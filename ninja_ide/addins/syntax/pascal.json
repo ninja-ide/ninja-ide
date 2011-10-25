@@ -1,0 +1,30 @@
+{
+  "extension": [
+    "pas"
+  ],
+  "comment": [
+    "//"
+  ], 
+  "operators": [
+    ",", ":", "=", "+", "-", "*", "/"
+  ], 
+  "keywords": [
+            "absolute","asm","assembler","begin","break","case","catch","cdecl",
+            "const","constructor","default","destructor","div","do","downto",
+            "else","end","except","export","exports","external","far",
+            "finalization","finally","for","forward","function","goto","if",
+            "implementation","in","index","inherited","initialization","inline",
+            "interface","interrupt","label","library","mod","name","not","of",
+            "or","overload","override","private","procedure","program",
+            "property","protected","public","published","raise","repeat",
+            "resourcestring","shl","shr","stdcall","stored","switch","then",
+            "to","try","type","unit","until","uses","var","while","xor",
+            "nil", "false", "true",
+            "abs","and","arc","arctan","blockread","blockwrite","chr","dispose",
+            "cos","eof","eoln","exp","get","ln","new","odd","ord","ordinal",
+            "pred","read","readln","sin","sqrt","succ","write","writeln",
+            "ansistring","array","boolean","byte","bytebool","char","file",
+            "integer","longbool","longint","object","packed","pointer","real",
+            "record","set","shortint","smallint","string","union","word"
+  ]
+}

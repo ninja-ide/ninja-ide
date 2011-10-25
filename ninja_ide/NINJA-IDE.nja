@@ -1,0 +1,21 @@
+{
+  "venv": "", 
+  "name": "NINJA-IDE", 
+  "license": "GNU General Public License v3", 
+  "url": "http://ninja-ide.org.ar", 
+  "pythonPath": "python", 
+  "programParams": "", 
+  "supported-extensions": [
+    ".py", 
+    ".html", 
+    ".jpg", 
+    ".png", 
+    ".ui", 
+    ".css", 
+    ".json", 
+    ".ini", 
+    ".js"
+  ], 
+  "project-type": "python", 
+  "description": "Ninja Is Not Just Another IDE"
+}

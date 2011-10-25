@@ -1,0 +1,75 @@
+{
+  "comment": [
+    "//"
+  ], 
+  "extension": [
+    "go"
+  ],
+  "definition": [
+    "struct",
+    "func",
+    "interface",
+    "type"
+  ], 
+  "string": [
+    "\""
+  ], 
+  "properObject": [
+    "this"
+  ], 
+  "operators": [
+    "=", 
+    "==", 
+    "!=", 
+    "<", 
+    "<=", 
+    ">", 
+    ">=", 
+    "\\+", 
+    "-", 
+    "\\*", 
+    "/", 
+    "//", 
+    "\\%", 
+    "\\*\\*", 
+    "\\+=", 
+    "-=", 
+    "\\*=", 
+    "/=", 
+    "\\%=", 
+    "!", 
+    "\\^", 
+    "\\|", 
+    "\\&", 
+    "\\~", 
+    ">>", 
+    "<<"
+  ], 
+  "keywords": [
+    "break",
+    "case",
+    "chan",
+    "const",
+    "continue",
+    "default",
+    "defer",
+    "else",
+    "fallthrough",
+    "for",
+    "go",
+    "goto",
+    "if",
+    "import",
+    "map",
+    "package",
+    "range",
+    "return",
+    "select",
+    "switch",
+    "var",
+    "struct",
+    "interface",
+    "type",
+    "func"
+  ]
+}

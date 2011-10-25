@@ -1,0 +1,50 @@
+{
+  "comment": [
+    "#"
+  ], 
+  "extension": [
+    "list"
+  ],
+  "definition": [
+    "http",
+    "ftp"
+  ], 
+  "string": [
+    "##"
+  ], 
+  "properObject": [
+    "file",
+    "cdrom"
+  ],
+  "operators": [
+    "/",
+    ":"
+  ], 
+  "keywords": [
+    "deb", 
+    "deb-src", 
+    "stable", 
+    "old-stable", 
+    "testing", 
+    "testing-proposed-updates", 
+    "unstable", 
+    "unstable-proposed-updates", 
+    "experimental", 
+    "security", 
+    "volatile", 
+    "volatile-sloppy", 
+    "partner", 
+    "backport", 
+    "contrib", 
+    "restricted", 
+    "main", 
+    "preview", 
+    "non-free", 
+    "commercial", 
+    "universe", 
+    "multiverse", 
+    "extras",
+    "medibuntu",
+    "getdeb"
+  ]
+}

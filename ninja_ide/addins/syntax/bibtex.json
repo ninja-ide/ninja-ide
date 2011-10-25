@@ -1,0 +1,93 @@
+{
+  "comment": [
+    "%%"
+  ], 
+  "extension": [
+    "tex"
+  ],
+  "definition": [
+    "def"
+  ], 
+  "string": [
+    "%%"
+  ], 
+  "properObject": [
+    "@comment",
+    "@preamble",
+    "@string",
+    "@article",
+    "@book",
+    "@booklet",
+    "@conference",
+    "@inbook",
+    "@incollection",
+    "@inproceedings",
+    "@manual",
+    "@mastersthesis",
+    "@misc",
+    "@phdthesis",
+    "@proceedings",
+    "@techreport",
+    "@unpublished",
+    "@collection",
+    "@patent",
+    "@webpage"
+  ],
+  "operators": [
+    "{",
+    "}",
+    "#",
+    "=",
+    ","
+  ], 
+  "keywords": [
+    "address",
+    "annote",
+    "author",
+    "booktitle",
+    "chapter",
+    "crossref",
+    "edition",
+    "editor",
+    "howpublished",
+    "institution",
+    "journal",
+    "key",
+    "month",
+    "note",
+    "number",
+    "organization",
+    "pages",
+    "publisher",
+    "school",
+    "series",
+    "title",
+    "type",
+    "volume",
+    "year",
+    "abstract",
+    "affiliation",
+    "chaptername",
+    "cited-by",
+    "cites",
+    "contents",
+    "copyright",
+    "date-added",
+    "date-modified",
+    "doi",
+    "eprint",
+    "isbn",
+    "issn",
+    "keywords",
+    "language",
+    "lccn",
+    "lib-congress",
+    "location",
+    "price",
+    "rating",
+    "read",
+    "size",
+    "source",
+    "url"
+  ]
+}

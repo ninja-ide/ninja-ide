@@ -1,0 +1,34 @@
+{
+  "comment": [
+    "%"
+  ], 
+  "extension": [
+    "tex"
+  ],
+  "operators": [
+    "&", "\\", "{", "}", "[", "]"
+  ], 
+  "keywords": [
+    "addlinespace", "and", "address", "appendix", "author", "backmatter",
+    "bfseries", "bibitem", "bigskip", "blindtext", "caption", "captionabove",
+    "captionbelow", "cdot", "centering", "chapter", "cite", "color",
+    "colorbox", "date", "dedication", "def", "definecolor", "documentclass",
+    "edef", "else", "email", "emph", "eqref", "extratitle", "fbox", "fi",
+    "flushleft", "flushright", "footnote", "frac", "frontmatter",
+    "graphicspath", "hfill", "hline", "hspace", "huge", "ifx", "include",
+    "includegraphics", "infty", "input", "int", "item", "itemsep",
+    "KOMAoption", "KOMAoptions", "label", "LaTeX", "left", "let", "limits",
+    "listfiles", "listoffigures", "listoftables", "lowertitleback",
+    "mainmatter", "makeatletter", "makeatother", "makebox", "makeindex",
+    "maketitle", "mbox", "mediumskip", "newcommand", "newenvironment",
+    "newpage", "nocite", "nonumber", "pagestyle", "par", "paragraph",
+    "parbox", "parident", "parskip", "partial", "publishers", "raggedleft",
+    "raggedright", "raisebox", "ref", "renewcommand", "renewenvironment",
+    "right", "rule", "section", "setlength", "sffamily", "subject",
+    "subparagraph", "subsection", "subsubsection", "subtitle", "sum",
+    "table", "tableofcontents", "textbf", "textcolor", "textit",
+    "textnormal", "textsuperscript", "texttt", "textwidth", "thanks", "title",
+    "titlehead", "today", "ttfamily", "uppertitleback", "urlstyle",
+    "usepackage", "vspace"
+  ]
+}

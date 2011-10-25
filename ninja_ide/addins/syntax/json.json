@@ -1,0 +1,12 @@
+{
+  "extension": [
+    "json"
+  ],
+  "string": [
+    "\"",
+    "'"
+  ], 
+  "operators": [
+    ":"
+  ]
+}
