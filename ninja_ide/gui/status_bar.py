@@ -347,7 +347,6 @@ class FileSystemOpener(QWidget):
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
         self.completer = QCompleter(self)
         self.pathLine = ui_tools.LineEditTabCompleter(self.completer)
-        self.pathLine.setPlaceholderText(self.tr("Type the path of the file."))
         fileModel = QFileSystemModel(self.completer)
         fileModel.setRootPath("")
         self.completer.setModel(fileModel)
