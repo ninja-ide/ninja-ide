@@ -33,10 +33,7 @@ and more enjoyable.
 def setup_and_run():
     # import only on run
     # Dont import always this, setup.py will fail
-    from ninja_ide import core, resources
-
-    # Create NINJA-IDE user folder structure for plugins, themes, etc
-    resources.create_home_dir_structure()
+    from ninja_ide import core
 
     # Run NINJA-IDE
     core.run_ninja()
