@@ -176,7 +176,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             if self._sidebarWidget._breakpoints:
                 self._sidebarWidget._breakpoints = self._add_line_increment(
                     self._sidebarWidget._breakpoints, blockNumber, diference)
-                settings.BREAKPOINTS[self.ID] = self._sidebarWidget._breakpoints
+                settings.BREAKPOINTS[self.ID] = \
+                    self._sidebarWidget._breakpoints
             if self._sidebarWidget._bookmarks:
                 self._sidebarWidget._bookmarks = self._add_line_increment(
                     self._sidebarWidget._bookmarks, blockNumber, diference)
@@ -237,11 +238,14 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.textModified = False
             self.document().setModified(self.textModified)
 
-    def register_syntax(self, lang):
+    def register_syntax(self, lang='', syntax=None):
         if lang in settings.EXTENSIONS:
             self.highlighter = highlighter.Highlighter(self.document(),
                 settings.EXTENSIONS.get(lang, 'python'),
                     resources.CUSTOM_SCHEME)
+        elif syntax is not None:
+            self.highlighter.apply_highlight(lang, resources.CUSTOM_SCHEME,
+                syntax)
 
     def get_text(self):
         """
