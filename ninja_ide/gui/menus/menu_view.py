@@ -22,30 +22,24 @@ class MenuView(QObject):
             self.tr("Show/Hide &Console (%1)").arg(
                 resources.get_shortcut("Hide-misc").toString(
                     QKeySequence.NativeText)))
-        self.hideConsoleAction.setCheckable(True)
         self.hideEditorAction = menuView.addAction(
             self.tr("Show/Hide &Editor (%1)").arg(
                 resources.get_shortcut("Hide-editor").toString(
                     QKeySequence.NativeText)))
-        self.hideEditorAction.setCheckable(True)
         self.hideAllAction = menuView.addAction(
             self.tr("Show/Hide &All (%1)").arg(
                 resources.get_shortcut("Hide-all").toString(
                     QKeySequence.NativeText)))
-        self.hideAllAction.setCheckable(True)
         self.hideExplorerAction = menuView.addAction(
             self.tr("Show/Hide &Explorer (%1)").arg(
                 resources.get_shortcut("Hide-explorer").toString(
                     QKeySequence.NativeText)))
-        self.hideExplorerAction.setCheckable(True)
         self.hideToolbarAction = menuView.addAction(
             self.tr("Show/Hide &Toolbar"))
-        self.hideToolbarAction.setCheckable(True)
         self.fullscreenAction = menuView.addAction(
             self.tr("Full Screen &Mode (%1)").arg(
                 resources.get_shortcut("Full-screen").toString(
                     QKeySequence.NativeText)))
-        self.fullscreenAction.setCheckable(True)
         menuView.addSeparator()
         splitTabHAction = menuView.addAction(
             QIcon(resources.IMAGES['splitH']),
