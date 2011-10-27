@@ -89,8 +89,11 @@ class Highlighter (QSyntaxHighlighter):
         QSyntaxHighlighter.__init__(self, document)
         self.apply_highlight(lang, scheme)
 
-    def apply_highlight(self, lang, scheme=None):
-        langSyntax = settings.SYNTAX.get(lang, {})
+    def apply_highlight(self, lang, scheme=None, syntax=None):
+        if syntax is None:
+            langSyntax = settings.SYNTAX.get(lang, {})
+        else:
+            langSyntax = syntax
         if scheme:
             restyle(scheme)
 
