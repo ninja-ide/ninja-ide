@@ -317,9 +317,12 @@ class __MainContainer(QSplitter):
 
     def open_image(self, fileName):
         try:
-            viewer = image_viewer.ImageViewer(fileName)
-            self.add_tab(viewer, file_manager.get_basename(fileName))
-            viewer.id = fileName
+            if not self.is_open(fileName):
+                viewer = image_viewer.ImageViewer(fileName)
+                self.add_tab(viewer, file_manager.get_basename(fileName))
+                viewer.id = fileName
+            else:
+                self.move_to_open(fileName)
         except Exception, reason:
             print reason
             QMessageBox.information(self, self.tr("Incorrect File"),
