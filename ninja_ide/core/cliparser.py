@@ -29,7 +29,7 @@ try:
             nargs='+', help='A file/s to edit', default=[])
         parser.add_argument('-p', '--project', metavar='project', type=unicode,
             nargs='+', help='A project/s to edit', default=[])
-        parser.add_argument('-e', '--extra_plugins',
+        parser.add_argument('--plugin',
             metavar='plugin', type=unicode,
             nargs='+', help='A plugin to load', default=[])
 
@@ -83,7 +83,7 @@ except:
         parser.add_option("--plugin",
             type="string",
             action="store",
-            dest="extra_plugins",
+            dest="plugin",
             default=[],
             help="A plugin to load",
             nargs=_resolve_nargs("--plugin"))
@@ -110,9 +110,9 @@ def parse():
         projects_path = opts.project \
             if isinstance(opts.project, list) \
             else  [opts.project]
-        extra_plugins = opts.extra_plugins \
-            if isinstance(opts.extra_plugins, list) \
-            else  [opts.extra_plugins]
+        extra_plugins = opts.plugin \
+            if isinstance(opts.plugin, list) \
+            else  [opts.plugin]
     except Exception, reason:
         print "Args couldn't be parsed."
         print reason
