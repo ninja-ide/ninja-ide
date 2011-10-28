@@ -250,6 +250,7 @@ class FindInFilesDialog(QDialog):
 
     def reject(self):
         self._kill_thread()
+        # Crazy hack to avoid circular imports
         self.result_widget.parent().parent().parent().hide()
         super(FindInFilesDialog, self).reject()
 
