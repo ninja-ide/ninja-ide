@@ -629,13 +629,13 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         position = event.pos()
         cursor = self.cursorForPosition(position)
         block = cursor.block()
-        if (block.blockNumber() + 1) in self.pep8.pep8lines:
-            index = self.pep8.pep8lines.index(block.blockNumber() + 1)
-            QToolTip.showText(self.mapToGlobal(position),
-                self.pep8.pep8checks[index], self)
         if (block.blockNumber() + 1) in self.errors.errorsLines:
             QToolTip.showText(self.mapToGlobal(position),
                 self.errors.errorsSummary[(block.blockNumber() + 1)], self)
+        elif (block.blockNumber() + 1) in self.pep8.pep8lines:
+            index = self.pep8.pep8lines.index(block.blockNumber() + 1)
+            QToolTip.showText(self.mapToGlobal(position),
+                self.pep8.pep8checks[index], self)
         if event.modifiers() == Qt.ControlModifier:
             cursor.select(QTextCursor.WordUnderCursor)
             cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
@@ -826,6 +826,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 self.extraSelections.append(selection)
             if self.pep8.pep8lines:
                 self.setExtraSelections(self.extraSelections)
+
+        #Re-position tooltip to allow text editing in the line of the error
+        if QToolTip.isVisible():
+            QToolTip.hideText()
 
         if self._braces is not None:
             self._braces = None
