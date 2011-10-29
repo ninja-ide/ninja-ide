@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
+import sys
 import os
 
 from PyQt4.QtGui import QTreeWidget
@@ -509,7 +510,8 @@ class TreeProjectsWidget(QTreeWidget):
                 subfolder.setToolTip(0, _file)
                 subfolder.setIcon(0, QIcon(resources.IMAGES['tree-folder']))
                 subFolderPath = os.path.join(folder, _file)
-                if not self._fileWatcher.directories().contains(subFolderPath):
+                if sys.platform != "darwin" and \
+                not self._fileWatcher.directories().contains(subFolderPath):
                     self._fileWatcher.addPath(subFolderPath)
                 self._load_folder(folderStructure,
                     subFolderPath, subfolder)
