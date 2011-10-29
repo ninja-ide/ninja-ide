@@ -484,25 +484,28 @@ class TreeProjectsWidget(QTreeWidget):
         self._fileWatcher.addPath(folder)
 
     def _load_folder(self, folderStructure, folder, parentItem):
-        items = folderStructure[folder]
+        """Load the Tree Project structure recursively."""
+        # Avoid failing if for some reason folder is not found
+        # Might be the case of special files, as links or versioning files
+        items = folderStructure.get(folder, [None, None])
 
         if items[0] is not None:
             items[0].sort()
-        for i in items[0]:
-            subitem = ProjectItem(parentItem, i, folder)
-            subitem.setToolTip(0, i)
-            subitem.setIcon(0, self._get_file_icon(i))
+            for i in items[0]:
+                subitem = ProjectItem(parentItem, i, folder)
+                subitem.setToolTip(0, i)
+                subitem.setIcon(0, self._get_file_icon(i))
         if items[1] is not None:
             items[1].sort()
-        for _file in items[1]:
-            if _file.startswith('.'):
-                continue
-            subfolder = ProjectItem(parentItem, _file, folder)
-            subfolder.isFolder = True
-            subfolder.setToolTip(0, _file)
-            subfolder.setIcon(0, QIcon(resources.IMAGES['tree-folder']))
-            self._load_folder(folderStructure,
-                os.path.join(folder, _file), subfolder)
+            for _file in items[1]:
+                if _file.startswith('.'):
+                    continue
+                subfolder = ProjectItem(parentItem, _file, folder)
+                subfolder.isFolder = True
+                subfolder.setToolTip(0, _file)
+                subfolder.setIcon(0, QIcon(resources.IMAGES['tree-folder']))
+                self._load_folder(folderStructure,
+                    os.path.join(folder, _file), subfolder)
 
     def _get_file_icon(self, fileName):
         return QIcon(self.images.get(file_manager.get_file_extension(fileName),
