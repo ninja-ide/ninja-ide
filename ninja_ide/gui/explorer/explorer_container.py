@@ -216,8 +216,8 @@ class __ExplorerContainer(QTabWidget):
             self._inspector._webInspector.setPage(page)
             self._inspector._webInspector.setVisible(True)
 
-    def open_project_folder(self, folderName='', notStart=True):
-        if not self._treeProjects and notStart:
+    def open_project_folder(self, folderName='', notIDEStart=True):
+        if not self._treeProjects and notIDEStart:
             QMessageBox.information(self, self.tr("Projects Disabled"),
                 self.tr("Project support has been disabled from Preferences"))
             return
@@ -241,7 +241,7 @@ class __ExplorerContainer(QTabWidget):
             self.emit(SIGNAL("projectOpened(QString)"), folderName)
         except Exception, reason:
             print reason, 'open_project_folder function'
-            if not notStart:
+            if not notIDEStart:
                 QMessageBox.information(self, self.tr("Incorrect Project"),
                     self.tr("The project could not be loaded!"))
 
@@ -272,12 +272,12 @@ class __ExplorerContainer(QTabWidget):
             return self._treeProjects.get_open_projects()
         return []
 
-    def open_session_projects(self, projects):
+    def open_session_projects(self, projects, notIDEStart=True):
         if not self._treeProjects:
             return
         for project in projects:
             if file_manager.folder_exists(project):
-                self.open_project_folder(project, False)
+                self.open_project_folder(project, notIDEStart)
 
     def close_opened_projects(self):
         if self._treeProjects:

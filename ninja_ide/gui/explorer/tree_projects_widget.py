@@ -367,7 +367,6 @@ class TreeProjectsWidget(QTreeWidget):
                 + os.path.join(item.path, unicode(item.text(0))),
                 QMessageBox.Yes, QMessageBox.No)
         if val == QMessageBox.Yes:
-            path = file_manager.create_path(item.path, unicode(item.text(0)))
             file_manager.delete_folder(item.path, unicode(item.text(0)))
             self.removeItemWidget(item, 0)
 
