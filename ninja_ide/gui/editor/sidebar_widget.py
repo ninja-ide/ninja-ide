@@ -362,11 +362,11 @@ class SidebarWidget(QWidget):
                 self.code_folding_event(lineNumber)
 
     def _save_breakpoints_bookmarks(self):
-        if self._bookmarks:
+        if self._bookmarks and self.edit.ID != "":
             settings.BOOKMARKS[self.edit.ID] = self._bookmarks
         elif self.edit.ID in settings.BOOKMARKS:
             settings.BOOKMARKS.pop(self.edit.ID)
-        if self._breakpoints:
+        if self._breakpoints and self.edit.ID != "":
             settings.BREAKPOINTS[self.edit.ID] = self._breakpoints
         elif self.edit.ID in settings.BREAKPOINTS:
             settings.BREAKPOINTS.pop(self.edit.ID)
