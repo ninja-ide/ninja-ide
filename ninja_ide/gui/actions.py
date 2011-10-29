@@ -616,14 +616,14 @@ class __Actions(QObject):
         if self.__breakpointsFile not in breakList:
             self.__breakpointsFile = breakList[0]
         index = breakList.index(self.__breakpointsFile)
-        breaks = settings.BREAKPOINTS[self.__breakpointsFile]
+        breaks = settings.BREAKPOINTS.get(self.__breakpointsFile, [])
         lineNumber = 0
         #val == True: forward
         if val:
             if (len(breaks) - 1) > self.__breakpointsPos:
                 self.__breakpointsPos += 1
                 lineNumber = breaks[self.__breakpointsPos]
-            elif breaks:
+            elif breaks > 0:
                 if index < (len(breakList) - 1):
                     self.__breakpointsFile = breakList[index + 1]
                 else:
@@ -635,7 +635,7 @@ class __Actions(QObject):
             if self.__breakpointsPos > 0:
                 self.__breakpointsPos -= 1
                 lineNumber = breaks[self.__breakpointsPos]
-            elif breaks:
+            elif breaks > 0:
                 self.__breakpointsFile = breakList[index - 1]
                 breaks = settings.BREAKPOINTS[self.__breakpointsFile]
                 self.__breakpointsPos = len(breaks) - 1
@@ -652,14 +652,14 @@ class __Actions(QObject):
         if self.__bookmarksFile not in bookList:
             self.__bookmarksFile = bookList[0]
         index = bookList.index(self.__bookmarksFile)
-        bookms = settings.BOOKMARKS[self.__bookmarksFile]
+        bookms = settings.BOOKMARKS.get(self.__bookmarksFile, [])
         lineNumber = 0
         #val == True: forward
         if val:
             if (len(bookms) - 1) > self.__bookmarksPos:
                 self.__bookmarksPos += 1
                 lineNumber = bookms[self.__bookmarksPos]
-            elif bookms:
+            elif bookms > 0:
                 if index < (len(bookList) - 1):
                     self.__bookmarksFile = bookList[index + 1]
                 else:
@@ -671,7 +671,7 @@ class __Actions(QObject):
             if self.__bookmarksPos > 0:
                 self.__bookmarksPos -= 1
                 lineNumber = bookms[self.__bookmarksPos]
-            elif bookms:
+            elif bookms > 0:
                 self.__bookmarksFile = bookList[index - 1]
                 bookms = settings.BOOKMARKS[self.__bookmarksFile]
                 self.__bookmarksPos = len(bookms) - 1
