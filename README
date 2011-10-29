@@ -16,13 +16,18 @@ more enjoyable.
 # CONTACT
 #===============================================================================
 
-HOMPAGE: http://ninja-ide.org
+HOMEPAGE: http://ninja-ide.org
 
-CONTACT (Google group): http://groups.google.com/group/ninja-ide
+CONTACT: dojo@ninja-ide.org
+
+FORUM (Google group): http://groups.google.com/group/ninja-ide
 
 TWITTER: @ninja_ide
 
 IRC: #ninja-ide (at Freenode)
+
+STAY UP TO DATE: http://groups.google.com/group/ninja-ide-dev
+(receive e-mail notifications when new code is added to the repository)
 
 
 #===============================================================================
@@ -37,22 +42,21 @@ PyQt >= 4.6
 # RUN NINJA-IDE
 #===============================================================================
 
-* From Sources Portable - Requires full dependencies:
-    
-    1. Go to:
-        http://code.google.com/p/ninja-ide/downloads/list
-    2. Download the last SOURCES package of NINJA-IDE.
-    3. Un-compress it.
+* From Sources Portable - Requires PyQt4:
+
+    1. Download the ZIP with the SOURCES from:
+        http://github.com/ninja-ide/ninja-ide/zipball/master
+    2. Un-compress it.
     4. Navigate to the folder where the source file is extracted using the 'cd'
        command.
     5. type:
         $ python ninja-ide.py
 
 
-* Clone HG Repo - Requires full dependencies and HG ():
+* Clone Git Repo - Requires PyQt4 and Git:
 
     1. Execute:
-        $ hg clone https://ninja-ide.googlecode.com/hg/ ninja-ide 
+        $ git clone git://github.com/ninja-ide/ninja-ide ninja-ide
     2. Execute:
         $ cd ninja-ide
     3. Execute:
@@ -130,7 +134,7 @@ Version 1.1 (Kunai)
 Version 1.0 (Kunai)
 
     * Syntax Highlighting for Python, Java, efene, C, C++, C#.
-    * Really easy to extend the highlight support to any language. Just 
+    * Really easy to extend the highlight support to any language. Just
       write a .json file!
     * Support for several languages more using Pygments.
     * Common IDE functionalities like:
@@ -143,7 +147,7 @@ Version 1.0 (Kunai)
     * Support file managment.
     * Allows to execute the Source Code and the Main Project in the Project
       Explorer from NINJA.
-    * Recognize a python project automatically, and load it into the Tree 
+    * Recognize a python project automatically, and load it into the Tree
       project Panel.
     * Allows working with zoom-in and zoom-out in the editor.
     * Allows working with different opacity for the application.
