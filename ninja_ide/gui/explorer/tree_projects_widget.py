@@ -226,8 +226,12 @@ class TreeProjectsWidget(QTreeWidget):
         proj.show()
 
     def _refresh_project_by_path(self, project_folder):
-        item = self._projects[unicode(project_folder)]
-        self._refresh_project(item)
+        project_folder = unicode(project_folder)
+        project = [path for path in self._projects if \
+            file_manager.belongs_to_folder(path, project_folder)]
+        if project:
+            item = self._projects[unicode(project[0])]
+            self._refresh_project(item)
 
     def _refresh_project(self, item=None):
         if item is None:
@@ -480,8 +484,8 @@ class TreeProjectsWidget(QTreeWidget):
         if self.currentItem() is None:
             item.setSelected(True)
             self.setCurrentItem(item)
-
-        self._fileWatcher.addPath(folder)
+        if not self._fileWatcher.directories().contains(folder):
+            self._fileWatcher.addPath(folder)
 
     def _load_folder(self, folderStructure, folder, parentItem):
         """Load the Tree Project structure recursively."""
@@ -504,8 +508,11 @@ class TreeProjectsWidget(QTreeWidget):
                 subfolder.isFolder = True
                 subfolder.setToolTip(0, _file)
                 subfolder.setIcon(0, QIcon(resources.IMAGES['tree-folder']))
+                subFolderPath = os.path.join(folder, _file)
+                if not self._fileWatcher.directories().contains(subFolderPath):
+                    self._fileWatcher.addPath(subFolderPath)
                 self._load_folder(folderStructure,
-                    os.path.join(folder, _file), subfolder)
+                    subFolderPath, subfolder)
 
     def _get_file_icon(self, fileName):
         return QIcon(self.images.get(file_manager.get_file_extension(fileName),
