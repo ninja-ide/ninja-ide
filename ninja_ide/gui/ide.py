@@ -228,9 +228,10 @@ class __IDE(QMainWindow):
         self.mainContainer.actualTab.close_tab()
 
     def load_session_files_projects(self, filesTab1, filesTab2, projects):
-        self.mainContainer.open_files(filesTab1)
-        self.mainContainer.open_files(filesTab2, mainTab=False)
-        self.explorer.open_session_projects(projects)
+        self.mainContainer.open_files(filesTab1, notIDEStart=False)
+        self.mainContainer.open_files(filesTab2, mainTab=False,
+            notIDEStart=False)
+        self.explorer.open_session_projects(projects, notIDEStart=False)
         self.status.explore_code()
 
     def change_window_title(self, title):
