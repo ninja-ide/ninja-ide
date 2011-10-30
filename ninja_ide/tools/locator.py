@@ -5,6 +5,7 @@ import re
 import Queue
 
 from PyQt4.QtGui import QMessageBox
+from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QBrush
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QFrame
@@ -198,7 +199,8 @@ class LocateThread(QThread):
             for one_file in current_files:
                 self._grep_file_locate(one_file.absoluteFilePath(),
                     one_file.fileName())
-        self.convert_map_to_array()
+#        self.convert_map_to_array()
+        self.dirty = True
 
     def locate_file_code(self):
         file_name = file_manager.get_basename(self._file_path)
@@ -209,6 +211,7 @@ class LocateThread(QThread):
     def get_locations(self):
         if self.dirty:
             self.convert_map_to_array()
+            self.dirty = False
         return self.locations
 
     def get_this_file_locations(self, path):
@@ -221,7 +224,7 @@ class LocateThread(QThread):
     def convert_map_to_array(self):
         global mapping_locations
         self.locations = [x for location in mapping_locations
-            for x in mapping_locations[location]]
+            for x in mapping_locations[location] if x[1] != '']
 
     def _grep_file(self, file_path, file_name):
         file_object = QFile(file_path)
@@ -337,9 +340,17 @@ class LocateItem(QListWidgetItem):
         '!': resources.IMAGES['tree-code']}
 
     def __init__(self, data):
-        QListWidgetItem.__init__(self, QIcon(self.icons[data[0]]),
-            u"{0} ({1})".format(data[1], data[2]))
+        QListWidgetItem.__init__(self, QIcon(self.icons[data[0]]), "\n")
         self._data = data
+
+
+class LocateWidget(QLabel):
+
+    def __init__(self, data):
+        QLabel.__init__(self)
+        self.setText(u"{0}<br>"
+            "<span style='font-size: 12px; color: grey;'>({1})</span>".format(
+                data[1], data[2]))
 
 
 class LocateCompleter(QLineEdit):
@@ -348,8 +359,9 @@ class LocateCompleter(QLineEdit):
         QLineEdit.__init__(self, parent)
         self._parent = parent
         self.__prefix = ''
-        self.frame = None
+        self.frame = PopupCompleter()
         self.filterPrefix = re.compile(r'^(@|<|>|!|\.)(\s)*')
+        self.locations = []
         self.tempLocations = []
         self.setMinimumWidth(700)
 
@@ -358,17 +370,25 @@ class LocateCompleter(QLineEdit):
 
     def set_prefix(self, prefix):
         self.__prefix = unicode(prefix.toLower())
+        if self.__prefix != '':
+            self.frame.hide_help()
         self._refresh_filter()
 
     def complete(self):
-        self.frame = PopupCompleter(self.filter())
+        self.frame.reload(self.filter())
         self.frame.setFixedWidth(self.width())
         point = self._parent.mapToGlobal(self.pos())
         self.frame.show()
         self.frame.move(point.x(), point.y() - self.frame.height())
 
+    def _create_list_items(self):
+        if self._parent._thread.dirty:
+            self.locations = [(LocateItem(x), LocateWidget(x)) \
+                for x in self._parent._thread.get_locations()]
+        return self.locations
+
     def filter(self):
-        self.tempLocations = self._parent._thread.get_locations()
+        self.tempLocations = self._create_list_items()
         if self.filterPrefix.match(self.__prefix):
             filterOption = self.__prefix[:1]
             if filterOption == '.':
@@ -378,17 +398,18 @@ class LocateCompleter(QLineEdit):
                     self._parent._thread.get_this_file_locations(
                         editorWidget.ID)
                 self.__prefix = unicode(self.__prefix)[1:].lstrip()
-                self.tempLocations = [LocateItem(x) for x in self.tempLocations
+                self.tempLocations = [(LocateItem(x), LocateWidget(x)) \
+                    for x in self.tempLocations \
                     if x[1].lower().find(self.__prefix) > -1]
                 return self.tempLocations
             self.tempLocations = [x for x in self.tempLocations
-                if x[0] == filterOption]
+                if x[0]._data[0] == filterOption]
             self.__prefix = unicode(self.__prefix)[1:].lstrip()
         if self.__prefix:
-            self.tempLocations = [LocateItem(x) for x in self.tempLocations
-                if x[1].lower().find(self.__prefix) > -1]
+            self.tempLocations = [x for x in self.tempLocations \
+                if x[0]._data[1].lower().find(self.__prefix) > -1]
         else:
-            self.tempLocations = [LocateItem(x) for x in self.tempLocations]
+            self.tempLocations = [x for x in self.tempLocations]
         return self.tempLocations
 
     def _refresh_filter(self):
@@ -419,6 +440,7 @@ class LocateCompleter(QLineEdit):
         elif event.key() in (Qt.Key_Tab, Qt.Key_Return, Qt.Key_Enter):
             item = self.frame.listWidget.currentItem()
             if type(item) is LocateItem:
+                print item._data
                 self._open_item(item._data)
             self._parent.statusBar.hide_status()
 
@@ -436,14 +458,18 @@ class LocateCompleter(QLineEdit):
 
 class PopupCompleter(QFrame):
 
-    def __init__(self, model):
+    def __init__(self):
         QFrame.__init__(self, None, Qt.FramelessWindowHint | Qt.ToolTip)
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
-        self.fetch = 20
+        self.fetch = 10
         self.listWidget = QListWidget()
+        self.listWidget.setAutoScroll(True)
+        self.listWidget.setVerticalScrollMode(self.listWidget.ScrollPerItem)
         self.listWidget.setMinimumHeight(250)
+        vbox.addWidget(self.listWidget)
+        #Load help
         fileItem = QListWidgetItem(
             QIcon(resources.IMAGES['locate-file']),
                 '@\t(Filter only by Files)')
@@ -488,31 +514,58 @@ class PopupCompleter(QFrame):
         nonPythonItem.setBackground(QBrush(Qt.lightGray))
         nonPythonItem.setForeground(QBrush(Qt.black))
         nonPythonItem.setFont(font)
+
+    def reload(self, model):
+        for index in xrange(self.listWidget.count()):
+            self.listWidget.setRowHidden(index, True)
+        self.show_help()
         for i, item in enumerate(model):
             if i > self.fetch:
                 break
-            self.listWidget.addItem(item)
+            if self.listWidget.indexFromItem(item[0]).isValid():
+                item[0].setHidden(False)
+            else:
+                self.listWidget.addItem(item[0])
+                self.listWidget.setItemWidget(item[0], item[1])
         if len(model) != self.listWidget.count():
             moreItems = QListWidgetItem('Load more...')
             self.listWidget.addItem(moreItems)
         self.listWidget.setCurrentRow(5)
-        vbox.addWidget(self.listWidget)
+
+    def hide_help(self):
+        for i in xrange(5):
+            self.listWidget.setRowHidden(i, True)
+
+    def show_help(self):
+        for i in xrange(5):
+            self.listWidget.setRowHidden(i, False)
 
     def refresh(self, model):
-        self.listWidget.clear()
+        for index in xrange(self.listWidget.count()):
+            self.listWidget.setRowHidden(index, True)
         for i, item in enumerate(model):
             if i > self.fetch:
                 break
-            self.listWidget.addItem(item)
-        self.listWidget.setCurrentRow(0)
+            if self.listWidget.indexFromItem(item[0]).isValid():
+                item[0].setHidden(False)
+            else:
+                self.listWidget.addItem(item[0])
+                self.listWidget.setItemWidget(item[0], item[1])
+        for index in xrange(self.listWidget.count()):
+            if not self.listWidget.item(index).isHidden():
+                break
+        self.listWidget.setCurrentRow(index)
+        self.listWidget.scrollToTop()
 
     def fetch_more(self, model):
-        fromFetch = self.fetch
-        self.fetch = min(self.fetch + 20, len(model))
+        fromFetch = self.fetch + 1
+        self.fetch = min(self.fetch + 10, len(model))
         if self.fetch > fromFetch:
             self.listWidget.takeItem(self.listWidget.count() - 1)
         for i in xrange(self.fetch - fromFetch):
-            self.listWidget.addItem(model[fromFetch + i])
+            self.listWidget.addItem(model[fromFetch + i][0])
+            self.listWidget.setItemWidget(model[fromFetch + i][0],
+                model[fromFetch + i][1])
         self.listWidget.setCurrentRow(
             self.listWidget.currentRow() + 1)
         if len(model) != self.fetch:
