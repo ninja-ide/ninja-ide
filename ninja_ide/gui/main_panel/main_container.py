@@ -2,6 +2,7 @@
 from __future__ import absolute_import
 
 import os
+import logging
 
 from PyQt4 import uic
 from PyQt4.QtGui import QSplitter
@@ -21,6 +22,9 @@ from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.main_panel import browser_widget
 from ninja_ide.gui.main_panel import image_viewer
 from ninja_ide.tools import runner
+
+
+logger = logging.getLogger('ninja_ide.gui.main_panel.main_container')
 
 __mainContainerInstance = None
 
@@ -324,7 +328,7 @@ class __MainContainer(QSplitter):
             else:
                 self.move_to_open(fileName)
         except Exception, reason:
-            print reason
+            logger.error('open_image: %s', reason)
             QMessageBox.information(self, self.tr("Incorrect File"),
                 self.tr("The image couldn\'t be open"))
 
@@ -390,7 +394,7 @@ class __MainContainer(QSplitter):
                     self.tr("The file couldn't be open"),
                     unicode(reason))
         except Exception, reason:
-            print unicode(reason), '- Exception reason: open_file'
+            logger.error('open_file: %s', reason)
         self.actualTab.notOpening = True
 
     def is_open(self, filename):
@@ -463,8 +467,7 @@ class __MainContainer(QSplitter):
             editorWidget._file_saved()
             return True
         except Exception, reason:
-            print reason, '- Exception: save_file(self) ' \
-            'function in MainContainer'
+            logger.error('save_file: %s', reason)
             QMessageBox.information(self, self.tr("Save Error"),
                 self.tr("The file couldn't be saved!"))
         return False
@@ -498,8 +501,7 @@ class __MainContainer(QSplitter):
                 self.tr("Invalid Path: the file '%s' already exists." % \
                     ex.filename))
         except Exception, reason:
-            print reason, '- Exception: save_file_as(self) ' \
-            'function in MainContainer'
+            logger.error('save_file_as: %s', reason)
             QMessageBox.information(self, self.tr("Save Error"),
                 self.tr("The file couldn't be saved!"))
             self.actualTab.setTabText(self.actualTab.currentIndex(),
