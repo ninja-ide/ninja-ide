@@ -2,6 +2,7 @@
 from __future__ import absolute_import
 
 import sys
+import logging
 
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QShortcut
@@ -32,6 +33,8 @@ try:
 except:
     settings.WEBINSPECTOR_SUPPORTED = False
 
+
+logger = logging.getLogger('ninja_ide.gui.explorer.explorer_container')
 
 __explorerContainerInstance = None
 
@@ -240,7 +243,7 @@ class __ExplorerContainer(QTabWidget):
                 self._treeProjects._set_current_project(folderName)
             self.emit(SIGNAL("projectOpened(QString)"), folderName)
         except Exception, reason:
-            print reason, 'open_project_folder function'
+            logger.error('open_project_folder: %s', reason)
             if not notIDEStart:
                 QMessageBox.information(self, self.tr("Incorrect Project"),
                     self.tr("The project could not be loaded!"))

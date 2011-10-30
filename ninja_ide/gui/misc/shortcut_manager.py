@@ -168,7 +168,6 @@ class ShortcutConfiguration(QWidget):
                             self.tr("Do you want to remove it?"),
                             QMessageBox.Yes, QMessageBox.No)
                     if val == QMessageBox.Yes:
-                        print top_item.text(0)
                         top_item.setText(1, "")
                         return True
                     else:
