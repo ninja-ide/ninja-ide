@@ -199,7 +199,6 @@ class LocateThread(QThread):
             for one_file in current_files:
                 self._grep_file_locate(one_file.absoluteFilePath(),
                     one_file.fileName())
-#        self.convert_map_to_array()
         self.dirty = True
 
     def locate_file_code(self):
@@ -224,7 +223,7 @@ class LocateThread(QThread):
     def convert_map_to_array(self):
         global mapping_locations
         self.locations = [x for location in mapping_locations
-            for x in mapping_locations[location] if x[1] != '']
+            for x in mapping_locations[location]]
 
     def _grep_file(self, file_path, file_name):
         file_object = QFile(file_path)
@@ -383,6 +382,10 @@ class LocateCompleter(QLineEdit):
 
     def _create_list_items(self):
         if self._parent._thread.dirty:
+            #Clean the objects from the listWidget
+            self.frame.listWidget.clear()
+            self.frame.add_help()
+            #Create the list items
             self.locations = [(LocateItem(x), LocateWidget(x)) \
                 for x in self._parent._thread.get_locations()]
         return self.locations
@@ -428,9 +431,8 @@ class LocateCompleter(QLineEdit):
               self.frame.listWidget.count() - 3:
                 self.frame.fetch_more(self.tempLocations)
             elif self.frame.listWidget.currentRow() != \
-              self.frame.listWidget.count() - 1:
-                self.frame.listWidget.setCurrentRow(
-                    self.frame.listWidget.currentRow() + 1)
+            self.frame.listWidget.count() - 1:
+                self.frame.listWidget.next_item()
             else:
                 self.frame.fetch_more(self.tempLocations)
         elif event.key() == Qt.Key_Up:
@@ -440,7 +442,6 @@ class LocateCompleter(QLineEdit):
         elif event.key() in (Qt.Key_Tab, Qt.Key_Return, Qt.Key_Enter):
             item = self.frame.listWidget.currentItem()
             if type(item) is LocateItem:
-                print item._data
                 self._open_item(item._data)
             self._parent.statusBar.hide_status()
 
@@ -464,11 +465,69 @@ class PopupCompleter(QFrame):
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
         self.fetch = 10
-        self.listWidget = QListWidget()
-        self.listWidget.setAutoScroll(True)
-        self.listWidget.setVerticalScrollMode(self.listWidget.ScrollPerItem)
+        self.__scrollbarMax = 10
+        self.listWidget = ListCompleterWidget()
         self.listWidget.setMinimumHeight(250)
         vbox.addWidget(self.listWidget)
+
+    def reload(self, model):
+        self.fetch = 10
+        for index in xrange(self.listWidget.real_count()):
+            self.listWidget.setRowHidden(index, True)
+        self.show_help()
+        for i, item in enumerate(model):
+            if i > self.fetch:
+                break
+            if self.listWidget.indexFromItem(item[0]).isValid():
+                item[0].setHidden(False)
+            else:
+                self.listWidget.addItem(item[0])
+                self.listWidget.setItemWidget(item[0], item[1])
+#        if len(model) != self.listWidget.count():
+#            moreItems = QListWidgetItem('Load more...')
+#            self.listWidget.addItem(moreItems)
+        self.listWidget.setCurrentRow(5)
+        self.listWidget.scrollToTop()
+
+    def hide_help(self):
+        for i in xrange(5):
+            self.listWidget.setRowHidden(i, True)
+
+    def show_help(self):
+        for i in xrange(5):
+            self.listWidget.setRowHidden(i, False)
+
+    def refresh(self, model):
+        self.fetch = 10
+        for index in xrange(self.listWidget.real_count()):
+            self.listWidget.setRowHidden(index, True)
+        for i, item in enumerate(model):
+            if i > self.fetch:
+                break
+            if self.listWidget.indexFromItem(item[0]).isValid():
+                item[0].setHidden(False)
+            else:
+                self.listWidget.addItem(item[0])
+                self.listWidget.setItemWidget(item[0], item[1])
+        self.listWidget.setCurrentItem(model[0][0])
+        self.listWidget.scrollToTop()
+
+    def fetch_more(self, model):
+        fromFetch = self.fetch + 1
+        self.fetch = min(self.fetch + 10, len(model))
+#        if self.fetch > fromFetch:
+#            self.listWidget.takeItem(self.listWidget.count() - 1)
+        for i in xrange(self.fetch - fromFetch):
+            self.listWidget.addItem(model[fromFetch + i][0])
+            self.listWidget.setItemWidget(model[fromFetch + i][0],
+                model[fromFetch + i][1])
+        self.listWidget.setCurrentRow(
+            self.listWidget.currentRow() + 1)
+#        if len(model) != self.fetch:
+#            moreItems = QListWidgetItem('Load more...')
+#            self.listWidget.addItem(moreItems)
+
+    def add_help(self):
         #Load help
         fileItem = QListWidgetItem(
             QIcon(resources.IMAGES['locate-file']),
@@ -515,59 +574,41 @@ class PopupCompleter(QFrame):
         nonPythonItem.setForeground(QBrush(Qt.black))
         nonPythonItem.setFont(font)
 
-    def reload(self, model):
-        for index in xrange(self.listWidget.count()):
-            self.listWidget.setRowHidden(index, True)
-        self.show_help()
-        for i, item in enumerate(model):
-            if i > self.fetch:
+
+class ListCompleterWidget(QListWidget):
+
+    def __init__(self):
+        QListWidget.__init__(self)
+
+    def real_count(self):
+        return QListWidget.count(self)
+
+    def count(self):
+        realCount = QListWidget.count(self)
+        count = 0
+        for i in xrange(realCount):
+            if not self.isRowHidden(i):
+                count += 1
+        return count
+
+    def currentRow(self):
+        realCount = QListWidget.count(self)
+        count = 0
+        actualItem = self.currentItem()
+        for i in xrange(realCount):
+            if self.item(i) == actualItem:
                 break
-            if self.listWidget.indexFromItem(item[0]).isValid():
-                item[0].setHidden(False)
-            else:
-                self.listWidget.addItem(item[0])
-                self.listWidget.setItemWidget(item[0], item[1])
-        if len(model) != self.listWidget.count():
-            moreItems = QListWidgetItem('Load more...')
-            self.listWidget.addItem(moreItems)
-        self.listWidget.setCurrentRow(5)
+            if not self.isRowHidden(i):
+                count += 1
+        return count
 
-    def hide_help(self):
-        for i in xrange(5):
-            self.listWidget.setRowHidden(i, True)
-
-    def show_help(self):
-        for i in xrange(5):
-            self.listWidget.setRowHidden(i, False)
-
-    def refresh(self, model):
-        for index in xrange(self.listWidget.count()):
-            self.listWidget.setRowHidden(index, True)
-        for i, item in enumerate(model):
-            if i > self.fetch:
+    def next_item(self):
+        row = QListWidget.currentRow(self)
+        realCount = QListWidget.count(self)
+        for i in xrange(row + 1, realCount):
+            if not self.isRowHidden(i):
+                self.setCurrentRow(i)
                 break
-            if self.listWidget.indexFromItem(item[0]).isValid():
-                item[0].setHidden(False)
-            else:
-                self.listWidget.addItem(item[0])
-                self.listWidget.setItemWidget(item[0], item[1])
-        for index in xrange(self.listWidget.count()):
-            if not self.listWidget.item(index).isHidden():
-                break
-        self.listWidget.setCurrentRow(index)
-        self.listWidget.scrollToTop()
 
-    def fetch_more(self, model):
-        fromFetch = self.fetch + 1
-        self.fetch = min(self.fetch + 10, len(model))
-        if self.fetch > fromFetch:
-            self.listWidget.takeItem(self.listWidget.count() - 1)
-        for i in xrange(self.fetch - fromFetch):
-            self.listWidget.addItem(model[fromFetch + i][0])
-            self.listWidget.setItemWidget(model[fromFetch + i][0],
-                model[fromFetch + i][1])
-        self.listWidget.setCurrentRow(
-            self.listWidget.currentRow() + 1)
-        if len(model) != self.fetch:
-            moreItems = QListWidgetItem('Load more...')
-            self.listWidget.addItem(moreItems)
+    def previous_item(self):
+        pass
