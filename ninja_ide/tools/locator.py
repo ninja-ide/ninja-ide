@@ -333,6 +333,8 @@ class CodeLocatorWidget(QWidget):
 
 class LocateItem(QListWidgetItem):
 
+    """Create QListWidgetItem that contains the proper icon and file data."""
+
     icons = {'>': resources.IMAGES['function'],
         '@': resources.IMAGES['tree-python'],
         '<': resources.IMAGES['class'],
@@ -344,6 +346,8 @@ class LocateItem(QListWidgetItem):
 
 
 class LocateWidget(QLabel):
+
+    """Create a styled QLabel that will show the info."""
 
     def __init__(self, data):
         QLabel.__init__(self)
@@ -368,8 +372,10 @@ class LocateCompleter(QLineEdit):
             self.set_prefix)
 
     def set_prefix(self, prefix):
+        """Set the prefix for the completer."""
         self.__prefix = unicode(prefix.toLower())
         if self.__prefix != '':
+            # if the prefix is not empty, hide the initial help
             self.frame.hide_help()
         self._refresh_filter()
 
@@ -381,7 +387,12 @@ class LocateCompleter(QLineEdit):
         self.frame.move(point.x(), point.y() - self.frame.height())
 
     def _create_list_items(self):
+        """Create a list of items and save that data in memory."""
+        #This will cause that load the list faster during the session
+        #The list is regenerated when the locate metadata is updated
+        #for example: open project, etc.
         if self._parent._thread.dirty:
+            #dirty == True: means that there is new info
             #Clean the objects from the listWidget
             self.frame.clear()
             #Create the list items
@@ -391,8 +402,10 @@ class LocateCompleter(QLineEdit):
 
     def filter(self):
         self.tempLocations = self._create_list_items()
+        #if the user type any of the prefix
         if self.filterPrefix.match(self.__prefix):
             filterOption = self.__prefix[:1]
+            #if the prefix is "." it means only the metadata of current file
             if filterOption == '.':
                 editorWidget = \
                     main_container.MainContainer().get_actual_editor()
@@ -404,10 +417,14 @@ class LocateCompleter(QLineEdit):
                     for x in self.tempLocations \
                     if x[1].lower().find(self.__prefix) > -1]
                 return self.tempLocations
+            #Is not "." filter by the other options
             self.tempLocations = [x for x in self.tempLocations
                 if x[0]._data[0] == filterOption]
+            #Obtain the user input without the filter prefix
             self.__prefix = unicode(self.__prefix)[1:].lstrip()
         if self.__prefix:
+            #if prefix (user search now) is not empty, filter words that
+            #contain the user input
             self.tempLocations = [x for x in self.tempLocations \
                 if x[0]._data[1].lower().find(self.__prefix) > -1]
         else:
@@ -419,35 +436,39 @@ class LocateCompleter(QLineEdit):
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Space:
-            currentText = unicode(self.frame.listWidget.currentItem().text())
-            currentText = currentText.split(' (')[0]
-            self.setText(currentText)
+            item = self.frame.listWidget.currentItem()
+            self.setText(unicode(item._data[1]))
             return
 
         QLineEdit.keyPressEvent(self, event)
         currentRow = self.frame.listWidget.currentRow()
         if event.key() == Qt.Key_Down:
             count = self.frame.listWidget.count()
+            #If the current position is greater than the amount of items in
+            #the list - 6, then try to fetch more items in the list.
             if currentRow >= (count - 6):
                 self.frame.fetch_more(self.tempLocations)
+            #While the current position is lower that the list size go to next
             if currentRow != count - 1:
                 self.frame.listWidget.next_item()
-            else:
-                self.frame.fetch_more(self.tempLocations)
         elif event.key() == Qt.Key_Up:
+            #while the current position is greater than 0, go to previous
             if currentRow > 0:
                 self.frame.listWidget.previous_item()
-        elif event.key() in (Qt.Key_Tab, Qt.Key_Return, Qt.Key_Enter):
+        elif event.key() in (Qt.Key_Return, Qt.Key_Enter):
+            #If the user press enter, go to the item selected
             item = self.frame.listWidget.currentItem()
             if type(item) is LocateItem:
                 self._open_item(item._data)
             self._parent.statusBar.hide_status()
 
     def focusOutEvent(self, event):
+        """Hide Popup on focus lost."""
         self._parent.statusBar.hide_status()
         QLineEdit.focusOutEvent(self, event)
 
     def _open_item(self, data):
+        """Open the item received."""
         if file_manager.get_file_extension(data[2]) in ('jpg', 'png'):
             main_container.MainContainer().open_image(data[2])
         else:
@@ -463,12 +484,12 @@ class PopupCompleter(QFrame):
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
         self.fetch = 10
-        self.__scrollbarMax = 10
         self.listWidget = ListCompleterWidget()
         self.listWidget.setMinimumHeight(250)
         vbox.addWidget(self.listWidget)
 
     def reload(self, model):
+        """Reload the data of the Popup Completer, and restart the state."""
         self.fetch = 10
         for index in xrange(self.listWidget.real_count()):
             self.listWidget.setRowHidden(index, True)
@@ -485,18 +506,22 @@ class PopupCompleter(QFrame):
         self.listWidget.scrollToTop()
 
     def clear(self):
+        """Remove all the items of the list (deleted), and reload the help."""
         self.listWidget.clear()
         self.add_help()
 
     def hide_help(self):
+        """Hide the help (not delete)."""
         for i in xrange(5):
             self.listWidget.setRowHidden(i, True)
 
     def show_help(self):
+        """Show the help."""
         for i in xrange(5):
             self.listWidget.setRowHidden(i, False)
 
     def refresh(self, model):
+        """Refresh the list when the user search for some word."""
         self.fetch = 10
         for index in xrange(self.listWidget.real_count()):
             self.listWidget.setRowHidden(index, True)
@@ -513,6 +538,7 @@ class PopupCompleter(QFrame):
         self.listWidget.scrollToTop()
 
     def fetch_more(self, model):
+        """Add more items to the list on user scroll."""
         fromFetch = self.fetch + 1
         self.fetch = min(self.fetch + 10, len(model))
         for i in xrange(self.fetch - fromFetch):
@@ -579,9 +605,11 @@ class ListCompleterWidget(QListWidget):
         QListWidget.__init__(self)
 
     def real_count(self):
+        """Return the amount of items in the list (hidden included)."""
         return QListWidget.count(self)
 
     def count(self):
+        """Return the amount of visible items in the list."""
         realCount = QListWidget.count(self)
         count = 0
         for i in xrange(realCount):
@@ -590,6 +618,7 @@ class ListCompleterWidget(QListWidget):
         return count
 
     def currentRow(self):
+        """Return the current position only counting for visible rows."""
         realCount = QListWidget.count(self)
         count = 0
         actualItem = self.currentItem()
@@ -601,6 +630,7 @@ class ListCompleterWidget(QListWidget):
         return count
 
     def next_item(self):
+        """Move the selection to the next visible item."""
         row = QListWidget.currentRow(self)
         realCount = QListWidget.count(self)
         for i in xrange(row + 1, realCount):
@@ -613,6 +643,7 @@ class ListCompleterWidget(QListWidget):
         self.verticalScrollBar().setSliderPosition(position)
 
     def previous_item(self):
+        """Move the selection to the previous visible item."""
         row = QListWidget.currentRow(self)
         for i in reversed(xrange(0, row)):
             if not self.isRowHidden(i):
