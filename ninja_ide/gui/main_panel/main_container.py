@@ -96,18 +96,8 @@ class __MainContainer(QSplitter):
         self.connect(self._tabSecondary,
             SIGNAL("syntaxChanged(QWidget, QString)"),
             self._specify_syntax)
-#        self.connect(self._tabs, SIGNAL("dropTab(QTabWidget)"),self._move_tab)
-#    self.connect(self._tabs2, SIGNAL("dropTab(QTabWidget)"),self._move_tab)
-#    self.connect(self._tabs, SIGNAL("emitSaveSignal()"), self._main.save)
-#        self.connect(self._tabs2, SIGNAL("emitSaveSignal()"), self._main.save)
         self.connect(self._tabSecondary, SIGNAL("allTabsClosed()"),
             self._secondary_without_tabs)
-        self.connect(self._tabMain,
-            SIGNAL("scrollEditor(QWheelEvent, QTabWidget)"),
-            self._scroll_follow_mode)
-        self.connect(self._tabSecondary,
-            SIGNAL("scrollEditor(QWheelEvent, QTabWidget)"),
-            self._scroll_follow_mode)
         #reload file
         self.connect(self._tabMain, SIGNAL("reloadFile()"), self.reload_file)
         self.connect(self._tabSecondary, SIGNAL("reloadFile()"),
@@ -597,19 +587,6 @@ class __MainContainer(QSplitter):
     def _exit_follow_mode(self):
         if self._followMode:
             self.show_follow_mode()
-
-    def _scroll_follow_mode(self, event, tab):
-        if self._followMode:
-            editorWidget = self._tabMain.currentWidget()
-            editor2 = self._tabSecondary.currentWidget()
-            firstLine = editor2.firstVisibleBlock().firstLineNumber()
-            lastLine = editorWidget._sidebarWidget.highest_line
-            if tab == self._tabMain:
-                if lastLine < (firstLine + 2):
-                    editor2.wheelEvent(event, False)
-            else:
-                if firstLine >= (lastLine - 4):
-                    editorWidget.wheelEvent(event, False)
 
     def get_opened_documents(self):
         if self._followMode:

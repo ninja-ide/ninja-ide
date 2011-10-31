@@ -590,9 +590,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 self.zoom_out()
             event.ignore()
         QPlainTextEdit.wheelEvent(self, event)
-        #parent().parent() == TabWidget
-        if forward:
-            self.parent().parent().wheelScroll(event)
 
     def contextMenuEvent(self, event):
         popup_menu = self.createStandardContextMenu()

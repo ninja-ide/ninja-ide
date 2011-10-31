@@ -30,7 +30,6 @@ class TabWidget(QTabWidget):
     """
     tabCloseRequested(int)
     dropTab(QTabWidget)
-    scrollEditor(QWheelEvent, QTabWidget)
     saveActualEditor()
     allTabsClosed()
     changeActualTab(QTabWidget)
@@ -341,9 +340,6 @@ class TabWidget(QTabWidget):
 #    def dropEvent(self, event):
 #        event.accept()
 #        self.emit(SIGNAL("dropTab(QTabWidget)"), self)
-
-    def wheelScroll(self, event):
-        self.emit(SIGNAL("scrollEditor(QWheelEvent, QTabWidget)"), event, self)
 
     def _check_unsaved_tabs(self):
         val = False
