@@ -383,8 +383,7 @@ class LocateCompleter(QLineEdit):
     def _create_list_items(self):
         if self._parent._thread.dirty:
             #Clean the objects from the listWidget
-            self.frame.listWidget.clear()
-            self.frame.add_help()
+            self.frame.clear()
             #Create the list items
             self.locations = [(LocateItem(x), LocateWidget(x)) \
                 for x in self._parent._thread.get_locations()]
@@ -426,19 +425,18 @@ class LocateCompleter(QLineEdit):
             return
 
         QLineEdit.keyPressEvent(self, event)
+        currentRow = self.frame.listWidget.currentRow()
         if event.key() == Qt.Key_Down:
-            if self.frame.listWidget.currentRow() == \
-              self.frame.listWidget.count() - 3:
+            count = self.frame.listWidget.count()
+            if currentRow >= (count - 6):
                 self.frame.fetch_more(self.tempLocations)
-            elif self.frame.listWidget.currentRow() != \
-            self.frame.listWidget.count() - 1:
+            if currentRow != count - 1:
                 self.frame.listWidget.next_item()
             else:
                 self.frame.fetch_more(self.tempLocations)
         elif event.key() == Qt.Key_Up:
-            if self.frame.listWidget.currentRow() > 0:
-                self.frame.listWidget.setCurrentRow(
-                    self.frame.listWidget.currentRow() - 1)
+            if currentRow > 0:
+                self.frame.listWidget.previous_item()
         elif event.key() in (Qt.Key_Tab, Qt.Key_Return, Qt.Key_Enter):
             item = self.frame.listWidget.currentItem()
             if type(item) is LocateItem:
@@ -483,11 +481,12 @@ class PopupCompleter(QFrame):
             else:
                 self.listWidget.addItem(item[0])
                 self.listWidget.setItemWidget(item[0], item[1])
-#        if len(model) != self.listWidget.count():
-#            moreItems = QListWidgetItem('Load more...')
-#            self.listWidget.addItem(moreItems)
         self.listWidget.setCurrentRow(5)
         self.listWidget.scrollToTop()
+
+    def clear(self):
+        self.listWidget.clear()
+        self.add_help()
 
     def hide_help(self):
         for i in xrange(5):
@@ -509,23 +508,22 @@ class PopupCompleter(QFrame):
             else:
                 self.listWidget.addItem(item[0])
                 self.listWidget.setItemWidget(item[0], item[1])
-        self.listWidget.setCurrentItem(model[0][0])
+        if model:
+            self.listWidget.setCurrentItem(model[0][0])
         self.listWidget.scrollToTop()
 
     def fetch_more(self, model):
         fromFetch = self.fetch + 1
         self.fetch = min(self.fetch + 10, len(model))
-#        if self.fetch > fromFetch:
-#            self.listWidget.takeItem(self.listWidget.count() - 1)
         for i in xrange(self.fetch - fromFetch):
-            self.listWidget.addItem(model[fromFetch + i][0])
-            self.listWidget.setItemWidget(model[fromFetch + i][0],
-                model[fromFetch + i][1])
-        self.listWidget.setCurrentRow(
-            self.listWidget.currentRow() + 1)
-#        if len(model) != self.fetch:
-#            moreItems = QListWidgetItem('Load more...')
-#            self.listWidget.addItem(moreItems)
+            if self.listWidget.indexFromItem(
+            model[fromFetch + i][0]).isValid():
+                model[fromFetch + i][0].setHidden(False)
+            else:
+                self.listWidget.addItem(model[fromFetch + i][0])
+                self.listWidget.setItemWidget(
+                    model[fromFetch + i][0], model[fromFetch + i][1])
+        self.listWidget.next_item()
 
     def add_help(self):
         #Load help
@@ -609,6 +607,18 @@ class ListCompleterWidget(QListWidget):
             if not self.isRowHidden(i):
                 self.setCurrentRow(i)
                 break
+        current = self.currentRow()
+        max = self.verticalScrollBar().maximum()
+        position = max - (max - current) - 2
+        self.verticalScrollBar().setSliderPosition(position)
 
     def previous_item(self):
-        pass
+        row = QListWidget.currentRow(self)
+        for i in reversed(xrange(0, row)):
+            if not self.isRowHidden(i):
+                self.setCurrentRow(i)
+                break
+        current = self.currentRow()
+        max = self.verticalScrollBar().maximum()
+        position = max - (max - current) - 2
+        self.verticalScrollBar().setSliderPosition(position)
