@@ -7,7 +7,6 @@ from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QGroupBox
 from PyQt4.QtGui import QCheckBox
-from PyQt4.QtGui import QRadioButton
 from PyQt4.QtGui import QComboBox
 from PyQt4.QtGui import QSpinBox
 from PyQt4.QtGui import QIcon
@@ -710,41 +709,21 @@ class EditorConfiguration(QWidget):
         self.connect(self._checkStyleOnLine, SIGNAL("	stateChanged(int)"),
             self._enable_check_inline)
         grid.addWidget(self._checkStyleOnLine, 6, 2, 1, 1, Qt.AlignTop)
-        #Highlight words
-        self._checkHighlightWords = QCheckBox(self.tr("Highlight Variables:"))
-        grid.addWidget(self._checkHighlightWords, 7, 1, 1, 2,
-            alignment=Qt.AlignTop)
-        self._radioWordsOnArea = QRadioButton(
-            self.tr("Highlight current word (on visible area)."))
-        self._radioWordsOnDocument = QRadioButton(
-            self.tr("Highlight current word (on entire file)."))
-        self._checkHighlightWords.setChecked(settings.HIGHLIGHT_VARIABLES)
-        if settings.HIGHLIGHT_ALL_VARIABLES:
-            self._radioWordsOnDocument.click()
-        else:
-            self._radioWordsOnArea.click()
-        if not settings.HIGHLIGHT_VARIABLES:
-            self._radioWordsOnArea.setEnabled(False)
-            self._radioWordsOnDocument.setEnabled(False)
-        vboxRadio = QVBoxLayout()
-        vboxRadio.addWidget(self._radioWordsOnArea)
-        vboxRadio.addWidget(self._radioWordsOnDocument)
-        grid.addLayout(vboxRadio, 8, 1, 1, 2, Qt.AlignRight)
         #Center On Scroll
         self._checkCenterScroll = QCheckBox(
             self.tr("Center on Scroll."))
         self._checkCenterScroll.setChecked(settings.CENTER_ON_SCROLL)
-        grid.addWidget(self._checkCenterScroll, 9, 1, 1, 2,
+        grid.addWidget(self._checkCenterScroll, 7, 1, 1, 2,
             alignment=Qt.AlignTop)
         #Remove Trailing Spaces add Last empty line automatically
         self._checkTrailing = QCheckBox(self.tr(
             "Remove Trailing Spaces and\nadd Last Line automatically."))
         self._checkTrailing.setChecked(settings.REMOVE_TRAILING_SPACES)
-        grid.addWidget(self._checkTrailing, 10, 1, 1, 2, alignment=Qt.AlignTop)
+        grid.addWidget(self._checkTrailing, 8, 1, 1, 2, alignment=Qt.AlignTop)
         #Show Tabs and Spaces
         self._checkShowSpaces = QCheckBox(self.tr("Show Tabs and Spaces."))
         self._checkShowSpaces.setChecked(settings.SHOW_TABS_AND_SPACES)
-        grid.addWidget(self._checkShowSpaces, 11, 1, 1, 2,
+        grid.addWidget(self._checkShowSpaces, 9, 1, 1, 2,
             alignment=Qt.AlignTop)
 
     def _enable_check_inline(self, val):
@@ -783,13 +762,6 @@ class EditorConfiguration(QWidget):
         qsettings.setValue('checkStyleInline',
             self._checkStyleOnLine.isChecked())
         settings.CHECK_HIGHLIGHT_LINE = self._checkStyleOnLine.isChecked()
-        qsettings.setValue('highlightVariables',
-            self._checkHighlightWords.isChecked())
-        settings.HIGHLIGHT_VARIABLES = self._checkHighlightWords.isChecked()
-        qsettings.setValue('highlightAllVariables',
-            self._radioWordsOnDocument.isChecked())
-        settings.HIGHLIGHT_ALL_VARIABLES = \
-            self._radioWordsOnDocument.isChecked()
         qsettings.setValue('centerOnScroll',
             self._checkCenterScroll.isChecked())
         settings.CENTER_ON_SCROLL = self._checkCenterScroll.isChecked()

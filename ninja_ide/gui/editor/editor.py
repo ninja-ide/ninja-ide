@@ -475,6 +475,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def keyReleaseEvent(self, event):
         if event.key() == Qt.Key_Control:
             self.highlight_current_line()
+            self.highlight_selected_word()
         QPlainTextEdit.keyReleaseEvent(self, event)
 
     def resizeEvent(self, event):
@@ -664,6 +665,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.setTextCursor(cursor)
         QPlainTextEdit.mousePressEvent(self, event)
 
+    def mouseReleaseEvent(self, event):
+        QPlainTextEdit.mouseReleaseEvent(self, event)
+        if event.button() == Qt.LeftButton:
+            self.highlight_selected_word()
+
     def dropEvent(self, event):
         if len(event.mimeData().urls()) > 0:
             path = event.mimeData().urls()[0].path()
@@ -750,33 +756,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             selection.cursor = self.textCursor()
             selection.cursor.clearSelection()
             self.extraSelections.append(selection)
-        self.setExtraSelections(self.extraSelections)
-
-        #Highlight selected variable
-        if not self.isReadOnly() and settings.HIGHLIGHT_VARIABLES:
-            word = self._text_under_cursor()
-            if self._patIsWord.match(word):
-                lineColor = QColor(resources.CUSTOM_SCHEME.get('selected-word',
-                            resources.COLOR_SCHEME['selected-word']))
-                lineColor.setAlpha(100)
-                if settings.HIGHLIGHT_ALL_VARIABLES:
-                    block = self.document().findBlock(0)
-                else:
-                    block = self.firstVisibleBlock()
-                cursor = self.document().find(word, block.position(),
-                    QTextDocument.FindCaseSensitively or \
-                    QTextDocument.FindWholeWords)
-                while block.isValid() and \
-                  block.blockNumber() <= self._sidebarWidget.highest_line and \
-                  cursor.position() != -1:
-                    selection = QTextEdit.ExtraSelection()
-                    selection.format.setBackground(lineColor)
-                    selection.cursor = cursor
-                    self.extraSelections.append(selection)
-                    cursor = self.document().find(word, cursor.position(),
-                        QTextDocument.FindCaseSensitively or \
-                        QTextDocument.FindWholeWords)
-                    block = block.next()
         self.setExtraSelections(self.extraSelections)
 
         #Find Errors
@@ -879,6 +858,32 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 resources.COLOR_SCHEME.get('brace-foreground'))))
             selection.cursor = cursor
             self.extraSelections.append(selection)
+        self.setExtraSelections(self.extraSelections)
+
+    def highlight_selected_word(self):
+        #Highlight selected variable
+        if not self.isReadOnly() and not self.textCursor().hasSelection():
+            word = self._text_under_cursor()
+            if self._patIsWord.match(word):
+                lineColor = QColor(
+                    resources.CUSTOM_SCHEME.get('selected-word',
+                        resources.COLOR_SCHEME['selected-word']))
+                lineColor.setAlpha(100)
+                block = self.document().findBlock(0)
+                cursor = self.document().find(word, block.position(),
+                    QTextDocument.FindCaseSensitively or \
+                    QTextDocument.FindWholeWords)
+                while block.isValid() and \
+                  block.blockNumber() <= self._sidebarWidget.highest_line \
+                  and cursor.position() != -1:
+                    selection = QTextEdit.ExtraSelection()
+                    selection.format.setBackground(lineColor)
+                    selection.cursor = cursor
+                    self.extraSelections.append(selection)
+                    cursor = self.document().find(word, cursor.position(),
+                        QTextDocument.FindCaseSensitively or \
+                        QTextDocument.FindWholeWords)
+                    block = block.next()
         self.setExtraSelections(self.extraSelections)
 
 
