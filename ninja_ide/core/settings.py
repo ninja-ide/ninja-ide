@@ -74,9 +74,6 @@ FONT_MIN_SIZE = 6
 MAX_REMEMBER_TABS = 50
 COPY_HISTORY_BUFFER = 20
 
-HIGHLIGHT_VARIABLES = True    # Variables on Visible Area
-HIGHLIGHT_ALL_VARIABLES = False    # Variables on the Document
-
 FIND_ERRORS = True
 ERRORS_HIGHLIGHT_LINE = False
 CHECK_STYLE = True
@@ -213,8 +210,6 @@ def load_settings():
     global ENABLE_COMPLETION_IN_COMMENTS
     global FONT_FAMILY
     global FONT_SIZE
-    global HIGHLIGHT_VARIABLES
-    global HIGHLIGHT_ALL_VARIABLES
     global SHOW_MARGIN_LINE
     global FIND_ERRORS
     global ERRORS_HIGHLIGHT_LINE
@@ -281,10 +276,6 @@ def load_settings():
         0).toInt()[0]
     if font_size != 0:
         FONT_SIZE = font_size
-    HIGHLIGHT_VARIABLES = qsettings.value(
-        'preferences/editor/highlightVariables', True).toBool()
-    HIGHLIGHT_ALL_VARIABLES = qsettings.value(
-        'preferences/editor/highlightAllVariables', False).toBool()
     SHOW_MARGIN_LINE = qsettings.value(
         'preferences/editor/showMarginLine', True).toBool()
     FIND_ERRORS = qsettings.value('preferences/editor/errors',
