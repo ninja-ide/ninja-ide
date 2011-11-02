@@ -158,6 +158,7 @@ class __StatusBar(QStatusBar):
         if editor:
             editor.replace_match(unicode(self._searchWidget._line.text()),
                 unicode(self._replaceWidget._lineReplace.text()), flags)
+        self.find()
 
     def replace_all(self):
         s = 0 if not self._searchWidget._checkSensitive.isChecked() \
