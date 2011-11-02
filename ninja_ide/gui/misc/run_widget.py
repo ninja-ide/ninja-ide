@@ -67,7 +67,6 @@ class RunWidget(QWidget):
     def insert_input(self):
         text = self.input.text() + '\n'
         self._proc.writeData(text)
-        self.output.insert_input(text)
         self.input.setText("")
 
     def start_process(self, fileName, pythonPath=False, programParams=''):
