@@ -244,6 +244,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 settings.EXTENSIONS.get(lang, 'python'),
                     resources.CUSTOM_SCHEME)
         elif syntax is not None:
+            self.highlighter = highlighter.Highlighter(self.document(),
+                None, resources.CUSTOM_SCHEME)
             self.highlighter.apply_highlight(lang, resources.CUSTOM_SCHEME,
                 syntax)
 
