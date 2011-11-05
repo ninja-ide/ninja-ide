@@ -281,7 +281,8 @@ class __IDE(QMainWindow):
         qsettings.setValue("window/central/mainSize",
             self.central.get_main_sizes())
         #Save the toolbar visibility
-        qsettings.setValue("window/hide_toolbar", not self.toolbar.isVisible())
+        qsettings.setValue("window/hide_toolbar",
+            not self.toolbar.isVisible() and self.menuBar().isVisible())
         #Save Profiles
         qsettings.setValue('ide/profiles', settings.PROFILES)
 
