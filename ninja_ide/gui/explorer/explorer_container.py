@@ -53,6 +53,7 @@ class __ExplorerContainer(QTabWidget):
     updateLocator()
     goToDefinition(int)
     projectOpened(QString)
+    projectClosed(QString)
     """
 
 ###############################################################################
@@ -122,8 +123,10 @@ class __ExplorerContainer(QTabWidget):
                 SIGNAL("removeProjectFromConsole(QString)"),
                 self.__ide.actions.remove_project_from_console)
 
-            def _close_project_signal():
+            def _close_project_signal(project=''):
                 self.emit(SIGNAL("updateLocator()"))
+                if project:
+                    self.emit(SIGNAL("projectClosed(QString)"), project)
             self.connect(self._treeProjects, SIGNAL("closeProject(QString)"),
                 _close_project_signal)
             self.connect(self._treeProjects, SIGNAL("refreshProject()"),
