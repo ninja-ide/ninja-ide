@@ -43,8 +43,8 @@ class TabWidget(QTabWidget):
     """
 ###############################################################################
 
-    def __init__(self):
-        QTabWidget.__init__(self)
+    def __init__(self, parent):
+        QTabWidget.__init__(self, parent)
         self.setTabsClosable(True)
         self.setMovable(True)
         self.setAcceptDrops(True)
@@ -53,6 +53,7 @@ class TabWidget(QTabWidget):
         self._resyntax = []
         self.navigator = TabNavigator()
         self.setCornerWidget(self.navigator, Qt.TopRightCorner)
+        self._parent = parent
         #On some plataforms there are problem with focusInEvent
         self.question_already_open = False
         #Keep track of the tab titles
@@ -89,6 +90,7 @@ class TabWidget(QTabWidget):
             print("Widget couldn't be added, doesn't inherit from ITabWidget")
 
     def expand_tab_name(self, title):
+        title = unicode(title)
         if title == 'New Document':
             return
         elif title not in self.titles:
@@ -254,10 +256,28 @@ class TabWidget(QTabWidget):
                 actionCloseAll = menu.addAction(self.tr("Close All Tabs"))
                 actionCloseAllNotThis = menu.addAction(
                     self.tr("Close Other Tabs"))
-                actionSplitH = menu.addAction(
-                    self.tr("Split this Tab (Horizontally)"))
-                actionSplitV = menu.addAction(
-                    self.tr("Split this Tab (Vertically)"))
+                menu.addSeparator()
+                if self._parent.splitted:
+                    actionMoveSplit = menu.addAction(
+                        self.tr("Move this Tab to the other Split"))
+                    actionCloseSplit = menu.addAction(
+                        self.tr("Close Split"))
+                    #Connect split actions
+                    self.connect(actionMoveSplit, SIGNAL("triggered()"),
+                        lambda: self._parent.move_tab_to_next_split(self))
+                    self.connect(actionCloseSplit, SIGNAL("triggered()"),
+                        lambda: self._parent.split_tab(
+                            self._parent.orientation()))
+                else:
+                    actionSplitH = menu.addAction(
+                        self.tr("Split this Tab (Horizontally)"))
+                    actionSplitV = menu.addAction(
+                        self.tr("Split this Tab (Vertically)"))
+                    #Connect split actions
+                    self.connect(actionSplitH, SIGNAL("triggered()"),
+                        lambda: self._split_this_tab(True))
+                    self.connect(actionSplitV, SIGNAL("triggered()"),
+                        lambda: self._split_this_tab(False))
                 menu.addSeparator()
                 actionCopyPath = menu.addAction(
                     self.tr("Copy file location to Clipboard"))
@@ -270,10 +290,6 @@ class TabWidget(QTabWidget):
                     self._run_this_file)
                 self.connect(actionAdd, SIGNAL("triggered()"),
                     self._add_to_project)
-                self.connect(actionSplitH, SIGNAL("triggered()"),
-                    lambda: self._split_this_tab(True))
-                self.connect(actionSplitV, SIGNAL("triggered()"),
-                    lambda: self._split_this_tab(False))
                 self.connect(actionClose, SIGNAL("triggered()"),
                     lambda: self.removeTab(index))
                 self.connect(actionCloseAllNotThis, SIGNAL("triggered()"),

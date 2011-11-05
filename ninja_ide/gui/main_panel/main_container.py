@@ -57,14 +57,15 @@ class __MainContainer(QSplitter):
     def __init__(self, parent=None):
         QSplitter.__init__(self, parent)
         self._parent = parent
-        self._tabMain = tab_widget.TabWidget()
-        self._tabSecondary = tab_widget.TabWidget()
+        self._tabMain = tab_widget.TabWidget(self)
+        self._tabSecondary = tab_widget.TabWidget(self)
         self.addWidget(self._tabMain)
         self.addWidget(self._tabSecondary)
         self.setSizes([1, 1])
         self._tabSecondary.hide()
         self.actualTab = self._tabMain
         self._followMode = False
+        self.splitted = False
         self._workingDirectory = ''
         #documentation browser
         self.docPage = None
@@ -73,8 +74,6 @@ class __MainContainer(QSplitter):
             self._current_tab_changed)
         self.connect(self._tabSecondary, SIGNAL("currentChanged(int)"),
             self._current_tab_changed)
-#        self.connect(self._tabs, SIGNAL("currentChanged(int)"),
-#            self._main._refresh_symbols)
         self.connect(self._tabMain, SIGNAL("currentChanged(int)"),
             self._exit_follow_mode)
         self.connect(self._tabMain, SIGNAL("changeActualTab(QTabWidget)"),
@@ -151,6 +150,7 @@ class __MainContainer(QSplitter):
         if self._tabSecondary.isVisible() and \
         orientation == self.orientation():
             self._tabSecondary.hide()
+            self.splitted = False
             for i in xrange(self._tabSecondary.count()):
                 widget = self._tabSecondary.widget(0)
                 name = unicode(self._tabSecondary.tabText(0))
@@ -169,9 +169,28 @@ class __MainContainer(QSplitter):
             if type(widget) is editor.Editor and widget.textModified:
                 self._tabSecondary.tab_was_modified(True)
             self._tabSecondary.show()
+            self.splitted = True
             self.setSizes([1, 1])
             self.actualTab = self._tabSecondary
         self.setOrientation(orientation)
+
+    def move_tab_to_next_split(self, tab):
+        if self._followMode:
+            return
+        if tab == self._tabSecondary:
+            widget = self._tabSecondary.currentWidget()
+            name = self._tabSecondary.tabText(
+                self._tabSecondary.currentIndex())
+            self._tabMain.add_tab(widget, name)
+            if widget is editor.Editor and widget.textModified:
+                self._tabMain.tab_was_saved(widget)
+        else:
+            widget = self._tabMain.currentWidget()
+            if widget is not None:
+                name = self._tabMain.tabText(self._tabMain.currentIndex())
+                self._tabSecondary.add_tab(widget, name)
+                if widget is editor.Editor and widget.textModified:
+                    self._tabSecondary.tab_was_saved(widget)
 
     def add_editor(self, fileName="", project=None, tabIndex=None,
         content=None, syntax=None):
