@@ -471,9 +471,10 @@ class __MainContainer(QSplitter):
 
             if settings.REMOVE_TRAILING_SPACES:
                 helpers.remove_trailing_spaces(editorWidget)
+            newFile = file_manager.get_file_extension(fileName) == ''
             fileName = file_manager.store_file_content(
                 fileName, editorWidget.get_text(),
-                addExtension=True, newFile=True)
+                addExtension=True, newFile=newFile)
             self.actualTab.setTabText(self.actualTab.currentIndex(),
                 file_manager.get_basename(fileName))
             editorWidget.register_syntax(
