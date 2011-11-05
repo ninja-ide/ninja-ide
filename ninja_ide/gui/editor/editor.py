@@ -80,6 +80,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #Brace matching
         self._braces = None
         self._mtime = None
+        self.encoding = None
         #Flag to dont bug the user when answer *the modification dialog*
         self.ask_if_externally_modified = True
         #Dict functions for KeyPress

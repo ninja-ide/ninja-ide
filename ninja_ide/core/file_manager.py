@@ -98,7 +98,10 @@ def file_exists(path, fileName=''):
 def _search_coding_line(txt):
     """Search a pattern like this: # -*- coding: utf-8 -*-."""
     coding_pattern = "coding[:=]\s*([-\w.]+)"
-    return re.search(coding_pattern, txt)
+    pat_coding = re.search(coding_pattern, txt)
+    if pat_coding:
+        return pat_coding.groups()[0]
+    return 'UTF-8'
 
 
 def read_file_content(fileName):
@@ -113,9 +116,8 @@ def read_file_content(fileName):
     #QIODevice.Text convert \r\n to \n
     stream = QtCore.QTextStream(f)
     content = stream.readAll()
-    coding_line = _search_coding_line(content)
-    if coding_line:
-        encoding = coding_line.groups()[0].toUpper()
+    encoding = _search_coding_line(content)
+    if encoding:
         #reset the stream options
         stream.reset()
         stream.seek(0)
@@ -146,9 +148,8 @@ def _real_store_file_content(fileName, content):
             raise NinjaIOException(f.errorString())
         #QTextStream detect locales ;)
         stream = QtCore.QTextStream(f)
-        coding_line = _search_coding_line(content)
-        if coding_line:
-            encoding = coding_line.groups()[0].toUpper()
+        encoding = _search_coding_line(content)
+        if encoding:
             stream.setCodec(encoding)
         encoded_stream = stream.codec().fromUnicode(content)
         f.write(encoded_stream)

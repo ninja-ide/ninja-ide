@@ -377,6 +377,8 @@ class __MainContainer(QSplitter):
                 editorWidget = self.add_editor(fileName, tabIndex=tabIndex)
                 editorWidget.setPlainText(content)
                 editorWidget.ID = fileName
+                encoding = file_manager._search_coding_line(content)
+                editorWidget.encoding = encoding
                 if not positionIsLineNumber:
                     editorWidget.set_cursor_position(cursorPosition)
                 else:
@@ -469,9 +471,12 @@ class __MainContainer(QSplitter):
             fileName = editorWidget.ID
             if settings.REMOVE_TRAILING_SPACES:
                 helpers.remove_trailing_spaces(editorWidget)
+            content = editorWidget.get_text()
             file_manager.store_file_content(
-                fileName, editorWidget.get_text(), addExtension=False)
+                fileName, content, addExtension=False)
             editorWidget.ID = fileName
+            encoding = file_manager._search_coding_line(content)
+            editorWidget.encoding = encoding
             self.emit(SIGNAL("fileSaved(QString)"),
                 self.tr("File Saved: %1").arg(fileName))
             editorWidget._file_saved()
