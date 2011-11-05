@@ -321,10 +321,13 @@ def load_settings():
         'preferences/interface/showErrorsList', False).toBool()
     #Bookmarks and Breakpoints
     bookmarks = qsettings.value('preferences/editor/bookmarks', {}).toMap()
+    print bookmarks
     for key in bookmarks:
-        BOOKMARKS[unicode(key)] = [
-            i.toInt()[0] for i in bookmarks[key].toList()]
+        if key:
+            BOOKMARKS[unicode(key)] = [
+                i.toInt()[0] for i in bookmarks[key].toList()]
     breakpoints = qsettings.value('preferences/editor/breakpoints', {}).toMap()
     for key in breakpoints:
-        BREAKPOINTS[unicode(key)] = [
-            i.toInt()[0] for i in breakpoints[key].toList()]
+        if key:
+            BREAKPOINTS[unicode(key)] = [
+                i.toInt()[0] for i in breakpoints[key].toList()]
