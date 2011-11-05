@@ -549,7 +549,6 @@ class PopupCompleter(QFrame):
                 self.listWidget.addItem(model[fromFetch + i][0])
                 self.listWidget.setItemWidget(
                     model[fromFetch + i][0], model[fromFetch + i][1])
-        self.listWidget.next_item()
 
     def add_help(self):
         #Load help
