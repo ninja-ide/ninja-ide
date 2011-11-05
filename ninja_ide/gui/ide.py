@@ -85,7 +85,7 @@ class __IDE(QMainWindow):
         #Load the size and the position of the main window
         self.load_window_geometry()
 
-        #Opactity
+        #Opacity
         self.opacity = settings.MAX_OPACITY
 
         #Define Actions object before the UI
