@@ -198,6 +198,8 @@ class __IDE(QMainWindow):
             self.status.explore_code)
         self.connect(self.explorer, SIGNAL("goToDefinition(int)"),
             self.actions.editor_go_to_line)
+        self.connect(self.explorer, SIGNAL("projectClosed(QString)"),
+            self.actions.close_files_from_project)
         #Create Misc Bottom Container
         self.misc = misc_container.MiscContainer(self)
         self.connect(self.mainContainer, SIGNAL("findOcurrences(QString)"),

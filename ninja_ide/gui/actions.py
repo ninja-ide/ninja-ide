@@ -2,6 +2,7 @@
 from __future__ import absolute_import
 
 import re
+import webbrowser
 
 from PyQt4.QtCore import QObject
 from PyQt4.QtCore import QSettings
@@ -13,7 +14,6 @@ from PyQt4.QtGui import QShortcut
 from ninja_ide.core import file_manager
 from ninja_ide.core import settings
 from ninja_ide import resources
-import webbrowser
 from ninja_ide.tools import ui_tools
 from ninja_ide.tools import locator
 from ninja_ide.tools import json_manager
@@ -389,6 +389,20 @@ class __Actions(QObject):
         self.ide.explorer.close_opened_projects()
         self.ide.explorer.open_session_projects(settings.PROFILES[key])
         self.ide.status.explore_code()
+
+    def close_files_from_project(self, project):
+        if project:
+            tabMain = self.ide.mainContainer._tabMain
+            for tabIndex in reversed(xrange(tabMain.count())):
+                if file_manager.belongs_to_folder(
+                project, tabMain.widget(tabIndex).ID):
+                    tabMain.removeTab(tabIndex)
+
+            tabSecondary = self.ide.mainContainer._tabSecondary
+            for tabIndex in reversed(xrange(tabSecondary.count())):
+                if file_manager.belongs_to_folder(
+                project, tabSecondary.widget(tabIndex).ID):
+                    tabSecondary.removeTab(tabIndex)
 
     def count_file_code_lines(self):
         editorWidget = self.ide.mainContainer.get_actual_editor()
