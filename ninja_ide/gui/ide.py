@@ -211,6 +211,8 @@ class __IDE(QMainWindow):
         self.connect(self.mainContainer,
             SIGNAL("cursorPositionChange(int, int)"),
             self.central.lateralPanel.update_line_col)
+        self.connect(self.mainContainer, SIGNAL("enabledFollowMode(bool)"),
+            self.central.enable_follow_mode_scrollbar)
 
         if settings.SHOW_START_PAGE:
             self.mainContainer.show_start_page()

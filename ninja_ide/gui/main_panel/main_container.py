@@ -55,6 +55,7 @@ class __MainContainer(QSplitter):
     findOcurrences(QString)
     cursorPositionChange(int, int)    #row, col
     fileOpened(QString)
+    enabledFollowMode(bool)
     """
 ###############################################################################
 
@@ -605,6 +606,7 @@ class __MainContainer(QSplitter):
             self._tabSecondary.setTabsClosable(False)
             self.setSizes([1, 1])
         self.actualTab = tempTab
+        self.emit(SIGNAL("enabledFollowMode(bool)"), self._followMode)
 
     def _exit_follow_mode(self):
         if self._followMode:

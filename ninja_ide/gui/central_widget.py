@@ -10,6 +10,7 @@ from PyQt4.QtGui import QComboBox
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QSplitter
+from PyQt4.QtGui import QScrollBar
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QSettings
@@ -47,13 +48,24 @@ class __CentralWidget(QWidget):
         self._splitterAreaSizes = None
         self.lateralPanel = None
 
-        vbox = QVBoxLayout(self)
+        hbox = QHBoxLayout(self)
+        hbox.setContentsMargins(0, 0, 0, 0)
+        hbox.setSpacing(0)
         #Create Splitters to divide the UI in: MainPanel, Explorer, Misc
         self._splitterArea = QSplitter(Qt.Horizontal)
         self._splitterMain = QSplitter(Qt.Vertical)
 
+        #Create scrollbar for follow mode
+        self.scrollBar = QScrollBar(Qt.Vertical, self)
+        self.scrollBar.setFixedWidth(20)
+        self.scrollBar.setToolTip('Follow Mode: Scroll the Editors together')
+        self.scrollBar.hide()
+        self.connect(self.scrollBar, SIGNAL("valueChanged(int)"),
+            self.move_follow_scrolls)
+
         #Add to Main Layout
-        vbox.addWidget(self._splitterArea)
+        hbox.addWidget(self.scrollBar)
+        hbox.addWidget(self._splitterArea)
 
     def insert_central_container(self, container):
         self.mainContainer = container
@@ -150,6 +162,24 @@ class __CentralWidget(QWidget):
         if self.misc.isVisible():
             self._splitterMainSizes = self._splitterMain.sizes()
         return self._splitterMainSizes
+
+    def enable_follow_mode_scrollbar(self, val):
+        if val:
+            editorWidget = self.mainContainer.get_actual_editor()
+            maxScroll = editorWidget.verticalScrollBar().maximum()
+            position = editorWidget.verticalScrollBar().value()
+            self.scrollBar.setMaximum(maxScroll)
+            self.scrollBar.setValue(position)
+        self.scrollBar.setVisible(val)
+
+    def move_follow_scrolls(self, val):
+        widget = self.mainContainer._tabMain.currentWidget()
+        diff = widget._sidebarWidget.highest_line - val
+        s1 = self.mainContainer._tabMain.currentWidget().verticalScrollBar()
+        s2 = self.mainContainer._tabSecondary.\
+            currentWidget().verticalScrollBar()
+        s1.setValue(val)
+        s2.setValue(val + diff)
 
 
 class LateralPanel(QWidget):
