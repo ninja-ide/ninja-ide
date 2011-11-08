@@ -1,5 +1,8 @@
+# *-* coding: UTF-8 *-*
+
 import urllib
 import webbrowser
+import logging
 
 from PyQt4.QtGui import QSystemTrayIcon
 from PyQt4.QtGui import QIcon
@@ -11,6 +14,9 @@ import ninja_ide
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.tools import json_manager
+
+
+logger = logging.getLogger('ninja_ide.gui.updates')
 
 
 class TrayIconUpdates(QSystemTrayIcon):
@@ -50,7 +56,7 @@ class TrayIconUpdates(QSystemTrayIcon):
             else:
                 self.hide()
         except:
-            print('Versions can not be compared.')
+            logger.warning('Versions can not be compared.')
             self.hide()
 
     def _convert_version_to_float(self, version):
@@ -93,4 +99,4 @@ class ThreadUpdates(QThread):
 #                        updates += [[lp, ava[0], ava[1], ava[2]]]
 #            self.plugins = updates
         except:
-            print('no connection available')
+            logger.info('no connection available')
