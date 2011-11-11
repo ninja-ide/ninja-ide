@@ -69,7 +69,7 @@ UPDATES_URL = 'http://ninja-ide.org/updates'
 
 SCHEMES_URL = 'http://ninja-ide.org/plugins/schemes'
 
-PLUGINS_WEB = 'http://ninja-ide.org/plugins/oficial'
+PLUGINS_WEB = 'http://ninja-ide.org/plugins/official'
 
 PLUGINS_COMMUNITY = 'http://ninja-ide.org/plugins/community'
 

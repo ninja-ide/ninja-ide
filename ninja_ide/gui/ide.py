@@ -80,7 +80,6 @@ class __IDE(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
         self.setWindowTitle('NINJA-IDE {Ninja-IDE Is Not Just Another IDE}')
-        self.setWindowIcon(QIcon(resources.IMAGES['icon']))
         self.setMinimumSize(700, 500)
         #Load the size and the position of the main window
         self.load_window_geometry()
@@ -336,6 +335,7 @@ def start(filenames=None, projects_path=None, extra_plugins=None):
     QCoreApplication.setOrganizationName('NINJA-IDE')
     QCoreApplication.setOrganizationDomain('ninja-ide.org')
     QCoreApplication.setApplicationName('NINJA-IDE')
+    app.setWindowIcon(QIcon(resources.IMAGES['icon']))
 
     # Create and display the splash screen
     splash_pix = QPixmap(resources.IMAGES['splash'])
