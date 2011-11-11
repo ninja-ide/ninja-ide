@@ -505,7 +505,6 @@ class PopupCompleter(QFrame):
             self.listWidget.addItem(item[0])
             self.listWidget.setItemWidget(item[0], item[1])
         self.listWidget.setCurrentRow(5)
-#        self.listWidget.scrollToTop()
 
     def clear(self):
         """Remove all the items of the list (deleted), and reload the help."""
@@ -519,12 +518,9 @@ class PopupCompleter(QFrame):
             self.listWidget.setItemWidget(item[0], item[1])
         if model:
             self.listWidget.setCurrentItem(model[0][0])
-#        self.listWidget.scrollToTop()
 
     def fetch_more(self, model):
         """Add more items to the list on user scroll."""
-#        fromFetch = self.fetch + 1
-#        self.fetch = min(self.fetch + 10, len(model))
         for item in model:
             self.listWidget.addItem(item[0])
             self.listWidget.setItemWidget(item[0], item[1])
@@ -575,59 +571,3 @@ class PopupCompleter(QFrame):
         nonPythonItem.setBackground(QBrush(Qt.lightGray))
         nonPythonItem.setForeground(QBrush(Qt.black))
         nonPythonItem.setFont(font)
-
-
-#class ListCompleterWidget(QListWidget):
-#
-#    def __init__(self):
-#        QListWidget.__init__(self)
-#
-#    def real_count(self):
-#        """Return the amount of items in the list (hidden included)."""
-#        return QListWidget.count(self)
-#
-#    def count(self):
-#        """Return the amount of visible items in the list."""
-#        realCount = QListWidget.count(self)
-#        count = 0
-#        for i in xrange(realCount):
-#            if not self.isRowHidden(i):
-#                count += 1
-#        return count
-#
-#    def currentRow(self):
-#        """Return the current position only counting for visible rows."""
-#        realCount = QListWidget.count(self)
-#        count = 0
-#        actualItem = self.currentItem()
-#        for i in xrange(realCount):
-#            if self.item(i) == actualItem:
-#                break
-#            if not self.isRowHidden(i):
-#                count += 1
-#        return count
-#
-#    def next_item(self):
-#        """Move the selection to the next visible item."""
-#        row = QListWidget.currentRow(self)
-#        realCount = QListWidget.count(self)
-#        for i in xrange(row + 1, realCount):
-#            if not self.isRowHidden(i):
-#                self.setCurrentRow(i)
-#                break
-#        current = self.currentRow()
-#        max = self.verticalScrollBar().maximum()
-#        position = max - (max - current) - 2
-#        self.verticalScrollBar().setSliderPosition(position)
-#
-#    def previous_item(self):
-#        """Move the selection to the previous visible item."""
-#        row = QListWidget.currentRow(self)
-#        for i in reversed(xrange(0, row)):
-#            if not self.isRowHidden(i):
-#                self.setCurrentRow(i)
-#                break
-#        current = self.currentRow()
-#        max = self.verticalScrollBar().maximum()
-#        position = max - (max - current) - 2
-#        self.verticalScrollBar().setSliderPosition(position)
