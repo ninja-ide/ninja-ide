@@ -19,6 +19,8 @@ from PyQt4.QtGui import QCursor
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QFileSystemWatcher
+from PyQt4.QtCore import QUrl
+from PyQt4.QtGui import QDesktopServices
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -133,6 +135,11 @@ class TreeProjectsWidget(QTreeWidget):
                 self._copy_file)
             self.connect(action_move_file, SIGNAL("triggered()"),
                 self._move_file)
+            #Allow to edit Qt UI files with the appropiate program
+            if item.lang() == 'ui':
+                action_edit_ui_file = menu.addAction(self.tr("Edit UI File"))
+                self.connect(action_edit_ui_file, SIGNAL("triggered()"),
+                    self._edit_ui_file)
             #menu per file language!
             for m in self.EXTRA_MENUS.get(item.lang(), ()):
                 menu.addSeparator()
@@ -462,6 +469,16 @@ class TreeProjectsWidget(QTreeWidget):
                 QMessageBox.information(self, self.tr("File Already Exists"),
                     self.tr("Invalid Path: the file '%s' already exists." % \
                         ex.filename))
+
+    def _edit_ui_file(self):
+        item = self.currentItem()
+        if item.parent() is None:
+            pathForFile = item.path
+        else:
+            pathForFile = os.path.join(item.path, unicode(item.text(0)))
+        pathForFile = "file://%s" % pathForFile
+        #open the correct program to edit Qt UI files!
+        QDesktopServices.openUrl(QUrl(pathForFile, QUrl.TolerantMode))
 
     def load_project(self, folderStructure, folder):
         if not folder:
