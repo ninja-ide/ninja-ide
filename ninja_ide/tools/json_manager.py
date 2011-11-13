@@ -1,4 +1,7 @@
+# *-* coding: UTF-8 *-*
+
 import os
+import logging
 try:
     import json
 except ImportError:
@@ -8,12 +11,15 @@ from ninja_ide import resources
 from ninja_ide.core import settings
 
 
+logger = logging.getLogger('ninja_ide.tools.json_manager')
+
+
 def parse(descriptor):
     try:
         return json.load(descriptor)
     except:
-        print "The file couldn't be parsed'"
-        print descriptor
+        logger.error("The file couldn't be parsed'")
+        logger.error(descriptor)
     return {}
 
 
