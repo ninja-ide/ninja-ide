@@ -100,8 +100,8 @@ def _search_coding_line(txt):
     coding_pattern = "coding[:=]\s*([-\w.]+)"
     pat_coding = re.search(coding_pattern, txt)
     if pat_coding:
-        return pat_coding.groups()[0]
-    return 'UTF-8'
+        return unicode(pat_coding.groups()[0])
+    return u'UTF-8'
 
 
 def read_file_content(fileName):
