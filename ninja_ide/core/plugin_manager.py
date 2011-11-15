@@ -279,6 +279,7 @@ class __PluginManager(object):
                         #setattr(plugin_instance,'get_plugin',self.__getitem__)
                         #call a special method *initialize* in the plugin!
                         plugin_instance.metadata = plugin_structure
+                        logger.info("Calling initialize (%s)", plugin_name)
                         plugin_instance.initialize()
                         #tuple (instance, metadata)
                         plugin_metadata = (plugin_instance, plugin_structure)
@@ -404,6 +405,9 @@ def download_plugin(file_):
 def update_local_plugin_descriptor(plugins):
     '''
     updates the local plugin description
+    The description.json file holds the information about the plugins
+    downloaded with NINJA-IDE
+    This is a way to track the versions of the plugins
     '''
     structure = []
     if os.path.isfile(resources.PLUGINS_DESCRIPTOR):
