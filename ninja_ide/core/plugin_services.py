@@ -25,6 +25,7 @@ class MainService(QObject):
     """
     #SIGNALS
     editorKeyPressEvent = pyqtSignal("QEvent")
+    beforeFileSaved = pyqtSignal("QString")
     fileSaved = pyqtSignal("QString")
     currentTabChanged = pyqtSignal("QString")
     fileExecuted = pyqtSignal("QString")
@@ -40,6 +41,8 @@ class MainService(QObject):
         #Connect signals
         self.connect(self._main, SIGNAL("editorKeyPressEvent(QEvent)"),
             self._keyPressEvent)
+        self.connect(self._main, SIGNAL("beforeFileSaved(QString)"),
+            self._beforeFileSaved)
         self.connect(self._main, SIGNAL("fileSaved(QString)"),
             self._fileSaved)
         self.connect(self._main, SIGNAL("currentTabChanged(QString)"),
@@ -192,7 +195,6 @@ class MainService(QObject):
     def get_actual_tab(self):
         """
         Returns the actual widget
-        (instance of ninja_ide.gui.main_panel.tab_widget.TabWidget)
         """
         return self._main.get_actual_widget()
 
@@ -204,23 +206,47 @@ class MainService(QObject):
         """
         self.editorKeyPressEvent.emit(qEvent)
 
+    def _beforeFileSaved(self, fileName):
+        """
+        Signal emitted before save a file
+        """
+        self.beforeFileSaved.emit(fileName)
+
     def _fileSaved(self, fileName):
+        """
+        Sinal emitted after save a file
+        """
         fileName = unicode(fileName.split(":")[-1]).strip()
         self.fileSaved.emit(fileName)
 
     def _currentTabChanged(self, fileName):
+        """
+        Signa emitted when the current tab changes
+        """
         self.currentTabChanged.emit(fileName)
 
     def _fileExecuted(self, fileName):
+        """
+        Signa emitted when the file is executed
+        """
         self.fileExecuted.emit(fileName)
 
     def _projectExecuted(self, projectName):
+        """
+        Signa emitted when the project is executed
+        """
         self.projectExecuted.emit(projectName)
 
     def _fileOpened(self, fileName):
+        """
+        Signa emitted when the file is opened
+        """
         self.fileOpened.emit(fileName)
 
     def _projectOpened(self, projectName):
+        """
+        Signa emitted when the project is opened
+        """
         self.projectOpened.emit(projectName)
 
 
