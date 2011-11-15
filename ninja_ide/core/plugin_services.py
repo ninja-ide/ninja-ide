@@ -221,31 +221,31 @@ class MainService(QObject):
 
     def _currentTabChanged(self, fileName):
         """
-        Signa emitted when the current tab changes
+        Signal emitted when the current tab changes
         """
         self.currentTabChanged.emit(fileName)
 
     def _fileExecuted(self, fileName):
         """
-        Signa emitted when the file is executed
+        Signal emitted when the file is executed
         """
         self.fileExecuted.emit(fileName)
 
     def _projectExecuted(self, projectName):
         """
-        Signa emitted when the project is executed
+        Signal emitted when the project is executed
         """
         self.projectExecuted.emit(projectName)
 
     def _fileOpened(self, fileName):
         """
-        Signa emitted when the file is opened
+        Signal emitted when the file is opened
         """
         self.fileOpened.emit(fileName)
 
     def _projectOpened(self, projectName):
         """
-        Signa emitted when the project is opened
+        Signal emitted when the project is opened
         """
         self.projectOpened.emit(projectName)
 
