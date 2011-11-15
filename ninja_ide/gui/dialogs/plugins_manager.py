@@ -354,7 +354,7 @@ class ThreadLoadPlugins(QThread):
                         if unicode(p["name"]) != unicode(local_data["name"])]
             elif plug_community:
                 ava = plug_community
-                oficial_available = [p for p in community_available
+                community_available = [p for p in community_available
                         if unicode(p["name"]) != unicode(local_data["name"])]
             #check versions
             if ava and float(ava["version"]) > float(local_data["version"]):

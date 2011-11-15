@@ -469,6 +469,7 @@ class __MainContainer(QSplitter):
                 return self.save_file_as()
 
             fileName = editorWidget.ID
+            self.emit(SIGNAL("beforeFileSaved(QString)"), fileName)
             if settings.REMOVE_TRAILING_SPACES:
                 helpers.remove_trailing_spaces(editorWidget)
             content = editorWidget.get_text()
