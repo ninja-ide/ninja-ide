@@ -253,12 +253,6 @@ class __MainContainer(QSplitter):
         if index >= 0:
             self.actualTab.setTabIcon(index,
                 QIcon(self.style().standardIcon(QStyle.SP_MessageBoxWarning)))
-            return
-        index = self.actualTab.indexOf(editorWidget)
-        if index >= 0:
-            self.actualTab.setTabIcon(index,
-                QIcon(self.style().standardIcon(QStyle.SP_MessageBoxWarning)))
-            return
 
     def _show_error_tab_indicator(self, editorWidget):
         index = self.actualTab.indexOf(editorWidget)
@@ -266,23 +260,12 @@ class __MainContainer(QSplitter):
         if index >= 0:
             self.actualTab.setTabIcon(index,
                 QIcon(resources.IMAGES['bug']))
-            return
-        index = self.actualTab.indexOf(editorWidget)
-        if index >= 0:
-            self.actualTab.setTabIcon(index,
-                QIcon(resources.IMAGES['bug']))
-            return
 
     def _hide_icon_tab_indicator(self, editorWidget):
         index = self.actualTab.indexOf(editorWidget)
         self.emit(SIGNAL("updateFileMetadata()"))
         if index >= 0:
             self.actualTab.setTabIcon(index, QIcon())
-            return
-        index = self.actualTab.indexOf(editorWidget)
-        if index >= 0:
-            self.actualTab.setTabIcon(index, QIcon())
-            return
 
     def _editor_keyPressEvent(self, event):
         self.emit(SIGNAL("editorKeyPressEvent(QEvent)"), event)
