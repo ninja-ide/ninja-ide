@@ -181,7 +181,7 @@ def store_file_content(fileName, content, addExtension=True, newFile=False):
 def open_project(path):
     """Return a dict structure containing the info inside a folder."""
     if not os.path.exists(path):
-        raise NinjaIOException("The folder already exist")
+        raise NinjaIOException("The folder does not exist")
     d = {}
     for root, dirs, files in os.walk(path):
         d[root] = [[f for f in files
