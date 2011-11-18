@@ -61,7 +61,7 @@ LOG_FILE_PATH = os.path.join(HOME_NINJA_PATH, 'ninja_ide.log')
 # URLS
 ###############################################################################
 
-BUGS_PAGE = "http://code.google.com/p/ninja-ide/issues/list"
+BUGS_PAGE = "https://github.com/ninja-ide/ninja-ide/issues"
 
 PLUGINS_DOC = "http://code.google.com/p/ninja-ide/wiki/New_Plugins_API"
 

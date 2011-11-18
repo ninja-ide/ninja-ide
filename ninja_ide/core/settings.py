@@ -32,7 +32,7 @@ elif sys.platform == "win32":
 MAX_OPACITY = 1
 MIN_OPACITY = 0.3
 
-TOOLBAR_ORIENTATION = 1
+TOOLBAR_AREA = 1
 #UI LAYOUT
 #001 : Central Rotate
 #010 : Panels Rotate
@@ -192,7 +192,7 @@ def get_symbols_handler(file_extension):
 def load_settings():
     qsettings = QSettings()
     #Globals
-    global TOOLBAR_ORIENTATION
+    global TOOLBAR_AREA
     global LANGUAGE
     global SHOW_START_PAGE
     global CONFIRM_EXIT
@@ -227,8 +227,8 @@ def load_settings():
     global HIDE_TOOLBAR
     #General
     HIDE_TOOLBAR = qsettings.value("window/hide_toolbar", False).toBool()
-    TOOLBAR_ORIENTATION = qsettings.value(
-        'preferences/general/toolbarOrientation', 1).toInt()[0]
+    TOOLBAR_AREA = qsettings.value(
+        'preferences/general/toolbarArea', 1).toInt()[0]
     LANGUAGE = unicode(qsettings.value(
         'preferences/interface/language', '').toString())
     SHOW_START_PAGE = qsettings.value(

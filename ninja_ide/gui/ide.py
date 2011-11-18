@@ -103,7 +103,7 @@ class __IDE(QMainWindow):
         styles.set_style(self.toolbar, 'toolbar-default')
         self.toolbar.setToolTip(self.tr("Press and Drag to Move"))
         self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
-        self.addToolBar(settings.TOOLBAR_ORIENTATION, self.toolbar)
+        self.addToolBar(settings.TOOLBAR_AREA, self.toolbar)
         if settings.HIDE_TOOLBAR:
             self.toolbar.hide()
 
@@ -270,6 +270,8 @@ class __IDE(QMainWindow):
         qsettings.setValue('preferences/editor/bookmarks', settings.BOOKMARKS)
         qsettings.setValue('preferences/editor/breakpoints',
             settings.BREAKPOINTS)
+        qsettings.setValue('preferences/general/toolbarArea',
+            self.toolBarArea(self.toolbar))
         #Save if the windows state is maximixed
         if(self.isMaximized()):
             qsettings.setValue("window/maximized", True)
