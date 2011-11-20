@@ -182,10 +182,10 @@ class TabWidget(QTabWidget):
         widget was modified and need to execute any saving"""
         if index != -1:
             self.setCurrentIndex(index)
-            editorWidget = self.currentWidget()
-            if type(editorWidget) is editor.Editor:
+            widget = self.currentWidget()
+            if type(widget) is editor.Editor:
                 val = QMessageBox.No
-                if editorWidget.textModified:
+                if widget.textModified:
                     fileName = self.tabBar().tabText(self.currentIndex())
                     val = QMessageBox.question(
                         self, self.tr('The file %1 was not saved').arg(
@@ -197,16 +197,17 @@ class TabWidget(QTabWidget):
                     return
                 elif val == QMessageBox.Yes:
                     self.emit(SIGNAL("saveActualEditor()"))
-                    if editorWidget.textModified:
+                    if widget.textModified:
                         return
-            if type(editorWidget) == browser_widget.BrowserWidget:
-                editorWidget.shutdown_pydoc()
-            elif type(editorWidget) is editor.Editor and editorWidget.ID:
-                self._add_to_last_opened(editorWidget.ID)
+            if type(widget) == browser_widget.BrowserWidget:
+                widget.shutdown_pydoc()
+            elif type(widget) is editor.Editor and widget.ID:
+                self._add_to_last_opened(widget.ID)
 
             if unicode(self.tabText(index)) in self.titles:
                 self.titles.remove(unicode(self.tabText(index)))
             super(TabWidget, self).removeTab(index)
+            del widget
             if self.currentWidget() is not None:
                 self.currentWidget().setFocus()
             else:

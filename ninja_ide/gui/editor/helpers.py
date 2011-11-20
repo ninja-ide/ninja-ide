@@ -120,7 +120,8 @@ def move_up(editorWidget):
             cursor.deleteChar()
             #Insert text and breakline
             cursor.movePosition(QTextCursor.Up, QTextCursor.MoveAnchor)
-            cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.MoveAnchor)
+            cursor.movePosition(QTextCursor.StartOfLine,
+                QTextCursor.MoveAnchor)
             cursor.insertText(text_to_move + '\n')
             #Restore the user selection
             startPosition = editorWidget.document().findBlockByLineNumber(
@@ -135,11 +136,13 @@ def move_up(editorWidget):
             block_previous = block_actual.previous()
             tempLine = unicode(block_actual.text())
             cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
-            cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
+            cursor.movePosition(QTextCursor.StartOfLine,
+                QTextCursor.KeepAnchor)
             cursor.insertText(block_previous.text())
             cursor.movePosition(QTextCursor.Up, QTextCursor.MoveAnchor)
             cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
-            cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
+            cursor.movePosition(QTextCursor.StartOfLine,
+                QTextCursor.KeepAnchor)
             cursor.insertText(tempLine)
             editorWidget.moveCursor(QTextCursor.Up, QTextCursor.MoveAnchor)
     cursor.endEditBlock()
@@ -184,11 +187,13 @@ def move_down(editorWidget):
             block_next = block_actual.next()
             tempLine = unicode(block_actual.text())
             cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
-            cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
+            cursor.movePosition(QTextCursor.StartOfLine,
+                QTextCursor.KeepAnchor)
             cursor.insertText(block_next.text())
             cursor.movePosition(QTextCursor.Down, QTextCursor.MoveAnchor)
             cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
-            cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
+            cursor.movePosition(QTextCursor.StartOfLine,
+                QTextCursor.KeepAnchor)
             cursor.insertText(tempLine)
             editorWidget.moveCursor(QTextCursor.Down, QTextCursor.MoveAnchor)
     cursor.endEditBlock()
