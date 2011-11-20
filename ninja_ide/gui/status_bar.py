@@ -321,7 +321,10 @@ class TextLine(QLineEdit):
         text = unicode(editor.toPlainText())
         search = unicode(self.text())
         hasSearch = len(search) > 0
-        self.totalMatches = text.count(search)
+        if self._checkSensitive.isChecked():
+            self.totalMatches = text.count(search)
+        else:
+            self.totalMatches = text.lower().count(search.lower())
         if hasSearch and self.totalMatches > 0:
             cursor = editor.textCursor()
             cursor.movePosition(QTextCursor.WordLeft)

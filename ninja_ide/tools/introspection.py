@@ -32,19 +32,7 @@ def _parse_class_body(classBody):
 
 def obtain_symbols(source):
     """Parse a module source code to obtain: Classes, Functions and Assigns."""
-    compilable = True
-    try:
-        module = ast.parse(source)
-    except:
-        compilable = False
-    if not compilable:
-        try:
-            module = ast.parse(source[source.find('\n'):])
-            compilable = True
-        except SyntaxError:
-            compilable = False
-    if not compilable:
-        return {}
+    module = ast.parse(source)
     symbols = {}
     globalAttributes = {}
     globalFunctions = {}

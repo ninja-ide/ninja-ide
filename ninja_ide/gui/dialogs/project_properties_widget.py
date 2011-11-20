@@ -102,7 +102,7 @@ class ProjectProperties(QDialog):
         self.txtParams.setToolTip(
             self.tr("Separate the params with commas (ie: help, verbose)"))
         self.txtParams.setText(self._item.programParams)
-        grid.addWidget(QLabel(self.tr("Params:")), 8, 0)
+        grid.addWidget(QLabel(self.tr("Params (comma separated):")), 8, 0)
         grid.addWidget(self.txtParams, 8, 1)
 
         #Widgets for virtualenv properties
