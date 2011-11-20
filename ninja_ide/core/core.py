@@ -9,7 +9,8 @@ from ninja_ide.core import cliparser
 
 def run_ninja():
     """First obtain the execution args and create the resources folder."""
-    if sys.platform != 'win32':
+    # Change the process name only for linux yet
+    if sys.platform != 'win32' and sys.platform != 'darwin':
         try:
             import ctypes
             libc = ctypes.CDLL('libc.so.6')
