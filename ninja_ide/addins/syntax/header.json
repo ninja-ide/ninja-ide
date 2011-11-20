@@ -7,10 +7,16 @@
     "close": "\\*/"
   },
   "extension": [
-    "c"
+    "h"
   ],
   "string": [
     "\""
+  ],
+    "definition": [
+    "private:",
+    "public:",
+    "protected:",
+    "class"
   ],
   "operators": [
     "=",
@@ -38,40 +44,42 @@
     "\\&",
     "\\~",
     ">>",
-    "<<"
+    "<<",
+    "#"
   ],
   "keywords": [
+    "include",
+    "class",
+    "public",
+    "protected",
+    "private",
+    "ifdef",
+    "ifndef",
+    "define",
+    "endif",
+    "import",
+    "pragma",
+    "if",
+    "elif",
     "auto",
-    "break",
-    "case",
     "char",
     "const",
-    "continue",
-    "default",
-    "do",
     "double",
-    "else",
     "enum",
-    "extern",
     "float",
-    "for",
-    "goto",
-    "if",
     "int",
     "long",
-    "register",
     "return",
     "short",
     "signed",
-    "sizeof",
     "static",
     "struct",
-    "switch",
-    "typedef",
     "union",
+    "typedef",
     "unsigned",
-    "void",
-    "volatile",
-    "while"
+    "void"
+  ],
+  "regex": [
+    ["<((\\w)+[\\s\\W]*(\\w)+)+>"]
   ]
 }
