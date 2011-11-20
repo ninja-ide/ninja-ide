@@ -9,14 +9,15 @@ from ninja_ide.core import cliparser
 
 def run_ninja():
     """First obtain the execution args and create the resources folder."""
-    if sys.platform != 'win32':
+    # Change the process name only for linux yet
+    if sys.platform != 'win32' and sys.platform != 'darwin':
         try:
             import ctypes
             libc = ctypes.CDLL('libc.so.6')
             procname = 'ninja-ide'
+            libc.prctl(15, '%s\0' % procname, 0, 0, 0)
         except:
             print "The process couldn't be renamed'"
-    libc.prctl(15, '%s\0' % procname, 0, 0, 0)
     #Set the application name
     filenames, projects_path, extra_plugins = cliparser.parse()
     # Create NINJA-IDE user folder structure for plugins, themes, etc
