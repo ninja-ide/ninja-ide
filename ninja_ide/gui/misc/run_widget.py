@@ -47,7 +47,24 @@ class RunWidget(QWidget):
             self.output._refresh_error)
         self.connect(self._proc, SIGNAL("finished(int, QProcess::ExitStatus)"),
             self.finish_execution)
+        self.connect(self._proc, SIGNAL("error(QProcess::ProcessError)"),
+            self.process_error)
         self.connect(self.input, SIGNAL("returnPressed()"), self.insert_input)
+
+    def process_error(self, error):
+        self.lblInput.hide()
+        self.input.hide()
+        self._proc.kill()
+        format = QTextCharFormat()
+        format.setAnchor(True)
+        format.setForeground(Qt.red)
+        if error == 0:
+            self.output.textCursor().insertText(self.tr('Failed to start'),
+                format)
+        else:
+            self.output.textCursor().insertText(
+                self.tr('Error during execution, QProcess error: %d' % error),
+                format)
 
     def finish_execution(self, exitCode, exitStatus):
         self.lblInput.hide()
