@@ -174,12 +174,12 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 self.errors.errorsLines = self._add_line_increment_for_error(
                     self.errors.errorsLines, blockNumber, diference)
                 self._sidebarWidget._errorsLines = self.errors.errorsLines
-            if self._sidebarWidget._breakpoints:
+            if self._sidebarWidget._breakpoints and self.ID:
                 self._sidebarWidget._breakpoints = self._add_line_increment(
                     self._sidebarWidget._breakpoints, blockNumber, diference)
                 settings.BREAKPOINTS[self.ID] = \
                     self._sidebarWidget._breakpoints
-            if self._sidebarWidget._bookmarks:
+            if self._sidebarWidget._bookmarks and self.ID:
                 self._sidebarWidget._bookmarks = self._add_line_increment(
                     self._sidebarWidget._bookmarks, blockNumber, diference)
                 settings.BOOKMARKS[self.ID] = self._sidebarWidget._bookmarks
@@ -223,6 +223,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def restyle(self, syntaxLang=None):
         styles.set_editor_style(self, resources.CUSTOM_SCHEME)
+        if self.highlighter is None:
+            self.highlighter = highlighter.Highlighter(self.document(),
+                None, resources.CUSTOM_SCHEME)
         if not syntaxLang:
             ext = file_manager.get_file_extension(self.ID)
             self.highlighter.apply_highlight(
