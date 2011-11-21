@@ -673,7 +673,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def mouseReleaseEvent(self, event):
         QPlainTextEdit.mouseReleaseEvent(self, event)
-        if event.button() == Qt.LeftButton:
+        if event.button() == Qt.LeftButton and \
+        self.textCursor().hasSelection():
             self.highlight_selected_word()
 
     def dropEvent(self, event):
