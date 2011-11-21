@@ -76,6 +76,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         styles.set_editor_style(self, resources.CUSTOM_SCHEME)
         self.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
         #For Highlighting in document
+        self.extraSelections = []
         self._patIsWord = re.compile('\w+')
         #Brace matching
         self._braces = None
