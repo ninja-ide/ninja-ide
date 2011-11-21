@@ -537,6 +537,14 @@ class TreeProjectsWidget(QTreeWidget):
         return QIcon(self.images.get(file_manager.get_file_extension(fileName),
             resources.IMAGES['tree-generic']))
 
+    def get_item_for_path(self, path):
+        items = self.findItems(file_manager.get_basename(path),
+            Qt.MatchRecursive, 0)
+        folder = file_manager.get_folder(path)
+        for item in items:
+            if file_manager.belongs_to_folder(folder, item.path):
+                return item
+
     def get_selected_project_path(self):
         if self._actualProject:
             return self._actualProject.path
@@ -556,7 +564,6 @@ class TreeProjectsWidget(QTreeWidget):
         return rootItem.lang()
 
     def get_open_projects(self):
-        #return [p.path for p in self._projects.values()]
         return self._projects.values()
 
     def is_open(self, path):
@@ -614,6 +621,9 @@ class ProjectItem(QTreeWidgetItem):
         Returns the full path of the file
         '''
         return os.path.join(self.path, unicode(self.text(0)))
+
+    def set_item_icon(self, icon):
+        self.setIcon(0, icon)
 
 
 class ProjectTree(QTreeWidgetItem):
