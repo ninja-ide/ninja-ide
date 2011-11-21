@@ -353,7 +353,8 @@ class ExplorerService(QObject):
         return self._explorer._treeProjects
 
     def get_item(self, path):
-        return self._explorer.get_item_for_path(path)
+        if self._explorer._treeProjects:
+            return self._explorer._treeProjects.get_item_for_path(path)
 
     def get_current_project_item(self):
         """
