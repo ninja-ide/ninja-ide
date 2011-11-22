@@ -414,10 +414,9 @@ class LocateCompleter(QLineEdit):
                         self._parent._thread.get_this_file_locations(
                             editorWidget.ID)
                     self.__prefix = unicode(self.__prefix)[1:].lstrip()
-                    self.tempLocations = [(LocateItem(x), LocateWidget(x)) \
-                        for x in self.tempLocations \
+                    self.tempLocations = [x for x in self.tempLocations \
                         if x[1].lower().find(self.__prefix) > -1]
-                    return self.tempLocations
+                    return self._create_list_widget_items(self.tempLocations)
 
             #Is not "." filter by the other options
             self.tempLocations = [
