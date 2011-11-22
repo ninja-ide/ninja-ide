@@ -63,6 +63,7 @@
     "import", 
     "in", 
     "is", 
+    "as",
     "lambda", 
     "not", 
     "or", 
