@@ -39,6 +39,7 @@ class TreeProjectsWidget(QTreeWidget):
     """
     runProject()
     closeProject(QString)
+    closeFilesFromProjectClosed(QString)
     addProjectToConsole(QString)
     removeProjectFromConsole(QString)
     """
@@ -265,6 +266,7 @@ class TreeProjectsWidget(QTreeWidget):
         pathKey = item.path
         if self.__enableCloseNotification:
             self.emit(SIGNAL("closeProject(QString)"), pathKey)
+        self.emit(SIGNAL("closeFilesFromProjectClosed(QString)"), pathKey)
         self._fileWatcher.removePath(pathKey)
         self.takeTopLevelItem(index)
         self._projects.pop(pathKey)
