@@ -168,10 +168,6 @@ class TreeProjectsWidget(QTreeWidget):
                 self.open_project_properties)
             #get the extra context menu for this projectType
             handler = settings.get_project_type_handler(item.projectType)
-#            if handler:
-#                for m in handler.get_context_menus():
-#                    menu.addSeparator()
-#                    menu.addMenu(m)
 
             menu.addSeparator()
             action_refresh = menu.addAction(
@@ -543,6 +539,13 @@ class TreeProjectsWidget(QTreeWidget):
         folder = file_manager.get_folder(path)
         for item in items:
             if file_manager.belongs_to_folder(folder, item.path):
+                return item
+
+    def get_project_by_name(self, projectName):
+        """Return the name of the project item based on the project name."""
+        # Return the item or None if it's not found
+        for item in self._projects.values():
+            if item.name == projectName:
                 return item
 
     def get_selected_project_path(self):
