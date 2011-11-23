@@ -443,9 +443,9 @@ class __Actions(QObject):
             self.ide.explorer._treeProjects.open_project_properties()
         elif mainFile:
             self.save_project()
-            #emit a signal for plugin!
-            self.emit(SIGNAL("projectExecuted(QString)"), mainFile)
             path = self.ide.explorer.get_actual_project()
+            #emit a signal for plugin!
+            self.emit(SIGNAL("projectExecuted(QString)"), path)
             project = json_manager.read_ninja_project(path)
             venv = project.get('venv', False)
             params = project.get('programParams', '')

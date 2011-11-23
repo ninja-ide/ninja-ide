@@ -23,15 +23,13 @@ class MainService(QObject):
     """
     Main Interact whith NINJA-IDE
     """
-    #SIGNALS
+    # SIGNALS
     editorKeyPressEvent = pyqtSignal("QEvent")
     beforeFileSaved = pyqtSignal("QString")
     fileSaved = pyqtSignal("QString")
     currentTabChanged = pyqtSignal("QString")
     fileExecuted = pyqtSignal("QString")
-    projectExecuted = pyqtSignal("QString")
     fileOpened = pyqtSignal("QString")
-    projectOpened = pyqtSignal("QString")
 
     def __init__(self):
         QObject.__init__(self)
@@ -49,12 +47,8 @@ class MainService(QObject):
             self._currentTabChanged)
         self.connect(self._action, SIGNAL("fileExecuted(QString)"),
             self._fileExecuted)
-        self.connect(self._action, SIGNAL("projectExecuted(QString)"),
-            self._projectExecuted)
         self.connect(self._main, SIGNAL("fileOpened(QString)"),
             self._fileOpened)
-        self.connect(self._explorer, SIGNAL("projectOpened(QString)"),
-            self._projectOpened)
 
     def add_menu(self, menu, lang=".py"):
         """
@@ -198,7 +192,7 @@ class MainService(QObject):
         """
         return self._main.get_actual_widget()
 
-    #SIGNALS
+    # SIGNALS
     def _keyPressEvent(self, qEvent):
         """
         Emit the signal when a key is pressed
@@ -231,23 +225,11 @@ class MainService(QObject):
         """
         self.fileExecuted.emit(fileName)
 
-    def _projectExecuted(self, projectName):
-        """
-        Signal emitted when the project is executed
-        """
-        self.projectExecuted.emit(projectName)
-
     def _fileOpened(self, fileName):
         """
         Signal emitted when the file is opened
         """
         self.fileOpened.emit(fileName)
-
-    def _projectOpened(self, projectName):
-        """
-        Signal emitted when the project is opened
-        """
-        self.projectOpened.emit(projectName)
 
 
 class ToolbarService(QObject):
@@ -341,10 +323,18 @@ class MiscContainerService(QObject):
 
 
 class ExplorerService(QObject):
+    # SIGNALS
+    projectOpened = pyqtSignal("QString")
+    projectExecuted = pyqtSignal("QString")
 
     def __init__(self):
         QObject.__init__(self)
         self._explorer = explorer_container.ExplorerContainer()
+        self._action = actions.Actions()
+        self.connect(self._explorer, SIGNAL("projectOpened(QString)"),
+            self._projectOpened)
+        self.connect(self._action, SIGNAL("projectExecuted(QString)"),
+            self._projectExecuted)
 
     def get_tree_projects(self):
         """
@@ -436,3 +426,16 @@ class ExplorerService(QObject):
         @lang: String with file extension format (py, php, json)
         """
         self._explorer._treeProjects.add_extra_menu(menu, lang=lang)
+
+    # SIGNALS
+    def _projectOpened(self, projectPath):
+        """
+        Signal emitted when the project is opened
+        """
+        self.projectOpened.emit(projectPath)
+
+    def _projectExecuted(self, projectPath):
+        """
+        Signal emitted when the project is executed
+        """
+        self.projectExecuted.emit(projectPath)
