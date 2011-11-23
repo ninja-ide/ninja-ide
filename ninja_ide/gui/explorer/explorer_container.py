@@ -126,14 +126,19 @@ class __ExplorerContainer(QTabWidget):
                 SIGNAL("removeProjectFromConsole(QString)"),
                 self.__ide.actions.remove_project_from_console)
 
-            def _close_project_signal(project=''):
+            def close_project_signal():
                 self.emit(SIGNAL("updateLocator()"))
+
+            def close_files_related_to_closed_project(project):
                 if project:
                     self.emit(SIGNAL("projectClosed(QString)"), project)
             self.connect(self._treeProjects, SIGNAL("closeProject(QString)"),
-                _close_project_signal)
+                close_project_signal)
             self.connect(self._treeProjects, SIGNAL("refreshProject()"),
-                _close_project_signal)
+                close_project_signal)
+            self.connect(self._treeProjects,
+                SIGNAL("closeFilesFromProjectClosed(QString)"),
+                close_files_related_to_closed_project)
 
     def add_tab_symbols(self):
         if not self._treeSymbols:
