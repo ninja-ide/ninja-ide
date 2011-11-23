@@ -365,6 +365,15 @@ class ExplorerService(QObject):
             return self._explorer._treeProjects.currentItem()
         return None
 
+    def get_project_item_by_name(self, projectName):
+        """
+        Return a ProjectItem that has the name provided.
+        """
+        if self._explorer._treeProjects:
+            return self._explorer._treeProjects.get_project_by_name(
+                projectName)
+        return None
+
     def get_tree_symbols(self):
         """
         Returns the symbols tree
