@@ -32,11 +32,15 @@ def _parse_class_body(classBody):
 
 def obtain_symbols(source):
     """Parse a module source code to obtain: Classes, Functions and Assigns."""
-    module = ast.parse(source)
+    try:
+        module = ast.parse(source)
+    except:
+        print 'The file contains syntax errors.'
     symbols = {}
     globalAttributes = {}
     globalFunctions = {}
     classes = {}
+
     for sym1 in module.body:
         if type(sym1) is ast.Assign:
             if type(sym1.targets[0]) is ast.Attribute:
@@ -58,19 +62,10 @@ def obtain_symbols(source):
 
 
 def obtain_imports(source):
-    compilable = True
     try:
         module = ast.parse(source)
     except:
-        compilable = False
-    if not compilable:
-        try:
-            module = ast.parse(source[source.find('\n'):])
-            compilable = True
-        except:
-            compilable = False
-    if not compilable:
-        return []
+        print 'The file contains syntax errors.'
     #Imports{} = {name: asname}, for example = {sys: sysAlias}
     imports = {}
     #From Imports{} = {name: {module: fromPart, asname: nameAlias}}
@@ -78,9 +73,10 @@ def obtain_imports(source):
     for sym in module.body:
         if type(sym) is ast.Import:
             for item in sym.names:
-                imports[item.name] = item.asname
+                imports[item.name] = {'asname': item.asname,
+                    'lineno': sym.lineno}
         if type(sym) is ast.ImportFrom:
             for item in sym.names:
                 fromImports[item.name] = {'module': sym.module,
-                    'asname': item.asname}
+                    'asname': item.asname, 'lineno': sym.lineno}
     return {'imports': imports, 'fromImports': fromImports}
