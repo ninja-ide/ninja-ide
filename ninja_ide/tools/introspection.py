@@ -73,18 +73,10 @@ def obtain_imports(source):
     for sym in module.body:
         if type(sym) is ast.Import:
             for item in sym.names:
-                if item.asname is None:
-                    name = item.name
-                else:
-                    name = item.asname
-                imports[name] = {'asname': name,
+                imports[item.name] = {'asname': item.asname,
                     'lineno': sym.lineno}
         if type(sym) is ast.ImportFrom:
             for item in sym.names:
-                if item.asname is None:
-                    name = item.name
-                else:
-                    name = item.asname
-                fromImports[name] = {'module': sym.module,
-                    'asname': name, 'lineno': sym.lineno}
+                fromImports[item.name] = {'module': sym.module,
+                    'asname': item.asname, 'lineno': sym.lineno}
     return {'imports': imports, 'fromImports': fromImports}
