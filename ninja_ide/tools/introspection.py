@@ -30,6 +30,29 @@ def _parse_class_body(classBody):
     return {'attributes': attr, 'functions': func}
 
 
+def obtain_imports(source='', body=None):
+    if source:
+        try:
+            module = ast.parse(source)
+            body = module.body
+        except:
+            print 'The file contains syntax errors.'
+    #Imports{} = {name: asname}, for example = {sys: sysAlias}
+    imports = {}
+    #From Imports{} = {name: {module: fromPart, asname: nameAlias}}
+    fromImports = {}
+    for sym in body:
+        if type(sym) is ast.Import:
+            for item in sym.names:
+                imports[item.name] = {'asname': item.asname,
+                    'lineno': sym.lineno}
+        if type(sym) is ast.ImportFrom:
+            for item in sym.names:
+                fromImports[item.name] = {'module': sym.module,
+                    'asname': item.asname, 'lineno': sym.lineno}
+    return {'imports': imports, 'fromImports': fromImports}
+
+
 def obtain_symbols(source):
     """Parse a module source code to obtain: Classes, Functions and Assigns."""
     try:
@@ -57,26 +80,10 @@ def obtain_symbols(source):
         symbols['functions'] = globalFunctions
     if classes:
         symbols['classes'] = classes
+    imports = obtain_imports(body=module.body)
+    if imports['imports']:
+        symbols['imports'] = imports['imports']
+    if imports['fromImports']:
+        symbols['fromImports'] = imports['fromImports']
 
     return symbols
-
-
-def obtain_imports(source):
-    try:
-        module = ast.parse(source)
-    except:
-        print 'The file contains syntax errors.'
-    #Imports{} = {name: asname}, for example = {sys: sysAlias}
-    imports = {}
-    #From Imports{} = {name: {module: fromPart, asname: nameAlias}}
-    fromImports = {}
-    for sym in module.body:
-        if type(sym) is ast.Import:
-            for item in sym.names:
-                imports[item.name] = {'asname': item.asname,
-                    'lineno': sym.lineno}
-        if type(sym) is ast.ImportFrom:
-            for item in sym.names:
-                fromImports[item.name] = {'module': sym.module,
-                    'asname': item.asname, 'lineno': sym.lineno}
-    return {'imports': imports, 'fromImports': fromImports}

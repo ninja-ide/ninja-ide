@@ -81,7 +81,7 @@ PLUGINS_COMMUNITY = 'http://ninja-ide.org/plugins/community'
 IMAGES = {
     "splash": os.path.join(PRJ_PATH, "img", "splash.jpg"),
     "icon": os.path.join(PRJ_PATH, "img", "icon.png"),
-    "iconUpdate": os.path.join(PRJ_PATH, "img", "icon-update.png"),
+    "iconUpdate": os.path.join(PRJ_PATH, "img", "icon.png"),
     "new": os.path.join(PRJ_PATH, "img", "document-new.png"),
     "newProj": os.path.join(PRJ_PATH, "img", "project-new.png"),
     "open": os.path.join(PRJ_PATH, "img", "document-open.png"),
@@ -144,6 +144,7 @@ IMAGES = {
     "break-right": os.path.join(PRJ_PATH, "img", "break-right.png"),
     "nav-code-left": os.path.join(PRJ_PATH, "img", "nav-code-left.png"),
     "nav-code-right": os.path.join(PRJ_PATH, "img", "nav-code-right.png"),
+    "import": os.path.join(PRJ_PATH, "img", "import.png"),
     "locate-file": os.path.join(PRJ_PATH, "img", "locate-file.png"),
     "locate-class": os.path.join(PRJ_PATH, "img", "locate-class.png"),
     "locate-function": os.path.join(PRJ_PATH, "img", "locate-function.png"),
