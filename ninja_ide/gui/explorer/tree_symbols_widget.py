@@ -57,32 +57,6 @@ class TreeSymbolsWidget(QTreeWidget):
             self.clear()
             self.actualSymbols = (filename, symbols)
             parent = self
-        if 'imports' in symbols:
-            impItem = ItemTree(parent,
-                QStringList(self.tr("Imports")))
-            impItem.isClickable = False
-            for imp in sorted(symbols['imports']):
-                name = imp
-                if symbols['imports'][imp]['asname'] is not None:
-                    name += ' as %s' % \
-                        symbols['imports'][imp]['asname']
-                importItem = ItemTree(impItem,
-                    QStringList(name),
-                    lineno=symbols['imports'][imp]['lineno'])
-                importItem.setIcon(0, QIcon(resources.IMAGES['import']))
-        if 'fromImports' in symbols:
-            fromImpItem = ItemTree(parent,
-                QStringList(self.tr("From ... Imports")))
-            fromImpItem.isClickable = False
-            for imp in sorted(symbols['fromImports']):
-                name = imp
-                if symbols['fromImports'][imp]['asname'] is not None:
-                    name += ' as %s' % \
-                        symbols['fromImports'][imp]['asname']
-                importItem = ItemTree(fromImpItem,
-                    QStringList(name),
-                    lineno=symbols['fromImports'][imp]['lineno'])
-                importItem.setIcon(0, QIcon(resources.IMAGES['import']))
         if 'attributes' in symbols:
             globalAttribute = ItemTree(parent,
                 QStringList(self.tr("Attributes")))
@@ -92,7 +66,6 @@ class TreeSymbolsWidget(QTreeWidget):
                     QStringList(glob), lineno=symbols['attributes'][glob])
                 globItem.isAttribute = True
                 globItem.setIcon(0, QIcon(resources.IMAGES['attribute']))
-            self.expand(self.indexFromItem(globalAttribute, 0))
         if 'functions' in symbols:
             functionsItem = ItemTree(parent, QStringList(self.tr("Functions")))
             functionsItem.isClickable = False
@@ -100,7 +73,6 @@ class TreeSymbolsWidget(QTreeWidget):
                 item = ItemTree(functionsItem, QStringList(func),
                     lineno=symbols['functions'][func])
                 item.setIcon(0, QIcon(resources.IMAGES['function']))
-            self.expand(self.indexFromItem(functionsItem, 0))
         if 'classes' in symbols:
             classItem = ItemTree(self, QStringList(self.tr("Classes")))
             classItem.isClickable = False
@@ -110,7 +82,7 @@ class TreeSymbolsWidget(QTreeWidget):
                 item.setIcon(0, QIcon(resources.IMAGES['class']))
                 self.update_symbols_tree(symbols['classes'][claz][1],
                     parent=item)
-            self.expand(self.indexFromItem(classItem, 0))
+        self.expandAll()
 
     def _go_to_definition(self, item):
         if item.isClickable:

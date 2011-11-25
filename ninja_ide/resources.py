@@ -144,7 +144,6 @@ IMAGES = {
     "break-right": os.path.join(PRJ_PATH, "img", "break-right.png"),
     "nav-code-left": os.path.join(PRJ_PATH, "img", "nav-code-left.png"),
     "nav-code-right": os.path.join(PRJ_PATH, "img", "nav-code-right.png"),
-    "import": os.path.join(PRJ_PATH, "img", "import.png"),
     "locate-file": os.path.join(PRJ_PATH, "img", "locate-file.png"),
     "locate-class": os.path.join(PRJ_PATH, "img", "locate-class.png"),
     "locate-function": os.path.join(PRJ_PATH, "img", "locate-function.png"),

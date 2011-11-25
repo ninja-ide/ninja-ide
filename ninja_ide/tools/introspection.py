@@ -59,6 +59,7 @@ def obtain_symbols(source):
         module = ast.parse(source)
     except:
         print 'The file contains syntax errors.'
+        return {}
     symbols = {}
     globalAttributes = {}
     globalFunctions = {}
@@ -80,10 +81,5 @@ def obtain_symbols(source):
         symbols['functions'] = globalFunctions
     if classes:
         symbols['classes'] = classes
-    imports = obtain_imports(body=module.body)
-    if imports['imports']:
-        symbols['imports'] = imports['imports']
-    if imports['fromImports']:
-        symbols['fromImports'] = imports['fromImports']
 
     return symbols
