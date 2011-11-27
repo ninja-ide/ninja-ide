@@ -281,6 +281,7 @@ class FindInFilesDialog(QDialog):
         self.accept()
 
     def _find_in_files(self):
+        self.emit(SIGNAL("findStarted()"))
         self._kill_thread()
         self.result_widget.clear()
         pattern = self.pattern_line_edit.text()
@@ -347,14 +348,22 @@ class FindInFilesWidget(QWidget):
             "itemClicked(QTreeWidgetItem *, int)"), self._go_to)
         self.connect(self._find_widget, SIGNAL("finished()"),
             self._find_finished)
+        self.connect(self._find_widget, SIGNAL("findStarted()"),
+            self._find_started)
 
     def _find_finished(self):
+        self._stop_button.setEnabled(False)
+        self._open_find_button.setEnabled(True)
         self._error_label.setVisible(False)
         if not self._result_widget.topLevelItemCount():
             self._error_label.setVisible(True)
 
     def _find_stop(self):
         self._find_widget._kill_thread()
+
+    def _find_started(self):
+        self._open_find_button.setEnabled(False)
+        self._stop_button.setEnabled(True)
 
     def _clear_results(self):
         self._result_widget.clear()
