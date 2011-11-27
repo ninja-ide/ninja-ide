@@ -71,10 +71,12 @@ class MenuView(QObject):
         fadeOutAction = menuView.addAction(
             self.tr("Fade Out (Alt+Wheel-Down)"))
 
-        toolbar.addAction(splitTabHAction)
-        toolbar.addAction(splitTabVAction)
-        toolbar.addAction(followModeAction)
-        toolbar.addSeparator()
+        self.toolbar_items = {
+            'splith': splitTabHAction,
+            'splitv': splitTabVAction,
+            'follow-mode': followModeAction,
+            'zoom-in': zoomInAction,
+            'zoom-out': zoomOutAction}
 
         self.connect(self.hideConsoleAction, SIGNAL("triggered()"),
             self.__ide.central.change_misc_visibility)

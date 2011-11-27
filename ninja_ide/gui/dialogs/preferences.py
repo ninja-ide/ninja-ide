@@ -4,6 +4,7 @@ from __future__ import absolute_import
 import os
 
 from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QStyle
 from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QGroupBox
 from PyQt4.QtGui import QCheckBox
@@ -404,6 +405,7 @@ class InterfaceTab(QWidget):
         QWidget.__init__(self, parent)
         vbox = QVBoxLayout(self)
         self._parent = parent
+        self.toolbar_settings = settings.TOOLBAR_ITEMS
 
         groupBoxExplorer = QGroupBox(self.tr("Explorer Panel:"))
         groupBoxGui = QGroupBox(self.tr("GUI Customization:"))
@@ -451,6 +453,7 @@ class InterfaceTab(QWidget):
         label_toolbar.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         hbox_select_items.addWidget(label_toolbar)
         self._comboToolbarItems = QComboBox()
+        self._load_combo_data(self._comboToolbarItems)
         self._btnItemAdd = QPushButton(
             QIcon(resources.IMAGES['add']), '')
         self._btnItemAdd.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
@@ -464,6 +467,7 @@ class InterfaceTab(QWidget):
         self._toolbar_items = QToolBar()
         self._toolbar_items.setToolButtonStyle(Qt.ToolButtonIconOnly)
         styles.set_style(self._toolbar_items, 'toolbar-customization')
+        self._load_toolbar()
         vbox_toolbar.addWidget(self._toolbar_items)
         #Language
         vboxLanguage = QVBoxLayout(groupBoxLang)
@@ -504,6 +508,106 @@ class InterfaceTab(QWidget):
             central_widget.CentralWidget().splitter_misc_rotate)
         self.connect(self._btnCentralOrientation, SIGNAL('clicked()'),
             central_widget.CentralWidget().splitter_central_orientation)
+        self.connect(self._btnItemAdd, SIGNAL("clicked()"),
+            self.toolbar_item_added)
+        self.connect(self._btnItemRemove, SIGNAL("clicked()"),
+            self.toolbar_item_removed)
+
+    def toolbar_item_added(self):
+        data = self._comboToolbarItems.itemData(
+            self._comboToolbarItems.currentIndex())
+        data = str(data.toString())
+        if data not in self.toolbar_settings or data == 'separator':
+            self.toolbar_settings.append(data)
+            self._load_toolbar()
+
+    def toolbar_item_removed(self):
+        data = self._comboToolbarItems.itemData(
+            self._comboToolbarItems.currentIndex())
+        data = str(data.toString())
+        if data in self.toolbar_settings and data != 'separator':
+            self.toolbar_settings.pop(self.toolbar_settings.index(data))
+            self._load_toolbar()
+        elif data == 'separator':
+            self.toolbar_settings.reverse()
+            self.toolbar_settings.pop(self.toolbar_settings.index(data))
+            self.toolbar_settings.reverse()
+            self._load_toolbar()
+
+    def _load_combo_data(self, combo):
+        self.toolbar_items = {
+            'separator': [QIcon(resources.IMAGES['separator']),
+                'Add Separtor'],
+            'new-file': [QIcon(resources.IMAGES['new']), 'New File'],
+            'new-project': [QIcon(resources.IMAGES['newProj']), 'New Project'],
+            'save-file': [QIcon(resources.IMAGES['save']), 'Save File'],
+            'save-as': [QIcon(resources.IMAGES['saveAs']), 'Save As'],
+            'save-all': [QIcon(resources.IMAGES['saveAll']), 'Save All'],
+            'save-project': [QIcon(resources.IMAGES['saveAll']),
+                'Save Project'],
+            'reload-file': [QIcon(resources.IMAGES['reload-file']),
+                'Reload File'],
+            'open-file': [QIcon(resources.IMAGES['open']), 'Open File'],
+            'open-project': [QIcon(resources.IMAGES['openProj']),
+                'Open Project'],
+            'activate-profile': [QIcon(resources.IMAGES['activate-profile']),
+                'Activate Profile'],
+            'deactivate-profile':
+                [QIcon(resources.IMAGES['deactivate-profile']),
+                'Deactivate Profile'],
+            'print-file': [QIcon(resources.IMAGES['print']), 'Print File'],
+            'close-file':
+                [self.style().standardIcon(QStyle.SP_DialogCloseButton),
+                'Close File'],
+            'close-projects':
+                [self.style().standardIcon(QStyle.SP_DialogCloseButton),
+                'Close Projects'],
+            'undo': [QIcon(resources.IMAGES['undo']), 'Undo'],
+            'redo': [QIcon(resources.IMAGES['redo']), 'Redo'],
+            'cut': [QIcon(resources.IMAGES['cut']), 'Cut'],
+            'copy': [QIcon(resources.IMAGES['copy']), 'Copy'],
+            'paste': [QIcon(resources.IMAGES['paste']), 'Paste'],
+            'find': [QIcon(resources.IMAGES['find']), 'Find'],
+            'find-replace': [QIcon(resources.IMAGES['findReplace']),
+                'Find/Replace'],
+            'find-files': [QIcon(resources.IMAGES['find']), 'Find In files'],
+            'code-locator': [QIcon(resources.IMAGES['locator']),
+                'Code Locator'],
+            'splith': [QIcon(resources.IMAGES['splitH']),
+                'Split Horizontally'],
+            'splitv': [QIcon(resources.IMAGES['splitV']), 'Split Vertically'],
+            'follow-mode': [QIcon(resources.IMAGES['follow']), 'Follow Mode'],
+            'zoom-in': [QIcon(resources.IMAGES['zoom-in']), 'Zoom In'],
+            'zoom-out': [QIcon(resources.IMAGES['zoom-out']), 'Zoom Out'],
+            'indent-more': [QIcon(resources.IMAGES['indent-more']),
+                'Indent More'],
+            'indent-less': [QIcon(resources.IMAGES['indent-less']),
+                'Indent Less'],
+            'comment': [QIcon(resources.IMAGES['comment-code']), 'Comment'],
+            'uncomment': [QIcon(resources.IMAGES['uncomment-code']),
+                'Uncomment'],
+            'go-to-definition': [QIcon(resources.IMAGES['go-to-definition']),
+                'Go To Definition'],
+            'insert-import': [QIcon(resources.IMAGES['insert-import']),
+                'Insert Import'],
+            'run-project': [QIcon(resources.IMAGES['play']), 'Run Project'],
+            'run-file': [QIcon(resources.IMAGES['file-run']), 'Run File'],
+            'stop': [QIcon(resources.IMAGES['stop']), 'Stop'],
+            'preview-web': [QIcon(resources.IMAGES['preview-web']),
+                'Preview Web']}
+        for item in self.toolbar_items:
+            combo.addItem(self.toolbar_items[item][0],
+                self.toolbar_items[item][1], item)
+        combo.model().sort(0)
+
+    def _load_toolbar(self):
+        self._toolbar_items.clear()
+        for item in self.toolbar_settings:
+            if item == 'separator':
+                self._toolbar_items.addSeparator()
+            else:
+                self._toolbar_items.addAction(self.toolbar_items[item][0],
+                    self.toolbar_items[item][1])
 
     def _load_langs(self):
 #        self.disconnect(self.thread, SIGNAL("finished()"), self.load_langs)
@@ -521,6 +625,7 @@ class InterfaceTab(QWidget):
         self._comboLang.setCurrentIndex(index)
 
     def save(self):
+        settings.TOOLBAR_ITEMS = self.toolbar_settings
         lang = self._comboLang.currentText()
         if lang not in self._langs:
             #TODO
@@ -564,11 +669,13 @@ class InterfaceTab(QWidget):
         uiLayout += 2 if self._btnPanelsRotate.isChecked() else 0
         uiLayout += 4 if self._btnCentralOrientation.isChecked() else 0
         qsettings.setValue('uiLayout', uiLayout)
+        qsettings.setValue('toolbar', settings.TOOLBAR_ITEMS)
         qsettings.setValue('language', lang)
         lang = unicode(lang + '.qm')
         settings.LANGUAGE = os.path.join(resources.LANGS, lang)
         qsettings.endGroup()
         qsettings.endGroup()
+        actions.Actions().reload_toolbar()
 
 
 class EditorTab(QWidget):

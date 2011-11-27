@@ -81,12 +81,21 @@ class MenuFile(QObject):
             ide.style().standardIcon(QStyle.SP_DialogCloseButton),
             self.tr("&Exit"))
 
-        toolbar.addAction(newAction)
-        toolbar.addAction(newProjectAction)
-        toolbar.addAction(openAction)
-        toolbar.addAction(openProjectAction)
-        toolbar.addAction(saveAction)
-        toolbar.addSeparator()
+        self.toolbar_items = {
+            'new-file': newAction,
+            'new-project': newProjectAction,
+            'save-file': saveAction,
+            'save-as': saveAsAction,
+            'save-all': saveAllAction,
+            'save-project': saveProjectAction,
+            'reload-file': reloadFileAction,
+            'open-file': openAction,
+            'open-project': openProjectAction,
+            'activate-profile': activateProfileAction,
+            'deactivate-profile': deactivateProfileAction,
+            'print-file': printFile,
+            'close-file': closeAction,
+            'close-projects': closeProjectsAction}
 
         self.connect(newAction, SIGNAL("triggered()"),
             ide.mainContainer.add_editor)

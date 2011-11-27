@@ -39,11 +39,11 @@ class MenuProject(QObject):
             self.tr("Preview Web in Default Browser"))
 #        diagramView = menuProject.addAction(self.tr("Diagram View"))
 
-        toolbar.addAction(runAction)
-#        toolbar.addAction(debugAction)
-        toolbar.addAction(runFileAction)
-        toolbar.addAction(stopAction)
-        toolbar.addSeparator()
+        self.toolbar_items = {
+            'run-project': runAction,
+            'run-file': runFileAction,
+            'stop': stopAction,
+            'preview-web': previewAction}
 
         self.connect(runAction, SIGNAL("triggered()"),
             actions.Actions().execute_project)
