@@ -57,8 +57,11 @@ class MenuFile(QObject):
         openProjectTypeAction = menuFile.addAction(
             QIcon(resources.IMAGES['openProj']), self.tr("Open Project &Type"))
         menuFile.addSeparator()
-        activateProfileAction = menuFile.addAction(self.tr("Activate Profile"))
+        activateProfileAction = menuFile.addAction(
+            QIcon(resources.IMAGES['activate-profile']),
+            self.tr("Activate Profile"))
         deactivateProfileAction = menuFile.addAction(
+            QIcon(resources.IMAGES['deactivate-profile']),
             self.tr("Deactivate Profile"))
         menuFile.addSeparator()
         printFile = menuFile.addAction(QIcon(resources.IMAGES['print']),

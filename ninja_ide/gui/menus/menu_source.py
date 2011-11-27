@@ -49,11 +49,13 @@ class MenuSource(QObject):
             self.tr("Count Code Lines"))
         menuSource.addSeparator()
         goToDefinitionAction = menuSource.addAction(
+            QIcon(resources.IMAGES['go-to-definition']),
             self.tr("Go To Definition (%1 or %2+Click)").arg(
                 resources.get_shortcut("Go-to-definition").toString(
                     QKeySequence.NativeText),
                 settings.OS_KEY))
         insertImport = menuSource.addAction(
+            QIcon(resources.IMAGES['insert-import']),
             self.tr("Insert &Import (%1)").arg(
                 resources.get_shortcut("Import").toString(
                     QKeySequence.NativeText)))

@@ -37,6 +37,7 @@ class MenuView(QObject):
         self.hideToolbarAction = menuView.addAction(
             self.tr("Show/Hide &Toolbar"))
         self.fullscreenAction = menuView.addAction(
+            QIcon(resources.IMAGES['fullscreen']),
             self.tr("Full Screen &Mode (%1)").arg(
                 resources.get_shortcut("Full-screen").toString(
                     QKeySequence.NativeText)))
@@ -61,9 +62,9 @@ class MenuView(QObject):
             self.tr("Deactivate Group Tabs"))
         menuView.addSeparator()
         #Zoom
-        zoomInAction = menuView.addAction(
+        zoomInAction = menuView.addAction(QIcon(resources.IMAGES['zoom-in']),
             self.tr("Zoom &In (%1+Wheel-Up)").arg(settings.OS_KEY))
-        zoomOutAction = menuView.addAction(
+        zoomOutAction = menuView.addAction(QIcon(resources.IMAGES['zoom-out']),
             self.tr("Zoom &Out (%1+Wheel-Down)").arg(settings.OS_KEY))
         menuView.addSeparator()
         fadeInAction = menuView.addAction(self.tr("Fade In (Alt+Wheel-Up)"))

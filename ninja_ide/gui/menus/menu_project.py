@@ -35,6 +35,7 @@ class MenuProject(QObject):
                     QKeySequence.NativeText)))
         menuProject.addSeparator()
         previewAction = menuProject.addAction(
+            QIcon(resources.IMAGES['preview-web']),
             self.tr("Preview Web in Default Browser"))
 #        diagramView = menuProject.addAction(self.tr("Diagram View"))
 
