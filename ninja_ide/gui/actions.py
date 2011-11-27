@@ -749,3 +749,6 @@ class __Actions(QObject):
     def open_class_diagram(self):
         diagram = class_diagram.ClassDiagram(self)
         self.ide.mainContainer.add_tab(diagram, self.tr("Class Diagram v.0.1"))
+
+    def reload_toolbar(self):
+        self.ide.load_toolbar()

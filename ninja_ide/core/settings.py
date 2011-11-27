@@ -52,6 +52,13 @@ EXECUTION_OPTIONS = ""
 
 PROFILES = {}
 
+TOOLBAR_ITEMS = [
+    "new-file", "new-project", "open-file", "open-project", "save-file",
+    "separator", "splith", "splitv", "follow-mode", "separator",
+    "cut", "copy", "paste", "separator",
+    "run-project", "run-file", "stop", "separator",
+    ]
+
 
 ###############################################################################
 # EDITOR
@@ -225,6 +232,7 @@ def load_settings():
     global BREAKPOINTS
     global BRACES
     global HIDE_TOOLBAR
+    global TOOLBAR_ITEMS
     #General
     HIDE_TOOLBAR = qsettings.value("window/hide_toolbar", False).toBool()
     TOOLBAR_AREA = qsettings.value(
@@ -256,6 +264,10 @@ def load_settings():
         projects = [unicode(item.toString()) \
             for item in profileDict[key].toList()[1].toList()]
         PROFILES[unicode(key)] = [files, projects]
+    toolbar_items = [str(item.toString()) for item in qsettings.value(
+        'preferences/interface/toolbar', []).toList()]
+    if toolbar_items:
+        TOOLBAR_ITEMS = toolbar_items
     #EXECUTION OPTIONS
     EXECUTION_OPTIONS = unicode(
         qsettings.value('preferences/execution/executionOptions',
