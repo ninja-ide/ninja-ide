@@ -3,6 +3,7 @@
 from __future__ import absolute_import
 
 from PyQt4.QtCore import QObject
+from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import pyqtSignal
 
@@ -56,6 +57,21 @@ class MainService(QObject):
         self.connect(self._explorer, SIGNAL("projectOpened(QString)"),
             self._projectOpened)
 
+###############################################################################
+# Get main GUI Objects
+###############################################################################
+
+    def get_tab_manager(self):
+        """
+        Returns the TabWidget (ninja_ide.gui.main_panel.tab_widget.TabWidget)
+        subclass of QTabWidget
+        """
+        return self._main.actualTab
+
+###############################################################################
+# END main GUI Objects
+###############################################################################
+
     def add_menu(self, menu, lang=".py"):
         """
         Add an *extra context menu* to the editor context menu
@@ -93,10 +109,13 @@ class MainService(QObject):
         """Return the syntax for this file -> {}."""
         if editorWidget is None:
             editorWidget = self._main.get_actual_editor()
-        ext = file_manager.get_file_extension(editorWidget.ID)
-        lang = settings.EXTENSIONS.get(ext, '')
-        syntax = settings.SYNTAX.get(lang, {})
-        return syntax
+
+        if editorWidget is not None:
+            ext = file_manager.get_file_extension(editorWidget.ID)
+            lang = settings.EXTENSIONS.get(ext, '')
+            syntax = settings.SYNTAX.get(lang, {})
+            return syntax
+        return {}
 
     def add_editor(self, fileName="", content=None, syntax=None):
         """
@@ -120,6 +139,17 @@ class MainService(QObject):
         editor = self._main.get_actual_editor()
         if editor:
             return editor.ID
+        return None
+
+    def get_editor_encoding(self, editorWidget=None):
+        """
+        Returns the editor encoding
+        """
+        if editorWidget is None:
+            editorWidget = self._main.get_actual_editor()
+
+        if editorWidget is not None:
+            return editorWidget.encoding
         return None
 
     def get_text(self):
@@ -198,7 +228,10 @@ class MainService(QObject):
         """
         return self._main.get_actual_widget()
 
-    #SIGNALS
+###############################################################################
+# SIGNALS
+###############################################################################
+
     def _keyPressEvent(self, qEvent):
         """
         Emit the signal when a key is pressed
@@ -214,7 +247,7 @@ class MainService(QObject):
 
     def _fileSaved(self, fileName):
         """
-        Sinal emitted after save a file
+        Signal emitted after save a file
         """
         fileName = unicode(fileName.split(":")[-1]).strip()
         self.fileSaved.emit(fileName)
