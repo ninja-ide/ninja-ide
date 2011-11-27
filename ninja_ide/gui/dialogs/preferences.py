@@ -528,7 +528,7 @@ class InterfaceTab(QWidget):
         if data in self.toolbar_settings and data != 'separator':
             self.toolbar_settings.pop(self.toolbar_settings.index(data))
             self._load_toolbar()
-        else:
+        elif data == 'separator':
             self.toolbar_settings.reverse()
             self.toolbar_settings.pop(self.toolbar_settings.index(data))
             self.toolbar_settings.reverse()
