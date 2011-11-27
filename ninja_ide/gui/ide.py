@@ -133,6 +133,8 @@ class __IDE(QMainWindow):
         self._menuPlugins = menu_plugins.MenuPlugins(self.pluginsMenu)
         self._menuAbout = menu_about.MenuAbout(about)
 
+        self.load_toolbar()
+
         #Plugin Manager
         services = {
             'editor': plugin_services.MainService(),
@@ -153,6 +155,23 @@ class __IDE(QMainWindow):
 
         self.connect(self.mainContainer, SIGNAL("fileSaved(QString)"),
             self.show_status_message)
+
+    def load_toolbar(self):
+        self.toolbar.clear()
+        toolbar_items = {}
+        toolbar_items.update(self._menuFile.toolbar_items)
+        toolbar_items.update(self._menuView.toolbar_items)
+        toolbar_items.update(self._menuEdit.toolbar_items)
+        toolbar_items.update(self._menuSource.toolbar_items)
+        toolbar_items.update(self._menuProject.toolbar_items)
+
+        for item in settings.TOOLBAR_ITEMS:
+            if item == 'separator':
+                self.toolbar.addSeparator()
+            else:
+                tool_item = toolbar_items.get(item, None)
+                if tool_item is not None:
+                    self.toolbar.addAction(tool_item)
 
     def load_external_plugins(self, paths):
         for path in paths:

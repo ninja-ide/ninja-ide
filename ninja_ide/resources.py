@@ -161,7 +161,8 @@ IMAGES = {
     "locate-on-this-file": os.path.join(PRJ_PATH, "img",
         "locate-on-this-file.png"),
     "add": os.path.join(PRJ_PATH, "img", "add.png"),
-    "delete": os.path.join(PRJ_PATH, "img", "delete.png")}
+    "delete": os.path.join(PRJ_PATH, "img", "delete.png"),
+    "separator": os.path.join(PRJ_PATH, "img", "separator.png")}
 
 
 ###############################################################################

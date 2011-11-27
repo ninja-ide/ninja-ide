@@ -85,6 +85,14 @@ class MenuSource(QObject):
                 resources.get_shortcut("Remove-line").toString(
                     QKeySequence.NativeText)))
 
+        self.toolbar_items = {
+            'indent-more': indentMoreAction,
+            'indent-less': indentLessAction,
+            'comment': commentAction,
+            'uncomment': unCommentAction,
+            'go-to-definition': goToDefinitionAction,
+            'insert-import': insertImport}
+
         self.connect(goToDefinitionAction, SIGNAL("triggered()"),
             actions.Actions().editor_go_to_definition)
         self.connect(countCodeLinesAction, SIGNAL("triggered()"),
