@@ -81,7 +81,7 @@ PLUGINS_COMMUNITY = 'http://ninja-ide.org/plugins/community'
 IMAGES = {
     "splash": os.path.join(PRJ_PATH, "img", "splash.jpg"),
     "icon": os.path.join(PRJ_PATH, "img", "icon.png"),
-    "iconUpdate": os.path.join(PRJ_PATH, "img", "icon-update.png"),
+    "iconUpdate": os.path.join(PRJ_PATH, "img", "icon.png"),
     "new": os.path.join(PRJ_PATH, "img", "document-new.png"),
     "newProj": os.path.join(PRJ_PATH, "img", "project-new.png"),
     "open": os.path.join(PRJ_PATH, "img", "document-open.png"),

@@ -244,8 +244,18 @@ def load_settings():
         'python').toString())
     profileDict = qsettings.value('ide/profiles', {}).toMap()
     for key in profileDict:
-        PROFILES[unicode(key)] = [
-            unicode(item.toString()) for item in profileDict[key].toList()]
+        files = [item \
+            for item in profileDict[key].toList()[0].toList()]
+        tempFiles = []
+        for file_ in files:
+            fileData = file_.toList()
+            if len(fileData) > 0:
+                tempFiles.append([unicode(fileData[0].toString()),
+                    fileData[1].toInt()[0]])
+        files = tempFiles
+        projects = [unicode(item.toString()) \
+            for item in profileDict[key].toList()[1].toList()]
+        PROFILES[unicode(key)] = [files, projects]
     #EXECUTION OPTIONS
     EXECUTION_OPTIONS = unicode(
         qsettings.value('preferences/execution/executionOptions',
