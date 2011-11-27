@@ -416,6 +416,7 @@ class __Actions(QObject):
                 if file_manager.belongs_to_folder(
                 project, tabSecondary.widget(tabIndex).ID):
                     tabSecondary.removeTab(tabIndex)
+            self.ide.profile = None
 
     def count_file_code_lines(self):
         editorWidget = self.ide.mainContainer.get_actual_editor()
