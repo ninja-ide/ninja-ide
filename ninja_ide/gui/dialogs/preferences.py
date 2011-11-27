@@ -4,6 +4,7 @@ from __future__ import absolute_import
 import os
 
 from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QActionGroup
 from PyQt4.QtGui import QStyle
 from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QGroupBox
@@ -469,6 +470,8 @@ class InterfaceTab(QWidget):
         styles.set_style(self._toolbar_items, 'toolbar-customization')
         self._load_toolbar()
         vbox_toolbar.addWidget(self._toolbar_items)
+        vbox_toolbar.addWidget(QLabel(
+            self.tr("The New Item will be inserted after the item selected.")))
         #Language
         vboxLanguage = QVBoxLayout(groupBoxLang)
         vboxLanguage.addWidget(QLabel(self.tr("Select Language:")))
@@ -518,7 +521,13 @@ class InterfaceTab(QWidget):
             self._comboToolbarItems.currentIndex())
         data = str(data.toString())
         if data not in self.toolbar_settings or data == 'separator':
-            self.toolbar_settings.append(data)
+            selected = self.actionGroup.checkedAction()
+            if selected is None:
+                self.toolbar_settings.append(data)
+            else:
+                dataAction = str(selected.data().toString())
+                self.toolbar_settings.insert(
+                    self.toolbar_settings.index(dataAction) + 1, data)
             self._load_toolbar()
 
     def toolbar_item_removed(self):
@@ -602,12 +611,17 @@ class InterfaceTab(QWidget):
 
     def _load_toolbar(self):
         self._toolbar_items.clear()
+        self.actionGroup = QActionGroup(self)
+        self.actionGroup.setExclusive(True)
         for item in self.toolbar_settings:
             if item == 'separator':
                 self._toolbar_items.addSeparator()
             else:
-                self._toolbar_items.addAction(self.toolbar_items[item][0],
-                    self.toolbar_items[item][1])
+                action = self._toolbar_items.addAction(
+                    self.toolbar_items[item][0], self.toolbar_items[item][1])
+                action.setData(item)
+                action.setCheckable(True)
+                self.actionGroup.addAction(action)
 
     def _load_langs(self):
 #        self.disconnect(self.thread, SIGNAL("finished()"), self.load_langs)
