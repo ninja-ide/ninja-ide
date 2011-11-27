@@ -228,7 +228,6 @@ class TabWidget(QTabWidget):
             if (type(self.widget(i)) is editor.Editor) \
             and self.widget(i).ID != '':
                 files.append([self.widget(i).ID,
-                    self.widget(i).get_parent_project(),
                     self.widget(i).get_cursor_position()])
                 self.widget(i)._sidebarWidget._save_breakpoints_bookmarks()
         return files

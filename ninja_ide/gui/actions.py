@@ -365,29 +365,42 @@ class __Actions(QObject):
         self.ide.explorer.open_project_folder(unicode(path))
         self.ide.status.explore_code()
 
-    def save_profile(self):
+    def create_profile(self):
         profileInfo = QInputDialog.getText(None,
-            self.tr("Create Profile"), self.tr("Profile Name:"))
+            self.tr("Create Profile"), self.tr(
+                "The Current Files and Projects will "
+                "be associated to this profile.\n"
+                "Profile Name:"))
         if profileInfo[1]:
             profileName = unicode(profileInfo[0])
             if not profileName or profileName in settings.PROFILES:
                 QMessageBox.information(self, self.tr("Profile Name Invalid"),
                     self.tr("The Profile name is invalid or already exists."))
                 return
-            projects_obj = self.ide.explorer.get_opened_projects()
-            projects = [p.path for p in projects_obj]
-            settings.PROFILES[profileName] = projects
-            qsettings = QSettings()
-            qsettings.setValue('ide/profiles', settings.PROFILES)
+            self.save_profile(profileName)
+            return profileName
 
-    def open_profile(self):
+    def save_profile(self, profileName):
+        projects_obj = self.ide.explorer.get_opened_projects()
+        projects = [p.path for p in projects_obj]
+        files = self.ide.mainContainer.get_opened_documents()
+        files = files[0] + files[1]
+        settings.PROFILES[profileName] = [files, projects]
+        qsettings = QSettings()
+        qsettings.setValue('ide/profiles', settings.PROFILES)
+
+    def activate_profile(self):
         profilesLoader = ui_tools.ProfilesLoader(self._load_profile_data,
-            settings.PROFILES, self.ide)
+            self.create_profile, settings.PROFILES, self.ide)
         profilesLoader.show()
+
+    def deactivate_profile(self):
+        self.ide.Profile = None
 
     def _load_profile_data(self, key):
         self.ide.explorer.close_opened_projects()
-        self.ide.explorer.open_session_projects(settings.PROFILES[key])
+        self.ide.mainContainer.open_files(settings.PROFILES[key][0])
+        self.ide.explorer.open_session_projects(settings.PROFILES[key][1])
         self.ide.status.explore_code()
 
     def close_files_from_project(self, project):
