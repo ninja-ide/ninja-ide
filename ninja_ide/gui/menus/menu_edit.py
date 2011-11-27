@@ -54,7 +54,7 @@ class MenuEdit(QObject):
             self.tr("Jump to Line (%1)").arg(
                 resources.get_shortcut("Jump").toString(
                     QKeySequence.NativeText)))
-        locatorAction = menuEdit.addAction(
+        locatorAction = menuEdit.addAction(QIcon(resources.IMAGES['locator']),
             self.tr("Code Locator (%1)").arg(
                 resources.get_shortcut("Code-locator").toString(
                     QKeySequence.NativeText)))

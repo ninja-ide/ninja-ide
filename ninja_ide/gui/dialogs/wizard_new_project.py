@@ -102,18 +102,10 @@ class WizardNewProject(QWizard, plugin_interfaces.IProjectTypeHandler):
     def on_wizard_finish(self, wizard):
         ids = wizard.pageIds()
         page = wizard.page(ids[1])
-        place = unicode(page.txtPlace.text())
-        if not place:
+        path = unicode(page.txtPlace.text())
+        if not path:
             QMessageBox.critical(self, self.tr("Incorrect Location"),
                 self.tr("The project couldn\'t be create"))
-            return
-        folder = unicode(page.txtFolder.text()).replace(' ', '_')
-        path = os.path.join(place, folder)
-        try:
-            file_manager.create_folder(path)
-        except:
-            QMessageBox.critical(self, self.tr("Incorrect Location"),
-                self.tr("The folder already exists."))
             return
         project = {}
         name = unicode(page.txtName.text())
@@ -122,6 +114,7 @@ class WizardNewProject(QWizard, plugin_interfaces.IProjectTypeHandler):
         project['license'] = unicode(page.cboLicense.currentText())
         project['venv'] = unicode(page.vtxtPlace.text())
         json_manager.create_ninja_project(path, name, project)
+        file_manager.create_init_file(path)
         self._load_project(path)
 
     def _load_project(self, path):
@@ -182,23 +175,19 @@ class PageProjectProperties(QWizardPage):
         #Names of the fields to complete
         self.lblName = QLabel(self.tr("New Project Name (*):"))
         self.lblPlace = QLabel(self.tr("Project Location (*):"))
-        self.lblFolder = QLabel(self.tr("Project Folder:"))
         self.lblDescription = QLabel(self.tr("Project Description:"))
         self.lblLicense = QLabel(self.tr("Project License:"))
         self.lblVenvFolder = QLabel(self.tr("Virtualenv Folder:"))
         gbox.addWidget(self.lblName, 0, 0, Qt.AlignRight)
-        gbox.addWidget(self.lblFolder, 1, 0, Qt.AlignRight)
-        gbox.addWidget(self.lblPlace, 2, 0, Qt.AlignRight)
-        gbox.addWidget(self.lblDescription, 3, 0, Qt.AlignTop)
-        gbox.addWidget(self.lblLicense, 4, 0, Qt.AlignRight)
-        gbox.addWidget(self.lblVenvFolder, 5, 0, Qt.AlignRight)
+        gbox.addWidget(self.lblPlace, 1, 0, Qt.AlignRight)
+        gbox.addWidget(self.lblDescription, 2, 0, Qt.AlignTop)
+        gbox.addWidget(self.lblLicense, 3, 0, Qt.AlignRight)
+        gbox.addWidget(self.lblVenvFolder, 4, 0, Qt.AlignRight)
 
         #Fields on de right of the grid
         #Name
         self.txtName = QLineEdit()
         self.registerField('projectName*', self.txtName)
-        #Project Folder
-        self.txtFolder = QLineEdit()
         #Location
         hPlace = QHBoxLayout()
         self.txtPlace = QLineEdit()
@@ -234,11 +223,10 @@ class PageProjectProperties(QWizardPage):
         self.cboLicense.setCurrentIndex(4)
         #Add to Grid
         gbox.addWidget(self.txtName, 0, 1)
-        gbox.addWidget(self.txtFolder, 1, 1)
-        gbox.addLayout(hPlace, 2, 1)
-        gbox.addWidget(self.txtDescription, 3, 1)
-        gbox.addWidget(self.cboLicense, 4, 1)
-        gbox.addLayout(vPlace, 5, 1)
+        gbox.addLayout(hPlace, 1, 1)
+        gbox.addWidget(self.txtDescription, 2, 1)
+        gbox.addWidget(self.cboLicense, 3, 1)
+        gbox.addLayout(vPlace, 4, 1)
         #Signal
         self.connect(self.btnExamine, SIGNAL('clicked()'), self.load_folder)
         self.connect(self.vbtnExamine, SIGNAL('clicked()'),

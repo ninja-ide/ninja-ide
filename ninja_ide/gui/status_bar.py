@@ -110,7 +110,7 @@ class __StatusBar(QStatusBar):
             self._searchWidget._line.setText(word)
             editor = main_container.MainContainer().get_actual_editor()
             editor.moveCursor(QTextCursor.WordLeft)
-            self._searchWidget._line.find_matches(editor)
+            self._searchWidget.find_matches(editor)
             self.show()
 
     def show_locator(self):

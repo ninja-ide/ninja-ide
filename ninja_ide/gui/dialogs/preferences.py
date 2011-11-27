@@ -12,11 +12,13 @@ from PyQt4.QtGui import QSpinBox
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QLineEdit
+from PyQt4.QtGui import QToolBar
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QGridLayout
 from PyQt4.QtGui import QTabWidget
+from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QListWidget
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QFileDialog
@@ -40,6 +42,7 @@ from ninja_ide.dependencies import pep8mod
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
 from ninja_ide.tools import ui_tools
+from ninja_ide.tools import styles
 from ninja_ide.tools import json_manager
 
 
@@ -404,6 +407,7 @@ class InterfaceTab(QWidget):
 
         groupBoxExplorer = QGroupBox(self.tr("Explorer Panel:"))
         groupBoxGui = QGroupBox(self.tr("GUI Customization:"))
+        groupBoxToolbar = QGroupBox(self.tr("Tool Bar Customization:"))
         groupBoxLang = QGroupBox(self.tr("Language:"))
 
         #Explorer
@@ -440,6 +444,27 @@ class InterfaceTab(QWidget):
             self.tr("Rotate Lateral")), 1, 1, Qt.AlignCenter)
         gridGuiConfig.addWidget(QLabel(
             self.tr("Central Orientation")), 1, 2, Qt.AlignCenter)
+        #GUI - Toolbar
+        vbox_toolbar = QVBoxLayout(groupBoxToolbar)
+        hbox_select_items = QHBoxLayout()
+        label_toolbar = QLabel(self.tr("Toolbar Items:"))
+        label_toolbar.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        hbox_select_items.addWidget(label_toolbar)
+        self._comboToolbarItems = QComboBox()
+        self._btnItemAdd = QPushButton(
+            QIcon(resources.IMAGES['add']), '')
+        self._btnItemAdd.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self._btnItemRemove = QPushButton(
+            QIcon(resources.IMAGES['delete']), '')
+        self._btnItemRemove.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        hbox_select_items.addWidget(self._comboToolbarItems)
+        hbox_select_items.addWidget(self._btnItemAdd)
+        hbox_select_items.addWidget(self._btnItemRemove)
+        vbox_toolbar.addLayout(hbox_select_items)
+        self._toolbar_items = QToolBar()
+        self._toolbar_items.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        styles.set_style(self._toolbar_items, 'toolbar-customization')
+        vbox_toolbar.addWidget(self._toolbar_items)
         #Language
         vboxLanguage = QVBoxLayout(groupBoxLang)
         vboxLanguage.addWidget(QLabel(self.tr("Select Language:")))
@@ -469,6 +494,7 @@ class InterfaceTab(QWidget):
 
         vbox.addWidget(groupBoxExplorer)
         vbox.addWidget(groupBoxGui)
+        vbox.addWidget(groupBoxToolbar)
         vbox.addWidget(groupBoxLang)
 
         #Signals

@@ -402,7 +402,7 @@ class LineEditCount(QObject):
 
 class LineEditTabCompleter(QLineEdit):
 
-    def __init__(self, completer, type=QCompleter.InlineCompletion):
+    def __init__(self, completer, type=QCompleter.PopupCompletion):
         QLineEdit.__init__(self)
         self.completer = completer
         self.setTextMargins(0, 0, 5, 0)
@@ -417,6 +417,7 @@ class LineEditTabCompleter(QLineEdit):
                 super(LineEditTabCompleter, self).event(eventTab)
             else:
                 completion = self.completer.currentCompletion()
+                completion += os.path.sep
                 self.selectAll()
                 self.insert(completion)
                 self.completer.popup().hide()
