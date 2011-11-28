@@ -429,7 +429,7 @@ class TreeProjectsWidget(QTreeWidget):
             self.tr("Copy File"),
             self.tr("File Name:"))[0])
         if not name:
-            QMessageBox.information(self, self.tr("Indalid Name"),
+            QMessageBox.information(self, self.tr("Invalid Name"),
                 self.tr("The file name is empty, please enter a name"))
             return
         path = file_manager.create_path(
