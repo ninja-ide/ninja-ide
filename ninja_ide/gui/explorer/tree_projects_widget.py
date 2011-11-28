@@ -2,6 +2,7 @@
 from __future__ import absolute_import
 
 import os
+import sys
 
 from PyQt4.QtGui import QTreeWidget
 from PyQt4.QtGui import QTreeWidgetItem
@@ -68,6 +69,7 @@ class TreeProjectsWidget(QTreeWidget):
         self.setAnimated(True)
 
         self._actualProject = None
+        #self._projects -> key: [Item, folderStructure]
         self._projects = {}
         self.__enableCloseNotification = True
         self._fileWatcher = QFileSystemWatcher()
@@ -212,8 +214,9 @@ class TreeProjectsWidget(QTreeWidget):
             fileName = os.path.join(item.path, unicode(item.text(column)))
             main_container.MainContainer().open_file(fileName)
 
-    def _get_project_root(self):
-        item = self.currentItem()
+    def _get_project_root(self, item=None):
+        if item is None:
+            item = self.currentItem()
         while item is not None and item.parent() is not None:
             item = item.parent()
         return item
@@ -229,19 +232,14 @@ class TreeProjectsWidget(QTreeWidget):
         proj = project_properties_widget.ProjectProperties(item, self)
         proj.show()
 
-    def _refresh_project_by_path(self, project_folder):
-        project_folder = unicode(project_folder)
-        project = [path for path in self._projects if \
-            file_manager.belongs_to_folder(path, project_folder)]
-        if project:
-            item = self._projects[unicode(project[0])]
-            self._refresh_project(item)
+    def _refresh_project_by_path(self, folder):
+        item = self.get_item_for_path(unicode(folder))
+        self._refresh_project(item)
 
     def _refresh_project(self, item=None):
         if item is None:
             item = self.currentItem()
-        item.takeChildren()
-        parentItem = self._get_project_root()
+        parentItem = self._get_project_root(item)
         if parentItem is None:
             return
         if item.parent() is None:
@@ -257,6 +255,7 @@ class TreeProjectsWidget(QTreeWidget):
             folderStructure[path][1].sort()
         else:
             return
+        item.takeChildren()
         self._load_folder(folderStructure, path, item)
         item.setExpanded(True)
 
@@ -267,6 +266,10 @@ class TreeProjectsWidget(QTreeWidget):
         if self.__enableCloseNotification:
             self.emit(SIGNAL("closeProject(QString)"), pathKey)
         self.emit(SIGNAL("closeFilesFromProjectClosed(QString)"), pathKey)
+        for directory in self._fileWatcher.directories():
+            directory = unicode(directory)
+            if file_manager.belongs_to_folder(pathKey, directory):
+                self._fileWatcher.removePath(directory)
         self._fileWatcher.removePath(pathKey)
         self.takeTopLevelItem(index)
         self._projects.pop(pathKey)
@@ -524,10 +527,9 @@ class TreeProjectsWidget(QTreeWidget):
                 subfolder.setToolTip(0, _file)
                 subfolder.setIcon(0, QIcon(resources.IMAGES['tree-folder']))
                 subFolderPath = os.path.join(folder, _file)
-                # Commented until some serious fix get apply
-#                if sys.platform != "darwin" and \
-#                not self._fileWatcher.directories().contains(subFolderPath):
-#                    self._fileWatcher.addPath(subFolderPath)
+                if sys.platform != "darwin" and \
+                not self._fileWatcher.directories().contains(subFolderPath):
+                    self._fileWatcher.addPath(subFolderPath)
                 self._load_folder(folderStructure,
                     subFolderPath, subfolder)
 
