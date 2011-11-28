@@ -1884,12 +1884,12 @@ Click here to Download</source>
     </message>
     <message>
         <location filename="ninja_ide/gui/explorer/tree_projects_widget.py" line="432"/>
-        <source>Indalid Name</source>
+        <source>The file name is empty, please enter a name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ninja_ide/gui/explorer/tree_projects_widget.py" line="432"/>
-        <source>The file name is empty, please enter a name</source>
+        <source>Invalid Name</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1993,11 +1993,6 @@ Click here to Download</source>
     </message>
     <message>
         <location filename="ninja_ide/gui/actions.py" line="326"/>
-        <source>Indalid Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ninja_ide/gui/actions.py" line="326"/>
         <source>The file name is empty, please enter a name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2058,6 +2053,11 @@ Profile Name:</source>
     <message>
         <location filename="ninja_ide/gui/actions.py" line="751"/>
         <source>Class Diagram v.0.1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ninja_ide/gui/actions.py" line="326"/>
+        <source>Invalid Name</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
