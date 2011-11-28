@@ -30,25 +30,41 @@ def _parse_class_body(classBody):
     return {'attributes': attr, 'functions': func}
 
 
+def obtain_imports(source='', body=None):
+    if source:
+        try:
+            module = ast.parse(source)
+            body = module.body
+        except:
+            print 'The file contains syntax errors.'
+    #Imports{} = {name: asname}, for example = {sys: sysAlias}
+    imports = {}
+    #From Imports{} = {name: {module: fromPart, asname: nameAlias}}
+    fromImports = {}
+    for sym in body:
+        if type(sym) is ast.Import:
+            for item in sym.names:
+                imports[item.name] = {'asname': item.asname,
+                    'lineno': sym.lineno}
+        if type(sym) is ast.ImportFrom:
+            for item in sym.names:
+                fromImports[item.name] = {'module': sym.module,
+                    'asname': item.asname, 'lineno': sym.lineno}
+    return {'imports': imports, 'fromImports': fromImports}
+
+
 def obtain_symbols(source):
     """Parse a module source code to obtain: Classes, Functions and Assigns."""
-    compilable = True
     try:
         module = ast.parse(source)
     except:
-        compilable = False
-    if not compilable:
-        try:
-            module = ast.parse(source[source.find('\n'):])
-            compilable = True
-        except SyntaxError:
-            compilable = False
-    if not compilable:
+        print 'The file contains syntax errors.'
         return {}
     symbols = {}
     globalAttributes = {}
     globalFunctions = {}
     classes = {}
+
     for sym1 in module.body:
         if type(sym1) is ast.Assign:
             if type(sym1.targets[0]) is ast.Attribute:
@@ -67,32 +83,3 @@ def obtain_symbols(source):
         symbols['classes'] = classes
 
     return symbols
-
-
-def obtain_imports(source):
-    compilable = True
-    try:
-        module = ast.parse(source)
-    except:
-        compilable = False
-    if not compilable:
-        try:
-            module = ast.parse(source[source.find('\n'):])
-            compilable = True
-        except:
-            compilable = False
-    if not compilable:
-        return []
-    #Imports{} = {name: asname}, for example = {sys: sysAlias}
-    imports = {}
-    #From Imports{} = {name: {module: fromPart, asname: nameAlias}}
-    fromImports = {}
-    for sym in module.body:
-        if type(sym) is ast.Import:
-            for item in sym.names:
-                imports[item.name] = item.asname
-        if type(sym) is ast.ImportFrom:
-            for item in sym.names:
-                fromImports[item.name] = {'module': sym.module,
-                    'asname': item.asname}
-    return {'imports': imports, 'fromImports': fromImports}

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
-import sys
 import os
+import sys
 
 from PyQt4.QtGui import QTreeWidget
 from PyQt4.QtGui import QTreeWidgetItem
@@ -40,6 +40,7 @@ class TreeProjectsWidget(QTreeWidget):
     """
     runProject()
     closeProject(QString)
+    closeFilesFromProjectClosed(QString)
     addProjectToConsole(QString)
     removeProjectFromConsole(QString)
     """
@@ -68,6 +69,7 @@ class TreeProjectsWidget(QTreeWidget):
         self.setAnimated(True)
 
         self._actualProject = None
+        #self._projects -> key: [Item, folderStructure]
         self._projects = {}
         self.__enableCloseNotification = True
         self._fileWatcher = QFileSystemWatcher()
@@ -169,10 +171,6 @@ class TreeProjectsWidget(QTreeWidget):
                 self.open_project_properties)
             #get the extra context menu for this projectType
             handler = settings.get_project_type_handler(item.projectType)
-#            if handler:
-#                for m in handler.get_context_menus():
-#                    menu.addSeparator()
-#                    menu.addMenu(m)
 
             menu.addSeparator()
             action_refresh = menu.addAction(
@@ -216,8 +214,9 @@ class TreeProjectsWidget(QTreeWidget):
             fileName = os.path.join(item.path, unicode(item.text(column)))
             main_container.MainContainer().open_file(fileName)
 
-    def _get_project_root(self):
-        item = self.currentItem()
+    def _get_project_root(self, item=None):
+        if item is None:
+            item = self.currentItem()
         while item is not None and item.parent() is not None:
             item = item.parent()
         return item
@@ -233,19 +232,14 @@ class TreeProjectsWidget(QTreeWidget):
         proj = project_properties_widget.ProjectProperties(item, self)
         proj.show()
 
-    def _refresh_project_by_path(self, project_folder):
-        project_folder = unicode(project_folder)
-        project = [path for path in self._projects if \
-            file_manager.belongs_to_folder(path, project_folder)]
-        if project:
-            item = self._projects[unicode(project[0])]
-            self._refresh_project(item)
+    def _refresh_project_by_path(self, folder):
+        item = self.get_item_for_path(unicode(folder))
+        self._refresh_project(item)
 
     def _refresh_project(self, item=None):
         if item is None:
             item = self.currentItem()
-        item.takeChildren()
-        parentItem = self._get_project_root()
+        parentItem = self._get_project_root(item)
         if parentItem is None:
             return
         if item.parent() is None:
@@ -261,6 +255,7 @@ class TreeProjectsWidget(QTreeWidget):
             folderStructure[path][1].sort()
         else:
             return
+        item.takeChildren()
         self._load_folder(folderStructure, path, item)
         item.setExpanded(True)
 
@@ -270,6 +265,11 @@ class TreeProjectsWidget(QTreeWidget):
         pathKey = item.path
         if self.__enableCloseNotification:
             self.emit(SIGNAL("closeProject(QString)"), pathKey)
+        self.emit(SIGNAL("closeFilesFromProjectClosed(QString)"), pathKey)
+        for directory in self._fileWatcher.directories():
+            directory = unicode(directory)
+            if file_manager.belongs_to_folder(pathKey, directory):
+                self._fileWatcher.removePath(directory)
         self._fileWatcher.removePath(pathKey)
         self.takeTopLevelItem(index)
         self._projects.pop(pathKey)
@@ -537,6 +537,21 @@ class TreeProjectsWidget(QTreeWidget):
         return QIcon(self.images.get(file_manager.get_file_extension(fileName),
             resources.IMAGES['tree-generic']))
 
+    def get_item_for_path(self, path):
+        items = self.findItems(file_manager.get_basename(path),
+            Qt.MatchRecursive, 0)
+        folder = file_manager.get_folder(path)
+        for item in items:
+            if file_manager.belongs_to_folder(folder, item.path):
+                return item
+
+    def get_project_by_name(self, projectName):
+        """Return the name of the project item based on the project name."""
+        # Return the item or None if it's not found
+        for item in self._projects.values():
+            if item.name == projectName:
+                return item
+
     def get_selected_project_path(self):
         if self._actualProject:
             return self._actualProject.path
@@ -556,7 +571,6 @@ class TreeProjectsWidget(QTreeWidget):
         return rootItem.lang()
 
     def get_open_projects(self):
-        #return [p.path for p in self._projects.values()]
         return self._projects.values()
 
     def is_open(self, path):
@@ -614,6 +628,9 @@ class ProjectItem(QTreeWidgetItem):
         Returns the full path of the file
         '''
         return os.path.join(self.path, unicode(self.text(0)))
+
+    def set_item_icon(self, icon):
+        self.setIcon(0, icon)
 
 
 class ProjectTree(QTreeWidgetItem):

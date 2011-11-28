@@ -61,7 +61,7 @@ LOG_FILE_PATH = os.path.join(HOME_NINJA_PATH, 'ninja_ide.log')
 # URLS
 ###############################################################################
 
-BUGS_PAGE = "http://code.google.com/p/ninja-ide/issues/list"
+BUGS_PAGE = "https://github.com/ninja-ide/ninja-ide/issues"
 
 PLUGINS_DOC = "http://code.google.com/p/ninja-ide/wiki/New_Plugins_API"
 
@@ -81,7 +81,7 @@ PLUGINS_COMMUNITY = 'http://ninja-ide.org/plugins/community'
 IMAGES = {
     "splash": os.path.join(PRJ_PATH, "img", "splash.jpg"),
     "icon": os.path.join(PRJ_PATH, "img", "icon.png"),
-    "iconUpdate": os.path.join(PRJ_PATH, "img", "icon-update.png"),
+    "iconUpdate": os.path.join(PRJ_PATH, "img", "icon.png"),
     "new": os.path.join(PRJ_PATH, "img", "document-new.png"),
     "newProj": os.path.join(PRJ_PATH, "img", "project-new.png"),
     "open": os.path.join(PRJ_PATH, "img", "document-open.png"),
@@ -93,6 +93,9 @@ IMAGES = {
     "save": os.path.join(PRJ_PATH, "img", "document-save.png"),
     "saveAs": os.path.join(PRJ_PATH, "img", "document-save-as.png"),
     "saveAll": os.path.join(PRJ_PATH, "img", "document-save-all.png"),
+    "activate-profile": os.path.join(PRJ_PATH, "img", "activate_profile.png"),
+    "deactivate-profile": os.path.join(PRJ_PATH, "img",
+        "deactivate_profile.png"),
     "copy": os.path.join(PRJ_PATH, "img", "edit-copy.png"),
     "cut": os.path.join(PRJ_PATH, "img", "edit-cut.png"),
     "paste": os.path.join(PRJ_PATH, "img", "edit-paste.png"),
@@ -101,9 +104,11 @@ IMAGES = {
     "exit": os.path.join(PRJ_PATH, "img", "exit.png"),
     "find": os.path.join(PRJ_PATH, "img", "find.png"),
     "findReplace": os.path.join(PRJ_PATH, "img", "find-replace.png"),
+    "locator": os.path.join(PRJ_PATH, "img", "locator.png"),
     "play": os.path.join(PRJ_PATH, "img", "play.png"),
     "stop": os.path.join(PRJ_PATH, "img", "stop.png"),
     "file-run": os.path.join(PRJ_PATH, "img", "file-run.png"),
+    "preview-web": os.path.join(PRJ_PATH, "img", "preview_web.png"),
     "debug": os.path.join(PRJ_PATH, "img", "debug.png"),
     "designer": os.path.join(PRJ_PATH, "img", "qtdesigner.png"),
     "bug": os.path.join(PRJ_PATH, "img", "bug.png"),
@@ -112,9 +117,12 @@ IMAGES = {
     "class": os.path.join(PRJ_PATH, "img", "class.png"),
     "attribute": os.path.join(PRJ_PATH, "img", "attribute.png"),
     "web": os.path.join(PRJ_PATH, "img", "web.png"),
+    "fullscreen": os.path.join(PRJ_PATH, "img", "fullscreen.png"),
     "follow": os.path.join(PRJ_PATH, "img", "follow.png"),
     "splitH": os.path.join(PRJ_PATH, "img", "split-horizontal.png"),
     "splitV": os.path.join(PRJ_PATH, "img", "split-vertical.png"),
+    "zoom-in": os.path.join(PRJ_PATH, "img", "zoom_in.png"),
+    "zoom-out": os.path.join(PRJ_PATH, "img", "zoom_out.png"),
     "splitCPosition": os.path.join(PRJ_PATH, "img",
                                 "panels-change-position.png"),
     "splitMPosition": os.path.join(PRJ_PATH, "img",
@@ -123,6 +131,8 @@ IMAGES = {
                                 "panels-change-orientation.png"),
     "indent-less": os.path.join(PRJ_PATH, "img", "indent-less.png"),
     "indent-more": os.path.join(PRJ_PATH, "img", "indent-more.png"),
+    "go-to-definition": os.path.join(PRJ_PATH, "img", "go_to_definition.png"),
+    "insert-import": os.path.join(PRJ_PATH, "img", "insert_import.png"),
     "console": os.path.join(PRJ_PATH, "img", "console.png"),
     "pref": os.path.join(PRJ_PATH, "img", "preferences-system.png"),
     "tree-app": os.path.join(PRJ_PATH, "img", "tree-app.png"),
@@ -149,7 +159,10 @@ IMAGES = {
     "locate-function": os.path.join(PRJ_PATH, "img", "locate-function.png"),
     "locate-nonpython": os.path.join(PRJ_PATH, "img", "locate-nonpython.png"),
     "locate-on-this-file": os.path.join(PRJ_PATH, "img",
-        "locate-on-this-file.png")}
+        "locate-on-this-file.png"),
+    "add": os.path.join(PRJ_PATH, "img", "add.png"),
+    "delete": os.path.join(PRJ_PATH, "img", "delete.png"),
+    "separator": os.path.join(PRJ_PATH, "img", "separator.png")}
 
 
 ###############################################################################

@@ -84,6 +84,8 @@ class __IDE(QMainWindow):
         #Load the size and the position of the main window
         self.load_window_geometry()
 
+        #Profile handler
+        self.profile = None
         #Opacity
         self.opacity = settings.MAX_OPACITY
 
@@ -103,7 +105,7 @@ class __IDE(QMainWindow):
         styles.set_style(self.toolbar, 'toolbar-default')
         self.toolbar.setToolTip(self.tr("Press and Drag to Move"))
         self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
-        self.addToolBar(settings.TOOLBAR_ORIENTATION, self.toolbar)
+        self.addToolBar(settings.TOOLBAR_AREA, self.toolbar)
         if settings.HIDE_TOOLBAR:
             self.toolbar.hide()
 
@@ -131,6 +133,8 @@ class __IDE(QMainWindow):
         self._menuPlugins = menu_plugins.MenuPlugins(self.pluginsMenu)
         self._menuAbout = menu_about.MenuAbout(about)
 
+        self.load_toolbar()
+
         #Plugin Manager
         services = {
             'editor': plugin_services.MainService(),
@@ -151,6 +155,23 @@ class __IDE(QMainWindow):
 
         self.connect(self.mainContainer, SIGNAL("fileSaved(QString)"),
             self.show_status_message)
+
+    def load_toolbar(self):
+        self.toolbar.clear()
+        toolbar_items = {}
+        toolbar_items.update(self._menuFile.toolbar_items)
+        toolbar_items.update(self._menuView.toolbar_items)
+        toolbar_items.update(self._menuEdit.toolbar_items)
+        toolbar_items.update(self._menuSource.toolbar_items)
+        toolbar_items.update(self._menuProject.toolbar_items)
+
+        for item in settings.TOOLBAR_ITEMS:
+            if item == 'separator':
+                self.toolbar.addSeparator()
+            else:
+                tool_item = toolbar_items.get(item, None)
+                if tool_item is not None:
+                    self.toolbar.addAction(tool_item)
 
     def load_external_plugins(self, paths):
         for path in paths:
@@ -237,8 +258,25 @@ class __IDE(QMainWindow):
         self.explorer.open_session_projects(projects, notIDEStart=False)
         self.status.explore_code()
 
+    def __get_profile(self):
+        return self.profile
+
+    def __set_profile(self, profileName):
+        self.profile = profileName
+        if self.profile is not None:
+            self.setWindowTitle('NINJA-IDE (PROFILE: %s)' % self.profile)
+        else:
+            self.setWindowTitle(
+                'NINJA-IDE {Ninja-IDE Is Not Just Another IDE}')
+
+    Profile = property(__get_profile, __set_profile)
+
     def change_window_title(self, title):
-        self.setWindowTitle('NINJA-IDE - ' + title)
+        if self.profile is None:
+            self.setWindowTitle('NINJA-IDE - %s' % title)
+        else:
+            self.setWindowTitle('NINJA-IDE (PROFILE: %s) - %s' % (
+                self.profile, title))
 
     def wheelEvent(self, event):
         if event.modifiers() == Qt.AltModifier:
@@ -270,6 +308,8 @@ class __IDE(QMainWindow):
         qsettings.setValue('preferences/editor/bookmarks', settings.BOOKMARKS)
         qsettings.setValue('preferences/editor/breakpoints',
             settings.BREAKPOINTS)
+        qsettings.setValue('preferences/general/toolbarArea',
+            self.toolBarArea(self.toolbar))
         #Save if the windows state is maximixed
         if(self.isMaximized()):
             qsettings.setValue("window/maximized", True)
@@ -287,7 +327,10 @@ class __IDE(QMainWindow):
         qsettings.setValue("window/hide_toolbar",
             not self.toolbar.isVisible() and self.menuBar().isVisible())
         #Save Profiles
-        qsettings.setValue('ide/profiles', settings.PROFILES)
+        if self.profile is not None:
+            self.actions.save_profile(self.profile)
+        else:
+            qsettings.setValue('ide/profiles', settings.PROFILES)
 
     def load_window_geometry(self):
         """Load from QSettings the window size of de Ninja IDE"""
@@ -390,7 +433,7 @@ def start(filenames=None, projects_path=None, extra_plugins=None):
     for file_ in mainFiles:
         fileData = file_.toList()
         tempFiles.append((unicode(fileData[0].toString()),
-            fileData[2].toInt()[0]))
+            fileData[1].toInt()[0]))
     mainFiles = tempFiles
     #Files in Secondary Tab
     secondaryFiles = qsettings.value('openFiles/secondaryTab', []).toList()
@@ -398,7 +441,7 @@ def start(filenames=None, projects_path=None, extra_plugins=None):
     for file_ in secondaryFiles:
         fileData = file_.toList()
         tempFiles.append((unicode(fileData[0].toString()),
-            fileData[2].toInt()[0]))
+            fileData[1].toInt()[0]))
     secondaryFiles = tempFiles
     #Projects
     projects = qsettings.value('openFiles/projects', []).toList()

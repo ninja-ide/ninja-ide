@@ -66,14 +66,6 @@ class __StatusBar(QStatusBar):
 
         self._shortEsc = QShortcut(QKeySequence(Qt.Key_Escape), self)
 
-        self.connect(self._searchWidget._btnClose, SIGNAL("clicked()"),
-            self.hide_status)
-        self.connect(self._searchWidget._btnFind, SIGNAL("clicked()"),
-            self.find)
-        self.connect(self._searchWidget.btnNext, SIGNAL("clicked()"),
-            self.find_next)
-        self.connect(self._searchWidget.btnPrevious, SIGNAL("clicked()"),
-            self.find_previous)
         self.connect(self, SIGNAL("messageChanged(QString)"), self.message_end)
         self.connect(self._replaceWidget._btnCloseReplace, SIGNAL("clicked()"),
             lambda: self._replaceWidget.setVisible(False))
@@ -118,7 +110,7 @@ class __StatusBar(QStatusBar):
             self._searchWidget._line.setText(word)
             editor = main_container.MainContainer().get_actual_editor()
             editor.moveCursor(QTextCursor.WordLeft)
-            self._searchWidget._line.find_matches(editor)
+            self._searchWidget.find_matches(editor)
             self.show()
 
     def show_locator(self):
@@ -223,11 +215,12 @@ class SearchWidget(QWidget):
 
     def __init__(self, parent):
         QWidget.__init__(self, parent)
+        self._parent = parent
         hSearch = QHBoxLayout(self)
         hSearch.setContentsMargins(0, 0, 0, 0)
         self._checkSensitive = QCheckBox(self.tr("Respect Case Sensitive"))
         self._checkWholeWord = QCheckBox(self.tr("Find Whole Words"))
-        self._line = TextLine(parent, self._checkSensitive)
+        self._line = TextLine(self)
         self._line.setMinimumWidth(250)
         self._btnClose = QPushButton(
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
@@ -247,6 +240,61 @@ class SearchWidget(QWidget):
         hSearch.addWidget(self.btnNext)
         hSearch.addWidget(self._checkSensitive)
         hSearch.addWidget(self._checkWholeWord)
+
+        self.totalMatches = 0
+        self.index = 0
+        self._line.counter.update_count(self.index, self.totalMatches)
+
+        self.connect(self._btnClose, SIGNAL("clicked()"),
+            self._parent.hide_status)
+        self.connect(self._btnFind, SIGNAL("clicked()"),
+            self.find_next)
+        self.connect(self.btnNext, SIGNAL("clicked()"),
+            self.find_next)
+        self.connect(self.btnPrevious, SIGNAL("clicked()"),
+            self.find_previous)
+
+    def find_next(self):
+        self._parent.find_next()
+        if self.totalMatches > 0 and self.index < self.totalMatches:
+            self.index += 1
+        elif self.totalMatches > 0:
+            self.index = 1
+        self._line.counter.update_count(self.index, self.totalMatches)
+
+    def find_previous(self):
+        self._parent.find_previous()
+        if self.totalMatches > 0 and self.index > 1:
+            self.index -= 1
+        elif self.totalMatches > 0:
+            self.index = self.totalMatches
+            editor = main_container.MainContainer().get_actual_editor()
+            editor.moveCursor(QTextCursor.End)
+            self._parent.find_previous()
+        self._line.counter.update_count(self.index, self.totalMatches)
+
+    def find_matches(self, editor):
+        text = unicode(editor.toPlainText())
+        search = unicode(self._line.text())
+        hasSearch = len(search) > 0
+        if self._checkSensitive.isChecked():
+            self.totalMatches = text.count(search)
+        else:
+            self.totalMatches = text.lower().count(search.lower())
+        if hasSearch and self.totalMatches > 0:
+            cursor = editor.textCursor()
+            cursor.movePosition(QTextCursor.WordLeft)
+            cursor.movePosition(QTextCursor.Start,
+                QTextCursor.KeepAnchor)
+            text = unicode(cursor.selectedText())
+            self.index = text.count(search) + 1
+        else:
+            self.index = 0
+            self.totalMatches = 0
+        self._line.counter.update_count(self.index, self.totalMatches,
+            hasSearch)
+        if hasSearch:
+            self._parent.find()
 
 
 class ReplaceWidget(QWidget):
@@ -269,14 +317,10 @@ class ReplaceWidget(QWidget):
 
 class TextLine(QLineEdit):
 
-    def __init__(self, parent, checkSensitive):
+    def __init__(self, parent):
         QLineEdit.__init__(self, parent)
         self._parent = parent
-        self._checkSensitive = checkSensitive
         self.counter = ui_tools.LineEditCount(self)
-        self.totalMatches = 0
-        self.index = 0
-        self.counter.update_count(self.index, self.totalMatches)
 
     def keyPressEvent(self, event):
         editor = main_container.MainContainer().get_actual_editor()
@@ -286,56 +330,19 @@ class TextLine(QLineEdit):
         if editor and event.key() in \
         (Qt.Key_Enter, Qt.Key_Return):
             self._parent.find_next()
-            if self.totalMatches > 0 and self.index < self.totalMatches:
-                self.index += 1
-            elif self.totalMatches > 0:
-                self.index = 1
-            self.counter.update_count(self.index, self.totalMatches)
             return
         elif event.modifiers() == Qt.ControlModifier and \
         event.key() == Qt.Key_Right:
             self._parent.find_next()
-            if self.totalMatches > 0 and self.index < self.totalMatches:
-                self.index += 1
-            elif self.totalMatches > 0:
-                self.index = 1
-            self.counter.update_count(self.index, self.totalMatches)
             return
         elif event.modifiers() == Qt.ControlModifier and \
         event.key() == Qt.Key_Left:
             self._parent.find_previous()
-            if self.totalMatches > 0 and self.index > 1:
-                self.index -= 1
-            elif self.totalMatches > 0:
-                self.index = self.totalMatches
-                editor.moveCursor(QTextCursor.End)
-                self._parent.find_previous()
-            self.counter.update_count(self.index, self.totalMatches)
             return
         super(TextLine, self).keyPressEvent(event)
         if int(event.key()) in range(32, 162) or \
         event.key() == Qt.Key_Backspace:
-            self.find_matches(editor)
-
-    def find_matches(self, editor):
-        text = unicode(editor.toPlainText())
-        search = unicode(self.text())
-        hasSearch = len(search) > 0
-        self.totalMatches = text.count(search)
-        if hasSearch and self.totalMatches > 0:
-            cursor = editor.textCursor()
-            cursor.movePosition(QTextCursor.WordLeft)
-            cursor.movePosition(QTextCursor.Start,
-                QTextCursor.KeepAnchor)
-            text = unicode(cursor.selectedText())
-            self.index = text.count(search) + 1
-        else:
-            self.index = 0
-            self.totalMatches = 0
-        self.counter.update_count(self.index, self.totalMatches,
-            hasSearch)
-        if hasSearch:
-            self._parent.find()
+            self._parent.find_matches(editor)
 
 
 class FileSystemOpener(QWidget):

@@ -32,7 +32,7 @@ elif sys.platform == "win32":
 MAX_OPACITY = 1
 MIN_OPACITY = 0.3
 
-TOOLBAR_ORIENTATION = 1
+TOOLBAR_AREA = 1
 #UI LAYOUT
 #001 : Central Rotate
 #010 : Panels Rotate
@@ -51,6 +51,13 @@ PYTHON_PATH = "python"
 EXECUTION_OPTIONS = ""
 
 PROFILES = {}
+
+TOOLBAR_ITEMS = [
+    "new-file", "new-project", "open-file", "open-project", "save-file",
+    "separator", "splith", "splitv", "follow-mode", "separator",
+    "cut", "copy", "paste", "separator",
+    "run-project", "run-file", "stop", "separator",
+    ]
 
 
 ###############################################################################
@@ -192,7 +199,7 @@ def get_symbols_handler(file_extension):
 def load_settings():
     qsettings = QSettings()
     #Globals
-    global TOOLBAR_ORIENTATION
+    global TOOLBAR_AREA
     global LANGUAGE
     global SHOW_START_PAGE
     global CONFIRM_EXIT
@@ -225,10 +232,11 @@ def load_settings():
     global BREAKPOINTS
     global BRACES
     global HIDE_TOOLBAR
+    global TOOLBAR_ITEMS
     #General
     HIDE_TOOLBAR = qsettings.value("window/hide_toolbar", False).toBool()
-    TOOLBAR_ORIENTATION = qsettings.value(
-        'preferences/general/toolbarOrientation', 1).toInt()[0]
+    TOOLBAR_AREA = qsettings.value(
+        'preferences/general/toolbarArea', 1).toInt()[0]
     LANGUAGE = unicode(qsettings.value(
         'preferences/interface/language', '').toString())
     SHOW_START_PAGE = qsettings.value(
@@ -244,8 +252,22 @@ def load_settings():
         'python').toString())
     profileDict = qsettings.value('ide/profiles', {}).toMap()
     for key in profileDict:
-        PROFILES[unicode(key)] = [
-            unicode(item.toString()) for item in profileDict[key].toList()]
+        files = [item \
+            for item in profileDict[key].toList()[0].toList()]
+        tempFiles = []
+        for file_ in files:
+            fileData = file_.toList()
+            if len(fileData) > 0:
+                tempFiles.append([unicode(fileData[0].toString()),
+                    fileData[1].toInt()[0]])
+        files = tempFiles
+        projects = [unicode(item.toString()) \
+            for item in profileDict[key].toList()[1].toList()]
+        PROFILES[unicode(key)] = [files, projects]
+    toolbar_items = [str(item.toString()) for item in qsettings.value(
+        'preferences/interface/toolbar', []).toList()]
+    if toolbar_items:
+        TOOLBAR_ITEMS = toolbar_items
     #EXECUTION OPTIONS
     EXECUTION_OPTIONS = unicode(
         qsettings.value('preferences/execution/executionOptions',

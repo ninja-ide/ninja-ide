@@ -19,7 +19,6 @@ class MenuFile(QObject):
             self.tr("&New File (%1)").arg(
                 resources.get_shortcut("New-file").toString(
                     QKeySequence.NativeText)))
-#        newAction.setShortcut(resources.get_shortcut("New-file"))
         newProjectAction = menuFile.addAction(
             QIcon(resources.IMAGES['newProj']),
             self.tr("New Pro&ject (%1)").arg(
@@ -39,8 +38,6 @@ class MenuFile(QObject):
             self.tr("Save Pro&ject  (%1)").arg(
                 resources.get_shortcut("Save-project").toString(
                     QKeySequence.NativeText)))
-        saveProfileAction = menuFile.addAction(
-            self.tr("Save Profile (Group together the opened projects)"))
         menuFile.addSeparator()
         reloadFileAction = menuFile.addAction(
             QIcon(resources.IMAGES['reload-file']),
@@ -59,7 +56,13 @@ class MenuFile(QObject):
                     QKeySequence.NativeText)))
         openProjectTypeAction = menuFile.addAction(
             QIcon(resources.IMAGES['openProj']), self.tr("Open Project &Type"))
-        openProfileAction = menuFile.addAction(self.tr("Open Profile"))
+        menuFile.addSeparator()
+        activateProfileAction = menuFile.addAction(
+            QIcon(resources.IMAGES['activate-profile']),
+            self.tr("Activate Profile"))
+        deactivateProfileAction = menuFile.addAction(
+            QIcon(resources.IMAGES['deactivate-profile']),
+            self.tr("Deactivate Profile"))
         menuFile.addSeparator()
         printFile = menuFile.addAction(QIcon(resources.IMAGES['print']),
             self.tr("Pr&int File (%1)").arg(
@@ -78,12 +81,21 @@ class MenuFile(QObject):
             ide.style().standardIcon(QStyle.SP_DialogCloseButton),
             self.tr("&Exit"))
 
-        toolbar.addAction(newAction)
-        toolbar.addAction(newProjectAction)
-        toolbar.addAction(openAction)
-        toolbar.addAction(openProjectAction)
-        toolbar.addAction(saveAction)
-        toolbar.addSeparator()
+        self.toolbar_items = {
+            'new-file': newAction,
+            'new-project': newProjectAction,
+            'save-file': saveAction,
+            'save-as': saveAsAction,
+            'save-all': saveAllAction,
+            'save-project': saveProjectAction,
+            'reload-file': reloadFileAction,
+            'open-file': openAction,
+            'open-project': openProjectAction,
+            'activate-profile': activateProfileAction,
+            'deactivate-profile': deactivateProfileAction,
+            'print-file': printFile,
+            'close-file': closeAction,
+            'close-projects': closeProjectsAction}
 
         self.connect(newAction, SIGNAL("triggered()"),
             ide.mainContainer.add_editor)
@@ -110,12 +122,12 @@ class MenuFile(QObject):
         QObject.connect(reloadFileAction, SIGNAL("triggered()"),
             ide.mainContainer.reload_file)
         self.connect(printFile, SIGNAL("triggered()"), ide.actions.print_file)
-        self.connect(saveProfileAction, SIGNAL("triggered()"),
-            ide.actions.save_profile)
-        self.connect(openProfileAction, SIGNAL("triggered()"),
-            ide.actions.open_profile)
         self.connect(closeProjectsAction, SIGNAL("triggered()"),
             ide.explorer.close_opened_projects)
+        self.connect(deactivateProfileAction, SIGNAL("triggered()"),
+            ide.actions.deactivate_profile)
+        self.connect(activateProfileAction, SIGNAL("triggered()"),
+            ide.actions.activate_profile)
 
     def _open_project_type(self):
         pass

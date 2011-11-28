@@ -126,14 +126,19 @@ class __ExplorerContainer(QTabWidget):
                 SIGNAL("removeProjectFromConsole(QString)"),
                 self.__ide.actions.remove_project_from_console)
 
-            def _close_project_signal(project=''):
+            def close_project_signal():
                 self.emit(SIGNAL("updateLocator()"))
+
+            def close_files_related_to_closed_project(project):
                 if project:
                     self.emit(SIGNAL("projectClosed(QString)"), project)
             self.connect(self._treeProjects, SIGNAL("closeProject(QString)"),
-                _close_project_signal)
+                close_project_signal)
             self.connect(self._treeProjects, SIGNAL("refreshProject()"),
-                _close_project_signal)
+                close_project_signal)
+            self.connect(self._treeProjects,
+                SIGNAL("closeFilesFromProjectClosed(QString)"),
+                close_files_related_to_closed_project)
 
     def add_tab_symbols(self):
         if not self._treeSymbols:
@@ -239,8 +244,15 @@ class __ExplorerContainer(QTabWidget):
                 return
             self._workingDirectory = folderName
             if not self._treeProjects.is_open(folderName):
-                self._treeProjects.load_project(
-                    file_manager.open_project(folderName), folderName)
+                project = json_manager.read_ninja_project(folderName)
+                extensions = project.get('supported-extensions',
+                    settings.SUPPORTED_EXTENSIONS)
+                if extensions != settings.SUPPORTED_EXTENSIONS:
+                    structure = file_manager.open_project_with_extensions(
+                        folderName, extensions)
+                else:
+                    structure = file_manager.open_project(folderName)
+                self._treeProjects.load_project(structure, folderName)
                 self.save_recent_projects(folderName)
             else:
                 self._treeProjects._set_current_project(folderName)
@@ -333,7 +345,9 @@ class __ExplorerContainer(QTabWidget):
 
     def get_project_name(self, path):
         if self._treeProjects:
-            return self._treeProjects._projects[path].name
+            item = self._treeProjects._projects.get(path, None)
+            if item is not None:
+                return item.name
 
 
 class WebInspector(QWidget):

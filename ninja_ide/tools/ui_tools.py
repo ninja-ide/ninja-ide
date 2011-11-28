@@ -280,23 +280,27 @@ class AddToProject(QDialog):
 
 class ProfilesLoader(QDialog):
 
-    def __init__(self, load_func, profiles, parent=None):
+    def __init__(self, load_func, save_func, profiles, parent=None):
         QDialog.__init__(self, parent, Qt.Dialog)
         self.setMinimumWidth(400)
         self._profiles = profiles
         self.load_function = load_func
+        self.save_function = save_func
+        self.ide = parent
         vbox = QVBoxLayout(self)
         self.profileList = QListWidget()
         self.profileList.addItems([key for key in profiles])
         self.contentList = QListWidget()
-        self.contentList.setSortingEnabled(True)
         self.btnDelete = QPushButton(self.tr("Delete Profile"))
         self.btnDelete.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.btnCreate = QPushButton(self.tr("Create New Profile"))
+        self.btnCreate.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.btnOpen = QPushButton(self.tr("Open Profile"))
         self.btnOpen.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.btnOpen.setDefault(True)
         hbox = QHBoxLayout()
         hbox.addWidget(self.btnDelete)
+        hbox.addWidget(self.btnCreate)
         hbox.addWidget(self.btnOpen)
 
         vbox.addWidget(self.profileList)
@@ -306,19 +310,30 @@ class ProfilesLoader(QDialog):
         self.connect(self.profileList, SIGNAL("itemSelectionChanged()"),
             self.load_profile_content)
         self.connect(self.btnOpen, SIGNAL("clicked()"), self.open_profile)
+        self.connect(self.btnCreate, SIGNAL("clicked()"), self.create_profile)
         self.connect(self.btnDelete, SIGNAL("clicked()"), self.delete_profile)
 
     def load_profile_content(self):
         item = self.profileList.currentItem()
         self.contentList.clear()
-        key = unicode(item.text())
-        content = self._profiles[key]
-        self.contentList.addItems(content)
+        if item is not None:
+            key = unicode(item.text())
+            files = [self.tr('Files:')] + \
+                [file[0] for file in self._profiles[key][0]]
+            projects = [self.tr('Projects:')] + self._profiles[key][1]
+            content = files + projects
+            self.contentList.addItems(content)
+
+    def create_profile(self):
+        profileName = self.save_function()
+        self.ide.Profile = profileName
+        self.close()
 
     def open_profile(self):
         if self.profileList.currentItem():
             key = unicode(self.profileList.currentItem().text())
             self.load_function(key)
+            self.ide.Profile = key
             self.close()
 
     def delete_profile(self):
@@ -387,7 +402,7 @@ class LineEditCount(QObject):
 
 class LineEditTabCompleter(QLineEdit):
 
-    def __init__(self, completer, type=QCompleter.InlineCompletion):
+    def __init__(self, completer, type=QCompleter.PopupCompletion):
         QLineEdit.__init__(self)
         self.completer = completer
         self.setTextMargins(0, 0, 5, 0)
@@ -402,6 +417,7 @@ class LineEditTabCompleter(QLineEdit):
                 super(LineEditTabCompleter, self).event(eventTab)
             else:
                 completion = self.completer.currentCompletion()
+                completion += os.path.sep
                 self.selectAll()
                 self.insert(completion)
                 self.completer.popup().hide()

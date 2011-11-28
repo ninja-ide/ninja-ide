@@ -54,7 +54,7 @@ class MenuEdit(QObject):
             self.tr("Jump to Line (%1)").arg(
                 resources.get_shortcut("Jump").toString(
                     QKeySequence.NativeText)))
-        locatorAction = menuEdit.addAction(
+        locatorAction = menuEdit.addAction(QIcon(resources.IMAGES['locator']),
             self.tr("Code Locator (%1)").arg(
                 resources.get_shortcut("Code-locator").toString(
                     QKeySequence.NativeText)))
@@ -69,10 +69,16 @@ class MenuEdit(QObject):
         prefAction = menuEdit.addAction(QIcon(resources.IMAGES['pref']),
             self.tr("Preference&s"))
 
-        toolbar.addAction(cutAction)
-        toolbar.addAction(copyAction)
-        toolbar.addAction(pasteAction)
-        toolbar.addSeparator()
+        self.toolbar_items = {
+            'undo': undoAction,
+            'redo': redoAction,
+            'cut': cutAction,
+            'copy': copyAction,
+            'paste': pasteAction,
+            'find': findAction,
+            'find-replace': findReplaceAction,
+            'find-files': findInFilesAction,
+            'code-locator': locatorAction}
 
         self.connect(cutAction, SIGNAL("triggered()"), self._editor_cut)
         self.connect(copyAction, SIGNAL("triggered()"), self._editor_copy)

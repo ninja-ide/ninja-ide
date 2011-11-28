@@ -56,7 +56,13 @@ QSS_STYLES = {
             background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                 stop: 0 #606161, stop: 1 #0a0b0b);
         }
-        """}
+        """,
+        'toolbar-customization': """QToolBar{
+            border-radius: 5px;
+            border-width: 1px;
+            border-color:gray;
+            border-style: solid;
+        }"""}
 
 
 def set_style(widget, sty):
