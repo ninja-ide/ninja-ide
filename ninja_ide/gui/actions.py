@@ -323,7 +323,7 @@ class __Actions(QObject):
             name = unicode(QInputDialog.getText(None,
                 self.tr("Add File To Project"), self.tr("File Name:"))[0])
             if not name:
-                QMessageBox.information(self, self.tr("Indalid Name"),
+                QMessageBox.information(self, self.tr("Invalid Name"),
                     self.tr("The file name is empty, please enter a name"))
                 return
         else:
