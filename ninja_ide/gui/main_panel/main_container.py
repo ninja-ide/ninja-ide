@@ -42,6 +42,7 @@ class __MainContainer(QSplitter):
 # MainContainer SIGNALS
 ###############################################################################
     """
+    beforeFileSaved(QString)
     fileSaved(QString)
     currentTabChanged(QString)
     locateFunction(QString, QString, bool) [functionName, filePath, isVariable]
