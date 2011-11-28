@@ -244,8 +244,15 @@ class __ExplorerContainer(QTabWidget):
                 return
             self._workingDirectory = folderName
             if not self._treeProjects.is_open(folderName):
-                self._treeProjects.load_project(
-                    file_manager.open_project(folderName), folderName)
+                project = json_manager.read_ninja_project(folderName)
+                extensions = project.get('supported-extensions',
+                    settings.SUPPORTED_EXTENSIONS)
+                if extensions != settings.SUPPORTED_EXTENSIONS:
+                    structure = file_manager.open_project_with_extensions(
+                        folderName, extensions)
+                else:
+                    structure = file_manager.open_project(folderName)
+                self._treeProjects.load_project(structure, folderName)
                 self.save_recent_projects(folderName)
             else:
                 self._treeProjects._set_current_project(folderName)
@@ -338,7 +345,9 @@ class __ExplorerContainer(QTabWidget):
 
     def get_project_name(self, path):
         if self._treeProjects:
-            return self._treeProjects._projects[path].name
+            item = self._treeProjects._projects.get(path, None)
+            if item is not None:
+                return item.name
 
 
 class WebInspector(QWidget):
