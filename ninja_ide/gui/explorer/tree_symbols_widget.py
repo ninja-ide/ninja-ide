@@ -11,8 +11,6 @@ from PyQt4.QtCore import QStringList
 from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
-from ninja_ide.core import settings
-from ninja_ide.tools import introspection
 
 
 class TreeSymbolsWidget(QTreeWidget):
@@ -37,17 +35,8 @@ class TreeSymbolsWidget(QTreeWidget):
         self.header().setStretchLastSection(False)
         self.actualSymbols = ('', {})
 
-        #Set self as symbols handler for python
-        settings.set_symbols_handler('py', self)
-
         self.connect(self, SIGNAL("itemClicked(QTreeWidgetItem *, int)"),
             self._go_to_definition)
-
-    def obtain_symbols(self, source):
-        """
-        Returns the symbols for Python Language
-        """
-        return introspection.obtain_symbols(source)
 
     def update_symbols_tree(self, symbols, filename='', parent=None):
         if not parent:
