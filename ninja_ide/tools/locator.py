@@ -40,6 +40,7 @@ mapping_locations = {}
 #@ FILES
 #< CLASSES
 #> FUNCTIONS
+#- MODULE ATTRIBUTES
 #! NO PYTHON FILES
 #. SYMBOLS IN THIS FILE
 
@@ -197,7 +198,7 @@ class LocateThread(QThread):
                 file_filter)
             #process all files in current dir!
             for one_file in current_files:
-                self._grep_file_locate(one_file.absoluteFilePath(),
+                self._grep_file_locate(unicode(one_file.absoluteFilePath()),
                     one_file.fileName())
         self.dirty = True
         self.get_locations()
@@ -249,9 +250,6 @@ class LocateThread(QThread):
             self.results += lines
 
     def _grep_file_locate(self, file_path, file_name):
-        file_object = QFile(file_path)
-        if not file_object.open(QFile.ReadOnly):
-            return
         #type - file_name - file_path
         global mapping_locations
         if file_manager.get_file_extension(unicode(file_name)) != 'py':
@@ -261,31 +259,39 @@ class LocateThread(QThread):
         mapping_locations[unicode(file_path)] = [('@', unicode(file_name),
             unicode(file_path), 0)]
 
-        stream = QTextStream(file_object)
         lines = []
-        line_index = 0
-        line = stream.readLine()
-        while not self._cancel:
-            if self.patFunction.match(line):
-                line = unicode(line)
-                func_name = line[line.find('def') + 3:line.find('(')].strip()
-                #type - function name - file_path - lineNumber
-                lines.append(('>', func_name, unicode(file_path), line_index))
-            elif self.patClass.match(line):
-                line = unicode(line)
-                if line.find('(') > 0:
-                    class_name = line[
-                        line.find('class') + 5:line.find('(')].strip()
-                else:
-                    class_name = line[:line.find(':')].split(
-                        'class')[1].strip()
-                #type - class name - file_path - lineNumber
-                lines.append(('<', class_name, unicode(file_path), line_index))
-            #take the next line!
-            line = stream.readLine()
-            if line.isNull():
-                break
-            line_index += 1
+        with open(file_path) as f:
+            content = f.read()
+            ext = file_manager.get_file_extension(file_path)
+            #obtain a symbols handler for this file extension
+            symbols_handler = settings.get_symbols_handler(ext)
+            symbols = symbols_handler.obtain_symbols(content)
+            if "classes" in symbols:
+                for claz in symbols['classes']:
+                    clazz = symbols['classes'][claz]
+                    #type - class name - file_path - lineNumber
+                    lines.append(('<', claz, unicode(file_path),
+                        clazz[0] - 1))
+                    if 'attributes' in clazz[1]:
+                        for attr in clazz[1]['attributes']:
+                            #type - attribute name - file_path - lineNumber
+                            lines.append(('-', attr, unicode(file_path),
+                                clazz[1]['attributes'][attr] - 1))
+                    if 'functions' in clazz[1]:
+                        for func in clazz[1]['functions']:
+                            #type - function name - file_path - lineNumber
+                            lines.append(('>', func, unicode(file_path),
+                                clazz[1]['functions'][func] - 1))
+            if 'attributes' in symbols:
+                for attr in symbols['attributes']:
+                    #type - attribute name - file_path - lineNumber
+                    lines.append(('-', attr, unicode(file_path),
+                        symbols['attributes'][attr] - 1))
+            if 'functions' in symbols:
+                for func in symbols['functions']:
+                    #type - function name - file_path - lineNumber
+                    lines.append(('>', func, unicode(file_path),
+                        symbols['functions'][func] - 1))
         if lines:
             mapping_locations[unicode(file_path)] += lines
 
@@ -339,7 +345,8 @@ class LocateItem(QListWidgetItem):
     icons = {'>': resources.IMAGES['function'],
         '@': resources.IMAGES['tree-python'],
         '<': resources.IMAGES['class'],
-        '!': resources.IMAGES['tree-code']}
+        '!': resources.IMAGES['tree-code'],
+        '-': resources.IMAGES['attribute']}
 
     def __init__(self, data):
         QListWidgetItem.__init__(self, QIcon(self.icons[data[0]]), "\n")
@@ -364,7 +371,7 @@ class LocateCompleter(QLineEdit):
         self._parent = parent
         self.__prefix = ''
         self.frame = PopupCompleter()
-        self.filterPrefix = re.compile(r'^(@|<|>|!|\.)(\s)*')
+        self.filterPrefix = re.compile(r'^(@|<|>|-|!|\.)(\s)*')
         self.tempLocations = []
         self.setMinimumWidth(700)
         self.items_in_page = 0
@@ -491,7 +498,7 @@ class PopupCompleter(QFrame):
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
         self.listWidget = QListWidget()
-        self.listWidget.setMinimumHeight(250)
+        self.listWidget.setMinimumHeight(300)
         vbox.addWidget(self.listWidget)
 
     def reload(self, model):
@@ -501,7 +508,7 @@ class PopupCompleter(QFrame):
         for item in model:
             self.listWidget.addItem(item[0])
             self.listWidget.setItemWidget(item[0], item[1])
-        self.listWidget.setCurrentRow(5)
+        self.listWidget.setCurrentRow(6)
 
     def clear(self):
         """Remove all the items of the list (deleted), and reload the help."""
@@ -550,6 +557,14 @@ class PopupCompleter(QFrame):
         methodItem.setBackground(QBrush(Qt.lightGray))
         methodItem.setForeground(QBrush(Qt.black))
         methodItem.setFont(font)
+        attributeItem = QListWidgetItem(
+            QIcon(resources.IMAGES['attribute']),
+                '-\t(Filter only by Attributes)')
+        self.listWidget.addItem(attributeItem)
+        attributeItem.setSizeHint(QSize(20, 30))
+        attributeItem.setBackground(QBrush(Qt.lightGray))
+        attributeItem.setForeground(QBrush(Qt.black))
+        attributeItem.setFont(font)
         thisFileItem = QListWidgetItem(
             QIcon(resources.IMAGES['locate-on-this-file']),
                 '.\t(Filter only by Classes and Methods in this File)')

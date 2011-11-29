@@ -352,3 +352,9 @@ def load_settings():
         if key:
             BREAKPOINTS[unicode(key)] = [
                 i.toInt()[0] for i in breakpoints[key].toList()]
+
+    # Import introspection here, it not needed in the namespace of
+    # the rest of the file.
+    from ninja_ide.tools import introspection
+    #Set Default Symbol Handler
+    set_symbols_handler('py', introspection)
