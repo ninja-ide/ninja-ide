@@ -391,7 +391,8 @@ class __Actions(QObject):
 
     def activate_profile(self):
         profilesLoader = ui_tools.ProfilesLoader(self._load_profile_data,
-            self.create_profile, settings.PROFILES, self.ide)
+            self.create_profile, self.save_profile,
+            settings.PROFILES, self.ide)
         profilesLoader.show()
 
     def deactivate_profile(self):
