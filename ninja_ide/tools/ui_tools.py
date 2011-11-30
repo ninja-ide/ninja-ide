@@ -280,11 +280,13 @@ class AddToProject(QDialog):
 
 class ProfilesLoader(QDialog):
 
-    def __init__(self, load_func, save_func, profiles, parent=None):
+    def __init__(self, load_func, create_func, save_func,
+    profiles, parent=None):
         QDialog.__init__(self, parent, Qt.Dialog)
         self.setMinimumWidth(400)
         self._profiles = profiles
         self.load_function = load_func
+        self.create_function = create_func
         self.save_function = save_func
         self.ide = parent
         vbox = QVBoxLayout(self)
@@ -293,6 +295,8 @@ class ProfilesLoader(QDialog):
         self.contentList = QListWidget()
         self.btnDelete = QPushButton(self.tr("Delete Profile"))
         self.btnDelete.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.btnUpdate = QPushButton(self.tr("Update Profile"))
+        self.btnUpdate.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.btnCreate = QPushButton(self.tr("Create New Profile"))
         self.btnCreate.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.btnOpen = QPushButton(self.tr("Open Profile"))
@@ -300,6 +304,7 @@ class ProfilesLoader(QDialog):
         self.btnOpen.setDefault(True)
         hbox = QHBoxLayout()
         hbox.addWidget(self.btnDelete)
+        hbox.addWidget(self.btnUpdate)
         hbox.addWidget(self.btnCreate)
         hbox.addWidget(self.btnOpen)
 
@@ -310,6 +315,7 @@ class ProfilesLoader(QDialog):
         self.connect(self.profileList, SIGNAL("itemSelectionChanged()"),
             self.load_profile_content)
         self.connect(self.btnOpen, SIGNAL("clicked()"), self.open_profile)
+        self.connect(self.btnUpdate, SIGNAL("clicked()"), self.save_profile)
         self.connect(self.btnCreate, SIGNAL("clicked()"), self.create_profile)
         self.connect(self.btnDelete, SIGNAL("clicked()"), self.delete_profile)
 
@@ -325,9 +331,16 @@ class ProfilesLoader(QDialog):
             self.contentList.addItems(content)
 
     def create_profile(self):
-        profileName = self.save_function()
+        profileName = self.create_function()
         self.ide.Profile = profileName
         self.close()
+
+    def save_profile(self):
+        if self.profileList.currentItem():
+            profileName = unicode(self.profileList.currentItem().text())
+            self.save_function(profileName)
+            self.ide.show_status_message(self.tr("Profile %1 Updated!").arg(
+                profileName))
 
     def open_profile(self):
         if self.profileList.currentItem():
