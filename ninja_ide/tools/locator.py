@@ -558,7 +558,7 @@ class PopupCompleter(QFrame):
         methodItem.setForeground(QBrush(Qt.black))
         methodItem.setFont(font)
         attributeItem = QListWidgetItem(
-            QIcon(resources.IMAGES['attribute']),
+            QIcon(resources.IMAGES['locate-attributes']),
                 '-\t(Filter only by Attributes)')
         self.listWidget.addItem(attributeItem)
         attributeItem.setSizeHint(QSize(20, 30))

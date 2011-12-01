@@ -251,7 +251,7 @@ class TreeProjectsWidget(QTreeWidget):
                 path, parentItem.extensions)
         else:
             folderStructure = file_manager.open_project(path)
-        if folderStructure[path][1] is not None:
+        if folderStructure.get(path, [None, None])[1] is not None:
             folderStructure[path][1].sort()
         else:
             return
