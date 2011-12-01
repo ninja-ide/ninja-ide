@@ -157,6 +157,8 @@ IMAGES = {
     "locate-file": os.path.join(PRJ_PATH, "img", "locate-file.png"),
     "locate-class": os.path.join(PRJ_PATH, "img", "locate-class.png"),
     "locate-function": os.path.join(PRJ_PATH, "img", "locate-function.png"),
+    "locate-attributes": os.path.join(PRJ_PATH, "img",
+        "locate-attributes.png"),
     "locate-nonpython": os.path.join(PRJ_PATH, "img", "locate-nonpython.png"),
     "locate-on-this-file": os.path.join(PRJ_PATH, "img",
         "locate-on-this-file.png"),
