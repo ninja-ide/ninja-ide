@@ -5,6 +5,7 @@ import sys
 
 from ninja_ide import resources
 from ninja_ide.core import cliparser
+from ninja_ide.core import ipc
 
 
 def run_ninja():
@@ -20,9 +21,19 @@ def run_ninja():
             print "The process couldn't be renamed'"
     #Set the application name
     filenames, projects_path, extra_plugins = cliparser.parse()
+    # Check if there is another session of ninja-ide opened
+    # and in that case send the filenames and projects to that session
+    if ipc.is_running() and (filenames or projects_path):
+        ipc.send_data(filenames, projects_path)
+        sys.exit()
+    listener = ipc.SessionListener()
+    listener.start()
     # Create NINJA-IDE user folder structure for plugins, themes, etc
     resources.create_home_dir_structure()
 
     # Start the UI
     from ninja_ide.gui import ide
-    ide.start(filenames, projects_path, extra_plugins)
+    try:
+        ide.start(listener, filenames, projects_path, extra_plugins)
+    finally:
+        ipc.close_listener(listener)

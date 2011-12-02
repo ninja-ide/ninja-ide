@@ -130,6 +130,8 @@ def read_file_content(fileName):
 
 def get_basename(fileName):
     """Get the name of a file or folder specified in a path."""
+    if fileName.endswith(os.path.sep):
+        fileName = fileName[:-1]
     return os.path.basename(fileName)
 
 
