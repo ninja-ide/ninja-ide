@@ -24,8 +24,9 @@ def run_ninja():
     # Check if there is another session of ninja-ide opened
     # and in that case send the filenames and projects to that session
     if ipc.is_running() and (filenames or projects_path):
-        ipc.send_data(filenames, projects_path)
-        sys.exit()
+        sended = ipc.send_data(filenames, projects_path)
+        if sended:
+            sys.exit()
     listener = ipc.SessionListener()
     listener.start()
     # Create NINJA-IDE user folder structure for plugins, themes, etc
