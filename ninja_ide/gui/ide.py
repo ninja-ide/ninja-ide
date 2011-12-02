@@ -259,10 +259,12 @@ class __IDE(QMainWindow):
         self.status.explore_code()
 
     def open_file(self, filename):
-        self.mainContainer.open_file(unicode(filename))
+        if filename:
+            self.mainContainer.open_file(unicode(filename))
 
     def open_project(self, project):
-        self.actions.open_project(project)
+        if project:
+            self.actions.open_project(project)
 
     def __get_profile(self):
         return self.profile
