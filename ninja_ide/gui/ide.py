@@ -382,7 +382,7 @@ class __IDE(QMainWindow):
 def start(listener, filenames=None, projects_path=None, extra_plugins=None):
     app = QApplication(sys.argv)
     QCoreApplication.setOrganizationName('NINJA-IDE')
-    QCoreApplication.setOrganizationDomain('ninja-ide.org')
+    QCoreApplication.setOrganizationDomain('NINJA-IDE')
     QCoreApplication.setApplicationName('NINJA-IDE')
     app.setWindowIcon(QIcon(resources.IMAGES['icon']))
 
