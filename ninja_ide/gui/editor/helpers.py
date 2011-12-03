@@ -205,12 +205,9 @@ def remove_line(editorWidget):
     if cursor.hasSelection():
         cursor.removeSelectedText()
     else:
-	if cursor.columnNumber() == 0:  # a blank line
-            cursor.deleteChar()
-        else:
-            cursor.select(QTextCursor.LineUnderCursor)
-            cursor.removeSelectedText()
-            cursor.deleteChar()
+        cursor.select(QTextCursor.LineUnderCursor)
+        cursor.removeSelectedText()
+        cursor.deleteChar()
     cursor.endEditBlock()
 
 
