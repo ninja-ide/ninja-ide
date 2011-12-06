@@ -44,9 +44,7 @@ def remove_trailing_spaces(editorWidget):
     block = editorWidget.document().findBlockByLineNumber(0)
     while block.isValid():
         if pat.match(block.text()):
-            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
-            cursor.movePosition(QTextCursor.StartOfLine,
-                QTextCursor.KeepAnchor)
+            cursor.select(QTextCursor.LineUnderCursor)
             cursor.insertText(unicode(block.text()).rstrip())
         cursor.movePosition(QTextCursor.Down, QTextCursor.MoveAnchor)
         block = block.next()
