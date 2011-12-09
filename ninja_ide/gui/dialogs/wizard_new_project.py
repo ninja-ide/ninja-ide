@@ -28,8 +28,16 @@ from ninja_ide.core import file_manager
 from ninja_ide.tools import json_manager
 
 
-class WizardNewProject(QWizard, plugin_interfaces.IProjectTypeHandler):
+###############################################################################
+# Wizard handler and Python Project handler
+###############################################################################
 
+class WizardNewProject(QWizard):
+    """
+    Wizard to create a new project (of any kind), it implements the base
+    behavior. Also, it set two special projects type handler
+    (PythonProjectHandler, ImportFromSourcesProjectHandler)
+    """
     def __init__(self, parent):
         QWizard.__init__(self, parent)
         self.__explorer = parent
@@ -37,23 +45,18 @@ class WizardNewProject(QWizard, plugin_interfaces.IProjectTypeHandler):
         self.setPixmap(QWizard.LogoPixmap, QPixmap(resources.IMAGES['icon']))
 
         self.option = 'Python'
-        #settings.PROJECT_TYPES[self.option] = self
         #Add a project type handler for Python
-        settings.set_project_type_handler(self.option, self)
+        settings.set_project_type_handler(self.option,
+            PythonProjectHandler(self.__explorer))
+        #Add a project type handler for Import from existing sources
+        settings.set_project_type_handler('Import from sources',
+            ImportFromSourcesProjectHandler(self.__explorer))
 
         self.addPage(PageProjectType(self))
         self.addPage(PageProjectProperties())
 
-    def get_pages(self):
-        """
-        We do not implementd the get_pages because this class is a special one
-        is like a Manager and a Handler at the same time
-        """
-        return ()
-
     def add_project_pages(self, option='Python'):
         self.option = option
-        #pages = settings.PROJECT_TYPES[option].getPages()
         pages = settings.get_project_type_handler(option).get_pages()
         listIds = self.pageIds()
         listIds.pop(listIds.index(0))
@@ -63,12 +66,6 @@ class WizardNewProject(QWizard, plugin_interfaces.IProjectTypeHandler):
         self.addPage(PageProjectProperties())
         for i in listIds:
             self.removePage(i)
-
-    def get_context_menus(self):
-        """
-        Get  a special menu for Python projects
-        """
-        return ()
 
     def done(self, result):
         if result == 1:
@@ -94,12 +91,46 @@ class WizardNewProject(QWizard, plugin_interfaces.IProjectTypeHandler):
                         else:
                             self.currentPage().vtxtPlace.setText("")
                 page.vtxtPlace.setText(venv)
-            #settings.PROJECT_TYPES[self.option].onWizardFinish(self)
             settings.get_project_type_handler(self.option)\
                 .on_wizard_finish(self)
         super(WizardNewProject, self).done(result)
 
+    def _load_project_with_extensions(self, path, extensions):
+        """Open Project based on path into Explorer with extensions"""
+#        self._main._properties._treeProjects.load_project(
+#            self._main.open_project_with_extensions(path), path)
+        pass
+
+
+###############################################################################
+# Python Project Handler
+###############################################################################
+
+
+class PythonProjectHandler(plugin_interfaces.IProjectTypeHandler):
+    """
+    Handler for Python projects
+    """
+    def __init__(self, explorer):
+        self.__explorer = explorer
+
+    def get_pages(self):
+        """
+        Get extra pages for new Python projects
+        """
+        return ()
+
+    def get_context_menus(self):
+        """
+        Get a special menu for new Python projects
+        """
+        return ()
+
     def on_wizard_finish(self, wizard):
+        """
+        Create the ninja_porject (.nja file), create the main __init__.py
+        and open the project
+        """
         ids = wizard.pageIds()
         page = wizard.page(ids[1])
         path = unicode(page.txtPlace.text())
@@ -118,14 +149,59 @@ class WizardNewProject(QWizard, plugin_interfaces.IProjectTypeHandler):
         self._load_project(path)
 
     def _load_project(self, path):
-        """Open Project based on path into Explorer"""
+        """
+        Open Project based on path into Explorer
+        """
         self.__explorer.open_project_folder(path)
 
-    def _load_project_with_extensions(self, path, extensions):
-        """Open Project based on path into Explorer with extensions"""
-#        self._main._properties._treeProjects.load_project(
-#            self._main.open_project_with_extensions(path), path)
-        pass
+
+###############################################################################
+# Import project from existing sources
+###############################################################################
+
+
+class ImportFromSourcesProjectHandler(plugin_interfaces.IProjectTypeHandler):
+    """
+    Handler for Import from existing sources project
+    """
+    def __init__(self, explorer):
+        self.__explorer = explorer
+
+    def get_pages(self):
+        """
+        Get extra pages for Import from sources projects
+        """
+        return ()
+
+    def get_context_menus(self):
+        """
+        Get a special menu for Import from sources projects
+        """
+        return ()
+
+    def on_wizard_finish(self, wizard):
+        """
+        Create the ninja_porject (.nja file) and open the project
+        """
+        ids = wizard.pageIds()
+        page = wizard.page(ids[1])
+        path = unicode(page.txtPlace.text())
+        if not path:
+            QMessageBox.critical(self, self.tr("Incorrect Location"),
+                self.tr("The project couldn\'t be create"))
+            return
+        project = {}
+        name = unicode(page.txtName.text())
+        project['name'] = name
+        project['description'] = unicode(page.txtDescription.toPlainText())
+        project['license'] = unicode(page.cboLicense.currentText())
+        project['venv'] = unicode(page.vtxtPlace.text())
+        json_manager.create_ninja_project(path, name, project)
+        self._load_project(path)
+
+    def _load_project(self, path):
+        """Open Project based on path into Explorer"""
+        self.__explorer.open_project_folder(path)
 
 
 ###############################################################################
