@@ -59,6 +59,13 @@ TOOLBAR_ITEMS = [
     "run-project", "run-file", "stop", "separator",
     ]
 
+TOOLBAR_ITEMS_DEFAULT = [
+    "new-file", "new-project", "open-file", "open-project", "save-file",
+    "separator", "splith", "splitv", "follow-mode", "separator",
+    "cut", "copy", "paste", "separator",
+    "run-project", "run-file", "stop", "separator",
+    ]
+
 
 ###############################################################################
 # EDITOR

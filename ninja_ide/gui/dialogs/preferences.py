@@ -460,10 +460,12 @@ class InterfaceTab(QWidget):
         self._btnItemAdd.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self._btnItemRemove = QPushButton(
             QIcon(resources.IMAGES['delete']), '')
+        self._btnDefaultItems = QPushButton(self.tr("Default Items"))
         self._btnItemRemove.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         hbox_select_items.addWidget(self._comboToolbarItems)
         hbox_select_items.addWidget(self._btnItemAdd)
         hbox_select_items.addWidget(self._btnItemRemove)
+        hbox_select_items.addWidget(self._btnDefaultItems)
         vbox_toolbar.addLayout(hbox_select_items)
         self._toolbar_items = QToolBar()
         self._toolbar_items.setToolButtonStyle(Qt.ToolButtonIconOnly)
@@ -515,6 +517,8 @@ class InterfaceTab(QWidget):
             self.toolbar_item_added)
         self.connect(self._btnItemRemove, SIGNAL("clicked()"),
             self.toolbar_item_removed)
+        self.connect(self._btnDefaultItems, SIGNAL("clicked()"),
+            self.toolbar_items_default)
 
     def toolbar_item_added(self):
         data = self._comboToolbarItems.itemData(
@@ -542,6 +546,10 @@ class InterfaceTab(QWidget):
             self.toolbar_settings.pop(self.toolbar_settings.index(data))
             self.toolbar_settings.reverse()
             self._load_toolbar()
+
+    def toolbar_items_default(self):
+        self.toolbar_settings = settings.TOOLBAR_ITEMS_DEFAULT
+        self._load_toolbar()
 
     def _load_combo_data(self, combo):
         self.toolbar_items = {
