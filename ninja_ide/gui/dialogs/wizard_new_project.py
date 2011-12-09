@@ -95,6 +95,12 @@ class WizardNewProject(QWizard):
                 .on_wizard_finish(self)
         super(WizardNewProject, self).done(result)
 
+    def _load_project(self, path):
+        """
+        Open Project based on path into Explorer
+        """
+        self.__explorer.open_project_folder(path)
+
     def _load_project_with_extensions(self, path, extensions):
         """Open Project based on path into Explorer with extensions"""
 #        self._main._properties._treeProjects.load_project(
@@ -146,13 +152,7 @@ class PythonProjectHandler(plugin_interfaces.IProjectTypeHandler):
         project['venv'] = unicode(page.vtxtPlace.text())
         json_manager.create_ninja_project(path, name, project)
         file_manager.create_init_file(path)
-        self._load_project(path)
-
-    def _load_project(self, path):
-        """
-        Open Project based on path into Explorer
-        """
-        self.__explorer.open_project_folder(path)
+        wizard._load_project(path)
 
 
 ###############################################################################
@@ -197,11 +197,7 @@ class ImportFromSourcesProjectHandler(plugin_interfaces.IProjectTypeHandler):
         project['license'] = unicode(page.cboLicense.currentText())
         project['venv'] = unicode(page.vtxtPlace.text())
         json_manager.create_ninja_project(path, name, project)
-        self._load_project(path)
-
-    def _load_project(self, path):
-        """Open Project based on path into Explorer"""
-        self.__explorer.open_project_folder(path)
+        wizard._load_project(path)
 
 
 ###############################################################################
