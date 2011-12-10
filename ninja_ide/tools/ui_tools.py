@@ -211,7 +211,7 @@ class FaderWidget(QWidget):
 
 class AddToProject(QDialog):
 
-    def __init__(self, pathProject, parent=None):
+    def __init__(self, pathProjects, parent=None):
         QDialog.__init__(self, parent)
         self.setWindowTitle(self.tr("Add File to Project"))
         self.pathSelected = ''
@@ -230,8 +230,9 @@ class AddToProject(QDialog):
         vbox.addLayout(hbox)
         #load folders
         self._root = None
-        folderStructure = file_manager.open_project(pathProject)
-        self._load_project(folderStructure, pathProject)
+        for pathProject in pathProjects:
+            folderStructure = file_manager.open_project(pathProject)
+            self._load_project(folderStructure, pathProject)
 
         self.connect(btnCancel, SIGNAL("clicked()"), self.close)
         self.connect(btnAdd, SIGNAL("clicked()"), self._select_path)

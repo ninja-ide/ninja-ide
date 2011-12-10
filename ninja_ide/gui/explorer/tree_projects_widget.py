@@ -414,12 +414,16 @@ class TreeProjectsWidget(QTreeWidget):
                         ex.filename))
 
     def _copy_file(self):
+        #get the selected QTreeWidgetItem
         item = self.currentItem()
         if item.parent() is None:
             pathForFile = item.path
         else:
             pathForFile = os.path.join(item.path, unicode(item.text(0)))
-        pathProject = self.get_selected_project_path()
+        pathProject = []
+        for project in self.get_open_projects():
+            #Note the [0:-1] to eliminate the last "/" of the path
+            pathProject.append(project.get_full_path()[0:-1])
         addToProject = ui_tools.AddToProject(pathProject, self)
         addToProject.setWindowTitle(self.tr("Copy File to"))
         addToProject.exec_()
