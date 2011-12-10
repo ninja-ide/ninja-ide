@@ -230,9 +230,15 @@ class AddToProject(QDialog):
         vbox.addLayout(hbox)
         #load folders
         self._root = None
-        for pathProject in pathProjects:
-            folderStructure = file_manager.open_project(pathProject)
-            self._load_project(folderStructure, pathProject)
+        if isinstance(pathProjects, list):
+            #pathProject is a list from TreeProjectsWidget._copy_file()
+            for pathProject in pathProjects:
+                folderStructure = file_manager.open_project(pathProject)
+                self._load_project(folderStructure, pathProject)
+        else:
+            #pathProject is a string from anywhere
+            folderStructure = file_manager.open_project(pathProjects)
+            self._load_project(folderStructure, pathProjects)
 
         self.connect(btnCancel, SIGNAL("clicked()"), self.close)
         self.connect(btnAdd, SIGNAL("clicked()"), self._select_path)
