@@ -461,6 +461,8 @@ class InterfaceTab(QWidget):
         self._btnItemRemove = QPushButton(
             QIcon(resources.IMAGES['delete']), '')
         self._btnDefaultItems = QPushButton(self.tr("Default Items"))
+        self._btnDefaultItems.setSizePolicy(QSizePolicy.Fixed,
+            QSizePolicy.Fixed)
         self._btnItemRemove.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         hbox_select_items.addWidget(self._comboToolbarItems)
         hbox_select_items.addWidget(self._btnItemAdd)
