@@ -299,6 +299,7 @@ class ProfilesLoader(QDialog):
         vbox = QVBoxLayout(self)
         self.profileList = QListWidget()
         self.profileList.addItems([key for key in profiles])
+        self.profileList.setCurrentRow(0)
         self.contentList = QListWidget()
         self.btnDelete = QPushButton(self.tr("Delete Profile"))
         self.btnDelete.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)

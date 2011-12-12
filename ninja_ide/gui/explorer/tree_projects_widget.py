@@ -251,7 +251,7 @@ class TreeProjectsWidget(QTreeWidget):
                 path, parentItem.extensions)
         else:
             folderStructure = file_manager.open_project(path)
-        if folderStructure[path][1] is not None:
+        if folderStructure.get(path, [None, None])[1] is not None:
             folderStructure[path][1].sort()
         else:
             return
@@ -648,8 +648,9 @@ class ProjectTree(QTreeWidgetItem):
         self.setForeground(0, QBrush(Qt.darkGray))
         project = json_manager.read_ninja_project(path)
         self.name = project.get('name', '')
-        if self.name != '':
-            self.setText(0, self.name)
+        if self.name == '':
+            self.name = _name
+        self.setText(0, self.name)
         self.projectType = project.get('project-type', '')
         self.description = project.get('description', '')
         self.url = project.get('url', '')

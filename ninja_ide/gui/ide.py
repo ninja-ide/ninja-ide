@@ -258,6 +258,14 @@ class __IDE(QMainWindow):
         self.explorer.open_session_projects(projects, notIDEStart=False)
         self.status.explore_code()
 
+    def open_file(self, filename):
+        if filename:
+            self.mainContainer.open_file(unicode(filename))
+
+    def open_project(self, project):
+        if project:
+            self.actions.open_project(project)
+
     def __get_profile(self):
         return self.profile
 
@@ -373,10 +381,10 @@ class __IDE(QMainWindow):
 ###############################################################################
 
 
-def start(filenames=None, projects_path=None, extra_plugins=None):
+def start(listener, filenames=None, projects_path=None, extra_plugins=None):
     app = QApplication(sys.argv)
     QCoreApplication.setOrganizationName('NINJA-IDE')
-    QCoreApplication.setOrganizationDomain('ninja-ide.org')
+    QCoreApplication.setOrganizationDomain('NINJA-IDE')
     QCoreApplication.setApplicationName('NINJA-IDE')
     app.setWindowIcon(QIcon(resources.IMAGES['icon']))
 
@@ -423,6 +431,11 @@ def start(filenames=None, projects_path=None, extra_plugins=None):
 
     #Showing GUI
     ide.show()
+    #Connect listener signals
+    ide.connect(listener, SIGNAL("fileOpenRequested(QString)"),
+        ide.open_file)
+    ide.connect(listener, SIGNAL("projectOpenRequested(QString)"),
+        ide.open_project)
 
     #Loading Session Files
     splash.showMessage("Loading Files and Projects",
