@@ -389,12 +389,14 @@ class TreeProjectsWidget(QTreeWidget):
         else:
             pathForFile = os.path.join(item.path, unicode(item.text(0)))
         result = QInputDialog.getText(self, self.tr("Rename File"),
-            self.tr("Enter New File Name:"))
+            self.tr("Enter New File Name:"), text=item.text(0))
         fileName = unicode(result[0])
 
         if result[1] and fileName.strip() != '':
             fileName = os.path.join(
                 file_manager.get_folder(unicode(pathForFile)), fileName)
+            if pathForFile == fileName:
+                return
             try:
                 fileName = file_manager.rename_file(pathForFile, fileName)
                 name = file_manager.get_basename(fileName)
