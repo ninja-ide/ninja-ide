@@ -389,12 +389,14 @@ class TreeProjectsWidget(QTreeWidget):
         else:
             pathForFile = os.path.join(item.path, unicode(item.text(0)))
         result = QInputDialog.getText(self, self.tr("Rename File"),
-            self.tr("Enter New File Name:"))
+            self.tr("Enter New File Name:"), text=item.text(0))
         fileName = unicode(result[0])
 
         if result[1] and fileName.strip() != '':
             fileName = os.path.join(
                 file_manager.get_folder(unicode(pathForFile)), fileName)
+            if pathForFile == fileName:
+                return
             try:
                 fileName = file_manager.rename_file(pathForFile, fileName)
                 name = file_manager.get_basename(fileName)
@@ -414,12 +416,16 @@ class TreeProjectsWidget(QTreeWidget):
                         ex.filename))
 
     def _copy_file(self):
+        #get the selected QTreeWidgetItem
         item = self.currentItem()
         if item.parent() is None:
             pathForFile = item.path
         else:
             pathForFile = os.path.join(item.path, unicode(item.text(0)))
-        pathProject = self.get_selected_project_path()
+        pathProject = []
+        for project in self.get_open_projects():
+            #Note the [0:-1] to eliminate the last "/" of the path
+            pathProject.append(project.get_full_path()[0:-1])
         addToProject = ui_tools.AddToProject(pathProject, self)
         addToProject.setWindowTitle(self.tr("Copy File to"))
         addToProject.exec_()

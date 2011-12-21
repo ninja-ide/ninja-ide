@@ -94,7 +94,6 @@ def replace_tabs_with_spaces(editorWidget):
 
 def move_up(editorWidget):
     cursor = editorWidget.textCursor()
-    cursor.beginEditBlock()
     block_actual = cursor.block()
     if block_actual.blockNumber() > 0:
         #line where indent_more should start and end
@@ -113,6 +112,8 @@ def move_up(editorWidget):
                 end - start)
             cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
             text_to_move = cursor.selectedText()
+            #begin Undo feature
+            cursor.beginEditBlock()
             #Remove
             cursor.removeSelectedText()
             cursor.deleteChar()
@@ -121,6 +122,8 @@ def move_up(editorWidget):
             cursor.movePosition(QTextCursor.StartOfLine,
                 QTextCursor.MoveAnchor)
             cursor.insertText(text_to_move + '\n')
+            #end Undo feature
+            cursor.endEditBlock()
             #Restore the user selection
             startPosition = editorWidget.document().findBlockByLineNumber(
                 (start - 1)).position()
@@ -136,19 +139,21 @@ def move_up(editorWidget):
             cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
             cursor.movePosition(QTextCursor.StartOfLine,
                 QTextCursor.KeepAnchor)
+            #begin Undo feature
+            cursor.beginEditBlock()
             cursor.insertText(block_previous.text())
             cursor.movePosition(QTextCursor.Up, QTextCursor.MoveAnchor)
             cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
             cursor.movePosition(QTextCursor.StartOfLine,
                 QTextCursor.KeepAnchor)
             cursor.insertText(tempLine)
+            #end Undo feature
+            cursor.endEditBlock()
             editorWidget.moveCursor(QTextCursor.Up, QTextCursor.MoveAnchor)
-    cursor.endEditBlock()
 
 
 def move_down(editorWidget):
     cursor = editorWidget.textCursor()
-    cursor.beginEditBlock()
     block_actual = cursor.block()
     if block_actual.blockNumber() < (editorWidget.blockCount() - 1):
         start = editorWidget.document().findBlock(
@@ -166,12 +171,16 @@ def move_down(editorWidget):
                 end - start)
             cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
             text_to_move = cursor.selectedText()
+            #begin Undo feature
+            cursor.beginEditBlock()
             #Remove
             cursor.removeSelectedText()
             cursor.deleteChar()
             #Insert text and breakline
             cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
             cursor.insertText('\n' + text_to_move)
+            #end Undo feature
+            cursor.endEditBlock()
             #Restore the user selection
             startPosition = editorWidget.document().findBlockByLineNumber(
                 (start + 1)).position()
@@ -187,14 +196,17 @@ def move_down(editorWidget):
             cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
             cursor.movePosition(QTextCursor.StartOfLine,
                 QTextCursor.KeepAnchor)
+            #begin Undo feature
+            cursor.beginEditBlock()
             cursor.insertText(block_next.text())
             cursor.movePosition(QTextCursor.Down, QTextCursor.MoveAnchor)
             cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
             cursor.movePosition(QTextCursor.StartOfLine,
                 QTextCursor.KeepAnchor)
             cursor.insertText(tempLine)
+            #end Undo feature
+            cursor.endEditBlock()
             editorWidget.moveCursor(QTextCursor.Down, QTextCursor.MoveAnchor)
-    cursor.endEditBlock()
 
 
 def remove_line(editorWidget):
