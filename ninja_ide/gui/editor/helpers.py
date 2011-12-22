@@ -212,10 +212,42 @@ def move_down(editorWidget):
 def remove_line(editorWidget):
     cursor = editorWidget.textCursor()
     cursor.beginEditBlock()
+    print "anchor(espacios): %s " % cursor.anchor()
+    print "position(espacios): %s " % cursor.position()
+    print "block number %s" % cursor.blockNumber()
+    block = cursor.block()
+
+    print "contenido: %s" % block.text()
+
     if cursor.hasSelection():
-        cursor.select(QTextCursor.LineUnderCursor)
-        cursor.removeSelectedText()
-        cursor.deleteChar()
+        block_start = editorWidget.document().findBlock(
+            cursor.selectionStart()).firstLineNumber()
+        block_end = editorWidget.document().findBlock(
+            cursor.selectionEnd()).firstLineNumber()
+        print ""
+        print "start(block):%s end(block):%s" % (block_start, block_end)
+        if block_start == block_end:  # same block selection
+            cursor.movePosition(QTextCursor.StartOfLine)
+            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
+            cursor.removeSelectedText()
+            cursor.deleteChar()
+        else:  # multiple blocks selection
+            position = cursor.position()
+            anchor = cursor.anchor()
+            if anchor > position:  # selection right to lef
+                cursor.movePosition(QTextCursor.StartOfLine)
+                cursor.movePosition(QTextCursor.Down, QTextCursor.KeepAnchor,
+                block_end - block_start)
+                cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
+                cursor.removeSelectedText()
+                cursor.deleteChar()
+            else:  # selection left to right
+                cursor.movePosition(QTextCursor.EndOfLine)
+                cursor.movePosition(QTextCursor.Up, QTextCursor.KeepAnchor,
+                block_end - block_start)
+                cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
+                cursor.removeSelectedText()
+                cursor.deleteChar()
     else:
         cursor.select(QTextCursor.LineUnderCursor)
         cursor.removeSelectedText()
