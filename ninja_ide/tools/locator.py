@@ -218,8 +218,11 @@ class LocateThread(QThread):
     def get_this_file_locations(self, path):
         global mapping_locations
         thisFileLocations = mapping_locations.get(path, ())
-        if thisFileLocations:
-            thisFileLocations = thisFileLocations[1:]
+        if not thisFileLocations:
+            file_name = file_manager.get_basename(path)
+            self._grep_file_locate(path, file_name)
+            thisFileLocations = mapping_locations.get(path, ())
+        thisFileLocations = thisFileLocations[1:]
         return thisFileLocations
 
     def convert_map_to_array(self):
@@ -294,6 +297,35 @@ class LocateThread(QThread):
                         symbols['functions'][func] - 1))
         if lines:
             mapping_locations[unicode(file_path)] += lines
+
+    def get_symbols_for_class(self, file_path, clazzName):
+        lines = []
+        with open(file_path) as f:
+            content = f.read()
+            ext = file_manager.get_file_extension(file_path)
+            #obtain a symbols handler for this file extension
+            symbols_handler = settings.get_symbols_handler(ext)
+            symbols = symbols_handler.obtain_symbols(content)
+            if "classes" in symbols:
+                for claz in symbols['classes']:
+                    if claz != clazzName:
+                        continue
+                    clazz = symbols['classes'][claz]
+                    #type - class name - file_path - lineNumber
+                    lines.append(('<', claz, unicode(file_path),
+                        clazz[0] - 1))
+                    if 'attributes' in clazz[1]:
+                        for attr in clazz[1]['attributes']:
+                            #type - attribute name - file_path - lineNumber
+                            lines.append(('-', attr, unicode(file_path),
+                                clazz[1]['attributes'][attr] - 1))
+                    if 'functions' in clazz[1]:
+                        for func in clazz[1]['functions']:
+                            #type - function name - file_path - lineNumber
+                            lines.append(('>', func, unicode(file_path),
+                                clazz[1]['functions'][func] - 1))
+                    return lines
+            return []
 
     def cancel(self):
         self._cancel = True
@@ -372,10 +404,12 @@ class LocateCompleter(QLineEdit):
         self.__prefix = ''
         self.frame = PopupCompleter()
         self.filterPrefix = re.compile(r'^(@|<|>|-|!|\.)(\s)*')
+        self.advancePrefix = re.compile(r'(@|<|>|-|!)')
         self.tempLocations = []
         self.setMinimumWidth(700)
         self.items_in_page = 0
         self.page_items_step = 10
+        self._filterData = [None, None, None, None]
 
         self.connect(self, SIGNAL("textChanged(QString)"),
             self.set_prefix)
@@ -405,8 +439,22 @@ class LocateCompleter(QLineEdit):
 
     def filter(self):
         self.items_in_page = 0
-        self.tempLocations = []
         #Clean the objects from the listWidget
+        inCurrentFile = False
+        filterOptions = self.advancePrefix.split(
+            unicode(self.__prefix).lstrip())
+        if filterOptions[0] == '':
+            del filterOptions[0]
+
+        if len(filterOptions) > 2:
+            if '@' in (filterOptions[1], filterOptions[2]):
+                self._advanced_filter_by_file(filterOptions)
+            else:
+                self._advanced_filter(filterOptions)
+            return self._create_list_widget_items(self.tempLocations)
+        # Clear frame after advance filter because advance filter
+        # ask for the first element in the popup
+        self.tempLocations = []
         self.frame.clear()
 
         #if the user type any of the prefix
@@ -414,6 +462,7 @@ class LocateCompleter(QLineEdit):
             filterOption = self.__prefix[:1]
             #if the prefix is "." it means only the metadata of current file
             if filterOption == '.':
+                inCurrentFile = True
                 main = main_container.MainContainer()
                 editorWidget = main.get_actual_editor()
                 if editorWidget:
@@ -423,24 +472,69 @@ class LocateCompleter(QLineEdit):
                     self.__prefix = unicode(self.__prefix)[1:].lstrip()
                     self.tempLocations = [x for x in self.tempLocations \
                         if x[1].lower().find(self.__prefix) > -1]
-                    return self._create_list_widget_items(self.tempLocations)
-
-            #Is not "." filter by the other options
-            self.tempLocations = [
-                x for x in self._parent._thread.get_locations()
-                if x[0] == filterOption]
-            #Obtain the user input without the filter prefix
-            self.__prefix = unicode(self.__prefix)[1:].lstrip()
+            else:
+                #Is not "." filter by the other options
+                self.tempLocations = [
+                    x for x in self._parent._thread.get_locations()
+                    if x[0] == filterOption]
+                #Obtain the user input without the filter prefix
+                self.__prefix = unicode(self.__prefix)[1:].lstrip()
         else:
             self.tempLocations = self._parent._thread.get_locations()
 
-        if self.__prefix:
-            #if prefix (user search now) is not empty, filter words that
+        if self.__prefix and not inCurrentFile:
+            #if prefix (user search now) is not empty, filter words that1
             #contain the user input
             self.tempLocations = [x for x in self.tempLocations \
                 if x[1].lower().find(self.__prefix) > -1]
 
         return self._create_list_widget_items(self.tempLocations)
+
+    def _advanced_filter(self, filterOptions):
+        if filterOptions[0] == '.':
+            filterOptions[0] = '@'
+            main = main_container.MainContainer()
+            editorWidget = main.get_actual_editor()
+            if editorWidget:
+                filterOptions.insert(1, editorWidget.ID)
+        elif filterOptions[0] in ('<', '@'):
+            currentItem = self.frame.listWidget.currentItem()
+            if type(currentItem) is LocateItem:
+                if currentItem._data[0] in ('@', '<'):
+                    self._filterData = currentItem._data
+            if filterOptions[0] == '<':
+                filterOptions.insert(0, '@')
+                filterOptions.insert(1, self._filterData[2])
+            else:
+                filterOptions[1] = self._filterData[2]
+        global mapping_locations
+        filePath = filterOptions[1]
+
+        moveIndex = 0
+        if len(filterOptions) > 4 and filterOptions[2] == '<':
+            moveIndex = 2
+            if self._filterData[0] == '<':
+                self._classFilter = self._filterData[1]
+            symbols = self._parent._thread.get_symbols_for_class(filePath,
+                self._classFilter)
+            self.tempLocations = [x for x in symbols \
+                if x[0] == filterOptions[4]]
+        else:
+            self.tempLocations = [
+                x for x in mapping_locations.get(filePath, []) \
+                if x[0] == filterOptions[2]]
+        if filterOptions[3 + moveIndex]:
+            self.tempLocations = [x for x in self.tempLocations \
+                if x[1].lower().find(filterOptions[3 + moveIndex]) > -1]
+
+    def _advanced_filter_by_file(self, filterOptions):
+        if filterOptions[1] == '@':
+            index = 2
+        else:
+            index = 3
+        self.tempLocations = [x for x in self.tempLocations \
+            if file_manager.get_basename(x[2]).lower().find(
+                filterOptions[index]) > -1]
 
     def _refresh_filter(self):
         self.frame.refresh(self.filter())

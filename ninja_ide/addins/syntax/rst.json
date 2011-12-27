@@ -1,0 +1,30 @@
+{
+  "extension": [
+    "rst"
+  ],
+  "string": [
+    "\""
+  ],
+  "keywords": [
+  ],
+  "regex": [
+    ["\\.\\. [a-zA-Z0-9_-| ]*::", "definition"],
+    ["::", "definition"],
+    [":[a-zA-Z0-9_- ]+:", "properObject"],
+    ["\\[.*\\]_", "keyword"],
+    ["=+", "keyword"],
+    ["\\*+", "keyword"],
+    ["\\-+", "keyword"],
+    ["\\|#.", "keyword"],
+    ["`.*`_" , "keyword"],
+    [".*__" , "keyword"],
+    ["\\*\\*.*\\*\\*" , "keyword", "bold"],
+    ["\\*.*\\*" , "keyword"],
+    ["``.*``" , "keyword", "italic"],
+    ["^(https?|mailto|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]", "keyword"],
+    ["\\|+", "keyword"],
+    ["_`.*`", "keyword"],
+    ["\\|.*\\|", "keyword"],
+    [".+_", "keyword"]
+  ]
+}
