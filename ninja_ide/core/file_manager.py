@@ -68,12 +68,13 @@ def create_init_file_complete(folderName):
     fi.close()
 
 
-def create_folder(folderName):
+def create_folder(folderName, add_init_file=True):
     """Create a new Folder inside the one received as a param."""
     if os.path.exists(folderName):
         raise NinjaIOException("The folder already exist")
     os.mkdir(folderName)
-    create_init_file(folderName)
+    if add_init_file:
+        create_init_file(folderName)
 
 
 def create_tree_folders(folderName):
