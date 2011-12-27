@@ -210,7 +210,6 @@ def move_down(editorWidget):
 
 
 def remove_line(editorWidget):
-
     cursor = editorWidget.textCursor()
     cursor.beginEditBlock()
 
@@ -235,7 +234,8 @@ def remove_line(editorWidget):
 
             cursor.setPosition(selection_start)
             cursor.movePosition(QTextCursor.StartOfLine)
-            cursor.movePosition(QTextCursor.Down, QTextCursor.KeepAnchor, block_end - block_start)
+            cursor.movePosition(QTextCursor.Down, QTextCursor.KeepAnchor,
+                block_end - block_start)
             cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
 
             cursor.removeSelectedText()
