@@ -218,8 +218,11 @@ class LocateThread(QThread):
     def get_this_file_locations(self, path):
         global mapping_locations
         thisFileLocations = mapping_locations.get(path, ())
-        if thisFileLocations:
-            thisFileLocations = thisFileLocations[1:]
+        if not thisFileLocations:
+            file_name = file_manager.get_basename(path)
+            self._grep_file_locate(path, file_name)
+            thisFileLocations = mapping_locations.get(path, ())
+        thisFileLocations = thisFileLocations[1:]
         return thisFileLocations
 
     def convert_map_to_array(self):
