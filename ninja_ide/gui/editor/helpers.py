@@ -212,12 +212,38 @@ def move_down(editorWidget):
 def remove_line(editorWidget):
     cursor = editorWidget.textCursor()
     cursor.beginEditBlock()
+
     if cursor.hasSelection():
+        block_start = editorWidget.document().findBlock(
+            cursor.selectionStart()).firstLineNumber()
+        block_end = editorWidget.document().findBlock(
+            cursor.selectionEnd()).firstLineNumber()
+
+        if block_start == block_end:  # same block selection
+            cursor.movePosition(QTextCursor.StartOfLine)
+            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
+            cursor.removeSelectedText()
+            cursor.deleteChar()
+        else:  # multiple blocks selection
+            selection_start = cursor.selectionStart()
+            selection_end = cursor.selectionEnd()
+
+            cursor.setPosition(selection_end)
+            if cursor.atBlockStart():
+                block_end = block_end - 1
+
+            cursor.setPosition(selection_start)
+            cursor.movePosition(QTextCursor.StartOfLine)
+            cursor.movePosition(QTextCursor.Down, QTextCursor.KeepAnchor,
+                block_end - block_start)
+            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
+
+            cursor.removeSelectedText()
+            cursor.deleteChar()
+    else:
+        cursor.select(QTextCursor.LineUnderCursor)
         cursor.removeSelectedText()
-    cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
-    cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
-    cursor.removeSelectedText()
-    cursor.deleteChar()
+        cursor.deleteChar()
     cursor.endEditBlock()
 
 
