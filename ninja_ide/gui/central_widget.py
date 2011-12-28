@@ -80,10 +80,13 @@ class __CentralWidget(QWidget):
         self._splitterMain.insertWidget(1, container)
 
     def showEvent(self, event):
-        #Rearrange widgets on Window
-        self._splitterArea.insertWidget(0, self._splitterMain)
         #Show Event
         QWidget.showEvent(self, event)
+        #Avoid recalculate the panel sizes if they are already loaded
+        if self._splitterArea.count() == 2:
+            return
+        #Rearrange widgets on Window
+        self._splitterArea.insertWidget(0, self._splitterMain)
         qsettings = QSettings()
         #Lists of sizes as list of QVariant- heightList = [QVariant, QVariant]
         heightList = qsettings.value("window/central/mainSize",

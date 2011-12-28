@@ -263,9 +263,6 @@ class TreeProjectsWidget(QTreeWidget):
         item = self.currentItem()
         index = self.indexOfTopLevelItem(item)
         pathKey = item.path
-        if self.__enableCloseNotification:
-            self.emit(SIGNAL("closeProject(QString)"), pathKey)
-        self.emit(SIGNAL("closeFilesFromProjectClosed(QString)"), pathKey)
         for directory in self._fileWatcher.directories():
             directory = unicode(directory)
             if file_manager.belongs_to_folder(pathKey, directory):
@@ -273,6 +270,9 @@ class TreeProjectsWidget(QTreeWidget):
         self._fileWatcher.removePath(pathKey)
         self.takeTopLevelItem(index)
         self._projects.pop(pathKey)
+        if self.__enableCloseNotification:
+            self.emit(SIGNAL("closeProject(QString)"), pathKey)
+        self.emit(SIGNAL("closeFilesFromProjectClosed(QString)"), pathKey)
         item = self.currentItem()
         if item:
             self.set_default_project(item)

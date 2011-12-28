@@ -357,12 +357,6 @@ def comment(editorWidget):
 
 def check_for_assistance_completion(editorWidget, line):
     #This will be possible when code completion is working
-#    global patIsLocalFunction
-#    localFunction = patIsLocalFunction.match(line)
-#    if localFunction:
-#        index = line.find('self.')
-#        function = line[index + 5:]
-#        print function
     global patClasss
     if patClass.match(line):
         editorWidget.textCursor().insertText('\n')

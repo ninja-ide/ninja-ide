@@ -290,6 +290,7 @@ class ProfilesLoader(QDialog):
     def __init__(self, load_func, create_func, save_func,
     profiles, parent=None):
         QDialog.__init__(self, parent, Qt.Dialog)
+        self.setWindowTitle(self.tr("Profile Manager"))
         self.setMinimumWidth(400)
         self._profiles = profiles
         self.load_function = load_func
@@ -297,6 +298,12 @@ class ProfilesLoader(QDialog):
         self.save_function = save_func
         self.ide = parent
         vbox = QVBoxLayout(self)
+        vbox.addWidget(QLabel(self.tr("Save your opened files and projects "
+                        "into a profile and change really quick\n"
+                        "between projects and files sessions.\n"
+                        "This allows you to save your working environment, "
+                        "keep working in another\nproject and then go back "
+                        "exactly where you left.")))
         self.profileList = QListWidget()
         self.profileList.addItems([key for key in profiles])
         self.profileList.setCurrentRow(0)
