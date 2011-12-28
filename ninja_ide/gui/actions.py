@@ -313,7 +313,7 @@ class __Actions(QObject):
         self.navigate_code_history(val, op)
 
     def _add_file_to_project(self, path):
-        pathProject = self.ide.explorer.get_actual_project()
+        pathProject = [self.ide.explorer.get_actual_project()]
         addToProject = ui_tools.AddToProject(pathProject, self.ide)
         addToProject.exec_()
         if not addToProject.pathSelected:
