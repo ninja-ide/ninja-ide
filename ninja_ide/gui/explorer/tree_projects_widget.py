@@ -422,18 +422,16 @@ class TreeProjectsWidget(QTreeWidget):
             pathForFile = item.path
         else:
             pathForFile = os.path.join(item.path, unicode(item.text(0)))
-        pathProject = []
-        for project in self.get_open_projects():
-            #Note the [0:-1] to eliminate the last "/" of the path
-            pathProject.append(project.get_full_path()[0:-1])
-        addToProject = ui_tools.AddToProject(pathProject, self)
+        pathProjects = [p.path for p in self.get_open_projects()]
+        addToProject = ui_tools.AddToProject(pathProjects, self)
         addToProject.setWindowTitle(self.tr("Copy File to"))
         addToProject.exec_()
         if not addToProject.pathSelected:
             return
-        name = unicode(QInputDialog.getText(None,
+        name = unicode(QInputDialog.getText(self,
             self.tr("Copy File"),
-            self.tr("File Name:"))[0])
+            self.tr("File Name:"),
+            text=item.text(0))[0])
         if not name:
             QMessageBox.information(self, self.tr("Invalid Name"),
                 self.tr("The file name is empty, please enter a name"))
@@ -455,8 +453,8 @@ class TreeProjectsWidget(QTreeWidget):
             pathForFile = item.path
         else:
             pathForFile = os.path.join(item.path, unicode(item.text(0)))
-        pathProject = self.get_selected_project_path()
-        addToProject = ui_tools.AddToProject(pathProject, self)
+        pathProjects = [p.path for p in self.get_open_projects()]
+        addToProject = ui_tools.AddToProject(pathProjects, self)
         addToProject.setWindowTitle(self.tr("Copy File to"))
         addToProject.exec_()
         if not addToProject.pathSelected:
