@@ -267,6 +267,8 @@ def create_path(*args):
 
 def belongs_to_folder(path, fileName):
     """Determine if fileName is located under path structure."""
+    if not path.endswith(os.path.sep):
+        path += os.path.sep
     return fileName.startswith(path)
 
 

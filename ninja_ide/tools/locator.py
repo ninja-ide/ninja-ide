@@ -113,6 +113,7 @@ class LocateThread(QThread):
         if not self.isRunning():
             global mapping_locations
             mapping_locations = {}
+            self.execute = self.locate_code
             self.start()
 
     def find_file_code_location(self, path):

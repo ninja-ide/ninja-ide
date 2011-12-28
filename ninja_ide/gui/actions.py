@@ -405,6 +405,7 @@ class __Actions(QObject):
         self.ide.status.explore_code()
 
     def close_files_from_project(self, project):
+        project = unicode(project)
         if project:
             tabMain = self.ide.mainContainer._tabMain
             for tabIndex in reversed(xrange(tabMain.count())):

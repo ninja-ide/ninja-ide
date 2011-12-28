@@ -81,10 +81,6 @@ class __ExplorerContainer(QTabWidget):
         if settings.SHOW_ERRORS_LIST:
             self.add_tab_errors()
 
-        #Now we see if there is any tab, if there is not, we hide the widget
-        if self.count() == 0:
-            self.hide()
-
         key = Qt.Key_1
         for i in xrange(10):
             if sys.platform == "darwin":
