@@ -8,6 +8,7 @@ from PyQt4.QtGui import QInputDialog
 
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
+from ninja_ide.tools import introspection
 
 
 patIndent = re.compile('^\s+')
@@ -359,6 +360,16 @@ def check_for_assistance_completion(editorWidget, line):
     #This will be possible when code completion is working
     global patClasss
     if patClass.match(line):
+        source = unicode(editorWidget.toPlainText())
+        source = source.encode(editorWidget.encoding)
+        symbols = introspection.obtain_symbols(source)
+        clazzName = [name for name in
+            re.split("(\\s)*class(\\s)+|:|\(", line) \
+            if name is not None and name.strip()][0]
+        if 'classes' in symbols and clazzName in symbols['classes']:
+            clazz = symbols['classes'][clazzName]
+            if '__init__' in clazz[1]['functions']:
+                return
         editorWidget.textCursor().insertText('\n')
         spaces = get_leading_spaces(line)
         indent = ' ' * 4
@@ -372,12 +383,8 @@ def check_for_assistance_completion(editorWidget, line):
             if len(classes) > 1:
                 parents += classes[1].split(',')
             if len(parents) > 0 and 'object):' not in parents:
-                parents[-1] = parents[-1][:-2]
-                for p in parents:
-                    parent = p.rstrip().lstrip()
-                    if parent != '':
-                        editorWidget.textCursor().insertText(
-                            indent + parent + '.__init__(self)\n')
+                editorWidget.textCursor().insertText(
+                    indent + "super({0}, self).__init__()\n".format(clazzName))
                 editorWidget.textCursor().insertText(indent)
             else:
                 editorWidget.textCursor().insertText(indent)
