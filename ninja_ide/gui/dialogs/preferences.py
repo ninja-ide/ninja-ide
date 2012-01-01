@@ -649,14 +649,7 @@ class InterfaceTab(QWidget):
 
     def save(self):
         settings.TOOLBAR_ITEMS = self.toolbar_settings
-        lang = self._comboLang.currentText()
-        if lang not in self._languages:
-            #TODO
-#            self.parent().overlay.show()
-#            core.download_lang(self.thread.langs[str(lang)])
-            pass
-        lang = unicode(lang)
-        self._parent.overlay.hide()
+        lang = unicode(self._comboLang.currentText())
         qsettings = QSettings()
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('interface')
