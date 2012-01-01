@@ -49,7 +49,9 @@ PLUGINS = os.path.join(HOME_NINJA_PATH, "addins", "plugins")
 PLUGINS_DESCRIPTOR = os.path.join(HOME_NINJA_PATH, "addins",
                                     "plugins", "descriptor.json")
 
-LANGS = os.path.join(HOME_NINJA_PATH, "addins", "languages")
+LANGS = os.path.join(PRJ_PATH, "addins", "lang")
+
+LANGS_DOWNLOAD = os.path.join(HOME_NINJA_PATH, "addins", "languages")
 
 EDITOR_SKINS = os.path.join(HOME_NINJA_PATH, "addins", "schemes")
 

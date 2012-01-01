@@ -278,15 +278,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         """
         Jump to a specific line number or ask to the user for the line
         """
-        """
-        try:
-            lineno = int(lineno)
-            self.emit(SIGNAL("addBackItemNavigation()"))
-            self.go_to_line(lineno)
-            return
-        except ValueError:
-            #ask the line and go!
-        """
         if lineno is not None:
             self.emit(SIGNAL("addBackItemNavigation()"))
             self.go_to_line(lineno)
