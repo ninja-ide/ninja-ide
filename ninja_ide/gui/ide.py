@@ -15,6 +15,7 @@ from PyQt4.QtGui import QToolTip
 from PyQt4.QtGui import QFont
 
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import QLocale
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import QCoreApplication
 from PyQt4.QtCore import QTranslator
@@ -399,16 +400,27 @@ def start(listener, filenames=None, projects_path=None, extra_plugins=None):
     QTextCodec.setCodecForCStrings(QTextCodec.codecForName('utf-8'))
 
     #Translator
+    qsettings = QSettings()
+    language = QLocale.system().language()
+    lang = unicode(qsettings.value(
+        'preferences/interface/language', language).toString()) + '.qm'
+    lang_path = file_manager.create_path(resources.LANGS, unicode(lang))
+    if file_manager.file_exists(lang_path):
+        settings.LANGUAGE = lang_path
+    elif file_manager.file_exists(file_manager.create_path(
+      resources.LANGS_DOWNLOAD, unicode(lang))):
+        settings.LANGUAGE = file_manager.create_path(
+            resources.LANGS_DOWNLOAD, unicode(lang))
     translator = QTranslator()
-    translator.load(settings.LANGUAGE)
-    app.installTranslator(translator)
+    if settings.LANGUAGE:
+        translator.load(settings.LANGUAGE)
+        app.installTranslator(translator)
 
     #Loading Syntax
     splash.showMessage("Loading Syntax", Qt.AlignRight | Qt.AlignTop, Qt.black)
     json_manager.load_syntax()
 
     #Read Settings
-    qsettings = QSettings()
     splash.showMessage("Loading Settings", Qt.AlignRight | Qt.AlignTop,
         Qt.black)
     settings.load_settings()

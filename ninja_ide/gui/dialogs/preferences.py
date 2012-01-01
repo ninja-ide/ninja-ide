@@ -485,10 +485,7 @@ class InterfaceTab(QWidget):
         vboxLanguage.addWidget(QLabel(self.tr('Requires restart...')))
 
         #Load Languages
-#        self.thread = ThreadLangs()
-#        self.connect(self.thread, SIGNAL("finished()"), self.load_langs)
-#        self.thread.start()
-        self._load_langs()    # until the thread is working
+        self._load_langs()
 
         #Settings
         self._checkProjectExplorer.setChecked(
@@ -634,24 +631,26 @@ class InterfaceTab(QWidget):
                 self.actionGroup.addAction(action)
 
     def _load_langs(self):
-#        self.disconnect(self.thread, SIGNAL("finished()"), self.load_langs)
-        self._langs = file_manager.get_files_from_folder(
+        langs = file_manager.get_files_from_folder(
             resources.LANGS, '.qm')
-        self._langs = ['english'] + \
-            [file_manager.get_module_name(lang) for lang in self._langs]
-#        if not self.thread.langs.keys() and len(self.langs) > 1:
-#            self.comboLang.addItems(self.langs)
-#        else:
-#            self.comboLang.addItems(['english'] + self.thread.langs.keys())
+        langs_download = file_manager.get_files_from_folder(
+            resources.LANGS_DOWNLOAD, '.qm')
+        self._languages = ['English'] + \
+            [file_manager.get_module_name(lang) for lang in langs] + \
+            [file_manager.get_module_name(lang) for lang in langs_download]
+        self._comboLang.addItems(self._languages)
         if(self._comboLang.count() > 1):
             self._comboLang.setEnabled(True)
-        index = self._comboLang.findText(settings.LANGUAGE)
+        if settings.LANGUAGE:
+            index = self._comboLang.findText(settings.LANGUAGE)
+        else:
+            index = 0
         self._comboLang.setCurrentIndex(index)
 
     def save(self):
         settings.TOOLBAR_ITEMS = self.toolbar_settings
         lang = self._comboLang.currentText()
-        if lang not in self._langs:
+        if lang not in self._languages:
             #TODO
 #            self.parent().overlay.show()
 #            core.download_lang(self.thread.langs[str(lang)])
