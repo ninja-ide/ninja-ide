@@ -60,11 +60,12 @@ class BrowserWidget(QWidget, itab_item.ITabItem):
             time.sleep(0.5)
             self.webFrame.reload()
 
-        if url.endswith('startPage.html'):
+        if url == resources.START_PAGE_URL:
             self.webFrame.page().setLinkDelegationPolicy(
                 QWebPage.DelegateAllLinks)
             self.connect(self.webFrame, SIGNAL("linkClicked(QUrl)"),
                 self.start_page_operations)
+            self._id = 'Start Page'
             if sys.platform == "win32":
                 content = file_manager.read_file_content(self.ID)
                 pathCss = os.path.join(
