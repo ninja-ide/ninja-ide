@@ -299,6 +299,6 @@ def create_home_dir_structure():
     """
     Create the necesary directories structure for NINJA-IDE
     """
-    for d in (HOME_NINJA_PATH, ADDINS, PLUGINS, EDITOR_SKINS, LANGS):
+    for d in (HOME_NINJA_PATH, ADDINS, PLUGINS, EDITOR_SKINS, LANGS_DOWNLOAD):
         if not os.path.isdir(d):
             os.mkdir(d)
