@@ -11,7 +11,7 @@ __author__ = "The NINJA-IDE Team"
 __mail__ = "ninja-ide at googlegroups dot com"
 __url__ = "http://www.ninja-ide.org"
 __source__ = "http://ninja-ide.googlecode.com"
-__version__ = "2.0-beta2"
+__version__ = "2.0-beta3"
 __license__ = "GPL3"
 
 ###############################################################################
