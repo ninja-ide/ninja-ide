@@ -203,7 +203,8 @@ def open_project_with_extensions(path, extensions):
     d = {}
     for root, dirs, files in os.walk(path):
         d[root] = [[f for f in files
-                if (os.path.splitext(f.lower())[-1]) in extensions],
+                if (os.path.splitext(f.lower())[-1]) in extensions or \
+                '.*' in extensions],
                 dirs]
     return d
 
