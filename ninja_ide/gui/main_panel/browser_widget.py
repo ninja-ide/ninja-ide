@@ -65,7 +65,6 @@ class BrowserWidget(QWidget, itab_item.ITabItem):
                 QWebPage.DelegateAllLinks)
             self.connect(self.webFrame, SIGNAL("linkClicked(QUrl)"),
                 self.start_page_operations)
-            self._id = 'Start Page'
             if sys.platform == "win32":
                 content = file_manager.read_file_content(self.ID)
                 pathCss = os.path.join(
@@ -77,6 +76,7 @@ class BrowserWidget(QWidget, itab_item.ITabItem):
                     'src="js/libs/', 'src="%s\\' % pathJs).replace(
                     'src="img/', 'src="%s\\' % pathImg)
                 self.webFrame.setHtml(content)
+            self._id = 'Start Page'
 
     def start_page_operations(self, url):
         opt = file_manager.get_basename(unicode(url.toString()))
