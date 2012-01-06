@@ -4,6 +4,7 @@ from __future__ import absolute_import
 import os
 import sys
 
+from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QGridLayout
 from PyQt4.QtGui import QLineEdit
@@ -200,3 +201,9 @@ class ProjectProperties(QDialog):
         if self._item.extensions != settings.SUPPORTED_EXTENSIONS:
             self._item._parent._refresh_project(self._item)
         self.close()
+
+
+class ProjectData(QWidget):
+
+    def __init__(self):
+        super(ProjectData, self).__init__()
