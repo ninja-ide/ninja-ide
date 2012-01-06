@@ -14,6 +14,7 @@ from ninja_ide.tools import introspection
 patIndent = re.compile('^\s+')
 patIsLocalFunction = re.compile('(\s)+self\.(\w)+\(\)')
 patClass = re.compile("(\\s)*class.+\\:$")
+patInit = re.compile("(\\s)*def __init__\(self,.+\\:$")
 endCharsForIndent = [':', '{', '(', '[', ',']
 
 
@@ -358,7 +359,8 @@ def comment(editorWidget):
 
 def check_for_assistance_completion(editorWidget, line):
     #This will be possible when code completion is working
-    global patClasss
+    global patClass
+    global patInit
     if patClass.match(line):
         source = unicode(editorWidget.toPlainText())
         source = source.encode(editorWidget.encoding)
@@ -390,3 +392,5 @@ def check_for_assistance_completion(editorWidget, line):
                 editorWidget.textCursor().insertText(indent)
         else:
             editorWidget.textCursor().insertText(indent)
+    if patInit.match(line):
+        pass
