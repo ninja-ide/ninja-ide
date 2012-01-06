@@ -48,6 +48,9 @@ class MenuSource(QObject):
         countCodeLinesAction = menuSource.addAction(
             self.tr("Count Code Lines"))
         menuSource.addSeparator()
+        tellTaleAction = menuSource.addAction(
+            self.tr("Tell me a Tale of Code"))
+        tellTaleAction.setEnabled(False)
         goToDefinitionAction = menuSource.addAction(
             QIcon(resources.IMAGES['go-to-definition']),
             self.tr("Go To Definition (%1 or %2+Click)").arg(
