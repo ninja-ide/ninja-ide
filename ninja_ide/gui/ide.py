@@ -122,7 +122,7 @@ class __IDE(QMainWindow):
         view = menubar.addMenu(self.tr("&View"))
         source = menubar.addMenu(self.tr("&Source"))
         project = menubar.addMenu(self.tr("&Project"))
-        self.pluginsMenu = menubar.addMenu(self.tr("P&lugins"))
+        self.pluginsMenu = menubar.addMenu(self.tr("&Addins"))
         about = menubar.addMenu(self.tr("&About"))
 
         #The order of the icons in the toolbar is defined by this calls
