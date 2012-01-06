@@ -544,9 +544,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 #        if not settings.ENABLE_COMPLETION_IN_COMMENTS and \
 #        cursor.selectedText().contains("#"):
 #            return
-        self.textCursor().insertText(settings.BRACES[unicode(event.text())])
-        self.moveCursor(QTextCursor.Left)
-        self.textCursor().insertText(self.selected_text)
+        symbol = unicode(event.text())
+        if symbol in settings.BRACES:
+            self.textCursor().insertText(settings.BRACES[symbol])
+            self.moveCursor(QTextCursor.Left)
+            self.textCursor().insertText(self.selected_text)
 
     def keyPressEvent(self, event):
         #On Return == True stop the execution of this method
