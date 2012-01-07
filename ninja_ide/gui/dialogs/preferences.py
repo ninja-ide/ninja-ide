@@ -758,6 +758,20 @@ class EditorGeneral(QWidget):
         #Signals
         self.connect(self._btnEditorFont,
             SIGNAL("clicked()"), self._load_editor_font)
+#        self.connect(self._listScheme, SIGNAL("itemSelectionChanged()"),
+#            self._preview_style)
+
+#    def _preview_style(self):
+#        scheme = unicode(self._listScheme.currentItem().text())
+#        editorWidget = main_container.MainContainer().get_actual_editor()
+#        if type(editorWidget) == editor.Editor:
+#            resources.CUSTOM_SCHEME = self._schemes.get(scheme,
+#                resources.COLOR_SCHEME)
+#            editorWidget.restyle(editorWidget.lang)
+#            fontText = unicode(self._btnEditorFont.text().remove(' '))
+#            family = fontText.split(',')[0]
+#            size = int(fontText.split(',')[1])
+#            editorWidget.set_font(family, size)
 
     def _load_editor_font(self):
         try:
