@@ -71,6 +71,8 @@ UPDATES_URL = 'http://ninja-ide.org/updates'
 
 SCHEMES_URL = 'http://ninja-ide.org/plugins/schemes'
 
+LANGUAGES_URL = 'http://ninja-ide.org/plugins/languages'
+
 PLUGINS_WEB = 'http://ninja-ide.org/plugins/official'
 
 PLUGINS_COMMUNITY = 'http://ninja-ide.org/plugins/community'
