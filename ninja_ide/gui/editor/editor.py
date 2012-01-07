@@ -244,6 +244,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.document().setModified(self.textModified)
 
     def register_syntax(self, lang='', syntax=None):
+        self.lang = lang
         if lang in settings.EXTENSIONS:
             self.highlighter = highlighter.Highlighter(self.document(),
                 settings.EXTENSIONS.get(lang, 'python'),
@@ -483,6 +484,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def __insert_indentation(self, event):
         if self.textCursor().hasSelection():
             self.indent_more()
+        elif settings.ALLOW_TABS_NON_PYTHON and self.lang != 'py':
+            return False
         else:
             self.textCursor().insertText(' ' * settings.INDENT)
         return True
