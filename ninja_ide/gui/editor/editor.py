@@ -122,7 +122,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self._find_occurrences)
 
     def set_flags(self):
-        self.setWordWrapMode(QTextOption.NoWrap)
+        if settings.ALLOW_WORD_WRAP:
+            self.setWordWrapMode(QTextOption.WrapAtWordBoundaryOrAnywhere)
+        else:
+            self.setWordWrapMode(QTextOption.NoWrap)
         self.setMouseTracking(True)
         doc = self.document()
         option = QTextOption()
