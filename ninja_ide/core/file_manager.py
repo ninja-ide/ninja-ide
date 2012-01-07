@@ -100,7 +100,7 @@ def _search_coding_line(txt):
     """Search a pattern like this: # -*- coding: utf-8 -*-."""
     coding_pattern = "coding[:=]\s*([-\w.]+)"
     pat_coding = re.search(coding_pattern, txt)
-    if pat_coding:
+    if pat_coding and unicode(pat_coding.groups()[0]) != 'None':
         return unicode(pat_coding.groups()[0])
     return u'UTF-8'
 
