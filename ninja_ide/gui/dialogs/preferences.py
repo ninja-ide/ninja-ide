@@ -880,6 +880,9 @@ class EditorConfiguration(QWidget):
             settings.ALLOW_TABS_NON_PYTHON)
         grid.addWidget(self._checkAllowTabsNonPython, 10, 1, 1, 2,
             alignment=Qt.AlignTop)
+        self._allowWordWrap = QCheckBox(self.tr("Allow Word Wrap."))
+        self._allowWordWrap.setChecked(settings.ALLOW_WORD_WRAP)
+        grid.addWidget(self._allowWordWrap, 11, 1, 1, 2, alignment=Qt.AlignTop)
 
     def _enable_check_inline(self, val):
         if val == Qt.Checked:
@@ -930,6 +933,8 @@ class EditorConfiguration(QWidget):
         qsettings.setValue('allowTabsForNonPythonFiles',
             allowTabsForNonPythonFiles)
         settings.ALLOW_TABS_NON_PYTHON = allowTabsForNonPythonFiles
+        qsettings.setValue('allowWordWrap', self._allowWordWrap.isChecked())
+        settings.ALLOW_WORD_WRAP = self._allowWordWrap.isChecked()
         qsettings.endGroup()
         qsettings.endGroup()
         actions.Actions().reset_editor_flags()
