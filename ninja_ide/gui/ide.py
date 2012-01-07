@@ -396,6 +396,9 @@ def start(listener, filenames=None, projects_path=None, extra_plugins=None):
     splash.show()
     app.processEvents()
 
+    # Set the cursor to unblinking
+    app.setCursorFlashTime(0)
+
     #Set the codec for strings (QString)
     QTextCodec.setCodecForCStrings(QTextCodec.codecForName('utf-8'))
 
