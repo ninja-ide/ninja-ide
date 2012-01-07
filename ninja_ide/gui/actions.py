@@ -610,8 +610,7 @@ class __Actions(QObject):
             symbols_handler = settings.get_symbols_handler(ext)
             if symbols_handler:
                 source = unicode(editorWidget.toPlainText())
-                if editorWidget.encoding:
-                    source = source.encode(editorWidget.encoding)
+                source = source.encode(editorWidget.encoding)
                 symbols = symbols_handler.obtain_symbols(source)
                 self.ide.explorer.update_symbols(symbols, editorWidget.ID)
 
