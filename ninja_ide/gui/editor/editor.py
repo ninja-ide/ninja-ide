@@ -833,9 +833,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             selection.format.setForeground(QColor(
                 resources.CUSTOM_SCHEME.get('brace-foreground',
                 resources.COLOR_SCHEME.get('brace-foreground'))))
-            selection.format.setBackground(QColor(
-                resources.CUSTOM_SCHEME.get('brace-background',
-                resources.COLOR_SCHEME.get('brace-background'))))
             selection.cursor = cursor
             self.extraSelections.append(selection)
             selection = QTextEdit.ExtraSelection()
