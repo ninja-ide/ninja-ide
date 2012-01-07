@@ -14,7 +14,6 @@ class ErrorsChecker(QThread):
     def __init__(self, editor):
         QThread.__init__(self)
         self._editor = editor
-        self.errorsLines = []
         self.errorsSummary = {}
 
     def check_errors(self):
@@ -23,7 +22,6 @@ class ErrorsChecker(QThread):
             self.setPriority(QThread.LowPriority)
 
     def reset(self):
-        self.errorsLines = []
         self.errorsSummary = {}
 
     def run(self):
@@ -33,15 +31,13 @@ class ErrorsChecker(QThread):
                 parseResult = compiler.parse(open(self._editor.ID).read())
                 self.checker = checker.Checker(parseResult, self._editor.ID)
                 for m in self.checker.messages:
-                    if m.lineno not in self.errorsLines:
-                        self.errorsLines.append(m.lineno)
-                        message = m.message % m.message_args
+                    if m.lineno not in self.errorsSummary:
+                        message = [m.message % m.message_args]
                     else:
                         message = self.errorsSummary[m.lineno]
-                        message += '\n' + m.message % m.message_args
+                        message += [m.message % m.message_args]
                     self.errorsSummary[m.lineno] = message
             except Exception, reason:
-                self.errorsLines.append(reason.lineno)
                 self.errorsSummary[reason.lineno] = reason.msg
         else:
             self.reset()

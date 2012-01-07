@@ -150,19 +150,20 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             return line + diference
         return map(_inner_increment, lines)
 
-    def _add_line_increment_for_error(self, lines, blockModified, diference):
+    def _add_line_increment_for_dict(self, data, blockModified, diference):
         def _inner_increment(line):
             if line < blockModified:
                 return line
             newLine = line + diference
-            summary = self.errors.errorsSummary.pop(line)
-            self.errors.errorsSummary[newLine] = summary
+            summary = data.pop(line)
+            data[newLine] = summary
             return newLine
-        return map(_inner_increment, lines)
+        map(_inner_increment, data.keys())
+        return data
 
     def _update_file_metadata(self, val):
         """Update the info of bookmarks, breakpoint, pep8 and static errors."""
-        if self.pep8.pep8lines or self.errors.errorsLines or \
+        if self.pep8.pep8checks or self.errors.errorsSummary or \
         self._sidebarWidget._bookmarks or self._sidebarWidget._breakpoints:
             cursor = self.textCursor()
             if self.__lines_count:
@@ -170,14 +171,15 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             else:
                 diference = 0
             blockNumber = cursor.blockNumber() - diference
-            if self.pep8.pep8lines:
-                self.pep8.pep8lines = self._add_line_increment(
-                    self.pep8.pep8lines, blockNumber, diference)
-                self._sidebarWidget._pep8Lines = self.pep8.pep8lines
-            if self.errors.errorsLines:
-                self.errors.errorsLines = self._add_line_increment_for_error(
-                    self.errors.errorsLines, blockNumber, diference)
-                self._sidebarWidget._errorsLines = self.errors.errorsLines
+            if self.pep8.pep8checks:
+                self.pep8.pep8checks = self._add_line_increment_for_dict(
+                    self.pep8.pep8checks, blockNumber, diference)
+                self._sidebarWidget._pep8Lines = self.pep8.pep8checks.keys()
+            if self.errors.errorsSummary:
+                self.errors.errorsSummary = self._add_line_increment_for_dict(
+                    self.errors.errorsSummary, blockNumber, diference)
+                self._sidebarWidget._errorsLines = \
+                    self.errors.errorsSummary.keys()
             if self._sidebarWidget._breakpoints and self.ID:
                 self._sidebarWidget._breakpoints = self._add_line_increment(
                     self._sidebarWidget._breakpoints, blockNumber, diference)
@@ -191,14 +193,15 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.highlight_current_line()
 
     def show_pep8_errors(self):
-        self._sidebarWidget.pep8_check_lines(self.pep8.pep8lines)
+        self._sidebarWidget.pep8_check_lines(self.pep8.pep8checks.keys())
         if self.syncDocErrorsSignal:
             self._sync_tab_icon_notification_signal()
         else:
             self.syncDocErrorsSignal = True
 
     def show_static_errors(self):
-        self._sidebarWidget.static_errors_lines(self.errors.errorsLines)
+        self._sidebarWidget.static_errors_lines(
+            self.errors.errorsSummary.keys())
         if self.syncDocErrorsSignal:
             self._sync_tab_icon_notification_signal()
         else:
@@ -206,9 +209,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def _sync_tab_icon_notification_signal(self):
         self.syncDocErrorsSignal = False
-        if self.errors.errorsLines:
+        if self.errors.errorsSummary:
             self.emit(SIGNAL("errorsFound(QPlainTextEdit)"), self)
-        elif self.pep8.pep8lines:
+        elif self.pep8.pep8checks:
             self.emit(SIGNAL("warningsFound(QPlainTextEdit)"), self)
         else:
             self.emit(SIGNAL("cleanDocument(QPlainTextEdit)"), self)
@@ -632,13 +635,15 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         position = event.pos()
         cursor = self.cursorForPosition(position)
         block = cursor.block()
-        if (block.blockNumber() + 1) in self.errors.errorsLines:
+        if (block.blockNumber() + 1) in self.errors.errorsSummary:
+            message = '\n'.join(
+                self.errors.errorsSummary[(block.blockNumber() + 1)])
             QToolTip.showText(self.mapToGlobal(position),
-                self.errors.errorsSummary[(block.blockNumber() + 1)], self)
-        elif (block.blockNumber() + 1) in self.pep8.pep8lines:
-            index = self.pep8.pep8lines.index(block.blockNumber() + 1)
-            QToolTip.showText(self.mapToGlobal(position),
-                self.pep8.pep8checks[index], self)
+                message, self)
+        elif (block.blockNumber() + 1) in self.pep8.pep8checks:
+            message = '\n'.join(
+                self.pep8.pep8checks[(block.blockNumber() + 1)])
+            QToolTip.showText(self.mapToGlobal(position), message, self)
         if event.modifiers() == Qt.ControlModifier:
             cursor.select(QTextCursor.WordUnderCursor)
             cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
@@ -765,9 +770,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
         #Find Errors
         if settings.ERRORS_HIGHLIGHT_LINE and \
-        len(self.errors.errorsLines) < settings.MAX_HIGHLIGHT_ERRORS:
+        len(self.errors.errorsSummary) < settings.MAX_HIGHLIGHT_ERRORS:
             cursor = self.textCursor()
-            for lineno in self.errors.errorsLines:
+            for lineno in self.errors.errorsSummary:
                 block = self.document().findBlockByLineNumber(lineno - 1)
                 if not block.isValid():
                     continue
@@ -782,20 +787,19 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 selection.cursor.movePosition(QTextCursor.EndOfBlock,
                     QTextCursor.KeepAnchor)
                 self.extraSelections.append(selection)
-            if self.errors.errorsLines:
+            if self.errors.errorsSummary:
                 self.setExtraSelections(self.extraSelections)
 
         #Check Style
         if settings.CHECK_HIGHLIGHT_LINE and \
-        len(self.pep8.pep8lines) < settings.MAX_HIGHLIGHT_ERRORS:
+        len(self.pep8.pep8checks) < settings.MAX_HIGHLIGHT_ERRORS:
             cursor = self.textCursor()
-            for xline, line in enumerate(self.pep8.pep8lines):
+            for line in self.pep8.pep8checks:
                 block = self.document().findBlockByLineNumber(line - 1)
                 if not block.isValid():
                     continue
                 cursor.setPosition(block.position())
                 selection = QTextEdit.ExtraSelection()
-                selection.format.setToolTip(self.pep8.pep8checks[xline])
                 selection.format.setUnderlineColor(QColor(
                     resources.CUSTOM_SCHEME.get('pep8-underline',
                     resources.COLOR_SCHEME['pep8-underline'])))
@@ -805,7 +809,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 selection.cursor.movePosition(QTextCursor.EndOfBlock,
                     QTextCursor.KeepAnchor)
                 self.extraSelections.append(selection)
-            if self.pep8.pep8lines:
+            if self.pep8.pep8checks:
                 self.setExtraSelections(self.extraSelections)
 
         #Re-position tooltip to allow text editing in the line of the error
