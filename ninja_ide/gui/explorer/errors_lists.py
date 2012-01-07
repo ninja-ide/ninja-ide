@@ -41,41 +41,35 @@ class ErrorsWidget(QWidget):
     def errors_selected(self):
         editorWidget = main_container.MainContainer().get_actual_editor()
         if editorWidget and self._outRefresh:
-            index = self.listErrors.currentItem().data(Qt.UserRole).toInt()[0]
-            editorWidget.jump_to_line(
-                editorWidget.errors.errorsLines[index] - 1)
+            lineno = self.listErrors.currentItem().data(Qt.UserRole).toInt()[0]
+            editorWidget.jump_to_line(lineno - 1)
             editorWidget.setFocus()
 
     def pep8_selected(self):
         editorWidget = main_container.MainContainer().get_actual_editor()
         if editorWidget and self._outRefresh:
-            index = self.listPep8.currentItem().data(Qt.UserRole).toInt()[0]
-            editorWidget.jump_to_line(
-                editorWidget.pep8.pep8lines[index] - 1)
+            lineno = self.listPep8.currentItem().data(Qt.UserRole).toInt()[0]
+            editorWidget.jump_to_line(lineno - 1)
             editorWidget.setFocus()
 
     def refresh_lists(self, errors, pep8):
         self._outRefresh = False
         self.listErrors.clear()
         self.listPep8.clear()
-        for index, data in enumerate(errors.errorsLines):
-            if index < len(errors.errorsLines):
-                lineno = 'L%s\t' % str(errors.errorsLines[index])
-            else:
-                lineno = 'n/a\t'
-            item = QListWidgetItem(lineno + errors.errorsSummary[data])
-            item.setData(Qt.UserRole, index)
-            self.listErrors.addItem(item)
+        for lineno in errors.errorsSummary:
+            linenostr = 'L%s\t' % str(lineno)
+            for data in errors.errorsSummary[lineno]:
+                item = QListWidgetItem(linenostr + data)
+                item.setData(Qt.UserRole, lineno)
+                self.listErrors.addItem(item)
         self.errorsLabel.setText(self.tr(ERRORS_TEXT).arg(
-            len(errors.errorsLines)))
-        for index, data in enumerate(pep8.pep8checks):
-            if index < len(pep8.pep8lines):
-                lineno = 'L%s,\t' % str(pep8.pep8lines[index])
-            else:
-                lineno = 'n/a\t'
-            item = QListWidgetItem(lineno + data.split('\n')[0])
-            item.setData(Qt.UserRole, index)
-            self.listPep8.addItem(item)
+            len(errors.errorsSummary)))
+        for lineno in pep8.pep8checks:
+            linenostr = 'L%s\t' % str(lineno)
+            for data in pep8.pep8checks[lineno]:
+                item = QListWidgetItem(linenostr + data.split('\n')[0])
+                item.setData(Qt.UserRole, lineno)
+                self.listPep8.addItem(item)
         self.pep8Label.setText(self.tr(PEP8_TEXT).arg(
             len(pep8.pep8checks)))
         self._outRefresh = True

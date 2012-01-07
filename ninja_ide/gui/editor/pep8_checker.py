@@ -12,8 +12,7 @@ class Pep8Checker(QThread):
     def __init__(self, editor):
         QThread.__init__(self)
         self._editor = editor
-        self.pep8checks = []
-        self.pep8lines = []
+        self.pep8checks = {}
 
     def check_style(self):
         if not self.isRunning():
@@ -21,47 +20,33 @@ class Pep8Checker(QThread):
             self.setPriority(QThread.LowPriority)
 
     def reset(self):
-        self.pep8checks = []
-        self.pep8lines = []
+        self.pep8checks = {}
 
     def run(self):
         if file_manager.get_file_extension(self._editor.ID) == 'py':
             self.reset()
-            tempChecks = []
-            self.pep8checks = pep8mod.run_check(self._editor.ID)
-            line = u''
-            repeated = False
-            addLine = True
-            for p in self.pep8checks:
-                if p.find('.py:') > 0:
-                    if len(line) != 0:
-                        tempChecks.append(line)
-                        line = ''
-                        addLine = True
-                    startPos = p.find('.py:') + 4
-                    endPos = p.find(':', startPos)
-                    lineno = p[startPos:endPos]
-                    if lineno.isdigit():
-                        if int(lineno) in self.pep8lines:
-                            repeated = True
-                        else:
-                            self.pep8lines.append(int(lineno))
+            tempData = pep8mod.run_check(self._editor.ID)
+            i = 0
+            while i < len(tempData):
+                lineno = -1
+                try:
+                    startPos = tempData[i].find('.py:') + 4
+                    endPos = tempData[i].find(':', startPos)
+                    lineno = int(tempData[i][startPos:endPos])
+                    error = unicode(tempData[i][tempData[i].find(
+                        ':', endPos + 1) + 2:])
+                    line = u'\n'.join(
+                        [error, tempData[i + 1], tempData[i + 2]])
+                except:
+                    line = ''
+                finally:
+                    i += 3
+                if line and lineno > -1:
+                    if lineno not in self.pep8checks:
+                        self.pep8checks[lineno] = [line]
                     else:
-                        continue
-                    line += unicode(p[p.find(':', endPos + 1) + 2:]) + '\n'
-                elif addLine:
-                    line += p + '\n'
-                    addLine = False
-                else:
-                    line += p
-            if len(line) != 0:
-                if repeated:
-                    repeated = False
-                    previousLine = tempChecks[-1]
-                    previousLine += '\n' + line
-                    tempChecks[-1] = previousLine
-                else:
-                    tempChecks.append(line)
-            self.pep8checks = tempChecks
+                        message = self.pep8checks[lineno]
+                        message += [line]
+                        self.pep8checks[lineno] = message
         else:
             self.reset()
