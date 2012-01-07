@@ -86,7 +86,13 @@ class PreferencesWidget(QDialog):
         vbox.addLayout(gridFooter)
 
         self.connect(self._btnSave, SIGNAL("clicked()"), self._save)
-        self.connect(self._btnCancel, SIGNAL("clicked()"), self.close)
+        self.connect(self._btnCancel, SIGNAL("clicked()"), self._cancel)
+
+    def _cancel(self):
+        editorWidget = main_container.MainContainer().get_actual_editor()
+        if type(editorWidget) == editor.Editor:
+            editorWidget.restyle(editorWidget.lang)
+        self.close()
 
     def _save(self):
         for i in xrange(self._tabs.count()):
@@ -758,20 +764,18 @@ class EditorGeneral(QWidget):
         #Signals
         self.connect(self._btnEditorFont,
             SIGNAL("clicked()"), self._load_editor_font)
-#        self.connect(self._listScheme, SIGNAL("itemSelectionChanged()"),
-#            self._preview_style)
+        self.connect(self._listScheme, SIGNAL("itemSelectionChanged()"),
+            self._preview_style)
 
-#    def _preview_style(self):
-#        scheme = unicode(self._listScheme.currentItem().text())
-#        editorWidget = main_container.MainContainer().get_actual_editor()
-#        if type(editorWidget) == editor.Editor:
-#            resources.CUSTOM_SCHEME = self._schemes.get(scheme,
-#                resources.COLOR_SCHEME)
-#            editorWidget.restyle(editorWidget.lang)
-#            fontText = unicode(self._btnEditorFont.text().remove(' '))
-#            family = fontText.split(',')[0]
-#            size = int(fontText.split(',')[1])
-#            editorWidget.set_font(family, size)
+    def _preview_style(self):
+        scheme = unicode(self._listScheme.currentItem().text())
+        editorWidget = main_container.MainContainer().get_actual_editor()
+        if type(editorWidget) == editor.Editor:
+            custom = resources.CUSTOM_SCHEME
+            resources.CUSTOM_SCHEME = self._schemes.get(scheme,
+                resources.COLOR_SCHEME)
+            editorWidget.restyle(editorWidget.lang)
+            resources.CUSTOM_SCHEME = custom
 
     def _load_editor_font(self):
         try:
