@@ -71,6 +71,7 @@ TOOLBAR_ITEMS_DEFAULT = [
 # EDITOR
 ###############################################################################
 
+ALLOW_TABS_NON_PYTHON = False
 INDENT = 4
 MARGIN_LINE = 80
 SHOW_MARGIN_LINE = True
@@ -221,6 +222,7 @@ def load_settings():
     global MARGIN_LINE
     global REMOVE_TRAILING_SPACES
     global SHOW_TABS_AND_SPACES
+    global ALLOW_TABS_NON_PYTHON
     global ENABLE_COMPLETION_IN_COMMENTS
     global FONT_FAMILY
     global FONT_SIZE
@@ -295,6 +297,8 @@ def load_settings():
         'preferences/editor/removeTrailingSpaces', True).toBool()
     SHOW_TABS_AND_SPACES = qsettings.value(
         'preferences/editor/showTabsAndSpaces', True).toBool()
+    ALLOW_TABS_NON_PYTHON = qsettings.value(
+        'preferences/editor/allowTabsForNonPythonFiles', False).toBool()
     ENABLE_COMPLETION_IN_COMMENTS = qsettings.value(
         'preferences/editor/completeInComments', True).toBool()
     font_family = unicode(qsettings.value(
