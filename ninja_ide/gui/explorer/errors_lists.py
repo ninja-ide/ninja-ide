@@ -59,14 +59,20 @@ class ErrorsWidget(QWidget):
         self.listErrors.clear()
         self.listPep8.clear()
         for index, data in enumerate(errors.errorsLines):
-            lineno = 'L%s\t' % str(errors.errorsLines.get(index, 'n/a'))
+            if index < len(errors.errorsLines):
+                lineno = 'L%s\t' % str(errors.errorsLines[index])
+            else:
+                lineno = 'n/a\t'
             item = QListWidgetItem(lineno + errors.errorsSummary[data])
             item.setData(Qt.UserRole, index)
             self.listErrors.addItem(item)
         self.errorsLabel.setText(self.tr(ERRORS_TEXT).arg(
             len(errors.errorsLines)))
         for index, data in enumerate(pep8.pep8checks):
-            lineno = 'L%s,\t' % str(pep8.pep8lines.get(index, 'n/a'))
+            if index < len(pep8.pep8lines):
+                lineno = 'L%s,\t' % str(pep8.pep8lines[index])
+            else:
+                lineno = 'n/a\t'
             item = QListWidgetItem(lineno + data.split('\n')[0])
             item.setData(Qt.UserRole, index)
             self.listPep8.addItem(item)
