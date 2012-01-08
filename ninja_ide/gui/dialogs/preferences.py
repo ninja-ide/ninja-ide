@@ -1297,8 +1297,9 @@ class EditorSchemeDesigner(QWidget):
     def _pick_color(self, lineedit):
         color = QColorDialog.getColor(QColor(lineedit.text()),
             self, self.tr("Choose Color for: "))
-        lineedit.setText(str(color.name()))
-        self._preview_style()
+        if color.isValid():
+            lineedit.setText(str(color.name()))
+            self._preview_style()
 
     def _preview_style(self):
         editorWidget = main_container.MainContainer().get_actual_editor()
