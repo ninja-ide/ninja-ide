@@ -99,20 +99,6 @@ def json_to_dict(fileName):
     return structure
 
 
-def load_gui_skins():
-    files = os.listdir(resources.GUI_SKINS)
-    skins = {}
-    for f in files:
-        if f.endswith('.skin'):
-            fileName = os.path.join(resources.GUI_SKINS, f)
-            read = open(fileName, 'r')
-            content = ''.join(read.readlines())
-            read.close()
-            name = f[:-5]
-            skins[name] = content
-    return skins
-
-
 def load_editor_skins():
     files = os.listdir(resources.EDITOR_SKINS)
     skins = {}
@@ -126,3 +112,9 @@ def load_editor_skins():
             name = unicode(f[:-6])
             skins[name] = structure
     return skins
+
+
+def save_editor_skins(filename, scheme):
+    f = open(filename, mode='w')
+    json.dump(scheme, f, indent=2)
+    f.close()

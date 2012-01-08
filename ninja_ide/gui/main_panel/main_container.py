@@ -18,6 +18,7 @@ from ninja_ide.core import file_manager
 from ninja_ide.core import settings
 from ninja_ide.gui.main_panel import tab_widget
 from ninja_ide.gui.editor import editor
+from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.main_panel import browser_widget
 from ninja_ide.gui.main_panel import image_viewer
@@ -73,6 +74,7 @@ class __MainContainer(QSplitter):
         self._followMode = False
         self.splitted = False
         self._workingDirectory = ''
+        highlighter.restyle(resources.CUSTOM_SCHEME)
         #documentation browser
         self.docPage = None
 
