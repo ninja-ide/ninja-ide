@@ -30,29 +30,7 @@ def format(color, style=''):
 
 
 # Syntax styles that can be shared by all languages
-STYLES = {
-    'keyword': format(resources.CUSTOM_SCHEME.get('keyword',
-        resources.COLOR_SCHEME['keyword']), 'bold'),
-    'operator': format(resources.CUSTOM_SCHEME.get('operator',
-        resources.COLOR_SCHEME['operator'])),
-    'brace': format(resources.CUSTOM_SCHEME.get('brace',
-        resources.COLOR_SCHEME['brace'])),
-    'definition': format(resources.CUSTOM_SCHEME.get('definition',
-        resources.COLOR_SCHEME['definition']), 'bold'),
-    'string': format(resources.CUSTOM_SCHEME.get('string',
-        resources.COLOR_SCHEME['string'])),
-    'string2': format(resources.CUSTOM_SCHEME.get('string2',
-        resources.COLOR_SCHEME['string2'])),
-    'comment': format(resources.CUSTOM_SCHEME.get('comment',
-        resources.COLOR_SCHEME['comment']), 'italic'),
-    'properObject': format(resources.CUSTOM_SCHEME.get('properObject',
-        resources.COLOR_SCHEME['properObject']), 'italic'),
-    'numbers': format(resources.CUSTOM_SCHEME.get('numbers',
-        resources.COLOR_SCHEME['numbers'])),
-    'spaces': format(resources.CUSTOM_SCHEME.get('spaces',
-        resources.COLOR_SCHEME['spaces'])),
-    'extras': format(resources.CUSTOM_SCHEME.get('extras',
-        resources.COLOR_SCHEME['extras']))}
+STYLES = {}
 
 
 def restyle(scheme):
