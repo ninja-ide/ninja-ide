@@ -2,8 +2,13 @@
 from __future__ import absolute_import
 
 import os
+import copy
 
 from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QColorDialog
+from PyQt4.QtGui import QColor
+from PyQt4.QtGui import QScrollArea
+from PyQt4.QtGui import QFrame
 from PyQt4.QtGui import QActionGroup
 from PyQt4.QtGui import QStyle
 from PyQt4.QtGui import QDialog
@@ -11,6 +16,7 @@ from PyQt4.QtGui import QGroupBox
 from PyQt4.QtGui import QCheckBox
 from PyQt4.QtGui import QComboBox
 from PyQt4.QtGui import QSpinBox
+from PyQt4.QtGui import QInputDialog
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QLineEdit
@@ -710,9 +716,12 @@ class EditorTab(QWidget):
         self._editorGeneral = EditorGeneral()
         self._editorConfiguration = EditorConfiguration()
         self._editorCompletion = EditorCompletion()
+        self._editorSchemeDesigner = EditorSchemeDesigner()
         self._tabs.addTab(self._editorGeneral, self.tr("General"))
         self._tabs.addTab(self._editorConfiguration, self.tr("Configuration"))
         self._tabs.addTab(self._editorCompletion, self.tr("Completion"))
+        self._tabs.addTab(self._editorSchemeDesigner,
+            self.tr("Editor Scheme Designer"))
 
         vbox.addWidget(self._tabs)
 
@@ -1038,3 +1047,311 @@ class EditorCompletion(QWidget):
         settings.CODE_COMPLETION = self._checkCodeDot.isChecked()
         qsettings.endGroup()
         qsettings.endGroup()
+
+
+class EditorSchemeDesigner(QWidget):
+
+    def __init__(self):
+        super(EditorSchemeDesigner, self).__init__()
+        vbox = QVBoxLayout(self)
+        scrollArea = QScrollArea()
+        vbox.addWidget(scrollArea)
+
+        self.txtKeyword = QLineEdit()
+        btnKeyword = QPushButton(self.tr("Pick Color"))
+        self.txtOperator = QLineEdit()
+        btnOperator = QPushButton(self.tr("Pick Color"))
+        self.txtBrace = QLineEdit()
+        btnBrace = QPushButton(self.tr("Pick Color"))
+        self.txtDefinition = QLineEdit()
+        btnDefinition = QPushButton(self.tr("Pick Color"))
+        self.txtString = QLineEdit()
+        btnString = QPushButton(self.tr("Pick Color"))
+        self.txtString2 = QLineEdit()
+        btnString2 = QPushButton(self.tr("Pick Color"))
+        self.txtComment = QLineEdit()
+        btnComment = QPushButton(self.tr("Pick Color"))
+        self.txtProperObject = QLineEdit()
+        btnProperObject = QPushButton(self.tr("Pick Color"))
+        self.txtNumbers = QLineEdit()
+        btnNumbers = QPushButton(self.tr("Pick Color"))
+        self.txtSpaces = QLineEdit()
+        btnSpaces = QPushButton(self.tr("Pick Color"))
+        self.txtExtras = QLineEdit()
+        btnExtras = QPushButton(self.tr("Pick Color"))
+        self.txtEditorText = QLineEdit()
+        btnEditorText = QPushButton(self.tr("Pick Color"))
+        self.txtEditorBackground = QLineEdit()
+        btnEditorBackground = QPushButton(self.tr("Pick Color"))
+        self.txtEditorSelectionColor = QLineEdit()
+        btnEditorSelectionColor = QPushButton(self.tr("Pick Color"))
+        self.txtEditorSelectionBackground = QLineEdit()
+        btnEditorSelectionBackground = QPushButton(self.tr("Pick Color"))
+        self.txtSelectedWord = QLineEdit()
+        btnSelectedWord = QPushButton(self.tr("Pick Color"))
+        self.txtCurrentLine = QLineEdit()
+        btnCurrentLine = QPushButton(self.tr("Pick Color"))
+        self.txtFoldArea = QLineEdit()
+        btnFoldArea = QPushButton(self.tr("Pick Color"))
+        self.txtFoldArrow = QLineEdit()
+        btnFoldArrow = QPushButton(self.tr("Pick Color"))
+        self.txtLinkNavigate = QLineEdit()
+        btnLinkNavigate = QPushButton(self.tr("Pick Color"))
+        self.txtBraceBackground = QLineEdit()
+        btnBraceBackground = QPushButton(self.tr("Pick Color"))
+        self.txtBraceForeground = QLineEdit()
+        btnBraceForeground = QPushButton(self.tr("Pick Color"))
+        self.txtErrorUnderline = QLineEdit()
+        btnErrorUnderline = QPushButton(self.tr("Pick Color"))
+        self.txtPep8Underline = QLineEdit()
+        btnPep8Underline = QPushButton(self.tr("Pick Color"))
+
+        grid = QGridLayout()
+        btnSaveScheme = QPushButton(self.tr("Save Scheme!"))
+        grid.addWidget(btnSaveScheme, 0, 0)
+        grid.addWidget(QLabel(self.tr("Keyword:")), 1, 0)
+        grid.addWidget(self.txtKeyword, 1, 1)
+        grid.addWidget(btnKeyword, 1, 2)
+        grid.addWidget(QLabel(self.tr("Operator:")), 2, 0)
+        grid.addWidget(self.txtOperator, 2, 1)
+        grid.addWidget(btnOperator, 2, 2)
+        grid.addWidget(QLabel(self.tr("Braces:")), 3, 0)
+        grid.addWidget(self.txtBrace, 3, 1)
+        grid.addWidget(btnBrace, 3, 2)
+        grid.addWidget(QLabel(self.tr("Definition:")), 4, 0)
+        grid.addWidget(self.txtDefinition, 4, 1)
+        grid.addWidget(btnDefinition, 4, 2)
+        grid.addWidget(QLabel(self.tr("String:")), 5, 0)
+        grid.addWidget(self.txtString, 5, 1)
+        grid.addWidget(btnString, 5, 2)
+        grid.addWidget(QLabel(self.tr("String2:")), 6, 0)
+        grid.addWidget(self.txtString2, 6, 1)
+        grid.addWidget(btnString2, 6, 2)
+        grid.addWidget(QLabel(self.tr("Comment:")), 7, 0)
+        grid.addWidget(self.txtComment, 7, 1)
+        grid.addWidget(btnComment, 7, 2)
+        grid.addWidget(QLabel(self.tr("Proper Object:")), 8, 0)
+        grid.addWidget(self.txtProperObject, 8, 1)
+        grid.addWidget(btnProperObject, 8, 2)
+        grid.addWidget(QLabel(self.tr("Numbers:")), 9, 0)
+        grid.addWidget(self.txtNumbers, 9, 1)
+        grid.addWidget(btnNumbers, 9, 2)
+        grid.addWidget(QLabel(self.tr("Spaces:")), 10, 0)
+        grid.addWidget(self.txtSpaces, 10, 1)
+        grid.addWidget(btnSpaces, 10, 2)
+        grid.addWidget(QLabel(self.tr("Extras:")), 11, 0)
+        grid.addWidget(self.txtExtras, 11, 1)
+        grid.addWidget(btnExtras, 11, 2)
+        grid.addWidget(QLabel(self.tr("Editor Text:")), 12, 0)
+        grid.addWidget(self.txtEditorText, 12, 1)
+        grid.addWidget(btnEditorText, 12, 2)
+        grid.addWidget(QLabel(self.tr("Editor Background:")), 13, 0)
+        grid.addWidget(self.txtEditorBackground, 13, 1)
+        grid.addWidget(btnEditorBackground, 13, 2)
+        grid.addWidget(QLabel(self.tr("Editor Selection Color:")), 14, 0)
+        grid.addWidget(self.txtEditorSelectionColor, 14, 1)
+        grid.addWidget(btnEditorSelectionColor, 14, 2)
+        grid.addWidget(QLabel(self.tr("Editor Selection Background:")), 15, 0)
+        grid.addWidget(self.txtEditorSelectionBackground, 15, 1)
+        grid.addWidget(btnEditorSelectionBackground, 15, 2)
+        grid.addWidget(QLabel(self.tr("Editor Selected Word:")), 16, 0)
+        grid.addWidget(self.txtSelectedWord, 16, 1)
+        grid.addWidget(btnSelectedWord, 16, 2)
+        grid.addWidget(QLabel(self.tr("Current Line:")), 17, 0)
+        grid.addWidget(self.txtCurrentLine, 17, 1)
+        grid.addWidget(btnCurrentLine, 17, 2)
+        grid.addWidget(QLabel(self.tr("Fold Area:")), 18, 0)
+        grid.addWidget(self.txtFoldArea, 18, 1)
+        grid.addWidget(btnFoldArea, 18, 2)
+        grid.addWidget(QLabel(self.tr("Fold Arrow:")), 19, 0)
+        grid.addWidget(self.txtFoldArrow, 19, 1)
+        grid.addWidget(btnFoldArrow, 19, 2)
+        grid.addWidget(QLabel(self.tr("Link Navigate:")), 20, 0)
+        grid.addWidget(self.txtLinkNavigate, 20, 1)
+        grid.addWidget(btnLinkNavigate, 20, 2)
+        grid.addWidget(QLabel(self.tr("Brace Background:")), 21, 0)
+        grid.addWidget(self.txtBraceBackground, 21, 1)
+        grid.addWidget(btnBraceBackground, 21, 2)
+        grid.addWidget(QLabel(self.tr("Brace Foreground:")), 22, 0)
+        grid.addWidget(self.txtBraceForeground, 22, 1)
+        grid.addWidget(btnBraceForeground, 22, 2)
+        grid.addWidget(QLabel(self.tr("Error Underline:")), 23, 0)
+        grid.addWidget(self.txtErrorUnderline, 23, 1)
+        grid.addWidget(btnErrorUnderline, 23, 2)
+        grid.addWidget(QLabel(self.tr("PEP8 Underline:")), 24, 0)
+        grid.addWidget(self.txtPep8Underline, 24, 1)
+        grid.addWidget(btnPep8Underline, 24, 2)
+
+        frame = QFrame()
+        frame.setLayout(grid)
+        scrollArea.setWidget(frame)
+
+        self.txtKeyword.setText(resources.CUSTOM_SCHEME.get('keyword',
+            resources.COLOR_SCHEME['keyword']))
+        self.txtOperator.setText(resources.CUSTOM_SCHEME.get('operator',
+            resources.COLOR_SCHEME['operator']))
+        self.txtBrace.setText(resources.CUSTOM_SCHEME.get('brace',
+            resources.COLOR_SCHEME['brace']))
+        self.txtDefinition.setText(resources.CUSTOM_SCHEME.get('definition',
+            resources.COLOR_SCHEME['definition']))
+        self.txtString.setText(resources.CUSTOM_SCHEME.get('string',
+            resources.COLOR_SCHEME['string']))
+        self.txtString2.setText(resources.CUSTOM_SCHEME.get('string2',
+            resources.COLOR_SCHEME['string2']))
+        self.txtSpaces.setText(resources.CUSTOM_SCHEME.get('spaces',
+            resources.COLOR_SCHEME['spaces']))
+        self.txtExtras.setText(resources.CUSTOM_SCHEME.get('extras',
+            resources.COLOR_SCHEME['extras']))
+        self.txtComment.setText(resources.CUSTOM_SCHEME.get('comment',
+            resources.COLOR_SCHEME['comment']))
+        self.txtProperObject.setText(resources.CUSTOM_SCHEME.get(
+            'properObject', resources.COLOR_SCHEME['properObject']))
+        self.txtNumbers.setText(resources.CUSTOM_SCHEME.get('numbers',
+            resources.COLOR_SCHEME['numbers']))
+        self.txtEditorText.setText(resources.CUSTOM_SCHEME.get('editor-text',
+            resources.COLOR_SCHEME['editor-text']))
+        self.txtEditorBackground.setText(resources.CUSTOM_SCHEME.get(
+            'editor-background', resources.COLOR_SCHEME['editor-background']))
+        self.txtEditorSelectionColor.setText(resources.CUSTOM_SCHEME.get(
+            'editor-selection-color',
+            resources.COLOR_SCHEME['editor-selection-color']))
+        self.txtEditorSelectionBackground.setText(resources.CUSTOM_SCHEME.get(
+            'editor-selection-background',
+            resources.COLOR_SCHEME['editor-selection-background']))
+        self.txtCurrentLine.setText(resources.CUSTOM_SCHEME.get('current-line',
+            resources.COLOR_SCHEME['current-line']))
+        self.txtSelectedWord.setText(resources.CUSTOM_SCHEME.get(
+            'selected-word', resources.COLOR_SCHEME['selected-word']))
+        self.txtFoldArea.setText(resources.CUSTOM_SCHEME.get(
+            'fold-area', resources.COLOR_SCHEME['fold-area']))
+        self.txtFoldArrow.setText(resources.CUSTOM_SCHEME.get(
+            'fold-arrow', resources.COLOR_SCHEME['fold-arrow']))
+        self.txtLinkNavigate.setText(resources.CUSTOM_SCHEME.get(
+            'linkNavigate', resources.COLOR_SCHEME['linkNavigate']))
+        self.txtBraceBackground.setText(resources.CUSTOM_SCHEME.get(
+            'brace-background', resources.COLOR_SCHEME['brace-background']))
+        self.txtBraceForeground.setText(resources.CUSTOM_SCHEME.get(
+            'brace-foreground', resources.COLOR_SCHEME['brace-foreground']))
+        self.txtErrorUnderline.setText(resources.CUSTOM_SCHEME.get(
+            'error-underline', resources.COLOR_SCHEME['error-underline']))
+        self.txtPep8Underline.setText(resources.CUSTOM_SCHEME.get(
+            'pep8-underline', resources.COLOR_SCHEME['pep8-underline']))
+
+        self.connect(btnKeyword, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtKeyword))
+        self.connect(btnOperator, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtOperator))
+        self.connect(btnBrace, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtBrace))
+        self.connect(btnDefinition, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtDefinition))
+        self.connect(btnString, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtString))
+        self.connect(btnString2, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtString2))
+        self.connect(btnSpaces, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtSpaces))
+        self.connect(btnExtras, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtExtras))
+        self.connect(btnComment, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtComment))
+        self.connect(btnProperObject, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtProperObject))
+        self.connect(btnNumbers, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtNumbers))
+        self.connect(btnEditorText, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtEditorText))
+        self.connect(btnEditorBackground, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtEditorBackground))
+        self.connect(btnEditorSelectionColor, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtEditorSelectionColor))
+        self.connect(btnEditorSelectionBackground, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtEditorSelectionBackground))
+        self.connect(btnCurrentLine, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtCurrentLine))
+        self.connect(btnSelectedWord, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtSelectedWord))
+        self.connect(btnFoldArea, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtFoldArea))
+        self.connect(btnFoldArrow, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtFoldArrow))
+        self.connect(btnLinkNavigate, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtLinkNavigate))
+        self.connect(btnBraceBackground, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtBraceBackground))
+        self.connect(btnBraceForeground, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtBraceForeground))
+        self.connect(btnErrorUnderline, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtErrorUnderline))
+        self.connect(btnPep8Underline, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtPep8Underline))
+
+        # Connect Buttons
+        for i in xrange(1, 25):
+            item = grid.itemAtPosition(i, 1).widget()
+            self.connect(item, SIGNAL("returnPressed()"),
+                self._preview_style)
+
+        self.connect(btnSaveScheme, SIGNAL("clicked()"), self.save_scheme)
+
+    def _pick_color(self, lineedit):
+        color = QColorDialog.getColor(QColor(lineedit.text()),
+            self, self.tr("Choose Color for: "))
+        lineedit.setText(str(color.name()))
+        self._preview_style()
+
+    def _preview_style(self):
+        editorWidget = main_container.MainContainer().get_actual_editor()
+        if type(editorWidget) == editor.Editor:
+            scheme = {
+                "keyword": str(self.txtKeyword.text()),
+                "operator": str(self.txtOperator.text()),
+                "brace": str(self.txtBrace.text()),
+                "definition": str(self.txtDefinition.text()),
+                "string": str(self.txtString.text()),
+                "string2": str(self.txtString2.text()),
+                "comment": str(self.txtComment.text()),
+                "properObject": str(self.txtProperObject.text()),
+                "numbers": str(self.txtNumbers.text()),
+                "spaces": str(self.txtSpaces.text()),
+                "extras": str(self.txtExtras.text()),
+                "editor-background": str(self.txtEditorBackground.text()),
+                "editor-selection-color": str(
+                    self.txtEditorSelectionColor.text()),
+                "editor-selection-background": str(
+                    self.txtEditorSelectionBackground.text()),
+                "editor-text": str(self.txtEditorText.text()),
+                "current-line": str(self.txtCurrentLine.text()),
+                "selected-word": str(self.txtSelectedWord.text()),
+                "fold-area": str(self.txtFoldArea.text()),
+                "fold-arrow": str(self.txtFoldArrow.text()),
+                "linkNavigate": str(self.txtLinkNavigate.text()),
+                "brace-background": str(self.txtBraceBackground.text()),
+                "brace-foreground": str(self.txtBraceForeground.text()),
+                "error-underline": str(self.txtErrorUnderline.text()),
+                "pep8-underline": str(self.txtPep8Underline.text())}
+            custom = copy.copy(resources.CUSTOM_SCHEME)
+            resources.CUSTOM_SCHEME = scheme
+            editorWidget.restyle(editorWidget.lang)
+            resources.CUSTOM_SCHEME = custom
+            return scheme
+
+    def save(self):
+        """All the widgets in preferences must contain a save method."""
+        pass
+
+    def save_scheme(self):
+        result = QInputDialog.getText(self, self.tr("Save Scheme"),
+            self.tr("Enter the Scheme Name:"))
+        fileName = unicode(result[0])
+        if result[1] and fileName.strip() != '':
+            fileName = file_manager.create_path(resources.EDITOR_SKINS,
+                fileName)
+            fileName += '.color'
+            scheme = self._preview_style()
+            json_manager.save_editor_skins(fileName, scheme)
+            QMessageBox.information(self, self.tr("Scheme Saved"),
+                    self.tr("The scheme has been saved at: %s." % fileName))
+        elif fileName.strip() != '':
+            QMessageBox.information(self, self.tr("Scheme Not Saved"),
+                    self.tr("The name probably is invalid."))
