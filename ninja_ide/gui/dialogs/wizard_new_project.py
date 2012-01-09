@@ -52,7 +52,8 @@ class WizardNewProject(QWizard):
         settings.set_project_type_handler('Import from sources',
             ImportFromSourcesProjectHandler(self.__explorer))
 
-        self.addPage(PageProjectType(self))
+        self.projectTypePage = PageProjectType(self)
+        self.addPage(self.projectTypePage)
         self.addPage(PageProjectProperties())
 
     def add_project_pages(self, option='Python'):
@@ -66,6 +67,12 @@ class WizardNewProject(QWizard):
         self.addPage(PageProjectProperties())
         for i in listIds:
             self.removePage(i)
+
+    def next(self):
+        if self.currentPage() == self.projectTypePage:
+            self.add_project_pages(
+                unicode(self.projectTypePage.listWidget.currentItem().text()))
+        super(WizardNewProject, self).next()
 
     def done(self, result):
         if result == 1:
@@ -218,16 +225,10 @@ class PageProjectType(QWizardPage):
         vbox.addWidget(self.listWidget)
         types = settings.get_all_project_types()
         types.sort()
-        self.listWidget.addItems(types)
         index = types.index('Python')
-        self.listWidget.setCurrentRow(index)
-
-        self.connect(self.listWidget, SIGNAL("itemSelectionChanged()"),
-            self._item_changed)
-
-    def _item_changed(self):
-        self._wizard.add_project_pages(
-            unicode(self.listWidget.currentItem().text()))
+        types.insert(0, types.pop(index))
+        self.listWidget.addItems(types)
+        self.listWidget.setCurrentRow(0)
 
 
 ###############################################################################
@@ -259,12 +260,12 @@ class PageProjectProperties(QWizardPage):
         #Fields on de right of the grid
         #Name
         self.txtName = QLineEdit()
-        self.registerField('projectName*', self.txtName)
+        self.registerField('PageProjectProperties_projectName*', self.txtName)
         #Location
         hPlace = QHBoxLayout()
         self.txtPlace = QLineEdit()
         self.txtPlace.setReadOnly(True)
-        self.registerField('place*', self.txtPlace)
+        self.registerField('PageProjectProperties_place*', self.txtPlace)
         self.btnExamine = QPushButton(self.tr("Examine..."))
         hPlace.addWidget(self.txtPlace)
         hPlace.addWidget(self.btnExamine)
@@ -272,7 +273,7 @@ class PageProjectProperties(QWizardPage):
         vPlace = QHBoxLayout()
         self.vtxtPlace = QLineEdit()
         self.vtxtPlace.setReadOnly(True)
-        self.registerField('vplace', self.vtxtPlace)
+        self.registerField('PageProjectProperties_vplace', self.vtxtPlace)
         self.vbtnExamine = QPushButton(self.tr("Examine..."))
         vPlace.addWidget(self.vtxtPlace)
         vPlace.addWidget(self.vbtnExamine)
