@@ -635,12 +635,14 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         position = event.pos()
         cursor = self.cursorForPosition(position)
         block = cursor.block()
-        if (block.blockNumber() + 1) in self.errors.errorsSummary:
+        if settings.ERRORS_HIGHLIGHT_LINE and \
+        (block.blockNumber() + 1) in self.errors.errorsSummary:
             message = '\n'.join(
                 self.errors.errorsSummary[(block.blockNumber() + 1)])
             QToolTip.showText(self.mapToGlobal(position),
                 message, self)
-        elif (block.blockNumber() + 1) in self.pep8.pep8checks:
+        elif settings.CHECK_HIGHLIGHT_LINE and \
+        (block.blockNumber() + 1) in self.pep8.pep8checks:
             message = '\n'.join(
                 self.pep8.pep8checks[(block.blockNumber() + 1)])
             QToolTip.showText(self.mapToGlobal(position), message, self)
