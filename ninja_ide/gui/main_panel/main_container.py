@@ -57,6 +57,7 @@ class __MainContainer(QSplitter):
     findOcurrences(QString)
     cursorPositionChange(int, int)    #row, col
     fileOpened(QString)
+    newFileOpened(QString)
     enabledFollowMode(bool)
     """
 ###############################################################################
@@ -241,7 +242,10 @@ class __MainContainer(QSplitter):
 
         #insert the content if present
         if content:
-            editorWidget.textCursor().insertText(content)
+            editorWidget.setPlainText(content)
+        #emit a signal about the file open
+        self.emit(SIGNAL("fileOpened(QString)"), fileName)
+
         return editorWidget
 
     def _cursor_position_changed(self, row, col):
@@ -360,8 +364,8 @@ class __MainContainer(QSplitter):
             if not self.is_open(fileName):
                 self.actualTab.notOpening = False
                 content = file_manager.read_file_content(fileName)
-                editorWidget = self.add_editor(fileName, tabIndex=tabIndex)
-                editorWidget.setPlainText(content)
+                editorWidget = self.add_editor(fileName, tabIndex=tabIndex,
+                    content=content)
                 editorWidget.ID = fileName
                 encoding = file_manager._search_coding_line(content)
                 editorWidget.encoding = encoding
@@ -374,8 +378,6 @@ class __MainContainer(QSplitter):
                     fileName += unicode(self.tr(" (Read-Only)"))
                     index = self.actualTab.currentIndex()
                     self.actualTab.setTabText(index, fileName)
-
-                self.emit(SIGNAL("currentTabChanged(QString)"), fileName)
             else:
                 self.move_to_open(fileName)
                 editorWidget = self.get_actual_editor()
@@ -384,8 +386,7 @@ class __MainContainer(QSplitter):
                         editorWidget.go_to_line(cursorPosition)
                     else:
                         editorWidget.set_cursor_position(cursorPosition)
-            #emit a signal about the file open
-            self.emit(SIGNAL("fileOpened(QString)"), fileName)
+            self.emit(SIGNAL("currentTabChanged(QString)"), fileName)
         except file_manager.NinjaIOException, reason:
             if not notStart:
                 QMessageBox.information(self,
