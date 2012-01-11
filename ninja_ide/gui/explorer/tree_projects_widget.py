@@ -354,6 +354,7 @@ class TreeProjectsWidget(QTreeWidget):
             subitem = ProjectItem(item, name, pathForFolder)
             subitem.setToolTip(0, name)
             subitem.setIcon(0, QIcon(resources.IMAGES['tree-folder']))
+            self._refresh_project(item)
 
     def _delete_file(self):
         item = self.currentItem()
