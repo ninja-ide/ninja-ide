@@ -202,7 +202,8 @@ class ConsoleWidget(QPlainTextEdit):
         event.modifiers() == Qt.ControlModifier):
             self.completer.setCompletionPrefix(completionPrefix)
             self._resolve_completion_argument()
-        elif event.key() == Qt.Key_Space and self.completer.popup().isVisible():
+        elif event.key() == Qt.Key_Space and \
+        self.completer.popup().isVisible():
             self.completer.popup().hide()
         if self.completer.popup().isVisible() and \
         completionPrefix != self.completer.completionPrefix():

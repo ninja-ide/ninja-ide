@@ -381,7 +381,8 @@ class FindInFilesWidget(QWidget):
 
     def open(self):
         if not self._find_widget.isVisible():
-            actual_projects_obj = self._explorer_container.get_opened_projects()
+            actual_projects_obj = \
+                self._explorer_container.get_opened_projects()
             actual_projects = [p.path for p in actual_projects_obj]
             actual = self._explorer_container.get_actual_project()
             self._find_widget.show(actual_project=actual_projects,

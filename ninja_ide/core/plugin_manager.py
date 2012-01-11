@@ -294,7 +294,8 @@ class __PluginManager(object):
                         #add the traceback to errors
                         self._add_error(plugin_name, traceback_msg)
                     else:
-                        logger.info("Successfuly initialized (%s)", plugin_name)
+                        logger.info("Successfuly initialized (%s)",
+                            plugin_name)
 
     def load_all(self):
         for dir, pl in self._plugins_by_dir.iteritems():
