@@ -2,7 +2,6 @@
 from __future__ import absolute_import
 
 import os
-import sys
 
 from PyQt4.QtGui import QTreeWidget
 from PyQt4.QtGui import QTreeWidgetItem
