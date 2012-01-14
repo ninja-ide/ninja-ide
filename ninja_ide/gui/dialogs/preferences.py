@@ -70,7 +70,7 @@ class PreferencesWidget(QDialog):
         self._tabs = QTabWidget()
         self._tabs.setTabPosition(QTabWidget.West)
         self._tabs.setMovable(False)
-        self._general = GeneralTab()
+        self._general = GeneralTab(self)
         self._interface = InterfaceTab(self)
         self._editor = EditorTab()
         self._plugins = plugin_preferences.PluginPreferences()
@@ -112,12 +112,12 @@ class PreferencesWidget(QDialog):
 
 class GeneralTab(QWidget):
 
-    def __init__(self):
+    def __init__(self, parent):
         QWidget.__init__(self)
         vbox = QVBoxLayout(self)
 
         self._tabs = QTabWidget()
-        self._generalConfiguration = GeneralConfiguration()
+        self._generalConfiguration = GeneralConfiguration(parent)
         self._generalExecution = GeneralExecution()
         self._shortcutConfiguration = shortcut_manager.ShortcutConfiguration()
         self._tabs.addTab(self._generalConfiguration, self.tr("General"))
@@ -133,8 +133,9 @@ class GeneralTab(QWidget):
 
 class GeneralConfiguration(QWidget):
 
-    def __init__(self):
+    def __init__(self, dialog):
         QWidget.__init__(self)
+        self._dialog = dialog
         vbox = QVBoxLayout(self)
 
         groupBoxStart = QGroupBox(self.tr("On Start:"))
@@ -249,6 +250,7 @@ class GeneralConfiguration(QWidget):
             buttons=QMessageBox.Yes | QMessageBox.No)
         if result == QMessageBox.Yes:
             QSettings().clear()
+            self._dialog.close()
 
 
 class GeneralExecution(QWidget):
