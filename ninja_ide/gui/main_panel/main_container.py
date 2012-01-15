@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
+import sys
 import os
 import logging
 
@@ -553,9 +554,13 @@ class __MainContainer(QSplitter):
         self.add_tab(startPage, 'Start Page')
 
     def show_python_doc(self):
-        process = runner.start_pydoc()
-        self.docPage = browser_widget.BrowserWidget(process[1], process[0])
-        self.add_tab(self.docPage, self.tr("Python Documentation"))
+        if sys.platform == 'win32':
+            self.docPage = browser_widget.BrowserWidget('http://pydoc.org/')
+            self.add_tab(self.docPage, self.tr("Python Documentation"))
+        else:
+            process = runner.start_pydoc()
+            self.docPage = browser_widget.BrowserWidget(process[1], process[0])
+            self.add_tab(self.docPage, self.tr("Python Documentation"))
 
     def editor_jump_to_line(self, lineno=None):
         """Jump to line *lineno* if it is not None
