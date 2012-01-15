@@ -14,6 +14,9 @@ from PyQt4.QtCore import QThread
 from PyQt4.QtCore import SIGNAL
 
 from PyQt4.QtGui import QVBoxLayout
+from PyQt4.QtGui import QMessageBox
+from PyQt4.QtGui import QSizePolicy
+from PyQt4.QtGui import QSpacerItem
 from PyQt4.QtGui import QRadioButton
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QGridLayout
@@ -164,6 +167,9 @@ class FindInFilesDialog(QDialog):
         self.open_button = QPushButton(QIcon(resources.IMAGES['find']),
             self.tr("Open"))
         self.filters_line_edit = QLineEdit("*.py")
+        self.replace_line = QLineEdit()
+        self.replace_line.setEnabled(False)
+        self.check_replace = QCheckBox(self.tr("Replace: "))
         self.case_checkbox = QCheckBox(self.tr("C&ase sensitive"))
         self.type_checkbox = QCheckBox(self.tr("R&egular Expression"))
         self.recursive_checkbox = QCheckBox(self.tr("Rec&ursive"))
@@ -194,6 +200,8 @@ class FindInFilesDialog(QDialog):
         grid.addWidget(self.open_button, 1, 2)
         grid.addWidget(QLabel(self.tr("Filter: ")), 2, 0)
         grid.addWidget(self.filters_line_edit, 2, 1)
+        grid.addWidget(self.check_replace, 3, 0)
+        grid.addWidget(self.replace_line, 3, 1)
 
         find_group_box.setLayout(grid)
         #add main section to MAIN LAYOUT
@@ -231,6 +239,19 @@ class FindInFilesDialog(QDialog):
             self._find_thread_finished)
         self.connect(self.type_checkbox, SIGNAL("stateChanged(int)"),
             self._change_radio_enabled)
+        self.connect(self.check_replace, SIGNAL("stateChanged(int)"),
+            self._replace_activated)
+        self.connect(self.words_radio, SIGNAL("clicked(bool)"),
+            self._words_radio_pressed)
+
+    def _replace_activated(self):
+        self.replace_line.setEnabled(self.check_replace.isChecked())
+        self.phrase_radio.setChecked(True)
+
+    def _words_radio_pressed(self, value):
+        self.replace_line.setEnabled(not value)
+        self.check_replace.setChecked(not value)
+        self.words_radio.setChecked(True)
 
     def _change_radio_enabled(self, val):
         enabled = not self.type_checkbox.isChecked()
@@ -319,15 +340,27 @@ class FindInFilesWidget(QWidget):
         self._open_find_button = QPushButton(self.tr("Find!"))
         self._stop_button = QPushButton(self.tr("Stop"))
         self._clear_button = QPushButton(self.tr("Clear!"))
+        self._replace_button = QPushButton(self.tr("Replace"))
         self._find_widget = FindInFilesDialog(self._result_widget)
         self._error_label = QLabel(self.tr("No Results"))
         self._error_label.setVisible(False)
+        #Replace Area
+        self.replace_widget = QWidget()
+        hbox_replace = QHBoxLayout(self.replace_widget)
+        hbox_replace.setContentsMargins(0, 0, 0, 0)
+        self.lbl_replace = QLabel(self.tr("Replace results with:"))
+        self.lbl_replace.setTextFormat(Qt.PlainText)
+        self.replace_edit = QLineEdit()
+        hbox_replace.addWidget(self.lbl_replace)
+        hbox_replace.addWidget(self.replace_edit)
+        self.replace_widget.setVisible(False)
         #Main Layout
         main_hbox = QHBoxLayout(self)
         #Result Layout
         tree_vbox = QVBoxLayout()
         tree_vbox.addWidget(self._result_widget)
         tree_vbox.addWidget(self._error_label)
+        tree_vbox.addWidget(self.replace_widget)
 
         main_hbox.addLayout(tree_vbox)
         #Buttons Layout
@@ -335,6 +368,9 @@ class FindInFilesWidget(QWidget):
         vbox.addWidget(self._open_find_button)
         vbox.addWidget(self._stop_button)
         vbox.addWidget(self._clear_button)
+        vbox.addSpacerItem(QSpacerItem(0, 50,
+            QSizePolicy.Fixed, QSizePolicy.Expanding))
+        vbox.addWidget(self._replace_button)
         main_hbox.addLayout(vbox)
 
         self._open_find_button.setFocus()
@@ -350,6 +386,8 @@ class FindInFilesWidget(QWidget):
             self._find_finished)
         self.connect(self._find_widget, SIGNAL("findStarted()"),
             self._find_started)
+        self.connect(self._replace_button, SIGNAL("clicked()"),
+            self._replace_results)
 
     def _find_finished(self):
         self._stop_button.setEnabled(False)
@@ -357,6 +395,13 @@ class FindInFilesWidget(QWidget):
         self._error_label.setVisible(False)
         if not self._result_widget.topLevelItemCount():
             self._error_label.setVisible(True)
+        if self._find_widget.check_replace.isChecked():
+            self.replace_widget.setVisible(True)
+            self._replace_button.setEnabled(True)
+            self.replace_edit.setText(self._find_widget.replace_line.text())
+        else:
+            self._replace_button.setEnabled(False)
+            self.replace_widget.setVisible(False)
 
     def _find_stop(self):
         self._find_widget._kill_thread()
@@ -371,12 +416,12 @@ class FindInFilesWidget(QWidget):
     def _go_to(self, item, val):
         if item.text(1):
             parent = item.parent()
-            file_name = str(parent.text(0))
+            file_name = unicode(parent.text(0))
             lineno = item.text(1)
-            root_dir_name = str(parent.dir_name_root)
+            root_dir_name = unicode(parent.dir_name_root)
             file_path = file_manager.create_path(root_dir_name, file_name)
             #open the file and jump_to_line
-            self._main_container.open_file(str(file_path))
+            self._main_container.open_file(unicode(file_path))
             self._main_container.editor_jump_to_line(lineno=int(lineno) - 1)
 
     def open(self):
@@ -402,3 +447,29 @@ class FindInFilesWidget(QWidget):
         self._find_widget.dir_combo.clear()
         self._find_widget.dir_combo.addItem(project)
         self._find_widget._find_in_files()
+
+    def _replace_results(self):
+        result = QMessageBox.question(self, self.tr("Replace Files Contents"),
+            self.tr("Are you sure you want to replace the content in "
+                    "this files?\n(The change is not reversible)"),
+            buttons=QMessageBox.Yes | QMessageBox.No)
+        if result == QMessageBox.Yes:
+            for index in xrange(self._result_widget.topLevelItemCount()):
+                parent = self._result_widget.topLevelItem(index)
+                root_dir_name = unicode(parent.dir_name_root)
+                file_name = unicode(parent.text(0))
+                file_path = file_manager.create_path(root_dir_name, file_name)
+                file_object = QFile(file_path)
+                if not file_object.open(QFile.ReadOnly):
+                    return
+                stream = QTextStream(file_object)
+                content = stream.readAll()
+                file_object.close()
+                pattern = self._find_widget.pattern_line_edit.text()
+                case_sensitive = self._find_widget.case_checkbox.isChecked()
+                type_ = QRegExp.RegExp if \
+                    self._find_widget.type_checkbox.isChecked() else \
+                    QRegExp.FixedString
+                target = QRegExp(pattern, case_sensitive, type_)
+                content.replace(target, self._find_widget.replace_line.text())
+                file_manager.store_file_content(file_path, content, False)
