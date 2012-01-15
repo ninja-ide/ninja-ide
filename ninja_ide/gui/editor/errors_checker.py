@@ -31,6 +31,7 @@ class ErrorsChecker(QThread):
                 parseResult = compiler.parse(open(self._editor.ID).read())
                 self.checker = checker.Checker(parseResult, self._editor.ID)
                 for m in self.checker.messages:
+                    print m.message
                     if m.lineno not in self.errorsSummary:
                         message = [m.message % m.message_args]
                     else:
@@ -38,6 +39,6 @@ class ErrorsChecker(QThread):
                         message += [m.message % m.message_args]
                     self.errorsSummary[m.lineno] = message
             except Exception, reason:
-                self.errorsSummary[reason.lineno] = reason.msg
+                self.errorsSummary[reason.lineno] = [reason.msg]
         else:
             self.reset()
