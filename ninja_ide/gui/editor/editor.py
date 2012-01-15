@@ -339,96 +339,50 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def indent_more(self):
         #cursor is a COPY all changes do not affect the QPlainTextEdit's cursor
         cursor = self.textCursor()
-        selectionStart = cursor.selectionStart()
-        selectionEnd = cursor.selectionEnd()
         #line where indent_more should start and end
-        start = self.document().findBlock(
-            cursor.selectionStart()).firstLineNumber()
+        block = self.document().findBlock(
+            cursor.selectionStart())
         end = self.document().findBlock(
-            cursor.selectionEnd()).firstLineNumber()
-        startPosition = self.document().findBlockByLineNumber(start).position()
+            cursor.selectionEnd()).next()
 
         #Start a undo block
         cursor.beginEditBlock()
 
-        #Decide which lines will be indented
-        cursor.setPosition(selectionEnd)
-        self.setTextCursor(cursor)
-        #Select one char at left
-        #If there is a newline \u2029 (\n) then skip it
-        self.moveCursor(QTextCursor.Left, QTextCursor.KeepAnchor)
-        if u'\u2029' in self.textCursor().selectedText():
-            end -= 1
+        #Move the COPY cursor
+        cursor.setPosition(block.position())
+        while block != end:
+            cursor.setPosition(block.position())
+            cursor.insertText(' ' * settings.INDENT)
+            block = block.next()
 
-        cursor.setPosition(selectionStart)
-        self.setTextCursor(cursor)
-        self.moveCursor(QTextCursor.StartOfLine)
-        #Indent loop; line by line
-        for i in xrange(start, end + 1):
-            self.textCursor().insertText(' ' * settings.INDENT)
-            self.moveCursor(QTextCursor.Down, QTextCursor.MoveAnchor)
-
-        #Restore the user selection
-        cursor.setPosition(startPosition)
-        selectionEnd = selectionEnd + \
-            (settings.INDENT * (end - start + 1))
-        cursor.setPosition(selectionEnd, QTextCursor.KeepAnchor)
-        self.setTextCursor(cursor)
         #End a undo block
         cursor.endEditBlock()
 
     def indent_less(self):
-        #save the total of movements made after indent_less
-        totalIndent = 0
         #cursor is a COPY all changes do not affect the QPlainTextEdit's cursor
         cursor = self.textCursor()
         if not cursor.hasSelection():
             cursor.movePosition(QTextCursor.EndOfLine)
-        selectionEnd = cursor.selectionEnd()
         #line where indent_less should start and end
-        start = self.document().findBlock(
-            cursor.selectionStart()).firstLineNumber()
+        block = self.document().findBlock(
+            cursor.selectionStart())
         end = self.document().findBlock(
-            cursor.selectionEnd()).firstLineNumber()
-        startPosition = self.document().findBlockByLineNumber(start).position()
+            cursor.selectionEnd()).next()
 
         #Start a undo block
         cursor.beginEditBlock()
 
-        #Decide which lines will be indented_less
-        cursor.setPosition(selectionEnd)
-        self.setTextCursor(cursor)
-        #Select one char at left
-        self.moveCursor(QTextCursor.Left, QTextCursor.KeepAnchor)
-        #If there is a newline \u2029 (\n) then dont indent this line; skip it!
-        if u'\u2029' in self.textCursor().selectedText():
-            end -= 1
-
-        cursor.setPosition(startPosition)
-        self.setTextCursor(cursor)
-        self.moveCursor(QTextCursor.StartOfLine)
-        #Indent_less loop; line by line
-        for i in xrange(start, end + 1):
+        cursor.setPosition(block.position())
+        while block != end:
+            cursor.setPosition(block.position())
             #Select Settings.indent chars from the current line
-            for j in xrange(settings.INDENT):
-                self.moveCursor(QTextCursor.Right, QTextCursor.KeepAnchor)
-
-            text = self.textCursor().selectedText()
+            cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
+                settings.INDENT)
+            text = cursor.selectedText()
             if text == ' ' * settings.INDENT:
-                self.textCursor().removeSelectedText()
-                totalIndent += settings.INDENT
-            elif u'\u2029' in text:
-                #\u2029 is the unicode char for \n
-                #if there is a newline, rollback the selection made above.
-                for j in xrange(settings.INDENT):
-                    self.moveCursor(QTextCursor.Left, QTextCursor.KeepAnchor)
+                cursor.removeSelectedText()
+            block = block.next()
 
-            #Go Down to the next line!
-            self.moveCursor(QTextCursor.Down)
-        #Restore the user selection
-        cursor.setPosition(startPosition)
-        cursor.setPosition(selectionEnd - totalIndent, QTextCursor.KeepAnchor)
-        self.setTextCursor(cursor)
         #End a undo block
         cursor.endEditBlock()
 
