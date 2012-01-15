@@ -671,11 +671,14 @@ class __Actions(QObject):
                 breaks = settings.BREAKPOINTS[self.__breakpointsFile]
                 self.__breakpointsPos = len(breaks) - 1
                 lineNumber = breaks[self.__breakpointsPos]
-        if self.__breakpointsFile:
+        if file_manager.file_exists(self.__breakpointsFile):
             self.ide.mainContainer.open_file(self.__breakpointsFile,
                 lineNumber, None, True)
+        else:
+            settings.BREAKPOINTS.pop(self.__breakpointsFile)
 
     def _navigate_bookmarks(self, val):
+        print settings.BOOKMARKS
         bookList = settings.BOOKMARKS.keys()
         bookList.sort()
         if not bookList:
@@ -707,9 +710,11 @@ class __Actions(QObject):
                 bookms = settings.BOOKMARKS[self.__bookmarksFile]
                 self.__bookmarksPos = len(bookms) - 1
                 lineNumber = bookms[self.__bookmarksPos]
-        if self.__bookmarksFile:
+        if file_manager.file_exists(self.__bookmarksFile):
             self.ide.mainContainer.open_file(self.__bookmarksFile,
                 lineNumber, None, True)
+        else:
+            settings.BOOKMARKS.pop(self.__bookmarksFile)
 
     def add_back_item_navigation(self):
         editorWidget = self.ide.mainContainer.get_actual_editor()
