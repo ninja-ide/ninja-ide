@@ -278,41 +278,21 @@ def duplicate(editorWidget):
     cursor.endEditBlock()
 
 
-def uncomment(editorWidget, start=-1, end=-1, startPosition=-1):
-    lang = file_manager.get_file_extension(editorWidget.ID)
-    key = settings.EXTENSIONS.get(lang, 'python')
-    comment_wildcard = settings.SYNTAX[key].get('comment', ['#'])[0]
-
+def uncomment(editorWidget, block, end, comment_wildcard):
     #cursor is a COPY all changes do not affect the QPlainTextEdit's cursor!!!
     cursor = editorWidget.textCursor()
-    if start == -1 and end == -1 and startPosition == -1:
-        start = editorWidget.document().findBlock(
-            cursor.selectionStart()).firstLineNumber()
-        end = editorWidget.document().findBlock(
-            cursor.selectionEnd()).firstLineNumber()
-        startPosition = editorWidget.document().findBlockByLineNumber(
-            start).position()
 
     #Start a undo block
     cursor.beginEditBlock()
 
-    #Move the COPY cursor
-    cursor.setPosition(startPosition)
-    #Move the QPlainTextEdit Cursor where the COPY cursor IS!
-    editorWidget.setTextCursor(cursor)
-    editorWidget.moveCursor(QTextCursor.StartOfLine)
-    for i in xrange(start, end + 1):
-        editorWidget.moveCursor(QTextCursor.Right, QTextCursor.KeepAnchor)
-        text = editorWidget.textCursor().selectedText()
+    while block != end:
+        #Move the COPY cursor
+        cursor.setPosition(block.position())
+        cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
+        text = cursor.selectedText()
         if text == comment_wildcard:
-            editorWidget.textCursor().removeSelectedText()
-        elif u'\u2029' in text:
-            #\u2029 is the unicode char for \n
-            #if there is a newline, rollback the selection made above.
-            editorWidget.moveCursor(QTextCursor.Left, QTextCursor.KeepAnchor)
-
-        editorWidget.moveCursor(QTextCursor.Down)
-        editorWidget.moveCursor(QTextCursor.StartOfLine)
+            cursor.removeSelectedText()
+        block = block.next()
 
     #End a undo block
     cursor.endEditBlock()
@@ -325,33 +305,26 @@ def comment(editorWidget):
 
     #cursor is a COPY all changes do not affect the QPlainTextEdit's cursor!!!
     cursor = editorWidget.textCursor()
-    start = editorWidget.document().findBlock(
-        cursor.selectionStart()).firstLineNumber()
+    block = editorWidget.document().findBlock(
+        cursor.selectionStart())
     end = editorWidget.document().findBlock(
-        cursor.selectionEnd()).firstLineNumber()
-    startPosition = editorWidget.document().findBlockByLineNumber(
-        start).position()
+        cursor.selectionEnd()).next()
 
     #Start a undo block
     cursor.beginEditBlock()
 
     #Move the COPY cursor
-    cursor.setPosition(startPosition)
-    #Move the QPlainTextEdit Cursor where the COPY cursor IS!
-    editorWidget.setTextCursor(cursor)
-    editorWidget.moveCursor(QTextCursor.StartOfLine)
-    editorWidget.moveCursor(QTextCursor.Right, QTextCursor.KeepAnchor)
-    text = editorWidget.textCursor().selectedText()
+    cursor.setPosition(block.position())
+    cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
+    text = cursor.selectedText()
     if text == comment_wildcard:
         cursor.endEditBlock()
-        uncomment(editorWidget, start, end, startPosition)
+        uncomment(editorWidget, block, end, comment_wildcard)
         return
-    else:
-        editorWidget.moveCursor(QTextCursor.StartOfLine)
-    for i in xrange(start, end + 1):
-        editorWidget.textCursor().insertText(comment_wildcard)
-        editorWidget.moveCursor(QTextCursor.Down)
-        editorWidget.moveCursor(QTextCursor.StartOfLine)
+    while block != end:
+        cursor.setPosition(block.position())
+        cursor.insertText(comment_wildcard)
+        block = block.next()
 
     #End a undo block
     cursor.endEditBlock()
