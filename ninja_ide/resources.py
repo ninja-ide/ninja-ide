@@ -224,6 +224,7 @@ SHORTCUTS = {
     "Print-file": QKeySequence(Qt.CTRL + Qt.Key_I),
     "Redo": QKeySequence(Qt.CTRL + Qt.Key_Y),
     "Comment": QKeySequence(Qt.CTRL + Qt.Key_D),
+    "Uncomment": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_D),
     "Horizontal-line": QKeySequence(Qt.CTRL + Qt.Key_R),
     "Title-comment": QKeySequence(Qt.CTRL + Qt.Key_T),
     "Indent-less": QKeySequence(Qt.SHIFT + Qt.Key_Tab),
