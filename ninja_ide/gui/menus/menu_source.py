@@ -35,7 +35,7 @@ class MenuSource(QObject):
         unCommentAction = menuSource.addAction(
             QIcon(resources.IMAGES['uncomment-code']),
             self.tr("Uncomment (%1)").arg(
-                resources.get_shortcut("Comment").toString(
+                resources.get_shortcut("Uncomment").toString(
                     QKeySequence.NativeText)))
         horizontalLineAction = menuSource.addAction(
             self.tr("Insert Horizontal Line (%1)").arg(
@@ -109,7 +109,7 @@ class MenuSource(QObject):
         self.connect(commentAction, SIGNAL("triggered()"),
             actions.Actions().editor_comment)
         self.connect(unCommentAction, SIGNAL("triggered()"),
-            actions.Actions().editor_comment)
+            actions.Actions().editor_uncomment)
         self.connect(horizontalLineAction, SIGNAL("triggered()"),
             actions.Actions().editor_insert_horizontal_line)
         self.connect(titleCommentAction, SIGNAL("triggered()"),

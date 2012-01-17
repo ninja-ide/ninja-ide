@@ -186,7 +186,7 @@ class FaderWidget(QWidget):
         self.timeline = QTimeLine()
         self.timeline.valueChanged.connect(self.animate)
         self.timeline.finished.connect(self.close)
-        self.timeline.setDuration(555)
+        self.timeline.setDuration(500)
         self.timeline.start()
 
         self.resize(new_widget.size())

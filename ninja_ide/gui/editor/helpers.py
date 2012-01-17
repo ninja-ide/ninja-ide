@@ -278,9 +278,17 @@ def duplicate(editorWidget):
     cursor.endEditBlock()
 
 
-def uncomment(editorWidget, block, end, comment_wildcard):
+def uncomment(editorWidget):
+    lang = file_manager.get_file_extension(editorWidget.ID)
+    key = settings.EXTENSIONS.get(lang, 'python')
+    comment_wildcard = settings.SYNTAX[key].get('comment', ['#'])[0]
+
     #cursor is a COPY all changes do not affect the QPlainTextEdit's cursor!!!
     cursor = editorWidget.textCursor()
+    block = editorWidget.document().findBlock(
+        cursor.selectionStart())
+    end = editorWidget.document().findBlock(
+        cursor.selectionEnd()).next()
 
     #Start a undo block
     cursor.beginEditBlock()
@@ -314,13 +322,6 @@ def comment(editorWidget):
     cursor.beginEditBlock()
 
     #Move the COPY cursor
-    cursor.setPosition(block.position())
-    cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
-    text = cursor.selectedText()
-    if text == comment_wildcard:
-        cursor.endEditBlock()
-        uncomment(editorWidget, block, end, comment_wildcard)
-        return
     while block != end:
         cursor.setPosition(block.position())
         cursor.insertText(comment_wildcard)

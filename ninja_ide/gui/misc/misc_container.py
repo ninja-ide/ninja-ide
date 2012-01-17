@@ -147,10 +147,6 @@ class __MiscContainer(QWidget):
         self.connect(button, SIGNAL("clicked()"), func)
         self.__toolbar.addWidget(button)
 
-#    def add_to_stack(self, widget, icon):
-#        self.stack.addWidget(widget)
-#        self._combo.addItem(QIcon(icon), '')
-
 
 class StackedWidget(QStackedWidget):
 
