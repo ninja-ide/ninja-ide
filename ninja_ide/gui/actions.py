@@ -73,6 +73,7 @@ class __Actions(QObject):
         self.shortAddBookmark = QShortcut(short("Add-Bookmark-or-Breakpoint"),
             self.ide)
         self.shortComment = QShortcut(short("Comment"), self.ide)
+        self.shortUncomment = QShortcut(short("Uncomment"), self.ide)
         self.shortHorizontalLine = QShortcut(short("Horizontal-line"),
             self.ide)
         self.shortTitleComment = QShortcut(short("Title-comment"), self.ide)
@@ -185,6 +186,8 @@ class __Actions(QObject):
             self.editor_indent_less)
         self.connect(self.shortComment, SIGNAL("activated()"),
             self.editor_comment)
+        self.connect(self.shortUncomment, SIGNAL("activated()"),
+            self.editor_uncomment)
         self.connect(self.shortHelp, SIGNAL("activated()"),
             self.ide.mainContainer.show_python_doc)
         self.connect(self.shortImport, SIGNAL("activated()"),
@@ -498,6 +501,11 @@ class __Actions(QObject):
         if editorWidget:
             helpers.comment(editorWidget)
 
+    def editor_uncomment(self):
+        editorWidget = self.ide.mainContainer.get_actual_editor()
+        if editorWidget:
+            helpers.uncomment(editorWidget)
+
     def editor_insert_horizontal_line(self):
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
@@ -678,7 +686,6 @@ class __Actions(QObject):
             settings.BREAKPOINTS.pop(self.__breakpointsFile)
 
     def _navigate_bookmarks(self, val):
-        print settings.BOOKMARKS
         bookList = settings.BOOKMARKS.keys()
         bookList.sort()
         if not bookList:
