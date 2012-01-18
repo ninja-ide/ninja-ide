@@ -558,7 +558,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 #        cursor.selectedText().contains("#"):
 #            return
         symbol = unicode(event.text())
-        #FIXME: Why this check, the qt signal should suffice
         if symbol in settings.BRACES:
             self.textCursor().insertText(settings.BRACES[symbol])
             self.moveCursor(QTextCursor.Left)
@@ -574,15 +573,14 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         cursor.movePosition(QTextCursor.StartOfLine,
             QTextCursor.KeepAnchor)
         symbol = unicode(event.text())
-        #FIXME: Why this check, the qt signal should suffice
         if symbol in settings.QUOTES:
             pre_context = self.__reverse_select_text_portion_from_offset(0, 3)
             if pre_context == 3 * symbol:
                 self.textCursor().insertText(3 * symbol)
-                #FIXME: Find a clean way to move cursor please
-                self.moveCursor(QTextCursor.Left)
-                self.moveCursor(QTextCursor.Left)
-                self.moveCursor(QTextCursor.Left)
+                another_cursor = self.textCursor()
+                another_cursor.movePosition(QTextCursor.Left,
+                                    QTextCursor.MoveAnchor, 3)
+                self.setTextCursor(another_cursor)
             else:
                 self.textCursor().insertText(symbol)
                 self.moveCursor(QTextCursor.Left)

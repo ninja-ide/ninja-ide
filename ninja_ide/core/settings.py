@@ -7,7 +7,7 @@ from ninja_ide.dependencies import pep8mod
 
 import logging
 
-LOGLEVEL = logging.DEBUG #Can we pretty please make this part of settings?
+LOGLEVEL = logging.DEBUG
 logger = logging.getLogger('ninja_ide.gui.core.settings')
 #All logger calls will default to this level, since is the one set up
 #In production environement should be nolog
@@ -349,11 +349,11 @@ def load_settings():
     simpleQuotes = qsettings.value('preferences/editor/simpleQuotes',
         True).toBool()
     if not simpleQuotes:
-        del BRACES["'"]
+        del QUOTES["'"]
     doubleQuotes = qsettings.value('preferences/editor/doubleQuotes',
         True).toBool()
     if not doubleQuotes:
-        del BRACES['"']
+        del QUOTES['"']
     #Projects
     SHOW_PROJECT_EXPLORER = qsettings.value(
         'preferences/interface/showProjectExplorer', True).toBool()
