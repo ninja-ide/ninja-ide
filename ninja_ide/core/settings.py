@@ -87,9 +87,7 @@ SHOW_MARGIN_LINE = True
 REMOVE_TRAILING_SPACES = True
 SHOW_TABS_AND_SPACES = True
 
-BRACES = {"'": "'",
-    '"': '"',
-    '{': '}',
+BRACES = {'{': '}',
     '[': ']',
     '(': ')'}
 QUOTES = ('"', "'")
