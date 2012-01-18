@@ -90,7 +90,8 @@ SHOW_TABS_AND_SPACES = True
 BRACES = {'{': '}',
     '[': ']',
     '(': ')'}
-QUOTES = ('"', "'")
+QUOTES = {'"': '"',
+    "'": "'"}
 
 FONT_MAX_SIZE = 28
 FONT_MIN_SIZE = 6
