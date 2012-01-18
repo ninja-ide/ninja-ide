@@ -5,6 +5,8 @@ import os
 import sys
 
 from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QSizePolicy
+from PyQt4.QtGui import QSpacerItem
 from PyQt4.QtGui import QTabWidget
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QDialog
@@ -57,21 +59,24 @@ class ProjectProperties(QDialog):
         self.connect(self.btnSave, SIGNAL("clicked()"), self.save_properties)
 
     def save_properties(self):
-        if str(self.name.text()).strip() == '':
+        if unicode(self.projectData.name.text()).strip() == '':
             QMessageBox.critical(self, self.tr("Properties Invalid"),
                 self.tr("The Project must have a name."))
             return
         tempName = self._item.name
-        self._item.name = unicode(self.name.text())
-        self._item.description = unicode(self.description.toPlainText())
-        self._item.license = unicode(self.cboLicense.currentText())
-        self._item.mainFile = unicode(self.path.text())
-        self._item.url = unicode(self.url.text())
-        self._item.projectType = unicode(self.txtType.text())
-        self._item.pythonPath = unicode(self.txtPythonPath.text())
-        self._item.programParams = unicode(self.txtParams.text())
-        self._item.venv = unicode(self.txtVenvPath.text())
-        extensions = unicode(self.txtExtensions.text()).split(', ')
+        self._item.name = unicode(self.projectData.name.text())
+        self._item.description = unicode(
+            self.projectData.description.toPlainText())
+        self._item.license = unicode(self.projectData.cboLicense.currentText())
+        self._item.mainFile = unicode(self.projectExecution.path.text())
+        self._item.url = unicode(self.projectData.url.text())
+        self._item.projectType = unicode(self.projectData.txtType.text())
+        self._item.pythonPath = unicode(
+            self.projectExecution.txtPythonPath.text())
+        self._item.programParams = unicode(
+            self.projectExecution.txtParams.text())
+        self._item.venv = unicode(self.projectExecution.txtVenvPath.text())
+        extensions = unicode(self.projectData.txtExtensions.text()).split(', ')
         self._item.extensions = tuple(extensions)
         #save project properties
         project = {}
@@ -166,10 +171,8 @@ class ProjectExecution(QWidget):
         self.path.setReadOnly(True)
         self.btnBrowse = QPushButton(QIcon(
             self.style().standardPixmap(self.style().SP_FileIcon)), '')
-        hbox = QHBoxLayout()
-        hbox.addWidget(self.path)
-        hbox.addWidget(self.btnBrowse)
-        grid.addLayout(hbox, 0, 1)
+        grid.addWidget(self.path, 0, 1)
+        grid.addWidget(self.btnBrowse, 0, 2)
 
         self.txtPythonPath = QLineEdit()
         self.txtPythonPath.setText(self._parent._item.pythonPath)
@@ -195,6 +198,8 @@ class ProjectExecution(QWidget):
         grid.addWidget(QLabel(self.tr("Virtualenv Folder:")), 3, 0)
         grid.addWidget(self.txtVenvPath, 3, 1)
         grid.addWidget(self.btnVenvPath, 3, 2)
+        grid.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
+            QSizePolicy.Expanding), 4, 0)
 
         self.connect(self.btnBrowse, SIGNAL("clicked()"), self.select_file)
         self.connect(self.btnPythonPath, SIGNAL("clicked()"),
@@ -226,8 +231,8 @@ class ProjectExecution(QWidget):
     def select_file(self):
         fileName = unicode(QFileDialog.getOpenFileName(
             self, self.tr("Select Main File"),
-                        self._item.path, '(*.py);;(*.*)'))
+                        self._parent._item.path, '(*.py);;(*.*)'))
         if fileName != '':
             fileName = file_manager.convert_to_relative(
-                self._item.path, fileName)
+                self._parent._item.path, fileName)
             self.path.setText(fileName)
