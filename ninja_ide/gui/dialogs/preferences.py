@@ -984,9 +984,9 @@ class EditorCompletion(QWidget):
         self._checkBrackets = QCheckBox(self.tr("Brackets: []"))
         self._checkBrackets.setChecked('[' in settings.BRACES)
         self._checkSimpleQuotes = QCheckBox(self.tr("Simple Quotes: ''"))
-        self._checkSimpleQuotes.setChecked("'" in settings.BRACES)
+        self._checkSimpleQuotes.setChecked("'" in settings.QUOTES)
         self._checkDoubleQuotes = QCheckBox(self.tr("Double Quotes: \"\""))
-        self._checkDoubleQuotes.setChecked('"' in settings.BRACES)
+        self._checkDoubleQuotes.setChecked('"' in settings.QUOTES)
         self._checkCompleteInStrings = QCheckBox(
             self.tr("Enable Completion inside Comments"))
         self._checkCompleteInStrings.setChecked(
@@ -1033,14 +1033,14 @@ class EditorCompletion(QWidget):
             del settings.BRACES['{']
         qsettings.setValue('simpleQuotes', self._checkSimpleQuotes.isChecked())
         if self._checkSimpleQuotes.isChecked():
-            settings.BRACES["'"] = "'"
-        elif ("'") in settings.BRACES:
-            del settings.BRACES["'"]
+            settings.QUOTES["'"] = "'"
+        elif ("'") in settings.QUOTES:
+            del settings.QUOTES["'"]
         qsettings.setValue('doubleQuotes', self._checkDoubleQuotes.isChecked())
         if self._checkDoubleQuotes.isChecked():
-            settings.BRACES['"'] = '"'
-        elif ('"') in settings.BRACES:
-            del settings.BRACES['"']
+            settings.QUOTES['"'] = '"'
+        elif ('"') in settings.QUOTES:
+            del settings.QUOTES['"']
         qsettings.setValue('codeCompletion', self._checkCodeDot .isChecked())
         qsettings.setValue('completeInComments',
             self._checkCompleteInStrings.isChecked())
