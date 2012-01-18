@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 import ast
 
+import logging
+
+logger_imports = logging.getLogger('ninja_ide.tools.introspection.obtaining_imports')
+logger_symbols = logging.getLogger('ninja_ide.tools.introspection.obtainint_symbols')
+
 
 def _parse_cls_function_body(funcBody):
     """Parse the content of a function in order to obtain class attributes."""
@@ -36,7 +41,7 @@ def obtain_imports(source='', body=None):
             module = ast.parse(source)
             body = module.body
         except:
-            print 'The file contains syntax errors.'
+            logger_imports.debug("A file contains syntax errors.")
     #Imports{} = {name: asname}, for example = {sys: sysAlias}
     imports = {}
     #From Imports{} = {name: {module: fromPart, asname: nameAlias}}
@@ -58,7 +63,7 @@ def obtain_symbols(source):
     try:
         module = ast.parse(source)
     except:
-        print 'The file contains syntax errors.'
+        logger_symbols.debug("A file contains syntax errors.")
         return {}
     symbols = {}
     globalAttributes = {}
