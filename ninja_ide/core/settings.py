@@ -5,6 +5,14 @@ from PyQt4.QtCore import QSettings
 
 from ninja_ide.dependencies import pep8mod
 
+import logging
+
+LOGLEVEL = logging.DEBUG
+logger = logging.getLogger('ninja_ide.gui.core.settings')
+#All logger calls will default to this level, since is the one set up
+#In production environement should be nolog
+logger.setLevel(LOGLEVEL)
+logging.basicConfig()
 
 ###############################################################################
 # OS DETECTOR
@@ -79,11 +87,10 @@ SHOW_MARGIN_LINE = True
 REMOVE_TRAILING_SPACES = True
 SHOW_TABS_AND_SPACES = True
 
-BRACES = {"'": "'",
-    '"': '"',
-    '{': '}',
+BRACES = {'{': '}',
     '[': ']',
     '(': ')'}
+QUOTES = ('"', "'")
 
 FONT_MAX_SIZE = 28
 FONT_MIN_SIZE = 6
@@ -342,11 +349,11 @@ def load_settings():
     simpleQuotes = qsettings.value('preferences/editor/simpleQuotes',
         True).toBool()
     if not simpleQuotes:
-        del BRACES["'"]
+        del QUOTES["'"]
     doubleQuotes = qsettings.value('preferences/editor/doubleQuotes',
         True).toBool()
     if not doubleQuotes:
-        del BRACES['"']
+        del QUOTES['"']
     #Projects
     SHOW_PROJECT_EXPLORER = qsettings.value(
         'preferences/interface/showProjectExplorer', True).toBool()
