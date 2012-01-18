@@ -2,6 +2,7 @@
 from __future__ import absolute_import
 
 import re
+import logging
 
 from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QFontMetricsF
@@ -32,6 +33,8 @@ from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.editor import pep8_checker
 from ninja_ide.gui.editor import errors_checker
 from ninja_ide.gui.editor import sidebar_widget
+
+logger = logging.getLogger('ninja_ide.gui.editor.editor')
 
 
 class Editor(QPlainTextEdit, itab_item.ITabItem):
@@ -93,7 +96,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             Qt.Key_Return: self.__ignore_extended_line,
             Qt.Key_BracketRight: self.__brace_completion,
             Qt.Key_BraceRight: self.__brace_completion,
-            Qt.Key_ParenRight: self.__brace_completion}
+            Qt.Key_ParenRight: self.__brace_completion,
+            Qt.Key_Apostrophe: self.__quot_completion,
+            Qt.Key_QuoteDbl: self.__quot_completion}
 
         self.postKeyPress = {
             Qt.Key_Enter: self.__auto_indent,
@@ -101,8 +106,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             Qt.Key_BracketLeft: self.__complete_braces,
             Qt.Key_BraceLeft: self.__complete_braces,
             Qt.Key_ParenLeft: self.__complete_braces,
-            Qt.Key_Apostrophe: self.__complete_braces,
-            Qt.Key_QuoteDbl: self.__complete_braces}
+            Qt.Key_Apostrophe: self.__complete_quotes,
+            Qt.Key_QuoteDbl: self.__complete_quotes}
 
         self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
             self._sidebarWidget.update_area)
@@ -475,15 +480,61 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if event.modifiers() == Qt.ShiftModifier:
             return True
 
+    def __reverse_select_text_portion_from_offset(self, begin, end):
+        """Backwards select text, go from current+begin to current - end
+        possition, returns text"""
+        cursor = self.textCursor()
+        cursor_position = cursor.position()
+        cursor.setPosition(cursor_position + begin)
+        #QT silently fails on invalid position, ergo breaks when EOF < begin
+        while (cursor.position() == cursor_position) and begin > 0:
+            begin -= 1
+            cursor.setPosition(cursor_position + begin)
+        cursor.setPosition(cursor_position - end, QTextCursor.KeepAnchor)
+        selected_text = unicode(cursor.selectedText())
+        return selected_text
+
+    def __quot_completion(self, event):
+        """Indicate if this is some sort of quote that needs to be completed
+        This is a very simple boolean table, given that quotes are a
+        simmetrical symbol, is a little more cumbersome guessing the completion
+        table.
+        """
+        text = unicode(event.text())
+        PENTA_Q = 5 * text
+        TETRA_Q = 4 * text
+        TRIPLE_Q = 3 * text
+        DOUBLE_Q = 2 * text
+        supress_echo = False
+        pre_context = self.__reverse_select_text_portion_from_offset(0, 3)
+        pos_context = self.__reverse_select_text_portion_from_offset(3, 0)
+        if pre_context == pos_context == TRIPLE_Q:
+            supress_echo = True
+        elif pos_context[:2] == DOUBLE_Q:
+            pre_context = self.__reverse_select_text_portion_from_offset(0, 4)
+            if pre_context == TETRA_Q:
+                supress_echo = True
+        elif pos_context[:1] == text:
+            pre_context = self.__reverse_select_text_portion_from_offset(0, 5)
+            if pre_context == PENTA_Q:
+                supress_echo = True
+            elif pre_context[-1] == text:
+                supress_echo = True
+        if supress_echo:
+            self.moveCursor(QTextCursor.Right)
+        return supress_echo
+
     def __brace_completion(self, event):
-        if unicode(event.text()) in \
-        (set(settings.BRACES.values()) - set(["'", '"'])):
-            cursor = self.textCursor()
-            cursor.setPosition(cursor.position() + 1)
-            cursor.setPosition(cursor.position() - 2, QTextCursor.KeepAnchor)
-            brace = unicode(cursor.selectedText())
-            if brace == ('%s%s' % (brace[0],
-            settings.BRACES.get(brace[0], ''))) and brace[1] == event.text():
+        """Indicate if this symbol is part of a given pair and needs to be
+        completed.
+        """
+        text = unicode(event.text())
+        b_dict = settings.BRACES
+        if text in b_dict.values():
+            portion = self.__reverse_select_text_portion_from_offset(1, 1)
+            brace_open = portion[0]
+            is_balance = b_dict.get(brace_open, None)
+            if is_balance and b_dict[brace_open] == text:
                 self.moveCursor(QTextCursor.Right)
                 return True
 
@@ -507,9 +558,34 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 #        cursor.selectedText().contains("#"):
 #            return
         symbol = unicode(event.text())
+        #FIXME: Why this check, the qt signal should suffice
         if symbol in settings.BRACES:
             self.textCursor().insertText(settings.BRACES[symbol])
             self.moveCursor(QTextCursor.Left)
+            self.textCursor().insertText(self.selected_text)
+
+    def __complete_quotes(self, event):
+        """
+        Completion for single and double quotes, which since are simmetrical
+        symbols used for different things can not be balanced as easily as
+        braces or equivalent.
+        """
+        cursor = self.textCursor()
+        cursor.movePosition(QTextCursor.StartOfLine,
+            QTextCursor.KeepAnchor)
+        symbol = unicode(event.text())
+        #FIXME: Why this check, the qt signal should suffice
+        if symbol in settings.QUOTES:
+            pre_context = self.__reverse_select_text_portion_from_offset(0, 3)
+            if pre_context == 3 * symbol:
+                self.textCursor().insertText(3 * symbol)
+                #FIXME: Find a clean way to move cursor please
+                self.moveCursor(QTextCursor.Left)
+                self.moveCursor(QTextCursor.Left)
+                self.moveCursor(QTextCursor.Left)
+            else:
+                self.textCursor().insertText(symbol)
+                self.moveCursor(QTextCursor.Left)
             self.textCursor().insertText(self.selected_text)
 
     def keyPressEvent(self, event):
