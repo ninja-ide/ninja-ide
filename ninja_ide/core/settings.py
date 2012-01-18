@@ -5,6 +5,14 @@ from PyQt4.QtCore import QSettings
 
 from ninja_ide.dependencies import pep8mod
 
+import logging
+
+LOGLEVEL = logging.DEBUG #Can we pretty please make this part of settings?
+logger = logging.getLogger('ninja_ide.gui.core.settings')
+#All logger calls will default to this level, since is the one set up
+#In production environement should be nolog
+logger.setLevel(LOGLEVEL)
+logging.basicConfig()
 
 ###############################################################################
 # OS DETECTOR
@@ -84,6 +92,7 @@ BRACES = {"'": "'",
     '{': '}',
     '[': ']',
     '(': ')'}
+QUOTES = ('"', "'")
 
 FONT_MAX_SIZE = 28
 FONT_MIN_SIZE = 6
