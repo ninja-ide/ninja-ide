@@ -27,6 +27,7 @@ from ninja_ide.gui.main_panel import tab_group
 __actionsInstance = None
 
 
+# Actions Singleton
 def Actions(*args, **kw):
     global __actionsInstance
     if __actionsInstance is None:
@@ -35,6 +36,15 @@ def Actions(*args, **kw):
 
 
 class __Actions(QObject):
+
+    """This class is like the Sauron's Ring:
+    One ring to rule them all, One ring to find them,
+    One ring to bring them all and in the darkness bind them.
+
+    This Class knows all the containers, and its know by all the containers,
+    but the containers don't need to know between each other, in this way we
+    can keep a better api without the need to tie the behaviour between
+    the widgets, and let them just consume the 'actions' they need."""
 
     def __init__(self):
         QObject.__init__(self)
@@ -52,6 +62,7 @@ class __Actions(QObject):
             2: self._navigate_breakpoints}
 
     def install_shortcuts(self, ide):
+        """Install the shortcuts to the IDE."""
         self.ide = ide
         short = resources.get_shortcut
         self.shortChangeTab = QShortcut(short("Change-Tab"), self.ide)
@@ -236,6 +247,7 @@ class __Actions(QObject):
             SIGNAL("openProject(QString)"), self.open_project)
 
     def update_shortcuts(self):
+        """If the user update the key binded to any shortcut, update them."""
         resources.load_shortcuts()
         short = resources.get_shortcut
         self.shortDuplicate.setKey(short("Duplicate"))
@@ -288,6 +300,7 @@ class __Actions(QObject):
         self.shortShowPasteHistory.setKey(short("Show-Paste-History"))
 
     def _copy_history(self):
+        """Copy the selected text into the copy/paste history."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             cursor = editorWidget.textCursor()
@@ -295,6 +308,7 @@ class __Actions(QObject):
             self.ide.central.lateralPanel.add_new_copy(copy)
 
     def _paste_history(self):
+        """Paste the text from the copy/paste history."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             cursor = editorWidget.textCursor()
@@ -302,6 +316,7 @@ class __Actions(QObject):
             cursor.insertText(paste)
 
     def _add_bookmark_breakpoint(self):
+        """Add a bookmark or breakpoint to the current file in the editor."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             if self.ide.mainContainer.actualTab.navigator.operation == 1:
@@ -312,10 +327,12 @@ class __Actions(QObject):
                     editorWidget.textCursor().blockNumber())
 
     def __navigate_with_keyboard(self, val):
+        """Navigate between the positions in the jump history stack."""
         op = self.ide.mainContainer._tabMain.navigator.operation
         self.navigate_code_history(val, op)
 
     def _add_file_to_project(self, path):
+        """Add the file for 'path' in the project the user choose here."""
         pathProject = [self.ide.explorer.get_actual_project()]
         addToProject = ui_tools.AddToProject(pathProject, self.ide)
         addToProject.exec_()
@@ -349,12 +366,15 @@ class __Actions(QObject):
                     ex.filename))
 
     def add_project_to_console(self, projectFolder):
+        """Add the namespace of the project received into the ninja-console."""
         self.ide.misc._console.load_project_into_console(projectFolder)
 
     def remove_project_from_console(self, projectFolder):
+        """Remove the namespace of the project received from the console."""
         self.ide.misc._console.unload_project_from_console(projectFolder)
 
     def import_from_everywhere(self):
+        """Show the dialog to insert an import from any place in the editor."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             text = unicode(editorWidget.get_text())
@@ -365,10 +385,12 @@ class __Actions(QObject):
             dialog.show()
 
     def open_project(self, path=''):
+        """Open a Project and load the symbols in the Code Locator."""
         self.ide.explorer.open_project_folder(unicode(path))
         self.ide.status.explore_code()
 
     def create_profile(self):
+        """Create a profile binding files and projects to a key."""
         profileInfo = QInputDialog.getText(None,
             self.tr("Create Profile"), self.tr(
                 "The Current Files and Projects will "
@@ -384,6 +406,7 @@ class __Actions(QObject):
             return profileName
 
     def save_profile(self, profileName):
+        """Save the updates from a profile."""
         projects_obj = self.ide.explorer.get_opened_projects()
         projects = [p.path for p in projects_obj]
         files = self.ide.mainContainer.get_opened_documents()
@@ -393,21 +416,25 @@ class __Actions(QObject):
         qsettings.setValue('ide/profiles', settings.PROFILES)
 
     def activate_profile(self):
+        """Show the Profile Manager dialog."""
         profilesLoader = ui_tools.ProfilesLoader(self._load_profile_data,
             self.create_profile, self.save_profile,
             settings.PROFILES, self.ide)
         profilesLoader.show()
 
     def deactivate_profile(self):
+        """Close the Profile Session."""
         self.ide.Profile = None
 
     def _load_profile_data(self, key):
+        """Activate the selected profile, closing the current files/projects"""
         self.ide.explorer.close_opened_projects()
         self.ide.mainContainer.open_files(settings.PROFILES[key][0])
         self.ide.explorer.open_session_projects(settings.PROFILES[key][1])
         self.ide.status.explore_code()
 
     def close_files_from_project(self, project):
+        """Close the files related to this project."""
         project = unicode(project)
         if project:
             tabMain = self.ide.mainContainer._tabMain
@@ -424,6 +451,7 @@ class __Actions(QObject):
             self.ide.profile = None
 
     def count_file_code_lines(self):
+        """Count the lines of code in the current file."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             blanks = re.findall('(^\n)|(^(\s+)?#)|(^( +)?($|\n))',
@@ -438,10 +466,8 @@ class __Actions(QObject):
                 QMessageBox.Ok, editorWidget)
             msgBox.exec_()
 
-    def debug_file(self):
-        pass
-
     def execute_file(self):
+        """Execute the current file."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         #emit a signal for plugin!
         self.emit(SIGNAL("fileExecuted(QString)"), editorWidget.ID)
@@ -456,6 +482,7 @@ class __Actions(QObject):
                 self.ide.misc.render_web_page(editorWidget.ID)
 
     def execute_project(self):
+        """Execute the project marked as Main Project."""
         mainFile = self.ide.explorer.get_project_main_file()
         if not mainFile and self.ide.explorer._treeProjects and \
           self.ide.explorer._treeProjects._actualProject:
@@ -473,93 +500,115 @@ class __Actions(QObject):
                 programParams=params)
 
     def kill_execution(self):
+        """Kill the execution of the current file or project."""
         self.ide.misc.kill_application()
 
     def fullscreen_mode(self):
+        """Change to fullscreen mode."""
         if self.ide.isFullScreen():
             self.ide.showMaximized()
         else:
             self.ide.showFullScreen()
 
     def editor_redo(self):
+        """Execute the redo action in the current editor."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             editorWidget.redo()
 
     def editor_indent_less(self):
+        """Indent 1 position to the left for the current line or selection."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             editorWidget.indent_less()
 
     def editor_indent_more(self):
+        """Indent 1 position to the right for the current line or selection."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             editorWidget.indent_more()
 
     def editor_comment(self):
+        """Mark the current line or selection as a comment."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             helpers.comment(editorWidget)
 
     def editor_uncomment(self):
+        """Uncomment the current line or selection."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             helpers.uncomment(editorWidget)
 
     def editor_insert_horizontal_line(self):
+        """Insert an horizontal lines of comment symbols."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             helpers.insert_horizontal_line(editorWidget)
 
     def editor_insert_title_comment(self):
+        """Insert a Title surrounded by comment symbols."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             helpers.insert_title_comment(editorWidget)
 
     def editor_remove_trailing_spaces(self):
+        """Remove the trailing spaces in the current editor."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             helpers.remove_trailing_spaces(editorWidget)
 
     def editor_replace_tabs_with_spaces(self):
+        """Replace the Tabs with Spaces in the current editor."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             helpers.replace_tabs_with_spaces(editorWidget)
 
     def editor_move_up(self):
+        """Move the current line or selection one position up."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             helpers.move_up(editorWidget)
 
     def editor_move_down(self):
+        """Move the current line or selection one position down."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             helpers.move_down(editorWidget)
 
     def editor_remove_line(self):
+        """Remove the current line or selection."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             helpers.remove_line(editorWidget)
 
     def editor_duplicate(self):
+        """Duplicate the current line or selection."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             helpers.duplicate(editorWidget)
 
     def editor_go_to_definition(self):
+        """Search the definition of the method or variable under the cursor.
+
+        If more than one method or variable is found with the same name,
+        shows a table with the results and let the user decide where to go."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             editorWidget.go_to_definition()
 
     def editor_go_to_line(self, line):
+        """Jump to the specified line in the current editor."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             editorWidget.jump_to_line(line)
 
     def reset_editor_flags(self):
+        """Reset the Flags for all the opened editors."""
         self.ide.mainContainer.reset_editor_flags()
 
     def preview_in_browser(self):
+        """Load the current html file in the default browser."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             if not editorWidget.ID:
@@ -569,6 +618,7 @@ class __Actions(QObject):
                 webbrowser.open(editorWidget.ID)
 
     def hide_all(self):
+        """Hide/Show all the containers except the editor."""
         if self.ide.menuBar().isVisible():
             self.ide.central.lateralPanel.hide()
             self.ide.misc.hide()
@@ -580,11 +630,13 @@ class __Actions(QObject):
             self.ide.menuBar().show()
 
     def save_project(self):
+        """Save all the opened files that belongs to the actual project."""
         path = self.ide.explorer.get_actual_project()
         if path:
             self.ide.mainContainer.save_project(path)
 
     def save_all(self):
+        """Save all the opened files."""
         self.ide.mainContainer.save_all()
 
     def print_file(self):
@@ -602,6 +654,7 @@ class __Actions(QObject):
             ui_tools.print_file(fileName, editorWidget.print_)
 
     def locate_function(self, function, filePath, isVariable):
+        """Move the cursor to the proper position in the navigate stack."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             self.__codeBack.append((editorWidget.ID,
@@ -611,6 +664,7 @@ class __Actions(QObject):
             unicode(filePath), isVariable)
 
     def update_explorer(self):
+        """Update the symbols in the Symbol Explorer when a file is saved."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             ext = file_manager.get_file_extension(editorWidget.ID)
@@ -618,7 +672,8 @@ class __Actions(QObject):
             symbols_handler = settings.get_symbols_handler(ext)
             if symbols_handler:
                 source = unicode(editorWidget.toPlainText())
-                source = source.encode(editorWidget.encoding)
+                if editorWidget.encoding is not None:
+                    source = source.encode(editorWidget.encoding)
                 symbols = symbols_handler.obtain_symbols(source)
                 self.ide.explorer.update_symbols(symbols, editorWidget.ID)
 
@@ -628,9 +683,11 @@ class __Actions(QObject):
                     editorWidget.errors, editorWidget.pep8)
 
     def navigate_code_history(self, val, op):
+        """Navigate the code history."""
         self.__operations[op](val)
 
     def _navigate_code_jumps(self, val):
+        """Navigate between the jump points."""
         node = None
         if not val and self.__codeBack:
             node = self.__codeBack.pop()
@@ -648,6 +705,7 @@ class __Actions(QObject):
             self.ide.mainContainer.open_file(node[0], node[1])
 
     def _navigate_breakpoints(self, val):
+        """Navigate between the breakpoints."""
         breakList = settings.BREAKPOINTS.keys()
         breakList.sort()
         if not breakList:
@@ -686,6 +744,7 @@ class __Actions(QObject):
             settings.BREAKPOINTS.pop(self.__breakpointsFile)
 
     def _navigate_bookmarks(self, val):
+        """Navigate between the bookmarks."""
         bookList = settings.BOOKMARKS.keys()
         bookList.sort()
         if not bookList:
@@ -724,6 +783,7 @@ class __Actions(QObject):
             settings.BOOKMARKS.pop(self.__bookmarksFile)
 
     def add_back_item_navigation(self):
+        """Add an item to the back stack and reset the forward stack."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             self.__codeBack.append((editorWidget.ID,
@@ -731,6 +791,7 @@ class __Actions(QObject):
             self.__codeForward = []
 
     def group_tabs_together(self):
+        """Group files that belongs to the same project together."""
         if self.ide.explorer._treeProjects is None:
             return
         projects_obj = self.ide.explorer.get_opened_projects()
@@ -751,6 +812,7 @@ class __Actions(QObject):
                 self.ide.mainContainer._tabMain.add_tab(tabGroup, projectName)
 
     def deactivate_tabs_groups(self):
+        """Deactivate tab grouping based in the project they belong."""
         for index in reversed(xrange(
         self.ide.mainContainer._tabMain.count())):
             widget = self.ide.mainContainer._tabMain.widget(index)
@@ -758,11 +820,14 @@ class __Actions(QObject):
                 widget.only_expand()
 
     def reopen_last_tab(self):
+        """Reopen the last closed tab."""
         self.ide.mainContainer.actualTab._reopen_last_tab()
 
     def open_class_diagram(self):
+        """Open the Class Diagram Generator."""
         diagram = class_diagram.ClassDiagram(self)
         self.ide.mainContainer.add_tab(diagram, self.tr("Class Diagram v.0.1"))
 
     def reload_toolbar(self):
+        """Reload the Toolbar."""
         self.ide.load_toolbar()
