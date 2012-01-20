@@ -25,6 +25,8 @@ from ninja_ide.gui.main_panel import main_container
 
 class RunWidget(QWidget):
 
+    """Widget that show the execution output in the MiscContainer."""
+
     def __init__(self):
         QWidget.__init__(self)
         vbox = QVBoxLayout(self)
@@ -52,6 +54,7 @@ class RunWidget(QWidget):
         self.connect(self.input, SIGNAL("returnPressed()"), self.insert_input)
 
     def process_error(self, error):
+        """Listen to the error signals from the running process."""
         self.lblInput.hide()
         self.input.hide()
         self._proc.kill()
@@ -67,6 +70,7 @@ class RunWidget(QWidget):
                 format)
 
     def finish_execution(self, exitCode, exitStatus):
+        """Print a message and hide the input line when the execution ends."""
         self.lblInput.hide()
         self.input.hide()
         format = QTextCharFormat()
@@ -82,11 +86,13 @@ class RunWidget(QWidget):
                 self.tr("Execution Interrupted"), format)
 
     def insert_input(self):
+        """Take the user input and send it to the process."""
         text = self.input.text() + '\n'
         self._proc.writeData(text)
         self.input.setText("")
 
     def start_process(self, fileName, pythonPath=False, programParams=''):
+        """Prepare the output widget and start the process."""
         self.lblInput.show()
         self.input.show()
         self.output.setCurrentCharFormat(self.output.plain_format)
@@ -108,6 +114,7 @@ class RunWidget(QWidget):
             [p.strip() for p in programParams.split(',') if p])
 
     def kill_process(self):
+        """Kill the running process."""
         self._proc.kill()
 
 
@@ -135,14 +142,20 @@ class OutputWidget(QPlainTextEdit):
         self.connect(self, SIGNAL("blockCountChanged(int)"), self._scroll_area)
 
     def _scroll_area(self):
+        """When new text is added to the widget, move the scroll to the end."""
         if self.actualValue == self.maxValue:
             self.moveCursor(QTextCursor.End)
 
     def mousePressEvent(self, event):
+        """
+        When the execution fail, allow to press the links in the traceback,
+        to go to the line when the error occur.
+        """
         QPlainTextEdit.mousePressEvent(self, event)
         self.go_to_error(event)
 
     def _refresh_output(self):
+        """Read the output buffer from the process and append the text."""
         #we should decode the bytes!
         text = self._parent._proc.readAllStandardOutput().data().decode('utf8')
         verticalScroll = self.verticalScrollBar()
@@ -151,6 +164,7 @@ class OutputWidget(QPlainTextEdit):
         self.textCursor().insertText(text)
 
     def _refresh_error(self):
+        """Read the error buffer from the process and append the text."""
         #we should decode the bytes!
         cursor = self.textCursor()
         text = self._parent._proc.readAllStandardError().data().decode('utf8')
@@ -165,10 +179,8 @@ class OutputWidget(QPlainTextEdit):
             else:
                 cursor.insertText(t, self.plain_format)
 
-    def insert_input(self, text):
-        self.textCursor().insertText(text)
-
     def go_to_error(self, event):
+        """Resolve the link and take the user to the error line."""
         cursor = self.cursorForPosition(event.pos())
         text = cursor.block().text()
         if self.patLink.match(text):
@@ -190,6 +202,7 @@ class OutputWidget(QPlainTextEdit):
         return (file_name, lineno)
 
     def contextMenuEvent(self, event):
+        """Show a context menu for the Plain Text widget."""
         popup_menu = self.createStandardContextMenu()
 
         menuOutput = QMenu(self.tr("Output"))
@@ -197,6 +210,9 @@ class OutputWidget(QPlainTextEdit):
         popup_menu.insertSeparator(popup_menu.actions()[0])
         popup_menu.insertMenu(popup_menu.actions()[0], menuOutput)
 
-        self.connect(cleanAction, SIGNAL("triggered()"), self.clear)
+        # This is a hack because if we leave the widget text empty
+        # it throw a violent segmentation fault in start_process
+        self.connect(cleanAction, SIGNAL("triggered()"),
+            lambda: self.setPlainText('\n\n'))
 
         popup_menu.exec_(event.globalPos())
