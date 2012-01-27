@@ -178,7 +178,7 @@ def store_file_content(fileName, content, addExtension=True, newFile=False):
     t.start()
     #wait until the saver finish
     t.join()
-    return fileName
+    return os.path.abspath(fileName)
 
 
 def open_project(path):
