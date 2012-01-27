@@ -10,7 +10,7 @@ __prj__ = "ninja-ide"
 __author__ = "The NINJA-IDE Team"
 __mail__ = "ninja-ide at googlegroups dot com"
 __url__ = "http://www.ninja-ide.org"
-__source__ = "http://ninja-ide.googlecode.com"
+__source__ = "https://github.com/ninja-ide/ninja-ide"
 __version__ = "2.0-beta3"
 __license__ = "GPL3"
 
