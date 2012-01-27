@@ -485,7 +485,6 @@ class __MainContainer(QSplitter):
                 self._parent, self.tr("Save File"), '', '(*.py);;(*.*)'))
             if not fileName:
                 return False
-            fileName = os.path.abspath(fileName)
 
             if settings.REMOVE_TRAILING_SPACES:
                 helpers.remove_trailing_spaces(editorWidget)
