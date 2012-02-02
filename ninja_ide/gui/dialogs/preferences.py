@@ -5,6 +5,7 @@ import os
 import copy
 
 from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QSpacerItem
 from PyQt4.QtGui import QColorDialog
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QScrollArea
@@ -1011,6 +1012,8 @@ class EditorCompletion(QWidget):
         grid.addWidget(self._checkCodeDot, 6, 1, alignment=Qt.AlignTop)
 #        grid.addWidget(self.checkCodeChar, 13, 0)
 #        grid.addWidget(self.spinCode, 13, 1)
+        grid.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
+            QSizePolicy.Expanding), 7, 0)
 
     def save(self):
         qsettings = QSettings()
