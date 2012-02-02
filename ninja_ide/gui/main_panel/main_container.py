@@ -626,6 +626,9 @@ class __MainContainer(QSplitter):
             self.actualTab = self._tabMain
         else:
             self.actualTab = self._tabSecondary
+            if files:
+                self._tabSecondary.show()
+
         for fileData in files:
             if file_manager.file_exists(unicode(fileData[0])):
                 self.open_file(unicode(fileData[0]),
