@@ -60,6 +60,7 @@ class ErrorsWidget(QWidget):
             linenostr = 'L%s\t' % str(lineno)
             for data in errors.errorsSummary[lineno]:
                 item = QListWidgetItem(linenostr + data)
+                item.setToolTip(linenostr + data)
                 item.setData(Qt.UserRole, lineno)
                 self.listErrors.addItem(item)
         self.errorsLabel.setText(self.tr(ERRORS_TEXT).arg(
@@ -68,6 +69,7 @@ class ErrorsWidget(QWidget):
             linenostr = 'L%s\t' % str(lineno)
             for data in pep8.pep8checks[lineno]:
                 item = QListWidgetItem(linenostr + data.split('\n')[0])
+                item.setToolTip(linenostr + data.split('\n')[0])
                 item.setData(Qt.UserRole, lineno)
                 self.listPep8.addItem(item)
         self.pep8Label.setText(self.tr(PEP8_TEXT).arg(
