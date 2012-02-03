@@ -80,6 +80,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
         #For Highlighting in document
         self.extraSelections = []
+        self.wordSelection = []
         self._patIsWord = re.compile('\w+')
         #Brace matching
         self._braces = None
@@ -798,6 +799,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.extraSelections.append(selection)
         self.setExtraSelections(self.extraSelections)
 
+        # Add highlighted words
+        for word in self.wordSelection:
+            self.extraSelections.append(word)
+        self.setExtraSelections(self.extraSelections)
+
         #Find Errors
         if settings.ERRORS_HIGHLIGHT_LINE and \
         len(self.errors.errorsSummary) < settings.MAX_HIGHLIGHT_ERRORS:
@@ -900,6 +906,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #Highlight selected variable
         if not self.isReadOnly() and not self.textCursor().hasSelection():
             word = self._text_under_cursor()
+            self.wordSelection = []
             if self._patIsWord.match(word):
                 lineColor = QColor(
                     resources.CUSTOM_SCHEME.get('selected-word',
@@ -915,6 +922,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                     selection = QTextEdit.ExtraSelection()
                     selection.format.setBackground(lineColor)
                     selection.cursor = cursor
+                    self.wordSelection.append(selection)
                     self.extraSelections.append(selection)
                     cursor = self.document().find(word, cursor.position(),
                         QTextDocument.FindCaseSensitively or \
