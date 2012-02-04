@@ -849,6 +849,7 @@ class EditorConfiguration(QWidget):
         grid.addWidget(QLabel(
             self.tr("Indentation Length:")), 1, 0, Qt.AlignRight)
         self._spin = QSpinBox()
+        self._spin.setMinimum(1)
         self._spin.setValue(settings.INDENT)
         grid.addWidget(self._spin, 1, 1, 1, 2, alignment=Qt.AlignTop)
         #Margin Line
