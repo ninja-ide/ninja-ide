@@ -4,6 +4,10 @@ from __future__ import absolute_import
 import re
 import logging
 
+from tokenize import generate_tokens, TokenError
+import token as tkn
+from StringIO import StringIO
+
 from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QFontMetricsF
 from PyQt4.QtGui import QToolTip
@@ -34,6 +38,9 @@ from ninja_ide.gui.editor import pep8_checker
 from ninja_ide.gui.editor import errors_checker
 from ninja_ide.gui.editor import sidebar_widget
 
+BRACE_DICT = {')': '(', ']': '[', '}': '{', '(': ')', '[': ']', '{': '}'}
+OPEN_BRACES = ('(', '[', '{')
+CLOSE_BRACES = (')', ']', '}')
 logger = logging.getLogger('ninja_ide.gui.editor.editor')
 
 
@@ -743,43 +750,56 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             cursor.setPosition(cursor2.position(), QTextCursor.KeepAnchor)
         else:
             cursor.setPosition(posEnd, QTextCursor.KeepAnchor)
-        text = cursor.selectedText()
+        text = cursor.selection().toPlainText()
+
         return unicode(text)
 
+    def __get_abs_position_on_text(self, text, position):
+        """tokens give us position of char in a given line, we need
+        such position relative to the beginning of the text, also we need
+        to add the number of lines, since our split removes the newlines
+        which are counted as a character in the editor"""
+        line, relative_position = position
+        insplit_line = line - 1
+        full_lenght = 0
+        for each_line in text.splitlines()[:insplit_line]:
+            full_lenght += len(each_line)
+        return full_lenght + insplit_line + relative_position
+
     def _match_braces(self, position, brace, forward):
-        """based on: http://gitorious.org/khteditor"""
+        """Return the position to hilight of the matching brace"""
+        braceMatch = BRACE_DICT[brace]
+        invalid_syntax = False
         if forward:
-            braceMatch = {'(': ')', '[': ']', '{': '}'}
             text = self.get_selection(position, QTextCursor.End)
-            braceOpen, braceClose = 1, 1
         else:
-            braceMatch = {')': '(', ']': '[', '}': '{'}
             text = self.get_selection(QTextCursor.Start, position)
-            braceOpen, braceClose = len(text) - 1, len(text) - 1
-        while True:
-            if forward:
-                posClose = text.find(braceMatch[brace], braceClose)
+        brace_stack = []
+        brace_buffer = []
+        try:
+            for tkn_type, tkn_rep, tkn_begin, tkn_end, _ in \
+                            generate_tokens(StringIO(text).readline):
+                if (tkn_type == tkn.OP) and (tkn_rep in BRACE_DICT):
+                    tkn_pos = forward and tkn_begin or tkn_end
+                    brace_buffer.append((tkn_rep, tkn_pos))
+        except (TokenError, IndentationError, SyntaxError):
+            invalid_syntax = True
+        if not forward:
+            brace_buffer.reverse()
+        if not ((not forward) and invalid_syntax):
+            #Exclude the brace that triggered all this
+            brace_buffer = brace_buffer[1:]
+
+        for tkn_rep, tkn_position in brace_buffer:
+            if (tkn_rep == braceMatch) and not brace_stack:
+                hl_position = \
+                self.__get_abs_position_on_text(text, tkn_position)
+                return forward and hl_position + position or hl_position
+            elif brace_stack and \
+                (BRACE_DICT.get(tkn_rep, '') == brace_stack[-1]):
+                brace_stack.pop(-1)
             else:
-                posClose = text.rfind(braceMatch[brace], 0, braceClose + 1)
-            if posClose > -1:
-                if forward:
-                    braceClose = posClose + 1
-                    posOpen = text.find(brace, braceOpen, posClose)
-                else:
-                    braceClose = posClose - 1
-                    posOpen = text.rfind(brace, posClose, braceOpen + 1)
-                if posOpen > -1:
-                    if forward:
-                        braceOpen = posOpen + 1
-                    else:
-                        braceOpen = posOpen - 1
-                else:
-                    if forward:
-                        return position + posClose
-                    else:
-                        return position - (len(text) - posClose)
-            else:
-                return
+                brace_stack.append(tkn_rep)
 
     def highlight_current_line(self):
         self.emit(SIGNAL("cursorPositionChange(int, int)"),
@@ -862,9 +882,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                              QTextCursor.KeepAnchor)
         text = unicode(cursor.selectedText())
         pos1 = cursor.position()
-        if text in (')', ']', '}'):
+        if text in CLOSE_BRACES:
             pos2 = self._match_braces(pos1, text, forward=False)
-        elif text in ('(', '[', '{'):
+        elif text in OPEN_BRACES:
             pos2 = self._match_braces(pos1, text, forward=True)
         else:
             self.setExtraSelections(self.extraSelections)
