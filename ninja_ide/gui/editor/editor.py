@@ -452,16 +452,23 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         elif settings.ALLOW_TABS_NON_PYTHON and self.lang != 'python':
             return False
         else:
-            self.textCursor().insertText(' ' * settings.INDENT)
+            if not settings.INDENT:
+			    self.textCursor().insertText('\t')
+            else:		
+                self.textCursor().insertText(' ' * settings.INDENT)
         return True
 
     def __backspace(self, event):
         if self.textCursor().hasSelection():
             return False
-        for i in xrange(settings.INDENT):
+        if not settings.INDENT:
+            indent = 1
+        else:
+		    indent = settings.INDENT
+        for i in xrange(indent):
             self.moveCursor(QTextCursor.Left, QTextCursor.KeepAnchor)
         text = self.textCursor().selection()
-        if unicode(text.toPlainText()) == ' ' * settings.INDENT:
+        if unicode(text.toPlainText()) == ' ' * indent:
             self.textCursor().removeSelectedText()
             return True
         else:
