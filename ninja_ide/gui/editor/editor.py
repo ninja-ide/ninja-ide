@@ -749,17 +749,21 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             cursor.setPosition(cursor2.position(), QTextCursor.KeepAnchor)
         else:
             cursor.setPosition(posEnd, QTextCursor.KeepAnchor)
-        text = cursor.selectedText()
+        text = cursor.selection().toPlainText()
+
         return unicode(text)
 
     def __get_abs_position_on_text(self, text, position):
         """tokens give us position of char in a given line, we need
-        such position relative to the beginning of the text"""
+        such position relative to the beginning of the text, also we need
+        to add the number of lines, since our split removes the newlines
+        which are counted as a character in the editor"""
         line, relative_position = position
+        insplit_line = line - 1
         full_lenght = 0
-        for each_line in text.splitlines()[:line - 1]:
+        for each_line in text.splitlines()[:insplit_line]:
             full_lenght += len(each_line)
-        return full_lenght + relative_position
+        return full_lenght + insplit_line + relative_position
 
     def _match_braces(self, position, brace, forward):
         """Return the position to hilight of the matching brace"""
@@ -784,6 +788,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if not ((not forward) and invalid_syntax):
             #Exclude the brace that triggered all this
             brace_buffer = brace_buffer[1:]
+
         for tkn_rep, tkn_position in brace_buffer:
             if (tkn_rep == braceMatch) and not brace_stack:
                 hl_position = \
