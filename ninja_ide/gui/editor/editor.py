@@ -781,7 +781,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 if (tkn_type == tkn.OP) and (tkn_rep in BRACE_DICT):
                     tkn_pos = forward and tkn_begin or tkn_end
                     brace_buffer.append((tkn_rep, tkn_pos))
-        except TokenError:
+        except (TokenError, IndentationError, SyntaxError):
             invalid_syntax = True
         if not forward:
             brace_buffer.reverse()
