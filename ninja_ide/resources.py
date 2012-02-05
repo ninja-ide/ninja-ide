@@ -253,7 +253,7 @@ SHORTCUTS = {
     "File-Opener": QKeySequence(Qt.CTRL + Qt.ALT + Qt.Key_O),
     "Navigate-back": QKeySequence(Qt.ALT + Qt.Key_Left),
     "Navigate-forward": QKeySequence(Qt.ALT + Qt.Key_Right),
-    "Open-recent-closed": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_N),
+    "Open-recent-closed": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_T),
     "Change-Tab": QKeySequence(Qt.CTRL + Qt.Key_Tab),
     "Change-Tab-Reverse": QKeySequence(Qt.CTRL + Qt.Key_Shift + Qt.Key_Tab),
     "Show-Code-Nav": QKeySequence(Qt.CTRL + Qt.Key_1),
