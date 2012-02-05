@@ -929,6 +929,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                         QTextDocument.FindWholeWords)
                     block = block.next()
         self.setExtraSelections(self.extraSelections)
+        self.highlight_current_line()
 
 
 def create_editor(fileName='', project=None, syntax=None):
