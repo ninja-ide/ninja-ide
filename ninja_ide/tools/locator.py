@@ -86,21 +86,17 @@ class LocateThread(QThread):
         self.results = []
         self._cancel = False
         self.locations = []
-        self.execute = self.navigate_code
+        self.execute = self.go_to_definition
         self.dirty = False
+        self._search = None
+        self._isVariable = None
 
-    def find(self, function, filePath, isVariable):
+    def find(self, search, filePath, isVariable):
         self.cancel()
         self._filePath = filePath
+        self._search = search
+        self._isVariable = isVariable
         self._cancel = False
-        if isVariable:
-            function_ = r'(\s)*%s(\s)*=\.*' % function
-            class_ = r'(\s)*self.%s(\s)*=\.*' % function
-        else:
-            function_ = r'(\s)*def(\s)+%s(\s)*\(.*' % function
-            class_ = r'(\s)*class(\s)+%s(\s)*\(.*' % function
-        self.patFunction = re.compile(function_)
-        self.patClass = re.compile(class_)
         self.start()
 
     def find_code_location(self):
@@ -130,45 +126,6 @@ class LocateThread(QThread):
 
     def run(self):
         self.execute()
-
-    def navigate_code(self):
-        explorerContainer = explorer_container.ExplorerContainer()
-        projects_obj = explorerContainer.get_opened_projects()
-        projects = [p.path for p in projects_obj]
-        project = None
-        for p in projects:
-            if self._filePath.startswith(p):
-                project = p
-                break
-        #Search in files
-        if not project:
-            fileName = file_manager.get_basename(self._filePath)
-            self._grep_file(self._filePath, fileName)
-            return
-        queue = Queue.Queue()
-        queue.put(project)
-        file_filter = QDir.Files | QDir.NoDotAndDotDot | QDir.Readable
-        dir_filter = QDir.Dirs | QDir.NoDotAndDotDot | QDir.Readable
-        while not self._cancel and not queue.empty():
-            current_dir = QDir(queue.get())
-            #Skip not readable dirs!
-            if not current_dir.isReadable():
-                continue
-
-            #Collect all sub dirs!
-            current_sub_dirs = current_dir.entryInfoList(dir_filter)
-            for one_dir in current_sub_dirs:
-                queue.put(one_dir.absoluteFilePath())
-
-            current_sub_dirs = current_dir.entryInfoList(dir_filter)
-            #all files in sub_dir first apply the filters
-            current_files = current_dir.entryInfoList(
-                ['*.py'], file_filter)
-            #process all files in current dir!
-            for one_file in current_files:
-                if one_file.fileName() != '__init__.py':
-                    self._grep_file(one_file.absoluteFilePath(),
-                        one_file.fileName())
 
     def locate_code(self):
         explorerContainer = explorer_container.ExplorerContainer()
@@ -210,6 +167,41 @@ class LocateThread(QThread):
         self.dirty = True
         self.execute = self.locate_code
 
+    def go_to_definition(self):
+        self.dirty = True
+        self.results = []
+        locations = self.get_locations()
+        #fileName - path - lineNumber - lineContent
+        #type - class name - file_path - lineNumber
+        if self._isVariable:
+            preResults = [[file_manager.get_basename(x[2]), x[2], x[3], ''] \
+                for x in locations \
+                if x[0] == '-' and x[1] == self._search]
+        else:
+            preResults = [[file_manager.get_basename(x[2]), x[2], x[3], ''] \
+                for x in locations \
+                if (x[0] == '>' or x[0] == '<') and x[1] == self._search]
+        for data in preResults:
+            file_object = QFile(data[1])
+            if not file_object.open(QFile.ReadOnly):
+                return
+
+            stream = QTextStream(file_object)
+            line_index = 0
+            line = stream.readLine()
+            while not self._cancel:
+                if line_index == data[2]:
+                    data[3] = unicode(line)
+                    self.results.append(data)
+                    break
+                #take the next line!
+                line = stream.readLine()
+                if line.isNull():
+                    break
+                line_index += 1
+        self._search = None
+        self._isVariable = None
+
     def get_locations(self):
         if self.dirty:
             self.convert_map_to_array()
@@ -230,28 +222,6 @@ class LocateThread(QThread):
         global mapping_locations
         self.locations = [x for location in mapping_locations
             for x in mapping_locations[location]]
-
-    def _grep_file(self, file_path, file_name):
-        file_object = QFile(file_path)
-        if not file_object.open(QFile.ReadOnly):
-            return
-
-        stream = QTextStream(file_object)
-        lines = []
-        line_index = 0
-        line = stream.readLine()
-        while not self._cancel:
-            if self.patFunction.match(line) or self.patClass.match(line):
-                #fileName - path - lineNumber - lineContent
-                lines.append((unicode(file_name), unicode(file_path),
-                    line_index, unicode(line)))
-            #take the next line!
-            line = stream.readLine()
-            if line.isNull():
-                break
-            line_index += 1
-        if lines:
-            self.results += lines
 
     def _grep_file_locate(self, file_path, file_name):
         #type - file_name - file_path
