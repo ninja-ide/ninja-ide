@@ -652,6 +652,8 @@ class ProjectTree(QTreeWidgetItem):
         self.url = project.get('url', '')
         self.license = project.get('license', '')
         self.mainFile = project.get('mainFile', '')
+        self.preExecScript = project.get('preExecScript', '')
+        self.postExecScript = project.get('postExecScript', '')
         self.extensions = project.get('supported-extensions',
             settings.SUPPORTED_EXTENSIONS)
         self.pythonPath = project.get('pythonPath', settings.PYTHON_PATH)

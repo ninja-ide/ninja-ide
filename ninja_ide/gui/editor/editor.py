@@ -92,7 +92,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #Brace matching
         self._braces = None
         self._mtime = None
-        self.encoding = None
+        self.__encoding = None
         #Flag to dont bug the user when answer *the modification dialog*
         self.ask_if_externally_modified = True
         #Dict functions for KeyPress
@@ -133,6 +133,18 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.tr("Find Usages"), self)
         self.connect(self.__actionFindOccurrences, SIGNAL("triggered()"),
             self._find_occurrences)
+
+    def __get_encoding(self):
+        """Get the current encoding of 'utf-8' otherwise."""
+        if self.__encoding is not None:
+            return self.__encoding
+        return 'utf-8'
+
+    def __set_encoding(self, encoding):
+        """Set the current encoding."""
+        self.__encoding = encoding
+
+    encoding = property(__get_encoding, __set_encoding)
 
     def set_flags(self):
         if settings.ALLOW_WORD_WRAP:
@@ -555,8 +567,20 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.moveCursor(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
             self.textCursor().removeSelectedText()
             self.moveCursor(QTextCursor.Down)
-        else:
+        elif settings.COMPLETE_DECLARATIONS:
             helpers.check_for_assistance_completion(self, text)
+
+    def complete_declaration(self):
+        try:
+            settings.COMPLETE_DECLARATIONS = not settings.COMPLETE_DECLARATIONS
+            cursor = self.textCursor()
+            cursor.movePosition(QTextCursor.EndOfLine)
+            if cursor.atEnd():
+                cursor.insertBlock()
+            self.moveCursor(QTextCursor.Down)
+            self.__auto_indent(None)
+        finally:
+            settings.COMPLETE_DECLARATIONS = not settings.COMPLETE_DECLARATIONS
 
     def __complete_braces(self, event):
         cursor = self.textCursor()
