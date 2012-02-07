@@ -111,6 +111,8 @@ class __Actions(QObject):
         self.shortImport = QShortcut(short("Import"), self.ide)
         self.shortGoToDefinition = QShortcut(short("Go-to-definition"),
             self.ide)
+        self.shortCompleteDeclarations = QShortcut(
+            short("Complete-Declarations"), self.ide)
         self.shortCodeLocator = QShortcut(short("Code-locator"), self.ide)
         self.shortFileOpener = QShortcut(short("File-Opener"), self.ide)
         self.shortNavigateBack = QShortcut(short("Navigate-back"), self.ide)
@@ -139,6 +141,8 @@ class __Actions(QObject):
             self.ide.status.show_file_opener)
         self.connect(self.shortGoToDefinition, SIGNAL("activated()"),
             self.editor_go_to_definition)
+        self.connect(self.shortCompleteDeclarations, SIGNAL("activated()"),
+            self.editor_complete_declaration)
         self.connect(self.shortRedo, SIGNAL("activated()"),
             self.editor_redo)
         self.connect(self.shortHorizontalLine, SIGNAL("activated()"),
@@ -495,9 +499,11 @@ class __Actions(QObject):
             project = json_manager.read_ninja_project(path)
             venv = project.get('venv', False)
             params = project.get('programParams', '')
+            preExec = project.get('preExecScript', '')
+            postExec = project.get('postExecScript', '')
             mainFile = file_manager.create_path(path, mainFile)
             self.ide.misc.run_application(mainFile, pythonPath=venv,
-                programParams=params)
+                programParams=params, preExec=preExec, postExec=postExec)
 
     def kill_execution(self):
         """Kill the execution of the current file or project."""
@@ -596,6 +602,12 @@ class __Actions(QObject):
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             editorWidget.go_to_definition()
+
+    def editor_complete_declaration(self):
+        """Do the opposite action that Complete Declaration expect."""
+        editorWidget = self.ide.mainContainer.get_actual_editor()
+        if editorWidget:
+            editorWidget.complete_declaration()
 
     def editor_go_to_line(self, line):
         """Jump to the specified line in the current editor."""

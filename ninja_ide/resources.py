@@ -249,6 +249,7 @@ SHORTCUTS = {
     "Find-in-files": QKeySequence(Qt.CTRL + Qt.Key_L),
     "Import": QKeySequence(Qt.CTRL + Qt.Key_U),
     "Go-to-definition": QKeySequence(Qt.CTRL + Qt.Key_Return),
+    "Complete-Declarations": QKeySequence(Qt.ALT + Qt.Key_Return),
     "Code-locator": QKeySequence(Qt.CTRL + Qt.Key_K),
     "File-Opener": QKeySequence(Qt.CTRL + Qt.ALT + Qt.Key_O),
     "Navigate-back": QKeySequence(Qt.ALT + Qt.Key_Left),

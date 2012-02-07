@@ -73,6 +73,10 @@ class ProjectProperties(QDialog):
         self._item.projectType = unicode(self.projectData.txtType.text())
         self._item.pythonPath = unicode(
             self.projectExecution.txtPythonPath.text())
+        self._item.preExecScript = unicode(
+            self.projectExecution.txtPreExec.text())
+        self._item.postExecScript = unicode(
+            self.projectExecution.txtPostExec.text())
         self._item.programParams = unicode(
             self.projectExecution.txtParams.text())
         self._item.venv = unicode(self.projectExecution.txtVenvPath.text())
@@ -88,6 +92,8 @@ class ProjectProperties(QDialog):
         project['project-type'] = self._item.projectType
         project['supported-extensions'] = self._item.extensions
         project['pythonPath'] = self._item.pythonPath
+        project['preExecScript'] = self._item.preExecScript
+        project['postExecScript'] = self._item.postExecScript
         project['venv'] = self._item.venv
         project['programParams'] = self._item.programParams
         if tempName != self._item.name and \
@@ -181,13 +187,36 @@ class ProjectExecution(QWidget):
         grid.addWidget(self.txtPythonPath, 1, 1)
         grid.addWidget(self.btnPythonPath, 1, 2)
 
+        self.txtPreExec = QLineEdit()
+        ui_tools.LineEditButton(self.txtPreExec, self.txtPreExec.clear,
+            self.style().standardPixmap(self.style().SP_TrashIcon))
+        self.txtPreExec.setReadOnly(True)
+        self.txtPreExec.setText(self._parent._item.preExecScript)
+        self.btnPreExec = QPushButton(QIcon(resources.IMAGES['open']), '')
+        grid.addWidget(QLabel(self.tr("Pre-exec Script:")), 2, 0)
+        grid.addWidget(self.txtPreExec, 2, 1)
+        grid.addWidget(self.btnPreExec, 2, 2)
+        self.txtPostExec = QLineEdit()
+        ui_tools.LineEditButton(self.txtPostExec, self.txtPostExec.clear,
+            self.style().standardPixmap(self.style().SP_TrashIcon))
+        self.txtPostExec.setReadOnly(True)
+        self.txtPostExec.setText(self._parent._item.postExecScript)
+        self.btnPostExec = QPushButton(QIcon(resources.IMAGES['open']), '')
+        grid.addWidget(QLabel(self.tr("Post-exec Script:")), 3, 0)
+        grid.addWidget(self.txtPostExec, 3, 1)
+        grid.addWidget(self.btnPostExec, 3, 2)
+
+        grid.addItem(QSpacerItem(5, 10, QSizePolicy.Expanding,
+            QSizePolicy.Expanding), 4, 0)
+
+        # Properties
+        grid.addWidget(QLabel(self.tr("Properties:")), 5, 0)
         self.txtParams = QLineEdit()
         self.txtParams.setToolTip(
             self.tr("Separate the params with commas (ie: help, verbose)"))
         self.txtParams.setText(self._parent._item.programParams)
-        grid.addWidget(QLabel(self.tr("Params (comma separated):")), 2, 0)
-        grid.addWidget(self.txtParams, 2, 1)
-
+        grid.addWidget(QLabel(self.tr("Params (comma separated):")), 6, 0)
+        grid.addWidget(self.txtParams, 6, 1)
         #Widgets for virtualenv properties
         self.txtVenvPath = QLineEdit()
         ui_tools.LineEditButton(self.txtVenvPath, self.txtVenvPath.clear,
@@ -195,17 +224,19 @@ class ProjectExecution(QWidget):
         self.txtVenvPath.setText(self._parent._item.venv)
         self.txtVenvPath.setReadOnly(True)
         self.btnVenvPath = QPushButton(QIcon(resources.IMAGES['open']), '')
-        grid.addWidget(QLabel(self.tr("Virtualenv Folder:")), 3, 0)
-        grid.addWidget(self.txtVenvPath, 3, 1)
-        grid.addWidget(self.btnVenvPath, 3, 2)
-        grid.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
-            QSizePolicy.Expanding), 4, 0)
+        grid.addWidget(QLabel(self.tr("Virtualenv Folder:")), 7, 0)
+        grid.addWidget(self.txtVenvPath, 7, 1)
+        grid.addWidget(self.btnVenvPath, 7, 2)
 
         self.connect(self.btnBrowse, SIGNAL("clicked()"), self.select_file)
         self.connect(self.btnPythonPath, SIGNAL("clicked()"),
             self._load_python_path)
         self.connect(self.btnVenvPath, SIGNAL("clicked()"),
             self._load_python_venv)
+        self.connect(self.btnPreExec, SIGNAL("clicked()"),
+            self.select_pre_exec_script)
+        self.connect(self.btnPostExec, SIGNAL("clicked()"),
+            self.select_post_exec_script)
 
     def _load_python_path(self):
         path = unicode(QFileDialog.getOpenFileName(
@@ -236,3 +267,21 @@ class ProjectExecution(QWidget):
             fileName = file_manager.convert_to_relative(
                 self._parent._item.path, fileName)
             self.path.setText(fileName)
+
+    def select_pre_exec_script(self):
+        fileName = unicode(QFileDialog.getOpenFileName(
+            self, self.tr("Select Pre Execution Script File"),
+                        self._parent._item.path, '(*.*)'))
+        if fileName != '':
+            fileName = file_manager.convert_to_relative(
+                self._parent._item.path, fileName)
+            self.txtPreExec.setText(fileName)
+
+    def select_post_exec_script(self):
+        fileName = unicode(QFileDialog.getOpenFileName(
+            self, self.tr("Select Post Execution Script File"),
+                        self._parent._item.path, '(*.*)'))
+        if fileName != '':
+            fileName = file_manager.convert_to_relative(
+                self._parent._item.path, fileName)
+            self.txtPostExec.setText(fileName)
