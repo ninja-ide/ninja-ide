@@ -58,6 +58,10 @@ class TabWidget(QTabWidget):
         self.navigator = TabNavigator()
         self.setCornerWidget(self.navigator, Qt.TopRightCorner)
         self._parent = parent
+        # Configure tabs size behavior
+#        self.setElideMode(Qt.ElideRight)
+#        self.tabBar().setExpanding(True)
+#        self.tabBar().setUsesScrollButtons(False)
         #On some plataforms there are problem with focusInEvent
         self.question_already_open = False
         #Keep track of the tab titles
@@ -80,6 +84,10 @@ class TabWidget(QTabWidget):
             self.__lastOpened = self.__lastOpened[1:]
 
     def add_tab(self, widget, title, index=None):
+#        if self.count() > 9:
+#            self.setElideMode(Qt.ElideNone)
+#            self.tabBar().setExpanding(False)
+#            self.tabBar().setUsesScrollButtons(True)
         try:
             if index is not None:
                 inserted_index = self.insertTab(index, widget, title)
