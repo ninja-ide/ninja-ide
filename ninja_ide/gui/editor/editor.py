@@ -571,16 +571,14 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             helpers.check_for_assistance_completion(self, text)
 
     def complete_declaration(self):
-        try:
-            settings.COMPLETE_DECLARATIONS = not settings.COMPLETE_DECLARATIONS
-            cursor = self.textCursor()
-            cursor.movePosition(QTextCursor.EndOfLine)
-            if cursor.atEnd():
-                cursor.insertBlock()
-            self.moveCursor(QTextCursor.Down)
-            self.__auto_indent(None)
-        finally:
-            settings.COMPLETE_DECLARATIONS = not settings.COMPLETE_DECLARATIONS
+        settings.COMPLETE_DECLARATIONS = not settings.COMPLETE_DECLARATIONS
+        cursor = self.textCursor()
+        cursor.movePosition(QTextCursor.EndOfLine)
+        if cursor.atEnd():
+            cursor.insertBlock()
+        self.moveCursor(QTextCursor.Down)
+        self.__auto_indent(None)
+        settings.COMPLETE_DECLARATIONS = not settings.COMPLETE_DECLARATIONS
 
     def __complete_braces(self, event):
         cursor = self.textCursor()

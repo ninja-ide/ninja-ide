@@ -73,8 +73,10 @@ class ProjectProperties(QDialog):
         self._item.projectType = unicode(self.projectData.txtType.text())
         self._item.pythonPath = unicode(
             self.projectExecution.txtPythonPath.text())
-        self._item.preExecScript = unicode(self.projectExecution.txtPreExec)
-        self._item.postExecScript = unicode(self.projectExecution.txtPostExec)
+        self._item.preExecScript = unicode(
+            self.projectExecution.txtPreExec.text())
+        self._item.postExecScript = unicode(
+            self.projectExecution.txtPostExec.text())
         self._item.programParams = unicode(
             self.projectExecution.txtParams.text())
         self._item.venv = unicode(self.projectExecution.txtVenvPath.text())

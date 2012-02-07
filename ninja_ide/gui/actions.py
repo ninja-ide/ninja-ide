@@ -499,9 +499,11 @@ class __Actions(QObject):
             project = json_manager.read_ninja_project(path)
             venv = project.get('venv', False)
             params = project.get('programParams', '')
+            preExec = project.get('preExecScript', '')
+            postExec = project.get('postExecScript', '')
             mainFile = file_manager.create_path(path, mainFile)
             self.ide.misc.run_application(mainFile, pythonPath=venv,
-                programParams=params)
+                programParams=params, preExec=preExec, postExec=postExec)
 
     def kill_execution(self):
         """Kill the execution of the current file or project."""
