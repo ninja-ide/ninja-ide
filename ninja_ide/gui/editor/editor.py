@@ -582,7 +582,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         except(TokenError, SyntaxError):
             pass
         token_buffer.reverse()
-        logger.debug(token_buffer)
         if token_buffer and (token_buffer[0] == complementary_brace) and \
                                                 self.selected_text:
             self.textCursor().insertText(self.selected_text)
@@ -600,7 +599,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.textCursor().insertText(complementary_brace)
             self.moveCursor(QTextCursor.Left)
             self.textCursor().insertText(self.selected_text)
-            logger.debug(token_buffer[1])
         if text == "":
             pass  # lets see left
 
