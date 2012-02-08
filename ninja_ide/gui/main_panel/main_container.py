@@ -481,8 +481,13 @@ class __MainContainer(QSplitter):
         if not editorWidget:
             return False
         try:
+            filter = '(*.py);;(*.*)'
+            if editorWidget.ID:
+                ext = file_manager.get_file_extension(editorWidget.ID)
+                if ext != 'py':
+                    filter = '(*.%s);;(*.py);;(*.*)' % ext
             fileName = unicode(QFileDialog.getSaveFileName(
-                self._parent, self.tr("Save File"), '', '(*.py);;(*.*)'))
+                self._parent, self.tr("Save File"), editorWidget.ID, filter))
             if not fileName:
                 return False
 
@@ -621,6 +626,9 @@ class __MainContainer(QSplitter):
             self.actualTab = self._tabMain
         else:
             self.actualTab = self._tabSecondary
+            if files:
+                self._tabSecondary.show()
+
         for fileData in files:
             if file_manager.file_exists(unicode(fileData[0])):
                 self.open_file(unicode(fileData[0]),

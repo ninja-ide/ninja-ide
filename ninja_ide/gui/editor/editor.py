@@ -87,11 +87,12 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
         #For Highlighting in document
         self.extraSelections = []
+        self.wordSelection = []
         self._patIsWord = re.compile('\w+')
         #Brace matching
         self._braces = None
         self._mtime = None
-        self.encoding = None
+        self.__encoding = None
         #Flag to dont bug the user when answer *the modification dialog*
         self.ask_if_externally_modified = True
         #Dict functions for KeyPress
@@ -132,6 +133,18 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.tr("Find Usages"), self)
         self.connect(self.__actionFindOccurrences, SIGNAL("triggered()"),
             self._find_occurrences)
+
+    def __get_encoding(self):
+        """Get the current encoding of 'utf-8' otherwise."""
+        if self.__encoding is not None:
+            return self.__encoding
+        return 'utf-8'
+
+    def __set_encoding(self, encoding):
+        """Set the current encoding."""
+        self.__encoding = encoding
+
+    encoding = property(__get_encoding, __set_encoding)
 
     def set_flags(self):
         if settings.ALLOW_WORD_WRAP:
@@ -554,8 +567,18 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.moveCursor(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
             self.textCursor().removeSelectedText()
             self.moveCursor(QTextCursor.Down)
-        else:
+        elif settings.COMPLETE_DECLARATIONS:
             helpers.check_for_assistance_completion(self, text)
+
+    def complete_declaration(self):
+        settings.COMPLETE_DECLARATIONS = not settings.COMPLETE_DECLARATIONS
+        cursor = self.textCursor()
+        cursor.movePosition(QTextCursor.EndOfLine)
+        if cursor.atEnd():
+            cursor.insertBlock()
+        self.moveCursor(QTextCursor.Down)
+        self.__auto_indent(None)
+        settings.COMPLETE_DECLARATIONS = not settings.COMPLETE_DECLARATIONS
 
     def __complete_braces(self, event):
         cursor = self.textCursor()
@@ -850,6 +873,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.extraSelections.append(selection)
         self.setExtraSelections(self.extraSelections)
 
+        # Add highlighted words
+        for word in self.wordSelection:
+            self.extraSelections.append(word)
+        self.setExtraSelections(self.extraSelections)
+
         #Find Errors
         if settings.ERRORS_HIGHLIGHT_LINE and \
         len(self.errors.errorsSummary) < settings.MAX_HIGHLIGHT_ERRORS:
@@ -952,6 +980,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #Highlight selected variable
         if not self.isReadOnly() and not self.textCursor().hasSelection():
             word = self._text_under_cursor()
+            self.wordSelection = []
             if self._patIsWord.match(word):
                 lineColor = QColor(
                     resources.CUSTOM_SCHEME.get('selected-word',
@@ -967,12 +996,14 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                     selection = QTextEdit.ExtraSelection()
                     selection.format.setBackground(lineColor)
                     selection.cursor = cursor
+                    self.wordSelection.append(selection)
                     self.extraSelections.append(selection)
                     cursor = self.document().find(word, cursor.position(),
                         QTextDocument.FindCaseSensitively or \
                         QTextDocument.FindWholeWords)
                     block = block.next()
         self.setExtraSelections(self.extraSelections)
+        self.highlight_current_line()
 
 
 def create_editor(fileName='', project=None, syntax=None):

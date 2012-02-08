@@ -35,6 +35,7 @@ class ConsoleWidget(QPlainTextEdit):
         self.setUndoRedoEnabled(False)
         styles.set_editor_style(self, resources.CUSTOM_SCHEME)
         self.setToolTip(self.tr("Show/Hide (F4)"))
+        self.moveCursor(QTextCursor.EndOfLine)
 
         self._patIsWord = re.compile('\w+')
         self.prompt = u'>>> '

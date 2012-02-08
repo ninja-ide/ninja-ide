@@ -5,6 +5,8 @@ import os
 import copy
 
 from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QKeySequence
+from PyQt4.QtGui import QSpacerItem
 from PyQt4.QtGui import QColorDialog
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QScrollArea
@@ -848,6 +850,7 @@ class EditorConfiguration(QWidget):
         grid.addWidget(QLabel(
             self.tr("Indentation Length:")), 1, 0, Qt.AlignRight)
         self._spin = QSpinBox()
+        self._spin.setMinimum(1)
         self._spin.setValue(settings.INDENT)
         grid.addWidget(self._spin, 1, 1, 1, 2, alignment=Qt.AlignTop)
         #Margin Line
@@ -987,6 +990,13 @@ class EditorCompletion(QWidget):
         self._checkSimpleQuotes.setChecked("'" in settings.QUOTES)
         self._checkDoubleQuotes = QCheckBox(self.tr("Double Quotes: \"\""))
         self._checkDoubleQuotes.setChecked('"' in settings.QUOTES)
+        self._checkCompleteDeclarations = QCheckBox(
+            self.tr("Complete Declarations\n"
+            "(execute the opposite action with: %1).").arg(
+                resources.get_shortcut("Complete-Declarations").toString(
+                    QKeySequence.NativeText)))
+        self._checkCompleteDeclarations.setChecked(
+            settings.COMPLETE_DECLARATIONS)
         self._checkCompleteInStrings = QCheckBox(
             self.tr("Enable Completion inside Comments"))
         self._checkCompleteInStrings.setChecked(
@@ -1008,9 +1018,13 @@ class EditorCompletion(QWidget):
 #            "Activate Code Completion after:"))
 #        self.spinCode = QSpinBox()
 #        self.spinCode.setSuffix(' characters')
-        grid.addWidget(self._checkCodeDot, 6, 1, alignment=Qt.AlignTop)
+        grid.addWidget(self._checkCompleteDeclarations, 6, 1,
+            alignment=Qt.AlignTop)
+        grid.addWidget(self._checkCodeDot, 7, 1, alignment=Qt.AlignTop)
 #        grid.addWidget(self.checkCodeChar, 13, 0)
 #        grid.addWidget(self.spinCode, 13, 1)
+        grid.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
+            QSizePolicy.Expanding), 8, 0)
 
     def save(self):
         qsettings = QSettings()
@@ -1047,6 +1061,10 @@ class EditorCompletion(QWidget):
         settings.ENABLE_COMPLETION_IN_COMMENTS = \
             self._checkCompleteInStrings.isChecked()
         settings.CODE_COMPLETION = self._checkCodeDot.isChecked()
+        settings.COMPLETE_DECLARATIONS = \
+            self._checkCompleteDeclarations.isChecked()
+        qsettings.setValue("completeDeclarations",
+            settings.COMPLETE_DECLARATIONS)
         qsettings.endGroup()
         qsettings.endGroup()
 
