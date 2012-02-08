@@ -608,8 +608,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if token_buffer and (token_buffer[0] == complementary_brace) and \
                                                 self.selected_text:
             self.textCursor().insertText(self.selected_text)
-        elif token_buffer and (token_buffer[0] == complementary_brace) and \
-                                                (token_buffer[1] == brace):
+        elif len(token_buffer) > 2 and (token_buffer[0] == complementary_brace)\
+                and (token_buffer[1] == brace) and (token_buffer[2] != brace):
+            pass
+        elif len(token_buffer) < 3 and (token_buffer[0] == complementary_brace)\
+                                            and (token_buffer[1] == brace):
             pass
         elif (len(token_buffer) > 2) and (token_buffer[2] == "def") and \
                 (brace == "("):
