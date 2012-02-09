@@ -582,14 +582,44 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def __complete_braces(self, event):
         cursor = self.textCursor()
+        brace = unicode(event.text())
+        if brace not in settings.BRACES:
+            return
+        complementary_brace = BRACE_DICT.get(brace)
+        if cursor.position != QTextCursor.EndOfLine:
+            cursor.movePosition(QTextCursor.Right)
         cursor.movePosition(QTextCursor.StartOfLine,
             QTextCursor.KeepAnchor)
-#        if not settings.ENABLE_COMPLETION_IN_COMMENTS and \
-#        cursor.selectedText().contains("#"):
-#            return
-        symbol = unicode(event.text())
-        if symbol in settings.BRACES:
-            self.textCursor().insertText(settings.BRACES[symbol])
+        text = cursor.selectedText()
+        if not text:  # We where in the border of a newline
+            cursor = self.textCursor()
+            cursor.movePosition(QTextCursor.StartOfLine,
+                                QTextCursor.KeepAnchor)
+            text = cursor.selectedText()
+        token_buffer = []
+        try:
+            for tkn_type, tkn_rep, tkn_begin, tkn_end, _ in \
+                            generate_tokens(StringIO(text).readline):
+                if tkn_rep.strip() != "":
+                    token_buffer.append(tkn_rep)
+        except(TokenError, SyntaxError):
+            pass
+        token_buffer.reverse()
+        next_token = token_buffer and token_buffer[0]
+        previous_token = (len(token_buffer) > 1) and token_buffer[1]
+        far_away_token = (len(token_buffer) > 2) and token_buffer[2]
+        if token_buffer and (token_buffer[0] == complementary_brace) and \
+           self.selected_text:
+            self.textCursor().insertText(self.selected_text)
+        elif (far_away_token == "def") and (brace == "(") and \
+             (self.lang == "python"):
+            #are we in presence of a function?
+            self.textCursor().insertText("):")
+            self.textCursor().movePosition(QTextCursor.Left,
+                                            QTextCursor.MoveAnchor, 2)
+            self.textCursor().insertText(self.selected_text)
+        elif (previous_token != brace) or (far_away_token == brace):
+            self.textCursor().insertText(complementary_brace)
             self.moveCursor(QTextCursor.Left)
             self.textCursor().insertText(self.selected_text)
 
