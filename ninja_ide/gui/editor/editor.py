@@ -605,28 +605,23 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         except(TokenError, SyntaxError):
             pass
         token_buffer.reverse()
+        next_token = token_buffer and token_buffer[0]
+        previous_token = (len(token_buffer) > 1) and token_buffer[1]
+        far_away_token = (len(token_buffer) > 2) and token_buffer[2]
         if token_buffer and (token_buffer[0] == complementary_brace) and \
-                                                self.selected_text:
+           self.selected_text:
             self.textCursor().insertText(self.selected_text)
-        elif len(token_buffer) > 2 and (token_buffer[0] == complementary_brace)\
-                and (token_buffer[1] == brace) and (token_buffer[2] != brace):
-            pass
-        elif len(token_buffer) < 3 and (token_buffer[0] == complementary_brace)\
-                                            and (token_buffer[1] == brace):
-            pass
-        elif (len(token_buffer) > 2) and (token_buffer[2] == "def") and \
-                (brace == "("):
+        elif (far_away_token == "def") and (brace == "(") and \
+             (self.lang == "python"):
             #are we in presence of a function?
             self.textCursor().insertText("):")
             self.textCursor().movePosition(QTextCursor.Left,
                                             QTextCursor.MoveAnchor, 2)
             self.textCursor().insertText(self.selected_text)
-        else:
+        elif (previous_token != brace) or (far_away_token == brace):
             self.textCursor().insertText(complementary_brace)
             self.moveCursor(QTextCursor.Left)
             self.textCursor().insertText(self.selected_text)
-        if text == "":
-            pass  # lets see left
 
     def __complete_quotes(self, event):
         """
