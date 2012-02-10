@@ -812,12 +812,14 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             full_lenght += len(each_line)
         return full_lenght + insplit_line + relative_position
 
-    def __fancyMoveCursor(self, direction, places):
-        """Invoque move cursor as many times as required, the other option is
-        to move a copy of the cursor and set it, yet I am not sure if this
-        can be a problem if someone selected text for instance"""
-        for each_place in range(places):
-             self.moveCursor(direction)
+    def __fancyMoveCursor(self, operation, repeat=1,
+                                            moveMode=QTextCursor.MoveAnchor):
+        """Move the cursor a given number of times (with or without
+        anchoring), just a helper given the less than practical way qt
+        has for such a common operation"""
+        cursor = self.textCursor()
+        cursor.movePosition(operation, moveMode, repeat)
+        self.setTextCursor(cursor)
 
     def __tokenize_text(self, text):
         invalid_syntax = False
