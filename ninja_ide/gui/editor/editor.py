@@ -597,13 +597,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                                 QTextCursor.KeepAnchor)
             text = cursor.selectedText()
         token_buffer = []
-        try:
-            for tkn_type, tkn_rep, tkn_begin, tkn_end, _ in \
-                            generate_tokens(StringIO(text).readline):
-                if tkn_rep.strip() != "":
-                    token_buffer.append(tkn_rep)
-        except(TokenError, SyntaxError):
-            pass
+        _, tokens = self.__tokenize_text(text)
+        for tkn_type, tkn_rep, tkn_begin, tkn_end in tokens:
+            if tkn_rep.strip() != "":
+                token_buffer.append(tkn_rep)
+
         token_buffer.reverse()
         next_token = token_buffer and token_buffer[0]
         previous_token = (len(token_buffer) > 1) and token_buffer[1]
@@ -615,8 +613,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
              (self.lang == "python"):
             #are we in presence of a function?
             self.textCursor().insertText("):")
-            self.textCursor().movePosition(QTextCursor.Left,
-                                            QTextCursor.MoveAnchor, 2)
+            self.__fancyMoveCursor(QTextCursor.Left, 2)
             self.textCursor().insertText(self.selected_text)
         elif (previous_token != brace) or (far_away_token == brace):
             self.textCursor().insertText(complementary_brace)
@@ -637,10 +634,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             pre_context = self.__reverse_select_text_portion_from_offset(0, 3)
             if pre_context == 3 * symbol:
                 self.textCursor().insertText(3 * symbol)
-                another_cursor = self.textCursor()
-                another_cursor.movePosition(QTextCursor.Left,
-                                    QTextCursor.MoveAnchor, 3)
-                self.setTextCursor(another_cursor)
+                self.__fancyMoveCursor(QTextCursor.Left, 3)
             else:
                 self.textCursor().insertText(symbol)
                 self.moveCursor(QTextCursor.Left)
@@ -818,24 +812,38 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             full_lenght += len(each_line)
         return full_lenght + insplit_line + relative_position
 
+    def __fancyMoveCursor(self, direction, places):
+        """Invoque move cursor as many times as required, the other option is
+        to move a copy of the cursor and set it, yet I am not sure if this
+        can be a problem if someone selected text for instance"""
+        for each_place in range(places):
+             self.moveCursor(direction)
+
+    def __tokenize_text(self, text):
+        invalid_syntax = False
+        token_buffer = []
+        try:
+            for tkn_type, tkn_rep, tkn_begin, tkn_end, _ in \
+                            generate_tokens(StringIO(text).readline):
+                token_buffer.append((tkn_type, tkn_rep, tkn_begin, tkn_end))
+        except (TokenError, IndentationError, SyntaxError):
+            invalid_syntax = True
+        return (invalid_syntax, token_buffer)
+
     def _match_braces(self, position, brace, forward):
         """Return the position to hilight of the matching brace"""
         braceMatch = BRACE_DICT[brace]
-        invalid_syntax = False
         if forward:
             text = self.get_selection(position, QTextCursor.End)
         else:
             text = self.get_selection(QTextCursor.Start, position)
         brace_stack = []
         brace_buffer = []
-        try:
-            for tkn_type, tkn_rep, tkn_begin, tkn_end, _ in \
-                            generate_tokens(StringIO(text).readline):
-                if (tkn_type == tkn.OP) and (tkn_rep in BRACE_DICT):
-                    tkn_pos = forward and tkn_begin or tkn_end
-                    brace_buffer.append((tkn_rep, tkn_pos))
-        except (TokenError, IndentationError, SyntaxError):
-            invalid_syntax = True
+        invalid_syntax, tokens = self.__tokenize_text(text)
+        for tkn_type, tkn_rep, tkn_begin, tkn_end in tokens:
+            if (tkn_type == tkn.OP) and (tkn_rep in BRACE_DICT):
+                tkn_pos = forward and tkn_begin or tkn_end
+                brace_buffer.append((tkn_rep, tkn_pos))
         if not forward:
             brace_buffer.reverse()
         if not ((not forward) and invalid_syntax):
