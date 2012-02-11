@@ -580,42 +580,42 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.__auto_indent(None)
         settings.COMPLETE_DECLARATIONS = not settings.COMPLETE_DECLARATIONS
 
-    def __complete_braces(self, event):
+    def __fetch_current_line(self):
+        """Returns the current text line"""
         cursor = self.textCursor()
+        cursor.movePosition(QTextCursor.EndOfLine)
+        cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
+        return cursor.selection().toPlainText()
+
+    def __complete_braces(self, event):
+        """Complete () [] and {} using a mild inteligence to see if corresponds
+        and also do some more magic such as complete in classes and functions"""
         brace = unicode(event.text())
-        if brace not in settings.BRACES:
-            return
+        text = self.__fetch_current_line()
         complementary_brace = BRACE_DICT.get(brace)
-        if cursor.position != QTextCursor.EndOfLine:
-            cursor.movePosition(QTextCursor.Right)
-        cursor.movePosition(QTextCursor.StartOfLine,
-            QTextCursor.KeepAnchor)
-        text = cursor.selectedText()
-        if not text:  # We where in the border of a newline
-            cursor = self.textCursor()
-            cursor.movePosition(QTextCursor.StartOfLine,
-                                QTextCursor.KeepAnchor)
-            text = cursor.selectedText()
         token_buffer = []
         _, tokens = self.__tokenize_text(text)
+        is_unbalance = 0
         for tkn_type, tkn_rep, tkn_begin, tkn_end in tokens:
+            if tkn_rep == brace:
+                is_unbalance += 1
+            elif tkn_rep == complementary_brace:
+                is_unbalance -= 1
             if tkn_rep.strip() != "":
-                token_buffer.append(tkn_rep)
+                token_buffer.append((tkn_rep, tkn_end[1]))
+            is_unbalance = (is_unbalance >= 0) and is_unbalance or 0
 
-        token_buffer.reverse()
-        next_token = token_buffer and token_buffer[0]
-        previous_token = (len(token_buffer) > 1) and token_buffer[1]
-        far_away_token = (len(token_buffer) > 2) and token_buffer[2]
-        if token_buffer and (token_buffer[0] == complementary_brace) and \
-           self.selected_text:
-            self.textCursor().insertText(self.selected_text)
-        elif (far_away_token == "def") and (brace == "(") and \
-             (self.lang == "python"):
+        if (self.lang == "python") and (len(token_buffer) == 3) and \
+                (token_buffer[2][0] == brace) and (token_buffer[0][0] in
+                                                        ("def", "class")):
             #are we in presence of a function?
             self.textCursor().insertText("):")
             self.__fancyMoveCursor(QTextCursor.Left, 2)
             self.textCursor().insertText(self.selected_text)
-        elif (previous_token != brace) or (far_away_token == brace):
+        elif token_buffer and (not is_unbalance) and \
+           self.selected_text:
+            self.textCursor().insertText(self.selected_text)
+        elif is_unbalance:
             self.textCursor().insertText(complementary_brace)
             self.moveCursor(QTextCursor.Left)
             self.textCursor().insertText(self.selected_text)
