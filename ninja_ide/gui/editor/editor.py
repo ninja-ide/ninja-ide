@@ -580,18 +580,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.__auto_indent(None)
         settings.COMPLETE_DECLARATIONS = not settings.COMPLETE_DECLARATIONS
 
-    def __fetch_current_line(self):
-        """Returns the current text line"""
-        cursor = self.textCursor()
-        cursor.movePosition(QTextCursor.EndOfLine)
-        cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
-        return cursor.selection().toPlainText()
-
     def __complete_braces(self, event):
         """Complete () [] and {} using a mild inteligence to see if corresponds
         and also do some more magic such as complete in classes and functions"""
         brace = unicode(event.text())
-        text = self.__fetch_current_line()
+        text = self.textCursor().block().text()
         complementary_brace = BRACE_DICT.get(brace)
         token_buffer = []
         _, tokens = self.__tokenize_text(text)
