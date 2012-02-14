@@ -39,8 +39,6 @@ from ninja_ide.gui.editor import errors_checker
 from ninja_ide.gui.editor import sidebar_widget
 
 BRACE_DICT = {')': '(', ']': '[', '}': '{', '(': ')', '[': ']', '{': '}'}
-OPEN_BRACES = ('(', '[', '{')
-CLOSE_BRACES = (')', ']', '}')
 logger = logging.getLogger('ninja_ide.gui.editor.editor')
 
 
@@ -549,12 +547,12 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         completed.
         """
         text = unicode(event.text())
-        b_dict = settings.BRACES
-        if text in b_dict.values():
+        if text in settings.BRACES.values():
             portion = self.__reverse_select_text_portion_from_offset(1, 1)
             brace_open = portion[0]
-            is_balance = b_dict.get(brace_open, None)
-            if is_balance and b_dict[brace_open] == text:
+            brace_close = (len(portion) > 1) and portion[1] or None
+            balance = BRACE_DICT.get(brace_open, None) == text == brace_close
+            if balance:
                 self.moveCursor(QTextCursor.Right)
                 return True
 
@@ -581,41 +579,37 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         settings.COMPLETE_DECLARATIONS = not settings.COMPLETE_DECLARATIONS
 
     def __complete_braces(self, event):
-        cursor = self.textCursor()
+        """Complete () [] and {} using a mild inteligence to see if corresponds
+        and also do some more magic such as complete in classes and functions"""
         brace = unicode(event.text())
         if brace not in settings.BRACES:
+            # Thou shalt not waste cpu cycles if this brace compleion dissabled
             return
+        text = self.textCursor().block().text()
         complementary_brace = BRACE_DICT.get(brace)
-        if cursor.position != QTextCursor.EndOfLine:
-            cursor.movePosition(QTextCursor.Right)
-        cursor.movePosition(QTextCursor.StartOfLine,
-            QTextCursor.KeepAnchor)
-        text = cursor.selectedText()
-        if not text:  # We where in the border of a newline
-            cursor = self.textCursor()
-            cursor.movePosition(QTextCursor.StartOfLine,
-                                QTextCursor.KeepAnchor)
-            text = cursor.selectedText()
         token_buffer = []
         _, tokens = self.__tokenize_text(text)
+        is_unbalance = 0
         for tkn_type, tkn_rep, tkn_begin, tkn_end in tokens:
+            if tkn_rep == brace:
+                is_unbalance += 1
+            elif tkn_rep == complementary_brace:
+                is_unbalance -= 1
             if tkn_rep.strip() != "":
-                token_buffer.append(tkn_rep)
+                token_buffer.append((tkn_rep, tkn_end[1]))
+            is_unbalance = (is_unbalance >= 0) and is_unbalance or 0
 
-        token_buffer.reverse()
-        next_token = token_buffer and token_buffer[0]
-        previous_token = (len(token_buffer) > 1) and token_buffer[1]
-        far_away_token = (len(token_buffer) > 2) and token_buffer[2]
-        if token_buffer and (token_buffer[0] == complementary_brace) and \
-           self.selected_text:
-            self.textCursor().insertText(self.selected_text)
-        elif (far_away_token == "def") and (brace == "(") and \
-             (self.lang == "python"):
+        if (self.lang == "python") and (len(token_buffer) == 3) and \
+                (token_buffer[2][0] == brace) and (token_buffer[0][0] in
+                                                        ("def", "class")):
             #are we in presence of a function?
             self.textCursor().insertText("):")
             self.__fancyMoveCursor(QTextCursor.Left, 2)
             self.textCursor().insertText(self.selected_text)
-        elif (previous_token != brace) or (far_away_token == brace):
+        elif token_buffer and (not is_unbalance) and \
+           self.selected_text:
+            self.textCursor().insertText(self.selected_text)
+        elif is_unbalance:
             self.textCursor().insertText(complementary_brace)
             self.moveCursor(QTextCursor.Left)
             self.textCursor().insertText(self.selected_text)
@@ -944,9 +938,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                              QTextCursor.KeepAnchor)
         text = unicode(cursor.selectedText())
         pos1 = cursor.position()
-        if text in CLOSE_BRACES:
+        if text in (")", "]", "}"):
             pos2 = self._match_braces(pos1, text, forward=False)
-        elif text in OPEN_BRACES:
+        elif text in ("(", "[", "{"):
             pos2 = self._match_braces(pos1, text, forward=True)
         else:
             self.setExtraSelections(self.extraSelections)
