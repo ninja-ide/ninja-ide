@@ -3,8 +3,10 @@ import ast
 
 import logging
 
-logger_imports = logging.getLogger('ninja_ide.tools.introspection.obtaining_imports')
-logger_symbols = logging.getLogger('ninja_ide.tools.introspection.obtainint_symbols')
+logger_imports = logging.getLogger(
+    'ninja_ide.tools.introspection.obtaining_imports')
+logger_symbols = logging.getLogger(
+    'ninja_ide.tools.introspection.obtainint_symbols')
 
 
 def _parse_cls_function_body(funcBody):
