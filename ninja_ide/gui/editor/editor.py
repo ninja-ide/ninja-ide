@@ -582,7 +582,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         """Complete () [] and {} using a mild inteligence to see if corresponds
         and also do some more magic such as complete in classes and functions"""
         brace = unicode(event.text())
-        if brace not in settings.BRACES.keys():
+        if brace not in settings.BRACES:
             # Thou shalt not waste cpu cycles if this brace compleion dissabled
             return
         text = self.textCursor().block().text()
