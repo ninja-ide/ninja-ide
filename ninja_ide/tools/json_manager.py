@@ -34,8 +34,9 @@ def load_syntax():
             read.close()
             name = f[:-5]
             settings.SYNTAX[name] = structure
-            ext = structure.get('extension', 'py')[0]
-            settings.EXTENSIONS[ext] = name
+            for ext in structure.get('extension'):
+                if ext is not None:
+                    settings.EXTENSIONS[ext] = name
 
 
 def create_ninja_project(path, project, structure):
