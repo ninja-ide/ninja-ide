@@ -39,8 +39,6 @@ from ninja_ide.gui.editor import errors_checker
 from ninja_ide.gui.editor import sidebar_widget
 
 BRACE_DICT = {')': '(', ']': '[', '}': '{', '(': ')', '[': ']', '{': '}'}
-OPEN_BRACES = settings.BRACES.keys()
-CLOSE_BRACES = settings.BRACES.values()
 logger = logging.getLogger('ninja_ide.gui.editor.editor')
 
 
@@ -549,7 +547,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         completed.
         """
         text = unicode(event.text())
-        if text in CLOSE_BRACES:
+        if text in settings.BRACES.values():
             portion = self.__reverse_select_text_portion_from_offset(1, 1)
             brace_open = portion[0]
             brace_close = (len(portion) > 1) and portion[1] or None
@@ -584,7 +582,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         """Complete () [] and {} using a mild inteligence to see if corresponds
         and also do some more magic such as complete in classes and functions"""
         brace = unicode(event.text())
-        if brace not in OPEN_BRACES:
+        if brace not in settings.BRACES.keys():
             # Thou shalt not waste cpu cycles if this brace compleion dissabled
             return
         text = self.textCursor().block().text()
@@ -940,9 +938,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                              QTextCursor.KeepAnchor)
         text = unicode(cursor.selectedText())
         pos1 = cursor.position()
-        if text in CLOSE_BRACES:
+        if text in (")", "]", "}"):
             pos2 = self._match_braces(pos1, text, forward=False)
-        elif text in OPEN_BRACES:
+        elif text in ("(", "[", "{"):
             pos2 = self._match_braces(pos1, text, forward=True)
         else:
             self.setExtraSelections(self.extraSelections)
