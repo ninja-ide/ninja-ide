@@ -81,7 +81,6 @@ class Locator(QObject):
 
 class ResultItem(object):
 
-    #type - class name - file_path - lineNumber
     def __init__(self, type='', name='', path='', lineno=-1):
         self.data = {
             'type': type,
