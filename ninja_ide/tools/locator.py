@@ -79,6 +79,46 @@ class Locator(QObject):
         return classes
 
 
+class ResultItem(object):
+
+    #type - class name - file_path - lineNumber
+    def __init__(self, type='', name='', path='', lineno=-1):
+        self.data = {
+            'type': type,
+            'name': name,
+            'path': path,
+            'lineno': lineno}
+
+    def __str__(self):
+        return self.data['name']
+
+    def __len__(self):
+        return len(self.data['name'])
+
+    def __iter__(self):
+        for i in self.data['name']:
+            yield i
+
+    def __getitem__(self, index):
+        return self.data['name'][index]
+
+    @property
+    def type(self):
+        return self.data['type']
+
+    @property
+    def name(self):
+        return self.data['name']
+
+    @property
+    def path(self):
+        return self.data['path']
+
+    @property
+    def lineno(self):
+        return self.data['lineno']
+
+
 class LocateThread(QThread):
 
     def __init__(self):
@@ -174,13 +214,15 @@ class LocateThread(QThread):
         #fileName - path - lineNumber - lineContent
         #type - class name - file_path - lineNumber
         if self._isVariable:
-            preResults = [[file_manager.get_basename(x[2]), x[2], x[3], ''] \
+            preResults = [
+                [file_manager.get_basename(x.path), x.path, x.lineno, ''] \
                 for x in locations \
-                if x[0] == '-' and x[1] == self._search]
+                if x.type == '-' and x.name == self._search]
         else:
-            preResults = [[file_manager.get_basename(x[2]), x[2], x[3], ''] \
+            preResults = [
+                [file_manager.get_basename(x.path), x.path, x.lineno, '']
                 for x in locations \
-                if (x[0] == '>' or x[0] == '<') and x[1] == self._search]
+                if (x.type == '>' or x.type == '<') and x.name == self._search]
         for data in preResults:
             file_object = QFile(data[1])
             if not file_object.open(QFile.ReadOnly):
@@ -227,13 +269,14 @@ class LocateThread(QThread):
         #type - file_name - file_path
         global mapping_locations
         if file_manager.get_file_extension(unicode(file_name)) != 'py':
-            mapping_locations[unicode(file_path)] = [('!',
-                unicode(file_name), unicode(file_path), 0)]
+            mapping_locations[unicode(file_path)] = [
+                ResultItem(type='!', name=unicode(file_name),
+                    path=unicode(file_path), lineno=0)]
             return
-        mapping_locations[unicode(file_path)] = [('@', unicode(file_name),
-            unicode(file_path), 0)]
-
-        lines = []
+        mapping_locations[unicode(file_path)] = [
+            ResultItem(type='@', name=unicode(file_name),
+                    path=unicode(file_path), lineno=0)]
+        results = []
         with open(file_path) as f:
             content = f.read()
             ext = file_manager.get_file_extension(file_path)
@@ -243,31 +286,31 @@ class LocateThread(QThread):
             if "classes" in symbols:
                 for claz in symbols['classes']:
                     clazz = symbols['classes'][claz]
-                    #type - class name - file_path - lineNumber
-                    lines.append(('<', claz, unicode(file_path),
-                        clazz[0] - 1))
+                    line_number = clazz[0] - 1
+                    results.append(ResultItem(type='<', name=claz,
+                        path=unicode(file_path), lineno=line_number))
                     if 'attributes' in clazz[1]:
                         for attr in clazz[1]['attributes']:
-                            #type - attribute name - file_path - lineNumber
-                            lines.append(('-', attr, unicode(file_path),
-                                clazz[1]['attributes'][attr] - 1))
+                            line_number = clazz[1]['attributes'][attr] - 1
+                            results.append(ResultItem(type='-', name=attr,
+                                path=unicode(file_path), lineno=line_number))
                     if 'functions' in clazz[1]:
                         for func in clazz[1]['functions']:
-                            #type - function name - file_path - lineNumber
-                            lines.append(('>', func, unicode(file_path),
-                                clazz[1]['functions'][func] - 1))
+                            line_number = clazz[1]['functions'][func] - 1
+                            results.append(ResultItem(type='>', name=func,
+                                path=unicode(file_path), lineno=line_number))
             if 'attributes' in symbols:
                 for attr in symbols['attributes']:
-                    #type - attribute name - file_path - lineNumber
-                    lines.append(('-', attr, unicode(file_path),
-                        symbols['attributes'][attr] - 1))
+                    line_number = symbols['attributes'][attr] - 1
+                    results.append(ResultItem(type='-', name=attr,
+                        path=unicode(file_path), lineno=line_number))
             if 'functions' in symbols:
                 for func in symbols['functions']:
-                    #type - function name - file_path - lineNumber
-                    lines.append(('>', func, unicode(file_path),
-                        symbols['functions'][func] - 1))
-        if lines:
-            mapping_locations[unicode(file_path)] += lines
+                    line_number = symbols['functions'][func] - 1
+                    results.append(ResultItem(type='>', name=func,
+                        path=unicode(file_path), lineno=line_number))
+        if results:
+            mapping_locations[unicode(file_path)] += results
 
     def get_symbols_for_class(self, file_path, clazzName):
         lines = []
@@ -282,19 +325,19 @@ class LocateThread(QThread):
                     if claz != clazzName:
                         continue
                     clazz = symbols['classes'][claz]
-                    #type - class name - file_path - lineNumber
-                    lines.append(('<', claz, unicode(file_path),
-                        clazz[0] - 1))
+                    line_number = clazz[0] - 1
+                    lines.append(ResultItem(type='<', name=claz,
+                        path=unicode(file_path), lineno=line_number))
                     if 'attributes' in clazz[1]:
                         for attr in clazz[1]['attributes']:
-                            #type - attribute name - file_path - lineNumber
-                            lines.append(('-', attr, unicode(file_path),
-                                clazz[1]['attributes'][attr] - 1))
+                            line_number = clazz[1]['attributes'][attr] - 1
+                            lines.append(ResultItem(type='-', name=attr,
+                                path=unicode(file_path), lineno=line_number))
                     if 'functions' in clazz[1]:
                         for func in clazz[1]['functions']:
-                            #type - function name - file_path - lineNumber
-                            lines.append(('>', func, unicode(file_path),
-                                clazz[1]['functions'][func] - 1))
+                            line_number = clazz[1]['functions'][func] - 1
+                            lines.append(ResultItem(type='>', name=func,
+                                path=unicode(file_path), lineno=line_number))
                     return lines
             return []
 
@@ -352,7 +395,7 @@ class LocateItem(QListWidgetItem):
         '-': resources.IMAGES['attribute']}
 
     def __init__(self, data):
-        QListWidgetItem.__init__(self, QIcon(self.icons[data[0]]), "\n")
+        QListWidgetItem.__init__(self, QIcon(self.icons[data.type]), "\n")
         self._data = data
 
 
@@ -364,7 +407,7 @@ class LocateWidget(QLabel):
         QLabel.__init__(self)
         self.setText(u"{0}<br>"
             "<span style='font-size: 12px; color: grey;'>({1})</span>".format(
-                data[1], data[2]))
+                data.name, data.path))
 
 
 class LocateCompleter(QLineEdit):
@@ -442,12 +485,12 @@ class LocateCompleter(QLineEdit):
                             editorWidget.ID)
                     self.__prefix = unicode(self.__prefix)[1:].lstrip()
                     self.tempLocations = [x for x in self.tempLocations \
-                        if x[1].lower().find(self.__prefix) > -1]
+                        if x.name.lower().find(self.__prefix) > -1]
             else:
                 #Is not "." filter by the other options
                 self.tempLocations = [
                     x for x in self._parent._thread.get_locations()
-                    if x[0] == filterOption]
+                    if x.type == filterOption]
                 #Obtain the user input without the filter prefix
                 self.__prefix = unicode(self.__prefix)[1:].lstrip()
         else:
@@ -457,7 +500,7 @@ class LocateCompleter(QLineEdit):
             #if prefix (user search now) is not empty, filter words that1
             #contain the user input
             self.tempLocations = [x for x in self.tempLocations \
-                if x[1].lower().find(self.__prefix) > -1]
+                if x.name.lower().find(self.__prefix) > -1]
 
         return self._create_list_widget_items(self.tempLocations)
 
@@ -471,32 +514,32 @@ class LocateCompleter(QLineEdit):
         elif filterOptions[0] in ('<', '@'):
             currentItem = self.frame.listWidget.currentItem()
             if type(currentItem) is LocateItem:
-                if currentItem._data[0] in ('@', '<'):
+                if currentItem._data.type in ('@', '<'):
                     self._filterData = currentItem._data
             if filterOptions[0] == '<':
                 filterOptions.insert(0, '@')
-                filterOptions.insert(1, self._filterData[2])
+                filterOptions.insert(1, self._filterData.path)
             else:
-                filterOptions[1] = self._filterData[2]
+                filterOptions[1] = self._filterData.path
         global mapping_locations
         filePath = filterOptions[1]
 
         moveIndex = 0
         if len(filterOptions) > 4 and filterOptions[2] == '<':
             moveIndex = 2
-            if self._filterData[0] == '<':
-                self._classFilter = self._filterData[1]
+            if self._filterData.type == '<':
+                self._classFilter = self._filterData.name
             symbols = self._parent._thread.get_symbols_for_class(filePath,
                 self._classFilter)
             self.tempLocations = [x for x in symbols \
-                if x[0] == filterOptions[4]]
+                if x.type == filterOptions[4]]
         else:
             self.tempLocations = [
                 x for x in mapping_locations.get(filePath, []) \
-                if x[0] == filterOptions[2]]
+                if x.type == filterOptions[2]]
         if filterOptions[3 + moveIndex]:
             self.tempLocations = [x for x in self.tempLocations \
-                if x[1].lower().find(filterOptions[3 + moveIndex]) > -1]
+                if x.name.lower().find(filterOptions[3 + moveIndex]) > -1]
 
     def _advanced_filter_by_file(self, filterOptions):
         if filterOptions[1] == '@':
@@ -504,7 +547,7 @@ class LocateCompleter(QLineEdit):
         else:
             index = 3
         self.tempLocations = [x for x in self.tempLocations \
-            if file_manager.get_basename(x[2]).lower().find(
+            if file_manager.get_basename(x.path).lower().find(
                 filterOptions[index]) > -1]
 
     def _refresh_filter(self):
@@ -548,11 +591,11 @@ class LocateCompleter(QLineEdit):
 
     def _open_item(self, data):
         """Open the item received."""
-        if file_manager.get_file_extension(data[2]) in ('jpg', 'png'):
-            main_container.MainContainer().open_image(data[2])
+        if file_manager.get_file_extension(data.path) in ('jpg', 'png'):
+            main_container.MainContainer().open_image(data.path)
         else:
             main_container.MainContainer().open_file(
-                data[2], data[3], None, True)
+                data.path, data.lineno, None, True)
 
 
 class PopupCompleter(QFrame):
