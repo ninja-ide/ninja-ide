@@ -223,7 +223,9 @@ class Highlighter (QSyntaxHighlighter):
                 self.setCurrentBlockState(in_state)
                 length = text.length() - start + add
             # Apply formatting
-            if self.format(start) != self.sl_comment_format:
+            if (self.format(start) != self.sl_comment_format) or \
+               ((self.format(start) == self.sl_comment_format) and
+               (self.currentBlockState != 0)):
                 self.setFormat(start, length, style)
             else:
                 self.setCurrentBlockState(0)
