@@ -64,6 +64,8 @@ class Highlighter (QSyntaxHighlighter):
     braces = ['\\(', '\\)', '\\{', '\\}', '\\[', '\\]']
 
     def __init__(self, document, lang=None, scheme=None):
+        self.sl_string_format = None
+        self.sl_comment_format = None
         QSyntaxHighlighter.__init__(self, document)
         if lang is not None:
             self.apply_highlight(lang, scheme)
@@ -127,16 +129,18 @@ class Highlighter (QSyntaxHighlighter):
                 style = reg[2]
             rules.append((expr, 0, format(color, style)))
 
-        comments = langSyntax.get('comment', [])
-        for co in comments:
-            expr = co + '[^\\n]*'
-            rules.append((expr, 0, STYLES['comment']))
-
         stringChar = langSyntax.get('string', [])
         for sc in stringChar:
             expr = r'"[^"\\]*(\\.[^"\\]*)*"' if sc == '"' \
                 else r"'[^'\\]*(\\.[^'\\]*)*'"
             rules.append((expr, 0, STYLES['string']))
+        self.sl_string_format = STYLES['string']
+
+        comments = langSyntax.get('comment', [])
+        for co in comments:
+            expr = co + '[^\\n]*'
+            rules.append((expr, 0, STYLES['comment']))
+        self.sl_comment_format = STYLES['comment']
 
         # Multi-line strings (expression, flag, style)
         # FIXME: The triple-quotes in these two lines will mess up the
@@ -166,7 +170,8 @@ class Highlighter (QSyntaxHighlighter):
                 # We actually want the index of the nth match
                 index = expression.pos(nth)
                 length = expression.cap(nth).length()
-                self.setFormat(index, length, format)
+                if self.format(index) != self.sl_string_format:
+                    self.setFormat(index, length, format)
                 index = expression.indexIn(text, index + length)
 
         self.setCurrentBlockState(0)
@@ -218,7 +223,10 @@ class Highlighter (QSyntaxHighlighter):
                 self.setCurrentBlockState(in_state)
                 length = text.length() - start + add
             # Apply formatting
-            self.setFormat(start, length, style)
+            if self.format(start) != self.sl_comment_format:
+                self.setFormat(start, length, style)
+            else:
+                self.setCurrentBlockState(0)
             # Look for the next match
             start = delimiter.indexIn(text, start + length)
 
