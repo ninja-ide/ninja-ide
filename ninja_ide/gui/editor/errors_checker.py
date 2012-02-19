@@ -6,6 +6,7 @@ import compiler
 from PyQt4.QtCore import QThread
 
 from ninja_ide.core import file_manager
+from ninja_ide.core import settings
 from ninja_ide.dependencies.pyflakes_mod import checker
 
 
@@ -25,7 +26,9 @@ class ErrorsChecker(QThread):
         self.errorsSummary = {}
 
     def run(self):
-        if file_manager.get_file_extension(self._editor.ID) == 'py':
+        exts = settings.SYNTAX.get('python')['extension']
+        file_ext = file_manager.get_file_extension(self._editor.ID)
+        if file_ext in exts:
             try:
                 self.reset()
                 parseResult = compiler.parse(open(self._editor.ID).read())
