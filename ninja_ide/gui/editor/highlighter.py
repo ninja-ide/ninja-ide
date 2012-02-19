@@ -233,7 +233,6 @@ class Highlighter (QSyntaxHighlighter):
                ((st_fmt == STYLES['comment']) and
                (self.previousBlockState() != 0))) and \
                 (len(start_collides) == 0):
-                print start_collides
                 self.setFormat(start, length, style)
             else:
                 self.setCurrentBlockState(0)

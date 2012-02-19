@@ -182,7 +182,7 @@ COLOR_SCHEME = {
     "brace": "#FFFFFF",
     "definition": "#F6EC2A",
     "string": "#B369BF",
-    "string2": "#80FFFF",
+    "string2": "#86d986",
     "comment": "#80FF80",
     "properObject": "#6EC7D7",
     "numbers": "#F8A008",
