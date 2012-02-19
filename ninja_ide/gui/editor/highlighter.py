@@ -64,8 +64,6 @@ class Highlighter (QSyntaxHighlighter):
     braces = ['\\(', '\\)', '\\{', '\\}', '\\[', '\\]']
 
     def __init__(self, document, lang=None, scheme=None):
-        STYLES['string'] = None
-        STYLES['comment'] = None
         QSyntaxHighlighter.__init__(self, document)
         if lang is not None:
             self.apply_highlight(lang, scheme)
