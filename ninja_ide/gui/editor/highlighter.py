@@ -163,6 +163,7 @@ class Highlighter (QSyntaxHighlighter):
 
     def highlightBlock(self, text):
         """Apply syntax highlighting to the given block of text."""
+        hls = []
         for expression, nth, format in self.rules:
             index = expression.indexIn(text, 0)
 
@@ -170,16 +171,21 @@ class Highlighter (QSyntaxHighlighter):
                 # We actually want the index of the nth match
                 index = expression.pos(nth)
                 length = expression.cap(nth).length()
-                if self.format(index) != self.sl_string_format:
+
+                if (self.format(index) != self.sl_string_format):
                     self.setFormat(index, length, format)
+                    if format == self.sl_string_format:
+                        hls.append((index, index+length))
                 index = expression.indexIn(text, index + length)
 
         self.setCurrentBlockState(0)
         if not self.multi_start:
             # Do multi-line strings
-            in_multiline = self.match_multiline(text, *self.tri_single)
+            in_multiline = self.match_multiline(text, *self.tri_single,
+                                                hls=hls)
             if not in_multiline:
-                in_multiline = self.match_multiline(text, *self.tri_double)
+                in_multiline = self.match_multiline(text, *self.tri_double,
+                                                hls=hls)
         else:
             # Do multi-line comment
             self.comment_multiline(text, self.multi_end[0], *self.multi_start)
@@ -193,7 +199,7 @@ class Highlighter (QSyntaxHighlighter):
             self.setFormat(index, length, STYLES['spaces'])
             index = expression.indexIn(text, index + length)
 
-    def match_multiline(self, text, delimiter, in_state, style):
+    def match_multiline(self, text, delimiter, in_state, style, hls=[]):
         """Do highlighting of multi-line strings. ``delimiter`` should be a
         ``QRegExp`` for triple-single-quotes or triple-double-quotes, and
         ``in_state`` should be a unique integer to represent the corresponding
@@ -222,10 +228,15 @@ class Highlighter (QSyntaxHighlighter):
             else:
                 self.setCurrentBlockState(in_state)
                 length = text.length() - start + add
+
+            st_fmt = self.format(start)
+            start_collides = [pos for pos in hls if pos[0]<start<pos[1]]
+
             # Apply formatting
-            if (self.format(start) != self.sl_comment_format) or \
-               ((self.format(start) == self.sl_comment_format) and
-               (self.currentBlockState != 0)):
+            if ((st_fmt != self.sl_comment_format) or \
+               ((st_fmt == self.sl_comment_format) and
+               (self.currentBlockState()!= 0))) and \
+                (len(start_collides) == 0):
                 self.setFormat(start, length, style)
             else:
                 self.setCurrentBlockState(0)
