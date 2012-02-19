@@ -207,7 +207,7 @@ def get_symbols_handler(file_extension):
     Returns the symbol handler for the given file_extension
     """
     global SYMBOLS_HANDLER
-    return SYMBOLS_HANDLER.get(file_extension)
+    return SYMBOLS_HANDLER.get(file_extension, None)
 
 
 ###############################################################################
