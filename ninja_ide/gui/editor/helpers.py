@@ -279,55 +279,169 @@ def duplicate(editorWidget):
 
 
 def uncomment(editorWidget):
-    lang = file_manager.get_file_extension(editorWidget.ID)
-    key = settings.EXTENSIONS.get(lang, 'python')
-    comment_wildcard = settings.SYNTAX[key].get('comment', ['#'])[0]
-
     #cursor is a COPY all changes do not affect the QPlainTextEdit's cursor!!!
     cursor = editorWidget.textCursor()
-    block = editorWidget.document().findBlock(
+    block_actual = editorWidget.document().findBlock(
         cursor.selectionStart())
-    end = editorWidget.document().findBlock(
+    block_end = editorWidget.document().findBlock(
         cursor.selectionEnd()).next()
+    # If multi or simple line selection?
+    if(block_actual == block_end.previous()):
+        # Is single line selection
+        lang = file_manager.get_file_extension(editorWidget.ID)
+        key = settings.EXTENSIONS.get(lang, 'python')
+        comment_wildcard = settings.SYNTAX[key].get('comment', None)
+        if(comment_wildcard):
+            # Lang have a comment single symbol like # or //
+            uncomment_single_line(cursor, block_actual, block_end, editorWidget)
+        else:
+            # Lang have NOT a comment symbol like # or //, have only multiple
+            # comment symbols like "<!-- -->"
+            uncomment_multiple_lines(editorWidget, cursor)
+    else:
+        # Is multiple line selection like
+        lang = file_manager.get_file_extension(editorWidget.ID)
+        key = settings.EXTENSIONS.get(lang, 'python')
+        comment_wildcard = settings.SYNTAX[key].get('multiline_comment', None)
+        if(comment_wildcard):
+            # Lang have a comment symbol like "<!-- -->" or "/* */"
+            uncomment_multiple_lines(editorWidget, cursor)
+        else:
+            # Lang have NOT a commnet symbol "<!-- -->" or "/* */", have only a
+            # commnet symbol (like # or //)
+            uncomment_single_line(cursor, block_actual, block_end, editorWidget)
 
+
+def uncomment_single_line(cursor, block_actual, block_end, editorWidget):
+    """Uncoment one or more lines when one line symbol is supported"""
+    lang = file_manager.get_file_extension(editorWidget.ID)
+    key = settings.EXTENSIONS.get(lang, 'python')
+    comment_wildcard = settings.SYNTAX[key].get('comment', None)
     #Start a undo block
     cursor.beginEditBlock()
-
-    while block != end:
-        #Move the COPY cursor
-        cursor.setPosition(block.position())
-        cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
-        text = cursor.selectedText()
-        if text == comment_wildcard:
+    while block_actual != block_end:
+        #Move the COPY
+        if unicode(block_actual.text()).startswith(comment_wildcard[0]):
+            cursor.setPosition(block_actual.position())
+            cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
+                len(comment_wildcard[0]))
             cursor.removeSelectedText()
-        block = block.next()
-
+        block_actual = block_actual.next()
     #End a undo block
     cursor.endEditBlock()
 
 
-def comment(editorWidget):
+def uncomment_multiple_lines(editorWidget, cursor):
+    """Uncomment one or more lines when multiple lines symbols is supported"""
     lang = file_manager.get_file_extension(editorWidget.ID)
     key = settings.EXTENSIONS.get(lang, 'python')
-    comment_wildcard = settings.SYNTAX[key].get('comment', ['#'])[0]
+    comment_wildcard = settings.SYNTAX[key].get('multiline_comment', None)
+    block_actual = editorWidget.document().findBlock(
+        cursor.selectionStart())
+    block_end = editorWidget.document().findBlock(
+        cursor.selectionEnd())
+    #begin Undo feature
+    cursor.beginEditBlock()
+    #Remove start symbol comment if correspond
+    if unicode(block_actual.previous().text()).startswith(
+        comment_wildcard['open']):
+        block_actual = block_actual.previous()
+        delete_lines_selected(cursor, block_actual)
+    if unicode(block_actual.text()).startswith(comment_wildcard['open']):
+        delete_lines_selected(cursor, block_actual)
+    #Remove end symbol comment if correspond
+    if unicode(block_end.next().text()).startswith(comment_wildcard['close']):
+        block_end = block_end.next()
+        delete_lines_selected(cursor, block_end)
+    if unicode(block_end.text()).startswith(comment_wildcard['close']):
+        delete_lines_selected(cursor, block_end)
+    cursor.endEditBlock()
 
+
+def delete_lines_selected(cursor, block_actual):
+    cursor.setPosition(block_actual.position())
+    cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
+    cursor.removeSelectedText()
+    cursor.deleteChar()
+
+
+def comment(editorWidget):
+    """ This method comment one or more lines of code """
     #cursor is a COPY all changes do not affect the QPlainTextEdit's cursor!!!
     cursor = editorWidget.textCursor()
-    block = editorWidget.document().findBlock(
+    block_actual = editorWidget.document().findBlock(
         cursor.selectionStart())
-    end = editorWidget.document().findBlock(
+    block_end = editorWidget.document().findBlock(
         cursor.selectionEnd()).next()
+    # If multi or simple line selection?
+    if(block_actual == block_end.previous()):
+        # Is single line selection
+        lang = file_manager.get_file_extension(editorWidget.ID)
+        key = settings.EXTENSIONS.get(lang, 'python')
+        comment_wildcard = settings.SYNTAX[key].get('comment', None)
+        if(comment_wildcard):
+            # Lang have a comment symbol like # or //
+            comment_single_line(editorWidget, cursor, block_actual, block_end)
+        else:
+            # Lang have NOT a comment symbol like # or //, have only multiple
+            # comment symbols like "<!-- -->"
+            comment_multiple_lines(editorWidget, cursor)
+    else:
+        # Is multiple line selection like
+        lang = file_manager.get_file_extension(editorWidget.ID)
+        key = settings.EXTENSIONS.get(lang, 'python')
+        comment_wildcard = settings.SYNTAX[key].get('multiline_comment', None)
+        if(comment_wildcard):
+            # Lang have a comment symbol like "<!-- -->" or "/* */"
+            comment_multiple_lines(editorWidget, cursor)
+        else:
+            # Lang have NOT a commnet symbol "<!-- -->" or "/* */", have only a
+            # commnet symbol (like # or //)
+            comment_single_line(editorWidget, cursor, block_actual, block_end)
 
+
+def comment_single_line(editorWidget, cursor, block_actual, block_end):
+    """Comment one or more lines with single comment symbol"""
+    lang = file_manager.get_file_extension(editorWidget.ID)
+    key = settings.EXTENSIONS.get(lang, 'python')
+    comment_wildcard = settings.SYNTAX[key].get('comment', None)
     #Start a undo block
     cursor.beginEditBlock()
-
     #Move the COPY cursor
-    while block != end:
-        cursor.setPosition(block.position())
-        cursor.insertText(comment_wildcard)
-        block = block.next()
-
+    while block_actual != block_end:
+        cursor.setPosition(block_actual.position())
+        cursor.insertText(comment_wildcard[0])
+        block_actual = block_actual.next()
     #End a undo block
+    cursor.endEditBlock()
+
+
+def comment_multiple_lines(editorWidget, cursor):
+    """Comment one or more lines with multiple comment symbol"""
+    lang = file_manager.get_file_extension(editorWidget.ID)
+    key = settings.EXTENSIONS.get(lang, 'python')
+    comment_wildcard = settings.SYNTAX[key].get('multiline_comment', None)
+    start = editorWidget.document().findBlock(
+        cursor.selectionStart()).firstLineNumber()
+    end = editorWidget.document().findBlock(
+        cursor.selectionEnd()).firstLineNumber()
+    #get the position of the line
+    startPosition = editorWidget.document().findBlockByLineNumber(
+        start).position()
+    #select the text to comment
+    cursor.setPosition(startPosition)
+    cursor.movePosition(QTextCursor.StartOfLine)
+    cursor.movePosition(QTextCursor.Down, QTextCursor.KeepAnchor,
+        end - start)
+    cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
+    text_to_comment = cursor.selectedText()
+    #begin Undo feature
+    cursor.beginEditBlock()
+    #Remove
+    cursor.removeSelectedText()
+    cursor.insertText(comment_wildcard['open'])
+    cursor.insertText('\n' + text_to_comment)
+    cursor.insertText('\n' + comment_wildcard['close'])
     cursor.endEditBlock()
 
 
