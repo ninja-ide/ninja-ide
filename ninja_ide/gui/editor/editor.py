@@ -486,7 +486,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 self.moveCursor(QTextCursor.Right)
 
     def __home_pressed(self, event):
-        if event.modifiers() == Qt.ShiftModifier:
+        if event.modifiers() == Qt.ControlModifier:
+            return False
+        elif event.modifiers() == Qt.ShiftModifier:
             move = QTextCursor.KeepAnchor
         else:
             move = QTextCursor.MoveAnchor

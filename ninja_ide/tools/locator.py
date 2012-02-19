@@ -249,13 +249,15 @@ class LocateThread(QThread):
             file_name = file_manager.get_basename(path)
             self._grep_file_locate(path, file_name)
             thisFileLocations = mapping_locations.get(path, ())
-        thisFileLocations = thisFileLocations[1:]
+        thisFileLocations = sorted(thisFileLocations[1:],
+            key=lambda item: item.name)
         return thisFileLocations
 
     def convert_map_to_array(self):
         global mapping_locations
         self.locations = [x for location in mapping_locations
             for x in mapping_locations[location]]
+        self.locations = sorted(self.locations, key=lambda item: item.name)
 
     def _grep_file_locate(self, file_path, file_name):
         #type - file_name - file_path
