@@ -290,7 +290,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.highlighter = highlighter.Highlighter(self.document(),
                 self.lang, resources.CUSTOM_SCHEME)
             self._mini.highlighter = highlighter.Highlighter(
-                self._mini.minicode.document(),
+                self._mini.document(),
                 self.lang, resources.CUSTOM_SCHEME)
         elif syntax is not None:
             self.highlighter = highlighter.Highlighter(self.document(),
