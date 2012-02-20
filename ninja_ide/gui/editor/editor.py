@@ -34,6 +34,7 @@ from ninja_ide.tools import styles
 from ninja_ide.gui.main_panel import itab_item
 from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import helpers
+from ninja_ide.gui.editor import minimap
 from ninja_ide.gui.editor import pep8_checker
 from ninja_ide.gui.editor import errors_checker
 from ninja_ide.gui.editor import sidebar_widget
@@ -67,6 +68,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #Config Editor
         self.set_flags()
         self.__lines_count = None
+
+        self._mini = minimap.MiniMap(self)
+        self._mini.show()
 
         self._sidebarWidget = sidebar_widget.SidebarWidget(self)
         if filename in settings.BREAKPOINTS:
@@ -117,6 +121,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
         self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
             self._sidebarWidget.update_area)
+        self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
+            self._mini.update_visible_area)
         self.connect(self, SIGNAL("undoAvailable(bool)"), self._file_saved)
         self.connect(self, SIGNAL("cursorPositionChanged()"),
             self.highlight_current_line)
@@ -161,6 +167,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def set_id(self, id_):
         super(Editor, self).set_id(id_)
         self._mtime = file_manager.get_last_modification(id_)
+        self._mini.set_code(self.toPlainText())
         if settings.CHECK_STYLE:
             self.pep8.check_style()
         if settings.FIND_ERRORS:
@@ -261,8 +268,13 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.highlighter.apply_highlight(
                 settings.EXTENSIONS.get(ext, 'python'),
                 resources.CUSTOM_SCHEME)
+            self._mini.highlighter.apply_highlight(
+                settings.EXTENSIONS.get(ext, 'python'),
+                resources.CUSTOM_SCHEME)
         else:
             self.highlighter.apply_highlight(
+                str(syntaxLang), resources.CUSTOM_SCHEME)
+            self._mini.highlighter.apply_highlight(
                 str(syntaxLang), resources.CUSTOM_SCHEME)
 
     def _file_saved(self, undoAvailable=False):
@@ -277,11 +289,18 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if lang in settings.EXTENSIONS:
             self.highlighter = highlighter.Highlighter(self.document(),
                 self.lang, resources.CUSTOM_SCHEME)
+            self._mini.highlighter = highlighter.Highlighter(
+                self._mini.document(),
+                self.lang, resources.CUSTOM_SCHEME)
         elif syntax is not None:
             self.highlighter = highlighter.Highlighter(self.document(),
                 None, resources.CUSTOM_SCHEME)
             self.highlighter.apply_highlight(lang, resources.CUSTOM_SCHEME,
                 syntax)
+            self._mini.highlighter = highlighter.Highlighter(self.document(),
+                None, resources.CUSTOM_SCHEME)
+            self._mini.highlighter.apply_highlight(lang,
+                resources.CUSTOM_SCHEME, syntax)
 
     def get_text(self):
         """
@@ -462,6 +481,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def resizeEvent(self, event):
         QPlainTextEdit.resizeEvent(self, event)
         self._sidebarWidget.setFixedHeight(self.height())
+        self._mini.adjust_to_parent()
 
     def __insert_indentation(self, event):
         if self.textCursor().hasSelection():
