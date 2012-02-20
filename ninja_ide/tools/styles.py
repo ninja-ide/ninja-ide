@@ -65,9 +65,9 @@ QSS_STYLES = {
         }""",
      'minimap': """QPlainTextEdit {
              border: none;
-             border-left: 1px solid white;
-             border-top: 1px solid white;
-             border-bottom: 1px solid white;
+             border-left: 1px solid grey;
+             border-top: 1px solid grey;
+             border-bottom: 1px solid grey;
              margin-right: 5px;
          }"""}
 
