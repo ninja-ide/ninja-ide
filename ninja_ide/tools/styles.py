@@ -57,12 +57,19 @@ QSS_STYLES = {
                 stop: 0 #606161, stop: 1 #0a0b0b);
         }
         """,
-        'toolbar-customization': """QToolBar{
+    'toolbar-customization': """QToolBar{
             border-radius: 5px;
             border-width: 1px;
             border-color:gray;
             border-style: solid;
-        }"""}
+        }""",
+     'minimap': """QPlainTextEdit {
+             border: none;
+             border-left: 1px solid grey;
+             border-top: 1px solid grey;
+             border-bottom: 1px solid grey;
+             margin-right: 5px;
+         }"""}
 
 
 def set_style(widget, sty):
