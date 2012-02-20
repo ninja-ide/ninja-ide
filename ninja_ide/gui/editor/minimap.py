@@ -24,6 +24,7 @@ class MiniMap(QPlainTextEdit):
         self.setReadOnly(True)
         self.setCenterOnScroll(True)
         self.setMouseTracking(True)
+        self.setTextInteractionFlags(Qt.NoTextInteraction)
 
         self._parent = parent
         self.highlighter = None

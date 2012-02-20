@@ -750,6 +750,8 @@ class EditorGeneral(QWidget):
         qsettings.beginGroup('editor')
         #Minimap
         formMini = QGridLayout(groupBoxMini)
+        self._checkShowMinimap = QCheckBox()
+        self._checkShowMinimap.setChecked(settings.SHOW_MINIMAP)
         self._spinMaxOpacity = QSpinBox()
         self._spinMaxOpacity.setMaximum(100)
         self._spinMaxOpacity.setMinimum(0)
@@ -762,15 +764,19 @@ class EditorGeneral(QWidget):
         self._spinSize.setMaximum(100)
         self._spinSize.setMinimum(0)
         self._spinSize.setValue(settings.SIZE_PROPORTION * 100)
-        formMini.addWidget(QLabel(self.tr("Max Opacity:")), 0, 0,
+        formMini.addWidget(QLabel(
+            self.tr("Enable/Disable MiniMap (Requires restart):")), 0, 0,
             Qt.AlignRight)
-        formMini.addWidget(QLabel(self.tr("Min Opacity:")), 1, 0,
+        formMini.addWidget(QLabel(self.tr("Max Opacity:")), 1, 0,
+            Qt.AlignRight)
+        formMini.addWidget(QLabel(self.tr("Min Opacity:")), 2, 0,
             Qt.AlignRight)
         formMini.addWidget(QLabel(
-            self.tr("Size Area relative to the Editor:")), 2, 0, Qt.AlignRight)
-        formMini.addWidget(self._spinMaxOpacity, 0, 1)
-        formMini.addWidget(self._spinMinOpacity, 1, 1)
-        formMini.addWidget(self._spinSize, 2, 1)
+            self.tr("Size Area relative to the Editor:")), 3, 0, Qt.AlignRight)
+        formMini.addWidget(self._checkShowMinimap, 0, 1)
+        formMini.addWidget(self._spinMaxOpacity, 1, 1)
+        formMini.addWidget(self._spinMinOpacity, 2, 1)
+        formMini.addWidget(self._spinSize, 3, 1)
         #Typo
         gridTypo = QGridLayout(groupBoxTypo)
         self._btnEditorFont = QPushButton(
@@ -844,9 +850,11 @@ class EditorGeneral(QWidget):
         qsettings = QSettings()
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('editor')
+        settings.SHOW_MINIMAP = self._checkShowMinimap.isChecked()
         settings.MINIMAP_MAX_OPACITY = self._spinMaxOpacity.value() / 100.0
         settings.MINIMAP_MIN_OPACITY = self._spinMinOpacity.value() / 100.0
         settings.SIZE_PROPORTION = self._spinSize.value() / 100.0
+        qsettings.setValue('minimapShow', settings.SHOW_MINIMAP)
         qsettings.setValue('minimapMaxOpacity', settings.MINIMAP_MAX_OPACITY)
         qsettings.setValue('minimapMinOpacity', settings.MINIMAP_MIN_OPACITY)
         qsettings.setValue('minimapSizeProportion', settings.SIZE_PROPORTION)
