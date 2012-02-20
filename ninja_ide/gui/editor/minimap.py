@@ -60,13 +60,16 @@ class MiniMap(QPlainTextEdit):
 
     def update_visible_area(self):
         block = self._parent.firstVisibleBlock()
+        first_line = block.blockNumber()
+        max_count = self.blockCount()
         parent_cursor = self._parent.textCursor()
         parent_cursor.setPosition(block.position())
         self.setTextCursor(parent_cursor)
+        lines_count = self.max_line
+        if (first_line + self.max_line) > max_count:
+            lines_count = max_count - first_line
         extraSelections = []
-        for i in xrange(self.max_line):
-            if not block.isValid():
-                continue
+        for i in xrange(lines_count):
             selection = QTextEdit.ExtraSelection()
             lineColor = QColor(resources.CUSTOM_SCHEME.get('current-line',
                         resources.COLOR_SCHEME['current-line']))
