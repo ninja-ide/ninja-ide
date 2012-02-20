@@ -121,6 +121,7 @@ BOOKMARKS = {}
 # MINIMAP
 ###############################################################################
 
+SHOW_MINIMAP = True
 MINIMAP_MAX_OPACITY = 0.8
 MINIMAP_MIN_OPACITY = 0.1
 SIZE_PROPORTION = 0.17
@@ -263,6 +264,7 @@ def load_settings():
     global BRACES
     global HIDE_TOOLBAR
     global TOOLBAR_ITEMS
+    global SHOW_MINIMAP
     global MINIMAP_MAX_OPACITY
     global MINIMAP_MIN_OPACITY
     global SIZE_PROPORTION
@@ -312,6 +314,8 @@ def load_settings():
     WORKSPACE = unicode(qsettings.value(
         'preferences/general/workspace', "").toString())
     #Editor
+    SHOW_MINIMAP = qsettings.value(
+        'preferences/editor/minimapShow', True).toBool()
     MINIMAP_MAX_OPACITY = qsettings.value(
         'preferences/editor/minimapMaxOpacity', 0.8).toFloat()[0]
     MINIMAP_MIN_OPACITY = qsettings.value(
