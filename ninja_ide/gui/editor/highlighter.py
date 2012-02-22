@@ -141,8 +141,8 @@ class Highlighter (QSyntaxHighlighter):
         # Multi-line strings (expression, flag, style)
         # FIXME: The triple-quotes in these two lines will mess up the
         # syntax highlighting from this point onward
-        self.tri_single = (QRegExp("'''"), 1, STYLES['string2'])    # '''
-        self.tri_double = (QRegExp('"""'), 2, STYLES['string2'])    # """
+        self.tri_single = (QRegExp("'''"), 1, STYLES['string2'])
+        self.tri_double = (QRegExp('"""'), 2, STYLES['string2'])
 
         multi = langSyntax.get('multiline_comment', [])
         if multi:

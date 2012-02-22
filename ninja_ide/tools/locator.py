@@ -32,6 +32,7 @@ from ninja_ide.gui.misc import misc_container
 from ninja_ide.gui.main_panel import main_container
 from ninja_ide.core import file_manager
 from ninja_ide.core import settings
+from ninja_ide.tools import json_manager
 
 
 mapping_locations = {}
@@ -168,10 +169,28 @@ class LocateThread(QThread):
         queue = Queue.Queue()
         for project in projects:
             queue.put(project)
-        file_filter = QDir.Files | QDir.NoDotAndDotDot | QDir.Readable
-        dir_filter = QDir.Dirs | QDir.NoDotAndDotDot | QDir.Readable
         while not self._cancel and not queue.empty():
             current_dir = QDir(queue.get())
+            #Skip not readable dirs!
+            if not current_dir.isReadable():
+                continue
+
+            project_data = project = json_manager.read_ninja_project(
+                unicode(current_dir.path()))
+            extensions = project_data.get('supported-extensions',
+                settings.SUPPORTED_EXTENSIONS)
+
+            queue_folders = Queue.Queue()
+            queue_folders.put(current_dir)
+            self.__locate_code_in_project(queue_folders, extensions)
+        self.dirty = True
+        self.get_locations()
+
+    def __locate_code_in_project(self, queue_folders, extensions):
+        file_filter = QDir.Files | QDir.NoDotAndDotDot | QDir.Readable
+        dir_filter = QDir.Dirs | QDir.NoDotAndDotDot | QDir.Readable
+        while not self._cancel and not queue_folders.empty():
+            current_dir = QDir(queue_folders.get())
             #Skip not readable dirs!
             if not current_dir.isReadable():
                 continue
@@ -179,19 +198,16 @@ class LocateThread(QThread):
             #Collect all sub dirs!
             current_sub_dirs = current_dir.entryInfoList(dir_filter)
             for one_dir in current_sub_dirs:
-                queue.put(one_dir.absoluteFilePath())
+                queue_folders.put(one_dir.absoluteFilePath())
 
-            current_sub_dirs = current_dir.entryInfoList(dir_filter)
             #all files in sub_dir first apply the filters
             current_files = current_dir.entryInfoList(
-                ['*{0}'.format(x) for x in settings.SUPPORTED_EXTENSIONS],
+                ['*{0}'.format(x) for x in extensions],
                 file_filter)
             #process all files in current dir!
             for one_file in current_files:
                 self._grep_file_locate(unicode(one_file.absoluteFilePath()),
                     one_file.fileName())
-        self.dirty = True
-        self.get_locations()
 
     def locate_file_code(self):
         file_name = file_manager.get_basename(self._file_path)
@@ -249,13 +265,15 @@ class LocateThread(QThread):
             file_name = file_manager.get_basename(path)
             self._grep_file_locate(path, file_name)
             thisFileLocations = mapping_locations.get(path, ())
-        thisFileLocations = thisFileLocations[1:]
+        thisFileLocations = sorted(thisFileLocations[1:],
+            key=lambda item: item.name)
         return thisFileLocations
 
     def convert_map_to_array(self):
         global mapping_locations
         self.locations = [x for location in mapping_locations
             for x in mapping_locations[location]]
+        self.locations = sorted(self.locations, key=lambda item: item.name)
 
     def _grep_file_locate(self, file_path, file_name):
         #type - file_name - file_path
@@ -265,16 +283,18 @@ class LocateThread(QThread):
             mapping_locations[unicode(file_path)] = [
                 ResultItem(type=FILTERS['non-python'], name=unicode(file_name),
                     path=unicode(file_path), lineno=0)]
+        else:
+            mapping_locations[unicode(file_path)] = [
+                ResultItem(type=FILTERS['files'], name=unicode(file_name),
+                        path=unicode(file_path), lineno=0)]
+        ext = file_manager.get_file_extension(file_path)
+        #obtain a symbols handler for this file extension
+        symbols_handler = settings.get_symbols_handler(ext)
+        if symbols_handler is None:
             return
-        mapping_locations[unicode(file_path)] = [
-            ResultItem(type=FILTERS['files'], name=unicode(file_name),
-                    path=unicode(file_path), lineno=0)]
         results = []
         with open(file_path) as f:
             content = f.read()
-            ext = file_manager.get_file_extension(file_path)
-            #obtain a symbols handler for this file extension
-            symbols_handler = settings.get_symbols_handler(ext)
             symbols = symbols_handler.obtain_symbols(content)
             if "classes" in symbols:
                 for claz in symbols['classes']:

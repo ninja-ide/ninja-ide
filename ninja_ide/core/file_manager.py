@@ -294,6 +294,9 @@ def check_for_external_modification(fileName, old_mtime):
 
 def get_files_from_folder(folder, ext):
     """Get the files in folder with the specified extension."""
-    filesExt = os.listdir(folder)
+    try:
+        filesExt = os.listdir(folder)
+    except:
+        filesExt = []
     filesExt = [f for f in filesExt if f.endswith(ext)]
     return filesExt
