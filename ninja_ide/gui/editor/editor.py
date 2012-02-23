@@ -1013,7 +1013,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if not self.isReadOnly() and not self.textCursor().hasSelection():
             word = self._text_under_cursor()
             self.wordSelection = []
-            if self._patIsWord.match(word):
+            if len(word) > 2 and self._patIsWord.match(word):
                 lineColor = QColor(
                     resources.CUSTOM_SCHEME.get('selected-word',
                         resources.COLOR_SCHEME['selected-word']))
