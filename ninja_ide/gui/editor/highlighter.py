@@ -162,7 +162,7 @@ class Highlighter (QSyntaxHighlighter):
 
     def set_selected_word(self, word):
         """Set the word to highlight."""
-        if word is None:
+        if not word:
             self.selected_word_pattern = None
         else:
             self.selected_word_pattern = QRegExp(r'\b%s\b' % word)

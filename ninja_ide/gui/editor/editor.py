@@ -1007,8 +1007,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #Highlight selected variable
         if not self.isReadOnly() and not self.textCursor().hasSelection():
             word = self._text_under_cursor()
-            if not word:
-                word = None
             self.highlighter.set_selected_word(word)
         self.highlighter.rehighlight()
 
