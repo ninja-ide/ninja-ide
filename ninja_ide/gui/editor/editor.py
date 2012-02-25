@@ -450,6 +450,22 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 self.setTextCursor(cursor)
 
     def replace_match(self, wordOld, wordNew, flags, all=False):
+        """Find if searched text exists and replace it with new one.
+        If there is a selection just doit inside it and exit.
+        """
+        tc = self.textCursor()
+        if tc.hasSelection():
+            start, end = tc.selectionStart(), tc.selectionEnd()
+            text = tc.selectedText()
+            old_len = len(text)
+            max_replace = (not all) and 1 or -1
+            text = unicode(text).replace(wordOld, wordNew, max_replace)
+            new_len = len(text)
+            tc.insertText(text)
+            offset = new_len - old_len
+            self.__set_selection_from_pair(start, end + offset)
+            return
+
         flags = QTextDocument.FindFlags(flags)
         self.moveCursor(QTextCursor.NoMove, QTextCursor.KeepAnchor)
 
@@ -527,6 +543,14 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def __ignore_extended_line(self, event):
         if event.modifiers() == Qt.ShiftModifier:
             return True
+
+    def __set_selection_from_pair(self, begin, end):
+        """Set the current editor cursor with a selection from a given pair of
+        positions"""
+        cursor = self.textCursor()
+        cursor.setPosition(begin)
+        cursor.setPosition(end, QTextCursor.KeepAnchor)
+        self.setTextCursor(cursor)
 
     def __reverse_select_text_portion_from_offset(self, begin, end):
         """Backwards select text, go from current+begin to current - end
