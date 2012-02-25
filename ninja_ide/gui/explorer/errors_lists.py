@@ -42,14 +42,14 @@ class ErrorsWidget(QWidget):
         editorWidget = main_container.MainContainer().get_actual_editor()
         if editorWidget and self._outRefresh:
             lineno = self.listErrors.currentItem().data(Qt.UserRole).toInt()[0]
-            editorWidget.jump_to_line(lineno - 1)
+            editorWidget.jump_to_line(lineno)
             editorWidget.setFocus()
 
     def pep8_selected(self):
         editorWidget = main_container.MainContainer().get_actual_editor()
         if editorWidget and self._outRefresh:
             lineno = self.listPep8.currentItem().data(Qt.UserRole).toInt()[0]
-            editorWidget.jump_to_line(lineno - 1)
+            editorWidget.jump_to_line(lineno)
             editorWidget.setFocus()
 
     def refresh_lists(self, errors, pep8):
@@ -57,7 +57,7 @@ class ErrorsWidget(QWidget):
         self.listErrors.clear()
         self.listPep8.clear()
         for lineno in errors.errorsSummary:
-            linenostr = 'L%s\t' % str(lineno)
+            linenostr = 'L%s\t' % str(lineno + 1)
             for data in errors.errorsSummary[lineno]:
                 item = QListWidgetItem(linenostr + data)
                 item.setToolTip(linenostr + data)
@@ -66,7 +66,7 @@ class ErrorsWidget(QWidget):
         self.errorsLabel.setText(self.tr(ERRORS_TEXT).arg(
             len(errors.errorsSummary)))
         for lineno in pep8.pep8checks:
-            linenostr = 'L%s\t' % str(lineno)
+            linenostr = 'L%s\t' % str(lineno + 1)
             for data in pep8.pep8checks[lineno]:
                 item = QListWidgetItem(linenostr + data.split('\n')[0])
                 item.setToolTip(linenostr + data.split('\n')[0])
