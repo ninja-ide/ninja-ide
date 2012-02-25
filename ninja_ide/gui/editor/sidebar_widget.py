@@ -183,14 +183,16 @@ class SidebarWidget(QWidget):
 
             # Set the Painter Pen depending on special lines
             error = False
-            if settings.CHECK_STYLE and line_count in self._pep8Lines:
+            if settings.CHECK_STYLE and \
+               ((line_count - 1) in self._pep8Lines):
                 painter.setPen(Qt.darkYellow)
                 font = painter.font()
                 font.setItalic(True)
                 font.setUnderline(True)
                 painter.setFont(font)
                 error = True
-            elif settings.FIND_ERRORS and line_count in self._errorsLines:
+            elif settings.FIND_ERRORS and \
+                 ((line_count - 1) in self._errorsLines):
                 painter.setPen(Qt.red)
                 font = painter.font()
                 font.setItalic(True)

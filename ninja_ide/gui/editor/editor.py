@@ -12,7 +12,6 @@ from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QFontMetricsF
 from PyQt4.QtGui import QToolTip
 from PyQt4.QtGui import QAction
-from PyQt4.QtGui import QTextCharFormat
 from PyQt4.QtGui import QTextOption
 from PyQt4.QtGui import QTextEdit
 from PyQt4.QtGui import QInputDialog
@@ -265,7 +264,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         styles.set_editor_style(self, resources.CUSTOM_SCHEME)
         if self.highlighter is None:
             self.highlighter = highlighter.Highlighter(self.document(),
-                None, resources.CUSTOM_SCHEME)
+                None, resources.CUSTOM_SCHEME, self.errors, self.pep8)
         if not syntaxLang:
             ext = file_manager.get_file_extension(self.ID)
             self.highlighter.apply_highlight(
@@ -293,7 +292,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.lang = settings.EXTENSIONS.get(lang, 'python')
         if lang in settings.EXTENSIONS:
             self.highlighter = highlighter.Highlighter(self.document(),
-                self.lang, resources.CUSTOM_SCHEME)
+                self.lang, resources.CUSTOM_SCHEME, self.errors, self.pep8)
             if self._mini:
                 self._mini.highlighter = highlighter.Highlighter(
                     self._mini.document(),
@@ -766,15 +765,15 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         cursor = self.cursorForPosition(position)
         block = cursor.block()
         if settings.ERRORS_HIGHLIGHT_LINE and \
-        (block.blockNumber() + 1) in self.errors.errorsSummary:
+        (block.blockNumber()) in self.errors.errorsSummary:
             message = '\n'.join(
-                self.errors.errorsSummary[(block.blockNumber() + 1)])
+                self.errors.errorsSummary[block.blockNumber()])
             QToolTip.showText(self.mapToGlobal(position),
                 message, self)
         elif settings.CHECK_HIGHLIGHT_LINE and \
-        (block.blockNumber() + 1) in self.pep8.pep8checks:
+        (block.blockNumber()) in self.pep8.pep8checks:
             message = '\n'.join(
-                self.pep8.pep8checks[(block.blockNumber() + 1)])
+                self.pep8.pep8checks[block.blockNumber()])
             QToolTip.showText(self.mapToGlobal(position), message, self)
         if event.modifiers() == Qt.ControlModifier:
             cursor.select(QTextCursor.WordUnderCursor)
@@ -928,50 +927,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             selection.cursor.clearSelection()
             self.extraSelections.append(selection)
         self.setExtraSelections(self.extraSelections)
-
-        #Find Errors
-        if settings.ERRORS_HIGHLIGHT_LINE and \
-        len(self.errors.errorsSummary) < settings.MAX_HIGHLIGHT_ERRORS:
-            cursor = self.textCursor()
-            for lineno in self.errors.errorsSummary:
-                block = self.document().findBlockByLineNumber(lineno - 1)
-                if not block.isValid():
-                    continue
-                cursor.setPosition(block.position())
-                selection = QTextEdit.ExtraSelection()
-                selection.format.setUnderlineColor(QColor(
-                    resources.CUSTOM_SCHEME.get('error-underline',
-                    resources.COLOR_SCHEME['error-underline'])))
-                selection.format.setUnderlineStyle(
-                    QTextCharFormat.WaveUnderline)
-                selection.cursor = cursor
-                selection.cursor.movePosition(QTextCursor.EndOfBlock,
-                    QTextCursor.KeepAnchor)
-                self.extraSelections.append(selection)
-            if self.errors.errorsSummary:
-                self.setExtraSelections(self.extraSelections)
-
-        #Check Style
-        if settings.CHECK_HIGHLIGHT_LINE and \
-        len(self.pep8.pep8checks) < settings.MAX_HIGHLIGHT_ERRORS:
-            cursor = self.textCursor()
-            for line in self.pep8.pep8checks:
-                block = self.document().findBlockByLineNumber(line - 1)
-                if not block.isValid():
-                    continue
-                cursor.setPosition(block.position())
-                selection = QTextEdit.ExtraSelection()
-                selection.format.setUnderlineColor(QColor(
-                    resources.CUSTOM_SCHEME.get('pep8-underline',
-                    resources.COLOR_SCHEME['pep8-underline'])))
-                selection.format.setUnderlineStyle(
-                    QTextCharFormat.WaveUnderline)
-                selection.cursor = cursor
-                selection.cursor.movePosition(QTextCursor.EndOfBlock,
-                    QTextCursor.KeepAnchor)
-                self.extraSelections.append(selection)
-            if self.pep8.pep8checks:
-                self.setExtraSelections(self.extraSelections)
 
         #Re-position tooltip to allow text editing in the line of the error
         if QToolTip.isVisible():
