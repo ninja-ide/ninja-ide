@@ -58,6 +58,8 @@ EDITOR_SKINS = os.path.join(HOME_NINJA_PATH, "addins", "schemes")
 
 START_PAGE_URL = os.path.join(PRJ_PATH, "doc", "startPage.html")
 
+#NINJA_THEME = os.path.join(PRJ_PATH, "addins", "theme", "ninja_theme.qss")
+
 LOG_FILE_PATH = os.path.join(HOME_NINJA_PATH, 'ninja_ide.log')
 
 ###############################################################################

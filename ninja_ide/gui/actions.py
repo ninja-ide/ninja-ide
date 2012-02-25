@@ -690,7 +690,8 @@ class __Actions(QObject):
                 self.ide.explorer.update_symbols(symbols, editorWidget.ID)
 
             #TODO: Should we change the code below similar to the code above?
-            if ext == 'py' or editorWidget.newDocument:
+            exts = settings.SYNTAX.get('python')['extension']
+            if ext in exts or editorWidget.newDocument:
                 self.ide.explorer.update_errors(
                     editorWidget.errors, editorWidget.pep8)
 

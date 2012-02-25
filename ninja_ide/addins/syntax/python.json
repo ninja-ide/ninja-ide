@@ -3,7 +3,7 @@
     "#"
   ],
   "extension": [
-    "py"
+    "py", "pyw"
   ],
   "definition": [
     "def",

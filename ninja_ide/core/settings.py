@@ -118,6 +118,16 @@ BOOKMARKS = {}
 
 
 ###############################################################################
+# MINIMAP
+###############################################################################
+
+SHOW_MINIMAP = True
+MINIMAP_MAX_OPACITY = 0.8
+MINIMAP_MIN_OPACITY = 0.1
+SIZE_PROPORTION = 0.17
+
+
+###############################################################################
 # FILE MANAGER
 ###############################################################################
 
@@ -207,7 +217,7 @@ def get_symbols_handler(file_extension):
     Returns the symbol handler for the given file_extension
     """
     global SYMBOLS_HANDLER
-    return SYMBOLS_HANDLER.get(file_extension)
+    return SYMBOLS_HANDLER.get(file_extension, None)
 
 
 ###############################################################################
@@ -254,6 +264,10 @@ def load_settings():
     global BRACES
     global HIDE_TOOLBAR
     global TOOLBAR_ITEMS
+    global SHOW_MINIMAP
+    global MINIMAP_MAX_OPACITY
+    global MINIMAP_MIN_OPACITY
+    global SIZE_PROPORTION
     #General
     HIDE_TOOLBAR = qsettings.value("window/hide_toolbar", False).toBool()
     TOOLBAR_AREA = qsettings.value(
@@ -300,6 +314,14 @@ def load_settings():
     WORKSPACE = unicode(qsettings.value(
         'preferences/general/workspace', "").toString())
     #Editor
+    SHOW_MINIMAP = qsettings.value(
+        'preferences/editor/minimapShow', True).toBool()
+    MINIMAP_MAX_OPACITY = qsettings.value(
+        'preferences/editor/minimapMaxOpacity', 0.8).toFloat()[0]
+    MINIMAP_MIN_OPACITY = qsettings.value(
+        'preferences/editor/minimapMinOpacity', 0.1).toFloat()[0]
+    SIZE_PROPORTION = qsettings.value(
+        'preferences/editor/minimapSizeProportion', 0.17).toFloat()[0]
     INDENT = qsettings.value('preferences/editor/indent',
         4).toInt()[0]
     MARGIN_LINE = qsettings.value('preferences/editor/marginLine',

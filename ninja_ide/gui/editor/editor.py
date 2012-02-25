@@ -34,6 +34,7 @@ from ninja_ide.tools import styles
 from ninja_ide.gui.main_panel import itab_item
 from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import helpers
+from ninja_ide.gui.editor import minimap
 from ninja_ide.gui.editor import pep8_checker
 from ninja_ide.gui.editor import errors_checker
 from ninja_ide.gui.editor import sidebar_widget
@@ -126,6 +127,13 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.connect(self, SIGNAL("blockCountChanged(int)"),
             self._update_file_metadata)
 
+        self._mini = None
+        if settings.SHOW_MINIMAP:
+            self._mini = minimap.MiniMap(self)
+            self._mini.show()
+            self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
+                self._mini.update_visible_area)
+
         #Context Menu Options
         self.__actionFindOccurrences = QAction(
             self.tr("Find Usages"), self)
@@ -161,6 +169,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def set_id(self, id_):
         super(Editor, self).set_id(id_)
         self._mtime = file_manager.get_last_modification(id_)
+        if self._mini:
+            self._mini.set_code(self.toPlainText())
         if settings.CHECK_STYLE:
             self.pep8.check_style()
         if settings.FIND_ERRORS:
@@ -261,9 +271,16 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.highlighter.apply_highlight(
                 settings.EXTENSIONS.get(ext, 'python'),
                 resources.CUSTOM_SCHEME)
+            if self._mini:
+                self._mini.highlighter.apply_highlight(
+                    settings.EXTENSIONS.get(ext, 'python'),
+                    resources.CUSTOM_SCHEME)
         else:
             self.highlighter.apply_highlight(
                 str(syntaxLang), resources.CUSTOM_SCHEME)
+            if self._mini:
+                self._mini.highlighter.apply_highlight(
+                    str(syntaxLang), resources.CUSTOM_SCHEME)
 
     def _file_saved(self, undoAvailable=False):
         if not undoAvailable:
@@ -277,11 +294,20 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if lang in settings.EXTENSIONS:
             self.highlighter = highlighter.Highlighter(self.document(),
                 self.lang, resources.CUSTOM_SCHEME)
+            if self._mini:
+                self._mini.highlighter = highlighter.Highlighter(
+                    self._mini.document(),
+                    self.lang, resources.CUSTOM_SCHEME)
         elif syntax is not None:
             self.highlighter = highlighter.Highlighter(self.document(),
                 None, resources.CUSTOM_SCHEME)
             self.highlighter.apply_highlight(lang, resources.CUSTOM_SCHEME,
                 syntax)
+            if self._mini:
+                self._mini.highlighter = highlighter.Highlighter(
+                    self.document(), None, resources.CUSTOM_SCHEME)
+                self._mini.highlighter.apply_highlight(lang,
+                    resources.CUSTOM_SCHEME, syntax)
 
     def get_text(self):
         """
@@ -462,6 +488,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def resizeEvent(self, event):
         QPlainTextEdit.resizeEvent(self, event)
         self._sidebarWidget.setFixedHeight(self.height())
+        if self._mini:
+            self._mini.adjust_to_parent()
 
     def __insert_indentation(self, event):
         if self.textCursor().hasSelection():
@@ -486,7 +514,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 self.moveCursor(QTextCursor.Right)
 
     def __home_pressed(self, event):
-        if event.modifiers() == Qt.ShiftModifier:
+        if event.modifiers() == Qt.ControlModifier:
+            return False
+        elif event.modifiers() == Qt.ShiftModifier:
             move = QTextCursor.KeepAnchor
         else:
             move = QTextCursor.MoveAnchor
@@ -983,7 +1013,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if not self.isReadOnly() and not self.textCursor().hasSelection():
             word = self._text_under_cursor()
             self.wordSelection = []
-            if self._patIsWord.match(word):
+            if len(word) > 2 and self._patIsWord.match(word):
                 lineColor = QColor(
                     resources.CUSTOM_SCHEME.get('selected-word',
                         resources.COLOR_SCHEME['selected-word']))
