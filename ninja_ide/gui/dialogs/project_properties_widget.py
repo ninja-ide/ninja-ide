@@ -247,7 +247,7 @@ class ProjectExecution(QWidget):
         venv = unicode(QFileDialog.getExistingDirectory(
             self, self.tr("Select Virtualenv Folder")))
         if sys.platform == 'win32':
-            venv = os.path.join(venv, 'Scripts', 'python')
+            venv = os.path.join(venv, 'Scripts', 'python.exe')
         else:
             venv = os.path.join(venv, 'bin', 'python')
         #check if venv folder exists
