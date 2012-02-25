@@ -1036,34 +1036,22 @@ class EditorCompletion(QWidget):
                     QKeySequence.NativeText)))
         self._checkCompleteDeclarations.setChecked(
             settings.COMPLETE_DECLARATIONS)
-        self._checkCompleteInStrings = QCheckBox(
-            self.tr("Enable Completion inside Comments"))
-        self._checkCompleteInStrings.setChecked(
-            settings.ENABLE_COMPLETION_IN_COMMENTS)
         grid.addWidget(self._checkParentheses, 1, 1, alignment=Qt.AlignTop)
         grid.addWidget(self._checkKeys, 1, 2, alignment=Qt.AlignTop)
         grid.addWidget(self._checkBrackets, 2, 1, alignment=Qt.AlignTop)
         grid.addWidget(self._checkSimpleQuotes, 2, 2, alignment=Qt.AlignTop)
         grid.addWidget(self._checkDoubleQuotes, 3, 1, alignment=Qt.AlignTop)
-        grid.addWidget(self._checkCompleteInStrings, 4,
-            0, alignment=Qt.AlignTop)
 
         groupBoxCode = QGroupBox(self.tr("Code Completion:"))
-        grid.addWidget(groupBoxCode, 5, 0, alignment=Qt.AlignTop)
+        grid.addWidget(groupBoxCode, 4, 0, alignment=Qt.AlignTop)
         self._checkCodeDot = QCheckBox(
             self.tr("Activate Code Completion with: \".\""))
         self._checkCodeDot.setChecked(settings.CODE_COMPLETION)
-#        self.checkCodeChar = QCheckBox(self.tr(
-#            "Activate Code Completion after:"))
-#        self.spinCode = QSpinBox()
-#        self.spinCode.setSuffix(' characters')
-        grid.addWidget(self._checkCompleteDeclarations, 6, 1,
+        grid.addWidget(self._checkCompleteDeclarations, 5, 1,
             alignment=Qt.AlignTop)
-        grid.addWidget(self._checkCodeDot, 7, 1, alignment=Qt.AlignTop)
-#        grid.addWidget(self.checkCodeChar, 13, 0)
-#        grid.addWidget(self.spinCode, 13, 1)
+        grid.addWidget(self._checkCodeDot, 6, 1, alignment=Qt.AlignTop)
         grid.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
-            QSizePolicy.Expanding), 8, 0)
+            QSizePolicy.Expanding), 7, 0)
 
     def save(self):
         qsettings = QSettings()
@@ -1095,10 +1083,6 @@ class EditorCompletion(QWidget):
         elif ('"') in settings.QUOTES:
             del settings.QUOTES['"']
         qsettings.setValue('codeCompletion', self._checkCodeDot .isChecked())
-        qsettings.setValue('completeInComments',
-            self._checkCompleteInStrings.isChecked())
-        settings.ENABLE_COMPLETION_IN_COMMENTS = \
-            self._checkCompleteInStrings.isChecked()
         settings.CODE_COMPLETION = self._checkCodeDot.isChecked()
         settings.COMPLETE_DECLARATIONS = \
             self._checkCompleteDeclarations.isChecked()
