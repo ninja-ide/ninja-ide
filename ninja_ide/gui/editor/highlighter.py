@@ -56,6 +56,8 @@ def restyle(scheme):
         resources.COLOR_SCHEME['spaces']))
     STYLES['extras'] = format(scheme.get('extras',
         resources.COLOR_SCHEME['extras']))
+    STYLES['selectedWord'] = scheme.get('selected-word',
+        resources.COLOR_SCHEME['selected-word'])
 
 
 class Highlighter (QSyntaxHighlighter):
@@ -141,7 +143,7 @@ class Highlighter (QSyntaxHighlighter):
         # Multi-line strings (expression, flag, style)
         # FIXME: The triple-quotes in these two lines will mess up the
         # syntax highlighting from this point onward
-        self.tri_single = (QRegExp("'''"), 1, STYLES['string2'])
+        self.tri_single = (QRegExp("'''"), 1, STYLES["string2"])
         self.tri_double = (QRegExp('"""'), 2, STYLES['string2'])
 
         multi = langSyntax.get('multiline_comment', [])
@@ -154,8 +156,16 @@ class Highlighter (QSyntaxHighlighter):
         # Build a QRegExp for each pattern
         self.rules = [(QRegExp(pat), index, fmt)
             for (pat, index, fmt) in rules]
+        self.selected_word_pattern = None
         #Apply Highlight to the document... (when colors change)
         self.rehighlight()
+
+    def set_selected_word(self, word):
+        """Set the word to highlight."""
+        if not word:
+            self.selected_word_pattern = None
+        else:
+            self.selected_word_pattern = QRegExp(r'\b%s\b' % word)
 
     def highlightBlock(self, text):
         """Apply syntax highlighting to the given block of text."""
@@ -185,6 +195,21 @@ class Highlighter (QSyntaxHighlighter):
         else:
             # Do multi-line comment
             self.comment_multiline(text, self.multi_end[0], *self.multi_start)
+
+        #Highlight selected word
+        if self.selected_word_pattern is not None:
+            index = self.selected_word_pattern.indexIn(text, 0)
+
+            while index >= 0:
+                index = self.selected_word_pattern.pos(0)
+                length = self.selected_word_pattern.cap(0).length()
+                format = self.format(index)
+                color = QColor()
+                color.setNamedColor(STYLES['selectedWord'])
+                color.setAlpha(100)
+                format.setBackground(color)
+                self.setFormat(index, length, format)
+                index = expression.indexIn(text, index + length)
 
         #Spaces
         expression = QRegExp('\s+')
