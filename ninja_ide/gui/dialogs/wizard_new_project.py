@@ -85,7 +85,7 @@ class WizardNewProject(QWizard):
                 venv = unicode(page.vtxtPlace.text())
                 if venv:
                     if sys.platform == 'win32':
-                        venv = os.path.join(venv, 'Scripts', 'python')
+                        venv = os.path.join(venv, 'Scripts', 'python.exe')
                     else:
                         venv = os.path.join(venv, 'bin', 'python')
                     #check if venv folder exists
