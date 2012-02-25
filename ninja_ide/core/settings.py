@@ -105,7 +105,6 @@ CHECK_HIGHLIGHT_LINE = True
 MAX_HIGHLIGHT_ERRORS = 5
 CODE_COMPLETION = True
 COMPLETE_DECLARATIONS = True
-ENABLE_COMPLETION_IN_COMMENTS = True
 
 CENTER_ON_SCROLL = True
 
@@ -244,7 +243,6 @@ def load_settings():
     global SHOW_TABS_AND_SPACES
     global ALLOW_TABS_NON_PYTHON
     global ALLOW_WORD_WRAP
-    global ENABLE_COMPLETION_IN_COMMENTS
     global COMPLETE_DECLARATIONS
     global FONT_FAMILY
     global FONT_SIZE
@@ -335,8 +333,6 @@ def load_settings():
         'preferences/editor/allowTabsForNonPythonFiles', False).toBool()
     ALLOW_WORD_WRAP = qsettings.value(
         'preferences/editor/allowWordWrap', False).toBool()
-    ENABLE_COMPLETION_IN_COMMENTS = qsettings.value(
-        'preferences/editor/completeInComments', True).toBool()
     COMPLETE_DECLARATIONS = qsettings.value(
         'preferences/editor/completeDeclarations', True).toBool()
     font_family = unicode(qsettings.value(
