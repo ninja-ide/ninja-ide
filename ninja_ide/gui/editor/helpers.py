@@ -40,15 +40,14 @@ def get_indentation(line):
 
 def remove_trailing_spaces(editorWidget):
     cursor = editorWidget.textCursor()
-    cursor.setPosition(0)
     cursor.beginEditBlock()
-    pat = re.compile('.*\\s$')
     block = editorWidget.document().findBlockByLineNumber(0)
     while block.isValid():
-        if pat.match(block.text()):
+        text = unicode(block.text())
+        if text.endswith(' '):
+            cursor.setPosition(block.position())
             cursor.select(QTextCursor.LineUnderCursor)
-            cursor.insertText(unicode(block.text()).rstrip())
-        cursor.movePosition(QTextCursor.Down, QTextCursor.MoveAnchor)
+            cursor.insertText(text.rstrip())
         block = block.next()
     cursor.movePosition(QTextCursor.End, QTextCursor.MoveAnchor)
     if not cursor.block().text().isEmpty():
