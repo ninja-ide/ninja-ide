@@ -905,11 +905,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.extraSelections.append(selection)
         self.setExtraSelections(self.extraSelections)
 
-        # Add highlighted words
-        for word in self.wordSelection:
-            self.extraSelections.append(word)
-        self.setExtraSelections(self.extraSelections)
-
         #Find Errors
         if settings.ERRORS_HIGHLIGHT_LINE and \
         len(self.errors.errorsSummary) < settings.MAX_HIGHLIGHT_ERRORS:
@@ -1012,30 +1007,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #Highlight selected variable
         if not self.isReadOnly() and not self.textCursor().hasSelection():
             word = self._text_under_cursor()
-            self.wordSelection = []
-            if len(word) > 2 and self._patIsWord.match(word):
-                lineColor = QColor(
-                    resources.CUSTOM_SCHEME.get('selected-word',
-                        resources.COLOR_SCHEME['selected-word']))
-                lineColor.setAlpha(100)
-                block = self.document().findBlock(0)
-                cursor = self.document().find(word, block.position(),
-                    QTextDocument.FindCaseSensitively or \
-                    QTextDocument.FindWholeWords)
-                while block.isValid() and \
-                  block.blockNumber() <= self._sidebarWidget.highest_line \
-                  and cursor.position() != -1:
-                    selection = QTextEdit.ExtraSelection()
-                    selection.format.setBackground(lineColor)
-                    selection.cursor = cursor
-                    self.wordSelection.append(selection)
-                    self.extraSelections.append(selection)
-                    cursor = self.document().find(word, cursor.position(),
-                        QTextDocument.FindCaseSensitively or \
-                        QTextDocument.FindWholeWords)
-                    block = block.next()
-        self.setExtraSelections(self.extraSelections)
-        self.highlight_current_line()
+            if not word:
+                word = None
+            self.highlighter.set_selected_word(word)
+        self.highlighter.rehighlight()
 
 
 def create_editor(fileName='', project=None, syntax=None):
