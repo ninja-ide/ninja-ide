@@ -129,6 +129,7 @@ class __Actions(QObject):
             self.ide)
         self.shortPasteHistory = QShortcut(short("History-Paste"), self.ide)
         self.shortCopyHistory = QShortcut(short("History-Copy"), self.ide)
+        self.shortHighlightWord = QShortcut(short("Highlight-Word"), self.ide)
 
         #Connect Shortcuts Signals
         self.connect(self.shortNavigateBack, SIGNAL("activated()"),
@@ -237,6 +238,8 @@ class __Actions(QObject):
             self._copy_history)
         self.connect(self.shortPasteHistory, SIGNAL("activated()"),
             self._paste_history)
+        self.connect(self.shortHighlightWord, SIGNAL("activated()"),
+            self.editor_highlight_word)
 
         #Connect SIGNALs from other objects
         self.connect(self.ide.mainContainer._tabMain,
@@ -602,6 +605,12 @@ class __Actions(QObject):
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             editorWidget.go_to_definition()
+
+    def editor_highlight_word(self):
+        """Highlight the occurrences of the current word in the editor."""
+        editorWidget = self.ide.mainContainer.get_actual_editor()
+        if editorWidget:
+            editorWidget.highlight_selected_word()
 
     def editor_complete_declaration(self):
         """Do the opposite action that Complete Declaration expect."""

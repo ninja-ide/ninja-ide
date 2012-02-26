@@ -478,12 +478,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.parent().parent().focusInEvent(event)
         #Check for modifications
 
-    def keyReleaseEvent(self, event):
-        if event.key() == Qt.Key_Control:
-            self.highlight_current_line()
-            self.highlight_selected_word()
-        QPlainTextEdit.keyReleaseEvent(self, event)
-
     def resizeEvent(self, event):
         QPlainTextEdit.resizeEvent(self, event)
         self._sidebarWidget.setFixedHeight(self.height())

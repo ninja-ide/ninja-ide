@@ -903,28 +903,26 @@ class EditorConfiguration(QWidget):
         grid.addWidget(self._checkShowMargin, 2, 2, alignment=Qt.AlignTop)
         #Find Errors
         self._checkErrors = QCheckBox(
-            self.tr("Find and Show Errors (at Sidebar Always)."))
+            self.tr("Find and Show Errors."))
         self._checkErrors.setChecked(settings.FIND_ERRORS)
         grid.addWidget(self._checkErrors, 3, 1, 1, 2, alignment=Qt.AlignTop)
         self.connect(self._checkErrors, SIGNAL("stateChanged(int)"),
             self._disable_show_errors)
         self._showErrorsOnLine = QCheckBox(
-            self.tr("Show static errors both at Sidebar\nand " \
-                "highlight Editor Lines (Slower)."))
+            self.tr("Show Tool tip information about the errors."))
         self._showErrorsOnLine.setChecked(settings.ERRORS_HIGHLIGHT_LINE)
         self.connect(self._showErrorsOnLine, SIGNAL("stateChanged(int)"),
             self._enable_errors_inline)
         grid.addWidget(self._showErrorsOnLine, 4, 2, 1, 1, Qt.AlignTop)
         #Find Check Style
         self._checkStyle = QCheckBox(
-            self.tr("Find and Show Check Style errors (at Sidebar Always)."))
+            self.tr("Find and Show Check Style errors."))
         self._checkStyle.setChecked(settings.CHECK_STYLE)
         grid.addWidget(self._checkStyle, 5, 1, 1, 2, alignment=Qt.AlignTop)
         self.connect(self._checkStyle, SIGNAL("stateChanged(int)"),
             self._disable_check_style)
         self._checkStyleOnLine = QCheckBox(
-            self.tr("Show check style errors both at Sidebar\nand " \
-                "highlight Editor Lines (Slower)."))
+            self.tr("Show Tool tip information about the PEP8 errors."))
         self._checkStyleOnLine.setChecked(settings.CHECK_HIGHLIGHT_LINE)
         self.connect(self._checkStyleOnLine, SIGNAL("	stateChanged(int)"),
             self._enable_check_inline)
