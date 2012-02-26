@@ -121,7 +121,6 @@ class SliderArea(QFrame):
         self.setFixedHeight(height)
         self.setFixedWidth(self._parent.width())
         self.__scroll_margins = (height, self._parent.height() - height)
-#        self.move(0, 0)
 
     def move_slider(self, y):
         self.move(0, y)
