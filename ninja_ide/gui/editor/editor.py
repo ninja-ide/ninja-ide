@@ -288,7 +288,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.newDocument = False
             self.textModified = False
             self.document().setModified(self.textModified)
-            self.highlighter.rehighlight()
 
     def register_syntax(self, lang='', syntax=None):
         self.lang = settings.EXTENSIONS.get(lang, 'python')
