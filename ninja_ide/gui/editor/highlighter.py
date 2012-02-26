@@ -245,7 +245,8 @@ class Highlighter (QSyntaxHighlighter):
                 color.setAlpha(100)
                 format.setBackground(color)
                 self.setFormat(index, length, format)
-                index = expression.indexIn(text, index + length)
+                index = self.selected_word_pattern.indexIn(
+                    text, index + length)
 
         #Spaces
         expression = QRegExp('\s+')
