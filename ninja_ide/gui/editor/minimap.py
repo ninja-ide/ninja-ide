@@ -70,6 +70,7 @@ class MiniMap(QPlainTextEdit):
             cursor = self.textCursor()
             cursor.setPosition(block.position())
             rect = self.cursorRect(cursor)
+            self.setTextCursor(cursor)
             self.slider.move_slider(rect.y())
 
     def enterEvent(self, event):
