@@ -94,9 +94,10 @@ class MiniMap(QPlainTextEdit):
         super(MiniMap, self).resizeEvent(event)
         self.slider.update_position()
 
-    def scroll_area(self, pos):
-        cursor = self.cursorForPosition(pos)
-        self._parent.jump_to_line(cursor.blockNumber())
+    def scroll_area(self, pos_parent, pos_slider):
+        pos_parent.setY(pos_parent.y() - pos_slider.y())
+        cursor = self.cursorForPosition(pos_parent)
+        self._parent.verticalScrollBar().setValue(cursor.blockNumber())
 
 
 class SliderArea(QFrame):
@@ -150,4 +151,4 @@ class SliderArea(QFrame):
                 self._parent.verticalScrollBar().setSliderPosition(
                     self._parent.verticalScrollBar().sliderPosition() + 2)
             self.move(0, y)
-            self._parent.scroll_area(pos)
+            self._parent.scroll_area(pos, event.pos())
