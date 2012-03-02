@@ -2,6 +2,7 @@
 from __future__ import absolute_import
 
 import sys
+import signal
 
 from ninja_ide import resources
 from ninja_ide.core import cliparser
@@ -10,6 +11,7 @@ from ninja_ide.core import ipc
 
 def run_ninja():
     """First obtain the execution args and create the resources folder."""
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
     # Change the process name only for linux yet
     if sys.platform != 'win32' and sys.platform != 'darwin':
         try:
