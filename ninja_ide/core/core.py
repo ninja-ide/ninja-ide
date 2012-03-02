@@ -11,8 +11,8 @@ from ninja_ide.core import ipc
 
 def run_ninja():
     """First obtain the execution args and create the resources folder."""
-    # Change the process name only for linux yet
     signal.signal(signal.SIGINT, signal.SIG_DFL)
+    # Change the process name only for linux yet
     if sys.platform != 'win32' and sys.platform != 'darwin':
         try:
             import ctypes
