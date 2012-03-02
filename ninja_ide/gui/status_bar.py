@@ -150,7 +150,8 @@ class __StatusBar(QStatusBar):
         if editor:
             editor.replace_match(unicode(self._searchWidget._line.text()),
                 unicode(self._replaceWidget._lineReplace.text()), flags)
-        self.find()
+        if not editor.textCursor().hasSelection():
+            self.find()
 
     def replace_all(self):
         s = 0 if not self._searchWidget._checkSensitive.isChecked() \
@@ -342,7 +343,9 @@ class TextLine(QLineEdit):
         super(TextLine, self).keyPressEvent(event)
         if int(event.key()) in range(32, 162) or \
         event.key() == Qt.Key_Backspace:
-            self._parent.find_matches(editor)
+            has_replace = self._parent._parent._replaceWidget.isVisible()
+            if not (has_replace and editor.textCursor().hasSelection()):
+                self._parent.find_matches(editor)
 
 
 class FileSystemOpener(QWidget):
