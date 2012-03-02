@@ -18,7 +18,7 @@ from ninja_ide.core import settings
 from ninja_ide.tools import styles
 from ninja_ide.tools import console
 from ninja_ide.gui.editor import highlighter
-from ninja_ide.gui.editor import completer
+from ninja_ide.tools.completion import completer
 
 
 BRACES = {"'": "'",
