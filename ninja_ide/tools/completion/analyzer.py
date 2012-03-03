@@ -42,7 +42,7 @@ class Analyzer(object):
                 assigns = self._process_assign(symbol)[0]
                 module.add_attributes(assigns)
             elif symbol_type in (ast.Import, ast.ImportFrom):
-                self._process_import(module, symbol)
+                module.add_imports(self._process_import(symbol))
             elif symbol_type is ast.ClassDef:
                 module.add_class(self._process_class(symbol))
             elif symbol_type is ast.FunctionDef:
@@ -72,8 +72,9 @@ class Analyzer(object):
                 assigns.append(data)
         return (assigns, attributes)
 
-    def _process_import(self, structure, symbol):
+    def _process_import(self, symbol):
         """Process an ast.Import and ast.ImportFrom object to extract data."""
+        imports = []
         for imp in symbol.names:
             if type(symbol) is ast.ImportFrom:
                 module_name = "%s.%s" % (symbol.module, imp.name)
@@ -82,7 +83,8 @@ class Analyzer(object):
             name = imp.asname
             if name is None:
                 name = imp.name
-            structure.imports[name] = module_name
+            imports.append((name, module_name))
+        return imports
 
     def _process_class(self, symbol):
         """Process an ast.ClassDef object to extract data."""
