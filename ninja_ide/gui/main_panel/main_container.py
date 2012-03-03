@@ -105,6 +105,8 @@ class __MainContainer(QSplitter):
         self.connect(self._tabSecondary,
             SIGNAL("syntaxChanged(QWidget, QString)"),
             self._specify_syntax)
+        self.connect(self._tabMain, SIGNAL("allTabsClosed()"),
+            self._main_without_tabs)
         self.connect(self._tabSecondary, SIGNAL("allTabsClosed()"),
             self._secondary_without_tabs)
         #reload file
@@ -124,6 +126,10 @@ class __MainContainer(QSplitter):
 
     def _navigate_code(self, val, op):
         self.emit(SIGNAL("navigateCode(bool, int)"), val, op)
+
+    def _main_without_tabs(self):
+        if self._tabSecondary.isVisible():
+            self.show_split(self.orientation())
 
     def _secondary_without_tabs(self):
         self.show_split(self.orientation())
@@ -155,6 +161,7 @@ class __MainContainer(QSplitter):
             self.show_split(Qt.Vertical)
 
     def show_split(self, orientation):
+        closingFollowMode = self._followMode
         if self._followMode:
             self.show_follow_mode()
         if self._tabSecondary.isVisible() and \
@@ -170,7 +177,7 @@ class __MainContainer(QSplitter):
                 if type(widget) is editor.Editor and widget.textModified:
                     self._tabMain.tab_was_modified(True)
             self.actualTab = self._tabMain
-        elif not self._tabSecondary.isVisible():
+        elif not self._tabSecondary.isVisible() and not closingFollowMode:
             widget = self.get_actual_widget()
             name = unicode(self._tabMain.tabText(self._tabMain.currentIndex()))
             self._tabSecondary.add_tab(widget, name)
