@@ -161,6 +161,7 @@ class __MainContainer(QSplitter):
             self.show_split(Qt.Vertical)
 
     def show_split(self, orientation):
+        closingFollowMode = self._followMode
         if self._followMode:
             self.show_follow_mode()
         if self._tabSecondary.isVisible() and \
@@ -176,7 +177,7 @@ class __MainContainer(QSplitter):
                 if type(widget) is editor.Editor and widget.textModified:
                     self._tabMain.tab_was_modified(True)
             self.actualTab = self._tabMain
-        elif not self._tabSecondary.isVisible():
+        elif not self._tabSecondary.isVisible() and not closingFollowMode:
             widget = self.get_actual_widget()
             name = unicode(self._tabMain.tabText(self._tabMain.currentIndex()))
             self._tabSecondary.add_tab(widget, name)
