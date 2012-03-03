@@ -105,6 +105,8 @@ class __MainContainer(QSplitter):
         self.connect(self._tabSecondary,
             SIGNAL("syntaxChanged(QWidget, QString)"),
             self._specify_syntax)
+        self.connect(self._tabMain, SIGNAL("allTabsClosed()"),
+            self._main_without_tabs)
         self.connect(self._tabSecondary, SIGNAL("allTabsClosed()"),
             self._secondary_without_tabs)
         #reload file
@@ -124,6 +126,10 @@ class __MainContainer(QSplitter):
 
     def _navigate_code(self, val, op):
         self.emit(SIGNAL("navigateCode(bool, int)"), val, op)
+
+    def _main_without_tabs(self):
+        if self._tabSecondary.isVisible():
+            self.show_split(self.orientation())
 
     def _secondary_without_tabs(self):
         self.show_split(self.orientation())
