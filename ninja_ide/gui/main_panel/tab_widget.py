@@ -290,7 +290,7 @@ class TabWidget(QTabWidget):
                         lambda: self._parent.move_tab_to_next_split(self))
                     self.connect(actionCloseSplit, SIGNAL("triggered()"),
                         lambda: self._parent.split_tab(
-                            self._parent.orientation()))
+                            self._parent.orientation() == Qt.Horizontal))
                 else:
                     actionSplitH = menu.addAction(
                         self.tr("Split this Tab (Horizontally)"))
