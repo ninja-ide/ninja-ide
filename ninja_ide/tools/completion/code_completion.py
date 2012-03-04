@@ -101,23 +101,31 @@ class CodeCompletion(object):
     def get_completion(self, code, offset):
         token_code = self._tokenize_text(code[:offset])
         scopes = self._search_for_scope(token_code)
-        print scopes
         var_segment = self._search_for_completion_segment(token_code)
-        print 'var_segment', var_segment
-
-#        begin = code[:offset].rfind(' ') + 1
-#        var = code[begin:offset]
-#        words = var.rsplit('.', 1)
-#        attr_name = words[0]
-#        word = ''
-#        if not var.endswith("."):
-#            word = words[1].strip()
-#        data_type = self.current_module.get_type(attr_name)
-#        imports = self.current_module.get_imports()
-#        to_complete = "%s.%s" % (data_type, word)
-#        data = completer.get_all_completions(to_complete, imports)
-#        self.token_code = None
-#        return data
+        words = var_segment.split('.', 1)
+        words_final = var_segment.rsplit('.', 1)
+        attr_name = words[0]
+        word = ''
+        final_word = ''
+        if var_segment.count(".") > 0:
+            word = words[1].strip()
+        if not var_segment.endswith('.'):
+            final_word = words_final[1]
+        result = self.current_module.get_type(attr_name, word, scopes)
+        if result[0]:
+            imports = self.current_module.get_imports()
+            to_complete = "%s.%s" % (result[1], final_word)
+            data = completer.get_all_completions(to_complete, imports)
+            self.token_code = None
+        else:
+            if len(result[1]):
+                data = result[1]
+            else:
+                #Based in Kai Plugin: https://github.com/matiasb/kai
+                data = sorted(set(re.split('\W+', code)))
+                if final_word in data:
+                    data.remove(final_word)
+        return data
 
 
 text = """
@@ -135,29 +143,30 @@ c = QtGui.Q
 q = self.diego("casa",
     "diego")
 
+mamamia = 2
 
 class Diego:
 
     def __init__(self):
-        pass
+        self.s = {}
+        self.m = 5
 
     def imprimir(self):
         pass
 
-    class Prueba:
-
-        def otra(self):
-            print 'gato'"""
+    def otra(self):
+        l = []"""
 
 #offset = 21
 #offset = 47
-offset = 85
-#offset = len(text)
+#offset = 85
 #print len(text)
 #print text[:offset]
 
 cc = CodeCompletion()
 cc.analyze_file('path', text)
+text += '\n        self.m.d'
+offset = len(text)
 print cc.get_completion(text, offset)
 
 

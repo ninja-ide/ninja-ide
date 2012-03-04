@@ -55,18 +55,18 @@ class Analyzer(object):
         """Process an ast.Assign object to extract the proper info."""
         assigns = []
         attributes = []
-        type_symbol = type(symbol)
         for var in symbol.targets:
             type_value = type(symbol.value)
             data_type = self.__mapping.get(type_value, None)
             line_content = self.content[symbol.lineno - 1]
             if data_type != late_resolution:
                 type_value = None
-            if type_symbol == ast.Attribute:
+            type_var = type(var)
+            if type_var == ast.Attribute:
                 data = (var.attr, symbol.lineno, data_type, line_content,
                     type_value)
                 attributes.append(data)
-            elif type_symbol == ast.Assign:
+            elif type_var == ast.Assign:
                 data = (var.id, symbol.lineno, data_type, line_content,
                     type_value)
                 assigns.append(data)

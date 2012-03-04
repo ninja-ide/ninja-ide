@@ -32,6 +32,18 @@ class Structure(object):
             assign.add_data(*attribute[1:])
             self.attributes[assign.name] = assign
 
+    def get_attribute_type(self, name):
+        result = (False, None)
+        var_names = name.split('.')
+        attr = self.attributes.get(var_names[0], None)
+        if attr is not None:
+            result = (True, attr.get_data_type())
+        else:
+            items = [i for i in self.get_completion_items() \
+                if i.startswith(var_names[0])]
+            result = (False, items)
+        return result
+
 
 class Module(Structure):
 
@@ -49,11 +61,19 @@ class Module(Structure):
     def add_class(self, clazz):
         self.classes[clazz.name] = clazz
 
-    def get_type(self, name, scope=None):
+    def get_type(self, main_attr, child_attrs='', scope=None):
+        result = (False, None)
         if scope is None:
-            value = self.imports.get(name, self.attributes.get(name, None))
+            value = self.imports.get(main_attr,
+                self.attributes.get(main_attr, None))
             if value is not None:
-                return value.get_data_type()
+                result = (True, value.get_data_type())
+        elif main_attr == 'self' and scope is not None:
+            clazz_name = scope[-1]
+            clazz = self.classes.get(clazz_name, None)
+            if clazz is not None:
+                result = clazz.get_attribute_type(child_attrs)
+        return result
 
     def get_imports(self):
         module_imports = ['import __builtin__']
@@ -69,6 +89,11 @@ class Clazz(Structure):
         self.name = name
         self.bases = []
         self.decorators = []
+
+    def get_completion_items(self):
+        attributes = [a for a in self.attributes]
+        functions = [f for f in self.functions]
+        return attributes + functions
 
 
 class Function(Structure):
