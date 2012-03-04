@@ -38,13 +38,30 @@ class Structure(object):
         attr = self.attributes.get(var_names[0], None)
         if attr is not None:
             result = (True, attr.get_data_type())
-        else:
-            items = self.get_completion_items()
-            result = (False, items)
         return result
 
-    def recursive_search_type(self):
-        return (False, None)
+    def _get_scope_structure(self, structure, scope):
+        struct = structure
+        if len(scope) > 0:
+            scope_name = scope[0]
+            new_struct = structure.functions.get(scope_name, None)
+            struct = self._get_scope_structure(new_struct, scope[1:])
+        return struct
+
+    def _resolve_attribute(self, assign, attrs):
+        data_type = assign.get_data_type()
+        return (True, data_type)
+
+    def recursive_search_type(self, structure, attrs, scope):
+        result = (False, None)
+        structure = self._get_scope_structure(structure, scope)
+        attr_name = attrs[0]
+        data_type = structure.get_attribute_type(attr_name)
+        result = data_type
+#        print 'assign', assign
+#        if assign is not None:
+#            result = self._resolve_attribute(assign, attrs[1:])
+        return result
 
 
 class Module(Structure):
@@ -70,20 +87,30 @@ class Module(Structure):
                 self.attributes.get(main_attr, None))
             if value is not None:
                 result = (True, value.get_data_type())
-        elif main_attr == 'self' and scope is not None:
-            clazz_name = scope[-1]
+        elif main_attr == 'self':
+            clazz_name = scope[0]
             clazz = self.classes.get(clazz_name, None)
             if clazz is not None:
                 result = clazz.get_attribute_type(child_attrs)
-        elif scope is not None:
-            func_name = scope[-1]
-            func = self.functions.get(func_name, None)
-            if func is not None:
-                result = func.get_attribute_type(child_attrs)
+            if not result[0] and clazz is not None:
+                items = clazz.get_completion_items()
+                result = (False, items)
+        else:
+            scope_name = scope[0]
+            structure = self.classes.get(scope_name,
+                self.functions.get(scope_name, None))
+            if structure is not None:
+                attrs = [main_attr] + child_attrs.split('.')
+                if len(attrs) > 1 and attrs[1] == '':
+                    del attrs[1]
+                result = self.recursive_search_type(
+                    structure, attrs, scope[1:])
+                if not result[0]:
+                    value = self.imports.get(main_attr,
+                        self.attributes.get(main_attr, None))
+                    if value is not None:
+                        result = (True, value.get_data_type())
         return result
-
-    def recursive_search_type(self):
-        return (False, None)
 
     def get_imports(self):
         module_imports = ['import __builtin__']

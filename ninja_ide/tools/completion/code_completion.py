@@ -66,9 +66,9 @@ class CodeCompletion(object):
                 #We only care about the function where we are
                 if new_indent < indent:
                     indent = new_indent
-                    scopes.append(token_code[-index + 1][1])
+                    scopes.insert(0, token_code[-index + 1][1])
             elif not is_indented and previous_is_definition:
-                scopes.append(token_code[-index + 1][1])
+                scopes.insert(0, token_code[-index + 1][1])
                 break
             previous_line = line
         return scopes
@@ -121,6 +121,8 @@ class CodeCompletion(object):
         if not var_segment.endswith('.'):
             final_word = words_final[1]
             word = word.rsplit('.', 1)[0]
+            if final_word == word:
+                word = ''
         result = self.current_module.get_type(attr_name, word, scopes)
         if result[0]:
             imports = self.current_module.get_imports()
@@ -164,7 +166,9 @@ class Diego:
         pass
 
     def otra(self):
-        l = []"""
+        l = []
+        if algo:
+            l."""
 
 #offset = 21
 #offset = 47
@@ -174,7 +178,6 @@ class Diego:
 
 cc = CodeCompletion()
 cc.analyze_file('path', text)
-text += '\n        os.p'
 offset = len(text)
 print cc.get_completion(text, offset)
 
@@ -200,13 +203,13 @@ f = ase.port("diego", [], {}
     "gato")
 """
 
-cc = CodeCompletion()
-token_code = cc._tokenize_text(text)
-
-print '\n\n'
-
-segment = cc._search_for_completion_segment(token_code)
-print segment
+#cc = CodeCompletion()
+#token_code = cc._tokenize_text(text)
+#
+#print '\n\n'
+#
+#segment = cc._search_for_completion_segment(token_code)
+#print segment
 
 
 #code = """casa(os.p

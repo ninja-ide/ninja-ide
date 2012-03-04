@@ -1,5 +1,6 @@
 # -*- coding: utf-8 *-*
 
+import re
 import ast
 import _ast
 
@@ -26,16 +27,37 @@ class Analyzer(object):
         _ast.Attribute: late_resolution,
     }
 
+    def __init__(self):
+        self._fixed_line = -1
+
     def collect_metadata(self, project_path):
         """Collect metadata from a project."""
         #TODO
 
     def _get_valid_module(self, source):
         """Try to parse the module and fix some errors if it has some."""
+        astModule = None
+        try:
+            astModule = ast.parse(source)
+        except SyntaxError, reason:
+            line = reason.lineno - 1
+            if line != self._fixed_line:
+                self._fixed_line = line
+                new_line = ''
+                indent = re.match('^\s+', reason.text)
+                if indent is not None:
+                    new_line = indent.group() + 'pass'
+                split_source = source.splitlines()
+                split_source[line] = new_line
+                source = '\n'.join(split_source)
+                astModule = self._get_valid_module(source)
+        return astModule
 
     def analyze(self, source):
         """Analyze the source provided and create the proper structure."""
-        astModule = ast.parse(source)
+        astModule = self._get_valid_module(source)
+        if astModule is None:
+            return model.Module()
         self.content = source.split('\n')
 
         module = model.Module()
@@ -69,7 +91,7 @@ class Analyzer(object):
                 data = (var.attr, symbol.lineno, data_type, line_content,
                     type_value)
                 attributes.append(data)
-            elif type_var == ast.Assign:
+            elif type_var == ast.Name:
                 data = (var.id, symbol.lineno, data_type, line_content,
                     type_value)
                 assigns.append(data)
