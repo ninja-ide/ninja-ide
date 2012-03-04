@@ -39,10 +39,12 @@ class Structure(object):
         if attr is not None:
             result = (True, attr.get_data_type())
         else:
-            items = [i for i in self.get_completion_items() \
-                if i.startswith(var_names[0])]
+            items = self.get_completion_items()
             result = (False, items)
         return result
+
+    def recursive_search_type(self):
+        return (False, None)
 
 
 class Module(Structure):
@@ -73,7 +75,15 @@ class Module(Structure):
             clazz = self.classes.get(clazz_name, None)
             if clazz is not None:
                 result = clazz.get_attribute_type(child_attrs)
+        elif scope is not None:
+            func_name = scope[-1]
+            func = self.functions.get(func_name, None)
+            if func is not None:
+                result = func.get_attribute_type(child_attrs)
         return result
+
+    def recursive_search_type(self):
+        return (False, None)
 
     def get_imports(self):
         module_imports = ['import __builtin__']

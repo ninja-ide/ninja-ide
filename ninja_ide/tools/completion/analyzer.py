@@ -30,6 +30,9 @@ class Analyzer(object):
         """Collect metadata from a project."""
         #TODO
 
+    def _get_valid_module(self, source):
+        """Try to parse the module and fix some errors if it has some."""
+
     def analyze(self, source):
         """Analyze the source provided and create the proper structure."""
         astModule = ast.parse(source)

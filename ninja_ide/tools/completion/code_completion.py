@@ -2,7 +2,7 @@
 
 import re
 import token as tkn
-from tokenize import generate_tokens
+from tokenize import generate_tokens, TokenError
 from StringIO import StringIO
 
 import analyzer
@@ -11,7 +11,7 @@ import completer
 
 #Because my python doesn't have it, and is not in the web docs either
 #but trust me, it exists!
-TOKEN_NL = 54
+__TOKEN_NL = 54
 
 
 class CodeCompletion(object):
@@ -37,8 +37,14 @@ class CodeCompletion(object):
 
     def _tokenize_text(self, code):
         # Optimization, only iterate until the previous line of a class??
-        token_code = [(t[0], t[1], t[2], t[4]) for t in \
-            generate_tokens(StringIO(code).readline)]
+        token_code = []
+        try:
+            for t in generate_tokens(StringIO(code).readline):
+                token_code.append((t[0], t[1], t[2], t[4]))
+        except TokenError:
+            #This is an expected situation, where i don't want to do anything
+            #possible an unbalanced brace like: func(os.p| (| = cursor-end)
+            pass
         while token_code[-1][0] in (tkn.ENDMARKER, tkn.DEDENT, tkn.NEWLINE):
             token_code.pop()
         return token_code
@@ -68,7 +74,7 @@ class CodeCompletion(object):
         return scopes
 
     def _search_for_completion_segment(self, token_code):
-        global TOKEN_NL
+        global __TOKEN_NL
         tokens = []
         keep_iter = True
         iter = reversed(token_code)
@@ -88,11 +94,14 @@ class CodeCompletion(object):
                 brace_stack += 1
             elif token_str in self._invalid_op:
                 brace_stack -= 1
+                if brace_stack == 0:
+                    segment = token_str + segment
+                    continue
             if brace_stack != 0:
                 continue
 
             op = t[0]
-            if (op == tkn.NAME) or token_str in (self._invalid_op + ('.',)):
+            if (op == tkn.NAME) or token_str == '.':
                 segment = token_str + segment
             elif op == tkn.OP:
                 break
@@ -111,14 +120,14 @@ class CodeCompletion(object):
             word = words[1].strip()
         if not var_segment.endswith('.'):
             final_word = words_final[1]
+            word = word.rsplit('.', 1)[0]
         result = self.current_module.get_type(attr_name, word, scopes)
         if result[0]:
             imports = self.current_module.get_imports()
             to_complete = "%s.%s" % (result[1], final_word)
             data = completer.get_all_completions(to_complete, imports)
-            self.token_code = None
         else:
-            if len(result[1]):
+            if result[1] is not None and len(result[1]) > 0:
                 data = result[1]
             else:
                 #Based in Kai Plugin: https://github.com/matiasb/kai
@@ -165,7 +174,7 @@ class Diego:
 
 cc = CodeCompletion()
 cc.analyze_file('path', text)
-text += '\n        self.m.d'
+text += '\n        os.p'
 offset = len(text)
 print cc.get_completion(text, offset)
 
@@ -198,3 +207,14 @@ print '\n\n'
 
 segment = cc._search_for_completion_segment(token_code)
 print segment
+
+
+#code = """casa(os.p
+#asdsd
+#"""
+#try:
+#    for t in generate_tokens(StringIO(code).readline):
+#        print t
+#except TokenError:
+#    print 'fin'
+#
