@@ -185,6 +185,20 @@ class TabWidget(QTabWidget):
                 self.setCurrentIndex(i)
                 return
 
+    def remove_title(self, index):
+        """Looks for the title of the tab at index and removes it from
+        self.titles, if it's there.'"""
+        if unicode(self.tabText(index)) in self.titles:
+            self.titles.remove(unicode(self.tabText(index)))
+
+    def update_current_widget(self):
+        """Sets the focus to the current widget. If this is the last tab in the
+        current split, the allTabsClosed() signal is emitted.'"""
+        if self.currentWidget() is not None:
+            self.currentWidget().setFocus()
+        else:
+            self.emit(SIGNAL("allTabsClosed()"))
+
     def removeTab(self, index):
         """Remove the Tab at the selected index and check if the
         widget was modified and need to execute any saving"""
@@ -212,14 +226,10 @@ class TabWidget(QTabWidget):
             elif type(widget) is editor.Editor and widget.ID:
                 self._add_to_last_opened(widget.ID)
 
-            if unicode(self.tabText(index)) in self.titles:
-                self.titles.remove(unicode(self.tabText(index)))
+            self.remove_title(index)
             super(TabWidget, self).removeTab(index)
             del widget
-            if self.currentWidget() is not None:
-                self.currentWidget().setFocus()
-            else:
-                self.emit(SIGNAL("allTabsClosed()"))
+            self.update_current_widget()
 
     def setTabText(self, index, text):
         QTabWidget.setTabText(self, index, text)
@@ -280,7 +290,7 @@ class TabWidget(QTabWidget):
                         lambda: self._parent.move_tab_to_next_split(self))
                     self.connect(actionCloseSplit, SIGNAL("triggered()"),
                         lambda: self._parent.split_tab(
-                            self._parent.orientation()))
+                            self._parent.orientation() == Qt.Horizontal))
                 else:
                     actionSplitH = menu.addAction(
                         self.tr("Split this Tab (Horizontally)"))
