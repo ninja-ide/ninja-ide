@@ -177,7 +177,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.pep8.check_style()
         if settings.FIND_ERRORS:
             self.errors.check_errors()
-        self.completer.update_metadata()
 
     def _add_line_increment(self, lines, blockModified, diference):
         def _inner_increment(line):

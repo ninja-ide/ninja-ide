@@ -19,7 +19,7 @@ class CompleterWidget(QCompleter):
         self.popupView = QListWidget()
         self.popupView.setAlternatingRowColors(True)
         self.popupView.setWordWrap(False)
-#        self.setPopup(self.popupView)
+        self.setPopup(self.popupView)
         self.setCompletionMode(QCompleter.PopupCompletion)
         self.setCaseSensitivity(Qt.CaseInsensitive)
 
@@ -28,18 +28,12 @@ class CompleterWidget(QCompleter):
         self.connect(self, SIGNAL("activated(const QString&)"),
             self.insert_completion)
 
-#        self.connect(self.popupView, SIGNAL("itemClicked(QListWidgetItem*)"),
-#            self.insert_completion)
-
     def update_metadata(self):
         source = self._editor.get_text()
         source = source.encode(self._editor.encoding)
         self.cc.analyze_file('', source)
 
     def insert_completion(self, insert):
-#        insert = self.popupView.currentItem().text()
-#        insert = self.currentCompletion()
-#        print insert
         extra = insert.length() - self.completionPrefix().length()
         self.widget().textCursor().insertText(insert.right(extra))
         self.popup().hide()
@@ -47,7 +41,8 @@ class CompleterWidget(QCompleter):
     def complete(self, cr, results):
         self.popupView.clear()
         model = self.obtain_model_items(results)
-#        self.setModel(model)
+        self.obtain_model_items(results)
+        self.setModel(model)
         self.popup().setCurrentIndex(model.index(0, 0))
         cr.setWidth(self.popup().sizeHintForColumn(0) \
             + self.popup().verticalScrollBar().sizeHint().width() + 10)
@@ -56,9 +51,8 @@ class CompleterWidget(QCompleter):
 
     def obtain_model_items(self, proposals):
         proposals.sort()
-        self.model().setStringList(proposals)
-#        for p in proposals:
-#            self.popupView.addItem(QListWidgetItem(p))
+        for p in proposals:
+            self.popupView.addItem(QListWidgetItem(p))
         return self.popupView.model()
 
     def is_visible(self):
@@ -68,7 +62,6 @@ class CompleterWidget(QCompleter):
         skip = False
         if event.key() in (Qt.Key_Enter, Qt.Key_Return, Qt.Key_Tab):
             event.ignore()
-#            self.insert_completion()
             self.popup().hide()
             skip = True
         elif event.key() in (Qt.Key_Space, Qt.Key_Escape, Qt.Key_Backtab):
@@ -88,9 +81,8 @@ class CompleterWidget(QCompleter):
     def fill_completer(self):
         source = self._editor.get_text()
         source = source.encode(self._editor.encoding)
+        self.cc.analyze_file('', source)
         offset = self._editor.textCursor().position()
-        if self.cc.current_module is None:
-            self.cc.analyze_file('', source)
         results = self.cc.get_completion(source, offset)
         cr = self._editor.cursorRect()
         self.complete(cr, results)

@@ -96,9 +96,7 @@ class Module(Structure):
             if value is not None:
                 result = (True, value.get_data_type())
         elif main_attr == 'self':
-            print 'SIIIIIIIIIII'
             clazz_name = scope[0]
-            print 'classes', self.classes
             clazz = self.classes.get(clazz_name, None)
             if clazz is not None:
                 result = clazz.get_attribute_type(child_attrs)
