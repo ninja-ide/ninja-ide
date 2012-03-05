@@ -4,11 +4,8 @@ import re
 import ast
 import _ast
 
-#from ninja_ide.tools.completion import model
-import model
+from ninja_ide.tools.completion import model
 
-
-late_resolution = object()
 
 MODULES = {}
 
@@ -22,9 +19,9 @@ class Analyzer(object):
         _ast.Dict: '__builtin__.dict',
         #Try to differenciate between int and float later
         _ast.Num: '__builtin__.int',
-        _ast.Call: late_resolution,
-        _ast.Name: late_resolution,
-        _ast.Attribute: late_resolution,
+        _ast.Call: model.late_resolution,
+        _ast.Name: model.late_resolution,
+        _ast.Attribute: model.late_resolution,
     }
 
     def __init__(self):
@@ -53,6 +50,9 @@ class Analyzer(object):
                 astModule = self._get_valid_module(source)
         return astModule
 
+    def _resolve_late(self, module):
+        """Resolve the late_resolution objects inside the module."""
+
     def analyze(self, source):
         """Analyze the source provided and create the proper structure."""
         astModule = self._get_valid_module(source)
@@ -72,6 +72,7 @@ class Analyzer(object):
                 module.add_class(self._process_class(symbol))
             elif symbol_type is ast.FunctionDef:
                 module.add_function(self._process_function(symbol))
+#        self.resolve_late(module)
 
         self.content = None
         return module
@@ -84,7 +85,7 @@ class Analyzer(object):
             type_value = type(symbol.value)
             data_type = self.__mapping.get(type_value, None)
             line_content = self.content[symbol.lineno - 1]
-            if data_type != late_resolution:
+            if data_type != model.late_resolution:
                 type_value = None
             type_var = type(var)
             if type_var == ast.Attribute:
@@ -152,14 +153,14 @@ class Analyzer(object):
         for value in reversed(symbol.args.defaults):
             type_value = type(value)
             data_type = self.__mapping.get(type_value, None)
-            if data_type != late_resolution:
+            if data_type != model.late_resolution:
                 type_value = None
             defaults.append((data_type, type_value))
         for arg in reversed(symbol.args.args):
             if arg.id == 'self':
                 continue
             assign = model.Assign(arg.id)
-            data_type = (late_resolution, None)
+            data_type = (model.late_resolution, None)
             if defaults:
                 data_type = defaults.pop()
             assign.add_data(symbol.lineno, data_type[0], None, data_type[1])
@@ -187,7 +188,7 @@ class Analyzer(object):
             lineno = symbol.lineno
             data_type = self.__mapping.get(type_value, None)
             line_content = self.content[lineno - 1]
-            if data_type != late_resolution:
+            if data_type != model.late_resolution:
                 type_value = None
             function.add_return(lineno, data_type, line_content, type_value)
         elif type_symbol in (ast.If, ast.For, ast.TryExcept):
@@ -200,89 +201,3 @@ class Analyzer(object):
                 self._search_for_returns(function, sym)
             for else_item in symbol.finalbody:
                 self._search_for_returns(function, else_item)
-
-file_content = """
-import sys.exit as gato, os
-from os import (path, diego)
-
-varA = 4
-
-@something
-class Completion(object, PyQt4.QtGui.QWidget):
-
-    name = "dieeego"
-
-    def funcion(self, atributo, *args2, **kwargs2):
-        self.x.path = atributo
-        self.valor = (5 + \
-        4)
-        self.atributo.hola()
-        for x in self.lista:
-            print x
-        else:
-            return 99
-
-        try:
-            if x == 3:
-                return 4
-            return 9
-        except:
-            print 3
-        else:
-            print 'else'
-            return 20
-
-        try:
-            return 5
-        finally:
-            return 10
-        variable = atributo.hola(diego, 4)
-        Q = "diego sarmentero"
-
-    animal = "cat"
-
-    @deco
-    def hola(self, name='diego'):
-        a = Completion()
-        if a:
-            return 'diego'
-        elif b:
-            return 4
-        else:
-            print 'diego'
-        print a
-        return a
-
-def only_print(name):
-    print 'only', name
-
-varB = Completion()
-varB = diego.Completion()
-
-v = varC = sys
-varD = sys.path
-q = 2.9
-w = True
-e = u"diego"
-r = e
-r = e.casa
-t = []
-y = {}
-r = "gato"
-u = (3,)
-"""
-
-
-if __name__ == '__main__':
-    f = open(
-        '/media/gato/ninja/ninja-ide-local/ninja_ide/gui/editor/editor.py',
-        'r')
-    c = f.read()
-    f.close()
-    a = Analyzer()
-    a.analyze(c)
-#    a.analyze(file_content)
-
-
-#import completer
-#print completer.get_all_completions("os.", ["import os"])

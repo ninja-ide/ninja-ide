@@ -5,13 +5,13 @@ import token as tkn
 from tokenize import generate_tokens, TokenError
 from StringIO import StringIO
 
-import analyzer
-import completer
+from ninja_ide.tools.completion import analyzer
+from ninja_ide.tools.completion import completer
 
 
 #Because my python doesn't have it, and is not in the web docs either
 #but trust me, it exists!
-__TOKEN_NL = 54
+_TOKEN_NL = 54
 
 
 class CodeCompletion(object):
@@ -50,31 +50,38 @@ class CodeCompletion(object):
         return token_code
 
     def _search_for_scope(self, token_code):
+        global _TOKEN_NL
         if not token_code[-1][3].startswith(' '):
             return None
         scopes = []
         indent = len(token_code[-1][3])
-        previous_line = token_code[-1]
-        for index, line in enumerate(reversed(token_code)):
-            is_indented = (line[0] == tkn.DEDENT or line[0] == tkn.INDENT)
-            previous_is_definition = previous_line[1] in ('def', 'class')
+        previous_line = ('', '')
+        keep_exploring = True
+        iter = reversed(token_code)
+        line = iter.next()
+        while keep_exploring:
+            is_indented = line[3].startswith(' ')
+            is_definition = line[1] in ('def', 'class')
             #Skip lines that are not def or class
-            if is_indented and previous_is_definition:
+            if is_indented and is_definition:
                 new_indent = self.patIndent.match(line[3])
                 if new_indent is not None:
                     new_indent = len(new_indent.group())
                 #We only care about the function where we are
                 if new_indent < indent:
                     indent = new_indent
-                    scopes.insert(0, token_code[-index + 1][1])
-            elif not is_indented and previous_is_definition:
-                scopes.insert(0, token_code[-index + 1][1])
-                break
-            previous_line = line
+                    scopes.insert(0, previous_line)
+            elif not is_indented and is_definition:
+                scopes.insert(0, previous_line)
+                keep_exploring = False
+            previous_line = line[1]
+            try:
+                line = iter.next()
+            except StopIteration:
+                keep_exploring = False
         return scopes
 
     def _search_for_completion_segment(self, token_code):
-        global __TOKEN_NL
         tokens = []
         keep_iter = True
         iter = reversed(token_code)
@@ -124,7 +131,7 @@ class CodeCompletion(object):
             if final_word == word:
                 word = ''
         result = self.current_module.get_type(attr_name, word, scopes)
-        if result[0]:
+        if result[0] and result[1] is not None:
             imports = self.current_module.get_imports()
             to_complete = "%s.%s" % (result[1], final_word)
             data = completer.get_all_completions(to_complete, imports)
@@ -161,6 +168,7 @@ class Diego:
     def __init__(self):
         self.s = {}
         self.m = 5
+        self.w = QtGui.QWidget()
 
     def imprimir(self):
         pass
@@ -168,7 +176,7 @@ class Diego:
     def otra(self):
         l = []
         if algo:
-            l."""
+            self.w."""
 
 #offset = 21
 #offset = 47
@@ -176,48 +184,7 @@ class Diego:
 #print len(text)
 #print text[:offset]
 
-cc = CodeCompletion()
-cc.analyze_file('path', text)
-offset = len(text)
-print cc.get_completion(text, offset)
-
-
-#f = open(
-#    '/media/gato/ninja/ninja-ide-local/ninja_ide/gui/editor/editor.py',
-#    'r')
-#text = f.read()
-#f.close()
-
-
-text = """
-
-print 3
-def fun():
-    a = b
-    b.casa(5,
-        3)
-
-otro = 4
-num = 5
-f = ase.port("diego", [], {}
-    "gato")
-"""
-
 #cc = CodeCompletion()
-#token_code = cc._tokenize_text(text)
-#
-#print '\n\n'
-#
-#segment = cc._search_for_completion_segment(token_code)
-#print segment
-
-
-#code = """casa(os.p
-#asdsd
-#"""
-#try:
-#    for t in generate_tokens(StringIO(code).readline):
-#        print t
-#except TokenError:
-#    print 'fin'
-#
+#cc.analyze_file('path', text)
+#offset = len(text)
+#print cc.get_completion(text, offset)

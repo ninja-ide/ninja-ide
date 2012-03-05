@@ -1,12 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
-# -*- coding: utf-8 *-*
-from PyQt4.QtGui import QCompleter
-from PyQt4.QtGui import QListWidgetItem
-from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
-from PyQt4.QtGui import QListWidget
 #Based in pycomplete emacs module.
 
 import sys
@@ -199,42 +193,3 @@ def _find_constructor(class_ob):
             if rc is not None:
                 return rc
     return None
-
-
-class CompleterWidget(QCompleter):
-
-    def __init__(self, editor):
-        QCompleter.__init__(self)
-
-        self.setWidget(editor)
-        self.popupView = QListWidget()
-        self.popupView.setAlternatingRowColors(True)
-        self.popupView.setWordWrap(False)
-        self.setPopup(self.popupView)
-        self.setCompletionMode(QCompleter.PopupCompletion)
-        self.setCaseSensitivity(Qt.CaseInsensitive)
-
-        self.connect(self.popupView, SIGNAL("itemClicked(QListWidgetItem*)"),
-            self.insert_completion)
-
-    def insert_completion(self):
-        insert = self.popupView.currentItem().text()
-        extra = insert.length() - self.completionPrefix().length()
-        self.widget().textCursor().insertText(insert.right(extra))
-        self.popup().hide()
-
-    def complete(self, cr, results):
-        self.popupView.clear()
-        model = self.obtain_model_items(results)
-        self.setModel(model)
-        self.popup().setCurrentIndex(model.index(0, 0))
-        cr.setWidth(self.popup().sizeHintForColumn(0) \
-            + self.popup().verticalScrollBar().sizeHint().width() + 10)
-        self.popupView.updateGeometries()
-        QCompleter.complete(self, cr)
-
-    def obtain_model_items(self, proposals):
-        proposals.sort()
-        for p in proposals:
-            self.popupView.addItem(QListWidgetItem(p))
-        return self.popupView.model()

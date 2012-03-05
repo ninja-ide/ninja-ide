@@ -1,6 +1,9 @@
 # -*- coding: utf-8 *-*
 
 
+late_resolution = object()
+
+
 class _TypeData(object):
 
     def __init__(self, lineno, data_type, line_content, oper):
@@ -8,6 +11,11 @@ class _TypeData(object):
         self.data_type = data_type
         self.line_content = line_content
         self.operation = oper
+        self.from_import = False
+        if isinstance(data_type, str):
+            self.is_native = True
+        else:
+            self.is_native = False
 
     def get_data_type(self):
         return self.data_type
@@ -48,9 +56,9 @@ class Structure(object):
             struct = self._get_scope_structure(new_struct, scope[1:])
         return struct
 
-    def _resolve_attribute(self, assign, attrs):
-        data_type = assign.get_data_type()
-        return (True, data_type)
+    def _resolve_attribute(self, type_data, attrs):
+        object_type = type_data.get_data_type()
+        return (True, object_type)
 
     def recursive_search_type(self, structure, attrs, scope):
         result = (False, None)
@@ -158,4 +166,7 @@ class Assign(object):
         self.data.append(info)
 
     def get_data_type(self):
-        return self.data[0].data_type
+        if self.data[0].is_native:
+            return self.data[0].data_type
+        else:
+            return None

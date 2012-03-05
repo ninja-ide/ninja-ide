@@ -30,6 +30,7 @@ from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
 from ninja_ide.tools import styles
+from ninja_ide.tools.completion import completer_widget
 from ninja_ide.gui.main_panel import itab_item
 from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import helpers
@@ -91,6 +92,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self._braces = None
         self._mtime = None
         self.__encoding = None
+        #Completer
+        self.completer = completer_widget.CompleterWidget(self)
         #Flag to dont bug the user when answer *the modification dialog*
         self.ask_if_externally_modified = True
         #Dict functions for KeyPress
@@ -313,7 +316,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         """
         Returns all the plain text of the editor
         """
-        return self.toPlainText()
+        return unicode(self.toPlainText())
 
     def get_lines_count(self):
         """
@@ -683,6 +686,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.textCursor().insertText(self.selected_text)
 
     def keyPressEvent(self, event):
+        #Completer pre key event
+        if self.completer.is_visible() and \
+           self.completer.process_pre_key_event(event):
+            return
         #On Return == True stop the execution of this method
         if self.preKeyPress.get(event.key(), lambda x: False)(event):
             #emit a signal then plugings can do something
@@ -693,6 +700,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         QPlainTextEdit.keyPressEvent(self, event)
 
         self.postKeyPress.get(event.key(), lambda x: False)(event)
+
+        #Completer post key event
+        self.completer.process_post_key_event(event)
 
         #emit a signal then plugings can do something
         self.emit(SIGNAL("keyPressEvent(QEvent)"), event)
