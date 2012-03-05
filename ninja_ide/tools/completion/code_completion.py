@@ -120,14 +120,14 @@ class CodeCompletion(object):
         var_segment = self._search_for_completion_segment(token_code)
         words = var_segment.split('.', 1)
         words_final = var_segment.rsplit('.', 1)
-        attr_name = words[0]
+        attr_name = words[0].strip()
         word = ''
         final_word = ''
         if var_segment.count(".") > 0:
             word = words[1].strip()
         if not var_segment.endswith('.'):
-            final_word = words_final[1]
-            word = word.rsplit('.', 1)[0]
+            final_word = words_final[1].strip()
+            word = word.rsplit('.', 1)[0].strip()
             if final_word == word:
                 word = ''
         result = self.current_module.get_type(attr_name, word, scopes)
