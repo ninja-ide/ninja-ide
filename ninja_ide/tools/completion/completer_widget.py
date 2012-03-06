@@ -24,6 +24,7 @@ class CompleterWidget(QCompleter):
         self.setCaseSensitivity(Qt.CaseInsensitive)
 
         self.cc = code_completion.CodeCompletion()
+        self.completion_results = []
 
         self.connect(self, SIGNAL("activated(const QString&)"),
             self.insert_completion)
@@ -40,8 +41,8 @@ class CompleterWidget(QCompleter):
 
     def complete(self, cr, results):
         self.popupView.clear()
+        self.completion_results = results
         model = self.obtain_model_items(results)
-        self.obtain_model_items(results)
         self.setModel(model)
         self.popup().setCurrentIndex(model.index(0, 0))
         cr.setWidth(self.popup().sizeHintForColumn(0) \
@@ -50,10 +51,16 @@ class CompleterWidget(QCompleter):
         QCompleter.complete(self, cr)
 
     def obtain_model_items(self, proposals):
-        proposals.sort()
         for p in proposals:
             self.popupView.addItem(QListWidgetItem(p))
         return self.popupView.model()
+
+    def set_completion_prefix(self, prefix):
+        self.setCompletionPrefix(prefix)
+        proposals = [item for item in self.completion_results \
+            if item.startswith(prefix)]
+        cr = self._editor.cursorRect()
+        self.complete(cr, proposals)
 
     def is_visible(self):
         return self.popup().isVisible()
@@ -69,14 +76,14 @@ class CompleterWidget(QCompleter):
         return skip
 
     def process_post_key_event(self, event):
-        if event.key() == Qt.Key_Period:
-            self.fill_completer()
         if self.popup().isVisible():
             prefix = self._editor._text_under_cursor()
-            self.setCompletionPrefix(prefix)
+            self.set_completion_prefix(prefix)
             self.popup().setCurrentIndex(
                 self.completionModel().index(0, 0))
             self.setCurrentRow(0)
+        if event.key() == Qt.Key_Period:
+            self.fill_completer()
 
     def fill_completer(self):
         source = self._editor.get_text()
@@ -84,5 +91,6 @@ class CompleterWidget(QCompleter):
         self.cc.analyze_file('', source)
         offset = self._editor.textCursor().position()
         results = self.cc.get_completion(source, offset)
+        results.sort()
         cr = self._editor.cursorRect()
         self.complete(cr, results)
