@@ -41,7 +41,6 @@ class CompleterWidget(QCompleter):
 
     def complete(self, cr, results):
         self.popupView.clear()
-        self.completion_results = results
         model = self.obtain_model_items(results)
         self.setModel(model)
         self.popup().setCurrentIndex(model.index(0, 0))
@@ -92,5 +91,6 @@ class CompleterWidget(QCompleter):
         offset = self._editor.textCursor().position()
         results = self.cc.get_completion(source, offset)
         results.sort()
+        self.completion_results = results
         cr = self._editor.cursorRect()
         self.complete(cr, results)
