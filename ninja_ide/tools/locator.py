@@ -448,6 +448,9 @@ class LocateCompleter(QLineEdit):
         self.connect(self, SIGNAL("textChanged(QString)"),
             self.set_prefix)
 
+        self.connect(self.frame.listWidget,
+        SIGNAL("itemPressed(QListWidgetItem*)"), self._go_to_location)
+
     def set_prefix(self, prefix):
         """Set the prefix for the completer."""
         self.__prefix = unicode(prefix.toLower())
@@ -601,9 +604,12 @@ class LocateCompleter(QLineEdit):
         elif event.key() in (Qt.Key_Return, Qt.Key_Enter):
             #If the user press enter, go to the item selected
             item = self.frame.listWidget.currentItem()
-            if type(item) is LocateItem:
-                self._open_item(item._data)
-            self._parent.statusBar.hide_status()
+            self._go_to_location(item)
+
+    def _go_to_location(self, item):
+        if type(item) is LocateItem:
+            self._open_item(item._data)
+        self._parent.statusBar.hide_status()
 
     def focusOutEvent(self, event):
         """Hide Popup on focus lost."""

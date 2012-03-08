@@ -93,7 +93,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self._mtime = None
         self.__encoding = None
         #Completer
-        self.completer = completer_widget.CompleterWidget(self)
+        self.completer = completer_widget.CodeCompletionWidget(self)
         #Flag to dont bug the user when answer *the modification dialog*
         self.ask_if_externally_modified = True
         #Dict functions for KeyPress
@@ -687,8 +687,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def keyPressEvent(self, event):
         #Completer pre key event
-        if self.completer.is_visible() and \
-           self.completer.process_pre_key_event(event):
+        if self.completer.process_pre_key_event(event):
             return
         #On Return == True stop the execution of this method
         if self.preKeyPress.get(event.key(), lambda x: False)(event):
