@@ -57,7 +57,7 @@ class CodeCompletionWidget(QFrame):
     def insert_completion(self, insert):
         extra = len(self._prefix) - len(insert)
         self._editor.textCursor().insertText(insert[extra:])
-        self.hide()
+        self.hide_completer()
 
     def _get_geometry(self):
         cr = self._editor.cursorRect()
@@ -108,6 +108,10 @@ class CodeCompletionWidget(QFrame):
         self.completion_results = results
         self.complete(results)
 
+    def hide_completer(self):
+        self._prefix = ''
+        self.hide()
+
     def process_pre_key_event(self, event):
         skip = False
         if not self.isVisible():
@@ -116,10 +120,10 @@ class CodeCompletionWidget(QFrame):
             insert = unicode(self.completion_list.currentItem().text())
             self.insert_completion(insert)
             event.ignore()
-            self.hide()
+            self.hide_completer()
             skip = True
         elif event.key() in (Qt.Key_Space, Qt.Key_Escape, Qt.Key_Backtab):
-            self.hide()
+            self.hide_completer()
         elif event.key() in self._key_operations:
             self._key_operations[event.key()]()
             skip = True
