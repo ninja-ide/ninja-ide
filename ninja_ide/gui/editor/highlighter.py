@@ -1,7 +1,7 @@
 #-*-coding:utf-8-*-
-from __future__ import absolute_import
 # based on Python Syntax highlighting from:
 # http://diotavelli.net/PyQtWiki/Python%20syntax%20highlighting
+from __future__ import absolute_import
 
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QTextCharFormat
@@ -56,6 +56,8 @@ def restyle(scheme):
         resources.COLOR_SCHEME['spaces']))
     STYLES['extras'] = format(scheme.get('extras',
         resources.COLOR_SCHEME['extras']))
+    STYLES['selectedWord'] = scheme.get('selected-word',
+        resources.COLOR_SCHEME['selected-word'])
 
 
 class Highlighter (QSyntaxHighlighter):
@@ -63,8 +65,11 @@ class Highlighter (QSyntaxHighlighter):
     # braces
     braces = ['\\(', '\\)', '\\{', '\\}', '\\[', '\\]']
 
-    def __init__(self, document, lang=None, scheme=None):
+    def __init__(self, document, lang=None, scheme=None,
+      errors=None, pep8=None):
         QSyntaxHighlighter.__init__(self, document)
+        self.errors = errors
+        self.pep8 = pep8
         if lang is not None:
             self.apply_highlight(lang, scheme)
 
@@ -141,7 +146,7 @@ class Highlighter (QSyntaxHighlighter):
         # Multi-line strings (expression, flag, style)
         # FIXME: The triple-quotes in these two lines will mess up the
         # syntax highlighting from this point onward
-        self.tri_single = (QRegExp("'''"), 1, STYLES['string2'])
+        self.tri_single = (QRegExp("'''"), 1, STYLES["string2"])
         self.tri_double = (QRegExp('"""'), 2, STYLES['string2'])
 
         multi = langSyntax.get('multiline_comment', [])
@@ -154,12 +159,52 @@ class Highlighter (QSyntaxHighlighter):
         # Build a QRegExp for each pattern
         self.rules = [(QRegExp(pat), index, fmt)
             for (pat, index, fmt) in rules]
+        self.selected_word_pattern = None
         #Apply Highlight to the document... (when colors change)
         self.rehighlight()
+
+    def set_selected_word(self, word):
+        """Set the word to highlight."""
+        if len(word) > 2:
+            self.selected_word_pattern = QRegExp(r'\b%s\b' % word)
+        else:
+            self.selected_word_pattern = None
+
+    def __highlight_pep8(self, format):
+        """Highlight the lines with errors."""
+        format = format.toCharFormat()
+        format.setUnderlineColor(QColor(
+            resources.CUSTOM_SCHEME.get('pep8-underline',
+                resources.COLOR_SCHEME['pep8-underline'])))
+        format.setUnderlineStyle(
+            QTextCharFormat.WaveUnderline)
+        return format
+
+    def __highlight_lint(self, format):
+        """Highlight the lines with errors."""
+        format = format.toCharFormat()
+        format.setUnderlineColor(QColor(
+            resources.CUSTOM_SCHEME.get('error-underline',
+                resources.COLOR_SCHEME['error-underline'])))
+        format.setUnderlineStyle(
+            QTextCharFormat.WaveUnderline)
+        return format
 
     def highlightBlock(self, text):
         """Apply syntax highlighting to the given block of text."""
         hls = []
+        block = self.currentBlock()
+        block_number = self.currentBlock().blockNumber()
+        highlight_errors = lambda x: x
+        if self.errors and (block_number in self.errors.errorsSummary):
+            highlight_errors = self.__highlight_lint
+        elif self.pep8 and (block_number in self.pep8.pep8checks):
+            highlight_errors = self.__highlight_pep8
+
+        format = block.charFormat()
+        format = highlight_errors(format)
+        self.setFormat(0, len(block.text()), format)
+
         for expression, nth, format in self.rules:
             index = expression.indexIn(text, 0)
 
@@ -167,6 +212,7 @@ class Highlighter (QSyntaxHighlighter):
                 # We actually want the index of the nth match
                 index = expression.pos(nth)
                 length = expression.cap(nth).length()
+                format = highlight_errors(format)
 
                 if (self.format(index) != STYLES['string']):
                     self.setFormat(index, length, format)
@@ -186,13 +232,31 @@ class Highlighter (QSyntaxHighlighter):
             # Do multi-line comment
             self.comment_multiline(text, self.multi_end[0], *self.multi_start)
 
+        #Highlight selected word
+        if self.selected_word_pattern is not None:
+            index = self.selected_word_pattern.indexIn(text, 0)
+
+            while index >= 0:
+                index = self.selected_word_pattern.pos(0)
+                length = self.selected_word_pattern.cap(0).length()
+                format = self.format(index)
+                color = QColor()
+                color.setNamedColor(STYLES['selectedWord'])
+                color.setAlpha(100)
+                format.setBackground(color)
+                self.setFormat(index, length, format)
+                index = self.selected_word_pattern.indexIn(
+                    text, index + length)
+
         #Spaces
         expression = QRegExp('\s+')
         index = expression.indexIn(text, 0)
         while index >= 0:
             index = expression.pos(0)
             length = expression.cap(0).length()
-            self.setFormat(index, length, STYLES['spaces'])
+            format = STYLES['spaces']
+            format = highlight_errors(format)
+            self.setFormat(index, length, format)
             index = expression.indexIn(text, index + length)
 
     def match_multiline(self, text, delimiter, in_state, style, hls=[]):

@@ -105,6 +105,8 @@ class __MainContainer(QSplitter):
         self.connect(self._tabSecondary,
             SIGNAL("syntaxChanged(QWidget, QString)"),
             self._specify_syntax)
+        self.connect(self._tabMain, SIGNAL("allTabsClosed()"),
+            self._main_without_tabs)
         self.connect(self._tabSecondary, SIGNAL("allTabsClosed()"),
             self._secondary_without_tabs)
         #reload file
@@ -124,6 +126,10 @@ class __MainContainer(QSplitter):
 
     def _navigate_code(self, val, op):
         self.emit(SIGNAL("navigateCode(bool, int)"), val, op)
+
+    def _main_without_tabs(self):
+        if self._tabSecondary.isVisible():
+            self.show_split(self.orientation())
 
     def _secondary_without_tabs(self):
         self.show_split(self.orientation())
@@ -155,6 +161,7 @@ class __MainContainer(QSplitter):
             self.show_split(Qt.Vertical)
 
     def show_split(self, orientation):
+        closingFollowMode = self._followMode
         if self._followMode:
             self.show_follow_mode()
         if self._tabSecondary.isVisible() and \
@@ -170,7 +177,7 @@ class __MainContainer(QSplitter):
                 if type(widget) is editor.Editor and widget.textModified:
                     self._tabMain.tab_was_modified(True)
             self.actualTab = self._tabMain
-        elif not self._tabSecondary.isVisible():
+        elif not self._tabSecondary.isVisible() and not closingFollowMode:
             widget = self.get_actual_widget()
             name = unicode(self._tabMain.tabText(self._tabMain.currentIndex()))
             self._tabSecondary.add_tab(widget, name)
@@ -184,23 +191,22 @@ class __MainContainer(QSplitter):
             self.actualTab = self._tabSecondary
         self.setOrientation(orientation)
 
-    def move_tab_to_next_split(self, tab):
+    def move_tab_to_next_split(self, tab_from):
         if self._followMode:
             return
-        if tab == self._tabSecondary:
-            widget = self._tabSecondary.currentWidget()
-            name = self._tabSecondary.tabText(
-                self._tabSecondary.currentIndex())
-            self._tabMain.add_tab(widget, name)
-            if widget is editor.Editor and widget.textModified:
-                self._tabMain.tab_was_saved(widget)
+
+        if tab_from == self._tabSecondary:
+            tab_to = self._tabMain
         else:
-            widget = self._tabMain.currentWidget()
-            if widget is not None:
-                name = self._tabMain.tabText(self._tabMain.currentIndex())
-                self._tabSecondary.add_tab(widget, name)
-                if widget is editor.Editor and widget.textModified:
-                    self._tabSecondary.tab_was_saved(widget)
+            tab_to = self._tabSecondary
+
+        widget = tab_from.currentWidget()
+        name = tab_from.tabText(tab_from.currentIndex())
+        tab_from.remove_title(tab_from.currentIndex())
+        tab_to.add_tab(widget, name)
+        if widget is editor.Editor and widget.textModified:
+            tab_to.tab_was_saved(widget)
+        tab_from.update_current_widget()
 
     def add_editor(self, fileName="", project=None, tabIndex=None,
         content=None, syntax=None):
