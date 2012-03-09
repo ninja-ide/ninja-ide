@@ -43,11 +43,18 @@ class CodeCompletionWidget(QFrame):
 
     def _select_next_row(self):
         new_row = self.completion_list.currentRow() + 1
-        self.completion_list.setCurrentRow(new_row)
+        if new_row < self.completion_list.count():
+            self.completion_list.setCurrentRow(new_row)
+        else:
+            self.completion_list.setCurrentRow(0)
 
     def _select_previous_row(self):
         new_row = self.completion_list.currentRow() - 1
-        self.completion_list.setCurrentRow(new_row)
+        if new_row >= 0:
+            self.completion_list.setCurrentRow(new_row)
+        else:
+            self.completion_list.setCurrentRow(
+                self.completion_list.count() - 1)
 
     def update_metadata(self):
         source = self._editor.get_text()
