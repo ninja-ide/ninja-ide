@@ -96,7 +96,10 @@ class CodeCompletionWidget(QFrame):
         self._prefix = prefix
         proposals = [item for item in self.completion_results \
             if item.startswith(prefix)]
-        self.complete(proposals)
+        if len(proposals) > 1:
+            self.complete(proposals)
+        else:
+            self.hide_completer()
 
     def fill_completer(self):
         source = self._editor.get_text()
@@ -106,7 +109,11 @@ class CodeCompletionWidget(QFrame):
         results = self.cc.get_completion(source, offset)
         results.sort()
         self.completion_results = results
-        self.complete(results)
+        prefix = self._editor._text_under_cursor()
+        if prefix:
+            self.set_completion_prefix(prefix)
+        else:
+            self.complete(results)
 
     def hide_completer(self):
         self._prefix = ''

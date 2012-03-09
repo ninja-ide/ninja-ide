@@ -709,7 +709,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def _text_under_cursor(self):
         tc = self.textCursor()
         tc.select(QTextCursor.WordUnderCursor)
-        return tc.selectedText()
+        return unicode(tc.selectedText())
 
     def paintEvent(self, event):
         super(Editor, self).paintEvent(event)
