@@ -55,8 +55,9 @@ class CodeCompletionWidget(QFrame):
         self.cc.analyze_file('', source)
 
     def insert_completion(self, insert):
-        extra = len(self._prefix) - len(insert)
-        self._editor.textCursor().insertText(insert[extra:])
+        if insert != self._prefix:
+            extra = len(self._prefix) - len(insert)
+            self._editor.textCursor().insertText(insert[extra:])
         self.hide_completer()
 
     def _get_geometry(self):
@@ -96,7 +97,7 @@ class CodeCompletionWidget(QFrame):
         self._prefix = prefix
         proposals = [item for item in self.completion_results \
             if item.startswith(prefix)]
-        if len(proposals) > 1:
+        if proposals:
             self.complete(proposals)
         else:
             self.hide_completer()
