@@ -344,7 +344,7 @@ class TextLine(QLineEdit):
         if int(event.key()) in range(32, 162) or \
         event.key() == Qt.Key_Backspace:
             has_replace = self._parent._parent._replaceWidget.isVisible()
-            if not (has_replace and editor.textCursor().hasSelection()):
+            if not has_replace:
                 self._parent.find_matches(editor)
 
 
