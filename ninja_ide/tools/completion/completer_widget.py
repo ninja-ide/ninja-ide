@@ -30,6 +30,7 @@ class CodeCompletionWidget(QFrame):
         self._completion_results = []
         self._prefix = u''
         self.setVisible(False)
+        self.source = ''
 
         self._key_operations = {
             Qt.Key_Up: self._select_previous_row,
@@ -40,6 +41,9 @@ class CodeCompletionWidget(QFrame):
 
         desktop = QApplication.instance().desktop()
         self._desktop_geometry = desktop.availableGeometry()
+
+        self.connect(self._editor.document(), SIGNAL("blockCountChanged(int)"),
+            self.update_metadata)
 
     def _select_next_row(self):
         new_row = self.completion_list.currentRow() + 1
@@ -112,7 +116,6 @@ class CodeCompletionWidget(QFrame):
     def fill_completer(self):
         source = self._editor.get_text()
         source = source.encode(self._editor.encoding)
-        self.cc.analyze_file('', source)
         offset = self._editor.textCursor().position()
         results = self.cc.get_completion(source, offset)
         results.sort()

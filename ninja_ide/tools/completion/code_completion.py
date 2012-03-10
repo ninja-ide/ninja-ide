@@ -125,7 +125,7 @@ class CodeCompletion(object):
         final_word = ''
         if var_segment.count(".") > 0:
             word = words[1].strip()
-        if not var_segment.endswith('.'):
+        if not var_segment.endswith('.') and len(words_final) > 1:
             final_word = words_final[1].strip()
             word = word.rsplit('.', 1)[0].strip()
             if final_word == word:

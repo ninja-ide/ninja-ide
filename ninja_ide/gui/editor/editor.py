@@ -250,7 +250,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.emit(SIGNAL("warningsFound(QPlainTextEdit)"), self)
         else:
             self.emit(SIGNAL("cleanDocument(QPlainTextEdit)"), self)
-        self.highlighter.rehighlight()
+        if self.highlighter:
+            self.highlighter.rehighlight()
 
     def check_external_modification(self):
         if self.newDocument:
