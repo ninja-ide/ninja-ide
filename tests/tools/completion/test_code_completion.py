@@ -350,6 +350,109 @@ class CodeCompletionTestCase(unittest.TestCase):
         expected = dir(str)
         self.assertEqual(expected, results)
 
+    def test_import_completion(self):
+        global SOURCE
+        self.cc.analyze_file('', SOURCE)
+        source_code = SOURCE + '\n\nos.p'
+        offset = len(source_code)
+        results = self.cc.get_completion(source_code, offset)
+        for r in results:
+            self.assertTrue(r.startswith('p'))
+
+    def test_builtin_list_completion(self):
+        global SOURCE
+        new_lines = '\n\nlis = []\nlis.'
+        source_code = SOURCE + new_lines
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        results = self.cc.get_completion(source_code, offset)
+        expected = dir(list)
+        self.assertEqual(expected, results)
+
+    def test_builtin_dict_completion(self):
+        global SOURCE
+        new_lines = '\n\nd = {}\nd.'
+        source_code = SOURCE + new_lines
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        results = self.cc.get_completion(source_code, offset)
+        expected = dir(dict)
+        self.assertEqual(expected, results)
+
+    def test_builtin_int_completion(self):
+        global SOURCE
+        new_lines = '\n\ni = 4\ni.'
+        source_code = SOURCE + new_lines
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        results = self.cc.get_completion(source_code, offset)
+        expected = dir(int)
+        self.assertEqual(expected, results)
+
+    @unittest.skip("FIX LATER")
+    def test_builtin_float_completion(self):
+        global SOURCE
+        new_lines = '\n\ni = 4.3\ni.'
+        source_code = SOURCE + new_lines
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        results = self.cc.get_completion(source_code, offset)
+        expected = dir(float)
+        self.assertEqual(expected, results)
+
+    def test_builtin_tuple_completion(self):
+        global SOURCE
+        new_lines = '\n\nt = ()\nt.'
+        source_code = SOURCE + new_lines
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        results = self.cc.get_completion(source_code, offset)
+        expected = dir(tuple)
+        self.assertEqual(expected, results)
+
+    @unittest.skip("FIX LATER")
+    def test_builtin_bool_completion(self):
+        global SOURCE
+        new_lines = '\n\nb = True\nb.'
+        source_code = SOURCE + new_lines
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        results = self.cc.get_completion(source_code, offset)
+        expected = dir(bool)
+        self.assertEqual(expected, results)
+
+    def test_builtin_str_completion(self):
+        global SOURCE
+        new_lines = '\n\ns = "ninja"\ns.'
+        source_code = SOURCE + new_lines
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        results = self.cc.get_completion(source_code, offset)
+        expected = dir(str)
+        self.assertEqual(expected, results)
+
+    @unittest.skip("FIX LATER")
+    def test_builtin_unicode_completion(self):
+        global SOURCE
+        new_lines = '\n\ns = u"ninja"\ns.'
+        source_code = SOURCE + new_lines
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        results = self.cc.get_completion(source_code, offset)
+        expected = dir(unicode)
+        self.assertEqual(expected, results)
+
+    def test_invalid_var(self):
+        global SOURCE
+        new_lines = '\n\ninvalid.'
+        source_code = SOURCE + new_lines
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        results = self.cc.get_completion(source_code, offset)
+        expected = sorted(set(re.split('\W+', source_code)))
+        del expected[0]
+        self.assertEqual(expected, results)
+
 
 if __name__ == '__main__':
     unittest.main()
