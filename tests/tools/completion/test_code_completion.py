@@ -11,7 +11,6 @@ from tests.tools.completion import SOURCE_COMPLETION
 class CodeCompletionTestCase(unittest.TestCase):
 
     def setUp(self):
-        global SOURCE_COMPLETION
         self.cc = code_completion.CodeCompletion()
 
 ###############################################################################
@@ -26,6 +25,25 @@ class CodeCompletionTestCase(unittest.TestCase):
         results = self.cc.get_completion(source_code, offset)
         for r in results:
             self.assertTrue(r.startswith('p'))
+
+    def test_global_attr_in_class(self):
+        global SOURCE_COMPLETION
+        source_code = SOURCE_COMPLETION + '\n        mamamia.'
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        results = self.cc.get_completion(source_code, offset)
+        expected = dir(int)
+        self.assertEqual(expected, results)
+
+    def test_global_attr_not_recognized_in_class(self):
+        global SOURCE_COMPLETION
+        source_code = SOURCE_COMPLETION + '\n        cat.'
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        results = self.cc.get_completion(source_code, offset)
+        expected = sorted(set(re.split('\W+', source_code)))
+        del expected[0]
+        self.assertEqual(expected, results)
 
     def test_builtin_list_completion_in_class_not_attr(self):
         global SOURCE_COMPLETION
@@ -425,6 +443,178 @@ class CodeCompletionTestCase(unittest.TestCase):
         expected = sorted(set(re.split('\W+', source_code)))
         del expected[0]
         self.assertEqual(expected, results)
+
+###############################################################################
+# TESTS FOR COMPLETION SEGMENT
+###############################################################################
+
+    def test_completion_segment1(self):
+        source = """var."""
+        token_code = self.cc._tokenize_text(source)
+        segment = self.cc._search_for_completion_segment(token_code)
+        expected = 'var.'
+        self.assertEqual(expected, segment)
+
+    def test_completion_segment2(self):
+        source = """var.attr"""
+        token_code = self.cc._tokenize_text(source)
+        segment = self.cc._search_for_completion_segment(token_code)
+        expected = 'var.attr'
+        self.assertEqual(expected, segment)
+
+    def test_completion_segment3(self):
+        source = """var.attr."""
+        token_code = self.cc._tokenize_text(source)
+        segment = self.cc._search_for_completion_segment(token_code)
+        expected = 'var.attr.'
+        self.assertEqual(expected, segment)
+
+    def test_completion_segment4(self):
+        source = """var.func()"""
+        token_code = self.cc._tokenize_text(source)
+        segment = self.cc._search_for_completion_segment(token_code)
+        expected = 'var.func()'
+        self.assertEqual(expected, segment)
+
+    def test_completion_segment5(self):
+        source = """var.func()."""
+        token_code = self.cc._tokenize_text(source)
+        segment = self.cc._search_for_completion_segment(token_code)
+        expected = 'var.func().'
+        self.assertEqual(expected, segment)
+
+    def test_completion_segment6(self):
+        source = """var.func('name')."""
+        token_code = self.cc._tokenize_text(source)
+        segment = self.cc._search_for_completion_segment(token_code)
+        expected = 'var.func().'
+        self.assertEqual(expected, segment)
+
+    def test_completion_segment7(self):
+        source = """q = var.func('name')."""
+        token_code = self.cc._tokenize_text(source)
+        segment = self.cc._search_for_completion_segment(token_code)
+        expected = 'var.func().'
+        self.assertEqual(expected, segment)
+
+    def test_completion_segment8(self):
+        source = """
+            f = ase.port("diego", [], {},
+                "gato")"""
+        token_code = self.cc._tokenize_text(source)
+        segment = self.cc._search_for_completion_segment(token_code)
+        expected = 'ase.port()'
+        self.assertEqual(expected, segment)
+
+    def test_completion_segment9(self):
+        source = """
+            f = ase.port("diego", [], {},
+                "gato")."""
+        token_code = self.cc._tokenize_text(source)
+        segment = self.cc._search_for_completion_segment(token_code)
+        expected = 'ase.port().'
+        self.assertEqual(expected, segment)
+
+    def test_completion_segment10(self):
+        source = """
+            f = ase.port("diego", [], {},
+                "gato").attr"""
+        token_code = self.cc._tokenize_text(source)
+        segment = self.cc._search_for_completion_segment(token_code)
+        expected = 'ase.port().attr'
+        self.assertEqual(expected, segment)
+
+    def test_completion_segment11(self):
+        source = """
+            f = ase.port("diego", [], {},
+                "gato").attr."""
+        token_code = self.cc._tokenize_text(source)
+        segment = self.cc._search_for_completion_segment(token_code)
+        expected = 'ase.port().attr.'
+        self.assertEqual(expected, segment)
+
+    def test_completion_segment12(self):
+        source = """
+            ase.port(var.)"""
+        token_code = self.cc._tokenize_text(source[:len(source) - 1])
+        segment = self.cc._search_for_completion_segment(token_code)
+        expected = 'var.'
+        self.assertEqual(expected, segment)
+
+    def test_completion_segment13(self):
+        source = """
+            ase.port(var.func('name', 3, [yep], (6, 7)).attr)"""
+        token_code = self.cc._tokenize_text(source[:len(source) - 1])
+        segment = self.cc._search_for_completion_segment(token_code)
+        expected = 'var.func().attr'
+        self.assertEqual(expected, segment)
+
+    def test_completion_segment14(self):
+        #doesn't have much sense, but i wanted to test it
+        source = """
+            ase.port{var.func('name', 3, [yep], (6, 7)).attr}"""
+        token_code = self.cc._tokenize_text(source[:len(source) - 1])
+        segment = self.cc._search_for_completion_segment(token_code)
+        expected = 'var.func().attr'
+        self.assertEqual(expected, segment)
+
+    def test_completion_segment15(self):
+        #doesn't have much sense, but i wanted to test it
+        source = """
+            f = ase.port[var.func('name', 3, [yep], (6, 7)).attr]"""
+        token_code = self.cc._tokenize_text(source[:len(source) - 1])
+        segment = self.cc._search_for_completion_segment(token_code)
+        expected = 'var.func().attr'
+        self.assertEqual(expected, segment)
+
+    def test_completion_segment16(self):
+        #doesn't have much sense, but i wanted to test it
+        source = """asd.\
+            ase.port(var.func('name', 3, [yep], (6, 7)).attr)."""
+        token_code = self.cc._tokenize_text(source)
+        segment = self.cc._search_for_completion_segment(token_code)
+        expected = 'asd.ase.port().'
+        self.assertEqual(expected, segment)
+
+###############################################################################
+# TESTS FOR SCOPE SEARCH
+###############################################################################
+
+    def test_search_for_scope1(self):
+        global SOURCE_COMPLETION
+        new_lines = '\n        l.'
+        source_code = SOURCE_COMPLETION + new_lines
+        token_code = self.cc._tokenize_text(source_code)
+        scope = self.cc._search_for_scope(token_code)
+        expected = ['MyClass', 'another']
+        self.assertEqual(expected, scope)
+
+    def test_search_for_scope2(self):
+        global SOURCE_COMPLETION
+        new_lines = '\n    l.'
+        source_code = SOURCE_COMPLETION + new_lines
+        token_code = self.cc._tokenize_text(source_code)
+        scope = self.cc._search_for_scope(token_code)
+        expected = ['MyClass']
+        self.assertEqual(expected, scope)
+
+    def test_search_for_scope3(self):
+        global SOURCE_COMPLETION
+        new_lines = ('\n        def new_func():'
+                     '\n            self.var.')
+        source_code = SOURCE_COMPLETION + new_lines
+        token_code = self.cc._tokenize_text(source_code)
+        scope = self.cc._search_for_scope(token_code)
+        expected = ['MyClass', 'another', 'new_func']
+        self.assertEqual(expected, scope)
+
+    def test_search_for_scope(self):
+        global SOURCE_COMPLETION
+        new_lines = ('\nvar.')
+        source_code = SOURCE_COMPLETION + new_lines
+        token_code = self.cc._tokenize_text(source_code)
+        scope = self.cc._search_for_scope(token_code)
+        self.assertEqual(None, scope)
 
 
 if __name__ == '__main__':

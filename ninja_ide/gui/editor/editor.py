@@ -499,6 +499,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.parent().parent().focusInEvent(event)
         #Check for modifications
 
+    def focusOutEvent(self, event):
+        """Hide Popup on focus lost."""
+        self.completer.hide_completer()
+        super(Editor, self).focusOutEvent(event)
+
     def resizeEvent(self, event):
         QPlainTextEdit.resizeEvent(self, event)
         self._sidebarWidget.setFixedHeight(self.height())
@@ -632,7 +637,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def __complete_braces(self, event):
         """Complete () [] and {} using a mild inteligence to see if corresponds
-        and also do some more magic such as complete in classes and functions"""
+        and also do some more magic such as complete in classes and functions.
+        """
         brace = unicode(event.text())
         if brace not in settings.BRACES:
             # Thou shalt not waste cpu cycles if this brace compleion dissabled

@@ -36,7 +36,7 @@ class CodeCompletion(object):
         pass
 
     def _tokenize_text(self, code):
-        # Optimization, only iterate until the previous line of a class??
+        # TODO Optimization, only iterate until the previous line of a class??
         token_code = []
         try:
             for t in generate_tokens(StringIO(code).readline):
@@ -54,7 +54,11 @@ class CodeCompletion(object):
         if not token_code[-1][3].startswith(' '):
             return None
         scopes = []
-        indent = len(token_code[-1][3])
+        indent = self.patIndent.match(token_code[-1][3])
+        if indent is not None:
+            indent = len(indent.group())
+        else:
+            indent = 0
         previous_line = ('', '')
         keep_exploring = True
         iter = reversed(token_code)
@@ -90,7 +94,10 @@ class CodeCompletion(object):
             if value[0] in (tkn.NEWLINE, tkn.INDENT, tkn.DEDENT):
                 keep_iter = False
             tokens.append(value)
-            value = iter.next()
+            try:
+                value = iter.next()
+            except:
+                keep_iter = False
         segment = ''
         brace_stack = 0
         for t in tokens:

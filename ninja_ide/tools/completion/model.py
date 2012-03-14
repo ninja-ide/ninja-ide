@@ -100,7 +100,7 @@ class Module(Structure):
             clazz = self.classes.get(clazz_name, None)
             if clazz is not None:
                 result = clazz.get_attribute_type(child_attrs)
-            if not result[0] and clazz is not None:
+            if child_attrs == '' and clazz is not None:
                 items = clazz.get_completion_items()
                 result = (False, items)
         else:

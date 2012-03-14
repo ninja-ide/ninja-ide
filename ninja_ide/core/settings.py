@@ -99,7 +99,7 @@ MAX_REMEMBER_TABS = 50
 COPY_HISTORY_BUFFER = 20
 
 FIND_ERRORS = True
-ERRORS_HIGHLIGHT_LINE = False
+ERRORS_HIGHLIGHT_LINE = True
 CHECK_STYLE = True
 CHECK_HIGHLIGHT_LINE = True
 CODE_COMPLETION = True
@@ -352,7 +352,7 @@ def load_settings():
     FIND_ERRORS = qsettings.value('preferences/editor/errors',
         True).toBool()
     ERRORS_HIGHLIGHT_LINE = qsettings.value(
-        'preferences/editor/errorsInLine', False).toBool()
+        'preferences/editor/errorsInLine', True).toBool()
     CHECK_STYLE = qsettings.value('preferences/editor/checkStyle',
         True).toBool()
     CHECK_HIGHLIGHT_LINE = qsettings.value(

@@ -139,6 +139,7 @@ class Analyzer(object):
         """Process an ast.FunctionDef object to extract data."""
         function = model.Function(symbol.name)
         for decorator in symbol.decorator_list:
+            #See Types
             function.decorators.append(decorator.id)
         if symbol.args.vararg is not None:
             assign = model.Assign(symbol.args.vararg)

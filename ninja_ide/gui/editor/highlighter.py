@@ -73,6 +73,9 @@ class Highlighter (QSyntaxHighlighter):
         if lang is not None:
             self.apply_highlight(lang, scheme)
 
+    def sanitize(self, word):
+        return word.replace('\\', '\\\\')
+
     def apply_highlight(self, lang, scheme=None, syntax=None):
         if syntax is None:
             langSyntax = settings.SYNTAX.get(lang, {})
@@ -100,14 +103,14 @@ class Highlighter (QSyntaxHighlighter):
         # All other rules
         proper = langSyntax.get('properObject', None)
         if proper is not None:
-            proper = '\\b' + str(proper[0]) + '\\b'
+            proper = r'\b%s\b' % str(proper[0])
             rules += [(proper, 0, STYLES['properObject'])]
 
         rules.append((r'__\w+__', 0, STYLES['properObject']))
 
         definition = langSyntax.get('definition', [])
         for de in definition:
-            expr = '\\b' + de + '\\b\\s*(\\w+)'
+            expr = r'\b%s\b\s*(\w+)' % de
             rules.append((expr, 1, STYLES['definition']))
 
         # Numeric literals
@@ -166,7 +169,8 @@ class Highlighter (QSyntaxHighlighter):
     def set_selected_word(self, word):
         """Set the word to highlight."""
         if len(word) > 2:
-            self.selected_word_pattern = QRegExp(r'\b%s\b' % word)
+            self.selected_word_pattern = QRegExp(
+                r'\b%s\b' % self.sanitize(word))
         else:
             self.selected_word_pattern = None
 
