@@ -138,9 +138,10 @@ class Analyzer(object):
     def _process_function(self, symbol, parent=None):
         """Process an ast.FunctionDef object to extract data."""
         function = model.Function(symbol.name)
-        for decorator in symbol.decorator_list:
-            #See Types
-            function.decorators.append(decorator.id)
+        #We are not going to collect data from decorators yet.
+#        for decorator in symbol.decorator_list:
+            #Decorators can be: Name, Call, Attributes
+#            function.decorators.append(decorator.id)
         if symbol.args.vararg is not None:
             assign = model.Assign(symbol.args.vararg)
             assign.add_data(symbol.lineno, '__builtin__.list', None, None)
