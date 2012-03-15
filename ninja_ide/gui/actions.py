@@ -85,6 +85,7 @@ class __Actions(QObject):
             self.ide)
         self.shortComment = QShortcut(short("Comment"), self.ide)
         self.shortUncomment = QShortcut(short("Uncomment"), self.ide)
+        self.shortUn_Comment = QShortcut(short("Un-Comment"), self.ide)
         self.shortHorizontalLine = QShortcut(short("Horizontal-line"),
             self.ide)
         self.shortTitleComment = QShortcut(short("Title-comment"), self.ide)
@@ -204,6 +205,8 @@ class __Actions(QObject):
             self.editor_comment)
         self.connect(self.shortUncomment, SIGNAL("activated()"),
             self.editor_uncomment)
+        self.connect(self.shortUn_Comment, SIGNAL("activated()"),
+            self.editor_un_comment)
         self.connect(self.shortHelp, SIGNAL("activated()"),
             self.ide.mainContainer.show_python_doc)
         self.connect(self.shortImport, SIGNAL("activated()"),
@@ -548,6 +551,12 @@ class __Actions(QObject):
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             helpers.uncomment(editorWidget)
+
+    def editor_un_comment(self):
+        """Comment or uncomment the current line or selection."""
+        editorWidget = self.ide.mainContainer.get_actual_editor()
+        if editorWidget:
+            helpers.un_comment(editorWidget)
 
     def editor_insert_horizontal_line(self):
         """Insert an horizontal lines of comment symbols."""
