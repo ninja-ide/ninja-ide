@@ -74,7 +74,6 @@ class CodeCompletionTestCase(unittest.TestCase):
         expected = dir(int)
         self.assertEqual(expected, results)
 
-    @unittest.skip("FIX LATER")
     def test_builtin_float_completion_in_class_not_attr(self):
         global SOURCE_COMPLETION
         new_lines = '\n        i = 4.3\n        i.'
@@ -95,7 +94,6 @@ class CodeCompletionTestCase(unittest.TestCase):
         expected = dir(tuple)
         self.assertEqual(expected, results)
 
-    @unittest.skip("FIX LATER")
     def test_builtin_bool_completion_in_class_not_attr(self):
         global SOURCE_COMPLETION
         new_lines = '\n        b = True\n        b.'
@@ -148,7 +146,6 @@ class CodeCompletionTestCase(unittest.TestCase):
         expected = dir(int)
         self.assertEqual(expected, results)
 
-    @unittest.skip("FIX LATER")
     def test_builtin_float_completion_in_class_attr(self):
         global SOURCE_COMPLETION
         new_lines = '\n        self.var = 4.3\n        self.var.'
@@ -189,7 +186,6 @@ class CodeCompletionTestCase(unittest.TestCase):
         expected = dir(tuple)
         self.assertEqual(expected, results)
 
-    @unittest.skip("FIX LATER")
     def test_builtin_bool_completion_in_class_attr(self):
         global SOURCE_COMPLETION
         new_lines = '\n        self.var = False\n        self.var.'
@@ -221,7 +217,6 @@ class CodeCompletionTestCase(unittest.TestCase):
         expected = dir(unicode)
         self.assertEqual(expected, results)
 
-    @unittest.skip("FIX LATER")
     def test_invalid_var_in_class_function_attr(self):
         global SOURCE_COMPLETION
         new_lines = '\n        self.invalid.'
@@ -256,7 +251,6 @@ class CodeCompletionTestCase(unittest.TestCase):
         expected = dir(int)
         self.assertEqual(expected, results)
 
-    @unittest.skip("FIX LATER")
     def test_builtin_float_completion_in_class_attr_diff_func(self):
         global SOURCE_COMPLETION
         new_lines = ('\n        self.var = 4.3'
@@ -293,7 +287,6 @@ class CodeCompletionTestCase(unittest.TestCase):
         expected = dir(tuple)
         self.assertEqual(expected, results)
 
-    @unittest.skip("FIX LATER")
     def test_builtin_bool_completion_in_class_attr_diff_func(self):
         global SOURCE_COMPLETION
         new_lines = ('\n        self.var = True'
@@ -380,7 +373,6 @@ class CodeCompletionTestCase(unittest.TestCase):
         expected = dir(int)
         self.assertEqual(expected, results)
 
-    @unittest.skip("FIX LATER")
     def test_builtin_float_completion(self):
         global SOURCE_COMPLETION
         new_lines = '\n\ni = 4.3\ni.'
@@ -401,10 +393,9 @@ class CodeCompletionTestCase(unittest.TestCase):
         expected = dir(tuple)
         self.assertEqual(expected, results)
 
-    @unittest.skip("FIX LATER")
     def test_builtin_bool_completion(self):
         global SOURCE_COMPLETION
-        new_lines = '\n\nb = True\nb.'
+        new_lines = '\n\nbo = True\nbo.'
         source_code = SOURCE_COMPLETION + new_lines
         self.cc.analyze_file('', source_code)
         offset = len(source_code)

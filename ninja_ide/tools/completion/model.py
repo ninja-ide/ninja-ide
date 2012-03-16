@@ -138,7 +138,11 @@ class Clazz(Structure):
     def get_completion_items(self):
         attributes = [a for a in self.attributes]
         functions = [f for f in self.functions]
-        return attributes + functions
+        if attributes or functions:
+            attributes.sort()
+            functions.sort()
+            return (attributes, functions)
+        return None
 
 
 class Function(Structure):

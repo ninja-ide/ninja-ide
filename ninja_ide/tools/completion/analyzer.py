@@ -17,8 +17,9 @@ class Analyzer(object):
         _ast.List: '__builtin__.list',
         _ast.Str: '__builtin__.str',
         _ast.Dict: '__builtin__.dict',
-        #Try to differenciate between int and float later
         _ast.Num: '__builtin__.int',
+        '_ast.Float': '__builtin__.float',
+        '_ast.Bool': '__builtin__.bool',
         _ast.Call: model.late_resolution,
         _ast.Name: model.late_resolution,
         _ast.Attribute: model.late_resolution,
@@ -77,14 +78,27 @@ class Analyzer(object):
         self.content = None
         return module
 
+    def _assign_disambiguation(self, type_name, line_content):
+        line = line_content.split('=')
+        value = line[1].strip()
+        # TODO: We have to analyze when the assign is: x,y = 1, 2
+        if type_name is _ast.Num and '.' in value:
+            type_name = '_ast.Float'
+        elif value in ('True', 'False'):
+            type_name = '_ast.Bool'
+        return type_name
+
     def _process_assign(self, symbol):
         """Process an ast.Assign object to extract the proper info."""
         assigns = []
         attributes = []
         for var in symbol.targets:
             type_value = type(symbol.value)
-            data_type = self.__mapping.get(type_value, None)
             line_content = self.content[symbol.lineno - 1]
+            if type_value in (_ast.Num, _ast.Name):
+                type_value = self._assign_disambiguation(
+                    type_value, line_content)
+            data_type = self.__mapping.get(type_value, None)
             if data_type != model.late_resolution:
                 type_value = None
             type_var = type(var)

@@ -141,13 +141,16 @@ class CodeCompletion(object):
         if result[0] and result[1] is not None:
             imports = self.current_module.get_imports()
             to_complete = "%s.%s" % (result[1], final_word)
-            data = completer.get_all_completions(to_complete, imports)
+            items = completer.get_all_completions(to_complete, imports)
+            data = {'attributes': [], 'functions': items}
         else:
             if result[1] is not None and len(result[1]) > 0:
-                data = result[1]
+                data = {'attributes': result[1][0],
+                    'functions': result[1][1]}
             else:
                 #Based in Kai Plugin: https://github.com/matiasb/kai
-                data = sorted(set(re.split('\W+', code)))
-                if final_word in data:
-                    data.remove(final_word)
+                items = sorted(set(re.split('\W+', code)))
+                if final_word in items:
+                    items.remove(final_word)
+                data = {'unknown': items}
         return data

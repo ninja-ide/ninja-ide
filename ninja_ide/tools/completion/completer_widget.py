@@ -5,10 +5,12 @@ from PyQt4.QtGui import QFrame
 from PyQt4.QtGui import QCompleter
 from PyQt4.QtGui import QStackedLayout
 from PyQt4.QtGui import QListWidgetItem
+from PyQt4.QtGui import QIcon
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtGui import QListWidget
 
+from ninja_ide import resources
 from ninja_ide.tools.completion import code_completion
 
 
@@ -25,6 +27,9 @@ class CodeCompletionWidget(QFrame):
         self.completion_list.setMinimumHeight(200)
         self.completion_list.setAlternatingRowColors(True)
         self._list_index = self.stack_layout.addWidget(self.completion_list)
+
+        self._icons = {'a': resources.IMAGES['attribute'],
+            'f': resources.IMAGES['function']}
 
         self.cc = code_completion.CodeCompletion()
         self._completion_results = []
@@ -102,12 +107,25 @@ class CodeCompletionWidget(QFrame):
     def add_list_items(self, proposals):
         self.completion_list.clear()
         for p in proposals:
-            self.completion_list.addItem(QListWidgetItem(p))
+            self.completion_list.addItem(
+                QListWidgetItem(
+                QIcon(self._icons.get(p[0], resources.IMAGES['attribute'])),
+                p[1]))
 
     def set_completion_prefix(self, prefix):
         self._prefix = prefix
-        proposals = [item for item in self.completion_results \
-            if item.startswith(prefix)]
+        proposals = []
+        if 'unknown' in self.completion_results:
+            proposals += [(None, item) \
+                for item in self.completion_results['unknown'] \
+                if item.startswith(prefix)]
+        else:
+            proposals += [('a', item) \
+                for item in self.completion_results['attributes'] \
+                if item.startswith(prefix)]
+            proposals += [('f', item) \
+                for item in self.completion_results['functions'] \
+                if item.startswith(prefix)]
         if proposals:
             self.complete(proposals)
         else:
@@ -118,13 +136,9 @@ class CodeCompletionWidget(QFrame):
         source = source.encode(self._editor.encoding)
         offset = self._editor.textCursor().position()
         results = self.cc.get_completion(source, offset)
-        results.sort()
         self.completion_results = results
         prefix = self._editor._text_under_cursor()
-        if prefix:
-            self.set_completion_prefix(prefix)
-        else:
-            self.complete(results)
+        self.set_completion_prefix(prefix)
 
     def hide_completer(self):
         self._prefix = ''
@@ -145,6 +159,8 @@ class CodeCompletionWidget(QFrame):
         elif event.key() in self._key_operations:
             self._key_operations[event.key()]()
             skip = True
+        elif event.modifiers() not in (Qt.NoModifier, Qt.ShiftModifier):
+            self.hide_completer()
         return skip
 
     def process_post_key_event(self, event):
