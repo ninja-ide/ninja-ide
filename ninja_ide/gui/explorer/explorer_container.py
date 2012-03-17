@@ -224,6 +224,7 @@ class __ExplorerContainer(QTabWidget):
             self._inspector._webInspector.setVisible(True)
 
     def open_project_folder(self, folderName='', notIDEStart=True):
+        self._treeProjects.mute_signals = True
         if not self._treeProjects and notIDEStart:
             QMessageBox.information(self, self.tr("Projects Disabled"),
                 self.tr("Project support has been disabled from Preferences"))
@@ -258,6 +259,8 @@ class __ExplorerContainer(QTabWidget):
             if not notIDEStart:
                 QMessageBox.information(self, self.tr("Incorrect Project"),
                     self.tr("The project could not be loaded!"))
+        finally:
+            self._treeProjects.mute_signals = False
 
     def create_new_project(self):
         if not self._treeProjects:
