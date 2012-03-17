@@ -277,6 +277,38 @@ def duplicate(editorWidget):
     cursor.endEditBlock()
 
 
+def un_comment(editorWidget):
+    #cursor is a COPY all changes do not affect the QPlainTextEdit's cursor!!!
+    cursor = editorWidget.textCursor()
+    block_start = editorWidget.document().findBlock(cursor.selectionStart())
+    block_end = editorWidget.document().findBlock(cursor.selectionEnd()).next()
+    lang = file_manager.get_file_extension(editorWidget.ID)
+    key = settings.EXTENSIONS.get(lang, 'python')
+    comment_wcard = settings.SYNTAX[key].get('comment', [])
+
+    if len(comment_wcard) == 0:
+        #Do nothing
+        return
+
+    # Check if add or remove comments
+    removeComments = True
+    while (block_start != block_end and removeComments):
+        if not unicode(block_start.text()).lstrip().startswith(
+                comment_wcard[0]):
+            removeComments = False
+        block_start = block_start.next()
+
+    #Reset cursor
+    cursor = editorWidget.textCursor()
+    block_start = editorWidget.document().findBlock(cursor.selectionStart())
+
+    #Do the job
+    if removeComments:
+        uncomment_single_line(cursor, block_start, block_end, comment_wcard)
+    else:
+        comment_single_line(cursor, block_start, block_end, comment_wcard)
+
+
 def uncomment(editorWidget):
     #cursor is a COPY all changes do not affect the QPlainTextEdit's cursor!!!
     cursor = editorWidget.textCursor()
@@ -307,8 +339,9 @@ def uncomment_single_line(cursor, block_start, block_end, comment_wildcard):
     # Start block undo
     cursor.beginEditBlock()
     while (block_start != block_end):
-        if unicode(block_start.text()).startswith(comment_wildcard[0]):
-            cursor.setPosition(block_start.position())
+        if unicode(block_start.text()).lstrip().startswith(comment_wildcard[0]):
+            cursor.setPosition(block_start.position() +
+                unicode(block_start.text()).find(comment_wildcard))
             cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
                 len(comment_wildcard))
             cursor.removeSelectedText()

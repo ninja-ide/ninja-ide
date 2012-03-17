@@ -37,6 +37,11 @@ class MenuSource(QObject):
             self.tr("Uncomment (%1)").arg(
                 resources.get_shortcut("Uncomment").toString(
                     QKeySequence.NativeText)))
+        un_CommentAction = menuSource.addAction(
+            #QIcon(resources.IMAGES['uncomment-code']),
+            self.tr("Un/Comment (%1)").arg(
+                resources.get_shortcut("Un-Comment").toString(
+                    QKeySequence.NativeText)))
         horizontalLineAction = menuSource.addAction(
             self.tr("Insert Horizontal Line (%1)").arg(
                 resources.get_shortcut("Horizontal-line").toString(
@@ -93,6 +98,7 @@ class MenuSource(QObject):
             'indent-less': indentLessAction,
             'comment': commentAction,
             'uncomment': unCommentAction,
+            'un-comment': un_CommentAction,
             'go-to-definition': goToDefinitionAction,
             'insert-import': insertImport}
 
@@ -110,6 +116,8 @@ class MenuSource(QObject):
             actions.Actions().editor_comment)
         self.connect(unCommentAction, SIGNAL("triggered()"),
             actions.Actions().editor_uncomment)
+        self.connect(un_CommentAction, SIGNAL("triggered()"),
+            actions.Actions().editor_un_comment)
         self.connect(horizontalLineAction, SIGNAL("triggered()"),
             actions.Actions().editor_insert_horizontal_line)
         self.connect(titleCommentAction, SIGNAL("triggered()"),
