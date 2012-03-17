@@ -2,6 +2,9 @@
 from __future__ import absolute_import
 
 import os
+import logging
+logger = logging.getLogger('ninja_ide.gui.explorer.tree_projects_widget')
+DEBUG = logger.debug
 
 from PyQt4.QtGui import QTreeWidget
 from PyQt4.QtGui import QTreeWidgetItem
@@ -17,7 +20,6 @@ from PyQt4.QtGui import QStyle
 from PyQt4.QtGui import QCursor
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QFileSystemWatcher
 from PyQt4.QtCore import QUrl
 from PyQt4.QtGui import QDesktopServices
 
@@ -60,7 +62,7 @@ class TreeProjectsWidget(QTreeWidget):
         'css': resources.IMAGES['tree-css'],
         'ui': resources.IMAGES['designer']}
 
-    def __init__(self):
+    def __init__(self, state_index=list()):
         QTreeWidget.__init__(self)
 
         self.header().setHidden(True)
@@ -71,7 +73,7 @@ class TreeProjectsWidget(QTreeWidget):
         #self._projects -> key: [Item, folderStructure]
         self._projects = {}
         self.__enableCloseNotification = True
-        self._fileWatcher = QFileSystemWatcher()
+        self._fileWatcher = file_manager.NinjaFileSystemWatcher()
 
         self.header().setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.header().setResizeMode(0, QHeaderView.ResizeToContents)
@@ -85,6 +87,25 @@ class TreeProjectsWidget(QTreeWidget):
             self._open_file)
         self.connect(self._fileWatcher, SIGNAL("directoryChanged(QString)"),
             self._refresh_project_by_path)
+        self.itemExpanded.connect(self._item_expanded)
+        self.itemCollapsed.connect(self._item_collapsed)
+        self.mute_signals = False
+        self.state_index = list()
+
+    def _item_collapsed(self, tree_item):
+        """Store status of item when collapsed"""
+        if not self.mute_signals:
+            path = tree_item.get_full_path()
+            if path in self.state_index:
+                path_index = self.state_index.index(path)
+                self.state_index.pop(path_index)
+
+    def _item_expanded(self, tree_item):
+        """Store status of item when expanded"""
+        if not self.mute_signals:
+            path = tree_item.get_full_path()
+            if path not in self.state_index:
+                self.state_index.append(path)
 
     def add_extra_menu(self, menu, lang='all'):
         '''
@@ -502,31 +523,34 @@ class TreeProjectsWidget(QTreeWidget):
         if self.currentItem() is None:
             item.setSelected(True)
             self.setCurrentItem(item)
-        if not self._fileWatcher.directories().contains(folder):
+        if folder not in self._fileWatcher.directories():
+            DEBUG("Ading '%s' to watcher" % folder)
             self._fileWatcher.addPath(folder)
 
     def _load_folder(self, folderStructure, folder, parentItem):
         """Load the Tree Project structure recursively."""
         # Avoid failing if for some reason folder is not found
         # Might be the case of special files, as links or versioning files
-        items = folderStructure.get(folder, [None, None])
+        files, folders = folderStructure.get(folder, [None, None])
 
-        if items[0] is not None:
-            items[0].sort()
-            for i in items[0]:
+        if files is not None:
+            files.sort()
+            for i in files:
                 subitem = ProjectItem(parentItem, i, folder)
                 subitem.setToolTip(0, i)
                 subitem.setIcon(0, self._get_file_icon(i))
-        if items[1] is not None:
-            items[1].sort()
-            for _file in items[1]:
-                if _file.startswith('.'):
+        if folders is not None:
+            folders.sort()
+            for _folder in folders:
+                if _folder.startswith('.'):
                     continue
-                subfolder = ProjectItem(parentItem, _file, folder)
+                subfolder = ProjectItem(parentItem, _folder, folder)
                 subfolder.isFolder = True
-                subfolder.setToolTip(0, _file)
+                subfolder.setToolTip(0, _folder)
                 subfolder.setIcon(0, QIcon(resources.IMAGES['tree-folder']))
-                subFolderPath = os.path.join(folder, _file)
+                subFolderPath = os.path.join(folder, _folder)
+                if subFolderPath in self.state_index:
+                    subfolder.setExpanded(True)
 #                if sys.platform != "darwin" and \
 #                not self._fileWatcher.directories().contains(subFolderPath):
 #                    self._fileWatcher.addPath(subFolderPath)
