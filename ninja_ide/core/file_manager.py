@@ -4,9 +4,94 @@ import threading
 import shutil
 
 from PyQt4 import QtCore
+from PyQt4.QtCore import QObject
+from PyQt4.QtCore import pyqtSignal
+
 
 from ninja_ide.core import settings
 
+try:
+    from watchdog.observers import Observer
+    from watchdog.events import FileSystemEventHandler
+
+    class NinjaEventHandler(FileSystemEventHandler):
+        """Trigger callbacks when the watched events are triggered"""
+        def __init__(self, base_path, callback):
+            super(FileSystemEventHandler, self).__init__()
+            self._base_path = base_path
+            self._callback = callback
+
+        def on_moved(self, event):
+            super(NinjaEventHandler, self).on_moved(event)
+            self._callback(self._base_path)
+
+        def on_created(self, event):
+            super(NinjaEventHandler, self).on_created(event)
+            self._callback(self._base_path)
+
+        def on_deleted(self, event):
+            super(NinjaEventHandler, self).on_deleted(event)
+            self._callback(self._base_path)
+
+    class NinjaFileSystemWatcher(QObject):
+        #SIGNALS
+        directoryChanged = pyqtSignal("QString")
+
+        def __init__(self):
+    #        super(NinjaFileSystemWatcher, self).__init__(self)
+            QObject.__init__(self)
+            self._file_queue = dict()
+
+        def _path_changed(self, path):
+            self.directoryChanged.emit(path)
+
+        def directories(self):
+            return self._file_queue.keys()
+
+        def removePath(self, directory):
+            try:
+                self._file_queue[directory].stop()
+                self._file_queue[directory].join()
+                del self._file_queue[directory]
+            except KeyError:
+                pass
+
+        def addPath(self, path):
+            if path not in self._file_queue:
+                observer = Observer()
+                event_handler = NinjaEventHandler(path, self._path_changed)
+                observer.schedule(event_handler, path, recursive=True)
+                observer.start()
+                self._file_queue[path] = observer
+
+        def exit(self):
+            for each_observer in self._file_queue.items():
+                each_observer.stop()
+                each_observer.join()
+
+except ImportError:
+    class NinjaFileSystemWatcher(QObject):
+        directoryChanged = pyqtSignal("QString")
+
+        def __init__(self):
+    #        super(NinjaFileSystemWatcher, self).__init__(self)
+            QObject.__init__(self)
+            self._file_queue = dict()
+
+        def _path_changed(self, path):
+            self.directoryChanged.emit(path)
+
+        def directories(self):
+            return self._file_queue.keys()
+
+        def removePath(self, directory):
+            pass
+
+        def addPath(self, path):
+            pass
+
+        def exit(self):
+            pass
 
 #Lock to protect the file's writing operation
 file_store_content_lock = threading.Lock()
