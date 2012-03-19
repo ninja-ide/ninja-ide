@@ -2,6 +2,7 @@ import os
 import re
 import threading
 import shutil
+import logging
 
 from PyQt4 import QtCore
 from PyQt4.QtCore import QObject
@@ -9,6 +10,9 @@ from PyQt4.QtCore import pyqtSignal
 
 
 from ninja_ide.core import settings
+
+logger = logging.getLogger('ninja_ide.gui.explorer.file_manager')
+DEBUG = logger.debug
 
 try:
     from watchdog.observers import Observer
@@ -58,11 +62,14 @@ try:
 
         def addPath(self, path):
             if path not in self._file_queue:
-                observer = Observer()
-                event_handler = NinjaEventHandler(path, self._path_changed)
-                observer.schedule(event_handler, path, recursive=True)
-                observer.start()
-                self._file_queue[path] = observer
+                try:
+                    observer = Observer()
+                    event_handler = NinjaEventHandler(path, self._path_changed)
+                    observer.schedule(event_handler, path, recursive=True)
+                    observer.start()
+                    self._file_queue[path] = observer
+                except OSError, err:
+                    DEBUG(err)
 
         def exit(self):
             for each_observer in self._file_queue.items():
