@@ -117,103 +117,117 @@ class TreeProjectsWidget(QTreeWidget):
         self.EXTRA_MENUS.setdefault(lang, [])
         self.EXTRA_MENUS[lang].append(menu)
 
+    def _folder_menu_context_tree(self, menu, item):
+        action_add_file = menu.addAction(QIcon(resources.IMAGES['new']),
+            self.tr("Add New File"))
+        self.connect(action_add_file, SIGNAL("triggered()"),
+            self._add_new_file)
+        action_add_folder = menu.addAction(QIcon(
+            resources.IMAGES['openProj']), self.tr("Add New Folder"))
+        self.connect(action_add_folder, SIGNAL("triggered()"),
+            self._add_new_folder)
+        action_create_init = menu.addAction(
+            self.tr("Create '__init__' Complete"))
+        self.connect(action_create_init, SIGNAL("triggered()"),
+            self._create_init)
+        if item.isFolder and (item.parent() != None):
+            action_remove_folder = menu.addAction(self.tr("Remove Folder"))
+            self.connect(action_remove_folder, SIGNAL("triggered()"),
+                self._delete_folder)
+        for handler in settings.get_context_menu_handlers('folder'):
+            handler.feed_menu(menu, item)
+
+    def _file_menu_context_tree(self, menu, item):
+        action_rename_file = menu.addAction(self.tr("Rename File"))
+        action_move_file = menu.addAction(self.tr("Move File"))
+        action_copy_file = menu.addAction(self.tr("Copy File"))
+        action_remove_file = menu.addAction(
+            self.style().standardIcon(QStyle.SP_DialogCloseButton),
+            self.tr("Delete File"))
+        self.connect(action_remove_file, SIGNAL("triggered()"),
+            self._delete_file)
+        self.connect(action_rename_file, SIGNAL("triggered()"),
+            self._rename_file)
+        self.connect(action_copy_file, SIGNAL("triggered()"),
+            self._copy_file)
+        self.connect(action_move_file, SIGNAL("triggered()"),
+            self._move_file)
+        #Allow to edit Qt UI files with the appropiate program
+        if item.lang() == 'ui':
+            action_edit_ui_file = menu.addAction(self.tr("Edit UI File"))
+            self.connect(action_edit_ui_file, SIGNAL("triggered()"),
+                self._edit_ui_file)
+        #menu per file language!
+        for m in self.EXTRA_MENUS.get(item.lang(), ()):
+            menu.addSeparator()
+            menu.addMenu(m)
+        for handler in settings.get_context_menu_handlers('file'):
+            handler.feed_menu(menu, item)
+
+    def _project_menu_context_tree(self, menu, item):
+        handler = None
+        menu.addSeparator()
+        actionRunProject = menu.addAction(QIcon(
+            resources.IMAGES['play']), self.tr("Run Project"))
+        self.connect(actionRunProject, SIGNAL("triggered()"),
+            SIGNAL("runProject()"))
+        actionMainProject = menu.addAction(self.tr("Set as Main Project"))
+        self.connect(actionMainProject, SIGNAL("triggered()"),
+            lambda: self.set_default_project(item))
+        if item.addedToConsole:
+            actionRemoveFromConsole = menu.addAction(
+                self.tr("Remove this Project from the Python Console"))
+            self.connect(actionRemoveFromConsole, SIGNAL("triggered()"),
+                self._remove_project_from_console)
+        else:
+            actionAdd2Console = menu.addAction(
+                self.tr("Add this Project to the Python Console"))
+            self.connect(actionAdd2Console, SIGNAL("triggered()"),
+                self._add_project_to_console)
+        actionProperties = menu.addAction(QIcon(resources.IMAGES['pref']),
+            self.tr("Project Properties"))
+        self.connect(actionProperties, SIGNAL("triggered()"),
+            self.open_project_properties)
+        #get the extra context menu for this projectType
+        handler = settings.get_project_type_handler(item.projectType)
+
+        menu.addSeparator()
+        action_refresh = menu.addAction(
+            self.style().standardIcon(QStyle.SP_BrowserReload),
+            self.tr("Refresh Project"))
+        self.connect(action_refresh, SIGNAL("triggered()"),
+            self._refresh_project)
+        action_close = menu.addAction(
+            self.style().standardIcon(QStyle.SP_DialogCloseButton),
+            self.tr("Close Project"))
+        self.connect(action_close, SIGNAL("triggered()"),
+            self._close_project)
+        #menu for the Project Type(if present)
+        if handler:
+            for m in handler.get_context_menus():
+                menu.addSeparator()
+                menu.addMenu(m)
+        for handler in settings.get_context_menu_handlers('project'):
+            handler.feed_menu(menu, item)
+
     def _menu_context_tree(self, point):
         index = self.indexAt(point)
         if not index.isValid():
             return
-
         item = self.itemAt(point)
-        handler = None
         menu = QMenu(self)
         if item.isFolder or item.parent() is None:
-            action_add_file = menu.addAction(QIcon(resources.IMAGES['new']),
-                self.tr("Add New File"))
-            self.connect(action_add_file, SIGNAL("triggered()"),
-                self._add_new_file)
-            action_add_folder = menu.addAction(QIcon(
-                resources.IMAGES['openProj']), self.tr("Add New Folder"))
-            self.connect(action_add_folder, SIGNAL("triggered()"),
-                self._add_new_folder)
-            action_create_init = menu.addAction(
-                self.tr("Create '__init__' Complete"))
-            self.connect(action_create_init, SIGNAL("triggered()"),
-                self._create_init)
-            if item.isFolder and (item.parent() != None):
-                action_remove_folder = menu.addAction(self.tr("Remove Folder"))
-                self.connect(action_remove_folder, SIGNAL("triggered()"),
-                    self._delete_folder)
+            self._folder_menu_context_tree(menu, item)
         elif not item.isFolder:
-            action_rename_file = menu.addAction(self.tr("Rename File"))
-            action_move_file = menu.addAction(self.tr("Move File"))
-            action_copy_file = menu.addAction(self.tr("Copy File"))
-            action_remove_file = menu.addAction(
-                self.style().standardIcon(QStyle.SP_DialogCloseButton),
-                self.tr("Delete File"))
-            self.connect(action_remove_file, SIGNAL("triggered()"),
-                self._delete_file)
-            self.connect(action_rename_file, SIGNAL("triggered()"),
-                self._rename_file)
-            self.connect(action_copy_file, SIGNAL("triggered()"),
-                self._copy_file)
-            self.connect(action_move_file, SIGNAL("triggered()"),
-                self._move_file)
-            #Allow to edit Qt UI files with the appropiate program
-            if item.lang() == 'ui':
-                action_edit_ui_file = menu.addAction(self.tr("Edit UI File"))
-                self.connect(action_edit_ui_file, SIGNAL("triggered()"),
-                    self._edit_ui_file)
-            #menu per file language!
-            for m in self.EXTRA_MENUS.get(item.lang(), ()):
-                menu.addSeparator()
-                menu.addMenu(m)
+            self._file_menu_context_tree(menu, item)
         if item.parent() is None:
-            menu.addSeparator()
-            actionRunProject = menu.addAction(QIcon(
-                resources.IMAGES['play']), self.tr("Run Project"))
-            self.connect(actionRunProject, SIGNAL("triggered()"),
-                SIGNAL("runProject()"))
-            actionMainProject = menu.addAction(self.tr("Set as Main Project"))
-            self.connect(actionMainProject, SIGNAL("triggered()"),
-                lambda: self.set_default_project(item))
-            if item.addedToConsole:
-                actionRemoveFromConsole = menu.addAction(
-                    self.tr("Remove this Project from the Python Console"))
-                self.connect(actionRemoveFromConsole, SIGNAL("triggered()"),
-                    self._remove_project_from_console)
-            else:
-                actionAdd2Console = menu.addAction(
-                    self.tr("Add this Project to the Python Console"))
-                self.connect(actionAdd2Console, SIGNAL("triggered()"),
-                    self._add_project_to_console)
-            actionProperties = menu.addAction(QIcon(resources.IMAGES['pref']),
-                self.tr("Project Properties"))
-            self.connect(actionProperties, SIGNAL("triggered()"),
-                self.open_project_properties)
-            #get the extra context menu for this projectType
-            handler = settings.get_project_type_handler(item.projectType)
-
-            menu.addSeparator()
-            action_refresh = menu.addAction(
-                self.style().standardIcon(QStyle.SP_BrowserReload),
-                self.tr("Refresh Project"))
-            self.connect(action_refresh, SIGNAL("triggered()"),
-                self._refresh_project)
-            action_close = menu.addAction(
-                self.style().standardIcon(QStyle.SP_DialogCloseButton),
-                self.tr("Close Project"))
-            self.connect(action_close, SIGNAL("triggered()"),
-                self._close_project)
+            self._project_menu_context_tree(menu, item)
 
         #menu for all items!
         for m in self.EXTRA_MENUS.get('all', ()):
             menu.addSeparator()
             menu.addMenu(m)
 
-        #menu for the Project Type(if present)
-        if handler:
-            for m in handler.get_context_menus():
-                menu.addSeparator()
-                menu.addMenu(m)
         #show the menu!
         menu.exec_(QCursor.pos())
 

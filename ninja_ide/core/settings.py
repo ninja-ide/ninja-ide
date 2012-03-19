@@ -162,6 +162,9 @@ SHOW_ERRORS_LIST = False
 #Symbols handler per language (file extension)
 SYMBOLS_HANDLER = {}
 
+#Context menu handlers per menu type (project/file/folder)
+CONTEXT_MENU_HANDLERS = {'project': [], 'folder': [], 'file': []}
+
 #Backward compatibility with older Qt versions
 WEBINSPECTOR_SUPPORTED = True
 
@@ -216,6 +219,22 @@ def get_symbols_handler(file_extension):
     """
     global SYMBOLS_HANDLER
     return SYMBOLS_HANDLER.get(file_extension, None)
+
+
+def add_context_menu_handler(menu_type, context_menu_handler):
+    """
+    Appends an context menu handler for the given menu type
+    """
+    global CONTEXT_MENU_HANDLERS
+    CONTEXT_MENU_HANDLERS[menu_type].append(context_menu_handler)
+
+
+def get_context_menu_handlers(menu_type):
+    """
+    Returns all context menu handlers for the given menu type
+    """
+    global CONTEXT_MENU_HANDLERS
+    return CONTEXT_MENU_HANDLERS.get(menu_type)
 
 
 ###############################################################################
