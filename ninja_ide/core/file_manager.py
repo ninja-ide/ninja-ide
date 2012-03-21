@@ -3,6 +3,7 @@ import re
 import threading
 import shutil
 import logging
+from datetime import datetime
 
 from PyQt4 import QtCore
 from PyQt4.QtCore import QObject
@@ -33,18 +34,31 @@ try:
             super(FileSystemEventHandler, self).__init__()
             self._base_path = base_path
             self._callback = callback
+            self._last_call = datetime.now()
 
         def on_moved(self, event):
             super(NinjaEventHandler, self).on_moved(event)
-            self._callback(self._base_path)
+            now = datetime.now()
+            diff = now - self._last_call
+            if diff.seconds > 1:
+                self._callback(self._base_path)
+                self._last_call = now
 
         def on_created(self, event):
             super(NinjaEventHandler, self).on_created(event)
-            self._callback(self._base_path)
+            now = datetime.now()
+            diff = now - self._last_call
+            if diff.seconds > 1:
+                self._callback(self._base_path)
+                self._last_call = now
 
         def on_deleted(self, event):
             super(NinjaEventHandler, self).on_deleted(event)
-            self._callback(self._base_path)
+            now = datetime.now()
+            diff = now - self._last_call
+            if diff.seconds > 1:
+                self._callback(self._base_path)
+                self._last_call = now
 
     class NinjaFileSystemWatcher(QObject):
         #SIGNALS
