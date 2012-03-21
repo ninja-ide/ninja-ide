@@ -18,6 +18,15 @@ try:
     from watchdog.observers import Observer
     from watchdog.events import FileSystemEventHandler
 
+    class SafeObserver(Observer):
+        """Mac is bitten by a bug that other OSs are not, so this is just
+        a cheap wrapping of the thread"""
+        def run(self, *args, **kwargs):
+            try:
+                Observer.run(self, *args, **kwargs)
+            except:
+                pass
+
     class NinjaEventHandler(FileSystemEventHandler):
         """Trigger callbacks when the watched events are triggered"""
         def __init__(self, base_path, callback):
@@ -63,7 +72,7 @@ try:
         def addPath(self, path):
             if path not in self._file_queue:
                 try:
-                    observer = Observer()
+                    observer = SafeObserver()
                     event_handler = NinjaEventHandler(path, self._path_changed)
                     observer.schedule(event_handler, path, recursive=True)
                     observer.start()
