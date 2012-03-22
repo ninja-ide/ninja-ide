@@ -39,6 +39,10 @@ if frozen in ('dll', 'console_exe', 'windows_exe'):
     # py2exe:
     PRJ_PATH = os.path.abspath(os.path.dirname(sys.executable))
 
+if frozen and platform.system().lower() == 'darwin':
+    #py2app:
+    PRJ_PATH = os.path.abspath(os.path.join(PRJ_PATH, '..', '..', '..'))
+
 HOME_NINJA_PATH = os.path.join(HOME_PATH, ".ninja_ide")
 
 ADDINS = os.path.join(HOME_NINJA_PATH, "addins")
