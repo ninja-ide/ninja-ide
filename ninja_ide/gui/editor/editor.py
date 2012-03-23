@@ -81,6 +81,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.newDocument = True
         self.highlighter = None
         self.syncDocErrorsSignal = False
+        self._selected_word = ''
         #Set editor style
         styles.set_editor_style(self, resources.CUSTOM_SCHEME)
         self.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
@@ -997,8 +998,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #Highlight selected variable
         if not self.isReadOnly() and not self.textCursor().hasSelection():
             word = self._text_under_cursor()
-            self.highlighter.set_selected_word(word)
-        self.highlighter.rehighlight()
+            if word != self._selected_word:
+                self._selected_word = word
+                self.highlighter.set_selected_word(word)
+                self.highlighter.rehighlight()
 
 
 def create_editor(fileName='', project=None, syntax=None):

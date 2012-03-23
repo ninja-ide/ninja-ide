@@ -35,6 +35,7 @@ class ErrorsChecker(QThread):
                 self.checker = checker.Checker(parseResult, self._editor.ID)
                 for m in self.checker.messages:
                     lineno = m.lineno - 1
+                    print dir(m)
                     if lineno not in self.errorsSummary:
                         message = [m.message % m.message_args]
                     else:

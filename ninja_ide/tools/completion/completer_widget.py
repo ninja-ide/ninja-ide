@@ -29,19 +29,29 @@ class CodeCompletionWidget(QFrame):
         self._list_index = self.stack_layout.addWidget(self.completion_list)
 
         self._icons = {'a': resources.IMAGES['attribute'],
-            'f': resources.IMAGES['function']}
+            'f': resources.IMAGES['function'],
+            'c': resources.IMAGES['class']}
 
         self.cc = code_completion.CodeCompletion()
         self._completion_results = []
         self._prefix = u''
         self.setVisible(False)
         self.source = ''
-
         self._key_operations = {
             Qt.Key_Up: self._select_previous_row,
             Qt.Key_Down: self._select_next_row,
+            Qt.Key_PageUp: (lambda: self._select_previous_row(6)),
+            Qt.Key_PageDown: (lambda: self._select_next_row(6)),
             Qt.Key_Right: lambda: None,
             Qt.Key_Left: lambda: None,
+            Qt.Key_Enter: self.pre_key_insert_completion,
+            Qt.Key_Return: self.pre_key_insert_completion,
+            Qt.Key_Tab: self.pre_key_insert_completion,
+            Qt.Key_Space: self.hide_completer,
+            Qt.Key_Escape: self.hide_completer,
+            Qt.Key_Backtab: self.hide_completer,
+            Qt.NoModifier: self.hide_completer,
+            Qt.ShiftModifier: self.hide_completer,
         }
 
         desktop = QApplication.instance().desktop()
@@ -50,20 +60,22 @@ class CodeCompletionWidget(QFrame):
         self.connect(self._editor.document(), SIGNAL("blockCountChanged(int)"),
             self.update_metadata)
 
-    def _select_next_row(self):
-        new_row = self.completion_list.currentRow() + 1
+    def _select_next_row(self, move=1):
+        new_row = self.completion_list.currentRow() + move
         if new_row < self.completion_list.count():
             self.completion_list.setCurrentRow(new_row)
         else:
             self.completion_list.setCurrentRow(0)
+        return True
 
-    def _select_previous_row(self):
-        new_row = self.completion_list.currentRow() - 1
+    def _select_previous_row(self, move=1):
+        new_row = self.completion_list.currentRow() - move
         if new_row >= 0:
             self.completion_list.setCurrentRow(new_row)
         else:
             self.completion_list.setCurrentRow(
-                self.completion_list.count() - 1)
+                self.completion_list.count() - move)
+        return True
 
     def update_metadata(self):
         source = self._editor.get_text()
@@ -115,17 +127,15 @@ class CodeCompletionWidget(QFrame):
     def set_completion_prefix(self, prefix):
         self._prefix = prefix
         proposals = []
-        if 'unknown' in self.completion_results:
-            proposals += [(None, item) \
-                for item in self.completion_results['unknown'] \
-                if item.startswith(prefix)]
-        else:
-            proposals += [('a', item) \
-                for item in self.completion_results['attributes'] \
-                if item.startswith(prefix)]
-            proposals += [('f', item) \
-                for item in self.completion_results['functions'] \
-                if item.startswith(prefix)]
+        proposals += [('c', item) \
+            for item in self.completion_results.get('classes', []) \
+            if item.startswith(prefix)]
+        proposals += [('a', item) \
+            for item in self.completion_results.get('attributes', []) \
+            if item.startswith(prefix)]
+        proposals += [('f', item) \
+            for item in self.completion_results.get('functions', []) \
+            if item.startswith(prefix)]
         if proposals:
             self.complete(proposals)
         else:
@@ -144,23 +154,19 @@ class CodeCompletionWidget(QFrame):
         self._prefix = ''
         self.hide()
 
+    def pre_key_insert_completion(self):
+        insert = unicode(self.completion_list.currentItem().text())
+        self.insert_completion(insert)
+        self.hide_completer()
+        return True
+
     def process_pre_key_event(self, event):
-        skip = False
         if not self.isVisible():
-            return skip
-        elif event.key() in (Qt.Key_Enter, Qt.Key_Return, Qt.Key_Tab):
-            insert = unicode(self.completion_list.currentItem().text())
-            self.insert_completion(insert)
-            event.ignore()
-            self.hide_completer()
-            skip = True
-        elif event.key() in (Qt.Key_Space, Qt.Key_Escape, Qt.Key_Backtab):
-            self.hide_completer()
-        elif event.key() in self._key_operations:
-            self._key_operations[event.key()]()
-            skip = True
-        elif event.modifiers() not in (Qt.NoModifier, Qt.ShiftModifier):
-            self.hide_completer()
+            return False
+        skip = self._key_operations.get(event.key(), lambda: False)()
+        self._key_operations.get(event.modifiers(), lambda: False)()
+        if skip is None:
+            skip = False
         return skip
 
     def process_post_key_event(self, event):

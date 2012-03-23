@@ -13,6 +13,18 @@ class CodeCompletionTestCase(unittest.TestCase):
     def setUp(self):
         self.cc = code_completion.CodeCompletion()
 
+    def get_source_data(self, code):
+        clazzes = re.findall("class (\w+?)\(", code)
+        funcs = re.findall("(\w+?)\(", code)
+        attrs = sorted(set(re.split('\W+', code)))
+        del attrs[0]
+        attrs = filter(lambda x: x not in funcs, attrs)
+        funcs = filter(lambda x: x not in clazzes, funcs)
+        data = {'attributes': attrs,
+            'functions': funcs,
+            'classes': clazzes}
+        return data
+
 ###############################################################################
 # TESTS FOR BUILTIN COMPLETION
 ###############################################################################
@@ -23,7 +35,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         source_code = SOURCE_COMPLETION + '\n        os.p'
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
-        for r in results:
+        for r in results['functions']:
             self.assertTrue(r.startswith('p'))
 
     def test_global_attr_in_class(self):
@@ -33,7 +45,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(int)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_global_attr_not_recognized_in_class(self):
         global SOURCE_COMPLETION
@@ -41,8 +53,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
-        expected = sorted(set(re.split('\W+', source_code)))
-        del expected[0]
+        expected = self.get_source_data(SOURCE_COMPLETION)
         self.assertEqual(expected, results)
 
     def test_builtin_list_completion_in_class_not_attr(self):
@@ -52,7 +63,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(list)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_dict_completion_in_class_not_attr(self):
         global SOURCE_COMPLETION
@@ -62,7 +73,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(dict)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_int_completion_in_class_not_attr(self):
         global SOURCE_COMPLETION
@@ -72,7 +83,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(int)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_float_completion_in_class_not_attr(self):
         global SOURCE_COMPLETION
@@ -82,7 +93,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(float)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_tuple_completion_in_class_not_attr(self):
         global SOURCE_COMPLETION
@@ -92,7 +103,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(tuple)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_bool_completion_in_class_not_attr(self):
         global SOURCE_COMPLETION
@@ -102,7 +113,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(bool)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_str_completion_in_class_not_attr(self):
         global SOURCE_COMPLETION
@@ -112,7 +123,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(str)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     @unittest.skip("FIX LATER")
     def test_builtin_unicode_completion_in_class_not_attr(self):
@@ -132,8 +143,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
-        expected = sorted(set(re.split('\W+', source_code)))
-        del expected[0]
+        expected = self.get_source_data(SOURCE_COMPLETION)
         self.assertEqual(expected, results)
 
     def test_builtin_int_completion_in_class_attr(self):
@@ -144,7 +154,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(int)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_float_completion_in_class_attr(self):
         global SOURCE_COMPLETION
@@ -154,7 +164,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(float)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_list_completion_in_class_attr(self):
         global SOURCE_COMPLETION
@@ -164,7 +174,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(list)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_dict_completion_in_class_attr(self):
         global SOURCE_COMPLETION
@@ -174,7 +184,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(dict)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_tuple_completion_in_class_attr(self):
         global SOURCE_COMPLETION
@@ -184,7 +194,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(tuple)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_bool_completion_in_class_attr(self):
         global SOURCE_COMPLETION
@@ -194,7 +204,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(bool)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_str_completion_in_class_attr(self):
         global SOURCE_COMPLETION
@@ -204,7 +214,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(str)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     @unittest.skip("FIX LATER")
     def test_builtin_unicode_completion_in_class_attr(self):
@@ -224,8 +234,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
-        expected = sorted(set(re.split('\W+', source_code)))
-        del expected[0]
+        expected = self.get_source_data(source_code)
         self.assertEqual(expected, results)
 
     def test_builtin_dict_completion_in_class_attr_diff_func(self):
@@ -237,7 +246,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(dict)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_int_completion_in_class_attr_diff_func(self):
         global SOURCE_COMPLETION
@@ -249,7 +258,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(int)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_float_completion_in_class_attr_diff_func(self):
         global SOURCE_COMPLETION
@@ -261,7 +270,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(float)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_list_completion_in_class_attr_diff_func(self):
         global SOURCE_COMPLETION
@@ -273,7 +282,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(list)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_tuple_completion_in_class_attr_diff_func(self):
         global SOURCE_COMPLETION
@@ -285,7 +294,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(tuple)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_bool_completion_in_class_attr_diff_func(self):
         global SOURCE_COMPLETION
@@ -297,7 +306,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(bool)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_str_completion_in_class_attr_diff_func(self):
         global SOURCE_COMPLETION
@@ -309,7 +318,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(str)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     @unittest.skip("FIX LATER")
     def test_builtin_unicode_completion_in_class_attr_diff_func(self):
@@ -332,7 +341,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(str)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_import_completion(self):
         global SOURCE_COMPLETION
@@ -340,7 +349,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         source_code = SOURCE_COMPLETION + '\n\nos.p'
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
-        for r in results:
+        for r in results['functions']:
             self.assertTrue(r.startswith('p'))
 
     def test_builtin_list_completion(self):
@@ -351,7 +360,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(list)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_dict_completion(self):
         global SOURCE_COMPLETION
@@ -361,7 +370,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(dict)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_int_completion(self):
         global SOURCE_COMPLETION
@@ -371,7 +380,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(int)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_float_completion(self):
         global SOURCE_COMPLETION
@@ -381,7 +390,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(float)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_tuple_completion(self):
         global SOURCE_COMPLETION
@@ -391,7 +400,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(tuple)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_bool_completion(self):
         global SOURCE_COMPLETION
@@ -401,7 +410,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(bool)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_builtin_str_completion(self):
         global SOURCE_COMPLETION
@@ -411,7 +420,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(str)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     @unittest.skip("FIX LATER")
     def test_builtin_unicode_completion(self):
@@ -422,7 +431,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(unicode)
-        self.assertEqual(expected, results)
+        self.assertEqual(expected, results['functions'])
 
     def test_invalid_var(self):
         global SOURCE_COMPLETION
@@ -431,8 +440,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
-        expected = sorted(set(re.split('\W+', source_code)))
-        del expected[0]
+        expected = self.get_source_data(source_code)
         self.assertEqual(expected, results)
 
 ###############################################################################

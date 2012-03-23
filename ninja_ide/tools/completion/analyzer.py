@@ -27,6 +27,7 @@ class Analyzer(object):
 
     def __init__(self):
         self._fixed_line = -1
+        self.content = None
 
     def collect_metadata(self, project_path):
         """Collect metadata from a project."""

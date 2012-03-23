@@ -149,8 +149,14 @@ class CodeCompletion(object):
                     'functions': result[1][1]}
             else:
                 #Based in Kai Plugin: https://github.com/matiasb/kai
-                items = sorted(set(re.split('\W+', code)))
-                if final_word in items:
-                    items.remove(final_word)
-                data = {'unknown': items}
+                clazzes = re.findall("class (\w+?)\(", code)
+                funcs = re.findall("(\w+?)\(", code)
+                attrs = sorted(set(re.split('\W+', code)))
+                if final_word in attrs:
+                    attrs.remove(final_word)
+                attrs = filter(lambda x: x not in funcs, attrs)
+                funcs = filter(lambda x: x not in clazzes, funcs)
+                data = {'attributes': attrs,
+                    'functions': funcs,
+                    'classes': clazzes}
         return data

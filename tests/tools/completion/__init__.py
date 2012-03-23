@@ -30,3 +30,35 @@ class MyClass:
 
     def another(self):
         l = []"""
+
+
+SOURCE_ANALYZER_NATIVE = """
+import os
+import sys
+from sys import exit
+
+a = 5
+b = []
+
+
+class Test(object):
+
+    def __init__(self):
+        self.x = {}
+
+    def my_function(self):
+        code = 'string'
+        self.var = 4.5
+
+    def func_args(var, inte, num=5, li='ninja', *arggg, **kwarggg):
+        nothing = False
+
+def global_func():
+    bo = True
+    obj = os.path
+    di = Test()
+    another = obj
+
+
+man = ()
+"""
