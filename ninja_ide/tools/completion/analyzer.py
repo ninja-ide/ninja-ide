@@ -184,11 +184,11 @@ class Analyzer(object):
                 function.add_function(self._process_function(sym))
             else:
                 #TODO: cover generators
-                self._search_for_returns(function, sym)
+                self._search_recursive_for_types(function, sym)
 
         return function
 
-    def _search_for_returns(self, function, symbol):
+    def _search_recursive_for_types(self, function, symbol):
         """Search for return recursively inside the function."""
         if symbol.__class__ is ast.Return:
             type_value = symbol.value.__class__
@@ -200,14 +200,14 @@ class Analyzer(object):
             function.add_return(lineno, data_type, line_content, type_value)
         elif symbol.__class__ in (ast.If, ast.For, ast.TryExcept):
             for sym in symbol.body:
-                self._search_for_returns(function, sym)
+                self._search_recursive_for_types(function, sym)
             for else_item in symbol.orelse:
-                self._search_for_returns(function, else_item)
+                self._search_recursive_for_types(function, else_item)
         elif symbol.__class__ is ast.TryFinally:
             for sym in symbol.body:
-                self._search_for_returns(function, sym)
+                self._search_recursive_for_types(function, sym)
             for else_item in symbol.finalbody:
-                self._search_for_returns(function, else_item)
+                self._search_recursive_for_types(function, else_item)
 
     def _expand_attribute(self, attribute):
         parent_name = []
