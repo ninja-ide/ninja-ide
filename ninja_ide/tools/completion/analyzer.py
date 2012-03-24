@@ -64,15 +64,14 @@ class Analyzer(object):
 
         module = model.Module()
         for symbol in astModule.body:
-            symbol_type = type(symbol)
-            if symbol_type is ast.Assign:
+            if symbol.__class__ is ast.Assign:
                 assigns = self._process_assign(symbol)[0]
                 module.add_attributes(assigns)
-            elif symbol_type in (ast.Import, ast.ImportFrom):
+            elif symbol.__class__ in (ast.Import, ast.ImportFrom):
                 module.add_imports(self._process_import(symbol))
-            elif symbol_type is ast.ClassDef:
+            elif symbol.__class__ is ast.ClassDef:
                 module.add_class(self._process_class(symbol))
-            elif symbol_type is ast.FunctionDef:
+            elif symbol.__class__ is ast.FunctionDef:
                 module.add_function(self._process_function(symbol))
 #        self.resolve_late(module)
 
@@ -80,6 +79,7 @@ class Analyzer(object):
         return module
 
     def _assign_disambiguation(self, type_name, line_content):
+        """Provide a specific builtin for the cases were ast doesn't work."""
         line = line_content.split('=')
         value = line[1].strip()
         # TODO: We have to analyze when the assign is: x,y = 1, 2
@@ -94,20 +94,17 @@ class Analyzer(object):
         assigns = []
         attributes = []
         for var in symbol.targets:
-            type_value = type(symbol.value)
+            type_value = symbol.value.__class__
             line_content = self.content[symbol.lineno - 1]
             if type_value in (_ast.Num, _ast.Name):
                 type_value = self._assign_disambiguation(
                     type_value, line_content)
             data_type = self.__mapping.get(type_value, None)
-            if data_type != model.late_resolution:
-                type_value = None
-            type_var = type(var)
-            if type_var == ast.Attribute:
+            if var.__class__ == ast.Attribute:
                 data = (var.attr, symbol.lineno, data_type, line_content,
                     type_value)
                 attributes.append(data)
-            elif type_var == ast.Name:
+            elif var.__class__ == ast.Name:
                 data = (var.id, symbol.lineno, data_type, line_content,
                     type_value)
                 assigns.append(data)
@@ -117,7 +114,7 @@ class Analyzer(object):
         """Process an ast.Import and ast.ImportFrom object to extract data."""
         imports = []
         for imp in symbol.names:
-            if type(symbol) is ast.ImportFrom:
+            if symbol.__class__ is ast.ImportFrom:
                 module_name = "%s.%s" % (symbol.module, imp.name)
             else:
                 module_name = imp.name
@@ -131,28 +128,24 @@ class Analyzer(object):
         """Process an ast.ClassDef object to extract data."""
         clazz = model.Clazz(symbol.name)
         for base in symbol.bases:
-            parent_name = []
-            while type(base) is ast.Attribute:
-                parent_name.append(base.attr)
-                base = base.value
-            name = '.'.join(reversed(parent_name))
-            name = base.id if name == '' else ("%s.%s" % (base.id, name))
+            name = self._expand_attribute(base)
             clazz.bases.append(name)
-        for decorator in symbol.decorator_list:
-            clazz.decorators.append(decorator.id)
+        #TODO: Decotator
+#        for decorator in symbol.decorator_list:
+#            clazz.decorators.append(decorator.id)
         # PARSE FUNCTIONS AND ATTRIBUTES
         for sym in symbol.body:
-            type_sym = type(sym)
-            if type_sym is ast.Assign:
+            if sym.__class__ is ast.Assign:
                 assigns = self._process_assign(sym)[0]
                 clazz.add_attributes(assigns)
-            elif type_sym is ast.FunctionDef:
+            elif sym.__class__ is ast.FunctionDef:
                 clazz.add_function(self._process_function(sym, clazz))
         return clazz
 
     def _process_function(self, symbol, parent=None):
         """Process an ast.FunctionDef object to extract data."""
         function = model.Function(symbol.name)
+        #TODO: Decorators
         #We are not going to collect data from decorators yet.
 #        for decorator in symbol.decorator_list:
             #Decorators can be: Name, Call, Attributes
@@ -168,10 +161,9 @@ class Analyzer(object):
         #We store the arguments to compare with default backwards
         defaults = []
         for value in symbol.args.defaults:
-            type_value = type(value)
+            #TODO: In some cases we can have something like: a=os.path
+            type_value = value.__class__
             data_type = self.__mapping.get(type_value, None)
-            if data_type != model.late_resolution:
-                type_value = None
             defaults.append((data_type, type_value))
         for arg in reversed(symbol.args.args):
             if arg.id == 'self':
@@ -183,13 +175,12 @@ class Analyzer(object):
             assign.add_data(symbol.lineno, data_type[0], None, data_type[1])
             function.args[assign.name] = assign
         for sym in symbol.body:
-            type_sym = type(sym)
-            if type_sym is ast.Assign:
+            if sym.__class__ is ast.Assign:
                 result = self._process_assign(sym)
                 function.add_attributes(result[0])
                 if parent is not None:
                     parent.add_attributes(result[1])
-            elif type_sym is ast.FunctionDef:
+            elif sym.__class__ is ast.FunctionDef:
                 function.add_function(self._process_function(sym))
             else:
                 #TODO: cover generators
@@ -199,22 +190,30 @@ class Analyzer(object):
 
     def _search_for_returns(self, function, symbol):
         """Search for return recursively inside the function."""
-        type_symbol = type(symbol)
-        if type_symbol is ast.Return:
-            type_value = type(symbol.value)
+        if symbol.__class__ is ast.Return:
+            type_value = symbol.value.__class__
             lineno = symbol.lineno
             data_type = self.__mapping.get(type_value, None)
             line_content = self.content[lineno - 1]
             if data_type != model.late_resolution:
                 type_value = None
             function.add_return(lineno, data_type, line_content, type_value)
-        elif type_symbol in (ast.If, ast.For, ast.TryExcept):
+        elif symbol.__class__ in (ast.If, ast.For, ast.TryExcept):
             for sym in symbol.body:
                 self._search_for_returns(function, sym)
             for else_item in symbol.orelse:
                 self._search_for_returns(function, else_item)
-        elif type_symbol is ast.TryFinally:
+        elif symbol.__class__ is ast.TryFinally:
             for sym in symbol.body:
                 self._search_for_returns(function, sym)
             for else_item in symbol.finalbody:
                 self._search_for_returns(function, else_item)
+
+    def _expand_attribute(self, attribute):
+        parent_name = []
+        while attribute.__class__ is ast.Attribute:
+            parent_name.append(attribute.attr)
+            attribute = attribute.value
+        name = '.'.join(reversed(parent_name))
+        name = attribute.id if name == '' else ("%s.%s" % (attribute.id, name))
+        return name

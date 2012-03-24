@@ -719,10 +719,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         tc.select(QTextCursor.WordUnderCursor)
         word = unicode(tc.selectedText())
         result = self._patIsWord.findall(word)
-        if result:
-            word = result[0]
-        else:
-            word = ''
+        word = result[0] if result else ''
         return word
 
     def paintEvent(self, event):

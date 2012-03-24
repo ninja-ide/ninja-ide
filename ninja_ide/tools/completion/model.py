@@ -10,6 +10,8 @@ class _TypeData(object):
         self.lineno = lineno
         self.data_type = data_type
         self.line_content = line_content
+        if data_type != late_resolution:
+            oper = None
         self.operation = oper
         self.from_import = False
         if isinstance(data_type, str):
