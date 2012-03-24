@@ -182,15 +182,20 @@ class Analyzer(object):
                     parent.add_attributes(result[1])
             elif sym.__class__ is ast.FunctionDef:
                 function.add_function(self._process_function(sym))
-            else:
-                #TODO: cover generators
-                self._search_recursive_for_types(function, sym)
+
+            if sym.__class__ is not ast.Assign:
+                self._search_recursive_for_types(function, sym, parent)
 
         return function
 
-    def _search_recursive_for_types(self, function, symbol):
+    def _search_recursive_for_types(self, function, symbol, parent=None):
         """Search for return recursively inside the function."""
-        if symbol.__class__ is ast.Return:
+        if symbol.__class__ is ast.Assign:
+            result = self._process_assign(symbol)
+            function.add_attributes(result[0])
+            if parent is not None:
+                parent.add_attributes(result[1])
+        elif symbol.__class__ is ast.Return:
             type_value = symbol.value.__class__
             lineno = symbol.lineno
             data_type = self.__mapping.get(type_value, None)
@@ -200,14 +205,14 @@ class Analyzer(object):
             function.add_return(lineno, data_type, line_content, type_value)
         elif symbol.__class__ in (ast.If, ast.For, ast.TryExcept):
             for sym in symbol.body:
-                self._search_recursive_for_types(function, sym)
+                self._search_recursive_for_types(function, sym, parent)
             for else_item in symbol.orelse:
-                self._search_recursive_for_types(function, else_item)
+                self._search_recursive_for_types(function, else_item, parent)
         elif symbol.__class__ is ast.TryFinally:
             for sym in symbol.body:
-                self._search_recursive_for_types(function, sym)
+                self._search_recursive_for_types(function, sym, parent)
             for else_item in symbol.finalbody:
-                self._search_recursive_for_types(function, else_item)
+                self._search_recursive_for_types(function, else_item, parent)
 
     def _expand_attribute(self, attribute):
         parent_name = []

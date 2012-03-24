@@ -169,13 +169,28 @@ class AnalyzerTestCase(unittest.TestCase):
         self.assertEqual(func.functions, {})
         #Assign
         result_a = func.attributes.keys()
-        expected = ['code']
+        result_a.sort()
+        expected = ['code', 'my_var']
         self.assertEqual(result_a, expected)
+        #Assing: code
         assign = func.attributes['code']
         self.assertEqual(assign.name, 'code')
         assign_test1 = model.Assign('code')
         assign_test1.add_data(0, '__builtin__.str', "        code = 'string'",
             None)
+        expected_data = assign_test1.data[0]
+        result_data = assign.data[0]
+        self.assertEqual(result_data.data_type, expected_data.data_type)
+        self.assertEqual(result_data.line_content, expected_data.line_content)
+        self.assertEqual(result_data.operation, expected_data.operation)
+        self.assertTrue(result_data.is_native)
+        self.assertFalse(result_data.from_import)
+        #Assing: my_var
+        assign = func.attributes['my_var']
+        self.assertEqual(assign.name, 'my_var')
+        assign_test1 = model.Assign('my_var')
+        assign_test1.add_data(0, '__builtin__.str',
+        "            my_var = 'inside if'", None)
         expected_data = assign_test1.data[0]
         result_data = assign.data[0]
         self.assertEqual(result_data.data_type, expected_data.data_type)

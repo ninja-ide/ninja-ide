@@ -49,6 +49,8 @@ class Test(object):
     def my_function(self):
         code = 'string'
         self.var = 4.5
+        if code:
+            my_var = 'inside if'
 
     def func_args(self, var, inte, num=5, li='ninja', *arggg, **kwarggg):
         nothing = False
