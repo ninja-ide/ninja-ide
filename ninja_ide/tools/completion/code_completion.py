@@ -77,6 +77,9 @@ class CodeCompletion(object):
                 #We only care about the function where we are
                 if new_indent < indent:
                     indent = new_indent
+                    #We need the "previous_line" because we are exploring
+                    #the tokens backwards, and when we reach to def or class
+                    #the actual name was in the line before.
                     scopes.insert(0, previous_line)
             elif not is_indented and is_definition:
                 scopes.insert(0, previous_line)
