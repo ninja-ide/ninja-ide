@@ -134,6 +134,146 @@ class AnalyzerTestCase(unittest.TestCase):
         attrs.sort()
         self.assertEqual(result_f, functions)
         self.assertEqual(result_a, attrs)
+        self.assertEqual(clazz.bases, ['object'])
+
+    def test_simple_class_attrs(self):
+        module = self.analyzer.analyze(SOURCE_ANALYZER_NATIVE)
+
+        clazz = module.classes['Test']
+        attr_x = clazz.attributes['x']
+        attr_var = clazz.attributes['var']
+        type_x = attr_x.data[0]
+        type_var = attr_var.data[0]
+
+        self.assertEqual(type_x.data_type, '__builtin__.dict')
+        self.assertEqual(type_x.line_content, '        self.x = {}')
+        self.assertEqual(type_x.operation, None)
+        self.assertEqual(type_x.from_import, False)
+        self.assertEqual(type_x.is_native, True)
+        self.assertEqual(type_var.data_type, '__builtin__.float')
+        self.assertEqual(type_var.line_content, '        self.var = 4.5')
+        self.assertEqual(type_var.operation, None)
+        self.assertEqual(type_var.from_import, False)
+        self.assertEqual(type_var.is_native, True)
+
+    def test_attrs_in_class_func(self):
+        module = self.analyzer.analyze(SOURCE_ANALYZER_NATIVE)
+
+        clazz = module.classes['Test']
+        func = clazz.functions['my_function']
+
+        self.assertEqual(func.args, {})
+        self.assertEqual(func.decorators, [])
+        self.assertEqual(func.return_type, [])
+        self.assertEqual(func.name, 'my_function')
+        self.assertEqual(func.functions, {})
+        #Assign
+        result_a = func.attributes.keys()
+        expected = ['code']
+        self.assertEqual(result_a, expected)
+        assign = func.attributes['code']
+        self.assertEqual(assign.name, 'code')
+        assign_test1 = model.Assign('code')
+        assign_test1.add_data(0, '__builtin__.str', "        code = 'string'",
+            None)
+        expected_data = assign_test1.data[0]
+        result_data = assign.data[0]
+        self.assertEqual(result_data.data_type, expected_data.data_type)
+        self.assertEqual(result_data.line_content, expected_data.line_content)
+        self.assertEqual(result_data.operation, expected_data.operation)
+        self.assertTrue(result_data.is_native)
+        self.assertFalse(result_data.from_import)
+
+    def test_attrs_in_class_func_extended(self):
+        module = self.analyzer.analyze(SOURCE_ANALYZER_NATIVE)
+
+        clazz = module.classes['Test']
+        func = clazz.functions['func_args']
+
+        #Args
+        args_names = ['var', 'inte', 'num', 'li', 'arggg', 'kwarggg']
+        args_names.sort()
+        func_args = func.args.keys()
+        func_args.sort()
+        self.assertEqual(func_args, args_names)
+        #For: var
+        type_var = model._TypeData(0, model.late_resolution, None, None)
+        func_arg_obj = func.args['var']
+        type_arg_func = func_arg_obj.data[0]
+        self.assertEqual(func_arg_obj.name, 'var')
+        self.assertEqual(type_arg_func.data_type, type_var.data_type)
+        self.assertEqual(type_arg_func.line_content, type_var.line_content)
+        self.assertEqual(type_arg_func.operation, type_var.operation)
+        self.assertFalse(type_arg_func.is_native)
+        #For: inte
+        type_var = model._TypeData(0, model.late_resolution, None, None)
+        func_arg_obj = func.args['inte']
+        type_arg_func = func_arg_obj.data[0]
+        self.assertEqual(func_arg_obj.name, 'inte')
+        self.assertEqual(type_arg_func.data_type, type_var.data_type)
+        self.assertEqual(type_arg_func.line_content, type_var.line_content)
+        self.assertEqual(type_arg_func.operation, type_var.operation)
+        self.assertFalse(type_arg_func.is_native)
+        #For: num
+        type_var = model._TypeData(0, '__builtin__.int', None, None)
+        func_arg_obj = func.args['num']
+        type_arg_func = func_arg_obj.data[0]
+        self.assertEqual(func_arg_obj.name, 'num')
+        self.assertEqual(type_arg_func.data_type, type_var.data_type)
+        self.assertEqual(type_arg_func.line_content, type_var.line_content)
+        self.assertEqual(type_arg_func.operation, type_var.operation)
+        self.assertTrue(type_arg_func.is_native)
+        #For: li
+        type_var = model._TypeData(0, '__builtin__.str', None, None)
+        func_arg_obj = func.args['li']
+        type_arg_func = func_arg_obj.data[0]
+        self.assertEqual(func_arg_obj.name, 'li')
+        self.assertEqual(type_arg_func.data_type, type_var.data_type)
+        self.assertEqual(type_arg_func.line_content, type_var.line_content)
+        self.assertEqual(type_arg_func.operation, type_var.operation)
+        self.assertTrue(type_arg_func.is_native)
+        #For: arggg
+        type_var = model._TypeData(0, '__builtin__.list', None, None)
+        func_arg_obj = func.args['arggg']
+        type_arg_func = func_arg_obj.data[0]
+        self.assertEqual(func_arg_obj.name, 'arggg')
+        self.assertEqual(type_arg_func.data_type, type_var.data_type)
+        self.assertEqual(type_arg_func.line_content, type_var.line_content)
+        self.assertEqual(type_arg_func.operation, type_var.operation)
+        self.assertTrue(type_arg_func.is_native)
+        #For: kwarggg
+        type_var = model._TypeData(0, '__builtin__.dict', None, None)
+        func_arg_obj = func.args['kwarggg']
+        type_arg_func = func_arg_obj.data[0]
+        self.assertEqual(func_arg_obj.name, 'kwarggg')
+        self.assertEqual(type_arg_func.data_type, type_var.data_type)
+        self.assertEqual(type_arg_func.line_content, type_var.line_content)
+        self.assertEqual(type_arg_func.operation, type_var.operation)
+        self.assertTrue(type_arg_func.is_native)
+
+        #Decorators
+        self.assertEqual(func.decorators, [])
+#        #Return Type
+        self.assertEqual(func.return_type, [])
+        #Attributes
+        self.assertEqual(func.name, 'func_args')
+        self.assertEqual(func.functions, {})
+        #Assign
+        result_a = func.attributes.keys()
+        expected = ['nothing']
+        self.assertEqual(result_a, expected)
+        assign = func.attributes['nothing']
+        self.assertEqual(assign.name, 'nothing')
+        assign_test1 = model.Assign('nothing')
+        assign_test1.add_data(0, '__builtin__.bool', "        nothing = False",
+            None)
+        expected_data = assign_test1.data[0]
+        result_data = assign.data[0]
+        self.assertEqual(result_data.data_type, expected_data.data_type)
+        self.assertEqual(result_data.line_content, expected_data.line_content)
+        self.assertEqual(result_data.operation, expected_data.operation)
+        self.assertTrue(result_data.is_native)
+        self.assertFalse(result_data.from_import)
 
 
 if __name__ == '__main__':

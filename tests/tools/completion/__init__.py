@@ -50,7 +50,7 @@ class Test(object):
         code = 'string'
         self.var = 4.5
 
-    def func_args(var, inte, num=5, li='ninja', *arggg, **kwarggg):
+    def func_args(self, var, inte, num=5, li='ninja', *arggg, **kwarggg):
         nothing = False
 
 def global_func():

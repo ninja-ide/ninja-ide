@@ -167,7 +167,7 @@ class Analyzer(object):
             function.args[assign.name] = assign
         #We store the arguments to compare with default backwards
         defaults = []
-        for value in reversed(symbol.args.defaults):
+        for value in symbol.args.defaults:
             type_value = type(value)
             data_type = self.__mapping.get(type_value, None)
             if data_type != model.late_resolution:

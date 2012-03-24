@@ -99,17 +99,17 @@ class ResultItem(object):
             raise TypeError("name is not a string or unicode.")
 
     def __str__(self):
-        return self.data['name']
+        return self.name
 
     def __len__(self):
-        return len(self.data['name'])
+        return len(self.name)
 
     def __iter__(self):
-        for i in self.data['name']:
+        for i in self.name:
             yield i
 
     def __getitem__(self, index):
-        return self.data['name'][index]
+        return self.name[index]
 
 
 class LocateThread(QThread):
