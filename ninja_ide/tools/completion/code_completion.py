@@ -1,5 +1,9 @@
 # -*- coding: utf-8 *-*
 
+# DISCLAIMER ABOUT READING THIS CODE:
+# We are not responsible for any kind of mental or emotional
+# damage that may arise from reading this code.
+
 import re
 import token as tkn
 from tokenize import generate_tokens, TokenError
@@ -50,7 +54,6 @@ class CodeCompletion(object):
         return token_code
 
     def _search_for_scope(self, token_code):
-        global _TOKEN_NL
         if not token_code[-1][3].startswith(' '):
             return None
         scopes = []

@@ -1,5 +1,9 @@
 # -*- coding: utf-8 *-*
 
+# DISCLAIMER ABOUT READING THIS CODE:
+# We are not responsible for any kind of mental or emotional
+# damage that may arise from reading this code.
+
 import re
 import ast
 import _ast
