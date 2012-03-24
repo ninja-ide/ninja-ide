@@ -717,7 +717,13 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def _text_under_cursor(self):
         tc = self.textCursor()
         tc.select(QTextCursor.WordUnderCursor)
-        return unicode(tc.selectedText())
+        word = unicode(tc.selectedText())
+        result = self._patIsWord.findall(word)
+        if result:
+            word = result[0]
+        else:
+            word = ''
+        return word
 
     def paintEvent(self, event):
         super(Editor, self).paintEvent(event)

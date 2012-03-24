@@ -171,7 +171,11 @@ class CodeCompletionWidget(QFrame):
 
     def process_post_key_event(self, event):
         if self.isVisible():
-            prefix = self._editor._text_under_cursor()
+            source = self._editor.get_text()
+            source = source.encode(self._editor.encoding)
+            offset = self._editor.textCursor().position()
+            prefix = self.cc.get_prefix(source, offset)
+#            prefix = self._editor._text_under_cursor()
             self.set_completion_prefix(prefix)
             self.completion_list.setCurrentRow(0)
         if event.key() == Qt.Key_Period  or (event.key() == Qt.Key_Space and \

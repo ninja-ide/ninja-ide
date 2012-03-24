@@ -14,8 +14,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         self.cc = code_completion.CodeCompletion()
 
     def get_source_data(self, code):
-        clazzes = re.findall("class (\w+?)\(", code)
-        funcs = re.findall("(\w+?)\(", code)
+        clazzes = sorted(set(re.findall("class (\w+?)\(", code)))
+        funcs = sorted(set(re.findall("(\w+?)\(", code)))
         attrs = sorted(set(re.split('\W+', code)))
         del attrs[0]
         attrs = filter(lambda x: x not in funcs, attrs)
