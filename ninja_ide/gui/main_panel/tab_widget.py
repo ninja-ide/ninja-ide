@@ -401,7 +401,9 @@ class TabWidget(QTabWidget):
 
     def change_open_tab_name(self, index, newName):
         """Change the name of the tab at index, for the newName."""
+        self.remove_title(index)
         self.setTabText(index, newName)
+        self.titles.append(newName)
 
 
 class TabNavigator(QWidget):
