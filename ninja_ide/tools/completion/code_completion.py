@@ -43,8 +43,9 @@ class CodeCompletion(object):
         # TODO Optimization, only iterate until the previous line of a class??
         token_code = []
         try:
-            for t in generate_tokens(StringIO(code).readline):
-                token_code.append((t[0], t[1], t[2], t[4]))
+            for tkn_type, tkn_str, pos, _, line, \
+                in generate_tokens(StringIO(code).readline):
+                token_code.append((tkn_type, tkn_str, pos, line))
         except TokenError:
             #This is an expected situation, where i don't want to do anything
             #possible an unbalanced brace like: func(os.p| (| = cursor-end)
