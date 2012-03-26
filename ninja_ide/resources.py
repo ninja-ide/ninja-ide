@@ -148,7 +148,6 @@ IMAGES = {
     "tree-html": os.path.join(PRJ_PATH, "img", "tree-html.png"),
     "tree-generic": os.path.join(PRJ_PATH, "img", "tree-generic.png"),
     "tree-css": os.path.join(PRJ_PATH, "img", "tree-CSS.png"),
-    "tree-java": os.path.join(PRJ_PATH, "img", "tree-java.png"),
     "tree-python": os.path.join(PRJ_PATH, "img", "tree-python.png"),
     "tree-image": os.path.join(PRJ_PATH, "img", "tree-image.png"),
     "comment-code": os.path.join(PRJ_PATH, "img", "comment-code.png"),

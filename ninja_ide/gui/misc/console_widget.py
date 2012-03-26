@@ -18,7 +18,8 @@ from ninja_ide.core import settings
 from ninja_ide.tools import styles
 from ninja_ide.tools import console
 from ninja_ide.gui.editor import highlighter
-from ninja_ide.gui.editor import completer
+from ninja_ide.tools.completion import completer
+from ninja_ide.tools.completion import completer_widget
 
 
 BRACES = {"'": "'",
@@ -46,7 +47,7 @@ class ConsoleWidget(QPlainTextEdit):
         self.patFrom = re.compile('^(\\s)*from ((\\w)+(\\.)*(\\w)*)+ import')
         self.patImport = re.compile('^(\\s)*import (\\w)+')
         self.patObject = re.compile('[^a-zA-Z0-9_\\.]')
-        self.completer = completer.CompleterWidget(self)
+        self.completer = completer_widget.CompleterWidget(self)
         self.okPrefix = QRegExp('[.)}:,\]]')
 
         #Create Context Menu
@@ -112,7 +113,6 @@ class ConsoleWidget(QPlainTextEdit):
         if self.completer.popup().isVisible():
             if event.key() in (Qt.Key_Enter, Qt.Key_Return, Qt.Key_Tab):
                 event.ignore()
-                self.completer.insert_completion()
                 self.completer.popup().hide()
                 return
             elif event.key in (Qt.Key_Space, Qt.Key_Escape, Qt.Key_Backtab):

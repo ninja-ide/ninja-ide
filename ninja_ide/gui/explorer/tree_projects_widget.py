@@ -52,10 +52,6 @@ class TreeProjectsWidget(QTreeWidget):
     EXTRA_MENUS = {'all': []}
     images = {
         'py': resources.IMAGES['tree-python'],
-        'java': resources.IMAGES['tree-java'],
-        'fn': resources.IMAGES['tree-code'],
-        'c': resources.IMAGES['tree-code'],
-        'cs': resources.IMAGES['tree-code'],
         'jpg': resources.IMAGES['tree-image'],
         'png': resources.IMAGES['tree-image'],
         'html': resources.IMAGES['tree-html'],

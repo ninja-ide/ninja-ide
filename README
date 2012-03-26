@@ -35,7 +35,7 @@ STAY UP TO DATE: http://groups.google.com/group/ninja-ide-dev
 #===============================================================================
 
 Python >= 2.6 (Not Python3)
-PyQt >= 4.6
+PyQt >= 4.7
 watchdog >= 0.5.4 (https://github.com/gorakhargosh/watchdog)
 
 
