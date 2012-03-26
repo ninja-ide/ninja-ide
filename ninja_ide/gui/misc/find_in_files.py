@@ -150,8 +150,8 @@ class FindInFilesRootItem(QTreeWidgetItem):
 
 class FindInFilesDialog(QDialog):
 
-    def __init__(self, result_widget):
-        QDialog.__init__(self)
+    def __init__(self, result_widget, parent):
+        QDialog.__init__(self, parent)
         self._find_thread = FindInFilesThread()
         self.setWindowTitle("Find in files")
         self.resize(400, 300)
@@ -341,7 +341,7 @@ class FindInFilesWidget(QWidget):
         self._stop_button = QPushButton(self.tr("Stop"))
         self._clear_button = QPushButton(self.tr("Clear!"))
         self._replace_button = QPushButton(self.tr("Replace"))
-        self._find_widget = FindInFilesDialog(self._result_widget)
+        self._find_widget = FindInFilesDialog(self._result_widget, self)
         self._error_label = QLabel(self.tr("No Results"))
         self._error_label.setVisible(False)
         #Replace Area

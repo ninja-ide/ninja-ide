@@ -1,6 +1,0 @@
-include COPYING
-include README
-include icon.png
-recursive-include ninja_ide/addins/syntax *
-recursive-include ninja_ide/doc *
-recursive-include ninja_ide/img *

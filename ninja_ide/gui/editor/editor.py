@@ -30,6 +30,7 @@ from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
 from ninja_ide.tools import styles
+from ninja_ide.tools.completion import completer_widget
 from ninja_ide.gui.main_panel import itab_item
 from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import helpers
@@ -80,6 +81,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.newDocument = True
         self.highlighter = None
         self.syncDocErrorsSignal = False
+        self._selected_word = ''
         #Set editor style
         styles.set_editor_style(self, resources.CUSTOM_SCHEME)
         self.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
@@ -91,6 +93,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self._braces = None
         self._mtime = None
         self.__encoding = None
+        #Completer
+        self.completer = completer_widget.CodeCompletionWidget(self)
         #Flag to dont bug the user when answer *the modification dialog*
         self.ask_if_externally_modified = True
         #Dict functions for KeyPress
@@ -247,7 +251,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.emit(SIGNAL("warningsFound(QPlainTextEdit)"), self)
         else:
             self.emit(SIGNAL("cleanDocument(QPlainTextEdit)"), self)
-        self.highlighter.rehighlight()
+        if self.highlighter:
+            self.highlighter.rehighlight()
 
     def check_external_modification(self):
         if self.newDocument:
@@ -313,7 +318,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         """
         Returns all the plain text of the editor
         """
-        return self.toPlainText()
+        return unicode(self.toPlainText())
 
     def get_lines_count(self):
         """
@@ -495,6 +500,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.parent().parent().focusInEvent(event)
         #Check for modifications
 
+    def focusOutEvent(self, event):
+        """Hide Popup on focus lost."""
+        self.completer.hide_completer()
+        super(Editor, self).focusOutEvent(event)
+
     def resizeEvent(self, event):
         QPlainTextEdit.resizeEvent(self, event)
         self._sidebarWidget.setFixedHeight(self.height())
@@ -628,7 +638,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def __complete_braces(self, event):
         """Complete () [] and {} using a mild inteligence to see if corresponds
-        and also do some more magic such as complete in classes and functions"""
+        and also do some more magic such as complete in classes and functions.
+        """
         brace = unicode(event.text())
         if brace not in settings.BRACES:
             # Thou shalt not waste cpu cycles if this brace compleion dissabled
@@ -683,6 +694,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.textCursor().insertText(self.selected_text)
 
     def keyPressEvent(self, event):
+        #Completer pre key event
+        if self.completer.process_pre_key_event(event):
+            return
         #On Return == True stop the execution of this method
         if self.preKeyPress.get(event.key(), lambda x: False)(event):
             #emit a signal then plugings can do something
@@ -694,13 +708,19 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
         self.postKeyPress.get(event.key(), lambda x: False)(event)
 
+        #Completer post key event
+        self.completer.process_post_key_event(event)
+
         #emit a signal then plugings can do something
         self.emit(SIGNAL("keyPressEvent(QEvent)"), event)
 
     def _text_under_cursor(self):
         tc = self.textCursor()
         tc.select(QTextCursor.WordUnderCursor)
-        return tc.selectedText()
+        word = unicode(tc.selectedText())
+        result = self._patIsWord.findall(word)
+        word = result[0] if result else ''
+        return word
 
     def paintEvent(self, event):
         super(Editor, self).paintEvent(event)
@@ -981,8 +1001,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #Highlight selected variable
         if not self.isReadOnly() and not self.textCursor().hasSelection():
             word = self._text_under_cursor()
-            self.highlighter.set_selected_word(word)
-        self.highlighter.rehighlight()
+            if word != self._selected_word:
+                self._selected_word = word
+                self.highlighter.set_selected_word(word)
+                self.highlighter.rehighlight()
 
 
 def create_editor(fileName='', project=None, syntax=None):

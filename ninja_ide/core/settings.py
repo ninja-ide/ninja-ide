@@ -99,7 +99,7 @@ MAX_REMEMBER_TABS = 50
 COPY_HISTORY_BUFFER = 20
 
 FIND_ERRORS = True
-ERRORS_HIGHLIGHT_LINE = False
+ERRORS_HIGHLIGHT_LINE = True
 CHECK_STYLE = True
 CHECK_HIGHLIGHT_LINE = True
 CODE_COMPLETION = True
@@ -284,8 +284,11 @@ def load_settings():
         'python').toString())
     profileDict = qsettings.value('ide/profiles', {}).toMap()
     for key in profileDict:
-        files = [item \
-            for item in profileDict[key].toList()[0].toList()]
+        profile_list = list(profileDict[key].toList())
+        files = []
+        if profile_list:
+            files = [item \
+                for item in profileDict[key].toList()[0].toList()]
         tempFiles = []
         for file_ in files:
             fileData = file_.toList()
@@ -293,8 +296,10 @@ def load_settings():
                 tempFiles.append([unicode(fileData[0].toString()),
                     fileData[1].toInt()[0]])
         files = tempFiles
-        projects = [unicode(item.toString()) \
-            for item in profileDict[key].toList()[1].toList()]
+        projects = []
+        if len(profile_list) > 1:
+            projects = [unicode(item.toString()) \
+                for item in profileDict[key].toList()[1].toList()]
         PROFILES[unicode(key)] = [files, projects]
     toolbar_items = [str(item.toString()) for item in qsettings.value(
         'preferences/interface/toolbar', []).toList()]
@@ -347,7 +352,7 @@ def load_settings():
     FIND_ERRORS = qsettings.value('preferences/editor/errors',
         True).toBool()
     ERRORS_HIGHLIGHT_LINE = qsettings.value(
-        'preferences/editor/errorsInLine', False).toBool()
+        'preferences/editor/errorsInLine', True).toBool()
     CHECK_STYLE = qsettings.value('preferences/editor/checkStyle',
         True).toBool()
     CHECK_HIGHLIGHT_LINE = qsettings.value(
