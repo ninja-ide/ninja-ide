@@ -188,7 +188,7 @@ COLOR_SCHEME = {
     "properObject": "#6EC7D7",
     "numbers": "#F8A008",
     "spaces": "#7b7b7b",
-    "extras": "orange",
+    "extras": "#ee8859",
     "editor-background": "#1E1E1E",
     "editor-selection-color": "#FFFFFF",
     "editor-selection-background": "#437DCD",
