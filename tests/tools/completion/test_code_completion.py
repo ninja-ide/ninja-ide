@@ -11,6 +11,7 @@ from tests.tools.completion import SOURCE_COMPLETION
 class CodeCompletionTestCase(unittest.TestCase):
 
     def setUp(self):
+        code_completion.settings.SYNTAX = {'python': {'keywords': []}}
         self.cc = code_completion.CodeCompletion()
 
     def get_source_data(self, code):
@@ -18,7 +19,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         funcs = sorted(set(re.findall("(\w+?)\(", code)))
         attrs = sorted(set(re.split('\W+', code)))
         del attrs[0]
-        attrs = filter(lambda x: x not in funcs, attrs)
+        filter_attrs = lambda x: (x not in funcs) and not x.isdigit()
+        attrs = filter(filter_attrs, attrs)
         funcs = filter(lambda x: x not in clazzes, funcs)
         data = {'attributes': attrs,
             'functions': funcs,

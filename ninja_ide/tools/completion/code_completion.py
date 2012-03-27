@@ -9,6 +9,7 @@ import token as tkn
 from tokenize import generate_tokens, TokenError
 from StringIO import StringIO
 
+from ninja_ide.core import settings
 from ninja_ide.tools.completion import analyzer
 from ninja_ide.tools.completion import completer
 
@@ -26,6 +27,7 @@ class CodeCompletion(object):
         self.patIndent = re.compile('^\s+')
         self._valid_op = (')', '}', ']')
         self._invalid_op = ('(', '{', '[')
+        self.keywords = settings.SYNTAX['python']['keywords']
 
     def analyze_project(self, path):
         pass
@@ -170,7 +172,9 @@ class CodeCompletion(object):
                 attrs = sorted(set(re.split('\W+', code)))
                 if final_word in attrs:
                     attrs.remove(final_word)
-                attrs = filter(lambda x: x not in funcs, attrs)
+                filter_attrs = lambda x: (x not in funcs) and \
+                    not x.isdigit() and (x not in self.keywords)
+                attrs = filter(filter_attrs, attrs)
                 funcs = filter(lambda x: x not in clazzes, funcs)
                 data = {'attributes': attrs,
                     'functions': funcs,
