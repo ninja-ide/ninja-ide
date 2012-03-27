@@ -252,11 +252,14 @@ class __IDE(QMainWindow):
         qsettings.endGroup()
         self.mainContainer.actualTab.close_tab()
 
-    def load_session_files_projects(self, filesTab1, filesTab2, projects):
+    def load_session_files_projects(self, filesTab1, filesTab2, projects,
+        current_file):
         self.mainContainer.open_files(filesTab1, notIDEStart=False)
         self.mainContainer.open_files(filesTab2, mainTab=False,
             notIDEStart=False)
         self.explorer.open_session_projects(projects, notIDEStart=False)
+        if current_file:
+            self.mainContainer.open_file(current_file)
         self.status.explore_code()
 
     def open_file(self, filename):
@@ -304,6 +307,10 @@ class __IDE(QMainWindow):
         Info saved: Tabs and projects opened, windows state(size and position).
         """
         qsettings = QSettings()
+        editor_widget = self.mainContainer.get_actual_editor()
+        current_file = ''
+        if editor_widget is not None:
+            current_file = editor_widget.ID
         openedFiles = self.mainContainer.get_opened_documents()
         if qsettings.value('preferences/general/loadFiles', True).toBool():
             projects_obj = self.explorer.get_opened_projects()
@@ -314,6 +321,7 @@ class __IDE(QMainWindow):
                 qsettings.setValue('openFiles/mainTab', openedFiles[0])
             if len(openedFiles) == 2:
                 qsettings.setValue('openFiles/secondaryTab', openedFiles[1])
+            qsettings.setValue('openFiles/currentFile', current_file)
         qsettings.setValue('preferences/editor/bookmarks', settings.BOOKMARKS)
         qsettings.setValue('preferences/editor/breakpoints',
             settings.BREAKPOINTS)
@@ -471,6 +479,9 @@ def start(listener, filenames=None, projects_path=None, extra_plugins=None):
         tempFiles.append((unicode(fileData[0].toString()),
             fileData[1].toInt()[0]))
     secondaryFiles = tempFiles
+    #Current File
+    current_file = unicode(
+        qsettings.value('openFiles/currentFile', '').toString())
     #Projects
     projects = qsettings.value('openFiles/projects', []).toList()
     projects = [unicode(project.toString()) for project in projects]
@@ -480,7 +491,10 @@ def start(listener, filenames=None, projects_path=None, extra_plugins=None):
     #Include projects received from console args
     if projects_path:
         projects += projects_path
-    ide.load_session_files_projects(mainFiles, secondaryFiles, projects)
+    mainFiles.reverse()
+    secondaryFiles.reverse()
+    ide.load_session_files_projects(mainFiles, secondaryFiles, projects,
+        current_file)
     #Load external plugins
     if extra_plugins:
         ide.load_external_plugins(extra_plugins)
