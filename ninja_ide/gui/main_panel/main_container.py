@@ -131,7 +131,6 @@ class __MainContainer(QSplitter):
         if self._followMode:
             # if we were in follow mode, close the duplicated editor.
             self._tabSecondary.close_tab()
-            self._exit_follow_mode()
             self._tabSecondary._followMode = False
             self._followMode = False
             self.emit(SIGNAL("enabledFollowMode(bool)"), self._followMode)
