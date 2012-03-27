@@ -128,6 +128,10 @@ class __MainContainer(QSplitter):
         self.emit(SIGNAL("navigateCode(bool, int)"), val, op)
 
     def _main_without_tabs(self):
+        if self._followMode:
+            # if we were in follow mode, close the duplicated editor.
+            self._tabSecondary.close_tab()
+            self._tabSecondary._followMode = False
         if self._tabSecondary.isVisible():
             self.show_split(self.orientation())
 
@@ -593,26 +597,23 @@ class __MainContainer(QSplitter):
             self._followMode = False
             self._tabSecondary.close_tab()
             self._tabSecondary.hide()
+            self._tabSecondary._followMode = False
             self._tabSecondary.setTabsClosable(True)
-            self._tabMain._follow_mode = False
-            self._tabSecondary._follow_mode = False
         else:
-            #check if is instance of Editor
+            #check if its instance of Editor
             self._followMode = True
             self.setOrientation(Qt.Horizontal)
             name = unicode(self._tabMain.tabText(self._tabMain.currentIndex()))
-            editor2 = editor.create_editor(fileName=name)
-            editor2.setPlainText(editorWidget.get_text())
-            editor2.setReadOnly(True)
+            editor2 = editor.create_editor()
+            editor2.setDocument(editorWidget.document())
             self._tabSecondary.add_tab(editor2, name)
             if editorWidget.textModified:
                 self._tabSecondary.tab_was_modified(True)
-            self._tabMain._follow_mode = True
-            self._tabSecondary._follow_mode = True
             self._tabSecondary.show()
             editor2.verticalScrollBar().setRange(
                 editorWidget._sidebarWidget.highest_line - 2, 0)
             self._tabSecondary.setTabsClosable(False)
+            self._tabSecondary._followMode = True
             self.setSizes([1, 1])
         self.actualTab = tempTab
         self.emit(SIGNAL("enabledFollowMode(bool)"), self._followMode)
