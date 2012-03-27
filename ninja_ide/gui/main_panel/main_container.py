@@ -129,6 +129,7 @@ class __MainContainer(QSplitter):
 
     def _main_without_tabs(self):
         if self._followMode:
+            # if we were in follow mode, close the duplicated editor.
             self._tabSecondary.close_tab()
             self._tabSecondary._followMode = False
         if self._tabSecondary.isVisible():
