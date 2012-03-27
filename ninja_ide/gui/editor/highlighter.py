@@ -228,10 +228,10 @@ class Highlighter (QSyntaxHighlighter):
         if not self.multi_start:
             # Do multi-line strings
             in_multiline = self.match_multiline(text, *self.tri_single,
-                                                hls=hls)
+                hls=hls, highlight_errors=highlight_errors)
             if not in_multiline:
                 in_multiline = self.match_multiline(text, *self.tri_double,
-                                                hls=hls)
+                    hls=hls, highlight_errors=highlight_errors)
         else:
             # Do multi-line comment
             self.comment_multiline(text, self.multi_end[0], *self.multi_start)
@@ -263,7 +263,8 @@ class Highlighter (QSyntaxHighlighter):
             self.setFormat(index, length, format)
             index = expression.indexIn(text, index + length)
 
-    def match_multiline(self, text, delimiter, in_state, style, hls=[]):
+    def match_multiline(self, text, delimiter, in_state, style,
+        hls=[], highlight_errors=lambda x: x):
         """Do highlighting of multi-line strings. ``delimiter`` should be a
         ``QRegExp`` for triple-single-quotes or triple-double-quotes, and
         ``in_state`` should be a unique integer to represent the corresponding
@@ -301,6 +302,7 @@ class Highlighter (QSyntaxHighlighter):
                ((st_fmt == STYLES['comment']) and
                (self.previousBlockState() != 0))) and \
                 (len(start_collides) == 0):
+                style = highlight_errors(style)
                 self.setFormat(start, length, style)
             else:
                 self.setCurrentBlockState(0)
