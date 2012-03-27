@@ -288,7 +288,7 @@ def load_settings():
         files = []
         if profile_list:
             files = [item \
-                for item in profileDict[key].toList()[0].toList()]
+                for item in profile_list[0].toList()]
         tempFiles = []
         for file_ in files:
             fileData = file_.toList()
@@ -299,7 +299,7 @@ def load_settings():
         projects = []
         if len(profile_list) > 1:
             projects = [unicode(item.toString()) \
-                for item in profileDict[key].toList()[1].toList()]
+                for item in profile_list[1].toList()]
         PROFILES[unicode(key)] = [files, projects]
     toolbar_items = [str(item.toString()) for item in qsettings.value(
         'preferences/interface/toolbar', []).toList()]
