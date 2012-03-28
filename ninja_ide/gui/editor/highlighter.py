@@ -81,7 +81,7 @@ class Highlighter (QSyntaxHighlighter):
             langSyntax = settings.SYNTAX.get(lang, {})
         else:
             langSyntax = syntax
-        if scheme:
+        if scheme is not None:
             restyle(scheme)
 
         keywords = langSyntax.get('keywords', [])
