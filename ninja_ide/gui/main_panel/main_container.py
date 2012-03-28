@@ -595,7 +595,6 @@ class __MainContainer(QSplitter):
         if self._followMode:
             self._exit_follow_mode()
         else:
-            #check if its instance of Editor
             self._followMode = True
             self.setOrientation(Qt.Horizontal)
             name = unicode(self._tabMain.tabText(self._tabMain.currentIndex()))
@@ -610,8 +609,8 @@ class __MainContainer(QSplitter):
             self._tabSecondary.setTabsClosable(False)
             self._tabSecondary.follow_mode = True
             self.setSizes([1, 1])
+            self.emit(SIGNAL("enabledFollowMode(bool)"), self._followMode)
         self.actualTab = tempTab
-        self.emit(SIGNAL("enabledFollowMode(bool)"), self._followMode)
 
     def _exit_follow_mode(self):
         if self._followMode:
