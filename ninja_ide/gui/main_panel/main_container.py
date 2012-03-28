@@ -130,10 +130,7 @@ class __MainContainer(QSplitter):
     def _main_without_tabs(self):
         if self._followMode:
             # if we were in follow mode, close the duplicated editor.
-            self._tabSecondary.close_tab()
-            self._tabSecondary._followMode = False
-            self._followMode = False
-            self.emit(SIGNAL("enabledFollowMode(bool)"), self._followMode)
+            self._exit_follow_mode()
         elif self._tabSecondary.isVisible():
             self.show_split(self.orientation())
 
@@ -169,7 +166,7 @@ class __MainContainer(QSplitter):
     def show_split(self, orientation):
         closingFollowMode = self._followMode
         if self._followMode:
-            self.show_follow_mode()
+            self._exit_follow_mode()
         if self._tabSecondary.isVisible() and \
         orientation == self.orientation():
             self._tabSecondary.hide()
@@ -596,11 +593,7 @@ class __MainContainer(QSplitter):
         if self._tabSecondary.isVisible() and not self._followMode:
             self.show_split(self.orientation())
         if self._followMode:
-            self._followMode = False
-            self._tabSecondary.close_tab()
-            self._tabSecondary.hide()
-            self._tabSecondary._followMode = False
-            self._tabSecondary.setTabsClosable(True)
+            self._exit_follow_mode()
         else:
             #check if its instance of Editor
             self._followMode = True
@@ -615,14 +608,19 @@ class __MainContainer(QSplitter):
             editor2.verticalScrollBar().setRange(
                 editorWidget._sidebarWidget.highest_line - 2, 0)
             self._tabSecondary.setTabsClosable(False)
-            self._tabSecondary._followMode = True
+            self._tabSecondary.follow_mode = True
             self.setSizes([1, 1])
         self.actualTab = tempTab
         self.emit(SIGNAL("enabledFollowMode(bool)"), self._followMode)
 
     def _exit_follow_mode(self):
         if self._followMode:
-            self.show_follow_mode()
+            self._followMode = False
+            self._tabSecondary.close_tab()
+            self._tabSecondary.hide()
+            self._tabSecondary.follow_mode = False
+            self._tabSecondary.setTabsClosable(True)
+            self.emit(SIGNAL("enabledFollowMode(bool)"), self._followMode)
 
     def get_opened_documents(self):
         if self._followMode:

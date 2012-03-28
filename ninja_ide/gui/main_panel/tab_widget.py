@@ -58,7 +58,7 @@ class TabWidget(QTabWidget):
         self.navigator = TabNavigator()
         self.setCornerWidget(self.navigator, Qt.TopRightCorner)
         self._parent = parent
-        self._followMode = False
+        self.follow_mode = False
         # Configure tabs size behavior
 #        self.setElideMode(Qt.ElideRight)
 #        self.tabBar().setExpanding(True)
@@ -208,7 +208,7 @@ class TabWidget(QTabWidget):
             widget = self.currentWidget()
             if type(widget) is editor.Editor:
                 val = QMessageBox.No
-                if widget.textModified and not self._followMode:
+                if widget.textModified and not self.follow_mode:
                     fileName = self.tabBar().tabText(self.currentIndex())
                     val = QMessageBox.question(
                         self, self.tr('The file %1 was not saved').arg(
@@ -264,7 +264,7 @@ class TabWidget(QTabWidget):
 
     def mousePressEvent(self, event):
         QTabWidget.mousePressEvent(self, event)
-        if self._followMode:
+        if self.follow_mode:
             return
         if event.button() == Qt.RightButton:
             index = self.tabBar().tabAt(event.pos())
