@@ -55,7 +55,7 @@ def restyle(scheme):
     STYLES['spaces'] = format(scheme.get('spaces',
         resources.COLOR_SCHEME['spaces']))
     STYLES['extras'] = format(scheme.get('extras',
-        resources.COLOR_SCHEME['extras']))
+        resources.COLOR_SCHEME['extras']), 'bold')
     STYLES['selectedWord'] = scheme.get('selected-word',
         resources.COLOR_SCHEME['selected-word'])
 
@@ -81,7 +81,7 @@ class Highlighter (QSyntaxHighlighter):
             langSyntax = settings.SYNTAX.get(lang, {})
         else:
             langSyntax = syntax
-        if scheme:
+        if scheme is not None:
             restyle(scheme)
 
         keywords = langSyntax.get('keywords', [])

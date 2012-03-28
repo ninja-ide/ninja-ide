@@ -99,6 +99,10 @@ class MiniMap(QPlainTextEdit):
         cursor = self.cursorForPosition(pos_parent)
         self._parent.verticalScrollBar().setValue(cursor.blockNumber())
 
+    def wheelEvent(self, event):
+        super(MiniMap, self).wheelEvent(event)
+        self._parent.wheelEvent(event)
+
 
 class SliderArea(QFrame):
 
