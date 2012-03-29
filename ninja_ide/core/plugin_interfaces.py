@@ -80,3 +80,15 @@ class IPluginPreferences:
         Save the plugin data as NINJA-IDE settings
         """
         raise MethodNotImplemented("Method not implemented")
+
+
+class IMenuContextTree:
+    """
+    Interface to append actions to the explorer context menus
+    """
+    #mandatory
+    def feed_menu(self, menu, item):
+        """
+        Appends here all new menu actions
+        """
+        raise MethodNotImplemented("Method not implemented")
