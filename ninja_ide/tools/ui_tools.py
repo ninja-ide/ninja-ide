@@ -54,6 +54,8 @@ def load_table(table, headers, data, checkFirstColumn=True):
             table.setItem(r, index, item)
             if index == 0 and checkFirstColumn:
                 item.setCheckState(Qt.Unchecked)
+                item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled |
+                    Qt.ItemIsUserCheckable)
             else:
                 item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
 
