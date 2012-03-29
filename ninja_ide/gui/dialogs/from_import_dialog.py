@@ -16,7 +16,6 @@ class FromImportDialog(QDialog):
 
     def __init__(self, fromSection, editorWidget, parent=None):
         QDialog.__init__(self, parent, Qt.Dialog)
-        self.setModal(True)
         self.setWindowTitle('from ... import ...')
         self._editorWidget = editorWidget
         self._fromSection = fromSection

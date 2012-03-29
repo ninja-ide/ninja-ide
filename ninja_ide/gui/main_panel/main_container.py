@@ -128,7 +128,10 @@ class __MainContainer(QSplitter):
         self.emit(SIGNAL("navigateCode(bool, int)"), val, op)
 
     def _main_without_tabs(self):
-        if self._tabSecondary.isVisible():
+        if self._followMode:
+            # if we were in follow mode, close the duplicated editor.
+            self._exit_follow_mode()
+        elif self._tabSecondary.isVisible():
             self.show_split(self.orientation())
 
     def _secondary_without_tabs(self):
@@ -163,7 +166,7 @@ class __MainContainer(QSplitter):
     def show_split(self, orientation):
         closingFollowMode = self._followMode
         if self._followMode:
-            self.show_follow_mode()
+            self._exit_follow_mode()
         if self._tabSecondary.isVisible() and \
         orientation == self.orientation():
             self._tabSecondary.hide()
@@ -339,10 +342,10 @@ class __MainContainer(QSplitter):
             QMessageBox.information(self, self.tr("Incorrect File"),
                 self.tr("The image couldn\'t be open"))
 
-    def open_file(self, fileName='', cursorPosition=0,\
+    def open_file(self, filename='', cursorPosition=0,\
                     tabIndex=None, positionIsLineNumber=False, notStart=True):
-        fileName = unicode(fileName)
-        if not fileName:
+        filename = unicode(filename)
+        if not filename:
             if settings.WORKSPACE:
                 directory = settings.WORKSPACE
             else:
@@ -350,20 +353,24 @@ class __MainContainer(QSplitter):
             extensions = ';;'.join(
                 ['(*%s)' % e for e in \
                     settings.SUPPORTED_EXTENSIONS + ['.*', '']])
-            fileName = unicode(QFileDialog.getOpenFileName(self,
+            fileNames = list(QFileDialog.getOpenFileNames(self,
                 self.tr("Open File"), directory, extensions))
-        if not fileName:
-            return
-        self._workingDirectory = os.path.dirname(fileName)
-
-        if file_manager.get_file_extension(fileName) in ('jpg', 'png'):
-            self.open_image(fileName)
-        elif file_manager.get_file_extension(fileName).endswith('ui'):
-            self.w = uic.loadUi(fileName)
-            self.w.show()
         else:
-            self.__open_file(fileName, cursorPosition,
-                tabIndex, positionIsLineNumber, notStart)
+            fileNames = [filename]
+        if not fileNames:
+            return
+
+        for filename in fileNames:
+            filename = unicode(filename)
+            if file_manager.get_file_extension(filename) in ('jpg', 'png'):
+                self.open_image(filename)
+            elif file_manager.get_file_extension(filename).endswith('ui'):
+                self.w = uic.loadUi(filename)
+                self.w.show()
+            else:
+                self.__open_file(filename, cursorPosition,
+                    tabIndex, positionIsLineNumber, notStart)
+        self._workingDirectory = os.path.dirname(unicode(fileNames[-1]))
 
     def __open_file(self, fileName='', cursorPosition=0,\
                     tabIndex=None, positionIsLineNumber=False, notStart=True):
@@ -590,36 +597,33 @@ class __MainContainer(QSplitter):
         if self._tabSecondary.isVisible() and not self._followMode:
             self.show_split(self.orientation())
         if self._followMode:
-            self._followMode = False
-            self._tabSecondary.close_tab()
-            self._tabSecondary.hide()
-            self._tabSecondary.setTabsClosable(True)
-            self._tabMain._follow_mode = False
-            self._tabSecondary._follow_mode = False
+            self._exit_follow_mode()
         else:
-            #check if is instance of Editor
             self._followMode = True
             self.setOrientation(Qt.Horizontal)
             name = unicode(self._tabMain.tabText(self._tabMain.currentIndex()))
-            editor2 = editor.create_editor(fileName=name)
-            editor2.setPlainText(editorWidget.get_text())
-            editor2.setReadOnly(True)
+            editor2 = editor.create_editor()
+            editor2.setDocument(editorWidget.document())
             self._tabSecondary.add_tab(editor2, name)
             if editorWidget.textModified:
                 self._tabSecondary.tab_was_modified(True)
-            self._tabMain._follow_mode = True
-            self._tabSecondary._follow_mode = True
             self._tabSecondary.show()
             editor2.verticalScrollBar().setRange(
                 editorWidget._sidebarWidget.highest_line - 2, 0)
             self._tabSecondary.setTabsClosable(False)
+            self._tabSecondary.follow_mode = True
             self.setSizes([1, 1])
+            self.emit(SIGNAL("enabledFollowMode(bool)"), self._followMode)
         self.actualTab = tempTab
-        self.emit(SIGNAL("enabledFollowMode(bool)"), self._followMode)
 
     def _exit_follow_mode(self):
         if self._followMode:
-            self.show_follow_mode()
+            self._followMode = False
+            self._tabSecondary.close_tab()
+            self._tabSecondary.hide()
+            self._tabSecondary.follow_mode = False
+            self._tabSecondary.setTabsClosable(True)
+            self.emit(SIGNAL("enabledFollowMode(bool)"), self._followMode)
 
     def get_opened_documents(self):
         if self._followMode:

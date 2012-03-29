@@ -55,7 +55,7 @@ def restyle(scheme):
     STYLES['spaces'] = format(scheme.get('spaces',
         resources.COLOR_SCHEME['spaces']))
     STYLES['extras'] = format(scheme.get('extras',
-        resources.COLOR_SCHEME['extras']))
+        resources.COLOR_SCHEME['extras']), 'bold')
     STYLES['selectedWord'] = scheme.get('selected-word',
         resources.COLOR_SCHEME['selected-word'])
 
@@ -73,12 +73,15 @@ class Highlighter (QSyntaxHighlighter):
         if lang is not None:
             self.apply_highlight(lang, scheme)
 
+    def sanitize(self, word):
+        return word.replace('\\', '\\\\')
+
     def apply_highlight(self, lang, scheme=None, syntax=None):
         if syntax is None:
             langSyntax = settings.SYNTAX.get(lang, {})
         else:
             langSyntax = syntax
-        if scheme:
+        if scheme is not None:
             restyle(scheme)
 
         keywords = langSyntax.get('keywords', [])
@@ -100,14 +103,14 @@ class Highlighter (QSyntaxHighlighter):
         # All other rules
         proper = langSyntax.get('properObject', None)
         if proper is not None:
-            proper = '\\b' + str(proper[0]) + '\\b'
+            proper = r'\b%s\b' % str(proper[0])
             rules += [(proper, 0, STYLES['properObject'])]
 
         rules.append((r'__\w+__', 0, STYLES['properObject']))
 
         definition = langSyntax.get('definition', [])
         for de in definition:
-            expr = '\\b' + de + '\\b\\s*(\\w+)'
+            expr = r'\b%s\b\s*(\w+)' % de
             rules.append((expr, 1, STYLES['definition']))
 
         # Numeric literals
@@ -166,7 +169,8 @@ class Highlighter (QSyntaxHighlighter):
     def set_selected_word(self, word):
         """Set the word to highlight."""
         if len(word) > 2:
-            self.selected_word_pattern = QRegExp(r'\b%s\b' % word)
+            self.selected_word_pattern = QRegExp(
+                r'\b%s\b' % self.sanitize(word))
         else:
             self.selected_word_pattern = None
 
@@ -224,10 +228,10 @@ class Highlighter (QSyntaxHighlighter):
         if not self.multi_start:
             # Do multi-line strings
             in_multiline = self.match_multiline(text, *self.tri_single,
-                                                hls=hls)
+                hls=hls, highlight_errors=highlight_errors)
             if not in_multiline:
                 in_multiline = self.match_multiline(text, *self.tri_double,
-                                                hls=hls)
+                    hls=hls, highlight_errors=highlight_errors)
         else:
             # Do multi-line comment
             self.comment_multiline(text, self.multi_end[0], *self.multi_start)
@@ -259,7 +263,8 @@ class Highlighter (QSyntaxHighlighter):
             self.setFormat(index, length, format)
             index = expression.indexIn(text, index + length)
 
-    def match_multiline(self, text, delimiter, in_state, style, hls=[]):
+    def match_multiline(self, text, delimiter, in_state, style,
+        hls=[], highlight_errors=lambda x: x):
         """Do highlighting of multi-line strings. ``delimiter`` should be a
         ``QRegExp`` for triple-single-quotes or triple-double-quotes, and
         ``in_state`` should be a unique integer to represent the corresponding
@@ -297,6 +302,7 @@ class Highlighter (QSyntaxHighlighter):
                ((st_fmt == STYLES['comment']) and
                (self.previousBlockState() != 0))) and \
                 (len(start_collides) == 0):
+                style = highlight_errors(style)
                 self.setFormat(start, length, style)
             else:
                 self.setCurrentBlockState(0)

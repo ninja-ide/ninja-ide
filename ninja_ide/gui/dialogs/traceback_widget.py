@@ -19,7 +19,6 @@ class PluginErrorDialog(QDialog):
     def __init__(self):
         QDialog.__init__(self)
         self.setWindowTitle(self.tr("Plugin error report"))
-        self.setModal(True)
         self.resize(525, 400)
         vbox = QVBoxLayout(self)
         label = QLabel(self.tr('Some plugins have errors and were removed'))

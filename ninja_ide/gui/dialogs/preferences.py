@@ -61,7 +61,6 @@ class PreferencesWidget(QDialog):
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
         self.setWindowTitle(self.tr("NINJA-IDE - Preferences"))
-        self.setModal(True)
         self.setMaximumSize(QSize(0, 0))
 
         self.overlay = ui_tools.Overlay(self)
@@ -787,16 +786,6 @@ class EditorGeneral(QWidget):
         #Scheme
         hbox = QHBoxLayout(groupBoxScheme)
         self._listScheme = QListWidget()
-        self._listScheme.addItem('default')
-        self._schemes = json_manager.load_editor_skins()
-        for item in self._schemes:
-            self._listScheme.addItem(item)
-        items = self._listScheme.findItems(
-            qsettings.value('scheme', '').toString(), Qt.MatchExactly)
-        if items:
-            self._listScheme.setCurrentItem(items[0])
-        else:
-            self._listScheme.setCurrentRow(0)
         hbox.addWidget(self._listScheme)
         qsettings.endGroup()
         qsettings.endGroup()
@@ -810,6 +799,25 @@ class EditorGeneral(QWidget):
             SIGNAL("clicked()"), self._load_editor_font)
         self.connect(self._listScheme, SIGNAL("itemSelectionChanged()"),
             self._preview_style)
+
+    def showEvent(self, event):
+        super(EditorGeneral, self).showEvent(event)
+        qsettings = QSettings()
+        qsettings.beginGroup('preferences')
+        qsettings.beginGroup('editor')
+        self._listScheme.clear()
+        self._listScheme.addItem('default')
+        self._schemes = json_manager.load_editor_skins()
+        for item in self._schemes:
+            self._listScheme.addItem(item)
+        items = self._listScheme.findItems(
+            qsettings.value('scheme', '').toString(), Qt.MatchExactly)
+        if items:
+            self._listScheme.setCurrentItem(items[0])
+        else:
+            self._listScheme.setCurrentRow(0)
+        qsettings.endGroup()
+        qsettings.endGroup()
 
     def _preview_style(self):
         scheme = unicode(self._listScheme.currentItem().text())
@@ -1377,6 +1385,12 @@ class EditorSchemeDesigner(QWidget):
             editorWidget.restyle(editorWidget.lang)
             resources.CUSTOM_SCHEME = custom
             return scheme
+
+    def hideEvent(self, event):
+        super(EditorSchemeDesigner, self).hideEvent(event)
+        editorWidget = main_container.MainContainer().get_actual_editor()
+        if type(editorWidget) == editor.Editor:
+            editorWidget.restyle(editorWidget.lang)
 
     def save(self):
         """All the widgets in preferences must contain a save method."""

@@ -24,7 +24,6 @@ class ThemesManagerWidget(QDialog):
     def __init__(self, parent):
         QDialog.__init__(self, parent, Qt.Dialog)
         self.setWindowTitle(self.tr("Themes Manager"))
-        self.setModal(True)
         self.resize(700, 500)
 
         vbox = QVBoxLayout(self)
