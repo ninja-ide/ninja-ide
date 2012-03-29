@@ -161,6 +161,7 @@ class PythonProjectHandler(plugin_interfaces.IProjectTypeHandler):
         project['description'] = unicode(page.txtDescription.toPlainText())
         project['license'] = unicode(page.cboLicense.currentText())
         project['venv'] = unicode(page.vtxtPlace.text())
+        project['project-type'] = unicode(wizard.option)
         json_manager.create_ninja_project(path, name, project)
         try:
             file_manager.create_init_file(path)
