@@ -47,9 +47,11 @@ class Analyzer(object):
             if line != self._fixed_line:
                 self._fixed_line = line
                 new_line = ''
-                indent = re.match('^\s+', reason.text)
-                if indent is not None:
-                    new_line = indent.group() + 'pass'
+                #This is failing sometimes, it should remaing commented
+                #until we find the proper fix.
+#                indent = re.match('^\s+', reason.text)
+#                if indent is not None:
+#                    new_line = indent.group() + 'pass'
                 split_source = source.splitlines()
                 split_source[line] = new_line
                 source = '\n'.join(split_source)

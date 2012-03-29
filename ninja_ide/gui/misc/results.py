@@ -41,7 +41,7 @@ class Results(QWidget):
         filename = unicode(item.toolTip(1))
         line = int(item.text(2)) - 1
         main_container.MainContainer().open_file(
-                fileName=filename,
+                filename=filename,
                 cursorPosition=line,
                 positionIsLineNumber=True)
         self._parent.hide()

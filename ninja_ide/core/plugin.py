@@ -32,7 +32,8 @@ class Plugin(QObject):
             self._path = ''
 
     def initialize(self):
-        raise NotImplemented
+        """The initialization of the Plugin should be here."""
+        self.logger.info("Initializing Plugin...")
 
     def finish(self):
         pass
