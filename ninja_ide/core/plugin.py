@@ -32,7 +32,7 @@ class Plugin(QObject):
             self._path = ''
 
     def initialize(self):
-        raise NotImplemented
+        pass
 
     def finish(self):
         pass
