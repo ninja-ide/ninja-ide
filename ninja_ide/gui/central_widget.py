@@ -97,9 +97,6 @@ class __CentralWidget(QWidget):
             heightList[0].toInt()[0], heightList[1].toInt()[0]]
         self._splitterAreaSizes = [
             widthList[0].toInt()[0], widthList[1].toInt()[0]]
-        #Set the sizes to splitters
-        self._splitterMain.setSizes(self._splitterMainSizes)
-        self._splitterArea.setSizes(self._splitterAreaSizes)
         if not event.spontaneous():
             self.change_misc_visibility()
         if bin(settings.UI_LAYOUT)[-1] == '1':
@@ -108,6 +105,9 @@ class __CentralWidget(QWidget):
             self.splitter_misc_rotate()
         if bin(settings.UI_LAYOUT >> 2)[-1] == '1':
             self.splitter_central_orientation()
+        #Set the sizes to splitters
+        self._splitterMain.setSizes(self._splitterMainSizes)
+        self._splitterArea.setSizes(self._splitterAreaSizes)
 
     def change_misc_visibility(self):
         if self.misc.isVisible():
