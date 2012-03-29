@@ -20,7 +20,6 @@ class AboutNinja(QDialog):
 
     def __init__(self, parent=None):
         QDialog.__init__(self, parent, Qt.Dialog)
-        self.setModal(True)
         self.setWindowTitle(self.tr("About NINJA-IDE"))
         self.setMaximumSize(QSize(0, 0))
 

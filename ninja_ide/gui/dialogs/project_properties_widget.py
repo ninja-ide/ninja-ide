@@ -35,7 +35,6 @@ class ProjectProperties(QDialog):
 
     def __init__(self, item, parent=None):
         QDialog.__init__(self, parent, Qt.Dialog)
-        self.setModal(True)
         self._item = item
         self.setWindowTitle(self.tr("Project Properties"))
         vbox = QVBoxLayout(self)
