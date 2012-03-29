@@ -342,10 +342,10 @@ class __MainContainer(QSplitter):
             QMessageBox.information(self, self.tr("Incorrect File"),
                 self.tr("The image couldn\'t be open"))
 
-    def open_file(self, fileName='', cursorPosition=0,\
+    def open_file(self, filename='', cursorPosition=0,\
                     tabIndex=None, positionIsLineNumber=False, notStart=True):
-        fileName = unicode(fileName)
-        if not fileName:
+        filename = unicode(filename)
+        if not filename:
             if settings.WORKSPACE:
                 directory = settings.WORKSPACE
             else:
@@ -353,20 +353,24 @@ class __MainContainer(QSplitter):
             extensions = ';;'.join(
                 ['(*%s)' % e for e in \
                     settings.SUPPORTED_EXTENSIONS + ['.*', '']])
-            fileName = unicode(QFileDialog.getOpenFileName(self,
+            fileNames = list(QFileDialog.getOpenFileNames(self,
                 self.tr("Open File"), directory, extensions))
-        if not fileName:
-            return
-        self._workingDirectory = os.path.dirname(fileName)
-
-        if file_manager.get_file_extension(fileName) in ('jpg', 'png'):
-            self.open_image(fileName)
-        elif file_manager.get_file_extension(fileName).endswith('ui'):
-            self.w = uic.loadUi(fileName)
-            self.w.show()
         else:
-            self.__open_file(fileName, cursorPosition,
-                tabIndex, positionIsLineNumber, notStart)
+            fileNames = [filename]
+        if not fileNames:
+            return
+
+        for filename in fileNames:
+            filename = unicode(filename)
+            if file_manager.get_file_extension(filename) in ('jpg', 'png'):
+                self.open_image(filename)
+            elif file_manager.get_file_extension(filename).endswith('ui'):
+                self.w = uic.loadUi(filename)
+                self.w.show()
+            else:
+                self.__open_file(filename, cursorPosition,
+                    tabIndex, positionIsLineNumber, notStart)
+        self._workingDirectory = os.path.dirname(unicode(fileNames[-1]))
 
     def __open_file(self, fileName='', cursorPosition=0,\
                     tabIndex=None, positionIsLineNumber=False, notStart=True):
