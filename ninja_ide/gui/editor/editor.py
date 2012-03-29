@@ -625,6 +625,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.moveCursor(QTextCursor.Down)
         elif settings.COMPLETE_DECLARATIONS:
             helpers.check_for_assistance_completion(self, text)
+        self.moveCursor(QTextCursor.EndOfLine)
 
     def complete_declaration(self):
         settings.COMPLETE_DECLARATIONS = not settings.COMPLETE_DECLARATIONS

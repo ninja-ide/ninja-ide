@@ -206,7 +206,7 @@ class MainService(QObject):
         """
         Open a single file, if the file is already open it get focus
         """
-        self._main.open_file(fileName=fileName, cursorPosition=cursorPosition,
+        self._main.open_file(filename=fileName, cursorPosition=cursorPosition,
                                 positionIsLineNumber=positionIsLineNumber)
 
     def open_image(self, filename):
