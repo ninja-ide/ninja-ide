@@ -14,7 +14,32 @@ class MethodNotImplemented(Exception):
     pass
 
 
-class IProjectTypeHandler:
+def implements(iface):
+    """
+    A decorator to check if interfaces are correctly implmented
+    #TODO: check if functions parameters are correct
+    """
+
+    def implementsIA(cls, *args, **kwargs):
+        """
+        Find out which methods should be and are not in the implementation
+        of the interface, raise errors if class is not correctly implementing.
+        """
+        should_implement = set(dir(iface)).difference(set(dir(object)))
+        should_implement = set(should for should in should_implement if
+                                not should.startswith("_"))
+        not_implemented = should_implement.difference(set(dir(cls)))
+        if len(not_implemented) > 0:
+            raise MethodNotImplemented("Methods %s not implemented" %
+                                         ", ".join(not_implemented))
+        if cls.__name__ not in globals():
+            #if decorated a class is not in globals
+            globals()[cls.__name__] = cls
+        return cls
+    return implementsIA
+
+
+class IProjectTypeHandler(object):
 
     """
     Interface to create a Project type handler
@@ -25,7 +50,7 @@ class IProjectTypeHandler:
         """
         Returns a collection of QWizardPage
         """
-        raise MethodNotImplemented("Method not implemented")
+        pass
 
     #mandatory
     def on_wizard_finish(self, wizard):
@@ -33,13 +58,13 @@ class IProjectTypeHandler:
         Called when the user finish the wizard
         @wizard: QWizard instance
         """
-        raise MethodNotImplemented("Method not implemented")
+        pass
 
     def get_context_menus(self):
         """"
         Returns a iterable of QMenu
         """
-        return ()
+        pass
 
 
 class ISymbolsHandler:
@@ -67,7 +92,7 @@ class ISymbolsHandler:
         Returns the dict needed by the tree
         @source: Source code in plain text
         """
-        raise MethodNotImplemented("Method not implemented")
+        pass
 
 
 class IPluginPreferences:
@@ -79,4 +104,4 @@ class IPluginPreferences:
         """
         Save the plugin data as NINJA-IDE settings
         """
-        raise MethodNotImplemented("Method not implemented")
+        pass
