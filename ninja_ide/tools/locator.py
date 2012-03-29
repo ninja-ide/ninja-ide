@@ -66,7 +66,7 @@ class Locator(QObject):
     def _load_results(self):
         if len(self._thread.results) == 1:
             main_container.MainContainer().open_file(
-                fileName=self._thread.results[0][1],
+                filename=self._thread.results[0][1],
                 cursorPosition=self._thread.results[0][2],
                 positionIsLineNumber=True)
         elif len(self._thread.results) == 0:

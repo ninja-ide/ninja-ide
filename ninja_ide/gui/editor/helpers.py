@@ -15,7 +15,7 @@ patIndent = re.compile('^\s+')
 patIsLocalFunction = re.compile('(\s)+self\.(\w)+\(\)')
 patClass = re.compile("(\\s)*class.+\\:$")
 patInit = re.compile("(\\s)*def __init__\(self,.+\\:$")
-endCharsForIndent = [':', '{', '(', '[', ',']
+endCharsForIndent = [':', '{', '(', '[']
 
 
 def get_leading_spaces(line):
