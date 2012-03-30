@@ -320,10 +320,8 @@ class PageProjectProperties(QWizardPage):
             lambda: self.emit(SIGNAL("completeChanged()")))
 
     def isComplete(self):
-        name = unicode(self.txtName.text())
-        place = unicode(self.txtPlace.text())
-        name.strip()
-        place.strip()
+        name = unicode(self.txtName.text()).strip()
+        place = unicode(self.txtPlace.text()).strip()
         return (len(name) > 0) and (len(place) > 0)
 
     def load_folder(self):
