@@ -396,6 +396,10 @@ class __Actions(QObject):
         self.ide.explorer.open_project_folder(unicode(path))
         self.ide.status.explore_code()
 
+    def open_project_properties(self):
+        """Open a Project and load the symbols in the Code Locator."""
+        self.ide.explorer.open_project_properties()
+
     def create_profile(self):
         """Create a profile binding files and projects to a key."""
         profileInfo = QInputDialog.getText(None,
