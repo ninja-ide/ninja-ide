@@ -296,6 +296,10 @@ class __ExplorerContainer(QTabWidget):
             if file_manager.folder_exists(project):
                 self.open_project_folder(project, notIDEStart)
 
+    def open_project_properties(self):
+        if self._treeProjects:
+            self._treeProjects.open_project_properties()
+
     def close_opened_projects(self):
         if self._treeProjects:
             self._treeProjects._close_open_projects()

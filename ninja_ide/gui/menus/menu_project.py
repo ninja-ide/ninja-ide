@@ -34,6 +34,9 @@ class MenuProject(QObject):
                 resources.get_shortcut("Stop-execution").toString(
                     QKeySequence.NativeText)))
         menuProject.addSeparator()
+        projectPropertiesAction = menuProject.addAction(
+            self.tr("Open Project Properties"))
+        menuProject.addSeparator()
         previewAction = menuProject.addAction(
             QIcon(resources.IMAGES['preview-web']),
             self.tr("Preview Web in Default Browser"))
@@ -53,6 +56,8 @@ class MenuProject(QObject):
             actions.Actions().kill_execution)
         self.connect(previewAction, SIGNAL("triggered()"),
             actions.Actions().preview_in_browser)
+        self.connect(projectPropertiesAction, SIGNAL("triggered()"),
+            actions.Actions().open_project_properties)
 #        self.connect(debugAction, SIGNAL("triggered()"),
 #            actions.Actions().debug_file)
 #        self.connect(diagramView, SIGNAL("triggered()"),
