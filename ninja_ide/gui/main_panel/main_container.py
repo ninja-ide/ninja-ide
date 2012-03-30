@@ -110,8 +110,9 @@ class __MainContainer(QSplitter):
         self.connect(self._tabSecondary, SIGNAL("allTabsClosed()"),
             self._secondary_without_tabs)
         #reload file
-        self.connect(self._tabMain, SIGNAL("reloadFile()"), self.reload_file)
-        self.connect(self._tabSecondary, SIGNAL("reloadFile()"),
+        self.connect(self._tabMain, SIGNAL("reloadFile(QWidget)"),
+            self.reload_file)
+        self.connect(self._tabSecondary, SIGNAL("reloadFile(QWidget)"),
             self.reload_file)
         #for Save on Close operation
         self.connect(self._tabMain, SIGNAL("saveActualEditor()"),
@@ -314,13 +315,14 @@ class __MainContainer(QSplitter):
             return widget
         return None
 
-    def reload_file(self):
-        editorWidget = self.get_actual_editor()
+    def reload_file(self, editorWidget=None):
+        if editorWidget is None:
+            editorWidget = self.get_actual_editor()
         if type(editorWidget) is editor.Editor and editorWidget.ID:
             fileName = editorWidget.ID
             old_cursor_position = editorWidget.textCursor().position()
-            old_widget_index = self.actualTab.currentIndex()
-            self.actualTab.close_tab()
+            old_widget_index = self.actualTab.indexOf(editorWidget)
+            self.actualTab.removeTab(old_widget_index)
             #open the file in the same tab as before
             self.open_file(fileName, tabIndex=old_widget_index)
             #get the new editor and set the old cursor position
@@ -536,22 +538,35 @@ class __MainContainer(QSplitter):
             editorWidget = self._tabMain.widget(i)
             if type(editorWidget) is editor.Editor and \
             file_manager.belongs_to_folder(projectFolder, editorWidget.ID):
-                self.save_file(editorWidget)
+                reloaded = self._tabMain.check_for_external_modifications(
+                    editorWidget)
+                if not reloaded:
+                    self.save_file(editorWidget)
         for i in xrange(self._tabSecondary.count()):
             editorWidget = self._tabSecondary.widget(i)
             if type(editorWidget) is editor.Editor and \
             file_manager.belongs_to_folder(projectFolder, editorWidget.ID):
-                self.save_file(editorWidget)
+                reloaded = self._tabSecondary.check_for_external_modifications(
+                    editorWidget)
+                if not reloaded:
+                    self.save_file(editorWidget)
 
     def save_all(self):
         for i in xrange(self._tabMain.count()):
             editorWidget = self._tabMain.widget(i)
             if type(editorWidget) is editor.Editor:
-                self.save_file(editorWidget)
+                reloaded = self._tabMain.check_for_external_modifications(
+                    editorWidget)
+                if not reloaded:
+                    self.save_file(editorWidget)
         for i in xrange(self._tabSecondary.count()):
             editorWidget = self._tabSecondary.widget(i)
+            self._tabSecondary.check_for_external_modifications(editorWidget)
             if type(editorWidget) is editor.Editor:
-                self.save_file(editorWidget)
+                reloaded = self._tabSecondary.check_for_external_modifications(
+                    editorWidget)
+                if not reloaded:
+                    self.save_file(editorWidget)
 
     def show_start_page(self):
         startPage = browser_widget.BrowserWidget(
