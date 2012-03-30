@@ -63,6 +63,12 @@ class WizardNewProject(QWizard):
         self.addPage(self.projectTypePage)
         self.addPage(PageProjectProperties())
 
+        self.setButtonLayout([
+            QWizard.BackButton,
+            QWizard.Stretch,
+            QWizard.NextButton,
+            QWizard.FinishButton])
+
     def add_project_pages(self, option='Python'):
         logger.debug("Add project pages")
         self.option = option
@@ -75,15 +81,6 @@ class WizardNewProject(QWizard):
         self.addPage(PageProjectProperties())
         for i in listIds:
             self.removePage(i)
-
-    def next(self):
-        logger.debug("Next")
-        if self.currentPage() == self.projectTypePage:
-            ptype = unicode(
-                self.projectTypePage.listWidget.currentItem().text())
-            logger.debug("Project type is %s" % ptype)
-            self.add_project_pages(ptype)
-        super(WizardNewProject, self).next()
 
     def done(self, result):
         logger.debug("Done")
@@ -169,7 +166,6 @@ class PythonProjectHandler(plugin_interfaces.IProjectTypeHandler):
         project['description'] = unicode(page.txtDescription.toPlainText())
         project['license'] = unicode(page.cboLicense.currentText())
         project['venv'] = unicode(page.vtxtPlace.text())
-        project['project-type'] = unicode(wizard.option)
         json_manager.create_ninja_project(path, name, project)
         try:
             file_manager.create_init_file(path)
@@ -219,6 +215,7 @@ class ImportFromSourcesProjectHandler(plugin_interfaces.IProjectTypeHandler):
         project['description'] = unicode(page.txtDescription.toPlainText())
         project['license'] = unicode(page.cboLicense.currentText())
         project['venv'] = unicode(page.vtxtPlace.text())
+        project['project-type'] = unicode(wizard.option)
         json_manager.create_ninja_project(path, name, project)
         wizard._load_project(path)
 
@@ -245,6 +242,13 @@ class PageProjectType(QWizardPage):
         types.insert(0, types.pop(index))
         self.listWidget.addItems(types)
         self.listWidget.setCurrentRow(0)
+
+        self.connect(self.listWidget, SIGNAL("itemActivated(QListWidgetItem*)"),
+            self.load_pages)
+
+    def load_pages(self):
+        self.wizard().add_project_pages(
+            unicode(self.listWidget.currentItem().text()))
 
 
 ###############################################################################
@@ -276,12 +280,10 @@ class PageProjectProperties(QWizardPage):
         #Fields on de right of the grid
         #Name
         self.txtName = QLineEdit()
-        self.registerField('PageProjectProperties_projectName*', self.txtName)
         #Location
         hPlace = QHBoxLayout()
         self.txtPlace = QLineEdit()
         self.txtPlace.setReadOnly(True)
-        self.registerField('PageProjectProperties_place*', self.txtPlace)
         self.btnExamine = QPushButton(self.tr("Examine..."))
         hPlace.addWidget(self.txtPlace)
         hPlace.addWidget(self.btnExamine)
@@ -289,7 +291,6 @@ class PageProjectProperties(QWizardPage):
         vPlace = QHBoxLayout()
         self.vtxtPlace = QLineEdit()
         self.vtxtPlace.setReadOnly(True)
-        self.registerField('PageProjectProperties_vplace', self.vtxtPlace)
         self.vbtnExamine = QPushButton(self.tr("Examine..."))
         vPlace.addWidget(self.vtxtPlace)
         vPlace.addWidget(self.vbtnExamine)
@@ -320,10 +321,18 @@ class PageProjectProperties(QWizardPage):
         self.connect(self.btnExamine, SIGNAL('clicked()'), self.load_folder)
         self.connect(self.vbtnExamine, SIGNAL('clicked()'),
             self.load_folder_venv)
+        self.connect(self.txtName, SIGNAL('textChanged(const QString&)'),
+            lambda: self.emit(SIGNAL("completeChanged()")))
+
+    def isComplete(self):
+        name = unicode(self.txtName.text()).strip()
+        place = unicode(self.txtPlace.text()).strip()
+        return (len(name) > 0) and (len(place) > 0)
 
     def load_folder(self):
         self.txtPlace.setText(unicode(QFileDialog.getExistingDirectory(
             self, self.tr("New Project Folder"))))
+        self.emit(SIGNAL("completeChanged()"))
 
     def load_folder_venv(self):
         self.vtxtPlace.setText(unicode(QFileDialog.getExistingDirectory(
