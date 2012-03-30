@@ -738,6 +738,7 @@ class EditorGeneral(QWidget):
     def __init__(self):
         QWidget.__init__(self)
         vbox = QVBoxLayout(self)
+        self.original_style = copy.copy(resources.CUSTOM_SCHEME)
 
         groupBoxMini = QGroupBox(self.tr("MiniMap:"))
         groupBoxTypo = QGroupBox(self.tr("Typography:"))
@@ -819,15 +820,22 @@ class EditorGeneral(QWidget):
         qsettings.endGroup()
         qsettings.endGroup()
 
+    def hideEvent(self, event):
+        super(EditorGeneral, self).hideEvent(event)
+        resources.CUSTOM_SCHEME = self.original_style
+        editorWidget = main_container.MainContainer().get_actual_editor()
+        if type(editorWidget) == editor.Editor:
+            editorWidget.restyle(editorWidget.lang)
+            editorWidget._sidebarWidget.repaint()
+
     def _preview_style(self):
         scheme = unicode(self._listScheme.currentItem().text())
         editorWidget = main_container.MainContainer().get_actual_editor()
         if type(editorWidget) == editor.Editor:
-            custom = resources.CUSTOM_SCHEME
             resources.CUSTOM_SCHEME = self._schemes.get(scheme,
                 resources.COLOR_SCHEME)
             editorWidget.restyle(editorWidget.lang)
-            resources.CUSTOM_SCHEME = custom
+            editorWidget._sidebarWidget.repaint()
 
     def _load_editor_font(self):
         try:
@@ -873,6 +881,7 @@ class EditorGeneral(QWidget):
         qsettings.setValue('fontSize', settings.FONT_SIZE)
         editorWidget = main_container.MainContainer().get_actual_editor()
         scheme = unicode(self._listScheme.currentItem().text())
+        self.original_style = resources.CUSTOM_SCHEME
         if type(editorWidget) == editor.Editor:
             editorWidget.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
         qsettings.setValue('scheme', scheme)
@@ -1105,6 +1114,7 @@ class EditorSchemeDesigner(QWidget):
         vbox = QVBoxLayout(self)
         scrollArea = QScrollArea()
         vbox.addWidget(scrollArea)
+        self.original_style = copy.copy(resources.CUSTOM_SCHEME)
 
         self.txtKeyword = QLineEdit()
         btnKeyword = QPushButton(self.tr("Pick Color"))
@@ -1154,6 +1164,10 @@ class EditorSchemeDesigner(QWidget):
         btnErrorUnderline = QPushButton(self.tr("Pick Color"))
         self.txtPep8Underline = QLineEdit()
         btnPep8Underline = QPushButton(self.tr("Pick Color"))
+        self.txtSidebarBackground = QLineEdit()
+        btnSidebarBackground = QPushButton(self.tr("Pick Color"))
+        self.txtSidebarForeground = QLineEdit()
+        btnSidebarForeground = QPushButton(self.tr("Pick Color"))
 
         grid = QGridLayout()
         btnSaveScheme = QPushButton(self.tr("Save Scheme!"))
@@ -1230,6 +1244,12 @@ class EditorSchemeDesigner(QWidget):
         grid.addWidget(QLabel(self.tr("PEP8 Underline:")), 24, 0)
         grid.addWidget(self.txtPep8Underline, 24, 1)
         grid.addWidget(btnPep8Underline, 24, 2)
+        grid.addWidget(QLabel(self.tr("Sidebar Background:")), 25, 0)
+        grid.addWidget(self.txtSidebarBackground, 25, 1)
+        grid.addWidget(btnSidebarBackground, 25, 2)
+        grid.addWidget(QLabel(self.tr("Sidebar Foreground:")), 26, 0)
+        grid.addWidget(self.txtSidebarForeground, 26, 1)
+        grid.addWidget(btnSidebarForeground, 26, 2)
 
         frame = QFrame()
         frame.setLayout(grid)
@@ -1285,6 +1305,12 @@ class EditorSchemeDesigner(QWidget):
             'error-underline', resources.COLOR_SCHEME['error-underline']))
         self.txtPep8Underline.setText(resources.CUSTOM_SCHEME.get(
             'pep8-underline', resources.COLOR_SCHEME['pep8-underline']))
+        self.txtSidebarBackground.setText(resources.CUSTOM_SCHEME.get(
+            'sidebar-background',
+            resources.COLOR_SCHEME['sidebar-background']))
+        self.txtSidebarForeground.setText(resources.CUSTOM_SCHEME.get(
+            'sidebar-foreground',
+            resources.COLOR_SCHEME['sidebar-foreground']))
 
         self.connect(btnKeyword, SIGNAL("clicked()"),
             lambda: self._pick_color(self.txtKeyword))
@@ -1334,6 +1360,10 @@ class EditorSchemeDesigner(QWidget):
             lambda: self._pick_color(self.txtErrorUnderline))
         self.connect(btnPep8Underline, SIGNAL("clicked()"),
             lambda: self._pick_color(self.txtPep8Underline))
+        self.connect(btnSidebarBackground, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtSidebarBackground))
+        self.connect(btnSidebarForeground, SIGNAL("clicked()"),
+            lambda: self._pick_color(self.txtSidebarForeground))
 
         # Connect Buttons
         for i in xrange(1, 25):
@@ -1379,15 +1409,17 @@ class EditorSchemeDesigner(QWidget):
                 "brace-background": str(self.txtBraceBackground.text()),
                 "brace-foreground": str(self.txtBraceForeground.text()),
                 "error-underline": str(self.txtErrorUnderline.text()),
-                "pep8-underline": str(self.txtPep8Underline.text())}
-            custom = copy.copy(resources.CUSTOM_SCHEME)
+                "pep8-underline": str(self.txtPep8Underline.text()),
+                "sidebar-background": str(self.txtSidebarBackground.text()),
+                "sidebar-foreground": str(self.txtSidebarForeground.text())}
             resources.CUSTOM_SCHEME = scheme
             editorWidget.restyle(editorWidget.lang)
-            resources.CUSTOM_SCHEME = custom
+            editorWidget._sidebarWidget.repaint()
             return scheme
 
     def hideEvent(self, event):
         super(EditorSchemeDesigner, self).hideEvent(event)
+        resources.CUSTOM_SCHEME = self.original_style
         editorWidget = main_container.MainContainer().get_actual_editor()
         if type(editorWidget) == editor.Editor:
             editorWidget.restyle(editorWidget.lang)

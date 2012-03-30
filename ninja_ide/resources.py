@@ -201,7 +201,9 @@ COLOR_SCHEME = {
     "brace-background": "#5BC85B",
     "brace-foreground": "red",
     "error-underline": "red",
-    "pep8-underline": "yellow"}
+    "pep8-underline": "yellow",
+    "sidebar-background": "#c4c4c4",
+    "sidebar-foreground": "black"}
 
 CUSTOM_SCHEME = {}
 

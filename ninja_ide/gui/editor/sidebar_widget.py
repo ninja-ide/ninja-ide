@@ -166,7 +166,15 @@ class SidebarWidget(QWidget):
             self.edit.textCursor().position())
 
         painter = QPainter(self)
-        painter.fillRect(self.rect(), Qt.lightGray)
+        background = resources.CUSTOM_SCHEME.get('sidebar-background',
+            resources.COLOR_SCHEME['sidebar-background'])
+        foreground = resources.CUSTOM_SCHEME.get('sidebar-foreground',
+            resources.COLOR_SCHEME['sidebar-foreground'])
+        pep8color = resources.CUSTOM_SCHEME.get('pep8-underline',
+            resources.COLOR_SCHEME['pep8-underline'])
+        errorcolor = resources.CUSTOM_SCHEME.get('error-underline',
+            resources.COLOR_SCHEME['error-underline'])
+        painter.fillRect(self.rect(), QColor(background))
 
         block = self.edit.firstVisibleBlock()
         viewport_offset = self.edit.contentOffset()
@@ -185,7 +193,7 @@ class SidebarWidget(QWidget):
             error = False
             if settings.CHECK_STYLE and \
                ((line_count - 1) in self._pep8Lines):
-                painter.setPen(Qt.darkYellow)
+                painter.setPen(QColor(pep8color))
                 font = painter.font()
                 font.setItalic(True)
                 font.setUnderline(True)
@@ -193,14 +201,14 @@ class SidebarWidget(QWidget):
                 error = True
             elif settings.FIND_ERRORS and \
                  ((line_count - 1) in self._errorsLines):
-                painter.setPen(Qt.red)
+                painter.setPen(QColor(errorcolor))
                 font = painter.font()
                 font.setItalic(True)
                 font.setUnderline(True)
                 painter.setFont(font)
                 error = True
             else:
-                painter.setPen(Qt.black)
+                painter.setPen(QColor(foreground))
 
             # We want the line number for the selected line to be bold.
             bold = False
