@@ -787,6 +787,16 @@ class EditorGeneral(QWidget):
         #Scheme
         hbox = QHBoxLayout(groupBoxScheme)
         self._listScheme = QListWidget()
+        self._listScheme.addItem('default')
+        self._schemes = json_manager.load_editor_skins()
+        for item in self._schemes:
+            self._listScheme.addItem(item)
+        items = self._listScheme.findItems(
+            qsettings.value('scheme', '').toString(), Qt.MatchExactly)
+        if items:
+            self._listScheme.setCurrentItem(items[0])
+        else:
+            self._listScheme.setCurrentRow(0)
         hbox.addWidget(self._listScheme)
         qsettings.endGroup()
         qsettings.endGroup()
