@@ -238,7 +238,7 @@ class PageProjectType(QWizardPage):
         self.listWidget.addItems(types)
         self.listWidget.setCurrentRow(0)
 
-        self.connect(self.listWidget, SIGNAL("itemClicked(QListWidgetItem*)"),
+        self.connect(self.listWidget, SIGNAL("itemActivated(QListWidgetItem*)"),
             self.load_pages)
 
     def load_pages(self):
