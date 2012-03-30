@@ -78,14 +78,6 @@ class WizardNewProject(QWizard):
         for i in listIds:
             self.removePage(i)
 
-#    def next(self):
-#        print '\n\n'
-#        print self.currentPage() == self.projectTypePage
-#        if self.currentPage() == self.projectTypePage:
-#            self.add_project_pages(
-#                unicode(self.projectTypePage.listWidget.currentItem().text()))
-#        super(WizardNewProject, self).next()
-
     def done(self, result):
         if result == 1:
             page = self.currentPage()
