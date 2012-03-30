@@ -30,6 +30,9 @@ from ninja_ide.tools import json_manager
 
 
 logger = logging.getLogger('ninja_ide.gui.dialogs.wizard_new_project')
+logging.basicConfig()
+logger.setLevel(logging.DEBUG)
+logger.info("loaded")
 
 
 ###############################################################################
@@ -61,6 +64,7 @@ class WizardNewProject(QWizard):
         self.addPage(PageProjectProperties())
 
     def add_project_pages(self, option='Python'):
+        logger.debug("Add project pages")
         self.option = option
         pages = settings.get_project_type_handler(option).get_pages()
         listIds = self.pageIds()
@@ -73,12 +77,16 @@ class WizardNewProject(QWizard):
             self.removePage(i)
 
     def next(self):
+        logger.debug("Next")
         if self.currentPage() == self.projectTypePage:
-            self.add_project_pages(
-                unicode(self.projectTypePage.listWidget.currentItem().text()))
+            ptype = unicode(
+                self.projectTypePage.listWidget.currentItem().text())
+            logger.debug("Project type is %s" % ptype)
+            self.add_project_pages(ptype)
         super(WizardNewProject, self).next()
 
     def done(self, result):
+        logger.debug("Done")
         if result == 1:
             page = self.currentPage()
             if type(page) == PageProjectProperties:
