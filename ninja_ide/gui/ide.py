@@ -33,7 +33,6 @@ from ninja_ide.gui import updates
 from ninja_ide.gui import actions
 from ninja_ide.gui.dialogs import preferences
 from ninja_ide.gui.dialogs import traceback_widget
-from ninja_ide.tools import styles
 from ninja_ide.tools import json_manager
 #NINJA-IDE Containers
 from ninja_ide.gui import central_widget
@@ -103,7 +102,6 @@ class __IDE(QMainWindow):
 
         #ToolBar
         self.toolbar = QToolBar(self)
-        styles.set_style(self.toolbar, 'toolbar-default')
         self.toolbar.setToolTip(self.tr("Press and Drag to Move"))
         self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
         self.addToolBar(settings.TOOLBAR_AREA, self.toolbar)
@@ -435,6 +433,12 @@ def start(listener, filenames=None, projects_path=None, extra_plugins=None):
     splash.showMessage("Loading Settings", Qt.AlignRight | Qt.AlignTop,
         Qt.black)
     settings.load_settings()
+
+    #Set Stylesheet
+    if settings.USE_STYLESHEET:
+        with open(resources.NINJA_THEME) as f:
+            qss = f.read()
+            app.setStyleSheet(qss)
 
     #Loading Themes
     splash.showMessage("Loading Themes", Qt.AlignRight | Qt.AlignTop, Qt.black)

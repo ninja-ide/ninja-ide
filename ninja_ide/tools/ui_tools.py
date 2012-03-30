@@ -396,7 +396,7 @@ class ComboBoxButton(object):
         combo.setLayout(hbox)
         hbox.addStretch()
         btnOperation = QPushButton(combo)
-        btnOperation.setStyleSheet("border: none;")
+        btnOperation.setObjectName('combo_button')
         if icon:
             btnOperation.setIcon(QIcon(icon))
         hbox.addWidget(btnOperation)

@@ -39,13 +39,6 @@ class SidebarWidget(QWidget):
         self._bookmarks = []
         self._pep8Lines = []
         self._errorsLines = []
-        css = '''
-        QWidget {
-          font-family: monospace;
-          font-size: 10;
-          color: black;
-        }'''
-        self.setStyleSheet(css)
 
     def update_area(self):
         maxLine = math.ceil(math.log10(self.edit.blockCount()))

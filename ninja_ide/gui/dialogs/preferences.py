@@ -52,7 +52,6 @@ from ninja_ide.dependencies import pep8mod
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
 from ninja_ide.tools import ui_tools
-from ninja_ide.tools import styles
 from ninja_ide.tools import json_manager
 
 
@@ -485,8 +484,8 @@ class InterfaceTab(QWidget):
         hbox_select_items.addWidget(self._btnDefaultItems)
         vbox_toolbar.addLayout(hbox_select_items)
         self._toolbar_items = QToolBar()
+        self._toolbar_items.setObjectName("custom")
         self._toolbar_items.setToolButtonStyle(Qt.ToolButtonIconOnly)
-        styles.set_style(self._toolbar_items, 'toolbar-customization')
         self._load_toolbar()
         vbox_toolbar.addWidget(self._toolbar_items)
         vbox_toolbar.addWidget(QLabel(
