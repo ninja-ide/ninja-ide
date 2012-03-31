@@ -20,7 +20,6 @@ from PyQt4.QtCore import SIGNAL
 
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
-from ninja_ide.tools import styles
 from ninja_ide.gui.main_panel import main_container
 
 
@@ -202,7 +201,6 @@ class OutputWidget(QPlainTextEdit):
         QPlainTextEdit.__init__(self, parent)
         self._parent = parent
         self.setReadOnly(True)
-        styles.set_style(self, 'editor')
         self.maxValue = 0
         self.actualValue = 0
         #traceback pattern

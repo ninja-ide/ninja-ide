@@ -12,7 +12,6 @@ from PyQt4.QtCore import QString
 from PyQt4.QtCore import Qt
 
 from ninja_ide import resources
-from ninja_ide.tools import styles
 
 
 class RecentProjectItem(QWidget):
@@ -37,7 +36,6 @@ class RecentProjectItem(QWidget):
         self.__name = QLineEdit(self)
         self.__itemRelated = itemRelated
         self.setMouseTracking(True)
-        styles.set_style(self, 'recent-project-list')
         self.__name.setText(self.__content[QString("name")].toString())
 
         if QString("description") in self.__content:

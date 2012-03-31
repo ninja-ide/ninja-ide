@@ -10,7 +10,6 @@ from PyQt4.QtCore import QPropertyAnimation
 
 from ninja_ide import resources
 from ninja_ide.core import settings
-from ninja_ide.tools import styles
 
 
 class MiniMap(QPlainTextEdit):
@@ -28,7 +27,6 @@ class MiniMap(QPlainTextEdit):
 
         self._parent = parent
         self.highlighter = None
-        styles.set_style(self, 'minimap')
         self.lines_count = 0
 
         self.goe = QGraphicsOpacityEffect()
