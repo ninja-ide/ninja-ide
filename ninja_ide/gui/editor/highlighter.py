@@ -91,15 +91,21 @@ class Highlighter (QSyntaxHighlighter):
         rules = []
 
         # Keyword, operator, brace and extras rules
-        rules += [(r'^((.* )|(.*=)){0,1}(%s)((\(.*)|( .*)){0,1}$' % w,
-             4, STYLES['keyword'])
+        accepted_before = (' ', '=')
+        accepted_after = (' ', '\(', '\:')
+        keyword_pattern = r'^(' + '|'.join(
+            '(.*%s)' % c for c in accepted_before
+        ) + '){0,1}(%s)(' + '|'.join(
+            '(%s.*)' % c for c in accepted_after
+        ) + '){0,1}$'
+        print keyword_pattern
+        rules += [(keyword_pattern % w, 4, STYLES['keyword'])
             for w in keywords]
         rules += [(r'%s' % o, 0, STYLES['operator'])
             for o in operators]
         rules += [(r'%s' % b, 0, STYLES['brace'])
             for b in Highlighter.braces]
-        rules += [(r'^((.* )|(.*=)){0,1}(%s)((\(.*)|( .*)){0,1}$' % e,
-             4, STYLES['extras'])
+        rules += [(keyword_pattern % e, 4, STYLES['extras'])
             for e in extras]
 
         # All other rules
