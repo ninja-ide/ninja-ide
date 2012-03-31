@@ -2,11 +2,14 @@
 from __future__ import absolute_import
 
 import re
+import sys
 import webbrowser
 
+from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QObject
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import SIGNAL
+from PyQt4.QtGui import QKeySequence
 from PyQt4.QtGui import QInputDialog
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QShortcut
@@ -241,6 +244,18 @@ class __Actions(QObject):
         self.connect(self.shortHighlightWord, SIGNAL("activated()"),
             self.editor_highlight_word)
 
+        key = Qt.Key_1
+        for i in xrange(10):
+            if sys.platform == "darwin":
+                short = TabShortcuts(
+                    QKeySequence(Qt.CTRL + Qt.ALT + key), self, i)
+            else:
+                short = TabShortcuts(QKeySequence(Qt.ALT + key), self.ide, i)
+            key += 1
+            self.connect(short, SIGNAL("activated()"), self._change_tab_index)
+        short = TabShortcuts(QKeySequence(Qt.ALT + Qt.Key_0), self.ide, 10)
+        self.connect(short, SIGNAL("activated()"), self._change_tab_index)
+
         #Connect SIGNALs from other objects
         self.connect(self.ide.mainContainer._tabMain,
             SIGNAL("runFile()"), self.execute_file)
@@ -305,6 +320,16 @@ class __Actions(QObject):
         self.shortShowBookmarksNav.setKey(short("Show-Bookmarks-Nav"))
         self.shortShowBreakpointsNav.setKey(short("Show-Breakpoints-Nav"))
         self.shortShowPasteHistory.setKey(short("Show-Paste-History"))
+
+    def _change_tab_index(self):
+        editorWidget = self.ide.mainContainer.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            container = self.ide.mainContainer.actualTab
+        else:
+            container = self.ide.explorer
+        obj = self.sender()
+        if obj.index < container.count():
+            container.setCurrentIndex(obj.index)
 
     def _copy_history(self):
         """Copy the selected text into the copy/paste history."""
@@ -857,3 +882,10 @@ class __Actions(QObject):
     def reload_toolbar(self):
         """Reload the Toolbar."""
         self.ide.load_toolbar()
+
+
+class TabShortcuts(QShortcut):
+
+    def __init__(self, key, parent, index):
+        QShortcut.__init__(self, key, parent)
+        self.index = index
