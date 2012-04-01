@@ -23,7 +23,6 @@ from ninja_ide import resources
 from ninja_ide.core import file_manager
 from ninja_ide.gui.main_panel import itab_item
 from ninja_ide.gui.main_panel import recent_project_item
-from ninja_ide.tools import styles
 
 
 class BrowserWidget(QWidget, itab_item.ITabItem):
@@ -99,7 +98,6 @@ class WebPluginList(QListWidget):
         self.browser_referece = browserReference
         QListWidget.__init__(self)
         self.setMouseTracking(True)
-        styles.set_style(self, 'recent-project')
         self.load_items()
 
     def load_items(self):
