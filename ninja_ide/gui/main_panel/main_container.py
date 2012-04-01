@@ -646,8 +646,7 @@ class __MainContainer(QSplitter):
         return [self._tabMain.get_documents_data(),
             self._tabSecondary.get_documents_data()]
 
-    def open_files(self, files, mainTab=True, notIDEStart=True,
-        position_is_line_nro=False):
+    def open_files(self, files, mainTab=True, notIDEStart=True):
         if mainTab:
             self.actualTab = self._tabMain
         else:
@@ -659,7 +658,7 @@ class __MainContainer(QSplitter):
             if file_manager.file_exists(unicode(fileData[0])):
                 self.open_file(unicode(fileData[0]),
                     fileData[1], notStart=notIDEStart,
-                    positionIsLineNumber=position_is_line_nro)
+                    positionIsLineNumber=True)
         self.actualTab = self._tabMain
 
     def check_for_unsaved_tabs(self):

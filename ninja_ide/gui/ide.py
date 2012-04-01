@@ -174,7 +174,7 @@ class __IDE(QMainWindow):
         files = map(lambda x: (x.split(':')[0], int(x.split(':')[1])),
             files.split(ipc.file_delimiter))
         projects = projects.split(ipc.project_delimiter)
-        self.load_session_files_projects(files, [], projects, None, True)
+        self.load_session_files_projects(files, [], projects, None)
 
     def load_toolbar(self):
         self.toolbar.clear()
@@ -272,11 +272,10 @@ class __IDE(QMainWindow):
         self.mainContainer.actualTab.close_tab()
 
     def load_session_files_projects(self, filesTab1, filesTab2, projects,
-        current_file, position_is_line_nro=False):
-        self.mainContainer.open_files(filesTab1, notIDEStart=False,
-            position_is_line_nro=position_is_line_nro)
+        current_file):
+        self.mainContainer.open_files(filesTab1, notIDEStart=False)
         self.mainContainer.open_files(filesTab2, mainTab=False,
-            notIDEStart=False, position_is_line_nro=position_is_line_nro)
+            notIDEStart=False)
         self.explorer.open_session_projects(projects, notIDEStart=False)
         if current_file:
             self.mainContainer.open_file(current_file)
@@ -412,7 +411,7 @@ class __IDE(QMainWindow):
 
 
 def start(filenames=None, projects_path=None,
-          extra_plugins=None, start_server=False):
+          extra_plugins=None, linenos=None, start_server=False):
     app = QApplication(sys.argv)
     QCoreApplication.setOrganizationName('NINJA-IDE')
     QCoreApplication.setOrganizationDomain('NINJA-IDE')
@@ -503,8 +502,9 @@ def start(filenames=None, projects_path=None,
     projects = qsettings.value('openFiles/projects', []).toList()
     projects = [unicode(project.toString()) for project in projects]
     #Include files received from console args
-    if filenames:
-        mainFiles += [(f, 0) for f in filenames]
+    file_with_nro = map(lambda f: (f[0], f[1] - 1), zip(filenames, linenos))
+    file_without_nro = map(lambda f: (f, 0), filenames[len(linenos):])
+    mainFiles = file_with_nro + file_without_nro
     #Include projects received from console args
     if projects_path:
         projects += projects_path

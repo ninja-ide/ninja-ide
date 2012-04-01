@@ -36,4 +36,4 @@ def run_ninja():
 
     # Start the UI
     from ninja_ide.gui import ide
-    ide.start(filenames, projects_path, extra_plugins, start_server)
+    ide.start(filenames, projects_path, extra_plugins, linenos, start_server)
