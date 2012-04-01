@@ -932,7 +932,8 @@ class EditorConfiguration(QWidget):
         self._checkHighlightLine = QCheckBox(
             self.tr("Highlight the whole line for Errors and PEP8."))
         self._checkHighlightLine.setChecked(settings.HIGHLIGHT_WHOLE_LINE)
-        grid.addWidget(self._checkHighlightLine, 3, 1, 1, 2, alignment=Qt.AlignTop)
+        grid.addWidget(self._checkHighlightLine, 3, 1, 1, 2,
+            alignment=Qt.AlignTop)
         self._checkErrors = QCheckBox(self.tr("Find and Show Errors."))
         self._checkErrors.setChecked(settings.FIND_ERRORS)
         grid.addWidget(self._checkErrors, 4, 1, 1, 2, alignment=Qt.AlignTop)
