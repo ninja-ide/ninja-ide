@@ -27,6 +27,8 @@ try:
             nargs='*', help='A file/s to edit', default=[])
         parser.add_argument('-f', '--files', metavar='file', type=unicode,
             nargs='+', help='A file/s to edit', default=[])
+        parser.add_argument('-l', '--lineno', metavar='lineno', type=int,
+            nargs='+', help='Line number for the files to open', default=[])
         parser.add_argument('-p', '--project', metavar='project', type=unicode,
             nargs='+', help='A project/s to edit', default=[])
         parser.add_argument('--plugin',
@@ -80,6 +82,14 @@ except:
             help="A project/s to edit",
             nargs=_resolve_nargs("-p", "--project"))
 
+        parser.add_option("-l", "--lineno",
+            type="int",
+            action="store",
+            dest="lineno",
+            default=[],
+            help="Line number for the files to open",
+            nargs=_resolve_nargs("-l", "--lineno"))
+
         parser.add_option("--plugin",
             type="string",
             action="store",
@@ -94,6 +104,7 @@ except:
 def parse():
     filenames = None
     projects_path = None
+    linenos = None
     extra_plugins = None
     try:
         if new_parser:
@@ -110,10 +121,13 @@ def parse():
         projects_path = opts.project \
             if isinstance(opts.project, list) \
             else  [opts.project]
+        linenos = opts.lineno \
+            if hasattr(opts, 'lineno') \
+            else  [opts.lineno]
         extra_plugins = opts.plugin \
             if isinstance(opts.plugin, list) \
             else  [opts.plugin]
     except Exception, reason:
         print "Args couldn't be parsed."
         print reason
-    return filenames, projects_path, extra_plugins
+    return filenames, projects_path, extra_plugins, linenos

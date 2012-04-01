@@ -657,7 +657,8 @@ class __MainContainer(QSplitter):
         for fileData in files:
             if file_manager.file_exists(unicode(fileData[0])):
                 self.open_file(unicode(fileData[0]),
-                    fileData[1], notIDEStart)
+                    fileData[1], notStart=notIDEStart,
+                    positionIsLineNumber=True)
         self.actualTab = self._tabMain
 
     def check_for_unsaved_tabs(self):

@@ -52,7 +52,6 @@ from ninja_ide.dependencies import pep8mod
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
 from ninja_ide.tools import ui_tools
-from ninja_ide.tools import styles
 from ninja_ide.tools import json_manager
 
 
@@ -485,8 +484,8 @@ class InterfaceTab(QWidget):
         hbox_select_items.addWidget(self._btnDefaultItems)
         vbox_toolbar.addLayout(hbox_select_items)
         self._toolbar_items = QToolBar()
+        self._toolbar_items.setObjectName("custom")
         self._toolbar_items.setToolButtonStyle(Qt.ToolButtonIconOnly)
-        styles.set_style(self._toolbar_items, 'toolbar-customization')
         self._load_toolbar()
         vbox_toolbar.addWidget(self._toolbar_items)
         vbox_toolbar.addWidget(QLabel(
@@ -929,10 +928,14 @@ class EditorConfiguration(QWidget):
         self._checkShowMargin.setChecked(settings.SHOW_MARGIN_LINE)
         grid.addWidget(self._checkShowMargin, 2, 2, alignment=Qt.AlignTop)
         #Find Errors
-        self._checkErrors = QCheckBox(
-            self.tr("Find and Show Errors."))
+        self._checkHighlightLine = QCheckBox(
+            self.tr("Highlight the whole line for Errors and PEP8."))
+        self._checkHighlightLine.setChecked(settings.HIGHLIGHT_WHOLE_LINE)
+        grid.addWidget(self._checkHighlightLine, 3, 1, 1, 2,
+            alignment=Qt.AlignTop)
+        self._checkErrors = QCheckBox(self.tr("Find and Show Errors."))
         self._checkErrors.setChecked(settings.FIND_ERRORS)
-        grid.addWidget(self._checkErrors, 3, 1, 1, 2, alignment=Qt.AlignTop)
+        grid.addWidget(self._checkErrors, 4, 1, 1, 2, alignment=Qt.AlignTop)
         self.connect(self._checkErrors, SIGNAL("stateChanged(int)"),
             self._disable_show_errors)
         self._showErrorsOnLine = QCheckBox(
@@ -940,12 +943,12 @@ class EditorConfiguration(QWidget):
         self._showErrorsOnLine.setChecked(settings.ERRORS_HIGHLIGHT_LINE)
         self.connect(self._showErrorsOnLine, SIGNAL("stateChanged(int)"),
             self._enable_errors_inline)
-        grid.addWidget(self._showErrorsOnLine, 4, 2, 1, 1, Qt.AlignTop)
+        grid.addWidget(self._showErrorsOnLine, 5, 2, 1, 1, Qt.AlignTop)
         #Find Check Style
         self._checkStyle = QCheckBox(
             self.tr("Find and Show Check Style errors."))
         self._checkStyle.setChecked(settings.CHECK_STYLE)
-        grid.addWidget(self._checkStyle, 5, 1, 1, 2, alignment=Qt.AlignTop)
+        grid.addWidget(self._checkStyle, 6, 1, 1, 2, alignment=Qt.AlignTop)
         self.connect(self._checkStyle, SIGNAL("stateChanged(int)"),
             self._disable_check_style)
         self._checkStyleOnLine = QCheckBox(
@@ -953,32 +956,32 @@ class EditorConfiguration(QWidget):
         self._checkStyleOnLine.setChecked(settings.CHECK_HIGHLIGHT_LINE)
         self.connect(self._checkStyleOnLine, SIGNAL("	stateChanged(int)"),
             self._enable_check_inline)
-        grid.addWidget(self._checkStyleOnLine, 6, 2, 1, 1, Qt.AlignTop)
+        grid.addWidget(self._checkStyleOnLine, 7, 2, 1, 1, Qt.AlignTop)
         #Center On Scroll
         self._checkCenterScroll = QCheckBox(
             self.tr("Center on Scroll."))
         self._checkCenterScroll.setChecked(settings.CENTER_ON_SCROLL)
-        grid.addWidget(self._checkCenterScroll, 7, 1, 1, 2,
+        grid.addWidget(self._checkCenterScroll, 8, 1, 1, 2,
             alignment=Qt.AlignTop)
         #Remove Trailing Spaces add Last empty line automatically
         self._checkTrailing = QCheckBox(self.tr(
             "Remove Trailing Spaces and\nadd Last Line automatically."))
         self._checkTrailing.setChecked(settings.REMOVE_TRAILING_SPACES)
-        grid.addWidget(self._checkTrailing, 8, 1, 1, 2, alignment=Qt.AlignTop)
+        grid.addWidget(self._checkTrailing, 9, 1, 1, 2, alignment=Qt.AlignTop)
         #Show Tabs and Spaces
         self._checkShowSpaces = QCheckBox(self.tr("Show Tabs and Spaces."))
         self._checkShowSpaces.setChecked(settings.SHOW_TABS_AND_SPACES)
-        grid.addWidget(self._checkShowSpaces, 9, 1, 1, 2,
+        grid.addWidget(self._checkShowSpaces, 10, 1, 1, 2,
             alignment=Qt.AlignTop)
         self._checkAllowTabsNonPython = QCheckBox(
             self.tr("Allow tabs for Non Python files."))
         self._checkAllowTabsNonPython.setChecked(
             settings.ALLOW_TABS_NON_PYTHON)
-        grid.addWidget(self._checkAllowTabsNonPython, 10, 1, 1, 2,
+        grid.addWidget(self._checkAllowTabsNonPython, 11, 1, 1, 2,
             alignment=Qt.AlignTop)
         self._allowWordWrap = QCheckBox(self.tr("Allow Word Wrap."))
         self._allowWordWrap.setChecked(settings.ALLOW_WORD_WRAP)
-        grid.addWidget(self._allowWordWrap, 11, 1, 1, 2, alignment=Qt.AlignTop)
+        grid.addWidget(self._allowWordWrap, 12, 1, 1, 2, alignment=Qt.AlignTop)
 
     def _enable_check_inline(self, val):
         if val == Qt.Checked:
@@ -1007,6 +1010,8 @@ class EditorConfiguration(QWidget):
         pep8mod.MAX_LINE_LENGTH = settings.MARGIN_LINE - 1
         qsettings.setValue('showMarginLine', self._checkShowMargin.isChecked())
         settings.SHOW_MARGIN_LINE = self._checkShowMargin.isChecked()
+        settings.HIGHLIGHT_WHOLE_LINE = self._checkHighlightLine.isChecked()
+        qsettings.setValue('highlightWholeLine', settings.HIGHLIGHT_WHOLE_LINE)
         qsettings.setValue('errors', self._checkErrors.isChecked())
         settings.FIND_ERRORS = self._checkErrors.isChecked()
         qsettings.setValue('errorsInLine', self._showErrorsOnLine.isChecked())
@@ -1323,72 +1328,89 @@ class EditorSchemeDesigner(QWidget):
             resources.COLOR_SCHEME['sidebar-foreground']))
 
         self.connect(btnKeyword, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtKeyword))
+            lambda: self._pick_color(self.txtKeyword, btnKeyword))
         self.connect(btnOperator, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtOperator))
+            lambda: self._pick_color(self.txtOperator, btnOperator))
         self.connect(btnBrace, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtBrace))
+            lambda: self._pick_color(self.txtBrace, btnBrace))
         self.connect(btnDefinition, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtDefinition))
+            lambda: self._pick_color(self.txtDefinition, btnDefinition))
         self.connect(btnString, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtString))
+            lambda: self._pick_color(self.txtString, btnString))
         self.connect(btnString2, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtString2))
+            lambda: self._pick_color(self.txtString2, btnString2))
         self.connect(btnSpaces, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtSpaces))
+            lambda: self._pick_color(self.txtSpaces, btnSpaces))
         self.connect(btnExtras, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtExtras))
+            lambda: self._pick_color(self.txtExtras, btnExtras))
         self.connect(btnComment, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtComment))
+            lambda: self._pick_color(self.txtComment, btnComment))
         self.connect(btnProperObject, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtProperObject))
+            lambda: self._pick_color(self.txtProperObject, btnProperObject))
         self.connect(btnNumbers, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtNumbers))
+            lambda: self._pick_color(self.txtNumbers, btnNumbers))
         self.connect(btnEditorText, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtEditorText))
+            lambda: self._pick_color(self.txtEditorText, btnEditorText))
         self.connect(btnEditorBackground, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtEditorBackground))
+            lambda: self._pick_color(self.txtEditorBackground,
+                btnEditorBackground))
         self.connect(btnEditorSelectionColor, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtEditorSelectionColor))
+            lambda: self._pick_color(self.txtEditorSelectionColor,
+                btnEditorSelectionColor))
         self.connect(btnEditorSelectionBackground, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtEditorSelectionBackground))
+            lambda: self._pick_color(self.txtEditorSelectionBackground,
+                btnEditorSelectionBackground))
         self.connect(btnCurrentLine, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtCurrentLine))
+            lambda: self._pick_color(self.txtCurrentLine, btnCurrentLine))
         self.connect(btnSelectedWord, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtSelectedWord))
+            lambda: self._pick_color(self.txtSelectedWord, btnSelectedWord))
         self.connect(btnFoldArea, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtFoldArea))
+            lambda: self._pick_color(self.txtFoldArea, btnFoldArea))
         self.connect(btnFoldArrow, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtFoldArrow))
+            lambda: self._pick_color(self.txtFoldArrow, btnFoldArrow))
         self.connect(btnLinkNavigate, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtLinkNavigate))
+            lambda: self._pick_color(self.txtLinkNavigate, btnLinkNavigate))
         self.connect(btnBraceBackground, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtBraceBackground))
+            lambda: self._pick_color(self.txtBraceBackground,
+                btnBraceBackground))
         self.connect(btnBraceForeground, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtBraceForeground))
+            lambda: self._pick_color(self.txtBraceForeground,
+                btnBraceForeground))
         self.connect(btnErrorUnderline, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtErrorUnderline))
+            lambda: self._pick_color(self.txtErrorUnderline,
+                btnErrorUnderline))
         self.connect(btnPep8Underline, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtPep8Underline))
+            lambda: self._pick_color(self.txtPep8Underline, btnPep8Underline))
         self.connect(btnSidebarBackground, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtSidebarBackground))
+            lambda: self._pick_color(self.txtSidebarBackground,
+                btnSidebarBackground))
         self.connect(btnSidebarForeground, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtSidebarForeground))
+            lambda: self._pick_color(self.txtSidebarForeground,
+                btnSidebarForeground))
 
         # Connect Buttons
-        for i in xrange(1, 25):
+        for i in xrange(1, 27):
             item = grid.itemAtPosition(i, 1).widget()
+            btn = grid.itemAtPosition(i, 2).widget()
             self.connect(item, SIGNAL("returnPressed()"),
                 self._preview_style)
+            self.apply_button_style(btn, item.text())
 
         self.connect(btnSaveScheme, SIGNAL("clicked()"), self.save_scheme)
 
-    def _pick_color(self, lineedit):
+    def _pick_color(self, lineedit, btn):
         color = QColorDialog.getColor(QColor(lineedit.text()),
             self, self.tr("Choose Color for: "))
         if color.isValid():
             lineedit.setText(str(color.name()))
+            self.apply_button_style(btn, color.name())
             self._preview_style()
+
+    def apply_button_style(self, btn, color_name):
+        btn.setAutoFillBackground(True)
+        style = ('background: %s; border-radius: 5px; '
+                 'padding: 5px;' % color_name)
+        btn.setStyleSheet(style)
 
     def _preview_style(self):
         editorWidget = main_container.MainContainer().get_actual_editor()

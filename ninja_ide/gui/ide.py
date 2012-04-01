@@ -13,7 +13,6 @@ from PyQt4.QtGui import QPixmap
 from PyQt4.QtGui import QToolBar
 from PyQt4.QtGui import QToolTip
 from PyQt4.QtGui import QFont
-
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QLocale
 from PyQt4.QtCore import QSettings
@@ -23,17 +22,18 @@ from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QTextCodec
 from PyQt4.QtCore import QSize
 from PyQt4.QtCore import QPoint
+from PyQt4.QtNetwork import QLocalServer
 
 from ninja_ide import resources
 from ninja_ide.core import plugin_manager
 from ninja_ide.core import plugin_services
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
+from ninja_ide.core import ipc
 from ninja_ide.gui import updates
 from ninja_ide.gui import actions
 from ninja_ide.gui.dialogs import preferences
 from ninja_ide.gui.dialogs import traceback_widget
-from ninja_ide.tools import styles
 from ninja_ide.tools import json_manager
 #NINJA-IDE Containers
 from ninja_ide.gui import central_widget
@@ -78,12 +78,19 @@ def IDE(*args, **kw):
 
 class __IDE(QMainWindow):
 
-    def __init__(self):
+    def __init__(self, start_server=False):
         QMainWindow.__init__(self)
         self.setWindowTitle('NINJA-IDE {Ninja-IDE Is Not Just Another IDE}')
         self.setMinimumSize(700, 500)
         #Load the size and the position of the main window
         self.load_window_geometry()
+
+        #Start server if needed
+        if start_server:
+            self.s_listener = QLocalServer()
+            self.s_listener.listen("ninja_ide")
+            self.connect(self.s_listener, SIGNAL("newConnection()"),
+                self._process_connection)
 
         #Profile handler
         self.profile = None
@@ -103,7 +110,6 @@ class __IDE(QMainWindow):
 
         #ToolBar
         self.toolbar = QToolBar(self)
-        styles.set_style(self.toolbar, 'toolbar-default')
         self.toolbar.setToolTip(self.tr("Press and Drag to Move"))
         self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
         self.addToolBar(settings.TOOLBAR_AREA, self.toolbar)
@@ -156,6 +162,17 @@ class __IDE(QMainWindow):
 
         self.connect(self.mainContainer, SIGNAL("fileSaved(QString)"),
             self.show_status_message)
+
+    def _process_connection(self):
+        connection = self.s_listener.nextPendingConnection()
+        connection.waitForReadyRead()
+        data = unicode(connection.readAll())
+        connection.close()
+        files, projects = data.split(ipc.project_delimiter, 1)
+        files = map(lambda x: (x.split(':')[0], int(x.split(':')[1])),
+            files.split(ipc.file_delimiter))
+        projects = projects.split(ipc.project_delimiter)
+        self.load_session_files_projects(files, [], projects, None)
 
     def load_toolbar(self):
         self.toolbar.clear()
@@ -361,6 +378,7 @@ class __IDE(QMainWindow):
                 QPoint(100, 100)).toPoint())
 
     def closeEvent(self, event):
+        self.s_listener.close()
         if settings.CONFIRM_EXIT and \
         self.mainContainer.check_for_unsaved_tabs():
             val = QMessageBox.question(self,
@@ -390,7 +408,8 @@ class __IDE(QMainWindow):
 ###############################################################################
 
 
-def start(listener, filenames=None, projects_path=None, extra_plugins=None):
+def start(filenames=None, projects_path=None,
+          extra_plugins=None, linenos=None, start_server=False):
     app = QApplication(sys.argv)
     QCoreApplication.setOrganizationName('NINJA-IDE')
     QCoreApplication.setOrganizationDomain('NINJA-IDE')
@@ -436,6 +455,12 @@ def start(listener, filenames=None, projects_path=None, extra_plugins=None):
         Qt.black)
     settings.load_settings()
 
+    #Set Stylesheet
+    if settings.USE_STYLESHEET:
+        with open(resources.NINJA_THEME) as f:
+            qss = f.read()
+            app.setStyleSheet(qss)
+
     #Loading Themes
     splash.showMessage("Loading Themes", Qt.AlignRight | Qt.AlignTop, Qt.black)
     scheme = unicode(qsettings.value('preferences/editor/scheme',
@@ -450,15 +475,10 @@ def start(listener, filenames=None, projects_path=None, extra_plugins=None):
     resources.load_shortcuts()
     #Loading GUI
     splash.showMessage("Loading GUI", Qt.AlignRight | Qt.AlignTop, Qt.black)
-    ide = IDE()
+    ide = IDE(start_server)
 
     #Showing GUI
     ide.show()
-    #Connect listener signals
-    ide.connect(listener, SIGNAL("fileOpenRequested(QString)"),
-        ide.open_file)
-    ide.connect(listener, SIGNAL("projectOpenRequested(QString)"),
-        ide.open_project)
 
     #Loading Session Files
     splash.showMessage("Loading Files and Projects",
@@ -486,8 +506,9 @@ def start(listener, filenames=None, projects_path=None, extra_plugins=None):
     projects = qsettings.value('openFiles/projects', []).toList()
     projects = [unicode(project.toString()) for project in projects]
     #Include files received from console args
-    if filenames:
-        mainFiles += [(f, 0) for f in filenames]
+    file_with_nro = map(lambda f: (f[0], f[1] - 1), zip(filenames, linenos))
+    file_without_nro = map(lambda f: (f, 0), filenames[len(linenos):])
+    mainFiles = file_with_nro + file_without_nro
     #Include projects received from console args
     if projects_path:
         projects += projects_path
