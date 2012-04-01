@@ -13,7 +13,6 @@ from PyQt4.QtGui import QPixmap
 from PyQt4.QtGui import QToolBar
 from PyQt4.QtGui import QToolTip
 from PyQt4.QtGui import QFont
-
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QLocale
 from PyQt4.QtCore import QSettings
@@ -23,12 +22,14 @@ from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QTextCodec
 from PyQt4.QtCore import QSize
 from PyQt4.QtCore import QPoint
+from PyQt4.QtNetwork import QLocalServer
 
 from ninja_ide import resources
 from ninja_ide.core import plugin_manager
 from ninja_ide.core import plugin_services
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
+from ninja_ide.core import ipc
 from ninja_ide.gui import updates
 from ninja_ide.gui import actions
 from ninja_ide.gui.dialogs import preferences
@@ -78,12 +79,19 @@ def IDE(*args, **kw):
 
 class __IDE(QMainWindow):
 
-    def __init__(self):
+    def __init__(self, start_server=False):
         QMainWindow.__init__(self)
         self.setWindowTitle('NINJA-IDE {Ninja-IDE Is Not Just Another IDE}')
         self.setMinimumSize(700, 500)
         #Load the size and the position of the main window
         self.load_window_geometry()
+
+        #Start server if needed
+        if start_server:
+            self.s_listener = QLocalServer()
+            self.s_listener.listen("ninja_ide")
+            self.connect(self.s_listener, SIGNAL("newConnection()"),
+                self._process_connection)
 
         #Profile handler
         self.profile = None
@@ -156,6 +164,17 @@ class __IDE(QMainWindow):
 
         self.connect(self.mainContainer, SIGNAL("fileSaved(QString)"),
             self.show_status_message)
+
+    def _process_connection(self):
+        connection = self.s_listener.nextPendingConnection()
+        connection.waitForReadyRead()
+        data = unicode(connection.readAll())
+        connection.close()
+        files, projects = data.split(ipc.project_delimiter, 1)
+        files = map(lambda x: (x.split(':')[0], int(x.split(':')[1])),
+            files.split(ipc.file_delimiter))
+        projects = projects.split(ipc.project_delimiter)
+        self.load_session_files_projects(files, [], projects, None, True)
 
     def load_toolbar(self):
         self.toolbar.clear()
@@ -253,10 +272,11 @@ class __IDE(QMainWindow):
         self.mainContainer.actualTab.close_tab()
 
     def load_session_files_projects(self, filesTab1, filesTab2, projects,
-        current_file):
-        self.mainContainer.open_files(filesTab1, notIDEStart=False)
+        current_file, position_is_line_nro=False):
+        self.mainContainer.open_files(filesTab1, notIDEStart=False,
+            position_is_line_nro=position_is_line_nro)
         self.mainContainer.open_files(filesTab2, mainTab=False,
-            notIDEStart=False)
+            notIDEStart=False, position_is_line_nro=position_is_line_nro)
         self.explorer.open_session_projects(projects, notIDEStart=False)
         if current_file:
             self.mainContainer.open_file(current_file)
@@ -361,6 +381,7 @@ class __IDE(QMainWindow):
                 QPoint(100, 100)).toPoint())
 
     def closeEvent(self, event):
+        self.s_listener.close()
         if settings.CONFIRM_EXIT and \
         self.mainContainer.check_for_unsaved_tabs():
             val = QMessageBox.question(self,
@@ -390,7 +411,8 @@ class __IDE(QMainWindow):
 ###############################################################################
 
 
-def start(listener, filenames=None, projects_path=None, extra_plugins=None):
+def start(filenames=None, projects_path=None,
+          extra_plugins=None, start_server=False):
     app = QApplication(sys.argv)
     QCoreApplication.setOrganizationName('NINJA-IDE')
     QCoreApplication.setOrganizationDomain('NINJA-IDE')
@@ -450,15 +472,10 @@ def start(listener, filenames=None, projects_path=None, extra_plugins=None):
     resources.load_shortcuts()
     #Loading GUI
     splash.showMessage("Loading GUI", Qt.AlignRight | Qt.AlignTop, Qt.black)
-    ide = IDE()
+    ide = IDE(start_server)
 
     #Showing GUI
     ide.show()
-    #Connect listener signals
-    ide.connect(listener, SIGNAL("fileOpenRequested(QString)"),
-        ide.open_file)
-    ide.connect(listener, SIGNAL("projectOpenRequested(QString)"),
-        ide.open_project)
 
     #Loading Session Files
     splash.showMessage("Loading Files and Projects",
