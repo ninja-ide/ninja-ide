@@ -1328,72 +1328,89 @@ class EditorSchemeDesigner(QWidget):
             resources.COLOR_SCHEME['sidebar-foreground']))
 
         self.connect(btnKeyword, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtKeyword))
+            lambda: self._pick_color(self.txtKeyword, btnKeyword))
         self.connect(btnOperator, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtOperator))
+            lambda: self._pick_color(self.txtOperator, btnOperator))
         self.connect(btnBrace, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtBrace))
+            lambda: self._pick_color(self.txtBrace, btnBrace))
         self.connect(btnDefinition, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtDefinition))
+            lambda: self._pick_color(self.txtDefinition, btnDefinition))
         self.connect(btnString, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtString))
+            lambda: self._pick_color(self.txtString, btnString))
         self.connect(btnString2, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtString2))
+            lambda: self._pick_color(self.txtString2, btnString2))
         self.connect(btnSpaces, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtSpaces))
+            lambda: self._pick_color(self.txtSpaces, btnSpaces))
         self.connect(btnExtras, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtExtras))
+            lambda: self._pick_color(self.txtExtras, btnExtras))
         self.connect(btnComment, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtComment))
+            lambda: self._pick_color(self.txtComment, btnComment))
         self.connect(btnProperObject, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtProperObject))
+            lambda: self._pick_color(self.txtProperObject, btnProperObject))
         self.connect(btnNumbers, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtNumbers))
+            lambda: self._pick_color(self.txtNumbers, btnNumbers))
         self.connect(btnEditorText, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtEditorText))
+            lambda: self._pick_color(self.txtEditorText, btnEditorText))
         self.connect(btnEditorBackground, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtEditorBackground))
+            lambda: self._pick_color(self.txtEditorBackground,
+                btnEditorBackground))
         self.connect(btnEditorSelectionColor, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtEditorSelectionColor))
+            lambda: self._pick_color(self.txtEditorSelectionColor,
+                btnEditorSelectionColor))
         self.connect(btnEditorSelectionBackground, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtEditorSelectionBackground))
+            lambda: self._pick_color(self.txtEditorSelectionBackground,
+                btnEditorSelectionBackground))
         self.connect(btnCurrentLine, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtCurrentLine))
+            lambda: self._pick_color(self.txtCurrentLine, btnCurrentLine))
         self.connect(btnSelectedWord, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtSelectedWord))
+            lambda: self._pick_color(self.txtSelectedWord, btnSelectedWord))
         self.connect(btnFoldArea, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtFoldArea))
+            lambda: self._pick_color(self.txtFoldArea, btnFoldArea))
         self.connect(btnFoldArrow, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtFoldArrow))
+            lambda: self._pick_color(self.txtFoldArrow, btnFoldArrow))
         self.connect(btnLinkNavigate, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtLinkNavigate))
+            lambda: self._pick_color(self.txtLinkNavigate, btnLinkNavigate))
         self.connect(btnBraceBackground, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtBraceBackground))
+            lambda: self._pick_color(self.txtBraceBackground,
+                btnBraceBackground))
         self.connect(btnBraceForeground, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtBraceForeground))
+            lambda: self._pick_color(self.txtBraceForeground,
+                btnBraceForeground))
         self.connect(btnErrorUnderline, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtErrorUnderline))
+            lambda: self._pick_color(self.txtErrorUnderline,
+                btnErrorUnderline))
         self.connect(btnPep8Underline, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtPep8Underline))
+            lambda: self._pick_color(self.txtPep8Underline, btnPep8Underline))
         self.connect(btnSidebarBackground, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtSidebarBackground))
+            lambda: self._pick_color(self.txtSidebarBackground,
+                btnSidebarBackground))
         self.connect(btnSidebarForeground, SIGNAL("clicked()"),
-            lambda: self._pick_color(self.txtSidebarForeground))
+            lambda: self._pick_color(self.txtSidebarForeground,
+                btnSidebarForeground))
 
         # Connect Buttons
-        for i in xrange(1, 25):
+        for i in xrange(1, 27):
             item = grid.itemAtPosition(i, 1).widget()
+            btn = grid.itemAtPosition(i, 2).widget()
             self.connect(item, SIGNAL("returnPressed()"),
                 self._preview_style)
+            self.apply_button_style(btn, item.text())
 
         self.connect(btnSaveScheme, SIGNAL("clicked()"), self.save_scheme)
 
-    def _pick_color(self, lineedit):
+    def _pick_color(self, lineedit, btn):
         color = QColorDialog.getColor(QColor(lineedit.text()),
             self, self.tr("Choose Color for: "))
         if color.isValid():
             lineedit.setText(str(color.name()))
+            self.apply_button_style(btn, color.name())
             self._preview_style()
+
+    def apply_button_style(self, btn, color_name):
+        btn.setAutoFillBackground(True)
+        style = ('background: %s; border-radius: 5px; '
+                 'padding: 5px;' % color_name)
+        btn.setStyleSheet(style)
 
     def _preview_style(self):
         editorWidget = main_container.MainContainer().get_actual_editor()
