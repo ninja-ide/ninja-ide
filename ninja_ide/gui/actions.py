@@ -97,6 +97,7 @@ class __Actions(QObject):
         self.shortHideExplorer = QShortcut(short("Hide-explorer"), self.ide)
         self.shortRunFile = QShortcut(short("Run-file"), self.ide)
         self.shortRunProject = QShortcut(short("Run-project"), self.ide)
+        self.shortSwitchFocus = QShortcut(short("Switch-Focus"), self.ide)
         self.shortStopExecution = QShortcut(short("Stop-execution"), self.ide)
         self.shortHideAll = QShortcut(short("Hide-all"), self.ide)
         self.shortFullscreen = QShortcut(short("Full-screen"), self.ide)
@@ -199,6 +200,8 @@ class __Actions(QObject):
             self.execute_file)
         self.connect(self.shortRunProject, SIGNAL("activated()"),
             self.execute_project)
+        self.connect(self.shortSwitchFocus, SIGNAL("activated()"),
+            self.switch_focus)
         self.connect(self.shortStopExecution, SIGNAL("activated()"),
             self.kill_execution)
         self.connect(self.shortIndentLess, SIGNAL("activated()"),
@@ -294,6 +297,7 @@ class __Actions(QObject):
         self.shortHideExplorer.setKey(short("Hide-explorer"))
         self.shortRunFile.setKey(short("Run-file"))
         self.shortRunProject.setKey(short("Run-project"))
+        self.shortSwitchFocus.setKey(short("Switch-Focus"))
         self.shortStopExecution.setKey(short("Stop-execution"))
         self.shortHideAll.setKey(short("Hide-all"))
         self.shortFullscreen.setKey(short("Full-screen"))
@@ -320,6 +324,13 @@ class __Actions(QObject):
         self.shortShowBookmarksNav.setKey(short("Show-Bookmarks-Nav"))
         self.shortShowBreakpointsNav.setKey(short("Show-Breakpoints-Nav"))
         self.shortShowPasteHistory.setKey(short("Show-Paste-History"))
+
+    def switch_focus(self):
+        editorWidget = self.ide.mainContainer.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            self.ide.explorer.setFocus()
+        elif editorWidget:
+            editorWidget.setFocus()
 
     def _change_tab_index(self):
         editorWidget = self.ide.mainContainer.get_actual_editor()
