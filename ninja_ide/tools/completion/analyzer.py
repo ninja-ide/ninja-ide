@@ -4,7 +4,6 @@
 # We are not responsible for any kind of mental or emotional
 # damage that may arise from reading this code.
 
-import re
 import ast
 import _ast
 
@@ -12,6 +11,16 @@ from ninja_ide.tools.completion import model
 
 
 MODULES = {}
+
+
+def expand_attribute(attribute):
+    parent_name = []
+    while attribute.__class__ is ast.Attribute:
+        parent_name.append(attribute.attr)
+        attribute = attribute.value
+    name = '.'.join(reversed(parent_name))
+    name = attribute.id if name == '' else ("%s.%s" % (attribute.id, name))
+    return name
 
 
 class Analyzer(object):
@@ -134,7 +143,7 @@ class Analyzer(object):
         """Process an ast.ClassDef object to extract data."""
         clazz = model.Clazz(symbol.name)
         for base in symbol.bases:
-            name = self._expand_attribute(base)
+            name = expand_attribute(base)
             clazz.bases.append(name)
         #TODO: Decotator
 #        for decorator in symbol.decorator_list:
@@ -219,12 +228,3 @@ class Analyzer(object):
                 self._search_recursive_for_types(function, sym, parent)
             for else_item in symbol.finalbody:
                 self._search_recursive_for_types(function, else_item, parent)
-
-    def _expand_attribute(self, attribute):
-        parent_name = []
-        while attribute.__class__ is ast.Attribute:
-            parent_name.append(attribute.attr)
-            attribute = attribute.value
-        name = '.'.join(reversed(parent_name))
-        name = attribute.id if name == '' else ("%s.%s" % (attribute.id, name))
-        return name
