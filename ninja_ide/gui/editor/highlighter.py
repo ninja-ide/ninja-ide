@@ -260,7 +260,8 @@ class Highlighter (QSyntaxHighlighter):
             index = expression.pos(0)
             length = expression.cap(0).length()
             format = STYLES['spaces']
-            format = highlight_errors(format)
+            if settings.HIGHLIGHT_WHOLE_LINE:
+                format = highlight_errors(format)
             self.setFormat(index, length, format)
             index = expression.indexIn(text, index + length)
 

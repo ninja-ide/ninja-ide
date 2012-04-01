@@ -928,10 +928,14 @@ class EditorConfiguration(QWidget):
         self._checkShowMargin.setChecked(settings.SHOW_MARGIN_LINE)
         grid.addWidget(self._checkShowMargin, 2, 2, alignment=Qt.AlignTop)
         #Find Errors
-        self._checkErrors = QCheckBox(
-            self.tr("Find and Show Errors."))
+        self._checkHighlightLine = QCheckBox(
+            self.tr("Highlight the whole line for Errors and PEP8."))
+        self._checkHighlightLine.setChecked(settings.HIGHLIGHT_WHOLE_LINE)
+        grid.addWidget(self._checkHighlightLine, 3, 1, 1, 2,
+            alignment=Qt.AlignTop)
+        self._checkErrors = QCheckBox(self.tr("Find and Show Errors."))
         self._checkErrors.setChecked(settings.FIND_ERRORS)
-        grid.addWidget(self._checkErrors, 3, 1, 1, 2, alignment=Qt.AlignTop)
+        grid.addWidget(self._checkErrors, 4, 1, 1, 2, alignment=Qt.AlignTop)
         self.connect(self._checkErrors, SIGNAL("stateChanged(int)"),
             self._disable_show_errors)
         self._showErrorsOnLine = QCheckBox(
@@ -939,12 +943,12 @@ class EditorConfiguration(QWidget):
         self._showErrorsOnLine.setChecked(settings.ERRORS_HIGHLIGHT_LINE)
         self.connect(self._showErrorsOnLine, SIGNAL("stateChanged(int)"),
             self._enable_errors_inline)
-        grid.addWidget(self._showErrorsOnLine, 4, 2, 1, 1, Qt.AlignTop)
+        grid.addWidget(self._showErrorsOnLine, 5, 2, 1, 1, Qt.AlignTop)
         #Find Check Style
         self._checkStyle = QCheckBox(
             self.tr("Find and Show Check Style errors."))
         self._checkStyle.setChecked(settings.CHECK_STYLE)
-        grid.addWidget(self._checkStyle, 5, 1, 1, 2, alignment=Qt.AlignTop)
+        grid.addWidget(self._checkStyle, 6, 1, 1, 2, alignment=Qt.AlignTop)
         self.connect(self._checkStyle, SIGNAL("stateChanged(int)"),
             self._disable_check_style)
         self._checkStyleOnLine = QCheckBox(
@@ -952,32 +956,32 @@ class EditorConfiguration(QWidget):
         self._checkStyleOnLine.setChecked(settings.CHECK_HIGHLIGHT_LINE)
         self.connect(self._checkStyleOnLine, SIGNAL("	stateChanged(int)"),
             self._enable_check_inline)
-        grid.addWidget(self._checkStyleOnLine, 6, 2, 1, 1, Qt.AlignTop)
+        grid.addWidget(self._checkStyleOnLine, 7, 2, 1, 1, Qt.AlignTop)
         #Center On Scroll
         self._checkCenterScroll = QCheckBox(
             self.tr("Center on Scroll."))
         self._checkCenterScroll.setChecked(settings.CENTER_ON_SCROLL)
-        grid.addWidget(self._checkCenterScroll, 7, 1, 1, 2,
+        grid.addWidget(self._checkCenterScroll, 8, 1, 1, 2,
             alignment=Qt.AlignTop)
         #Remove Trailing Spaces add Last empty line automatically
         self._checkTrailing = QCheckBox(self.tr(
             "Remove Trailing Spaces and\nadd Last Line automatically."))
         self._checkTrailing.setChecked(settings.REMOVE_TRAILING_SPACES)
-        grid.addWidget(self._checkTrailing, 8, 1, 1, 2, alignment=Qt.AlignTop)
+        grid.addWidget(self._checkTrailing, 9, 1, 1, 2, alignment=Qt.AlignTop)
         #Show Tabs and Spaces
         self._checkShowSpaces = QCheckBox(self.tr("Show Tabs and Spaces."))
         self._checkShowSpaces.setChecked(settings.SHOW_TABS_AND_SPACES)
-        grid.addWidget(self._checkShowSpaces, 9, 1, 1, 2,
+        grid.addWidget(self._checkShowSpaces, 10, 1, 1, 2,
             alignment=Qt.AlignTop)
         self._checkAllowTabsNonPython = QCheckBox(
             self.tr("Allow tabs for Non Python files."))
         self._checkAllowTabsNonPython.setChecked(
             settings.ALLOW_TABS_NON_PYTHON)
-        grid.addWidget(self._checkAllowTabsNonPython, 10, 1, 1, 2,
+        grid.addWidget(self._checkAllowTabsNonPython, 11, 1, 1, 2,
             alignment=Qt.AlignTop)
         self._allowWordWrap = QCheckBox(self.tr("Allow Word Wrap."))
         self._allowWordWrap.setChecked(settings.ALLOW_WORD_WRAP)
-        grid.addWidget(self._allowWordWrap, 11, 1, 1, 2, alignment=Qt.AlignTop)
+        grid.addWidget(self._allowWordWrap, 12, 1, 1, 2, alignment=Qt.AlignTop)
 
     def _enable_check_inline(self, val):
         if val == Qt.Checked:
@@ -1006,6 +1010,8 @@ class EditorConfiguration(QWidget):
         pep8mod.MAX_LINE_LENGTH = settings.MARGIN_LINE - 1
         qsettings.setValue('showMarginLine', self._checkShowMargin.isChecked())
         settings.SHOW_MARGIN_LINE = self._checkShowMargin.isChecked()
+        settings.HIGHLIGHT_WHOLE_LINE = self._checkHighlightLine.isChecked()
+        qsettings.setValue('highlightWholeLine', settings.HIGHLIGHT_WHOLE_LINE)
         qsettings.setValue('errors', self._checkErrors.isChecked())
         settings.FIND_ERRORS = self._checkErrors.isChecked()
         qsettings.setValue('errorsInLine', self._showErrorsOnLine.isChecked())
