@@ -53,6 +53,7 @@ def load_table(table, headers, data, checkFirstColumn=True):
             item = QTableWidgetItem(colItem)
             table.setItem(r, index, item)
             if index == 0 and checkFirstColumn:
+                item.setData(Qt.UserRole, row)
                 item.setCheckState(Qt.Unchecked)
                 item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled |
                     Qt.ItemIsUserCheckable)
