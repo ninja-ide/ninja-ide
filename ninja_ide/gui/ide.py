@@ -409,12 +409,21 @@ class __IDE(QMainWindow):
 
 
 def start(filenames=None, projects_path=None,
-          extra_plugins=None, linenos=None, start_server=False):
+          extra_plugins=None, linenos=None):
     app = QApplication(sys.argv)
     QCoreApplication.setOrganizationName('NINJA-IDE')
     QCoreApplication.setOrganizationDomain('NINJA-IDE')
     QCoreApplication.setApplicationName('NINJA-IDE')
     app.setWindowIcon(QIcon(resources.IMAGES['icon']))
+
+    # Check if there is another session of ninja-ide opened
+    # and in that case send the filenames and projects to that session
+    running = ipc.is_running()
+    start_server = not running[0]
+    if running[0] and (filenames or projects_path):
+        sended = ipc.send_data(running[1], filenames, projects_path, linenos)
+        if sended:
+            sys.exit()
 
     # Create and display the splash screen
     splash_pix = QPixmap(resources.IMAGES['splash'])
