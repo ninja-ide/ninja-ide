@@ -699,7 +699,11 @@ class __Actions(QObject):
                 source = unicode(editorWidget.toPlainText())
                 if editorWidget.encoding is not None:
                     source = source.encode(editorWidget.encoding)
-                symbols = symbols_handler.obtain_symbols(source)
+                if ext == 'py':
+                    args = (source, True)
+                else:
+                    args = (source,)
+                symbols = symbols_handler.obtain_symbols(*args)
                 self.ide.explorer.update_symbols(symbols, editorWidget.ID)
 
             #TODO: Should we change the code below similar to the code above?
