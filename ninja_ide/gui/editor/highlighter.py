@@ -98,7 +98,6 @@ class Highlighter (QSyntaxHighlighter):
             for o in operators]
         rules += [(r'%s' % b, 0, STYLES['brace'])
             for b in Highlighter.braces]
-        rules += [(r'\b%s\b' % e, 0, STYLES['extras'])
         rules += [(keyword_pattern % e, 2, STYLES['extras'])
             for e in extras]
 
