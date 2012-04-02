@@ -86,6 +86,7 @@ class __IDE(QMainWindow):
         self.load_window_geometry()
 
         #Start server if needed
+        self.s_listener = None
         if start_server:
             self.s_listener = QLocalServer()
             self.s_listener.listen("ninja_ide")
@@ -168,11 +169,12 @@ class __IDE(QMainWindow):
         connection.waitForReadyRead()
         data = unicode(connection.readAll())
         connection.close()
-        files, projects = data.split(ipc.project_delimiter, 1)
-        files = map(lambda x: (x.split(':')[0], int(x.split(':')[1])),
-            files.split(ipc.file_delimiter))
-        projects = projects.split(ipc.project_delimiter)
-        self.load_session_files_projects(files, [], projects, None)
+        if data:
+            files, projects = data.split(ipc.project_delimiter, 1)
+            files = map(lambda x: (x.split(':')[0], int(x.split(':')[1])),
+                files.split(ipc.file_delimiter))
+            projects = projects.split(ipc.project_delimiter)
+            self.load_session_files_projects(files, [], projects, None)
 
     def load_toolbar(self):
         self.toolbar.clear()
@@ -378,7 +380,8 @@ class __IDE(QMainWindow):
                 QPoint(100, 100)).toPoint())
 
     def closeEvent(self, event):
-        self.s_listener.close()
+        if self.s_listener:
+            self.s_listener.close()
         if settings.CONFIRM_EXIT and \
         self.mainContainer.check_for_unsaved_tabs():
             val = QMessageBox.question(self,
@@ -424,6 +427,8 @@ def start(filenames=None, projects_path=None,
         sended = ipc.send_data(running[1], filenames, projects_path, linenos)
         if sended:
             sys.exit()
+    else:
+        running[1].close()
 
     # Create and display the splash screen
     splash_pix = QPixmap(resources.IMAGES['splash'])
@@ -517,7 +522,7 @@ def start(filenames=None, projects_path=None,
     #Include files received from console args
     file_with_nro = map(lambda f: (f[0], f[1] - 1), zip(filenames, linenos))
     file_without_nro = map(lambda f: (f, 0), filenames[len(linenos):])
-    mainFiles = file_with_nro + file_without_nro
+    mainFiles += file_with_nro + file_without_nro
     #Include projects received from console args
     if projects_path:
         projects += projects_path

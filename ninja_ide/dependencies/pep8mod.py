@@ -728,20 +728,6 @@ def python_3000_backticks(logical_line):
 ##############################################################################
 
 
-if '' == ''.encode():
-    # Python 2: implicit encoding.
-
-    def readlines(filename):
-        return open(filename).readlines()
-else:
-    # Python 3: decode to latin-1.
-    # This function is lazy, it does not read the encoding declaration.
-    # XXX: use tokenize.detect_encoding()
-
-    def readlines(filename):
-        return open(filename, encoding='latin-1').readlines()
-
-
 def expand_indent(line):
     """
     Return the amount of indentation.
@@ -842,10 +828,10 @@ class Checker(object):
     Load a Python source file, tokenize it, check coding style.
     """
 
-    def __init__(self, filename, lines=None):
+    def __init__(self, filename, lines):
         self.filename = filename
         self.results = []
-        self.lines = readlines(filename)
+        self.lines = lines
 
     def readline(self):
         """
@@ -1020,12 +1006,13 @@ class Checker(object):
                 self.results.append(check.__doc__.lstrip('\n').rstrip())
 
 
-def run_check(fileName):
+def run_check(fileName, source):
     """
     Parse options and run checks on Python source.
     """
     try:
-        return Checker(fileName).check_all()
+        lines = [line + '\n' for line in source.splitlines()]
+        return Checker(fileName, lines).check_all()
     except:
         print 'pep8mod couldn\'t parse file: {0}'.format(fileName)
     return []
