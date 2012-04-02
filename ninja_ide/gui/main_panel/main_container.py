@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
+import time
 import sys
 import os
 import logging
@@ -344,7 +345,7 @@ class __MainContainer(QSplitter):
             QMessageBox.information(self, self.tr("Incorrect File"),
                 self.tr("The image couldn\'t be open"))
 
-    def open_file(self, filename='', cursorPosition=0,\
+    def open_file(self, filename='', cursorPosition=0, \
                     tabIndex=None, positionIsLineNumber=False, notStart=True):
         filename = unicode(filename)
         if not filename:
