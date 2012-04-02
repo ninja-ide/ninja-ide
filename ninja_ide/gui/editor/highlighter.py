@@ -98,6 +98,7 @@ class Highlighter (QSyntaxHighlighter):
             for o in operators]
         rules += [(r'%s' % b, 0, STYLES['brace'])
             for b in Highlighter.braces]
+        rules += [(r'\b%s\b' % e, 0, STYLES['extras'])
         rules += [(keyword_pattern % e, 2, STYLES['extras'])
             for e in extras]
 
@@ -260,7 +261,8 @@ class Highlighter (QSyntaxHighlighter):
             index = expression.pos(0)
             length = expression.cap(0).length()
             format = STYLES['spaces']
-            format = highlight_errors(format)
+            if settings.HIGHLIGHT_WHOLE_LINE:
+                format = highlight_errors(format)
             self.setFormat(index, length, format)
             index = expression.indexIn(text, index + length)
 

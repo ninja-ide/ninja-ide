@@ -15,7 +15,6 @@ from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
 from ninja_ide.core import settings
-from ninja_ide.tools import styles
 from ninja_ide.tools import console
 from ninja_ide.gui.editor import highlighter
 from ninja_ide.tools.completion import completer
@@ -34,7 +33,7 @@ class ConsoleWidget(QPlainTextEdit):
     def __init__(self):
         QPlainTextEdit.__init__(self, u'>>> ')
         self.setUndoRedoEnabled(False)
-        styles.set_editor_style(self, resources.CUSTOM_SCHEME)
+        self.apply_editor_style()
         self.setToolTip(self.tr("Show/Hide (F4)"))
         self.moveCursor(QTextCursor.EndOfLine)
 
@@ -434,8 +433,21 @@ class ConsoleWidget(QPlainTextEdit):
         return ''
 
     def restyle(self):
-        styles.set_editor_style(self, resources.CUSTOM_SCHEME)
+        self.apply_editor_style()
         self._highlighter.apply_highlight('python', resources.CUSTOM_SCHEME)
+
+    def apply_editor_style(self):
+        css = 'QPlainTextEdit {color: %s; background-color: %s;' \
+            'selection-color: %s; selection-background-color: %s;}' \
+            % (resources.CUSTOM_SCHEME.get('editor-text',
+            resources.COLOR_SCHEME['editor-text']),
+            resources.CUSTOM_SCHEME.get('editor-background',
+                resources.COLOR_SCHEME['editor-background']),
+            resources.CUSTOM_SCHEME.get('editor-selection-color',
+                resources.COLOR_SCHEME['editor-selection-color']),
+            resources.CUSTOM_SCHEME.get('editor-selection-background',
+                resources.COLOR_SCHEME['editor-selection-background']))
+        self.setStyleSheet(css)
 
     def load_project_into_console(self, projectFolder):
         """Load the projectFolder received into the sys.path."""

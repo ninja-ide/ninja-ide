@@ -20,7 +20,6 @@ from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
 from ninja_ide.gui.editor import editor
-from ninja_ide.tools import styles
 from ninja_ide.gui.main_panel import browser_widget
 
 logger = logging.getLogger('ninja_ide.gui.main_panel.tab_widget')
@@ -426,12 +425,10 @@ class TabNavigator(QWidget):
             QIcon(resources.IMAGES['nav-code-left']), '')
         self.btnPrevious.setToolTip(
             self.tr("Right click to change navigation options"))
-        styles.set_style(self.btnPrevious, 'tab-navigator')
         self.btnNext = QPushButton(
             QIcon(resources.IMAGES['nav-code-right']), '')
         self.btnNext.setToolTip(
             self.tr("Right click to change navigation options"))
-        styles.set_style(self.btnNext, 'tab-navigator')
         hbox.addWidget(self.btnPrevious)
         hbox.addWidget(self.btnNext)
         self.setContentsMargins(0, 0, 0, 0)

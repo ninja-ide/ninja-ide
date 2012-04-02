@@ -58,7 +58,7 @@ EDITOR_SKINS = os.path.join(HOME_NINJA_PATH, "addins", "schemes")
 
 START_PAGE_URL = os.path.join(PRJ_PATH, "doc", "startPage.html")
 
-#NINJA_THEME = os.path.join(PRJ_PATH, "addins", "theme", "ninja_theme.qss")
+NINJA_THEME = os.path.join(PRJ_PATH, "addins", "theme", "ninja_theme.qss")
 
 LOG_FILE_PATH = os.path.join(HOME_NINJA_PATH, 'ninja_ide.log')
 
@@ -238,6 +238,7 @@ SHORTCUTS = {
     "Run-file": QKeySequence(Qt.CTRL + Qt.Key_F6),
     "Run-project": QKeySequence(Qt.Key_F6),
     "Debug": QKeySequence(Qt.Key_F7),
+    "Switch-Focus": QKeySequence(Qt.Key_F8),
     "Stop-execution": QKeySequence(Qt.CTRL + Qt.Key_F5),
     "Hide-all": QKeySequence(Qt.Key_F11),
     "Full-screen": QKeySequence(Qt.CTRL + Qt.Key_F11),

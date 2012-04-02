@@ -31,7 +31,10 @@ class ErrorsChecker(QThread):
         if file_ext in exts:
             try:
                 self.reset()
-                parseResult = compiler.parse(open(self._editor.ID).read())
+                source = self._editor.get_text()
+                if self._editor.encoding is not None:
+                    source = source.encode(self._editor.encoding)
+                parseResult = compiler.parse(source)
                 self.checker = checker.Checker(parseResult, self._editor.ID)
                 for m in self.checker.messages:
                     lineno = m.lineno - 1
@@ -42,6 +45,9 @@ class ErrorsChecker(QThread):
                         message += [m.message % m.message_args]
                     self.errorsSummary[lineno] = message
             except Exception, reason:
-                self.errorsSummary[reason.lineno - 1] = [reason.msg]
+                if hasattr(reason, 'lineno'):
+                    self.errorsSummary[reason.lineno - 1] = [reason.message]
+                else:
+                    self.errorsSummary[0] = [reason.message]
         else:
             self.reset()

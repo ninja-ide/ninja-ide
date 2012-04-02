@@ -34,6 +34,7 @@ class TreeSymbolsWidget(QTreeWidget):
         self.header().setResizeMode(0, QHeaderView.ResizeToContents)
         self.header().setStretchLastSection(False)
         self.actualSymbols = ('', {})
+        self.docstrings = {}
 
         self.connect(self, SIGNAL("itemClicked(QTreeWidgetItem *, int)"),
             self._go_to_definition)
@@ -45,6 +46,7 @@ class TreeSymbolsWidget(QTreeWidget):
                     return
             self.clear()
             self.actualSymbols = (filename, symbols)
+            self.docstrings = symbols.get('docstrings', {})
             parent = self
         if 'attributes' in symbols:
             globalAttribute = ItemTree(parent,
@@ -61,13 +63,18 @@ class TreeSymbolsWidget(QTreeWidget):
             for func in sorted(symbols['functions']):
                 item = ItemTree(functionsItem, QStringList(func),
                     lineno=symbols['functions'][func])
+                tooltip = self.create_tooltip(func, symbols['functions'][func])
+                item.setToolTip(0, tooltip)
                 item.setIcon(0, QIcon(resources.IMAGES['function']))
         if 'classes' in symbols:
             classItem = ItemTree(self, QStringList(self.tr("Classes")))
             classItem.isClickable = False
             for claz in sorted(symbols['classes']):
+                line_number = symbols['classes'][claz][0]
                 item = ItemTree(classItem, QStringList(claz),
-                    lineno=symbols['classes'][claz][0])
+                    lineno=line_number)
+                tooltip = self.create_tooltip(claz, line_number)
+                item.setToolTip(0, tooltip)
                 item.setIcon(0, QIcon(resources.IMAGES['class']))
                 self.update_symbols_tree(symbols['classes'][claz][1],
                     parent=item)
@@ -76,6 +83,15 @@ class TreeSymbolsWidget(QTreeWidget):
     def _go_to_definition(self, item):
         if item.isClickable:
             self.emit(SIGNAL("goToDefinition(int)"), item.lineno - 1)
+
+    def create_tooltip(self, name, lineno):
+        doc = self.docstrings.get(lineno, None)
+        if doc is None:
+            doc = ''
+        else:
+            doc = '\n' + doc
+        tooltip = name + doc
+        return tooltip
 
 
 class ItemTree(QTreeWidgetItem):

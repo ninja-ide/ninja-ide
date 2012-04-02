@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
+import time
 import sys
 import os
 import logging
@@ -344,7 +345,7 @@ class __MainContainer(QSplitter):
             QMessageBox.information(self, self.tr("Incorrect File"),
                 self.tr("The image couldn\'t be open"))
 
-    def open_file(self, filename='', cursorPosition=0,\
+    def open_file(self, filename='', cursorPosition=0, \
                     tabIndex=None, positionIsLineNumber=False, notStart=True):
         filename = unicode(filename)
         if not filename:
@@ -657,7 +658,8 @@ class __MainContainer(QSplitter):
         for fileData in files:
             if file_manager.file_exists(unicode(fileData[0])):
                 self.open_file(unicode(fileData[0]),
-                    fileData[1], notIDEStart)
+                    fileData[1], notStart=notIDEStart,
+                    positionIsLineNumber=True)
         self.actualTab = self._tabMain
 
     def check_for_unsaved_tabs(self):

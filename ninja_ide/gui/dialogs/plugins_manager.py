@@ -1,11 +1,13 @@
 # *-* coding: utf-8 *-*
 from __future__ import absolute_import
 
+import webbrowser
 from copy import copy
 
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QLabel
+from PyQt4.QtGui import QTextBrowser
 #from PyQt4.QtGui import QLineEdit
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QTableWidget
@@ -20,6 +22,20 @@ from PyQt4.QtCore import QThread
 from ninja_ide.core import plugin_manager
 from ninja_ide.core import file_manager
 from ninja_ide.tools import ui_tools
+
+
+TABLE_HEADER = ('Name', 'Version')
+HTML_STYLE = """
+<html>
+<body>
+    <h2>{name}</h2>
+    <p><i>Version: {version}</i></p>
+    <h3>{description}</h3>
+    <br><p><b>Author:</b> {author}</p>
+    <p>More info about the Plugin: <a href='{link}'>Website</a></p>
+</body>
+</html>
+"""
 
 
 def _get_plugin(plugin_name, plugin_list):
@@ -41,11 +57,15 @@ class PluginsManagerWidget(QDialog):
     def __init__(self, parent):
         QDialog.__init__(self, parent, Qt.Dialog)
         self.setWindowTitle(self.tr("Plugins Manager"))
-        self.resize(700, 500)
+        self.resize(700, 600)
 
         vbox = QVBoxLayout(self)
         self._tabs = QTabWidget()
         vbox.addWidget(self._tabs)
+        self._txt_data = QTextBrowser()
+        self._txt_data.setOpenLinks(False)
+        vbox.addWidget(QLabel(self.tr("Description:")))
+        vbox.addWidget(self._txt_data)
         btnReload = QPushButton(self.tr("Reload"))
         btnReload.setMaximumWidth(100)
         vbox.addWidget(btnReload)
@@ -66,8 +86,23 @@ class PluginsManagerWidget(QDialog):
             self._after_download_plugin)
         self.connect(self.thread, SIGNAL("plugin_uninstalled(PyQt_PyObject)"),
             self._after_uninstall_plugin)
+        self.connect(self._txt_data, SIGNAL("anchorClicked(const QUrl&)"),
+            self._open_link)
         self.overlay.show()
         self._reload_plugins()
+
+    def show_plugin_info(self, data):
+        plugin_description = unicode(data[2].toString()).replace('\n', '<br>')
+        html = HTML_STYLE.format(name=data[0].toString(),
+            version=data[1].toString(), description=plugin_description,
+            author=data[3].toString(), link=data[4].toString())
+        self._txt_data.setHtml(html)
+
+    def _open_link(self, url):
+        link = unicode(url.toString())
+        if link.startswith('/plugins/'):
+            link = 'http://ninja-ide.org' + link
+        webbrowser.open(link)
 
     def _reload_plugins(self):
         self.overlay.show()
@@ -164,13 +199,13 @@ class UpdatesWidget(QWidget):
         self._parent = parent
         self._updates = updates
         vbox = QVBoxLayout(self)
-        self._table = QTableWidget(1, 5)
+        self._table = QTableWidget(1, 2)
         self._table.removeRow(0)
-        self._headers = ('Name', 'Version', 'Description', 'Authors', 'Web')
+        self._table.setSelectionMode(QTableWidget.SingleSelection)
+        self._table.setColumnWidth(0, 500)
         vbox.addWidget(self._table)
-        ui_tools.load_table(self._table, self._headers,
+        ui_tools.load_table(self._table, TABLE_HEADER,
             _format_for_table(updates))
-        self._table.setColumnWidth(0, 200)
         btnUpdate = QPushButton(self.tr("Update"))
         btnUpdate.setMaximumWidth(100)
         vbox.addWidget(btnUpdate)
@@ -199,13 +234,13 @@ class AvailableWidget(QWidget):
         self._parent = parent
         self._available = available
         vbox = QVBoxLayout(self)
-        self._table = QTableWidget(1, 5)
+        self._table = QTableWidget(1, 2)
+        self._table.setSelectionMode(QTableWidget.SingleSelection)
         self._table.removeRow(0)
         vbox.addWidget(self._table)
-        self._headers = ('Name', 'Version', 'Description', "Authors", "Web")
-        ui_tools.load_table(self._table, self._headers,
+        ui_tools.load_table(self._table, TABLE_HEADER,
             _format_for_table(available))
-        self._table.setColumnWidth(0, 200)
+        self._table.setColumnWidth(0, 500)
         hbox = QHBoxLayout()
         btnInstall = QPushButton('Install')
         btnInstall.setMaximumWidth(100)
@@ -228,7 +263,14 @@ class AvailableWidget(QWidget):
 #        vbox.addWidget(lblExternalPlugin)
 
         self.connect(btnInstall, SIGNAL("clicked()"), self._install_plugins)
+        self.connect(self._table, SIGNAL("	itemSelectionChanged()"),
+            self._show_item_description)
 #        self.connect(btnAdd, SIGNAL("clicked()"), self._install_external)
+
+    def _show_item_description(self):
+        item = self._table.currentItem()
+        data = item.data(Qt.UserRole).toList()
+        self._parent.show_plugin_info(data)
 
     def _install_plugins(self):
         data = _format_for_table(self._available)
@@ -265,7 +307,7 @@ class AvailableWidget(QWidget):
     def add_table_items(self, plugs):
         self._available += plugs
         data = _format_for_table(self._available)
-        ui_tools.load_table(self._table, self._headers, data)
+        ui_tools.load_table(self._table, TABLE_HEADER, data)
 
 
 class InstalledWidget(QWidget):
@@ -278,13 +320,13 @@ class InstalledWidget(QWidget):
         self._parent = parent
         self._installed = installed
         vbox = QVBoxLayout(self)
-        self._table = QTableWidget(1, 5)
+        self._table = QTableWidget(1, 2)
+        self._table.setSelectionMode(QTableWidget.SingleSelection)
         self._table.removeRow(0)
-        self._headers = ('Name', 'Version', 'Description', "Authors", "Web")
         vbox.addWidget(self._table)
-        ui_tools.load_table(self._table, self._headers,
+        ui_tools.load_table(self._table, TABLE_HEADER,
             _format_for_table(installed))
-        self._table.setColumnWidth(0, 200)
+        self._table.setColumnWidth(0, 500)
         btnUninstall = QPushButton(self.tr("Uninstall"))
         btnUninstall.setMaximumWidth(100)
         vbox.addWidget(btnUninstall)
@@ -299,7 +341,7 @@ class InstalledWidget(QWidget):
     def add_table_items(self, plugs):
         self._installed += plugs
         data = _format_for_table(self._installed)
-        ui_tools.load_table(self._table, self._headers, data)
+        ui_tools.load_table(self._table, TABLE_HEADER, data)
 
     def _uninstall_plugins(self):
         data = _format_for_table(self._installed)
@@ -310,7 +352,7 @@ class InstalledWidget(QWidget):
         self._installed = installed
         while self._table.rowCount() > 0:
             self._table.removeRow(0)
-        ui_tools.load_table(self._table, self._headers, self._installed)
+        ui_tools.load_table(self._table, TABLE_HEADER, self._installed)
 
 
 class ThreadLoadPlugins(QThread):
