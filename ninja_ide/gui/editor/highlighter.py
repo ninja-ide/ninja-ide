@@ -91,7 +91,7 @@ class Highlighter (QSyntaxHighlighter):
         rules = []
 
         # Keyword, operator, brace and extras rules
-        keyword_pattern = '^(.*[^\w\.]{1}){0,1}(%s)([^\w]{1}.*){0,1}$'
+        keyword_pattern = '(^|[^\w\.]{1})(%s)([^\w]{1}|$)'
         rules += [(keyword_pattern % w, 2, STYLES['keyword'])
             for w in keywords]
         rules += [(r'%s' % o, 0, STYLES['operator'])
