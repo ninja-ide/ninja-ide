@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 import re
 import threading
@@ -222,26 +224,14 @@ def _search_coding_line(txt):
 
 def read_file_content(fileName):
     """Read a file content, this function is used to load Editor content."""
-    if not os.path.exists(fileName):
-        raise NinjaIOException("The file does not exist")
-    if not os.path.isfile(fileName):
-        raise NinjaIOException("%s is not a file" % fileName)
-    f = QtCore.QFile(fileName)
-    if not f.open(QtCore.QIODevice.ReadOnly | QtCore.QIODevice.Text):
-        raise NinjaIOException("%s" % f.errorString())
-    #QIODevice.Text convert \r\n to \n
-    stream = QtCore.QTextStream(f)
-    content = stream.readAll()
-    encoding = _search_coding_line(content)
-    if encoding:
-        #reset the stream options
-        stream.reset()
-        stream.seek(0)
-        #Set the specific encoding
-        stream.setCodec(encoding)
-        content = stream.readAll()
-    f.close()
-    return unicode(content)
+    try:
+        with open(fileName, mode='rU') as f:
+            content = f.read()
+            encoding = _search_coding_line(content)
+            content.decode(encoding)
+    except IOError, reason:
+        raise NinjaIOException(unicode(reason))
+    return content
 
 
 def get_basename(fileName):
