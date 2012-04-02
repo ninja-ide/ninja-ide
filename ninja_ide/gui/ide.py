@@ -425,6 +425,7 @@ def start(filenames=None, projects_path=None,
     start_server = not running[0]
     if running[0] and (filenames or projects_path):
         sended = ipc.send_data(running[1], filenames, projects_path, linenos)
+        running[1].close()
         if sended:
             sys.exit()
     else:
