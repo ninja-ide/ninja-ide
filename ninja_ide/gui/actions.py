@@ -9,6 +9,7 @@ from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QObject
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import SIGNAL
+from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QKeySequence
 from PyQt4.QtGui import QInputDialog
 from PyQt4.QtGui import QMessageBox
@@ -326,11 +327,19 @@ class __Actions(QObject):
         self.shortShowPasteHistory.setKey(short("Show-Paste-History"))
 
     def switch_focus(self):
-        editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget and editorWidget.hasFocus():
-            self.ide.explorer.setFocus()
-        elif editorWidget:
-            editorWidget.setFocus()
+        widget = QApplication.focusWidget()
+        if widget:
+            if widget in (self.ide.mainContainer.actualTab,
+               self.ide.mainContainer.actualTab.currentWidget()):
+                self.ide.explorer.currentWidget().setFocus()
+            elif widget in (self.ide.explorer,
+                 self.ide.explorer.currentWidget()):
+                if self.ide.misc.isVisible():
+                    self.ide.misc.stack.currentWidget().setFocus()
+                else:
+                    self.ide.mainContainer.actualTab.currentWidget().setFocus()
+            elif widget.parent() is self.ide.misc.stack:
+                self.ide.mainContainer.actualTab.currentWidget().setFocus()
 
     def _change_tab_index(self):
         editorWidget = self.ide.mainContainer.get_actual_editor()
