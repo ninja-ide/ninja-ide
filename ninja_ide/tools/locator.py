@@ -230,7 +230,7 @@ class LocateThread(QThread):
                 for x in locations \
                 if ((x.type == FILTERS['functions']) or \
                    (x.type == FILTERS['classes'])) and \
-                   (x.name == self._search)]
+                   (x.name.startswith(self._search))]
         for data in preResults:
             file_object = QFile(data[1])
             if not file_object.open(QFile.ReadOnly):
