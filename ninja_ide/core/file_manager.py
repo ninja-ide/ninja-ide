@@ -227,9 +227,11 @@ def read_file_content(fileName):
     try:
         with open(fileName, mode='rU') as f:
             content = f.read()
+            encoding = _search_coding_line(content)
+            content.decode(encoding)
     except IOError, reason:
         raise NinjaIOException(unicode(reason))
-    return unicode(content)
+    return content
 
 
 def get_basename(fileName):
