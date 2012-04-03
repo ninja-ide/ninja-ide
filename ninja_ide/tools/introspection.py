@@ -66,6 +66,7 @@ def _parse_function(symbol, with_docstrings):
             func_name += ' ' + _FILE_CONTENT[line_pos].strip()
             line_pos += 1
         func_name = func_name[:-1]
+        func_name = func_name.replace('\\', '')
     else:
         func_name = symbol.name + '()'
 
