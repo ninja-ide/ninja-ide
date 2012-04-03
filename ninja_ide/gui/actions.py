@@ -911,5 +911,5 @@ class __Actions(QObject):
 class TabShortcuts(QShortcut):
 
     def __init__(self, key, parent, index):
-        QShortcut.__init__(self, key, parent)
+        super(TabShortcuts, self).__init__(key, parent)
         self.index = index
