@@ -29,7 +29,6 @@ from PyQt4.QtCore import Qt
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
-from ninja_ide.tools import styles
 from ninja_ide.tools.completion import completer_widget
 from ninja_ide.gui.main_panel import itab_item
 from ninja_ide.gui.editor import highlighter
@@ -83,7 +82,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.syncDocErrorsSignal = False
         self._selected_word = ''
         #Set editor style
-        styles.set_editor_style(self, resources.CUSTOM_SCHEME)
+        self.apply_editor_style()
         self.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
         #For Highlighting in document
         self.extraSelections = []
@@ -267,7 +266,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         return file_manager.has_write_permission(self.ID)
 
     def restyle(self, syntaxLang=None):
-        styles.set_editor_style(self, resources.CUSTOM_SCHEME)
+        self.apply_editor_style()
         if self.highlighter is None:
             self.highlighter = highlighter.Highlighter(self.document(),
                 None, resources.CUSTOM_SCHEME, self.errors, self.pep8)
@@ -286,6 +285,19 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             if self._mini:
                 self._mini.highlighter.apply_highlight(
                     str(syntaxLang), resources.CUSTOM_SCHEME)
+
+    def apply_editor_style(self):
+        css = 'QPlainTextEdit {color: %s; background-color: %s;' \
+            'selection-color: %s; selection-background-color: %s;}' \
+            % (resources.CUSTOM_SCHEME.get('editor-text',
+            resources.COLOR_SCHEME['editor-text']),
+            resources.CUSTOM_SCHEME.get('editor-background',
+                resources.COLOR_SCHEME['editor-background']),
+            resources.CUSTOM_SCHEME.get('editor-selection-color',
+                resources.COLOR_SCHEME['editor-selection-color']),
+            resources.CUSTOM_SCHEME.get('editor-selection-background',
+                resources.COLOR_SCHEME['editor-selection-background']))
+        self.setStyleSheet(css)
 
     def _file_saved(self, undoAvailable=False):
         if not undoAvailable:
@@ -625,7 +637,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.moveCursor(QTextCursor.Down)
         elif settings.COMPLETE_DECLARATIONS:
             helpers.check_for_assistance_completion(self, text)
-        self.moveCursor(QTextCursor.EndOfLine)
+        cursor = self.textCursor()
+        cursor.setPosition(cursor.position())
+        self.setTextCursor(cursor)
 
     def complete_declaration(self):
         settings.COMPLETE_DECLARATIONS = not settings.COMPLETE_DECLARATIONS

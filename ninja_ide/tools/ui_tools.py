@@ -53,6 +53,7 @@ def load_table(table, headers, data, checkFirstColumn=True):
             item = QTableWidgetItem(colItem)
             table.setItem(r, index, item)
             if index == 0 and checkFirstColumn:
+                item.setData(Qt.UserRole, row)
                 item.setCheckState(Qt.Unchecked)
                 item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled |
                     Qt.ItemIsUserCheckable)
@@ -396,7 +397,7 @@ class ComboBoxButton(object):
         combo.setLayout(hbox)
         hbox.addStretch()
         btnOperation = QPushButton(combo)
-        btnOperation.setStyleSheet("border: none;")
+        btnOperation.setObjectName('combo_button')
         if icon:
             btnOperation.setIcon(QIcon(icon))
         hbox.addWidget(btnOperation)

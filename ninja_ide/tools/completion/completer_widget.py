@@ -178,7 +178,7 @@ class CodeCompletionWidget(QFrame):
             self.set_completion_prefix(prefix)
             self.completion_list.setCurrentRow(0)
         if event.key() == Qt.Key_Period  or (event.key() == Qt.Key_Space and \
-        event.modifiers() == Qt.ControlModifier):
+           event.modifiers() == Qt.ControlModifier):
             self.fill_completer()
 
 

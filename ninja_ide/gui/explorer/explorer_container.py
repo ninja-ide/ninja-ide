@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
-import sys
 import logging
 
 from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QShortcut
-from PyQt4.QtGui import QKeySequence
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QTabWidget
 from PyQt4.QtGui import QFileDialog
@@ -15,7 +12,6 @@ from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QIcon
 
 from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import QString
 from PyQt4.QtCore import QDateTime
@@ -81,18 +77,6 @@ class __ExplorerContainer(QTabWidget):
         if settings.SHOW_ERRORS_LIST:
             self.add_tab_errors()
 
-        key = Qt.Key_1
-        for i in xrange(10):
-            if sys.platform == "darwin":
-                short = TabShortcuts(
-                    QKeySequence(Qt.CTRL + Qt.ALT + key), self, i)
-            else:
-                short = TabShortcuts(QKeySequence(Qt.ALT + key), self, i)
-            key += 1
-            self.connect(short, SIGNAL("activated()"), self._change_tab_index)
-        short = TabShortcuts(QKeySequence(Qt.ALT + Qt.Key_0), self, 10)
-        self.connect(short, SIGNAL("activated()"), self._change_tab_index)
-
     def update_symbols(self, symbols, fileName):
         if self._treeSymbols:
             self._treeSymbols.update_symbols_tree(symbols, filename=fileName)
@@ -103,11 +87,6 @@ class __ExplorerContainer(QTabWidget):
 
     def addTab(self, tab, title):
         QTabWidget.addTab(self, tab, title)
-
-    def _change_tab_index(self):
-        obj = self.sender()
-        if obj.index < self.count():
-            self.setCurrentIndex(obj.index)
 
     def add_tab_projects(self):
         if not self._treeProjects:
@@ -296,6 +275,10 @@ class __ExplorerContainer(QTabWidget):
             if file_manager.folder_exists(project):
                 self.open_project_folder(project, notIDEStart)
 
+    def open_project_properties(self):
+        if self._treeProjects:
+            self._treeProjects.open_project_properties()
+
     def close_opened_projects(self):
         if self._treeProjects:
             self._treeProjects._close_open_projects()
@@ -358,10 +341,3 @@ class WebInspector(QWidget):
         vbox.addWidget(self._webInspector)
         self.btnDock = QPushButton(self.tr("Undock"))
         vbox.addWidget(self.btnDock)
-
-
-class TabShortcuts(QShortcut):
-
-    def __init__(self, key, parent, index):
-        QShortcut.__init__(self, key, parent)
-        self.index = index

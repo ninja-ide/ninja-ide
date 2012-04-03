@@ -28,7 +28,10 @@ class Pep8Checker(QThread):
         file_ext = file_manager.get_file_extension(self._editor.ID)
         if file_ext in exts:
             self.reset()
-            tempData = pep8mod.run_check(self._editor.ID)
+            source = self._editor.get_text()
+            if self._editor.encoding is not None:
+                source = source.encode(self._editor.encoding)
+            tempData = pep8mod.run_check(self._editor.ID, source)
             i = 0
             while i < len(tempData):
                 lineno = -1

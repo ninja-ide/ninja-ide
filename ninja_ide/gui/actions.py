@@ -2,11 +2,15 @@
 from __future__ import absolute_import
 
 import re
+import sys
 import webbrowser
 
+from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QObject
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import SIGNAL
+from PyQt4.QtGui import QApplication
+from PyQt4.QtGui import QKeySequence
 from PyQt4.QtGui import QInputDialog
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QShortcut
@@ -94,6 +98,7 @@ class __Actions(QObject):
         self.shortHideExplorer = QShortcut(short("Hide-explorer"), self.ide)
         self.shortRunFile = QShortcut(short("Run-file"), self.ide)
         self.shortRunProject = QShortcut(short("Run-project"), self.ide)
+        self.shortSwitchFocus = QShortcut(short("Switch-Focus"), self.ide)
         self.shortStopExecution = QShortcut(short("Stop-execution"), self.ide)
         self.shortHideAll = QShortcut(short("Hide-all"), self.ide)
         self.shortFullscreen = QShortcut(short("Full-screen"), self.ide)
@@ -196,6 +201,8 @@ class __Actions(QObject):
             self.execute_file)
         self.connect(self.shortRunProject, SIGNAL("activated()"),
             self.execute_project)
+        self.connect(self.shortSwitchFocus, SIGNAL("activated()"),
+            self.switch_focus)
         self.connect(self.shortStopExecution, SIGNAL("activated()"),
             self.kill_execution)
         self.connect(self.shortIndentLess, SIGNAL("activated()"),
@@ -241,6 +248,18 @@ class __Actions(QObject):
         self.connect(self.shortHighlightWord, SIGNAL("activated()"),
             self.editor_highlight_word)
 
+        key = Qt.Key_1
+        for i in xrange(10):
+            if sys.platform == "darwin":
+                short = TabShortcuts(
+                    QKeySequence(Qt.CTRL + Qt.ALT + key), self, i)
+            else:
+                short = TabShortcuts(QKeySequence(Qt.ALT + key), self.ide, i)
+            key += 1
+            self.connect(short, SIGNAL("activated()"), self._change_tab_index)
+        short = TabShortcuts(QKeySequence(Qt.ALT + Qt.Key_0), self.ide, 10)
+        self.connect(short, SIGNAL("activated()"), self._change_tab_index)
+
         #Connect SIGNALs from other objects
         self.connect(self.ide.mainContainer._tabMain,
             SIGNAL("runFile()"), self.execute_file)
@@ -279,6 +298,7 @@ class __Actions(QObject):
         self.shortHideExplorer.setKey(short("Hide-explorer"))
         self.shortRunFile.setKey(short("Run-file"))
         self.shortRunProject.setKey(short("Run-project"))
+        self.shortSwitchFocus.setKey(short("Switch-Focus"))
         self.shortStopExecution.setKey(short("Stop-execution"))
         self.shortHideAll.setKey(short("Hide-all"))
         self.shortFullscreen.setKey(short("Full-screen"))
@@ -305,6 +325,31 @@ class __Actions(QObject):
         self.shortShowBookmarksNav.setKey(short("Show-Bookmarks-Nav"))
         self.shortShowBreakpointsNav.setKey(short("Show-Breakpoints-Nav"))
         self.shortShowPasteHistory.setKey(short("Show-Paste-History"))
+
+    def switch_focus(self):
+        widget = QApplication.focusWidget()
+        if widget:
+            if widget in (self.ide.mainContainer.actualTab,
+               self.ide.mainContainer.actualTab.currentWidget()):
+                self.ide.explorer.currentWidget().setFocus()
+            elif widget in (self.ide.explorer,
+                 self.ide.explorer.currentWidget()):
+                if self.ide.misc.isVisible():
+                    self.ide.misc.stack.currentWidget().setFocus()
+                else:
+                    self.ide.mainContainer.actualTab.currentWidget().setFocus()
+            elif widget.parent() is self.ide.misc.stack:
+                self.ide.mainContainer.actualTab.currentWidget().setFocus()
+
+    def _change_tab_index(self):
+        editorWidget = self.ide.mainContainer.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            container = self.ide.mainContainer.actualTab
+        else:
+            container = self.ide.explorer
+        obj = self.sender()
+        if obj.index < container.count():
+            container.setCurrentIndex(obj.index)
 
     def _copy_history(self):
         """Copy the selected text into the copy/paste history."""
@@ -395,6 +440,10 @@ class __Actions(QObject):
         """Open a Project and load the symbols in the Code Locator."""
         self.ide.explorer.open_project_folder(unicode(path))
         self.ide.status.explore_code()
+
+    def open_project_properties(self):
+        """Open a Project and load the symbols in the Code Locator."""
+        self.ide.explorer.open_project_properties()
 
     def create_profile(self):
         """Create a profile binding files and projects to a key."""
@@ -695,7 +744,11 @@ class __Actions(QObject):
                 source = unicode(editorWidget.toPlainText())
                 if editorWidget.encoding is not None:
                     source = source.encode(editorWidget.encoding)
-                symbols = symbols_handler.obtain_symbols(source)
+                if ext == 'py':
+                    args = (source, True)
+                else:
+                    args = (source,)
+                symbols = symbols_handler.obtain_symbols(*args)
                 self.ide.explorer.update_symbols(symbols, editorWidget.ID)
 
             #TODO: Should we change the code below similar to the code above?
@@ -853,3 +906,10 @@ class __Actions(QObject):
     def reload_toolbar(self):
         """Reload the Toolbar."""
         self.ide.load_toolbar()
+
+
+class TabShortcuts(QShortcut):
+
+    def __init__(self, key, parent, index):
+        super(TabShortcuts, self).__init__(key, parent)
+        self.index = index

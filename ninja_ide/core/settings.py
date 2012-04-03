@@ -50,6 +50,7 @@ UI_LAYOUT = 0
 LANGUAGE = ""
 
 SHOW_START_PAGE = True
+USE_STYLESHEET = True
 
 CONFIRM_EXIT = True
 NOTIFY_UPDATES = True
@@ -104,6 +105,7 @@ CHECK_STYLE = True
 CHECK_HIGHLIGHT_LINE = True
 CODE_COMPLETION = True
 COMPLETE_DECLARATIONS = True
+HIGHLIGHT_WHOLE_LINE = True
 
 CENTER_ON_SCROLL = True
 
@@ -243,6 +245,7 @@ def load_settings():
     global ALLOW_TABS_NON_PYTHON
     global ALLOW_WORD_WRAP
     global COMPLETE_DECLARATIONS
+    global HIGHLIGHT_WHOLE_LINE
     global FONT_FAMILY
     global FONT_SIZE
     global SHOW_MARGIN_LINE
@@ -339,6 +342,8 @@ def load_settings():
         'preferences/editor/allowWordWrap', False).toBool()
     COMPLETE_DECLARATIONS = qsettings.value(
         'preferences/editor/completeDeclarations', True).toBool()
+    HIGHLIGHT_WHOLE_LINE = qsettings.value(
+        'preferences/editor/highlightWholeLine', True).toBool()
     font_family = unicode(qsettings.value(
         'preferences/editor/fontFamily', "").toString())
     if font_family:

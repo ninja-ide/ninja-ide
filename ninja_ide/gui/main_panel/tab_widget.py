@@ -20,7 +20,6 @@ from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
 from ninja_ide.gui.editor import editor
-from ninja_ide.tools import styles
 from ninja_ide.gui.main_panel import browser_widget
 
 logger = logging.getLogger('ninja_ide.gui.main_panel.tab_widget')
@@ -42,7 +41,7 @@ class TabWidget(QTabWidget):
     runFile()
     addToProject(QString)
     syntaxChanged(QWidget, QString)
-    reloadFile()
+    reloadFile(QWidget)
     navigateCode(bool, int)
     """
 ###############################################################################
@@ -153,20 +152,26 @@ class TabWidget(QTabWidget):
         if not editorWidget.ask_if_externally_modified:
             return
         #Check external modifications!
+        self.check_for_external_modifications(editorWidget)
+        #we can ask again
+        self.question_already_open = False
+
+    def check_for_external_modifications(self, editorWidget):
+        reloaded = False
         if editorWidget.check_external_modification() and \
-            not self.question_already_open:
-                #dont ask again if you are already asking!
+           not self.question_already_open:
+            #dont ask again if you are already asking!
             self.question_already_open = True
             val = QMessageBox.question(self, 'The file has changed on disc!',
-                                self.tr("Do you want to reload it?"),
-                                QMessageBox.Yes, QMessageBox.No)
+                self.tr("%1\nDo you want to reload it?").arg(editorWidget.ID),
+                QMessageBox.Yes, QMessageBox.No)
             if val == QMessageBox.Yes:
-                self.emit(SIGNAL("reloadFile()"))
+                self.emit(SIGNAL("reloadFile(QWidget)"), editorWidget)
+                reloaded = True
             else:
                 #dont ask again while the current file is open
                 editorWidget.ask_if_externally_modified = False
-        #we can ask again
-        self.question_already_open = False
+        return reloaded
 
     def tab_was_saved(self, ed):
         index = self.indexOf(ed)
@@ -420,12 +425,10 @@ class TabNavigator(QWidget):
             QIcon(resources.IMAGES['nav-code-left']), '')
         self.btnPrevious.setToolTip(
             self.tr("Right click to change navigation options"))
-        styles.set_style(self.btnPrevious, 'tab-navigator')
         self.btnNext = QPushButton(
             QIcon(resources.IMAGES['nav-code-right']), '')
         self.btnNext.setToolTip(
             self.tr("Right click to change navigation options"))
-        styles.set_style(self.btnNext, 'tab-navigator')
         hbox.addWidget(self.btnPrevious)
         hbox.addWidget(self.btnNext)
         self.setContentsMargins(0, 0, 0, 0)
