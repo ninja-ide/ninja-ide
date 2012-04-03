@@ -535,15 +535,13 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def __backspace(self, event):
         if self.textCursor().hasSelection():
             return False
-        for i in xrange(settings.INDENT):
-            self.moveCursor(QTextCursor.Left, QTextCursor.KeepAnchor)
-        text = self.textCursor().selection()
-        if unicode(text.toPlainText()) == ' ' * settings.INDENT:
-            self.textCursor().removeSelectedText()
+        cursor = self.textCursor()
+        cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor,
+            settings.INDENT)
+        text = unicode(cursor.selection().toPlainText())
+        if text == ' ' * settings.INDENT:
+            cursor.removeSelectedText()
             return True
-        else:
-            for i in xrange(text.toPlainText().size()):
-                self.moveCursor(QTextCursor.Right)
 
     def __home_pressed(self, event):
         if event.modifiers() == Qt.ControlModifier:
