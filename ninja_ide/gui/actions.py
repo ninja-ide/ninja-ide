@@ -252,7 +252,7 @@ class __Actions(QObject):
         for i in xrange(10):
             if sys.platform == "darwin":
                 short = TabShortcuts(
-                    QKeySequence(Qt.CTRL + Qt.ALT + key), self, i)
+                    QKeySequence(Qt.CTRL + Qt.ALT + key), self.ide, i)
             else:
                 short = TabShortcuts(QKeySequence(Qt.ALT + key), self.ide, i)
             key += 1
