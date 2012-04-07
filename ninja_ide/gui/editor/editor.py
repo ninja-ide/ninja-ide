@@ -741,7 +741,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             painter = QPainter()
             painter.begin(self.viewport())
             painter.setPen(QColor('#FE9E9A'))
-            posX = QFontMetricsF(self.document().defaultFont()).width(' ') \
+            posX = QFontMetricsF(self.document().defaultFont()).width('#') \
                                         * settings.MARGIN_LINE
             offset = self.contentOffset()
             painter.drawLine(posX + offset.x(), 0, \
