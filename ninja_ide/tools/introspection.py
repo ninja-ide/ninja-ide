@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import _ast
 import ast
 
 import logging
@@ -12,7 +13,14 @@ logger_symbols = logging.getLogger(
     'ninja_ide.tools.introspection.obtainint_symbols')
 
 
-_FILE_CONTENT = None
+_map_type = {
+    _ast.Tuple: 'tuple',
+    _ast.List: 'list',
+    _ast.Str: 'str',
+    _ast.Dict: 'dict',
+    _ast.Num: 'int',
+    _ast.Call: 'function()',
+}
 
 
 def _parse_assign(symbol):
@@ -55,20 +63,40 @@ def _parse_class(symbol, with_docstrings):
 def _parse_function(symbol, with_docstrings):
     docstring = ''
     attrs = {}
-    global _FILE_CONTENT
-    line_pos = symbol.lineno - 1
-    line = _FILE_CONTENT[line_pos]
-    index = line.find('def')
-    if index != -1:
-        func_name = line[index + 3:].strip()
-        line_pos += 1
-        while not func_name.endswith(':') and (len(_FILE_CONTENT) > line_pos):
-            func_name += ' ' + _FILE_CONTENT[line_pos].strip()
-            line_pos += 1
-        func_name = func_name[:-1]
-        func_name = func_name.replace('\\', '')
-    else:
-        func_name = symbol.name + '()'
+
+    func_name = symbol.name + '('
+    #We store the arguments to compare with default backwards
+    defaults = []
+    for value in symbol.args.defaults:
+        #TODO: In some cases we can have something like: a=os.path
+        defaults.append(value)
+    arguments = []
+    for arg in reversed(symbol.args.args):
+        if arg.id == 'self':
+            continue
+        argument = arg.id
+        if defaults:
+            value = defaults.pop()
+            arg_default = _map_type.get(value.__class__, None)
+            if arg_default is None:
+                if value.__class__ is _ast.Attribute:
+                    arg_default = analyzer.expand_attribute(value)
+                elif value.__class__ is _ast.Name:
+                    arg_default = value.id
+                else:
+                    arg_default = 'object'
+            argument += '=' + arg_default
+        arguments.append(argument)
+    func_name += ', '.join(reversed(arguments))
+    if symbol.args.vararg is not None:
+        if not func_name.endswith('('):
+            func_name += ', '
+        func_name += '*' + symbol.args.vararg
+    if symbol.args.kwarg is not None:
+        if not func_name.endswith('('):
+            func_name += ', '
+        func_name += '**' + symbol.args.kwarg
+    func_name += ')'
 
     for sym in symbol.body:
         if sym.__class__ is ast.Assign:
@@ -86,8 +114,6 @@ def obtain_symbols(source, with_docstrings=False):
     """Parse a module source code to obtain: Classes, Functions and Assigns."""
     try:
         module = ast.parse(source)
-        global _FILE_CONTENT
-        _FILE_CONTENT = source.splitlines()
     except:
         logger_symbols.debug("A file contains syntax errors.")
         return {}
@@ -123,8 +149,6 @@ def obtain_symbols(source, with_docstrings=False):
         symbols['classes'] = classes
     if docstrings and with_docstrings:
         symbols['docstrings'] = docstrings
-
-    _FILE_CONTENT = None
 
     return symbols
 
