@@ -251,7 +251,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         else:
             self.emit(SIGNAL("cleanDocument(QPlainTextEdit)"), self)
         if self.highlighter:
-            self.highlighter.rehighlight()
+            lines = list(set(self.errors.errorsSummary.keys() +
+                        self.pep8.pep8checks.keys()))
+            self.highlighter.rehighlight_lines(lines)
 
     def check_external_modification(self):
         if self.newDocument:
@@ -1017,7 +1019,18 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             if word != self._selected_word:
                 self._selected_word = word
                 self.highlighter.set_selected_word(word)
-                self.highlighter.rehighlight()
+                #Search for blocks
+                lines = []
+                position = 0
+                word_len = len(word)
+                cursor = self.document().find(word, position,
+                    QTextDocument.FindCaseSensitively)
+                while cursor.position() != -1:
+                    lines.append(cursor.blockNumber())
+                    position = cursor.position() + word_len
+                    cursor = self.document().find(word, position,
+                        QTextDocument.FindCaseSensitively)
+                self.highlighter.rehighlight_lines(lines)
 
 
 def create_editor(fileName='', project=None, syntax=None):
