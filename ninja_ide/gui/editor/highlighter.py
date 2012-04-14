@@ -70,6 +70,7 @@ class Highlighter (QSyntaxHighlighter):
         QSyntaxHighlighter.__init__(self, document)
         self.errors = errors
         self.pep8 = pep8
+        self.checkers_lines = []
         if lang is not None:
             self.apply_highlight(lang, scheme)
 
@@ -264,6 +265,13 @@ class Highlighter (QSyntaxHighlighter):
                 format = highlight_errors(format)
             self.setFormat(index, length, format)
             index = expression.indexIn(text, index + length)
+
+    def rehighlight_lines(self, lines):
+        self.checkers_lines = set(lines + self.checkers_lines)
+        for line in self.checkers_lines:
+            block = self.document().findBlockByNumber(line)
+            self.rehighlightBlock(block)
+        self.checkers_lines = lines
 
     def match_multiline(self, text, delimiter, in_state, style,
         hls=[], highlight_errors=lambda x: x):
