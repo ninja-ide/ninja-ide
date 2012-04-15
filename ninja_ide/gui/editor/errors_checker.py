@@ -26,6 +26,7 @@ class ErrorsChecker(QThread):
         self.errorsSummary = {}
 
     def run(self):
+        self.sleep(2)
         exts = settings.SYNTAX.get('python')['extension']
         file_ext = file_manager.get_file_extension(self._editor.ID)
         if file_ext in exts:

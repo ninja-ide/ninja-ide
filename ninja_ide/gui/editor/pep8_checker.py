@@ -24,6 +24,7 @@ class Pep8Checker(QThread):
         self.pep8checks = {}
 
     def run(self):
+        self.sleep(1)
         exts = settings.SYNTAX.get('python')['extension']
         file_ext = file_manager.get_file_extension(self._editor.ID)
         if file_ext in exts:

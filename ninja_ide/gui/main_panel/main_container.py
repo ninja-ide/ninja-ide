@@ -213,9 +213,9 @@ class __MainContainer(QSplitter):
         tab_from.update_current_widget()
 
     def add_editor(self, fileName="", project=None, tabIndex=None,
-        content=None, syntax=None):
+        syntax=None, use_open_highlight=False):
         editorWidget = editor.create_editor(fileName=fileName, project=project,
-            syntax=syntax)
+            syntax=syntax, use_open_highlight=use_open_highlight)
 
         if not fileName:
             tabName = "New Document"
@@ -225,6 +225,7 @@ class __MainContainer(QSplitter):
         #add the tab
         inserted_index = self.add_tab(editorWidget, tabName, tabIndex=tabIndex)
         self.actualTab.setTabToolTip(inserted_index, fileName)
+        #Connect signals
         self.connect(editorWidget, SIGNAL("modificationChanged(bool)"),
             self._editor_tab_was_modified)
         self.connect(editorWidget, SIGNAL("fileSaved(QPlainTextEdit)"),
@@ -251,9 +252,6 @@ class __MainContainer(QSplitter):
         self.connect(editorWidget, SIGNAL("keyPressEvent(QEvent)"),
             self._editor_keyPressEvent)
 
-        #insert the content if present
-        if content:
-            editorWidget.setPlainText(content)
         #emit a signal about the file open
         self.emit(SIGNAL("fileOpened(QString)"), fileName)
 
@@ -381,8 +379,13 @@ class __MainContainer(QSplitter):
                 self.actualTab.notOpening = False
                 content = file_manager.read_file_content(fileName)
                 editorWidget = self.add_editor(fileName, tabIndex=tabIndex,
-                    content=content)
+                    use_open_highlight=True)
+                editorWidget.highlighter.set_open_visible_area(
+                    positionIsLineNumber, cursorPosition)
+                #Add content
+                editorWidget.setPlainText(content)
                 editorWidget.ID = fileName
+                editorWidget.async_highlight()
                 encoding = file_manager._search_coding_line(content)
                 editorWidget.encoding = encoding
                 if not positionIsLineNumber:

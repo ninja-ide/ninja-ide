@@ -114,8 +114,10 @@ class MainService(QObject):
         """
         Create a new editor
         """
-        return self._main.add_editor(fileName=fileName, content=content,
-                                        syntax=syntax)
+        editor = self._main.add_editor(fileName=fileName, syntax=syntax)
+        if content:
+            editor.setPlainText(content)
+        return editor
 
     def get_editor(self):
         """
