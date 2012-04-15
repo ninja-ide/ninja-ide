@@ -1039,12 +1039,13 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 def create_editor(fileName='', project=None, syntax=None,
                   use_open_highlight=False):
     editor = Editor(fileName, project)
+    #if syntax is specified, use it
     if syntax:
         editor.register_syntax(syntax)
     else:
         #try to set a syntax based on the file extension
-        ext = file_manager.get_file_extension(editor.ID)
-        if ext not in settings.EXTENSIONS and editor.ID == '':
+        ext = file_manager.get_file_extension(fileName)
+        if ext not in settings.EXTENSIONS and fileName == '':
             #by default use python syntax
             editor.register_syntax('py')
         else:
