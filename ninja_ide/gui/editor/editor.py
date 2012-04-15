@@ -1032,8 +1032,12 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                         QTextDocument.FindCaseSensitively)
                 self.highlighter.rehighlight_lines(lines)
 
+    def async_highlight(self):
+        self.highlighter.async_highlight()
 
-def create_editor(fileName='', project=None, syntax=None):
+
+def create_editor(fileName='', project=None, syntax=None,
+                  use_open_highlight=False):
     editor = Editor(fileName, project)
     #if syntax is specified, use it
     if syntax:
@@ -1046,4 +1050,9 @@ def create_editor(fileName='', project=None, syntax=None):
             editor.register_syntax('py')
         else:
             editor.register_syntax(ext)
+
+    if use_open_highlight:
+        editor.highlighter.highlight_function = \
+            editor.highlighter.open_highlight
+
     return editor
