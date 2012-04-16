@@ -327,6 +327,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                     self.document(), None, resources.CUSTOM_SCHEME)
                 self._mini.highlighter.apply_highlight(lang,
                     resources.CUSTOM_SCHEME, syntax)
+        else:
+            self.highlighter = highlighter.EmpyHighlighter(self.document())
+            if self._mini:
+                self._mini.highlighter = highlighter.EmpyHighlighter(
+                    self.document())
 
     def get_text(self):
         """
