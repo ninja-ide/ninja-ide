@@ -62,7 +62,7 @@ def restyle(scheme):
         resources.COLOR_SCHEME['selected-word'])
 
 
-class Highlighter (QSyntaxHighlighter):
+class Highlighter(QSyntaxHighlighter):
 
     # braces
     braces = ['\\(', '\\)', '\\{', '\\}', '\\[', '\\]']
@@ -446,3 +446,34 @@ class HighlightParserThread(QThread):
 
             self.styles[block.blockNumber()] = formats
             block = block.next()
+
+
+class EmpyHighlighter(QSyntaxHighlighter):
+
+    def __init__(self, document):
+        super(EmpyHighlighter, self).__init__(document)
+        self.highlight_function = lambda x: None
+
+    def apply_highlight(self, *args, **kwargs):
+        pass
+
+    def set_selected_word(self, *args, **kwargs):
+        pass
+
+    def realtime_highlight(self, *args, **kwargs):
+        pass
+
+    def set_open_visible_area(self, *args, **kwargs):
+        pass
+
+    def open_highlight(self, *args, **kwargs):
+        pass
+
+    def async_highlight(self, *args, **kwargs):
+        pass
+
+    def highlightBlock(self, text):
+        pass
+
+    def rehighlight_lines(self, lines):
+        pass
