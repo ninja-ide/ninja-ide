@@ -812,22 +812,30 @@ class EditorGeneral(QWidget):
 
     def showEvent(self, event):
         super(EditorGeneral, self).showEvent(event)
+        self.thread_callback = ui_tools.ThreadCallback(self._get_editor_skins)
+        self.connect(self.thread_callback, SIGNAL("finished()"),
+            self._show_editor_skins)
+
+    def _get_editor_skins(self):
         qsettings = QSettings()
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('editor')
+        self._schemes = json_manager.load_editor_skins()
+        self._selected_scheme = qsettings.value('scheme', '').toString()
+        qsettings.endGroup()
+        qsettings.endGroup()
+
+    def _show_editor_skins(self):
         self._listScheme.clear()
         self._listScheme.addItem('default')
-        self._schemes = json_manager.load_editor_skins()
         for item in self._schemes:
             self._listScheme.addItem(item)
         items = self._listScheme.findItems(
-            qsettings.value('scheme', '').toString(), Qt.MatchExactly)
+            self._selected_scheme, Qt.MatchExactly)
         if items:
             self._listScheme.setCurrentItem(items[0])
         else:
             self._listScheme.setCurrentRow(0)
-        qsettings.endGroup()
-        qsettings.endGroup()
 
     def hideEvent(self, event):
         super(EditorGeneral, self).hideEvent(event)
