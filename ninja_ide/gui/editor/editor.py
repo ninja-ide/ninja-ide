@@ -95,7 +95,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #Completer
         self.completer = completer_widget.CodeCompletionWidget(self)
         #Flag to dont bug the user when answer *the modification dialog*
-        self.ask_if_externally_modified = True
+        self.ask_if_externally_modified = False
         #Dict functions for KeyPress
         self.preKeyPress = {
             Qt.Key_Tab: self.__insert_indentation,
@@ -514,10 +514,13 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def focusInEvent(self, event):
         super(Editor, self).focusInEvent(event)
-        #use parent().parent() to Access QTabWidget
-        #First parent() = QStackedWidget, Second parent() = TabWidget
-        self.parent().parent().focusInEvent(event)
-        #Check for modifications
+        try:
+            #use parent().parent() to Access QTabWidget
+            #First parent() = QStackedWidget, Second parent() = TabWidget
+            #Check for modifications
+            self.parent().parent().focusInEvent(event)
+        except RuntimeError:
+            pass
 
     def focusOutEvent(self, event):
         """Hide Popup on focus lost."""
