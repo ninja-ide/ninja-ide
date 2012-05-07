@@ -60,6 +60,8 @@ START_PAGE_URL = os.path.join(PRJ_PATH, "doc", "startPage.html")
 
 NINJA_THEME = os.path.join(PRJ_PATH, "addins", "theme", "ninja_theme.qss")
 
+NINJA_THEME_DOWNLOAD = os.path.join(HOME_NINJA_PATH, "addins", "theme")
+
 LOG_FILE_PATH = os.path.join(HOME_NINJA_PATH, 'ninja_ide.log')
 
 ###############################################################################
@@ -309,6 +311,7 @@ def create_home_dir_structure():
     """
     Create the necesary directories structure for NINJA-IDE
     """
-    for d in (HOME_NINJA_PATH, ADDINS, PLUGINS, EDITOR_SKINS, LANGS_DOWNLOAD):
+    for d in (HOME_NINJA_PATH, ADDINS, PLUGINS, EDITOR_SKINS,
+              LANGS_DOWNLOAD, NINJA_THEME_DOWNLOAD):
         if not os.path.isdir(d):
             os.mkdir(d)

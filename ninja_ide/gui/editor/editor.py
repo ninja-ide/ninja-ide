@@ -95,7 +95,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #Completer
         self.completer = completer_widget.CodeCompletionWidget(self)
         #Flag to dont bug the user when answer *the modification dialog*
-        self.ask_if_externally_modified = True
+        self.ask_if_externally_modified = False
         #Dict functions for KeyPress
         self.preKeyPress = {
             Qt.Key_Tab: self.__insert_indentation,
@@ -251,7 +251,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         else:
             self.emit(SIGNAL("cleanDocument(QPlainTextEdit)"), self)
         if self.highlighter:
-            self.highlighter.rehighlight()
+            lines = list(set(self.errors.errorsSummary.keys() +
+                        self.pep8.pep8checks.keys()))
+            self.highlighter.rehighlight_lines(lines)
 
     def check_external_modification(self):
         if self.newDocument:
@@ -325,6 +327,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                     self.document(), None, resources.CUSTOM_SCHEME)
                 self._mini.highlighter.apply_highlight(lang,
                     resources.CUSTOM_SCHEME, syntax)
+        else:
+            self.highlighter = highlighter.EmpyHighlighter(self.document())
+            if self._mini:
+                self._mini.highlighter = highlighter.EmpyHighlighter(
+                    self.document())
 
     def get_text(self):
         """
@@ -507,10 +514,13 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def focusInEvent(self, event):
         super(Editor, self).focusInEvent(event)
-        #use parent().parent() to Access QTabWidget
-        #First parent() = QStackedWidget, Second parent() = TabWidget
-        self.parent().parent().focusInEvent(event)
-        #Check for modifications
+        try:
+            #use parent().parent() to Access QTabWidget
+            #First parent() = QStackedWidget, Second parent() = TabWidget
+            #Check for modifications
+            self.parent().parent().focusInEvent(event)
+        except RuntimeError:
+            pass
 
     def focusOutEvent(self, event):
         """Hide Popup on focus lost."""
@@ -535,15 +545,13 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def __backspace(self, event):
         if self.textCursor().hasSelection():
             return False
-        for i in xrange(settings.INDENT):
-            self.moveCursor(QTextCursor.Left, QTextCursor.KeepAnchor)
-        text = self.textCursor().selection()
-        if unicode(text.toPlainText()) == ' ' * settings.INDENT:
-            self.textCursor().removeSelectedText()
+        cursor = self.textCursor()
+        cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor,
+            settings.INDENT)
+        text = unicode(cursor.selection().toPlainText())
+        if text == ' ' * settings.INDENT:
+            cursor.removeSelectedText()
             return True
-        else:
-            for i in xrange(text.toPlainText().size()):
-                self.moveCursor(QTextCursor.Right)
 
     def __home_pressed(self, event):
         if event.modifiers() == Qt.ControlModifier:
@@ -743,7 +751,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             painter = QPainter()
             painter.begin(self.viewport())
             painter.setPen(QColor('#FE9E9A'))
-            posX = QFontMetricsF(self.document().defaultFont()).width(' ') \
+            posX = QFontMetricsF(self.document().defaultFont()).width('#') \
                                         * settings.MARGIN_LINE
             offset = self.contentOffset()
             painter.drawLine(posX + offset.x(), 0, \
@@ -1019,10 +1027,25 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             if word != self._selected_word:
                 self._selected_word = word
                 self.highlighter.set_selected_word(word)
-                self.highlighter.rehighlight()
+                #Search for blocks
+                lines = []
+                position = 0
+                word_len = len(word)
+                cursor = self.document().find(word, position,
+                    QTextDocument.FindCaseSensitively)
+                while cursor.position() != -1:
+                    lines.append(cursor.blockNumber())
+                    position = cursor.position() + word_len
+                    cursor = self.document().find(word, position,
+                        QTextDocument.FindCaseSensitively)
+                self.highlighter.rehighlight_lines(lines)
+
+    def async_highlight(self):
+        self.highlighter.async_highlight()
 
 
-def create_editor(fileName='', project=None, syntax=None):
+def create_editor(fileName='', project=None, syntax=None,
+                  use_open_highlight=False):
     editor = Editor(fileName, project)
     #if syntax is specified, use it
     if syntax:
@@ -1035,4 +1058,9 @@ def create_editor(fileName='', project=None, syntax=None):
             editor.register_syntax('py')
         else:
             editor.register_syntax(ext)
+
+    if use_open_highlight:
+        editor.highlighter.highlight_function = \
+            editor.highlighter.open_highlight
+
     return editor
