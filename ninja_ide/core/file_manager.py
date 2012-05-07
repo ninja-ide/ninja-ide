@@ -358,6 +358,11 @@ def get_file_extension(fileName):
     return os.path.splitext(fileName.lower())[-1][1:]
 
 
+def get_file_name(fileName):
+    """Get the file name, without the extension."""
+    return os.path.splitext(fileName)[0]
+
+
 def get_module_name(fileName):
     """Get the name of the file without the extension."""
     module = os.path.basename(fileName)
