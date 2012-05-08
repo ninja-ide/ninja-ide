@@ -1554,7 +1554,7 @@ class ThemeDesigner(QWidget):
         hbox.addWidget(self.btn_save)
 
         self.edit_qss = editor.create_editor(fileName='qss.qss')
-        if not self.edit_qss._mini:
+        if self.edit_qss._mini:
             self.edit_qss._mini.hide()
         self.edit_qss._mini = None
         self.btn_apply = QPushButton(self.tr("Apply Style Sheet"))
