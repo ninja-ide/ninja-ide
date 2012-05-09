@@ -22,20 +22,25 @@ class MenuView(QObject):
             self.tr("Show/Hide &Console (%1)").arg(
                 resources.get_shortcut("Hide-misc").toString(
                     QKeySequence.NativeText)))
+        self.hideConsoleAction.setCheckable(True)
         self.hideEditorAction = menuView.addAction(
             self.tr("Show/Hide &Editor (%1)").arg(
                 resources.get_shortcut("Hide-editor").toString(
                     QKeySequence.NativeText)))
+        self.hideEditorAction.setCheckable(True)
         self.hideAllAction = menuView.addAction(
             self.tr("Show/Hide &All (%1)").arg(
                 resources.get_shortcut("Hide-all").toString(
                     QKeySequence.NativeText)))
+        self.hideAllAction.setCheckable(True)
         self.hideExplorerAction = menuView.addAction(
             self.tr("Show/Hide &Explorer (%1)").arg(
                 resources.get_shortcut("Hide-explorer").toString(
                     QKeySequence.NativeText)))
+        self.hideExplorerAction.setCheckable(True)
         self.hideToolbarAction = menuView.addAction(
             self.tr("Show/Hide &Toolbar"))
+        self.hideToolbarAction.setCheckable(True)
         self.fullscreenAction = menuView.addAction(
             QIcon(resources.IMAGES['fullscreen']),
             self.tr("Full Screen &Mode (%1)").arg(
@@ -79,15 +84,16 @@ class MenuView(QObject):
             'zoom-out': zoomOutAction}
 
         self.connect(self.hideConsoleAction, SIGNAL("triggered()"),
-            self.__ide.central.change_misc_visibility)
+            self.__ide.actions.view_misc_visibility)
         self.connect(self.hideEditorAction, SIGNAL("triggered()"),
-            self.__ide.central.change_main_visibility)
+            self.__ide.actions.view_main_visibility)
         self.connect(self.hideExplorerAction, SIGNAL("triggered()"),
-            self.__ide.central.change_explorer_visibility)
+            self.__ide.actions.view_explorer_visibility)
         self.connect(self.hideAllAction, SIGNAL("triggered()"),
             self.__ide.actions.hide_all)
         self.connect(self.fullscreenAction, SIGNAL("triggered()"),
             self.__ide.actions.fullscreen_mode)
+
         self.connect(splitTabHAction, SIGNAL("triggered()"),
             lambda: self.__ide.mainContainer.split_tab(True))
         self.connect(splitTabVAction, SIGNAL("triggered()"),
@@ -106,6 +112,13 @@ class MenuView(QObject):
             self.__ide.actions.group_tabs_together)
         self.connect(deactivateGroupTabsAction, SIGNAL("triggered()"),
             self.__ide.actions.deactivate_tabs_groups)
+
+        #Set proper MenuView checks values:
+        self.hideAllAction.setChecked(True)
+        self.hideConsoleAction.setChecked(False)
+        self.hideEditorAction.setChecked(True)
+        self.hideExplorerAction.setChecked(True)
+        self.hideToolbarAction.setChecked(True)
 
     def _hide_show_toolbar(self):
         if self.__ide.toolbar.isVisible():
