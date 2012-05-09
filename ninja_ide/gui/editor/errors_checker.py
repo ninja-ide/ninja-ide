@@ -46,9 +46,15 @@ class ErrorsChecker(QThread):
                         message += [m.message % m.message_args]
                     self.errorsSummary[lineno] = message
             except Exception, reason:
-                if hasattr(reason, 'lineno'):
-                    self.errorsSummary[reason.lineno - 1] = [reason.message]
+                message = ''
+                if hasattr(reason, 'msg'):
+                    message = reason.msg
                 else:
-                    self.errorsSummary[0] = [reason.message]
+                    message = reason.message
+
+                if hasattr(reason, 'lineno'):
+                    self.errorsSummary[reason.lineno - 1] = [message]
+                else:
+                    self.errorsSummary[0] = [message]
         else:
             self.reset()
