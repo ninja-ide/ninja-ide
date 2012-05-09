@@ -168,11 +168,11 @@ class __Actions(QObject):
         self.connect(self.shortNewProject, SIGNAL("activated()"),
             self.ide.explorer.create_new_project)
         self.connect(self.shortHideMisc, SIGNAL("activated()"),
-            self.ide.central.change_misc_visibility)
+            self.view_misc_visibility)
         self.connect(self.shortHideEditor, SIGNAL("activated()"),
-            self.ide.central.change_main_visibility)
+            self.view_main_visibility)
         self.connect(self.shortHideExplorer, SIGNAL("activated()"),
-            self.ide.central.change_explorer_visibility)
+            self.view_explorer_visibility)
         self.connect(self.shortHideAll, SIGNAL("activated()"),
             self.hide_all)
         self.connect(self.shortJump, SIGNAL("activated()"),
@@ -697,6 +697,31 @@ class __Actions(QObject):
             self.ide.central.lateralPanel.show()
             self.ide.toolbar.show()
             self.ide.menuBar().show()
+        self.ide._menuView.hideAllAction.setChecked(
+            self.ide.menuBar().isVisible())
+        self.ide._menuView.hideConsoleAction.setChecked(
+            self.ide.central.misc.isVisible())
+        self.ide._menuView.hideEditorAction.setChecked(
+            self.ide.central.mainContainer.isVisible())
+        self.ide._menuView.hideExplorerAction.setChecked(
+            self.ide.central.lateralPanel.isVisible())
+        self.ide._menuView.hideToolbarAction.setChecked(
+            self.ide.toolbar.isVisible())
+
+    def view_misc_visibility(self):
+        self.ide.central.change_misc_visibility()
+        self.ide._menuView.hideConsoleAction.setChecked(
+            self.ide.central.misc.isVisible())
+
+    def view_main_visibility(self):
+        self.ide.central.change_main_visibility()
+        self.ide._menuView.hideEditorAction.setChecked(
+            self.ide.central.mainContainer.isVisible())
+
+    def view_explorer_visibility(self):
+        self.ide.central.change_explorer_visibility()
+        self.ide._menuView.hideExplorerAction.setChecked(
+            self.ide.central.lateralPanel.isVisible())
 
     def save_project(self):
         """Save all the opened files that belongs to the actual project."""
