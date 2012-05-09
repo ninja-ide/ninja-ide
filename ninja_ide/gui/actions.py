@@ -528,8 +528,7 @@ class __Actions(QObject):
         #emit a signal for plugin!
         self.emit(SIGNAL("fileExecuted(QString)"), editorWidget.ID)
         if editorWidget:
-            if not editorWidget.ID:
-                self.ide.mainContainer.save_file()
+            self.ide.mainContainer.save_file(editorWidget)
             ext = file_manager.get_file_extension(editorWidget.ID)
             #TODO: Remove the IF statment with polymorphism using Handler
             if ext == 'py':
