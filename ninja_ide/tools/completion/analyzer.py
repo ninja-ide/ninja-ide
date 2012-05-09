@@ -19,7 +19,12 @@ def expand_attribute(attribute):
         parent_name.append(attribute.attr)
         attribute = attribute.value
     name = '.'.join(reversed(parent_name))
-    name = attribute.id if name == '' else ("%s.%s" % (attribute.id, name))
+    attribute_id = ''
+    if attribute.__class__ is ast.Name:
+        attribute_id = attribute.id
+    elif attribute.__class__ is ast.Call:
+        attribute_id = attribute.func.attr
+    name = attribute_id if name == '' else ("%s.%s" % (attribute_id, name))
     return name
 
 
