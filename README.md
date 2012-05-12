@@ -33,26 +33,17 @@ Running Ninja-IDE
 
 You can clone this repo and simply execute:
 
-<<<<<<< HEAD
     git clone git://github.com/ninja-ide/ninja-ide.git
     cd ninja-ide
     python ninja-ide.py
-=======
-  git clone git://github.com/ninja-ide/ninja-ide.git
-  cd ninja-ide
-  python ninja-ide.py
->>>>>>> acd9975c272d254b51c27c7f37f13ff099785a60
 
 Piece of cake, uh?
 
 CHANGELOG
 ---------
 
-<<<<<<< HEAD
+
 **Version 2.0-Beta (Shuriken)**
-=======
-Version 2.0-Beta (Shuriken)
->>>>>>> acd9975c272d254b51c27c7f37f13ff099785a60
 
 * NINJA-IDE fully migrated to a new Architecture with a better design.
 * New Plugins API.
@@ -102,11 +93,8 @@ Version 2.0-Beta (Shuriken)
 * Added Copy/Paste Historial
 * Bugs from 1.1 Fixed!
 
-<<<<<<< HEAD
+
 **Version 1.1 (Kunai)**
-=======
-Version 1.1 (Kunai)
->>>>>>> acd9975c272d254b51c27c7f37f13ff099785a60
 
 * All Bugs from Version 1.0 fixed (Until April 21st)
 * Support for Encoding
@@ -120,11 +108,8 @@ Version 1.1 (Kunai)
 * New Feature: "Find in Files" (Ctrl+L)
 * New: Easter Egg!! (Find it!)
 
-<<<<<<< HEAD
+
 **Version 1.0 (Kunai)**
-=======
-Version 1.0 (Kunai)
->>>>>>> acd9975c272d254b51c27c7f37f13ff099785a60
 
 * Syntax Highlighting for Python, Java, efene, C, C++, C#.
 * Really easy to extend the highlight support to any language. Just write a .json file!
@@ -182,11 +167,8 @@ plugins automatically.
 * Refactoring functions supported.
 * Python path configurable for the IDE or for each project.
 * Show Recent Projects.
-<<<<<<< HEAD
 
 
-=======
->>>>>>> acd9975c272d254b51c27c7f37f13ff099785a60
 License
 -------
 
