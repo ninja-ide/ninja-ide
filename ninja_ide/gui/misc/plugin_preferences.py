@@ -29,7 +29,7 @@ class PluginPreferences(QWidget):
     def _load_widgets(self):
         logger.info("Loading plugins preferences widgets")
         #Collect the preferences widget for each active plugin
-        for plugin in self.plugin_manager.get_actives_plugins():
+        for plugin in self.plugin_manager.get_active_plugins():
             plugin_name = plugin.metadata.get('name')
             try:
                 preferences_widget = plugin.get_preferences_widget()
