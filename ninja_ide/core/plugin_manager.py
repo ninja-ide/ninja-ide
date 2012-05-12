@@ -129,7 +129,7 @@ class __PluginManager(object):
         if not plugin_dir in self._plugins_by_dir:
             self._plugins_by_dir[plugin_dir] = []
 
-    def get_actives_plugins(self):
+    def get_active_plugins(self):
         '''
         Return a list the instances
         '''
@@ -143,8 +143,8 @@ class __PluginManager(object):
         Check if the plugin is known,
         if it is active return it,
         otherwise, active it and return it.
-        It is exception safe, if the plugin
-        is not known return None.
+        If the plugin name does not exist
+        raise KeyError exception.
 
         @param plugin_name: plugin name.
 
@@ -159,7 +159,7 @@ class __PluginManager(object):
             if not plugin_name in self._active_plugins:
                 self.load(plugin_name)
             return self._active_plugins[plugin_name][0]
-        return None
+        return KeyError(plugin_name)
 
     def __contains__(self, plugin_name):
         '''
@@ -491,4 +491,4 @@ if __name__ == '__main__':
     print "Activating plugins..."
     pm.load_all()
     print "Plugins already actives..."
-    print pm.get_actives_plugins()
+    print pm.get_active_plugins()
