@@ -172,5 +172,5 @@ plugins automatically.
 License
 -------
 
-TODO: Fill me with legal stuff
+GPL v3
 
