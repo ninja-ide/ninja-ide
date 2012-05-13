@@ -129,6 +129,11 @@ class __PluginManager(object):
         if not plugin_dir in self._plugins_by_dir:
             self._plugins_by_dir[plugin_dir] = []
 
+    def get_actives_plugins(self):
+        import warnings
+        warnings.warn("Deprecated in behalf of a TYPO free method name")
+        return self.get_active_plugins()
+
     def get_active_plugins(self):
         '''
         Return a list the instances
@@ -485,10 +490,10 @@ if __name__ == '__main__':
     pm = PluginManager(folders, sl)
     #There are not plugins yet...lets discover
     pm.discover()
-    print "listing plugins names..."
+    logger.info("listing plugins names...")
     for p in pm:
         print p
-    print "Activating plugins..."
+    logger.info("Activating plugins...")
     pm.load_all()
-    print "Plugins already actives..."
-    print pm.get_active_plugins()
+    logger.info("Plugins already actives...")
+    logger.info(pm.get_active_plugins())
