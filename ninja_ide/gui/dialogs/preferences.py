@@ -3,7 +3,9 @@ from __future__ import absolute_import
 
 import os
 import copy
+import getpass
 
+from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QKeySequence
 from PyQt4.QtGui import QSpacerItem
@@ -73,11 +75,13 @@ class PreferencesWidget(QDialog):
         self._general = GeneralTab(self)
         self._interface = InterfaceTab(self)
         self._editor = EditorTab()
+        self._theme = ThemeTab()
         self._plugins = plugin_preferences.PluginPreferences()
         self._tabs.addTab(self._general, self.tr("General"))
         self._tabs.addTab(self._interface, self.tr("Interface"))
         self._tabs.addTab(self._editor, self.tr("Editor"))
         self._tabs.addTab(self._plugins, self.tr("Plugins"))
+        self._tabs.addTab(self._theme, self.tr("Theme"))
         #Buttons (save-cancel)
         hbox = QHBoxLayout()
         self._btnSave = QPushButton(self.tr("Save"))
@@ -1483,3 +1487,141 @@ class EditorSchemeDesigner(QWidget):
         elif fileName.strip() != '':
             QMessageBox.information(self, self.tr("Scheme Not Saved"),
                     self.tr("The name probably is invalid."))
+
+
+class ThemeTab(QTabWidget):
+
+    def __init__(self):
+        super(ThemeTab, self).__init__()
+        self.theme_chooser = ThemeChooser()
+        self.theme_designer = ThemeDesigner(self)
+
+        self.addTab(self.theme_chooser, "Theme Chooser")
+        self.addTab(self.theme_designer, "Theme Designer")
+
+    def save(self):
+        pass
+
+
+class ThemeChooser(QWidget):
+
+    def __init__(self):
+        super(ThemeChooser, self).__init__()
+        vbox = QVBoxLayout(self)
+
+        vbox.addWidget(QLabel(self.tr("<b>Select Theme:</b>")))
+        self.list_skins = QListWidget()
+        self.list_skins.setSelectionMode(QListWidget.SingleSelection)
+        vbox.addWidget(self.list_skins)
+        self.btn_preview = QPushButton(self.tr("Preview Theme"))
+        hbox = QHBoxLayout()
+        hbox.addSpacerItem(QSpacerItem(10, 0, QSizePolicy.Expanding,
+            QSizePolicy.Fixed))
+        hbox.addWidget(self.btn_preview)
+        vbox.addLayout(hbox)
+
+        self.connect(self.btn_preview, SIGNAL("clicked()"), self.preview_theme)
+
+    def showEvent(self, event):
+        self.list_skins.clear()
+        self.list_skins.addItem("Default")
+
+        files = [file_manager.get_file_name(filename) for filename in \
+            file_manager.get_files_from_folder(
+            resources.NINJA_THEME_DOWNLOAD, "qss")]
+        self.list_skins.addItems(files)
+
+        self.list_skins.setCurrentRow(0)
+        super(ThemeChooser, self).showEvent(event)
+
+    def preview_theme(self):
+        if self.list_skins.currentRow() == 0:
+            qss_file = resources.NINJA_THEME
+        else:
+            file_name = ("%s.qss" %
+                self.list_skins.currentItem().text())
+            qss_file = file_manager.create_path(resources.NINJA_THEME_DOWNLOAD,
+                file_name)
+        with open(qss_file) as f:
+            qss = f.read()
+        QApplication.instance().setStyleSheet(qss)
+
+
+class ThemeDesigner(QWidget):
+
+    def __init__(self, parent):
+        super(ThemeDesigner, self).__init__()
+        self._parent = parent
+        vbox = QVBoxLayout(self)
+
+        hbox = QHBoxLayout()
+        hbox.addWidget(QLabel(self.tr("New Theme Name:")))
+        self.line_name = QLineEdit()
+        hbox.addWidget(self.line_name)
+        self.btn_save = QPushButton(self.tr("Save Theme"))
+        hbox.addWidget(self.btn_save)
+
+        self.edit_qss = editor.create_editor(fileName='qss.qss')
+        if self.edit_qss._mini:
+            self.edit_qss._mini.hide()
+        self.edit_qss._mini = None
+        self.btn_apply = QPushButton(self.tr("Apply Style Sheet"))
+        hbox2 = QHBoxLayout()
+        hbox2.addSpacerItem(QSpacerItem(10, 0, QSizePolicy.Expanding,
+            QSizePolicy.Fixed))
+        hbox2.addWidget(self.btn_apply)
+        hbox2.addSpacerItem(QSpacerItem(10, 0, QSizePolicy.Expanding,
+            QSizePolicy.Fixed))
+
+        vbox.addLayout(hbox)
+        vbox.addWidget(self.edit_qss)
+        vbox.addLayout(hbox2)
+
+        self.connect(self.btn_apply, SIGNAL("clicked()"),
+            self.apply_stylesheet)
+        self.connect(self.btn_save, SIGNAL("clicked()"),
+            self.save_stylesheet)
+
+    def showEvent(self, event):
+        if self._parent.theme_chooser.list_skins.currentRow() == 0:
+            qss_file = resources.NINJA_THEME
+        else:
+            file_name = ("%s.qss" %
+                self._parent.theme_chooser.list_skins.currentItem().text())
+            qss_file = file_manager.create_path(resources.NINJA_THEME_DOWNLOAD,
+                file_name)
+        with open(qss_file) as f:
+            qss = f.read()
+            self.edit_qss.setPlainText(qss)
+            self.edit_qss.document().setModified(False)
+        self.line_name.setText("%s_%s" %
+            (self._parent.theme_chooser.list_skins.currentItem().text(),
+            getpass.getuser()))
+        super(ThemeDesigner, self).showEvent(event)
+
+    def hideEvent(self, event):
+        if self.edit_qss.document().isModified():
+            answer = QMessageBox.question(self, self.tr("Theme Modified"),
+                self.tr("Do you want to save the theme changes?"),
+                QMessageBox.Ok | QMessageBox.No, QMessageBox.Ok)
+            if answer == QMessageBox.Ok:
+                self.save_stylesheet()
+        super(ThemeDesigner, self).hideEvent(event)
+
+    def apply_stylesheet(self):
+        qss = self.edit_qss.toPlainText()
+        QApplication.instance().setStyleSheet(qss)
+
+    def save_stylesheet(self):
+        try:
+            file_name = "%s.qss" % self.line_name.text()
+            file_name = file_manager.create_path(
+                resources.NINJA_THEME_DOWNLOAD, file_name)
+            content = unicode(self.edit_qss.toPlainText())
+            file_manager.store_file_content(file_name, content, newFile=True)
+            QMessageBox.information(self, self.tr("Style Sheet Saved"),
+                self.tr("Theme saved at: '%s'." % file_name))
+        except file_manager.NinjaFileExistsException, ex:
+            QMessageBox.information(self, self.tr("File Already Exists"),
+                self.tr("Invalid File Name: the file '%s' already exists." % \
+                    ex.filename))

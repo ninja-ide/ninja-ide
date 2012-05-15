@@ -11,6 +11,7 @@ from PyQt4.QtCore import SIGNAL
 from PyQt4.QtGui import QListWidget
 
 from ninja_ide import resources
+from ninja_ide.core import settings
 from ninja_ide.tools.completion import code_completion
 
 
@@ -170,6 +171,8 @@ class CodeCompletionWidget(QFrame):
         return skip
 
     def process_post_key_event(self, event):
+        if not settings.CODE_COMPLETION or self._editor.lang != "python":
+            return
         if self.isVisible():
             source = self._editor.get_text()
             source = source.encode(self._editor.encoding)

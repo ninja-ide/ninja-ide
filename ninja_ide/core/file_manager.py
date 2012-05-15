@@ -19,11 +19,11 @@ logger = logging.getLogger('ninja_ide.gui.explorer.file_manager')
 DEBUG = logger.debug
 
 try:
-    if sys.platform == "darwin":
+#    if sys.platform == "darwin":
         # Temporary hack to avoid using the filewatcher in Mac OS X, because it
         # is causing Ninja to crash with an error like this:
         #     "[Errno 24] Too many open files"
-        raise ImportError()
+    raise ImportError()
 
     from watchdog.observers import Observer
     from watchdog.events import FileSystemEventHandler
@@ -356,6 +356,11 @@ def rename_file(old, new):
 def get_file_extension(fileName):
     """Get the file extension in the form of: 'py'"""
     return os.path.splitext(fileName.lower())[-1][1:]
+
+
+def get_file_name(fileName):
+    """Get the file name, without the extension."""
+    return os.path.splitext(fileName)[0]
 
 
 def get_module_name(fileName):

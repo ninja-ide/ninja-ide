@@ -103,10 +103,10 @@ class ConsoleWidget(QPlainTextEdit):
         clipboard = QApplication.instance().clipboard()
         clipboard.setText(content)
 
-    def setCursorPosition(self, position):
-        self.moveCursor(QTextCursor.StartOfLine)
+    def setCursorPosition(self, position, mode=QTextCursor.MoveAnchor):
+        self.moveCursor(QTextCursor.StartOfLine, mode)
         for i in xrange(len(self.prompt) + position):
-            self.moveCursor(QTextCursor.Right)
+            self.moveCursor(QTextCursor.Right, mode)
 
     def keyPressEvent(self, event):
         if self.completer.popup().isVisible():
@@ -125,7 +125,10 @@ class ConsoleWidget(QPlainTextEdit):
             self.textCursor().insertText(' ' * settings.INDENT)
             return
         if event.key() == Qt.Key_Home:
-            self.setCursorPosition(0)
+            if event.modifiers() == Qt.ShiftModifier:
+                self.setCursorPosition(0, QTextCursor.KeepAnchor)
+            else:
+                self.setCursorPosition(0)
             return
         if event.key() == Qt.Key_PageUp:
             return
@@ -151,15 +154,13 @@ class ConsoleWidget(QPlainTextEdit):
                 return
             elif self._get_cursor_position() == 0:
                 return
-            for i in xrange(settings.INDENT):
-                self.moveCursor(QTextCursor.Left, QTextCursor.KeepAnchor)
-            text = self.textCursor().selection()
-            if unicode(text.toPlainText()) == ' ' * settings.INDENT:
-                self.textCursor().removeSelectedText()
-                return
-            else:
-                for i in xrange(text.toPlainText().size()):
-                    self.moveCursor(QTextCursor.Right)
+            cursor = self.textCursor()
+            cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor,
+                settings.INDENT)
+            text = unicode(cursor.selection().toPlainText())
+            if text == ' ' * settings.INDENT:
+                cursor.removeSelectedText()
+                return True
         elif event.key() == Qt.Key_Home:
             if event.modifiers() == Qt.ShiftModifier:
                 move = QTextCursor.KeepAnchor
@@ -173,12 +174,12 @@ class ConsoleWidget(QPlainTextEdit):
             return
         elif unicode(event.text()) in \
         (set(BRACES.values()) - set(["'", '"'])):
-            self.moveCursor(QTextCursor.Left, QTextCursor.KeepAnchor)
-            brace = unicode(self.textCursor().selection().toPlainText())
-            self.moveCursor(QTextCursor.Right)
-            self.moveCursor(QTextCursor.Right, QTextCursor.KeepAnchor)
-            braceClose = unicode(self.textCursor().selection().toPlainText())
-            self.moveCursor(QTextCursor.Left)
+            cursor = self.textCursor()
+            cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
+            brace = unicode(cursor.selection().toPlainText())
+            cursor = self.textCursor()
+            cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
+            braceClose = unicode(cursor.selection().toPlainText())
             if BRACES.get(brace, False) == unicode(event.text()) and \
               braceClose == unicode(event.text()):
                 self.moveCursor(QTextCursor.Right)
