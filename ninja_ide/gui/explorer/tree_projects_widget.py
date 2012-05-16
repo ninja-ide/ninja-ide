@@ -292,6 +292,9 @@ class TreeProjectsWidget(QTreeWidget):
         item = self.currentItem()
         if item:
             self.set_default_project(item)
+            self._actualProject = item
+        else:
+            self._actualProject = None
 
     def _create_init(self):
         item = self.currentItem()
