@@ -23,7 +23,6 @@ from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.main_panel import browser_widget
 from ninja_ide.gui.main_panel import image_viewer
-#from ninja_ide.gui import actions
 from ninja_ide.tools import runner
 
 
