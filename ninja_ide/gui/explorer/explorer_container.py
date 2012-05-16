@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
+import os
 import logging
 
 from PyQt4.QtGui import QWidget
@@ -61,7 +62,6 @@ class __ExplorerContainer(QTabWidget):
         QTabWidget.__init__(self, parent)
         self.setTabPosition(QTabWidget.East)
         self.__ide = parent
-        self._workingDirectory = ''
 
         #Searching the Preferences
         self._treeProjects = None
@@ -212,13 +212,15 @@ class __ExplorerContainer(QTabWidget):
             if settings.WORKSPACE:
                 directory = settings.WORKSPACE
             else:
-                directory = self._workingDirectory
+                directory = os.path.expanduser("~")
+                current_project = self.get_actual_project()
+                if current_project is not None:
+                    directory = current_project
             folderName = unicode(QFileDialog.getExistingDirectory(self,
                 self.tr("Open Project Directory"), directory))
         try:
             if not folderName:
                 return
-            self._workingDirectory = folderName
             if not self._treeProjects.is_open(folderName):
                 project = json_manager.read_ninja_project(folderName)
                 extensions = project.get('supported-extensions',
