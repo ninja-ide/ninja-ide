@@ -194,7 +194,7 @@ class __StatusBar(QStatusBar):
         editor = main_container.MainContainer().get_actual_editor()
         if editor:
             editor.find_match(unicode(self._searchWidget._line.text()),
-            flags, True)
+                flags, True)
 
     def showMessage(self, message, timeout):
         self._widgetStatus.hide()
