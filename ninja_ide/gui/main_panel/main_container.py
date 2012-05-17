@@ -315,7 +315,7 @@ class __MainContainer(QSplitter):
     def reload_file(self, editorWidget=None):
         if editorWidget is None:
             editorWidget = self.get_actual_editor()
-        if type(editorWidget) is editor.Editor and editorWidget.ID:
+        if editorWidget is not None and editorWidget.ID:
             fileName = editorWidget.ID
             old_cursor_position = editorWidget.textCursor().position()
             old_widget_index = self.actualTab.indexOf(editorWidget)
@@ -353,7 +353,7 @@ class __MainContainer(QSplitter):
                 current_project = self._parent.explorer.get_actual_project()
                 if current_project is not None:
                     directory = current_project
-                elif type(editorWidget) is editor.Editor and editorWidget.ID:
+                elif editorWidget is not None and editorWidget.ID:
                     directory = file_manager.get_folder(editorWidget.ID)
             extensions = ';;'.join(
                 ['(*%s)' % e for e in \

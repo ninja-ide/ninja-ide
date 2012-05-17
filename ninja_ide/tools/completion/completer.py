@@ -12,12 +12,6 @@ import os
 _HELPOUT = StringIO.StringIO
 _STDOUT = sys.stdout
 
-try:
-    x = set
-except NameError:
-    from sets import Set as set
-else:
-    del x
 
 COLWIDTH = 20
 
