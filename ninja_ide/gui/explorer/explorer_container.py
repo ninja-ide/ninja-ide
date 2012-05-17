@@ -22,6 +22,7 @@ from ninja_ide.core import file_manager
 from ninja_ide.gui.explorer import tree_projects_widget
 from ninja_ide.gui.explorer import tree_symbols_widget
 from ninja_ide.gui.explorer import errors_lists
+from ninja_ide.gui.main_panel import main_container
 from ninja_ide.gui.dialogs import wizard_new_project
 from ninja_ide.tools import json_manager
 
@@ -214,8 +215,12 @@ class __ExplorerContainer(QTabWidget):
             else:
                 directory = os.path.expanduser("~")
                 current_project = self.get_actual_project()
+                mainContainer = main_container.MainContainer()
+                editorWidget = mainContainer.get_actual_editor()
                 if current_project is not None:
                     directory = current_project
+                elif editorWidget is not None and editorWidget.ID:
+                    directory = file_manager.get_folder(editorWidget.ID)
             folderName = unicode(QFileDialog.getExistingDirectory(self,
                 self.tr("Open Project Directory"), directory))
         try:
