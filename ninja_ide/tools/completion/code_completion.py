@@ -166,7 +166,6 @@ class CodeCompletion(object):
                 data = {'attributes': result[1][0],
                     'functions': result[1][1]}
             else:
-                #Based in Kai Plugin: https://github.com/matiasb/kai
                 clazzes = sorted(set(re.findall("class (\w+?)\(", code)))
                 funcs = sorted(set(re.findall("(\w+?)\(", code)))
                 attrs = sorted(set(re.split('\W+', code)))

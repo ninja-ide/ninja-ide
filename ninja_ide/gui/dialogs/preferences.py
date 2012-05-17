@@ -100,7 +100,7 @@ class PreferencesWidget(QDialog):
 
     def _cancel(self):
         editorWidget = main_container.MainContainer().get_actual_editor()
-        if type(editorWidget) == editor.Editor:
+        if editorWidget is not None:
             editorWidget.restyle(editorWidget.lang)
         self.close()
 
@@ -845,14 +845,14 @@ class EditorGeneral(QWidget):
         super(EditorGeneral, self).hideEvent(event)
         resources.CUSTOM_SCHEME = self.original_style
         editorWidget = main_container.MainContainer().get_actual_editor()
-        if type(editorWidget) == editor.Editor:
+        if editorWidget is not None:
             editorWidget.restyle(editorWidget.lang)
             editorWidget._sidebarWidget.repaint()
 
     def _preview_style(self):
         scheme = unicode(self._listScheme.currentItem().text())
         editorWidget = main_container.MainContainer().get_actual_editor()
-        if type(editorWidget) == editor.Editor:
+        if editorWidget is not None:
             resources.CUSTOM_SCHEME = self._schemes.get(scheme,
                 resources.COLOR_SCHEME)
             editorWidget.restyle(editorWidget.lang)
@@ -903,7 +903,7 @@ class EditorGeneral(QWidget):
         editorWidget = main_container.MainContainer().get_actual_editor()
         scheme = unicode(self._listScheme.currentItem().text())
         self.original_style = resources.CUSTOM_SCHEME
-        if type(editorWidget) == editor.Editor:
+        if editorWidget is not None:
             editorWidget.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
         qsettings.setValue('scheme', scheme)
         resources.CUSTOM_SCHEME = self._schemes.get(scheme,
@@ -1426,7 +1426,7 @@ class EditorSchemeDesigner(QWidget):
 
     def _preview_style(self):
         editorWidget = main_container.MainContainer().get_actual_editor()
-        if type(editorWidget) == editor.Editor:
+        if editorWidget is not None:
             scheme = {
                 "keyword": str(self.txtKeyword.text()),
                 "operator": str(self.txtOperator.text()),
@@ -1465,7 +1465,7 @@ class EditorSchemeDesigner(QWidget):
         super(EditorSchemeDesigner, self).hideEvent(event)
         resources.CUSTOM_SCHEME = self.original_style
         editorWidget = main_container.MainContainer().get_actual_editor()
-        if type(editorWidget) == editor.Editor:
+        if editorWidget is not None:
             editorWidget.restyle(editorWidget.lang)
 
     def save(self):
