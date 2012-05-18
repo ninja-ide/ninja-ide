@@ -14,7 +14,6 @@ from ninja_ide.tools import introspection
 patIndent = re.compile('^\s+')
 patIsLocalFunction = re.compile('(\s)+self\.(\w)+\(\)')
 patClass = re.compile("(\\s)*class.+\\:$")
-patExcept = re.compile("(\\s)*except\\s*.*\\:$")
 endCharsForIndent = [':', '{', '(', '[']
 closeBraces = {'{': '}', '(': ')', '[': ']'}
 
@@ -443,26 +442,3 @@ def check_for_assistance_completion(editorWidget, line):
                 editorWidget.textCursor().insertText(indent)
         else:
             editorWidget.textCursor().insertText(indent)
-    elif patExcept.match(line):
-        block = editorWidget.textCursor().block()
-        previous = block.previous()
-        while unicode(previous.text()).find('try:') == -1:
-            previous = previous.previous()
-        try_line = unicode(previous.text())
-        if try_line.find('try:') != -1:
-            cursor = editorWidget.textCursor()
-            cursor.beginEditBlock()
-            indentation = get_indentation(try_line)
-            last_line = indentation + unicode(block.text()).strip()
-            cursor.movePosition(QTextCursor.StartOfLine,
-                QTextCursor.KeepAnchor)
-            cursor.insertText(last_line)
-            indentation = indentation[:-settings.INDENT]
-            previous = block.previous()
-            last_line = indentation + line.strip()
-            cursor.movePosition(QTextCursor.Up)
-            cursor.movePosition(QTextCursor.EndOfLine)
-            cursor.movePosition(QTextCursor.StartOfLine,
-                QTextCursor.KeepAnchor)
-            cursor.insertText(last_line)
-            cursor.endEditBlock()

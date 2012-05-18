@@ -138,18 +138,6 @@ def get_all_completions(s, imports=None):
     _import_modules(imports, globals())
 
     dots = s.rsplit('.', 1)
-    if not s or len(dots) == 1:
-        keys = set()
-        keys.update(globals().keys())
-        keys.update(dlocals.keys())
-        import __builtin__
-        keys.update(dir(__builtin__))
-        keys = list(keys)
-        keys.sort()
-        if s:
-            return [k for k in keys if k.startswith(s)]
-        else:
-            return keys
 
     sym = None
     for i in range(1, len(dots)):

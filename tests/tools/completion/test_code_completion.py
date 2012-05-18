@@ -31,14 +31,21 @@ class CodeCompletionTestCase(unittest.TestCase):
 # TESTS FOR BUILTIN COMPLETION
 ###############################################################################
 
-    def test_import_completion_in_class(self):
+    def test_import_attribute(self):
         global SOURCE_COMPLETION
-        self.cc.analyze_file('', SOURCE_COMPLETION)
-        source_code = SOURCE_COMPLETION + '\n        os.p'
+        source_code = SOURCE_COMPLETION + '\n        os.'
+        self.cc.analyze_file('', source_code)
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
-        for r in results['functions']:
-            self.assertTrue(r.startswith('p'))
+        self.assertIn('path', results['functions'])
+
+    def test_import_double_attribute(self):
+        global SOURCE_COMPLETION
+        source_code = SOURCE_COMPLETION + '\n        os.path.'
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('expanduser(path)', results['functions'])
 
     def test_global_attr_in_class(self):
         global SOURCE_COMPLETION
@@ -335,6 +342,22 @@ class CodeCompletionTestCase(unittest.TestCase):
         expected = dir(unicode)
         self.assertEqual(expected, results)
 
+    def test_module_import_attribute(self):
+        global SOURCE_COMPLETION
+        source_code = SOURCE_COMPLETION + '\n\nos.'
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('path', results['functions'])
+
+    def test_module_import_double_attribute(self):
+        global SOURCE_COMPLETION
+        source_code = SOURCE_COMPLETION + '\n\nos.path.'
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('expanduser(path)', results['functions'])
+
     def test_valid_class_attr(self):
         global SOURCE_COMPLETION
         new_lines = '\n        self.attr.'
@@ -344,15 +367,6 @@ class CodeCompletionTestCase(unittest.TestCase):
         results = self.cc.get_completion(source_code, offset)
         expected = dir(str)
         self.assertEqual(expected, results['functions'])
-
-    def test_import_completion(self):
-        global SOURCE_COMPLETION
-        self.cc.analyze_file('', SOURCE_COMPLETION)
-        source_code = SOURCE_COMPLETION + '\n\nos.p'
-        offset = len(source_code)
-        results = self.cc.get_completion(source_code, offset)
-        for r in results['functions']:
-            self.assertTrue(r.startswith('p'))
 
     def test_builtin_list_completion(self):
         global SOURCE_COMPLETION
