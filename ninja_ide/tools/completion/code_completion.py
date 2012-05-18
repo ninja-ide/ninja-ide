@@ -175,6 +175,8 @@ class CodeCompletion(object):
                 attrs = sorted(set(re.split('\W+', code)))
                 if final_word in attrs:
                     attrs.remove(final_word)
+                if attr_name in attrs:
+                    attrs.remove(attr_name)
                 filter_attrs = lambda x: (x not in funcs) and \
                     not x.isdigit() and (x not in self.keywords)
                 attrs = filter(filter_attrs, attrs)
