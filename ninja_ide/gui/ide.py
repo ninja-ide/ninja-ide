@@ -67,6 +67,8 @@ logger.setLevel(logging.DEBUG)
 # IDE: MAIN CONTAINER
 ###############################################################################
 __ideInstance = None
+#Save cursor flash time to restore it on close (necessary for Windows)
+cursor_flash_time = 0
 
 
 def IDE(*args, **kw):
@@ -390,6 +392,7 @@ class __IDE(QMainWindow):
                 QMessageBox.Yes, QMessageBox.No)
             if val == QMessageBox.No:
                 event.ignore()
+        QApplication.instance().setCursorFlashTime(cursor_flash_time)
         self.save_settings()
         #close python documentation server (if running)
         self.mainContainer.close_python_doc()
@@ -439,6 +442,8 @@ def start(filenames=None, projects_path=None,
     app.processEvents()
 
     # Set the cursor to unblinking
+    global cursor_flash_time
+    cursor_flash_time = app.cursorFlashTime()
     app.setCursorFlashTime(0)
 
     #Set the codec for strings (QString)

@@ -19,11 +19,11 @@ logger = logging.getLogger('ninja_ide.gui.explorer.file_manager')
 DEBUG = logger.debug
 
 try:
-    if sys.platform == "darwin":
+#    if sys.platform == "darwin":
         # Temporary hack to avoid using the filewatcher in Mac OS X, because it
         # is causing Ninja to crash with an error like this:
         #     "[Errno 24] Too many open files"
-        raise ImportError()
+    raise ImportError()
 
     from watchdog.observers import Observer
     from watchdog.events import FileSystemEventHandler

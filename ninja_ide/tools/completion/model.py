@@ -43,6 +43,7 @@ class Structure(object):
             self.attributes[assign.name] = assign
 
     def get_attribute_type(self, name):
+        """Return a tuple with:(Found, Type)"""
         result = (False, None)
         var_names = name.split('.')
         attr = self.attributes.get(var_names[0], None)
@@ -65,12 +66,13 @@ class Structure(object):
     def recursive_search_type(self, structure, attrs, scope):
         result = (False, None)
         structure = self._get_scope_structure(structure, scope)
-        attr_name = attrs[0]
-        data_type = structure.get_attribute_type(attr_name)
-        result = data_type
-#        print 'assign', assign
-#        if assign is not None:
-#            result = self._resolve_attribute(assign, attrs[1:])
+        if structure:
+            attr_name = attrs[0]
+            data_type = structure.get_attribute_type(attr_name)
+            result = data_type
+#            print 'assign', assign
+#            if assign is not None:
+#                result = self._resolve_attribute(assign, attrs[1:])
         return result
 
 

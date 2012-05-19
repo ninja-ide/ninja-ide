@@ -158,7 +158,11 @@ class CodeCompletion(object):
         result = self.current_module.get_type(attr_name, word, scopes)
         if result[0] and result[1] is not None:
             imports = self.current_module.get_imports()
-            to_complete = "%s.%s" % (result[1], final_word)
+            prefix = attr_name
+            if result[1] != attr_name:
+                prefix = result[1]
+                word = final_word
+            to_complete = "%s.%s" % (prefix, word)
             items = completer.get_all_completions(to_complete, imports)
             data = {'attributes': [], 'functions': items}
         else:
@@ -166,12 +170,13 @@ class CodeCompletion(object):
                 data = {'attributes': result[1][0],
                     'functions': result[1][1]}
             else:
-                #Based in Kai Plugin: https://github.com/matiasb/kai
                 clazzes = sorted(set(re.findall("class (\w+?)\(", code)))
                 funcs = sorted(set(re.findall("(\w+?)\(", code)))
                 attrs = sorted(set(re.split('\W+', code)))
                 if final_word in attrs:
                     attrs.remove(final_word)
+                if attr_name in attrs:
+                    attrs.remove(attr_name)
                 filter_attrs = lambda x: (x not in funcs) and \
                     not x.isdigit() and (x not in self.keywords)
                 attrs = filter(filter_attrs, attrs)
