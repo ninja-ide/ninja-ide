@@ -90,11 +90,15 @@ class Locator(QObject):
 class ResultItem(object):
 
     def __init__(self, type='', name='', path='', lineno=-1):
-        if isinstance(name, str) or isinstance(name, unicode):
+        if isinstance(name, basestring):
             self.type = type
             self.name = name
             self.path = path
             self.lineno = lineno
+            self.comparison = self.name
+            index = self.name.find('(')
+            if index != -1:
+                self.comparison = self.name[:index]
         else:
             raise TypeError("name is not a string or unicode.")
 
@@ -508,7 +512,7 @@ class LocateCompleter(QLineEdit):
                             editorWidget.ID)
                     self.__prefix = unicode(self.__prefix)[1:].lstrip()
                     self.tempLocations = [x for x in self.tempLocations \
-                        if x.name.lower().find(self.__prefix) > -1]
+                        if x.comparison.lower().find(self.__prefix) > -1]
             else:
                 #Is not "." filter by the other options
                 self.tempLocations = [
@@ -523,7 +527,7 @@ class LocateCompleter(QLineEdit):
             #if prefix (user search now) is not empty, filter words that1
             #contain the user input
             self.tempLocations = [x for x in self.tempLocations \
-                if x.name.lower().find(self.__prefix) > -1]
+                if x.comparison.lower().find(self.__prefix) > -1]
 
         return self._create_list_widget_items(self.tempLocations)
 
@@ -563,7 +567,7 @@ class LocateCompleter(QLineEdit):
                 if x.type == filterOptions[2]]
         if filterOptions[3 + moveIndex]:
             self.tempLocations = [x for x in self.tempLocations \
-                if x.name.lower().find(filterOptions[3 + moveIndex]) > -1]
+              if x.comparison.lower().find(filterOptions[3 + moveIndex]) > -1]
 
     def _advanced_filter_by_file(self, filterOptions):
         if filterOptions[1] == FILTERS['files']:
