@@ -362,9 +362,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.go_to_line(lineno)
             return
 
-        max = self.blockCount()
+        maximum = self.blockCount()
         line = QInputDialog.getInt(self, self.tr("Jump to Line"),
-            self.tr("Line:"), 1, 1, max, 1)
+            self.tr("Line:"), 1, 1, maximum, 1)
         if line[1]:
             self.emit(SIGNAL("addBackItemNavigation()"))
             self.go_to_line(line[0] - 1)
@@ -1038,7 +1038,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                     position = cursor.position() + word_len
                     cursor = self.document().find(word, position,
                         QTextDocument.FindCaseSensitively)
-                self.highlighter.rehighlight_lines(lines)
+                self.highlighter.rehighlight_lines(lines, False)
 
     def async_highlight(self):
         self.highlighter.async_highlight()
