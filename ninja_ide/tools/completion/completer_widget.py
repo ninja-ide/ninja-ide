@@ -31,7 +31,8 @@ class CodeCompletionWidget(QFrame):
 
         self._icons = {'a': resources.IMAGES['attribute'],
             'f': resources.IMAGES['function'],
-            'c': resources.IMAGES['class']}
+            'c': resources.IMAGES['class'],
+            'm': resources.IMAGES['module']}
 
         self.cc = code_completion.CodeCompletion()
         self._completion_results = []
@@ -128,6 +129,9 @@ class CodeCompletionWidget(QFrame):
     def set_completion_prefix(self, prefix):
         self._prefix = prefix
         proposals = []
+        proposals += [('m', item) \
+            for item in self.completion_results.get('modules', []) \
+            if item.startswith(prefix)]
         proposals += [('c', item) \
             for item in self.completion_results.get('classes', []) \
             if item.startswith(prefix)]
@@ -207,7 +211,12 @@ class CompleterWidget(QCompleter):
         self.popup().hide()
 
     def complete(self, cr, results):
-        self.model().setStringList(results)
+        proposals = []
+        proposals += results.get('modules', [])
+        proposals += results.get('classes', [])
+        proposals += results.get('attributes', [])
+        proposals += results.get('functions', [])
+        self.model().setStringList(proposals)
         self.popup().setCurrentIndex(self.model().index(0, 0))
         cr.setWidth(self.popup().sizeHintForColumn(0) \
             + self.popup().verticalScrollBar().sizeHint().width() + 10)
