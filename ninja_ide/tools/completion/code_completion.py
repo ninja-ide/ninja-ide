@@ -163,8 +163,7 @@ class CodeCompletion(object):
                 prefix = result[1]
                 word = final_word
             to_complete = "%s.%s" % (prefix, word)
-            items = completer.get_all_completions(to_complete, imports)
-            data = {'attributes': [], 'functions': items}
+            data = completer.get_all_completions(to_complete, imports)
         else:
             if result[1] is not None and len(result[1]) > 0:
                 data = {'attributes': result[1][0],
