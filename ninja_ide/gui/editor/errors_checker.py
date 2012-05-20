@@ -36,8 +36,8 @@ class ErrorsChecker(QThread):
                 if self._editor.encoding is not None:
                     source = source.encode(self._editor.encoding)
                 parseResult = compiler.parse(source)
-                self.checker = checker.Checker(parseResult, self._editor.ID)
-                for m in self.checker.messages:
+                lint_checker = checker.Checker(parseResult, self._editor.ID)
+                for m in lint_checker.messages:
                     lineno = m.lineno - 1
                     if lineno not in self.errorsSummary:
                         message = [m.message % m.message_args]
@@ -46,6 +46,7 @@ class ErrorsChecker(QThread):
                         message += [m.message % m.message_args]
                     self.errorsSummary[lineno] = message
             except Exception, reason:
+                print 'yesssssss'
                 message = ''
                 if hasattr(reason, 'msg'):
                     message = reason.msg

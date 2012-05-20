@@ -6,6 +6,7 @@ import __builtin__
 import os.path
 from compiler import ast
 
+from ninja_ide.core import settings
 from ninja_ide.dependencies.pyflakes_mod import messages
 
 
@@ -153,6 +154,7 @@ class Checker(object):
     def __init__(self, tree, filename='(none)'):
         self._deferredFunctions = []
         self._deferredAssignments = []
+        self.python_syntax = settings.SYNTAX.get("python", {})
         self.dead_scopes = []
         self.messages = []
         self.filename = filename
@@ -309,6 +311,10 @@ class Checker(object):
                 self.report(messages.UndefinedName, lineno, value.name)
         else:
             self.scope[value.name] = value
+
+        if isinstance(value, Assignment) and \
+           (value.name in self.python_syntax.get('extras', [])):
+            self.report(messages.BuiltinOverlap, lineno, value.name)
 
     def WITH(self, node):
         """
