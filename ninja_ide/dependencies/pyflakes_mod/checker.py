@@ -9,6 +9,9 @@ from compiler import ast
 from ninja_ide.dependencies.pyflakes_mod import messages
 
 
+PYTHON_BUILTINS = dir(__builtin__)
+
+
 class Binding(object):
     """
     Represents the binding of a value to a name.
@@ -309,6 +312,9 @@ class Checker(object):
                 self.report(messages.UndefinedName, lineno, value.name)
         else:
             self.scope[value.name] = value
+
+        if isinstance(value, Assignment) and (value.name in PYTHON_BUILTINS):
+            self.report(messages.BuiltinOverlap, lineno, value.name)
 
     def WITH(self, node):
         """

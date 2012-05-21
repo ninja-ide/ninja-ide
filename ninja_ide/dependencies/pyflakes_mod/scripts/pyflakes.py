@@ -3,10 +3,12 @@
 Implementation of the command-line I{pyflakes} tool.
 """
 
-import compiler, sys
+import sys
+import compiler
 import os
 
 checker = __import__('ninja_ide.dependencies.pyflakes.checker').checker
+
 
 def check(codeString, filename):
     """
@@ -90,7 +92,8 @@ def main():
                 for dirpath, dirnames, filenames in os.walk(arg):
                     for filename in filenames:
                         if filename.endswith('.py'):
-                            warnings += checkPath(os.path.join(dirpath, filename))
+                            warnings += checkPath(
+                                os.path.join(dirpath, filename))
             else:
                 warnings += checkPath(arg)
     else:

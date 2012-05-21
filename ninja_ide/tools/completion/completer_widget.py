@@ -31,7 +31,8 @@ class CodeCompletionWidget(QFrame):
 
         self._icons = {'a': resources.IMAGES['attribute'],
             'f': resources.IMAGES['function'],
-            'c': resources.IMAGES['class']}
+            'c': resources.IMAGES['class'],
+            'm': resources.IMAGES['module']}
 
         self.cc = code_completion.CodeCompletion()
         self._completion_results = []
@@ -125,9 +126,12 @@ class CodeCompletionWidget(QFrame):
                 QIcon(self._icons.get(p[0], resources.IMAGES['attribute'])),
                 p[1]))
 
-    def set_completion_prefix(self, prefix):
+    def set_completion_prefix(self, prefix, valid=True):
         self._prefix = prefix
         proposals = []
+        proposals += [('m', item) \
+            for item in self.completion_results.get('modules', []) \
+            if item.startswith(prefix)]
         proposals += [('c', item) \
             for item in self.completion_results.get('classes', []) \
             if item.startswith(prefix)]
@@ -137,7 +141,7 @@ class CodeCompletionWidget(QFrame):
         proposals += [('f', item) \
             for item in self.completion_results.get('functions', []) \
             if item.startswith(prefix)]
-        if proposals:
+        if proposals and valid:
             self.complete(proposals)
         else:
             self.hide_completer()
@@ -177,8 +181,8 @@ class CodeCompletionWidget(QFrame):
             source = self._editor.get_text()
             source = source.encode(self._editor.encoding)
             offset = self._editor.textCursor().position()
-            prefix = self.cc.get_prefix(source, offset)
-            self.set_completion_prefix(prefix)
+            prefix, valid = self.cc.get_prefix(source, offset)
+            self.set_completion_prefix(prefix, valid)
             self.completion_list.setCurrentRow(0)
         if event.key() == Qt.Key_Period  or (event.key() == Qt.Key_Space and \
            event.modifiers() == Qt.ControlModifier):
@@ -207,7 +211,12 @@ class CompleterWidget(QCompleter):
         self.popup().hide()
 
     def complete(self, cr, results):
-        self.model().setStringList(results)
+        proposals = []
+        proposals += results.get('modules', [])
+        proposals += results.get('classes', [])
+        proposals += results.get('attributes', [])
+        proposals += results.get('functions', [])
+        self.model().setStringList(proposals)
         self.popup().setCurrentIndex(self.model().index(0, 0))
         cr.setWidth(self.popup().sizeHintForColumn(0) \
             + self.popup().verticalScrollBar().sizeHint().width() + 10)

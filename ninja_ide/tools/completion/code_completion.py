@@ -131,13 +131,15 @@ class CodeCompletion(object):
         return segment
 
     def get_prefix(self, code, offset):
+        """Return the prefix of the word under the cursor and a boolean
+        saying if it is a valid completion area."""
         token_code = self._tokenize_text(code[:offset])
         var_segment = self._search_for_completion_segment(token_code)
         words_final = var_segment.rsplit('.', 1)
         final_word = ''
         if not var_segment.endswith('.') and len(words_final) > 1:
             final_word = words_final[1].strip()
-        return final_word
+        return final_word, (var_segment != "")
 
     def get_completion(self, code, offset):
         token_code = self._tokenize_text(code[:offset])
@@ -163,8 +165,7 @@ class CodeCompletion(object):
                 prefix = result[1]
                 word = final_word
             to_complete = "%s.%s" % (prefix, word)
-            items = completer.get_all_completions(to_complete, imports)
-            data = {'attributes': [], 'functions': items}
+            data = completer.get_all_completions(to_complete, imports)
         else:
             if result[1] is not None and len(result[1]) > 0:
                 data = {'attributes': result[1][0],
