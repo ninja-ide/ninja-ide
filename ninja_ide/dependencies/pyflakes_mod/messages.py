@@ -116,3 +116,12 @@ class BuiltinOverlap(Message):
     def __init__(self, filename, lineno, names):
         Message.__init__(self, filename, lineno)
         self.message_args = (names, names)
+
+
+class DocstringMissing(Message):
+
+    message = 'missing docstring for %s'
+
+    def __init__(self, filename, lineno, names):
+        Message.__init__(self, filename, lineno)
+        self.message_args = (names,)
