@@ -118,6 +118,13 @@ BOOKMARKS = {}
 
 
 ###############################################################################
+# CHECKERS
+###############################################################################
+
+CHECK_FOR_DOCSTRINGS = False
+
+
+###############################################################################
 # MINIMAP
 ###############################################################################
 
@@ -260,6 +267,7 @@ def load_settings():
     global SHOW_WEB_INSPECTOR
     global SHOW_ERRORS_LIST
     global BOOKMARKS
+    global CHECK_FOR_DOCSTRINGS
     global BREAKPOINTS
     global BRACES
     global HIDE_TOOLBAR
@@ -406,7 +414,9 @@ def load_settings():
         if key:
             BREAKPOINTS[unicode(key)] = [
                 i.toInt()[0] for i in breakpoints[key].toList()]
-
+    # Checkers
+    CHECK_FOR_DOCSTRINGS = qsettings.value(
+        'preferences/editor/checkForDocstrings', False).toBool()
     # Import introspection here, it not needed in the namespace of
     # the rest of the file.
     from ninja_ide.tools import introspection

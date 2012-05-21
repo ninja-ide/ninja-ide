@@ -6,6 +6,7 @@ import __builtin__
 import os.path
 from compiler import ast
 
+from ninja_ide.core import settings
 from ninja_ide.dependencies.pyflakes_mod import messages
 
 
@@ -312,6 +313,13 @@ class Checker(object):
                 self.report(messages.UndefinedName, lineno, value.name)
         else:
             self.scope[value.name] = value
+
+        if settings.CHECK_FOR_DOCSTRINGS and \
+           ((value.__class__ is FunctionDefinition) or \
+           (value.source.__class__.__name__.upper() == "CLASS")):
+            doc = value.source.doc
+            if doc is None:
+                self.report(messages.DocstringMissing, lineno, value.name)
 
         if isinstance(value, Assignment) and (value.name in PYTHON_BUILTINS):
             self.report(messages.BuiltinOverlap, lineno, value.name)

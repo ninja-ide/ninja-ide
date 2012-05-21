@@ -994,6 +994,11 @@ class EditorConfiguration(QWidget):
         self._allowWordWrap = QCheckBox(self.tr("Allow Word Wrap."))
         self._allowWordWrap.setChecked(settings.ALLOW_WORD_WRAP)
         grid.addWidget(self._allowWordWrap, 12, 1, 1, 2, alignment=Qt.AlignTop)
+        self._checkForDocstrings = QCheckBox(
+            self.tr("Check for Docstrings in Classes and Functions."))
+        self._checkForDocstrings.setChecked(settings.CHECK_FOR_DOCSTRINGS)
+        grid.addWidget(self._checkForDocstrings, 13, 1, 1, 2,
+            alignment=Qt.AlignTop)
 
     def _enable_check_inline(self, val):
         if val == Qt.Checked:
@@ -1048,6 +1053,9 @@ class EditorConfiguration(QWidget):
         settings.ALLOW_TABS_NON_PYTHON = allowTabsForNonPythonFiles
         qsettings.setValue('allowWordWrap', self._allowWordWrap.isChecked())
         settings.ALLOW_WORD_WRAP = self._allowWordWrap.isChecked()
+        qsettings.setValue('checkForDocstrings',
+            self._checkForDocstrings.isChecked())
+        settings.CHECK_FOR_DOCSTRINGS = self._checkForDocstrings.isChecked()
         qsettings.endGroup()
         qsettings.endGroup()
         actions.Actions().reset_editor_flags()
