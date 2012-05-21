@@ -473,16 +473,17 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             if not found:
                 self.setTextCursor(cursor)
 
-    def replace_match(self, wordOld, wordNew, flags, all=False):
+    def replace_match(self, wordOld, wordNew, flags, all=False,
+                        selection=False):
         """Find if searched text exists and replace it with new one.
         If there is a selection just doit inside it and exit.
         """
         tc = self.textCursor()
-        if tc.hasSelection():
+        if selection and tc.hasSelection():
             start, end = tc.selectionStart(), tc.selectionEnd()
             text = tc.selectedText()
             old_len = len(text)
-            max_replace = (not all) and 1 or -1
+            max_replace = -1  # all
             text = unicode(text).replace(wordOld, wordNew, max_replace)
             new_len = len(text)
             tc.insertText(text)

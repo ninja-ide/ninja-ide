@@ -73,6 +73,8 @@ class __StatusBar(QStatusBar):
             self.replace)
         self.connect(self._replaceWidget._btnReplaceAll, SIGNAL("clicked()"),
             self.replace_all)
+        self.connect(self._replaceWidget._btnReplaceSelection,
+            SIGNAL("clicked()"), self.replace_selected)
         self.connect(self._shortEsc, SIGNAL("activated()"), self.hide_status)
         self.connect(self._fileSystemOpener.btnClose, SIGNAL("clicked()"),
             self.hide_status)
@@ -153,7 +155,10 @@ class __StatusBar(QStatusBar):
         if not editor.textCursor().hasSelection():
             self.find()
 
-    def replace_all(self):
+    def replace_selected(self):
+        self.replace_all(True)
+
+    def replace_all(self, selected=False):
         s = 0 if not self._searchWidget._checkSensitive.isChecked() \
             else QTextDocument.FindCaseSensitively
         w = 0 if not self._searchWidget._checkWholeWord.isChecked() \
@@ -162,7 +167,8 @@ class __StatusBar(QStatusBar):
         editor = main_container.MainContainer().get_actual_editor()
         if editor:
             editor.replace_match(unicode(self._searchWidget._line.text()),
-                unicode(self._replaceWidget._lineReplace.text()), flags, True)
+                unicode(self._replaceWidget._lineReplace.text()), flags, True,
+                selected)
 
     def find(self):
         s = 0 if not self._searchWidget._checkSensitive.isChecked() \
@@ -310,10 +316,12 @@ class ReplaceWidget(QWidget):
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
         self._btnReplace = QPushButton(self.tr("Replace"))
         self._btnReplaceAll = QPushButton(self.tr("Replace All"))
+        self._btnReplaceSelection = QPushButton(self.tr("Replace Selection"))
         hReplace.addWidget(self._btnCloseReplace)
         hReplace.addWidget(self._lineReplace)
         hReplace.addWidget(self._btnReplace)
         hReplace.addWidget(self._btnReplaceAll)
+        hReplace.addWidget(self._btnReplaceSelection)
 
 
 class TextLine(QLineEdit):
