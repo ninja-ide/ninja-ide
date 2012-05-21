@@ -46,7 +46,6 @@ class ErrorsChecker(QThread):
                         message += [m.message % m.message_args]
                     self.errorsSummary[lineno] = message
             except Exception, reason:
-                print 'yesssssss'
                 message = ''
                 if hasattr(reason, 'msg'):
                     message = reason.msg
