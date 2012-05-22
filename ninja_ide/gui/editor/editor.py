@@ -362,9 +362,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.go_to_line(lineno)
             return
 
-        max = self.blockCount()
+        maximum = self.blockCount()
         line = QInputDialog.getInt(self, self.tr("Jump to Line"),
-            self.tr("Line:"), 1, 1, max, 1)
+            self.tr("Line:"), 1, 1, maximum, 1)
         if line[1]:
             self.emit(SIGNAL("addBackItemNavigation()"))
             self.go_to_line(line[0] - 1)
@@ -473,16 +473,17 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             if not found:
                 self.setTextCursor(cursor)
 
-    def replace_match(self, wordOld, wordNew, flags, all=False):
+    def replace_match(self, wordOld, wordNew, flags, all=False,
+                        selection=False):
         """Find if searched text exists and replace it with new one.
         If there is a selection just doit inside it and exit.
         """
         tc = self.textCursor()
-        if tc.hasSelection():
+        if selection and tc.hasSelection():
             start, end = tc.selectionStart(), tc.selectionEnd()
             text = tc.selectedText()
             old_len = len(text)
-            max_replace = (not all) and 1 or -1
+            max_replace = -1  # all
             text = unicode(text).replace(wordOld, wordNew, max_replace)
             new_len = len(text)
             tc.insertText(text)
@@ -1038,7 +1039,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                     position = cursor.position() + word_len
                     cursor = self.document().find(word, position,
                         QTextDocument.FindCaseSensitively)
-                self.highlighter.rehighlight_lines(lines)
+                self.highlighter.rehighlight_lines(lines, False)
 
     def async_highlight(self):
         self.highlighter.async_highlight()

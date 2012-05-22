@@ -131,13 +131,15 @@ class CodeCompletion(object):
         return segment
 
     def get_prefix(self, code, offset):
+        """Return the prefix of the word under the cursor and a boolean
+        saying if it is a valid completion area."""
         token_code = self._tokenize_text(code[:offset])
         var_segment = self._search_for_completion_segment(token_code)
         words_final = var_segment.rsplit('.', 1)
         final_word = ''
         if not var_segment.endswith('.') and len(words_final) > 1:
             final_word = words_final[1].strip()
-        return final_word
+        return final_word, (var_segment != "")
 
     def get_completion(self, code, offset):
         token_code = self._tokenize_text(code[:offset])
@@ -158,20 +160,24 @@ class CodeCompletion(object):
         result = self.current_module.get_type(attr_name, word, scopes)
         if result[0] and result[1] is not None:
             imports = self.current_module.get_imports()
-            to_complete = "%s.%s" % (result[1], final_word)
-            items = completer.get_all_completions(to_complete, imports)
-            data = {'attributes': [], 'functions': items}
+            prefix = attr_name
+            if result[1] != attr_name:
+                prefix = result[1]
+                word = final_word
+            to_complete = "%s.%s" % (prefix, word)
+            data = completer.get_all_completions(to_complete, imports)
         else:
             if result[1] is not None and len(result[1]) > 0:
                 data = {'attributes': result[1][0],
                     'functions': result[1][1]}
             else:
-                #Based in Kai Plugin: https://github.com/matiasb/kai
                 clazzes = sorted(set(re.findall("class (\w+?)\(", code)))
                 funcs = sorted(set(re.findall("(\w+?)\(", code)))
                 attrs = sorted(set(re.split('\W+', code)))
                 if final_word in attrs:
                     attrs.remove(final_word)
+                if attr_name in attrs:
+                    attrs.remove(attr_name)
                 filter_attrs = lambda x: (x not in funcs) and \
                     not x.isdigit() and (x not in self.keywords)
                 attrs = filter(filter_attrs, attrs)
