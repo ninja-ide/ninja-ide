@@ -107,7 +107,7 @@ class Module(Structure):
             if child_attrs == '' and clazz is not None:
                 items = clazz.get_completion_items()
                 result = (False, items)
-        else:
+        elif scope:
             scope_name = scope[0]
             structure = self.classes.get(scope_name,
                 self.functions.get(scope_name, None))
