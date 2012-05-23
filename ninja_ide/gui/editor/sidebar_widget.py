@@ -33,7 +33,8 @@ class SidebarWidget(QWidget):
         self.foldArea = 15
         self.rightArrowIcon = QPixmap()
         self.downArrowIcon = QPixmap()
-        self.pat = re.compile('(\s)*def |(\s)*class |(\s)*#begin-fold:|(.)*{$')
+        self.pat = re.compile('(\s)*def |(\s)*class |(\s)*#begin-fold:')
+        self.patNotPython = re.compile('(\s)*#begin-fold:|(.)*{$')
         self._foldedBlocks = []
         self._breakpoints = []
         self._bookmarks = []
@@ -157,6 +158,7 @@ class SidebarWidget(QWidget):
         font_metrics = QFontMetrics(self.edit.document().defaultFont())
         current_block = self.edit.document().findBlock(
             self.edit.textCursor().position())
+        pattern = self.pat if self.edit.lang == "python" else self.patNotPython
 
         painter = QPainter(self)
         background = resources.CUSTOM_SCHEME.get('sidebar-background',
@@ -279,7 +281,7 @@ class SidebarWidget(QWidget):
             if position.y() > page_bottom:
                 break
 
-            if self.pat.match(unicode(block.text())) and block.isVisible():
+            if pattern.match(unicode(block.text())) and block.isVisible():
                 if block.blockNumber() in self._foldedBlocks:
                     painter.drawPixmap(xofs, round(position.y()),
                         self.rightArrowIcon)
@@ -329,6 +331,9 @@ class SidebarWidget(QWidget):
             lineNumber = 0
 
             if event.pos().x() > xofs:
+                pattern = self.pat
+                if self.edit.lang != "python":
+                    pattern = self.patNotPython
                 block = self.edit.firstVisibleBlock()
                 viewport_offset = self.edit.contentOffset()
                 page_bottom = self.edit.viewport().height()
@@ -338,7 +343,7 @@ class SidebarWidget(QWidget):
                     if position.y() > page_bottom:
                         break
                     if position.y() < ys and (position.y() + fh) > ys and \
-                      self.pat.match(str(block.text())):
+                      pattern.match(str(block.text())):
                         lineNumber = block.blockNumber() + 1
                         break
                     elif position.y() < ys and (position.y() + fh) > ys and \
