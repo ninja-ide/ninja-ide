@@ -215,6 +215,14 @@ class UpdatesWidget(QWidget):
         vbox.addWidget(btnUpdate)
 
         self.connect(btnUpdate, SIGNAL("clicked()"), self._update_plugins)
+        self.connect(self._table, SIGNAL("itemSelectionChanged()"),
+            self._show_item_description)
+
+    def _show_item_description(self):
+        item = self._table.currentItem()
+        if item is not None:
+            data = item.data(Qt.UserRole).toList()
+            self._parent.show_plugin_info(data)
 
     def _update_plugins(self):
         data = _format_for_table(self._updates)
@@ -338,6 +346,14 @@ class InstalledWidget(QWidget):
 
         self.connect(btnUninstall, SIGNAL("clicked()"),
             self._uninstall_plugins)
+        self.connect(self._table, SIGNAL("itemSelectionChanged()"),
+            self._show_item_description)
+
+    def _show_item_description(self):
+        item = self._table.currentItem()
+        if item is not None:
+            data = item.data(Qt.UserRole).toList()
+            self._parent.show_plugin_info(data)
 
     def remove_item(self, plugin_name):
         plugin = _get_plugin(plugin_name, self._installed)
