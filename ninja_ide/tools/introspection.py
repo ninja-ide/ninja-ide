@@ -139,6 +139,7 @@ def obtain_symbols(source, with_docstrings=False):
             try:
                 result = _parse_class(symbol, with_docstrings)
             except:
+                print 'class-name', symbol.name
                 print 'source', repr(source)
                 raise
             classes[result['name']] = (result['lineno'],
