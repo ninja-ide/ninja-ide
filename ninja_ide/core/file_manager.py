@@ -2,7 +2,7 @@
 
 import os
 import re
-import sys
+#import sys
 import threading
 import shutil
 import logging

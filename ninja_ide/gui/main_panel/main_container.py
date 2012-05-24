@@ -503,13 +503,13 @@ class __MainContainer(QSplitter):
         if not editorWidget:
             return False
         try:
-            filter = '(*.py);;(*.*)'
+            filters = '(*.py);;(*.*)'
             if editorWidget.ID:
                 ext = file_manager.get_file_extension(editorWidget.ID)
                 if ext != 'py':
-                    filter = '(*.%s);;(*.py);;(*.*)' % ext
+                    filters = '(*.%s);;(*.py);;(*.*)' % ext
             fileName = unicode(QFileDialog.getSaveFileName(
-                self._parent, self.tr("Save File"), editorWidget.ID, filter))
+                self._parent, self.tr("Save File"), editorWidget.ID, filters))
             if not fileName:
                 return False
 
