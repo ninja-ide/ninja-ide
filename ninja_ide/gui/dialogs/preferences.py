@@ -100,7 +100,7 @@ class PreferencesWidget(QDialog):
 
     def _cancel(self):
         editorWidget = main_container.MainContainer().get_actual_editor()
-        if type(editorWidget) == editor.Editor:
+        if editorWidget is not None:
             editorWidget.restyle(editorWidget.lang)
         self.close()
 
@@ -816,35 +816,43 @@ class EditorGeneral(QWidget):
 
     def showEvent(self, event):
         super(EditorGeneral, self).showEvent(event)
+        self.thread_callback = ui_tools.ThreadCallback(self._get_editor_skins)
+        self.connect(self.thread_callback, SIGNAL("finished()"),
+            self._show_editor_skins)
+
+    def _get_editor_skins(self):
         qsettings = QSettings()
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('editor')
+        self._schemes = json_manager.load_editor_skins()
+        self._selected_scheme = qsettings.value('scheme', '').toString()
+        qsettings.endGroup()
+        qsettings.endGroup()
+
+    def _show_editor_skins(self):
         self._listScheme.clear()
         self._listScheme.addItem('default')
-        self._schemes = json_manager.load_editor_skins()
         for item in self._schemes:
             self._listScheme.addItem(item)
         items = self._listScheme.findItems(
-            qsettings.value('scheme', '').toString(), Qt.MatchExactly)
+            self._selected_scheme, Qt.MatchExactly)
         if items:
             self._listScheme.setCurrentItem(items[0])
         else:
             self._listScheme.setCurrentRow(0)
-        qsettings.endGroup()
-        qsettings.endGroup()
 
     def hideEvent(self, event):
         super(EditorGeneral, self).hideEvent(event)
         resources.CUSTOM_SCHEME = self.original_style
         editorWidget = main_container.MainContainer().get_actual_editor()
-        if type(editorWidget) == editor.Editor:
+        if editorWidget is not None:
             editorWidget.restyle(editorWidget.lang)
             editorWidget._sidebarWidget.repaint()
 
     def _preview_style(self):
         scheme = unicode(self._listScheme.currentItem().text())
         editorWidget = main_container.MainContainer().get_actual_editor()
-        if type(editorWidget) == editor.Editor:
+        if editorWidget is not None:
             resources.CUSTOM_SCHEME = self._schemes.get(scheme,
                 resources.COLOR_SCHEME)
             editorWidget.restyle(editorWidget.lang)
@@ -895,7 +903,7 @@ class EditorGeneral(QWidget):
         editorWidget = main_container.MainContainer().get_actual_editor()
         scheme = unicode(self._listScheme.currentItem().text())
         self.original_style = resources.CUSTOM_SCHEME
-        if type(editorWidget) == editor.Editor:
+        if editorWidget is not None:
             editorWidget.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
         qsettings.setValue('scheme', scheme)
         resources.CUSTOM_SCHEME = self._schemes.get(scheme,
@@ -986,6 +994,11 @@ class EditorConfiguration(QWidget):
         self._allowWordWrap = QCheckBox(self.tr("Allow Word Wrap."))
         self._allowWordWrap.setChecked(settings.ALLOW_WORD_WRAP)
         grid.addWidget(self._allowWordWrap, 12, 1, 1, 2, alignment=Qt.AlignTop)
+        self._checkForDocstrings = QCheckBox(
+            self.tr("Check for Docstrings in Classes and Functions."))
+        self._checkForDocstrings.setChecked(settings.CHECK_FOR_DOCSTRINGS)
+        grid.addWidget(self._checkForDocstrings, 13, 1, 1, 2,
+            alignment=Qt.AlignTop)
 
     def _enable_check_inline(self, val):
         if val == Qt.Checked:
@@ -1040,6 +1053,9 @@ class EditorConfiguration(QWidget):
         settings.ALLOW_TABS_NON_PYTHON = allowTabsForNonPythonFiles
         qsettings.setValue('allowWordWrap', self._allowWordWrap.isChecked())
         settings.ALLOW_WORD_WRAP = self._allowWordWrap.isChecked()
+        qsettings.setValue('checkForDocstrings',
+            self._checkForDocstrings.isChecked())
+        settings.CHECK_FOR_DOCSTRINGS = self._checkForDocstrings.isChecked()
         qsettings.endGroup()
         qsettings.endGroup()
         actions.Actions().reset_editor_flags()
@@ -1418,7 +1434,7 @@ class EditorSchemeDesigner(QWidget):
 
     def _preview_style(self):
         editorWidget = main_container.MainContainer().get_actual_editor()
-        if type(editorWidget) == editor.Editor:
+        if editorWidget is not None:
             scheme = {
                 "keyword": str(self.txtKeyword.text()),
                 "operator": str(self.txtOperator.text()),
@@ -1457,7 +1473,7 @@ class EditorSchemeDesigner(QWidget):
         super(EditorSchemeDesigner, self).hideEvent(event)
         resources.CUSTOM_SCHEME = self.original_style
         editorWidget = main_container.MainContainer().get_actual_editor()
-        if type(editorWidget) == editor.Editor:
+        if editorWidget is not None:
             editorWidget.restyle(editorWidget.lang)
 
     def save(self):

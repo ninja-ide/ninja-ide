@@ -75,7 +75,6 @@ class __MainContainer(QSplitter):
         self.actualTab = self._tabMain
         self._followMode = False
         self.splitted = False
-        self._workingDirectory = ''
         highlighter.restyle(resources.CUSTOM_SCHEME)
         #documentation browser
         self.docPage = None
@@ -316,7 +315,7 @@ class __MainContainer(QSplitter):
     def reload_file(self, editorWidget=None):
         if editorWidget is None:
             editorWidget = self.get_actual_editor()
-        if type(editorWidget) is editor.Editor and editorWidget.ID:
+        if editorWidget is not None and editorWidget.ID:
             fileName = editorWidget.ID
             old_cursor_position = editorWidget.textCursor().position()
             old_widget_index = self.actualTab.indexOf(editorWidget)
@@ -349,7 +348,13 @@ class __MainContainer(QSplitter):
             if settings.WORKSPACE:
                 directory = settings.WORKSPACE
             else:
-                directory = self._workingDirectory
+                directory = os.path.expanduser("~")
+                editorWidget = self.get_actual_editor()
+                current_project = self._parent.explorer.get_actual_project()
+                if current_project is not None:
+                    directory = current_project
+                elif editorWidget is not None and editorWidget.ID:
+                    directory = file_manager.get_folder(editorWidget.ID)
             extensions = ';;'.join(
                 ['(*%s)' % e for e in \
                     settings.SUPPORTED_EXTENSIONS + ['.*', '']])
@@ -370,7 +375,6 @@ class __MainContainer(QSplitter):
             else:
                 self.__open_file(filename, cursorPosition,
                     tabIndex, positionIsLineNumber, notStart)
-        self._workingDirectory = os.path.dirname(unicode(fileNames[-1]))
 
     def __open_file(self, fileName='', cursorPosition=0,\
                     tabIndex=None, positionIsLineNumber=False, notStart=True):
@@ -499,13 +503,13 @@ class __MainContainer(QSplitter):
         if not editorWidget:
             return False
         try:
-            filter = '(*.py);;(*.*)'
+            filters = '(*.py);;(*.*)'
             if editorWidget.ID:
                 ext = file_manager.get_file_extension(editorWidget.ID)
                 if ext != 'py':
-                    filter = '(*.%s);;(*.py);;(*.*)' % ext
+                    filters = '(*.%s);;(*.py);;(*.*)' % ext
             fileName = unicode(QFileDialog.getSaveFileName(
-                self._parent, self.tr("Save File"), editorWidget.ID, filter))
+                self._parent, self.tr("Save File"), editorWidget.ID, filters))
             if not fileName:
                 return False
 

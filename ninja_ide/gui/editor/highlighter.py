@@ -223,9 +223,10 @@ class Highlighter(QSyntaxHighlighter):
 
     def _execute_threaded_highlight(self):
         self.highlight_function = self.threaded_highlight
-        lines = list(set(self.thread_highlight.styles.keys()) -
-            set(range(self.visible_limits[0], self.visible_limits[1])))
-        self.rehighlight_lines(lines)
+        if self.thread_highlight.styles:
+            lines = list(set(self.thread_highlight.styles.keys()) -
+                set(range(self.visible_limits[0], self.visible_limits[1])))
+            self.rehighlight_lines(lines)
         self.highlight_function = self.realtime_highlight
         self.thread_highlight = None
 
@@ -332,11 +333,18 @@ class Highlighter(QSyntaxHighlighter):
             self.setFormat(index, length, char_format)
             index = expression.indexIn(text, index + length)
 
-    def rehighlight_lines(self, lines):
-        self.checkers_lines = set(lines + self.checkers_lines)
-        for line in self.checkers_lines:
+    def _rehighlight_lines(self, lines):
+        for line in lines:
             block = self.document().findBlockByNumber(line)
             self.rehighlightBlock(block)
+
+    def rehighlight_lines(self, lines, errors=True):
+        if errors:
+            self.checkers_lines = set(lines + self.checkers_lines)
+            self._rehighlight_lines(self.checkers_lines)
+        else:
+            self._rehighlight_lines(lines)
+            return
         self.checkers_lines = lines
 
     def match_multiline(self, text, delimiter, in_state, style,

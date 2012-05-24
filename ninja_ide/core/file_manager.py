@@ -2,7 +2,7 @@
 
 import os
 import re
-import sys
+#import sys
 import threading
 import shutil
 import logging
@@ -19,11 +19,11 @@ logger = logging.getLogger('ninja_ide.gui.explorer.file_manager')
 DEBUG = logger.debug
 
 try:
-    if sys.platform == "darwin":
+#    if sys.platform == "darwin":
         # Temporary hack to avoid using the filewatcher in Mac OS X, because it
         # is causing Ninja to crash with an error like this:
         #     "[Errno 24] Too many open files"
-        raise ImportError()
+    raise ImportError()
 
     from watchdog.observers import Observer
     from watchdog.events import FileSystemEventHandler
@@ -298,7 +298,7 @@ def open_project(path):
     if not os.path.exists(path):
         raise NinjaIOException("The folder does not exist")
     d = {}
-    for root, dirs, files in os.walk(path):
+    for root, dirs, files in os.walk(path, followlinks=True):
         d[root] = [[f for f in files
                 if (os.path.splitext(f.lower())[-1]) in \
                 settings.SUPPORTED_EXTENSIONS],
@@ -313,7 +313,7 @@ def open_project_with_extensions(path, extensions):
     if not os.path.exists(path):
         raise NinjaIOException("The folder does not exist")
     d = {}
-    for root, dirs, files in os.walk(path):
+    for root, dirs, files in os.walk(path, followlinks=True):
         d[root] = [[f for f in files
                 if (os.path.splitext(f.lower())[-1]) in extensions or \
                 '.*' in extensions],

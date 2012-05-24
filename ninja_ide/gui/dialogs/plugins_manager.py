@@ -3,6 +3,7 @@ from __future__ import absolute_import
 
 import webbrowser
 from copy import copy
+import logging
 
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QDialog
@@ -22,6 +23,9 @@ from PyQt4.QtCore import QThread
 from ninja_ide.core import plugin_manager
 from ninja_ide.core import file_manager
 from ninja_ide.tools import ui_tools
+
+
+logger = logging.getLogger('ninja_ide.gui.dialogs.plugin_manager')
 
 
 TABLE_HEADER = ('Name', 'Version')
@@ -263,14 +267,15 @@ class AvailableWidget(QWidget):
 #        vbox.addWidget(lblExternalPlugin)
 
         self.connect(btnInstall, SIGNAL("clicked()"), self._install_plugins)
-        self.connect(self._table, SIGNAL("	itemSelectionChanged()"),
+        self.connect(self._table, SIGNAL("itemSelectionChanged()"),
             self._show_item_description)
 #        self.connect(btnAdd, SIGNAL("clicked()"), self._install_external)
 
     def _show_item_description(self):
         item = self._table.currentItem()
-        data = item.data(Qt.UserRole).toList()
-        self._parent.show_plugin_info(data)
+        if item is not None:
+            data = item.data(Qt.UserRole).toList()
+            self._parent.show_plugin_info(data)
 
     def _install_plugins(self):
         data = _format_for_table(self._available)
@@ -412,21 +417,32 @@ class ThreadLoadPlugins(QThread):
         Downloads some plugins
         """
         for p in self.plug:
-            plugin_manager.download_plugin(p[5])
-            plugin_manager.update_local_plugin_descriptor((p, ))
-            self.emit(SIGNAL("plugin_downloaded(PyQt_PyObject)"), p)
+            try:
+                name = plugin_manager.download_plugin(p[5])
+                p.append(name)
+                plugin_manager.update_local_plugin_descriptor((p, ))
+                self.emit(SIGNAL("plugin_downloaded(PyQt_PyObject)"), p)
+            except Exception, e:
+                logger.warning("Impossible to install (%s): %s", p[0], e)
 
     def uninstall_plugins_thread(self):
         for p in self.plug:
-            plugin_manager.uninstall_plugin(p)
-            self.emit(SIGNAL("plugin_uninstalled(PyQt_PyObject)"), p)
+            try:
+                plugin_manager.uninstall_plugin(p)
+                self.emit(SIGNAL("plugin_uninstalled(PyQt_PyObject)"), p)
+            except Exception, e:
+                logger.warning("Impossible to uninstall (%s): %s", p[0], e)
 
     def update_plugin_thread(self):
         """
         Updates some plugins
         """
         for p in self.plug:
-            plugin_manager.uninstall_plugin(p)
-            plugin_manager.download_plugin(p[5])
-            plugin_manager.update_local_plugin_descriptor([p])
-            self._manager.reset_installed_plugins()
+            try:
+                plugin_manager.uninstall_plugin(p)
+                name = plugin_manager.download_plugin(p[5])
+                p.append(name)
+                plugin_manager.update_local_plugin_descriptor([p])
+                self._manager.reset_installed_plugins()
+            except Exception, e:
+                logger.warning("Impossible to update (%s): %s", p[0], e)

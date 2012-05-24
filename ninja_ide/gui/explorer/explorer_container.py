@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
+import os
 import logging
 
 from PyQt4.QtGui import QWidget
@@ -21,6 +22,7 @@ from ninja_ide.core import file_manager
 from ninja_ide.gui.explorer import tree_projects_widget
 from ninja_ide.gui.explorer import tree_symbols_widget
 from ninja_ide.gui.explorer import errors_lists
+from ninja_ide.gui.main_panel import main_container
 from ninja_ide.gui.dialogs import wizard_new_project
 from ninja_ide.tools import json_manager
 
@@ -61,7 +63,6 @@ class __ExplorerContainer(QTabWidget):
         QTabWidget.__init__(self, parent)
         self.setTabPosition(QTabWidget.East)
         self.__ide = parent
-        self._workingDirectory = ''
 
         #Searching the Preferences
         self._treeProjects = None
@@ -212,13 +213,19 @@ class __ExplorerContainer(QTabWidget):
             if settings.WORKSPACE:
                 directory = settings.WORKSPACE
             else:
-                directory = self._workingDirectory
+                directory = os.path.expanduser("~")
+                current_project = self.get_actual_project()
+                mainContainer = main_container.MainContainer()
+                editorWidget = mainContainer.get_actual_editor()
+                if current_project is not None:
+                    directory = current_project
+                elif editorWidget is not None and editorWidget.ID:
+                    directory = file_manager.get_folder(editorWidget.ID)
             folderName = unicode(QFileDialog.getExistingDirectory(self,
                 self.tr("Open Project Directory"), directory))
         try:
             if not folderName:
                 return
-            self._workingDirectory = folderName
             if not self._treeProjects.is_open(folderName):
                 project = json_manager.read_ninja_project(folderName)
                 extensions = project.get('supported-extensions',

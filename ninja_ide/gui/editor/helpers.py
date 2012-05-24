@@ -14,7 +14,6 @@ from ninja_ide.tools import introspection
 patIndent = re.compile('^\s+')
 patIsLocalFunction = re.compile('(\s)+self\.(\w)+\(\)')
 patClass = re.compile("(\\s)*class.+\\:$")
-patExcept = re.compile("(\\s)*except\\s*.*\\:$")
 endCharsForIndent = [':', '{', '(', '[']
 closeBraces = {'{': '}', '(': ')', '[': ']'}
 
@@ -419,9 +418,12 @@ def check_for_assistance_completion(editorWidget, line):
         clazzName = [name for name in
             re.split("(\\s)*class(\\s)+|:|\(", line) \
             if name is not None and name.strip()][0]
-        if 'classes' in symbols and clazzName in symbols['classes']:
-            clazz = symbols['classes'][clazzName]
-            if '__init__' in clazz[1]['functions']:
+        clazz_key = [item for item in symbols.get('classes', []) \
+            if item.startswith(clazzName)]
+        if clazz_key:
+            clazz = symbols['classes'][clazz_key[0]]
+            if [init for init in clazz[1]['functions'] \
+               if init.startswith('__init__')]:
                 return
         editorWidget.textCursor().insertText('\n')
         spaces = get_leading_spaces(line)
@@ -443,26 +445,3 @@ def check_for_assistance_completion(editorWidget, line):
                 editorWidget.textCursor().insertText(indent)
         else:
             editorWidget.textCursor().insertText(indent)
-    elif patExcept.match(line):
-        block = editorWidget.textCursor().block()
-        previous = block.previous()
-        while unicode(previous.text()).find('try:') == -1:
-            previous = previous.previous()
-        try_line = unicode(previous.text())
-        if try_line.find('try:') != -1:
-            cursor = editorWidget.textCursor()
-            cursor.beginEditBlock()
-            indentation = get_indentation(try_line)
-            last_line = indentation + unicode(block.text()).strip()
-            cursor.movePosition(QTextCursor.StartOfLine,
-                QTextCursor.KeepAnchor)
-            cursor.insertText(last_line)
-            indentation = indentation[:-settings.INDENT]
-            previous = block.previous()
-            last_line = indentation + line.strip()
-            cursor.movePosition(QTextCursor.Up)
-            cursor.movePosition(QTextCursor.EndOfLine)
-            cursor.movePosition(QTextCursor.StartOfLine,
-                QTextCursor.KeepAnchor)
-            cursor.insertText(last_line)
-            cursor.endEditBlock()
