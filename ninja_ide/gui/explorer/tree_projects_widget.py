@@ -523,7 +523,7 @@ class TreeProjectsWidget(QTreeWidget):
             item.setSelected(True)
             self.setCurrentItem(item)
         if folder not in self._fileWatcher.directories():
-            DEBUG("Ading '%s' to watcher" % folder)
+            DEBUG("Adding '%s' to watcher" % folder)
             self._fileWatcher.addPath(folder)
 
     def _load_folder(self, folderStructure, folder, parentItem):

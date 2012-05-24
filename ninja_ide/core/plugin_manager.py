@@ -390,13 +390,25 @@ def local_plugins():
     return plugins
 
 
+def __get_all_plugin_descriptors():
+    '''
+    Returns all the .plugin files
+    '''
+    global PLUGIN_EXTENSION
+    return [pf for pf in os.listdir(resources.PLUGINS)
+        if pf.endswith(PLUGIN_EXTENSION)]
+
+
 def download_plugin(file_):
     '''
     Download a plugin specified by file_
     '''
+    global PLUGIN_EXTENSION
+    #get all the .plugin files in local filesystem
+    plugins_installed_before = set(__get_all_plugin_descriptors())
+    #download the plugin
     fileName = os.path.join(resources.PLUGINS, os.path.basename(file_))
     content = urllib2.urlopen(file_)
-    #download the plugin
     f = open(fileName, 'wb')
     f.write(content.read())
     f.close()
@@ -406,6 +418,11 @@ def download_plugin(file_):
     zipFile.close()
     #clean up the enviroment
     os.remove(fileName)
+    #get the name of the last installed plugin
+    plugins_installed_after = set(__get_all_plugin_descriptors())
+    #using set operations get the difference that is the new plugin
+    new_plugin = (plugins_installed_after - plugins_installed_before).pop()
+    return new_plugin
 
 
 def update_local_plugin_descriptor(plugins):
@@ -429,6 +446,7 @@ def update_local_plugin_descriptor(plugins):
         plug['authors'] = plug_list[3]
         plug['home'] = plug_list[4]
         plug['download'] = plug_list[5]
+        plug['plugin-descriptor'] = plug_list[6]
         #append the plugin data
         structure.append(plug)
     descriptor = open(resources.PLUGINS_DESCRIPTOR, 'w')
@@ -439,11 +457,21 @@ def uninstall_plugin(plug):
     """
     Uninstall the given plugin
     """
-    global PLUGIN_EXTENSION
     plugin_name = plug[0]
-    fileName = os.path.basename(plugin_name)
-    fileName = os.path.splitext(fileName)[0]
-    fileName = os.path.join(resources.PLUGINS, fileName + PLUGIN_EXTENSION)
+    structure = []
+    if os.path.isfile(resources.PLUGINS_DESCRIPTOR):
+        read = open(resources.PLUGINS_DESCRIPTOR, 'r')
+        structure = json.load(read)
+        read.close()
+    #copy the strcuture we iterate and remove at the same time
+    structure_aux = copy.copy(structure)
+    for plugin in structure_aux:
+        if plugin["name"] == plugin_name:
+            fileName = plugin["plugin-descriptor"]
+            structure.remove(plugin)
+            break
+    #open <plugin>.plugin file and get the module to remove
+    fileName = os.path.join(resources.PLUGINS, fileName)
     plugin_descriptor = open(fileName, 'r')
     plugin = json.load(plugin_descriptor)
     plugin_descriptor.close()
@@ -463,17 +491,6 @@ def uninstall_plugin(plug):
                 os.removedirs(f)
         #remove ths plugin_name.plugin file
         os.remove(fileName)
-    structure = []
-    if os.path.isfile(resources.PLUGINS_DESCRIPTOR):
-        read = open(resources.PLUGINS_DESCRIPTOR, 'r')
-        structure = json.load(read)
-        read.close()
-    #copy the strcuture we iterate and remove at the same time
-    structure_aux = copy.copy(structure)
-    for plugin in structure_aux:
-        if plugin["name"] == plugin_name:
-            structure.remove(plugin)
-            break
     #write the new info
     descriptor = open(resources.PLUGINS_DESCRIPTOR, 'w')
     json.dump(structure, descriptor, indent=2)
