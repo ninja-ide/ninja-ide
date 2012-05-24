@@ -194,6 +194,10 @@ class __IDE(QMainWindow):
                 tool_item = toolbar_items.get(item, None)
                 if tool_item is not None:
                     self.toolbar.addAction(tool_item)
+        #load action added by plugins, This is a special case when reload
+        #the toolbar after save the preferences widget
+        for toolbar_action in settings.get_toolbar_item_for_plugins():
+            self.toolbar.addAction(toolbar_action)
 
     def load_external_plugins(self, paths):
         for path in paths:
