@@ -75,6 +75,9 @@ TOOLBAR_ITEMS_DEFAULT = [
     "run-project", "run-file", "stop", "separator",
     ]
 
+#hold the toolbar actions added by plugins
+TOOLBAR_ITEMS_PLUGINS = []
+
 
 ###############################################################################
 # EDITOR
@@ -227,9 +230,25 @@ def get_symbols_handler(file_extension):
     return SYMBOLS_HANDLER.get(file_extension, None)
 
 
+def add_toolbar_item_for_plugins(toolbar_action):
+    """
+    Add a toolbar action set from some plugin
+    """
+    global TOOLBAR_ITEMS_PLUGINS
+    TOOLBAR_ITEMS_PLUGINS.append(toolbar_action)
+
+
+def get_toolbar_item_for_plugins():
+    """
+    Returns the toolbar actions set by plugins
+    """
+    global TOOLBAR_ITEMS_PLUGINS
+    return TOOLBAR_ITEMS_PLUGINS
+
 ###############################################################################
 # LOAD SETTINGS
 ###############################################################################
+
 
 def load_settings():
     qsettings = QSettings()
