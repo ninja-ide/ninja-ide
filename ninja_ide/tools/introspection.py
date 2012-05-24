@@ -136,7 +136,11 @@ def obtain_symbols(source, with_docstrings=False):
             else:
                 globalFunctions[result['name']] = result['lineno']
         elif symbol.__class__ is ast.ClassDef:
-            result = _parse_class(symbol, with_docstrings)
+            try:
+                result = _parse_class(symbol, with_docstrings)
+            except:
+                print 'source', repr(source)
+                raise
             classes[result['name']] = (result['lineno'],
                 {'attributes': result['attributes'],
                 'functions': result['functions']})
