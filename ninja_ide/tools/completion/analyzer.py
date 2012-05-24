@@ -23,6 +23,11 @@ def expand_attribute(attribute):
     if attribute.__class__ is ast.Name:
         attribute_id = attribute.id
     elif attribute.__class__ is ast.Call:
+        print '\n\nEXPAND ATTRIBUTE'
+        print 'attribute', repr(attribute)
+        print 'func', repr(attribute.func)
+        print 'dir', dir(attribute.func)
+        print '\n\n'
         attribute_id = attribute.func.attr
     name = attribute_id if name == '' else ("%s.%s" % (attribute_id, name))
     return name
