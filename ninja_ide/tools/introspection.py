@@ -35,7 +35,7 @@ def _parse_assign(symbol):
 
 
 def _parse_class(symbol, with_docstrings):
-    docstring = ''
+    docstring = {}
     attr = {}
     func = {}
     name = symbol.name + '('
@@ -51,11 +51,12 @@ def _parse_class(symbol, with_docstrings):
             result = _parse_function(sym, with_docstrings)
             attr.update(result['attrs'])
             if with_docstrings:
-                func[result['name']] = (result['lineno'], result['docstring'])
+                func[result['name']] = result['lineno']
+                docstring[result['lineno']] = result['docstring']
             else:
                 func[result['name']] = result['lineno']
     if with_docstrings:
-        docstring = ast.get_docstring(symbol, clean=True)
+        docstring[symbol.lineno] = ast.get_docstring(symbol, clean=True)
     return {'name': name, 'attributes': attr, 'functions': func,
         'lineno': symbol.lineno, 'docstring': docstring}
 
@@ -140,7 +141,7 @@ def obtain_symbols(source, with_docstrings=False):
             classes[result['name']] = (result['lineno'],
                 {'attributes': result['attributes'],
                 'functions': result['functions']})
-            docstrings[result['lineno']] = result['docstring']
+            docstrings.update(result['docstring'])
     if globalAttributes:
         symbols['attributes'] = globalAttributes
     if globalFunctions:
