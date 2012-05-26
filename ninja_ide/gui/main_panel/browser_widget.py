@@ -57,7 +57,7 @@ class BrowserWidget(QWidget, itab_item.ITabItem):
 
         if process is not None:
             time.sleep(0.5)
-            self.webFrame.reload()
+            self.webFrame.load(QUrl(url))
 
         if url == resources.START_PAGE_URL:
             self.webFrame.page().setLinkDelegationPolicy(
