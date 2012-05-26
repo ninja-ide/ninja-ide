@@ -1,34 +1,19 @@
 #-*- coding: utf-8 -*-
 
 from PyQt4.QtGui import QKeySequence
+from PyQt4.QtCore import QDir
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import Qt
 
 import os
 import sys
-import platform
 
 
 ###############################################################################
 # PATHS
 ###############################################################################
 
-if platform.system().lower().startswith('windows'):
-    # ...works on at least windows and linux.
-    # In windows it points to the user"s folder
-    #  (the one directly under Documents and Settings, not My Documents)
-
-    # In windows, you can choose to care about local versus roaming profiles.
-    # You can fetch the current user"s through PyWin32.
-    #
-    # For example, to ask for the roaming "Application Data" directory:
-    # CSIDL_APPDATA asks for the roaming, CSIDL_LOCAL_APPDATA for the local one
-
-    HOME_PATH = os.environ.get("APPDATA")
-else:
-   # quick semi-nasty fallback for non-windows/win32com case
-    HOME_PATH = os.path.expanduser("~")
-
+HOME_PATH = unicode(QDir.toNativeSeparators(QDir.homePath()))
 
 NINJA_EXECUTABLE = os.path.realpath(sys.argv[0])
 
