@@ -618,7 +618,7 @@ class TreeProjectsWidget(QTreeWidget):
         item = self.currentItem()
         if event.key() in (Qt.Key_Return, Qt.Key_Enter):
             self._open_file(item, 0)
-        elif event.key() == Qt.Key_Space and item.isFolder:
+        elif event.key() in (Qt.Key_Space, Qt.Key_Slash) and item.isFolder:
             expand = not item.isExpanded()
             item.setExpanded(expand)
         elif event.key() == Qt.Key_Left and not item.isExpanded():
