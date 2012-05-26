@@ -73,7 +73,7 @@ def _parse_function(symbol, with_docstrings):
         defaults.append(value)
     arguments = []
     for arg in reversed(symbol.args.args):
-        if arg.id == 'self':
+        if arg.__class__ is not _ast.Name or arg.id == 'self':
             continue
         argument = arg.id
         if defaults:
