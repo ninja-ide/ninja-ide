@@ -239,7 +239,6 @@ class __ExplorerContainer(QTabWidget):
                 thread.start()
             else:
                 self._treeProjects._set_current_project(folderName)
-            self.emit(SIGNAL("projectOpened(QString)"), folderName)
         except Exception, reason:
             logger.error('open_project_folder: %s', reason)
             if not notIDEStart:
@@ -268,6 +267,7 @@ class __ExplorerContainer(QTabWidget):
             folderName = thread.storage_values[1]
             self._treeProjects.load_project(structure, folderName)
             self.save_recent_projects(folderName)
+            self.emit(SIGNAL("projectOpened(QString)"), folderName)
 
     def create_new_project(self):
         if not self._treeProjects:
