@@ -16,7 +16,7 @@ from PyQt4.QtGui import QLinearGradient
 from PyQt4.QtGui import QTableWidgetItem
 from PyQt4.QtGui import QAbstractItemView
 from PyQt4.QtGui import QPrinter
-from PyQt4.QtGui import QPrintDialog
+from PyQt4.QtGui import QPrintPreviewDialog
 from PyQt4.QtGui import QPalette
 from PyQt4.QtGui import QPainter
 from PyQt4.QtGui import QBrush
@@ -155,22 +155,15 @@ def print_file(fileName, printFunction):
     object and print the file,
     the print method
     More info on:http://doc.qt.nokia.com/latest/printing.html"""
-    #TODO: Make that the option it's taken from settings. maybe
-    #this should be a class to manage all cases?
 
     printer = QPrinter(QPrinter.HighResolution)
     printer.setPageSize(QPrinter.A4)
     printer.setOutputFileName(fileName)
     printer.setDocName(fileName)
-#PRINT PREVIEW OPTIONS
-#TODO: the follow imp. dipatch an error on execution time we need to review
-#if the error belongs to qt
-#    preview = QPrintPreviewDialog(printer)
-#    preview.paintRequested[QPrinter].connect(printFunction)
-#    preview.exec_()
-    dialog = QPrintDialog(printer)
-    if dialog.exec_():
-        printFunction(printer)
+
+    preview = QPrintPreviewDialog(printer)
+    preview.paintRequested[QPrinter].connect(printFunction)
+    preview.exec_()
 
 ###############################################################################
 # FADING ANIMATION
