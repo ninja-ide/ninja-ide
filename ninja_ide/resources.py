@@ -157,6 +157,7 @@ IMAGES = {
         "locate-on-this-file.png"),
     "add": os.path.join(PRJ_PATH, "img", "add.png"),
     "delete": os.path.join(PRJ_PATH, "img", "delete.png"),
+    "loading": os.path.join(PRJ_PATH, "img", "loading.gif"),
     "separator": os.path.join(PRJ_PATH, "img", "separator.png")}
 
 

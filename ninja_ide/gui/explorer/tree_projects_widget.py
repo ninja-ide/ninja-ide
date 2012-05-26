@@ -68,6 +68,8 @@ class TreeProjectsWidget(QTreeWidget):
         self._actualProject = None
         #self._projects -> key: [Item, folderStructure]
         self._projects = {}
+        self._loading_items = {}
+        self._thread_execution = {}
         self.__enableCloseNotification = True
         self._fileWatcher = file_manager.NinjaFileSystemWatcher()
 
@@ -81,8 +83,8 @@ class TreeProjectsWidget(QTreeWidget):
             self._menu_context_tree)
         self.connect(self, SIGNAL("itemClicked(QTreeWidgetItem *, int)"),
             self._open_file)
-        self.connect(self._fileWatcher, SIGNAL("directoryChanged(QString)"),
-            self._refresh_project_by_path)
+#        self.connect(self._fileWatcher, SIGNAL("directoryChanged(QString)"),
+#            self._refresh_project_by_path)
         self.itemExpanded.connect(self._item_expanded)
         self.itemCollapsed.connect(self._item_collapsed)
         self.mute_signals = False
@@ -262,30 +264,51 @@ class TreeProjectsWidget(QTreeWidget):
             path = item.path
         else:
             path = file_manager.create_path(item.path, unicode(item.text(0)))
+
+        thread = ui_tools.ThreadExecution(
+            self._thread_refresh_project, args=[path, item, parentItem])
+        self._thread_execution[path] = thread
+        self.connect(thread, SIGNAL("executionFinished(PyQt_PyObject)"),
+            self._callback_refresh_project)
+        thread.start()
+
+    def _thread_refresh_project(self, path, item, parentItem):
         if parentItem.extensions != settings.SUPPORTED_EXTENSIONS:
             folderStructure = file_manager.open_project_with_extensions(
                 path, parentItem.extensions)
         else:
             folderStructure = file_manager.open_project(path)
+
         if folderStructure.get(path, [None, None])[1] is not None:
             folderStructure[path][1].sort()
+            values = (folderStructure, path, item)
         else:
-            return
-        item.takeChildren()
-        self._load_folder(folderStructure, path, item)
-        item.setExpanded(True)
+            values = None
+
+        self._thread_execution[path].storage_values = values
+        self._thread_execution[path].signal_return = path
+
+    def _callback_refresh_project(self, value):
+        thread = self._thread_execution.pop(value, None)
+        if thread is not None and len(thread.storage_values) == 3:
+            folderStructure = thread.storage_values[0]
+            path = thread.storage_values[1]
+            item = thread.storage_values[2]
+            item.takeChildren()
+            self._load_folder(folderStructure, path, item)
+            item.setExpanded(True)
 
     def _close_project(self):
         item = self.currentItem()
         index = self.indexOfTopLevelItem(item)
         pathKey = item.path
-        for directory in self._fileWatcher.directories():
-            directory = unicode(directory)
-            if file_manager.belongs_to_folder(pathKey, directory):
-                self._fileWatcher.removePath(directory)
-        self._fileWatcher.removePath(pathKey)
+#        for directory in self._fileWatcher.directories():
+#            directory = unicode(directory)
+#            if file_manager.belongs_to_folder(pathKey, directory):
+#                self._fileWatcher.removePath(directory)
+#        self._fileWatcher.removePath(pathKey)
         self.takeTopLevelItem(index)
-        self._projects.pop(pathKey)
+        self._projects.pop(pathKey, None)
         if self.__enableCloseNotification:
             self.emit(SIGNAL("closeProject(QString)"), pathKey)
         self.emit(SIGNAL("closeFilesFromProjectClosed(QString)"), pathKey)
@@ -384,7 +407,8 @@ class TreeProjectsWidget(QTreeWidget):
         if val == QMessageBox.Yes:
             path = file_manager.create_path(item.path, unicode(item.text(0)))
             file_manager.delete_file(item.path, unicode(item.text(0)))
-            self.removeItemWidget(item, 0)
+            index = item.parent().indexOfChild(item)
+            item.parent().takeChild(index)
             mainContainer = main_container.MainContainer()
             if mainContainer.is_open(path):
                 mainContainer.close_deleted_file(path)
@@ -397,7 +421,8 @@ class TreeProjectsWidget(QTreeWidget):
                 QMessageBox.Yes, QMessageBox.No)
         if val == QMessageBox.Yes:
             file_manager.delete_folder(item.path, unicode(item.text(0)))
-            self.removeItemWidget(item, 0)
+            index = item.parent().indexOfChild(item)
+            item.parent().takeChild(index)
 
     def _rename_file(self):
         item = self.currentItem()
@@ -500,9 +525,23 @@ class TreeProjectsWidget(QTreeWidget):
         #open the correct program to edit Qt UI files!
         QDesktopServices.openUrl(QUrl(pathForFile, QUrl.TolerantMode))
 
+    def loading_project(self, folder, reload_item=None):
+        loadingItem = ui_tools.LoadingItem()
+        if reload_item is None:
+            parent = self
+        else:
+            parent = reload_item.parent()
+        item = loadingItem.add_item_to_tree(folder, self, ProjectItem, parent)
+        self._loading_items[folder] = item
+
     def load_project(self, folderStructure, folder):
         if not folder:
             return
+
+        item = self._loading_items.pop(folder, None)
+        if item is not None:
+            index = self.indexOfTopLevelItem(item)
+            self.takeTopLevelItem(index)
 
         name = file_manager.get_basename(folder)
         item = ProjectTree(self, name, folder)
@@ -512,9 +551,6 @@ class TreeProjectsWidget(QTreeWidget):
         self._projects[folder] = item
         if folderStructure[folder][1] is not None:
             folderStructure[folder][1].sort()
-        if item.extensions != settings.SUPPORTED_EXTENSIONS:
-            folderStructure = file_manager.open_project_with_extensions(
-                item.path, item.extensions)
         self._load_folder(folderStructure, folder, item)
         item.setExpanded(True)
         if len(self._projects) == 1:
@@ -522,9 +558,9 @@ class TreeProjectsWidget(QTreeWidget):
         if self.currentItem() is None:
             item.setSelected(True)
             self.setCurrentItem(item)
-        if folder not in self._fileWatcher.directories():
-            DEBUG("Adding '%s' to watcher" % folder)
-            self._fileWatcher.addPath(folder)
+#        if folder not in self._fileWatcher.directories():
+#            DEBUG("Adding '%s' to watcher" % folder)
+#            self._fileWatcher.addPath(folder)
 
     def _load_folder(self, folderStructure, folder, parentItem):
         """Load the Tree Project structure recursively."""
@@ -550,9 +586,6 @@ class TreeProjectsWidget(QTreeWidget):
                 subFolderPath = os.path.join(folder, _folder)
                 if subFolderPath in self.state_index:
                     subfolder.setExpanded(True)
-#                if sys.platform != "darwin" and \
-#                not self._fileWatcher.directories().contains(subFolderPath):
-#                    self._fileWatcher.addPath(subFolderPath)
                 self._load_folder(folderStructure,
                     subFolderPath, subfolder)
 
