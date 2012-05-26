@@ -314,10 +314,10 @@ def uncomment_single_line(cursor, block_start, block_end, comment_wildcard):
     cursor.beginEditBlock()
     while (block_start != block_end):
         # Find the position of the comment in the line
-        comment_position = unicode(block_start.text()) \
-            .find(comment_wildcard[0])
+        comment_position = unicode(block_start.text()).find(
+            comment_wildcard[0])
         if unicode(block_start.text()).startswith(
-            " " * comment_position + comment_wildcard[0]):
+           " " * comment_position + comment_wildcard[0]):
             cursor.setPosition(block_start.position() + comment_position)
             cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
                 len(comment_wildcard))
