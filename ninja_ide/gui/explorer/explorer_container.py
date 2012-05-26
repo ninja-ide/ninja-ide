@@ -268,6 +268,7 @@ class __ExplorerContainer(QTabWidget):
             self._treeProjects.load_project(structure, folderName)
             self.save_recent_projects(folderName)
             self.emit(SIGNAL("projectOpened(QString)"), folderName)
+            self.emit(SIGNAL("updateLocator()"))
 
     def create_new_project(self):
         if not self._treeProjects:
