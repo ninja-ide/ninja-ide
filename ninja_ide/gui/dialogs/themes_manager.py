@@ -41,7 +41,7 @@ class ThemesManagerWidget(QDialog):
 
         #Load Themes with Thread
         self.connect(btnReload, SIGNAL("clicked()"), self._reload_themes)
-        self._thread = ui_tools.ThreadCallback(self.execute_thread)
+        self._thread = ui_tools.ThreadExecution(self.execute_thread)
         self.connect(self._thread, SIGNAL("finished()"), self.load_skins_data)
         self._reload_themes()
 

@@ -70,7 +70,6 @@ class Structure(object):
             attr_name = attrs[0]
             data_type = structure.get_attribute_type(attr_name)
             result = data_type
-#            print 'assign', assign
 #            if assign is not None:
 #                result = self._resolve_attribute(assign, attrs[1:])
         return result

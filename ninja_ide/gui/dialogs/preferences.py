@@ -816,7 +816,7 @@ class EditorGeneral(QWidget):
 
     def showEvent(self, event):
         super(EditorGeneral, self).showEvent(event)
-        self.thread_callback = ui_tools.ThreadCallback(self._get_editor_skins)
+        self.thread_callback = ui_tools.ThreadExecution(self._get_editor_skins)
         self.connect(self.thread_callback, SIGNAL("finished()"),
             self._show_editor_skins)
 
