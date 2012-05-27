@@ -109,8 +109,72 @@ class ShortcutConfiguration(QWidget):
     """
     Dialog to manage ALL shortcuts
     """
+
     def __init__(self):
         QWidget.__init__(self)
+
+        self.shortcuts_text = {
+            "Duplicate": self.tr("Duplicate the line/selection"),
+            "Remove-line": self.tr("Remove the line/selection"),
+            "Move-up": self.tr("Move the line/selection up"),
+            "Move-down": self.tr("Move the line/selection down"),
+            "Close-tab": self.tr("Close the current tab"),
+            "New-file": self.tr("Create a New tab"),
+            "New-project": self.tr("Create a new Project"),
+            "Open-file": self.tr("Open a File"),
+            "Open-project": self.tr("Open a Project"),
+            "Save-file": self.tr("Save the current file"),
+            "Save-project": self.tr("Save the current project opened files"),
+            "Print-file": self.tr("Print current file"),
+            "Redo": self.tr("Redo"),
+            "Comment": self.tr("Comment line/selection"),
+            "Uncomment": self.tr("Uncomment line/selection"),
+            "Horizontal-line": self.tr("Insert Horizontal line"),
+            "Title-comment": self.tr("Insert comment Title"),
+            "Indent-less": self.tr("Indent less"),
+            "Hide-misc": self.tr("Hide Misc Container"),
+            "Hide-editor": self.tr("Hide Editor Area"),
+            "Hide-explorer": self.tr("Hide Explorer"),
+            "Run-file": self.tr("Execute current file"),
+            "Run-project": self.tr("Execute current project"),
+            "Debug": self.tr("Debug"),
+            "Switch-Focus": self.tr("Switch keyboard focus"),
+            "Stop-execution": self.tr("Stop Execution"),
+            "Hide-all": self.tr("Hide all (Except Editor)"),
+            "Full-screen": self.tr("Full Screen"),
+            "Find": self.tr("Find"),
+            "Find-replace": self.tr("Find & Replace"),
+            "Find-with-word": self.tr("Find word under cursor"),
+            "Find-next": self.tr("Find Next"),
+            "Find-previous": self.tr("Find Previous"),
+            "Help": self.tr("Show Python Help"),
+            "Split-horizontal": self.tr("Split Tabs Horizontally"),
+            "Split-vertical": self.tr("Split Tabs Vertically"),
+            "Follow-mode": self.tr("Activate/Deactivate Follow Mode"),
+            "Reload-file": self.tr("Reload File"),
+            "Jump": self.tr("Jump to line"),
+            "Find-in-files": self.tr("Find in Files"),
+            "Import": self.tr("Import from everywhere"),
+            "Go-to-definition": self.tr("Go to definition"),
+            "Complete-Declarations": self.tr("Complete Declarations"),
+            "Code-locator": self.tr("Show Code Locator"),
+            "File-Opener": self.tr("Show File Opener"),
+            "Navigate-back": self.tr("Navigate Back"),
+            "Navigate-forward": self.tr("Navigate Forward"),
+            "Open-recent-closed": self.tr("Open recent closed file"),
+            "Change-Tab": self.tr("Change to the next Tab"),
+            "Change-Tab-Reverse": self.tr("Change to the previous Tab"),
+            "Show-Code-Nav": self.tr("Activate History Navigation"),
+            "Show-Bookmarks-Nav": self.tr("Activate Bookmarks Navigation"),
+            "Show-Breakpoints-Nav": self.tr("Activate Breakpoints Navigation"),
+            "Show-Paste-History": self.tr("Show copy/paste history"),
+            "History-Copy": self.tr("Copy into copy/paste history"),
+            "History-Paste": self.tr("Paste from copy/paste history"),
+            "Add-Bookmark-or-Breakpoint": self.tr(
+                "Insert Bookmark/Breakpoint"),
+            "Highlight-Word": self.tr(
+                "Highlight occurrences for word under cursor")}
+
         self.shortcut_dialog = ShortcutDialog(self)
         #main layout
         main_vbox = QVBoxLayout(self)
@@ -127,6 +191,7 @@ class ShortcutConfiguration(QWidget):
             self.tr("The Shortcut's Text in the Menus are " \
             "going to be refreshed on restart.")))
         #load data!
+        self.result_widget.setColumnWidth(0, 400)
         self._load_shortcuts()
         #signals
         #open the set shortcut dialog
@@ -195,8 +260,8 @@ class ShortcutConfiguration(QWidget):
         settings.beginGroup("shortcuts")
         for index in xrange(self.result_widget.topLevelItemCount()):
             item = self.result_widget.topLevelItem(index)
-            shortcut_name = item.text(0)
             shortcut_keys = item.text(1)
+            shortcut_name = item.text(2)
             settings.setValue(shortcut_name, shortcut_keys)
         settings.endGroup()
         actions.Actions().update_shortcuts()
@@ -205,8 +270,8 @@ class ShortcutConfiguration(QWidget):
         for action in resources.CUSTOM_SHORTCUTS:
             shortcut_action = resources.get_shortcut(action)
             #populate the tree widget
-            tree_data = [self.tr(action),
-                shortcut_action.toString(QKeySequence.NativeText)]
+            tree_data = [self.shortcuts_text[action],
+                shortcut_action.toString(QKeySequence.NativeText), action]
             item = QTreeWidgetItem(self.result_widget, tree_data)
             item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
 
@@ -215,7 +280,7 @@ class ShortcutConfiguration(QWidget):
         for name, action in resources.SHORTCUTS.iteritems():
             shortcut_action = action
             #populate the tree widget
-            tree_data = [self.tr(name),
+            tree_data = [self.shortcuts_text[name],
                 shortcut_action.toString(QKeySequence.NativeText)]
             item = QTreeWidgetItem(self.result_widget, tree_data)
             item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)

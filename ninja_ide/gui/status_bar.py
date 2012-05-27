@@ -340,14 +340,6 @@ class TextLine(QLineEdit):
         (Qt.Key_Enter, Qt.Key_Return):
             self._parent.find_next()
             return
-        elif event.modifiers() == Qt.ControlModifier and \
-        event.key() == Qt.Key_Right:
-            self._parent.find_next()
-            return
-        elif event.modifiers() == Qt.ControlModifier and \
-        event.key() == Qt.Key_Left:
-            self._parent.find_previous()
-            return
         super(TextLine, self).keyPressEvent(event)
         if int(event.key()) in range(32, 162) or \
         event.key() == Qt.Key_Backspace:

@@ -103,6 +103,8 @@ class __Actions(QObject):
         self.shortHideAll = QShortcut(short("Hide-all"), self.ide)
         self.shortFullscreen = QShortcut(short("Full-screen"), self.ide)
         self.shortFind = QShortcut(short("Find"), self.ide)
+        self.shortFindNext = QShortcut(short("Find-next"), self.ide)
+        self.shortFindPrevious = QShortcut(short("Find-previous"), self.ide)
         self.shortFindReplace = QShortcut(short("Find-replace"), self.ide)
         self.shortFindWithWord = QShortcut(short("Find-with-word"), self.ide)
         self.shortHelp = QShortcut(short("Help"), self.ide)
@@ -193,6 +195,10 @@ class __Actions(QObject):
             self.print_file)
         self.connect(self.shortFind, SIGNAL("activated()"),
             self.ide.status.show)
+        self.connect(self.shortFindPrevious, SIGNAL("activated()"),
+            self.ide.status._searchWidget.find_previous)
+        self.connect(self.shortFindNext, SIGNAL("activated()"),
+            self.ide.status._searchWidget.find_next)
         self.connect(self.shortFindWithWord, SIGNAL("activated()"),
             self.ide.status.show_with_word)
         self.connect(self.shortFindReplace, SIGNAL("activated()"),
@@ -303,6 +309,8 @@ class __Actions(QObject):
         self.shortHideAll.setKey(short("Hide-all"))
         self.shortFullscreen.setKey(short("Full-screen"))
         self.shortFind.setKey(short("Find"))
+        self.shortFindNext.setKey(short("Find-next"))
+        self.shortFindPrevious.setKey(short("Find-previous"))
         self.shortFindReplace.setKey(short("Find-replace"))
         self.shortFindWithWord.setKey(short("Find-with-word"))
         self.shortHelp.setKey(short("Help"))
