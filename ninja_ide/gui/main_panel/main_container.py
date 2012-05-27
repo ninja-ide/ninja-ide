@@ -575,6 +575,21 @@ class __MainContainer(QSplitter):
                 if not reloaded:
                     self.save_file(editorWidget)
 
+    def call_editors_function(self, call_function, *arguments):
+        args = arguments[0]
+        kwargs = arguments[1]
+        for i in xrange(self._tabMain.count()):
+            editorWidget = self._tabMain.widget(i)
+            if type(editorWidget) is editor.Editor:
+                function = getattr(editorWidget, call_function)
+                function(*args, **kwargs)
+        for i in xrange(self._tabSecondary.count()):
+            editorWidget = self._tabSecondary.widget(i)
+            self._tabSecondary.check_for_external_modifications(editorWidget)
+            if type(editorWidget) is editor.Editor:
+                function = getattr(editorWidget, call_function)
+                function(*args, **kwargs)
+
     def show_start_page(self):
         startPage = browser_widget.BrowserWidget(
             resources.START_PAGE_URL, parent=self)

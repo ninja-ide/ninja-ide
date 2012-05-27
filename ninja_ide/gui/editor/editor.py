@@ -84,6 +84,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #Set editor style
         self.apply_editor_style()
         self.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
+        #Set tab usage
+        if settings.USE_TABS:
+            self.set_tab_usage()
         #For Highlighting in document
         self.extraSelections = []
         self.wordSelection = []
@@ -167,6 +170,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         doc.setDefaultTextOption(option)
         self.setDocument(doc)
         self.setCenterOnScroll(settings.CENTER_ON_SCROLL)
+
+    def set_tab_usage(self):
+        tab_size = self.pos_margin / settings.MARGIN_LINE * settings.INDENT
+        self.setTabStopWidth(tab_size)
 
     def set_id(self, id_):
         super(Editor, self).set_id(id_)
@@ -433,7 +440,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         cursor.setPosition(block.position())
         while block != end:
             cursor.setPosition(block.position())
-            cursor.insertText(' ' * settings.INDENT)
+            if settings.USE_TABS:
+                cursor.insertText('\t')
+            else:
+                cursor.insertText(' ' * settings.INDENT)
             block = block.next()
 
         #End a undo block
@@ -457,10 +467,15 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         while block != end:
             cursor.setPosition(block.position())
             #Select Settings.indent chars from the current line
-            cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
-                settings.INDENT)
+            if settings.USE_TABS:
+                cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
+            else:
+                cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
+                    settings.INDENT)
             text = cursor.selectedText()
-            if text == ' ' * settings.INDENT:
+            if not settings.USE_TABS and text == ' ' * settings.INDENT:
+                cursor.removeSelectedText()
+            elif settings.USE_TABS and text == '\t':
                 cursor.removeSelectedText()
             block = block.next()
 
@@ -545,14 +560,14 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def __insert_indentation(self, event):
         if self.textCursor().hasSelection():
             self.indent_more()
-        elif settings.ALLOW_TABS_NON_PYTHON and self.lang != 'python':
+        elif settings.USE_TABS:
             return False
         else:
             self.textCursor().insertText(' ' * settings.INDENT)
         return True
 
     def __backspace(self, event):
-        if self.textCursor().hasSelection():
+        if self.textCursor().hasSelection() or settings.USE_TABS:
             return False
         cursor = self.textCursor()
         cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor,
