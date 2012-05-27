@@ -767,7 +767,8 @@ class EditorGeneral(QWidget):
         self._spinSize.setMinimum(0)
         self._spinSize.setValue(settings.SIZE_PROPORTION * 100)
         formMini.addWidget(QLabel(
-            self.tr("Enable/Disable MiniMap (Requires restart):")), 0, 0,
+            self.tr("Enable/Disable MiniMap (Requires restart):\n"
+            "(opacity not supported in MAC OS)")), 0, 0,
             Qt.AlignRight)
         formMini.addWidget(QLabel(self.tr("Max Opacity:")), 1, 0,
             Qt.AlignRight)
