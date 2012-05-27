@@ -21,7 +21,6 @@ from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 
 from ninja_ide import resources
-from ninja_ide.core import settings
 from ninja_ide.tools import locator
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.main_panel import main_container
@@ -234,12 +233,14 @@ class SearchWidget(QWidget):
         self._btnFind = QPushButton(QIcon(resources.IMAGES['find']), '')
         self.btnPrevious = QPushButton(
             self.style().standardIcon(QStyle.SP_ArrowLeft), '')
-        self.btnPrevious.setToolTip(self.tr("Press (%1 + Left Arrow)").arg(
-            settings.OS_KEY))
+        self.btnPrevious.setToolTip(self.tr("Press %1").arg(
+                resources.get_shortcut("Find-previous").toString(
+                    QKeySequence.NativeText)))
         self.btnNext = QPushButton(
             self.style().standardIcon(QStyle.SP_ArrowRight), '')
-        self.btnNext.setToolTip(self.tr("Press (%1 + Right Arrow)").arg(
-            settings.OS_KEY))
+        self.btnNext.setToolTip(self.tr("Press %1").arg(
+                resources.get_shortcut("Find-next").toString(
+                    QKeySequence.NativeText)))
         hSearch.addWidget(self._btnClose)
         hSearch.addWidget(self._line)
         hSearch.addWidget(self._btnFind)
