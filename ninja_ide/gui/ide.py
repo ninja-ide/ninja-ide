@@ -316,7 +316,7 @@ class __IDE(QMainWindow):
                 self.profile, title))
 
     def wheelEvent(self, event):
-        if event.modifiers() == Qt.AltModifier:
+        if event.modifiers() == Qt.ShiftModifier:
             if event.delta() == 120 and self.opacity < settings.MAX_OPACITY:
                 self.opacity += 0.1
             elif event.delta() == -120 and self.opacity > settings.MIN_OPACITY:
