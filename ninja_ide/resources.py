@@ -233,6 +233,8 @@ SHORTCUTS = {
     "Find": QKeySequence(Qt.CTRL + Qt.Key_F),
     "Find-replace": QKeySequence(Qt.CTRL + Qt.Key_H),
     "Find-with-word": QKeySequence(Qt.CTRL + Qt.Key_G),
+    "Find-next": QKeySequence(Qt.CTRL + Qt.Key_F3),
+    "Find-previous": QKeySequence(Qt.CTRL + Qt.Key_F2),
     "Help": QKeySequence(Qt.Key_F1),
     "Split-horizontal": QKeySequence(Qt.Key_F10),
     "Split-vertical": QKeySequence(Qt.Key_F9),
