@@ -572,7 +572,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         cursor = self.textCursor()
         cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
         text = unicode(cursor.selection().toPlainText())
-        if (len(text) % settings.INDENT == 0) and text.strip() == '':
+        if (len(text) % settings.INDENT == 0) and text.isspace():
             cursor.movePosition(QTextCursor.StartOfLine)
             cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
                 settings.INDENT)
