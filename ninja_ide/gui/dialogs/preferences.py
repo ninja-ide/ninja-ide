@@ -1507,9 +1507,9 @@ class EditorSchemeDesigner(QWidget):
         pass
 
     def save_scheme(self):
-        name = file_manager.create_path(resources.EDITOR_SKINS,
-            unicode(self.line_name.text())).strip()
-        fileName = name + '.color'
+        name = unicode(self.line_name.text()).strip()
+        fileName = file_manager.create_path(
+            resources.EDITOR_SKINS, name) + '.color'
         if name != '' and not file_manager.file_exists(fileName):
             scheme = self._preview_style()
             json_manager.save_editor_skins(fileName, scheme)
