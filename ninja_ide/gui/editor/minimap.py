@@ -1,15 +1,24 @@
 # -*- coding: utf-8 *-*
+import sys
 
 from PyQt4.QtGui import QFrame
 from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QTextOption
 from PyQt4.QtGui import QGraphicsOpacityEffect
 from PyQt4.QtGui import QFontMetrics
+from PyQt4.QtGui import QPainter
+from PyQt4.QtGui import QColor
+from PyQt4.QtGui import QPen
+from PyQt4.QtGui import QBrush
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QPropertyAnimation
 
 from ninja_ide import resources
 from ninja_ide.core import settings
+
+
+#QGraphicsOpacityEffect doesn't work in mac cause a Qt Issue: QTBUG-15367
+ACTIVATE_OPACITY = True if sys.platform != 'darwin' else False
 
 
 class MiniMap(QPlainTextEdit):
@@ -29,10 +38,11 @@ class MiniMap(QPlainTextEdit):
         self.highlighter = None
         self.lines_count = 0
 
-        self.goe = QGraphicsOpacityEffect()
-        self.setGraphicsEffect(self.goe)
-        self.goe.setOpacity(settings.MINIMAP_MIN_OPACITY)
-        self.animation = QPropertyAnimation(self.goe, "opacity")
+        if ACTIVATE_OPACITY:
+            self.goe = QGraphicsOpacityEffect()
+            self.setGraphicsEffect(self.goe)
+            self.goe.setOpacity(settings.MINIMAP_MIN_OPACITY)
+            self.animation = QPropertyAnimation(self.goe, "opacity")
 
         self.slider = SliderArea(self)
         self.slider.show()
@@ -74,16 +84,18 @@ class MiniMap(QPlainTextEdit):
             self.slider.move_slider(rect.y())
 
     def enterEvent(self, event):
-        self.animation.setDuration(300)
-        self.animation.setStartValue(settings.MINIMAP_MIN_OPACITY)
-        self.animation.setEndValue(settings.MINIMAP_MAX_OPACITY)
-        self.animation.start()
+        if ACTIVATE_OPACITY:
+            self.animation.setDuration(300)
+            self.animation.setStartValue(settings.MINIMAP_MIN_OPACITY)
+            self.animation.setEndValue(settings.MINIMAP_MAX_OPACITY)
+            self.animation.start()
 
     def leaveEvent(self, event):
-        self.animation.setDuration(300)
-        self.animation.setStartValue(settings.MINIMAP_MAX_OPACITY)
-        self.animation.setEndValue(settings.MINIMAP_MIN_OPACITY)
-        self.animation.start()
+        if ACTIVATE_OPACITY:
+            self.animation.setDuration(300)
+            self.animation.setStartValue(settings.MINIMAP_MAX_OPACITY)
+            self.animation.setEndValue(settings.MINIMAP_MIN_OPACITY)
+            self.animation.start()
 
     def mousePressEvent(self, event):
         super(MiniMap, self).mousePressEvent(event)
@@ -113,13 +125,29 @@ class SliderArea(QFrame):
         self.setCursor(Qt.OpenHandCursor)
         color = resources.CUSTOM_SCHEME.get('current-line',
             resources.COLOR_SCHEME['current-line'])
-        self.setStyleSheet("background: %s;" % color)
-        self.goe = QGraphicsOpacityEffect()
-        self.setGraphicsEffect(self.goe)
-        self.goe.setOpacity(settings.MINIMAP_MAX_OPACITY / 2)
+        if ACTIVATE_OPACITY:
+            self.setStyleSheet("background: %s;" % color)
+            self.goe = QGraphicsOpacityEffect()
+            self.setGraphicsEffect(self.goe)
+            self.goe.setOpacity(settings.MINIMAP_MAX_OPACITY / 2)
+        else:
+            self.setStyleSheet("background: transparent;")
 
         self.pressed = False
         self.__scroll_margins = None
+
+    def paintEvent(self, event):
+        """Paint over the widget to overlay its content."""
+        if not ACTIVATE_OPACITY:
+            painter = QPainter()
+            painter.begin(self)
+            painter.setRenderHint(QPainter.TextAntialiasing, True)
+            painter.setRenderHint(QPainter.Antialiasing, True)
+            painter.fillRect(event.rect(), QBrush(
+                QColor(255, 255, 255, 80)))
+            painter.setPen(QPen(Qt.NoPen))
+            painter.end()
+        super(SliderArea, self).paintEvent(event)
 
     def update_position(self):
         font_size = QFontMetrics(self._parent.font()).height()
