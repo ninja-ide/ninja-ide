@@ -1076,8 +1076,8 @@ class EditorConfiguration(QWidget):
             pep8mod.options.ignore.append("W191")
             pep8mod.refresh_checks()
         elif "W191" in pep8mod.options.ignore:
-                pep8mod.options.ignore.remove("W191")
-                pep8mod.refresh_checks()
+            pep8mod.options.ignore.remove("W191")
+            pep8mod.refresh_checks()
 
 
 class EditorCompletion(QWidget):
