@@ -51,7 +51,7 @@ class Analyzer(object):
         """Collect metadata from a project."""
         #TODO
 
-    def _get_valid_module(self, source):
+    def _get_valid_module(self, source, retry=True):
         """Try to parse the module and fix some errors if it has some."""
         astModule = None
         try:
@@ -69,7 +69,8 @@ class Analyzer(object):
                 split_source = source.splitlines()
                 split_source[line] = new_line
                 source = '\n'.join(split_source)
-                astModule = self._get_valid_module(source)
+                if retry:
+                    astModule = self._get_valid_module(source, False)
         return astModule
 
     def _resolve_late(self, module):
