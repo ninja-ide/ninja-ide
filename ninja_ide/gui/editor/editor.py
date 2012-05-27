@@ -570,10 +570,12 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if self.textCursor().hasSelection() or settings.USE_TABS:
             return False
         cursor = self.textCursor()
-        cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor,
-            settings.INDENT)
+        cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
         text = unicode(cursor.selection().toPlainText())
-        if text == ' ' * settings.INDENT:
+        if (len(text) % settings.INDENT == 0) and text.isspace():
+            cursor.movePosition(QTextCursor.StartOfLine)
+            cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
+                settings.INDENT)
             cursor.removeSelectedText()
             return True
 
