@@ -823,6 +823,12 @@ options.physical_checks = find_checks('physical_line')
 options.logical_checks = find_checks('logical_line')
 
 
+def refresh_checks():
+    #Refresh the Physical and Logical check functions
+    options.physical_checks = find_checks('physical_line')
+    options.logical_checks = find_checks('logical_line')
+
+
 class Checker(object):
     """
     Load a Python source file, tokenize it, check coding style.

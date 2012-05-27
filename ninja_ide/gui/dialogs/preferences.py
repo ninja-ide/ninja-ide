@@ -929,9 +929,20 @@ class EditorConfiguration(QWidget):
         grid.addWidget(QLabel(
             self.tr("Indentation Length:")), 1, 0, Qt.AlignRight)
         self._spin = QSpinBox()
+        self._spin.setAlignment(Qt.AlignRight)
         self._spin.setMinimum(1)
         self._spin.setValue(settings.INDENT)
-        grid.addWidget(self._spin, 1, 1, 1, 2, alignment=Qt.AlignTop)
+        grid.addWidget(self._spin, 1, 1, alignment=Qt.AlignTop)
+        self._checkUseTabs = QCheckBox(
+            self.tr("Use Tabs."))
+        self._checkUseTabs.setChecked(settings.USE_TABS)
+        self.connect(self._checkUseTabs, SIGNAL("stateChanged(int)"),
+            self._change_tab_spaces)
+        grid.addWidget(self._checkUseTabs, 1, 2, alignment=Qt.AlignTop)
+        if settings.USE_TABS:
+            self._spin.setSuffix(self.tr("  (tab size)"))
+        else:
+            self._spin.setSuffix(self.tr("  (spaces)"))
         #Margin Line
         grid.addWidget(QLabel(self.tr("Margin Line:")), 2, 0, Qt.AlignRight)
         self._spinMargin = QSpinBox()
@@ -987,19 +998,13 @@ class EditorConfiguration(QWidget):
         self._checkShowSpaces.setChecked(settings.SHOW_TABS_AND_SPACES)
         grid.addWidget(self._checkShowSpaces, 10, 1, 1, 2,
             alignment=Qt.AlignTop)
-        self._checkAllowTabsNonPython = QCheckBox(
-            self.tr("Allow tabs for Non Python files."))
-        self._checkAllowTabsNonPython.setChecked(
-            settings.ALLOW_TABS_NON_PYTHON)
-        grid.addWidget(self._checkAllowTabsNonPython, 11, 1, 1, 2,
-            alignment=Qt.AlignTop)
         self._allowWordWrap = QCheckBox(self.tr("Allow Word Wrap."))
         self._allowWordWrap.setChecked(settings.ALLOW_WORD_WRAP)
-        grid.addWidget(self._allowWordWrap, 12, 1, 1, 2, alignment=Qt.AlignTop)
+        grid.addWidget(self._allowWordWrap, 11, 1, 1, 2, alignment=Qt.AlignTop)
         self._checkForDocstrings = QCheckBox(
             self.tr("Check for Docstrings in Classes and Functions."))
         self._checkForDocstrings.setChecked(settings.CHECK_FOR_DOCSTRINGS)
-        grid.addWidget(self._checkForDocstrings, 13, 1, 1, 2,
+        grid.addWidget(self._checkForDocstrings, 12, 1, 1, 2,
             alignment=Qt.AlignTop)
 
     def _enable_check_inline(self, val):
@@ -1017,6 +1022,12 @@ class EditorConfiguration(QWidget):
     def _disable_show_errors(self, val):
         if val == Qt.Unchecked:
             self._showErrorsOnLine.setChecked(False)
+
+    def _change_tab_spaces(self, val):
+        if val == Qt.Unchecked:
+            self._spin.setSuffix(self.tr("  (spaces)"))
+        else:
+            self._spin.setSuffix(self.tr("  (tab size)"))
 
     def save(self):
         qsettings = QSettings()
@@ -1049,10 +1060,8 @@ class EditorConfiguration(QWidget):
         qsettings.setValue('showTabsAndSpaces',
             self._checkShowSpaces.isChecked())
         settings.SHOW_TABS_AND_SPACES = self._checkShowSpaces.isChecked()
-        allowTabsForNonPythonFiles = self._checkAllowTabsNonPython.isChecked()
-        qsettings.setValue('allowTabsForNonPythonFiles',
-            allowTabsForNonPythonFiles)
-        settings.ALLOW_TABS_NON_PYTHON = allowTabsForNonPythonFiles
+        qsettings.setValue('useTabs', self._checkUseTabs.isChecked())
+        settings.USE_TABS = self._checkUseTabs.isChecked()
         qsettings.setValue('allowWordWrap', self._allowWordWrap.isChecked())
         settings.ALLOW_WORD_WRAP = self._allowWordWrap.isChecked()
         qsettings.setValue('checkForDocstrings',
@@ -1060,7 +1069,15 @@ class EditorConfiguration(QWidget):
         settings.CHECK_FOR_DOCSTRINGS = self._checkForDocstrings.isChecked()
         qsettings.endGroup()
         qsettings.endGroup()
-        actions.Actions().reset_editor_flags()
+        action = actions.Actions()
+        action.reset_editor_flags()
+        action.call_editors_function("set_tab_usage")
+        if settings.USE_TABS:
+            pep8mod.options.ignore.append("W191")
+            pep8mod.refresh_checks()
+        elif "W191" in pep8mod.options.ignore:
+                pep8mod.options.ignore.remove("W191")
+                pep8mod.refresh_checks()
 
 
 class EditorCompletion(QWidget):

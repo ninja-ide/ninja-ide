@@ -684,6 +684,10 @@ class __Actions(QObject):
         """Reset the Flags for all the opened editors."""
         self.ide.mainContainer.reset_editor_flags()
 
+    def call_editors_function(self, call_function, *args, **kwargs):
+        self.ide.mainContainer.call_editors_function(
+            call_function, args, kwargs)
+
     def preview_in_browser(self):
         """Load the current html file in the default browser."""
         editorWidget = self.ide.mainContainer.get_actual_editor()

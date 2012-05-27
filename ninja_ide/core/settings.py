@@ -83,7 +83,7 @@ TOOLBAR_ITEMS_PLUGINS = []
 # EDITOR
 ###############################################################################
 
-ALLOW_TABS_NON_PYTHON = False
+USE_TABS = False
 ALLOW_WORD_WRAP = False
 INDENT = 4
 MARGIN_LINE = 80
@@ -268,7 +268,7 @@ def load_settings():
     global MARGIN_LINE
     global REMOVE_TRAILING_SPACES
     global SHOW_TABS_AND_SPACES
-    global ALLOW_TABS_NON_PYTHON
+    global USE_TABS
     global ALLOW_WORD_WRAP
     global COMPLETE_DECLARATIONS
     global HIGHLIGHT_WHOLE_LINE
@@ -363,8 +363,11 @@ def load_settings():
         'preferences/editor/removeTrailingSpaces', True).toBool()
     SHOW_TABS_AND_SPACES = qsettings.value(
         'preferences/editor/showTabsAndSpaces', True).toBool()
-    ALLOW_TABS_NON_PYTHON = qsettings.value(
-        'preferences/editor/allowTabsForNonPythonFiles', False).toBool()
+    USE_TABS = qsettings.value(
+        'preferences/editor/useTabs', False).toBool()
+    if USE_TABS:
+        pep8mod.options.ignore.append("W191")
+        pep8mod.refresh_checks()
     ALLOW_WORD_WRAP = qsettings.value(
         'preferences/editor/allowWordWrap', False).toBool()
     COMPLETE_DECLARATIONS = qsettings.value(
