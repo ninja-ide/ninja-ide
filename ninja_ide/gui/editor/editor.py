@@ -347,11 +347,19 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def set_font(self, family=settings.FONT_FAMILY, size=settings.FONT_SIZE):
         font = QFont(family, size)
+        font.setStyleHint(QFont.Monospace)
         self.document().setDefaultFont(font)
         # Fix for older version of Qt which doens't has ForceIntegerMetrics
         if "ForceIntegerMetrics" in dir(QFont):
             self.document().defaultFont().setStyleStrategy(
                 QFont.ForceIntegerMetrics)
+        font_metrics = QFontMetricsF(self.document().defaultFont())
+        if (font_metrics.width("#") * settings.MARGIN_LINE) == \
+           (font_metrics.width(" ") * settings.MARGIN_LINE):
+            self.pos_margin = font_metrics.width('#') * settings.MARGIN_LINE
+        else:
+            char_width = font_metrics.averageCharWidth()
+            self.pos_margin = char_width * settings.MARGIN_LINE
 
     def jump_to_line(self, lineno=None):
         """
@@ -752,11 +760,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             painter = QPainter()
             painter.begin(self.viewport())
             painter.setPen(QColor('#FE9E9A'))
-            posX = QFontMetricsF(self.document().defaultFont()).width('#') \
-                                        * settings.MARGIN_LINE
             offset = self.contentOffset()
-            painter.drawLine(posX + offset.x(), 0, \
-                posX + offset.x(), self.viewport().height())
+            painter.drawLine(self.pos_margin + offset.x(), 0, \
+                self.pos_margin + offset.x(), self.viewport().height())
             painter.end()
 
     def wheelEvent(self, event, forward=True):

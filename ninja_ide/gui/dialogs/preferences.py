@@ -870,10 +870,12 @@ class EditorGeneral(QWidget):
 
     def _get_font_from_string(self, font):
         if (font.isEmpty()):
-            return QFont(settings.FONT_FAMILY, settings.FONT_SIZE)
-
-        listFont = font.remove(' ').split(',')
-        return QFont(listFont[0], listFont[1].toInt()[0])
+            font = QFont(settings.FONT_FAMILY, settings.FONT_SIZE)
+        else:
+            listFont = unicode(font).split(',')
+            font = QFont(listFont[0].strip(), int(listFont[1].strip()))
+        font.setStyleHint(QFont.Monospace)
+        return font
 
     def _load_font(self, initialFont, parent=0):
         font, ok = QFontDialog.getFont(initialFont, parent)
