@@ -30,7 +30,7 @@ if sys.platform == "darwin":
     FONT_SIZE = 11
     OS_KEY = QKeySequence(Qt.CTRL).toString(QKeySequence.NativeText)
 elif sys.platform == "win32":
-    FONT_FAMILY = 'Lucida Console'
+    FONT_FAMILY = 'Courier'
     FONT_SIZE = 10
 
 ###############################################################################
