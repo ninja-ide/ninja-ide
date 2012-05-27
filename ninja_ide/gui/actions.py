@@ -436,7 +436,7 @@ class __Actions(QObject):
     def import_from_everywhere(self):
         """Show the dialog to insert an import from any place in the editor."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget and editorWidget.hasFocus():
+        if editorWidget:
             text = unicode(editorWidget.get_text())
             froms = re.findall('^from (.*)', text, re.MULTILINE)
             fromSection = list(set([f.split(' import')[0] for f in froms]))
@@ -677,7 +677,7 @@ class __Actions(QObject):
     def editor_go_to_line(self, line):
         """Jump to the specified line in the current editor."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget and editorWidget.hasFocus():
+        if editorWidget:
             editorWidget.jump_to_line(line)
 
     def reset_editor_flags(self):
