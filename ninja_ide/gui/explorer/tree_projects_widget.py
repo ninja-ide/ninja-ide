@@ -534,14 +534,17 @@ class TreeProjectsWidget(QTreeWidget):
         item = loadingItem.add_item_to_tree(folder, self, ProjectItem, parent)
         self._loading_items[folder] = item
 
-    def load_project(self, folderStructure, folder):
-        if not folder:
-            return
-
+    def remove_loading_icon(self, folder):
         item = self._loading_items.pop(folder, None)
         if item is not None:
             index = self.indexOfTopLevelItem(item)
             self.takeTopLevelItem(index)
+
+    def load_project(self, folderStructure, folder):
+        if not folder:
+            return
+
+        self.remove_loading_icon(folder)
 
         name = file_manager.get_basename(folder)
         item = ProjectTree(self, name, folder)

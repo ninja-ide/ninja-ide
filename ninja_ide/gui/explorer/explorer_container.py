@@ -206,7 +206,6 @@ class __ExplorerContainer(QTabWidget):
             self._inspector._webInspector.setVisible(True)
 
     def open_project_folder(self, folderName='', notIDEStart=True):
-        self._treeProjects.mute_signals = True
         if not self._treeProjects and notIDEStart:
             QMessageBox.information(self, self.tr("Projects Disabled"),
                 self.tr("Project support has been disabled from Preferences"))
@@ -244,21 +243,26 @@ class __ExplorerContainer(QTabWidget):
             if not notIDEStart:
                 QMessageBox.information(self, self.tr("Incorrect Project"),
                     self.tr("The project could not be loaded!"))
-        finally:
-            self._treeProjects.mute_signals = False
 
     def _thread_open_project(self, folderName):
-        project = json_manager.read_ninja_project(folderName)
-        extensions = project.get('supported-extensions',
-            settings.SUPPORTED_EXTENSIONS)
-        if extensions != settings.SUPPORTED_EXTENSIONS:
-            structure = file_manager.open_project_with_extensions(
-                folderName, extensions)
-        else:
-            structure = file_manager.open_project(folderName)
-        self._thread_execution[folderName].storage_values = (
-            structure, folderName)
-        self._thread_execution[folderName].signal_return = folderName
+        self._treeProjects.mute_signals = True
+        try:
+            project = json_manager.read_ninja_project(folderName)
+            extensions = project.get('supported-extensions',
+                settings.SUPPORTED_EXTENSIONS)
+            if extensions != settings.SUPPORTED_EXTENSIONS:
+                structure = file_manager.open_project_with_extensions(
+                    folderName, extensions)
+            else:
+                structure = file_manager.open_project(folderName)
+            self._thread_execution[folderName].storage_values = (
+                structure, folderName)
+            self._thread_execution[folderName].signal_return = folderName
+        except Exception, reason:
+            logger.error('open_project_folder: %s', reason)
+            self._treeProjects.remove_loading_icon(folderName)
+        finally:
+            self._treeProjects.mute_signals = False
 
     def _callback_open_project(self, value):
         thread = self._thread_execution.pop(value, None)
