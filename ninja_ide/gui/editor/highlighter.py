@@ -141,16 +141,16 @@ class Highlighter(QSyntaxHighlighter):
                 style = reg[2]
             rules.append((expr, 0, format(color, style)))
 
+        comments = langSyntax.get('comment', [])
+        for co in comments:
+            expr = co + '[^\\n]*'
+            rules.append((expr, 0, STYLES['comment']))
+
         stringChar = langSyntax.get('string', [])
         for sc in stringChar:
             expr = r'"[^"\\]*(\\.[^"\\]*)*"' if sc == '"' \
                 else r"'[^'\\]*(\\.[^'\\]*)*'"
             rules.append((expr, 0, STYLES['string']))
-
-        comments = langSyntax.get('comment', [])
-        for co in comments:
-            expr = co + '[^\\n]*'
-            rules.append((expr, 0, STYLES['comment']))
 
         # Multi-line strings (expression, flag, style)
         # FIXME: The triple-quotes in these two lines will mess up the
