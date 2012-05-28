@@ -116,8 +116,10 @@ QScrollBar::handle:vertical{
 }
 
 QScrollBar::handle:horizontal{
+    padding: 2px;
     min-width: 50px;
     background: #adadad;
+    border-radius: 5px;
     border-width: 5px;
 }
 

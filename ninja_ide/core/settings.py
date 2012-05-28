@@ -30,7 +30,7 @@ if sys.platform == "darwin":
     FONT_SIZE = 11
     OS_KEY = QKeySequence(Qt.CTRL).toString(QKeySequence.NativeText)
 elif sys.platform == "win32":
-    FONT_FAMILY = 'Lucida Console'
+    FONT_FAMILY = 'Courier'
     FONT_SIZE = 10
 
 ###############################################################################
@@ -75,12 +75,15 @@ TOOLBAR_ITEMS_DEFAULT = [
     "run-project", "run-file", "stop", "separator",
     ]
 
+#hold the toolbar actions added by plugins
+TOOLBAR_ITEMS_PLUGINS = []
+
 
 ###############################################################################
 # EDITOR
 ###############################################################################
 
-ALLOW_TABS_NON_PYTHON = False
+USE_TABS = False
 ALLOW_WORD_WRAP = False
 INDENT = 4
 MARGIN_LINE = 80
@@ -115,6 +118,13 @@ EXTENSIONS = {}
 
 BREAKPOINTS = {}
 BOOKMARKS = {}
+
+
+###############################################################################
+# CHECKERS
+###############################################################################
+
+CHECK_FOR_DOCSTRINGS = False
 
 
 ###############################################################################
@@ -220,9 +230,25 @@ def get_symbols_handler(file_extension):
     return SYMBOLS_HANDLER.get(file_extension, None)
 
 
+def add_toolbar_item_for_plugins(toolbar_action):
+    """
+    Add a toolbar action set from some plugin
+    """
+    global TOOLBAR_ITEMS_PLUGINS
+    TOOLBAR_ITEMS_PLUGINS.append(toolbar_action)
+
+
+def get_toolbar_item_for_plugins():
+    """
+    Returns the toolbar actions set by plugins
+    """
+    global TOOLBAR_ITEMS_PLUGINS
+    return TOOLBAR_ITEMS_PLUGINS
+
 ###############################################################################
 # LOAD SETTINGS
 ###############################################################################
+
 
 def load_settings():
     qsettings = QSettings()
@@ -242,7 +268,7 @@ def load_settings():
     global MARGIN_LINE
     global REMOVE_TRAILING_SPACES
     global SHOW_TABS_AND_SPACES
-    global ALLOW_TABS_NON_PYTHON
+    global USE_TABS
     global ALLOW_WORD_WRAP
     global COMPLETE_DECLARATIONS
     global HIGHLIGHT_WHOLE_LINE
@@ -260,6 +286,7 @@ def load_settings():
     global SHOW_WEB_INSPECTOR
     global SHOW_ERRORS_LIST
     global BOOKMARKS
+    global CHECK_FOR_DOCSTRINGS
     global BREAKPOINTS
     global BRACES
     global HIDE_TOOLBAR
@@ -336,8 +363,11 @@ def load_settings():
         'preferences/editor/removeTrailingSpaces', True).toBool()
     SHOW_TABS_AND_SPACES = qsettings.value(
         'preferences/editor/showTabsAndSpaces', True).toBool()
-    ALLOW_TABS_NON_PYTHON = qsettings.value(
-        'preferences/editor/allowTabsForNonPythonFiles', False).toBool()
+    USE_TABS = qsettings.value(
+        'preferences/editor/useTabs', False).toBool()
+    if USE_TABS:
+        pep8mod.options.ignore.append("W191")
+        pep8mod.refresh_checks()
     ALLOW_WORD_WRAP = qsettings.value(
         'preferences/editor/allowWordWrap', False).toBool()
     COMPLETE_DECLARATIONS = qsettings.value(
@@ -406,7 +436,9 @@ def load_settings():
         if key:
             BREAKPOINTS[unicode(key)] = [
                 i.toInt()[0] for i in breakpoints[key].toList()]
-
+    # Checkers
+    CHECK_FOR_DOCSTRINGS = qsettings.value(
+        'preferences/editor/checkForDocstrings', False).toBool()
     # Import introspection here, it not needed in the namespace of
     # the rest of the file.
     from ninja_ide.tools import introspection

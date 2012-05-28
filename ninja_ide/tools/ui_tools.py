@@ -10,13 +10,14 @@ from PyQt4.QtGui import QCompleter
 from PyQt4.QtGui import QKeyEvent
 from PyQt4.QtGui import QLineEdit
 from PyQt4.QtGui import QLabel
+from PyQt4.QtGui import QMovie
 from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QListWidget
 from PyQt4.QtGui import QLinearGradient
 from PyQt4.QtGui import QTableWidgetItem
 from PyQt4.QtGui import QAbstractItemView
 from PyQt4.QtGui import QPrinter
-from PyQt4.QtGui import QPrintDialog
+from PyQt4.QtGui import QPrintPreviewDialog
 from PyQt4.QtGui import QPalette
 from PyQt4.QtGui import QPainter
 from PyQt4.QtGui import QBrush
@@ -31,6 +32,7 @@ from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import QSize
 from PyQt4.QtCore import QObject
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QThread
@@ -73,20 +75,49 @@ def remove_get_selected_items(table, data):
     return selected
 
 
+class LoadingItem(QLabel):
+
+    def __init__(self):
+        super(LoadingItem, self).__init__()
+        self.movie = QMovie(resources.IMAGES['loading'])
+        self.setMovie(self.movie)
+        self.movie.setScaledSize(QSize(16, 16))
+        self.movie.start()
+
+    def add_item_to_tree(self, folder, tree, item_type=None, parent=None):
+        if item_type is None:
+            item = QTreeWidgetItem()
+            item.setText(0, self.tr('       LOADING: "%1"').arg(folder))
+        else:
+            item = item_type(parent,
+                self.tr('       LOADING: "%1"').arg(folder), folder)
+        tree.addTopLevelItem(item)
+        tree.setItemWidget(item, 0, self)
+        return item
+
+
 ###############################################################################
 # Thread with Callback
 ###############################################################################
 
 
-class ThreadCallback(QThread):
+class ThreadExecution(QThread):
 
-    def __init__(self, functionInit=None):
+    def __init__(self, functionInit=None, args=None, kwargs=None):
         QThread.__init__(self)
         self.execute = functionInit
+        self.result = None
+        self.storage_values = None
+        self.args = args if args is not None else []
+        self.kwargs = kwargs if kwargs is not None else {}
+        self.signal_return = None
 
     def run(self):
         if self.execute:
-            self.execute()
+            self.result = self.execute(*self.args, **self.kwargs)
+        self.emit(SIGNAL("executionFinished(PyQt_PyObject)"),
+            self.signal_return)
+        self.signal_return = None
 
 
 ###############################################################################
@@ -155,22 +186,15 @@ def print_file(fileName, printFunction):
     object and print the file,
     the print method
     More info on:http://doc.qt.nokia.com/latest/printing.html"""
-    #TODO: Make that the option it's taken from settings. maybe
-    #this should be a class to manage all cases?
 
     printer = QPrinter(QPrinter.HighResolution)
     printer.setPageSize(QPrinter.A4)
     printer.setOutputFileName(fileName)
     printer.setDocName(fileName)
-#PRINT PREVIEW OPTIONS
-#TODO: the follow imp. dipatch an error on execution time we need to review
-#if the error belongs to qt
-#    preview = QPrintPreviewDialog(printer)
-#    preview.paintRequested[QPrinter].connect(printFunction)
-#    preview.exec_()
-    dialog = QPrintDialog(printer)
-    if dialog.exec_():
-        printFunction(printer)
+
+    preview = QPrintPreviewDialog(printer)
+    preview.paintRequested[QPrinter].connect(printFunction)
+    preview.exec_()
 
 ###############################################################################
 # FADING ANIMATION
@@ -234,12 +258,39 @@ class AddToProject(QDialog):
         vbox.addLayout(hbox)
         #load folders
         self._root = None
-        for pathProject in pathProjects:
-            folderStructure = file_manager.open_project(pathProject)
-            self._load_project(folderStructure, pathProject)
+        self._loading_items = {}
+        self.loading_projects(pathProjects)
+        self._thread_execution = ThreadExecution(
+            self._thread_load_projects, args=[pathProjects])
+        self.connect(self._thread_execution,
+            SIGNAL("finished()"), self._callback_load_project)
+        self._thread_execution.start()
 
         self.connect(btnCancel, SIGNAL("clicked()"), self.close)
         self.connect(btnAdd, SIGNAL("clicked()"), self._select_path)
+
+    def loading_projects(self, projects):
+        for project in projects:
+            loadingItem = LoadingItem()
+            item = loadingItem.add_item_to_tree(project, self._tree,
+                parent=self)
+            self._loading_items[project] = item
+
+    def _thread_load_projects(self, projects):
+        structures = []
+        for pathProject in projects:
+            folderStructure = file_manager.open_project(pathProject)
+            structures.append((folderStructure, pathProject))
+        self._thread_execution.storage_values = structures
+
+    def _callback_load_project(self):
+        structures = self._thread_execution.storage_values
+        for structure, path in structures:
+            item = self._loading_items.pop(path, None)
+            if item is not None:
+                index = self._tree.indexOfTopLevelItem(item)
+                self._tree.takeTopLevelItem(index)
+            self._load_project(structure, path)
 
     def _select_path(self):
         item = self._tree.currentItem()

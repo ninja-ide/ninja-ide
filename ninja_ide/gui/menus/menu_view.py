@@ -9,7 +9,6 @@ from PyQt4.QtCore import QPoint
 from PyQt4.QtCore import Qt
 
 from ninja_ide import resources
-from ninja_ide.core import settings
 
 
 class MenuView(QObject):
@@ -68,9 +67,9 @@ class MenuView(QObject):
         menuView.addSeparator()
         #Zoom
         zoomInAction = menuView.addAction(QIcon(resources.IMAGES['zoom-in']),
-            self.tr("Zoom &In (%1+Wheel-Up)").arg(settings.OS_KEY))
+            self.tr("Zoom &In (Shift+Wheel-Up)"))
         zoomOutAction = menuView.addAction(QIcon(resources.IMAGES['zoom-out']),
-            self.tr("Zoom &Out (%1+Wheel-Down)").arg(settings.OS_KEY))
+            self.tr("Zoom &Out (Shift+Wheel-Down)"))
         menuView.addSeparator()
         fadeInAction = menuView.addAction(self.tr("Fade In (Alt+Wheel-Up)"))
         fadeOutAction = menuView.addAction(

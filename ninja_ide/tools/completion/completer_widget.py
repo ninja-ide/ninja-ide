@@ -166,7 +166,7 @@ class CodeCompletionWidget(QFrame):
         return True
 
     def process_pre_key_event(self, event):
-        if not self.isVisible():
+        if not self.isVisible() or self._editor.lang != "python":
             return False
         skip = self._key_operations.get(event.key(), lambda: False)()
         self._key_operations.get(event.modifiers(), lambda: False)()

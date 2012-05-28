@@ -223,9 +223,10 @@ class Highlighter(QSyntaxHighlighter):
 
     def _execute_threaded_highlight(self):
         self.highlight_function = self.threaded_highlight
-        lines = list(set(self.thread_highlight.styles.keys()) -
-            set(range(self.visible_limits[0], self.visible_limits[1])))
-        self.rehighlight_lines(lines)
+        if self.thread_highlight.styles:
+            lines = list(set(self.thread_highlight.styles.keys()) -
+                set(range(self.visible_limits[0], self.visible_limits[1])))
+            self.rehighlight_lines(lines)
         self.highlight_function = self.realtime_highlight
         self.thread_highlight = None
 

@@ -1,34 +1,19 @@
 #-*- coding: utf-8 -*-
 
 from PyQt4.QtGui import QKeySequence
+from PyQt4.QtCore import QDir
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import Qt
 
 import os
 import sys
-import platform
 
 
 ###############################################################################
 # PATHS
 ###############################################################################
 
-if platform.system().lower().startswith('windows'):
-    # ...works on at least windows and linux.
-    # In windows it points to the user"s folder
-    #  (the one directly under Documents and Settings, not My Documents)
-
-    # In windows, you can choose to care about local versus roaming profiles.
-    # You can fetch the current user"s through PyWin32.
-    #
-    # For example, to ask for the roaming "Application Data" directory:
-    # CSIDL_APPDATA asks for the roaming, CSIDL_LOCAL_APPDATA for the local one
-
-    HOME_PATH = os.environ.get("APPDATA")
-else:
-   # quick semi-nasty fallback for non-windows/win32com case
-    HOME_PATH = os.path.expanduser("~")
-
+HOME_PATH = unicode(QDir.toNativeSeparators(QDir.homePath()))
 
 NINJA_EXECUTABLE = os.path.realpath(sys.argv[0])
 
@@ -172,6 +157,7 @@ IMAGES = {
         "locate-on-this-file.png"),
     "add": os.path.join(PRJ_PATH, "img", "add.png"),
     "delete": os.path.join(PRJ_PATH, "img", "delete.png"),
+    "loading": os.path.join(PRJ_PATH, "img", "loading.gif"),
     "separator": os.path.join(PRJ_PATH, "img", "separator.png")}
 
 
@@ -247,6 +233,8 @@ SHORTCUTS = {
     "Find": QKeySequence(Qt.CTRL + Qt.Key_F),
     "Find-replace": QKeySequence(Qt.CTRL + Qt.Key_H),
     "Find-with-word": QKeySequence(Qt.CTRL + Qt.Key_G),
+    "Find-next": QKeySequence(Qt.CTRL + Qt.Key_F3),
+    "Find-previous": QKeySequence(Qt.CTRL + Qt.Key_F2),
     "Help": QKeySequence(Qt.Key_F1),
     "Split-horizontal": QKeySequence(Qt.Key_F10),
     "Split-vertical": QKeySequence(Qt.Key_F9),

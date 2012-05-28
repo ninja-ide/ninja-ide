@@ -20,7 +20,6 @@ from PyQt4.QtGui import QGroupBox
 from PyQt4.QtGui import QCheckBox
 from PyQt4.QtGui import QComboBox
 from PyQt4.QtGui import QSpinBox
-from PyQt4.QtGui import QInputDialog
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QLineEdit
@@ -768,7 +767,8 @@ class EditorGeneral(QWidget):
         self._spinSize.setMinimum(0)
         self._spinSize.setValue(settings.SIZE_PROPORTION * 100)
         formMini.addWidget(QLabel(
-            self.tr("Enable/Disable MiniMap (Requires restart):")), 0, 0,
+            self.tr("Enable/Disable MiniMap (Requires restart):\n"
+            "(opacity not supported in MAC OS)")), 0, 0,
             Qt.AlignRight)
         formMini.addWidget(QLabel(self.tr("Max Opacity:")), 1, 0,
             Qt.AlignRight)
@@ -816,7 +816,7 @@ class EditorGeneral(QWidget):
 
     def showEvent(self, event):
         super(EditorGeneral, self).showEvent(event)
-        self.thread_callback = ui_tools.ThreadCallback(self._get_editor_skins)
+        self.thread_callback = ui_tools.ThreadExecution(self._get_editor_skins)
         self.connect(self.thread_callback, SIGNAL("finished()"),
             self._show_editor_skins)
 
@@ -870,10 +870,12 @@ class EditorGeneral(QWidget):
 
     def _get_font_from_string(self, font):
         if (font.isEmpty()):
-            return QFont(settings.FONT_FAMILY, settings.FONT_SIZE)
-
-        listFont = font.remove(' ').split(',')
-        return QFont(listFont[0], listFont[1].toInt()[0])
+            font = QFont(settings.FONT_FAMILY, settings.FONT_SIZE)
+        else:
+            listFont = unicode(font).split(',')
+            font = QFont(listFont[0].strip(), int(listFont[1].strip()))
+        font.setStyleHint(QFont.Monospace)
+        return font
 
     def _load_font(self, initialFont, parent=0):
         font, ok = QFontDialog.getFont(initialFont, parent)
@@ -927,9 +929,20 @@ class EditorConfiguration(QWidget):
         grid.addWidget(QLabel(
             self.tr("Indentation Length:")), 1, 0, Qt.AlignRight)
         self._spin = QSpinBox()
+        self._spin.setAlignment(Qt.AlignRight)
         self._spin.setMinimum(1)
         self._spin.setValue(settings.INDENT)
-        grid.addWidget(self._spin, 1, 1, 1, 2, alignment=Qt.AlignTop)
+        grid.addWidget(self._spin, 1, 1, alignment=Qt.AlignTop)
+        self._checkUseTabs = QCheckBox(
+            self.tr("Use Tabs."))
+        self._checkUseTabs.setChecked(settings.USE_TABS)
+        self.connect(self._checkUseTabs, SIGNAL("stateChanged(int)"),
+            self._change_tab_spaces)
+        grid.addWidget(self._checkUseTabs, 1, 2, alignment=Qt.AlignTop)
+        if settings.USE_TABS:
+            self._spin.setSuffix(self.tr("  (tab size)"))
+        else:
+            self._spin.setSuffix(self.tr("  (spaces)"))
         #Margin Line
         grid.addWidget(QLabel(self.tr("Margin Line:")), 2, 0, Qt.AlignRight)
         self._spinMargin = QSpinBox()
@@ -985,15 +998,14 @@ class EditorConfiguration(QWidget):
         self._checkShowSpaces.setChecked(settings.SHOW_TABS_AND_SPACES)
         grid.addWidget(self._checkShowSpaces, 10, 1, 1, 2,
             alignment=Qt.AlignTop)
-        self._checkAllowTabsNonPython = QCheckBox(
-            self.tr("Allow tabs for Non Python files."))
-        self._checkAllowTabsNonPython.setChecked(
-            settings.ALLOW_TABS_NON_PYTHON)
-        grid.addWidget(self._checkAllowTabsNonPython, 11, 1, 1, 2,
-            alignment=Qt.AlignTop)
         self._allowWordWrap = QCheckBox(self.tr("Allow Word Wrap."))
         self._allowWordWrap.setChecked(settings.ALLOW_WORD_WRAP)
-        grid.addWidget(self._allowWordWrap, 12, 1, 1, 2, alignment=Qt.AlignTop)
+        grid.addWidget(self._allowWordWrap, 11, 1, 1, 2, alignment=Qt.AlignTop)
+        self._checkForDocstrings = QCheckBox(
+            self.tr("Check for Docstrings in Classes and Functions."))
+        self._checkForDocstrings.setChecked(settings.CHECK_FOR_DOCSTRINGS)
+        grid.addWidget(self._checkForDocstrings, 12, 1, 1, 2,
+            alignment=Qt.AlignTop)
 
     def _enable_check_inline(self, val):
         if val == Qt.Checked:
@@ -1010,6 +1022,12 @@ class EditorConfiguration(QWidget):
     def _disable_show_errors(self, val):
         if val == Qt.Unchecked:
             self._showErrorsOnLine.setChecked(False)
+
+    def _change_tab_spaces(self, val):
+        if val == Qt.Unchecked:
+            self._spin.setSuffix(self.tr("  (spaces)"))
+        else:
+            self._spin.setSuffix(self.tr("  (tab size)"))
 
     def save(self):
         qsettings = QSettings()
@@ -1042,15 +1060,24 @@ class EditorConfiguration(QWidget):
         qsettings.setValue('showTabsAndSpaces',
             self._checkShowSpaces.isChecked())
         settings.SHOW_TABS_AND_SPACES = self._checkShowSpaces.isChecked()
-        allowTabsForNonPythonFiles = self._checkAllowTabsNonPython.isChecked()
-        qsettings.setValue('allowTabsForNonPythonFiles',
-            allowTabsForNonPythonFiles)
-        settings.ALLOW_TABS_NON_PYTHON = allowTabsForNonPythonFiles
+        qsettings.setValue('useTabs', self._checkUseTabs.isChecked())
+        settings.USE_TABS = self._checkUseTabs.isChecked()
         qsettings.setValue('allowWordWrap', self._allowWordWrap.isChecked())
         settings.ALLOW_WORD_WRAP = self._allowWordWrap.isChecked()
+        qsettings.setValue('checkForDocstrings',
+            self._checkForDocstrings.isChecked())
+        settings.CHECK_FOR_DOCSTRINGS = self._checkForDocstrings.isChecked()
         qsettings.endGroup()
         qsettings.endGroup()
-        actions.Actions().reset_editor_flags()
+        action = actions.Actions()
+        action.reset_editor_flags()
+        action.call_editors_function("set_tab_usage")
+        if settings.USE_TABS:
+            pep8mod.options.ignore.append("W191")
+            pep8mod.refresh_checks()
+        elif "W191" in pep8mod.options.ignore:
+            pep8mod.options.ignore.remove("W191")
+            pep8mod.refresh_checks()
 
 
 class EditorCompletion(QWidget):
@@ -1196,90 +1223,98 @@ class EditorSchemeDesigner(QWidget):
         self.txtSidebarForeground = QLineEdit()
         btnSidebarForeground = QPushButton(self.tr("Pick Color"))
 
-        grid = QGridLayout()
+        hbox = QHBoxLayout()
+        hbox.addWidget(QLabel(self.tr("<b>New Theme Name:</b>")))
+        self.line_name = QLineEdit()
+        hbox.addWidget(self.line_name)
         btnSaveScheme = QPushButton(self.tr("Save Scheme!"))
-        grid.addWidget(btnSaveScheme, 0, 0)
-        grid.addWidget(QLabel(self.tr("Keyword:")), 1, 0)
-        grid.addWidget(self.txtKeyword, 1, 1)
-        grid.addWidget(btnKeyword, 1, 2)
-        grid.addWidget(QLabel(self.tr("Operator:")), 2, 0)
-        grid.addWidget(self.txtOperator, 2, 1)
-        grid.addWidget(btnOperator, 2, 2)
-        grid.addWidget(QLabel(self.tr("Braces:")), 3, 0)
-        grid.addWidget(self.txtBrace, 3, 1)
-        grid.addWidget(btnBrace, 3, 2)
-        grid.addWidget(QLabel(self.tr("Definition:")), 4, 0)
-        grid.addWidget(self.txtDefinition, 4, 1)
-        grid.addWidget(btnDefinition, 4, 2)
-        grid.addWidget(QLabel(self.tr("String:")), 5, 0)
-        grid.addWidget(self.txtString, 5, 1)
-        grid.addWidget(btnString, 5, 2)
-        grid.addWidget(QLabel(self.tr("String2:")), 6, 0)
-        grid.addWidget(self.txtString2, 6, 1)
-        grid.addWidget(btnString2, 6, 2)
-        grid.addWidget(QLabel(self.tr("Comment:")), 7, 0)
-        grid.addWidget(self.txtComment, 7, 1)
-        grid.addWidget(btnComment, 7, 2)
-        grid.addWidget(QLabel(self.tr("Proper Object:")), 8, 0)
-        grid.addWidget(self.txtProperObject, 8, 1)
-        grid.addWidget(btnProperObject, 8, 2)
-        grid.addWidget(QLabel(self.tr("Numbers:")), 9, 0)
-        grid.addWidget(self.txtNumbers, 9, 1)
-        grid.addWidget(btnNumbers, 9, 2)
-        grid.addWidget(QLabel(self.tr("Spaces:")), 10, 0)
-        grid.addWidget(self.txtSpaces, 10, 1)
-        grid.addWidget(btnSpaces, 10, 2)
-        grid.addWidget(QLabel(self.tr("Extras:")), 11, 0)
-        grid.addWidget(self.txtExtras, 11, 1)
-        grid.addWidget(btnExtras, 11, 2)
-        grid.addWidget(QLabel(self.tr("Editor Text:")), 12, 0)
-        grid.addWidget(self.txtEditorText, 12, 1)
-        grid.addWidget(btnEditorText, 12, 2)
-        grid.addWidget(QLabel(self.tr("Editor Background:")), 13, 0)
-        grid.addWidget(self.txtEditorBackground, 13, 1)
-        grid.addWidget(btnEditorBackground, 13, 2)
-        grid.addWidget(QLabel(self.tr("Editor Selection Color:")), 14, 0)
-        grid.addWidget(self.txtEditorSelectionColor, 14, 1)
-        grid.addWidget(btnEditorSelectionColor, 14, 2)
-        grid.addWidget(QLabel(self.tr("Editor Selection Background:")), 15, 0)
-        grid.addWidget(self.txtEditorSelectionBackground, 15, 1)
-        grid.addWidget(btnEditorSelectionBackground, 15, 2)
-        grid.addWidget(QLabel(self.tr("Editor Selected Word:")), 16, 0)
-        grid.addWidget(self.txtSelectedWord, 16, 1)
-        grid.addWidget(btnSelectedWord, 16, 2)
-        grid.addWidget(QLabel(self.tr("Current Line:")), 17, 0)
-        grid.addWidget(self.txtCurrentLine, 17, 1)
-        grid.addWidget(btnCurrentLine, 17, 2)
-        grid.addWidget(QLabel(self.tr("Fold Area:")), 18, 0)
-        grid.addWidget(self.txtFoldArea, 18, 1)
-        grid.addWidget(btnFoldArea, 18, 2)
-        grid.addWidget(QLabel(self.tr("Fold Arrow:")), 19, 0)
-        grid.addWidget(self.txtFoldArrow, 19, 1)
-        grid.addWidget(btnFoldArrow, 19, 2)
-        grid.addWidget(QLabel(self.tr("Link Navigate:")), 20, 0)
-        grid.addWidget(self.txtLinkNavigate, 20, 1)
-        grid.addWidget(btnLinkNavigate, 20, 2)
-        grid.addWidget(QLabel(self.tr("Brace Background:")), 21, 0)
-        grid.addWidget(self.txtBraceBackground, 21, 1)
-        grid.addWidget(btnBraceBackground, 21, 2)
-        grid.addWidget(QLabel(self.tr("Brace Foreground:")), 22, 0)
-        grid.addWidget(self.txtBraceForeground, 22, 1)
-        grid.addWidget(btnBraceForeground, 22, 2)
-        grid.addWidget(QLabel(self.tr("Error Underline:")), 23, 0)
-        grid.addWidget(self.txtErrorUnderline, 23, 1)
-        grid.addWidget(btnErrorUnderline, 23, 2)
-        grid.addWidget(QLabel(self.tr("PEP8 Underline:")), 24, 0)
-        grid.addWidget(self.txtPep8Underline, 24, 1)
-        grid.addWidget(btnPep8Underline, 24, 2)
-        grid.addWidget(QLabel(self.tr("Sidebar Background:")), 25, 0)
-        grid.addWidget(self.txtSidebarBackground, 25, 1)
-        grid.addWidget(btnSidebarBackground, 25, 2)
-        grid.addWidget(QLabel(self.tr("Sidebar Foreground:")), 26, 0)
-        grid.addWidget(self.txtSidebarForeground, 26, 1)
-        grid.addWidget(btnSidebarForeground, 26, 2)
+        hbox.addWidget(btnSaveScheme)
+
+        grid = QGridLayout()
+        grid.addWidget(QLabel(self.tr("Keyword:")), 0, 0)
+        grid.addWidget(self.txtKeyword, 0, 1)
+        grid.addWidget(btnKeyword, 0, 2)
+        grid.addWidget(QLabel(self.tr("Operator:")), 1, 0)
+        grid.addWidget(self.txtOperator, 1, 1)
+        grid.addWidget(btnOperator, 1, 2)
+        grid.addWidget(QLabel(self.tr("Braces:")), 2, 0)
+        grid.addWidget(self.txtBrace, 2, 1)
+        grid.addWidget(btnBrace, 2, 2)
+        grid.addWidget(QLabel(self.tr("Definition:")), 3, 0)
+        grid.addWidget(self.txtDefinition, 3, 1)
+        grid.addWidget(btnDefinition, 3, 2)
+        grid.addWidget(QLabel(self.tr("String:")), 4, 0)
+        grid.addWidget(self.txtString, 4, 1)
+        grid.addWidget(btnString, 4, 2)
+        grid.addWidget(QLabel(self.tr("String2:")), 5, 0)
+        grid.addWidget(self.txtString2, 5, 1)
+        grid.addWidget(btnString2, 5, 2)
+        grid.addWidget(QLabel(self.tr("Comment:")), 6, 0)
+        grid.addWidget(self.txtComment, 6, 1)
+        grid.addWidget(btnComment, 6, 2)
+        grid.addWidget(QLabel(self.tr("Proper Object:")), 7, 0)
+        grid.addWidget(self.txtProperObject, 7, 1)
+        grid.addWidget(btnProperObject, 7, 2)
+        grid.addWidget(QLabel(self.tr("Numbers:")), 8, 0)
+        grid.addWidget(self.txtNumbers, 8, 1)
+        grid.addWidget(btnNumbers, 8, 2)
+        grid.addWidget(QLabel(self.tr("Spaces:")), 9, 0)
+        grid.addWidget(self.txtSpaces, 9, 1)
+        grid.addWidget(btnSpaces, 9, 2)
+        grid.addWidget(QLabel(self.tr("Extras:")), 10, 0)
+        grid.addWidget(self.txtExtras, 10, 1)
+        grid.addWidget(btnExtras, 10, 2)
+        grid.addWidget(QLabel(self.tr("Editor Text:")), 11, 0)
+        grid.addWidget(self.txtEditorText, 11, 1)
+        grid.addWidget(btnEditorText, 11, 2)
+        grid.addWidget(QLabel(self.tr("Editor Background:")), 12, 0)
+        grid.addWidget(self.txtEditorBackground, 12, 1)
+        grid.addWidget(btnEditorBackground, 12, 2)
+        grid.addWidget(QLabel(self.tr("Editor Selection Color:")), 13, 0)
+        grid.addWidget(self.txtEditorSelectionColor, 13, 1)
+        grid.addWidget(btnEditorSelectionColor, 13, 2)
+        grid.addWidget(QLabel(self.tr("Editor Selection Background:")), 14, 0)
+        grid.addWidget(self.txtEditorSelectionBackground, 14, 1)
+        grid.addWidget(btnEditorSelectionBackground, 14, 2)
+        grid.addWidget(QLabel(self.tr("Editor Selected Word:")), 15, 0)
+        grid.addWidget(self.txtSelectedWord, 15, 1)
+        grid.addWidget(btnSelectedWord, 15, 2)
+        grid.addWidget(QLabel(self.tr("Current Line:")), 16, 0)
+        grid.addWidget(self.txtCurrentLine, 16, 1)
+        grid.addWidget(btnCurrentLine, 16, 2)
+        grid.addWidget(QLabel(self.tr("Fold Area:")), 17, 0)
+        grid.addWidget(self.txtFoldArea, 17, 1)
+        grid.addWidget(btnFoldArea, 17, 2)
+        grid.addWidget(QLabel(self.tr("Fold Arrow:")), 18, 0)
+        grid.addWidget(self.txtFoldArrow, 18, 1)
+        grid.addWidget(btnFoldArrow, 18, 2)
+        grid.addWidget(QLabel(self.tr("Link Navigate:")), 19, 0)
+        grid.addWidget(self.txtLinkNavigate, 19, 1)
+        grid.addWidget(btnLinkNavigate, 19, 2)
+        grid.addWidget(QLabel(self.tr("Brace Background:")), 20, 0)
+        grid.addWidget(self.txtBraceBackground, 20, 1)
+        grid.addWidget(btnBraceBackground, 20, 2)
+        grid.addWidget(QLabel(self.tr("Brace Foreground:")), 21, 0)
+        grid.addWidget(self.txtBraceForeground, 21, 1)
+        grid.addWidget(btnBraceForeground, 21, 2)
+        grid.addWidget(QLabel(self.tr("Error Underline:")), 22, 0)
+        grid.addWidget(self.txtErrorUnderline, 22, 1)
+        grid.addWidget(btnErrorUnderline, 22, 2)
+        grid.addWidget(QLabel(self.tr("PEP8 Underline:")), 23, 0)
+        grid.addWidget(self.txtPep8Underline, 23, 1)
+        grid.addWidget(btnPep8Underline, 23, 2)
+        grid.addWidget(QLabel(self.tr("Sidebar Background:")), 24, 0)
+        grid.addWidget(self.txtSidebarBackground, 24, 1)
+        grid.addWidget(btnSidebarBackground, 24, 2)
+        grid.addWidget(QLabel(self.tr("Sidebar Foreground:")), 25, 0)
+        grid.addWidget(self.txtSidebarForeground, 25, 1)
+        grid.addWidget(btnSidebarForeground, 25, 2)
 
         frame = QFrame()
-        frame.setLayout(grid)
+        vbox = QVBoxLayout()
+        vbox.addLayout(hbox)
+        vbox.addLayout(grid)
+        frame.setLayout(vbox)
         scrollArea.setWidget(frame)
 
         self.txtKeyword.setText(resources.CUSTOM_SCHEME.get('keyword',
@@ -1401,7 +1436,7 @@ class EditorSchemeDesigner(QWidget):
                 btnSidebarForeground))
 
         # Connect Buttons
-        for i in xrange(1, 27):
+        for i in xrange(0, 26):
             item = grid.itemAtPosition(i, 1).widget()
             btn = grid.itemAtPosition(i, 2).widget()
             self.connect(item, SIGNAL("returnPressed()"),
@@ -1473,20 +1508,18 @@ class EditorSchemeDesigner(QWidget):
         pass
 
     def save_scheme(self):
-        result = QInputDialog.getText(self, self.tr("Save Scheme"),
-            self.tr("Enter the Scheme Name:"))
-        fileName = unicode(result[0])
-        if result[1] and fileName.strip() != '':
-            fileName = file_manager.create_path(resources.EDITOR_SKINS,
-                fileName)
-            fileName += '.color'
+        name = unicode(self.line_name.text()).strip()
+        fileName = file_manager.create_path(
+            resources.EDITOR_SKINS, name) + '.color'
+        if name != '' and not file_manager.file_exists(fileName):
             scheme = self._preview_style()
             json_manager.save_editor_skins(fileName, scheme)
             QMessageBox.information(self, self.tr("Scheme Saved"),
                     self.tr("The scheme has been saved at: %s." % fileName))
         elif fileName.strip() != '':
             QMessageBox.information(self, self.tr("Scheme Not Saved"),
-                    self.tr("The name probably is invalid."))
+                self.tr(
+                "The name probably is invalid or the file already exists."))
 
 
 class ThemeTab(QTabWidget):
@@ -1555,7 +1588,7 @@ class ThemeDesigner(QWidget):
         vbox = QVBoxLayout(self)
 
         hbox = QHBoxLayout()
-        hbox.addWidget(QLabel(self.tr("New Theme Name:")))
+        hbox.addWidget(QLabel(self.tr("<b>New Theme Name:</b>")))
         self.line_name = QLineEdit()
         hbox.addWidget(self.line_name)
         self.btn_save = QPushButton(self.tr("Save Theme"))

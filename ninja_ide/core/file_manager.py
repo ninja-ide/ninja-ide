@@ -2,7 +2,7 @@
 
 import os
 import re
-import sys
+#import sys
 import threading
 import shutil
 import logging
@@ -298,7 +298,7 @@ def open_project(path):
     if not os.path.exists(path):
         raise NinjaIOException("The folder does not exist")
     d = {}
-    for root, dirs, files in os.walk(path):
+    for root, dirs, files in os.walk(path, followlinks=True):
         d[root] = [[f for f in files
                 if (os.path.splitext(f.lower())[-1]) in \
                 settings.SUPPORTED_EXTENSIONS],
@@ -313,7 +313,7 @@ def open_project_with_extensions(path, extensions):
     if not os.path.exists(path):
         raise NinjaIOException("The folder does not exist")
     d = {}
-    for root, dirs, files in os.walk(path):
+    for root, dirs, files in os.walk(path, followlinks=True):
         d[root] = [[f for f in files
                 if (os.path.splitext(f.lower())[-1]) in extensions or \
                 '.*' in extensions],

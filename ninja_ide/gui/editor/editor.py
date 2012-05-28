@@ -84,6 +84,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #Set editor style
         self.apply_editor_style()
         self.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
+        #Set tab usage
+        if settings.USE_TABS:
+            self.set_tab_usage()
         #For Highlighting in document
         self.extraSelections = []
         self.wordSelection = []
@@ -167,6 +170,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         doc.setDefaultTextOption(option)
         self.setDocument(doc)
         self.setCenterOnScroll(settings.CENTER_ON_SCROLL)
+
+    def set_tab_usage(self):
+        tab_size = self.pos_margin / settings.MARGIN_LINE * settings.INDENT
+        self.setTabStopWidth(tab_size)
 
     def set_id(self, id_):
         super(Editor, self).set_id(id_)
@@ -347,11 +354,19 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def set_font(self, family=settings.FONT_FAMILY, size=settings.FONT_SIZE):
         font = QFont(family, size)
+        font.setStyleHint(QFont.Monospace)
         self.document().setDefaultFont(font)
         # Fix for older version of Qt which doens't has ForceIntegerMetrics
         if "ForceIntegerMetrics" in dir(QFont):
             self.document().defaultFont().setStyleStrategy(
                 QFont.ForceIntegerMetrics)
+        font_metrics = QFontMetricsF(self.document().defaultFont())
+        if (font_metrics.width("#") * settings.MARGIN_LINE) == \
+           (font_metrics.width(" ") * settings.MARGIN_LINE):
+            self.pos_margin = font_metrics.width('#') * settings.MARGIN_LINE
+        else:
+            char_width = font_metrics.averageCharWidth()
+            self.pos_margin = char_width * settings.MARGIN_LINE
 
     def jump_to_line(self, lineno=None):
         """
@@ -425,7 +440,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         cursor.setPosition(block.position())
         while block != end:
             cursor.setPosition(block.position())
-            cursor.insertText(' ' * settings.INDENT)
+            if settings.USE_TABS:
+                cursor.insertText('\t')
+            else:
+                cursor.insertText(' ' * settings.INDENT)
             block = block.next()
 
         #End a undo block
@@ -449,10 +467,15 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         while block != end:
             cursor.setPosition(block.position())
             #Select Settings.indent chars from the current line
-            cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
-                settings.INDENT)
+            if settings.USE_TABS:
+                cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
+            else:
+                cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
+                    settings.INDENT)
             text = cursor.selectedText()
-            if text == ' ' * settings.INDENT:
+            if not settings.USE_TABS and text == ' ' * settings.INDENT:
+                cursor.removeSelectedText()
+            elif settings.USE_TABS and text == '\t':
                 cursor.removeSelectedText()
             block = block.next()
 
@@ -537,20 +560,22 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def __insert_indentation(self, event):
         if self.textCursor().hasSelection():
             self.indent_more()
-        elif settings.ALLOW_TABS_NON_PYTHON and self.lang != 'python':
+        elif settings.USE_TABS:
             return False
         else:
             self.textCursor().insertText(' ' * settings.INDENT)
         return True
 
     def __backspace(self, event):
-        if self.textCursor().hasSelection():
+        if self.textCursor().hasSelection() or settings.USE_TABS:
             return False
         cursor = self.textCursor()
-        cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor,
-            settings.INDENT)
+        cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
         text = unicode(cursor.selection().toPlainText())
-        if text == ' ' * settings.INDENT:
+        if (len(text) % settings.INDENT == 0) and text.isspace():
+            cursor.movePosition(QTextCursor.StartOfLine)
+            cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
+                settings.INDENT)
             cursor.removeSelectedText()
             return True
 
@@ -752,11 +777,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             painter = QPainter()
             painter.begin(self.viewport())
             painter.setPen(QColor('#FE9E9A'))
-            posX = QFontMetricsF(self.document().defaultFont()).width('#') \
-                                        * settings.MARGIN_LINE
             offset = self.contentOffset()
-            painter.drawLine(posX + offset.x(), 0, \
-                posX + offset.x(), self.viewport().height())
+            painter.drawLine(self.pos_margin + offset.x(), 0, \
+                self.pos_margin + offset.x(), self.viewport().height())
             painter.end()
 
     def wheelEvent(self, event, forward=True):

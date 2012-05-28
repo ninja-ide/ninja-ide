@@ -503,13 +503,13 @@ class __MainContainer(QSplitter):
         if not editorWidget:
             return False
         try:
-            filter = '(*.py);;(*.*)'
+            filters = '(*.py);;(*.*)'
             if editorWidget.ID:
                 ext = file_manager.get_file_extension(editorWidget.ID)
                 if ext != 'py':
-                    filter = '(*.%s);;(*.py);;(*.*)' % ext
+                    filters = '(*.%s);;(*.py);;(*.*)' % ext
             fileName = unicode(QFileDialog.getSaveFileName(
-                self._parent, self.tr("Save File"), editorWidget.ID, filter))
+                self._parent, self.tr("Save File"), editorWidget.ID, filters))
             if not fileName:
                 return False
 
@@ -574,6 +574,21 @@ class __MainContainer(QSplitter):
                     editorWidget)
                 if not reloaded:
                     self.save_file(editorWidget)
+
+    def call_editors_function(self, call_function, *arguments):
+        args = arguments[0]
+        kwargs = arguments[1]
+        for i in xrange(self._tabMain.count()):
+            editorWidget = self._tabMain.widget(i)
+            if type(editorWidget) is editor.Editor:
+                function = getattr(editorWidget, call_function)
+                function(*args, **kwargs)
+        for i in xrange(self._tabSecondary.count()):
+            editorWidget = self._tabSecondary.widget(i)
+            self._tabSecondary.check_for_external_modifications(editorWidget)
+            if type(editorWidget) is editor.Editor:
+                function = getattr(editorWidget, call_function)
+                function(*args, **kwargs)
 
     def show_start_page(self):
         startPage = browser_widget.BrowserWidget(

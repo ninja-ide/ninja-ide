@@ -194,6 +194,10 @@ class __IDE(QMainWindow):
                 tool_item = toolbar_items.get(item, None)
                 if tool_item is not None:
                     self.toolbar.addAction(tool_item)
+        #load action added by plugins, This is a special case when reload
+        #the toolbar after save the preferences widget
+        for toolbar_action in settings.get_toolbar_item_for_plugins():
+            self.toolbar.addAction(toolbar_action)
 
     def load_external_plugins(self, paths):
         for path in paths:
@@ -312,7 +316,7 @@ class __IDE(QMainWindow):
                 self.profile, title))
 
     def wheelEvent(self, event):
-        if event.modifiers() == Qt.AltModifier:
+        if event.modifiers() == Qt.ShiftModifier:
             if event.delta() == 120 and self.opacity < settings.MAX_OPACITY:
                 self.opacity += 0.1
             elif event.delta() == -120 and self.opacity > settings.MIN_OPACITY:
