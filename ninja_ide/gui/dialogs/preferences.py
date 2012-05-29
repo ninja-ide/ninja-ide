@@ -874,7 +874,6 @@ class EditorGeneral(QWidget):
         else:
             listFont = unicode(font).split(',')
             font = QFont(listFont[0].strip(), int(listFont[1].strip()))
-        font.setStyleHint(QFont.Monospace)
         return font
 
     def _load_font(self, initialFont, parent=0):

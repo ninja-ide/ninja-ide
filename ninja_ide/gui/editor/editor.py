@@ -354,7 +354,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def set_font(self, family=settings.FONT_FAMILY, size=settings.FONT_SIZE):
         font = QFont(family, size)
-        font.setStyleHint(QFont.Monospace)
         self.document().setDefaultFont(font)
         # Fix for older version of Qt which doens't has ForceIntegerMetrics
         if "ForceIntegerMetrics" in dir(QFont):
