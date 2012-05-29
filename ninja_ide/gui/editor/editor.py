@@ -84,9 +84,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #Set editor style
         self.apply_editor_style()
         self.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
-        #Set tab usage
-        if settings.USE_TABS:
-            self.set_tab_usage()
         #For Highlighting in document
         self.extraSelections = []
         self.wordSelection = []
@@ -138,6 +135,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self._mini.show()
             self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
                 self._mini.update_visible_area)
+        #Set tab usage
+        if settings.USE_TABS:
+            self.set_tab_usage()
 
         #Context Menu Options
         self.__actionFindOccurrences = QAction(
