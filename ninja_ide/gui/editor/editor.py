@@ -174,6 +174,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def set_tab_usage(self):
         tab_size = self.pos_margin / settings.MARGIN_LINE * settings.INDENT
         self.setTabStopWidth(tab_size)
+        if self._mini:
+            self._mini.setTabStopWidth(tab_size)
 
     def set_id(self, id_):
         super(Editor, self).set_id(id_)
