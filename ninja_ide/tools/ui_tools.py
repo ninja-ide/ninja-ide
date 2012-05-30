@@ -4,6 +4,7 @@ from __future__ import absolute_import
 import os
 import math
 
+from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QAction
 from PyQt4.QtGui import QCompleter
@@ -194,6 +195,10 @@ def print_file(fileName, printFunction):
 
     preview = QPrintPreviewDialog(printer)
     preview.paintRequested[QPrinter].connect(printFunction)
+    size = QApplication.instance().desktop().screenGeometry()
+    width = size.width() - 100
+    height = size.height() - 100
+    preview.setMinimumSize(width, height)
     preview.exec_()
 
 ###############################################################################

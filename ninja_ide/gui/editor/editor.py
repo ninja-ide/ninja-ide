@@ -84,9 +84,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #Set editor style
         self.apply_editor_style()
         self.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
-        #Set tab usage
-        if settings.USE_TABS:
-            self.set_tab_usage()
         #For Highlighting in document
         self.extraSelections = []
         self.wordSelection = []
@@ -138,6 +135,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self._mini.show()
             self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
                 self._mini.update_visible_area)
+        #Set tab usage
+        if settings.USE_TABS:
+            self.set_tab_usage()
 
         #Context Menu Options
         self.__actionFindOccurrences = QAction(
@@ -174,6 +174,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def set_tab_usage(self):
         tab_size = self.pos_margin / settings.MARGIN_LINE * settings.INDENT
         self.setTabStopWidth(tab_size)
+        if self._mini:
+            self._mini.setTabStopWidth(tab_size)
 
     def set_id(self, id_):
         super(Editor, self).set_id(id_)
@@ -354,7 +356,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def set_font(self, family=settings.FONT_FAMILY, size=settings.FONT_SIZE):
         font = QFont(family, size)
-        font.setStyleHint(QFont.Monospace)
         self.document().setDefaultFont(font)
         # Fix for older version of Qt which doens't has ForceIntegerMetrics
         if "ForceIntegerMetrics" in dir(QFont):
