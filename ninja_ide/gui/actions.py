@@ -103,6 +103,8 @@ class __Actions(QObject):
         self.shortHideAll = QShortcut(short("Hide-all"), self.ide)
         self.shortFullscreen = QShortcut(short("Full-screen"), self.ide)
         self.shortFind = QShortcut(short("Find"), self.ide)
+        self.shortFindNext = QShortcut(short("Find-next"), self.ide)
+        self.shortFindPrevious = QShortcut(short("Find-previous"), self.ide)
         self.shortFindReplace = QShortcut(short("Find-replace"), self.ide)
         self.shortFindWithWord = QShortcut(short("Find-with-word"), self.ide)
         self.shortHelp = QShortcut(short("Help"), self.ide)
@@ -193,6 +195,10 @@ class __Actions(QObject):
             self.print_file)
         self.connect(self.shortFind, SIGNAL("activated()"),
             self.ide.status.show)
+        self.connect(self.shortFindPrevious, SIGNAL("activated()"),
+            self.ide.status._searchWidget.find_previous)
+        self.connect(self.shortFindNext, SIGNAL("activated()"),
+            self.ide.status._searchWidget.find_next)
         self.connect(self.shortFindWithWord, SIGNAL("activated()"),
             self.ide.status.show_with_word)
         self.connect(self.shortFindReplace, SIGNAL("activated()"),
@@ -303,6 +309,8 @@ class __Actions(QObject):
         self.shortHideAll.setKey(short("Hide-all"))
         self.shortFullscreen.setKey(short("Full-screen"))
         self.shortFind.setKey(short("Find"))
+        self.shortFindNext.setKey(short("Find-next"))
+        self.shortFindPrevious.setKey(short("Find-previous"))
         self.shortFindReplace.setKey(short("Find-replace"))
         self.shortFindWithWord.setKey(short("Find-with-word"))
         self.shortHelp.setKey(short("Help"))
@@ -354,7 +362,7 @@ class __Actions(QObject):
     def _copy_history(self):
         """Copy the selected text into the copy/paste history."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget:
+        if editorWidget and editorWidget.hasFocus():
             cursor = editorWidget.textCursor()
             copy = cursor.selectedText()
             self.ide.central.lateralPanel.add_new_copy(copy)
@@ -362,7 +370,7 @@ class __Actions(QObject):
     def _paste_history(self):
         """Paste the text from the copy/paste history."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget:
+        if editorWidget and editorWidget.hasFocus():
             cursor = editorWidget.textCursor()
             paste = self.ide.central.lateralPanel.get_paste()
             cursor.insertText(paste)
@@ -370,7 +378,7 @@ class __Actions(QObject):
     def _add_bookmark_breakpoint(self):
         """Add a bookmark or breakpoint to the current file in the editor."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget:
+        if editorWidget and editorWidget.hasFocus():
             if self.ide.mainContainer.actualTab.navigator.operation == 1:
                 editorWidget._sidebarWidget.set_bookmark(
                     editorWidget.textCursor().blockNumber())
@@ -570,43 +578,43 @@ class __Actions(QObject):
     def editor_redo(self):
         """Execute the redo action in the current editor."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget:
+        if editorWidget and editorWidget.hasFocus():
             editorWidget.redo()
 
     def editor_indent_less(self):
         """Indent 1 position to the left for the current line or selection."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget:
+        if editorWidget and editorWidget.hasFocus():
             editorWidget.indent_less()
 
     def editor_indent_more(self):
         """Indent 1 position to the right for the current line or selection."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget:
+        if editorWidget and editorWidget.hasFocus():
             editorWidget.indent_more()
 
     def editor_comment(self):
         """Mark the current line or selection as a comment."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget:
+        if editorWidget and editorWidget.hasFocus():
             helpers.comment(editorWidget)
 
     def editor_uncomment(self):
         """Uncomment the current line or selection."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget:
+        if editorWidget and editorWidget.hasFocus():
             helpers.uncomment(editorWidget)
 
     def editor_insert_horizontal_line(self):
         """Insert an horizontal lines of comment symbols."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget:
+        if editorWidget and editorWidget.hasFocus():
             helpers.insert_horizontal_line(editorWidget)
 
     def editor_insert_title_comment(self):
         """Insert a Title surrounded by comment symbols."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget:
+        if editorWidget and editorWidget.hasFocus():
             helpers.insert_title_comment(editorWidget)
 
     def editor_remove_trailing_spaces(self):
@@ -624,25 +632,25 @@ class __Actions(QObject):
     def editor_move_up(self):
         """Move the current line or selection one position up."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget:
+        if editorWidget and editorWidget.hasFocus():
             helpers.move_up(editorWidget)
 
     def editor_move_down(self):
         """Move the current line or selection one position down."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget:
+        if editorWidget and editorWidget.hasFocus():
             helpers.move_down(editorWidget)
 
     def editor_remove_line(self):
         """Remove the current line or selection."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget:
+        if editorWidget and editorWidget.hasFocus():
             helpers.remove_line(editorWidget)
 
     def editor_duplicate(self):
         """Duplicate the current line or selection."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget:
+        if editorWidget and editorWidget.hasFocus():
             helpers.duplicate(editorWidget)
 
     def editor_go_to_definition(self):
@@ -651,19 +659,19 @@ class __Actions(QObject):
         If more than one method or variable is found with the same name,
         shows a table with the results and let the user decide where to go."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget:
+        if editorWidget and editorWidget.hasFocus():
             editorWidget.go_to_definition()
 
     def editor_highlight_word(self):
         """Highlight the occurrences of the current word in the editor."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget:
+        if editorWidget and editorWidget.hasFocus():
             editorWidget.highlight_selected_word()
 
     def editor_complete_declaration(self):
         """Do the opposite action that Complete Declaration expect."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget:
+        if editorWidget and editorWidget.hasFocus():
             editorWidget.complete_declaration()
 
     def editor_go_to_line(self, line):
@@ -675,6 +683,10 @@ class __Actions(QObject):
     def reset_editor_flags(self):
         """Reset the Flags for all the opened editors."""
         self.ide.mainContainer.reset_editor_flags()
+
+    def call_editors_function(self, call_function, *args, **kwargs):
+        self.ide.mainContainer.call_editors_function(
+            call_function, args, kwargs)
 
     def preview_in_browser(self):
         """Load the current html file in the default browser."""

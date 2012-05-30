@@ -25,6 +25,7 @@ from ninja_ide.gui.explorer import errors_lists
 from ninja_ide.gui.main_panel import main_container
 from ninja_ide.gui.dialogs import wizard_new_project
 from ninja_ide.tools import json_manager
+from ninja_ide.tools import ui_tools
 
 try:
     from PyQt4.QtWebKit import QWebInspector
@@ -63,6 +64,7 @@ class __ExplorerContainer(QTabWidget):
         QTabWidget.__init__(self, parent)
         self.setTabPosition(QTabWidget.East)
         self.__ide = parent
+        self._thread_execution = {}
 
         #Searching the Preferences
         self._treeProjects = None
@@ -204,7 +206,6 @@ class __ExplorerContainer(QTabWidget):
             self._inspector._webInspector.setVisible(True)
 
     def open_project_folder(self, folderName='', notIDEStart=True):
-        self._treeProjects.mute_signals = True
         if not self._treeProjects and notIDEStart:
             QMessageBox.information(self, self.tr("Projects Disabled"),
                 self.tr("Project support has been disabled from Preferences"))
@@ -227,26 +228,51 @@ class __ExplorerContainer(QTabWidget):
             if not folderName:
                 return
             if not self._treeProjects.is_open(folderName):
-                project = json_manager.read_ninja_project(folderName)
-                extensions = project.get('supported-extensions',
-                    settings.SUPPORTED_EXTENSIONS)
-                if extensions != settings.SUPPORTED_EXTENSIONS:
-                    structure = file_manager.open_project_with_extensions(
-                        folderName, extensions)
-                else:
-                    structure = file_manager.open_project(folderName)
-                self._treeProjects.load_project(structure, folderName)
-                self.save_recent_projects(folderName)
+                self._treeProjects.loading_project(folderName)
+                thread = ui_tools.ThreadExecution(
+                    self._thread_open_project, args=[folderName])
+                self._thread_execution[folderName] = thread
+                self.connect(thread,
+                    SIGNAL("executionFinished(PyQt_PyObject)"),
+                    self._callback_open_project)
+                thread.start()
             else:
                 self._treeProjects._set_current_project(folderName)
-            self.emit(SIGNAL("projectOpened(QString)"), folderName)
         except Exception, reason:
             logger.error('open_project_folder: %s', reason)
             if not notIDEStart:
                 QMessageBox.information(self, self.tr("Incorrect Project"),
                     self.tr("The project could not be loaded!"))
+
+    def _thread_open_project(self, folderName):
+        self._treeProjects.mute_signals = True
+        try:
+            project = json_manager.read_ninja_project(folderName)
+            extensions = project.get('supported-extensions',
+                settings.SUPPORTED_EXTENSIONS)
+            if extensions != settings.SUPPORTED_EXTENSIONS:
+                structure = file_manager.open_project_with_extensions(
+                    folderName, extensions)
+            else:
+                structure = file_manager.open_project(folderName)
+            self._thread_execution[folderName].storage_values = (
+                structure, folderName)
+            self._thread_execution[folderName].signal_return = folderName
+        except Exception, reason:
+            logger.error('open_project_folder: %s', reason)
+            self._treeProjects.remove_loading_icon(folderName)
         finally:
             self._treeProjects.mute_signals = False
+
+    def _callback_open_project(self, value):
+        thread = self._thread_execution.pop(value, None)
+        if thread is not None:
+            structure = thread.storage_values[0]
+            folderName = thread.storage_values[1]
+            self._treeProjects.load_project(structure, folderName)
+            self.save_recent_projects(folderName)
+            self.emit(SIGNAL("projectOpened(QString)"), folderName)
+            self.emit(SIGNAL("updateLocator()"))
 
     def create_new_project(self):
         if not self._treeProjects:

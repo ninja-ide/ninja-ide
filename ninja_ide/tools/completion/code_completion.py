@@ -67,8 +67,8 @@ class CodeCompletion(object):
             indent = 0
         previous_line = ('', '')
         keep_exploring = True
-        iter = reversed(token_code)
-        line = iter.next()
+        iterate = reversed(token_code)
+        line = iterate.next()
         while keep_exploring:
             is_indented = line[3].startswith(' ')
             is_definition = line[1] in ('def', 'class')
@@ -89,7 +89,7 @@ class CodeCompletion(object):
                 keep_exploring = False
             previous_line = line[1]
             try:
-                line = iter.next()
+                line = iterate.next()
             except StopIteration:
                 keep_exploring = False
         return scopes
@@ -97,14 +97,14 @@ class CodeCompletion(object):
     def _search_for_completion_segment(self, token_code):
         tokens = []
         keep_iter = True
-        iter = reversed(token_code)
-        value = iter.next()
+        iterate = reversed(token_code)
+        value = iterate.next()
         while keep_iter:
             if value[0] in (tkn.NEWLINE, tkn.INDENT, tkn.DEDENT):
                 keep_iter = False
             tokens.append(value)
             try:
-                value = iter.next()
+                value = iterate.next()
             except:
                 keep_iter = False
         segment = ''

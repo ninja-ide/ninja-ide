@@ -25,7 +25,6 @@ Dependencies
 
 * Python >= 2.6 (Not Python3)
 * PyQt >= 4.7
-* watchdog >= 0.5.4 [github] (https://github.com/gorakhargosh/watchdog)
 
 
 Running Ninja-IDE

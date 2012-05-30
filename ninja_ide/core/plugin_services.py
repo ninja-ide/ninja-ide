@@ -276,6 +276,7 @@ class ToolbarService(QObject):
         Add an action to the Toolbar
         @action: Should be an instance(or subclass) of QAction
         """
+        settings.add_toolbar_item_for_plugins(action)
         self._toolbar.addAction(action)
 
 

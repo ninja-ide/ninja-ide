@@ -31,13 +31,19 @@ def get_indentation(line):
     global endCharsForIndent
     indentation = ''
     if len(line) > 0 and line[-1] in endCharsForIndent:
-        indentation = ' ' * settings.INDENT
+        if settings.USE_TABS:
+            indentation = '\t'
+        else:
+            indentation = ' ' * settings.INDENT
     elif len(line) > 0 and line[-1] == ',':
         count = filter(lambda x: \
             (line.count(x) - line.count(closeBraces[x])) % 2 != 0,
             endCharsForIndent[1:])
         if count:
-            indentation = ' ' * settings.INDENT
+            if settings.USE_TABS:
+                indentation = '\t'
+            else:
+                indentation = ' ' * settings.INDENT
     space = patIndent.match(line)
     if space is not None:
         return space.group() + indentation
@@ -313,8 +319,12 @@ def uncomment_single_line(cursor, block_start, block_end, comment_wildcard):
     # Start block undo
     cursor.beginEditBlock()
     while (block_start != block_end):
-        if unicode(block_start.text()).startswith(comment_wildcard[0]):
-            cursor.setPosition(block_start.position())
+        # Find the position of the comment in the line
+        comment_position = unicode(block_start.text()).find(
+            comment_wildcard[0])
+        if unicode(block_start.text()).startswith(
+           " " * comment_position + comment_wildcard[0]):
+            cursor.setPosition(block_start.position() + comment_position)
             cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
                 len(comment_wildcard))
             cursor.removeSelectedText()
