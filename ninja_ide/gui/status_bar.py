@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
+import logging
+
 from PyQt4.QtGui import QStatusBar
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QCompleter
@@ -25,6 +27,8 @@ from ninja_ide.tools import locator
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.main_panel import main_container
 
+logger = logging.getLogger('ninja_ide.gui.status_bar')
+DEBUG = logger.debug
 
 __statusBarInstance = None
 
@@ -66,6 +70,9 @@ class __StatusBar(QStatusBar):
         self._shortEsc = QShortcut(QKeySequence(Qt.Key_Escape), self)
 
         self.connect(self, SIGNAL("messageChanged(QString)"), self.message_end)
+        self.connect(main_container.MainContainer(),
+                    SIGNAL("currentTabChanged(QString)"),
+                        self._handle_tab_changed)
         self.connect(self._replaceWidget._btnCloseReplace, SIGNAL("clicked()"),
             lambda: self._replaceWidget.setVisible(False))
         self.connect(self._replaceWidget._btnReplace, SIGNAL("clicked()"),
@@ -79,6 +86,15 @@ class __StatusBar(QStatusBar):
             self.hide_status)
         self.connect(self._fileSystemOpener, SIGNAL("requestHide()"),
             self.hide_status)
+
+    def _handle_tab_changed(self, new_tab):
+        """
+        Re-run search if tab changed, we use the find of search widget because
+        we want the widget to be updated.
+        """
+        if self._searchWidget.isVisible():
+            editor = main_container.MainContainer().get_actual_editor()
+            self._searchWidget.find_matches(editor)
 
     def explore_code(self):
         self._codeLocator.explore_code()
