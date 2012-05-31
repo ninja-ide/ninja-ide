@@ -226,7 +226,7 @@ class Highlighter(QSyntaxHighlighter):
         if self.thread_highlight.styles:
             lines = list(set(self.thread_highlight.styles.keys()) -
                 set(range(self.visible_limits[0], self.visible_limits[1])))
-            self.rehighlight_lines(lines)
+            self.rehighlight_lines(lines, False)
         self.highlight_function = self.realtime_highlight
         self.thread_highlight = None
 
@@ -346,6 +346,11 @@ class Highlighter(QSyntaxHighlighter):
             self._rehighlight_lines(lines)
             return
         self.checkers_lines = lines
+
+    def update_errors_lines(self, line_changed, diference):
+        for index, line in enumerate(self.checkers_lines):
+            if line > line_changed:
+                self.checkers_lines[index] = line + diference
 
     def match_multiline(self, text, delimiter, in_state, style,
         hls=[], highlight_errors=lambda x: x):
@@ -483,5 +488,5 @@ class EmpyHighlighter(QSyntaxHighlighter):
     def highlightBlock(self, text):
         pass
 
-    def rehighlight_lines(self, lines):
+    def rehighlight_lines(self, lines, errors=True):
         pass
