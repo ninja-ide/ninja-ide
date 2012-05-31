@@ -70,9 +70,6 @@ class __StatusBar(QStatusBar):
         self._shortEsc = QShortcut(QKeySequence(Qt.Key_Escape), self)
 
         self.connect(self, SIGNAL("messageChanged(QString)"), self.message_end)
-        self.connect(main_container.MainContainer(),
-                    SIGNAL("currentTabChanged(QString)"),
-                        self._handle_tab_changed)
         self.connect(self._replaceWidget._btnCloseReplace, SIGNAL("clicked()"),
             lambda: self._replaceWidget.setVisible(False))
         self.connect(self._replaceWidget._btnReplace, SIGNAL("clicked()"),
@@ -87,7 +84,7 @@ class __StatusBar(QStatusBar):
         self.connect(self._fileSystemOpener, SIGNAL("requestHide()"),
             self.hide_status)
 
-    def _handle_tab_changed(self, new_tab):
+    def handle_tab_changed(self, new_tab):
         """
         Re-run search if tab changed, we use the find of search widget because
         we want the widget to be updated.
