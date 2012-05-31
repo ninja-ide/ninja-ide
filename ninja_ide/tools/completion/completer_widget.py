@@ -35,7 +35,7 @@ class CodeCompletionWidget(QFrame):
             'm': resources.IMAGES['module']}
 
         self.cc = code_completion.CodeCompletion()
-        self._completion_results = []
+        self._completion_results = {}
         self._prefix = u''
         self.setVisible(False)
         self.source = ''
@@ -200,7 +200,7 @@ class CompleterWidget(QCompleter):
         self.setCaseSensitivity(Qt.CaseInsensitive)
 
         self.cc = code_completion.CodeCompletion()
-        self.completion_results = []
+        self.completion_results = {}
 
         self.connect(self, SIGNAL("activated(const QString&)"),
             self.insert_completion)
