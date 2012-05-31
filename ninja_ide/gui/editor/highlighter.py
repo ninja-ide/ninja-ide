@@ -483,5 +483,5 @@ class EmpyHighlighter(QSyntaxHighlighter):
     def highlightBlock(self, text):
         pass
 
-    def rehighlight_lines(self, lines):
+    def rehighlight_lines(self, lines, errors=True):
         pass
