@@ -130,16 +130,16 @@ class CodeCompletionWidget(QFrame):
         self._prefix = prefix
         proposals = []
         proposals += [('m', item) \
-            for item in self.completion_results.get('modules', []) \
+            for item in self._completion_results.get('modules', []) \
             if item.startswith(prefix)]
         proposals += [('c', item) \
-            for item in self.completion_results.get('classes', []) \
+            for item in self._completion_results.get('classes', []) \
             if item.startswith(prefix)]
         proposals += [('a', item) \
-            for item in self.completion_results.get('attributes', []) \
+            for item in self._completion_results.get('attributes', []) \
             if item.startswith(prefix)]
         proposals += [('f', item) \
-            for item in self.completion_results.get('functions', []) \
+            for item in self._completion_results.get('functions', []) \
             if item.startswith(prefix)]
         if proposals and valid:
             self.complete(proposals)
@@ -151,7 +151,7 @@ class CodeCompletionWidget(QFrame):
         source = source.encode(self._editor.encoding)
         offset = self._editor.textCursor().position()
         results = self.cc.get_completion(source, offset)
-        self.completion_results = results
+        self._completion_results = results
         prefix = self._editor._text_under_cursor()
         self.set_completion_prefix(prefix)
 
