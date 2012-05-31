@@ -350,7 +350,8 @@ class __MainContainer(QSplitter):
             else:
                 directory = os.path.expanduser("~")
                 editorWidget = self.get_actual_editor()
-                current_project = self._parent.explorer.get_actual_project()
+                pexplorer = self._parent.explorer
+                current_project = pexplorer and pexplorer.get_actual_project()
                 if current_project is not None:
                     directory = current_project
                 elif editorWidget is not None and editorWidget.ID:
