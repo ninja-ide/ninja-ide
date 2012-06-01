@@ -233,6 +233,8 @@ class __IDE(QMainWindow):
             self._show_preferences)
         self.connect(self.mainContainer, SIGNAL("dontOpenStartPage()"),
             self._dont_show_start_page_again)
+        self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
+            self.status.handle_tab_changed)
         # Update symbols
         self.connect(self.mainContainer, SIGNAL("updateLocator(QString)"),
             self.status.explore_file_code)
