@@ -509,7 +509,7 @@ if __name__ == '__main__':
     pm.discover()
     logger.info("listing plugins names...")
     for p in pm:
-        print p
+        print(p)
     logger.info("Activating plugins...")
     pm.load_all()
     logger.info("Plugins already actives...")
