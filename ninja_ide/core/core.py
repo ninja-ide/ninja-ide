@@ -19,7 +19,7 @@ def run_ninja():
             procname = 'ninja-ide'
             libc.prctl(15, '%s\0' % procname, 0, 0, 0)
         except:
-            print "The process couldn't be renamed'"
+            print("The process couldn't be renamed'")
     #Set the application name
     filenames, projects_path, extra_plugins, linenos = cliparser.parse()
     # Create NINJA-IDE user folder structure for plugins, themes, etc

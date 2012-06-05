@@ -274,6 +274,15 @@ class SearchWidget(QWidget):
             self.find_next)
         self.connect(self.btnPrevious, SIGNAL("clicked()"),
             self.find_previous)
+        self.connect(self._checkSensitive, SIGNAL("stateChanged(int)"),
+            self._checks_state_changed)
+        self.connect(self._checkWholeWord, SIGNAL("stateChanged(int)"),
+            self._checks_state_changed)
+
+    def _checks_state_changed(self):
+        editor = main_container.MainContainer().get_actual_editor()
+        editor.moveCursor(QTextCursor.Start)
+        self.find_matches(editor)
 
     def find_next(self):
         self._parent.find_next()
