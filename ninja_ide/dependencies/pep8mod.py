@@ -1020,5 +1020,5 @@ def run_check(fileName, source):
         lines = [line + '\n' for line in source.splitlines()]
         return Checker(fileName, lines).check_all()
     except:
-        print 'pep8mod couldn\'t parse file: {0}'.format(fileName)
+        print('pep8mod couldn\'t parse file: {0}'.format(fileName))
     return []
