@@ -593,6 +593,12 @@ class __Actions(QObject):
         if editorWidget and editorWidget.hasFocus():
             editorWidget.indent_more()
 
+    def editor_insert_debugging_prints(self):
+        """Insert a print statement in each selected line."""
+        editorWidget = self.ide.mainContainer.get_actual_editor()
+        if editorWidget:
+            helpers.insert_debugging_prints(editorWidget)
+
     def editor_comment(self):
         """Mark the current line or selection as a comment."""
         editorWidget = self.ide.mainContainer.get_actual_editor()

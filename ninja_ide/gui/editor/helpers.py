@@ -105,6 +105,35 @@ def replace_tabs_with_spaces(editorWidget):
     editorWidget.setPlainText(text)
 
 
+def insert_debugging_prints(editorWidget):
+    cursor = editorWidget.textCursor()
+    if cursor.hasSelection():
+        result = str(QInputDialog.getText(editorWidget,
+            editorWidget.tr("Print Text"),
+            editorWidget.tr("Insert a Text to use in the Print or "
+                            "leave empty to just print numbers:"))[0])
+        print_text = ""
+        if result:
+            print_text = "%s: " % result
+        #begin Undo feature
+        cursor.beginEditBlock()
+        start = editorWidget.document().findBlock(
+            cursor.selectionStart()).firstLineNumber()
+        end = editorWidget.document().findBlock(
+            cursor.selectionEnd()).firstLineNumber()
+        lines = end - start
+        for i in range(lines):
+            position = editorWidget.document().findBlockByLineNumber(
+                start + (i * 2)).position()
+            cursor.setPosition(position)
+            indentation = get_indentation(cursor.block().text())
+            cursor.movePosition(QTextCursor.EndOfLine)
+            cursor.insertText("\n%sprint('%s%i')" % (
+                indentation, print_text, i))
+        #end Undo feature
+        cursor.endEditBlock()
+
+
 def move_up(editorWidget):
     cursor = editorWidget.textCursor()
     block_actual = cursor.block()

@@ -23,8 +23,8 @@ IRC: #ninja-ide (at Freenode)
 Dependencies
 ------------
 
-* Python >= 2.6 (Not Python3)
-* PyQt >= 4.7
+* Python >= 2.7 (Not Python3)
+* PyQt >= 4.8
 
 
 Running Ninja-IDE
