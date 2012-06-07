@@ -13,6 +13,7 @@ from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QIcon
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import QDir
 
 from ninja_ide import resources
 from ninja_ide.core import file_manager
@@ -223,7 +224,8 @@ class __MainContainer(QSplitter):
 
         #add the tab
         inserted_index = self.add_tab(editorWidget, tabName, tabIndex=tabIndex)
-        self.actualTab.setTabToolTip(inserted_index, fileName)
+        self.actualTab.setTabToolTip(inserted_index,
+            QDir.toNativeSeparators(fileName))
         #Connect signals
         self.connect(editorWidget, SIGNAL("modificationChanged(bool)"),
             self._editor_tab_was_modified)
