@@ -13,6 +13,7 @@ from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QIcon
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import QDir
 
 from ninja_ide import resources
 from ninja_ide.core import file_manager
@@ -223,7 +224,8 @@ class __MainContainer(QSplitter):
 
         #add the tab
         inserted_index = self.add_tab(editorWidget, tabName, tabIndex=tabIndex)
-        self.actualTab.setTabToolTip(inserted_index, fileName)
+        self.actualTab.setTabToolTip(inserted_index,
+            QDir.toNativeSeparators(fileName))
         #Connect signals
         self.connect(editorWidget, SIGNAL("modificationChanged(bool)"),
             self._editor_tab_was_modified)
@@ -724,3 +726,33 @@ class __MainContainer(QSplitter):
             self.actualTab.removeTab(index)
             #assign None to the browser
             self.docPage = None
+
+    def close_tab(self):
+        """Close the current tab in the current TabWidget."""
+        self.actualTab.close_tab()
+
+    def change_tab(self):
+        """Change the tab in the current TabWidget."""
+        self.actualTab.change_tab()
+
+    def change_tab_reverse(self):
+        """Change the tab in the current TabWidget backwards."""
+        self.actualTab.change_tab_reverse()
+
+    def show_code_navigation_buttons(self):
+        self.actualTab.navigator._show_code_nav()
+
+    def show_breakpoints_buttons(self):
+        self.actualTab.navigator._show_breakpoints()
+
+    def show_bookmarks_buttons(self):
+        self.actualTab.navigator._show_bookmarks()
+
+    def change_split_focus(self):
+        if self.actualTab == self._tabMain and self._tabSecondary.isVisible():
+            self.actualTab = self._tabSecondary
+        else:
+            self.actualTab = self._tabMain
+        widget = self.actualTab.currentWidget()
+        if widget is not None:
+            widget.setFocus()

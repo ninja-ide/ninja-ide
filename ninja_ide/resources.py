@@ -259,6 +259,7 @@ SHORTCUTS = {
     "History-Copy": QKeySequence(Qt.CTRL + Qt.ALT + Qt.Key_C),
     "History-Paste": QKeySequence(Qt.CTRL + Qt.ALT + Qt.Key_V),
     "Add-Bookmark-or-Breakpoint": QKeySequence(Qt.CTRL + Qt.Key_B),
+    "change-split-focus": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_F10),
     "Highlight-Word": QKeySequence(Qt.CTRL + Qt.Key_Down)}
 
 CUSTOM_SHORTCUTS = {}
