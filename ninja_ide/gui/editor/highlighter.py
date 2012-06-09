@@ -349,7 +349,7 @@ class Highlighter(QSyntaxHighlighter):
 
     def update_errors_lines(self, line_changed, diference):
         for index, line in enumerate(self.checkers_lines):
-            if line > line_changed:
+            if line >= line_changed:
                 self.checkers_lines[index] = line + diference
 
     def match_multiline(self, text, delimiter, in_state, style,
