@@ -13,9 +13,9 @@ from ninja_ide.dependencies.pyflakes_mod import checker
 
 class ErrorsChecker(QThread):
 
-    pat_disable_lint = re.compile('(\s)*#disable-lint$')
-    pat_enable_lint = re.compile('(\s)*#enable-lint$')
-    pat_ignore_lint = re.compile('(.)+#lint: ok$|(.)+# lint: ok$')
+    pat_disable_lint = re.compile('(\s)*#lint:disable$')
+    pat_enable_lint = re.compile('(\s)*#lint:enable$')
+    pat_ignore_lint = re.compile('(.)+#lint:ok$|(.)+# lint:ok$')
 
     def __init__(self, editor):
         QThread.__init__(self)
