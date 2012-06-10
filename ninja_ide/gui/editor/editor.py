@@ -498,6 +498,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             found = self.find(word, flags)
             if not found:
                 self.setTextCursor(cursor)
+        if found:
+            self.highlight_selected_word(word)
 
     def replace_match(self, wordOld, wordNew, flags, all=False,
                         selection=False):
@@ -1047,25 +1049,26 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.extraSelections.append(selection)
         self.setExtraSelections(self.extraSelections)
 
-    def highlight_selected_word(self):
+    def highlight_selected_word(self, word_find=None):
         #Highlight selected variable
-        if not self.isReadOnly() and not self.textCursor().hasSelection():
-            word = self._text_under_cursor()
-            if word != self._selected_word:
-                self._selected_word = word
-                self.highlighter.set_selected_word(word)
-                #Search for blocks
-                lines = []
-                position = 0
-                word_len = len(word)
+        word = self._text_under_cursor()
+        if word == '' and word_find is not None:
+            word = word_find
+        if word != self._selected_word:
+            self._selected_word = word
+            self.highlighter.set_selected_word(word)
+            #Search for blocks
+            lines = []
+            position = 0
+            word_len = len(word)
+            cursor = self.document().find(word, position,
+                QTextDocument.FindCaseSensitively)
+            while cursor.position() != -1:
+                lines.append(cursor.blockNumber())
+                position = cursor.position() + word_len
                 cursor = self.document().find(word, position,
                     QTextDocument.FindCaseSensitively)
-                while cursor.position() != -1:
-                    lines.append(cursor.blockNumber())
-                    position = cursor.position() + word_len
-                    cursor = self.document().find(word, position,
-                        QTextDocument.FindCaseSensitively)
-                self.highlighter.rehighlight_lines(lines, False)
+            self.highlighter.rehighlight_lines(lines, False)
 
     def async_highlight(self):
         self.highlighter.async_highlight()
