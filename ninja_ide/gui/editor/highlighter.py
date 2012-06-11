@@ -74,6 +74,7 @@ class Highlighter(QSyntaxHighlighter):
         self.errors = errors
         self.pep8 = pep8
         self.checkers_lines = []
+        self.selected_word_lines = []
         self.visible_limits = (0, 50)
         if lang is not None:
             self.apply_highlight(lang, scheme)
@@ -227,8 +228,8 @@ class Highlighter(QSyntaxHighlighter):
             lines = list(set(self.thread_highlight.styles.keys()) -
                 set(range(self.visible_limits[0], self.visible_limits[1])))
             self.rehighlight_lines(lines, False)
+            self.thread_highlight = None
         self.highlight_function = self.realtime_highlight
-        self.thread_highlight = None
 
     def threaded_highlight(self, text):
         hls = []
@@ -340,16 +341,16 @@ class Highlighter(QSyntaxHighlighter):
 
     def rehighlight_lines(self, lines, errors=True):
         if errors:
-            self.checkers_lines = set(lines + self.checkers_lines)
-            self._rehighlight_lines(self.checkers_lines)
+            refresh_lines = set(lines + self.checkers_lines)
+            self.checkers_lines = lines
         else:
-            self._rehighlight_lines(lines)
-            return
-        self.checkers_lines = lines
+            refresh_lines = set(lines + self.selected_word_lines)
+            self.selected_word_lines = lines
+        self._rehighlight_lines(refresh_lines)
 
     def update_errors_lines(self, line_changed, diference):
         for index, line in enumerate(self.checkers_lines):
-            if line > line_changed:
+            if line >= line_changed:
                 self.checkers_lines[index] = line + diference
 
     def match_multiline(self, text, delimiter, in_state, style,
