@@ -4,7 +4,7 @@ import pickle
 
 class HighScores(object):
     """ Keeps track of a high-scores list, allowing to save
-        and load it from a file, add new scores, and return 
+        and load it from a file, add new scores, and return
         a sorted list.
     """
     def __init__(self, max_length=10):
@@ -12,13 +12,13 @@ class HighScores(object):
         #
         self.max_length = max_length
         self.scorelist = []
-    
+
     def lowest_score(self):
         """ The lowest score currently in the list.
             If the list is still incomplete, returns 0
         """
         return 0 if len(self.scorelist) < self.max_length else self.scorelist[-1][1]
-    
+
     def add_score(self, name, score):
         """ Adds a score to the high-scores. The score is only
             added if it's strictly higher than the lowest score
@@ -27,21 +27,21 @@ class HighScores(object):
         """
         self.scorelist.append((name, score))
         self.scorelist.sort(reverse = True, cmp = lambda a, b: cmp(a[1], b[1]))
-        
+
         if len(self.scorelist) > self.max_length:
             self.scorelist = self.scorelist[0:-1]
- 
+
     def get_list(self):
         """ Returns the high-scores list.
             The list contains (name, score) tuples and is sorted
             in a descending order (highest score first).
         """
         return self.scorelist
- 
+
     def printme(self):
         for i in self.scorelist:
-            print i
- 
+            print(i)
+
     def save_to_file(self, filename):
         """ Saves the high-scores list to a file.
         """
@@ -61,11 +61,11 @@ class HighScores(object):
 
 if __name__ == "__main__":
     FILENAME = 'pyqtris_highscores'
-    ds = HighScores(10) 
-    
+    ds = HighScores(10)
+
     #~ ds.load_from_file(FILENAME)
     #~ ds.printme()
-        
+
     ds.add_score('joe', 15)
     ds.add_score('qjoe', 15)
     ds.add_score('nexus', 155)

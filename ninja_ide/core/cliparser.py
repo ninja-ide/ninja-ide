@@ -128,6 +128,6 @@ def parse():
             if isinstance(opts.plugin, list) \
             else  [opts.plugin]
     except Exception, reason:
-        print "Args couldn't be parsed."
-        print reason
+        print("Args couldn't be parsed.")
+        print(reason)
     return filenames, projects_path, extra_plugins, linenos

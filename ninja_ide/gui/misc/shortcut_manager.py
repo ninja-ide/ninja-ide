@@ -170,6 +170,8 @@ class ShortcutConfiguration(QWidget):
             "Show-Paste-History": self.tr("Show copy/paste history"),
             "History-Copy": self.tr("Copy into copy/paste history"),
             "History-Paste": self.tr("Paste from copy/paste history"),
+            "change-split-focus": self.tr(
+                "Change the keyboard focus between the current splits"),
             "Add-Bookmark-or-Breakpoint": self.tr(
                 "Insert Bookmark/Breakpoint"),
             "Highlight-Word": self.tr(

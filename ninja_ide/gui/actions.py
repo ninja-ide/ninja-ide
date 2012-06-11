@@ -137,6 +137,8 @@ class __Actions(QObject):
         self.shortPasteHistory = QShortcut(short("History-Paste"), self.ide)
         self.shortCopyHistory = QShortcut(short("History-Copy"), self.ide)
         self.shortHighlightWord = QShortcut(short("Highlight-Word"), self.ide)
+        self.shortChangeSplitFocus = QShortcut(short("change-split-focus"),
+            self.ide)
 
         #Connect Shortcuts Signals
         self.connect(self.shortNavigateBack, SIGNAL("activated()"),
@@ -186,7 +188,7 @@ class __Actions(QObject):
         self.connect(self.shortOpenProject, SIGNAL("activated()"),
             self.open_project)
         self.connect(self.shortCloseTab, SIGNAL("activated()"),
-            self.ide.mainContainer.actualTab.close_tab)
+            self.ide.mainContainer.close_tab)
         self.connect(self.shortSave, SIGNAL("activated()"),
             self.ide.mainContainer.save_file)
         self.connect(self.shortSaveProject, SIGNAL("activated()"),
@@ -234,15 +236,15 @@ class __Actions(QObject):
         self.connect(self.shortOpenLastTabOpened, SIGNAL("activated()"),
             self.reopen_last_tab)
         self.connect(self.shortChangeTab, SIGNAL("activated()"),
-            self.ide.mainContainer.actualTab.change_tab)
+            self.ide.mainContainer.change_tab)
         self.connect(self.shortChangeTabReverse, SIGNAL("activated()"),
-            self.ide.mainContainer.actualTab.change_tab_reverse)
+            self.ide.mainContainer.change_tab_reverse)
         self.connect(self.shortShowCodeNav, SIGNAL("activated()"),
-            self.ide.mainContainer.actualTab.navigator._show_code_nav)
+            self.ide.mainContainer.show_code_navigation_buttons)
         self.connect(self.shortShowBookmarksNav, SIGNAL("activated()"),
-            self.ide.mainContainer.actualTab.navigator._show_bookmarks)
+            self.ide.mainContainer.show_bookmarks_buttons)
         self.connect(self.shortShowBreakpointsNav, SIGNAL("activated()"),
-            self.ide.mainContainer.actualTab.navigator._show_breakpoints)
+            self.ide.mainContainer.show_breakpoints_buttons)
         self.connect(self.shortAddBookmark, SIGNAL("activated()"),
             self._add_bookmark_breakpoint)
         self.connect(self.shortShowPasteHistory, SIGNAL("activated()"),
@@ -253,6 +255,8 @@ class __Actions(QObject):
             self._paste_history)
         self.connect(self.shortHighlightWord, SIGNAL("activated()"),
             self.editor_highlight_word)
+        self.connect(self.shortChangeSplitFocus, SIGNAL("activated()"),
+            self.ide.mainContainer.change_split_focus)
 
         key = Qt.Key_1
         for i in xrange(10):
@@ -592,6 +596,12 @@ class __Actions(QObject):
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget and editorWidget.hasFocus():
             editorWidget.indent_more()
+
+    def editor_insert_debugging_prints(self):
+        """Insert a print statement in each selected line."""
+        editorWidget = self.ide.mainContainer.get_actual_editor()
+        if editorWidget:
+            helpers.insert_debugging_prints(editorWidget)
 
     def editor_comment(self):
         """Mark the current line or selection as a comment."""

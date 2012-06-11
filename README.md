@@ -23,9 +23,8 @@ IRC: #ninja-ide (at Freenode)
 Dependencies
 ------------
 
-* Python >= 2.6 (Not Python3)
-* PyQt >= 4.7
-* watchdog >= 0.5.4 [github] (https://github.com/gorakhargosh/watchdog)
+* Python >= 2.7 (Not Python3)
+* PyQt >= 4.8
 
 
 Running Ninja-IDE

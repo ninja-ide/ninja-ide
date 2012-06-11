@@ -1,6 +1,7 @@
 # *-* coding: utf-8 *-*
 from __future__ import absolute_import
 
+from PyQt4.QtGui import QMenu
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QKeySequence
 from PyQt4.QtCore import SIGNAL
@@ -62,6 +63,9 @@ class MenuSource(QObject):
             self.tr("Insert &Import (%1)").arg(
                 resources.get_shortcut("Import").toString(
                     QKeySequence.NativeText)))
+        menu_debugging = menuSource.addMenu(self.tr("Debugging Tricks"))
+        insertPrints = menu_debugging.addAction(
+            self.tr("Insert Prints per selected line."))
 #        organizeImportsAction = menuSource.addAction(
 #            self.tr("&Organize Imports"))
 #        removeUnusedImportsAction = menuSource.addAction(
@@ -134,3 +138,5 @@ class MenuSource(QObject):
             actions.Actions().editor_remove_trailing_spaces)
         self.connect(remove, SIGNAL("triggered()"),
             actions.Actions().editor_remove_line)
+        self.connect(insertPrints, SIGNAL("triggered()"),
+            actions.Actions().editor_insert_debugging_prints)

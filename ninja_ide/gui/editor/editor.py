@@ -84,9 +84,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #Set editor style
         self.apply_editor_style()
         self.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
-        #Set tab usage
-        if settings.USE_TABS:
-            self.set_tab_usage()
         #For Highlighting in document
         self.extraSelections = []
         self.wordSelection = []
@@ -138,6 +135,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self._mini.show()
             self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
                 self._mini.update_visible_area)
+        #Set tab usage
+        if settings.USE_TABS:
+            self.set_tab_usage()
 
         #Context Menu Options
         self.__actionFindOccurrences = QAction(
@@ -174,6 +174,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def set_tab_usage(self):
         tab_size = self.pos_margin / settings.MARGIN_LINE * settings.INDENT
         self.setTabStopWidth(tab_size)
+        if self._mini:
+            self._mini.setTabStopWidth(tab_size)
 
     def set_id(self, id_):
         super(Editor, self).set_id(id_)
@@ -212,7 +214,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 diference = val - self.__lines_count
             else:
                 diference = 0
-            blockNumber = cursor.blockNumber() - diference
+            blockNumber = cursor.blockNumber() - abs(diference)
             if self.pep8.pep8checks:
                 self.pep8.pep8checks = self._add_line_increment_for_dict(
                     self.pep8.pep8checks, blockNumber, diference)
@@ -231,6 +233,13 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 self._sidebarWidget._bookmarks = self._add_line_increment(
                     self._sidebarWidget._bookmarks, blockNumber, diference)
                 settings.BOOKMARKS[self.ID] = self._sidebarWidget._bookmarks
+            #Update errors in highlighter
+            conflict_line = (cursor.blockNumber() + 1)
+            if conflict_line not in self.highlighter.checkers_lines:
+                self.highlighter.update_errors_lines(blockNumber, diference)
+            else:
+                conflict_line += 1
+                self.highlighter.update_errors_lines(conflict_line, diference)
         self.__lines_count = val
         self.highlight_current_line()
 
@@ -354,7 +363,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def set_font(self, family=settings.FONT_FAMILY, size=settings.FONT_SIZE):
         font = QFont(family, size)
-        font.setStyleHint(QFont.Monospace)
         self.document().setDefaultFont(font)
         # Fix for older version of Qt which doens't has ForceIntegerMetrics
         if "ForceIntegerMetrics" in dir(QFont):
@@ -495,6 +503,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             found = self.find(word, flags)
             if not found:
                 self.setTextCursor(cursor)
+        if found:
+            self.highlight_selected_word(word)
 
     def replace_match(self, wordOld, wordNew, flags, all=False,
                         selection=False):
@@ -1044,25 +1054,26 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.extraSelections.append(selection)
         self.setExtraSelections(self.extraSelections)
 
-    def highlight_selected_word(self):
+    def highlight_selected_word(self, word_find=None):
         #Highlight selected variable
-        if not self.isReadOnly() and not self.textCursor().hasSelection():
-            word = self._text_under_cursor()
-            if word != self._selected_word:
-                self._selected_word = word
-                self.highlighter.set_selected_word(word)
-                #Search for blocks
-                lines = []
-                position = 0
-                word_len = len(word)
+        word = self._text_under_cursor()
+        if word == '' and word_find is not None:
+            word = word_find
+        if word != self._selected_word:
+            self._selected_word = word
+            self.highlighter.set_selected_word(word)
+            #Search for blocks
+            lines = []
+            position = 0
+            word_len = len(word)
+            cursor = self.document().find(word, position,
+                QTextDocument.FindCaseSensitively)
+            while cursor.position() != -1:
+                lines.append(cursor.blockNumber())
+                position = cursor.position() + word_len
                 cursor = self.document().find(word, position,
                     QTextDocument.FindCaseSensitively)
-                while cursor.position() != -1:
-                    lines.append(cursor.blockNumber())
-                    position = cursor.position() + word_len
-                    cursor = self.document().find(word, position,
-                        QTextDocument.FindCaseSensitively)
-                self.highlighter.rehighlight_lines(lines, False)
+            self.highlighter.rehighlight_lines(lines, False)
 
     def async_highlight(self):
         self.highlighter.async_highlight()
