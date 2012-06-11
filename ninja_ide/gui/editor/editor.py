@@ -214,7 +214,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 diference = val - self.__lines_count
             else:
                 diference = 0
-            blockNumber = cursor.blockNumber() - diference
+            blockNumber = cursor.blockNumber() - abs(diference)
             if self.pep8.pep8checks:
                 self.pep8.pep8checks = self._add_line_increment_for_dict(
                     self.pep8.pep8checks, blockNumber, diference)
@@ -234,7 +234,12 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                     self._sidebarWidget._bookmarks, blockNumber, diference)
                 settings.BOOKMARKS[self.ID] = self._sidebarWidget._bookmarks
             #Update errors in highlighter
-            self.highlighter.update_errors_lines(blockNumber, diference)
+            conflict_line = (cursor.blockNumber() + 1)
+            if conflict_line not in self.highlighter.checkers_lines:
+                self.highlighter.update_errors_lines(blockNumber, diference)
+            else:
+                conflict_line += 1
+                self.highlighter.update_errors_lines(conflict_line, diference)
         self.__lines_count = val
         self.highlight_current_line()
 
