@@ -7,16 +7,13 @@ from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QTextCharFormat
 from PyQt4.QtGui import QFont
 from PyQt4.QtGui import QSyntaxHighlighter
+from PyQt4.QtGui import QTextBlockUserData
 from PyQt4.QtCore import QThread
 from PyQt4.QtCore import QRegExp
 from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
 from ninja_ide.core import settings
-
-
-CLEAN_STATE = 10
-ERROR_STATE = 11
 
 
 def format(color, style=''):
@@ -64,6 +61,13 @@ def restyle(scheme):
         resources.COLOR_SCHEME['extras']), 'bold')
     STYLES['selectedWord'] = scheme.get('selected-word',
         resources.COLOR_SCHEME['selected-word'])
+
+
+class SyntaxUserData(QTextBlockUserData):
+
+    def __init__(self, error=False):
+        super(SyntaxUserData, self).__init__()
+        self.error = error
 
 
 class Highlighter(QSyntaxHighlighter):
@@ -186,7 +190,7 @@ class Highlighter(QSyntaxHighlighter):
 
     def __highlight_pep8(self, char_format, block):
         """Highlight the lines with errors."""
-        block.setUserState(ERROR_STATE)
+        block.setUserData(SyntaxUserData(True))
         char_format = char_format.toCharFormat()
         char_format.setUnderlineColor(QColor(
             resources.CUSTOM_SCHEME.get('pep8-underline',
@@ -197,7 +201,7 @@ class Highlighter(QSyntaxHighlighter):
 
     def __highlight_lint(self, char_format, block):
         """Highlight the lines with errors."""
-        block.setUserState(ERROR_STATE)
+        block.setUserData(SyntaxUserData(True))
         char_format = char_format.toCharFormat()
         char_format.setUnderlineColor(QColor(
             resources.CUSTOM_SCHEME.get('error-underline',
@@ -207,7 +211,7 @@ class Highlighter(QSyntaxHighlighter):
         return char_format
 
     def __clean_error(self, char_format, block):
-        block.setUserState(CLEAN_STATE)
+        block.setUserData(SyntaxUserData())
         return char_format
 
     def highlightBlock(self, text):
@@ -352,7 +356,8 @@ class Highlighter(QSyntaxHighlighter):
         errors_lines = []
         block = self.document().begin()
         while block.isValid():
-            if block.userState() == ERROR_STATE:
+            user_data = block.userData()
+            if (user_data is not None) and (user_data.error == True):
                 errors_lines.append(block.blockNumber())
             block = block.next()
         return errors_lines
