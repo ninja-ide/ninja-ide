@@ -28,7 +28,10 @@ class MenuPlugins(QObject):
     def _show_manager(self):
         manager = plugins_manager.PluginsManagerWidget(
             central_widget.CentralWidget())
-        manager.show()
+        manager.exec_()
+        if manager._requirements:
+            d = plugins_manager.DependenciesHelpDialog(manager._requirements)
+            d.exec_()
 
     def _show_languages(self):
         manager = language_manager.LanguagesManagerWidget(
