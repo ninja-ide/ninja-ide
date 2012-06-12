@@ -1,5 +1,5 @@
 {
-  "mainFile": "", 
+  "mainFile": "ninja-ide.py", 
   "venv": "", 
   "name": "NINJA-IDE", 
   "license": "GNU General Public License v3", 
