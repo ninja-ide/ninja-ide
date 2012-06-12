@@ -49,9 +49,9 @@ class TreeProjectsWidget(QTreeWidget):
 ###############################################################################
 
     #Extra context menu 'all' indicate a menu for ALL LANGUAGES!
-    EXTRA_MENUS = {'all': []}
+    extra_menus = {'all': []}
     #Extra context menu by scope all is for ALL the TREE ITEMS!
-    EXTRA_MENUS_BY_SCOPE = {'all': [], 'project': [], 'folder': [], 'file': []}
+    extra_menus_by_scope = {'all': [], 'project': [], 'folder': [], 'file': []}
 
     images = {
         'py': resources.IMAGES['tree-python'],
@@ -115,18 +115,18 @@ class TreeProjectsWidget(QTreeWidget):
         '''
         #remove blanks and replace dots Example(.py => py)
         lang = lang.strip().replace('.', '')
-        self.EXTRA_MENUS.setdefault(lang, [])
-        self.EXTRA_MENUS[lang].append(menu)
+        self.extra_menus.setdefault(lang, [])
+        self.extra_menus[lang].append(menu)
 
     def add_item_extra_menu(self, menu, scope='all'):
         '''
         Add an extra menu for the given language
         @scope: string with the menu scope (all, project, folder, item)
         '''
-        if scope not in self.EXTRA_MENUS_BY_SCOPE:
+        if scope not in self.extra_menus_by_scope:
             logger.warning("add_item_extra_menu invalid scope: %s", scope)
             return
-        self.EXTRA_MENUS_BY_SCOPE[scope].append(menu)
+        self.extra_menus_by_scope[scope].append(menu)
 
     def _menu_context_tree(self, point):
         index = self.indexAt(point)
@@ -146,17 +146,19 @@ class TreeProjectsWidget(QTreeWidget):
             self._add_context_menu_for_root(menu, item)
 
         #menu for all items (legacy API)!
-        extra_menus = self.EXTRA_MENUS.get('all', ())
+        extra_menus = self.extra_menus.get('all', ())
         #menu for all items!
-        extra_menus_by_scope = self.EXTRA_MENUS_BY_SCOPE['all']
+        extra_menus_by_scope = self.extra_menus_by_scope['all']
         for m in (extra_menus + extra_menus_by_scope):
-            menu.addSeparator()
-            menu.addMenu(m)
+            if isinstance(m, QMenu):
+                menu.addSeparator()
+                menu.addMenu(m)
         #menu for the Project Type(if present)
         if handler:
             for m in handler.get_context_menus():
-                menu.addSeparator()
-                menu.addMenu(m)
+                if isinstance(m, QMenu):
+                    menu.addSeparator()
+                    menu.addMenu(m)
         #show the menu!
         menu.exec_(QCursor.pos())
 
@@ -196,9 +198,10 @@ class TreeProjectsWidget(QTreeWidget):
         self.connect(action_close, SIGNAL("triggered()"),
             self._close_project)
         #menu for the project
-        for m in self.EXTRA_MENUS_BY_SCOPE['project']:
-            menu.addSeparator()
-            menu.addMenu(m)
+        for m in self.extra_menus_by_scope['project']:
+            if isinstance(m, QMenu):
+                menu.addSeparator()
+                menu.addMenu(m)
 
     def _add_context_menu_for_folders(self, menu, item):
         action_add_file = menu.addAction(QIcon(resources.IMAGES['new']),
@@ -219,9 +222,10 @@ class TreeProjectsWidget(QTreeWidget):
                 self._delete_folder)
         #Folders but not the root
         if item.isFolder and item.parent() is not None:
-            for m in self.EXTRA_MENUS_BY_SCOPE['folder']:
-                menu.addSeparator()
-                menu.addMenu(m)
+            for m in self.extra_menus_by_scope['folder']:
+                if isinstance(m, QMenu):
+                    menu.addSeparator()
+                    menu.addMenu(m)
 
     def _add_context_menu_for_files(self, menu, item):
         action_rename_file = menu.addAction(self.tr("Rename File"))
@@ -244,13 +248,15 @@ class TreeProjectsWidget(QTreeWidget):
             self.connect(action_edit_ui_file, SIGNAL("triggered()"),
                 self._edit_ui_file)
         #menu per file language (legacy plugin API)!
-        for m in self.EXTRA_MENUS.get(item.lang(), ()):
-            menu.addSeparator()
-            menu.addMenu(m)
+        for m in self.extra_menus.get(item.lang(), ()):
+            if isinstance(m, QMenu):
+                menu.addSeparator()
+                menu.addMenu(m)
         #menu for files
-        for m in self.EXTRA_MENUS_BY_SCOPE['file']:
-            menu.addSeparator()
-            menu.addMenu(m)
+        for m in self.extra_menus_by_scope['file']:
+            if isinstance(m, QMenu):
+                menu.addSeparator()
+                menu.addMenu(m)
 
     def _add_project_to_console(self):
         item = self.currentItem()
