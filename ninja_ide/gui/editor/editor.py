@@ -233,13 +233,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 self._sidebarWidget._bookmarks = self._add_line_increment(
                     self._sidebarWidget._bookmarks, blockNumber, diference)
                 settings.BOOKMARKS[self.ID] = self._sidebarWidget._bookmarks
-            #Update errors in highlighter
-            conflict_line = (cursor.blockNumber() + 1)
-            if conflict_line not in self.highlighter.checkers_lines:
-                self.highlighter.update_errors_lines(blockNumber, diference)
-            else:
-                conflict_line += 1
-                self.highlighter.update_errors_lines(conflict_line, diference)
         self.__lines_count = val
         self.highlight_current_line()
 
