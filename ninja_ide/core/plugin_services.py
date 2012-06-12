@@ -457,7 +457,16 @@ class ExplorerService(QObject):
         with the given extension.
         @lang: String with file extension format (py, php, json)
         """
-        self._explorer._treeProjects.add_extra_menu(menu, lang=lang)
+        if self._explorer._treeProjects:
+            self._explorer._treeProjects.add_extra_menu(menu, lang=lang)
+
+    def add_project_menu_by_scope(self, menu, scope='all'):
+        """
+        Add an extra menu to the project explorer to the specific scope
+        @scope: String with the menu scope (all, project, folder, file)
+        """
+        if self._explorer._treeProjects:
+            self._explorer._treeProjects.add_item_extra_menu(menu, scope=scope)
 
     # SIGNALS
     def _projectOpened(self, projectPath):
