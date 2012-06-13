@@ -7,6 +7,9 @@ import sys
 import types
 import inspect
 import StringIO
+import logging
+
+logger = logging.getLogger('ninja_ide.tools.completion.completer')
 
 _HELPOUT = StringIO.StringIO
 _STDOUT = sys.stdout
@@ -30,7 +33,8 @@ def get_completions_per_type(object_dir):
         try:
             obj = _load_symbol(attr, globals(), locals())
         except Exception, ex:
-            return '%s' % ex
+            logger.error('Could not load symbol: %r', ex)
+            return {}
 
         if type(obj) in (types.ClassType, types.TypeType):
             # Look for the highest __init__ in the class chain.
@@ -109,7 +113,7 @@ def get_all_completions(s, imports=None):
             try:
                 sym = __import__(s, globals(), dlocals, [])
             except ImportError:
-                return []
+                return {}
             except AttributeError:
                 try:
                     sym = __import__(s, globals(), dlocals, [])
