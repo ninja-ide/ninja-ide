@@ -111,12 +111,12 @@ def _parse_function(symbol, with_docstrings):
         'attrs': attrs, 'docstring': docstring}
 
 
-def obtain_symbols(source, with_docstrings=False):
+def obtain_symbols(source, with_docstrings=False, filename=''):
     """Parse a module source code to obtain: Classes, Functions and Assigns."""
     try:
         module = ast.parse(source)
     except:
-        logger_symbols.debug("A file contains syntax errors.")
+        logger_symbols.debug("The file contains syntax errors: %s" % filename)
         return {}
     symbols = {}
     globalAttributes = {}

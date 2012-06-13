@@ -25,7 +25,6 @@ class ErrorsChecker(QThread):
     def check_errors(self):
         if not self.isRunning():
             self.start()
-            self.setPriority(QThread.LowPriority)
 
     def reset(self):
         self.errorsSummary = {}
