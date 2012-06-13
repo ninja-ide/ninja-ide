@@ -406,7 +406,7 @@ class __MainContainer(QSplitter):
             else:
                 self.move_to_open(fileName)
                 editorWidget = self.get_actual_editor()
-                if editorWidget:
+                if editorWidget and notStart:
                     if positionIsLineNumber:
                         editorWidget.go_to_line(cursorPosition)
                     else:
@@ -681,8 +681,7 @@ class __MainContainer(QSplitter):
         for fileData in files:
             if file_manager.file_exists(unicode(fileData[0])):
                 self.open_file(unicode(fileData[0]),
-                    fileData[1], notStart=notIDEStart,
-                    positionIsLineNumber=True)
+                    fileData[1], notStart=notIDEStart)
         self.actualTab = self._tabMain
 
     def check_for_unsaved_tabs(self):
