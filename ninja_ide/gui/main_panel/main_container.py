@@ -510,8 +510,9 @@ class __MainContainer(QSplitter):
                 ext = file_manager.get_file_extension(editorWidget.ID)
                 if ext != 'py':
                     filters = '(*.%s);;(*.py);;(*.*)' % ext
+            save_folder = self._get_save_folder(editorWidget.ID)
             fileName = unicode(QFileDialog.getSaveFileName(
-                self._parent, self.tr("Save File"), editorWidget.ID, filters))
+                self._parent, self.tr("Save File"), save_folder, filters))
             if not fileName:
                 return False
 
@@ -541,6 +542,15 @@ class __MainContainer(QSplitter):
             self.actualTab.setTabText(self.actualTab.currentIndex(),
                 self.tr("New Document"))
         return False
+
+    def _get_save_folder(self, fileName):
+        """
+        Returns the root directory of the 'Main Project' or the home folder
+        """
+        actual_project = self._parent.explorer.get_actual_project()
+        if actual_project:
+            return actual_project
+        return os.path.expanduser("~")
 
     def save_project(self, projectFolder):
         for i in xrange(self._tabMain.count()):
