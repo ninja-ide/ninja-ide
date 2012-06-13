@@ -198,6 +198,7 @@ class Analyzer(object):
                 logger.error('line number: %d' % symbol.lineno)
                 logger.error('line: %s' % self.content[symbol.lineno])
                 logger.error('source: \n%s' % ''.join(self.content))
+                raise
             assign = model.Assign(arg.id)
             data_type = (model.late_resolution, None)
             if defaults:
