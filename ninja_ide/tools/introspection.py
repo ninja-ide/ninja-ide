@@ -12,7 +12,6 @@ logger_imports = logging.getLogger(
 logger_symbols = logging.getLogger(
     'ninja_ide.tools.introspection.obtainint_symbols')
 
-
 _map_type = {
     _ast.Tuple: 'tuple',
     _ast.List: 'list',
