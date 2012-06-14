@@ -106,6 +106,9 @@ class TreeProjectsWidget(QTreeWidget):
             if path not in self.state_index:
                 self.state_index.append(path)
 
+    def shutdown(self):
+        self._fileWatcher.shutdown_notification()
+
     def add_extra_menu(self, menu, lang='all'):
         '''
         Add an extra menu for the given language

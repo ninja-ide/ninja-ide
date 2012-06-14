@@ -60,5 +60,11 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
             notifier.join()
             del(self.watching_paths[path])
 
+    def shutdown_notification(self):
+        for each_path in self.watching_paths:
+            notifier = self.watching_paths[each_path]
+            notifier.stop()
+            notifier.join()
+
     def _emit_signal_on_change(self, event, path):
         self.emit(SIGNAL("fileChanged(int, QString)"), event, path)

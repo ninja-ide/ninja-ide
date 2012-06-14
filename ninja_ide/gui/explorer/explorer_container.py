@@ -97,6 +97,8 @@ class __ExplorerContainer(QTabWidget):
             self.addTab(self._treeProjects, self.tr('Projects'))
             self.connect(self._treeProjects, SIGNAL("runProject()"),
                 self.__ide.actions.execute_project)
+            self.connect(self.__ide, SIGNAL("goingDown()"),
+                        self._treeProjects.shutdown)
             self.connect(self._treeProjects,
                 SIGNAL("addProjectToConsole(QString)"),
                 self.__ide.actions.add_project_to_console)
