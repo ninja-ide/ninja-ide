@@ -220,6 +220,9 @@ class LocateThread(QThread):
                 except Exception, reason:
                     logger.error(
                         '__locate_code_in_project, error: %r' % reason)
+                    logger.error(
+                        '__locate_code_in_project fail for file: %r' %
+                        one_file.absoluteFilePath())
 
     def locate_file_code(self):
         file_name = file_manager.get_basename(self._file_path)
