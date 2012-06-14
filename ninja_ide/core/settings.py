@@ -149,6 +149,7 @@ SUPPORTED_EXTENSIONS = [
     '.ui',
     '.css',
     '.json',
+    '.js',
     '.ini']
 
 
