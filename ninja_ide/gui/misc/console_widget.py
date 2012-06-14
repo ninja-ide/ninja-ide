@@ -2,6 +2,7 @@
 from __future__ import absolute_import
 
 import re
+import logging
 
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QPlainTextEdit
@@ -10,6 +11,7 @@ from PyQt4.QtGui import QTextFormat
 from PyQt4.QtGui import QTextEdit
 from PyQt4.QtGui import QColor
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import QProcess
 from PyQt4.QtCore import QRegExp
 from PyQt4.QtCore import SIGNAL
 
@@ -20,6 +22,8 @@ from ninja_ide.gui.editor import highlighter
 from ninja_ide.tools.completion import completer
 from ninja_ide.tools.completion import completer_widget
 
+
+logger = logging.getLogger('ninja_ide.gui.misc.console_widget')
 
 BRACES = {"'": "'",
     '"': '"',
@@ -58,6 +62,33 @@ class ConsoleWidget(QPlainTextEdit):
         self.connect(self, SIGNAL("cursorPositionChanged()"),
             self.highlight_current_line)
         self.highlight_current_line()
+
+        self._proc = QProcess(self)
+        self.connect(self._proc, SIGNAL("readyReadStandardOutput()"),
+            self._python_path_detected)
+        self.connect(self._proc, SIGNAL("error(QProcess::ProcessError)"),
+            self.process_error)
+        self._add_system_path_for_frozen()
+
+    def _add_system_path_for_frozen(self):
+        try:
+            self._proc.start(settings.PYTHON_PATH, [resources.GET_SYSTEM_PATH])
+        except Exception, reason:
+            logger.error('Could not get system path, error: %r' % reason)
+
+    def _python_path_detected(self):
+        paths = self._proc.readAllStandardOutput().data().decode('utf8')
+        add_system_path = ('import sys; '
+                           'sys.path = list(set(sys.path + %s))' % paths)
+        self._write(add_system_path)
+
+    def process_error(self, error):
+        message = ''
+        if error == 0:
+            message = 'Failed to start'
+        else:
+            message = 'Error during execution, QProcess error: %d' % error
+        logger.error('Could not get system path, error: %r' % message)
 
     def _create_context_menu(self):
         self.popup_menu = self.createStandardContextMenu()
