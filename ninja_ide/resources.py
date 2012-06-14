@@ -65,9 +65,9 @@ SCHEMES_URL = 'http://ninja-ide.org/plugins/schemes'
 
 LANGUAGES_URL = 'http://ninja-ide.org/plugins/languages'
 
-PLUGINS_WEB = 'http://ninja-ide.org/plugins/official'
+PLUGINS_WEB = 'http://ninja-ide.org/plugins/api/official'
 
-PLUGINS_COMMUNITY = 'http://ninja-ide.org/plugins/community'
+PLUGINS_COMMUNITY = 'http://ninja-ide.org/plugins/api/community'
 
 
 ###############################################################################
