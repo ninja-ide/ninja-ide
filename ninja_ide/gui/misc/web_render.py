@@ -23,5 +23,6 @@ class WebRender(QWidget):
     def render_page(self, url):
         self.webFrame.load(QUrl('file:///' + url))
 
-    def render_from_html(self, html):
-        self.webFrame.setHtml(html)
+    def render_from_html(self, html, url):
+        url = QUrl(url)
+        self.webFrame.setHtml(html, url)
