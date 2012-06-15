@@ -551,7 +551,8 @@ class LocateCompleter(QLineEdit):
         return self._create_list_widget_items(self.tempLocations)
 
     def _advanced_filter(self, filterOptions):
-        if filterOptions[0] == FILTERS['this-file']:
+        was_this_file = filterOptions[0] == FILTERS['this-file']
+        if was_this_file:
             filterOptions[0] = FILTERS['files']
             main = main_container.MainContainer()
             editorWidget = main.get_actual_editor()
@@ -568,6 +569,11 @@ class LocateCompleter(QLineEdit):
                 filterOptions.insert(1, self._filterData.path)
             else:
                 filterOptions[1] = self._filterData.path
+        if was_this_file and len(filterOptions) > 4:
+            currentItem = self.frame.listWidget.currentItem()
+            if type(currentItem) is LocateItem:
+                if currentItem._data.type == FILTERS['classes']:
+                    self._filterData = currentItem._data
         global mapping_locations
         filePath = filterOptions[1]
 
