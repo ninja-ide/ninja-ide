@@ -348,6 +348,8 @@ class Highlighter(QSyntaxHighlighter):
             index = expression.indexIn(text, index + length)
 
     def _rehighlight_lines(self, lines):
+        if self.document() is None:
+            return
         for line in lines:
             block = self.document().findBlockByNumber(line)
             self.rehighlightBlock(block)
