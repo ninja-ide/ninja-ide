@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
+import re
 import logging
 
 from PyQt4.QtGui import QStatusBar
@@ -307,6 +308,10 @@ class SearchWidget(QWidget):
         text = unicode(editor.toPlainText())
         search = unicode(self._line.text())
         hasSearch = len(search) > 0
+        if self._checkWholeWord.isChecked():
+            pattern = r'\b%s\b' % search
+            temp_text = ''.join(re.findall(pattern, text, re.IGNORECASE))
+            text = temp_text if temp_text != '' else text
         if self._checkSensitive.isChecked():
             self.totalMatches = text.count(search)
         else:
