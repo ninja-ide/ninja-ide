@@ -26,7 +26,12 @@ def expand_attribute(attribute):
     if attribute.__class__ is ast.Name:
         attribute_id = attribute.id
     elif attribute.__class__ is ast.Call:
-        attribute_id = attribute.func.id
+        if attribute.func.__class__ is ast.Attribute:
+            attribute_id = '%s.%s()' % (
+                expand_attribute(attribute.func.value),
+                attribute.func.attr)
+        else:
+            attribute_id = '%s()' % attribute.func.id
     name = attribute_id if name == '' else ("%s.%s" % (attribute_id, name))
     return name
 
