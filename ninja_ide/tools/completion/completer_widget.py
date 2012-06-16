@@ -1,6 +1,7 @@
 # -*- coding: utf-8 *-*
 
 from PyQt4.QtGui import QApplication
+from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QFrame
 from PyQt4.QtGui import QCompleter
 from PyQt4.QtGui import QStackedLayout
@@ -146,7 +147,22 @@ class CodeCompletionWidget(QFrame):
         else:
             self.hide_completer()
 
+    def _invalid_completion_position(self):
+        result = False
+        cursor = self._editor.textCursor()
+        cursor.movePosition(QTextCursor.StartOfLine,
+            QTextCursor.KeepAnchor)
+        selection = unicode(cursor.selectedText())[:-1].split(' ')
+        if len(selection) == 0 or selection[-1] == '' or \
+           selection[-1].isdigit():
+            result = True
+        return result
+
     def fill_completer(self):
+        if self._editor.cursor_inside_string() or \
+           self._editor.cursor_inside_comment() or \
+           self._invalid_completion_position():
+            return
         source = self._editor.get_text()
         source = source.encode(self._editor.encoding)
         offset = self._editor.textCursor().position()
