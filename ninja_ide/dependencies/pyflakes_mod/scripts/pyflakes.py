@@ -46,19 +46,14 @@ def check(codeString, filename):
             # bogus message that claims the encoding the file declared was
             # unknown.
             pass
-#            print >> sys.stderr, "%s: problem decoding source" % (filename, )
         else:
             line = text.splitlines()[-1]
 
             if offset is not None:
                 offset = offset - (len(text) - len(line))
 
-#            print >> sys.stderr, '%s:%d: %s' % (filename, lineno, msg)
-#            print >> sys.stderr, line
-
             if offset is not None:
                 pass
-#                print >> sys.stderr, " " * offset, "^"
 
         return 1
     else:
@@ -81,7 +76,6 @@ def checkPath(filename):
     try:
         return check(file(filename, 'U').read() + '\n', filename)
     except IOError, msg:
-#        print >> sys.stderr, "%s: %s" % (filename, msg.args[1])
         return 1
 
 
