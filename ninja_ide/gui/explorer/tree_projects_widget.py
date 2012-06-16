@@ -72,7 +72,7 @@ class TreeProjectsWidget(QTreeWidget):
         self._loading_items = {}
         self._thread_execution = {}
         self.__enableCloseNotification = True
-        self._fileWatcher = NinjaFileSystemWatcher()
+        self._fileWatcher = NinjaFileSystemWatcher
 
         self.header().setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.header().setResizeMode(0, QHeaderView.ResizeToContents)

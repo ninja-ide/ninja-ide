@@ -19,6 +19,7 @@ from PyQt4.QtCore import SIGNAL
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
+from ninja_ide.core.filesystem_notifications import NinjaFileSystemWatcher
 from ninja_ide.gui.editor import editor
 from ninja_ide.gui.main_panel import browser_widget
 
@@ -58,6 +59,7 @@ class TabWidget(QTabWidget):
         self.setCornerWidget(self.navigator, Qt.TopRightCorner)
         self._parent = parent
         self.follow_mode = False
+        self._change_map = {}
         # Configure tabs size behavior
 #        self.setElideMode(Qt.ElideRight)
 #        self.tabBar().setExpanding(True)
@@ -67,7 +69,8 @@ class TabWidget(QTabWidget):
         #Keep track of the tab titles
         self.titles = []
         self.dontLoopInExpandTitle = False
-
+        self.connect(NinjaFileSystemWatcher,
+            SIGNAL("fileChanged(int, QString)"), self._file_changed)
         self.connect(self, SIGNAL("tabCloseRequested(int)"), self.removeTab)
         self.connect(self.navigator.btnPrevious, SIGNAL("clicked()"),
             lambda: self._navigate_code(False))
@@ -152,13 +155,19 @@ class TabWidget(QTabWidget):
         if not editorWidget.ask_if_externally_modified:
             return
         #Check external modifications!
-        self.check_for_external_modifications(editorWidget)
+#        self.check_for_external_modifications(editorWidget)
         #we can ask again
         self.question_already_open = False
 
+    def _file_changed(self, change_type, file_path):
+        print "the file %s changed" % file_path
+        print "the change was %d" % change_type
+        if self.is_open(file_path) and (file_path not in self._change_map):
+            self._change_map[file_path] = change_type
+
     def check_for_external_modifications(self, editorWidget):
         reloaded = False
-        if editorWidget.check_external_modification() and \
+        if (editorWidget.ID in self._change_map) and \
            not self.question_already_open:
             #dont ask again if you are already asking!
             self.question_already_open = True
@@ -168,6 +177,7 @@ class TabWidget(QTabWidget):
             if val == QMessageBox.Yes:
                 self.emit(SIGNAL("reloadFile(QWidget)"), editorWidget)
                 reloaded = True
+                del(self._change_map[editorWidget.ID])
             else:
                 #dont ask again while the current file is open
                 editorWidget.ask_if_externally_modified = False

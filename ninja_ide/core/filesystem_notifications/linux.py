@@ -29,6 +29,7 @@ class NinjaProcessEvent(ProcessEvent):
         self._process_callback(base_watcher.BaseWatcher.DELETED, event.path)
 
     def process_IN_MODIFY(self, event):
+        print "Algo se movio en %s " % event.path
         self._process_callback(base_watcher.BaseWatcher.MODIFIED, event.path)
 
     def process_IN_MOVED_TO(self, event):

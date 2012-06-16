@@ -15,4 +15,4 @@ else:
     source = linux
 
 
-NinjaFileSystemWatcher = source.NinjaFileSystemWatcher
+NinjaFileSystemWatcher = source.NinjaFileSystemWatcher()
