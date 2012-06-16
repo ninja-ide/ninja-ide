@@ -160,10 +160,8 @@ class TabWidget(QTabWidget):
         self.question_already_open = False
 
     def _file_changed(self, change_type, file_path):
-        print "the file %s changed" % file_path
-        print "the change was %d" % change_type
         if self.is_open(file_path) and (file_path not in self._change_map):
-            self._change_map[file_path] = change_type
+            self._change_map[unicode(file_path)] = int(change_type)
 
     def check_for_external_modifications(self, editorWidget):
         reloaded = False

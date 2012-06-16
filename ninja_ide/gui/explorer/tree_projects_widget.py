@@ -298,12 +298,12 @@ class TreeProjectsWidget(QTreeWidget):
         proj.show()
 
     def _refresh_project_by_path(self, event, folder):
-        item = self.get_item_for_path(unicode(folder))
-        incumbent_events = (self._fileWatcher.ADDED, self._fileWatcher.DELETED,
-                          self._fileWatcher.REMOVE, self._fileWatcher.RENAME)
-        if event in incumbent_events:
-            project = self._get_project_root(item)
-            self._refresh_project(project)
+        oprojects = self.get_open_projects()
+        for each_project in oprojects:
+            p_path = unicode(each_project.path)
+            if file_manager.belongs_to_folder(p_path, unicode(folder)):
+                self._refresh_project(each_project)
+                return
 
     def _refresh_project(self, item=None):
         if item is None:

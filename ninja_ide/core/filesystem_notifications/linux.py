@@ -20,23 +20,23 @@ class NinjaProcessEvent(ProcessEvent):
         self._process_callback = process_callback
 
     def process_IN_CREATE(self, event):
-        self._process_callback(base_watcher.BaseWatcher.ADDED, event.path)
+        self._process_callback(base_watcher.BaseWatcher.ADDED, event.pathname)
 
     def process_IN_DELETE(self, event):
-        self._process_callback(base_watcher.BaseWatcher.DELETED, event.path)
+        self._process_callback(base_watcher.BaseWatcher.DELETED, event.pathname)
 
     def process_IN_DELETE_SELF(self, event):
-        self._process_callback(base_watcher.BaseWatcher.DELETED, event.path)
+        self._process_callback(base_watcher.BaseWatcher.DELETED, event.pathname)
 
     def process_IN_MODIFY(self, event):
-        print "Algo se movio en %s " % event.path
-        self._process_callback(base_watcher.BaseWatcher.MODIFIED, event.path)
+        self._process_callback(base_watcher.BaseWatcher.MODIFIED,
+                                event.pathname)
 
     def process_IN_MOVED_TO(self, event):
-        self._process_callback(base_watcher.BaseWatcher.REMOVE, event.path)
+        self._process_callback(base_watcher.BaseWatcher.REMOVE, event.pathname)
 
     def process_IN_MOVE_SELF(self, event):
-        self._process_callback(base_watcher.BaseWatcher.RENAME, event.path)
+        self._process_callback(base_watcher.BaseWatcher.RENAME, event.pathname)
 
 
 class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
