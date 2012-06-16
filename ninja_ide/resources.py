@@ -49,6 +49,8 @@ NINJA_THEME_DOWNLOAD = os.path.join(HOME_NINJA_PATH, "addins", "theme")
 
 LOG_FILE_PATH = os.path.join(HOME_NINJA_PATH, 'ninja_ide.log')
 
+GET_SYSTEM_PATH = os.path.join(PRJ_PATH, 'tools', 'get_system_path.py')
+
 ###############################################################################
 # URLS
 ###############################################################################
@@ -63,9 +65,9 @@ SCHEMES_URL = 'http://ninja-ide.org/plugins/schemes'
 
 LANGUAGES_URL = 'http://ninja-ide.org/plugins/languages'
 
-PLUGINS_WEB = 'http://ninja-ide.org/plugins/official'
+PLUGINS_WEB = 'http://ninja-ide.org/plugins/api/official'
 
-PLUGINS_COMMUNITY = 'http://ninja-ide.org/plugins/community'
+PLUGINS_COMMUNITY = 'http://ninja-ide.org/plugins/api/community'
 
 
 ###############################################################################

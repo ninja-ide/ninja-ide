@@ -1,6 +1,8 @@
 # *-* coding: utf-8 *-*
 from __future__ import absolute_import
 
+import webbrowser
+
 from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
@@ -9,6 +11,7 @@ from PyQt4.QtGui import QPixmap
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QSize
 from PyQt4.QtCore import QEvent
+from PyQt4.QtCore import SIGNAL
 
 import ninja_ide
 from ninja_ide import resources
@@ -48,12 +51,22 @@ NINJA-IDE provides tools to simplify the Python-software development
 and handles all kinds of situations thanks to its rich extensibility.""")))
         vbox.addWidget(QLabel(self.tr("Version: %1").arg(
                 ninja_ide.__version__)))
-        vbox.addWidget(QLabel(
-            self.tr("Website: %1").arg(ninja_ide.__url__)))
-        vbox.addWidget(QLabel(
-            self.tr("Source Code: %1").arg(ninja_ide.__source__)))
+        link_ninja = QLabel(
+            self.tr("Website: <a href='%1'>%1</a>").arg(ninja_ide.__url__))
+        vbox.addWidget(link_ninja)
+        link_source = QLabel(
+            self.tr("Source Code: <a href='%1'>%1</a>").arg(
+                ninja_ide.__source__))
+        vbox.addWidget(link_source)
 
+        self.connect(link_ninja, SIGNAL("linkActivated(QString)"),
+            self.link_activated)
+        self.connect(link_source, SIGNAL("linkActivated(QString)"),
+            self.link_activated)
         self.lblIcon.installEventFilter(self)
+
+    def link_activated(self, link):
+        webbrowser.open(str(link))
 
     def eventFilter(self, obj, event):
         if obj == self.lblIcon and event.type() == QEvent.MouseButtonPress:

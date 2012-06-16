@@ -18,7 +18,6 @@ class Pep8Checker(QThread):
     def check_style(self):
         if not self.isRunning():
             self.start()
-            self.setPriority(QThread.LowPriority)
 
     def reset(self):
         self.pep8checks = {}

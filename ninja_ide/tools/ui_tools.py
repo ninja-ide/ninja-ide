@@ -499,7 +499,8 @@ class LineEditTabCompleter(QLineEdit):
                 super(LineEditTabCompleter, self).event(eventTab)
             else:
                 completion = self.completer.currentCompletion()
-                completion += os.path.sep
+                if os.path.isdir(completion):
+                    completion += os.path.sep
                 self.selectAll()
                 self.insert(completion)
                 self.completer.popup().hide()

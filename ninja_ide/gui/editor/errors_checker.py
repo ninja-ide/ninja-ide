@@ -1,6 +1,7 @@
 # *-* coding: utf-8 *-*
 from __future__ import absolute_import
 
+import re
 import compiler
 
 from PyQt4.QtCore import QThread
@@ -12,6 +13,10 @@ from ninja_ide.dependencies.pyflakes_mod import checker
 
 class ErrorsChecker(QThread):
 
+    pat_disable_lint = re.compile('(\s)*#lint:disable$')
+    pat_enable_lint = re.compile('(\s)*#lint:enable$')
+    pat_ignore_lint = re.compile('(.)+#lint:ok$|(.)+# lint:ok$')
+
     def __init__(self, editor):
         QThread.__init__(self)
         self._editor = editor
@@ -20,13 +25,12 @@ class ErrorsChecker(QThread):
     def check_errors(self):
         if not self.isRunning():
             self.start()
-            self.setPriority(QThread.LowPriority)
 
     def reset(self):
         self.errorsSummary = {}
 
     def run(self):
-        self.sleep(2)
+        self.sleep(1)
         exts = settings.SYNTAX.get('python')['extension']
         file_ext = file_manager.get_file_extension(self._editor.ID)
         if file_ext in exts:
@@ -56,5 +60,31 @@ class ErrorsChecker(QThread):
                     self.errorsSummary[reason.lineno - 1] = [message]
                 else:
                     self.errorsSummary[0] = [message]
+            finally:
+                ignored_range, ignored_lines = self._get_ignore_range()
+                to_remove = [x for x in self.errorsSummary \
+                             for r in ignored_range if r[0] < x < r[1]]
+                to_remove += ignored_lines
+                for line in to_remove:
+                    self.errorsSummary.pop(line, None)
         else:
             self.reset()
+
+    def _get_ignore_range(self):
+        ignored_range = []
+        ignored_lines = []
+        block = self._editor.document().begin()
+        while block.isValid():
+            if self.pat_disable_lint.match(unicode(block.text())):
+                start = block.blockNumber()
+                while block.isValid():
+                    block = block.next()
+                    if self.pat_enable_lint.match(unicode(block.text())):
+                        end = block.blockNumber()
+                        ignored_range.append((start, end))
+                        break
+            elif self.pat_ignore_lint.match(unicode(block.text())):
+                ignored_lines.append(block.blockNumber())
+            block = block.next()
+
+        return (ignored_range, ignored_lines)

@@ -2,6 +2,7 @@
 from __future__ import absolute_import
 
 import re
+import logging
 import Queue
 
 from PyQt4.QtGui import QMessageBox
@@ -34,6 +35,8 @@ from ninja_ide.core import file_manager
 from ninja_ide.core import settings
 from ninja_ide.tools import json_manager
 
+
+logger = logging.getLogger('ninja_ide.tools.locator')
 
 mapping_locations = {}
 
@@ -210,14 +213,25 @@ class LocateThread(QThread):
                 file_filter)
             #process all files in current dir!
             for one_file in current_files:
-                self._grep_file_locate(unicode(one_file.absoluteFilePath()),
-                    one_file.fileName())
+                try:
+                    self._grep_file_locate(
+                        unicode(one_file.absoluteFilePath()),
+                        one_file.fileName())
+                except Exception, reason:
+                    logger.error(
+                        '__locate_code_in_project, error: %r' % reason)
+                    logger.error(
+                        '__locate_code_in_project fail for file: %r' %
+                        one_file.absoluteFilePath())
 
     def locate_file_code(self):
         file_name = file_manager.get_basename(self._file_path)
-        self._grep_file_locate(self._file_path, file_name)
-        self.dirty = True
-        self.execute = self.locate_code
+        try:
+            self._grep_file_locate(self._file_path, file_name)
+            self.dirty = True
+            self.execute = self.locate_code
+        except Exception, reason:
+            logger.error('locate_file_code, error: %r' % reason)
 
     def go_to_definition(self):
         self.dirty = True
@@ -265,12 +279,15 @@ class LocateThread(QThread):
     def get_this_file_locations(self, path):
         global mapping_locations
         thisFileLocations = mapping_locations.get(path, ())
-        if not thisFileLocations:
-            file_name = file_manager.get_basename(path)
-            self._grep_file_locate(path, file_name)
-            thisFileLocations = mapping_locations.get(path, ())
-        thisFileLocations = sorted(thisFileLocations[1:],
-            key=lambda item: item.name)
+        try:
+            if not thisFileLocations:
+                file_name = file_manager.get_basename(path)
+                self._grep_file_locate(path, file_name)
+                thisFileLocations = mapping_locations.get(path, ())
+            thisFileLocations = sorted(thisFileLocations[1:],
+                key=lambda item: item.name)
+        except Exception, reason:
+            logger.error('get_this_file_locations, error: %r' % reason)
         return thisFileLocations
 
     def convert_map_to_array(self):
@@ -299,7 +316,8 @@ class LocateThread(QThread):
         results = []
         with open(file_path) as f:
             content = f.read()
-            symbols = symbols_handler.obtain_symbols(content)
+            symbols = symbols_handler.obtain_symbols(content,
+                filename=file_path)
             if "classes" in symbols:
                 for claz in symbols['classes']:
                     line_number = symbols['classes'][claz][0] - 1
@@ -341,7 +359,8 @@ class LocateThread(QThread):
             ext = file_manager.get_file_extension(file_path)
             #obtain a symbols handler for this file extension
             symbols_handler = settings.get_symbols_handler(ext)
-            symbols = symbols_handler.obtain_symbols(content)
+            symbols = symbols_handler.obtain_symbols(content,
+                filename=file_path)
             if "classes" in symbols:
                 for claz in symbols['classes']:
                     if claz != clazzName:
@@ -532,7 +551,8 @@ class LocateCompleter(QLineEdit):
         return self._create_list_widget_items(self.tempLocations)
 
     def _advanced_filter(self, filterOptions):
-        if filterOptions[0] == FILTERS['this-file']:
+        was_this_file = filterOptions[0] == FILTERS['this-file']
+        if was_this_file:
             filterOptions[0] = FILTERS['files']
             main = main_container.MainContainer()
             editorWidget = main.get_actual_editor()
@@ -549,6 +569,11 @@ class LocateCompleter(QLineEdit):
                 filterOptions.insert(1, self._filterData.path)
             else:
                 filterOptions[1] = self._filterData.path
+        if was_this_file and len(filterOptions) > 4:
+            currentItem = self.frame.listWidget.currentItem()
+            if type(currentItem) is LocateItem:
+                if currentItem._data.type == FILTERS['classes']:
+                    self._filterData = currentItem._data
         global mapping_locations
         filePath = filterOptions[1]
 

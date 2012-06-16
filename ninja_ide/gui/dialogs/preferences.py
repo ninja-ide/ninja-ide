@@ -721,7 +721,7 @@ class EditorTab(QWidget):
         self._editorGeneral = EditorGeneral()
         self._editorConfiguration = EditorConfiguration()
         self._editorCompletion = EditorCompletion()
-        self._editorSchemeDesigner = EditorSchemeDesigner()
+        self._editorSchemeDesigner = EditorSchemeDesigner(self)
         self._tabs.addTab(self._editorGeneral, self.tr("General"))
         self._tabs.addTab(self._editorConfiguration, self.tr("Configuration"))
         self._tabs.addTab(self._editorCompletion, self.tr("Completion"))
@@ -741,6 +741,7 @@ class EditorGeneral(QWidget):
         QWidget.__init__(self)
         vbox = QVBoxLayout(self)
         self.original_style = copy.copy(resources.CUSTOM_SCHEME)
+        self.current_scheme = 'default'
 
         groupBoxMini = QGroupBox(self.tr("MiniMap:"))
         groupBoxTypo = QGroupBox(self.tr("Typography:"))
@@ -857,6 +858,7 @@ class EditorGeneral(QWidget):
                 resources.COLOR_SCHEME)
             editorWidget.restyle(editorWidget.lang)
             editorWidget._sidebarWidget.repaint()
+        self.current_scheme = scheme
 
     def _load_editor_font(self):
         try:
@@ -1162,8 +1164,9 @@ class EditorCompletion(QWidget):
 
 class EditorSchemeDesigner(QWidget):
 
-    def __init__(self):
+    def __init__(self, parent):
         super(EditorSchemeDesigner, self).__init__()
+        self._parent = parent
         vbox = QVBoxLayout(self)
         scrollArea = QScrollArea()
         vbox.addWidget(scrollArea)
@@ -1316,62 +1319,82 @@ class EditorSchemeDesigner(QWidget):
         frame.setLayout(vbox)
         scrollArea.setWidget(frame)
 
-        self.txtKeyword.setText(resources.CUSTOM_SCHEME.get('keyword',
-            resources.COLOR_SCHEME['keyword']))
-        self.txtOperator.setText(resources.CUSTOM_SCHEME.get('operator',
-            resources.COLOR_SCHEME['operator']))
-        self.txtBrace.setText(resources.CUSTOM_SCHEME.get('brace',
-            resources.COLOR_SCHEME['brace']))
-        self.txtDefinition.setText(resources.CUSTOM_SCHEME.get('definition',
-            resources.COLOR_SCHEME['definition']))
-        self.txtString.setText(resources.CUSTOM_SCHEME.get('string',
-            resources.COLOR_SCHEME['string']))
-        self.txtString2.setText(resources.CUSTOM_SCHEME.get('string2',
-            resources.COLOR_SCHEME['string2']))
-        self.txtSpaces.setText(resources.CUSTOM_SCHEME.get('spaces',
-            resources.COLOR_SCHEME['spaces']))
-        self.txtExtras.setText(resources.CUSTOM_SCHEME.get('extras',
-            resources.COLOR_SCHEME['extras']))
-        self.txtComment.setText(resources.CUSTOM_SCHEME.get('comment',
-            resources.COLOR_SCHEME['comment']))
-        self.txtProperObject.setText(resources.CUSTOM_SCHEME.get(
-            'properObject', resources.COLOR_SCHEME['properObject']))
-        self.txtNumbers.setText(resources.CUSTOM_SCHEME.get('numbers',
-            resources.COLOR_SCHEME['numbers']))
-        self.txtEditorText.setText(resources.CUSTOM_SCHEME.get('editor-text',
-            resources.COLOR_SCHEME['editor-text']))
-        self.txtEditorBackground.setText(resources.CUSTOM_SCHEME.get(
-            'editor-background', resources.COLOR_SCHEME['editor-background']))
-        self.txtEditorSelectionColor.setText(resources.CUSTOM_SCHEME.get(
-            'editor-selection-color',
-            resources.COLOR_SCHEME['editor-selection-color']))
-        self.txtEditorSelectionBackground.setText(resources.CUSTOM_SCHEME.get(
-            'editor-selection-background',
-            resources.COLOR_SCHEME['editor-selection-background']))
-        self.txtCurrentLine.setText(resources.CUSTOM_SCHEME.get('current-line',
-            resources.COLOR_SCHEME['current-line']))
-        self.txtSelectedWord.setText(resources.CUSTOM_SCHEME.get(
-            'selected-word', resources.COLOR_SCHEME['selected-word']))
-        self.txtFoldArea.setText(resources.CUSTOM_SCHEME.get(
-            'fold-area', resources.COLOR_SCHEME['fold-area']))
-        self.txtFoldArrow.setText(resources.CUSTOM_SCHEME.get(
-            'fold-arrow', resources.COLOR_SCHEME['fold-arrow']))
-        self.txtLinkNavigate.setText(resources.CUSTOM_SCHEME.get(
-            'linkNavigate', resources.COLOR_SCHEME['linkNavigate']))
-        self.txtBraceBackground.setText(resources.CUSTOM_SCHEME.get(
-            'brace-background', resources.COLOR_SCHEME['brace-background']))
-        self.txtBraceForeground.setText(resources.CUSTOM_SCHEME.get(
-            'brace-foreground', resources.COLOR_SCHEME['brace-foreground']))
-        self.txtErrorUnderline.setText(resources.CUSTOM_SCHEME.get(
-            'error-underline', resources.COLOR_SCHEME['error-underline']))
-        self.txtPep8Underline.setText(resources.CUSTOM_SCHEME.get(
-            'pep8-underline', resources.COLOR_SCHEME['pep8-underline']))
-        self.txtSidebarBackground.setText(resources.CUSTOM_SCHEME.get(
-            'sidebar-background',
-            resources.COLOR_SCHEME['sidebar-background']))
-        self.txtSidebarForeground.setText(resources.CUSTOM_SCHEME.get(
-            'sidebar-foreground',
-            resources.COLOR_SCHEME['sidebar-foreground']))
+        self.connect(self.txtKeyword, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(
+                btnKeyword, self.txtKeyword.text()))
+        self.connect(self.txtOperator, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(
+                btnOperator, self.txtOperator.text()))
+        self.connect(self.txtBrace, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(btnBrace, self.txtBrace.text()))
+        self.connect(self.txtDefinition, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(
+                btnDefinition, self.txtDefinition.text()))
+        self.connect(self.txtString, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(btnString, self.txtString.text()))
+        self.connect(self.txtString2, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(
+                btnString2, self.txtString2.text()))
+        self.connect(self.txtSpaces, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(btnSpaces, self.txtSpaces.text()))
+        self.connect(self.txtExtras, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(btnExtras, self.txtExtras.text()))
+        self.connect(self.txtComment, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(
+                btnComment, self.txtComment.text()))
+        self.connect(self.txtProperObject, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(
+                btnProperObject, self.txtProperObject.text()))
+        self.connect(self.txtNumbers, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(btnNumbers,
+                self.txtNumbers.text()))
+        self.connect(self.txtEditorText, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(
+                btnEditorText, self.txtEditorText.text()))
+        self.connect(self.txtEditorBackground, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(btnEditorBackground,
+                self.txtEditorBackground.text()))
+        self.connect(self.txtEditorSelectionColor,
+            SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(btnEditorSelectionColor,
+                self.txtEditorSelectionColor.text()))
+        self.connect(self.txtEditorSelectionBackground,
+            SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(btnEditorSelectionBackground,
+                self.txtEditorSelectionBackground.text()))
+        self.connect(self.txtCurrentLine, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(
+                btnCurrentLine, self.txtCurrentLine.text()))
+        self.connect(self.txtSelectedWord, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(
+                btnSelectedWord, self.txtSelectedWord.text()))
+        self.connect(self.txtFoldArea, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(
+                btnFoldArea, self.txtFoldArea.text()))
+        self.connect(self.txtFoldArrow, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(
+                btnFoldArrow, self.txtFoldArrow.text()))
+        self.connect(self.txtLinkNavigate, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(
+                btnLinkNavigate, self.txtLinkNavigate.text()))
+        self.connect(self.txtBraceBackground, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(btnBraceBackground,
+                self.txtBraceBackground.text()))
+        self.connect(self.txtBraceForeground, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(btnBraceForeground,
+                self.txtBraceForeground.text()))
+        self.connect(self.txtErrorUnderline, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(btnErrorUnderline,
+                self.txtErrorUnderline.text()))
+        self.connect(self.txtPep8Underline, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(
+                btnPep8Underline, self.txtPep8Underline.text()))
+        self.connect(self.txtSidebarBackground, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(btnSidebarBackground,
+                self.txtSidebarBackground.text()))
+        self.connect(self.txtSidebarForeground, SIGNAL("textChanged(QString)"),
+            lambda: self.apply_button_style(btnSidebarForeground,
+                self.txtSidebarForeground.text()))
 
         self.connect(btnKeyword, SIGNAL("clicked()"),
             lambda: self._pick_color(self.txtKeyword, btnKeyword))
@@ -1444,6 +1467,64 @@ class EditorSchemeDesigner(QWidget):
 
         self.connect(btnSaveScheme, SIGNAL("clicked()"), self.save_scheme)
 
+    def _apply_line_edit_style(self):
+        self.txtKeyword.setText(resources.CUSTOM_SCHEME.get('keyword',
+            resources.COLOR_SCHEME['keyword']))
+        self.txtOperator.setText(resources.CUSTOM_SCHEME.get('operator',
+            resources.COLOR_SCHEME['operator']))
+        self.txtBrace.setText(resources.CUSTOM_SCHEME.get('brace',
+            resources.COLOR_SCHEME['brace']))
+        self.txtDefinition.setText(resources.CUSTOM_SCHEME.get('definition',
+            resources.COLOR_SCHEME['definition']))
+        self.txtString.setText(resources.CUSTOM_SCHEME.get('string',
+            resources.COLOR_SCHEME['string']))
+        self.txtString2.setText(resources.CUSTOM_SCHEME.get('string2',
+            resources.COLOR_SCHEME['string2']))
+        self.txtSpaces.setText(resources.CUSTOM_SCHEME.get('spaces',
+            resources.COLOR_SCHEME['spaces']))
+        self.txtExtras.setText(resources.CUSTOM_SCHEME.get('extras',
+            resources.COLOR_SCHEME['extras']))
+        self.txtComment.setText(resources.CUSTOM_SCHEME.get('comment',
+            resources.COLOR_SCHEME['comment']))
+        self.txtProperObject.setText(resources.CUSTOM_SCHEME.get(
+            'properObject', resources.COLOR_SCHEME['properObject']))
+        self.txtNumbers.setText(resources.CUSTOM_SCHEME.get('numbers',
+            resources.COLOR_SCHEME['numbers']))
+        self.txtEditorText.setText(resources.CUSTOM_SCHEME.get('editor-text',
+            resources.COLOR_SCHEME['editor-text']))
+        self.txtEditorBackground.setText(resources.CUSTOM_SCHEME.get(
+            'editor-background', resources.COLOR_SCHEME['editor-background']))
+        self.txtEditorSelectionColor.setText(resources.CUSTOM_SCHEME.get(
+            'editor-selection-color',
+            resources.COLOR_SCHEME['editor-selection-color']))
+        self.txtEditorSelectionBackground.setText(resources.CUSTOM_SCHEME.get(
+            'editor-selection-background',
+            resources.COLOR_SCHEME['editor-selection-background']))
+        self.txtCurrentLine.setText(resources.CUSTOM_SCHEME.get('current-line',
+            resources.COLOR_SCHEME['current-line']))
+        self.txtSelectedWord.setText(resources.CUSTOM_SCHEME.get(
+            'selected-word', resources.COLOR_SCHEME['selected-word']))
+        self.txtFoldArea.setText(resources.CUSTOM_SCHEME.get(
+            'fold-area', resources.COLOR_SCHEME['fold-area']))
+        self.txtFoldArrow.setText(resources.CUSTOM_SCHEME.get(
+            'fold-arrow', resources.COLOR_SCHEME['fold-arrow']))
+        self.txtLinkNavigate.setText(resources.CUSTOM_SCHEME.get(
+            'linkNavigate', resources.COLOR_SCHEME['linkNavigate']))
+        self.txtBraceBackground.setText(resources.CUSTOM_SCHEME.get(
+            'brace-background', resources.COLOR_SCHEME['brace-background']))
+        self.txtBraceForeground.setText(resources.CUSTOM_SCHEME.get(
+            'brace-foreground', resources.COLOR_SCHEME['brace-foreground']))
+        self.txtErrorUnderline.setText(resources.CUSTOM_SCHEME.get(
+            'error-underline', resources.COLOR_SCHEME['error-underline']))
+        self.txtPep8Underline.setText(resources.CUSTOM_SCHEME.get(
+            'pep8-underline', resources.COLOR_SCHEME['pep8-underline']))
+        self.txtSidebarBackground.setText(resources.CUSTOM_SCHEME.get(
+            'sidebar-background',
+            resources.COLOR_SCHEME['sidebar-background']))
+        self.txtSidebarForeground.setText(resources.CUSTOM_SCHEME.get(
+            'sidebar-foreground',
+            resources.COLOR_SCHEME['sidebar-foreground']))
+
     def _pick_color(self, lineedit, btn):
         color = QColorDialog.getColor(QColor(lineedit.text()),
             self, self.tr("Choose Color for: "))
@@ -1453,10 +1534,11 @@ class EditorSchemeDesigner(QWidget):
             self._preview_style()
 
     def apply_button_style(self, btn, color_name):
-        btn.setAutoFillBackground(True)
-        style = ('background: %s; border-radius: 5px; '
-                 'padding: 5px;' % color_name)
-        btn.setStyleSheet(style)
+        if QColor(color_name).isValid():
+            btn.setAutoFillBackground(True)
+            style = ('background: %s; border-radius: 5px; '
+                     'padding: 5px;' % color_name)
+            btn.setStyleSheet(style)
 
     def _preview_style(self):
         editorWidget = main_container.MainContainer().get_actual_editor()
@@ -1502,6 +1584,19 @@ class EditorSchemeDesigner(QWidget):
         if editorWidget is not None:
             editorWidget.restyle(editorWidget.lang)
 
+    def showEvent(self, event):
+        super(EditorSchemeDesigner, self).showEvent(event)
+        schemes = self._parent._editorGeneral._schemes
+        scheme = unicode(self._parent._editorGeneral.current_scheme)
+        resources.CUSTOM_SCHEME = schemes.get(scheme, resources.COLOR_SCHEME)
+        editorWidget = main_container.MainContainer().get_actual_editor()
+        if editorWidget is not None:
+            editorWidget.restyle(editorWidget.lang)
+            editorWidget._sidebarWidget.repaint()
+        self._apply_line_edit_style()
+        if scheme != 'default':
+            self.line_name.setText(scheme)
+
     def save(self):
         """All the widgets in preferences must contain a save method."""
         pass
@@ -1510,15 +1605,20 @@ class EditorSchemeDesigner(QWidget):
         name = unicode(self.line_name.text()).strip()
         fileName = file_manager.create_path(
             resources.EDITOR_SKINS, name) + '.color'
-        if name != '' and not file_manager.file_exists(fileName):
+        answer = True
+        if file_manager.file_exists(fileName):
+            answer = QMessageBox.question(self,
+                self.tr("Scheme already exists"),
+                self.tr("Do you want to override the file: %s?" % fileName),
+                QMessageBox.Yes, QMessageBox.No)
+        if name != '' and answer == QMessageBox.Yes:
             scheme = self._preview_style()
             json_manager.save_editor_skins(fileName, scheme)
             QMessageBox.information(self, self.tr("Scheme Saved"),
                     self.tr("The scheme has been saved at: %s." % fileName))
-        elif fileName.strip() != '':
+        elif answer == QMessageBox.Yes:
             QMessageBox.information(self, self.tr("Scheme Not Saved"),
-                self.tr(
-                "The name probably is invalid or the file already exists."))
+                self.tr("The name probably is invalid."))
 
 
 class ThemeTab(QTabWidget):

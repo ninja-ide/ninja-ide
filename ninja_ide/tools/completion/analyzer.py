@@ -6,9 +6,12 @@
 
 import ast
 import _ast
+import logging
 
 from ninja_ide.tools.completion import model
 
+
+logger = logging.getLogger('ninja_ide.tools.completion.analyzer')
 
 MODULES = {}
 
@@ -23,7 +26,12 @@ def expand_attribute(attribute):
     if attribute.__class__ is ast.Name:
         attribute_id = attribute.id
     elif attribute.__class__ is ast.Call:
-        attribute_id = attribute.func.id
+        if attribute.func.__class__ is ast.Attribute:
+            attribute_id = '%s.%s()' % (
+                expand_attribute(attribute.func.value),
+                attribute.func.attr)
+        else:
+            attribute_id = '%s()' % attribute.func.id
     name = attribute_id if name == '' else ("%s.%s" % (attribute_id, name))
     return name
 
@@ -187,8 +195,15 @@ class Analyzer(object):
             data_type = self.__mapping.get(type_value, None)
             defaults.append((data_type, type_value))
         for arg in reversed(symbol.args.args):
-            if arg.id == 'self':
-                continue
+            try:
+                if arg.id == 'self':
+                    continue
+            except Exception, reason:
+                logger.error('_process_function, error: %r' % reason)
+                logger.error('line number: %d' % symbol.lineno)
+                logger.error('line: %s' % self.content[symbol.lineno])
+                logger.error('source: \n%s' % ''.join(self.content))
+                raise
             assign = model.Assign(arg.id)
             data_type = (model.late_resolution, None)
             if defaults:

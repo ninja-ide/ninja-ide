@@ -407,7 +407,7 @@ class __MainContainer(QSplitter):
             else:
                 self.move_to_open(fileName)
                 editorWidget = self.get_actual_editor()
-                if editorWidget:
+                if editorWidget and notStart:
                     if positionIsLineNumber:
                         editorWidget.go_to_line(cursorPosition)
                     else:
@@ -511,8 +511,9 @@ class __MainContainer(QSplitter):
                 ext = file_manager.get_file_extension(editorWidget.ID)
                 if ext != 'py':
                     filters = '(*.%s);;(*.py);;(*.*)' % ext
+            save_folder = self._get_save_folder(editorWidget.ID)
             fileName = unicode(QFileDialog.getSaveFileName(
-                self._parent, self.tr("Save File"), editorWidget.ID, filters))
+                self._parent, self.tr("Save File"), save_folder, filters))
             if not fileName:
                 return False
 
@@ -542,6 +543,15 @@ class __MainContainer(QSplitter):
             self.actualTab.setTabText(self.actualTab.currentIndex(),
                 self.tr("New Document"))
         return False
+
+    def _get_save_folder(self, fileName):
+        """
+        Returns the root directory of the 'Main Project' or the home folder
+        """
+        actual_project = self._parent.explorer.get_actual_project()
+        if actual_project:
+            return actual_project
+        return os.path.expanduser("~")
 
     def save_project(self, projectFolder):
         for i in xrange(self._tabMain.count()):
@@ -682,8 +692,7 @@ class __MainContainer(QSplitter):
         for fileData in files:
             if file_manager.file_exists(unicode(fileData[0])):
                 self.open_file(unicode(fileData[0]),
-                    fileData[1], notStart=notIDEStart,
-                    positionIsLineNumber=True)
+                    fileData[1], notStart=notIDEStart)
         self.actualTab = self._tabMain
 
     def check_for_unsaved_tabs(self):
