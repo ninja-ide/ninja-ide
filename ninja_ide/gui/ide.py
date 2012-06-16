@@ -483,9 +483,17 @@ def start(filenames=None, projects_path=None,
 
     #Set Stylesheet
     if settings.USE_STYLESHEET:
-        with open(resources.NINJA_THEME) as f:
-            qss = f.read()
-            app.setStyleSheet(qss)
+        if settings.NINJA_SKIN == 'Default':
+            with open(resources.NINJA_THEME) as f:
+                qss = f.read()
+                app.setStyleSheet(qss)
+        else:
+            file_name = ("%s.qss" % settings.NINJA_SKIN)
+            qss_file = file_manager.create_path(resources.NINJA_THEME_DOWNLOAD,
+                file_name)
+            with open(qss_file) as f:
+                qss = f.read()
+                app.setStyleSheet(qss)
 
     #Loading Themes
     splash.showMessage("Loading Themes", Qt.AlignRight | Qt.AlignTop, Qt.black)
