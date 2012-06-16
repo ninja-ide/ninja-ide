@@ -68,6 +68,19 @@ class SyntaxUserData(QTextBlockUserData):
     def __init__(self, error=False):
         super(SyntaxUserData, self).__init__()
         self.error = error
+        self.str_groups = []
+        self.comment_start = -1
+
+    def clear_data(self):
+        self.error = False
+        self.str_groups = []
+        self.comment_start = -1
+
+    def add_str_group(self, start, end):
+        self.str_groups.append((start + 1, end))
+
+    def comment_start_at(self, pos):
+        self.comment_start = pos
 
 
 class Highlighter(QSyntaxHighlighter):
@@ -188,9 +201,9 @@ class Highlighter(QSyntaxHighlighter):
         else:
             self.selected_word_pattern = None
 
-    def __highlight_pep8(self, char_format, block):
+    def __highlight_pep8(self, char_format, user_data):
         """Highlight the lines with errors."""
-        block.setUserData(SyntaxUserData(True))
+        user_data.error = True
         char_format = char_format.toCharFormat()
         char_format.setUnderlineColor(QColor(
             resources.CUSTOM_SCHEME.get('pep8-underline',
@@ -199,19 +212,15 @@ class Highlighter(QSyntaxHighlighter):
             QTextCharFormat.WaveUnderline)
         return char_format
 
-    def __highlight_lint(self, char_format, block):
+    def __highlight_lint(self, char_format, user_data):
         """Highlight the lines with errors."""
-        block.setUserData(SyntaxUserData(True))
+        user_data.error = True
         char_format = char_format.toCharFormat()
         char_format.setUnderlineColor(QColor(
             resources.CUSTOM_SCHEME.get('error-underline',
                 resources.COLOR_SCHEME['error-underline'])))
         char_format.setUnderlineStyle(
             QTextCharFormat.WaveUnderline)
-        return char_format
-
-    def __clean_error(self, char_format, block):
-        block.setUserData(SyntaxUserData())
         return char_format
 
     def highlightBlock(self, text):
@@ -247,24 +256,31 @@ class Highlighter(QSyntaxHighlighter):
     def threaded_highlight(self, text):
         hls = []
         block = self.currentBlock()
+        user_data = block.userData()
+        if user_data is None:
+            user_data = SyntaxUserData(False)
+        user_data.clear_data()
         block_number = block.blockNumber()
-        highlight_errors = self.__clean_error
+        highlight_errors = lambda cf, ud: cf
         if self.errors and (block_number in self.errors.errorsSummary):
             highlight_errors = self.__highlight_lint
         elif self.pep8 and (block_number in self.pep8.pep8checks):
             highlight_errors = self.__highlight_pep8
 
         char_format = block.charFormat()
-        char_format = highlight_errors(char_format, block)
+        char_format = highlight_errors(char_format, user_data)
         self.setFormat(0, len(block.text()), char_format)
 
         styles = self.thread_highlight.styles.get(block.blockNumber(), ())
         for index, length, char_format in styles:
-            char_format = highlight_errors(char_format, block)
+            char_format = highlight_errors(char_format, user_data)
             if (self.format(index) != STYLES['string']):
                 self.setFormat(index, length, char_format)
                 if char_format == STYLES['string']:
                     hls.append((index, index + length))
+                    user_data.add_str_group(index, index + length)
+                elif char_format == STYLES['comment']:
+                    user_data.comment_start_at(index)
 
         self.setCurrentBlockState(0)
         if not self.multi_start:
@@ -278,18 +294,24 @@ class Highlighter(QSyntaxHighlighter):
             # Do multi-line comment
             self.comment_multiline(text, self.multi_end[0], *self.multi_start)
 
+        block.setUserData(user_data)
+
     def realtime_highlight(self, text):
         hls = []
         block = self.currentBlock()
+        user_data = block.userData()
+        if user_data is None:
+            user_data = SyntaxUserData(False)
+        user_data.clear_data()
         block_number = block.blockNumber()
-        highlight_errors = self.__clean_error
+        highlight_errors = lambda cf, ud: cf
         if self.errors and (block_number in self.errors.errorsSummary):
             highlight_errors = self.__highlight_lint
         elif self.pep8 and (block_number in self.pep8.pep8checks):
             highlight_errors = self.__highlight_pep8
 
         char_format = block.charFormat()
-        char_format = highlight_errors(char_format, block)
+        char_format = highlight_errors(char_format, user_data)
         self.setFormat(0, len(block.text()), char_format)
 
         for expression, nth, char_format in self.rules:
@@ -299,12 +321,15 @@ class Highlighter(QSyntaxHighlighter):
                 # We actually want the index of the nth match
                 index = expression.pos(nth)
                 length = expression.cap(nth).length()
-                char_format = highlight_errors(char_format, block)
+                char_format = highlight_errors(char_format, user_data)
 
                 if (self.format(index) != STYLES['string']):
                     self.setFormat(index, length, char_format)
                     if char_format == STYLES['string']:
                         hls.append((index, index + length))
+                        user_data.add_str_group(index, index + length)
+                    elif char_format == STYLES['comment']:
+                        user_data.comment_start_at(index)
                 index = expression.indexIn(text, index + length)
 
         self.setCurrentBlockState(0)
@@ -343,9 +368,11 @@ class Highlighter(QSyntaxHighlighter):
             length = expression.cap(0).length()
             char_format = STYLES['spaces']
             if settings.HIGHLIGHT_WHOLE_LINE:
-                char_format = highlight_errors(char_format, block)
+                char_format = highlight_errors(char_format, user_data)
             self.setFormat(index, length, char_format)
             index = expression.indexIn(text, index + length)
+
+        block.setUserData(user_data)
 
     def _rehighlight_lines(self, lines):
         if self.document() is None:
@@ -412,7 +439,7 @@ class Highlighter(QSyntaxHighlighter):
                ((st_fmt == STYLES['comment']) and
                (self.previousBlockState() != 0))) and \
                 (len(start_collides) == 0):
-                style = highlight_errors(style, self.currentBlock())
+                style = highlight_errors(style, self.currentBlock().userData())
                 self.setFormat(start, length, style)
             else:
                 self.setCurrentBlockState(0)
