@@ -52,12 +52,14 @@ class CodeCompletion(object):
             #This is an expected situation, where i don't want to do anything
             #possible an unbalanced brace like: func(os.p| (| = cursor-end)
             pass
+        except IndentationError:
+            return []
         while token_code[-1][0] in (tkn.ENDMARKER, tkn.DEDENT, tkn.NEWLINE):
             token_code.pop()
         return token_code
 
     def _search_for_scope(self, token_code):
-        if not token_code[-1][3].startswith(' '):
+        if not token_code or not token_code[-1][3].startswith(' '):
             return None
         scopes = []
         indent = self.patIndent.match(token_code[-1][3])
@@ -98,13 +100,12 @@ class CodeCompletion(object):
         tokens = []
         keep_iter = True
         iterate = reversed(token_code)
-        value = iterate.next()
         while keep_iter:
-            if value[0] in (tkn.NEWLINE, tkn.INDENT, tkn.DEDENT):
-                keep_iter = False
-            tokens.append(value)
             try:
                 value = iterate.next()
+                if value[0] in (tkn.NEWLINE, tkn.INDENT, tkn.DEDENT):
+                    keep_iter = False
+                tokens.append(value)
             except:
                 keep_iter = False
         segment = ''
