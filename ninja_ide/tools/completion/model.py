@@ -93,7 +93,7 @@ class Module(Structure):
 
     def get_type(self, main_attr, child_attrs='', scope=None):
         result = (False, None)
-        if scope is None:
+        if not scope:
             value = self.imports.get(main_attr,
                 self.attributes.get(main_attr, None))
             if value is not None:

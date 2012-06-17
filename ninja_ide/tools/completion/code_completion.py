@@ -10,6 +10,7 @@ from tokenize import generate_tokens, TokenError
 from StringIO import StringIO
 
 from ninja_ide.core import settings
+from ninja_ide.gui.editor import helpers
 from ninja_ide.tools.completion import analyzer
 from ninja_ide.tools.completion import completer
 
@@ -36,6 +37,12 @@ class CodeCompletion(object):
         if source is None:
             with open(path) as f:
                 source = f.read()
+        split_last_lines = source.rsplit('\n', 2)
+        if len(split_last_lines) > 1 and \
+           split_last_lines[-2].endswith(':') and split_last_lines[-1] == '':
+            indent = helpers.get_indentation(split_last_lines[-2])
+            source += '%spass;' % indent
+
         self.current_module = self.analyzer.analyze(source)
 
     def update_file(self, path):
