@@ -62,6 +62,7 @@ class CodeCompletionWidget(QFrame):
 
         self.connect(self._editor.document(), SIGNAL("blockCountChanged(int)"),
             self.update_metadata)
+        self.update_metadata()
 
     def _select_next_row(self, move=1):
         new_row = self.completion_list.currentRow() + move
