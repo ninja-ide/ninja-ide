@@ -133,7 +133,7 @@ CHECK_FOR_DOCSTRINGS = False
 # MINIMAP
 ###############################################################################
 
-SHOW_MINIMAP = True
+SHOW_MINIMAP = False
 MINIMAP_MAX_OPACITY = 0.8
 MINIMAP_MIN_OPACITY = 0.1
 SIZE_PROPORTION = 0.17
@@ -353,7 +353,7 @@ def load_settings():
         'preferences/general/workspace', "").toString())
     #Editor
     SHOW_MINIMAP = qsettings.value(
-        'preferences/editor/minimapShow', True).toBool()
+        'preferences/editor/minimapShow', False).toBool()
     MINIMAP_MAX_OPACITY = qsettings.value(
         'preferences/editor/minimapMaxOpacity', 0.8).toFloat()[0]
     MINIMAP_MIN_OPACITY = qsettings.value(
