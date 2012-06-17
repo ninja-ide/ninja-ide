@@ -139,6 +139,8 @@ class CodeCompletion(object):
         final_word = ''
         if not var_segment.endswith('.') and len(words_final) > 1:
             final_word = words_final[1].strip()
+        elif (var_segment != "") and len(words_final) == 1:
+            final_word = words_final[0].strip()
         return final_word, (var_segment != "")
 
     def get_completion(self, code, offset):
