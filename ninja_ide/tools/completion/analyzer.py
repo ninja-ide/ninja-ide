@@ -4,6 +4,7 @@
 # We are not responsible for any kind of mental or emotional
 # damage that may arise from reading this code.
 
+import re
 import ast
 import _ast
 import logging
@@ -12,6 +13,8 @@ from ninja_ide.tools.completion import model
 
 
 logger = logging.getLogger('ninja_ide.tools.completion.analyzer')
+
+MAX_THRESHOLD = 3
 
 MODULES = {}
 
@@ -59,7 +62,7 @@ class Analyzer(object):
         """Collect metadata from a project."""
         #TODO
 
-    def _get_valid_module(self, source, retry=True):
+    def _get_valid_module(self, source, retry=0):
         """Try to parse the module and fix some errors if it has some."""
         astModule = None
         try:
@@ -71,14 +74,14 @@ class Analyzer(object):
                 new_line = ''
                 #This is failing sometimes, it should remaing commented
                 #until we find the proper fix.
-#                indent = re.match('^\s+', reason.text)
-#                if indent is not None:
-#                    new_line = indent.group() + 'pass'
+                indent = re.match('^\s+', reason.text)
+                if indent is not None:
+                    new_line = indent.group() + 'pass'
                 split_source = source.splitlines()
                 split_source[line] = new_line
                 source = '\n'.join(split_source)
-                if retry:
-                    astModule = self._get_valid_module(source, False)
+                if retry < MAX_THRESHOLD:
+                    astModule = self._get_valid_module(source, retry + 1)
         return astModule
 
     def _resolve_late(self, module):
