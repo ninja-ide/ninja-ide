@@ -1,16 +1,25 @@
 {
   "extension": [
-    "css", "qss"
+    "css",
+    "qss",
+    "less",
+    "sass"
   ],
   "comment": [
     "//"
   ],
+  "multiline_comment": {
+    "open": "/*",
+    "close": "*/"
+  },
   "string": [
     "\"",
     "'"
   ],
   "operators": [
-    "="
+    ":",
+    "{",
+    "}"
   ],
   "keywords": [
     "html",
@@ -45,6 +54,7 @@
     "border-bottom-width",
     "border-left-width",
     "border-width",
+    "border-radius",
     "bottom",
     "caption-side",
     "clear",

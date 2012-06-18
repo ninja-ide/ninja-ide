@@ -1,6 +1,8 @@
 {
   "extension": [
-    "html"
+    "html",
+    "htm",
+    "xhtml"
   ],
   "string": [
     "\""
@@ -19,6 +21,8 @@
     "address",
     "applet",
     "area",
+    "article",
+    "audio",
     "b",
     "base",
     "basefont",
@@ -47,8 +51,10 @@
     "form",
     "frame",
     "frameset",
+    "footer",
     "h[1-6]",
     "head",
+    "header",
     "hr",
     "html",
     "i",
