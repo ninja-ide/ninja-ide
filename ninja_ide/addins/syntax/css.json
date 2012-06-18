@@ -9,8 +9,8 @@
     "//"
   ],
   "multiline_comment": {
-    "open": "/*",
-    "close": "*/"
+    "open": "/\\*",
+    "close": "\\*/"
   },
   "string": [
     "\"",
@@ -18,8 +18,6 @@
   ],
   "operators": [
     ":",
-    "{",
-    "}"
   ],
   "keywords": [
     "alignment-adjust",
@@ -292,7 +290,7 @@
     "white-space",
     "widows",
     "width",
-    "word-break,"
+    "word-break",
     "word-spacing",
     "z-index"
   ],
