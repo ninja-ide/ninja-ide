@@ -16,8 +16,6 @@ logger = logging.getLogger('ninja_ide.tools.completion.analyzer')
 
 MAX_THRESHOLD = 3
 
-MODULES = {}
-
 
 def expand_attribute(attribute):
     parent_name = []
@@ -58,10 +56,6 @@ class Analyzer(object):
         self._fixed_line = -1
         self.content = None
 
-    def collect_metadata(self, project_path):
-        """Collect metadata from a project."""
-        #TODO
-
     def _get_valid_module(self, source, retry=0):
         """Try to parse the module and fix some errors if it has some."""
         astModule = None
@@ -84,9 +78,6 @@ class Analyzer(object):
                     astModule = self._get_valid_module(source, retry + 1)
         return astModule
 
-    def _resolve_late(self, module):
-        """Resolve the late_resolution objects inside the module."""
-
     def analyze(self, source):
         """Analyze the source provided and create the proper structure."""
         astModule = self._get_valid_module(source)
@@ -105,7 +96,6 @@ class Analyzer(object):
                 module.add_class(self._process_class(symbol))
             elif symbol.__class__ is ast.FunctionDef:
                 module.add_function(self._process_function(symbol))
-#        self.resolve_late(module)
 
         self.content = None
         return module

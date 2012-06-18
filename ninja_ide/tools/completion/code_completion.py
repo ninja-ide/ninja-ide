@@ -13,6 +13,7 @@ from ninja_ide.core import settings
 from ninja_ide.gui.editor import helpers
 from ninja_ide.tools.completion import analyzer
 from ninja_ide.tools.completion import completer
+from ninja_ide.tools.completion import completion_daemon
 
 
 #Because my python doesn't have it, and is not in the web docs either
@@ -24,14 +25,15 @@ class CodeCompletion(object):
 
     def __init__(self):
         self.analyzer = analyzer.Analyzer()
+        self.cdaemon = completion_daemon.CompletionDaemon()
         self.current_module = None
         self.patIndent = re.compile('^\s+')
         self._valid_op = (')', '}', ']')
         self._invalid_op = ('(', '{', '[')
         self.keywords = settings.SYNTAX['python']['keywords']
 
-    def analyze_project(self, path):
-        pass
+    def __del__(self):
+        self.cdaemon.stop()
 
     def analyze_file(self, path, source=None):
         if source is None:
@@ -44,6 +46,7 @@ class CodeCompletion(object):
             source += '%spass;' % indent
 
         self.current_module = self.analyzer.analyze(source)
+        self.cdaemon.inspect_module(path, self.current_module)
 
     def update_file(self, path):
         pass

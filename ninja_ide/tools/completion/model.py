@@ -18,6 +18,7 @@ class _TypeData(object):
             self.is_native = True
         else:
             self.is_native = False
+        self.can_resolve = True
 
     def get_data_type(self):
         return self.data_type
@@ -129,6 +130,16 @@ class Module(Structure):
             module_imports.append(self.imports[name].line_content)
         return module_imports
 
+    def need_resolution(self):
+        to_resolve = False
+        for attr in self.attributes:
+            attribute = self.attributes[attr]
+            for d in attribute.data:
+                if d.data_type == late_resolution:
+                    to_resolve = True
+                    break
+        return to_resolve
+
 
 class Clazz(Structure):
 
@@ -173,7 +184,7 @@ class Assign(object):
         self.data.append(info)
 
     def get_data_type(self):
-        if self.data[0].is_native:
+        if self.data[0].data_type is not late_resolution:
             return self.data[0].data_type
         else:
             return None
