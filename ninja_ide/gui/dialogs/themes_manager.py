@@ -73,7 +73,7 @@ class ThemesManagerWidget(QDialog):
         try:
             descriptor_schemes = urllib2.urlopen(resources.SCHEMES_URL)
             schemes = json_manager.parse(descriptor_schemes)
-            schemes = [[name, schemes[name]] for name in schemes]
+            schemes = [(d['name'], d['download']) for d in schemes]
             local_schemes = self.get_local_schemes()
             schemes = [schemes[i] for i in range(len(schemes)) if \
                 os.path.basename(schemes[i][1]) not in local_schemes]
