@@ -9,7 +9,6 @@ import urllib2
 import zipfile
 import traceback
 import logging
-import subprocess
 try:
     import json
 except ImportError:
@@ -449,6 +448,8 @@ def has_dependencies(plug):
             req_file = os.path.join(os.path.join(PLUGINS, module), REQUIREMENTS)
             if os.path.isfile(req_file):
                 return (True, COMMAND_FOR_PIP_INSTALL % req_file)
+            #the plugin was found but no requirement then break!
+            break
     return (False, None)
 
 

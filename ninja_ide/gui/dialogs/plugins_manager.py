@@ -29,9 +29,6 @@ from ninja_ide.tools import ui_tools
 
 logger = logging.getLogger('ninja_ide.gui.dialogs.plugin_manager')
 
-LEGEND = """It seems that some plugins needs some dependencies to be solved to
-work properly, you should install them as follows using a Terminal"""
-
 TABLE_HEADER = ('Name', 'Version')
 HTML_STYLE = """
 <html>
@@ -448,8 +445,8 @@ class ThreadLoadPlugins(QThread):
                 p.append(name)
                 plugin_manager.update_local_plugin_descriptor((p, ))
                 req_command = plugin_manager.has_dependencies(p)
-                if req_command:
-                    self._manager._requirements[p[0]] = req_command
+                if req_command[0]:
+                    self._manager._requirements[p[0]] = req_command[1]
                 self.emit(SIGNAL("plugin_downloaded(PyQt_PyObject)"), p)
             except Exception, e:
                 logger.warning("Impossible to install (%s): %s", p[0], e)
@@ -479,12 +476,13 @@ class ThreadLoadPlugins(QThread):
 
 class DependenciesHelpDialog(QDialog):
     def __init__(self, requirements_dict):
-        global LEGEND
-        QDialog.__init__(self)
+        super(DependenciesHelpDialog, self).__init__()
         self.setWindowTitle(self.tr("Plugin requirements"))
         self.resize(525, 400)
         vbox = QVBoxLayout(self)
-        label = QLabel(self.tr(LEGEND))
+        label = QLabel(self.tr("""It seems that some plugins needs some
+            dependencies to be solved to work properly, you should install them
+            as follows using a Terminal"""))
         vbox.addWidget(label)
         self._editor = QPlainTextEdit()
         self._editor.setReadOnly(True)
