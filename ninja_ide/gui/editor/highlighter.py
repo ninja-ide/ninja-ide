@@ -286,10 +286,12 @@ class Highlighter(QSyntaxHighlighter):
         if not self.multi_start:
             # Do multi-line strings
             in_multiline = self.match_multiline(text, *self.tri_single,
-                hls=hls, highlight_errors=highlight_errors)
+                hls=hls, highlight_errors=highlight_errors,
+                user_data=user_data)
             if not in_multiline:
                 in_multiline = self.match_multiline(text, *self.tri_double,
-                    hls=hls, highlight_errors=highlight_errors)
+                    hls=hls, highlight_errors=highlight_errors,
+                    user_data=user_data)
         else:
             # Do multi-line comment
             self.comment_multiline(text, self.multi_end[0], *self.multi_start)
@@ -336,10 +338,12 @@ class Highlighter(QSyntaxHighlighter):
         if not self.multi_start:
             # Do multi-line strings
             in_multiline = self.match_multiline(text, *self.tri_single,
-                hls=hls, highlight_errors=highlight_errors)
+                hls=hls, highlight_errors=highlight_errors,
+                user_data=user_data)
             if not in_multiline:
                 in_multiline = self.match_multiline(text, *self.tri_double,
-                    hls=hls, highlight_errors=highlight_errors)
+                    hls=hls, highlight_errors=highlight_errors,
+                    user_data=user_data)
         else:
             # Do multi-line comment
             self.comment_multiline(text, self.multi_end[0], *self.multi_start)
@@ -401,7 +405,7 @@ class Highlighter(QSyntaxHighlighter):
         self._rehighlight_lines(refresh_lines)
 
     def match_multiline(self, text, delimiter, in_state, style,
-        hls=[], highlight_errors=lambda x: x):
+        hls=[], highlight_errors=lambda x: x, user_data=None):
         """Do highlighting of multi-line strings. ``delimiter`` should be a
         ``QRegExp`` for triple-single-quotes or triple-double-quotes, and
         ``in_state`` should be a unique integer to represent the corresponding
@@ -439,7 +443,9 @@ class Highlighter(QSyntaxHighlighter):
                ((st_fmt == STYLES['comment']) and
                (self.previousBlockState() != 0))) and \
                 (len(start_collides) == 0):
-                style = highlight_errors(style, self.currentBlock().userData())
+                if user_data is not None:
+                    style = highlight_errors(
+                        style, self.currentBlock().userData())
                 self.setFormat(start, length, style)
             else:
                 self.setCurrentBlockState(0)
