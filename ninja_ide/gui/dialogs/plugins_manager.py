@@ -2,8 +2,9 @@
 from __future__ import absolute_import
 
 import webbrowser
-from copy import copy
 import logging
+from copy import copy
+from distutils import version
 
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QDialog
@@ -419,7 +420,12 @@ class ThreadLoadPlugins(QThread):
                 community_available = [p for p in community_available
                         if unicode(p["name"]) != unicode(local_data["name"])]
             #check versions
-            if ava and float(ava["version"]) > float(local_data["version"]):
+            if ava:
+                available_version = version.LooseVersion(str(ava["version"]))
+            else:
+                available_version = version.LooseVersion('0.0')
+            local_version = version.LooseVersion(str(local_data["version"]))
+            if available_version < local_version:
                 #this plugin has an update
                 updates.append(ava)
         #set manager attributes
