@@ -61,7 +61,7 @@ PLUGINS_DOC = "http://code.google.com/p/ninja-ide/wiki/New_Plugins_API"
 
 UPDATES_URL = 'http://ninja-ide.org/updates'
 
-SCHEMES_URL = 'http://ninja-ide.org/plugins/schemes'
+SCHEMES_URL = 'http://ninja-ide.org/schemes/api/'
 
 LANGUAGES_URL = 'http://ninja-ide.org/plugins/languages'
 

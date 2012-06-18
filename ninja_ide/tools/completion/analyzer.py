@@ -68,7 +68,7 @@ class Analyzer(object):
                 new_line = ''
                 #This is failing sometimes, it should remaing commented
                 #until we find the proper fix.
-                indent = re.match('^\s+', reason.text)
+                indent = re.match('^\s+', unicode(reason.text))
                 if indent is not None:
                     new_line = indent.group() + 'pass'
                 split_source = source.splitlines()
