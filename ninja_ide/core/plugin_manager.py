@@ -17,6 +17,8 @@ except ImportError:
 from ninja_ide import resources
 
 logger = logging.getLogger('ninja_ide.core.plugin_manager')
+REQUIREMENTS = 'requirements.txt'
+COMMAND_FOR_PIP_INSTALL = 'pip install -r %s'
 
 
 class ServiceLocator(object):
@@ -423,6 +425,32 @@ def download_plugin(file_):
     #using set operations get the difference that is the new plugin
     new_plugin = (plugins_installed_after - plugins_installed_before).pop()
     return new_plugin
+
+
+def has_dependencies(plug):
+    global REQUIREMENTS, COMMAND_FOR_PIP_INSTALL
+
+    plugin_name = plug[0]
+    structure = []
+    if os.path.isfile(resources.PLUGINS_DESCRIPTOR):
+        read = open(resources.PLUGINS_DESCRIPTOR, 'r')
+        structure = json.load(read)
+        read.close()
+    PLUGINS = resources.PLUGINS
+    for p in structure:
+        if p['name'] == plugin_name:
+            pd_file = os.path.join(PLUGINS, p['plugin-descriptor'])
+            p_descriptor_file = open(pd_file, 'r')
+            p_json = json.load(p_descriptor_file)
+            p_descriptor_file.close()
+            module = p_json.get('module')
+            #plugin_module/requirements.txt
+            req_file = os.path.join(os.path.join(PLUGINS, module), REQUIREMENTS)
+            if os.path.isfile(req_file):
+                return (True, COMMAND_FOR_PIP_INSTALL % req_file)
+            #the plugin was found but no requirement then break!
+            break
+    return (False, None)
 
 
 def update_local_plugin_descriptor(plugins):
