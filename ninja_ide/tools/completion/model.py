@@ -136,8 +136,14 @@ class Module(Structure):
             attribute = self.attributes[attr]
             for d in attribute.data:
                 if d.data_type == late_resolution:
-                    to_resolve = True
-                    break
+                    return True
+        for func in self.functions:
+            function = self.functions[func]
+            for attr in function.attributes:
+                attribute = function.attributes[attr]
+                for d in attribute.data:
+                    if d.data_type == late_resolution:
+                        return True
         return to_resolve
 
 

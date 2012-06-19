@@ -52,6 +52,13 @@ class __CompletionDaemon(threading.Thread):
             for d in attribute.data:
                 if d.data_type == model.late_resolution:
                     self._resolve_assign(attribute, module)
+        for func in module.functions:
+            function = module.functions[func]
+            for attr in function.attributes:
+                attribute = function.attributes[attr]
+                for d in attribute.data:
+                    if d.data_type == model.late_resolution:
+                        self._resolve_assign(attribute, module)
 
     def _resolve_assign(self, assign, module):
         self._resolve_with_imports(assign, module)
