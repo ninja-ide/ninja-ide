@@ -108,6 +108,9 @@ def get_all_completions(s, imports=None):
             continue
         try:
             s = unicode(s)
+            if s.find('(') != -1:
+                index = s.index('(')
+                s = s[:index]
             sym = eval(s, globals(), dlocals)
         except NameError:
             try:
@@ -119,7 +122,7 @@ def get_all_completions(s, imports=None):
                     sym = __import__(s, globals(), dlocals, [])
                 except ImportError:
                     pass
-        except (AttributeError, TypeError):
+        except AttributeError:
             return {}
     if sym is not None:
         var = s
