@@ -35,6 +35,7 @@ from ninja_ide.gui import actions
 from ninja_ide.gui.dialogs import preferences
 from ninja_ide.gui.dialogs import traceback_widget
 from ninja_ide.tools import json_manager
+from ninja_ide.tools.completion import completion_daemon
 #NINJA-IDE Containers
 from ninja_ide.gui import central_widget
 from ninja_ide.gui.main_panel import main_container
@@ -400,6 +401,7 @@ class __IDE(QMainWindow):
                 event.ignore()
         QApplication.instance().setCursorFlashTime(cursor_flash_time)
         self.save_settings()
+        completion_daemon.shutdown_daemon()
         #close python documentation server (if running)
         self.mainContainer.close_python_doc()
         #Shutdown PluginManager

@@ -1,13 +1,14 @@
 # -*- coding: utf-8 *-*
 
+import time
 import threading
 
-from ninja_ide.tools.completion import completer
 from ninja_ide.tools.completion import model
 
 
 __completion_daemon_instance = None
 MODULES = {}
+WAITING_BEFORE_START = 5
 
 
 def CompletionDaemon():
@@ -31,6 +32,8 @@ class __CompletionDaemon(threading.Thread):
 
     def run(self):
         global MODULES
+        global WAITING_BEFORE_START
+        time.sleep(WAITING_BEFORE_START)
         while self.keep_alive:
             if not self.unresolved_modules:
                 self.event.wait()
@@ -54,14 +57,13 @@ class __CompletionDaemon(threading.Thread):
         self._resolve_with_imports(assign, module)
 
     def _resolve_with_imports(self, assign, module):
-        line = assign.data[0].line_content
-        value = line.split('=')[1].strip().split('.')
-        if value[0] in module.imports:
-            print 'YESSSSSSSSSSSSSSSSSSSSSSS'
-            value[0] = module.imports[value[0]].data_type
-            resolve = '.'.join(value)
-            assign.data[0].data_type = resolve
-            assign.data[0].from_import = True
+        for data in assign.data:
+            line = data.line_content
+            value = line.split('=')[1].strip().split('.')
+            if value[0] in module.imports:
+                value[0] = module.imports[value[0]].data_type
+                resolve = '.'.join(value)
+                data.data_type = resolve
 
     def inspect_module(self, path, module):
         self.lock.acquire()
@@ -80,3 +82,10 @@ class __CompletionDaemon(threading.Thread):
         self.keep_alive = False
         if self.is_alive():
             self.join()
+
+
+def shutdown_daemon():
+    daemon = CompletionDaemon()
+    daemon.force_stop()
+    global __completion_daemon_instance
+    __completion_daemon_instance = None

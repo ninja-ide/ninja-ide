@@ -119,6 +119,8 @@ def get_all_completions(s, imports=None):
                     sym = __import__(s, globals(), dlocals, [])
                 except ImportError:
                     pass
+        except (AttributeError, TypeError):
+            return {}
     if sym is not None:
         var = s
         s = dots[-1]
