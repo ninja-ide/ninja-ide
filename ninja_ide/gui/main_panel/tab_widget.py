@@ -155,7 +155,7 @@ class TabWidget(QTabWidget):
         if not editorWidget.ask_if_externally_modified:
             return
         #Check external modifications!
-#        self.check_for_external_modifications(editorWidget)
+        self.check_for_external_modifications(editorWidget)
         #we can ask again
         self.question_already_open = False
 
