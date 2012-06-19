@@ -392,7 +392,7 @@ class __MainContainer(QSplitter):
                 editorWidget.setPlainText(content)
                 editorWidget.ID = fileName
                 editorWidget.async_highlight()
-                encoding = file_manager._search_coding_line(content)
+                encoding = file_manager.get_file_encoding(content)
                 editorWidget.encoding = encoding
                 if not positionIsLineNumber:
                     editorWidget.set_cursor_position(cursorPosition)
@@ -488,7 +488,7 @@ class __MainContainer(QSplitter):
             file_manager.store_file_content(
                 fileName, content, addExtension=False)
             editorWidget.ID = fileName
-            encoding = file_manager._search_coding_line(content)
+            encoding = file_manager.get_file_encoding(content)
             editorWidget.encoding = encoding
             self.emit(SIGNAL("fileSaved(QString)"),
                 self.tr("File Saved: %1").arg(fileName))
