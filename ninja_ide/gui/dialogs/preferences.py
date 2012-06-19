@@ -1653,6 +1653,7 @@ class ThemeChooser(QWidget):
             QSizePolicy.Fixed))
         hbox.addWidget(self.btn_preview)
         vbox.addLayout(hbox)
+        self._refresh_list()
 
         self.connect(self.btn_preview, SIGNAL("clicked()"), self.preview_theme)
         self.connect(self.btn_delete, SIGNAL("clicked()"), self.delete_theme)
@@ -1682,10 +1683,11 @@ class ThemeChooser(QWidget):
 
         if settings.NINJA_SKIN == 'Default':
             self.list_skins.setCurrentRow(0)
+        elif settings.NINJA_SKIN in files:
+            index = files.index(settings.NINJA_SKIN)
+            self.list_skins.setCurrentRow(index + 1)
         else:
-            if settings.NINJA_SKIN in files:
-                index = files.index(settings.NINJA_SKIN)
-                self.list_skins.setCurrentRow(index + 1)
+            self.list_skins.setCurrentRow(0)
 
     def save(self):
         qsettings = QSettings()
