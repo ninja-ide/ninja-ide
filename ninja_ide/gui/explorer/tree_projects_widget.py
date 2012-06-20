@@ -27,6 +27,8 @@ from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
 from ninja_ide.core.filesystem_notifications import NinjaFileSystemWatcher
+from ninja_ide.core.filesystem_notifications.base_watcher import ADDED, \
+                                                    DELETED, REMOVE, RENAME
 from ninja_ide.tools import json_manager
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.main_panel import main_container
@@ -298,18 +300,20 @@ class TreeProjectsWidget(QTreeWidget):
         proj.show()
 
     def _refresh_project_by_path(self, event, folder):
+        if event not in (DELETED, ADDED, REMOVE, RENAME):
+            return
         oprojects = self.get_open_projects()
         for each_project in oprojects:
             p_path = unicode(each_project.path)
             if file_manager.belongs_to_folder(p_path, unicode(folder)):
+                DEBUG("About to refresh %s" % folder)
+                DEBUG("for event %s" % event)
                 self._refresh_project(each_project)
-                return
 
     def _refresh_project(self, item=None):
         if item is None:
             item = self.currentItem()
         parentItem = self._get_project_root(item)
-        DEBUG("Parent item %s" % parentItem)
         if parentItem is None:
             return
         if item.parent() is None:
@@ -325,7 +329,7 @@ class TreeProjectsWidget(QTreeWidget):
         thread.start()
 
     def _thread_refresh_project(self, path, item, parentItem):
-        DEBUG("Path that is going to be refreshed %s" % path)
+
         if parentItem.extensions != settings.SUPPORTED_EXTENSIONS:
             folderStructure = file_manager.open_project_with_extensions(
                 path, parentItem.extensions)

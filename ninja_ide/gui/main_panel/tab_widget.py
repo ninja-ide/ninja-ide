@@ -19,6 +19,8 @@ from PyQt4.QtCore import SIGNAL
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
+from ninja_ide.core.filesystem_notifications.base_watcher import MODIFIED, \
+                                                                DELETED
 from ninja_ide.core.filesystem_notifications import NinjaFileSystemWatcher
 from ninja_ide.gui.editor import editor
 from ninja_ide.gui.main_panel import browser_widget
@@ -152,34 +154,51 @@ class TabWidget(QTabWidget):
         if editorWidget.newDocument:
             return
         #Check if we should ask to the user
-        if not editorWidget.ask_if_externally_modified:
-            return
+#        if not editorWidget.ask_if_externally_modified:
+#            return
         #Check external modifications!
         self.check_for_external_modifications(editorWidget)
         #we can ask again
         self.question_already_open = False
 
-    def _file_changed(self, change_type, file_path):
-        if self.is_open(file_path) and (file_path not in self._change_map):
-            self._change_map[unicode(file_path)] = int(change_type)
-
-    def check_for_external_modifications(self, editorWidget):
-        reloaded = False
-        if (editorWidget.ID in self._change_map) and \
-           not self.question_already_open:
-            #dont ask again if you are already asking!
-            self.question_already_open = True
+    def _prompt_reload(self, editorWidget, change):
+        self.question_already_open = True
+        if change == MODIFIED:
             val = QMessageBox.question(self, 'The file has changed on disc!',
                 self.tr("%1\nDo you want to reload it?").arg(editorWidget.ID),
                 QMessageBox.Yes, QMessageBox.No)
             if val == QMessageBox.Yes:
                 self.emit(SIGNAL("reloadFile(QWidget)"), editorWidget)
-                reloaded = True
-                del(self._change_map[editorWidget.ID])
             else:
                 #dont ask again while the current file is open
                 editorWidget.ask_if_externally_modified = False
-        return reloaded
+        elif change == DELETED:
+                val = QMessageBox.information(self,
+                            'The file has deleted from disc!',
+                self.tr("%1\n").arg(editorWidget.ID),
+                QMessageBox.Yes)
+
+    def _file_changed(self, change_type, file_path):
+        editorWidget = self.currentWidget()
+        if ((not editorWidget) or (editorWidget.ID != file_path)) and \
+            (change_type in (MODIFIED, DELETED)):
+            self._change_map.setdefault(unicode(file_path),
+                                        []).append(change_type)
+        elif not editorWidget:
+            return
+        elif (editorWidget.ID == file_path) and \
+            (not self.question_already_open):
+            #dont ask again if you are already asking!
+            self._prompt_reload(editorWidget, change_type)
+
+    def check_for_external_modifications(self, editorWidget):
+        e_path = editorWidget.ID
+        if e_path in self._change_map:
+            if DELETED in self._change_map[e_path]:
+                self._prompt_reload(editorWidget, DELETED)
+            else:
+                self._prompt_reload(editorWidget, MODIFIED)
+            self._change_map.pop(e_path)
 
     def tab_was_saved(self, ed):
         index = self.indexOf(ed)
