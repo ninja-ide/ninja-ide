@@ -164,6 +164,9 @@ class TabWidget(QTabWidget):
     def _prompt_reload(self, editorWidget, change):
         self.question_already_open = True
         if change == MODIFIED:
+            if editorWidget.just_saved:
+                editorWidget.just_saved = False
+                return
             val = QMessageBox.question(self, 'The file has changed on disc!',
                 self.tr("%1\nDo you want to reload it?").arg(editorWidget.ID),
                 QMessageBox.Yes, QMessageBox.No)

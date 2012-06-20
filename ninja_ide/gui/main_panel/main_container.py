@@ -477,6 +477,7 @@ class __MainContainer(QSplitter):
         if not editorWidget:
             return False
         try:
+            editorWidget.just_saved = True
             if editorWidget.newDocument or \
             not file_manager.has_write_permission(editorWidget.ID):
                 return self.save_file_as()
@@ -496,6 +497,7 @@ class __MainContainer(QSplitter):
             editorWidget._file_saved()
             return True
         except Exception, reason:
+            editorWidget.just_saved = False
             logger.error('save_file: %s', reason)
             QMessageBox.information(self, self.tr("Save Error"),
                 self.tr("The file couldn't be saved!"))
@@ -506,6 +508,7 @@ class __MainContainer(QSplitter):
         if not editorWidget:
             return False
         try:
+            editorWidget.just_saved = True
             filters = '(*.py);;(*.*)'
             if editorWidget.ID:
                 ext = file_manager.get_file_extension(editorWidget.ID)
@@ -533,10 +536,12 @@ class __MainContainer(QSplitter):
             editorWidget._file_saved()
             return True
         except file_manager.NinjaFileExistsException, ex:
+            editorWidget.just_saved = False
             QMessageBox.information(self, self.tr("File Already Exists"),
                 self.tr("Invalid Path: the file '%s' already exists." % \
                     ex.filename))
         except Exception, reason:
+            editorWidget.just_saved = False
             logger.error('save_file_as: %s', reason)
             QMessageBox.information(self, self.tr("Save Error"),
                 self.tr("The file couldn't be saved!"))
