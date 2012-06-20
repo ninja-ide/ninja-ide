@@ -698,6 +698,10 @@ class __MainContainer(QSplitter):
         return self._tabMain._check_unsaved_tabs() or \
             self._tabSecondary._check_unsaved_tabs()
 
+    def get_unsaved_files(self):
+        return self._tabMain.get_unsaved_files() or \
+            self._tabSecondary.get_unsaved_files()
+
     def reset_editor_flags(self):
         for i in range(self._tabMain.count()):
             widget = self._tabMain.widget(i)
