@@ -6,7 +6,7 @@ import os
 import sys
 import logging
 
-from PyQt4.QtCore import QObject
+from PyQt4.QtCore import QObject, SIGNAL
 
 
 class Plugin(QObject):
@@ -30,6 +30,26 @@ class Plugin(QObject):
             self._path = os.path.dirname(path)
         except:
             self._path = ''
+
+    def __getattribute__(self, attr_name):
+        try:
+            attr = super(Plugin, self).__getattribute__(attr_name)
+        except AttributeError:
+            self.emit(SIGNAL("pluginError(QString, QString)"), attr_name,
+                self.metadata.get['module'])
+            return
+
+        if callable(attr):
+            def intercept_call(*args, **kwargs):
+                try:
+                    ret = attr(*args, **kwargs)
+                    return ret
+                except Exception:
+                    self.emit(SIGNAL("pluginError(QString, QString)"),
+                        attr_name, self.metadata['module'])
+                    return
+            return intercept_call
+        return attr
 
     def initialize(self):
         """The initialization of the Plugin should be here."""

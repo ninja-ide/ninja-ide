@@ -226,7 +226,25 @@ def _search_coding_line(txt):
     pat_coding = re.search(coding_pattern, txt)
     if pat_coding and unicode(pat_coding.groups()[0]) != 'None':
         return unicode(pat_coding.groups()[0])
-    return u'UTF-8'
+    return None
+
+
+def get_file_encoding(content):
+    """Try to get the encoding of the file using the PEP 0263 rules
+    search the first or the second line of the file
+    Returns the encoding or the default UTF-8
+    """
+    encoding = None
+    lines_to_check = content.split("\n", 2)
+    for index in range(2):
+        line_encoding = _search_coding_line(lines_to_check[index])
+        if line_encoding:
+            encoding = line_encoding
+            break
+    #if not encoding is set then use UTF-8 as default
+    if encoding is None:
+        encoding = "UTF-8"
+    return encoding
 
 
 def read_file_content(fileName):
@@ -234,7 +252,7 @@ def read_file_content(fileName):
     try:
         with open(fileName, mode='rU') as f:
             content = f.read()
-            encoding = _search_coding_line(content)
+            encoding = get_file_encoding(content)
             content.decode(encoding)
     except IOError, reason:
         raise NinjaIOException(unicode(reason))
