@@ -51,7 +51,7 @@ class TreeProjectsWidget(QTreeWidget):
     #Extra context menu 'all' indicate a menu for ALL LANGUAGES!
     extra_menus = {'all': []}
     #Extra context menu by scope all is for ALL the TREE ITEMS!
-    extra_menus_by_scope = {'all': [], 'project': [], 'folder': [], 'file': []}
+    extra_menus_by_scope = {'project': [], 'folder': [], 'file': []}
 
     images = {
         'py': resources.IMAGES['tree-python'],
@@ -118,15 +118,17 @@ class TreeProjectsWidget(QTreeWidget):
         self.extra_menus.setdefault(lang, [])
         self.extra_menus[lang].append(menu)
 
-    def add_item_extra_menu(self, menu, scope='all'):
+    def add_extra_menu_by_scope(self, menu, scope):
         '''
         Add an extra menu for the given language
         @scope: string with the menu scope (all, project, folder, item)
         '''
-        if scope not in self.extra_menus_by_scope:
-            logger.warning("add_item_extra_menu invalid scope: %s", scope)
-            return
-        self.extra_menus_by_scope[scope].append(menu)
+        if scope.project:
+            self.extra_menus_by_scope['project'].append(menu)
+        if scope.folder:
+            self.extra_menus_by_scope['folder'].append(menu)
+        if scope.file:
+            self.extra_menus_by_scope['file'].append(menu)
 
     def _menu_context_tree(self, point):
         index = self.indexAt(point)
@@ -148,8 +150,7 @@ class TreeProjectsWidget(QTreeWidget):
         #menu for all items (legacy API)!
         extra_menus = self.extra_menus.get('all', ())
         #menu for all items!
-        extra_menus_by_scope = self.extra_menus_by_scope['all']
-        for m in (extra_menus + extra_menus_by_scope):
+        for m in extra_menus:
             if isinstance(m, QMenu):
                 menu.addSeparator()
                 menu.addMenu(m)
