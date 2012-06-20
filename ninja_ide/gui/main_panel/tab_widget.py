@@ -162,8 +162,10 @@ class TabWidget(QTabWidget):
            not self.question_already_open:
             #dont ask again if you are already asking!
             self.question_already_open = True
-            val = QMessageBox.question(self, 'The file has changed on disc!',
-                self.tr("%1\nDo you want to reload it?").arg(editorWidget.ID),
+            txt = "%s %s" % (editorWidget.ID, editorWidget._mtime.toString())
+            val = QMessageBox.question(self,
+                self.tr("The file has changed on disc!"),
+                self.tr("%1\nDo you want to reload it?").arg(txt),
                 QMessageBox.Yes, QMessageBox.No)
             if val == QMessageBox.Yes:
                 self.emit(SIGNAL("reloadFile(QWidget)"), editorWidget)
@@ -389,11 +391,26 @@ class TabWidget(QTabWidget):
 #        self.emit(SIGNAL("dropTab(QTabWidget)"), self)
 
     def _check_unsaved_tabs(self):
+        """
+        Check if are there any unsaved tab
+        Returns True or False
+        """
         val = False
         for i in range(self.count()):
             if type(self.widget(i)) is editor.Editor:
                 val = val or self.widget(i).textModified
         return val
+
+    def get_unsaved_files(self):
+        """
+        Returns a list with the tabText of the unsaved files
+        """
+        files = []
+        for i in range(self.count()):
+            widget = self.widget(i)
+            if type(widget) is editor.Editor and widget.textModified:
+                files.append(unicode(self.tabText(i)))
+        return files
 
     def change_tab(self):
         if self.currentIndex() < (self.count() - 1):
