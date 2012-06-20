@@ -96,18 +96,23 @@ class _DaemonProcess(Process):
                     self.queue_send.put((path, module))
 
     def _resolve_module(self, module):
-        for attr in module.attributes:
-            attribute = module.attributes[attr]
+        self._resolve_attributes(module, module)
+        for func in module.functions:
+            function = module.functions[func]
+            self._resolve_attributes(function, module)
+        for cla in module.classes:
+            clazz = module.classes[cla]
+            self._resolve_attributes(clazz, module)
+            for func in clazz.functions:
+                function = clazz.functions[func]
+                self._resolve_attributes(function, module)
+
+    def _resolve_attributes(self, structure, module):
+        for attr in structure.attributes:
+            attribute = structure.attributes[attr]
             for d in attribute.data:
                 if d.data_type == model.late_resolution:
                     self._resolve_assign(attribute, module)
-        for func in module.functions:
-            function = module.functions[func]
-            for attr in function.attributes:
-                attribute = function.attributes[attr]
-                for d in attribute.data:
-                    if d.data_type == model.late_resolution:
-                        self._resolve_assign(attribute, module)
 
     def _resolve_assign(self, assign, module):
         self._resolve_with_imports(assign, module)
