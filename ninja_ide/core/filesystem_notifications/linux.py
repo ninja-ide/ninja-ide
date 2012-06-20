@@ -70,8 +70,8 @@ class QNotifier(QThread):
                 event = e_dict.pop(key)
                 if (ADDED in event) and (DELETED in event):
                     event = [e for e in event if e not in (ADDED, DELETED)]
-                if (ADDED in event) and (MODIFIED in event):
-                    event = [e for e in event if e != ADDED]
+#                if (ADDED in event) and (MODIFIED in event):
+#                    event = [e for e in event if e != ADDED]
                 for each_event in event:
                     self._processor(each_event, key)
         self.notifier.stop()

@@ -397,9 +397,11 @@ class __IDE(QMainWindow):
             self.s_listener.close()
         if settings.CONFIRM_EXIT and \
         self.mainContainer.check_for_unsaved_tabs():
+            unsaved_files = self.mainContainer.get_unsaved_files()
+            txt = '\n'.join(unsaved_files)
             val = QMessageBox.question(self,
                 self.tr("Some changes were not saved"),
-                self.tr("Do you want to exit anyway?"),
+                self.tr("%1\n\nDo you want to exit anyway?").arg(txt),
                 QMessageBox.Yes, QMessageBox.No)
             if val == QMessageBox.No:
                 event.ignore()
