@@ -460,7 +460,7 @@ class ExplorerService(QObject):
         if self._explorer._treeProjects:
             self._explorer._treeProjects.add_extra_menu(menu, lang=lang)
 
-    def add_project_menu_by_scope(self, menu, scope='all'):
+    def add_project_menu_by_scope(self, menu, scope=None):
         """
         Add an extra menu to the project explorer to the specific scope
         @scope: String with the menu scope (all, project, folder, file)
