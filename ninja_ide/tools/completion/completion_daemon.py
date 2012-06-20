@@ -97,15 +97,17 @@ class _DaemonProcess(Process):
 
     def _resolve_module(self, module):
         self._resolve_attributes(module, module)
-        for func in module.functions:
-            function = module.functions[func]
-            self._resolve_attributes(function, module)
+        self._resolve_functions(module, module)
         for cla in module.classes:
             clazz = module.classes[cla]
             self._resolve_attributes(clazz, module)
-            for func in clazz.functions:
-                function = clazz.functions[func]
-                self._resolve_attributes(function, module)
+            self._resolve_functions(clazz, module)
+
+    def _resolve_functions(self, structure, module):
+        for func in structure.functions:
+            function = structure.functions[func]
+            self._resolve_attributes(function, module)
+            self._resolve_functions(function, module)
 
     def _resolve_attributes(self, structure, module):
         for attr in structure.attributes:
