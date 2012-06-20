@@ -56,8 +56,13 @@ def _parse_class(symbol, with_docstrings):
                 func[result['name']] = result['lineno']
     if with_docstrings:
         docstring[symbol.lineno] = ast.get_docstring(symbol, clean=True)
+
+    lineno = symbol.lineno
+    for decorator in symbol.decorator_list:
+        lineno += 1
+
     return {'name': name, 'attributes': attr, 'functions': func,
-        'lineno': symbol.lineno, 'docstring': docstring}
+        'lineno': lineno, 'docstring': docstring}
 
 
 def _parse_function(symbol, with_docstrings):
@@ -106,7 +111,11 @@ def _parse_function(symbol, with_docstrings):
     if with_docstrings:
         docstring = ast.get_docstring(symbol, clean=True)
 
-    return {'name': func_name, 'lineno': symbol.lineno,
+    lineno = symbol.lineno
+    for decorator in symbol.decorator_list:
+        lineno += 1
+
+    return {'name': func_name, 'lineno': lineno,
         'attrs': attrs, 'docstring': docstring}
 
 

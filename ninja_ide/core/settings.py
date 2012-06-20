@@ -78,6 +78,8 @@ TOOLBAR_ITEMS_DEFAULT = [
 #hold the toolbar actions added by plugins
 TOOLBAR_ITEMS_PLUGINS = []
 
+NINJA_SKIN = 'Default'
+
 
 ###############################################################################
 # EDITOR
@@ -131,7 +133,7 @@ CHECK_FOR_DOCSTRINGS = False
 # MINIMAP
 ###############################################################################
 
-SHOW_MINIMAP = True
+SHOW_MINIMAP = False
 MINIMAP_MAX_OPACITY = 0.8
 MINIMAP_MIN_OPACITY = 0.1
 SIZE_PROPORTION = 0.17
@@ -262,6 +264,7 @@ def load_settings():
     global NOTIFY_UPDATES
     global PYTHON_PATH
     global PROFILES
+    global NINJA_SKIN
     global EXECUTION_OPTIONS
     global SUPPORTED_EXTENSIONS
     global WORKSPACE
@@ -313,6 +316,8 @@ def load_settings():
     PYTHON_PATH = unicode(
         qsettings.value('preferences/execution/pythonPath',
         'python').toString())
+    NINJA_SKIN = unicode(
+        qsettings.value('preferences/theme/skin', 'Default').toString())
     profileDict = qsettings.value('ide/profiles', {}).toMap()
     for key in profileDict:
         profile_list = list(profileDict[key].toList())
@@ -348,7 +353,7 @@ def load_settings():
         'preferences/general/workspace', "").toString())
     #Editor
     SHOW_MINIMAP = qsettings.value(
-        'preferences/editor/minimapShow', True).toBool()
+        'preferences/editor/minimapShow', False).toBool()
     MINIMAP_MAX_OPACITY = qsettings.value(
         'preferences/editor/minimapMaxOpacity', 0.8).toFloat()[0]
     MINIMAP_MIN_OPACITY = qsettings.value(

@@ -10,6 +10,7 @@ from tokenize import generate_tokens, TokenError
 from StringIO import StringIO
 
 from ninja_ide.core import settings
+from ninja_ide.gui.editor import helpers
 from ninja_ide.tools.completion import analyzer
 from ninja_ide.tools.completion import completer
 
@@ -36,6 +37,12 @@ class CodeCompletion(object):
         if source is None:
             with open(path) as f:
                 source = f.read()
+        split_last_lines = source.rsplit('\n', 2)
+        if len(split_last_lines) > 1 and \
+           split_last_lines[-2].endswith(':') and split_last_lines[-1] == '':
+            indent = helpers.get_indentation(split_last_lines[-2])
+            source += '%spass;' % indent
+
         self.current_module = self.analyzer.analyze(source)
 
     def update_file(self, path):
@@ -52,12 +59,14 @@ class CodeCompletion(object):
             #This is an expected situation, where i don't want to do anything
             #possible an unbalanced brace like: func(os.p| (| = cursor-end)
             pass
+        except IndentationError:
+            return []
         while token_code[-1][0] in (tkn.ENDMARKER, tkn.DEDENT, tkn.NEWLINE):
             token_code.pop()
         return token_code
 
     def _search_for_scope(self, token_code):
-        if not token_code[-1][3].startswith(' '):
+        if not token_code or not token_code[-1][3].startswith(' '):
             return None
         scopes = []
         indent = self.patIndent.match(token_code[-1][3])
@@ -98,13 +107,12 @@ class CodeCompletion(object):
         tokens = []
         keep_iter = True
         iterate = reversed(token_code)
-        value = iterate.next()
         while keep_iter:
-            if value[0] in (tkn.NEWLINE, tkn.INDENT, tkn.DEDENT):
-                keep_iter = False
-            tokens.append(value)
             try:
                 value = iterate.next()
+                if value[0] in (tkn.NEWLINE, tkn.INDENT, tkn.DEDENT):
+                    keep_iter = False
+                tokens.append(value)
             except:
                 keep_iter = False
         segment = ''
@@ -139,6 +147,8 @@ class CodeCompletion(object):
         final_word = ''
         if not var_segment.endswith('.') and len(words_final) > 1:
             final_word = words_final[1].strip()
+        elif (var_segment != "") and len(words_final) == 1:
+            final_word = words_final[0].strip()
         return final_word, (var_segment != "")
 
     def get_completion(self, code, offset):
