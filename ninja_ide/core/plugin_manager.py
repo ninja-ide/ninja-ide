@@ -15,7 +15,6 @@ except ImportError:
     import simplejson as json
 
 from ninja_ide import resources
-from PyQt4.QtCore import QObject, SIGNAL
 
 logger = logging.getLogger('ninja_ide.core.plugin_manager')
 REQUIREMENTS = 'requirements.txt'
@@ -89,7 +88,7 @@ def PluginManager(*args, **kw):
 PLUGIN_EXTENSION = '.plugin'
 
 
-class __PluginManager(QObject):
+class __PluginManager(object):
     '''
     Plugin manager allows to load, unload, initialize plugins.
     '''
@@ -99,7 +98,6 @@ class __PluginManager(QObject):
         @param plugins_dir: Path to search plugins.
         @param service_loctor: ServiceLocator object.
         '''
-        QObject.__init__(self)
         self._service_locator = service_locator
         #new!
         self._plugins_by_dir = {}
@@ -283,9 +281,6 @@ class __PluginManager(QObject):
                     try:
                         plugin_instance = self._load_module(module,
                             klassname, plugin_structure, dir_name)
-                        self.connect(plugin_instance,
-                            SIGNAL("pluginError(QString, QString)"),
-                                self._handle_error)
                         #set a get_plugin method to get the reference to other
                         #setattr(plugin_instance,'get_plugin',self.__getitem__)
                         #call a special method *initialize* in the plugin!
@@ -307,11 +302,6 @@ class __PluginManager(QObject):
                     else:
                         logger.info("Successfuly initialized (%s)",
                             plugin_name)
-
-    def _handle_error(self, attr_name, plugin):
-        logger.error("ERROR EN EL PLUGIN (%s): %s", plugin, attr_name)
-        logger.info("DESACTIVANDO EL PLUGIN (%s) POR ERRORES", plugin)
-        #TODO: continuar con esto
 
     def load_all(self):
         for dir, pl in self._plugins_by_dir.iteritems():
