@@ -8,6 +8,7 @@ from PyQt4.QtCore import pyqtSignal
 
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
+from ninja_ide.core import plugin_util
 from ninja_ide.gui.main_panel import itab_item
 from ninja_ide.gui.main_panel import main_container
 from ninja_ide.gui import actions
@@ -460,13 +461,17 @@ class ExplorerService(QObject):
         if self._explorer._treeProjects:
             self._explorer._treeProjects.add_extra_menu(menu, lang=lang)
 
-    def add_project_menu_by_scope(self, menu, scope='all'):
+    def add_project_menu_by_scope(self, menu, scope=None):
         """
         Add an extra menu to the project explorer to the specific scope
         @scope: String with the menu scope (all, project, folder, file)
         """
+        if scope is None:
+            #default behavior show ALL
+            scope = plugin_util.ContextMenuScope(project=True, folder=True,
+                files=True)
         if self._explorer._treeProjects:
-            self._explorer._treeProjects.add_item_extra_menu(menu, scope=scope)
+            self._explorer._treeProjects.add_extra_menu_by_scope(menu, scope)
 
     # SIGNALS
     def _projectOpened(self, projectPath):
