@@ -1,7 +1,7 @@
 # -*- coding: utf-8 *-*
 
 
-late_resolution = object()
+late_resolution = 0
 
 
 class _TypeData(object):
