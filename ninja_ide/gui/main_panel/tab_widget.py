@@ -162,7 +162,7 @@ class TabWidget(QTabWidget):
            not self.question_already_open:
             #dont ask again if you are already asking!
             self.question_already_open = True
-            txt = "%s %s" % (editorWidget.ID, editorWidget._mtime.toString())
+            txt = "%s\n%s" % (editorWidget.ID, editorWidget._mtime.toString())
             val = QMessageBox.question(self,
                 self.tr("The file has changed on disc!"),
                 self.tr("%1\nDo you want to reload it?").arg(txt),
