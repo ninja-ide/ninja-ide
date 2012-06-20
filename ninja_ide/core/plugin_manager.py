@@ -98,7 +98,6 @@ class __PluginManager(object):
         @param plugins_dir: Path to search plugins.
         @param service_loctor: ServiceLocator object.
         '''
-
         self._service_locator = service_locator
         #new!
         self._plugins_by_dir = {}
