@@ -37,21 +37,21 @@ class __CompletionDaemon(Thread):
         global WAITING_BEFORE_START
         time.sleep(WAITING_BEFORE_START)
         while self.keep_alive:
-            path, module = self.queue_receive.get()
-            if path is None:
+            package, module = self.queue_receive.get()
+            if package is None:
                 continue
             self.lock.acquire()
-            self.modules[path] = module
+            self.modules[package] = module
             self.lock.release()
 
-    def inspect_module(self, path, module):
+    def inspect_module(self, package, module):
         self.lock.acquire()
-        self.modules[path] = module
+        self.modules[package] = module
         self.lock.release()
-        self.queue_send.put((path, module))
+        self.queue_send.put((package, module))
 
-    def get_module(self, path):
-        return self.modules.get(path, None)
+    def get_module(self, package):
+        return self.modules.get(package, None)
 
     def stop(self):
         self.reference_counter -= 1
@@ -83,17 +83,17 @@ class _DaemonProcess(Process):
 
     def run(self):
         while True:
-            path, module = self.queue_receive.get()
-            if path is None and module is None:
+            package, module = self.queue_receive.get()
+            if package is None and module is None:
                 break
 
-            self.unresolved_modules[path] = module
+            self.unresolved_modules[package] = module
             if module.need_resolution():
                 self._resolve_module(module)
             if not module.need_resolution():
-                module = self.unresolved_modules.pop(path, None)
+                module = self.unresolved_modules.pop(package, None)
                 if module is not None:
-                    self.queue_send.put((path, module))
+                    self.queue_send.put((package, module))
 
     def _resolve_module(self, module):
         self._resolve_attributes(module, module)
