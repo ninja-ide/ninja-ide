@@ -5,7 +5,7 @@ from __future__ import absolute_import
 
 import sys
 import types
-import inspect
+#import inspect
 import StringIO
 import logging
 
@@ -44,11 +44,12 @@ def get_completions_per_type(object_dir):
             # but we drop the "self" param.
             obj = obj.im_func
 
-        if type(obj) in [types.FunctionType, types.LambdaType]:
-            (args, varargs, varkw, defaults) = inspect.getargspec(obj)
-            sig = ('%s%s' % (obj.__name__,
-                               inspect.formatargspec(args, varargs, varkw,
-                                                     defaults)))
+        # Not Show functions args, but we will use this for showing doc
+#        if type(obj) in [types.FunctionType, types.LambdaType]:
+#            (args, varargs, varkw, defaults) = inspect.getargspec(obj)
+#            sig = ('%s%s' % (obj.__name__,
+#                               inspect.formatargspec(args, varargs, varkw,
+#                                                     defaults)))
         if not sig:
             sig = attr[attr.rfind('.') + 1:]
         result[type_assign.get(type(obj), 'attributes')].append(sig)
