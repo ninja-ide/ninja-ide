@@ -92,6 +92,7 @@ class TreeProjectsWidget(QTreeWidget):
         self.itemCollapsed.connect(self._item_collapsed)
         self.mute_signals = False
         self.state_index = list()
+        self._folding_menu = FoldingContextMenu(self)
 
     def _item_collapsed(self, tree_item):
         """Store status of item when collapsed"""
@@ -146,6 +147,8 @@ class TreeProjectsWidget(QTreeWidget):
             #get the extra context menu for this projectType
             handler = settings.get_project_type_handler(item.projectType)
             self._add_context_menu_for_root(menu, item)
+
+        menu.addMenu(self._folding_menu)
 
         #menu for all items (legacy API)!
         extra_menus = self.extra_menus.get('all', ())
@@ -780,3 +783,59 @@ class ProjectTree(QTreeWidgetItem):
         '''
         project_file = json_manager.get_ninja_project_file(self.path)
         return os.path.join(self.path, project_file)
+
+
+class FoldingContextMenu(QMenu):
+    """
+    This class represents a menu for Folding/Unfolding task
+    """
+
+    def __init__(self, tree):
+        super(FoldingContextMenu, self).__init__(tree.tr("Fold/Unfold"))
+        self._tree = tree
+        fold_project = self.addAction(self.tr("Fold the project"))
+        unfold_project = self.addAction(self.tr("Unfold the project"))
+        self.addSeparator()
+        fold_all_projects = self.addAction(self.tr("Fold all projects"))
+        unfold_all_projects = self.addAction(self.tr("Unfold all projects"))
+
+        self.connect(fold_project, SIGNAL("triggered()"),
+            lambda: self._fold_unfold_project(False))
+        self.connect(unfold_project, SIGNAL("triggered()"),
+            lambda: self._fold_unfold_project(True))
+        self.connect(fold_all_projects, SIGNAL("triggered()"),
+            self._fold_all_projects)
+        self.connect(unfold_all_projects, SIGNAL("triggered()"),
+            self._unfold_all_projects)
+
+    def _recursive_fold_unfold(self, item, expand):
+        if item.isFolder:
+            item.setExpanded(expand)
+        for index in range(item.childCount()):
+            child = item.child(index)
+            self._recursive_fold_unfold(child, expand)
+
+    def _fold_unfold_project(self, expand):
+        """
+        Fold the current project
+        """
+        root = self._tree._get_project_root(item=self._tree.currentItem())
+        childs = root.childCount()
+        if childs:
+            root.setExpanded(expand)
+
+        for index in range(childs):
+            item = root.child(index)
+            self._recursive_fold_unfold(item, expand)
+
+    def _fold_all_projects(self):
+        """
+        Fold all projects
+        """
+        self._tree.collapseAll()
+
+    def _unfold_all_projects(self):
+        """
+        Unfold all project
+        """
+        self._tree.expandAll()
