@@ -29,8 +29,10 @@ class Structure(object):
     def __init__(self):
         self.attributes = {}
         self.functions = {}
+        self.parent = None
 
     def add_function(self, function):
+        function.parent = self
         self.functions[function.name] = function
 
     def add_attributes(self, attributes):
@@ -41,6 +43,7 @@ class Structure(object):
             else:
                 assign = Assign(attribute[0])
             assign.add_data(*attribute[1:])
+            assign.parent = self
             self.attributes[assign.name] = assign
 
     def get_attribute_type(self, name):
@@ -50,6 +53,8 @@ class Structure(object):
         attr = self.attributes.get(var_names[0], None)
         if attr is not None:
             result = (True, attr.get_data_type())
+        elif self.parent.__class__ is Function:
+            result = self.parent.get_attribute_type(name)
         return result
 
     def _get_scope_structure(self, structure, scope):
@@ -90,6 +95,7 @@ class Module(Structure):
             self.imports[imp[0]] = info
 
     def add_class(self, clazz):
+        clazz.parent = self
         self.classes[clazz.name] = clazz
 
     def get_type(self, main_attr, child_attrs='', scope=None):
@@ -122,6 +128,9 @@ class Module(Structure):
                         self.attributes.get(main_attr, None))
                     if value is not None:
                         result = (True, value.get_data_type())
+
+        if result[1].__class__ is Clazz:
+            result = (False, result[1].get_completion_items())
         return result
 
     def get_imports(self):
@@ -184,6 +193,7 @@ class Assign(object):
     def __init__(self, name):
         self.name = name
         self.data = []
+        self.parent = None
 
     def add_data(self, lineno, data_type, line_content, oper):
         info = _TypeData(lineno, data_type, line_content, oper)

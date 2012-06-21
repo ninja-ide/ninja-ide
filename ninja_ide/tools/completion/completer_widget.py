@@ -181,9 +181,11 @@ class CodeCompletionWidget(QFrame):
         self.hide()
 
     def pre_key_insert_completion(self):
+        type_ = ord('a')
         current = self.completion_list.currentItem()
-        type_ = current.type()
         insert = unicode(current.text())
+        if not insert.endswith(')'):
+            type_ = current.type()
         self.insert_completion(insert, type_)
         self.hide_completer()
         return True

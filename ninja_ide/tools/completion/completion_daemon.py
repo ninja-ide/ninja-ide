@@ -44,6 +44,9 @@ class __CompletionDaemon(Thread):
             self.modules[package] = module
             self.lock.release()
 
+    def _resolve_with_other_modules(self, module):
+        pass
+
     def inspect_module(self, package, module):
         self.lock.acquire()
         self.modules[package] = module
@@ -79,21 +82,22 @@ class _DaemonProcess(Process):
         super(_DaemonProcess, self).__init__()
         self.queue_receive = queue_receive
         self.queue_send = queue_send
-        self.unresolved_modules = {}
+        self.first_iteration = True
 
     def run(self):
         while True:
+            self.first_iteration = True
             package, module = self.queue_receive.get()
             if package is None and module is None:
                 break
 
-            self.unresolved_modules[package] = module
             if module.need_resolution():
                 self._resolve_module(module)
+                self.first_iteration = False
+                self._resolve_module(module)
             if not module.need_resolution():
-                module = self.unresolved_modules.pop(package, None)
-                if module is not None:
-                    self.queue_send.put((package, module))
+                #TODO: SEND NEED RESOLUTION SIGNAL
+                self.queue_send.put((package, module))
 
     def _resolve_module(self, module):
         self._resolve_attributes(module, module)
@@ -117,7 +121,11 @@ class _DaemonProcess(Process):
                     self._resolve_assign(attribute, module)
 
     def _resolve_assign(self, assign, module):
-        self._resolve_with_imports(assign, module)
+        if self.first_iteration:
+            self._resolve_with_imports(assign, module)
+            self._resolve_with_local_names(assign, module)
+        else:
+            self._resolve_with_local_vars(assign, module)
 
     def _resolve_with_imports(self, assign, module):
         for data in assign.data:
@@ -127,6 +135,18 @@ class _DaemonProcess(Process):
                 value[0] = module.imports[value[0]].data_type
                 resolve = '.'.join(value)
                 data.data_type = resolve
+
+    def _resolve_with_local_names(self, assign, module):
+        #TODO: resolve with functions returns
+        for data in assign.data:
+            line = data.line_content
+            value = line.split('=')[1].split('(')[0].strip()
+            if value in module.classes:
+                clazz = module.classes[value]
+                data.data_type = clazz
+
+    def _resolve_with_local_vars(self, assign, module):
+        pass
 
 
 def shutdown_daemon():
