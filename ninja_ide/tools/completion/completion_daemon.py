@@ -37,7 +37,7 @@ class __CompletionDaemon(Thread):
         global WAITING_BEFORE_START
         time.sleep(WAITING_BEFORE_START)
         while self.keep_alive:
-            package, module = self.queue_receive.get()
+            package, module, resolve = self.queue_receive.get()
             if package is None:
                 continue
             self.lock.acquire()
@@ -95,9 +95,10 @@ class _DaemonProcess(Process):
                 self._resolve_module(module)
                 self.first_iteration = False
                 self._resolve_module(module)
-            if not module.need_resolution():
-                #TODO: SEND NEED RESOLUTION SIGNAL
-                self.queue_send.put((package, module))
+            if module.need_resolution():
+                self.queue_send.put((package, module, True))
+            else:
+                self.queue_send.put((package, module, False))
 
     def _resolve_module(self, module):
         self._resolve_attributes(module, module)

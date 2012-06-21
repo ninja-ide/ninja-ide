@@ -140,20 +140,28 @@ class Module(Structure):
         return module_imports
 
     def need_resolution(self):
-        to_resolve = False
-        for attr in self.attributes:
-            attribute = self.attributes[attr]
+        if self._check_attr_func_resolution(self):
+            return True
+        for cla in self.classes:
+            clazz = self.classes[cla]
+            if self._check_attr_func_resolution(clazz):
+                return True
+        return False
+
+    def _check_attr_func_resolution(self, structure):
+        for attr in structure.attributes:
+            attribute = structure.attributes[attr]
             for d in attribute.data:
                 if d.data_type == late_resolution:
                     return True
-        for func in self.functions:
-            function = self.functions[func]
+        for func in structure.functions:
+            function = structure.functions[func]
             for attr in function.attributes:
                 attribute = function.attributes[attr]
                 for d in attribute.data:
                     if d.data_type == late_resolution:
                         return True
-        return to_resolve
+        return False
 
 
 class Clazz(Structure):
