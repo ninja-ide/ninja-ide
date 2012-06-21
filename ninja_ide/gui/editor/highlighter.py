@@ -444,8 +444,7 @@ class Highlighter(QSyntaxHighlighter):
                (self.previousBlockState() != 0))) and \
                 (len(start_collides) == 0):
                 if user_data is not None:
-                    style = highlight_errors(
-                        style, self.currentBlock().userData())
+                    style = highlight_errors(style, user_data)
                 self.setFormat(start, length, style)
             else:
                 self.setCurrentBlockState(0)
