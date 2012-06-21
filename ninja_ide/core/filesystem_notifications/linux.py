@@ -15,6 +15,7 @@ DELETED = base_watcher.DELETED
 REMOVE = base_watcher.REMOVE
 RENAME = base_watcher.RENAME
 MODIFIED = base_watcher.MODIFIED
+#FIXME: For some reaseon the code below raises an import error with name ADDED
 #from ninja_ide.core.filesystem_notifications.base_watcher import ADDED, \
 #                                            DELETED, REMOVE, RENAME, MODIFIED
 
@@ -70,8 +71,6 @@ class QNotifier(QThread):
                 event = e_dict.pop(key)
                 if (ADDED in event) and (DELETED in event):
                     event = [e for e in event if e not in (ADDED, DELETED)]
-#                if (ADDED in event) and (MODIFIED in event):
-#                    event = [e for e in event if e != ADDED]
                 for each_event in event:
                     self._processor(each_event, key)
         self.notifier.stop()
