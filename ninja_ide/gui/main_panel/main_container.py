@@ -392,7 +392,7 @@ class __MainContainer(QSplitter):
                 editorWidget.setPlainText(content)
                 editorWidget.ID = fileName
                 editorWidget.async_highlight()
-                encoding = file_manager._search_coding_line(content)
+                encoding = file_manager.get_file_encoding(content)
                 editorWidget.encoding = encoding
                 if not positionIsLineNumber:
                     editorWidget.set_cursor_position(cursorPosition)
@@ -488,7 +488,7 @@ class __MainContainer(QSplitter):
             file_manager.store_file_content(
                 fileName, content, addExtension=False)
             editorWidget.ID = fileName
-            encoding = file_manager._search_coding_line(content)
+            encoding = file_manager.get_file_encoding(content)
             editorWidget.encoding = encoding
             self.emit(SIGNAL("fileSaved(QString)"),
                 self.tr("File Saved: %1").arg(fileName))
@@ -697,6 +697,10 @@ class __MainContainer(QSplitter):
     def check_for_unsaved_tabs(self):
         return self._tabMain._check_unsaved_tabs() or \
             self._tabSecondary._check_unsaved_tabs()
+
+    def get_unsaved_files(self):
+        return self._tabMain.get_unsaved_files() or \
+            self._tabSecondary.get_unsaved_files()
 
     def reset_editor_flags(self):
         for i in range(self._tabMain.count()):
