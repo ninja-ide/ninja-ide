@@ -79,6 +79,11 @@ def IDE(*args, **kw):
 
 
 class __IDE(QMainWindow):
+###############################################################################
+# SIGNALS
+#
+# goingDown()
+###############################################################################
 
     def __init__(self, start_server=False):
         QMainWindow.__init__(self)
@@ -401,6 +406,7 @@ class __IDE(QMainWindow):
             if val == QMessageBox.No:
                 event.ignore()
         QApplication.instance().setCursorFlashTime(cursor_flash_time)
+        self.emit(SIGNAL("goingDown()"))
         self.save_settings()
         #close python documentation server (if running)
         self.mainContainer.close_python_doc()
