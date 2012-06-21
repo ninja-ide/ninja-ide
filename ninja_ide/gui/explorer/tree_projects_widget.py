@@ -26,6 +26,9 @@ from PyQt4.QtGui import QDesktopServices
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
+from ninja_ide.core.filesystem_notifications import NinjaFileSystemWatcher
+from ninja_ide.core.filesystem_notifications.base_watcher import ADDED, \
+                                                    DELETED, REMOVE, RENAME
 from ninja_ide.tools import json_manager
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.main_panel import main_container
@@ -74,7 +77,7 @@ class TreeProjectsWidget(QTreeWidget):
         self._loading_items = {}
         self._thread_execution = {}
         self.__enableCloseNotification = True
-        self._fileWatcher = file_manager.NinjaFileSystemWatcher()
+        self._fileWatcher = NinjaFileSystemWatcher
 
         self.header().setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.header().setResizeMode(0, QHeaderView.ResizeToContents)
@@ -86,8 +89,8 @@ class TreeProjectsWidget(QTreeWidget):
             self._menu_context_tree)
         self.connect(self, SIGNAL("itemClicked(QTreeWidgetItem *, int)"),
             self._open_file)
-#        self.connect(self._fileWatcher, SIGNAL("directoryChanged(QString)"),
-#            self._refresh_project_by_path)
+        self.connect(self._fileWatcher, SIGNAL("fileChanged(int, QString)"),
+            self._refresh_project_by_path)
         self.itemExpanded.connect(self._item_expanded)
         self.itemCollapsed.connect(self._item_collapsed)
         self.mute_signals = False
@@ -107,6 +110,9 @@ class TreeProjectsWidget(QTreeWidget):
             path = tree_item.get_full_path()
             if path not in self.state_index:
                 self.state_index.append(path)
+
+    def shutdown(self):
+        self._fileWatcher.shutdown_notification()
 
     def add_extra_menu(self, menu, lang='all'):
         '''
@@ -294,9 +300,16 @@ class TreeProjectsWidget(QTreeWidget):
         proj = project_properties_widget.ProjectProperties(item, self)
         proj.show()
 
-    def _refresh_project_by_path(self, folder):
-        item = self.get_item_for_path(unicode(folder))
-        self._refresh_project(item)
+    def _refresh_project_by_path(self, event, folder):
+        if event not in (DELETED, ADDED, REMOVE, RENAME):
+            return
+        oprojects = self.get_open_projects()
+        for each_project in oprojects:
+            p_path = unicode(each_project.path)
+            if file_manager.belongs_to_folder(p_path, unicode(folder)):
+                DEBUG("About to refresh %s" % folder)
+                DEBUG("for event %s" % event)
+                self._refresh_project(each_project)
 
     def _refresh_project(self, item=None):
         if item is None:
@@ -317,6 +330,7 @@ class TreeProjectsWidget(QTreeWidget):
         thread.start()
 
     def _thread_refresh_project(self, path, item, parentItem):
+
         if parentItem.extensions != settings.SUPPORTED_EXTENSIONS:
             folderStructure = file_manager.open_project_with_extensions(
                 path, parentItem.extensions)
@@ -346,6 +360,7 @@ class TreeProjectsWidget(QTreeWidget):
         item = self.currentItem()
         index = self.indexOfTopLevelItem(item)
         pathKey = item.path
+        self._fileWatcher.remove_watch(pathKey)
 #        for directory in self._fileWatcher.directories():
 #            directory = unicode(directory)
 #            if file_manager.belongs_to_folder(pathKey, directory):
@@ -605,6 +620,7 @@ class TreeProjectsWidget(QTreeWidget):
         if self.currentItem() is None:
             item.setSelected(True)
             self.setCurrentItem(item)
+        self._fileWatcher.add_watch(folder)
 #        if folder not in self._fileWatcher.directories():
 #            DEBUG("Adding '%s' to watcher" % folder)
 #            self._fileWatcher.addPath(folder)

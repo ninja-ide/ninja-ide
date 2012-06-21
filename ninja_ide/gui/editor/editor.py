@@ -96,6 +96,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.completer = completer_widget.CodeCompletionWidget(self)
         #Flag to dont bug the user when answer *the modification dialog*
         self.ask_if_externally_modified = False
+        self.just_saved = False
         #Dict functions for KeyPress
         self.preKeyPress = {
             Qt.Key_Tab: self.__insert_indentation,
