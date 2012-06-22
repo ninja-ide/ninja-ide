@@ -14,11 +14,11 @@ logger = logging.getLogger('ninja_ide.core.filesystem_notifications.windows')
 DEBUG = logger.debug
 
 from ninja_ide.core.filesystem_notifications import base_watcher
-ADDED = base_watcher.BaseWatcher.ADDED
-DELETED = base_watcher.BaseWatcher.DELETED
-MODIFIED = base_watcher.BaseWatcher.MODIFIED
-REMOVE = base_watcher.BaseWatcher.REMOVE
-RENAME = base_watcher.BaseWatcher.RENAME
+ADDED = base_watcher.ADDED
+DELETED = base_watcher.DELETED
+REMOVE = base_watcher.REMOVE
+RENAME = base_watcher.RENAME
+MODIFIED = base_watcher.MODIFIED
 
 watchmask = win32con.FILE_NOTIFY_CHANGE_FILE_NAME | \
             win32con.FILE_NOTIFY_CHANGE_SIZE | \
