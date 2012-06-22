@@ -246,7 +246,7 @@ class Highlighter(QSyntaxHighlighter):
             self._execute_threaded_highlight)
         self.thread_highlight.start()
 
-    def _execute_threaded_highlight(self, styles):
+    def _execute_threaded_highlight(self, styles=None):
         self.highlight_function = self.threaded_highlight
         if styles:
             self._styles = styles
