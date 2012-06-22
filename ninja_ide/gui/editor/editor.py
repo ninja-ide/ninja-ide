@@ -902,7 +902,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         QPlainTextEdit.mouseMoveEvent(self, event)
 
     def mousePressEvent(self, event):
-        if event.modifiers() == Qt.ControlModifier:
+        if self.completer.isVisible():
+            self.completer.hide_completer()
+        elif event.modifiers() == Qt.ControlModifier:
             cursor = self.cursorForPosition(event.pos())
             self.setTextCursor(cursor)
             self.go_to_definition(cursor)
