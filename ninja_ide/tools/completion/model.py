@@ -1,7 +1,7 @@
 # -*- coding: utf-8 *-*
 
 
-late_resolution = object()
+late_resolution = 0
 
 
 class _TypeData(object):
@@ -18,6 +18,7 @@ class _TypeData(object):
             self.is_native = True
         else:
             self.is_native = False
+        self.can_resolve = True
 
     def get_data_type(self):
         return self.data_type
@@ -28,8 +29,10 @@ class Structure(object):
     def __init__(self):
         self.attributes = {}
         self.functions = {}
+        self.parent = None
 
     def add_function(self, function):
+        function.parent = self
         self.functions[function.name] = function
 
     def add_attributes(self, attributes):
@@ -40,6 +43,7 @@ class Structure(object):
             else:
                 assign = Assign(attribute[0])
             assign.add_data(*attribute[1:])
+            assign.parent = self
             self.attributes[assign.name] = assign
 
     def get_attribute_type(self, name):
@@ -49,6 +53,8 @@ class Structure(object):
         attr = self.attributes.get(var_names[0], None)
         if attr is not None:
             result = (True, attr.get_data_type())
+        elif self.parent.__class__ is Function:
+            result = self.parent.get_attribute_type(name)
         return result
 
     def _get_scope_structure(self, structure, scope):
@@ -89,6 +95,7 @@ class Module(Structure):
             self.imports[imp[0]] = info
 
     def add_class(self, clazz):
+        clazz.parent = self
         self.classes[clazz.name] = clazz
 
     def get_type(self, main_attr, child_attrs='', scope=None):
@@ -121,6 +128,9 @@ class Module(Structure):
                         self.attributes.get(main_attr, None))
                     if value is not None:
                         result = (True, value.get_data_type())
+
+        if result[1].__class__ is Clazz:
+            result = (False, result[1].get_completion_items())
         return result
 
     def get_imports(self):
@@ -128,6 +138,30 @@ class Module(Structure):
         for name in self.imports:
             module_imports.append(self.imports[name].line_content)
         return module_imports
+
+    def need_resolution(self):
+        if self._check_attr_func_resolution(self):
+            return True
+        for cla in self.classes:
+            clazz = self.classes[cla]
+            if self._check_attr_func_resolution(clazz):
+                return True
+        return False
+
+    def _check_attr_func_resolution(self, structure):
+        for attr in structure.attributes:
+            attribute = structure.attributes[attr]
+            for d in attribute.data:
+                if d.data_type == late_resolution:
+                    return True
+        for func in structure.functions:
+            function = structure.functions[func]
+            for attr in function.attributes:
+                attribute = function.attributes[attr]
+                for d in attribute.data:
+                    if d.data_type == late_resolution:
+                        return True
+        return False
 
 
 class Clazz(Structure):
@@ -167,13 +201,14 @@ class Assign(object):
     def __init__(self, name):
         self.name = name
         self.data = []
+        self.parent = None
 
     def add_data(self, lineno, data_type, line_content, oper):
         info = _TypeData(lineno, data_type, line_content, oper)
         self.data.append(info)
 
     def get_data_type(self):
-        if self.data[0].is_native:
+        if self.data[0].data_type is not late_resolution:
             return self.data[0].data_type
         else:
             return None

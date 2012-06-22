@@ -85,9 +85,6 @@ class TreeSymbolsWidget(QTreeWidget):
         if not classes_root:
             return
 
-        #for each class!
-#        for i in range(classes_root.childCount()):
-#            classes_root.child(i).setExpanded(True)
         classes_root.setExpanded(True)
 
     def _unfold_class_method(self):
@@ -166,6 +163,8 @@ class TreeSymbolsWidget(QTreeWidget):
                 item.setIcon(0, QIcon(resources.IMAGES['class']))
                 self.update_symbols_tree(symbols['classes'][claz][1],
                     parent=item)
+
+        self.expandAll()
 
     def _go_to_definition(self, item):
         if item.isClickable:

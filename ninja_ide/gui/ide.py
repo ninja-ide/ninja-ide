@@ -35,6 +35,7 @@ from ninja_ide.gui import actions
 from ninja_ide.gui.dialogs import preferences
 from ninja_ide.gui.dialogs import traceback_widget
 from ninja_ide.tools import json_manager
+from ninja_ide.tools.completion import completion_daemon
 #NINJA-IDE Containers
 from ninja_ide.gui import central_widget
 from ninja_ide.gui.main_panel import main_container
@@ -79,6 +80,11 @@ def IDE(*args, **kw):
 
 
 class __IDE(QMainWindow):
+###############################################################################
+# SIGNALS
+#
+# goingDown()
+###############################################################################
 
     def __init__(self, start_server=False):
         QMainWindow.__init__(self)
@@ -401,7 +407,9 @@ class __IDE(QMainWindow):
             if val == QMessageBox.No:
                 event.ignore()
         QApplication.instance().setCursorFlashTime(cursor_flash_time)
+        self.emit(SIGNAL("goingDown()"))
         self.save_settings()
+        completion_daemon.shutdown_daemon()
         #close python documentation server (if running)
         self.mainContainer.close_python_doc()
         #Shutdown PluginManager
@@ -497,8 +505,8 @@ def start(filenames=None, projects_path=None,
                 qss = f.read()
                 app.setStyleSheet(qss)
 
-    #Loading Themes
-    splash.showMessage("Loading Themes", Qt.AlignRight | Qt.AlignTop, Qt.black)
+    #Loading Schemes
+    splash.showMessage("Loading Schemes", Qt.AlignRight | Qt.AlignTop, Qt.black)
     scheme = unicode(qsettings.value('preferences/editor/scheme',
         "default").toString())
     if scheme != 'default':

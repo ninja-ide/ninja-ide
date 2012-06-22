@@ -26,6 +26,9 @@ from PyQt4.QtGui import QDesktopServices
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
+from ninja_ide.core.filesystem_notifications import NinjaFileSystemWatcher
+from ninja_ide.core.filesystem_notifications.base_watcher import ADDED, \
+                                                    DELETED, REMOVE, RENAME
 from ninja_ide.tools import json_manager
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.main_panel import main_container
@@ -74,7 +77,7 @@ class TreeProjectsWidget(QTreeWidget):
         self._loading_items = {}
         self._thread_execution = {}
         self.__enableCloseNotification = True
-        self._fileWatcher = file_manager.NinjaFileSystemWatcher()
+        self._fileWatcher = NinjaFileSystemWatcher
 
         self.header().setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.header().setResizeMode(0, QHeaderView.ResizeToContents)
@@ -86,8 +89,8 @@ class TreeProjectsWidget(QTreeWidget):
             self._menu_context_tree)
         self.connect(self, SIGNAL("itemClicked(QTreeWidgetItem *, int)"),
             self._open_file)
-#        self.connect(self._fileWatcher, SIGNAL("directoryChanged(QString)"),
-#            self._refresh_project_by_path)
+        self.connect(self._fileWatcher, SIGNAL("fileChanged(int, QString)"),
+            self._refresh_project_by_path)
         self.itemExpanded.connect(self._item_expanded)
         self.itemCollapsed.connect(self._item_collapsed)
         self.mute_signals = False
@@ -108,6 +111,9 @@ class TreeProjectsWidget(QTreeWidget):
             path = tree_item.get_full_path()
             if path not in self.state_index:
                 self.state_index.append(path)
+
+    def shutdown(self):
+        self._fileWatcher.shutdown_notification()
 
     def add_extra_menu(self, menu, lang='all'):
         '''
@@ -297,9 +303,18 @@ class TreeProjectsWidget(QTreeWidget):
         proj = project_properties_widget.ProjectProperties(item, self)
         proj.show()
 
-    def _refresh_project_by_path(self, folder):
-        item = self.get_item_for_path(unicode(folder))
-        self._refresh_project(item)
+    def _refresh_project_by_path(self, event, folder):
+        if event not in (DELETED, ADDED, REMOVE, RENAME):
+            return
+        folder = unicode(folder)
+        oprojects = self.get_open_projects()
+        for each_project in oprojects:
+            p_path = unicode(each_project.path)
+            if file_manager.belongs_to_folder(p_path, folder):
+                DEBUG("About to refresh %s" % folder)
+                DEBUG("for event %s" % event)
+                self._refresh_project(each_project)
+                break
 
     def _refresh_project(self, item=None):
         if item is None:
@@ -312,48 +327,33 @@ class TreeProjectsWidget(QTreeWidget):
         else:
             path = file_manager.create_path(item.path, unicode(item.text(0)))
 
-        thread = ui_tools.ThreadExecution(
-            self._thread_refresh_project, args=[path, item, parentItem])
+        thread = ui_tools.ThreadProjectExplore()
         self._thread_execution[path] = thread
-        self.connect(thread, SIGNAL("executionFinished(PyQt_PyObject)"),
+        self.connect(thread, SIGNAL("folderDataRefreshed(PyQt_PyObject)"),
             self._callback_refresh_project)
-        thread.start()
+        self.connect(thread, SIGNAL("finished()"), self._clean_threads)
+        thread.refresh_project(path, item, parentItem.extensions)
 
-    def _thread_refresh_project(self, path, item, parentItem):
-        if parentItem.extensions != settings.SUPPORTED_EXTENSIONS:
-            folderStructure = file_manager.open_project_with_extensions(
-                path, parentItem.extensions)
-        else:
-            folderStructure = file_manager.open_project(path)
-
-        if folderStructure.get(path, [None, None])[1] is not None:
-            folderStructure[path][1].sort()
-            values = (folderStructure, path, item)
-        else:
-            values = None
-
-        self._thread_execution[path].storage_values = values
-        self._thread_execution[path].signal_return = path
+    def _clean_threads(self):
+        paths_to_delete = []
+        for path in self._thread_execution:
+            thread = self._thread_execution.get(path, None)
+            if thread and not thread.isRunning():
+                paths_to_delete.append(path)
+        for path in paths_to_delete:
+            self._thread_execution.pop(path, None)
 
     def _callback_refresh_project(self, value):
-        thread = self._thread_execution.pop(value, None)
-        if thread is not None and len(thread.storage_values) == 3:
-            folderStructure = thread.storage_values[0]
-            path = thread.storage_values[1]
-            item = thread.storage_values[2]
-            item.takeChildren()
-            self._load_folder(folderStructure, path, item)
-            item.setExpanded(True)
+        path, item, structure = value
+        item.takeChildren()
+        self._load_folder(structure, path, item)
+        item.setExpanded(True)
 
     def _close_project(self):
         item = self.currentItem()
         index = self.indexOfTopLevelItem(item)
         pathKey = item.path
-#        for directory in self._fileWatcher.directories():
-#            directory = unicode(directory)
-#            if file_manager.belongs_to_folder(pathKey, directory):
-#                self._fileWatcher.removePath(directory)
-#        self._fileWatcher.removePath(pathKey)
+        self._fileWatcher.remove_watch(pathKey)
         self.takeTopLevelItem(index)
         self._projects.pop(pathKey, None)
         if self.__enableCloseNotification:
@@ -608,6 +608,7 @@ class TreeProjectsWidget(QTreeWidget):
         if self.currentItem() is None:
             item.setSelected(True)
             self.setCurrentItem(item)
+        self._fileWatcher.add_watch(folder)
 #        if folder not in self._fileWatcher.directories():
 #            DEBUG("Adding '%s' to watcher" % folder)
 #            self._fileWatcher.addPath(folder)

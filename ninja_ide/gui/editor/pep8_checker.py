@@ -13,10 +13,14 @@ class Pep8Checker(QThread):
     def __init__(self, editor):
         QThread.__init__(self)
         self._editor = editor
+        self._path = ''
+        self._encoding = ''
         self.pep8checks = {}
 
     def check_style(self):
         if not self.isRunning():
+            self._path = self._editor.ID
+            self._encoding = self._editor.encoding
             self.start()
 
     def reset(self):
@@ -25,13 +29,13 @@ class Pep8Checker(QThread):
     def run(self):
         self.sleep(1)
         exts = settings.SYNTAX.get('python')['extension']
-        file_ext = file_manager.get_file_extension(self._editor.ID)
+        file_ext = file_manager.get_file_extension(self._path)
         if file_ext in exts:
             self.reset()
             source = self._editor.get_text()
-            if self._editor.encoding is not None:
-                source = source.encode(self._editor.encoding)
-            tempData = pep8mod.run_check(self._editor.ID, source)
+            if self._encoding is not None:
+                source = source.encode(self._encoding)
+            tempData = pep8mod.run_check(self._path, source)
             i = 0
             while i < len(tempData):
                 lineno = -1
