@@ -108,21 +108,22 @@ def get_all_completions(s, imports=None):
         if not s:
             continue
         try:
-            s = unicode(s)
-            sym = eval(s, globals(), dlocals)
-        except NameError:
             try:
-                sym = __import__(s, globals(), dlocals, [])
-            except ImportError:
-                if s.find('(') != -1:
-                    s = s[:s.index('(')]
+                s = unicode(s)
                 sym = eval(s, globals(), dlocals)
-            except AttributeError:
+            except NameError:
                 try:
                     sym = __import__(s, globals(), dlocals, [])
                 except ImportError:
-                    pass
-        except (AttributeError, TypeError, SyntaxError):
+                    if s.find('(') != -1 and s[-1] == ')':
+                        s = s[:s.index('(')]
+                    sym = eval(s, globals(), dlocals)
+                except AttributeError:
+                    try:
+                        sym = __import__(s, globals(), dlocals, [])
+                    except ImportError:
+                        pass
+        except (AttributeError, NameError, TypeError, SyntaxError):
             return {}
     if sym is not None:
         var = s

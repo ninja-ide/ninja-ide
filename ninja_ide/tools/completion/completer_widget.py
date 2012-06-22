@@ -60,6 +60,9 @@ class CodeCompletionWidget(QFrame):
         desktop = QApplication.instance().desktop()
         self._desktop_geometry = desktop.availableGeometry()
 
+        self.connect(self.completion_list,
+            SIGNAL("itemClicked(QListWidgetItem*)"),
+            self.pre_key_insert_completion)
         self.connect(self._editor.document(), SIGNAL("blockCountChanged(int)"),
             self.update_metadata)
         self.update_metadata()
