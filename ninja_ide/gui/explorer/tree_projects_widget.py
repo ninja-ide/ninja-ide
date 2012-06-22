@@ -303,13 +303,15 @@ class TreeProjectsWidget(QTreeWidget):
     def _refresh_project_by_path(self, event, folder):
         if event not in (DELETED, ADDED, REMOVE, RENAME):
             return
+        folder = unicode(folder)
         oprojects = self.get_open_projects()
         for each_project in oprojects:
             p_path = unicode(each_project.path)
-            if file_manager.belongs_to_folder(p_path, unicode(folder)):
+            if file_manager.belongs_to_folder(p_path, folder):
                 DEBUG("About to refresh %s" % folder)
                 DEBUG("for event %s" % event)
                 self._refresh_project(each_project)
+                break
 
     def _refresh_project(self, item=None):
         if item is None:
