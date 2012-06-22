@@ -86,10 +86,14 @@ class CodeCompletionWidget(QFrame):
         source = source.encode(self._editor.encoding)
         self.cc.analyze_file('', source)
 
-    def insert_completion(self, insert):
+    def insert_completion(self, insert, type_=ord('a')):
         if insert != self._prefix:
+            closing = ''
+            if type_ in (ord('f'), ord('c')):
+                closing = '()'
             extra = len(self._prefix) - len(insert)
-            self._editor.textCursor().insertText(insert[extra:])
+            insertion = '%s%s' % (insert[extra:], closing)
+            self._editor.textCursor().insertText(insertion)
         self.hide_completer()
 
     def _get_geometry(self):
@@ -126,7 +130,7 @@ class CodeCompletionWidget(QFrame):
             self.completion_list.addItem(
                 QListWidgetItem(
                 QIcon(self._icons.get(p[0], resources.IMAGES['attribute'])),
-                p[1]))
+                p[1], type=ord(p[0])))
 
     def set_completion_prefix(self, prefix, valid=True):
         self._prefix = prefix
@@ -177,8 +181,12 @@ class CodeCompletionWidget(QFrame):
         self.hide()
 
     def pre_key_insert_completion(self):
-        insert = unicode(self.completion_list.currentItem().text())
-        self.insert_completion(insert)
+        type_ = ord('a')
+        current = self.completion_list.currentItem()
+        insert = unicode(current.text())
+        if not insert.endswith(')'):
+            type_ = current.type()
+        self.insert_completion(insert, type_)
         self.hide_completer()
         return True
 

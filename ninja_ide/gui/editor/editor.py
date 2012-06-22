@@ -417,10 +417,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         """
         Go to an specific line
         """
-        cursor = self.textCursor()
-        cursor.setPosition(self.document().findBlockByLineNumber(
-            lineno).position())
-        self.setTextCursor(cursor)
+        if self.blockCount() >= lineno:
+            cursor = self.textCursor()
+            cursor.setPosition(self.document().findBlockByLineNumber(
+                lineno).position())
+            self.setTextCursor(cursor)
 
     def zoom_in(self):
         font = self.document().defaultFont()
@@ -445,9 +446,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         return self.textCursor().position()
 
     def set_cursor_position(self, pos):
-        cursor = self.textCursor()
-        cursor.setPosition(pos)
-        self.setTextCursor(cursor)
+        if self.document().characterCount() >= pos:
+            cursor = self.textCursor()
+            cursor.setPosition(pos)
+            self.setTextCursor(cursor)
 
     def indent_more(self):
         #cursor is a COPY all changes do not affect the QPlainTextEdit's cursor

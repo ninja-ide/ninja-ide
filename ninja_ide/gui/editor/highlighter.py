@@ -96,6 +96,7 @@ class Highlighter(QSyntaxHighlighter):
         self.pep8 = pep8
         self.selected_word_lines = []
         self.visible_limits = (0, 50)
+        self._styles = {}
         if lang is not None:
             self.apply_highlight(lang, scheme)
 
@@ -240,17 +241,20 @@ class Highlighter(QSyntaxHighlighter):
 
     def async_highlight(self):
         self.thread_highlight = HighlightParserThread(self)
-        self.connect(self.thread_highlight, SIGNAL("finished()"),
+        self.connect(self.thread_highlight,
+            SIGNAL("highlightingDetected(PyQt_PyObject)"),
             self._execute_threaded_highlight)
         self.thread_highlight.start()
 
-    def _execute_threaded_highlight(self):
+    def _execute_threaded_highlight(self, styles=None):
         self.highlight_function = self.threaded_highlight
-        if self.thread_highlight and self.thread_highlight.styles:
-            lines = list(set(self.thread_highlight.styles.keys()) -
+        if styles:
+            self._styles = styles
+            lines = list(set(styles.keys()) -
                 set(range(self.visible_limits[0], self.visible_limits[1])))
             self.rehighlight_lines(lines, False)
-            self.thread_highlight = None
+        else:
+            self._styles = {}
         self.highlight_function = self.realtime_highlight
 
     def threaded_highlight(self, text):
@@ -271,8 +275,8 @@ class Highlighter(QSyntaxHighlighter):
         char_format = highlight_errors(char_format, user_data)
         self.setFormat(0, len(block.text()), char_format)
 
-        styles = self.thread_highlight.styles.get(block.blockNumber(), ())
-        for index, length, char_format in styles:
+        block_styles = self._styles.get(block.blockNumber(), ())
+        for index, length, char_format in block_styles:
             char_format = highlight_errors(char_format, user_data)
             if (self.format(index) != STYLES['string']):
                 self.setFormat(index, length, char_format)
@@ -481,9 +485,9 @@ class HighlightParserThread(QThread):
     def __init__(self, highlighter):
         super(HighlightParserThread, self).__init__()
         self._highlighter = highlighter
-        self.styles = {}
 
     def run(self):
+        styles = {}
         self.msleep(300)
         block = self._highlighter.document().begin()
         while block.blockNumber() != -1:
@@ -510,8 +514,9 @@ class HighlightParserThread(QThread):
                 formats.append((index, length, STYLES['spaces']))
                 index = expression.indexIn(text, index + length)
 
-            self.styles[block.blockNumber()] = formats
+            styles[block.blockNumber()] = formats
             block = block.next()
+        self.emit(SIGNAL("highlightingDetected(PyQt_PyObject)"), styles)
 
 
 class EmpyHighlighter(QSyntaxHighlighter):

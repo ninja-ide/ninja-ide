@@ -120,10 +120,11 @@ def get_file_encoding(content):
     encoding = None
     lines_to_check = content.split("\n", 2)
     for index in range(2):
-        line_encoding = _search_coding_line(lines_to_check[index])
-        if line_encoding:
-            encoding = line_encoding
-            break
+        if len(lines_to_check) > index:
+            line_encoding = _search_coding_line(lines_to_check[index])
+            if line_encoding:
+                encoding = line_encoding
+                break
     #if not encoding is set then use UTF-8 as default
     if encoding is None:
         encoding = "UTF-8"
