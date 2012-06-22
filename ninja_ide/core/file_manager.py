@@ -155,15 +155,19 @@ def get_folder(fileName):
     return os.path.dirname(fileName)
 
 
-def _real_store_file_content(fileName, content):
-    """Function that actually save the content of a file (thread)."""
-    global file_store_content_lock
-    file_store_content_lock.acquire()
+def store_file_content(fileName, content, addExtension=True, newFile=False):
+    """Save content on disk with the given file name."""
+    if fileName == '':
+        raise Exception()
+    ext = (os.path.splitext(fileName)[-1])[1:]
+    if ext == '' and addExtension:
+        fileName += '.py'
+    if newFile and file_exists(fileName):
+        raise NinjaFileExistsException(fileName)
     try:
         f = QtCore.QFile(fileName)
         if not f.open(QtCore.QIODevice.WriteOnly | QtCore.QIODevice.Truncate):
             raise NinjaIOException(f.errorString())
-        #QTextStream detect locales ;)
         stream = QtCore.QTextStream(f)
         encoding = _search_coding_line(content)
         if encoding:
@@ -174,24 +178,6 @@ def _real_store_file_content(fileName, content):
         f.close()
     except:
         raise
-    finally:
-        file_store_content_lock.release()
-
-
-def store_file_content(fileName, content, addExtension=True, newFile=False):
-    """Save content on disk with the given file name."""
-    if fileName == '':
-        raise Exception()
-    ext = (os.path.splitext(fileName)[-1])[1:]
-    if ext == '' and addExtension:
-        fileName += '.py'
-    if newFile and file_exists(fileName):
-        raise NinjaFileExistsException(fileName)
-    t = threading.Thread(target=_real_store_file_content,
-                            args=(fileName, content))
-    t.start()
-    #wait until the saver finish
-    t.join()
     return os.path.abspath(fileName)
 
 
