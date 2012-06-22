@@ -67,7 +67,7 @@ class __CompletionDaemon(Thread):
     def _shutdown_process(self):
         self.queue_send.put((None, None))
         self.daemon.terminate()
-        self.queue_receive.put((None, None))
+        self.queue_receive.put((None, None, None))
 
     def force_stop(self):
         self.keep_alive = False
@@ -96,9 +96,9 @@ class _DaemonProcess(Process):
                 self.first_iteration = False
                 self._resolve_module(module)
             if module.need_resolution():
-                self.queue_send.put((package, module, True))
+                self.queue_send.put((package, module, 1))
             else:
-                self.queue_send.put((package, module, False))
+                self.queue_send.put((package, module, 0))
 
     def _resolve_module(self, module):
         self._resolve_attributes(module, module)

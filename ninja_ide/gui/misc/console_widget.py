@@ -74,7 +74,7 @@ class ConsoleWidget(QPlainTextEdit):
         try:
             self._proc.start(settings.PYTHON_PATH, [resources.GET_SYSTEM_PATH])
         except Exception, reason:
-            logger.error('Could not get system path, error: %r' % reason)
+            logger.warning('Could not get system path, error: %r' % reason)
 
     def _python_path_detected(self):
         paths = self._proc.readAllStandardOutput().data().decode('utf8')
@@ -88,7 +88,7 @@ class ConsoleWidget(QPlainTextEdit):
             message = 'Failed to start'
         else:
             message = 'Error during execution, QProcess error: %d' % error
-        logger.error('Could not get system path, error: %r' % message)
+        logger.warning('Could not get system path, error: %r' % message)
 
     def _create_context_menu(self):
         self.popup_menu = self.createStandardContextMenu()

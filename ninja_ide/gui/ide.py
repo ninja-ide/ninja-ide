@@ -505,8 +505,8 @@ def start(filenames=None, projects_path=None,
                 qss = f.read()
                 app.setStyleSheet(qss)
 
-    #Loading Themes
-    splash.showMessage("Loading Themes", Qt.AlignRight | Qt.AlignTop, Qt.black)
+    #Loading Schemes
+    splash.showMessage("Loading Schemes", Qt.AlignRight | Qt.AlignTop, Qt.black)
     scheme = unicode(qsettings.value('preferences/editor/scheme',
         "default").toString())
     if scheme != 'default':
