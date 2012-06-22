@@ -306,13 +306,15 @@ class TreeProjectsWidget(QTreeWidget):
     def _refresh_project_by_path(self, event, folder):
         if event not in (DELETED, ADDED, REMOVE, RENAME):
             return
+        folder = unicode(folder)
         oprojects = self.get_open_projects()
         for each_project in oprojects:
             p_path = unicode(each_project.path)
-            if file_manager.belongs_to_folder(p_path, unicode(folder)):
+            if file_manager.belongs_to_folder(p_path, folder):
                 DEBUG("About to refresh %s" % folder)
                 DEBUG("for event %s" % event)
                 self._refresh_project(each_project)
+                break
 
     def _refresh_project(self, item=None):
         if item is None:
@@ -325,50 +327,33 @@ class TreeProjectsWidget(QTreeWidget):
         else:
             path = file_manager.create_path(item.path, unicode(item.text(0)))
 
-        thread = ui_tools.ThreadExecution(
-            self._thread_refresh_project, args=[path, item, parentItem])
+        thread = ui_tools.ThreadProjectExplore()
         self._thread_execution[path] = thread
-        self.connect(thread, SIGNAL("executionFinished(PyQt_PyObject)"),
+        self.connect(thread, SIGNAL("folderDataRefreshed(PyQt_PyObject)"),
             self._callback_refresh_project)
-        thread.start()
+        self.connect(thread, SIGNAL("finished()"), self._clean_threads)
+        thread.refresh_project(path, item, parentItem.extensions)
 
-    def _thread_refresh_project(self, path, item, parentItem):
-
-        if parentItem.extensions != settings.SUPPORTED_EXTENSIONS:
-            folderStructure = file_manager.open_project_with_extensions(
-                path, parentItem.extensions)
-        else:
-            folderStructure = file_manager.open_project(path)
-
-        if folderStructure.get(path, [None, None])[1] is not None:
-            folderStructure[path][1].sort()
-            values = (folderStructure, path, item)
-        else:
-            values = None
-
-        self._thread_execution[path].storage_values = values
-        self._thread_execution[path].signal_return = path
+    def _clean_threads(self):
+        paths_to_delete = []
+        for path in self._thread_execution:
+            thread = self._thread_execution.get(path, None)
+            if thread and not thread.isRunning():
+                paths_to_delete.append(path)
+        for path in paths_to_delete:
+            self._thread_execution.pop(path, None)
 
     def _callback_refresh_project(self, value):
-        thread = self._thread_execution.pop(value, None)
-        if thread is not None and len(thread.storage_values) == 3:
-            folderStructure = thread.storage_values[0]
-            path = thread.storage_values[1]
-            item = thread.storage_values[2]
-            item.takeChildren()
-            self._load_folder(folderStructure, path, item)
-            item.setExpanded(True)
+        path, item, structure = value
+        item.takeChildren()
+        self._load_folder(structure, path, item)
+        item.setExpanded(True)
 
     def _close_project(self):
         item = self.currentItem()
         index = self.indexOfTopLevelItem(item)
         pathKey = item.path
         self._fileWatcher.remove_watch(pathKey)
-#        for directory in self._fileWatcher.directories():
-#            directory = unicode(directory)
-#            if file_manager.belongs_to_folder(pathKey, directory):
-#                self._fileWatcher.removePath(directory)
-#        self._fileWatcher.removePath(pathKey)
         self.takeTopLevelItem(index)
         self._projects.pop(pathKey, None)
         if self.__enableCloseNotification:

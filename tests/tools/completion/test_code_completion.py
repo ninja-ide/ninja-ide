@@ -5,6 +5,7 @@ import re
 import unittest
 
 from ninja_ide.tools.completion import code_completion
+from ninja_ide.tools.completion import completion_daemon
 from tests.tools.completion import SOURCE_COMPLETION
 
 
@@ -13,6 +14,9 @@ class CodeCompletionTestCase(unittest.TestCase):
     def setUp(self):
         code_completion.settings.SYNTAX = {'python': {'keywords': []}}
         self.cc = code_completion.CodeCompletion()
+
+    def tearDown(self):
+        completion_daemon.shutdown_daemon()
 
     def get_source_data(self, code, word=""):
         clazzes = sorted(set(re.findall("class (\w+?)\(", code)))

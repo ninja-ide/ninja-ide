@@ -64,3 +64,10 @@ def global_func():
 
 man = ()
 """
+
+
+SOURCE_LATE_RESOLUTION = """
+import os
+
+p = os.path
+"""

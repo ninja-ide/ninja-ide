@@ -10,7 +10,6 @@ from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QTextBrowser
-#from PyQt4.QtGui import QLineEdit
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QTableWidget
 from PyQt4.QtGui import QTabWidget
@@ -263,23 +262,9 @@ class AvailableWidget(QWidget):
             "changes to take effect.")))
         vbox.addLayout(hbox)
 
-#        hbox = QHBoxLayout()
-#        hbox.addWidget(QLabel(
-#            self.tr("Add an external Plugin. URL Zip File:")))
-#        self._link = QLineEdit()
-#        hbox.addWidget(self._link)
-#        btnAdd = QPushButton(self.tr("Add"))
-#        hbox.addWidget(btnAdd)
-#        vbox.addLayout(hbox)
-#        lblExternalPlugin = QLabel(
-#            self.tr("(Write the URL of the Plugin and press 'Add')"))
-#        lblExternalPlugin.setAlignment(Qt.AlignRight)
-#        vbox.addWidget(lblExternalPlugin)
-
         self.connect(btnInstall, SIGNAL("clicked()"), self._install_plugins)
         self.connect(self._table, SIGNAL("itemSelectionChanged()"),
             self._show_item_description)
-#        self.connect(btnAdd, SIGNAL("clicked()"), self._install_external)
 
     def _show_item_description(self):
         item = self._table.currentItem()
@@ -384,7 +369,7 @@ class ThreadLoadPlugins(QThread):
     """
 
     def __init__(self, manager):
-        QThread.__init__(self)
+        super(ThreadLoadPlugins, self).__init__()
         self._manager = manager
         #runnable hold a function to call!
         self.runnable = self.collect_data_thread
