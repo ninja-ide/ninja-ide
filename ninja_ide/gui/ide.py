@@ -1,4 +1,20 @@
 # -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+
 from __future__ import absolute_import
 
 import sys
@@ -35,6 +51,7 @@ from ninja_ide.gui import actions
 from ninja_ide.gui.dialogs import preferences
 from ninja_ide.gui.dialogs import traceback_widget
 from ninja_ide.tools import json_manager
+from ninja_ide.tools.completion import completion_daemon
 #NINJA-IDE Containers
 from ninja_ide.gui import central_widget
 from ninja_ide.gui.main_panel import main_container
@@ -408,6 +425,7 @@ class __IDE(QMainWindow):
         QApplication.instance().setCursorFlashTime(cursor_flash_time)
         self.emit(SIGNAL("goingDown()"))
         self.save_settings()
+        completion_daemon.shutdown_daemon()
         #close python documentation server (if running)
         self.mainContainer.close_python_doc()
         #Shutdown PluginManager
@@ -503,8 +521,8 @@ def start(filenames=None, projects_path=None,
                 qss = f.read()
                 app.setStyleSheet(qss)
 
-    #Loading Themes
-    splash.showMessage("Loading Themes", Qt.AlignRight | Qt.AlignTop, Qt.black)
+    #Loading Schemes
+    splash.showMessage("Loading Schemes", Qt.AlignRight | Qt.AlignTop, Qt.black)
     scheme = unicode(qsettings.value('preferences/editor/scheme',
         "default").toString())
     if scheme != 'default':

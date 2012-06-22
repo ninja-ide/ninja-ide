@@ -1,8 +1,22 @@
 # -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 import os
 import re
-#import sys
 import threading
 import shutil
 import logging
@@ -120,10 +134,11 @@ def get_file_encoding(content):
     encoding = None
     lines_to_check = content.split("\n", 2)
     for index in range(2):
-        line_encoding = _search_coding_line(lines_to_check[index])
-        if line_encoding:
-            encoding = line_encoding
-            break
+        if len(lines_to_check) > index:
+            line_encoding = _search_coding_line(lines_to_check[index])
+            if line_encoding:
+                encoding = line_encoding
+                break
     #if not encoding is set then use UTF-8 as default
     if encoding is None:
         encoding = "UTF-8"
@@ -154,29 +169,6 @@ def get_folder(fileName):
     return os.path.dirname(fileName)
 
 
-def _real_store_file_content(fileName, content):
-    """Function that actually save the content of a file (thread)."""
-    global file_store_content_lock
-    file_store_content_lock.acquire()
-    try:
-        f = QtCore.QFile(fileName)
-        if not f.open(QtCore.QIODevice.WriteOnly | QtCore.QIODevice.Truncate):
-            raise NinjaIOException(f.errorString())
-        #QTextStream detect locales ;)
-        stream = QtCore.QTextStream(f)
-        encoding = _search_coding_line(content)
-        if encoding:
-            stream.setCodec(encoding)
-        encoded_stream = stream.codec().fromUnicode(content)
-        f.write(encoded_stream)
-        f.flush()
-        f.close()
-    except:
-        raise
-    finally:
-        file_store_content_lock.release()
-
-
 def store_file_content(fileName, content, addExtension=True, newFile=False):
     """Save content on disk with the given file name."""
     if fileName == '':
@@ -186,11 +178,20 @@ def store_file_content(fileName, content, addExtension=True, newFile=False):
         fileName += '.py'
     if newFile and file_exists(fileName):
         raise NinjaFileExistsException(fileName)
-    t = threading.Thread(target=_real_store_file_content,
-                            args=(fileName, content))
-    t.start()
-    #wait until the saver finish
-    t.join()
+    try:
+        f = QtCore.QFile(fileName)
+        if not f.open(QtCore.QIODevice.WriteOnly | QtCore.QIODevice.Truncate):
+            raise NinjaIOException(f.errorString())
+        stream = QtCore.QTextStream(f)
+        encoding = get_file_encoding(content)
+        if encoding:
+            stream.setCodec(encoding)
+        encoded_stream = stream.codec().fromUnicode(content)
+        f.write(encoded_stream)
+        f.flush()
+        f.close()
+    except:
+        raise
     return os.path.abspath(fileName)
 
 

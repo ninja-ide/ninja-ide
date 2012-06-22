@@ -1,4 +1,19 @@
 # -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
 import os
@@ -41,7 +56,9 @@ from PyQt4.QtCore import QEvent
 from PyQt4.QtCore import QTimeLine
 
 from ninja_ide import resources
+from ninja_ide.core import settings
 from ninja_ide.core import file_manager
+from ninja_ide.tools import json_manager
 
 
 def load_table(table, headers, data, checkFirstColumn=True):
@@ -105,6 +122,7 @@ class LoadingItem(QLabel):
 class ThreadExecution(QThread):
 
     def __init__(self, functionInit=None, args=None, kwargs=None):
+        super(ThreadExecution, self).__init__()
         QThread.__init__(self)
         self.execute = functionInit
         self.result = None
@@ -119,6 +137,60 @@ class ThreadExecution(QThread):
         self.emit(SIGNAL("executionFinished(PyQt_PyObject)"),
             self.signal_return)
         self.signal_return = None
+
+
+class ThreadProjectExplore(QThread):
+
+    def __init__(self):
+        super(ThreadProjectExplore, self).__init__()
+        self.execute = lambda: None
+        self._folder_path = None
+        self._item = None
+        self._extensions = None
+
+    def open_folder(self, folder):
+        self._folder_path = folder
+        self.execute = self._thread_open_project
+        self.start()
+
+    def refresh_project(self, path, item, extensions):
+        self._folder_path = path
+        self._item = item
+        self._extensions = extensions
+        self.execute = self._thread_refresh_project
+        self.start()
+
+    def run(self):
+        self.execute()
+
+    def _thread_refresh_project(self):
+        if self._extensions != settings.SUPPORTED_EXTENSIONS:
+            folderStructure = file_manager.open_project_with_extensions(
+                self._folder_path, self._extensions)
+        else:
+            folderStructure = file_manager.open_project(self._folder_path)
+
+        if folderStructure.get(self._folder_path, [None, None])[1] is not None:
+            folderStructure[self._folder_path][1].sort()
+            values = (self._folder_path, self._item, folderStructure)
+            self.emit(SIGNAL("folderDataRefreshed(PyQt_PyObject)"), values)
+
+    def _thread_open_project(self):
+        try:
+            project = json_manager.read_ninja_project(self._folder_path)
+            extensions = project.get('supported-extensions',
+                settings.SUPPORTED_EXTENSIONS)
+            if extensions != settings.SUPPORTED_EXTENSIONS:
+                structure = file_manager.open_project_with_extensions(
+                    self._folder_path, extensions)
+            else:
+                structure = file_manager.open_project(self._folder_path)
+
+            self.emit(SIGNAL("folderDataAcquired(PyQt_PyObject)"),
+                (self._folder_path, structure))
+        except:
+            self.emit(SIGNAL("folderDataAcquired(PyQt_PyObject)"),
+                (self._folder_path, None))
 
 
 ###############################################################################

@@ -1,4 +1,20 @@
-# *-* coding: utf-8 *-*
+# -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+
 from __future__ import absolute_import
 
 import webbrowser
@@ -10,7 +26,6 @@ from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QTextBrowser
-#from PyQt4.QtGui import QLineEdit
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QTableWidget
 from PyQt4.QtGui import QTabWidget
@@ -263,23 +278,9 @@ class AvailableWidget(QWidget):
             "changes to take effect.")))
         vbox.addLayout(hbox)
 
-#        hbox = QHBoxLayout()
-#        hbox.addWidget(QLabel(
-#            self.tr("Add an external Plugin. URL Zip File:")))
-#        self._link = QLineEdit()
-#        hbox.addWidget(self._link)
-#        btnAdd = QPushButton(self.tr("Add"))
-#        hbox.addWidget(btnAdd)
-#        vbox.addLayout(hbox)
-#        lblExternalPlugin = QLabel(
-#            self.tr("(Write the URL of the Plugin and press 'Add')"))
-#        lblExternalPlugin.setAlignment(Qt.AlignRight)
-#        vbox.addWidget(lblExternalPlugin)
-
         self.connect(btnInstall, SIGNAL("clicked()"), self._install_plugins)
         self.connect(self._table, SIGNAL("itemSelectionChanged()"),
             self._show_item_description)
-#        self.connect(btnAdd, SIGNAL("clicked()"), self._install_external)
 
     def _show_item_description(self):
         item = self._table.currentItem()
@@ -384,7 +385,7 @@ class ThreadLoadPlugins(QThread):
     """
 
     def __init__(self, manager):
-        QThread.__init__(self)
+        super(ThreadLoadPlugins, self).__init__()
         self._manager = manager
         #runnable hold a function to call!
         self.runnable = self.collect_data_thread

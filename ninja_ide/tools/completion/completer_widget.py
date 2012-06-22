@@ -1,4 +1,19 @@
-# -*- coding: utf-8 *-*
+# -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QTextCursor
@@ -86,10 +101,14 @@ class CodeCompletionWidget(QFrame):
         source = source.encode(self._editor.encoding)
         self.cc.analyze_file('', source)
 
-    def insert_completion(self, insert):
+    def insert_completion(self, insert, type_=ord('a')):
         if insert != self._prefix:
+            closing = ''
+            if type_ in (ord('f'), ord('c')):
+                closing = '()'
             extra = len(self._prefix) - len(insert)
-            self._editor.textCursor().insertText(insert[extra:])
+            insertion = '%s%s' % (insert[extra:], closing)
+            self._editor.textCursor().insertText(insertion)
         self.hide_completer()
 
     def _get_geometry(self):
@@ -126,7 +145,7 @@ class CodeCompletionWidget(QFrame):
             self.completion_list.addItem(
                 QListWidgetItem(
                 QIcon(self._icons.get(p[0], resources.IMAGES['attribute'])),
-                p[1]))
+                p[1], type=ord(p[0])))
 
     def set_completion_prefix(self, prefix, valid=True):
         self._prefix = prefix
@@ -177,8 +196,12 @@ class CodeCompletionWidget(QFrame):
         self.hide()
 
     def pre_key_insert_completion(self):
-        insert = unicode(self.completion_list.currentItem().text())
-        self.insert_completion(insert)
+        type_ = ord('a')
+        current = self.completion_list.currentItem()
+        insert = unicode(current.text())
+        if not insert.endswith(')'):
+            type_ = current.type()
+        self.insert_completion(insert, type_)
         self.hide_completer()
         return True
 

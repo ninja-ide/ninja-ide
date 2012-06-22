@@ -1,4 +1,19 @@
 # -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
 import os
@@ -230,14 +245,17 @@ class __ExplorerContainer(QTabWidget):
             if not folderName:
                 return
             if not self._treeProjects.is_open(folderName):
+                self._treeProjects.mute_signals = True
                 self._treeProjects.loading_project(folderName)
-                thread = ui_tools.ThreadExecution(
-                    self._thread_open_project, args=[folderName])
+                thread = ui_tools.ThreadProjectExplore()
                 self._thread_execution[folderName] = thread
                 self.connect(thread,
-                    SIGNAL("executionFinished(PyQt_PyObject)"),
+                    SIGNAL("folderDataAcquired(PyQt_PyObject)"),
                     self._callback_open_project)
-                thread.start()
+                self.connect(thread,
+                    SIGNAL("finished()"),
+                    self._unmute_tree_signals_clean_threads)
+                thread.open_folder(folderName)
             else:
                 self._treeProjects._set_current_project(folderName)
         except Exception, reason:
@@ -246,35 +264,27 @@ class __ExplorerContainer(QTabWidget):
                 QMessageBox.information(self, self.tr("Incorrect Project"),
                     self.tr("The project could not be loaded!"))
 
-    def _thread_open_project(self, folderName):
-        self._treeProjects.mute_signals = True
-        try:
-            project = json_manager.read_ninja_project(folderName)
-            extensions = project.get('supported-extensions',
-                settings.SUPPORTED_EXTENSIONS)
-            if extensions != settings.SUPPORTED_EXTENSIONS:
-                structure = file_manager.open_project_with_extensions(
-                    folderName, extensions)
-            else:
-                structure = file_manager.open_project(folderName)
-            self._thread_execution[folderName].storage_values = (
-                structure, folderName)
-            self._thread_execution[folderName].signal_return = folderName
-        except Exception, reason:
-            logger.error('open_project_folder: %s', reason)
-            self._treeProjects.remove_loading_icon(folderName)
-        finally:
+    def _unmute_tree_signals_clean_threads(self):
+        paths_to_delete = []
+        for path in self._thread_execution:
+            thread = self._thread_execution.get(path, None)
+            if thread and not thread.isRunning():
+                paths_to_delete.append(path)
+        for path in paths_to_delete:
+            self._thread_execution.pop(path, None)
+        if len(self._thread_execution) == 0:
             self._treeProjects.mute_signals = False
 
     def _callback_open_project(self, value):
-        thread = self._thread_execution.pop(value, None)
-        if thread is not None:
-            structure = thread.storage_values[0]
-            folderName = thread.storage_values[1]
-            self._treeProjects.load_project(structure, folderName)
-            self.save_recent_projects(folderName)
-            self.emit(SIGNAL("projectOpened(QString)"), folderName)
-            self.emit(SIGNAL("updateLocator()"))
+        path, structure = value
+        if structure is None:
+            self._treeProjects.remove_loading_icon(path)
+            return
+
+        self._treeProjects.load_project(structure, path)
+        self.save_recent_projects(path)
+        self.emit(SIGNAL("projectOpened(QString)"), path)
+        self.emit(SIGNAL("updateLocator()"))
 
     def create_new_project(self):
         if not self._treeProjects:

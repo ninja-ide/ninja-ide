@@ -1,11 +1,26 @@
 # -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
 #Based in pycomplete emacs module.
 
 import sys
 import types
-import inspect
+#import inspect
 import StringIO
 import logging
 
@@ -44,11 +59,12 @@ def get_completions_per_type(object_dir):
             # but we drop the "self" param.
             obj = obj.im_func
 
-        if type(obj) in [types.FunctionType, types.LambdaType]:
-            (args, varargs, varkw, defaults) = inspect.getargspec(obj)
-            sig = ('%s%s' % (obj.__name__,
-                               inspect.formatargspec(args, varargs, varkw,
-                                                     defaults)))
+        # Not Show functions args, but we will use this for showing doc
+#        if type(obj) in [types.FunctionType, types.LambdaType]:
+#            (args, varargs, varkw, defaults) = inspect.getargspec(obj)
+#            sig = ('%s%s' % (obj.__name__,
+#                               inspect.formatargspec(args, varargs, varkw,
+#                                                     defaults)))
         if not sig:
             sig = attr[attr.rfind('.') + 1:]
         result[type_assign.get(type(obj), 'attributes')].append(sig)
@@ -119,6 +135,8 @@ def get_all_completions(s, imports=None):
                     sym = __import__(s, globals(), dlocals, [])
                 except ImportError:
                     pass
+        except (AttributeError, TypeError, SyntaxError):
+            return {}
     if sym is not None:
         var = s
         s = dots[-1]

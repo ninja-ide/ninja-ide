@@ -1,4 +1,19 @@
 # -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
 import os
@@ -95,6 +110,7 @@ class TreeProjectsWidget(QTreeWidget):
         self.itemCollapsed.connect(self._item_collapsed)
         self.mute_signals = False
         self.state_index = list()
+        self._folding_menu = FoldingContextMenu(self)
 
     def _item_collapsed(self, tree_item):
         """Store status of item when collapsed"""
@@ -152,6 +168,8 @@ class TreeProjectsWidget(QTreeWidget):
             #get the extra context menu for this projectType
             handler = settings.get_project_type_handler(item.projectType)
             self._add_context_menu_for_root(menu, item)
+
+        menu.addMenu(self._folding_menu)
 
         #menu for all items (legacy API)!
         extra_menus = self.extra_menus.get('all', ())
@@ -303,13 +321,15 @@ class TreeProjectsWidget(QTreeWidget):
     def _refresh_project_by_path(self, event, folder):
         if event not in (DELETED, ADDED, REMOVE, RENAME):
             return
+        folder = unicode(folder)
         oprojects = self.get_open_projects()
         for each_project in oprojects:
             p_path = unicode(each_project.path)
-            if file_manager.belongs_to_folder(p_path, unicode(folder)):
+            if file_manager.belongs_to_folder(p_path, folder):
                 DEBUG("About to refresh %s" % folder)
                 DEBUG("for event %s" % event)
                 self._refresh_project(each_project)
+                break
 
     def _refresh_project(self, item=None):
         if item is None:
@@ -322,50 +342,33 @@ class TreeProjectsWidget(QTreeWidget):
         else:
             path = file_manager.create_path(item.path, unicode(item.text(0)))
 
-        thread = ui_tools.ThreadExecution(
-            self._thread_refresh_project, args=[path, item, parentItem])
+        thread = ui_tools.ThreadProjectExplore()
         self._thread_execution[path] = thread
-        self.connect(thread, SIGNAL("executionFinished(PyQt_PyObject)"),
+        self.connect(thread, SIGNAL("folderDataRefreshed(PyQt_PyObject)"),
             self._callback_refresh_project)
-        thread.start()
+        self.connect(thread, SIGNAL("finished()"), self._clean_threads)
+        thread.refresh_project(path, item, parentItem.extensions)
 
-    def _thread_refresh_project(self, path, item, parentItem):
-
-        if parentItem.extensions != settings.SUPPORTED_EXTENSIONS:
-            folderStructure = file_manager.open_project_with_extensions(
-                path, parentItem.extensions)
-        else:
-            folderStructure = file_manager.open_project(path)
-
-        if folderStructure.get(path, [None, None])[1] is not None:
-            folderStructure[path][1].sort()
-            values = (folderStructure, path, item)
-        else:
-            values = None
-
-        self._thread_execution[path].storage_values = values
-        self._thread_execution[path].signal_return = path
+    def _clean_threads(self):
+        paths_to_delete = []
+        for path in self._thread_execution:
+            thread = self._thread_execution.get(path, None)
+            if thread and not thread.isRunning():
+                paths_to_delete.append(path)
+        for path in paths_to_delete:
+            self._thread_execution.pop(path, None)
 
     def _callback_refresh_project(self, value):
-        thread = self._thread_execution.pop(value, None)
-        if thread is not None and len(thread.storage_values) == 3:
-            folderStructure = thread.storage_values[0]
-            path = thread.storage_values[1]
-            item = thread.storage_values[2]
-            item.takeChildren()
-            self._load_folder(folderStructure, path, item)
-            item.setExpanded(True)
+        path, item, structure = value
+        item.takeChildren()
+        self._load_folder(structure, path, item)
+        item.setExpanded(True)
 
     def _close_project(self):
         item = self.currentItem()
         index = self.indexOfTopLevelItem(item)
         pathKey = item.path
         self._fileWatcher.remove_watch(pathKey)
-#        for directory in self._fileWatcher.directories():
-#            directory = unicode(directory)
-#            if file_manager.belongs_to_folder(pathKey, directory):
-#                self._fileWatcher.removePath(directory)
-#        self._fileWatcher.removePath(pathKey)
         self.takeTopLevelItem(index)
         self._projects.pop(pathKey, None)
         if self.__enableCloseNotification:
@@ -796,3 +799,59 @@ class ProjectTree(QTreeWidgetItem):
         '''
         project_file = json_manager.get_ninja_project_file(self.path)
         return os.path.join(self.path, project_file)
+
+
+class FoldingContextMenu(QMenu):
+    """
+    This class represents a menu for Folding/Unfolding task
+    """
+
+    def __init__(self, tree):
+        super(FoldingContextMenu, self).__init__(tree.tr("Fold/Unfold"))
+        self._tree = tree
+        fold_project = self.addAction(self.tr("Fold the project"))
+        unfold_project = self.addAction(self.tr("Unfold the project"))
+        self.addSeparator()
+        fold_all_projects = self.addAction(self.tr("Fold all projects"))
+        unfold_all_projects = self.addAction(self.tr("Unfold all projects"))
+
+        self.connect(fold_project, SIGNAL("triggered()"),
+            lambda: self._fold_unfold_project(False))
+        self.connect(unfold_project, SIGNAL("triggered()"),
+            lambda: self._fold_unfold_project(True))
+        self.connect(fold_all_projects, SIGNAL("triggered()"),
+            self._fold_all_projects)
+        self.connect(unfold_all_projects, SIGNAL("triggered()"),
+            self._unfold_all_projects)
+
+    def _recursive_fold_unfold(self, item, expand):
+        if item.isFolder:
+            item.setExpanded(expand)
+        for index in range(item.childCount()):
+            child = item.child(index)
+            self._recursive_fold_unfold(child, expand)
+
+    def _fold_unfold_project(self, expand):
+        """
+        Fold the current project
+        """
+        root = self._tree._get_project_root(item=self._tree.currentItem())
+        childs = root.childCount()
+        if childs:
+            root.setExpanded(expand)
+
+        for index in range(childs):
+            item = root.child(index)
+            self._recursive_fold_unfold(item, expand)
+
+    def _fold_all_projects(self):
+        """
+        Fold all projects
+        """
+        self._tree.collapseAll()
+
+    def _unfold_all_projects(self):
+        """
+        Unfold all project
+        """
+        self._tree.expandAll()

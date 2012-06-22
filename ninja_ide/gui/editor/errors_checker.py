@@ -1,4 +1,19 @@
-# *-* coding: utf-8 *-*
+# -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
 import re
@@ -18,12 +33,16 @@ class ErrorsChecker(QThread):
     pat_ignore_lint = re.compile('(.)+#lint:ok$|(.)+# lint:ok$')
 
     def __init__(self, editor):
-        QThread.__init__(self)
+        super(ErrorsChecker, self).__init__()
         self._editor = editor
+        self._path = ''
+        self._encoding = ''
         self.errorsSummary = {}
 
     def check_errors(self):
         if not self.isRunning():
+            self._path = self._editor.ID
+            self._encoding = self._editor.encoding
             self.start()
 
     def reset(self):
@@ -32,15 +51,15 @@ class ErrorsChecker(QThread):
     def run(self):
         self.sleep(1)
         exts = settings.SYNTAX.get('python')['extension']
-        file_ext = file_manager.get_file_extension(self._editor.ID)
+        file_ext = file_manager.get_file_extension(self._path)
         if file_ext in exts:
             try:
                 self.reset()
                 source = self._editor.get_text()
-                if self._editor.encoding is not None:
-                    source = source.encode(self._editor.encoding)
+                if self._encoding is not None:
+                    source = source.encode(self._encoding)
                 parseResult = compiler.parse(source)
-                lint_checker = checker.Checker(parseResult, self._editor.ID)
+                lint_checker = checker.Checker(parseResult, self._path)
                 for m in lint_checker.messages:
                     lineno = m.lineno - 1
                     if lineno not in self.errorsSummary:

@@ -1,4 +1,19 @@
-#-*-coding:utf-8-*-
+# -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 # based on Python Syntax highlighting from:
 # http://diotavelli.net/PyQtWiki/Python%20syntax%20highlighting
 from __future__ import absolute_import
@@ -96,6 +111,7 @@ class Highlighter(QSyntaxHighlighter):
         self.pep8 = pep8
         self.selected_word_lines = []
         self.visible_limits = (0, 50)
+        self._styles = {}
         if lang is not None:
             self.apply_highlight(lang, scheme)
 
@@ -240,17 +256,20 @@ class Highlighter(QSyntaxHighlighter):
 
     def async_highlight(self):
         self.thread_highlight = HighlightParserThread(self)
-        self.connect(self.thread_highlight, SIGNAL("finished()"),
+        self.connect(self.thread_highlight,
+            SIGNAL("highlightingDetected(PyQt_PyObject)"),
             self._execute_threaded_highlight)
         self.thread_highlight.start()
 
-    def _execute_threaded_highlight(self):
+    def _execute_threaded_highlight(self, styles=None):
         self.highlight_function = self.threaded_highlight
-        if self.thread_highlight and self.thread_highlight.styles:
-            lines = list(set(self.thread_highlight.styles.keys()) -
+        if styles:
+            self._styles = styles
+            lines = list(set(styles.keys()) -
                 set(range(self.visible_limits[0], self.visible_limits[1])))
             self.rehighlight_lines(lines, False)
-            self.thread_highlight = None
+        else:
+            self._styles = {}
         self.highlight_function = self.realtime_highlight
 
     def threaded_highlight(self, text):
@@ -271,8 +290,8 @@ class Highlighter(QSyntaxHighlighter):
         char_format = highlight_errors(char_format, user_data)
         self.setFormat(0, len(block.text()), char_format)
 
-        styles = self.thread_highlight.styles.get(block.blockNumber(), ())
-        for index, length, char_format in styles:
+        block_styles = self._styles.get(block.blockNumber(), ())
+        for index, length, char_format in block_styles:
             char_format = highlight_errors(char_format, user_data)
             if (self.format(index) != STYLES['string']):
                 self.setFormat(index, length, char_format)
@@ -444,8 +463,7 @@ class Highlighter(QSyntaxHighlighter):
                (self.previousBlockState() != 0))) and \
                 (len(start_collides) == 0):
                 if user_data is not None:
-                    style = highlight_errors(
-                        style, self.currentBlock().userData())
+                    style = highlight_errors(style, user_data)
                 self.setFormat(start, length, style)
             else:
                 self.setCurrentBlockState(0)
@@ -482,9 +500,9 @@ class HighlightParserThread(QThread):
     def __init__(self, highlighter):
         super(HighlightParserThread, self).__init__()
         self._highlighter = highlighter
-        self.styles = {}
 
     def run(self):
+        styles = {}
         self.msleep(300)
         block = self._highlighter.document().begin()
         while block.blockNumber() != -1:
@@ -511,8 +529,9 @@ class HighlightParserThread(QThread):
                 formats.append((index, length, STYLES['spaces']))
                 index = expression.indexIn(text, index + length)
 
-            self.styles[block.blockNumber()] = formats
+            styles[block.blockNumber()] = formats
             block = block.next()
+        self.emit(SIGNAL("highlightingDetected(PyQt_PyObject)"), styles)
 
 
 class EmpyHighlighter(QSyntaxHighlighter):

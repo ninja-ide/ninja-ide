@@ -1,4 +1,19 @@
-# *-* coding: UTF-8 *-*
+# -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 import urllib
 import webbrowser
@@ -29,11 +44,14 @@ class TrayIconUpdates(QSystemTrayIcon):
         icon = QIcon(resources.IMAGES['iconUpdate'])
         self.setIcon(icon)
         self.setup_menu()
+        self.ide_version = '0'
+        self.download_link = ''
 
         if settings.NOTIFY_UPDATES:
             self.thread = ThreadUpdates()
 
-            self.connect(self.thread, SIGNAL("finished()"),
+            self.connect(self.thread,
+                SIGNAL("versionReceived(QString, QString)"),
                 self._show_messages)
             self.thread.start()
         else:
@@ -43,7 +61,7 @@ class TrayIconUpdates(QSystemTrayIcon):
         self.menu = QMenu()
         if show_downloads:
             self.download = QAction(self.tr("Download Version: %1!").arg(
-                self.thread.ide['version']),
+                self.ide_version),
                 self, triggered=self._show_download)
             self.menu.addAction(self.download)
             self.menu.addSeparator()
@@ -53,33 +71,36 @@ class TrayIconUpdates(QSystemTrayIcon):
 
         self.setContextMenu(self.menu)
 
-    def _show_messages(self):
+    def _show_messages(self, ide_version, download):
+        self.ide_version = str(ide_version)
+        self.download_link = str(download)
         try:
             local_version = version.LooseVersion(ninja_ide.__version__)
-            web_version = version.LooseVersion(self.thread.ide['version'])
+            web_version = version.LooseVersion(self.ide_version)
             if local_version < web_version:
                 if self.supportsMessages():
                     self.setup_menu(True)
                     self.showMessage(self.tr("NINJA-IDE Updates"),
                         self.tr("New Version of NINJA-IDE\nAvailable: ") + \
-                        self.thread.ide['version'] + \
+                        self.ide_version + \
                         self.tr("\n\nCheck the Update Icon Menu to Download!"),
                         QSystemTrayIcon.Information, 10000)
                 else:
                     button = QMessageBox.information(self.parent(),
                         self.tr("NINJA-IDE Updates"),
                         self.tr("New Version of NINJA-IDE\nAvailable: ") + \
-                        self.thread.ide['version'])
+                        self.ide_version)
                     if button == QMessageBox.Ok:
                         self._show_download()
             else:
                 self.hide()
-        except:
-            logger.warning('Versions can not be compared.')
+        except Exception, reason:
+            print reason
+            logger.warning('Versions can not be compared: %r', reason)
             self.hide()
 
     def _show_download(self):
-        webbrowser.open(self.thread.ide['downloads'])
+        webbrowser.open(self.download_link)
         self.hide()
 
 
@@ -87,23 +108,14 @@ class ThreadUpdates(QThread):
 
     def __init__(self):
         QThread.__init__(self)
-        self.ide = {}
-#        self.plugins = []
 
     def run(self):
         try:
             #Check for IDE Updates
             ninja_version = urllib.urlopen(resources.UPDATES_URL)
-            self.ide = json_manager.parse(ninja_version)
-
-#            available = ninja_ide.core.available_plugins()
-#            local_plugins = ninja_ide.core.local_plugins()
-#            updates = []
-#            for lp in local_plugins:
-#                if lp in available:
-#                    ava = available.pop(lp)
-#                    if float(ava[1]) > float(local_plugins[lp][1]):
-#                        updates += [[lp, ava[0], ava[1], ava[2]]]
-#            self.plugins = updates
+            ide = json_manager.parse(ninja_version)
         except:
+            ide = {}
             logger.info('no connection available')
+        self.emit(SIGNAL("versionReceived(QString, QString)"),
+            ide.get('version', '0'), ide.get('downloads', ''))

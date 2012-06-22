@@ -1,4 +1,19 @@
-# *-* coding: utf-8 *-*
+# -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
 from PyQt4.QtCore import QThread
@@ -13,10 +28,14 @@ class Pep8Checker(QThread):
     def __init__(self, editor):
         QThread.__init__(self)
         self._editor = editor
+        self._path = ''
+        self._encoding = ''
         self.pep8checks = {}
 
     def check_style(self):
         if not self.isRunning():
+            self._path = self._editor.ID
+            self._encoding = self._editor.encoding
             self.start()
 
     def reset(self):
@@ -25,13 +44,13 @@ class Pep8Checker(QThread):
     def run(self):
         self.sleep(1)
         exts = settings.SYNTAX.get('python')['extension']
-        file_ext = file_manager.get_file_extension(self._editor.ID)
+        file_ext = file_manager.get_file_extension(self._path)
         if file_ext in exts:
             self.reset()
             source = self._editor.get_text()
-            if self._editor.encoding is not None:
-                source = source.encode(self._editor.encoding)
-            tempData = pep8mod.run_check(self._editor.ID, source)
+            if self._encoding is not None:
+                source = source.encode(self._encoding)
+            tempData = pep8mod.run_check(self._path, source)
             i = 0
             while i < len(tempData):
                 lineno = -1

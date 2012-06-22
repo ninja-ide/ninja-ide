@@ -1,4 +1,19 @@
-# -*- coding: utf-8 *-*
+# -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 # DISCLAIMER ABOUT READING THIS CODE:
 # We are not responsible for any kind of mental or emotional
@@ -13,6 +28,7 @@ from ninja_ide.core import settings
 from ninja_ide.gui.editor import helpers
 from ninja_ide.tools.completion import analyzer
 from ninja_ide.tools.completion import completer
+from ninja_ide.tools.completion import completion_daemon
 
 
 #Because my python doesn't have it, and is not in the web docs either
@@ -24,14 +40,15 @@ class CodeCompletion(object):
 
     def __init__(self):
         self.analyzer = analyzer.Analyzer()
-        self.current_module = None
+        self.cdaemon = completion_daemon.CompletionDaemon()
+        self.module_id = None
         self.patIndent = re.compile('^\s+')
         self._valid_op = (')', '}', ']')
         self._invalid_op = ('(', '{', '[')
         self.keywords = settings.SYNTAX['python']['keywords']
 
-    def analyze_project(self, path):
-        pass
+    def __del_(self):
+        self.cdaemon.stop()
 
     def analyze_file(self, path, source=None):
         if source is None:
@@ -43,7 +60,9 @@ class CodeCompletion(object):
             indent = helpers.get_indentation(split_last_lines[-2])
             source += '%spass;' % indent
 
-        self.current_module = self.analyzer.analyze(source)
+        self.module_id = path
+        module = self.analyzer.analyze(source)
+        self.cdaemon.inspect_module(self.module_id, module)
 
     def update_file(self, path):
         pass
@@ -167,9 +186,12 @@ class CodeCompletion(object):
             word = word.rsplit('.', 1)[0].strip()
             if final_word == word:
                 word = ''
-        result = self.current_module.get_type(attr_name, word, scopes)
+        self.cdaemon.lock.acquire()
+        module = self.cdaemon.get_module(self.module_id)
+        imports = module.get_imports()
+        result = module.get_type(attr_name, word, scopes)
+        self.cdaemon.lock.release()
         if result[0] and result[1] is not None:
-            imports = self.current_module.get_imports()
             prefix = attr_name
             if result[1] != attr_name:
                 prefix = result[1]

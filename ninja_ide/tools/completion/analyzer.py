@@ -1,4 +1,19 @@
-# -*- coding: utf-8 *-*
+# -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 # DISCLAIMER ABOUT READING THIS CODE:
 # We are not responsible for any kind of mental or emotional
@@ -15,8 +30,6 @@ from ninja_ide.tools.completion import model
 logger = logging.getLogger('ninja_ide.tools.completion.analyzer')
 
 MAX_THRESHOLD = 3
-
-MODULES = {}
 
 
 def expand_attribute(attribute):
@@ -58,10 +71,6 @@ class Analyzer(object):
         self._fixed_line = -1
         self.content = None
 
-    def collect_metadata(self, project_path):
-        """Collect metadata from a project."""
-        #TODO
-
     def _get_valid_module(self, source, retry=0):
         """Try to parse the module and fix some errors if it has some."""
         astModule = None
@@ -84,9 +93,6 @@ class Analyzer(object):
                     astModule = self._get_valid_module(source, retry + 1)
         return astModule
 
-    def _resolve_late(self, module):
-        """Resolve the late_resolution objects inside the module."""
-
     def analyze(self, source):
         """Analyze the source provided and create the proper structure."""
         astModule = self._get_valid_module(source)
@@ -105,7 +111,6 @@ class Analyzer(object):
                 module.add_class(self._process_class(symbol))
             elif symbol.__class__ is ast.FunctionDef:
                 module.add_function(self._process_function(symbol))
-#        self.resolve_late(module)
 
         self.content = None
         return module
