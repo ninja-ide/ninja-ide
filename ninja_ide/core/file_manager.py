@@ -169,7 +169,7 @@ def store_file_content(fileName, content, addExtension=True, newFile=False):
         if not f.open(QtCore.QIODevice.WriteOnly | QtCore.QIODevice.Truncate):
             raise NinjaIOException(f.errorString())
         stream = QtCore.QTextStream(f)
-        encoding = _search_coding_line(content)
+        encoding = get_file_encoding(content)
         if encoding:
             stream.setCodec(encoding)
         encoded_stream = stream.codec().fromUnicode(content)
