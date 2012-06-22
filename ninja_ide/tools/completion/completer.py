@@ -114,7 +114,9 @@ def get_all_completions(s, imports=None):
             try:
                 sym = __import__(s, globals(), dlocals, [])
             except ImportError:
-                return {}
+                if s.find('(') != -1:
+                    s = s[:s.index('(')]
+                sym = eval(s, globals(), dlocals)
             except AttributeError:
                 try:
                     sym = __import__(s, globals(), dlocals, [])
