@@ -77,10 +77,6 @@ class TabWidget(QTabWidget):
         self._parent = parent
         self.follow_mode = False
         self._change_map = {}
-        # Configure tabs size behavior
-#        self.setElideMode(Qt.ElideRight)
-#        self.tabBar().setExpanding(True)
-#        self.tabBar().setUsesScrollButtons(False)
         #On some plataforms there are problem with focusInEvent
         self.question_already_open = False
         #Keep track of the tab titles

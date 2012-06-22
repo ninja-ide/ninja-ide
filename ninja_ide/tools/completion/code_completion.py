@@ -198,23 +198,27 @@ class CodeCompletion(object):
                 word = final_word
             to_complete = "%s.%s" % (prefix, word)
             data = completer.get_all_completions(to_complete, imports)
-        else:
-            if result[1] is not None and len(result[1]) > 0:
-                data = {'attributes': result[1][0],
-                    'functions': result[1][1]}
+            if data:
+                return data
             else:
-                clazzes = sorted(set(re.findall("class (\w+?)\(", code)))
-                funcs = sorted(set(re.findall("(\w+?)\(", code)))
-                attrs = sorted(set(re.split('\W+', code)))
-                if final_word in attrs:
-                    attrs.remove(final_word)
-                if attr_name in attrs:
-                    attrs.remove(attr_name)
-                filter_attrs = lambda x: (x not in funcs) and \
-                    not x.isdigit() and (x not in self.keywords)
-                attrs = filter(filter_attrs, attrs)
-                funcs = filter(lambda x: x not in clazzes, funcs)
-                data = {'attributes': attrs,
-                    'functions': funcs,
-                    'classes': clazzes}
+                result = (None, None)
+
+        if result[1] is not None and len(result[1]) > 0:
+            data = {'attributes': result[1][0],
+                'functions': result[1][1]}
+        else:
+            clazzes = sorted(set(re.findall("class (\w+?)\(", code)))
+            funcs = sorted(set(re.findall("(\w+?)\(", code)))
+            attrs = sorted(set(re.split('\W+', code)))
+            if final_word in attrs:
+                attrs.remove(final_word)
+            if attr_name in attrs:
+                attrs.remove(attr_name)
+            filter_attrs = lambda x: (x not in funcs) and \
+                not x.isdigit() and (x not in self.keywords)
+            attrs = filter(filter_attrs, attrs)
+            funcs = filter(lambda x: x not in clazzes, funcs)
+            data = {'attributes': attrs,
+                'functions': funcs,
+                'classes': clazzes}
         return data
