@@ -93,7 +93,7 @@ class Analyzer(object):
                     astModule = self._get_valid_module(source, retry + 1)
         return astModule
 
-    def analyze(self, source):
+    def analyze(self, source, old_module=None):
         """Analyze the source provided and create the proper structure."""
         astModule = self._get_valid_module(source)
         if astModule is None:
@@ -111,9 +111,16 @@ class Analyzer(object):
                 module.add_class(self._process_class(symbol))
             elif symbol.__class__ is ast.FunctionDef:
                 module.add_function(self._process_function(symbol))
+        if old_module is not None:
+            self._resolve_module(module, old_module)
 
         self.content = None
         return module
+
+    def _resolve_module(self, module, old_module):
+        module.update_attributes(old_module.attributes)
+        module.update_functions(old_module.functions)
+        module.update_classes(old_module.classes)
 
     def _assign_disambiguation(self, type_name, line_content):
         """Provide a specific builtin for the cases were ast doesn't work."""

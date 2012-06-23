@@ -102,7 +102,7 @@ class CodeCompletionWidget(QFrame):
     def update_metadata(self):
         source = self._editor.get_text()
         source = source.encode(self._editor.encoding)
-        self.cc.analyze_file('', source)
+        self.cc.analyze_file(self._editor.ID, source)
 
     def insert_completion(self, insert, type_=ord('a')):
         if insert != self._prefix:

@@ -47,9 +47,6 @@ class CodeCompletion(object):
         self._invalid_op = ('(', '{', '[')
         self.keywords = settings.SYNTAX['python']['keywords']
 
-    def __del_(self):
-        self.cdaemon.stop()
-
     def analyze_file(self, path, source=None):
         if source is None:
             with open(path) as f:
@@ -61,7 +58,8 @@ class CodeCompletion(object):
             source += '%spass;' % indent
 
         self.module_id = path
-        module = self.analyzer.analyze(source)
+        module = self.cdaemon.get_module(self.module_id)
+        module = self.analyzer.analyze(source, module)
         self.cdaemon.inspect_module(self.module_id, module)
 
     def update_file(self, path):
