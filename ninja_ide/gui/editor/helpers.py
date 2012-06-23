@@ -120,6 +120,35 @@ def replace_tabs_with_spaces(editorWidget):
     editorWidget.setPlainText(text)
 
 
+def lint_ignore_line(editorWidget):
+    cursor = editorWidget.textCursor()
+    if not cursor.hasSelection():
+        cursor.movePosition(QTextCursor.EndOfLine)
+        cursor.insertText("  # lint:ok")
+
+
+def lint_ignore_selection(editorWidget):
+    cursor = editorWidget.textCursor()
+    if cursor.hasSelection():
+        cursor.beginEditBlock()
+        start = editorWidget.document().findBlock(
+            cursor.selectionStart()).firstLineNumber()
+        end = editorWidget.document().findBlock(
+            cursor.selectionEnd()).firstLineNumber()
+        position = editorWidget.document().findBlockByLineNumber(
+            start).position()
+        cursor.setPosition(position)
+        indentation = get_indentation(cursor.block().text())
+        cursor.movePosition(QTextCursor.StartOfLine)
+        cursor.insertText("%s#lint:disable\n" % indentation)
+        position = editorWidget.document().findBlockByLineNumber(
+            end + 2).position()
+        cursor.setPosition(position)
+        cursor.movePosition(QTextCursor.StartOfLine)
+        cursor.insertText("%s#lint:enable\n" % indentation)
+        cursor.endEditBlock()
+
+
 def insert_debugging_prints(editorWidget):
     cursor = editorWidget.textCursor()
     if cursor.hasSelection():
