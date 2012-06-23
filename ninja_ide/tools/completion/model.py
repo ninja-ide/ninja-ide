@@ -16,7 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 
-late_resolution = None
+late_resolution = 0
 
 
 class _TypeData(object):
