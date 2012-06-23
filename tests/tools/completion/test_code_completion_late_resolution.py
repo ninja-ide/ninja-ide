@@ -17,14 +17,13 @@
 from __future__ import absolute_import
 
 import _ast
-import re
 import unittest
 
 from ninja_ide.tools.completion import analyzer
 from ninja_ide.tools.completion import model
 from ninja_ide.tools.completion import code_completion
 from ninja_ide.tools.completion import completion_daemon
-from tests.tools.completion import SOURCE_LATE_RESOLUTION
+from tests.tools.completion import get_source_data, SOURCE_LATE_RESOLUTION
 
 
 completion_daemon.shutdown_daemon()
@@ -40,21 +39,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
 
     def tearDown(self):
         completion_daemon.shutdown_daemon()
-
-    def get_source_data(self, code, word=""):
-        clazzes = sorted(set(re.findall("class (\w+?)\(", code)))
-        funcs = sorted(set(re.findall("(\w+?)\(", code)))
-        attrs = sorted(set(re.split('\W+', code)))
-        del attrs[0]
-        filter_attrs = lambda x: (x not in funcs) and not x.isdigit()
-        attrs = filter(filter_attrs, attrs)
-        if word in attrs:
-            attrs.remove(word)
-        funcs = filter(lambda x: x not in clazzes, funcs)
-        data = {'attributes': attrs,
-            'functions': funcs,
-            'classes': clazzes}
-        return data
 
 ###############################################################################
 # For Python Imports
@@ -90,8 +74,159 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         self.assertIn('pathsep', results['attributes'])
-        self.assertIn('expanduser(path)', results['functions'])
+        self.assertIn('expanduser', results['functions'])
         self.assertIn('sys', results['modules'])
+
+    def test_simple_import_late_resolution_func(self):
+        new_code = ['def func():',
+                    '    p.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('pathsep', results['attributes'])
+        self.assertIn('expanduser', results['functions'])
+        self.assertIn('sys', results['modules'])
+
+    def test_simple_import_late_resolution_chained_attr(self):
+        new_code = ['import threading',
+                    't = threading.Lock().']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('acquire', results['attributes'])
+
+    def test_simple_import_late_resolution_not_outside_func(self):
+        new_code = ['def func():',
+                    '    q = os.path',
+                    'q.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        expected = get_source_data(source_code, 'q')
+        self.assertEqual(results, expected)
+
+    def test_simple_import_late_resolution_chained_func_1(self):
+        new_code = ['import threading',
+                    'import sys',
+                    'def func():',
+                    '    q = threading.Lock()',
+                    '    def gfunc():',
+                    '        a = sys',
+                    '        a.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('exit', results['attributes'])
+
+    def test_simple_import_late_resolution_chained_func_2(self):
+        new_code = ['import threading',
+                    'import sys',
+                    'def func():',
+                    '    q = threading.Lock()',
+                    '    def gfunc():',
+                    '        a = sys',
+                    '        q.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('acquire', results['attributes'])
+
+    def test_simple_import_late_resolution_chained_func_3(self):
+        new_code = ['import threading',
+                    'import sys',
+                    'def func():',
+                    '    q = threading.Lock()',
+                    '    def gfunc():',
+                    '        a = sys',
+                    '        p.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('expanduser', results['functions'])
+
+    def test_simple_import_late_resolution_chained_func_4(self):
+        new_code = ['import threading',
+                    'import sys',
+                    'def func():',
+                    '    q = threading.Lock()',
+                    '    def gfunc():',
+                    '        a = sys',
+                    '    a.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        expected = get_source_data(source_code, 'a')
+        self.assertEqual(expected, results)
+
+    def test_simple_import_late_resolution_chained_func_5(self):
+        new_code = ['import threading',
+                    'import sys',
+                    'def func():',
+                    '    q = threading.Lock()',
+                    '    def gfunc():',
+                    '        a = sys',
+                    '    q.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('acquire', results['attributes'])
+
+    def test_simple_import_late_resolution_chained_func_6(self):
+        new_code = ['import threading',
+                    'import sys',
+                    'def func():',
+                    '    q = threading.Lock()',
+                    '    def gfunc():',
+                    '        a = sys',
+                    'p.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('expanduser', results['functions'])
+
+    def test_simple_import_late_resolution_chained_func_7(self):
+        new_code = ['import threading',
+                    'import sys',
+                    'def func():',
+                    '    q = threading.Lock()',
+                    '    def gfunc():',
+                    '        a = sys',
+                    'q.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        expected = get_source_data(source_code, 'q')
+        self.assertEqual(expected, results)
 
 
 if __name__ == '__main__':
