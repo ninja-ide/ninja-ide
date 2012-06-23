@@ -38,6 +38,9 @@ class _TypeData(object):
     def get_data_type(self):
         return self.data_type
 
+    def __eq__(self, other):
+        return other.line_content == self.line_content
+
 
 class Structure(object):
 
@@ -60,6 +63,37 @@ class Structure(object):
             assign.add_data(*attribute[1:])
             assign.parent = self
             self.attributes[assign.name] = assign
+
+    def update_attributes(self, attributes):
+        for name in self.attributes:
+            if name in attributes:
+                assign = self.attributes[name]
+                old_assign = attributes[name]
+                for type_data in assign.data:
+                    if type_data in old_assign.data:
+                        old_type = old_assign.data[
+                            old_assign.data.index(type_data)]
+                        type_data.data_type = old_type.data_type
+
+    def update_functions(self, functions):
+        for func_name in self.functions:
+            if func_name in functions:
+                old_func = functions[func_name]
+                function = self.functions[func_name]
+                function.update_functions(old_func.functions)
+                function.update_attributes(old_func.attributes)
+                # Function Arguments
+                for arg in function.args:
+                    if arg in old_func.args:
+                        argument = function.args[arg]
+                        old_arg = old_func.args[arg]
+                        argument.data[0].data_type = old_arg.data[0].data_type
+                # Function Returns
+                for type_data in function.return_type:
+                    if type_data in old_func.return_type:
+                        old_type = old_func.return_type[
+                            old_func.return_type.index(type_data)]
+                        type_data.data_type = old_type.data_type
 
     def get_attribute_type(self, name):
         """Return a tuple with:(Found, Type)"""
@@ -113,6 +147,13 @@ class Module(Structure):
         clazz.parent = self
         self.classes[clazz.name] = clazz
 
+    def update_classes(self, classes):
+        for clazz_name in self.classes:
+            if clazz_name in classes:
+                clazz = self.classes[clazz_name]
+                clazz.update_attributes(classes[clazz_name].attributes)
+                clazz.update_functions(classes[clazz_name].functions)
+
     def get_type(self, main_attr, child_attrs='', scope=None):
         result = (False, None)
         if not scope:
@@ -161,9 +202,6 @@ class Module(Structure):
             clazz = self.classes[cla]
             if self._check_attr_func_resolution(clazz):
                 return True
-        return False
-
-    def need_external_modules(self):
         return False
 
     def _check_attr_func_resolution(self, structure):
@@ -223,7 +261,8 @@ class Assign(object):
 
     def add_data(self, lineno, data_type, line_content, oper):
         info = _TypeData(lineno, data_type, line_content, oper)
-        self.data.append(info)
+        if info not in self.data:
+            self.data.append(info)
 
     def get_data_type(self):
         if self.data[0].data_type is not late_resolution:
