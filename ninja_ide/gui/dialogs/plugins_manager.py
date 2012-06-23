@@ -427,7 +427,7 @@ class ThreadLoadPlugins(QThread):
             else:
                 available_version = version.LooseVersion('0.0')
             local_version = version.LooseVersion(str(local_data["version"]))
-            if available_version < local_version:
+            if available_version > local_version:
                 #this plugin has an update
                 updates.append(ava)
         #set manager attributes
