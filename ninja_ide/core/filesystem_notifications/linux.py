@@ -45,11 +45,9 @@ class NinjaProcessEvent(ProcessEvent):
         ProcessEvent.__init__(self)
 
     def process_IN_CREATE(self, event):
-        DEBUG("CREATED: %s" % event.pathname)
         self._process_callback((ADDED, event.pathname))
 
     def process_IN_DELETE(self, event):
-        DEBUG("DELETED: %s" % event.pathname)
         self._process_callback((DELETED, event.pathname))
 
     def process_IN_DELETE_SELF(self, event):
@@ -75,23 +73,19 @@ class QNotifier(QThread):
         QThread.__init__(self)
 
     def run(self):
-        DEBUG("Starting event processing")
         while self.keep_running:
             self.notifier.process_events()
             e_dict = {}
-            DEBUG("PROCESS E_QUEUE")
             while len(self.event_queue):
                 e_type, e_path = self.event_queue.pop(0)
                 e_dict.setdefault(e_path, []).append(e_type)
 
-            DEBUG("WILL PROCESS %s" % e_dict)
             keys = e_dict.keys()
             while len(keys):
                 key = keys.pop(0)
                 event = e_dict.pop(key)
                 if (ADDED in event) and (DELETED in event):
                     event = [e for e in event if e not in (ADDED, DELETED)]
-                DEBUG("EVENTS TO NOTIFY %s" % event)
                 for each_event in event:
                     self._processor(each_event, key)
             if self.notifier.check_events():
@@ -103,12 +97,10 @@ class QNotifier(QThread):
 class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
 
     def __init__(self):
-        DEBUG("Instantiating like a baussss")
         self.watching_paths = {}
         super(NinjaFileSystemWatcher, self).__init__()
 
     def add_watch(self, path):
-        DEBUG("Adding path %s like a bauss" % path)
         if path not in self.watching_paths:
             wm = WatchManager()
             notifier = QNotifier(wm, self._emit_signal_on_change)
