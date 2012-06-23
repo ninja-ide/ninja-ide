@@ -309,7 +309,6 @@ class __IDE(QMainWindow):
         self.explorer.open_session_projects(projects, notIDEStart=False)
         if current_file:
             self.mainContainer.open_file(current_file, notStart=False)
-        self.status.explore_code()
 
     def open_file(self, filename):
         if filename:
