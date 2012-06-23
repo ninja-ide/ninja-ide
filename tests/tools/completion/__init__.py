@@ -15,6 +15,25 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+import re
+
+
+def get_source_data(code, word=""):
+    clazzes = sorted(set(re.findall("class (\w+?)\(", code)))
+    funcs = sorted(set(re.findall("(\w+?)\(", code)))
+    attrs = sorted(set(re.split('\W+', code)))
+    del attrs[0]
+    filter_attrs = lambda x: (x not in funcs) and not x.isdigit()
+    attrs = filter(filter_attrs, attrs)
+    if word in attrs:
+        attrs.remove(word)
+    funcs = filter(lambda x: x not in clazzes, funcs)
+    data = {'attributes': attrs,
+        'functions': funcs,
+        'classes': clazzes}
+    return data
+
+
 SOURCE_COMPLETION = """
 a = "ninja-ide"
 b = a.split()

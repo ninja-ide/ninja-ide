@@ -16,7 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 
-late_resolution = 0
+late_resolution = None
 
 
 class _TypeData(object):
@@ -161,6 +161,9 @@ class Module(Structure):
             clazz = self.classes[cla]
             if self._check_attr_func_resolution(clazz):
                 return True
+        return False
+
+    def need_external_modules(self):
         return False
 
     def _check_attr_func_resolution(self, structure):

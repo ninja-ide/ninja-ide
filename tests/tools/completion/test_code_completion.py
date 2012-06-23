@@ -16,12 +16,11 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
-import re
 import unittest
 
 from ninja_ide.tools.completion import code_completion
 from ninja_ide.tools.completion import completion_daemon
-from tests.tools.completion import SOURCE_COMPLETION
+from tests.tools.completion import get_source_data, SOURCE_COMPLETION
 
 
 class CodeCompletionTestCase(unittest.TestCase):
@@ -32,21 +31,6 @@ class CodeCompletionTestCase(unittest.TestCase):
 
     def tearDown(self):
         completion_daemon.shutdown_daemon()
-
-    def get_source_data(self, code, word=""):
-        clazzes = sorted(set(re.findall("class (\w+?)\(", code)))
-        funcs = sorted(set(re.findall("(\w+?)\(", code)))
-        attrs = sorted(set(re.split('\W+', code)))
-        del attrs[0]
-        filter_attrs = lambda x: (x not in funcs) and not x.isdigit()
-        attrs = filter(filter_attrs, attrs)
-        if word in attrs:
-            attrs.remove(word)
-        funcs = filter(lambda x: x not in clazzes, funcs)
-        data = {'attributes': attrs,
-            'functions': funcs,
-            'classes': clazzes}
-        return data
 
 ###############################################################################
 # TESTS FOR BUILTIN COMPLETION
@@ -66,7 +50,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
-        self.assertIn('expanduser(path)', results['functions'])
+        self.assertIn('expanduser', results['functions'])
 
     def test_global_attr_in_class(self):
         global SOURCE_COMPLETION
@@ -83,7 +67,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
-        expected = self.get_source_data(SOURCE_COMPLETION, 'cat')
+        expected = get_source_data(SOURCE_COMPLETION, 'cat')
         self.assertEqual(expected, results)
 
     def test_builtin_list_completion_in_class_not_attr(self):
@@ -173,7 +157,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
-        expected = self.get_source_data(SOURCE_COMPLETION, 's')
+        expected = get_source_data(SOURCE_COMPLETION, 's')
         self.assertEqual(expected, results)
 
     def test_builtin_int_completion_in_class_attr(self):
@@ -264,7 +248,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
-        expected = self.get_source_data(source_code, 'self')
+        expected = get_source_data(source_code, 'self')
         self.assertEqual(expected, results)
 
     def test_builtin_dict_completion_in_class_attr_diff_func(self):
@@ -377,7 +361,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
-        self.assertIn('expanduser(path)', results['functions'])
+        self.assertIn('expanduser', results['functions'])
 
     def test_valid_class_attr(self):
         global SOURCE_COMPLETION
@@ -477,7 +461,7 @@ class CodeCompletionTestCase(unittest.TestCase):
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
-        expected = self.get_source_data(source_code, 'invalid')
+        expected = get_source_data(source_code, 'invalid')
         self.assertEqual(expected, results)
 
 ###############################################################################
