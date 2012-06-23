@@ -191,7 +191,10 @@ class TabWidget(QTabWidget):
 
     def _file_changed(self, change_type, file_path):
         editorWidget = self.currentWidget()
-        if ((not editorWidget) or (editorWidget.ID != file_path)) and \
+        opened = [path for path, _ in self.get_documents_data()]
+
+        if (file_path in opened) and \
+            ((not editorWidget) or (editorWidget.ID != file_path)) and \
             (change_type in (MODIFIED, DELETED)):
             self._change_map.setdefault(unicode(file_path),
                                         []).append(change_type)

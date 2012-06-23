@@ -68,14 +68,13 @@ class QNotifier(QThread):
         self.event_queue = list()
         self._processor = processor
         self.notifier = Notifier(wm, NinjaProcessEvent(self.event_queue.append))
+        self.notifier.coalesce_events(True)
         self.keep_running = True
         QThread.__init__(self)
 
     def run(self):
         while self.keep_running:
             self.notifier.process_events()
-            if self.notifier.check_events():
-                self.notifier.read_events()
             e_dict = {}
             while len(self.event_queue):
                 e_type, e_path = self.event_queue.pop(0)
@@ -89,22 +88,25 @@ class QNotifier(QThread):
                     event = [e for e in event if e not in (ADDED, DELETED)]
                 for each_event in event:
                     self._processor(each_event, key)
+            if self.notifier.check_events():
+                self.notifier.read_events()
+
         self.notifier.stop()
 
 
 class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
 
     def __init__(self):
-        super(NinjaFileSystemWatcher, self).__init__()
         self.watching_paths = {}
+        super(NinjaFileSystemWatcher, self).__init__()
 
     def add_watch(self, path):
         if path not in self.watching_paths:
             wm = WatchManager()
             notifier = QNotifier(wm, self._emit_signal_on_change)
+            notifier.start()
             wm.add_watch(path, mask, rec=True, auto_add=True)
             self.watching_paths[path] = notifier
-            notifier.start()
 
     def remove_watch(self, path):
         if path in self.watching_paths:
