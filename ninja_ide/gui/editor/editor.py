@@ -34,7 +34,7 @@ from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QTextDocument
 from PyQt4.QtGui import QTextFormat
 from PyQt4.QtGui import QFont
-#from PyQt4.QtGui import QMenu
+from PyQt4.QtGui import QMenu
 from PyQt4.QtGui import QPainter
 from PyQt4.QtGui import QColor
 from PyQt4.QtCore import SIGNAL
@@ -838,22 +838,17 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def contextMenuEvent(self, event):
         popup_menu = self.createStandardContextMenu()
 
-#        menuRefactor = QMenu(self.tr("Refactor"))
-#        extractMethodAction = menuRefactor.addAction(
-#            self.tr("Extract as Method"))
-#        organizeImportsAction = menuRefactor.addAction(
-#            self.tr("Organize Imports"))
-#        removeUnusedAction = menuRefactor.addAction(
-#            self.tr("Remove Unused Imports"))
-        #TODO
-#        self.connect(organizeImportsAction, SIGNAL("triggered()"),
-#            self.organize_imports)
-#        self.connect(removeUnusedAction, SIGNAL("triggered()"),
-#            self.remove_unused_imports)
-#        self.connect(extractMethodAction, SIGNAL("triggered()"),
-#            self.extract_method)
+        menu_lint = QMenu(self.tr("Ignore Lint"))
+        ignoreLineAction = menu_lint.addAction(
+            self.tr("Ignore This Line"))
+        ignoreSelectedAction = menu_lint.addAction(
+            self.tr("Ignore Selected Area"))
+        self.connect(ignoreLineAction, SIGNAL("triggered()"),
+            lambda: helpers.lint_ignore_line(self))
+        self.connect(ignoreSelectedAction, SIGNAL("triggered()"),
+            lambda: helpers.lint_ignore_selection(self))
         popup_menu.insertSeparator(popup_menu.actions()[0])
-#        popup_menu.insertMenu(popup_menu.actions()[0], menuRefactor)
+        popup_menu.insertMenu(popup_menu.actions()[0], menu_lint)
         popup_menu.insertAction(popup_menu.actions()[0],
             self.__actionFindOccurrences)
         #add extra menus (from Plugins)
