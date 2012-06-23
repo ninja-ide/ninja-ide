@@ -31,7 +31,6 @@ def CompletionDaemon():
     if __completion_daemon_instance is None:
         __completion_daemon_instance = __CompletionDaemon()
         __completion_daemon_instance.start()
-        __completion_daemon_instance.reference_counter += 1
     return __completion_daemon_instance
 
 
@@ -52,32 +51,24 @@ class __CompletionDaemon(Thread):
         global WAITING_BEFORE_START
         time.sleep(WAITING_BEFORE_START)
         while self.keep_alive:
-            package, module, resolve = self.queue_receive.get()
-            if package is None:
+            path_id, module, resolve = self.queue_receive.get()
+            if path_id is None:
                 continue
             self.lock.acquire()
-            self.modules[package] = module
+            self.modules[path_id] = module
             self.lock.release()
 
     def _resolve_with_other_modules(self, module):
         pass
 
-    def inspect_module(self, package, module):
+    def inspect_module(self, path_id, module):
         self.lock.acquire()
-        self.modules[package] = module
+        self.modules[path_id] = module
         self.lock.release()
-        self.queue_send.put((package, module))
+        self.queue_send.put((path_id, module))
 
-    def get_module(self, package):
-        return self.modules.get(package, None)
-
-    def stop(self):
-        self.reference_counter -= 1
-        if self.reference_counter == 0:
-            self.keep_alive = False
-            self._shutdown_process()
-            if self.is_alive():
-                self.join()
+    def get_module(self, path_id):
+        return self.modules.get(path_id, None)
 
     def _shutdown_process(self):
         self.queue_send.put((None, None))
@@ -102,18 +93,20 @@ class _DaemonProcess(Process):
     def run(self):
         while True:
             self.first_iteration = True
-            package, module = self.queue_receive.get()
-            if package is None and module is None:
+            path_id, module = self.queue_receive.get()
+            if path_id is None and module is None:
                 break
 
             if module.need_resolution():
                 self._resolve_module(module)
                 self.first_iteration = False
                 self._resolve_module(module)
-            if module.need_resolution():
-                self.queue_send.put((package, module, 1))
             else:
-                self.queue_send.put((package, module, 0))
+                continue
+            if module.need_resolution():
+                self.queue_send.put((path_id, module, 1))
+            else:
+                self.queue_send.put((path_id, module, 0))
 
     def _resolve_module(self, module):
         self._resolve_attributes(module, module)
