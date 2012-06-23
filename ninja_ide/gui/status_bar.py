@@ -321,6 +321,8 @@ class SearchWidget(QWidget):
         self._line.counter.update_count(self.index, self.totalMatches)
 
     def find_matches(self, editor):
+        if editor is None:
+            return
         text = unicode(editor.toPlainText())
         search = unicode(self._line.text())
         hasSearch = len(search) > 0
