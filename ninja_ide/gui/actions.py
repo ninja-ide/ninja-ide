@@ -467,7 +467,6 @@ class __Actions(QObject):
     def open_project(self, path=''):
         """Open a Project and load the symbols in the Code Locator."""
         self.ide.explorer.open_project_folder(unicode(path))
-        self.ide.status.explore_code()
 
     def open_project_properties(self):
         """Open a Project and load the symbols in the Code Locator."""
@@ -515,7 +514,6 @@ class __Actions(QObject):
         self.ide.explorer.close_opened_projects()
         self.ide.mainContainer.open_files(settings.PROFILES[key][0])
         self.ide.explorer.open_session_projects(settings.PROFILES[key][1])
-        self.ide.status.explore_code()
 
     def close_files_from_project(self, project):
         """Close the files related to this project."""
