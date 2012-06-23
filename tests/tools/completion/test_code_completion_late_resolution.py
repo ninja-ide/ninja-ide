@@ -228,6 +228,27 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         expected = get_source_data(source_code, 'q')
         self.assertEqual(expected, results)
 
+    def test_simple_import_late_resolution_local_symbols(self):
+        new_code = ['class MyClass(object):',
+                    '    def __init__(self):',
+                    '        self.value1 = True',
+                    '    def func(self):',
+                    '        self.q = os.path',
+                    '    def gfunc(self):',
+                    '        import sys',
+                    '        self.a = sys',
+                    'mc = MyClass()',
+                    'mc.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        expected = {'attributes': ['a', 'q', 'value1'],
+                    'functions': ['__init__', 'func', 'gfunc']}
+        self.assertEqual(expected, results)
+
 
 if __name__ == '__main__':
     unittest.main()
