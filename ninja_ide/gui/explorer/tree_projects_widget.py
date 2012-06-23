@@ -14,6 +14,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+
 from __future__ import absolute_import
 
 import os
@@ -325,7 +326,9 @@ class TreeProjectsWidget(QTreeWidget):
         oprojects = self.get_open_projects()
         for each_project in oprojects:
             p_path = unicode(each_project.path)
-            if file_manager.belongs_to_folder(p_path, folder):
+            if file_manager.belongs_to_folder(p_path, folder) and \
+               file_manager.is_supported_extension(folder,
+                   each_project.extensions):
                 DEBUG("About to refresh %s" % folder)
                 DEBUG("for event %s" % event)
                 self._refresh_project(each_project)
