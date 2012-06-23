@@ -69,8 +69,6 @@ class MenuFile(QObject):
             self.tr("Open &Project (%1)").arg(
                 resources.get_shortcut("Open-project").toString(
                     QKeySequence.NativeText)))
-        openProjectTypeAction = menuFile.addAction(
-            QIcon(resources.IMAGES['openProj']), self.tr("Open Project &Type"))
         menuFile.addSeparator()
         activateProfileAction = menuFile.addAction(
             QIcon(resources.IMAGES['activate-profile']),
@@ -128,8 +126,6 @@ class MenuFile(QObject):
             ide.actions.save_project)
         self.connect(openProjectAction, SIGNAL("triggered()"),
             ide.explorer.open_project_folder)
-        self.connect(openProjectTypeAction, SIGNAL("triggered()"),
-            self._open_project_type)
         self.connect(closeAction, SIGNAL("triggered()"),
             ide.mainContainer.actualTab.close_tab)
         self.connect(exitAction, SIGNAL("triggered()"),
@@ -143,6 +139,3 @@ class MenuFile(QObject):
             ide.actions.deactivate_profile)
         self.connect(activateProfileAction, SIGNAL("triggered()"),
             ide.actions.activate_profile)
-
-    def _open_project_type(self):
-        pass
