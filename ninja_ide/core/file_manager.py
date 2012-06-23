@@ -319,3 +319,11 @@ def get_files_from_folder(folder, ext):
         filesExt = []
     filesExt = [f for f in filesExt if f.endswith(ext)]
     return filesExt
+
+
+def is_supported_extension(filename, extensions=None):
+    if extensions is None:
+        extensions = settings.SUPPORTED_EXTENSIONS
+    if os.path.splitext(filename.lower())[-1] in extensions:
+        return True
+    return False
