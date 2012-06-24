@@ -123,12 +123,12 @@ class __MiscContainer(QWidget):
         toolbar.addWidget(self._combo)
         toolbar.addSeparator()
 
-    def run_application(self, fileName, pythonPath=False, programParams='',
-      preExec='', postExec=''):
+    def run_application(self, fileName, pythonPath=False, PYTHONPATH=None,
+            programParams='', preExec='', postExec=''):
         self._item_changed(1)
         self.show()
-        self._runWidget.start_process(fileName, pythonPath, programParams,
-            preExec, postExec)
+        self._runWidget.start_process(fileName, pythonPath, PYTHONPATH,
+            programParams, preExec, postExec)
         self._runWidget.input.setFocus()
 
     def show_results(self, items):
