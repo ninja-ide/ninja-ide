@@ -777,6 +777,7 @@ class ProjectTree(QTreeWidgetItem):
         self.extensions = project.get('supported-extensions',
             settings.SUPPORTED_EXTENSIONS)
         self.pythonPath = project.get('pythonPath', settings.PYTHON_PATH)
+        self.PYTHONPATH = project.get('PYTHONPATH', '')
         self.programParams = project.get('programParams', '')
         self.venv = project.get('venv', '')
         self.addedToConsole = False
