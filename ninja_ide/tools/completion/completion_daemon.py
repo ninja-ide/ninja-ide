@@ -177,6 +177,7 @@ class _DaemonProcess(Process):
                 scope.pop(0)
                 scope.reverse()
                 result = module.get_type(main_attr, child_attr, scope)
+                data_type = None
                 if isinstance(result[1], basestring):
                     if child_attr:
                         data_type = "%s.%s" % (result[1], child_attr)
@@ -184,7 +185,9 @@ class _DaemonProcess(Process):
                         data_type = result[1]
                 elif result[1] is not None:
                     data_type = result[1]
-                data.data_type = data_type
+
+                if data is not None:
+                    data.data_type = data_type
 
     def _get_scope(self, structure, scope):
         if structure.__class__ not in (None, model.Module):
