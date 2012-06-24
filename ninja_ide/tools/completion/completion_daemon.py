@@ -188,8 +188,8 @@ class _DaemonProcess(Process):
                         data_type = "%s.%s" % (result[1], child_attr)
                     else:
                         data_type = result[1]
-                elif result[1] is not None:
-                    data_type = result[1]
+                elif len(result) == 3:
+                    data_type = result[2]
 
                 if data is not None:
                     data.data_type = data_type
