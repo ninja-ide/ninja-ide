@@ -174,7 +174,11 @@ class CodeCompletion(object):
         var_segment = self._search_for_completion_segment(token_code)
         words = var_segment.split('.', 1)
         words_final = var_segment.rsplit('.', 1)
-        attr_name = words[0].strip()
+        main_attribute = words[0].strip().split('(', 1)
+        attr_name = main_attribute[0]
+        arguments = ''
+        if len(main_attribute) == 2:
+            arguments = '(%s' % main_attribute[1]
         word = ''
         final_word = ''
         if var_segment.count(".") > 0:
@@ -195,6 +199,10 @@ class CodeCompletion(object):
                 prefix = result[1]
                 word = final_word
             to_complete = "%s.%s" % (prefix, word)
+            if arguments:
+                to_complete = "%s%s%s" % (to_complete[:-1], arguments,
+                    to_complete[-1])
+            imports = [imp.split('.')[0] for imp in imports]
             data = completer.get_all_completions(to_complete, imports)
             if data:
                 return data
