@@ -145,9 +145,14 @@ class _DaemonProcess(Process):
         for data in assign.data:
             line = data.line_content
             value = line.split('=')[1].strip().split('.')
-            if value[0] in module.imports:
-                value[0] = module.imports[value[0]].data_type
-                resolve = '.'.join(value)
+            name = value[0]
+            extra = ''
+            if name.find('(') != -1:
+                extra = name[name.index('('):]
+                name = name[:name.index('(')]
+            if name in module.imports:
+                value[0] = module.imports[name].data_type
+                resolve = "%s%s" % ('.'.join(value), extra)
                 data.data_type = resolve
 
     def _resolve_with_local_names(self, assign, module):
