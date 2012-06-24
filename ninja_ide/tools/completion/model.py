@@ -207,7 +207,7 @@ class Module(Structure):
                         result = (True, value.get_data_type())
 
         if result[1].__class__ is Clazz:
-            result = (False, result[1].get_completion_items())
+            result = (False, result[1].get_completion_items(), result[1])
         return result
 
     def get_imports(self):
