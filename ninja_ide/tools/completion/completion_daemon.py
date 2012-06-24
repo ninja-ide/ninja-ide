@@ -97,16 +97,21 @@ class _DaemonProcess(Process):
             if path_id is None and module is None:
                 break
 
-            if module.need_resolution():
-                self._resolve_module(module)
-                self.first_iteration = False
-                self._resolve_module(module)
-            else:
-                continue
-            if module.need_resolution():
-                self.queue_send.put((path_id, module, 1))
-            else:
-                self.queue_send.put((path_id, module, 0))
+            try:
+                if module.need_resolution():
+                    self._resolve_module(module)
+                    self.first_iteration = False
+                    self._resolve_module(module)
+                else:
+                    continue
+                if module.need_resolution():
+                    self.queue_send.put((path_id, module, 1))
+                else:
+                    self.queue_send.put((path_id, module, 0))
+            except Exception, reason:
+                # Don't die whatever happend
+                message = 'Daemon Fail with: %r', reason
+                print(message)
 
     def _resolve_module(self, module):
         self._resolve_attributes(module, module)
@@ -155,7 +160,30 @@ class _DaemonProcess(Process):
                 data.data_type = clazz
 
     def _resolve_with_local_vars(self, assign, module):
-        pass
+        for data in assign.data:
+            line = data.line_content
+            value = line.split('=')[1].split('(')[0].strip()
+            sym = value.split('.')
+            if len(sym) != 0:
+                main_attr = sym[0]
+                if len(sym) > 2:
+                    child_attr = '.'.join(sym[1:])
+                elif len(sym) == 2:
+                    child_attr = sym[1]
+                else:
+                    child_attr = ''
+                scope = []
+                self._get_scope(assign, scope)
+                scope.pop(0)
+                scope.reverse()
+                result = module.get_type(main_attr, child_attr, scope)
+                if result[1] is not None:
+                    data.data_type = result[1]
+
+    def _get_scope(self, structure, scope):
+        if structure.__class__ not in (None, model.Module):
+            scope.append(structure.name)
+            self._get_scope(structure.parent, scope)
 
 
 def shutdown_daemon():
