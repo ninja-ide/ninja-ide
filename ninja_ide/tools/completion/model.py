@@ -19,6 +19,24 @@
 late_resolution = 0
 
 
+def filter_data_type(data_types):
+    occurrences = {}
+    for type_ in data_types:
+        if isinstance(type_, basestring):
+            item = occurrences.get(type_, [0, type_])
+            item[0] += 1
+            occurrences[type_] = item
+        else:
+            item = occurrences.get(type_, [0, type_])
+            item[0] += 1
+            occurrences[type_.name] = item
+    values = [occurrences[key][0] for key in occurrences]
+    maximum = max(values)
+    data_type = [occurrences[key][1] for key in occurrences \
+                if occurrences[key][0] == maximum]
+    return data_type[0]
+
+
 class _TypeData(object):
 
     def __init__(self, lineno, data_type, line_content, oper):
@@ -268,7 +286,9 @@ class Assign(object):
             self.data.append(info)
 
     def get_data_type(self):
-        if self.data[0].data_type is not late_resolution:
-            return self.data[0].data_type
+        possible = [d.data_type for d in self.data \
+                    if d.data_type is not late_resolution]
+        if possible:
+            return filter_data_type(possible)
         else:
             return None
