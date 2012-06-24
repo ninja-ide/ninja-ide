@@ -18,6 +18,7 @@ from __future__ import absolute_import
 
 import time
 import re
+import sys
 
 from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QLabel
@@ -30,6 +31,7 @@ from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QTextCharFormat
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QProcess
+from PyQt4.QtCore import QProcessEnvironment
 from PyQt4.QtCore import QFile
 from PyQt4.QtCore import SIGNAL
 
@@ -126,17 +128,40 @@ class RunWidget(QWidget):
         self._proc.writeData(text)
         self.input.setText("")
 
-    def start_process(self, fileName, pythonPath=False, programParams='',
-      preExec='', postExec=''):
+    def start_process(self, fileName, pythonPath=False, PYTHONPATH=None,
+        programParams='', preExec='', postExec=''):
+
         """Prepare the output widget and start the process."""
         self.lblInput.show()
         self.input.show()
         self.fileName = fileName
-        self.pythonPath = pythonPath
+        self.pythonPath = pythonPath  # FIXME, this is python interpreter
         self.programParams = programParams
         self.preExec = preExec
         self.postExec = postExec
+        self.PYTHONPATH = PYTHONPATH
+
         self.__pre_execution()
+
+    def __make_process_environemtn(self, pythonpath):
+        """ Given a list with paths, we return a QProcessEnvironment
+        with the paths
+            in unix: PYTHONPATH='/path/to/place/:path/to/other/place'
+            in win: TODO
+        """
+
+        if not isinstance(pythonpath, unicode):
+            exc = 'Only accept unicode instances'
+            raise Exception(exc)
+
+        if sys.platform.startswith('linux'):
+            pythonpath = 'PYTHONPATH=' + ':'.join(
+                                    )
+        if sys.platform.startswith('win'):
+            # TODO: Hacer esto para windows
+            pass
+
+        return pythonpath
 
     def __main_execution(self):
         """Execute the project."""
@@ -161,6 +186,14 @@ class RunWidget(QWidget):
         #force python to unbuffer stdin and stdout
         options = ['-u'] + settings.EXECUTION_OPTIONS.split()
         self.currentProcess = self._proc
+
+        if self.PYTHONPATH:
+            envpaths = [path for path in self.PYTHONPATH.splitlines()]
+            env = QProcessEnvironment()
+            for path in envpaths:
+                env.insert('PYTHONPATH', path)
+            self._proc.setProcessEnvironment(env)
+
         self._proc.start(self.pythonPath, options + [self.fileName] + \
             [p.strip() for p in self.programParams.split(',') if p])
 

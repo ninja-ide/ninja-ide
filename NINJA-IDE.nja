@@ -7,6 +7,7 @@
   "pythonPath": "python", 
   "preExecScript": "", 
   "programParams": "", 
+  "PYTHONPATH": "/chinga/tu/hermana\n/forro/del/orto", 
   "supported-extensions": [
     ".py", 
     ".html", 
