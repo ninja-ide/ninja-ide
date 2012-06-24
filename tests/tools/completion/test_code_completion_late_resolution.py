@@ -101,6 +101,29 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         results = self.cc.get_completion(source_code, offset)
         self.assertIn('acquire', results['attributes'])
 
+    def test_simple_import_late_resolution_chained_attr_2(self):
+        new_code = ['from threading import Lock',
+                    't = Lock().']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('acquire', results['attributes'])
+
+    def test_simple_import_late_resolution_chained_attr_3(self):
+        new_code = ['from threading import Lock',
+                    't = Lock()',
+                    't.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('acquire', results['attributes'])
+
     def test_simple_import_late_resolution_not_outside_func(self):
         new_code = ['def func():',
                     '    q = os.path',

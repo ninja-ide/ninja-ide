@@ -182,7 +182,7 @@ class _DaemonProcess(Process):
                 scope.pop(0)
                 scope.reverse()
                 result = module.get_type(main_attr, child_attr, scope)
-                data_type = None
+                data_type = model.late_resolution
                 if isinstance(result[1], basestring):
                     if child_attr:
                         data_type = "%s.%s" % (result[1], child_attr)
