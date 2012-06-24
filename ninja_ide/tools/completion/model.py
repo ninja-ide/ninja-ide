@@ -207,7 +207,31 @@ class Module(Structure):
                         result = (True, value.get_data_type())
 
         if result[1].__class__ is Clazz:
-            result = (False, result[1].get_completion_items(), result[1])
+            if child_attrs:
+                attrs = child_attrs.split('.')
+                if attrs[-1] == '':
+                    attrs.pop(-1)
+                result = self._search_type(result[1], attrs)
+            else:
+                result = (False, result[1].get_completion_items(), result[1])
+        return result
+
+    def _search_type(self, structure, attrs):
+        result = (False, None)
+        if not attrs:
+            return result
+        attr = attrs[0]
+        value = structure.attributes.get(attr,
+            structure.functions.get(attr, None))
+        if value is None:
+            return result
+        data_type = value.get_data_type()
+        if data_type.__class__ is Clazz and len(attrs) > 1:
+            result = self._search_type(data_type, attrs[1:])
+        elif data_type.__class__ is Clazz:
+            result = (False, data_type.get_completion_items(), data_type)
+        elif isinstance(data_type, basestring):
+            result = (True, data_type, data_type)
         return result
 
     def get_imports(self):
@@ -270,7 +294,16 @@ class Function(Structure):
 
     def add_return(self, lineno, data_type, line_content, oper):
         info = _TypeData(lineno, data_type, line_content, oper)
-        self.return_type.append(info)
+        if info not in self.return_type:
+            self.return_type.append(info)
+
+    def get_data_type(self):
+        possible = [d.data_type for d in self.return_type \
+                    if d.data_type is not late_resolution]
+        if possible:
+            return filter_data_type(possible)
+        else:
+            return None
 
 
 class Assign(object):
