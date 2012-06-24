@@ -112,7 +112,6 @@ class _DaemonProcess(Process):
                 # Don't die whatever happend
                 message = 'Daemon Fail with: %r', reason
                 print(message)
-                raise
 
     def _resolve_module(self, module):
         self._resolve_attributes(module, module)
