@@ -129,26 +129,26 @@ class _DaemonProcess(Process):
             self._resolve_returns(function, module)
 
     def _resolve_returns(self, structure, module):
-        self._resolve_types(structure.return_type, module, structure)
+        self._resolve_types(structure.return_type, module, structure, 'return')
 
     def _resolve_attributes(self, structure, module):
         for attr in structure.attributes:
             assign = structure.attributes[attr]
             self._resolve_types(assign.data, module, assign)
 
-    def _resolve_types(self, types, module, structure=None):
+    def _resolve_types(self, types, module, structure=None, split_by='='):
         if self.first_iteration:
-            self._resolve_with_imports(types, module)
-            self._resolve_with_local_names(types, module)
+            self._resolve_with_imports(types, module, split_by)
+            self._resolve_with_local_names(types, module, split_by)
         else:
-            self._resolve_with_local_vars(types, module, structure)
+            self._resolve_with_local_vars(types, module, split_by, structure)
 
-    def _resolve_with_imports(self, types, module):
+    def _resolve_with_imports(self, types, module, splitby):
         for data in types:
             if data.data_type != model.late_resolution:
                 continue
             line = data.line_content
-            value = line.split('=')[1].strip().split('.')
+            value = line.split(splitby)[1].strip().split('.')
             name = value[0]
             extra = ''
             if name.find('(') != -1:
@@ -159,23 +159,23 @@ class _DaemonProcess(Process):
                 resolve = "%s%s" % ('.'.join(value), extra)
                 data.data_type = resolve
 
-    def _resolve_with_local_names(self, types, module):
+    def _resolve_with_local_names(self, types, module, splitby):
         #TODO: resolve with functions returns
         for data in types:
             if data.data_type != model.late_resolution:
                 continue
             line = data.line_content
-            value = line.split('=')[1].split('(')[0].strip()
+            value = line.split(splitby)[1].split('(')[0].strip()
             if value in module.classes:
                 clazz = module.classes[value]
                 data.data_type = clazz
 
-    def _resolve_with_local_vars(self, types, module, structure=None):
+    def _resolve_with_local_vars(self, types, module, splitby, structure=None):
         for data in types:
             if data.data_type != model.late_resolution:
                 continue
             line = data.line_content
-            value = line.split('=')[1].split('(')[0].strip()
+            value = line.split(splitby)[1].split('(')[0].strip()
             sym = value.split('.')
             if len(sym) != 0:
                 main_attr = sym[0]
