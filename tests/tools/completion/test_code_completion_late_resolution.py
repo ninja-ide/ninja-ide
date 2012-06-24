@@ -272,6 +272,48 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
                     'functions': ['__init__', 'func', 'gfunc']}
         self.assertEqual(expected, results)
 
+    def test_late_resolution_own_class_1(self):
+        new_code = ['class MyClass(object):',
+                    '    def __init__(self):',
+                    '        self.value1 = True',
+                    '    def func(self):',
+                    '        self.q = os.path',
+                    '    def gfunc(self):',
+                    '        import sys',
+                    '        self.a = sys',
+                    'mc = MyClass()',
+                    'd = mc']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        expected = {'attributes': ['a', 'q', 'value1'],
+                    'functions': ['__init__', 'func', 'gfunc']}
+        self.assertEqual(expected, results)
+
+    def test_late_resolution_own_class_2(self):
+        new_code = ['class MyClass(object):',
+                    '    def __init__(self):',
+                    '        self.value1 = "ninja-ide"',
+                    '    def func(self):',
+                    '        self.q = os.path',
+                    '    def gfunc(self):',
+                    '        import sys',
+                    '        self.a = sys',
+                    'mc = MyClass()',
+                    'd = mc.value1',
+                    'd.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        expected = dir(str)
+        self.assertEqual(expected, results['attributes'])
+
 
 if __name__ == '__main__':
     unittest.main()
