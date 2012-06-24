@@ -143,26 +143,6 @@ class RunWidget(QWidget):
 
         self.__pre_execution()
 
-    def __make_process_environemtn(self, pythonpath):
-        """ Given a list with paths, we return a QProcessEnvironment
-        with the paths
-            in unix: PYTHONPATH='/path/to/place/:path/to/other/place'
-            in win: TODO
-        """
-
-        if not isinstance(pythonpath, unicode):
-            exc = 'Only accept unicode instances'
-            raise Exception(exc)
-
-        if sys.platform.startswith('linux'):
-            pythonpath = 'PYTHONPATH=' + ':'.join(
-                                    )
-        if sys.platform.startswith('win'):
-            # TODO: Hacer esto para windows
-            pass
-
-        return pythonpath
-
     def __main_execution(self):
         """Execute the project."""
         self.output.setCurrentCharFormat(self.output.plain_format)
