@@ -131,6 +131,8 @@ class Analyzer(object):
             type_name = '_ast.Float'
         elif value in ('True', 'False'):
             type_name = '_ast.Bool'
+        elif value == 'None':
+            type_name = None
         return type_name
 
     def _process_assign(self, symbol):
@@ -143,6 +145,8 @@ class Analyzer(object):
             if type_value in (_ast.Num, _ast.Name):
                 type_value = self._assign_disambiguation(
                     type_value, line_content)
+                if type_value is None:
+                    continue
             data_type = self.__mapping.get(type_value, None)
             if var.__class__ == ast.Attribute:
                 data = (var.attr, symbol.lineno, data_type, line_content,
