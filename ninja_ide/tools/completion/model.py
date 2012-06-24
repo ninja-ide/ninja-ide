@@ -73,7 +73,8 @@ class Structure(object):
                     if type_data in old_assign.data:
                         old_type = old_assign.data[
                             old_assign.data.index(type_data)]
-                        type_data.data_type = old_type.data_type
+                        if type_data.line_content == old_type.line_content:
+                            type_data.data_type = old_type.data_type
 
     def update_functions(self, functions):
         for func_name in self.functions:
@@ -85,15 +86,17 @@ class Structure(object):
                 # Function Arguments
                 for arg in function.args:
                     if arg in old_func.args:
-                        argument = function.args[arg]
-                        old_arg = old_func.args[arg]
-                        argument.data[0].data_type = old_arg.data[0].data_type
+                        argument_type = function.args[arg].data[0]
+                        old_type = old_func.args[arg].data[0]
+                        if argument_type.line_content == old_type.line_content:
+                            argument_type.data_type = old_type.data_type
                 # Function Returns
                 for type_data in function.return_type:
                     if type_data in old_func.return_type:
                         old_type = old_func.return_type[
                             old_func.return_type.index(type_data)]
-                        type_data.data_type = old_type.data_type
+                        if type_data.line_content == old_type.line_content:
+                            type_data.data_type = old_type.data_type
 
     def get_attribute_type(self, name):
         """Return a tuple with:(Found, Type)"""

@@ -461,6 +461,7 @@ class FindInFilesWidget(QWidget):
                 break
         self._find_widget.dir_combo.clear()
         self._find_widget.dir_combo.addItem(project)
+        self._find_widget.case_checkbox.setChecked(True)
         self._find_widget._find_in_files()
 
     def _replace_results(self):
