@@ -147,7 +147,7 @@ class Analyzer(object):
                     type_value, line_content)
                 if type_value is None:
                     continue
-            data_type = self.__mapping.get(type_value, None)
+            data_type = self.__mapping.get(type_value, model.late_resolution)
             if var.__class__ == ast.Attribute:
                 data = (var.attr, symbol.lineno, data_type, line_content,
                     type_value)

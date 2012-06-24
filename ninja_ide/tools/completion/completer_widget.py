@@ -227,8 +227,9 @@ class CodeCompletionWidget(QFrame):
             prefix, valid = self.cc.get_prefix(source, offset)
             self.set_completion_prefix(prefix, valid)
             self.completion_list.setCurrentRow(0)
+#        start_completion = len(self._editor._text_under_cursor()) > 3
         if event.key() == Qt.Key_Period  or (event.key() == Qt.Key_Space and \
-           event.modifiers() == Qt.ControlModifier):
+           event.modifiers() == Qt.ControlModifier):  # or start_completion:
             self.fill_completer()
 
 
