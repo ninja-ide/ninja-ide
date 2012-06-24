@@ -126,23 +126,27 @@ class _DaemonProcess(Process):
             function = structure.functions[func]
             self._resolve_attributes(function, module)
             self._resolve_functions(function, module)
+            self._resolve_returns(function, module)
+
+    def _resolve_returns(self, structure, module):
+        self._resolve_types(structure.return_type, module, structure)
 
     def _resolve_attributes(self, structure, module):
         for attr in structure.attributes:
-            attribute = structure.attributes[attr]
-            for d in attribute.data:
-                if d.data_type == model.late_resolution:
-                    self._resolve_assign(attribute, module)
+            assign = structure.attributes[attr]
+            self._resolve_types(assign.data, module, assign)
 
-    def _resolve_assign(self, assign, module):
+    def _resolve_types(self, types, module, structure=None):
         if self.first_iteration:
-            self._resolve_with_imports(assign, module)
-            self._resolve_with_local_names(assign, module)
+            self._resolve_with_imports(types, module)
+            self._resolve_with_local_names(types, module)
         else:
-            self._resolve_with_local_vars(assign, module)
+            self._resolve_with_local_vars(types, module, structure)
 
-    def _resolve_with_imports(self, assign, module):
-        for data in assign.data:
+    def _resolve_with_imports(self, types, module):
+        for data in types:
+            if data.data_type != model.late_resolution:
+                continue
             line = data.line_content
             value = line.split('=')[1].strip().split('.')
             name = value[0]
@@ -155,17 +159,21 @@ class _DaemonProcess(Process):
                 resolve = "%s%s" % ('.'.join(value), extra)
                 data.data_type = resolve
 
-    def _resolve_with_local_names(self, assign, module):
+    def _resolve_with_local_names(self, types, module):
         #TODO: resolve with functions returns
-        for data in assign.data:
+        for data in types:
+            if data.data_type != model.late_resolution:
+                continue
             line = data.line_content
             value = line.split('=')[1].split('(')[0].strip()
             if value in module.classes:
                 clazz = module.classes[value]
                 data.data_type = clazz
 
-    def _resolve_with_local_vars(self, assign, module):
-        for data in assign.data:
+    def _resolve_with_local_vars(self, types, module, structure=None):
+        for data in types:
+            if data.data_type != model.late_resolution:
+                continue
             line = data.line_content
             value = line.split('=')[1].split('(')[0].strip()
             sym = value.split('.')
@@ -178,7 +186,7 @@ class _DaemonProcess(Process):
                 else:
                     child_attr = ''
                 scope = []
-                self._get_scope(assign, scope)
+                self._get_scope(structure, scope)
                 scope.pop(0)
                 scope.reverse()
                 result = module.get_type(main_attr, child_attr, scope)
