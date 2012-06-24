@@ -190,6 +190,10 @@ class RunWidget(QWidget):
         if self.PYTHONPATH:
             envpaths = [path for path in self.PYTHONPATH.splitlines()]
             env = QProcessEnvironment()
+            system_environemnt = self._proc.systemEnvironment()
+            for e in system_environemnt:
+                key, value = unicode(e).split('=', 1)
+                env.insert(key, value)
             for path in envpaths:
                 env.insert('PYTHONPATH', path)
             self._proc.setProcessEnvironment(env)
