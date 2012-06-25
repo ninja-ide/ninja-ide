@@ -26,7 +26,7 @@ Dependencies
 * Python >= 2.7 (Not Python3)
 * PyQt >= 4.8
 
-* Linux: pyinotify (Ubuntu$ sudo apt-get install python-pyinotif)
+* Linux: pyinotify (Ubuntu$ sudo apt-get install python-pyinotify)
 * Windows: pywin32 (http://sourceforge.net/projects/pywin32/files/pywin32/)
 * MAC OS: macfsevents ($ pip install macfsevents)
 
