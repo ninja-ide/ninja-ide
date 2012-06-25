@@ -100,9 +100,10 @@ class CodeCompletionWidget(QFrame):
         return True
 
     def update_metadata(self):
-        source = self._editor.get_text()
-        source = source.encode(self._editor.encoding)
-        self.cc.analyze_file(self._editor.ID, source)
+        if settings.CODE_COMPLETION:
+            source = self._editor.get_text()
+            source = source.encode(self._editor.encoding)
+            self.cc.analyze_file(self._editor.ID, source)
 
     def insert_completion(self, insert, type_=ord('a')):
         if insert != self._prefix:

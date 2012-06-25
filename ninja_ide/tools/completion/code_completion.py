@@ -45,6 +45,7 @@ class CodeCompletion(object):
         self.patIndent = re.compile('^\s+')
         self._valid_op = (')', '}', ']')
         self._invalid_op = ('(', '{', '[')
+        self._invalid_words = ('if', 'elif', 'for', 'while', 'in', 'return')
         self.keywords = settings.SYNTAX['python']['keywords']
 
     def analyze_file(self, path, source=None):
@@ -136,7 +137,9 @@ class CodeCompletion(object):
         brace_stack = 0
         for t in tokens:
             token_str = t[1]
-            if token_str in self._valid_op:
+            if token_str in self._invalid_words:
+                break
+            elif token_str in self._valid_op:
                 if brace_stack == 0:
                     segment = token_str + segment
                 brace_stack += 1
