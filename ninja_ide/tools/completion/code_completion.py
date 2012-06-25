@@ -198,6 +198,8 @@ class CodeCompletion(object):
             if result[1] != attr_name:
                 prefix = result[1]
                 word = final_word
+                if prefix[-1] == ')':
+                    arguments = ''
             to_complete = "%s.%s" % (prefix, word)
             if arguments:
                 to_complete = "%s%s%s" % (to_complete[:-1], arguments,

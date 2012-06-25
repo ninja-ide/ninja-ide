@@ -91,8 +91,7 @@ class Structure(object):
                     if type_data in old_assign.data:
                         old_type = old_assign.data[
                             old_assign.data.index(type_data)]
-                        if type_data.line_content == old_type.line_content:
-                            type_data.data_type = old_type.data_type
+                        type_data.data_type = old_type.data_type
 
     def update_functions(self, functions):
         for func_name in self.functions:
@@ -106,15 +105,13 @@ class Structure(object):
                     if arg in old_func.args:
                         argument_type = function.args[arg].data[0]
                         old_type = old_func.args[arg].data[0]
-                        if argument_type.line_content == old_type.line_content:
-                            argument_type.data_type = old_type.data_type
+                        argument_type.data_type = old_type.data_type
                 # Function Returns
                 for type_data in function.return_type:
                     if type_data in old_func.return_type:
                         old_type = old_func.return_type[
                             old_func.return_type.index(type_data)]
-                        if type_data.line_content == old_type.line_content:
-                            type_data.data_type = old_type.data_type
+                        type_data.data_type = old_type.data_type
 
     def get_attribute_type(self, name):
         """Return a tuple with:(Found, Type)"""
@@ -177,9 +174,11 @@ class Module(Structure):
 
     def get_type(self, main_attr, child_attrs='', scope=None):
         result = (False, None)
+        child_attrs = self.remove_function_arguments(child_attrs)
         if not scope:
             value = self.imports.get(main_attr,
-                self.attributes.get(main_attr, None))
+                self.attributes.get(main_attr,
+                self.functions.get(main_attr, None)))
             if value is not None:
                 result = (True, value.get_data_type())
         elif main_attr == 'self':
@@ -202,7 +201,8 @@ class Module(Structure):
                     structure, attrs, scope[1:])
                 if not result[0]:
                     value = self.imports.get(main_attr,
-                        self.attributes.get(main_attr, None))
+                        self.attributes.get(main_attr,
+                        self.functions.get(main_attr, None)))
                     if value is not None:
                         result = (True, value.get_data_type())
 
@@ -234,6 +234,13 @@ class Module(Structure):
             result = (True, data_type, data_type)
         return result
 
+    def remove_function_arguments(self, line):
+        while line.find('(') != -1:
+            start = line.find('(')
+            end = line.find(')') + 1
+            line = line[:start] + line[end:]
+        return line
+
     def get_imports(self):
         module_imports = ['import __builtin__']
         for name in self.imports:
@@ -262,6 +269,9 @@ class Module(Structure):
                 for d in attribute.data:
                     if d.data_type == late_resolution:
                         return True
+            for ret in function.return_type:
+                if ret.data_type == late_resolution:
+                    return True
         return False
 
 
@@ -299,7 +309,8 @@ class Function(Structure):
 
     def get_data_type(self):
         possible = [d.data_type for d in self.return_type \
-                    if d.data_type is not late_resolution]
+                    if d.data_type is not late_resolution and \
+                    d.data_type is not None]
         if possible:
             return filter_data_type(possible)
         else:
