@@ -126,25 +126,29 @@ class _DaemonProcess(Process):
             function = structure.functions[func]
             self._resolve_attributes(function, module)
             self._resolve_functions(function, module)
+            self._resolve_returns(function, module)
+
+    def _resolve_returns(self, structure, module):
+        self._resolve_types(structure.return_type, module, structure, 'return')
 
     def _resolve_attributes(self, structure, module):
         for attr in structure.attributes:
-            attribute = structure.attributes[attr]
-            for d in attribute.data:
-                if d.data_type == model.late_resolution:
-                    self._resolve_assign(attribute, module)
+            assign = structure.attributes[attr]
+            self._resolve_types(assign.data, module, assign)
 
-    def _resolve_assign(self, assign, module):
+    def _resolve_types(self, types, module, structure=None, split_by='='):
         if self.first_iteration:
-            self._resolve_with_imports(assign, module)
-            self._resolve_with_local_names(assign, module)
+            self._resolve_with_imports(types, module, split_by)
+            self._resolve_with_local_names(types, module, split_by)
         else:
-            self._resolve_with_local_vars(assign, module)
+            self._resolve_with_local_vars(types, module, split_by, structure)
 
-    def _resolve_with_imports(self, assign, module):
-        for data in assign.data:
+    def _resolve_with_imports(self, types, module, splitby):
+        for data in types:
+            if data.data_type != model.late_resolution:
+                continue
             line = data.line_content
-            value = line.split('=')[1].strip().split('.')
+            value = line.split(splitby)[1].strip().split('.')
             name = value[0]
             extra = ''
             if name.find('(') != -1:
@@ -155,19 +159,23 @@ class _DaemonProcess(Process):
                 resolve = "%s%s" % ('.'.join(value), extra)
                 data.data_type = resolve
 
-    def _resolve_with_local_names(self, assign, module):
+    def _resolve_with_local_names(self, types, module, splitby):
         #TODO: resolve with functions returns
-        for data in assign.data:
+        for data in types:
+            if data.data_type != model.late_resolution:
+                continue
             line = data.line_content
-            value = line.split('=')[1].split('(')[0].strip()
+            value = line.split(splitby)[1].split('(')[0].strip()
             if value in module.classes:
                 clazz = module.classes[value]
                 data.data_type = clazz
 
-    def _resolve_with_local_vars(self, assign, module):
-        for data in assign.data:
+    def _resolve_with_local_vars(self, types, module, splitby, structure=None):
+        for data in types:
+            if data.data_type != model.late_resolution:
+                continue
             line = data.line_content
-            value = line.split('=')[1].split('(')[0].strip()
+            value = line.split(splitby)[1].split('(')[0].strip()
             sym = value.split('.')
             if len(sym) != 0:
                 main_attr = sym[0]
@@ -178,13 +186,15 @@ class _DaemonProcess(Process):
                 else:
                     child_attr = ''
                 scope = []
-                self._get_scope(assign, scope)
-                scope.pop(0)
+                self._get_scope(structure, scope)
+                if structure.__class__ is model.Assign:
+                    scope.pop(0)
                 scope.reverse()
                 result = module.get_type(main_attr, child_attr, scope)
                 data_type = model.late_resolution
                 if isinstance(result[1], basestring) and len(result) < 3:
-                    if child_attr:
+                    if child_attr and \
+                       structure.__class__ is not model.Function:
                         data_type = "%s.%s" % (result[1], child_attr)
                     else:
                         data_type = result[1]

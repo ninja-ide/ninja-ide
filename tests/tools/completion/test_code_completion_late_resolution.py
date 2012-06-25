@@ -314,6 +314,166 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         expected = dir(str)
         self.assertEqual(expected, results['attributes'])
 
+    def test_late_resolution_return_1(self):
+        new_code = ['def function():',
+                    '    return "ninja-ide"',
+                    'f = function()',
+                    'f.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        expected = dir(str)
+        self.assertEqual(expected, results['attributes'])
+
+    def test_late_resolution_return_2(self):
+        new_code = ['def function():',
+                    '    return "ninja-ide"',
+                    'f = function().']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        expected = dir(str)
+        self.assertEqual(expected, results['attributes'])
+
+    def test_late_resolution_return_3(self):
+        new_code = ['class Ninja:',
+                    '    def __init__(self):',
+                    '        self.val = 34',
+                    '    def funcion(self):',
+                    '        return "ninja"',
+                    '    def funcion2(self):',
+                    '        return self.val',
+                    'n = Ninja()',
+                    'a = n.funcion()',
+                    'a.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        expected = dir(str)
+        self.assertEqual(expected, results['attributes'])
+
+    def test_late_resolution_return_4(self):
+        new_code = ['class Ninja:',
+                    '    def __init__(self):',
+                    '        self.val = 34',
+                    '    def funcion(self):',
+                    '        return "ninja"',
+                    '    def funcion2(self):',
+                    '        return self.val',
+                    'n = Ninja()',
+                    'a = n.funcion().']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        expected = dir(str)
+        self.assertEqual(expected, results['attributes'])
+
+    def test_late_resolution_return_5(self):
+        #It happens in the test, but can not reproduce it IRL
+        new_code = ['class Ninja:',
+                    '    def __init__(self):',
+                    '        self.val = 34',
+                    '    def funcion(self):',
+                    '        return "ninja"',
+                    '    def funcion2(self):',
+                    '        return self.val',
+                    'n = Ninja()',
+                    'a = n.funcion2()',
+                    'a.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        expected = dir(int)
+        self.assertEqual(expected, results['attributes'])
+
+    def test_late_resolution_return_6(self):
+        new_code = ['class Ninja:',
+                    '    def __init__(self):',
+                    '        self.val = 34',
+                    '    def funcion(self):',
+                    '        return "ninja"',
+                    '    def funcion2(self):',
+                    '        return self.val',
+                    'n = Ninja()',
+                    'a = n.funcion2().']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        expected = dir(int)
+        self.assertEqual(expected, results['attributes'])
+
+    def test_late_resolution_return_7(self):
+        new_code = ['import threading',
+                    'def func():',
+                    '    return threading.Lock()',
+                    'n = func()',
+                    'n.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('acquire', results['attributes'])
+
+    def test_late_resolution_return_8(self):
+        new_code = ['import threading',
+                    'def func():',
+                    '    return threading.Lock()',
+                    'n = func().']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('acquire', results['attributes'])
+
+    def test_late_resolution_return_9(self):
+        new_code = ['import threading',
+                    'def func():',
+                    '    return threading',
+                    'n = func().']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('Lock', results['attributes'])
+
+    def test_late_resolution_return_10(self):
+        new_code = ['import threading',
+                    'def func():',
+                    '    return threading',
+                    'n = func()',
+                    'n.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('Lock', results['attributes'])
+
 
 if __name__ == '__main__':
     unittest.main()
