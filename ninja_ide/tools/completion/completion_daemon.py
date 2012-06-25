@@ -187,12 +187,14 @@ class _DaemonProcess(Process):
                     child_attr = ''
                 scope = []
                 self._get_scope(structure, scope)
-                scope.pop(0)
+                if structure.__class__ is model.Assign:
+                    scope.pop(0)
                 scope.reverse()
                 result = module.get_type(main_attr, child_attr, scope)
                 data_type = model.late_resolution
                 if isinstance(result[1], basestring) and len(result) < 3:
-                    if child_attr:
+                    if child_attr and \
+                       structure.__class__ is not model.Function:
                         data_type = "%s.%s" % (result[1], child_attr)
                     else:
                         data_type = result[1]
