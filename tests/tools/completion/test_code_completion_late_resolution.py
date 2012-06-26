@@ -448,7 +448,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         results = self.cc.get_completion(source_code, offset)
         self.assertIn('acquire', results['attributes'])
 
-    @unittest.skip("It happens in the test, but can not reproduce it IRL")
     def test_late_resolution_return_9(self):
         new_code = ['import threading',
                     'def func():',
@@ -475,6 +474,35 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         self.assertIn('Lock', results['attributes'])
+
+    def test_weird_case_1(self):
+        new_code = ['import threading',
+                    'def func():',
+                    '    return threading',
+                    'n = func()',
+                    'b = n.Lock().']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('acquire', results['attributes'])
+
+    def test_weird_case_2(self):
+        new_code = ['import threading',
+                    'def func():',
+                    '    return threading',
+                    'n = func()',
+                    'b = n.Lock()',
+                    'b.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('acquire', results['attributes'])
 
 
 if __name__ == '__main__':
