@@ -100,10 +100,6 @@ class TabWidget(QTabWidget):
             self.__lastOpened = self.__lastOpened[1:]
 
     def add_tab(self, widget, title, index=None):
-#        if self.count() > 9:
-#            self.setElideMode(Qt.ElideNone)
-#            self.tabBar().setExpanding(False)
-#            self.tabBar().setUsesScrollButtons(True)
         try:
             if index is not None:
                 inserted_index = self.insertTab(index, widget, title)
