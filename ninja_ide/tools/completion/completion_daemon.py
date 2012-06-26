@@ -192,14 +192,14 @@ class _DaemonProcess(Process):
                 scope.reverse()
                 result = module.get_type(main_attr, child_attr, scope)
                 data_type = model.late_resolution
-                if isinstance(result[1], basestring) and len(result) < 3:
+                if isinstance(result['type'], basestring) and len(result) < 3:
                     if child_attr and \
                        structure.__class__ is not model.Function:
-                        data_type = "%s.%s" % (result[1], child_attr)
+                        data_type = "%s.%s" % (result['type'], child_attr)
                     else:
-                        data_type = result[1]
-                elif len(result) == 3:
-                    data_type = result[2]
+                        data_type = result['type']
+                elif result.get('object', False):
+                    data_type = result['object']
 
                 if data is not None:
                     data.data_type = data_type

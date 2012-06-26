@@ -115,11 +115,11 @@ class Structure(object):
 
     def get_attribute_type(self, name):
         """Return a tuple with:(Found, Type)"""
-        result = (False, None)
+        result = {'found': False, 'type': None}
         var_names = name.split('.')
         attr = self.attributes.get(var_names[0], None)
         if attr is not None:
-            result = (True, attr.get_data_type())
+            result['found'], result['type'] = True, attr.get_data_type()
         elif self.parent.__class__ is Function:
             result = self.parent.get_attribute_type(name)
         return result
@@ -137,7 +137,7 @@ class Structure(object):
         return (True, object_type)
 
     def recursive_search_type(self, structure, attrs, scope):
-        result = (False, None)
+        result = {'found': False, 'type': None}
         structure = self._get_scope_structure(structure, scope)
         if structure:
             attr_name = attrs[0]
@@ -171,51 +171,58 @@ class Module(Structure):
                 clazz.update_functions(classes[clazz_name].functions)
 
     def get_type(self, main_attr, child_attrs='', scope=None):
-        result = (False, None)
-        child_attrs = self.remove_function_arguments(child_attrs)
+        result = {'found': False, 'type': None}
+        canonical_attrs = self.remove_function_arguments(child_attrs)
         if not scope:
             value = self.imports.get(main_attr,
                 self.attributes.get(main_attr,
                 self.functions.get(main_attr, None)))
             if value is not None:
-                result = (True, value.get_data_type())
+                data_type = value.get_data_type()
+                result['found'], result['type'] = True, data_type
+                if child_attrs or (isinstance(data_type, basestring) and \
+                   data_type.endswith(main_attr)):
+                    result['main_attr_replace'] = True
         elif main_attr == 'self':
             clazz_name = scope[0]
             clazz = self.classes.get(clazz_name, None)
             if clazz is not None:
-                result = clazz.get_attribute_type(child_attrs)
-            if child_attrs == '' and clazz is not None:
+                result = clazz.get_attribute_type(canonical_attrs)
+            if canonical_attrs == '' and clazz is not None:
                 items = clazz.get_completion_items()
-                result = (False, items)
+                result['found'], result['type'] = False, items
         elif scope:
             scope_name = scope[0]
             structure = self.classes.get(scope_name,
                 self.functions.get(scope_name, None))
             if structure is not None:
-                attrs = [main_attr] + child_attrs.split('.')
+                attrs = [main_attr] + canonical_attrs.split('.')
                 if len(attrs) > 1 and attrs[1] == '':
                     del attrs[1]
                 result = self.recursive_search_type(
                     structure, attrs, scope[1:])
-                if not result[0]:
+                if not result['found']:
                     value = self.imports.get(main_attr,
                         self.attributes.get(main_attr,
                         self.functions.get(main_attr, None)))
                     if value is not None:
-                        result = (True, value.get_data_type())
+                        data_type = value.get_data_type()
+                        result['found'], result['type'] = True, data_type
 
-        if result[1].__class__ is Clazz:
-            if child_attrs:
-                attrs = child_attrs.split('.')
+        if result['type'].__class__ is Clazz:
+            if canonical_attrs:
+                attrs = canonical_attrs.split('.')
                 if attrs[-1] == '':
                     attrs.pop(-1)
-                result = self._search_type(result[1], attrs)
+                result = self._search_type(result['type'], attrs)
             else:
-                result = (False, result[1].get_completion_items(), result[1])
+                result = {'found': False,
+                          'type': result['type'].get_completion_items(),
+                          'object': result['type']}
         return result
 
     def _search_type(self, structure, attrs):
-        result = (False, None)
+        result = {'found': False, 'type': None}
         if not attrs:
             return result
         attr = attrs[0]
@@ -227,9 +234,12 @@ class Module(Structure):
         if data_type.__class__ is Clazz and len(attrs) > 1:
             result = self._search_type(data_type, attrs[1:])
         elif data_type.__class__ is Clazz:
-            result = (False, data_type.get_completion_items(), data_type)
+            items = data_type.get_completion_items()
+            result['found'], result['type'] = False, items
+            result['object'] = data_type
         elif isinstance(data_type, basestring):
-            result = (True, data_type, data_type)
+            result['found'], result['type'] = True, data_type
+            result['object'] = data_type
         return result
 
     def remove_function_arguments(self, line):
@@ -287,7 +297,7 @@ class Clazz(Structure):
         if attributes or functions:
             attributes.sort()
             functions.sort()
-            return (attributes, functions)
+            return {'attributes': attributes, 'functions': functions}
         return None
 
 

@@ -179,9 +179,6 @@ class CodeCompletion(object):
         words_final = var_segment.rsplit('.', 1)
         main_attribute = words[0].strip().split('(', 1)
         attr_name = main_attribute[0]
-        arguments = ''
-        if len(main_attribute) == 2:
-            arguments = '(%s' % main_attribute[1]
         word = ''
         final_word = ''
         if var_segment.count(".") > 0:
@@ -196,27 +193,24 @@ class CodeCompletion(object):
         imports = module.get_imports()
         result = module.get_type(attr_name, word, scopes)
         self.cdaemon.lock.release()
-        if result[0] and result[1] is not None:
+        if result['found'] and result['type'] is not None:
             prefix = attr_name
-            if result[1] != attr_name:
-                prefix = result[1]
+            if result['type'] != attr_name:
+                prefix = result['type']
                 word = final_word
-                if prefix[-1] == ')':
-                    arguments = ''
             to_complete = "%s.%s" % (prefix, word)
-            if arguments:
-                to_complete = "%s%s%s" % (to_complete[:-1], arguments,
-                    to_complete[-1])
+            if result.get('main_attr_replace', False):
+                to_complete = var_segment.replace(attr_name, result['type'], 1)
             imports = [imp.split('.')[0] for imp in imports]
             data = completer.get_all_completions(to_complete, imports)
             if data:
                 return data
             else:
-                result = (None, None)
+                result = {'found': None, 'type': None}
 
-        if result[1] is not None and len(result[1]) > 0:
-            data = {'attributes': result[1][0],
-                'functions': result[1][1]}
+        if result['type'] is not None and len(result['type']) > 0:
+            data = {'attributes': result['type']['attributes'],
+                'functions': result['type']['functions']}
         else:
             clazzes = sorted(set(re.findall("class (\w+?)\(", code)))
             funcs = sorted(set(re.findall("(\w+?)\(", code)))

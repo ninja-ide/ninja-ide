@@ -417,6 +417,7 @@ class FindInFilesWidget(QWidget):
         else:
             self._replace_button.setEnabled(False)
             self.replace_widget.setVisible(False)
+        self._result_widget.setFocus()
 
     def _find_stop(self):
         self._find_widget._kill_thread()
