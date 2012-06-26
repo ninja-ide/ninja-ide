@@ -49,6 +49,8 @@ class SingleFileWatcher(QThread):
         #only add if the file still exists
         if (file_to_watch not in self._watches) and status:
             self._watches[file_to_watch] = do_stat(file_to_watch)
+        elif not status:
+            self._emit_call(DELETED, file_to_watch)
 
     def del_watch(self, file_to_unwatch):
         if file_to_unwatch in self._watches:
@@ -63,6 +65,7 @@ class SingleFileWatcher(QThread):
                 self.del_watch(each_file)
             if status.st_mtime > self._watches[each_file].st_mtime:
                 self._emit_call(MODIFIED, each_file)
+                self._watches[each_file] = status
 
     def run(self):
         while self._do_run:
