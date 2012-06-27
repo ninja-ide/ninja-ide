@@ -135,6 +135,7 @@ class __MiscContainer(QWidget):
         self._item_changed(4)
         self.show()
         self._results.update_result(items)
+        self._results._tree.setFocus()
 
     def kill_application(self):
         self._runWidget.kill_process()
