@@ -115,6 +115,7 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
             notifier.quit()
 
     def shutdown_notification(self):
+        base_watcher.BaseWatcher.shutdown_notification(self)
         for each_path in self.watching_paths:
             notifier = self.watching_paths[each_path]
             notifier.keep_running = False

@@ -29,6 +29,9 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
         # do stuff
         self.watching_paths = []
 
+    def shutdown_notification(self):
+        base_watcher.BaseWatcher.shutdown_notification(self)
+
     def add_watch(self, path):
         if path not in self.watching_paths:
             self.watching_paths.append(path)

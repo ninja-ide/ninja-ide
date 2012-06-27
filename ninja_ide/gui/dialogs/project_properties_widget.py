@@ -47,6 +47,11 @@ from ninja_ide.tools import json_manager
 from ninja_ide.tools import ui_tools
 
 
+import logging
+logger = logging.getLogger('ninja_ide.gui.dialogs.project_properties_widget')
+DEBUG = logger.debug
+
+
 class ProjectProperties(QDialog):
 
     def __init__(self, item, parent=None):
@@ -78,6 +83,7 @@ class ProjectProperties(QDialog):
             QMessageBox.critical(self, self.tr("Properties Invalid"),
                 self.tr("The Project must have a name."))
             return
+
         tempName = self._item.name
         self._item.name = unicode(self.projectData.name.text())
         self._item.description = unicode(
