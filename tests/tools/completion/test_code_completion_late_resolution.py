@@ -312,6 +312,8 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(str)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_late_resolution_return_1(self):
@@ -326,6 +328,8 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(str)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_late_resolution_return_2(self):
@@ -339,6 +343,8 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(str)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_late_resolution_return_3(self):
@@ -359,6 +365,8 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(str)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_late_resolution_return_4(self):
@@ -378,6 +386,8 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(str)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     @unittest.skip("It happens in the test, but can not reproduce it IRL")
@@ -400,6 +410,8 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(int)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_late_resolution_return_6(self):
@@ -419,6 +431,8 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(int)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_late_resolution_return_7(self):

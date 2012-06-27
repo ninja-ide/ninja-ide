@@ -204,7 +204,8 @@ class CodeCompletion(object):
             imports = [imp.split('.')[0] for imp in imports]
             data = completer.get_all_completions(to_complete, imports)
             __attrib = [d for d in data['attributes'] if d[:2] == '__']
-            data['attributes'] = data['attributes'][len(__attrib):] + __attrib
+            map(lambda i: data['attributes'].remove(i), __attrib)
+            data['attributes'] += __attrib
             if data:
                 return data
             else:
