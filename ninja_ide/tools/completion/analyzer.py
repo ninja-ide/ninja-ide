@@ -57,6 +57,7 @@ class Analyzer(object):
     __mapping = {
         _ast.Tuple: '__builtin__.tuple',
         _ast.List: '__builtin__.list',
+        _ast.ListComp: '__builtin__.list',
         _ast.Str: '__builtin__.str',
         _ast.Dict: '__builtin__.dict',
         _ast.Num: '__builtin__.int',
@@ -142,6 +143,10 @@ class Analyzer(object):
         for var in symbol.targets:
             type_value = symbol.value.__class__
             line_content = self.content[symbol.lineno - 1]
+            print '\n'
+            print line_content
+            print type_value
+            print symbol.value
             if type_value in (_ast.Num, _ast.Name):
                 type_value = self._assign_disambiguation(
                     type_value, line_content)
