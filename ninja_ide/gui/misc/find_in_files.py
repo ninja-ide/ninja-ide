@@ -396,6 +396,8 @@ class FindInFilesWidget(QWidget):
         self.connect(self._clear_button, SIGNAL("clicked()"),
             self._clear_results)
         self.connect(self._result_widget, SIGNAL(
+            "itemActivated(QTreeWidgetItem *, int)"), self._go_to)
+        self.connect(self._result_widget, SIGNAL(
             "itemClicked(QTreeWidgetItem *, int)"), self._go_to)
         self.connect(self._find_widget, SIGNAL("finished()"),
             self._find_finished)
@@ -417,6 +419,7 @@ class FindInFilesWidget(QWidget):
         else:
             self._replace_button.setEnabled(False)
             self.replace_widget.setVisible(False)
+        self._result_widget.setFocus()
 
     def _find_stop(self):
         self._find_widget._kill_thread()
@@ -461,6 +464,7 @@ class FindInFilesWidget(QWidget):
                 break
         self._find_widget.dir_combo.clear()
         self._find_widget.dir_combo.addItem(project)
+        self._find_widget.case_checkbox.setChecked(True)
         self._find_widget._find_in_files()
 
     def _replace_results(self):

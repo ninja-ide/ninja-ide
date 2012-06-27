@@ -101,6 +101,29 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         results = self.cc.get_completion(source_code, offset)
         self.assertIn('acquire', results['attributes'])
 
+    def test_simple_import_late_resolution_chained_attr_2(self):
+        new_code = ['from threading import Lock',
+                    't = Lock().']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('acquire', results['attributes'])
+
+    def test_simple_import_late_resolution_chained_attr_3(self):
+        new_code = ['from threading import Lock',
+                    't = Lock()',
+                    't.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('acquire', results['attributes'])
+
     def test_simple_import_late_resolution_not_outside_func(self):
         new_code = ['def func():',
                     '    q = os.path',
@@ -248,6 +271,252 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         expected = {'attributes': ['a', 'q', 'value1'],
                     'functions': ['__init__', 'func', 'gfunc']}
         self.assertEqual(expected, results)
+
+    def test_late_resolution_own_class_1(self):
+        new_code = ['class MyClass(object):',
+                    '    def __init__(self):',
+                    '        self.value1 = True',
+                    '    def func(self):',
+                    '        self.q = os.path',
+                    '    def gfunc(self):',
+                    '        import sys',
+                    '        self.a = sys',
+                    'mc = MyClass()',
+                    'd = mc']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        expected = {'attributes': ['a', 'q', 'value1'],
+                    'functions': ['__init__', 'func', 'gfunc']}
+        self.assertEqual(expected, results)
+
+    def test_late_resolution_own_class_2(self):
+        new_code = ['class MyClass(object):',
+                    '    def __init__(self):',
+                    '        self.value1 = "ninja-ide"',
+                    '    def func(self):',
+                    '        self.q = os.path',
+                    '    def gfunc(self):',
+                    '        import sys',
+                    '        self.a = sys',
+                    'mc = MyClass()',
+                    'd = mc.value1',
+                    'd.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        expected = dir(str)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
+        self.assertEqual(expected, results['attributes'])
+
+    def test_late_resolution_return_1(self):
+        new_code = ['def function():',
+                    '    return "ninja-ide"',
+                    'f = function()',
+                    'f.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        expected = dir(str)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
+        self.assertEqual(expected, results['attributes'])
+
+    def test_late_resolution_return_2(self):
+        new_code = ['def function():',
+                    '    return "ninja-ide"',
+                    'f = function().']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        expected = dir(str)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
+        self.assertEqual(expected, results['attributes'])
+
+    def test_late_resolution_return_3(self):
+        new_code = ['class Ninja:',
+                    '    def __init__(self):',
+                    '        self.val = 34',
+                    '    def funcion(self):',
+                    '        return "ninja"',
+                    '    def funcion2(self):',
+                    '        return self.val',
+                    'n = Ninja()',
+                    'a = n.funcion()',
+                    'a.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        expected = dir(str)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
+        self.assertEqual(expected, results['attributes'])
+
+    def test_late_resolution_return_4(self):
+        new_code = ['class Ninja:',
+                    '    def __init__(self):',
+                    '        self.val = 34',
+                    '    def funcion(self):',
+                    '        return "ninja"',
+                    '    def funcion2(self):',
+                    '        return self.val',
+                    'n = Ninja()',
+                    'a = n.funcion().']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        expected = dir(str)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
+        self.assertEqual(expected, results['attributes'])
+
+    @unittest.skip("It happens in the test, but can not reproduce it IRL")
+    def test_late_resolution_return_5(self):
+        #It happens in the test, but can not reproduce it IRL
+        new_code = ['class Ninja:',
+                    '    def __init__(self):',
+                    '        self.val = 34',
+                    '    def funcion(self):',
+                    '        return "ninja"',
+                    '    def funcion2(self):',
+                    '        return self.val',
+                    'n = Ninja()',
+                    'a = n.funcion2()',
+                    'a.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        expected = dir(int)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
+        self.assertEqual(expected, results['attributes'])
+
+    def test_late_resolution_return_6(self):
+        new_code = ['class Ninja:',
+                    '    def __init__(self):',
+                    '        self.val = 34',
+                    '    def funcion(self):',
+                    '        return "ninja"',
+                    '    def funcion2(self):',
+                    '        return self.val',
+                    'n = Ninja()',
+                    'a = n.funcion2().']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        expected = dir(int)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
+        self.assertEqual(expected, results['attributes'])
+
+    def test_late_resolution_return_7(self):
+        new_code = ['import threading',
+                    'def func():',
+                    '    return threading.Lock()',
+                    'n = func()',
+                    'n.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('acquire', results['attributes'])
+
+    def test_late_resolution_return_8(self):
+        new_code = ['import threading',
+                    'def func():',
+                    '    return threading.Lock()',
+                    'n = func().']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('acquire', results['attributes'])
+
+    def test_late_resolution_return_9(self):
+        new_code = ['import threading',
+                    'def func():',
+                    '    return threading',
+                    'n = func().']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('Lock', results['attributes'])
+
+    def test_late_resolution_return_10(self):
+        new_code = ['import threading',
+                    'def func():',
+                    '    return threading',
+                    'n = func()',
+                    'n.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('Lock', results['attributes'])
+
+    def test_weird_case_1(self):
+        new_code = ['import threading',
+                    'def func():',
+                    '    return threading',
+                    'n = func()',
+                    'b = n.Lock().']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('acquire', results['attributes'])
+
+    def test_weird_case_2(self):
+        new_code = ['import threading',
+                    'def func():',
+                    '    return threading',
+                    'n = func()',
+                    'b = n.Lock()',
+                    'b.']
+        source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        import time
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('acquire', results['attributes'])
 
 
 if __name__ == '__main__':

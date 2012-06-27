@@ -93,7 +93,7 @@ class Analyzer(object):
                     astModule = self._get_valid_module(source, retry + 1)
         return astModule
 
-    def analyze(self, source):
+    def analyze(self, source, old_module=None):
         """Analyze the source provided and create the proper structure."""
         astModule = self._get_valid_module(source)
         if astModule is None:
@@ -111,9 +111,16 @@ class Analyzer(object):
                 module.add_class(self._process_class(symbol))
             elif symbol.__class__ is ast.FunctionDef:
                 module.add_function(self._process_function(symbol))
+        if old_module is not None:
+            self._resolve_module(module, old_module)
 
         self.content = None
         return module
+
+    def _resolve_module(self, module, old_module):
+        module.update_classes(old_module.classes)
+        module.update_functions(old_module.functions)
+        module.update_attributes(old_module.attributes)
 
     def _assign_disambiguation(self, type_name, line_content):
         """Provide a specific builtin for the cases were ast doesn't work."""
@@ -124,6 +131,8 @@ class Analyzer(object):
             type_name = '_ast.Float'
         elif value in ('True', 'False'):
             type_name = '_ast.Bool'
+        elif value == 'None':
+            type_name = None
         return type_name
 
     def _process_assign(self, symbol):
@@ -136,7 +145,9 @@ class Analyzer(object):
             if type_value in (_ast.Num, _ast.Name):
                 type_value = self._assign_disambiguation(
                     type_value, line_content)
-            data_type = self.__mapping.get(type_value, None)
+                if type_value is None:
+                    continue
+            data_type = self.__mapping.get(type_value, model.late_resolution)
             if var.__class__ == ast.Attribute:
                 data = (var.attr, symbol.lineno, data_type, line_content,
                     type_value)

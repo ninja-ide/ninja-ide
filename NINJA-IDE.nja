@@ -7,6 +7,7 @@
   "pythonPath": "python", 
   "preExecScript": "", 
   "programParams": "", 
+  "PYTHONPATH": "", 
   "supported-extensions": [
     ".py", 
     ".html", 

@@ -100,9 +100,10 @@ class CodeCompletionWidget(QFrame):
         return True
 
     def update_metadata(self):
-        source = self._editor.get_text()
-        source = source.encode(self._editor.encoding)
-        self.cc.analyze_file('', source)
+        if settings.CODE_COMPLETION:
+            source = self._editor.get_text()
+            source = source.encode(self._editor.encoding)
+            self.cc.analyze_file(self._editor.ID, source)
 
     def insert_completion(self, insert, type_=ord('a')):
         if insert != self._prefix:
@@ -181,10 +182,10 @@ class CodeCompletionWidget(QFrame):
             result = True
         return result
 
-    def fill_completer(self):
-        if self._editor.cursor_inside_string() or \
+    def fill_completer(self, force_completion=False):
+        if not force_completion and (self._editor.cursor_inside_string() or \
            self._editor.cursor_inside_comment() or \
-           self._invalid_completion_position():
+           self._invalid_completion_position()):
             return
         source = self._editor.get_text()
         source = source.encode(self._editor.encoding)
@@ -227,9 +228,10 @@ class CodeCompletionWidget(QFrame):
             prefix, valid = self.cc.get_prefix(source, offset)
             self.set_completion_prefix(prefix, valid)
             self.completion_list.setCurrentRow(0)
-        if event.key() == Qt.Key_Period  or (event.key() == Qt.Key_Space and \
-           event.modifiers() == Qt.ControlModifier):
-            self.fill_completer()
+        force_completion = (event.key() == Qt.Key_Space and \
+                            event.modifiers() == Qt.ControlModifier)
+        if event.key() == Qt.Key_Period  or force_completion:
+            self.fill_completer(force_completion)
 
 
 class CompleterWidget(QCompleter):

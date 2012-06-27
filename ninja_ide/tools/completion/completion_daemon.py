@@ -31,7 +31,6 @@ def CompletionDaemon():
     if __completion_daemon_instance is None:
         __completion_daemon_instance = __CompletionDaemon()
         __completion_daemon_instance.start()
-        __completion_daemon_instance.reference_counter += 1
     return __completion_daemon_instance
 
 
@@ -52,32 +51,24 @@ class __CompletionDaemon(Thread):
         global WAITING_BEFORE_START
         time.sleep(WAITING_BEFORE_START)
         while self.keep_alive:
-            package, module, resolve = self.queue_receive.get()
-            if package is None:
+            path_id, module, resolve = self.queue_receive.get()
+            if path_id is None:
                 continue
             self.lock.acquire()
-            self.modules[package] = module
+            self.modules[path_id] = module
             self.lock.release()
 
     def _resolve_with_other_modules(self, module):
         pass
 
-    def inspect_module(self, package, module):
+    def inspect_module(self, path_id, module):
         self.lock.acquire()
-        self.modules[package] = module
+        self.modules[path_id] = module
         self.lock.release()
-        self.queue_send.put((package, module))
+        self.queue_send.put((path_id, module))
 
-    def get_module(self, package):
-        return self.modules.get(package, None)
-
-    def stop(self):
-        self.reference_counter -= 1
-        if self.reference_counter == 0:
-            self.keep_alive = False
-            self._shutdown_process()
-            if self.is_alive():
-                self.join()
+    def get_module(self, path_id):
+        return self.modules.get(path_id, None)
 
     def _shutdown_process(self):
         self.queue_send.put((None, None))
@@ -102,18 +93,25 @@ class _DaemonProcess(Process):
     def run(self):
         while True:
             self.first_iteration = True
-            package, module = self.queue_receive.get()
-            if package is None and module is None:
+            path_id, module = self.queue_receive.get()
+            if path_id is None and module is None:
                 break
 
-            if module.need_resolution():
-                self._resolve_module(module)
-                self.first_iteration = False
-                self._resolve_module(module)
-            if module.need_resolution():
-                self.queue_send.put((package, module, 1))
-            else:
-                self.queue_send.put((package, module, 0))
+            try:
+                if module.need_resolution():
+                    self._resolve_module(module)
+                    self.first_iteration = False
+                    self._resolve_module(module)
+                else:
+                    continue
+                if module.need_resolution():
+                    self.queue_send.put((path_id, module, 1))
+                else:
+                    self.queue_send.put((path_id, module, 0))
+            except Exception, reason:
+                # Don't die whatever happend
+                message = 'Daemon Fail with: %r', reason
+                print(message)
 
     def _resolve_module(self, module):
         self._resolve_attributes(module, module)
@@ -128,41 +126,88 @@ class _DaemonProcess(Process):
             function = structure.functions[func]
             self._resolve_attributes(function, module)
             self._resolve_functions(function, module)
+            self._resolve_returns(function, module)
+
+    def _resolve_returns(self, structure, module):
+        self._resolve_types(structure.return_type, module, structure, 'return')
 
     def _resolve_attributes(self, structure, module):
         for attr in structure.attributes:
-            attribute = structure.attributes[attr]
-            for d in attribute.data:
-                if d.data_type == model.late_resolution:
-                    self._resolve_assign(attribute, module)
+            assign = structure.attributes[attr]
+            self._resolve_types(assign.data, module, assign)
 
-    def _resolve_assign(self, assign, module):
+    def _resolve_types(self, types, module, structure=None, split_by='='):
         if self.first_iteration:
-            self._resolve_with_imports(assign, module)
-            self._resolve_with_local_names(assign, module)
+            self._resolve_with_imports(types, module, split_by)
+            self._resolve_with_local_names(types, module, split_by)
         else:
-            self._resolve_with_local_vars(assign, module)
+            self._resolve_with_local_vars(types, module, split_by, structure)
 
-    def _resolve_with_imports(self, assign, module):
-        for data in assign.data:
+    def _resolve_with_imports(self, types, module, splitby):
+        for data in types:
+            if data.data_type != model.late_resolution:
+                continue
             line = data.line_content
-            value = line.split('=')[1].strip().split('.')
-            if value[0] in module.imports:
-                value[0] = module.imports[value[0]].data_type
-                resolve = '.'.join(value)
+            value = line.split(splitby)[1].strip().split('.')
+            name = value[0]
+            extra = ''
+            if name.find('(') != -1:
+                extra = name[name.index('('):]
+                name = name[:name.index('(')]
+            if name in module.imports:
+                value[0] = module.imports[name].data_type
+                resolve = "%s%s" % ('.'.join(value), extra)
                 data.data_type = resolve
 
-    def _resolve_with_local_names(self, assign, module):
+    def _resolve_with_local_names(self, types, module, splitby):
         #TODO: resolve with functions returns
-        for data in assign.data:
+        for data in types:
+            if data.data_type != model.late_resolution:
+                continue
             line = data.line_content
-            value = line.split('=')[1].split('(')[0].strip()
+            value = line.split(splitby)[1].split('(')[0].strip()
             if value in module.classes:
                 clazz = module.classes[value]
                 data.data_type = clazz
 
-    def _resolve_with_local_vars(self, assign, module):
-        pass
+    def _resolve_with_local_vars(self, types, module, splitby, structure=None):
+        for data in types:
+            if data.data_type != model.late_resolution:
+                continue
+            line = data.line_content
+            value = line.split(splitby)[1].split('(')[0].strip()
+            sym = value.split('.')
+            if len(sym) != 0:
+                main_attr = sym[0]
+                if len(sym) > 2:
+                    child_attr = '.'.join(sym[1:])
+                elif len(sym) == 2:
+                    child_attr = sym[1]
+                else:
+                    child_attr = ''
+                scope = []
+                self._get_scope(structure, scope)
+                if structure.__class__ is model.Assign:
+                    scope.pop(0)
+                scope.reverse()
+                result = module.get_type(main_attr, child_attr, scope)
+                data_type = model.late_resolution
+                if isinstance(result['type'], basestring) and len(result) < 3:
+                    if child_attr and \
+                       structure.__class__ is not model.Function:
+                        data_type = "%s.%s" % (result['type'], child_attr)
+                    else:
+                        data_type = result['type']
+                elif result.get('object', False):
+                    data_type = result['object']
+
+                if data is not None:
+                    data.data_type = data_type
+
+    def _get_scope(self, structure, scope):
+        if structure.__class__ not in (None, model.Module):
+            scope.append(structure.name)
+            self._get_scope(structure.parent, scope)
 
 
 def shutdown_daemon():
