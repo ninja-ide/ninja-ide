@@ -82,19 +82,20 @@ class BaseWatcher(QObject):
 ###############################################################################
 
     def __init__(self):
-        self._file_watcher = SingleFileWatcher(self._emit_signal_on_change)
         super(BaseWatcher, self).__init__()
-        self._file_watcher.start()
+        self._single_file_watcher = \
+            SingleFileWatcher(self._emit_signal_on_change)
+        #self._single_file_watcher.start()
 
     def add_file_watch(self, file_path):
-        self._file_watcher.add_watch(file_path)
+        self._single_file_watcher.add_watch(file_path)
 
     def remove_file_watch(self, file_path):
-        self._file_watcher.remove_file_watch(file_path)
+        self._single_file_watcher.remove_file_watch(file_path)
 
     def shutdown_notification(self):
-        self._file_watcher.stop_running()
-        self._file_watcher.quit()
+        self._single_file_watcher.stop_running()
+        self._single_file_watcher.quit()
 
     def _emit_signal_on_change(self, event, path):
         self.emit(SIGNAL("fileChanged(int, QString)"), event, path)

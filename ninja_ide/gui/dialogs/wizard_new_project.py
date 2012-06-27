@@ -49,6 +49,7 @@ logger = logging.getLogger('ninja_ide.gui.dialogs.wizard_new_project')
 logging.basicConfig()
 logger.setLevel(logging.DEBUG)
 logger.info("loaded")
+DEBUG = logger.debug
 
 
 ###############################################################################
@@ -261,6 +262,10 @@ class PageProjectType(QWizardPage):
 
         self.connect(self.listWidget, SIGNAL("itemActivated(QListWidgetItem*)"),
             self.load_pages)
+
+    def validatePage(self):
+        self._wizard.option = unicode(self.listWidget.currentItem().text())
+        return True
 
     def load_pages(self):
         self.wizard().add_project_pages(
