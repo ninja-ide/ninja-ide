@@ -180,13 +180,16 @@ class Module(Structure):
         if not scope:
             value = self.imports.get(main_attr,
                 self.attributes.get(main_attr,
-                self.functions.get(main_attr, None)))
-            if value is not None:
+                self.functions.get(main_attr,
+                self.classes.get(main_attr, None))))
+            if value is not None and value.__class__ is not Clazz:
                 data_type = value.get_data_type()
                 result['found'], result['type'] = True, data_type
                 if child_attrs or (isinstance(data_type, basestring) and \
                    data_type.endswith(main_attr)):
                     result['main_attr_replace'] = True
+            elif value.__class__ is Clazz:
+                result['found'], result['type'] = False, value
         elif main_attr == 'self':
             clazz_name = scope[0]
             clazz = self.classes.get(clazz_name, None)
@@ -265,6 +268,8 @@ class Module(Structure):
             return True
         for cla in self.classes:
             clazz = self.classes[cla]
+            for parent in clazz.bases:
+                return True
             if self._check_attr_func_resolution(clazz):
                 return True
         return False
@@ -293,8 +298,11 @@ class Clazz(Structure):
     def __init__(self, name):
         super(Clazz, self).__init__()
         self.name = name
-        self.bases = []
+        self.bases = {}
         self.decorators = []
+
+    def add_parent(self, parent):
+        self.bases[parent] = None
 
     def get_completion_items(self):
         attributes = [a for a in self.attributes]
@@ -304,6 +312,32 @@ class Clazz(Structure):
             functions.sort()
             return {'attributes': attributes, 'functions': functions}
         return None
+
+    def update_with_parent_data(self):
+        for base in self.bases:
+            parent = self.bases[base]
+            if parent.__class__ is Clazz:
+                self.attributes.update(parent.attributes)
+                self.functions.update(parent.functions)
+            elif isinstance(parent, tuple):
+                parent_name = parent[0]
+                data = parent[1]
+                attributes = {}
+                functions = {}
+                for attr in data.get('attributes', []):
+                    if attr[:2] == '__' and attr[-2:] == '__':
+                        continue
+                    assign = Assign(attr)
+                    assign.add_data(0, parent_name + attr, '',
+                        parent_name + attr)
+                    attributes[attr] = assign
+                for func in data.get('functions', []):
+                    assign = Assign(func)
+                    assign.add_data(0, parent_name + attr, '',
+                        parent_name + attr)
+                    functions[func] = assign
+                self.attributes.update(attributes)
+                self.functions.update(functions)
 
 
 class Function(Structure):

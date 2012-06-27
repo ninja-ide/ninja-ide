@@ -176,8 +176,10 @@ class Analyzer(object):
         """Process an ast.ClassDef object to extract data."""
         clazz = model.Clazz(symbol.name)
         for base in symbol.bases:
+            if base == 'object':
+                continue
             name = expand_attribute(base)
-            clazz.bases.append(name)
+            clazz.add_parent(name)
         #TODO: Decotator
 #        for decorator in symbol.decorator_list:
 #            clazz.decorators.append(decorator.id)
