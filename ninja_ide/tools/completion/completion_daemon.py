@@ -20,6 +20,7 @@ from threading import Thread, Lock
 from multiprocessing import Process, Queue
 
 from ninja_ide.tools.completion import model
+from ninja_ide.tools.completion import completer
 
 
 __completion_daemon_instance = None
@@ -112,16 +113,40 @@ class _DaemonProcess(Process):
                 # Don't die whatever happend
                 message = 'Daemon Fail with: %r', reason
                 print(message)
+                raise
 
     def _resolve_module(self, module):
         self._resolve_attributes(module, module)
         self._resolve_functions(module, module)
         for cla in module.classes:
             clazz = module.classes[cla]
+            self._resolve_inheritance(clazz, module)
             self._resolve_attributes(clazz, module)
             self._resolve_functions(clazz, module)
 
+    def _resolve_inheritance(self, clazz, module):
+        for base in clazz.bases:
+            name = base.split('.', 1)
+            main_attr = name[0]
+            child_attrs = ''
+            if len(name) == 2:
+                child_attrs = name[1]
+            result = module.get_type(main_attr, child_attrs)
+            data = model.late_resolution
+            if result.get('found', True):
+                name = '%s().' % base
+                imports = module.get_imports()
+                imports = [imp.split('.')[0] for imp in imports]
+                data = completer.get_all_completions(name, imports)
+                data = (name, data)
+            elif result.get('object', False).__class__ is model.Clazz:
+                data = result['object']
+            clazz.bases[base] = data
+        clazz.update_with_parent_data()
+
     def _resolve_functions(self, structure, module):
+        if structure.__class__ is model.Assign:
+            return
         for func in structure.functions:
             function = structure.functions[func]
             self._resolve_attributes(function, module)
@@ -129,9 +154,13 @@ class _DaemonProcess(Process):
             self._resolve_returns(function, module)
 
     def _resolve_returns(self, structure, module):
+        if structure.__class__ is model.Assign:
+            return
         self._resolve_types(structure.return_type, module, structure, 'return')
 
     def _resolve_attributes(self, structure, module):
+        if structure.__class__ is model.Assign:
+            return
         for attr in structure.attributes:
             assign = structure.attributes[attr]
             self._resolve_types(assign.data, module, assign)
