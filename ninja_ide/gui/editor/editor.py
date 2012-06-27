@@ -396,17 +396,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def set_font(self, family=settings.FONT_FAMILY, size=settings.FONT_SIZE):
         font = QFont(family, size)
         self.document().setDefaultFont(font)
-        # Fix for older version of Qt which doens't has ForceIntegerMetrics
-        if "ForceIntegerMetrics" in dir(QFont):
-            self.document().defaultFont().setStyleStrategy(
-                QFont.ForceIntegerMetrics)
-        font_metrics = QFontMetricsF(self.document().defaultFont())
-        if (font_metrics.width("#") * settings.MARGIN_LINE) == \
-           (font_metrics.width(" ") * settings.MARGIN_LINE):
-            self.pos_margin = font_metrics.width('#') * settings.MARGIN_LINE
-        else:
-            char_width = font_metrics.averageCharWidth()
-            self.pos_margin = char_width * settings.MARGIN_LINE
+        self._update_margin_line(font)
 
     def jump_to_line(self, lineno=None):
         """
@@ -445,6 +435,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             size += 2
             font.setPointSize(size)
         self.setFont(font)
+        self._update_margin_line(font)
 
     def zoom_out(self):
         font = self.document().defaultFont()
@@ -453,6 +444,20 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             size -= 2
             font.setPointSize(size)
         self.setFont(font)
+        self._update_margin_line(font)
+
+    def _update_margin_line(self, font):
+        # Fix for older version of Qt which doens't has ForceIntegerMetrics
+        if "ForceIntegerMetrics" in dir(QFont):
+            self.document().defaultFont().setStyleStrategy(
+                QFont.ForceIntegerMetrics)
+        font_metrics = QFontMetricsF(self.document().defaultFont())
+        if (font_metrics.width("#") * settings.MARGIN_LINE) == \
+           (font_metrics.width(" ") * settings.MARGIN_LINE):
+            self.pos_margin = font_metrics.width('#') * settings.MARGIN_LINE
+        else:
+            char_width = font_metrics.averageCharWidth()
+            self.pos_margin = char_width * settings.MARGIN_LINE
 
     def get_parent_project(self):
         return ''
