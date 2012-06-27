@@ -59,6 +59,9 @@ class _TypeData(object):
     def __eq__(self, other):
         return other.line_content == self.line_content
 
+    def __repr__(self):
+        return repr(self.data_type)
+
 
 class Structure(object):
 
@@ -91,7 +94,8 @@ class Structure(object):
                     if type_data in old_assign.data:
                         old_type = old_assign.data[
                             old_assign.data.index(type_data)]
-                        type_data.data_type = old_type.data_type
+                        if old_type.data_type.__class__ is not Clazz:
+                            type_data.data_type = old_type.data_type
 
     def update_functions(self, functions):
         for func_name in self.functions:
@@ -167,8 +171,8 @@ class Module(Structure):
         for clazz_name in self.classes:
             if clazz_name in classes:
                 clazz = self.classes[clazz_name]
-                clazz.update_attributes(classes[clazz_name].attributes)
                 clazz.update_functions(classes[clazz_name].functions)
+                clazz.update_attributes(classes[clazz_name].attributes)
 
     def get_type(self, main_attr, child_attrs='', scope=None):
         result = {'found': False, 'type': None}
@@ -219,6 +223,7 @@ class Module(Structure):
                 result = {'found': False,
                           'type': result['type'].get_completion_items(),
                           'object': result['type']}
+
         return result
 
     def _search_type(self, structure, attrs):

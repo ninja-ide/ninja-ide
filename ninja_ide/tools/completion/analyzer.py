@@ -118,9 +118,9 @@ class Analyzer(object):
         return module
 
     def _resolve_module(self, module, old_module):
-        module.update_attributes(old_module.attributes)
-        module.update_functions(old_module.functions)
         module.update_classes(old_module.classes)
+        module.update_functions(old_module.functions)
+        module.update_attributes(old_module.attributes)
 
     def _assign_disambiguation(self, type_name, line_content):
         """Provide a specific builtin for the cases were ast doesn't work."""
