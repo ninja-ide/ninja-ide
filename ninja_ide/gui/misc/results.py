@@ -49,6 +49,9 @@ class Results(QWidget):
         vbox.addWidget(self._tree)
 
         #Signals
+        self.connect(self._tree,
+            SIGNAL("itemActivated(QTreeWidgetItem*, int)"),
+            self._open_result)
         self.connect(self._tree, SIGNAL("itemClicked(QTreeWidgetItem*, int)"),
             self._open_result)
 

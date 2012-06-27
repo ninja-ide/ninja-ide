@@ -396,6 +396,8 @@ class FindInFilesWidget(QWidget):
         self.connect(self._clear_button, SIGNAL("clicked()"),
             self._clear_results)
         self.connect(self._result_widget, SIGNAL(
+            "itemActivated(QTreeWidgetItem *, int)"), self._go_to)
+        self.connect(self._result_widget, SIGNAL(
             "itemClicked(QTreeWidgetItem *, int)"), self._go_to)
         self.connect(self._find_widget, SIGNAL("finished()"),
             self._find_finished)
