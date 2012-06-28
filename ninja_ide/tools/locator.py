@@ -605,9 +605,10 @@ class LocateCompleter(QLineEdit):
             self.tempLocations = [
                 x for x in mapping_locations.get(filePath, []) \
                 if x.type == filterOptions[2]]
-        if filterOptions[3 + moveIndex]:
+        moveIndex += 3
+        if len(filterOptions) > moveIndex and filterOptions[moveIndex]:
             self.tempLocations = [x for x in self.tempLocations \
-              if x.comparison.lower().find(filterOptions[3 + moveIndex]) > -1]
+              if x.comparison.lower().find(filterOptions[moveIndex]) > -1]
 
     def _advanced_filter_by_file(self, filterOptions):
         if filterOptions[1] == FILTERS['files']:
