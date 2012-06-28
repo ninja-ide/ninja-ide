@@ -180,6 +180,7 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
             # Remove real watcher using platform specific things
 
     def shutdown_notification(self):
+        base_watcher.BaseWatcher.shutdown_notification(self)
         for each_path in self.watching_paths:
             each_path = self.watching_paths[each_path]
             each_path.stop()

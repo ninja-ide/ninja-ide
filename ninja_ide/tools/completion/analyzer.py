@@ -57,6 +57,7 @@ class Analyzer(object):
     __mapping = {
         _ast.Tuple: '__builtin__.tuple',
         _ast.List: '__builtin__.list',
+        _ast.ListComp: '__builtin__.list',
         _ast.Str: '__builtin__.str',
         _ast.Dict: '__builtin__.dict',
         _ast.Num: '__builtin__.int',
