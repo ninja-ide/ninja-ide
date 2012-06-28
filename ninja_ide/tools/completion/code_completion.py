@@ -45,7 +45,9 @@ class CodeCompletion(object):
         self.patIndent = re.compile('^\s+')
         self._valid_op = (')', '}', ']')
         self._invalid_op = ('(', '{', '[')
-        self._invalid_words = ('if', 'elif', 'for', 'while', 'in', 'return')
+        self._invalid_words = ('if', 'elif', 'for', 'while', 'in', 'return',
+            'and', 'or', 'del', 'except', 'from', 'import', 'is', 'print',
+            'super', 'yield')
         self.keywords = settings.SYNTAX['python']['keywords']
 
     def analyze_file(self, path, source=None):
