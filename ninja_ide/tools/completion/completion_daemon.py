@@ -134,7 +134,10 @@ class _DaemonProcess(Process):
             result = module.get_type(main_attr, child_attrs)
             data = model.late_resolution
             if result.get('found', True):
-                name = '%s().' % base
+                data_type = module.imports[main_attr].get_data_type()
+                if child_attrs:
+                    child_attrs = '.%s' % child_attrs
+                name = '%s%s().' % (data_type, child_attrs)
                 imports = module.get_imports()
                 imports = [imp.split('.')[0] for imp in imports]
                 data = completer.get_all_completions(name, imports)
