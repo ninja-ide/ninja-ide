@@ -17,13 +17,18 @@
 from __future__ import absolute_import
 
 import _ast
+import time
 import unittest
 
 from ninja_ide.tools.completion import analyzer
 from ninja_ide.tools.completion import model
 from ninja_ide.tools.completion import code_completion
 from ninja_ide.tools.completion import completion_daemon
-from tests.tools.completion import get_source_data, SOURCE_LATE_RESOLUTION
+from tests.tools.completion import (
+    get_source_data,
+    SOURCE_LATE_RESOLUTION,
+    SOURCE_INHERITANCE
+)
 
 
 completion_daemon.shutdown_daemon()
@@ -70,7 +75,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\np.'
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         self.assertIn('pathsep', results['attributes'])
@@ -83,7 +87,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         self.assertIn('pathsep', results['attributes'])
@@ -96,7 +99,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         self.assertIn('acquire', results['attributes'])
@@ -107,7 +109,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         self.assertIn('acquire', results['attributes'])
@@ -119,7 +120,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         self.assertIn('acquire', results['attributes'])
@@ -131,7 +131,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         expected = get_source_data(source_code, 'q')
@@ -148,7 +147,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         self.assertIn('exit', results['attributes'])
@@ -164,7 +162,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         self.assertIn('acquire', results['attributes'])
@@ -180,7 +177,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         self.assertIn('expanduser', results['functions'])
@@ -196,7 +192,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         expected = get_source_data(source_code, 'a')
@@ -213,7 +208,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         self.assertIn('acquire', results['attributes'])
@@ -229,7 +223,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         self.assertIn('expanduser', results['functions'])
@@ -245,7 +238,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         expected = get_source_data(source_code, 'q')
@@ -265,7 +257,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         expected = {'attributes': ['a', 'q', 'value1'],
@@ -286,7 +277,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         expected = {'attributes': ['a', 'q', 'value1'],
@@ -308,7 +298,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(str)
@@ -324,7 +313,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(str)
@@ -339,7 +327,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(str)
@@ -361,7 +348,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(str)
@@ -382,7 +368,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(str)
@@ -406,7 +391,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(int)
@@ -427,7 +411,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(int)
@@ -444,7 +427,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         self.assertIn('acquire', results['attributes'])
@@ -457,7 +439,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         self.assertIn('acquire', results['attributes'])
@@ -470,7 +451,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         self.assertIn('Lock', results['attributes'])
@@ -484,7 +464,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         self.assertIn('Lock', results['attributes'])
@@ -498,7 +477,6 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         self.assertIn('acquire', results['attributes'])
@@ -513,10 +491,131 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
         source_code = SOURCE_LATE_RESOLUTION + '\n'.join(new_code)
         self.cc.analyze_file('', source_code)
         offset = len(source_code)
-        import time
         time.sleep(1)
         results = self.cc.get_completion(source_code, offset)
         self.assertIn('acquire', results['attributes'])
+
+
+class InheritanceLateResolutionTestCase(unittest.TestCase):
+
+    def setUp(self):
+        code_completion.settings.SYNTAX = {'python': {'keywords': []}}
+        self.cc = code_completion.CodeCompletion()
+        self.analyzer = analyzer.Analyzer()
+
+    def tearDown(self):
+        completion_daemon.shutdown_daemon()
+
+    def test_simple_local_inheritance(self):
+        new_code = ['class Son(Parent):',
+                    '    def __init__(self):',
+                    '        super(Son, self).__init__()',
+                    '        self.x = 3',
+                    'n = Son()',
+                    'n.']
+        source_code = SOURCE_INHERITANCE + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('value', results['attributes'])
+        self.assertIn('x', results['attributes'])
+        self.assertIn('function', results['functions'])
+
+    def test_simple_import_inheritance(self):
+        new_code = ['class Son(Lock):',
+                    '    def __init__(self):',
+                    '        super(Son, self).__init__()',
+                    '        self.x = 3',
+                    'n = Son()',
+                    'n.']
+        source_code = SOURCE_INHERITANCE + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('acquire', results['attributes'])
+        self.assertIn('x', results['attributes'])
+
+    def test_simple_import_inheritance_2(self):
+        new_code = ['class Son(decimal.Decimal):',
+                    '    def __init__(self):',
+                    '        super(Son, self).__init__()',
+                    '        self.x = 3',
+                    'n = Son()',
+                    'n.']
+        source_code = SOURCE_INHERITANCE + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('real', results['attributes'])
+        self.assertIn('x', results['attributes'])
+        self.assertIn('to_integral', results['functions'])
+
+    def test_multiple_import_inheritance(self):
+        new_code = ['class Son(Lock, decimal.Decimal):',
+                    '    def __init__(self):',
+                    '        super(Son, self).__init__()',
+                    '        self.x = 3',
+                    'n = Son()',
+                    'n.']
+        source_code = SOURCE_INHERITANCE + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('acquire', results['attributes'])
+        self.assertIn('real', results['attributes'])
+        self.assertIn('x', results['attributes'])
+        self.assertIn('to_integral', results['functions'])
+
+    def test_multiple_mix_inheritance(self):
+        new_code = ['class Parent2(Lock):',
+                    '    def __init__(self):',
+                    '        self.my_value = "yeah"',
+                    '    def function2(self):',
+                    '        self.another = "yeah2"',
+                    'class Son(Parent2, decimal.Decimal):',
+                    '    def __init__(self):',
+                    '        super(Son, self).__init__()',
+                    '        self.x = 3',
+                    'n = Son()',
+                    'n.']
+        source_code = SOURCE_INHERITANCE + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('acquire', results['attributes'])
+        self.assertIn('real', results['attributes'])
+        self.assertIn('another', results['attributes'])
+        self.assertIn('my_value', results['attributes'])
+        self.assertIn('x', results['attributes'])
+        self.assertIn('function2', results['functions'])
+        self.assertIn('to_integral', results['functions'])
+
+    def test_multiple_mix_inheritance_inside_class(self):
+        new_code = ['class Parent2(Lock):',
+                    '    def __init__(self):',
+                    '        self.my_value = "yeah"',
+                    '    def function2(self):',
+                    '        self.another = "yeah2"',
+                    'class Son(Parent2, decimal.Decimal):',
+                    '    def __init__(self):',
+                    '        super(Son, self).__init__()',
+                    '        self.']
+        source_code = SOURCE_INHERITANCE + '\n'.join(new_code)
+        self.cc.analyze_file('', source_code)
+        offset = len(source_code)
+        time.sleep(1)
+        results = self.cc.get_completion(source_code, offset)
+        self.assertIn('acquire', results['attributes'])
+        self.assertIn('real', results['attributes'])
+        self.assertIn('another', results['attributes'])
+        self.assertIn('my_value', results['attributes'])
+        self.assertIn('function2', results['functions'])
+        self.assertIn('to_integral', results['functions'])
 
 
 if __name__ == '__main__':
