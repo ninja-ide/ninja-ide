@@ -332,6 +332,8 @@ class Clazz(Structure):
                         parent_name + attr)
                     attributes[attr] = assign
                 for func in data.get('functions', []):
+                    if func[:2] == '__' and func[-2:] == '__':
+                        continue
                     assign = Assign(func)
                     assign.add_data(0, parent_name + attr, '',
                         parent_name + attr)
