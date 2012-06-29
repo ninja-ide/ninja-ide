@@ -17,7 +17,6 @@
 import os
 from PyQt4.QtCore import QObject
 from PyQt4.QtCore import SIGNAL, QThread
-import time
 
 ADDED = 1
 MODIFIED = 2
@@ -40,6 +39,7 @@ class SingleFileWatcher(QThread):
         self._watches = dict()
         self._do_run = True
         self._emit_call = callback
+        super(SingleFileWatcher, self).__init__()
 
     def stop_running(self):
         self._do_run = False
@@ -51,6 +51,9 @@ class SingleFileWatcher(QThread):
             self._watches[file_to_watch] = do_stat(file_to_watch)
         elif not status:
             self._emit_call(DELETED, file_to_watch)
+
+    def is_empty(self):
+        return len(self._watches) == 0
 
     def del_watch(self, file_to_unwatch):
         if file_to_unwatch in self._watches:
@@ -70,7 +73,7 @@ class SingleFileWatcher(QThread):
     def run(self):
         while self._do_run:
             self.tick()
-            time.sleep(1)
+            QThread.msleep(1000)
 
 
 class BaseWatcher(QObject):
@@ -83,19 +86,26 @@ class BaseWatcher(QObject):
 
     def __init__(self):
         super(BaseWatcher, self).__init__()
-        self._single_file_watcher = \
-            SingleFileWatcher(self._emit_signal_on_change)
-        #self._single_file_watcher.start()
 
     def add_file_watch(self, file_path):
+        if not self._single_file_watcher:
+            self._single_file_watcher = \
+                SingleFileWatcher(self._emit_signal_on_change)
+            self._single_file_watcher.start()
         self._single_file_watcher.add_watch(file_path)
 
     def remove_file_watch(self, file_path):
         self._single_file_watcher.remove_file_watch(file_path)
+        if self._single_file_watcher.is_empty():
+            self._single_file_watcher.stop_running()
+            self._single_file_watcher.quit()
+            #I realy hope this gets collected
+            self._single_file_watcher = None
 
     def shutdown_notification(self):
-        self._single_file_watcher.stop_running()
-        self._single_file_watcher.quit()
+        if self._single_file_watcher:
+            self._single_file_watcher.stop_running()
+            self._single_file_watcher.quit()
 
     def _emit_signal_on_change(self, event, path):
         self.emit(SIGNAL("fileChanged(int, QString)"), event, path)
