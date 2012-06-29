@@ -18,7 +18,6 @@ from __future__ import absolute_import
 
 import sys
 import os
-import logging
 
 from PyQt4 import uic
 from PyQt4.QtGui import QSplitter
@@ -41,8 +40,9 @@ from ninja_ide.gui.main_panel import browser_widget
 from ninja_ide.gui.main_panel import image_viewer
 from ninja_ide.tools import runner
 
+from ninja_ide.tools.logger import NinjaLogger
 
-logger = logging.getLogger('ninja_ide.gui.main_panel.main_container')
+logger = NinjaLogger('ninja_ide.gui.main_panel.main_container')
 
 __mainContainerInstance = None
 

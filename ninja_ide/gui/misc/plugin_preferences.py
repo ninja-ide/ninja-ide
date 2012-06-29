@@ -17,15 +17,15 @@
 
 from __future__ import absolute_import
 
-import logging
-
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QTabWidget
 from PyQt4.QtGui import QVBoxLayout
 
 from ninja_ide.core import plugin_manager
 
-logger = logging.getLogger('ninja_ide.gui.misc.plugin_preferences')
+from ninja_ide.tools.logger import NinjaLogger
+
+logger = NinjaLogger('ninja_ide.gui.misc.plugin_preferences')
 
 
 class PluginPreferences(QWidget):

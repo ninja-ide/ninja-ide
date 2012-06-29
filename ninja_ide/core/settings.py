@@ -21,14 +21,10 @@ from PyQt4.QtCore import QSettings
 
 from ninja_ide.dependencies import pep8mod
 
-import logging
+from ninja_ide.tools.logger import NinjaLogger
 
-LOGLEVEL = logging.DEBUG
-logger = logging.getLogger('ninja_ide.gui.core.settings')
-#All logger calls will default to this level, since is the one set up
-#In production environement should be nolog
-logger.setLevel(LOGLEVEL)
-logging.basicConfig()
+logger = NinjaLogger('ninja_ide.gui.core.settings')
+logger.basicConfig()
 
 ###############################################################################
 # OS DETECTOR
