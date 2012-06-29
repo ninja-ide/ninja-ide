@@ -18,7 +18,6 @@
 from __future__ import absolute_import
 
 import sys
-import logging
 
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QMainWindow
@@ -70,15 +69,16 @@ from ninja_ide.gui.menus import menu_source
 ###############################################################################
 # LOGGER INITIALIZE
 ###############################################################################
-logger = logging.getLogger('ninja_ide')
-#The file is open in write mode from byte 0 (1 run logger)
-handler = logging.FileHandler(resources.LOG_FILE_PATH, mode='w')
-formatter = logging.Formatter("%(asctime)s %(name)s:%(lineno)-4d "
-                              "%(levelname)-8s %(message)s",
-                              '%Y-%m-%d %H:%M:%S')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
-logger.setLevel(logging.DEBUG)
+
+from ninja_ide.tools.logger import NinjaLogger
+
+logger = NinjaLogger('ninja_ide')
+
+log_format = "%(asctime)s %(name)s:%(lineno)-4d %(levelname)-8s %(message)s"
+time_format = '%Y-%m-%d %H:%M:%S'
+
+logger.add_handler(resources.LOG_FILE_PATH, 'w', log_format, time_format)
+
 
 ###############################################################################
 # IDE: MAIN CONTAINER

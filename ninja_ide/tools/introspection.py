@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 #
 # This file is part of NINJA-IDE (http://ninja-ide.org).
@@ -17,14 +18,13 @@
 import _ast
 import ast
 
-import logging
-
 from ninja_ide.tools.completion import analyzer
 
+from ninja_ide.tools.logger import NinjaLogger
 
-logger_imports = logging.getLogger(
+logger_imports = NinjaLogger(
     'ninja_ide.tools.introspection.obtaining_imports')
-logger_symbols = logging.getLogger(
+logger_symbols = NinjaLogger(
     'ninja_ide.tools.introspection.obtainint_symbols')
 
 _map_type = {

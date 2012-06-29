@@ -16,7 +16,6 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import logging
 try:
     import json
 except ImportError:
@@ -25,8 +24,9 @@ except ImportError:
 from ninja_ide import resources
 from ninja_ide.core import settings
 
+from ninja_ide.tools.logger import NinjaLogger
 
-logger = logging.getLogger('ninja_ide.tools.json_manager')
+logger = NinjaLogger('ninja_ide.tools.json_manager')
 
 
 def parse(descriptor):

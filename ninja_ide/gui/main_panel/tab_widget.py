@@ -16,8 +16,6 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
-import logging
-
 from PyQt4.QtGui import QTabWidget
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QHBoxLayout
@@ -40,7 +38,9 @@ from ninja_ide.core.filesystem_notifications import NinjaFileSystemWatcher
 from ninja_ide.gui.editor import editor
 from ninja_ide.gui.main_panel import browser_widget
 
-logger = logging.getLogger('ninja_ide.gui.main_panel.tab_widget')
+from ninja_ide.tools.logger import NinjaLogger
+
+logger = NinjaLogger('ninja_ide.gui.main_panel.tab_widget')
 
 
 class TabWidget(QTabWidget):

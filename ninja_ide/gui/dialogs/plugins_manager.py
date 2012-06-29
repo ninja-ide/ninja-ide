@@ -18,7 +18,6 @@
 from __future__ import absolute_import
 
 import webbrowser
-import logging
 from copy import copy
 from distutils import version
 
@@ -41,8 +40,9 @@ from ninja_ide.core import plugin_manager
 from ninja_ide.core import file_manager
 from ninja_ide.tools import ui_tools
 
+from ninja_ide.tools.logger import NinjaLogger
 
-logger = logging.getLogger('ninja_ide.gui.dialogs.plugin_manager')
+logger = NinjaLogger('ninja_ide.gui.dialogs.plugin_manager')
 
 TABLE_HEADER = ('Name', 'Version')
 HTML_STYLE = """

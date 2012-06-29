@@ -19,13 +19,13 @@ import os
 import re
 import threading
 import shutil
-import logging
 
 from PyQt4 import QtCore
 
 from ninja_ide.core import settings
 
-logger = logging.getLogger('ninja_ide.gui.explorer.file_manager')
+from ninja_ide.tools.logger import NinjaLogger
+logger = NinjaLogger('ninja_ide.gui.explorer.file_manager')
 DEBUG = logger.debug
 
 
