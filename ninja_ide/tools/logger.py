@@ -73,7 +73,7 @@ class DummyLogger(Logger):
         pass
 
 
-if not getattr(sys, 'frozen', False):
+if getattr(sys, 'frozen', False):
     NinjaLogger = DummyLogger
 else:
     NinjaLogger = Logger
