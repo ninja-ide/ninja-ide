@@ -64,7 +64,6 @@ class CodeCompletion(object):
         if not self.cdaemon.daemon.is_alive():
             completion_daemon.shutdown_daemon()
             self.cdaemon = completion_daemon.CompletionDaemon()
-        print self.cdaemon.daemon.is_alive()
         module = self.cdaemon.get_module(self.module_id)
         module = self.analyzer.analyze(source, module)
         self.cdaemon.inspect_module(self.module_id, module)
