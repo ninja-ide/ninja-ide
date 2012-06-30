@@ -21,8 +21,8 @@ from PyQt4.QtCore import SIGNAL, QThread
 from pyinotify import ProcessEvent, IN_CREATE, IN_DELETE, IN_DELETE_SELF, \
                         IN_MODIFY, WatchManager, Notifier
 
-import logging
-logger = logging.getLogger('ninja_ide.core.filesystem_notifications.linux')
+from ninja_ide.tools.logger import NinjaLogger
+logger = NinjaLogger('ninja_ide.core.filesystem_notifications.linux')
 DEBUG = logger.debug
 
 from ninja_ide.core.filesystem_notifications import base_watcher

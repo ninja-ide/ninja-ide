@@ -25,8 +25,8 @@ import win32event
 import os
 from ninja_ide.core import file_manager
 
-import logging
-logger = logging.getLogger('ninja_ide.core.filesystem_notifications.windows')
+from ninja_ide.tools.logger import NinjaLogger
+logger = NinjaLogger('ninja_ide.core.filesystem_notifications.windows')
 DEBUG = logger.debug
 
 from ninja_ide.core.filesystem_notifications import base_watcher

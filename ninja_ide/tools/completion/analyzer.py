@@ -22,12 +22,12 @@
 import re
 import ast
 import _ast
-import logging
 
+from ninja_ide.tools.logger import NinjaLogger
 from ninja_ide.tools.completion import model
 
 
-logger = logging.getLogger('ninja_ide.tools.completion.analyzer')
+logger = NinjaLogger('ninja_ide.tools.completion.analyzer')
 
 MAX_THRESHOLD = 3
 
@@ -57,6 +57,7 @@ class Analyzer(object):
     __mapping = {
         _ast.Tuple: '__builtin__.tuple',
         _ast.List: '__builtin__.list',
+        _ast.ListComp: '__builtin__.list',
         _ast.Str: '__builtin__.str',
         _ast.Dict: '__builtin__.dict',
         _ast.Num: '__builtin__.int',
@@ -176,8 +177,10 @@ class Analyzer(object):
         """Process an ast.ClassDef object to extract data."""
         clazz = model.Clazz(symbol.name)
         for base in symbol.bases:
+            if base == 'object':
+                continue
             name = expand_attribute(base)
-            clazz.bases.append(name)
+            clazz.add_parent(name)
         #TODO: Decotator
 #        for decorator in symbol.decorator_list:
 #            clazz.decorators.append(decorator.id)

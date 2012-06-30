@@ -18,7 +18,6 @@
 from __future__ import absolute_import
 
 import re
-import logging
 
 from PyQt4.QtGui import QStatusBar
 from PyQt4.QtGui import QLabel
@@ -43,8 +42,9 @@ from ninja_ide import resources
 from ninja_ide.tools import locator
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.main_panel import main_container
+from ninja_ide.tools.logger import NinjaLogger
 
-logger = logging.getLogger('ninja_ide.gui.status_bar')
+logger = NinjaLogger('ninja_ide.gui.status_bar')
 DEBUG = logger.debug
 
 __statusBarInstance = None

@@ -23,15 +23,15 @@ import copy
 import urllib2
 import zipfile
 import traceback
-import logging
 try:
     import json
 except ImportError:
     import simplejson as json
 
 from ninja_ide import resources
+from ninja_ide.tools.logger import NinjaLogger
 
-logger = logging.getLogger('ninja_ide.core.plugin_manager')
+logger = NinjaLogger('ninja_ide.core.plugin_manager')
 REQUIREMENTS = 'requirements.txt'
 COMMAND_FOR_PIP_INSTALL = 'pip install -r %s'
 

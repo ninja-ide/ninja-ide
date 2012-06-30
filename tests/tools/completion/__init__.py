@@ -105,3 +105,18 @@ import os
 
 p = os.path
 """
+
+
+SOURCE_INHERITANCE = """
+import decimal
+from threading import Lock
+
+class Parent:
+
+    def __init__(self):
+        self.value = 'string'
+
+    def function(self):
+        pass
+
+"""

@@ -19,7 +19,6 @@ from __future__ import absolute_import
 
 import os
 import sys
-import logging
 
 from PyQt4.QtGui import QWizard
 from PyQt4.QtGui import QWizardPage
@@ -43,11 +42,10 @@ from ninja_ide.core import settings
 from ninja_ide.core import plugin_interfaces
 from ninja_ide.core import file_manager
 from ninja_ide.tools import json_manager
+from ninja_ide.tools.logger import NinjaLogger
 
 
-logger = logging.getLogger('ninja_ide.gui.dialogs.wizard_new_project')
-logging.basicConfig()
-logger.setLevel(logging.DEBUG)
+logger = NinjaLogger('ninja_ide.gui.dialogs.wizard_new_project')
 logger.info("loaded")
 DEBUG = logger.debug
 
