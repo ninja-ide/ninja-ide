@@ -17,7 +17,6 @@
 from __future__ import absolute_import
 
 import re
-import logging
 
 from tokenize import generate_tokens, TokenError
 import token as tkn
@@ -53,8 +52,10 @@ from ninja_ide.gui.editor import pep8_checker
 from ninja_ide.gui.editor import errors_checker
 from ninja_ide.gui.editor import sidebar_widget
 
+from ninja_ide.tools.logger import NinjaLogger
+
 BRACE_DICT = {')': '(', ']': '[', '}': '{', '(': ')', '[': ']', '{': '}'}
-logger = logging.getLogger('ninja_ide.gui.editor.editor')
+logger = NinjaLogger('ninja_ide.gui.editor.editor')
 
 
 class Editor(QPlainTextEdit, itab_item.ITabItem):

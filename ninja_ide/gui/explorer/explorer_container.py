@@ -17,7 +17,6 @@
 from __future__ import absolute_import
 
 import os
-import logging
 
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QPushButton
@@ -47,8 +46,9 @@ try:
 except:
     settings.WEBINSPECTOR_SUPPORTED = False
 
+from ninja_ide.tools.logger import NinjaLogger
 
-logger = logging.getLogger('ninja_ide.gui.explorer.explorer_container')
+logger = NinjaLogger('ninja_ide.gui.explorer.explorer_container')
 
 __explorerContainerInstance = None
 

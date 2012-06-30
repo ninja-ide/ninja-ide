@@ -22,9 +22,9 @@ import sys
 import types
 #import inspect
 import StringIO
-import logging
+from ninja_ide.tools.logger import NinjaLogger
 
-logger = logging.getLogger('ninja_ide.tools.completion.completer')
+logger = NinjaLogger('ninja_ide.tools.completion.completer')
 
 _HELPOUT = StringIO.StringIO
 _STDOUT = sys.stdout

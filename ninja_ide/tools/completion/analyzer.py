@@ -22,12 +22,12 @@
 import re
 import ast
 import _ast
-import logging
 
+from ninja_ide.tools.logger import NinjaLogger
 from ninja_ide.tools.completion import model
 
 
-logger = logging.getLogger('ninja_ide.tools.completion.analyzer')
+logger = NinjaLogger('ninja_ide.tools.completion.analyzer')
 
 MAX_THRESHOLD = 3
 

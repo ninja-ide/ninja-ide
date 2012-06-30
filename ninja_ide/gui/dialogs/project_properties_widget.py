@@ -47,8 +47,8 @@ from ninja_ide.tools import json_manager
 from ninja_ide.tools import ui_tools
 
 
-import logging
-logger = logging.getLogger('ninja_ide.gui.dialogs.project_properties_widget')
+from ninja_ide.tools.logger import NinjaLogger
+logger = NinjaLogger('ninja_ide.gui.dialogs.project_properties_widget')
 DEBUG = logger.debug
 
 
