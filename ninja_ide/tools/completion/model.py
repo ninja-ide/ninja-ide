@@ -299,7 +299,7 @@ class Clazz(Structure):
         super(Clazz, self).__init__()
         self.name = name
         self.bases = {}
-        self.decorators = []
+#        self.decorators = []
 
     def add_parent(self, parent):
         self.bases[parent] = None

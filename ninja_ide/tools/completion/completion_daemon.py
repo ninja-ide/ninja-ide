@@ -110,10 +110,9 @@ class _DaemonProcess(Process):
                 else:
                     self.queue_send.put((path_id, module, 0))
             except Exception, reason:
-                # Don't die whatever happend
+                # Try to not die whatever happend
                 message = 'Daemon Fail with: %r', reason
                 print(message)
-                raise
 
     def _resolve_module(self, module):
         self._resolve_attributes(module, module)
