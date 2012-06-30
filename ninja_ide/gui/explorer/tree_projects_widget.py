@@ -365,6 +365,7 @@ class TreeProjectsWidget(QTreeWidget):
         path, item, structure = value
         item.takeChildren()
         self._load_folder(structure, path, item)
+        #todo: refresh completion
         item.setExpanded(True)
 
     def _close_project(self):
