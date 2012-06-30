@@ -72,12 +72,7 @@ from ninja_ide.gui.menus import menu_source
 
 from ninja_ide.tools.logger import NinjaLogger
 
-logger = NinjaLogger('ninja_ide')
-
-log_format = "%(asctime)s %(name)s:%(lineno)-4d %(levelname)-8s %(message)s"
-time_format = '%Y-%m-%d %H:%M:%S'
-
-logger.add_handler(resources.LOG_FILE_PATH, 'w', log_format, time_format)
+logger = NinjaLogger('ninja_ide.gui.ide')
 
 
 ###############################################################################

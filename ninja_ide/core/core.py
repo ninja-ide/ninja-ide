@@ -37,9 +37,12 @@ def run_ninja():
         except:
             print("The process couldn't be renamed'")
     #Set the application name
-    filenames, projects_path, extra_plugins, linenos = cliparser.parse()
+    filenames, projects_path, extra_plugins, linenos, log_level, log_file = \
+                                                            cliparser.parse()
     # Create NINJA-IDE user folder structure for plugins, themes, etc
     resources.create_home_dir_structure()
+    from ninja_ide.tools.logger import NinjaLogger
+    NinjaLogger.argparse(log_level, log_file)
 
     # Start the UI
     from ninja_ide.gui import ide
