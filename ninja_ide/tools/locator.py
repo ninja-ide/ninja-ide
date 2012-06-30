@@ -17,7 +17,6 @@
 from __future__ import absolute_import
 
 import re
-import logging
 import Queue
 
 from PyQt4.QtGui import QMessageBox
@@ -50,8 +49,10 @@ from ninja_ide.core import file_manager
 from ninja_ide.core import settings
 from ninja_ide.tools import json_manager
 
+from ninja_ide.tools.logger import NinjaLogger
 
-logger = logging.getLogger('ninja_ide.tools.locator')
+
+logger = NinjaLogger('ninja_ide.tools.locator')
 
 mapping_locations = {}
 

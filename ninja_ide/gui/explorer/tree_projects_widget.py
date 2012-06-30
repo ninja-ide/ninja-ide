@@ -18,8 +18,9 @@
 from __future__ import absolute_import
 
 import os
-import logging
-logger = logging.getLogger('ninja_ide.gui.explorer.tree_projects_widget')
+
+from ninja_ide.tools.logger import NinjaLogger
+logger = NinjaLogger('ninja_ide.gui.explorer.tree_projects_widget')
 DEBUG = logger.debug
 
 from PyQt4.QtGui import QTreeWidget

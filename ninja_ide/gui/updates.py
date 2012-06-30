@@ -17,7 +17,6 @@
 
 import urllib
 import webbrowser
-import logging
 from distutils import version
 
 from PyQt4.QtGui import QSystemTrayIcon
@@ -32,9 +31,9 @@ import ninja_ide
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.tools import json_manager
+from ninja_ide.tools.logger import NinjaLogger
 
-
-logger = logging.getLogger('ninja_ide.gui.updates')
+logger = NinjaLogger('ninja_ide.gui.updates')
 
 
 class TrayIconUpdates(QSystemTrayIcon):

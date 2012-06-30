@@ -17,7 +17,6 @@
 from __future__ import absolute_import
 
 import re
-import logging
 
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QPlainTextEdit
@@ -37,8 +36,9 @@ from ninja_ide.gui.editor import highlighter
 from ninja_ide.tools.completion import completer
 from ninja_ide.tools.completion import completer_widget
 
+from ninja_ide.tools.logger import NinjaLogger
 
-logger = logging.getLogger('ninja_ide.gui.misc.console_widget')
+logger = NinjaLogger('ninja_ide.gui.misc.console_widget')
 
 BRACES = {"'": "'",
     '"': '"',
