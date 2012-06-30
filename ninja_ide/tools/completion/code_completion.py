@@ -26,6 +26,7 @@ from StringIO import StringIO
 
 from ninja_ide.core import settings
 from ninja_ide.gui.editor import helpers
+from ninja_ide.tools.completion import model
 from ninja_ide.tools.completion import analyzer
 from ninja_ide.tools.completion import completer
 from ninja_ide.tools.completion import completion_daemon
@@ -41,6 +42,8 @@ class CodeCompletion(object):
     def __init__(self):
         self.analyzer = analyzer.Analyzer()
         self.cdaemon = completion_daemon.CompletionDaemon()
+        # Set modules reference to model
+        model.MODULES = self.cdaemon.modules
         self.module_id = None
         self.patIndent = re.compile('^\s+')
         self._valid_op = (')', '}', ']')
@@ -63,13 +66,13 @@ class CodeCompletion(object):
         self.module_id = path
         if not self.cdaemon.daemon.is_alive():
             completion_daemon.shutdown_daemon()
+            del self.cdaemon
             self.cdaemon = completion_daemon.CompletionDaemon()
+            # Set modules reference to model
+            model.MODULES = self.cdaemon.modules
         module = self.cdaemon.get_module(self.module_id)
         module = self.analyzer.analyze(source, module)
         self.cdaemon.inspect_module(self.module_id, module)
-
-    def update_file(self, path):
-        pass
 
     def _tokenize_text(self, code):
         # TODO Optimization, only iterate until the previous line of a class??
@@ -140,9 +143,10 @@ class CodeCompletion(object):
                 keep_iter = False
         segment = ''
         brace_stack = 0
+        first_element = True
         for t in tokens:
             token_str = t[1]
-            if token_str in self._invalid_words:
+            if token_str in self._invalid_words and not first_element:
                 break
             elif token_str in self._valid_op:
                 if brace_stack == 0:
@@ -153,6 +157,7 @@ class CodeCompletion(object):
                 if brace_stack == 0:
                     segment = token_str + segment
                     continue
+            first_element = False
             if brace_stack != 0:
                 continue
 
