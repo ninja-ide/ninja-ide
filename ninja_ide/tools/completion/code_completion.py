@@ -61,6 +61,9 @@ class CodeCompletion(object):
             source += '%spass;' % indent
 
         self.module_id = path
+        if not self.cdaemon.daemon.is_alive():
+            completion_daemon.shutdown_daemon()
+            self.cdaemon = completion_daemon.CompletionDaemon()
         module = self.cdaemon.get_module(self.module_id)
         module = self.analyzer.analyze(source, module)
         self.cdaemon.inspect_module(self.module_id, module)
@@ -205,9 +208,10 @@ class CodeCompletion(object):
                 to_complete = var_segment.replace(attr_name, result['type'], 1)
             imports = [imp.split('.')[0] for imp in imports]
             data = completer.get_all_completions(to_complete, imports)
-            __attrib = [d for d in data['attributes'] if d[:2] == '__']
-            map(lambda i: data['attributes'].remove(i), __attrib)
-            data['attributes'] += __attrib
+            __attrib = [d for d in data.get('attributes', []) if d[:2] == '__']
+            if __attrib:
+                map(lambda i: data['attributes'].remove(i), __attrib)
+                data['attributes'] += __attrib
             if data:
                 return data
             else:

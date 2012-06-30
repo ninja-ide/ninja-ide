@@ -101,6 +101,8 @@ class Structure(object):
         for func_name in self.functions:
             if func_name in functions:
                 old_func = functions[func_name]
+                if old_func.__class__ is Assign:
+                    continue
                 function = self.functions[func_name]
                 function.update_functions(old_func.functions)
                 function.update_attributes(old_func.attributes)
@@ -143,7 +145,7 @@ class Structure(object):
     def recursive_search_type(self, structure, attrs, scope):
         result = {'found': False, 'type': None}
         structure = self._get_scope_structure(structure, scope)
-        if structure:
+        if structure and structure.__class__ is not Assign:
             attr_name = attrs[0]
             data_type = structure.get_attribute_type(attr_name)
             result = data_type
@@ -299,7 +301,7 @@ class Clazz(Structure):
         super(Clazz, self).__init__()
         self.name = name
         self.bases = {}
-        self.decorators = []
+#        self.decorators = []
 
     def add_parent(self, parent):
         self.bases[parent] = None

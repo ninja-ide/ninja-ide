@@ -15,16 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+import os
 import time
 from threading import Thread, Lock
 from multiprocessing import Process, Queue
 
 from ninja_ide.tools.completion import model
 from ninja_ide.tools.completion import completer
+from ninja_ide.tools.completion import analyzer
 
 
 __completion_daemon_instance = None
 WAITING_BEFORE_START = 5
+PROJECTS = {}
 
 
 def CompletionDaemon():
@@ -62,6 +65,12 @@ class __CompletionDaemon(Thread):
     def _resolve_with_other_modules(self, module):
         pass
 
+    def process_path(self):
+        for project in PROJECTS:
+            if PROJECTS[project]:
+                continue
+            pass
+
     def inspect_module(self, path_id, module):
         self.lock.acquire()
         self.modules[path_id] = module
@@ -79,6 +88,8 @@ class __CompletionDaemon(Thread):
     def force_stop(self):
         self.keep_alive = False
         self._shutdown_process()
+        for project in PROJECTS:
+            PROJECTS[project] = False
         if self.is_alive():
             self.join()
 
@@ -110,10 +121,9 @@ class _DaemonProcess(Process):
                 else:
                     self.queue_send.put((path_id, module, 0))
             except Exception, reason:
-                # Don't die whatever happend
+                # Try to not die whatever happend
                 message = 'Daemon Fail with: %r', reason
                 print(message)
-                raise
 
     def _resolve_module(self, module):
         self._resolve_attributes(module, module)
@@ -247,3 +257,11 @@ def shutdown_daemon():
     daemon.force_stop()
     global __completion_daemon_instance
     __completion_daemon_instance = None
+
+
+def add_project_folder(project_path):
+    global PROJECTS
+    if project_path not in PROJECTS:
+        PROJECTS[project_path] = False
+        daemon = CompletionDaemon()
+        daemon.process_path()
