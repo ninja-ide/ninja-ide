@@ -46,6 +46,9 @@ class CodeCompletion(object):
         model.MODULES = self.cdaemon.modules
         self.module_id = None
         self.patIndent = re.compile('^\s+')
+        self.patClass = re.compile("class (\w+?)\(")
+        self.patFunction = re.compile("(\w+?)\(")
+        self.patWords = re.compile('\W+')
         self._valid_op = (')', '}', ']')
         self._invalid_op = ('(', '{', '[')
         self._invalid_words = ('if', 'elif', 'for', 'while', 'in', 'return',
@@ -226,9 +229,9 @@ class CodeCompletion(object):
             data = {'attributes': result['type']['attributes'],
                 'functions': result['type']['functions']}
         else:
-            clazzes = sorted(set(re.findall("class (\w+?)\(", code)))
-            funcs = sorted(set(re.findall("(\w+?)\(", code)))
-            attrs = sorted(set(re.split('\W+', code)))
+            clazzes = sorted(set(self.patClass.findall(code)))
+            funcs = sorted(set(self.patFunction.findall(code)))
+            attrs = sorted(set(self.patWords.split(code)))
             if final_word in attrs:
                 attrs.remove(final_word)
             if attr_name in attrs:

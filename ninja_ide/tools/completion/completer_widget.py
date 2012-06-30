@@ -37,6 +37,8 @@ class CodeCompletionWidget(QFrame):
         super(CodeCompletionWidget, self).__init__(
             None, Qt.FramelessWindowHint | Qt.ToolTip)
         self._editor = editor
+        self._revision = 0
+        self._block = 0
         self.stack_layout = QStackedLayout(self)
         self.stack_layout.setContentsMargins(0, 0, 0, 0)
         self.stack_layout.setSpacing(0)
@@ -78,9 +80,9 @@ class CodeCompletionWidget(QFrame):
         self.connect(self.completion_list,
             SIGNAL("itemClicked(QListWidgetItem*)"),
             self.pre_key_insert_completion)
-        self.connect(self._editor.document(), SIGNAL("blockCountChanged(int)"),
+        self.connect(self._editor.document(),
+            SIGNAL("cursorPositionChanged(QTextCursor)"),
             self.update_metadata)
-        self.update_metadata()
 
     def _select_next_row(self, move=1):
         new_row = self.completion_list.currentRow() + move
@@ -99,11 +101,15 @@ class CodeCompletionWidget(QFrame):
                 self.completion_list.count() - move)
         return True
 
-    def update_metadata(self):
+    def update_metadata(self, cursor):
         if settings.CODE_COMPLETION:
-            source = self._editor.get_text()
-            source = source.encode(self._editor.encoding)
-            self.cc.analyze_file(self._editor.ID, source)
+            if self._editor.document().revision() != self._revision and \
+               cursor.block().blockNumber() != self._block:
+                source = self._editor.get_text()
+                source = source.encode(self._editor.encoding)
+                self.cc.analyze_file(self._editor.ID, source)
+                self._revision = self._editor.document().revision()
+                self._block = cursor.block().blockNumber()
 
     def insert_completion(self, insert, type_=ord('a')):
         if insert != self._prefix:

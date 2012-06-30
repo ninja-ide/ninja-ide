@@ -282,7 +282,8 @@ class Module(Structure):
         for cla in self.classes:
             clazz = self.classes[cla]
             for parent in clazz.bases:
-                return True
+                if clazz.bases[parent] is None:
+                    return True
             if self._check_attr_func_resolution(clazz):
                 return True
         return False
@@ -312,10 +313,22 @@ class Clazz(Structure):
         super(Clazz, self).__init__()
         self.name = name
         self.bases = {}
+        self._update_bases = []
 #        self.decorators = []
 
     def add_parent(self, parent):
-        self.bases[parent] = None
+        self._update_bases.append(parent)
+        value = self.bases.get(parent, None)
+        if value is None:
+            self.bases[parent] = None
+
+    def update_bases(self):
+        to_remove = []
+        for parent in self.bases:
+            if parent not in self._update_bases:
+                to_remove.append(parent)
+        for remove in to_remove:
+            self.bases.pop(parent)
 
     def get_completion_items(self):
         attributes = [a for a in self.attributes]
@@ -332,6 +345,7 @@ class Clazz(Structure):
             if parent.__class__ is Clazz:
                 self.attributes.update(parent.attributes)
                 self.functions.update(parent.functions)
+                self.bases[base] = None
             elif isinstance(parent, tuple):
                 parent_name = parent[0]
                 data = parent[1]
