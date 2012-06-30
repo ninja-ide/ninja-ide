@@ -40,4 +40,4 @@ class WebRender(QWidget):
 
     def render_from_html(self, html, url=None):
         url = url and QUrl(url) or ""
-        self.webFrame.setHtml(html, url, base)
+        self.webFrame.setHtml(html, url)

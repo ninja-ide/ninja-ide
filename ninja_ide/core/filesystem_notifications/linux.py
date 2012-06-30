@@ -74,7 +74,10 @@ class QNotifier(QThread):
 
     def run(self):
         while self.keep_running:
-            self.notifier.process_events()
+            try:
+                self.notifier.process_events()
+            except OSError:
+                pass  # OSError: [Errno 2] No such file or directory happens
             e_dict = {}
             while len(self.event_queue):
                 e_type, e_path = self.event_queue.pop(0)
