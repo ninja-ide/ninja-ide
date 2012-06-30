@@ -125,6 +125,8 @@ def get_all_completions(s, imports=None):
         try:
             try:
                 s = unicode(s)
+                if s.startswith('PyQt4.') and s.endswith('()'):
+                    s = s[:-2]
                 sym = eval(s, globals(), dlocals)
             except NameError:
                 try:
@@ -145,6 +147,7 @@ def get_all_completions(s, imports=None):
         s = dots[-1]
         return get_completions_per_type(["%s.%s" % (var, k) for k in \
             dir(sym) if k.startswith(s)])
+    return {}
 
 
 def _find_constructor(class_ob):
