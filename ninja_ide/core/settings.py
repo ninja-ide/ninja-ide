@@ -24,7 +24,6 @@ from ninja_ide.dependencies import pep8mod
 from ninja_ide.tools.logger import NinjaLogger
 
 logger = NinjaLogger('ninja_ide.gui.core.settings')
-logger.basicConfig()
 
 ###############################################################################
 # OS DETECTOR

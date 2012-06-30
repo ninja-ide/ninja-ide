@@ -1,6 +1,12 @@
 # -*- coding: utf-8 *-*
 import logging
 import sys
+from ninja_ide import resources
+
+
+NOLOG = 100
+LOG_FORMAT = "%(asctime)s %(name)s:%(lineno)-4d %(levelname)-8s %(message)s"
+TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 
 class Logger(object):
@@ -8,73 +14,60 @@ class Logger(object):
         General logger
     """
 
-    def __getattr__(self, name):
-        """
-            Method missing delegates on self.logger
-        """
-
-        def decorator(*args, **kwargs):
-
-            return getattr(self.logger, name)(*args, **kwargs)
-
-        return decorator
-
-    def __init__(self, module):
-
-        self._initialize(module)
-
-    def _initialize(self, module):
-
-        self.logger = logging.getLogger(module)
-        self.logger.setLevel(logging.DEBUG)
-
-    def add_handler(self, file, mode, log_format, time_format):
-
-        handler = logging.FileHandler(file, mode)
-        formatter = logging.Formatter(log_format, time_format)
-        handler.setFormatter(formatter)
-        self.logger.addHandler(handler)
-
-    def basicConfig(self):
-
+    def __init__(self):
+        self._loggers = {}
+        self._default_level = NOLOG
+        self._handler = None
         logging.basicConfig()
+        super(Logger, self).__init__()
 
-    def debug(self, *a, **k):
-        self.logger.debug(*a, **k)
+    def __call__(self, modname):
+        if not self._handler:
+            self.add_handler(resources.LOG_FILE_PATH, 'w', LOG_FORMAT,
+                                TIME_FORMAT)
+        if modname not in self._loggers:
+            logger = logging.getLogger(modname)
+            self._loggers[modname] = logger
+            logger.setLevel(self._default_level)
+            logger.addHandler(self._handler)
 
-    def info(self, *a, **k):
-        self.logger.info(*a, **k)
+        return self._loggers[modname]
 
-    def warning(self, *a, **k):
-        self.logger.warning(*a, **k)
+    def dissable(self):
+        for each_log in self._loggers.values():
+            each_log.setLevel(NOLOG)
 
-    def error(self, *a, **k):
-        self.logger.error(*a, **k)
+    def setLevel(self, level):
+        self._default_level = level
+        for each_log in self._loggers.values():
+            each_log.setLevel(level)
 
-    def critical(self, *a, **k):
-        self.logger.critical(*a, **k)
+    def add_handler(self, hfile, mode, log_format, time_format, stream=None):
+        formatter = logging.Formatter(log_format, time_format)
+        if stream:
+            handler = logging.StreamHandler(hfile)
+        else:
+            handler = logging.FileHandler(hfile, mode)
+        handler.setFormatter(formatter)
+        for each_log in self._loggers.values():
+            each_log.addHandler(handler)
+        self._handler = handler
+
+    def argparse(self, log_level, log_file):
+        if log_level:
+            if log_level in ('DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'):
+                log_level = getattr(logging, log_level)
+                self.setLevel(log_level)
+        if log_file:
+            if log_file == "STDOUT":
+                self.add_handler(sys.stdout, None, LOG_FORMAT, TIME_FORMAT,
+                                    True)
+            if log_file == "STDERR":
+                self.add_handler(sys.stdout, None, LOG_FORMAT, TIME_FORMAT,
+                                    True)
+            else:
+                self.add_handler(log_file, 'w', LOG_FORMAT,
+                                TIME_FORMAT)
 
 
-class DummyLogger(Logger):
-
-    def debug(self, *a, **k):
-        pass
-
-    def info(self, *a, **k):
-        pass
-
-    def warning(self, *a, **k):
-        pass
-
-    def error(self, *a, **k):
-        pass
-
-    def critical(self, *a, **k):
-        pass
-
-
-if getattr(sys, 'frozen', False):
-    NinjaLogger = DummyLogger
-else:
-    NinjaLogger = Logger
-
+NinjaLogger = Logger()
