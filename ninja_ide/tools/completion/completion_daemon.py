@@ -43,6 +43,7 @@ class __CompletionDaemon(Thread):
     def __init__(self):
         Thread.__init__(self)
         self.modules = {}
+        self.projects_modules = {}
         self.reference_counter = 0
         self.keep_alive = True
         self.lock = Lock()
