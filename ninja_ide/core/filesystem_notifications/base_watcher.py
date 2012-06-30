@@ -103,7 +103,7 @@ class BaseWatcher(QObject):
             self._single_file_watcher = None
 
     def shutdown_notification(self):
-        if self._single_file_watcher:
+        if hasattr(self, "_single_file_watcher") and self._single_file_watcher:
             self._single_file_watcher.stop_running()
             self._single_file_watcher.quit()
 

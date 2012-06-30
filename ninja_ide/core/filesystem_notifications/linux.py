@@ -67,7 +67,8 @@ class QNotifier(QThread):
     def __init__(self, wm, processor):
         self.event_queue = list()
         self._processor = processor
-        self.notifier = Notifier(wm, NinjaProcessEvent(self.event_queue.append))
+        self.notifier = Notifier(wm,
+                            NinjaProcessEvent(self.event_queue.append))
         self.notifier.coalesce_events(True)
         self.keep_running = True
         QThread.__init__(self)
