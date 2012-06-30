@@ -85,7 +85,7 @@ class Analyzer(object):
                 new_line = ''
                 #This is failing sometimes, it should remaing commented
                 #until we find the proper fix.
-                indent = re.match('^\s+', unicode(reason.text))
+                indent = re.match('^\s+', reason.text)
                 if indent is not None:
                     new_line = indent.group() + 'pass'
                 split_source = source.splitlines()
@@ -224,6 +224,8 @@ class Analyzer(object):
                 clazz.add_attributes(assigns)
             elif sym.__class__ is ast.FunctionDef:
                 clazz.add_function(self._process_function(sym, clazz))
+        clazz.update_bases()
+        clazz.update_with_parent_data()
         return clazz
 
     def _process_function(self, symbol, parent=None):
