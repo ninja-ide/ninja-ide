@@ -24,10 +24,6 @@ from PyQt4 import QtCore
 
 from ninja_ide.core import settings
 
-from ninja_ide.tools.logger import NinjaLogger
-logger = NinjaLogger('ninja_ide.gui.explorer.file_manager')
-DEBUG = logger.debug
-
 
 #Lock to protect the file's writing operation
 file_store_content_lock = threading.Lock()
