@@ -56,6 +56,9 @@ class CodeCompletion(object):
             'super', 'yield')
         self.keywords = settings.SYNTAX['python']['keywords']
 
+    def unload_module(self):
+        self.cdaemon.unload_module(self.module_id)
+
     def analyze_file(self, path, source=None):
         if source is None:
             with open(path) as f:

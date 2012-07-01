@@ -45,6 +45,7 @@ class __CompletionDaemon(Thread):
         self.analyzer = analyzer.Analyzer()
         self.modules = {}
         self.projects_modules = {}
+        self._relations = {}
         self.reference_counter = 0
         self.keep_alive = True
         self.lock = Lock()
@@ -65,6 +66,9 @@ class __CompletionDaemon(Thread):
             self.lock.release()
             if resolve:
                 resolution = self._resolve_with_other_modules(resolve)
+                self._relations[path_id] = []
+                for package in resolution:
+                    self._relations[path_id].append(resolution[package])
                 self.queue_send.put((path_id, module, False, resolution))
 
     def _resolve_with_other_modules(self, packages):
@@ -105,6 +109,19 @@ class __CompletionDaemon(Thread):
         except Exception, reason:
             print reason
         return False
+
+    def unload_module(self, path_id):
+        relations = self._relations.pop(path_id, None)
+        if relations is not None:
+            relations.append(path_id)
+            for module in relations:
+                valid = False
+                for rel in self._relations:
+                    other_modules = self._relations[rel]
+                    if module in other_modules:
+                        valid = True
+                if not valid:
+                    self.modules.pop(module, None)
 
     def process_path(self):
         for project in PROJECTS:

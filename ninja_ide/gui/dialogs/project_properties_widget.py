@@ -62,9 +62,12 @@ class ProjectProperties(QDialog):
         self.tab_widget = QTabWidget()
         self.projectData = ProjectData(self)
         self.projectExecution = ProjectExecution(self)
+        self.projectMetadata = ProjectMetadata(self)
         self.tab_widget.addTab(self.projectData, self.tr("Project Data"))
         self.tab_widget.addTab(self.projectExecution,
             self.tr("Project Execution"))
+        self.tab_widget.addTab(self.projectMetadata,
+            self.tr("Project Metadata"))
 
         vbox.addWidget(self.tab_widget)
         self.btnSave = QPushButton(self.tr("Save"))
@@ -105,6 +108,9 @@ class ProjectProperties(QDialog):
         self._item.venv = unicode(self.projectExecution.txtVenvPath.text())
         extensions = unicode(self.projectData.txtExtensions.text()).split(', ')
         self._item.extensions = tuple(extensions)
+        related = unicode(self.projectMetadata.txt_projects.toPlainText())
+        related = [path for path in related.split('\n') if path != '']
+        self._item.related_projects = related
         #save project properties
         project = {}
         project['name'] = self._item.name
@@ -120,6 +126,7 @@ class ProjectProperties(QDialog):
         project['postExecScript'] = self._item.postExecScript
         project['venv'] = self._item.venv
         project['programParams'] = self._item.programParams
+        project['relatedProjects'] = self._item.related_projects
         if tempName != self._item.name and \
             file_manager.file_exists(self._item.path, tempName + '.nja'):
             file_manager.delete_file(self._item.path, tempName + '.nja')
@@ -129,6 +136,7 @@ class ProjectProperties(QDialog):
         self._item.setToolTip(0, self._item.name)
         if self._item.extensions != settings.SUPPORTED_EXTENSIONS:
             self._item._parent._refresh_project(self._item)
+        self._item.update_paths()
         self.close()
 
 
@@ -319,3 +327,22 @@ class ProjectExecution(QWidget):
             fileName = file_manager.convert_to_relative(
                 self._parent._item.path, fileName)
             self.txtPostExec.setText(fileName)
+
+
+class ProjectMetadata(QWidget):
+
+    def __init__(self, parent):
+        super(ProjectMetadata, self).__init__()
+        self._parent = parent
+
+        vbox = QVBoxLayout(self)
+        vbox.addWidget(QLabel(self.tr(
+                        "Insert the path of Python Projects related"
+                        "to this one in order\nto improve Code Completion.")))
+        self.txt_projects = QPlainTextEdit()
+        vbox.addWidget(self.txt_projects)
+        vbox.addWidget(QLabel(
+            self.tr("Split your paths using newlines [ENTER].")))
+
+        paths = '\n'.join(self._parent._item.related_projects)
+        self.txt_projects.setPlainText(paths)
