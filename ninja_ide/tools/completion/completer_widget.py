@@ -74,8 +74,7 @@ class CodeCompletionWidget(QFrame):
             Qt.ShiftModifier: self.hide_completer,
         }
 
-        desktop = QApplication.instance().desktop()
-        self._desktop_geometry = desktop.availableGeometry()
+        self.desktop = QApplication.instance().desktop()
 
         self.connect(self.completion_list,
             SIGNAL("itemClicked(QListWidgetItem*)"),
@@ -123,20 +122,21 @@ class CodeCompletionWidget(QFrame):
 
     def _get_geometry(self):
         cr = self._editor.cursorRect()
+        desktop_geometry = self.desktop.availableGeometry(self._editor)
         point = self._editor.mapToGlobal(cr.topLeft())
         cr.moveTopLeft(point)
         #Check new position according desktop geometry
         width = (self.completion_list.sizeHintForColumn(0) + \
             self.completion_list.verticalScrollBar().sizeHint().width() + 10)
         height = 200
-        orientation = (point.y() + height) < self._desktop_geometry.height()
+        orientation = (point.y() + height) < desktop_geometry.height()
         if orientation:
             cr.moveTop(cr.bottom())
         cr.setWidth(width)
         cr.setHeight(height)
         if not orientation:
             cr.moveBottom(cr.top())
-        xpos = self._desktop_geometry.width() - (point.x() + width)
+        xpos = desktop_geometry.width() - (point.x() + width)
         if xpos < 0:
             cr.moveLeft(cr.left() + xpos)
         return cr
