@@ -475,7 +475,6 @@ class LocateCompleter(QLineEdit):
     def __init__(self, parent):
         QLineEdit.__init__(self, parent)
         self._parent = parent
-        self.main = main_container.MainContainer()
         self.__prefix = ''
         self.frame = PopupCompleter()
         self.filterPrefix = re.compile(r'^(@|<|>|-|!|\.|/)(\s)*')
@@ -538,10 +537,11 @@ class LocateCompleter(QLineEdit):
         #if the user type any of the prefix
         if self.filterPrefix.match(self.__prefix):
             filterOption = self.__prefix[:1]
+            main = main_container.MainContainer()
             #if the prefix is "." it means only the metadata of current file
             if filterOption == FILTERS['this-file']:
                 inCurrentFile = True
-                editorWidget = self.main.get_actual_editor()
+                editorWidget = main.get_actual_editor()
                 if editorWidget:
                     self.tempLocations = \
                         self._parent._thread.get_this_file_locations(
@@ -550,7 +550,7 @@ class LocateCompleter(QLineEdit):
                     self.tempLocations = [x for x in self.tempLocations \
                         if x.comparison.lower().find(self.__prefix) > -1]
             elif filterOption == FILTERS['tabs']:
-                tab1, tab2 = self.main.get_opened_documents()
+                tab1, tab2 = main.get_opened_documents()
                 opened = tab1 + tab2
                 self.tempLocations = [ResultItem(FILTERS['files'],
                     file_manager.get_basename(f[0]), f[0]) \
@@ -578,7 +578,8 @@ class LocateCompleter(QLineEdit):
         was_this_file = filterOptions[0] == FILTERS['this-file']
         if was_this_file:
             filterOptions[0] = FILTERS['files']
-            editorWidget = self.main.get_actual_editor()
+            main = main_container.MainContainer()
+            editorWidget = main.get_actual_editor()
             if editorWidget:
                 filterOptions.insert(1, editorWidget.ID)
         elif filterOptions[0] in (
@@ -672,10 +673,11 @@ class LocateCompleter(QLineEdit):
 
     def _open_item(self, data):
         """Open the item received."""
+        main = main_container.MainContainer()
         if file_manager.get_file_extension(data.path) in ('jpg', 'png'):
-            self.main.open_image(data.path)
+            main.open_image(data.path)
         else:
-            self.main.open_file(data.path, data.lineno, None, True)
+            main.open_file(data.path, data.lineno, None, True)
 
 
 class PopupCompleter(QFrame):
