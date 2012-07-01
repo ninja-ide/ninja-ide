@@ -35,9 +35,6 @@ and more enjoyable.
 
 import sys
 
-from ez_setup import use_setuptools
-use_setuptools()
-
 from setuptools import setup, find_packages
 
 import ninja_ide
@@ -84,7 +81,7 @@ params = {
     "author": ninja_ide.__author__,
     "author_email": ninja_ide.__mail__,
     "url": ninja_ide.__url__,
-    "license": ninja_ide.__licence__,
+    "license": ninja_ide.__license__,
     "keywords": "ide python ninja development",
     "classifiers": ["Development Status :: Development Status :: 4 - Beta",
                "Topic :: Utilities",
