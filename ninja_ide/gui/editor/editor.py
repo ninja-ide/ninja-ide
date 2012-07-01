@@ -106,7 +106,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self._patIsWord = re.compile('\w+')
         #Brace matching
         self._braces = None
-        self._mtime = None
         self.__encoding = None
         #Completer
         self.completer = completer_widget.CodeCompletionWidget(self)
@@ -196,7 +195,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def set_id(self, id_):
         super(Editor, self).set_id(id_)
-        self._mtime = file_manager.get_last_modification(id_)
         if self._mini:
             self._mini.set_code(self.toPlainText())
         if settings.CHECK_STYLE:
@@ -280,13 +278,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             lines = list(set(self.errors.errorsSummary.keys() +
                         self.pep8.pep8checks.keys()))
             self.highlighter.rehighlight_lines(lines)
-
-    def check_external_modification(self):
-        if self.newDocument:
-            return False
-        #Saved document we can ask for modification!
-        return file_manager.check_for_external_modification(
-            self.get_id(), self._mtime)
 
     def has_write_permission(self):
         if self.newDocument:
