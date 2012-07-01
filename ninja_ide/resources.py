@@ -172,6 +172,7 @@ IMAGES = {
     "locate-nonpython": os.path.join(PRJ_PATH, "img", "locate-nonpython.png"),
     "locate-on-this-file": os.path.join(PRJ_PATH, "img",
         "locate-on-this-file.png"),
+    "locate-tab": os.path.join(PRJ_PATH, "img", "locate-tab.png"),
     "add": os.path.join(PRJ_PATH, "img", "add.png"),
     "delete": os.path.join(PRJ_PATH, "img", "delete.png"),
     "loading": os.path.join(PRJ_PATH, "img", "loading.gif"),
