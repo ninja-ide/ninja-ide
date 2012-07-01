@@ -270,6 +270,7 @@ class TabWidget(QTabWidget):
             elif type(widget) is editor.Editor and widget.ID:
                 self._add_to_last_opened(widget.ID)
                 self._parent.remove_standalone_watcher(widget.ID)
+                widget.completer.cc.unload_module()
 
             self.remove_title(index)
             super(TabWidget, self).removeTab(index)

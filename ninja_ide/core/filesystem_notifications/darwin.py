@@ -21,7 +21,7 @@ import fsevents
 from PyQt4.QtCore import SIGNAL
 
 from ninja_ide.tools.logger import NinjaLogger
-logger = NinjaLogger('ninja_ide.core.filesystem_notifications.linux')
+logger = NinjaLogger('ninja_ide.core.filesystem_notifications.darwin')
 DEBUG = logger.debug
 
 from ninja_ide.core.filesystem_notifications import base_watcher
