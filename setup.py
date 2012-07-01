@@ -99,18 +99,28 @@ params = {
 
     # include all resources
     "include_package_data": True,
-    "package_data": {'': ['*.png', '*.json']},
+    "package_data": {'': ['*.png', '*.json', '*.qss',
+        '*.js', '*.html', '*.css']},
 
     # include ninja pkg and setup the run script
-    "packages": find_packages(),
+    "packages": find_packages() + [
+        'ninja_ide/addins',
+        'ninja_ide/addins/syntax',
+        'ninja_ide/addins/theme',
+        'ninja_ide/doc',
+        'ninja_ide/doc/css',
+        'ninja_ide/doc/img',
+        'ninja_ide/doc/js',
+        'ninja_ide/doc/js/libs',
+        'ninja_ide/img'],
 
     #auto create scripts
     "entry_points": {
         'console_scripts': [
-            'ninjac = ninja_ide:setup_and_run',
+            'ninja-ide = ninja_ide:setup_and_run',
         ],
         'gui_scripts': [
-            'ninja = ninja_ide:setup_and_run',
+            'ninja-ide = ninja_ide:setup_and_run',
         ]
     }
 }
