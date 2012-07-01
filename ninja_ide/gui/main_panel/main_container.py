@@ -32,6 +32,7 @@ from PyQt4.QtCore import QDir
 from ninja_ide import resources
 from ninja_ide.core import file_manager
 from ninja_ide.core import settings
+from ninja_ide.core.filesystem_notifications import NinjaFileSystemWatcher
 from ninja_ide.gui.main_panel import tab_widget
 from ninja_ide.gui.editor import editor
 from ninja_ide.gui.editor import highlighter
@@ -94,6 +95,9 @@ class __MainContainer(QSplitter):
         highlighter.restyle(resources.CUSTOM_SCHEME)
         #documentation browser
         self.docPage = None
+        # File Watcher
+        self._file_watcher = NinjaFileSystemWatcher
+        self._watched_simple_files = []
 
         self.connect(self._tabMain, SIGNAL("currentChanged(int)"),
             self._current_tab_changed)
@@ -334,6 +338,7 @@ class __MainContainer(QSplitter):
             editorWidget = self.get_actual_editor()
         if editorWidget is not None and editorWidget.ID:
             fileName = editorWidget.ID
+            self._file_watcher.allow_kill = False
             old_cursor_position = editorWidget.textCursor().position()
             old_widget_index = self.actualTab.indexOf(editorWidget)
             self.actualTab.removeTab(old_widget_index)
@@ -344,6 +349,7 @@ class __MainContainer(QSplitter):
             cursor = editorWidget.textCursor()
             cursor.setPosition(old_cursor_position)
             editorWidget.setTextCursor(cursor)
+            self._file_watcher.allow_kill = True
 
     def open_image(self, fileName):
         try:
@@ -414,6 +420,7 @@ class __MainContainer(QSplitter):
                     editorWidget.set_cursor_position(cursorPosition)
                 else:
                     editorWidget.go_to_line(cursorPosition)
+                self.add_standalone_watcher(editorWidget.ID, notStart)
 
                 if not editorWidget.has_write_permission():
                     fileName += unicode(self.tr(" (Read-Only)"))
@@ -436,6 +443,23 @@ class __MainContainer(QSplitter):
         except Exception, reason:
             logger.error('open_file: %s', reason)
         self.actualTab.notOpening = True
+
+    def add_standalone_watcher(self, filename, not_start=True):
+        # Add File Watcher if needed
+        opened_projects = self._parent.explorer.get_opened_projects()
+        opened_projects = [p.path for p in opened_projects]
+        alone = not_start
+        for folder in opened_projects:
+            if file_manager.belongs_to_folder(folder, filename):
+                alone = False
+        if alone:
+            self._file_watcher.add_file_watch(filename)
+            self._watched_simple_files.append(filename)
+
+    def remove_standalone_watcher(self, filename):
+        if filename in self._watched_simple_files:
+            self._file_watcher.remove_file_watch(filename)
+            self._watched_simple_files.remove(filename)
 
     def is_open(self, filename):
         return self._tabMain.is_open(filename) != -1 or \
@@ -504,6 +528,11 @@ class __MainContainer(QSplitter):
             content = editorWidget.get_text()
             file_manager.store_file_content(
                 fileName, content, addExtension=False)
+            self._file_watcher.allow_kill = False
+            if editorWidget.ID != fileName:
+                self.remove_standalone_watcher(editorWidget.ID)
+            self.add_standalone_watcher(fileName)
+            self._file_watcher.allow_kill = True
             editorWidget.ID = fileName
             encoding = file_manager.get_file_encoding(content)
             editorWidget.encoding = encoding
@@ -545,10 +574,15 @@ class __MainContainer(QSplitter):
                 file_manager.get_basename(fileName))
             editorWidget.register_syntax(
                 file_manager.get_file_extension(fileName))
+            self._file_watcher.allow_kill = False
+            if editorWidget.ID != fileName:
+                self.remove_standalone_watcher(editorWidget.ID)
             editorWidget.ID = fileName
             self.emit(SIGNAL("fileSaved(QString)"),
                 self.tr("File Saved: %1").arg(fileName))
             editorWidget._file_saved()
+            self.add_standalone_watcher(fileName)
+            self._file_watcher.allow_kill = True
             return True
         except file_manager.NinjaFileExistsException, ex:
             editorWidget.just_saved = False

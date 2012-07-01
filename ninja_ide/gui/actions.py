@@ -433,7 +433,13 @@ class __Actions(QObject):
         try:
             path = file_manager.store_file_content(
                 path, editorWidget.get_text(), newFile=True)
+            self.ide.mainContainer._file_watcher.allow_kill = False
+            if path != editorWidget.ID:
+                self.ide.mainContainer.remove_standalone_watcher(
+                    editorWidget.ID)
             editorWidget.ID = path
+            self.ide.mainContainer.add_standalone_watcher(path)
+            self.ide.mainContainer._file_watcher.allow_kill = True
             self.ide.explorer.add_existing_file(path)
             self.ide.change_window_title(path)
             name = file_manager.get_basename(path)
