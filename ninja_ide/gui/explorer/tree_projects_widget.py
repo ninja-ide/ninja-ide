@@ -784,7 +784,13 @@ class ProjectTree(QTreeWidgetItem):
         self.PYTHONPATH = project.get('PYTHONPATH', '')
         self.programParams = project.get('programParams', '')
         self.venv = project.get('venv', '')
+        self.related_projects = project.get('relatedProjects', [])
+        self.update_paths()
         self.addedToConsole = False
+
+    def update_paths(self):
+        for path in self.related_projects:
+            completion_daemon.add_project_folder(path)
 
     @property
     def isProject(self):

@@ -1,6 +1,7 @@
 {
   "mainFile": "ninja-ide.py", 
   "venv": "", 
+  "relatedProjects": [], 
   "name": "NINJA-IDE", 
   "license": "GNU General Public License v3", 
   "url": "http://ninja-ide.org", 
