@@ -90,10 +90,6 @@ params = {
                "Operating System :: OS Independent",
                "Programming Language :: Python :: 2"],
 
-    # this line is required for install a plugin for mercurial to package all
-    # images and other resources
-    "setup_requires": ["setuptools_git"],
-
     # Ninja need:
     "install_requires": dependencies,
 
