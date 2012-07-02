@@ -49,6 +49,10 @@ def setup_and_run():
     # import only on run
     # Dont import always this, setup.py will fail
     from ninja_ide import core
+    from multiprocessing import freeze_support
+
+    # Used to support multiprocessing on windows packages
+    freeze_support()
 
     # Run NINJA-IDE
     core.run_ninja()
