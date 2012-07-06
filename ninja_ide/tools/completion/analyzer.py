@@ -71,6 +71,7 @@ class Analyzer(object):
     def __init__(self):
         self._fixed_line = -1
         self.content = None
+#        self._functions = {}
 
     def _get_valid_module(self, source, retry=0):
         """Try to parse the module and fix some errors if it has some."""
@@ -84,7 +85,7 @@ class Analyzer(object):
                 new_line = ''
                 #This is failing sometimes, it should remaing commented
                 #until we find the proper fix.
-                indent = re.match('^\s+', unicode(reason.text))
+                indent = re.match('^\s+', reason.text)
                 if indent is not None:
                     new_line = indent.group() + 'pass'
                 split_source = source.splitlines()
@@ -112,10 +113,13 @@ class Analyzer(object):
                 module.add_class(self._process_class(symbol))
             elif symbol.__class__ is ast.FunctionDef:
                 module.add_function(self._process_function(symbol))
+#            elif symbol.__class__ is ast.Expr:
+#                self._process_expression(symbol.value)
         if old_module is not None:
             self._resolve_module(module, old_module)
 
         self.content = None
+#        self._functions = {}
         return module
 
     def _resolve_module(self, module, old_module):
@@ -135,6 +139,33 @@ class Analyzer(object):
         elif value == 'None':
             type_name = None
         return type_name
+
+#    def _process_expression(self, expr):
+#        """Process expression, not assignment."""
+#        if expr.__class__ is not ast.Call:
+#            return
+#        args = expr.args
+#        keywords = expr.keywords
+#        ar = []
+#        kw = {}
+#        for arg in args:
+#            type_value = arg.__class__
+#            arg_name = ''
+#            if type_value is ast.Call:
+#                arg_name = expand_attribute(arg.func)
+#            elif type_value is ast.Attribute:
+#                arg_name = expand_attribute(arg.attr)
+#            data_type = self.__mapping.get(type_value, model.late_resolution)
+#            ar.append((arg_name, data_type))
+#        for key in keywords:
+#            type_value = key.value.__class__
+#            data_type = self.__mapping.get(type_value, model.late_resolution)
+#            kw[key.arg] = data_type
+#        if expr.func.__class__ is ast.Attribute:
+#            name = expand_attribute(expr.func)
+#        else:
+#            name = expr.func.id
+#        self._functions[name] = (ar, kw)
 
     def _process_assign(self, symbol):
         """Process an ast.Assign object to extract the proper info."""
@@ -157,6 +188,8 @@ class Analyzer(object):
                 data = (var.id, symbol.lineno, data_type, line_content,
                     type_value)
                 assigns.append(data)
+#            if type_value is ast.Call:
+#                self._process_expression(symbol.value)
         return (assigns, attributes)
 
     def _process_import(self, symbol):
@@ -191,6 +224,8 @@ class Analyzer(object):
                 clazz.add_attributes(assigns)
             elif sym.__class__ is ast.FunctionDef:
                 clazz.add_function(self._process_function(sym, clazz))
+        clazz.update_bases()
+        clazz.update_with_parent_data()
         return clazz
 
     def _process_function(self, symbol, parent=None):
@@ -271,3 +306,5 @@ class Analyzer(object):
                 self._search_recursive_for_types(function, sym, parent)
             for else_item in symbol.finalbody:
                 self._search_recursive_for_types(function, else_item, parent)
+#        elif symbol.__class__ is ast.Expr:
+#            self._process_expression(symbol.value)

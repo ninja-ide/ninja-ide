@@ -26,6 +26,7 @@ from StringIO import StringIO
 
 from ninja_ide.core import settings
 from ninja_ide.gui.editor import helpers
+from ninja_ide.tools.completion import model
 from ninja_ide.tools.completion import analyzer
 from ninja_ide.tools.completion import completer
 from ninja_ide.tools.completion import completion_daemon
@@ -41,14 +42,22 @@ class CodeCompletion(object):
     def __init__(self):
         self.analyzer = analyzer.Analyzer()
         self.cdaemon = completion_daemon.CompletionDaemon()
+        # Set modules reference to model
+        model.MODULES = self.cdaemon.modules
         self.module_id = None
         self.patIndent = re.compile('^\s+')
+        self.patClass = re.compile("class (\w+?)\(")
+        self.patFunction = re.compile("(\w+?)\(")
+        self.patWords = re.compile('\W+')
         self._valid_op = (')', '}', ']')
         self._invalid_op = ('(', '{', '[')
         self._invalid_words = ('if', 'elif', 'for', 'while', 'in', 'return',
             'and', 'or', 'del', 'except', 'from', 'import', 'is', 'print',
             'super', 'yield')
         self.keywords = settings.SYNTAX['python']['keywords']
+
+    def unload_module(self):
+        self.cdaemon.unload_module(self.module_id)
 
     def analyze_file(self, path, source=None):
         if source is None:
@@ -61,12 +70,15 @@ class CodeCompletion(object):
             source += '%spass;' % indent
 
         self.module_id = path
+        if not self.cdaemon.daemon.is_alive():
+            completion_daemon.shutdown_daemon()
+            del self.cdaemon
+            self.cdaemon = completion_daemon.CompletionDaemon()
+            # Set modules reference to model
+            model.MODULES = self.cdaemon.modules
         module = self.cdaemon.get_module(self.module_id)
         module = self.analyzer.analyze(source, module)
         self.cdaemon.inspect_module(self.module_id, module)
-
-    def update_file(self, path):
-        pass
 
     def _tokenize_text(self, code):
         # TODO Optimization, only iterate until the previous line of a class??
@@ -137,9 +149,10 @@ class CodeCompletion(object):
                 keep_iter = False
         segment = ''
         brace_stack = 0
+        first_element = True
         for t in tokens:
             token_str = t[1]
-            if token_str in self._invalid_words:
+            if token_str in self._invalid_words and not first_element:
                 break
             elif token_str in self._valid_op:
                 if brace_stack == 0:
@@ -150,6 +163,7 @@ class CodeCompletion(object):
                 if brace_stack == 0:
                     segment = token_str + segment
                     continue
+            first_element = False
             if brace_stack != 0:
                 continue
 
@@ -205,9 +219,10 @@ class CodeCompletion(object):
                 to_complete = var_segment.replace(attr_name, result['type'], 1)
             imports = [imp.split('.')[0] for imp in imports]
             data = completer.get_all_completions(to_complete, imports)
-            __attrib = [d for d in data['attributes'] if d[:2] == '__']
-            map(lambda i: data['attributes'].remove(i), __attrib)
-            data['attributes'] += __attrib
+            __attrib = [d for d in data.get('attributes', []) if d[:2] == '__']
+            if __attrib:
+                map(lambda i: data['attributes'].remove(i), __attrib)
+                data['attributes'] += __attrib
             if data:
                 return data
             else:
@@ -217,9 +232,9 @@ class CodeCompletion(object):
             data = {'attributes': result['type']['attributes'],
                 'functions': result['type']['functions']}
         else:
-            clazzes = sorted(set(re.findall("class (\w+?)\(", code)))
-            funcs = sorted(set(re.findall("(\w+?)\(", code)))
-            attrs = sorted(set(re.split('\W+', code)))
+            clazzes = sorted(set(self.patClass.findall(code)))
+            funcs = sorted(set(self.patFunction.findall(code)))
+            attrs = sorted(set(self.patWords.split(code)))
             if final_word in attrs:
                 attrs.remove(final_word)
             if attr_name in attrs:

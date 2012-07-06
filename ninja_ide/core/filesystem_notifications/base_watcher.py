@@ -25,7 +25,7 @@ RENAME = 4
 REMOVE = 5
 
 
-def do_stat(self, file_path):
+def do_stat(file_path):
     status = None
     try:
         status = os.stat(file_path)
@@ -74,6 +74,7 @@ class SingleFileWatcher(QThread):
         while self._do_run:
             self.tick()
             QThread.msleep(1000)
+        self.deleteLater()
 
 
 class BaseWatcher(QObject):
@@ -86,21 +87,27 @@ class BaseWatcher(QObject):
 
     def __init__(self):
         super(BaseWatcher, self).__init__()
+        self._single_file_watcher = None
+        self.allow_kill = True
 
     def add_file_watch(self, file_path):
         if not self._single_file_watcher:
             self._single_file_watcher = \
                 SingleFileWatcher(self._emit_signal_on_change)
+            self.connect(self._single_file_watcher,
+                SIGNAL("destroyed(QObject*)"), self.on_destroy)
             self._single_file_watcher.start()
         self._single_file_watcher.add_watch(file_path)
 
     def remove_file_watch(self, file_path):
-        self._single_file_watcher.remove_file_watch(file_path)
-        if self._single_file_watcher.is_empty():
-            self._single_file_watcher.stop_running()
-            self._single_file_watcher.quit()
-            #I realy hope this gets collected
-            self._single_file_watcher = None
+        if self._single_file_watcher:
+            self._single_file_watcher.del_watch(file_path)
+            if self._single_file_watcher.is_empty() and self.allow_kill:
+                self._single_file_watcher.stop_running()
+                self._single_file_watcher.quit()
+
+    def on_destroy(self):
+        self._single_file_watcher = None
 
     def shutdown_notification(self):
         if hasattr(self, "_single_file_watcher") and self._single_file_watcher:

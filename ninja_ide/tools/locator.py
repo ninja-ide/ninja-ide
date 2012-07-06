@@ -69,7 +69,8 @@ FILTERS = {
     'functions': '>',
     'attribs': '-',
     'non-python': '!',
-    'this-file': '.'}
+    'this-file': '.',
+    'tabs': '/'}
 
 
 class Locator(QObject):
@@ -476,8 +477,8 @@ class LocateCompleter(QLineEdit):
         self._parent = parent
         self.__prefix = ''
         self.frame = PopupCompleter()
-        self.filterPrefix = re.compile(r'^(@|<|>|-|!|\.)(\s)*')
-        self.advancePrefix = re.compile(r'(@|<|>|-|!)')
+        self.filterPrefix = re.compile(r'^(@|<|>|-|!|\.|/)(\s)*')
+        self.advancePrefix = re.compile(r'(@|<|>|-|!|/)')
         self.tempLocations = []
         self.setMinimumWidth(700)
         self.items_in_page = 0
@@ -536,10 +537,10 @@ class LocateCompleter(QLineEdit):
         #if the user type any of the prefix
         if self.filterPrefix.match(self.__prefix):
             filterOption = self.__prefix[:1]
+            main = main_container.MainContainer()
             #if the prefix is "." it means only the metadata of current file
             if filterOption == FILTERS['this-file']:
                 inCurrentFile = True
-                main = main_container.MainContainer()
                 editorWidget = main.get_actual_editor()
                 if editorWidget:
                     self.tempLocations = \
@@ -548,6 +549,13 @@ class LocateCompleter(QLineEdit):
                     self.__prefix = unicode(self.__prefix)[1:].lstrip()
                     self.tempLocations = [x for x in self.tempLocations \
                         if x.comparison.lower().find(self.__prefix) > -1]
+            elif filterOption == FILTERS['tabs']:
+                tab1, tab2 = main.get_opened_documents()
+                opened = tab1 + tab2
+                self.tempLocations = [ResultItem(FILTERS['files'],
+                    file_manager.get_basename(f[0]), f[0]) \
+                    for f in opened]
+                self.__prefix = unicode(self.__prefix)[1:].lstrip()
             else:
                 #Is not "." filter by the other options
                 self.tempLocations = [
@@ -574,7 +582,8 @@ class LocateCompleter(QLineEdit):
             editorWidget = main.get_actual_editor()
             if editorWidget:
                 filterOptions.insert(1, editorWidget.ID)
-        elif filterOptions[0] in (FILTERS['classes'], FILTERS['files']):
+        elif filterOptions[0] in (
+             FILTERS['classes'], FILTERS['files'], FILTERS['tabs']):
             currentItem = self.frame.listWidget.currentItem()
             if type(currentItem) is LocateItem:
                 if currentItem._data.type in (FILTERS['files'],
@@ -664,11 +673,11 @@ class LocateCompleter(QLineEdit):
 
     def _open_item(self, data):
         """Open the item received."""
+        main = main_container.MainContainer()
         if file_manager.get_file_extension(data.path) in ('jpg', 'png'):
-            main_container.MainContainer().open_image(data.path)
+            main.open_image(data.path)
         else:
-            main_container.MainContainer().open_file(
-                data.path, data.lineno, None, True)
+            main.open_file(data.path, data.lineno, None, True)
 
 
 class PopupCompleter(QFrame):
@@ -689,7 +698,7 @@ class PopupCompleter(QFrame):
         for item in model:
             self.listWidget.addItem(item[0])
             self.listWidget.setItemWidget(item[0], item[1])
-        self.listWidget.setCurrentRow(6)
+        self.listWidget.setCurrentRow(7)
 
     def clear(self):
         """Remove all the items of the list (deleted), and reload the help."""
@@ -756,6 +765,16 @@ class PopupCompleter(QFrame):
         thisFileItem.setForeground(QBrush(Qt.black))
         thisFileItem.setFont(font)
         self.listWidget.addItem(thisFileItem)
+        tabsItem = QListWidgetItem(
+            QIcon(resources.IMAGES['locate-tab']),
+                '/\t(Filter only by the current Tabs)')
+        font = tabsItem.font()
+        font.setBold(True)
+        tabsItem.setSizeHint(QSize(20, 30))
+        tabsItem.setBackground(QBrush(Qt.lightGray))
+        tabsItem.setForeground(QBrush(Qt.black))
+        tabsItem.setFont(font)
+        self.listWidget.addItem(tabsItem)
         nonPythonItem = QListWidgetItem(
             QIcon(resources.IMAGES['locate-nonpython']),
                 '!\t(Filter only by Non Python Files)')

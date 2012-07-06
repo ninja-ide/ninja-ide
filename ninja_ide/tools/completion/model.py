@@ -16,6 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 
+MODULES = None
 late_resolution = 0
 
 
@@ -35,6 +36,16 @@ def filter_data_type(data_types):
     data_type = [occurrences[key][1] for key in occurrences \
                 if occurrences[key][0] == maximum]
     return data_type[0]
+
+
+def remove_function_arguments(line):
+    while line.find('(') != -1:
+        start = line.find('(')
+        end = line.find(')') + 1
+        if start == -1 or end == 0:
+            break
+        line = line[:start] + line[end:]
+    return line
 
 
 class _TypeData(object):
@@ -101,6 +112,8 @@ class Structure(object):
         for func_name in self.functions:
             if func_name in functions:
                 old_func = functions[func_name]
+                if old_func.__class__ is Assign:
+                    continue
                 function = self.functions[func_name]
                 function.update_functions(old_func.functions)
                 function.update_attributes(old_func.attributes)
@@ -143,7 +156,7 @@ class Structure(object):
     def recursive_search_type(self, structure, attrs, scope):
         result = {'found': False, 'type': None}
         structure = self._get_scope_structure(structure, scope)
-        if structure:
+        if structure and structure.__class__ is not Assign:
             attr_name = attrs[0]
             data_type = structure.get_attribute_type(attr_name)
             result = data_type
@@ -176,7 +189,7 @@ class Module(Structure):
 
     def get_type(self, main_attr, child_attrs='', scope=None):
         result = {'found': False, 'type': None}
-        canonical_attrs = self.remove_function_arguments(child_attrs)
+        canonical_attrs = remove_function_arguments(child_attrs)
         if not scope:
             value = self.imports.get(main_attr,
                 self.attributes.get(main_attr,
@@ -226,6 +239,13 @@ class Module(Structure):
                 result = {'found': False,
                           'type': result['type'].get_completion_items(),
                           'object': result['type']}
+        elif result['type'].__class__ is LinkedModule:
+            if main_attr == 'self':
+                attrs = canonical_attrs.split('.', 1)
+                canonical_attrs = ''
+                if len(attrs) > 1:
+                    canonical_attrs = attrs[1]
+            result = result['type'].get_type(canonical_attrs)
 
         return result
 
@@ -250,13 +270,6 @@ class Module(Structure):
             result['object'] = data_type
         return result
 
-    def remove_function_arguments(self, line):
-        while line.find('(') != -1:
-            start = line.find('(')
-            end = line.find(')') + 1
-            line = line[:start] + line[end:]
-        return line
-
     def get_imports(self):
         module_imports = ['import __builtin__']
         for name in self.imports:
@@ -269,7 +282,8 @@ class Module(Structure):
         for cla in self.classes:
             clazz = self.classes[cla]
             for parent in clazz.bases:
-                return True
+                if clazz.bases[parent] is None:
+                    return True
             if self._check_attr_func_resolution(clazz):
                 return True
         return False
@@ -299,10 +313,22 @@ class Clazz(Structure):
         super(Clazz, self).__init__()
         self.name = name
         self.bases = {}
-        self.decorators = []
+        self._update_bases = []
+#        self.decorators = []
 
     def add_parent(self, parent):
-        self.bases[parent] = None
+        self._update_bases.append(parent)
+        value = self.bases.get(parent, None)
+        if value is None:
+            self.bases[parent] = None
+
+    def update_bases(self):
+        to_remove = []
+        for parent in self.bases:
+            if parent not in self._update_bases:
+                to_remove.append(parent)
+        for remove in to_remove:
+            self.bases.pop(parent)
 
     def get_completion_items(self):
         attributes = [a for a in self.attributes]
@@ -319,6 +345,7 @@ class Clazz(Structure):
             if parent.__class__ is Clazz:
                 self.attributes.update(parent.attributes)
                 self.functions.update(parent.functions)
+                self.bases[base] = None
             elif isinstance(parent, tuple):
                 parent_name = parent[0]
                 data = parent[1]
@@ -385,3 +412,27 @@ class Assign(object):
             return filter_data_type(possible)
         else:
             return None
+
+
+class LinkedModule(object):
+
+    def __init__(self, path, attrs):
+        self.name = path
+        self.resolve_attrs = remove_function_arguments(attrs)
+
+    def get_type(self, resolve=''):
+        result = {'found': False, 'type': None}
+        global MODULES
+        module = MODULES.get(self.name, None)
+        if module:
+            if resolve:
+                to_resolve = "%s.%s" % (self.resolve_attrs, resolve)
+            else:
+                to_resolve = self.resolve_attrs
+            to_resolve = to_resolve.split('.', 1)
+            main_attr = to_resolve[0]
+            child_attr = ''
+            if len(to_resolve) == 2:
+                child_attr = to_resolve[1]
+            result = module.get_type(main_attr, child_attr)
+        return result

@@ -186,6 +186,7 @@ class TabWidget(QTabWidget):
                 QMessageBox.Yes)
 
     def _file_changed(self, change_type, file_path):
+        file_path = unicode(file_path)
         editorWidget = self.currentWidget()
         opened = [path for path, _ in self.get_documents_data()]
 
@@ -268,6 +269,8 @@ class TabWidget(QTabWidget):
                 widget.shutdown_pydoc()
             elif type(widget) is editor.Editor and widget.ID:
                 self._add_to_last_opened(widget.ID)
+                self._parent.remove_standalone_watcher(widget.ID)
+                widget.completer.cc.unload_module()
 
             self.remove_title(index)
             super(TabWidget, self).removeTab(index)

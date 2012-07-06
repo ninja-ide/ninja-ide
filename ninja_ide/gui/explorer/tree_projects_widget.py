@@ -50,6 +50,7 @@ from ninja_ide.tools import json_manager
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.main_panel import main_container
 from ninja_ide.gui.dialogs import project_properties_widget
+from ninja_ide.tools.completion import completion_daemon
 
 
 class TreeProjectsWidget(QTreeWidget):
@@ -364,6 +365,7 @@ class TreeProjectsWidget(QTreeWidget):
         path, item, structure = value
         item.takeChildren()
         self._load_folder(structure, path, item)
+        #todo: refresh completion
         item.setExpanded(True)
 
     def _close_project(self):
@@ -626,6 +628,7 @@ class TreeProjectsWidget(QTreeWidget):
             item.setSelected(True)
             self.setCurrentItem(item)
         self._fileWatcher.add_watch(folder)
+        completion_daemon.add_project_folder(folder)
 
     def _load_folder(self, folderStructure, folder, parentItem):
         """Load the Tree Project structure recursively."""
@@ -781,7 +784,13 @@ class ProjectTree(QTreeWidgetItem):
         self.PYTHONPATH = project.get('PYTHONPATH', '')
         self.programParams = project.get('programParams', '')
         self.venv = project.get('venv', '')
+        self.related_projects = project.get('relatedProjects', [])
+        self.update_paths()
         self.addedToConsole = False
+
+    def update_paths(self):
+        for path in self.related_projects:
+            completion_daemon.add_project_folder(path)
 
     @property
     def isProject(self):
