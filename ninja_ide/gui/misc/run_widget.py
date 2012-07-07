@@ -1,8 +1,24 @@
 # -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
 import time
 import re
+import sys
 
 from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QLabel
@@ -15,6 +31,7 @@ from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QTextCharFormat
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QProcess
+from PyQt4.QtCore import QProcessEnvironment
 from PyQt4.QtCore import QFile
 from PyQt4.QtCore import SIGNAL
 
@@ -111,16 +128,19 @@ class RunWidget(QWidget):
         self._proc.writeData(text)
         self.input.setText("")
 
-    def start_process(self, fileName, pythonPath=False, programParams='',
-      preExec='', postExec=''):
+    def start_process(self, fileName, pythonPath=False, PYTHONPATH=None,
+        programParams='', preExec='', postExec=''):
+
         """Prepare the output widget and start the process."""
         self.lblInput.show()
         self.input.show()
         self.fileName = fileName
-        self.pythonPath = pythonPath
+        self.pythonPath = pythonPath  # FIXME, this is python interpreter
         self.programParams = programParams
         self.preExec = preExec
         self.postExec = postExec
+        self.PYTHONPATH = PYTHONPATH
+
         self.__pre_execution()
 
     def __main_execution(self):
@@ -146,6 +166,18 @@ class RunWidget(QWidget):
         #force python to unbuffer stdin and stdout
         options = ['-u'] + settings.EXECUTION_OPTIONS.split()
         self.currentProcess = self._proc
+
+        if self.PYTHONPATH:
+            envpaths = [path for path in self.PYTHONPATH.splitlines()]
+            env = QProcessEnvironment()
+            system_environemnt = self._proc.systemEnvironment()
+            for e in system_environemnt:
+                key, value = unicode(e).split('=', 1)
+                env.insert(key, value)
+            for path in envpaths:
+                env.insert('PYTHONPATH', path)
+            self._proc.setProcessEnvironment(env)
+
         self._proc.start(self.pythonPath, options + [self.fileName] + \
             [p.strip() for p in self.programParams.split(',') if p])
 

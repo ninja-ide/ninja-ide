@@ -1,15 +1,29 @@
 # -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 import _ast
 import ast
 
-import logging
-
 from ninja_ide.tools.completion import analyzer
 
+from ninja_ide.tools.logger import NinjaLogger
 
-logger_imports = logging.getLogger(
+logger_imports = NinjaLogger(
     'ninja_ide.tools.introspection.obtaining_imports')
-logger_symbols = logging.getLogger(
+logger_symbols = NinjaLogger(
     'ninja_ide.tools.introspection.obtainint_symbols')
 
 _map_type = {
@@ -56,8 +70,13 @@ def _parse_class(symbol, with_docstrings):
                 func[result['name']] = result['lineno']
     if with_docstrings:
         docstring[symbol.lineno] = ast.get_docstring(symbol, clean=True)
+
+    lineno = symbol.lineno
+    for decorator in symbol.decorator_list:
+        lineno += 1
+
     return {'name': name, 'attributes': attr, 'functions': func,
-        'lineno': symbol.lineno, 'docstring': docstring}
+        'lineno': lineno, 'docstring': docstring}
 
 
 def _parse_function(symbol, with_docstrings):
@@ -106,7 +125,11 @@ def _parse_function(symbol, with_docstrings):
     if with_docstrings:
         docstring = ast.get_docstring(symbol, clean=True)
 
-    return {'name': func_name, 'lineno': symbol.lineno,
+    lineno = symbol.lineno
+    for decorator in symbol.decorator_list:
+        lineno += 1
+
+    return {'name': func_name, 'lineno': lineno,
         'attrs': attrs, 'docstring': docstring}
 
 

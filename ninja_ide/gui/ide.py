@@ -1,8 +1,23 @@
 # -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+
 from __future__ import absolute_import
 
 import sys
-import logging
 
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QMainWindow
@@ -35,6 +50,7 @@ from ninja_ide.gui import actions
 from ninja_ide.gui.dialogs import preferences
 from ninja_ide.gui.dialogs import traceback_widget
 from ninja_ide.tools import json_manager
+from ninja_ide.tools.completion import completion_daemon
 #NINJA-IDE Containers
 from ninja_ide.gui import central_widget
 from ninja_ide.gui.main_panel import main_container
@@ -53,15 +69,11 @@ from ninja_ide.gui.menus import menu_source
 ###############################################################################
 # LOGGER INITIALIZE
 ###############################################################################
-logger = logging.getLogger('ninja_ide')
-#The file is open in write mode from byte 0 (1 run logger)
-handler = logging.FileHandler(resources.LOG_FILE_PATH, mode='w')
-formatter = logging.Formatter("%(asctime)s %(name)s:%(lineno)-4d "
-                              "%(levelname)-8s %(message)s",
-                              '%Y-%m-%d %H:%M:%S')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
-logger.setLevel(logging.DEBUG)
+
+from ninja_ide.tools.logger import NinjaLogger
+
+logger = NinjaLogger('ninja_ide.gui.ide')
+
 
 ###############################################################################
 # IDE: MAIN CONTAINER
@@ -292,7 +304,6 @@ class __IDE(QMainWindow):
         self.explorer.open_session_projects(projects, notIDEStart=False)
         if current_file:
             self.mainContainer.open_file(current_file, notStart=False)
-        self.status.explore_code()
 
     def open_file(self, filename):
         if filename:
@@ -397,15 +408,18 @@ class __IDE(QMainWindow):
             self.s_listener.close()
         if settings.CONFIRM_EXIT and \
         self.mainContainer.check_for_unsaved_tabs():
+            unsaved_files = self.mainContainer.get_unsaved_files()
+            txt = '\n'.join(unsaved_files)
             val = QMessageBox.question(self,
                 self.tr("Some changes were not saved"),
-                self.tr("Do you want to exit anyway?"),
+                self.tr("%1\n\nDo you want to exit anyway?").arg(txt),
                 QMessageBox.Yes, QMessageBox.No)
             if val == QMessageBox.No:
                 event.ignore()
         QApplication.instance().setCursorFlashTime(cursor_flash_time)
         self.emit(SIGNAL("goingDown()"))
         self.save_settings()
+        completion_daemon.shutdown_daemon()
         #close python documentation server (if running)
         self.mainContainer.close_python_doc()
         #Shutdown PluginManager
@@ -489,12 +503,20 @@ def start(filenames=None, projects_path=None,
 
     #Set Stylesheet
     if settings.USE_STYLESHEET:
-        with open(resources.NINJA_THEME) as f:
-            qss = f.read()
-            app.setStyleSheet(qss)
+        if settings.NINJA_SKIN == 'Default':
+            with open(resources.NINJA_THEME) as f:
+                qss = f.read()
+                app.setStyleSheet(qss)
+        else:
+            file_name = ("%s.qss" % settings.NINJA_SKIN)
+            qss_file = file_manager.create_path(resources.NINJA_THEME_DOWNLOAD,
+                file_name)
+            with open(qss_file) as f:
+                qss = f.read()
+                app.setStyleSheet(qss)
 
-    #Loading Themes
-    splash.showMessage("Loading Themes", Qt.AlignRight | Qt.AlignTop, Qt.black)
+    #Loading Schemes
+    splash.showMessage("Loading Schemes", Qt.AlignRight | Qt.AlignTop, Qt.black)
     scheme = unicode(qsettings.value('preferences/editor/scheme',
         "default").toString())
     if scheme != 'default':

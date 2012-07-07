@@ -1,4 +1,20 @@
-# -*- coding: utf-8 *-*
+# -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+
 from __future__ import absolute_import
 
 from PyQt4.QtCore import SIGNAL
@@ -9,16 +25,16 @@ import win32event
 import os
 from ninja_ide.core import file_manager
 
-import logging
-logger = logging.getLogger('ninja_ide.core.filesystem_notifications.windows')
+from ninja_ide.tools.logger import NinjaLogger
+logger = NinjaLogger('ninja_ide.core.filesystem_notifications.windows')
 DEBUG = logger.debug
 
 from ninja_ide.core.filesystem_notifications import base_watcher
-ADDED = base_watcher.BaseWatcher.ADDED
-DELETED = base_watcher.BaseWatcher.DELETED
-MODIFIED = base_watcher.BaseWatcher.MODIFIED
-REMOVE = base_watcher.BaseWatcher.REMOVE
-RENAME = base_watcher.BaseWatcher.RENAME
+ADDED = base_watcher.ADDED
+DELETED = base_watcher.DELETED
+REMOVE = base_watcher.REMOVE
+RENAME = base_watcher.RENAME
+MODIFIED = base_watcher.MODIFIED
 
 watchmask = win32con.FILE_NOTIFY_CHANGE_FILE_NAME | \
             win32con.FILE_NOTIFY_CHANGE_SIZE | \
@@ -164,6 +180,7 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
             # Remove real watcher using platform specific things
 
     def shutdown_notification(self):
+        base_watcher.BaseWatcher.shutdown_notification(self)
         for each_path in self.watching_paths:
             each_path = self.watching_paths[each_path]
             each_path.stop()

@@ -1,4 +1,19 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 from PyQt4.QtGui import QKeySequence
 from PyQt4.QtCore import QDir
@@ -61,7 +76,7 @@ PLUGINS_DOC = "http://code.google.com/p/ninja-ide/wiki/New_Plugins_API"
 
 UPDATES_URL = 'http://ninja-ide.org/updates'
 
-SCHEMES_URL = 'http://ninja-ide.org/plugins/schemes'
+SCHEMES_URL = 'http://ninja-ide.org/schemes/api/'
 
 LANGUAGES_URL = 'http://ninja-ide.org/plugins/languages'
 
@@ -157,6 +172,7 @@ IMAGES = {
     "locate-nonpython": os.path.join(PRJ_PATH, "img", "locate-nonpython.png"),
     "locate-on-this-file": os.path.join(PRJ_PATH, "img",
         "locate-on-this-file.png"),
+    "locate-tab": os.path.join(PRJ_PATH, "img", "locate-tab.png"),
     "add": os.path.join(PRJ_PATH, "img", "add.png"),
     "delete": os.path.join(PRJ_PATH, "img", "delete.png"),
     "loading": os.path.join(PRJ_PATH, "img", "loading.gif"),

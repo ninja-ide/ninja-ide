@@ -1,4 +1,19 @@
-# -*- coding: utf-8 *-*
+# -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 # DISCLAIMER ABOUT READING THIS CODE:
 # We are not responsible for any kind of mental or emotional
@@ -10,8 +25,11 @@ from tokenize import generate_tokens, TokenError
 from StringIO import StringIO
 
 from ninja_ide.core import settings
+from ninja_ide.gui.editor import helpers
+from ninja_ide.tools.completion import model
 from ninja_ide.tools.completion import analyzer
 from ninja_ide.tools.completion import completer
+from ninja_ide.tools.completion import completion_daemon
 
 
 #Because my python doesn't have it, and is not in the web docs either
@@ -23,23 +41,44 @@ class CodeCompletion(object):
 
     def __init__(self):
         self.analyzer = analyzer.Analyzer()
-        self.current_module = None
+        self.cdaemon = completion_daemon.CompletionDaemon()
+        # Set modules reference to model
+        model.MODULES = self.cdaemon.modules
+        self.module_id = None
         self.patIndent = re.compile('^\s+')
+        self.patClass = re.compile("class (\w+?)\(")
+        self.patFunction = re.compile("(\w+?)\(")
+        self.patWords = re.compile('\W+')
         self._valid_op = (')', '}', ']')
         self._invalid_op = ('(', '{', '[')
+        self._invalid_words = ('if', 'elif', 'for', 'while', 'in', 'return',
+            'and', 'or', 'del', 'except', 'from', 'import', 'is', 'print',
+            'super', 'yield')
         self.keywords = settings.SYNTAX['python']['keywords']
 
-    def analyze_project(self, path):
-        pass
+    def unload_module(self):
+        self.cdaemon.unload_module(self.module_id)
 
     def analyze_file(self, path, source=None):
         if source is None:
             with open(path) as f:
                 source = f.read()
-        self.current_module = self.analyzer.analyze(source)
+        split_last_lines = source.rsplit('\n', 2)
+        if len(split_last_lines) > 1 and \
+           split_last_lines[-2].endswith(':') and split_last_lines[-1] == '':
+            indent = helpers.get_indentation(split_last_lines[-2])
+            source += '%spass;' % indent
 
-    def update_file(self, path):
-        pass
+        self.module_id = path
+        if not self.cdaemon.daemon.is_alive():
+            completion_daemon.shutdown_daemon()
+            del self.cdaemon
+            self.cdaemon = completion_daemon.CompletionDaemon()
+            # Set modules reference to model
+            model.MODULES = self.cdaemon.modules
+        module = self.cdaemon.get_module(self.module_id)
+        module = self.analyzer.analyze(source, module)
+        self.cdaemon.inspect_module(self.module_id, module)
 
     def _tokenize_text(self, code):
         # TODO Optimization, only iterate until the previous line of a class??
@@ -52,12 +91,14 @@ class CodeCompletion(object):
             #This is an expected situation, where i don't want to do anything
             #possible an unbalanced brace like: func(os.p| (| = cursor-end)
             pass
+        except IndentationError:
+            return []
         while token_code[-1][0] in (tkn.ENDMARKER, tkn.DEDENT, tkn.NEWLINE):
             token_code.pop()
         return token_code
 
     def _search_for_scope(self, token_code):
-        if not token_code[-1][3].startswith(' '):
+        if not token_code or not token_code[-1][3].startswith(' '):
             return None
         scopes = []
         indent = self.patIndent.match(token_code[-1][3])
@@ -98,20 +139,22 @@ class CodeCompletion(object):
         tokens = []
         keep_iter = True
         iterate = reversed(token_code)
-        value = iterate.next()
         while keep_iter:
-            if value[0] in (tkn.NEWLINE, tkn.INDENT, tkn.DEDENT):
-                keep_iter = False
-            tokens.append(value)
             try:
                 value = iterate.next()
+                if value[0] in (tkn.NEWLINE, tkn.INDENT, tkn.DEDENT):
+                    keep_iter = False
+                tokens.append(value)
             except:
                 keep_iter = False
         segment = ''
         brace_stack = 0
+        first_element = True
         for t in tokens:
             token_str = t[1]
-            if token_str in self._valid_op:
+            if token_str in self._invalid_words and not first_element:
+                break
+            elif token_str in self._valid_op:
                 if brace_stack == 0:
                     segment = token_str + segment
                 brace_stack += 1
@@ -120,6 +163,7 @@ class CodeCompletion(object):
                 if brace_stack == 0:
                     segment = token_str + segment
                     continue
+            first_element = False
             if brace_stack != 0:
                 continue
 
@@ -139,6 +183,8 @@ class CodeCompletion(object):
         final_word = ''
         if not var_segment.endswith('.') and len(words_final) > 1:
             final_word = words_final[1].strip()
+        elif (var_segment != "") and len(words_final) == 1:
+            final_word = words_final[0].strip()
         return final_word, (var_segment != "")
 
     def get_completion(self, code, offset):
@@ -147,7 +193,8 @@ class CodeCompletion(object):
         var_segment = self._search_for_completion_segment(token_code)
         words = var_segment.split('.', 1)
         words_final = var_segment.rsplit('.', 1)
-        attr_name = words[0].strip()
+        main_attribute = words[0].strip().split('(', 1)
+        attr_name = main_attribute[0]
         word = ''
         final_word = ''
         if var_segment.count(".") > 0:
@@ -157,32 +204,46 @@ class CodeCompletion(object):
             word = word.rsplit('.', 1)[0].strip()
             if final_word == word:
                 word = ''
-        result = self.current_module.get_type(attr_name, word, scopes)
-        if result[0] and result[1] is not None:
-            imports = self.current_module.get_imports()
+        self.cdaemon.lock.acquire()
+        module = self.cdaemon.get_module(self.module_id)
+        imports = module.get_imports()
+        result = module.get_type(attr_name, word, scopes)
+        self.cdaemon.lock.release()
+        if result['found'] and result['type'] is not None:
             prefix = attr_name
-            if result[1] != attr_name:
-                prefix = result[1]
+            if result['type'] != attr_name:
+                prefix = result['type']
                 word = final_word
             to_complete = "%s.%s" % (prefix, word)
+            if result.get('main_attr_replace', False):
+                to_complete = var_segment.replace(attr_name, result['type'], 1)
+            imports = [imp.split('.')[0] for imp in imports]
             data = completer.get_all_completions(to_complete, imports)
-        else:
-            if result[1] is not None and len(result[1]) > 0:
-                data = {'attributes': result[1][0],
-                    'functions': result[1][1]}
+            __attrib = [d for d in data.get('attributes', []) if d[:2] == '__']
+            if __attrib:
+                map(lambda i: data['attributes'].remove(i), __attrib)
+                data['attributes'] += __attrib
+            if data:
+                return data
             else:
-                clazzes = sorted(set(re.findall("class (\w+?)\(", code)))
-                funcs = sorted(set(re.findall("(\w+?)\(", code)))
-                attrs = sorted(set(re.split('\W+', code)))
-                if final_word in attrs:
-                    attrs.remove(final_word)
-                if attr_name in attrs:
-                    attrs.remove(attr_name)
-                filter_attrs = lambda x: (x not in funcs) and \
-                    not x.isdigit() and (x not in self.keywords)
-                attrs = filter(filter_attrs, attrs)
-                funcs = filter(lambda x: x not in clazzes, funcs)
-                data = {'attributes': attrs,
-                    'functions': funcs,
-                    'classes': clazzes}
+                result = {'found': None, 'type': None}
+
+        if result['type'] is not None and len(result['type']) > 0:
+            data = {'attributes': result['type']['attributes'],
+                'functions': result['type']['functions']}
+        else:
+            clazzes = sorted(set(self.patClass.findall(code)))
+            funcs = sorted(set(self.patFunction.findall(code)))
+            attrs = sorted(set(self.patWords.split(code)))
+            if final_word in attrs:
+                attrs.remove(final_word)
+            if attr_name in attrs:
+                attrs.remove(attr_name)
+            filter_attrs = lambda x: (x not in funcs) and \
+                not x.isdigit() and (x not in self.keywords)
+            attrs = filter(filter_attrs, attrs)
+            funcs = filter(lambda x: x not in clazzes, funcs)
+            data = {'attributes': attrs,
+                'functions': funcs,
+                'classes': clazzes}
         return data

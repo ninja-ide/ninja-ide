@@ -1,8 +1,22 @@
 # -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
 import re
-import logging
 import Queue
 
 from PyQt4.QtGui import QMessageBox
@@ -35,8 +49,10 @@ from ninja_ide.core import file_manager
 from ninja_ide.core import settings
 from ninja_ide.tools import json_manager
 
+from ninja_ide.tools.logger import NinjaLogger
 
-logger = logging.getLogger('ninja_ide.tools.locator')
+
+logger = NinjaLogger('ninja_ide.tools.locator')
 
 mapping_locations = {}
 
@@ -53,7 +69,8 @@ FILTERS = {
     'functions': '>',
     'attribs': '-',
     'non-python': '!',
-    'this-file': '.'}
+    'this-file': '.',
+    'tabs': '/'}
 
 
 class Locator(QObject):
@@ -460,8 +477,8 @@ class LocateCompleter(QLineEdit):
         self._parent = parent
         self.__prefix = ''
         self.frame = PopupCompleter()
-        self.filterPrefix = re.compile(r'^(@|<|>|-|!|\.)(\s)*')
-        self.advancePrefix = re.compile(r'(@|<|>|-|!)')
+        self.filterPrefix = re.compile(r'^(@|<|>|-|!|\.|/)(\s)*')
+        self.advancePrefix = re.compile(r'(@|<|>|-|!|/)')
         self.tempLocations = []
         self.setMinimumWidth(700)
         self.items_in_page = 0
@@ -520,10 +537,10 @@ class LocateCompleter(QLineEdit):
         #if the user type any of the prefix
         if self.filterPrefix.match(self.__prefix):
             filterOption = self.__prefix[:1]
+            main = main_container.MainContainer()
             #if the prefix is "." it means only the metadata of current file
             if filterOption == FILTERS['this-file']:
                 inCurrentFile = True
-                main = main_container.MainContainer()
                 editorWidget = main.get_actual_editor()
                 if editorWidget:
                     self.tempLocations = \
@@ -532,6 +549,13 @@ class LocateCompleter(QLineEdit):
                     self.__prefix = unicode(self.__prefix)[1:].lstrip()
                     self.tempLocations = [x for x in self.tempLocations \
                         if x.comparison.lower().find(self.__prefix) > -1]
+            elif filterOption == FILTERS['tabs']:
+                tab1, tab2 = main.get_opened_documents()
+                opened = tab1 + tab2
+                self.tempLocations = [ResultItem(FILTERS['files'],
+                    file_manager.get_basename(f[0]), f[0]) \
+                    for f in opened]
+                self.__prefix = unicode(self.__prefix)[1:].lstrip()
             else:
                 #Is not "." filter by the other options
                 self.tempLocations = [
@@ -558,7 +582,8 @@ class LocateCompleter(QLineEdit):
             editorWidget = main.get_actual_editor()
             if editorWidget:
                 filterOptions.insert(1, editorWidget.ID)
-        elif filterOptions[0] in (FILTERS['classes'], FILTERS['files']):
+        elif filterOptions[0] in (
+             FILTERS['classes'], FILTERS['files'], FILTERS['tabs']):
             currentItem = self.frame.listWidget.currentItem()
             if type(currentItem) is LocateItem:
                 if currentItem._data.type in (FILTERS['files'],
@@ -590,9 +615,10 @@ class LocateCompleter(QLineEdit):
             self.tempLocations = [
                 x for x in mapping_locations.get(filePath, []) \
                 if x.type == filterOptions[2]]
-        if filterOptions[3 + moveIndex]:
+        moveIndex += 3
+        if len(filterOptions) > moveIndex and filterOptions[moveIndex]:
             self.tempLocations = [x for x in self.tempLocations \
-              if x.comparison.lower().find(filterOptions[3 + moveIndex]) > -1]
+              if x.comparison.lower().find(filterOptions[moveIndex]) > -1]
 
     def _advanced_filter_by_file(self, filterOptions):
         if filterOptions[1] == FILTERS['files']:
@@ -647,11 +673,11 @@ class LocateCompleter(QLineEdit):
 
     def _open_item(self, data):
         """Open the item received."""
+        main = main_container.MainContainer()
         if file_manager.get_file_extension(data.path) in ('jpg', 'png'):
-            main_container.MainContainer().open_image(data.path)
+            main.open_image(data.path)
         else:
-            main_container.MainContainer().open_file(
-                data.path, data.lineno, None, True)
+            main.open_file(data.path, data.lineno, None, True)
 
 
 class PopupCompleter(QFrame):
@@ -672,7 +698,7 @@ class PopupCompleter(QFrame):
         for item in model:
             self.listWidget.addItem(item[0])
             self.listWidget.setItemWidget(item[0], item[1])
-        self.listWidget.setCurrentRow(6)
+        self.listWidget.setCurrentRow(7)
 
     def clear(self):
         """Remove all the items of the list (deleted), and reload the help."""
@@ -739,6 +765,16 @@ class PopupCompleter(QFrame):
         thisFileItem.setForeground(QBrush(Qt.black))
         thisFileItem.setFont(font)
         self.listWidget.addItem(thisFileItem)
+        tabsItem = QListWidgetItem(
+            QIcon(resources.IMAGES['locate-tab']),
+                '/\t(Filter only by the current Tabs)')
+        font = tabsItem.font()
+        font.setBold(True)
+        tabsItem.setSizeHint(QSize(20, 30))
+        tabsItem.setBackground(QBrush(Qt.lightGray))
+        tabsItem.setForeground(QBrush(Qt.black))
+        tabsItem.setFont(font)
+        self.listWidget.addItem(tabsItem)
         nonPythonItem = QListWidgetItem(
             QIcon(resources.IMAGES['locate-nonpython']),
                 '!\t(Filter only by Non Python Files)')

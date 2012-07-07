@@ -1,6 +1,22 @@
-# -*- coding: utf-8 *-*
+# -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 from PyQt4.QtGui import QApplication
+from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QFrame
 from PyQt4.QtGui import QCompleter
 from PyQt4.QtGui import QStackedLayout
@@ -21,6 +37,8 @@ class CodeCompletionWidget(QFrame):
         super(CodeCompletionWidget, self).__init__(
             None, Qt.FramelessWindowHint | Qt.ToolTip)
         self._editor = editor
+        self._revision = 0
+        self._block = 0
         self.stack_layout = QStackedLayout(self)
         self.stack_layout.setContentsMargins(0, 0, 0, 0)
         self.stack_layout.setSpacing(0)
@@ -56,10 +74,13 @@ class CodeCompletionWidget(QFrame):
             Qt.ShiftModifier: self.hide_completer,
         }
 
-        desktop = QApplication.instance().desktop()
-        self._desktop_geometry = desktop.availableGeometry()
+        self.desktop = QApplication.instance().desktop()
 
-        self.connect(self._editor.document(), SIGNAL("blockCountChanged(int)"),
+        self.connect(self.completion_list,
+            SIGNAL("itemClicked(QListWidgetItem*)"),
+            self.pre_key_insert_completion)
+        self.connect(self._editor.document(),
+            SIGNAL("cursorPositionChanged(QTextCursor)"),
             self.update_metadata)
 
     def _select_next_row(self, move=1):
@@ -79,33 +100,43 @@ class CodeCompletionWidget(QFrame):
                 self.completion_list.count() - move)
         return True
 
-    def update_metadata(self):
-        source = self._editor.get_text()
-        source = source.encode(self._editor.encoding)
-        self.cc.analyze_file('', source)
+    def update_metadata(self, cursor):
+        if settings.CODE_COMPLETION:
+            if self._editor.document().revision() != self._revision and \
+               cursor.block().blockNumber() != self._block:
+                source = self._editor.get_text()
+                source = source.encode(self._editor.encoding)
+                self.cc.analyze_file(self._editor.ID, source)
+                self._revision = self._editor.document().revision()
+                self._block = cursor.block().blockNumber()
 
-    def insert_completion(self, insert):
+    def insert_completion(self, insert, type_=ord('a')):
         if insert != self._prefix:
+            closing = ''
+            if type_ in (ord('f'), ord('c')):
+                closing = '()'
             extra = len(self._prefix) - len(insert)
-            self._editor.textCursor().insertText(insert[extra:])
+            insertion = '%s%s' % (insert[extra:], closing)
+            self._editor.textCursor().insertText(insertion)
         self.hide_completer()
 
     def _get_geometry(self):
         cr = self._editor.cursorRect()
+        desktop_geometry = self.desktop.availableGeometry(self._editor)
         point = self._editor.mapToGlobal(cr.topLeft())
         cr.moveTopLeft(point)
         #Check new position according desktop geometry
         width = (self.completion_list.sizeHintForColumn(0) + \
             self.completion_list.verticalScrollBar().sizeHint().width() + 10)
         height = 200
-        orientation = (point.y() + height) < self._desktop_geometry.height()
+        orientation = (point.y() + height) < desktop_geometry.height()
         if orientation:
             cr.moveTop(cr.bottom())
         cr.setWidth(width)
         cr.setHeight(height)
         if not orientation:
             cr.moveBottom(cr.top())
-        xpos = self._desktop_geometry.width() - (point.x() + width)
+        xpos = desktop_geometry.width() - (point.x() + width)
         if xpos < 0:
             cr.moveLeft(cr.left() + xpos)
         return cr
@@ -124,7 +155,7 @@ class CodeCompletionWidget(QFrame):
             self.completion_list.addItem(
                 QListWidgetItem(
                 QIcon(self._icons.get(p[0], resources.IMAGES['attribute'])),
-                p[1]))
+                p[1], type=ord(p[0])))
 
     def set_completion_prefix(self, prefix, valid=True):
         self._prefix = prefix
@@ -146,7 +177,22 @@ class CodeCompletionWidget(QFrame):
         else:
             self.hide_completer()
 
-    def fill_completer(self):
+    def _invalid_completion_position(self):
+        result = False
+        cursor = self._editor.textCursor()
+        cursor.movePosition(QTextCursor.StartOfLine,
+            QTextCursor.KeepAnchor)
+        selection = unicode(cursor.selectedText())[:-1].split(' ')
+        if len(selection) == 0 or selection[-1] == '' or \
+           selection[-1].isdigit():
+            result = True
+        return result
+
+    def fill_completer(self, force_completion=False):
+        if not force_completion and (self._editor.cursor_inside_string() or \
+           self._editor.cursor_inside_comment() or \
+           self._invalid_completion_position()):
+            return
         source = self._editor.get_text()
         source = source.encode(self._editor.encoding)
         offset = self._editor.textCursor().position()
@@ -160,8 +206,12 @@ class CodeCompletionWidget(QFrame):
         self.hide()
 
     def pre_key_insert_completion(self):
-        insert = unicode(self.completion_list.currentItem().text())
-        self.insert_completion(insert)
+        type_ = ord('a')
+        current = self.completion_list.currentItem()
+        insert = unicode(current.text())
+        if not insert.endswith(')'):
+            type_ = current.type()
+        self.insert_completion(insert, type_)
         self.hide_completer()
         return True
 
@@ -184,9 +234,10 @@ class CodeCompletionWidget(QFrame):
             prefix, valid = self.cc.get_prefix(source, offset)
             self.set_completion_prefix(prefix, valid)
             self.completion_list.setCurrentRow(0)
-        if event.key() == Qt.Key_Period  or (event.key() == Qt.Key_Space and \
-           event.modifiers() == Qt.ControlModifier):
-            self.fill_completer()
+        force_completion = (event.key() == Qt.Key_Space and \
+                            event.modifiers() == Qt.ControlModifier)
+        if event.key() == Qt.Key_Period  or force_completion:
+            self.fill_completer(force_completion)
 
 
 class CompleterWidget(QCompleter):

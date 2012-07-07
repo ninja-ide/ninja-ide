@@ -1,4 +1,38 @@
-# -*- coding: utf-8 *-*
+# -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+
+import re
+
+
+def get_source_data(code, word=""):
+    clazzes = sorted(set(re.findall("class (\w+?)\(", code)))
+    funcs = sorted(set(re.findall("(\w+?)\(", code)))
+    attrs = sorted(set(re.split('\W+', code)))
+    del attrs[0]
+    filter_attrs = lambda x: (x not in funcs) and not x.isdigit()
+    attrs = filter(filter_attrs, attrs)
+    if word in attrs:
+        attrs.remove(word)
+    funcs = filter(lambda x: x not in clazzes, funcs)
+    data = {'attributes': attrs,
+        'functions': funcs,
+        'classes': clazzes}
+    return data
+
 
 SOURCE_COMPLETION = """
 a = "ninja-ide"
@@ -63,4 +97,26 @@ def global_func():
 
 
 man = ()
+"""
+
+
+SOURCE_LATE_RESOLUTION = """
+import os
+
+p = os.path
+"""
+
+
+SOURCE_INHERITANCE = """
+import decimal
+from threading import Lock
+
+class Parent:
+
+    def __init__(self):
+        self.value = 'string'
+
+    def function(self):
+        pass
+
 """

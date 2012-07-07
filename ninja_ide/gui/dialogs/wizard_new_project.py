@@ -1,9 +1,24 @@
-# *-* coding: utf-8 *-*
+# -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+
 from __future__ import absolute_import
 
 import os
 import sys
-import logging
 
 from PyQt4.QtGui import QWizard
 from PyQt4.QtGui import QWizardPage
@@ -27,12 +42,12 @@ from ninja_ide.core import settings
 from ninja_ide.core import plugin_interfaces
 from ninja_ide.core import file_manager
 from ninja_ide.tools import json_manager
+from ninja_ide.tools.logger import NinjaLogger
 
 
-logger = logging.getLogger('ninja_ide.gui.dialogs.wizard_new_project')
-logging.basicConfig()
-logger.setLevel(logging.DEBUG)
+logger = NinjaLogger('ninja_ide.gui.dialogs.wizard_new_project')
 logger.info("loaded")
+DEBUG = logger.debug
 
 
 ###############################################################################
@@ -245,6 +260,10 @@ class PageProjectType(QWizardPage):
 
         self.connect(self.listWidget, SIGNAL("itemActivated(QListWidgetItem*)"),
             self.load_pages)
+
+    def validatePage(self):
+        self._wizard.option = unicode(self.listWidget.currentItem().text())
+        return True
 
     def load_pages(self):
         self.wizard().add_project_pages(

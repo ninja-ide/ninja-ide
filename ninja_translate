@@ -13,13 +13,14 @@ SOURCES += \
     ninja_ide/gui/dialogs/project_properties_widget.py \
     ninja_ide/gui/dialogs/preferences.py \
     ninja_ide/gui/dialogs/plugins_manager.py \
-    ninja_ide/gui/dialogs/open_projects_type.py \
+    ninja_ide/gui/dialogs/language_manager.py \
     ninja_ide/gui/dialogs/from_import_dialog.py \
     ninja_ide/gui/dialogs/about_ninja.py \
     ninja_ide/gui/editor/editor.py \
     ninja_ide/gui/explorer/tree_projects_widget.py \
     ninja_ide/gui/explorer/tree_symbols_widget.py \
     ninja_ide/gui/explorer/explorer_container.py \
+    ninja_ide/gui/explorer/errors_lists.py \
     ninja_ide/gui/main_panel/tab_widget.py \
     ninja_ide/gui/main_panel/tab_group.py \
     ninja_ide/gui/main_panel/recent_project_item.py \

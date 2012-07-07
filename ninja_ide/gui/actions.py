@@ -1,4 +1,20 @@
 # -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+
 from __future__ import absolute_import
 
 import re
@@ -417,7 +433,13 @@ class __Actions(QObject):
         try:
             path = file_manager.store_file_content(
                 path, editorWidget.get_text(), newFile=True)
+            self.ide.mainContainer._file_watcher.allow_kill = False
+            if path != editorWidget.ID:
+                self.ide.mainContainer.remove_standalone_watcher(
+                    editorWidget.ID)
             editorWidget.ID = path
+            self.ide.mainContainer.add_standalone_watcher(path)
+            self.ide.mainContainer._file_watcher.allow_kill = True
             self.ide.explorer.add_existing_file(path)
             self.ide.change_window_title(path)
             name = file_manager.get_basename(path)
@@ -451,7 +473,6 @@ class __Actions(QObject):
     def open_project(self, path=''):
         """Open a Project and load the symbols in the Code Locator."""
         self.ide.explorer.open_project_folder(unicode(path))
-        self.ide.status.explore_code()
 
     def open_project_properties(self):
         """Open a Project and load the symbols in the Code Locator."""
@@ -499,7 +520,6 @@ class __Actions(QObject):
         self.ide.explorer.close_opened_projects()
         self.ide.mainContainer.open_files(settings.PROFILES[key][0])
         self.ide.explorer.open_session_projects(settings.PROFILES[key][1])
-        self.ide.status.explore_code()
 
     def close_files_from_project(self, project):
         """Close the files related to this project."""
@@ -555,17 +575,22 @@ class __Actions(QObject):
           self.ide.explorer._treeProjects._actualProject:
             self.ide.explorer._treeProjects.open_project_properties()
         elif mainFile:
+
             self.save_project()
             path = self.ide.explorer.get_actual_project()
             #emit a signal for plugin!
             self.emit(SIGNAL("projectExecuted(QString)"), path)
+
+            # load our jutsus!
             project = json_manager.read_ninja_project(path)
             venv = project.get('venv', False)
+            PYTHONPATH = project.get('PYTHONPATH', None)
             params = project.get('programParams', '')
             preExec = project.get('preExecScript', '')
             postExec = project.get('postExecScript', '')
             mainFile = file_manager.create_path(path, mainFile)
             self.ide.misc.run_application(mainFile, pythonPath=venv,
+                PYTHONPATH=PYTHONPATH,
                 programParams=params, preExec=preExec, postExec=postExec)
 
     def kill_execution(self):

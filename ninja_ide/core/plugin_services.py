@@ -1,4 +1,19 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
 
@@ -8,6 +23,7 @@ from PyQt4.QtCore import pyqtSignal
 
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
+from ninja_ide.core import plugin_util
 from ninja_ide.gui.main_panel import itab_item
 from ninja_ide.gui.main_panel import main_container
 from ninja_ide.gui import actions
@@ -460,13 +476,17 @@ class ExplorerService(QObject):
         if self._explorer._treeProjects:
             self._explorer._treeProjects.add_extra_menu(menu, lang=lang)
 
-    def add_project_menu_by_scope(self, menu, scope='all'):
+    def add_project_menu_by_scope(self, menu, scope=None):
         """
         Add an extra menu to the project explorer to the specific scope
         @scope: String with the menu scope (all, project, folder, file)
         """
+        if scope is None:
+            #default behavior show ALL
+            scope = plugin_util.ContextMenuScope(project=True, folder=True,
+                files=True)
         if self._explorer._treeProjects:
-            self._explorer._treeProjects.add_item_extra_menu(menu, scope=scope)
+            self._explorer._treeProjects.add_extra_menu_by_scope(menu, scope)
 
     # SIGNALS
     def _projectOpened(self, projectPath):

@@ -1,18 +1,34 @@
-# *-* coding: utf-8 *-*
+# -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+
 from __future__ import absolute_import
 
 import webbrowser
 from copy import copy
-import logging
+from distutils import version
 
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QTextBrowser
-#from PyQt4.QtGui import QLineEdit
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QTableWidget
 from PyQt4.QtGui import QTabWidget
+from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QMessageBox
@@ -24,9 +40,9 @@ from ninja_ide.core import plugin_manager
 from ninja_ide.core import file_manager
 from ninja_ide.tools import ui_tools
 
+from ninja_ide.tools.logger import NinjaLogger
 
-logger = logging.getLogger('ninja_ide.gui.dialogs.plugin_manager')
-
+logger = NinjaLogger('ninja_ide.gui.dialogs.plugin_manager')
 
 TABLE_HEADER = ('Name', 'Version')
 HTML_STYLE = """
@@ -81,6 +97,7 @@ class PluginsManagerWidget(QDialog):
         self._locals = []
         self._updates = []
         self._loading = True
+        self._requirements = {}
 
         self.connect(btnReload, SIGNAL("clicked()"), self._reload_plugins)
         self.thread = ThreadLoadPlugins(self)
@@ -261,23 +278,9 @@ class AvailableWidget(QWidget):
             "changes to take effect.")))
         vbox.addLayout(hbox)
 
-#        hbox = QHBoxLayout()
-#        hbox.addWidget(QLabel(
-#            self.tr("Add an external Plugin. URL Zip File:")))
-#        self._link = QLineEdit()
-#        hbox.addWidget(self._link)
-#        btnAdd = QPushButton(self.tr("Add"))
-#        hbox.addWidget(btnAdd)
-#        vbox.addLayout(hbox)
-#        lblExternalPlugin = QLabel(
-#            self.tr("(Write the URL of the Plugin and press 'Add')"))
-#        lblExternalPlugin.setAlignment(Qt.AlignRight)
-#        vbox.addWidget(lblExternalPlugin)
-
         self.connect(btnInstall, SIGNAL("clicked()"), self._install_plugins)
         self.connect(self._table, SIGNAL("itemSelectionChanged()"),
             self._show_item_description)
-#        self.connect(btnAdd, SIGNAL("clicked()"), self._install_external)
 
     def _show_item_description(self):
         item = self._table.currentItem()
@@ -382,7 +385,7 @@ class ThreadLoadPlugins(QThread):
     """
 
     def __init__(self, manager):
-        QThread.__init__(self)
+        super(ThreadLoadPlugins, self).__init__()
         self._manager = manager
         #runnable hold a function to call!
         self.runnable = self.collect_data_thread
@@ -419,7 +422,12 @@ class ThreadLoadPlugins(QThread):
                 community_available = [p for p in community_available
                         if unicode(p["name"]) != unicode(local_data["name"])]
             #check versions
-            if ava and float(ava["version"]) > float(local_data["version"]):
+            if ava:
+                available_version = version.LooseVersion(str(ava["version"]))
+            else:
+                available_version = version.LooseVersion('0.0')
+            local_version = version.LooseVersion(str(local_data["version"]))
+            if available_version > local_version:
                 #this plugin has an update
                 updates.append(ava)
         #set manager attributes
@@ -437,6 +445,9 @@ class ThreadLoadPlugins(QThread):
                 name = plugin_manager.download_plugin(p[5])
                 p.append(name)
                 plugin_manager.update_local_plugin_descriptor((p, ))
+                req_command = plugin_manager.has_dependencies(p)
+                if req_command[0]:
+                    self._manager._requirements[p[0]] = req_command[1]
                 self.emit(SIGNAL("plugin_downloaded(PyQt_PyObject)"), p)
             except Exception, e:
                 logger.warning("Impossible to install (%s): %s", p[0], e)
@@ -462,3 +473,29 @@ class ThreadLoadPlugins(QThread):
                 self._manager.reset_installed_plugins()
             except Exception, e:
                 logger.warning("Impossible to update (%s): %s", p[0], e)
+
+
+class DependenciesHelpDialog(QDialog):
+    def __init__(self, requirements_dict):
+        super(DependenciesHelpDialog, self).__init__()
+        self.setWindowTitle(self.tr("Plugin requirements"))
+        self.resize(525, 400)
+        vbox = QVBoxLayout(self)
+        label = QLabel(self.tr("""It seems that some plugins needs some
+            dependencies to be solved to work properly, you should install them
+            as follows using a Terminal"""))
+        vbox.addWidget(label)
+        self._editor = QPlainTextEdit()
+        self._editor.setReadOnly(True)
+        vbox.addWidget(self._editor)
+        hbox = QHBoxLayout()
+        btnAccept = QPushButton(self.tr("Accept"))
+        btnAccept.setMaximumWidth(100)
+        hbox.addWidget(btnAccept)
+        vbox.addLayout(hbox)
+        #signals
+        self.connect(btnAccept, SIGNAL("clicked()"), self.close)
+
+        command_tmpl = "<%s>:\n%s\n"
+        for name, description in requirements_dict.iteritems():
+            self._editor.insertPlainText(command_tmpl % (name, description))

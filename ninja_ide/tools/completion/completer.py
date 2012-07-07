@@ -1,15 +1,30 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 #Based in pycomplete emacs module.
+
+from __future__ import absolute_import
 
 import sys
 import types
-import inspect
+#import inspect
 import StringIO
-import logging
+from ninja_ide.tools.logger import NinjaLogger
 
-logger = logging.getLogger('ninja_ide.tools.completion.completer')
+logger = NinjaLogger('ninja_ide.tools.completion.completer')
 
 _HELPOUT = StringIO.StringIO
 _STDOUT = sys.stdout
@@ -44,11 +59,12 @@ def get_completions_per_type(object_dir):
             # but we drop the "self" param.
             obj = obj.im_func
 
-        if type(obj) in [types.FunctionType, types.LambdaType]:
-            (args, varargs, varkw, defaults) = inspect.getargspec(obj)
-            sig = ('%s%s' % (obj.__name__,
-                               inspect.formatargspec(args, varargs, varkw,
-                                                     defaults)))
+        # Not Show functions args, but we will use this for showing doc
+#        if type(obj) in [types.FunctionType, types.LambdaType]:
+#            (args, varargs, varkw, defaults) = inspect.getargspec(obj)
+#            sig = ('%s%s' % (obj.__name__,
+#                               inspect.formatargspec(args, varargs, varkw,
+#                                                     defaults)))
         if not sig:
             sig = attr[attr.rfind('.') + 1:]
         result[type_assign.get(type(obj), 'attributes')].append(sig)
@@ -107,23 +123,31 @@ def get_all_completions(s, imports=None):
         if not s:
             continue
         try:
-            s = unicode(s)
-            sym = eval(s, globals(), dlocals)
-        except NameError:
             try:
-                sym = __import__(s, globals(), dlocals, [])
-            except ImportError:
-                return {}
-            except AttributeError:
+                s = unicode(s)
+                if s.startswith('PyQt4.') and s.endswith('()'):
+                    s = s[:-2]
+                sym = eval(s, globals(), dlocals)
+            except NameError:
                 try:
                     sym = __import__(s, globals(), dlocals, [])
                 except ImportError:
-                    pass
+                    if s.find('(') != -1 and s[-1] == ')':
+                        s = s[:s.index('(')]
+                    sym = eval(s, globals(), dlocals)
+                except AttributeError:
+                    try:
+                        sym = __import__(s, globals(), dlocals, [])
+                    except ImportError:
+                        pass
+        except (AttributeError, NameError, TypeError, SyntaxError):
+            return {}
     if sym is not None:
         var = s
         s = dots[-1]
         return get_completions_per_type(["%s.%s" % (var, k) for k in \
             dir(sym) if k.startswith(s)])
+    return {}
 
 
 def _find_constructor(class_ob):

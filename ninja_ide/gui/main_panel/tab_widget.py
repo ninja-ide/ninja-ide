@@ -1,7 +1,20 @@
 # -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
-
-import logging
 
 from PyQt4.QtGui import QTabWidget
 from PyQt4.QtGui import QIcon
@@ -19,11 +32,15 @@ from PyQt4.QtCore import SIGNAL
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
+from ninja_ide.core.filesystem_notifications.base_watcher import MODIFIED, \
+                                                                DELETED
 from ninja_ide.core.filesystem_notifications import NinjaFileSystemWatcher
 from ninja_ide.gui.editor import editor
 from ninja_ide.gui.main_panel import browser_widget
 
-logger = logging.getLogger('ninja_ide.gui.main_panel.tab_widget')
+from ninja_ide.tools.logger import NinjaLogger
+
+logger = NinjaLogger('ninja_ide.gui.main_panel.tab_widget')
 
 
 class TabWidget(QTabWidget):
@@ -60,10 +77,6 @@ class TabWidget(QTabWidget):
         self._parent = parent
         self.follow_mode = False
         self._change_map = {}
-        # Configure tabs size behavior
-#        self.setElideMode(Qt.ElideRight)
-#        self.tabBar().setExpanding(True)
-#        self.tabBar().setUsesScrollButtons(False)
         #On some plataforms there are problem with focusInEvent
         self.question_already_open = False
         #Keep track of the tab titles
@@ -87,10 +100,6 @@ class TabWidget(QTabWidget):
             self.__lastOpened = self.__lastOpened[1:]
 
     def add_tab(self, widget, title, index=None):
-#        if self.count() > 9:
-#            self.setElideMode(Qt.ElideNone)
-#            self.tabBar().setExpanding(False)
-#            self.tabBar().setUsesScrollButtons(True)
         try:
             if index is not None:
                 inserted_index = self.insertTab(index, widget, title)
@@ -151,35 +160,56 @@ class TabWidget(QTabWidget):
         #Check never saved
         if editorWidget.newDocument:
             return
-        #Check if we should ask to the user
-        if not editorWidget.ask_if_externally_modified:
-            return
         #Check external modifications!
         self.check_for_external_modifications(editorWidget)
         #we can ask again
         self.question_already_open = False
 
-    def _file_changed(self, change_type, file_path):
-        if self.is_open(file_path) and (file_path not in self._change_map):
-            self._change_map[unicode(file_path)] = int(change_type)
-
-    def check_for_external_modifications(self, editorWidget):
-        reloaded = False
-        if (editorWidget.ID in self._change_map) and \
-           not self.question_already_open:
-            #dont ask again if you are already asking!
-            self.question_already_open = True
+    def _prompt_reload(self, editorWidget, change):
+        self.question_already_open = True
+        if change == MODIFIED:
+            if editorWidget.just_saved:
+                editorWidget.just_saved = False
+                return
             val = QMessageBox.question(self, 'The file has changed on disc!',
                 self.tr("%1\nDo you want to reload it?").arg(editorWidget.ID),
                 QMessageBox.Yes, QMessageBox.No)
             if val == QMessageBox.Yes:
                 self.emit(SIGNAL("reloadFile(QWidget)"), editorWidget)
-                reloaded = True
-                del(self._change_map[editorWidget.ID])
             else:
                 #dont ask again while the current file is open
                 editorWidget.ask_if_externally_modified = False
-        return reloaded
+        elif change == DELETED:
+                val = QMessageBox.information(self,
+                            'The file has deleted from disc!',
+                self.tr("%1\n").arg(editorWidget.ID),
+                QMessageBox.Yes)
+
+    def _file_changed(self, change_type, file_path):
+        file_path = unicode(file_path)
+        editorWidget = self.currentWidget()
+        opened = [path for path, _ in self.get_documents_data()]
+
+        if (file_path in opened) and \
+            ((not editorWidget) or (editorWidget.ID != file_path)) and \
+            (change_type in (MODIFIED, DELETED)):
+            self._change_map.setdefault(unicode(file_path),
+                                        []).append(change_type)
+        elif not editorWidget:
+            return
+        elif (editorWidget.ID == file_path) and \
+            (not self.question_already_open):
+            #dont ask again if you are already asking!
+            self._prompt_reload(editorWidget, change_type)
+
+    def check_for_external_modifications(self, editorWidget):
+        e_path = editorWidget.ID
+        if e_path in self._change_map:
+            if DELETED in self._change_map[e_path]:
+                self._prompt_reload(editorWidget, DELETED)
+            else:
+                self._prompt_reload(editorWidget, MODIFIED)
+            self._change_map.pop(e_path)
 
     def tab_was_saved(self, ed):
         index = self.indexOf(ed)
@@ -239,6 +269,8 @@ class TabWidget(QTabWidget):
                 widget.shutdown_pydoc()
             elif type(widget) is editor.Editor and widget.ID:
                 self._add_to_last_opened(widget.ID)
+                self._parent.remove_standalone_watcher(widget.ID)
+                widget.completer.cc.unload_module()
 
             self.remove_title(index)
             super(TabWidget, self).removeTab(index)
@@ -397,11 +429,26 @@ class TabWidget(QTabWidget):
 #        self.emit(SIGNAL("dropTab(QTabWidget)"), self)
 
     def _check_unsaved_tabs(self):
+        """
+        Check if are there any unsaved tab
+        Returns True or False
+        """
         val = False
         for i in range(self.count()):
             if type(self.widget(i)) is editor.Editor:
                 val = val or self.widget(i).textModified
         return val
+
+    def get_unsaved_files(self):
+        """
+        Returns a list with the tabText of the unsaved files
+        """
+        files = []
+        for i in range(self.count()):
+            widget = self.widget(i)
+            if type(widget) is editor.Editor and widget.textModified:
+                files.append(unicode(self.tabText(i)))
+        return files
 
     def change_tab(self):
         if self.currentIndex() < (self.count() - 1):

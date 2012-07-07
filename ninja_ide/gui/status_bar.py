@@ -1,8 +1,23 @@
 # -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+
 from __future__ import absolute_import
 
 import re
-import logging
 
 from PyQt4.QtGui import QStatusBar
 from PyQt4.QtGui import QLabel
@@ -27,8 +42,9 @@ from ninja_ide import resources
 from ninja_ide.tools import locator
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.main_panel import main_container
+from ninja_ide.tools.logger import NinjaLogger
 
-logger = logging.getLogger('ninja_ide.gui.status_bar')
+logger = NinjaLogger('ninja_ide.gui.status_bar')
 DEBUG = logger.debug
 
 __statusBarInstance = None
@@ -305,12 +321,14 @@ class SearchWidget(QWidget):
         self._line.counter.update_count(self.index, self.totalMatches)
 
     def find_matches(self, editor):
+        if editor is None:
+            return
         text = unicode(editor.toPlainText())
         search = unicode(self._line.text())
         hasSearch = len(search) > 0
         if self._checkWholeWord.isChecked():
             pattern = r'\b%s\b' % search
-            temp_text = ''.join(re.findall(pattern, text, re.IGNORECASE))
+            temp_text = ' '.join(re.findall(pattern, text, re.IGNORECASE))
             text = temp_text if temp_text != '' else text
         if self._checkSensitive.isChecked():
             self.totalMatches = text.count(search)

@@ -1,8 +1,22 @@
 # -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
 import re
-import logging
 
 from tokenize import generate_tokens, TokenError
 import token as tkn
@@ -19,7 +33,7 @@ from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QTextDocument
 from PyQt4.QtGui import QTextFormat
 from PyQt4.QtGui import QFont
-#from PyQt4.QtGui import QMenu
+from PyQt4.QtGui import QMenu
 from PyQt4.QtGui import QPainter
 from PyQt4.QtGui import QColor
 from PyQt4.QtCore import SIGNAL
@@ -38,8 +52,10 @@ from ninja_ide.gui.editor import pep8_checker
 from ninja_ide.gui.editor import errors_checker
 from ninja_ide.gui.editor import sidebar_widget
 
+from ninja_ide.tools.logger import NinjaLogger
+
 BRACE_DICT = {')': '(', ']': '[', '}': '{', '(': ')', '[': ']', '{': '}'}
-logger = logging.getLogger('ninja_ide.gui.editor.editor')
+logger = NinjaLogger('ninja_ide.gui.editor.editor')
 
 
 class Editor(QPlainTextEdit, itab_item.ITabItem):
@@ -90,12 +106,12 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self._patIsWord = re.compile('\w+')
         #Brace matching
         self._braces = None
-        self._mtime = None
         self.__encoding = None
         #Completer
         self.completer = completer_widget.CodeCompletionWidget(self)
         #Flag to dont bug the user when answer *the modification dialog*
         self.ask_if_externally_modified = False
+        self.just_saved = False
         #Dict functions for KeyPress
         self.preKeyPress = {
             Qt.Key_Tab: self.__insert_indentation,
@@ -179,7 +195,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def set_id(self, id_):
         super(Editor, self).set_id(id_)
-        self._mtime = file_manager.get_last_modification(id_)
         if self._mini:
             self._mini.set_code(self.toPlainText())
         if settings.CHECK_STYLE:
@@ -264,13 +279,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                         self.pep8.pep8checks.keys()))
             self.highlighter.rehighlight_lines(lines)
 
-    def check_external_modification(self):
-        if self.newDocument:
-            return False
-        #Saved document we can ask for modification!
-        return file_manager.check_for_external_modification(
-            self.get_id(), self._mtime)
-
     def has_write_permission(self):
         if self.newDocument:
             return True
@@ -354,20 +362,33 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         """
         return self.textCursor().document().lineCount()
 
+    def cursor_inside_string(self):
+        inside = False
+        cursor = self.textCursor()
+        pos = cursor.positionInBlock()
+        user_data = cursor.block().userData()
+        if user_data is not None:
+            for vals in user_data.str_groups:
+                if vals[0] < pos < vals[1]:
+                    inside = True
+                    break
+        return inside
+
+    def cursor_inside_comment(self):
+        inside = False
+        cursor = self.textCursor()
+        pos = cursor.positionInBlock()
+        user_data = cursor.block().userData()
+        if user_data is not None:
+            if (user_data.comment_start != -1) and \
+               (pos > user_data.comment_start):
+                inside = True
+        return inside
+
     def set_font(self, family=settings.FONT_FAMILY, size=settings.FONT_SIZE):
         font = QFont(family, size)
         self.document().setDefaultFont(font)
-        # Fix for older version of Qt which doens't has ForceIntegerMetrics
-        if "ForceIntegerMetrics" in dir(QFont):
-            self.document().defaultFont().setStyleStrategy(
-                QFont.ForceIntegerMetrics)
-        font_metrics = QFontMetricsF(self.document().defaultFont())
-        if (font_metrics.width("#") * settings.MARGIN_LINE) == \
-           (font_metrics.width(" ") * settings.MARGIN_LINE):
-            self.pos_margin = font_metrics.width('#') * settings.MARGIN_LINE
-        else:
-            char_width = font_metrics.averageCharWidth()
-            self.pos_margin = char_width * settings.MARGIN_LINE
+        self._update_margin_line(font)
 
     def jump_to_line(self, lineno=None):
         """
@@ -393,10 +414,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         """
         Go to an specific line
         """
-        cursor = self.textCursor()
-        cursor.setPosition(self.document().findBlockByLineNumber(
-            lineno).position())
-        self.setTextCursor(cursor)
+        if self.blockCount() >= lineno:
+            cursor = self.textCursor()
+            cursor.setPosition(self.document().findBlockByLineNumber(
+                lineno).position())
+            self.setTextCursor(cursor)
 
     def zoom_in(self):
         font = self.document().defaultFont()
@@ -405,6 +427,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             size += 2
             font.setPointSize(size)
         self.setFont(font)
+        self._update_margin_line(font)
 
     def zoom_out(self):
         font = self.document().defaultFont()
@@ -413,6 +436,20 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             size -= 2
             font.setPointSize(size)
         self.setFont(font)
+        self._update_margin_line(font)
+
+    def _update_margin_line(self, font):
+        # Fix for older version of Qt which doens't has ForceIntegerMetrics
+        if "ForceIntegerMetrics" in dir(QFont):
+            self.document().defaultFont().setStyleStrategy(
+                QFont.ForceIntegerMetrics)
+        font_metrics = QFontMetricsF(self.document().defaultFont())
+        if (font_metrics.width("#") * settings.MARGIN_LINE) == \
+           (font_metrics.width(" ") * settings.MARGIN_LINE):
+            self.pos_margin = font_metrics.width('#') * settings.MARGIN_LINE
+        else:
+            char_width = font_metrics.averageCharWidth()
+            self.pos_margin = char_width * settings.MARGIN_LINE
 
     def get_parent_project(self):
         return ''
@@ -421,9 +458,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         return self.textCursor().position()
 
     def set_cursor_position(self, pos):
-        cursor = self.textCursor()
-        cursor.setPosition(pos)
-        self.setTextCursor(cursor)
+        if self.document().characterCount() >= pos:
+            cursor = self.textCursor()
+            cursor.setPosition(pos)
+            self.setTextCursor(cursor)
 
     def indent_more(self):
         #cursor is a COPY all changes do not affect the QPlainTextEdit's cursor
@@ -797,22 +835,17 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def contextMenuEvent(self, event):
         popup_menu = self.createStandardContextMenu()
 
-#        menuRefactor = QMenu(self.tr("Refactor"))
-#        extractMethodAction = menuRefactor.addAction(
-#            self.tr("Extract as Method"))
-#        organizeImportsAction = menuRefactor.addAction(
-#            self.tr("Organize Imports"))
-#        removeUnusedAction = menuRefactor.addAction(
-#            self.tr("Remove Unused Imports"))
-        #TODO
-#        self.connect(organizeImportsAction, SIGNAL("triggered()"),
-#            self.organize_imports)
-#        self.connect(removeUnusedAction, SIGNAL("triggered()"),
-#            self.remove_unused_imports)
-#        self.connect(extractMethodAction, SIGNAL("triggered()"),
-#            self.extract_method)
+        menu_lint = QMenu(self.tr("Ignore Lint"))
+        ignoreLineAction = menu_lint.addAction(
+            self.tr("Ignore This Line"))
+        ignoreSelectedAction = menu_lint.addAction(
+            self.tr("Ignore Selected Area"))
+        self.connect(ignoreLineAction, SIGNAL("triggered()"),
+            lambda: helpers.lint_ignore_line(self))
+        self.connect(ignoreSelectedAction, SIGNAL("triggered()"),
+            lambda: helpers.lint_ignore_selection(self))
         popup_menu.insertSeparator(popup_menu.actions()[0])
-#        popup_menu.insertMenu(popup_menu.actions()[0], menuRefactor)
+        popup_menu.insertMenu(popup_menu.actions()[0], menu_lint)
         popup_menu.insertAction(popup_menu.actions()[0],
             self.__actionFindOccurrences)
         #add extra menus (from Plugins)
@@ -861,7 +894,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         QPlainTextEdit.mouseMoveEvent(self, event)
 
     def mousePressEvent(self, event):
-        if event.modifiers() == Qt.ControlModifier:
+        if self.completer.isVisible():
+            self.completer.hide_completer()
+        elif event.modifiers() == Qt.ControlModifier:
             cursor = self.cursorForPosition(event.pos())
             self.setTextCursor(cursor)
             self.go_to_definition(cursor)

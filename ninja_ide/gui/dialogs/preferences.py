@@ -1,4 +1,20 @@
-# *-* coding: utf-8 *-*
+# -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+
 from __future__ import absolute_import
 
 import os
@@ -1632,7 +1648,7 @@ class ThemeTab(QTabWidget):
         self.addTab(self.theme_designer, "Theme Designer")
 
     def save(self):
-        pass
+        self.theme_chooser.save()
 
 
 class ThemeChooser(QWidget):
@@ -1645,26 +1661,59 @@ class ThemeChooser(QWidget):
         self.list_skins = QListWidget()
         self.list_skins.setSelectionMode(QListWidget.SingleSelection)
         vbox.addWidget(self.list_skins)
+        self.btn_delete = QPushButton(self.tr("Delete Theme"))
         self.btn_preview = QPushButton(self.tr("Preview Theme"))
         hbox = QHBoxLayout()
+        hbox.addWidget(self.btn_delete)
         hbox.addSpacerItem(QSpacerItem(10, 0, QSizePolicy.Expanding,
             QSizePolicy.Fixed))
         hbox.addWidget(self.btn_preview)
         vbox.addLayout(hbox)
+        self._refresh_list()
 
         self.connect(self.btn_preview, SIGNAL("clicked()"), self.preview_theme)
+        self.connect(self.btn_delete, SIGNAL("clicked()"), self.delete_theme)
+
+    def delete_theme(self):
+        if self.list_skins.currentRow() != 0:
+            file_name = ("%s.qss" %
+                self.list_skins.currentItem().text())
+            qss_file = file_manager.create_path(resources.NINJA_THEME_DOWNLOAD,
+                file_name)
+            file_manager.delete_file(qss_file)
+            self._refresh_list()
 
     def showEvent(self, event):
+        self._refresh_list()
+        super(ThemeChooser, self).showEvent(event)
+
+    def _refresh_list(self):
         self.list_skins.clear()
         self.list_skins.addItem("Default")
 
         files = [file_manager.get_file_name(filename) for filename in \
             file_manager.get_files_from_folder(
             resources.NINJA_THEME_DOWNLOAD, "qss")]
+        files.sort()
         self.list_skins.addItems(files)
 
-        self.list_skins.setCurrentRow(0)
-        super(ThemeChooser, self).showEvent(event)
+        if settings.NINJA_SKIN == 'Default':
+            self.list_skins.setCurrentRow(0)
+        elif settings.NINJA_SKIN in files:
+            index = files.index(settings.NINJA_SKIN)
+            self.list_skins.setCurrentRow(index + 1)
+        else:
+            self.list_skins.setCurrentRow(0)
+
+    def save(self):
+        qsettings = QSettings()
+        qsettings.beginGroup('preferences')
+        qsettings.beginGroup('theme')
+        settings.NINJA_SKIN = self.list_skins.currentItem().text()
+        qsettings.setValue("skin", settings.NINJA_SKIN)
+        qsettings.endGroup()
+        qsettings.endGroup()
+        self.preview_theme()
 
     def preview_theme(self):
         if self.list_skins.currentRow() == 0:
@@ -1753,6 +1802,7 @@ class ThemeDesigner(QWidget):
             file_manager.store_file_content(file_name, content, newFile=True)
             QMessageBox.information(self, self.tr("Style Sheet Saved"),
                 self.tr("Theme saved at: '%s'." % file_name))
+            self.edit_qss.document().setModified(False)
         except file_manager.NinjaFileExistsException, ex:
             QMessageBox.information(self, self.tr("File Already Exists"),
                 self.tr("Invalid File Name: the file '%s' already exists." % \

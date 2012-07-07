@@ -1,4 +1,20 @@
 # -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+
 from __future__ import absolute_import
 
 import sys
@@ -34,10 +50,15 @@ try:
         parser.add_argument('--plugin',
             metavar='plugin', type=unicode,
             nargs='+', help='A plugin to load', default=[])
-
+        parser.add_argument('--loglevel', help="Level to use for logging, "
+                    "one of 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'",
+                    default=None, metavar="loglevel")
+        parser.add_argument('--logfile', help="A file path to log, special "
+                                        "words STDOUT or STDERR are accepted",
+                                        default=None, metavar="logfile")
         return parser
 
-except:
+except ImportError:
     import optparse
 
     new_parser = False
@@ -106,6 +127,9 @@ def parse():
     projects_path = None
     linenos = None
     extra_plugins = None
+    log_level = None
+    log_file = None
+
     try:
         if new_parser:
             opts = _get_parser().parse_args()
@@ -127,7 +151,11 @@ def parse():
         extra_plugins = opts.plugin \
             if isinstance(opts.plugin, list) \
             else  [opts.plugin]
+        log_level = opts.loglevel
+        log_file = opts.logfile
+
     except Exception, reason:
         print("Args couldn't be parsed.")
         print(reason)
-    return filenames, projects_path, extra_plugins, linenos
+    return (filenames, projects_path, extra_plugins, linenos, log_level,
+            log_file)

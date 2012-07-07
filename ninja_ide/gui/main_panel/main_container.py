@@ -1,9 +1,23 @@
 # -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
 import sys
 import os
-import logging
 
 from PyQt4 import uic
 from PyQt4.QtGui import QSplitter
@@ -18,6 +32,7 @@ from PyQt4.QtCore import QDir
 from ninja_ide import resources
 from ninja_ide.core import file_manager
 from ninja_ide.core import settings
+from ninja_ide.core.filesystem_notifications import NinjaFileSystemWatcher
 from ninja_ide.gui.main_panel import tab_widget
 from ninja_ide.gui.editor import editor
 from ninja_ide.gui.editor import highlighter
@@ -26,8 +41,9 @@ from ninja_ide.gui.main_panel import browser_widget
 from ninja_ide.gui.main_panel import image_viewer
 from ninja_ide.tools import runner
 
+from ninja_ide.tools.logger import NinjaLogger
 
-logger = logging.getLogger('ninja_ide.gui.main_panel.main_container')
+logger = NinjaLogger('ninja_ide.gui.main_panel.main_container')
 
 __mainContainerInstance = None
 
@@ -79,6 +95,9 @@ class __MainContainer(QSplitter):
         highlighter.restyle(resources.CUSTOM_SCHEME)
         #documentation browser
         self.docPage = None
+        # File Watcher
+        self._file_watcher = NinjaFileSystemWatcher
+        self._watched_simple_files = []
 
         self.connect(self._tabMain, SIGNAL("currentChanged(int)"),
             self._current_tab_changed)
@@ -319,6 +338,7 @@ class __MainContainer(QSplitter):
             editorWidget = self.get_actual_editor()
         if editorWidget is not None and editorWidget.ID:
             fileName = editorWidget.ID
+            self._file_watcher.allow_kill = False
             old_cursor_position = editorWidget.textCursor().position()
             old_widget_index = self.actualTab.indexOf(editorWidget)
             self.actualTab.removeTab(old_widget_index)
@@ -329,6 +349,7 @@ class __MainContainer(QSplitter):
             cursor = editorWidget.textCursor()
             cursor.setPosition(old_cursor_position)
             editorWidget.setTextCursor(cursor)
+            self._file_watcher.allow_kill = True
 
     def open_image(self, fileName):
         try:
@@ -393,12 +414,13 @@ class __MainContainer(QSplitter):
                 editorWidget.setPlainText(content)
                 editorWidget.ID = fileName
                 editorWidget.async_highlight()
-                encoding = file_manager._search_coding_line(content)
+                encoding = file_manager.get_file_encoding(content)
                 editorWidget.encoding = encoding
                 if not positionIsLineNumber:
                     editorWidget.set_cursor_position(cursorPosition)
                 else:
                     editorWidget.go_to_line(cursorPosition)
+                self.add_standalone_watcher(editorWidget.ID, notStart)
 
                 if not editorWidget.has_write_permission():
                     fileName += unicode(self.tr(" (Read-Only)"))
@@ -421,6 +443,23 @@ class __MainContainer(QSplitter):
         except Exception, reason:
             logger.error('open_file: %s', reason)
         self.actualTab.notOpening = True
+
+    def add_standalone_watcher(self, filename, not_start=True):
+        # Add File Watcher if needed
+        opened_projects = self._parent.explorer.get_opened_projects()
+        opened_projects = [p.path for p in opened_projects]
+        alone = not_start
+        for folder in opened_projects:
+            if file_manager.belongs_to_folder(folder, filename):
+                alone = False
+        if alone:
+            self._file_watcher.add_file_watch(filename)
+            self._watched_simple_files.append(filename)
+
+    def remove_standalone_watcher(self, filename):
+        if filename in self._watched_simple_files:
+            self._file_watcher.remove_file_watch(filename)
+            self._watched_simple_files.remove(filename)
 
     def is_open(self, filename):
         return self._tabMain.is_open(filename) != -1 or \
@@ -477,6 +516,7 @@ class __MainContainer(QSplitter):
         if not editorWidget:
             return False
         try:
+            editorWidget.just_saved = True
             if editorWidget.newDocument or \
             not file_manager.has_write_permission(editorWidget.ID):
                 return self.save_file_as()
@@ -488,14 +528,20 @@ class __MainContainer(QSplitter):
             content = editorWidget.get_text()
             file_manager.store_file_content(
                 fileName, content, addExtension=False)
+            self._file_watcher.allow_kill = False
+            if editorWidget.ID != fileName:
+                self.remove_standalone_watcher(editorWidget.ID)
+            self.add_standalone_watcher(fileName)
+            self._file_watcher.allow_kill = True
             editorWidget.ID = fileName
-            encoding = file_manager._search_coding_line(content)
+            encoding = file_manager.get_file_encoding(content)
             editorWidget.encoding = encoding
             self.emit(SIGNAL("fileSaved(QString)"),
                 self.tr("File Saved: %1").arg(fileName))
             editorWidget._file_saved()
             return True
         except Exception, reason:
+            editorWidget.just_saved = False
             logger.error('save_file: %s', reason)
             QMessageBox.information(self, self.tr("Save Error"),
                 self.tr("The file couldn't be saved!"))
@@ -506,6 +552,7 @@ class __MainContainer(QSplitter):
         if not editorWidget:
             return False
         try:
+            editorWidget.just_saved = True
             filters = '(*.py);;(*.*)'
             if editorWidget.ID:
                 ext = file_manager.get_file_extension(editorWidget.ID)
@@ -527,16 +574,23 @@ class __MainContainer(QSplitter):
                 file_manager.get_basename(fileName))
             editorWidget.register_syntax(
                 file_manager.get_file_extension(fileName))
+            self._file_watcher.allow_kill = False
+            if editorWidget.ID != fileName:
+                self.remove_standalone_watcher(editorWidget.ID)
             editorWidget.ID = fileName
             self.emit(SIGNAL("fileSaved(QString)"),
                 self.tr("File Saved: %1").arg(fileName))
             editorWidget._file_saved()
+            self.add_standalone_watcher(fileName)
+            self._file_watcher.allow_kill = True
             return True
         except file_manager.NinjaFileExistsException, ex:
+            editorWidget.just_saved = False
             QMessageBox.information(self, self.tr("File Already Exists"),
                 self.tr("Invalid Path: the file '%s' already exists." % \
                     ex.filename))
         except Exception, reason:
+            editorWidget.just_saved = False
             logger.error('save_file_as: %s', reason)
             QMessageBox.information(self, self.tr("Save Error"),
                 self.tr("The file couldn't be saved!"))
@@ -698,6 +752,10 @@ class __MainContainer(QSplitter):
     def check_for_unsaved_tabs(self):
         return self._tabMain._check_unsaved_tabs() or \
             self._tabSecondary._check_unsaved_tabs()
+
+    def get_unsaved_files(self):
+        return self._tabMain.get_unsaved_files() or \
+            self._tabSecondary.get_unsaved_files()
 
     def reset_editor_flags(self):
         for i in range(self._tabMain.count()):

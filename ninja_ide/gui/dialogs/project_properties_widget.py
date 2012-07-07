@@ -1,4 +1,20 @@
 # -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+
 from __future__ import absolute_import
 
 import os
@@ -31,6 +47,11 @@ from ninja_ide.tools import json_manager
 from ninja_ide.tools import ui_tools
 
 
+from ninja_ide.tools.logger import NinjaLogger
+logger = NinjaLogger('ninja_ide.gui.dialogs.project_properties_widget')
+DEBUG = logger.debug
+
+
 class ProjectProperties(QDialog):
 
     def __init__(self, item, parent=None):
@@ -41,9 +62,12 @@ class ProjectProperties(QDialog):
         self.tab_widget = QTabWidget()
         self.projectData = ProjectData(self)
         self.projectExecution = ProjectExecution(self)
+        self.projectMetadata = ProjectMetadata(self)
         self.tab_widget.addTab(self.projectData, self.tr("Project Data"))
         self.tab_widget.addTab(self.projectExecution,
             self.tr("Project Execution"))
+        self.tab_widget.addTab(self.projectMetadata,
+            self.tr("Project Metadata"))
 
         vbox.addWidget(self.tab_widget)
         self.btnSave = QPushButton(self.tr("Save"))
@@ -62,6 +86,7 @@ class ProjectProperties(QDialog):
             QMessageBox.critical(self, self.tr("Properties Invalid"),
                 self.tr("The Project must have a name."))
             return
+
         tempName = self._item.name
         self._item.name = unicode(self.projectData.name.text())
         self._item.description = unicode(
@@ -71,7 +96,9 @@ class ProjectProperties(QDialog):
         self._item.url = unicode(self.projectData.url.text())
         self._item.projectType = unicode(self.projectData.txtType.text())
         self._item.pythonPath = unicode(
-            self.projectExecution.txtPythonPath.text())
+            self.projectExecution.txtPythonPath.text())  # FIXME
+        self._item.PYTHONPATH = unicode(
+            self.projectExecution.PYTHONPATH.toPlainText())
         self._item.preExecScript = unicode(
             self.projectExecution.txtPreExec.text())
         self._item.postExecScript = unicode(
@@ -81,6 +108,9 @@ class ProjectProperties(QDialog):
         self._item.venv = unicode(self.projectExecution.txtVenvPath.text())
         extensions = unicode(self.projectData.txtExtensions.text()).split(', ')
         self._item.extensions = tuple(extensions)
+        related = unicode(self.projectMetadata.txt_projects.toPlainText())
+        related = [path for path in related.split('\n') if path != '']
+        self._item.related_projects = related
         #save project properties
         project = {}
         project['name'] = self._item.name
@@ -90,11 +120,13 @@ class ProjectProperties(QDialog):
         project['mainFile'] = self._item.mainFile
         project['project-type'] = self._item.projectType
         project['supported-extensions'] = self._item.extensions
-        project['pythonPath'] = self._item.pythonPath
+        project['pythonPath'] = self._item.pythonPath  # FIXME
+        project['PYTHONPATH'] = self._item.PYTHONPATH
         project['preExecScript'] = self._item.preExecScript
         project['postExecScript'] = self._item.postExecScript
         project['venv'] = self._item.venv
         project['programParams'] = self._item.programParams
+        project['relatedProjects'] = self._item.related_projects
         if tempName != self._item.name and \
             file_manager.file_exists(self._item.path, tempName + '.nja'):
             file_manager.delete_file(self._item.path, tempName + '.nja')
@@ -104,6 +136,7 @@ class ProjectProperties(QDialog):
         self._item.setToolTip(0, self._item.name)
         if self._item.extensions != settings.SUPPORTED_EXTENSIONS:
             self._item._parent._refresh_project(self._item)
+        self._item.update_paths()
         self.close()
 
 
@@ -179,12 +212,22 @@ class ProjectExecution(QWidget):
         grid.addWidget(self.path, 0, 1)
         grid.addWidget(self.btnBrowse, 0, 2)
 
+        # this should be changed, and ALL pythonPath names to
+        # python_custom_interpreter or something like that. this is NOT the
+        # PYTHONPATH
         self.txtPythonPath = QLineEdit()
         self.txtPythonPath.setText(self._parent._item.pythonPath)
         self.btnPythonPath = QPushButton(QIcon(resources.IMAGES['open']), '')
-        grid.addWidget(QLabel(self.tr("Python Path:")), 1, 0)
+        grid.addWidget(QLabel(self.tr("Python Custom Interpreter:")), 1, 0)
         grid.addWidget(self.txtPythonPath, 1, 1)
         grid.addWidget(self.btnPythonPath, 1, 2)
+
+        # THIS IS THE MODAFUCKA REAL PYTHONPATH BRO, YEAH !!!
+        grid.addWidget(QLabel(self.tr("Custom PYTHONPATH:")), 2, 0)
+        self.PYTHONPATH = QPlainTextEdit()  # TODO : better widget
+        self.PYTHONPATH.setPlainText(self._parent._item.PYTHONPATH)
+        self.PYTHONPATH.setToolTip(self.tr("One path per line"))
+        grid.addWidget(self.PYTHONPATH, 2, 1)
 
         self.txtPreExec = QLineEdit()
         ui_tools.LineEditButton(self.txtPreExec, self.txtPreExec.clear,
@@ -192,30 +235,30 @@ class ProjectExecution(QWidget):
         self.txtPreExec.setReadOnly(True)
         self.txtPreExec.setText(self._parent._item.preExecScript)
         self.btnPreExec = QPushButton(QIcon(resources.IMAGES['open']), '')
-        grid.addWidget(QLabel(self.tr("Pre-exec Script:")), 2, 0)
-        grid.addWidget(self.txtPreExec, 2, 1)
-        grid.addWidget(self.btnPreExec, 2, 2)
+        grid.addWidget(QLabel(self.tr("Pre-exec Script:")), 3, 0)
+        grid.addWidget(self.txtPreExec, 3, 1)
+        grid.addWidget(self.btnPreExec, 3, 2)
         self.txtPostExec = QLineEdit()
         ui_tools.LineEditButton(self.txtPostExec, self.txtPostExec.clear,
             self.style().standardPixmap(self.style().SP_TrashIcon))
         self.txtPostExec.setReadOnly(True)
         self.txtPostExec.setText(self._parent._item.postExecScript)
         self.btnPostExec = QPushButton(QIcon(resources.IMAGES['open']), '')
-        grid.addWidget(QLabel(self.tr("Post-exec Script:")), 3, 0)
-        grid.addWidget(self.txtPostExec, 3, 1)
-        grid.addWidget(self.btnPostExec, 3, 2)
+        grid.addWidget(QLabel(self.tr("Post-exec Script:")), 4, 0)
+        grid.addWidget(self.txtPostExec, 4, 1)
+        grid.addWidget(self.btnPostExec, 4, 2)
 
         grid.addItem(QSpacerItem(5, 10, QSizePolicy.Expanding,
-            QSizePolicy.Expanding), 4, 0)
+            QSizePolicy.Expanding), 5, 0)
 
         # Properties
-        grid.addWidget(QLabel(self.tr("Properties:")), 5, 0)
+        grid.addWidget(QLabel(self.tr("Properties:")), 6, 0)
         self.txtParams = QLineEdit()
         self.txtParams.setToolTip(
             self.tr("Separate the params with commas (ie: help, verbose)"))
         self.txtParams.setText(self._parent._item.programParams)
-        grid.addWidget(QLabel(self.tr("Params (comma separated):")), 6, 0)
-        grid.addWidget(self.txtParams, 6, 1)
+        grid.addWidget(QLabel(self.tr("Params (comma separated):")), 7, 0)
+        grid.addWidget(self.txtParams, 7, 1)
         #Widgets for virtualenv properties
         self.txtVenvPath = QLineEdit()
         ui_tools.LineEditButton(self.txtVenvPath, self.txtVenvPath.clear,
@@ -223,9 +266,9 @@ class ProjectExecution(QWidget):
         self.txtVenvPath.setText(self._parent._item.venv)
         self.txtVenvPath.setReadOnly(True)
         self.btnVenvPath = QPushButton(QIcon(resources.IMAGES['open']), '')
-        grid.addWidget(QLabel(self.tr("Virtualenv Folder:")), 7, 0)
-        grid.addWidget(self.txtVenvPath, 7, 1)
-        grid.addWidget(self.btnVenvPath, 7, 2)
+        grid.addWidget(QLabel(self.tr("Virtualenv Folder:")), 8, 0)
+        grid.addWidget(self.txtVenvPath, 8, 1)
+        grid.addWidget(self.btnVenvPath, 8, 2)
 
         self.connect(self.btnBrowse, SIGNAL("clicked()"), self.select_file)
         self.connect(self.btnPythonPath, SIGNAL("clicked()"),
@@ -284,3 +327,22 @@ class ProjectExecution(QWidget):
             fileName = file_manager.convert_to_relative(
                 self._parent._item.path, fileName)
             self.txtPostExec.setText(fileName)
+
+
+class ProjectMetadata(QWidget):
+
+    def __init__(self, parent):
+        super(ProjectMetadata, self).__init__()
+        self._parent = parent
+
+        vbox = QVBoxLayout(self)
+        vbox.addWidget(QLabel(self.tr(
+                        "Insert the path of Python Projects related"
+                        "to this one in order\nto improve Code Completion.")))
+        self.txt_projects = QPlainTextEdit()
+        vbox.addWidget(self.txt_projects)
+        vbox.addWidget(QLabel(
+            self.tr("Split your paths using newlines [ENTER].")))
+
+        paths = '\n'.join(self._parent._item.related_projects)
+        self.txt_projects.setPlainText(paths)
