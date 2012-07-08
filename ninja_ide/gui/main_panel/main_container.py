@@ -537,7 +537,7 @@ class __MainContainer(QSplitter):
             encoding = file_manager.get_file_encoding(content)
             editorWidget.encoding = encoding
             self.emit(SIGNAL("fileSaved(QString)"),
-                self.tr("File Saved: %1").arg(fileName))
+                self.tr("File Saved: %s" % fileName))
             editorWidget._file_saved()
             return True
         except Exception, reason:
@@ -579,7 +579,7 @@ class __MainContainer(QSplitter):
                 self.remove_standalone_watcher(editorWidget.ID)
             editorWidget.ID = fileName
             self.emit(SIGNAL("fileSaved(QString)"),
-                self.tr("File Saved: %1").arg(fileName))
+                self.tr("File Saved: %s" % fileName))
             editorWidget._file_saved()
             self.add_standalone_watcher(fileName)
             self._file_watcher.allow_kill = True

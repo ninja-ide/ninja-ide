@@ -27,8 +27,8 @@ from PyQt4.QtCore import SIGNAL
 from ninja_ide.gui.main_panel import main_container
 
 
-ERRORS_TEXT = "Static Errors: %1"
-PEP8_TEXT = "PEP8 Errors: %1"
+ERRORS_TEXT = "Static Errors: %s"
+PEP8_TEXT = "PEP8 Errors: %s"
 
 
 class ErrorsWidget(QWidget):
@@ -41,10 +41,10 @@ class ErrorsWidget(QWidget):
         vbox = QVBoxLayout(self)
         self.listErrors = QListWidget()
         self.listPep8 = QListWidget()
-        self.errorsLabel = QLabel(self.tr(ERRORS_TEXT).arg(0))
+        self.errorsLabel = QLabel(self.tr(ERRORS_TEXT % 0))
         vbox.addWidget(self.errorsLabel)
         vbox.addWidget(self.listErrors)
-        self.pep8Label = QLabel(self.tr(PEP8_TEXT).arg(0))
+        self.pep8Label = QLabel(self.tr(PEP8_TEXT % 0))
         vbox.addWidget(self.pep8Label)
         vbox.addWidget(self.listPep8)
 
@@ -78,7 +78,7 @@ class ErrorsWidget(QWidget):
                 item.setToolTip(linenostr + data)
                 item.setData(Qt.UserRole, lineno)
                 self.listErrors.addItem(item)
-        self.errorsLabel.setText(self.tr(ERRORS_TEXT).arg(
+        self.errorsLabel.setText(self.tr(ERRORS_TEXT %
             len(errors.errorsSummary)))
         for lineno in pep8.pep8checks:
             linenostr = 'L%s\t' % str(lineno + 1)
@@ -87,6 +87,6 @@ class ErrorsWidget(QWidget):
                 item.setToolTip(linenostr + data.split('\n')[0])
                 item.setData(Qt.UserRole, lineno)
                 self.listPep8.addItem(item)
-        self.pep8Label.setText(self.tr(PEP8_TEXT).arg(
+        self.pep8Label.setText(self.tr(PEP8_TEXT %
             len(pep8.pep8checks)))
         self._outRefresh = True

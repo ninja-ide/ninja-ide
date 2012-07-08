@@ -544,11 +544,11 @@ class __Actions(QObject):
         if editorWidget:
             blanks = re.findall('(^\n)|(^(\s+)?#)|(^( +)?($|\n))',
                 unicode(editorWidget.get_text()), re.M)
-            resume = self.tr("Lines code: %1\n").arg(
+            resume = self.tr("Lines code: %s\n" %
                 editorWidget.blockCount() - len(blanks))
-            resume += self.tr("Blanks and commented lines: %1\n\n").arg(
+            resume += self.tr("Blanks and commented lines: %s\n\n" %
                 len(blanks))
-            resume += self.tr("Total lines: %1").arg(editorWidget.blockCount())
+            resume += self.tr("Total lines: %s" % editorWidget.blockCount())
             msgBox = QMessageBox(QMessageBox.Information,
                 self.tr("Summary of lines"), resume,
                 QMessageBox.Ok, editorWidget)

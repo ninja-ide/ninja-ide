@@ -25,7 +25,6 @@ from PyQt4.QtGui import QCursor
 from PyQt4.QtGui import QMenu
 
 from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QStringList
 from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
@@ -144,34 +143,32 @@ class TreeSymbolsWidget(QTreeWidget):
             self.docstrings = symbols.get('docstrings', {})
             parent = self
         if 'attributes' in symbols:
-            globalAttribute = ItemTree(parent,
-                QStringList(self.tr("Attributes")))
+            globalAttribute = ItemTree(parent, [self.tr("Attributes")])
             globalAttribute.isClickable = False
             globalAttribute.isAttribute = True
             for glob in sorted(symbols['attributes']):
-                globItem = ItemTree(globalAttribute,
-                    QStringList(glob), lineno=symbols['attributes'][glob])
+                globItem = ItemTree(globalAttribute, [glob],
+                    lineno=symbols['attributes'][glob])
                 globItem.isAttribute = True
                 globItem.setIcon(0, QIcon(resources.IMAGES['attribute']))
         if 'functions' in symbols:
-            functionsItem = ItemTree(parent, QStringList(self.tr("Functions")))
+            functionsItem = ItemTree(parent, [self.tr("Functions")])
             functionsItem.isClickable = False
             functionsItem.isMethod = True
             for func in sorted(symbols['functions']):
-                item = ItemTree(functionsItem, QStringList(func),
+                item = ItemTree(functionsItem, [func],
                     lineno=symbols['functions'][func])
                 tooltip = self.create_tooltip(func, symbols['functions'][func])
                 item.isMethod = True
                 item.setToolTip(0, tooltip)
                 item.setIcon(0, QIcon(resources.IMAGES['function']))
         if 'classes' in symbols:
-            classItem = ItemTree(self, QStringList(self.tr("Classes")))
+            classItem = ItemTree(self, [self.tr("Classes")])
             classItem.isClickable = False
             classItem.isClass = True
             for claz in sorted(symbols['classes']):
                 line_number = symbols['classes'][claz][0]
-                item = ItemTree(classItem, QStringList(claz),
-                    lineno=line_number)
+                item = ItemTree(classItem, [claz], lineno=line_number)
                 item.isClass = True
                 tooltip = self.create_tooltip(claz, line_number)
                 item.setToolTip(0, tooltip)
