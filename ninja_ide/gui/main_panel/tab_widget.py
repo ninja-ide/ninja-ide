@@ -17,6 +17,7 @@
 from __future__ import absolute_import
 
 from PyQt4.QtGui import QTabWidget
+from PyQt4.QtGui import QCursor
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QWidget
@@ -513,7 +514,10 @@ class TabNavigator(QWidget):
             self._show_bookmarks)
 
     def contextMenuEvent(self, event):
-        self.menuNavigate.exec_(event.globalPos())
+        self.show_menu_navigation()
+
+    def show_menu_navigation(self):
+        self.menuNavigate.exec_(QCursor.pos())
 
     def _show_bookmarks(self):
         self.btnPrevious.setIcon(QIcon(resources.IMAGES['book-left']))
