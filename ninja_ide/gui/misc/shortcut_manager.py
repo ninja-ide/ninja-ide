@@ -32,7 +32,6 @@ from PyQt4.QtGui import QMessageBox
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QEvent
-from PyQt4.QtCore import QString
 from PyQt4.QtCore import QSettings
 
 from ninja_ide import resources
@@ -117,7 +116,7 @@ class ShortcutDialog(QDialog):
         if evt.modifiers() & Qt.MetaModifier:
             self.keys += Qt.META
         #set the keys
-        self.set_shortcut(QString(QKeySequence(self.keys)))
+        self.set_shortcut(QKeySequence(self.keys))
 
 
 class ShortcutConfiguration(QWidget):
@@ -227,7 +226,7 @@ class ShortcutConfiguration(QWidget):
         Validate and set a new shortcut
         """
         if self.__validate_shortcut(keysequence):
-            self.result_widget.currentItem().setText(1, QString(keysequence))
+            self.result_widget.currentItem().setText(1, keysequence)
 
     def __validate_shortcut(self, keysequence):
         """
@@ -237,7 +236,7 @@ class ShortcutConfiguration(QWidget):
             return True
 
         keyname = unicode(self.result_widget.currentItem().text(0))
-        keystr = unicode(QString(keysequence))
+        keystr = keysequence
 
         for top_index in xrange(self.result_widget.topLevelItemCount()):
             top_item = self.result_widget.topLevelItem(top_index)
@@ -266,7 +265,7 @@ class ShortcutConfiguration(QWidget):
         if item.childCount():
             return
 
-        self.shortcut_dialog.set_shortcut(QString(QKeySequence(item.text(1))))
+        self.shortcut_dialog.set_shortcut(QKeySequence(item.text(1)))
         self.shortcut_dialog.exec_()
 
     def save(self):

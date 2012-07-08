@@ -24,7 +24,6 @@ from PyQt4.QtGui import QAbstractItemView
 from PyQt4.QtGui import QHeaderView
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QString
 
 from ninja_ide.gui.main_panel import main_container
 
@@ -67,6 +66,5 @@ class Results(QWidget):
     def update_result(self, items):
         self._tree.clear()
         for i in items:
-            item = QTreeWidgetItem(self._tree,
-                (i[3], i[0], QString.number(i[2] + 1)))
+            item = QTreeWidgetItem(self._tree, (i[3], i[0], str(i[2] + 1)))
             item.setToolTip(1, i[1])

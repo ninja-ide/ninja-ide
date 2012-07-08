@@ -23,7 +23,6 @@ from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QCursor
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QSettings
-from PyQt4.QtCore import QString
 from PyQt4.QtCore import Qt
 
 from ninja_ide import resources
@@ -51,10 +50,10 @@ class RecentProjectItem(QWidget):
         self.__name = QLineEdit(self)
         self.__itemRelated = itemRelated
         self.setMouseTracking(True)
-        self.__name.setText(self.__content[QString("name")].toString())
+        self.__name.setText(self.__content[u"name"].toString())
 
-        if QString("description") in self.__content:
-            description = self.__content[QString("description")].toString()
+        if u"description" in self.__content:
+            description = self.__content[u"description"].toString()
         else:
             description = self.tr("no description available")
         self.__name.setToolTip(self.tr(self.__project) + '\n\n' + description)
@@ -75,7 +74,7 @@ class RecentProjectItem(QWidget):
         #TODO: Change this click listen it doesn't work with ReadOnly = True
         self.connect(self.__name,
             SIGNAL("cursorPositionChanged(int, int)"), self.__on_click_on_name)
-        self._set_favorite(self.__content[QString("isFavorite")].toBool())
+        self._set_favorite(self.__content[u"isFavorite"].toBool())
 
     def __on_click_on_delete(self):
         settings = QSettings()
@@ -89,13 +88,11 @@ class RecentProjectItem(QWidget):
         settings = QSettings()
         recent_projects = settings.value("recentProjects").toMap()
         properties = recent_projects[self.__project].toMap()
-        properties[QString("isFavorite")] = not properties[
-            QString("isFavorite")].toBool()
+        properties[u"isFavorite"] = not properties[u"isFavorite"].toBool()
         recent_projects[self.__project] = properties
         settings.setValue("recentProjects", recent_projects)
-        self.emit(SIGNAL("favoriteChange(bool)"), properties[
-            QString("isFavorite")])
-        self._set_favorite(properties[QString("isFavorite")])
+        self.emit(SIGNAL("favoriteChange(bool)"), properties[u"isFavorite"])
+        self._set_favorite(properties[u"isFavorite"])
 
     def __on_click_on_name(self, uno, dos):
         self.emit(SIGNAL("clicked(QString)"), self.__project)

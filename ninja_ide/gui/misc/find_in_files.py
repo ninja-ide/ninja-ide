@@ -17,12 +17,12 @@
 from __future__ import absolute_import
 
 import os
+import re
 import Queue
 
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QDir
 from PyQt4.QtCore import QFile
-from PyQt4.QtCore import QString
 from PyQt4.QtCore import QTextStream
 from PyQt4.QtCore import QRegExp
 from PyQt4.QtCore import QThread
@@ -153,7 +153,7 @@ class FindInFilesResult(QTreeWidget):
                 dir_name_root)
             root_item.setExpanded(True)
             for line, content in items:
-                QTreeWidgetItem(root_item, (content, QString.number(line + 1)))
+                QTreeWidgetItem(root_item, (content, str(line + 1)))
 
 
 class FindInFilesRootItem(QTreeWidgetItem):
@@ -322,8 +322,13 @@ class FindInFilesDialog(QDialog):
         self.result_widget.clear()
         pattern = self.pattern_line_edit.text()
         dir_name = self.dir_combo.currentText()
-        filters = self.filters_line_edit.text().split(QRegExp("[,;]"),
-            QString.SkipEmptyParts)
+
+        filters = re.split("[,;]", self.filters_line_edit.text())
+
+        # Version of PyQt API 1
+        # filters = self.filters_line_edit.text().split(QRegExp("[,;]"),
+        #     QString.SkipEmptyParts)
+
         #remove the spaces in the words Ex. (" *.foo"--> "*.foo")
         filters = [f.simplified() for f in filters]
         case_sensitive = self.case_checkbox.isChecked()
