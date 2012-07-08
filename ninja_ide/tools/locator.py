@@ -630,7 +630,8 @@ class LocateCompleter(QLineEdit):
                 filterOptions[index]) > -1]
 
     def _refresh_filter(self):
-        self.frame.refresh(self.filter())
+        has_text = len(self.text()) != 0
+        self.frame.refresh(self.filter(), has_text)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Space:
@@ -704,9 +705,11 @@ class PopupCompleter(QFrame):
         """Remove all the items of the list (deleted), and reload the help."""
         self.listWidget.clear()
 
-    def refresh(self, model):
+    def refresh(self, model, has_text=True):
         """Refresh the list when the user search for some word."""
         self.listWidget.clear()
+        if not has_text:
+            self.add_help()
         for item in model:
             self.listWidget.addItem(item[0])
             self.listWidget.setItemWidget(item[0], item[1])
