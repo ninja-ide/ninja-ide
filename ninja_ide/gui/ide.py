@@ -412,7 +412,7 @@ class __IDE(QMainWindow):
             txt = '\n'.join(unsaved_files)
             val = QMessageBox.question(self,
                 self.tr("Some changes were not saved"),
-                self.tr("%1\n\nDo you want to exit anyway?").arg(txt),
+                self.tr("%s\n\nDo you want to exit anyway?" % txt),
                 QMessageBox.Yes, QMessageBox.No)
             if val == QMessageBox.No:
                 event.ignore()
