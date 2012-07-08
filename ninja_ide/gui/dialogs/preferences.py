@@ -1117,7 +1117,7 @@ class EditorCompletion(QWidget):
         self._checkDoubleQuotes.setChecked('"' in settings.QUOTES)
         self._checkCompleteDeclarations = QCheckBox(
             self.tr("Complete Declarations\n"
-            "(execute the opposite action with: %1).").arg(
+            "(execute the opposite action with: %s)." %
                 resources.get_shortcut("Complete-Declarations").toString(
                     QKeySequence.NativeText)))
         self._checkCompleteDeclarations.setChecked(

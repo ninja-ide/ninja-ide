@@ -263,13 +263,13 @@ class SearchWidget(QWidget):
         self._btnFind = QPushButton(QIcon(resources.IMAGES['find']), '')
         self.btnPrevious = QPushButton(
             self.style().standardIcon(QStyle.SP_ArrowLeft), '')
-        self.btnPrevious.setToolTip(self.tr("Press %1").arg(
-                resources.get_shortcut("Find-previous").toString(
+        self.btnPrevious.setToolTip(self.tr("Press %s" %
+            resources.get_shortcut("Find-previous").toString(
                     QKeySequence.NativeText)))
         self.btnNext = QPushButton(
             self.style().standardIcon(QStyle.SP_ArrowRight), '')
-        self.btnNext.setToolTip(self.tr("Press %1").arg(
-                resources.get_shortcut("Find-next").toString(
+        self.btnNext.setToolTip(self.tr("Press %s" %
+            resources.get_shortcut("Find-next").toString(
                     QKeySequence.NativeText)))
         hSearch.addWidget(self._btnClose)
         hSearch.addWidget(self._line)
