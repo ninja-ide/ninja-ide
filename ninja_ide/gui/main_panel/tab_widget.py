@@ -28,6 +28,7 @@ from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QClipboard
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
+from PyQt4.QtCore import QDir
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -41,6 +42,7 @@ from ninja_ide.gui.main_panel import browser_widget
 from ninja_ide.tools.logger import NinjaLogger
 
 logger = NinjaLogger('ninja_ide.gui.main_panel.tab_widget')
+DEBUG = logger.debug
 
 
 class TabWidget(QTabWidget):
@@ -184,20 +186,25 @@ class TabWidget(QTabWidget):
                             'The file has deleted from disc!',
                 self.tr("%1\n").arg(editorWidget.ID),
                 QMessageBox.Yes)
+        self.question_already_open = False
 
     def _file_changed(self, change_type, file_path):
-        file_path = unicode(file_path)
+
+        file_path = unicode(QDir.toNativeSeparators(file_path))
         editorWidget = self.currentWidget()
+        current_open = unicode(QDir.toNativeSeparators(editorWidget and
+                                                        editorWidget.ID or ""))
         opened = [path for path, _ in self.get_documents_data()]
 
         if (file_path in opened) and \
-            ((not editorWidget) or (editorWidget.ID != file_path)) and \
+            ((not editorWidget) or (current_open != file_path)) and \
             (change_type in (MODIFIED, DELETED)):
+
             self._change_map.setdefault(unicode(file_path),
                                         []).append(change_type)
         elif not editorWidget:
             return
-        elif (editorWidget.ID == file_path) and \
+        elif (current_open == file_path) and \
             (not self.question_already_open):
             #dont ask again if you are already asking!
             self._prompt_reload(editorWidget, change_type)
