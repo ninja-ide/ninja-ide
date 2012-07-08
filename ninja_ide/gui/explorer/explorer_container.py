@@ -28,7 +28,6 @@ from PyQt4.QtGui import QIcon
 
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QSettings
-from PyQt4.QtCore import QString
 from PyQt4.QtCore import QDateTime
 
 from ninja_ide.core import settings
@@ -341,14 +340,14 @@ class __ExplorerContainer(QTabWidget):
         if description == '':
             description = self.tr('no description available')
 
-        if QString(folder) in recent_project_list:
-            properties = recent_project_list[QString(folder)].toMap()
-            properties[QString("lastopen")] = QDateTime.currentDateTime()
-            properties[QString("name")] = name
-            properties[QString("description")] = description
-            recent_project_list[QString(folder)] = properties
+        if folder in recent_project_list:
+            properties = recent_project_list[folder].toMap()
+            properties["lastopen"] = QDateTime.currentDateTime()
+            properties["name"] = name
+            properties["description"] = description
+            recent_project_list[folder] = properties
         else:
-            recent_project_list[QString(folder)] = {
+            recent_project_list[folder] = {
                 "name": name,
                 "description": description,
                 "isFavorite": False, "lastopen": QDateTime.currentDateTime()}
@@ -364,7 +363,7 @@ class __ExplorerContainer(QTabWidget):
         listFounder = []
         for recent_project_path, content in recent_project_list.iteritems():
             listFounder.append((recent_project_path, int(
-                content.toMap()[QString("lastopen")].toDateTime().toString(
+                content.toMap()[u"lastopen"].toDateTime().toString(
                 "yyyyMMddHHmmzzz"))))
         listFounder = sorted(listFounder, key=lambda date: listFounder[1],
             reverse=True)   # sort by date last used
