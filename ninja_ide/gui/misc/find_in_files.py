@@ -123,7 +123,7 @@ class FindInFilesThread(QThread):
                 lines.append((line_index, line))
             #take the next line!
             line = stream.readLine()
-            if line.isNull():
+            if line is None:
                 break
             line_index += 1
         #emit a signal!

@@ -80,7 +80,7 @@ class Analyzer(object):
             astModule = ast.parse(source)
         except SyntaxError, reason:
             line = reason.lineno - 1
-            if line != self._fixed_line:
+            if line != self._fixed_line and reason.text is not None:
                 self._fixed_line = line
                 new_line = ''
                 #This is failing sometimes, it should remaing commented
