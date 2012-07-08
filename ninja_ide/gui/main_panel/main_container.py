@@ -806,14 +806,8 @@ class __MainContainer(QSplitter):
         """Change the tab in the current TabWidget backwards."""
         self.actualTab.change_tab_reverse()
 
-    def show_code_navigation_buttons(self):
-        self.actualTab.navigator._show_code_nav()
-
-    def show_breakpoints_buttons(self):
-        self.actualTab.navigator._show_breakpoints()
-
-    def show_bookmarks_buttons(self):
-        self.actualTab.navigator._show_bookmarks()
+    def show_navigation_buttons(self):
+        self.actualTab.show_menu_navigation()
 
     def change_split_focus(self):
         if self.actualTab == self._tabMain and self._tabSecondary.isVisible():

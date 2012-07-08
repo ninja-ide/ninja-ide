@@ -1627,7 +1627,7 @@ class EditorSchemeDesigner(QWidget):
                 self.tr("Scheme already exists"),
                 self.tr("Do you want to override the file: %s?" % fileName),
                 QMessageBox.Yes, QMessageBox.No)
-        if name != '' and answer == QMessageBox.Yes:
+        if name != '' and answer in (QMessageBox.Yes, True):
             scheme = self._preview_style()
             json_manager.save_editor_skins(fileName, scheme)
             QMessageBox.information(self, self.tr("Scheme Saved"),
