@@ -354,7 +354,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         """
         Returns all the plain text of the editor
         """
-        return unicode(self.toPlainText())
+        return self.toPlainText()
 
     def get_lines_count(self):
         """
@@ -876,8 +876,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if event.modifiers() == Qt.ControlModifier:
             cursor.select(QTextCursor.WordUnderCursor)
             cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
-            if cursor.selectedText().endsWith('(') or \
-            cursor.selectedText().endsWith('.'):
+            if cursor.selectedText().endswith('(') or \
+            cursor.selectedText().endswith('.'):
                 cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
                 self.extraSelections = []
                 selection = QTextEdit.ExtraSelection()
@@ -925,11 +925,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             cursor = self.textCursor()
         cursor.select(QTextCursor.WordUnderCursor)
         cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
-        if cursor.selectedText().endsWith('('):
+        if cursor.selectedText().endswith('('):
             cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
             self.emit(SIGNAL("locateFunction(QString, QString, bool)"),
                 cursor.selectedText(), self.ID, False)
-        elif cursor.selectedText().endsWith('.'):
+        elif cursor.selectedText().endswith('.'):
             cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
             self.emit(SIGNAL("locateFunction(QString, QString, bool)"),
                 cursor.selectedText(), self.ID, True)

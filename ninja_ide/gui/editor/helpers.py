@@ -77,8 +77,6 @@ def remove_trailing_spaces(editorWidget):
             cursor.insertText(text.rstrip())
         block = block.next()
     cursor.movePosition(QTextCursor.End, QTextCursor.MoveAnchor)
-    if not cursor.block().text().isEmpty():
-        cursor.insertText('\n')
     cursor.endEditBlock()
 
 

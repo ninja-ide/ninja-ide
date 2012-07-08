@@ -330,7 +330,7 @@ class FindInFilesDialog(QDialog):
         #     QString.SkipEmptyParts)
 
         #remove the spaces in the words Ex. (" *.foo"--> "*.foo")
-        filters = [f.simplified() for f in filters]
+        filters = [f.strip() for f in filters]
         case_sensitive = self.case_checkbox.isChecked()
         type_ = QRegExp.RegExp if \
             self.type_checkbox.isChecked() else QRegExp.FixedString

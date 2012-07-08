@@ -257,7 +257,7 @@ class CompleterWidget(QCompleter):
             self.insert_completion)
 
     def insert_completion(self, insert):
-        extra = insert.length() - self.completionPrefix().length()
+        extra = len(insert) - len(self.completionPrefix())
         self.widget().textCursor().insertText(insert.right(extra))
         self.popup().hide()
 

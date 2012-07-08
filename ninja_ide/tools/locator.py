@@ -493,7 +493,7 @@ class LocateCompleter(QLineEdit):
 
     def set_prefix(self, prefix):
         """Set the prefix for the completer."""
-        self.__prefix = unicode(prefix.toLower())
+        self.__prefix = unicode(prefix.lower())
         self._refresh_filter()
 
     def complete(self):
