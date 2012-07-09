@@ -807,7 +807,7 @@ class __MainContainer(QSplitter):
         self.actualTab.change_tab_reverse()
 
     def show_navigation_buttons(self):
-        self.actualTab.show_menu_navigation()
+        self.actualTab.navigator.show_menu_navigation()
 
     def change_split_focus(self):
         if self.actualTab == self._tabMain and self._tabSecondary.isVisible():
