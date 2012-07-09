@@ -270,9 +270,9 @@ SHORTCUTS = {
     "Change-Tab": QKeySequence(Qt.CTRL + Qt.Key_PageDown),
     "Change-Tab-Reverse": QKeySequence(Qt.CTRL + Qt.Key_PageUp),
     "Show-Code-Nav": QKeySequence(Qt.CTRL + Qt.Key_1),
-    "Show-Paste-History": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_V),
-    "History-Copy": QKeySequence(Qt.CTRL + Qt.Key_C),
-    "History-Paste": QKeySequence(Qt.CTRL + Qt.Key_V),
+    "Show-Paste-History": QKeySequence(Qt.CTRL + Qt.Key_4),
+    "History-Copy": QKeySequence(Qt.CTRL + Qt.ALT + Qt.Key_C),
+    "History-Paste": QKeySequence(Qt.CTRL + Qt.ALT + Qt.Key_V),
     "Add-Bookmark-or-Breakpoint": QKeySequence(Qt.CTRL + Qt.Key_B),
     "change-split-focus": QKeySequence(Qt.CTRL + Qt.Key_Tab),
     "Highlight-Word": QKeySequence(Qt.CTRL + Qt.Key_Down)}

@@ -143,10 +143,6 @@ class __Actions(QObject):
         self.shortOpenLastTabOpened = QShortcut(short("Open-recent-closed"),
             self.ide)
         self.shortShowCodeNav = QShortcut(short("Show-Code-Nav"), self.ide)
-#        self.shortShowBookmarksNav = QShortcut(short("Show-Bookmarks-Nav"),
-#            self.ide)
-#        self.shortShowBreakpointsNav = QShortcut(short("Show-Breakpoints-Nav"),
-#            self.ide)
         self.shortShowPasteHistory = QShortcut(short("Show-Paste-History"),
             self.ide)
         self.shortPasteHistory = QShortcut(short("History-Paste"), self.ide)
