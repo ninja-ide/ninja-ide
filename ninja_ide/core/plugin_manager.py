@@ -23,10 +23,12 @@ import copy
 import urllib2
 import zipfile
 import traceback
+#lint:disable
 try:
     import json
 except ImportError:
     import simplejson as json
+#lint:enable
 
 from ninja_ide import resources
 from ninja_ide.tools.logger import NinjaLogger
@@ -459,7 +461,8 @@ def has_dependencies(plug):
             p_descriptor_file.close()
             module = p_json.get('module')
             #plugin_module/requirements.txt
-            req_file = os.path.join(os.path.join(PLUGINS, module), REQUIREMENTS)
+            req_file = os.path.join(os.path.join(PLUGINS, module),
+                REQUIREMENTS)
             if os.path.isfile(req_file):
                 return (True, COMMAND_FOR_PIP_INSTALL % req_file)
             #the plugin was found but no requirement then break!
