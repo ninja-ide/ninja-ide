@@ -173,6 +173,7 @@ IMAGES = {
     "locate-on-this-file": os.path.join(PRJ_PATH, "img",
         "locate-on-this-file.png"),
     "locate-tab": os.path.join(PRJ_PATH, "img", "locate-tab.png"),
+    "locate-line": os.path.join(PRJ_PATH, "img", "locate-line.png"),
     "add": os.path.join(PRJ_PATH, "img", "add.png"),
     "delete": os.path.join(PRJ_PATH, "img", "delete.png"),
     "loading": os.path.join(PRJ_PATH, "img", "loading.gif"),
