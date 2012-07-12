@@ -1778,31 +1778,22 @@ class ThemeDesigner(QWidget):
             (self._parent.theme_chooser.list_skins.currentItem().text(),
             getpass.getuser()))
 
-#    def showEvent(self, event):
-#        if self._parent.theme_chooser.list_skins.currentRow() == 0:
-#            qss_file = resources.NINJA_THEME
-#        else:
-#            file_name = ("%s.qss" %
-#                self._parent.theme_chooser.list_skins.currentItem().text())
-#            qss_file = file_manager.create_path(resources.NINJA_THEME_DOWNLOAD,
-#                file_name)
-#        with open(qss_file) as f:
-#            qss = f.read()
-#            self.edit_qss.setPlainText(qss)
-#            self.edit_qss.document().setModified(False)
-#        self.line_name.setText("%s_%s" %
-#            (self._parent.theme_chooser.list_skins.currentItem().text(),
-#            getpass.getuser()))
-#        super(ThemeDesigner, self).showEvent(event)
-
-#    def hideEvent(self, event):
-#        if self.edit_qss.document().isModified():
-#            answer = QMessageBox.question(self, self.tr("Theme Modified"),
-#                self.tr("Do you want to save the theme changes?"),
-#                QMessageBox.Ok | QMessageBox.No, QMessageBox.Ok)
-#            if answer == QMessageBox.Ok:
-#                self.save_stylesheet()
-#        super(ThemeDesigner, self).hideEvent(event)
+    def showEvent(self, event):
+        if self._parent.theme_chooser.list_skins.currentRow() == 0:
+            qss_file = resources.NINJA_THEME
+        else:
+            file_name = ("%s.qss" %
+                self._parent.theme_chooser.list_skins.currentItem().text())
+            qss_file = file_manager.create_path(resources.NINJA_THEME_DOWNLOAD,
+                file_name)
+        with open(qss_file) as f:
+            qss = f.read()
+            self.edit_qss.setPlainText(qss)
+            self.edit_qss.document().setModified(False)
+        self.line_name.setText("%s_%s" %
+            (self._parent.theme_chooser.list_skins.currentItem().text(),
+            getpass.getuser()))
+        super(ThemeDesigner, self).showEvent(event)
 
     def apply_stylesheet(self):
         qss = self.edit_qss.toPlainText()
