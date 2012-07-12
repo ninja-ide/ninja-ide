@@ -1795,6 +1795,15 @@ class ThemeDesigner(QWidget):
             getpass.getuser()))
         super(ThemeDesigner, self).showEvent(event)
 
+    def hideEvent(self, event):
+        if self.edit_qss.document().isModified():
+            answer = QMessageBox.question(self, self.tr("Theme Modified"),
+                self.tr("Do you want to save the theme changes?"),
+                QMessageBox.Ok | QMessageBox.No, QMessageBox.Ok)
+            if answer == QMessageBox.Ok:
+                self.save_stylesheet()
+        super(ThemeDesigner, self).hideEvent(event)
+
     def apply_stylesheet(self):
         qss = self.edit_qss.toPlainText()
         QApplication.instance().setStyleSheet(qss)
