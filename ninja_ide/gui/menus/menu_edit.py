@@ -65,10 +65,6 @@ class MenuEdit(QObject):
             self.tr("Find in Files (%1)").arg(
                 resources.get_shortcut("Find-in-files").toString(
                     QKeySequence.NativeText)))
-        jumpAction = menuEdit.addAction(
-            self.tr("Jump to Line (%1)").arg(
-                resources.get_shortcut("Jump").toString(
-                    QKeySequence.NativeText)))
         locatorAction = menuEdit.addAction(QIcon(resources.IMAGES['locator']),
             self.tr("Code Locator (%1)").arg(
                 resources.get_shortcut("Code-locator").toString(
@@ -107,8 +103,6 @@ class MenuEdit(QObject):
             status_bar.StatusBar().show)
         self.connect(findWithWordAction, SIGNAL("triggered()"),
             status_bar.StatusBar().show_with_word)
-        self.connect(jumpAction, SIGNAL("triggered()"),
-            lambda: self.jump_to_editor_line())
         self.connect(findReplaceAction, SIGNAL("triggered()"),
             status_bar.StatusBar().show_replace)
         self.connect(findInFilesAction, SIGNAL("triggered()"),
@@ -186,11 +180,6 @@ class MenuEdit(QObject):
         editorWidget = main_container.MainContainer().get_actual_editor()
         if editorWidget:
             editorWidget.undo()
-
-    def jump_to_editor_line(self):
-        editor = main_container.MainContainer().get_actual_editor()
-        if editor:
-            editor.jump_to_line()
 
     def _show_preferences(self):
         pref = preferences.PreferencesWidget(main_container.MainContainer())

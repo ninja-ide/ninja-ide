@@ -364,7 +364,7 @@ class __MainContainer(QSplitter):
             QMessageBox.information(self, self.tr("Incorrect File"),
                 self.tr("The image couldn\'t be open"))
 
-    def open_file(self, filename='', cursorPosition=0, \
+    def open_file(self, filename='', cursorPosition=-1, \
                     tabIndex=None, positionIsLineNumber=False, notStart=True):
         filename = unicode(filename)
         if not filename:
@@ -400,7 +400,7 @@ class __MainContainer(QSplitter):
                 self.__open_file(filename, cursorPosition,
                     tabIndex, positionIsLineNumber, notStart)
 
-    def __open_file(self, fileName='', cursorPosition=0,\
+    def __open_file(self, fileName='', cursorPosition=-1,\
                     tabIndex=None, positionIsLineNumber=False, notStart=True):
         try:
             if not self.is_open(fileName):
@@ -416,6 +416,8 @@ class __MainContainer(QSplitter):
                 editorWidget.async_highlight()
                 encoding = file_manager.get_file_encoding(content)
                 editorWidget.encoding = encoding
+                if cursorPosition == -1:
+                    cursorPosition = 0
                 if not positionIsLineNumber:
                     editorWidget.set_cursor_position(cursorPosition)
                 else:
@@ -429,7 +431,7 @@ class __MainContainer(QSplitter):
             else:
                 self.move_to_open(fileName)
                 editorWidget = self.get_actual_editor()
-                if editorWidget and notStart:
+                if editorWidget and notStart and cursorPosition != -1:
                     if positionIsLineNumber:
                         editorWidget.go_to_line(cursorPosition)
                     else:
@@ -806,14 +808,8 @@ class __MainContainer(QSplitter):
         """Change the tab in the current TabWidget backwards."""
         self.actualTab.change_tab_reverse()
 
-    def show_code_navigation_buttons(self):
-        self.actualTab.navigator._show_code_nav()
-
-    def show_breakpoints_buttons(self):
-        self.actualTab.navigator._show_breakpoints()
-
-    def show_bookmarks_buttons(self):
-        self.actualTab.navigator._show_bookmarks()
+    def show_navigation_buttons(self):
+        self.actualTab.navigator.show_menu_navigation()
 
     def change_split_focus(self):
         if self.actualTab == self._tabMain and self._tabSecondary.isVisible():
