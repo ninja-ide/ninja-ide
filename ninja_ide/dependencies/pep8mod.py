@@ -167,6 +167,7 @@ options.ignore = []
 options.verbose = 0
 options.quiet = 0
 options.max_line_length = MAX_LINE_LENGTH
+options.ignore_continuation_indentation = True
 
 
 ##############################################################################
@@ -463,6 +464,8 @@ def continuation_line_indentation(logical_line, tokens, indent_level, verbose):
     E127: a = (24,\n      42)
     E128: a = (24,\n    42)
     """
+    if options.ignore_continuation_indentation:
+        return
     first_row = tokens[0][2][0]
     nrows = 1 + tokens[-1][2][0] - first_row
     if nrows == 1:
