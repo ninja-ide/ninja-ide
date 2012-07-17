@@ -125,8 +125,8 @@ def get_all_completions(s, imports=None):
         try:
             try:
                 s = unicode(s)
-                if s.startswith('PyQt4.') and s.endswith('()'):
-                    s = s[:-2]
+                if s.startswith('PyQt4.') and s.endswith(')'):
+                    s = s[:s.rindex('(')]
                 sym = eval(s, globals(), dlocals)
             except NameError:
                 try:
@@ -145,7 +145,7 @@ def get_all_completions(s, imports=None):
     if sym is not None:
         var = s
         s = dots[-1]
-        return get_completions_per_type(["%s.%s" % (var, k) for k in \
+        return get_completions_per_type(["%s.%s" % (var, k) for k in
             dir(sym) if k.startswith(s)])
     return {}
 
