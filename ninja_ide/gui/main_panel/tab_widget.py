@@ -486,10 +486,12 @@ class TabNavigator(QWidget):
         hbox = QHBoxLayout(self)
         self.btnPrevious = QPushButton(
             QIcon(resources.IMAGES['nav-code-left']), '')
+        self.btnPrevious.setObjectName('navigation_button')
         self.btnPrevious.setToolTip(
             self.tr("Right click to change navigation options"))
         self.btnNext = QPushButton(
             QIcon(resources.IMAGES['nav-code-right']), '')
+        self.btnNext.setObjectName('navigation_button')
         self.btnNext.setToolTip(
             self.tr("Right click to change navigation options"))
         hbox.addWidget(self.btnPrevious)

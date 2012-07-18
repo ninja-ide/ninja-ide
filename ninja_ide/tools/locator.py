@@ -466,8 +466,8 @@ class LocateWidget(QLabel):
 
     def __init__(self, data):
         QLabel.__init__(self)
-        self.setText(u"{0}<br>"
-            "<span style='font-size: 12px; color: grey;'>({1})</span>".format(
+        self.setText(u"<span style='color: white;'>{0}</span><br>"
+            "<span style='font-size: 12px; color: gray;'>({1})</span>".format(
                 data.name, data.path))
 
 
