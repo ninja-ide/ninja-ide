@@ -313,7 +313,7 @@ class TreeProjectsWidget(QTreeWidget):
     def set_default_project(self, item):
         item.setForeground(0, QBrush(QColor(0, 204, 82)))
         if self._actualProject:
-            self._actualProject.setForeground(0, QBrush(Qt.darkGray))
+            item.setForeground(0, QBrush(QColor(255, 165, 0)))
         self._actualProject = item
 
     def open_project_properties(self):
@@ -765,7 +765,7 @@ class ProjectTree(QTreeWidgetItem):
         self.setText(0, _name)
         self.path = path
         self.isFolder = True
-        self.setForeground(0, QBrush(Qt.darkGray))
+        self.setForeground(0, QBrush(QColor(255, 165, 0)))
         project = json_manager.read_ninja_project(path)
         self.name = project.get('name', '')
         if self.name == '':
