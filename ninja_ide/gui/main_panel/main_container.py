@@ -93,7 +93,7 @@ class __MainContainer(QSplitter):
         self.actualTab = self._tabMain
         self._followMode = False
         self.splitted = False
-        self.allowed_extensions = ['py', 'pyw', 'wpy', 'pyc']
+        self._allowed_extensions = ['py', 'pyw', 'wpy']
         highlighter.restyle(resources.CUSTOM_SCHEME)
         #documentation browser
         self.docPage = None
@@ -152,7 +152,7 @@ class __MainContainer(QSplitter):
             file_path = unicode(file_path)
             extension = file_manager.get_file_extension(file_path) 
             
-            if extension in self.allowed_extensions:
+            if extension in self._allowed_extensions:
                 event.accept()
             else:
                 event.ignore()
