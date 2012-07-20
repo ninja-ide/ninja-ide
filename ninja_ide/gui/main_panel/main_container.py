@@ -85,6 +85,7 @@ class __MainContainer(QSplitter):
         self._parent = parent
         self._tabMain = tab_widget.TabWidget(self)
         self._tabSecondary = tab_widget.TabWidget(self)
+        self.setAcceptDrops(True)
         self.addWidget(self._tabMain)
         self.addWidget(self._tabSecondary)
         self.setSizes([1, 1])
@@ -143,6 +144,16 @@ class __MainContainer(QSplitter):
             self._navigate_code)
         self.connect(self._tabSecondary, SIGNAL("navigateCode(bool, int)"),
             self._navigate_code)
+        
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.accept()
+        else:
+            event.ignore()
+        
+    def dropEvent(self, event):
+        file_path = event.mimeData().urls()[0].path()
+        self.open_file(unicode(file_path[1:]))
 
     def _navigate_code(self, val, op):
         self.emit(SIGNAL("navigateCode(bool, int)"), val, op)
