@@ -93,6 +93,7 @@ class __MainContainer(QSplitter):
         self.actualTab = self._tabMain
         self._followMode = False
         self.splitted = False
+        self.allowed_extensions = ['py', 'pyw', 'wpy', 'pyc']
         highlighter.restyle(resources.CUSTOM_SCHEME)
         #documentation browser
         self.docPage = None
@@ -147,7 +148,14 @@ class __MainContainer(QSplitter):
         
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
-            event.accept()
+            file_path = event.mimeData().urls()[0].path()
+            file_path = unicode(file_path)
+            extension = file_manager.get_file_extension(file_path) 
+            
+            if extension in self.allowed_extensions:
+                event.accept()
+            else:
+                event.ignore()
         else:
             event.ignore()
         
