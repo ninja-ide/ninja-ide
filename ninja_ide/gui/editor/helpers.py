@@ -64,6 +64,21 @@ def get_indentation(line):
         return space.group() + indentation
     return indentation
 
+def get_first_keyword(line):
+    word = line.split()[0]
+    keyword = remove_symbols(word)
+
+    if keyword in settings.SYNTAX.get('python')['keywords']: 
+        return keyword 
+
+    return word
+
+def remove_symbols(word):
+    return re.sub(r'[^\w]', '', word)
+
+def clean_line(editorWidget):
+    while editorWidget.textCursor().columnNumber() > 0:
+        editorWidget.textCursor().deletePreviousChar()
 
 def remove_trailing_spaces(editorWidget):
     cursor = editorWidget.textCursor()

@@ -92,6 +92,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.pep8 = pep8_checker.Pep8Checker(self)
         self.errors = errors_checker.ErrorsChecker(self)
 
+        self.allows_less_indentation = ['else', 'elif', 'finally', 'except']
+
         self.textModified = False
         self.newDocument = True
         self.highlighter = None
@@ -128,6 +130,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.postKeyPress = {
             Qt.Key_Enter: self.__auto_indent,
             Qt.Key_Return: self.__auto_indent,
+            Qt.Key_Colon: self.__retreat_to_keywords,
             Qt.Key_BracketLeft: self.__complete_braces,
             Qt.Key_BraceLeft: self.__complete_braces,
             Qt.Key_ParenLeft: self.__complete_braces,
@@ -160,6 +163,21 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.tr("Find Usages"), self)
         self.connect(self.__actionFindOccurrences, SIGNAL("triggered()"),
             self._find_occurrences)
+
+    def __retreat_to_keywords(self, event):
+        previous_text = unicode(self.textCursor().block().previous().text())
+        current_text = unicode(self.textCursor().block().text())
+        previous_spaces = helpers.get_indentation(previous_text)
+        current_spaces = helpers.get_indentation(current_text)
+
+        if len(previous_spaces) != len(current_spaces):
+            last_word = helpers.get_first_keyword(current_text)
+
+            if last_word in self.allows_less_indentation:
+                helpers.clean_line(self)
+
+                spaces_diff = len(current_spaces) - len(previous_spaces)
+                self.textCursor().insertText(current_text[spaces_diff:])
 
     def __get_encoding(self):
         """Get the current encoding of 'utf-8' otherwise."""
