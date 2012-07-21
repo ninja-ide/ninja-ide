@@ -231,7 +231,7 @@ QTabBar::tab:focus {
 }
 
 QTabBar::tab:top:first:selected {
-    
+
 }
 
 QTabBar::tab:bottom:first:selected {
@@ -308,6 +308,11 @@ QPushButton#navigation_button {
     border-color: gray;
     background: none;
     padding: 0px;
+}
+
+QPushButton#web_list_button {
+    border: none;
+    background: none
 }
 
 QPushButton#combo_button {

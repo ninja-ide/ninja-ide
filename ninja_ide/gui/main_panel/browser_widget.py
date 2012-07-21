@@ -24,6 +24,7 @@ from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QListWidget
 from PyQt4.QtGui import QListWidgetItem
+from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QUrl
 from PyQt4.QtCore import QString
 from PyQt4.QtCore import QSettings
@@ -91,6 +92,13 @@ class BrowserWidget(QWidget, itab_item.ITabItem):
                     'src="img/', 'src="%s\\' % pathImg)
                 self.webFrame.setHtml(content)
             self._id = 'Start Page'
+            policy = Qt.ScrollBarAlwaysOff
+        else:
+            policy = Qt.ScrollBarAsNeeded
+        self.webFrame.page().currentFrame().setScrollBarPolicy(
+            Qt.Vertical, policy)
+        self.webFrame.page().currentFrame().setScrollBarPolicy(
+            Qt.Horizontal, policy)
 
     def start_page_operations(self, url):
         opt = file_manager.get_basename(unicode(url.toString()))
