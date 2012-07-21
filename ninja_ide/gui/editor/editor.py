@@ -407,7 +407,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.go_to_line(line[0] - 1)
 
     def _find_occurrences(self):
-        word = self._text_under_cursor()
+        if self.textCursor().hasSelection():
+            word = self.textCursor().selectedText()
+        else:
+            word = self._text_under_cursor()
         self.emit(SIGNAL("findOcurrences(QString)"), word)
 
     def go_to_line(self, lineno):
