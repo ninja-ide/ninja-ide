@@ -125,8 +125,8 @@ class TabWidget(QTabWidget):
             self.titles.append(title)
             return
         indexes = [i for i in xrange(self.count())
-            if type(self.widget(i)) is editor.Editor and \
-            self.tabText(i) == title and \
+            if type(self.widget(i)) is editor.Editor and
+            self.tabText(i) == title and
             self.widget(i).ID]
         self.dontLoopInExpandTitle = True
         for i in indexes:
@@ -150,7 +150,8 @@ class TabWidget(QTabWidget):
         ed = self.currentWidget()
         if type(ed) is editor.Editor and self.notOpening and val:
             ed.textModified = True
-            self.tabBar().setTabTextColor(self.currentIndex(), QColor(Qt.red))
+            text = '(*) %s' % self.tabBar().tabText(self.currentIndex())
+            self.tabBar().setTabText(self.currentIndex(), text)
 
     def focusInEvent(self, event):
         QTabWidget.focusInEvent(self, event)
@@ -221,7 +222,10 @@ class TabWidget(QTabWidget):
 
     def tab_was_saved(self, ed):
         index = self.indexOf(ed)
-        self.tabBar().setTabTextColor(index, QColor(Qt.gray))
+        text = unicode(self.tabBar().tabText(self.currentIndex()))
+        if text.startswith('(*) '):
+            text = text[4:]
+        self.tabBar().setTabText(index, text)
 
     def is_open(self, identifier):
         """Check if a Tab with id = identifier is open"""
