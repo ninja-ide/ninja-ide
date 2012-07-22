@@ -93,3 +93,4 @@ class FromImportDialog(QDialog):
         importLine[1:]).position() == -1:
             cursor.insertText(importLine)
         self.close()
+        
