@@ -822,7 +822,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             painter.begin(self.viewport())
             painter.setPen(QColor('#FE9E9A'))
             offset = self.contentOffset()
-            painter.drawLine(self.pos_margin + offset.x(), 0, \
+            painter.drawLine(self.pos_margin + offset.x(), 0,
                 self.pos_margin + offset.x(), self.viewport().height())
             painter.end()
 
