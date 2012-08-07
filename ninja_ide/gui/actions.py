@@ -434,7 +434,7 @@ class __Actions(QObject):
             editorWidget._file_saved()
         except file_manager.NinjaFileExistsException, ex:
             QMessageBox.information(self, self.tr("File Already Exists"),
-                self.tr("Invalid Path: the file '%s' already exists." % \
+                self.tr("Invalid Path: the file '%s' already exists." %
                     ex.filename))
 
     def add_project_to_console(self, projectFolder):
@@ -604,6 +604,7 @@ class __Actions(QObject):
 
     def editor_indent_more(self):
         """Indent 1 position to the right for the current line or selection."""
+        print 'yes'
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget and editorWidget.hasFocus():
             editorWidget.indent_more()
