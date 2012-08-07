@@ -1315,7 +1315,7 @@ class Checker(object):
             self.results.append("%s:%s:%d: %s" %
                     (self.filename, self.line_offset + line_number,
                      offset + 1, text))
-            if options.show_source:
+            if options.show_source and len(self.lines) <= line_number:
                 line = self.lines[line_number - 1]
                 self.results.append(line.rstrip())
                 self.results.append(' ' * offset + '^')

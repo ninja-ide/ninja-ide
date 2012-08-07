@@ -205,7 +205,7 @@ class ShortcutConfiguration(QWidget):
         buttons_layout.addWidget(load_defaults_button)
         main_vbox.addLayout(buttons_layout)
         main_vbox.addWidget(QLabel(
-            self.tr("The Shortcut's Text in the Menus are " \
+            self.tr("The Shortcut's Text in the Menus are "
             "going to be refreshed on restart.")))
         #load data!
         self.result_widget.setColumnWidth(0, 400)
