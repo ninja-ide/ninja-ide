@@ -244,7 +244,7 @@ class TreeProjectsWidget(QTreeWidget):
             self.tr("Create '__init__' Complete"))
         self.connect(action_create_init, SIGNAL("triggered()"),
             self._create_init)
-        if item.isFolder and (item.parent() != None):
+        if item.isFolder and (item.parent() is not None):
             action_remove_folder = menu.addAction(self.tr("Remove Folder"))
             self.connect(action_remove_folder, SIGNAL("triggered()"),
                 self._delete_folder)
@@ -330,7 +330,7 @@ class TreeProjectsWidget(QTreeWidget):
             p_path = unicode(each_project.path)
             if file_manager.belongs_to_folder(p_path, folder) and \
                file_manager.is_supported_extension(folder,
-                   each_project.extensions):
+                   each_project.extensions) and folder[:1] != '.':
                 self._refresh_project(each_project)
                 break
 
@@ -424,7 +424,7 @@ class TreeProjectsWidget(QTreeWidget):
                 main_container.MainContainer().save_file()
             except file_manager.NinjaFileExistsException, ex:
                 QMessageBox.information(self, self.tr("File Already Exists"),
-                    self.tr("Invalid Path: the file '%s' already exists." % \
+                    self.tr("Invalid Path: the file '%s' already exists." %
                         ex.filename))
 
     def add_existing_file(self, path):
@@ -467,7 +467,7 @@ class TreeProjectsWidget(QTreeWidget):
     def _delete_file(self):
         item = self.currentItem()
         val = QMessageBox.question(self, self.tr("Delete File"),
-                self.tr("Do you want to delete the following file: ") \
+                self.tr("Do you want to delete the following file: ")
                 + os.path.join(item.path, unicode(item.text(0))),
                 QMessageBox.Yes, QMessageBox.No)
         if val == QMessageBox.Yes:
@@ -482,7 +482,7 @@ class TreeProjectsWidget(QTreeWidget):
     def _delete_folder(self):
         item = self.currentItem()
         val = QMessageBox.question(self, self.tr("Delete Folder"),
-                self.tr("Do you want to delete the following folder: ") \
+                self.tr("Do you want to delete the following folder: ")
                 + os.path.join(item.path, unicode(item.text(0))),
                 QMessageBox.Yes, QMessageBox.No)
         if val == QMessageBox.Yes:
@@ -519,7 +519,7 @@ class TreeProjectsWidget(QTreeWidget):
                 subitem.parent().takeChild(index)
             except file_manager.NinjaFileExistsException, ex:
                 QMessageBox.information(self, self.tr("File Already Exists"),
-                    self.tr("Invalid Path: the file '%s' already exists." % \
+                    self.tr("Invalid Path: the file '%s' already exists." %
                         ex.filename))
 
     def _copy_file(self):
@@ -551,7 +551,7 @@ class TreeProjectsWidget(QTreeWidget):
             self.add_existing_file(path)
         except file_manager.NinjaFileExistsException, ex:
                 QMessageBox.information(self, self.tr("File Already Exists"),
-                    self.tr("Invalid Path: the file '%s' already exists." % \
+                    self.tr("Invalid Path: the file '%s' already exists." %
                         ex.filename))
 
     def _move_file(self):
@@ -578,7 +578,7 @@ class TreeProjectsWidget(QTreeWidget):
             self.add_existing_file(path)
         except file_manager.NinjaFileExistsException, ex:
                 QMessageBox.information(self, self.tr("File Already Exists"),
-                    self.tr("Invalid Path: the file '%s' already exists." % \
+                    self.tr("Invalid Path: the file '%s' already exists." %
                         ex.filename))
 
     def _edit_ui_file(self):
@@ -698,7 +698,7 @@ class TreeProjectsWidget(QTreeWidget):
         return self._projects.values()
 
     def is_open(self, path):
-        return len([True for item in self._projects.values() \
+        return len([True for item in self._projects.values()
             if item.path == path]) != 0
 
     def _set_current_project(self, path):

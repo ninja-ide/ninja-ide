@@ -292,7 +292,7 @@ QLabel, QListWidget {
 }
 
 QPushButton {
-    background: #ADD8E6;
+    background: #97b9c4;
     border-radius: 5px;
     padding: 4px 8px;
     border: 0;
@@ -307,7 +307,13 @@ QPushButton:only-one {
 }
 
 QPushButton:hover {
+    background: #b8deea;
     border-bottom: 2px solid #5D7886;
+}
+
+QPushButton:focus {
+    border: 2px solid #39508c;
+    padding: 3px 7px;
 }
 
 QPushButton:pressed {
