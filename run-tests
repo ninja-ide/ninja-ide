@@ -1,2 +1,2 @@
 clear
-python -m unittest discover -v
+python -m unittest discover -v ninja_tests/
