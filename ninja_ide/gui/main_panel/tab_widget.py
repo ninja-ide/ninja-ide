@@ -22,7 +22,6 @@ from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QMenu
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QApplication
@@ -148,7 +147,9 @@ class TabWidget(QTabWidget):
 
     def tab_was_modified(self, val):
         ed = self.currentWidget()
-        if type(ed) is editor.Editor and self.notOpening and val:
+        text = unicode(self.tabBar().tabText(self.currentIndex()))
+        if type(ed) is editor.Editor and self.notOpening and val and \
+           not text.startswith('(*) '):
             ed.textModified = True
             text = '(*) %s' % self.tabBar().tabText(self.currentIndex())
             self.tabBar().setTabText(self.currentIndex(), text)
