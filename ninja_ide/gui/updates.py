@@ -80,9 +80,10 @@ class TrayIconUpdates(QSystemTrayIcon):
                 if self.supportsMessages():
                     self.setup_menu(True)
                     self.showMessage(self.tr("NINJA-IDE Updates"),
-                        self.tr("New Version of NINJA-IDE\nAvailable: ") + \
+                        self.tr("New Version of NINJA-IDE\nAvailable: ") +
                         self.ide_version + \
-                        self.tr("\n\nCheck the Update Icon Menu to Download!"),
+                        self.tr("\n\nCheck the Update Menu in the NINJA-IDE "
+                                "System Tray icon to Download!"),
                         QSystemTrayIcon.Information, 10000)
                 else:
                     button = QMessageBox.information(self.parent(),
