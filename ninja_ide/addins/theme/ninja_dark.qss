@@ -307,7 +307,8 @@ QPushButton:only-one {
 }
 
 QPushButton:hover {
-    background: #b8deea;
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+        stop: 0 #b8deea, stop: 1.0 #97b9c4);
     border-bottom: 2px solid #5D7886;
 }
 
