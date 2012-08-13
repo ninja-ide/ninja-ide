@@ -24,7 +24,7 @@ from ninja_ide.tools.completion import analyzer
 from ninja_ide.tools.completion import model
 from ninja_ide.tools.completion import code_completion
 from ninja_ide.tools.completion import completion_daemon
-from tests.tools.completion import (
+from ninja_tests.tools.completion import (
     get_source_data,
     SOURCE_LATE_RESOLUTION,
     SOURCE_INHERITANCE
