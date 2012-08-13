@@ -20,7 +20,7 @@ import unittest
 
 from ninja_ide.tools.completion import code_completion
 from ninja_ide.tools.completion import completion_daemon
-from tests.tools.completion import get_source_data, SOURCE_COMPLETION
+from ninja_tests.tools.completion import get_source_data, SOURCE_COMPLETION
 
 
 class CodeCompletionTestCase(unittest.TestCase):
