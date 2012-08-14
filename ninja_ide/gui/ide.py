@@ -502,7 +502,7 @@ def start(filenames=None, projects_path=None,
 
     #Set Stylesheet
     style_applied = False
-    if settings.NINJA_SKIN != 'Default':
+    if settings.NINJA_SKIN not in ('Default', 'Classic Theme'):
         file_name = ("%s.qss" % settings.NINJA_SKIN)
         qss_file = file_manager.create_path(resources.NINJA_THEME_DOWNLOAD,
             file_name)
@@ -512,9 +512,13 @@ def start(filenames=None, projects_path=None,
                 app.setStyleSheet(qss)
                 style_applied = True
     if not style_applied:
-        with open(resources.NINJA_THEME) as f:
-            qss = f.read()
-            app.setStyleSheet(qss)
+        if settings.NINJA_SKIN == 'Default':
+            with open(resources.NINJA_THEME) as f:
+                qss = f.read()
+        else:
+            with open(resources.NINJA__THEME_CLASSIC) as f:
+                qss = f.read()
+        app.setStyleSheet(qss)
 
     #Loading Schemes
     splash.showMessage("Loading Schemes",
