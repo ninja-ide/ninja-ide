@@ -60,6 +60,9 @@ START_PAGE_URL = os.path.join(PRJ_PATH, "doc", "startPage.html")
 
 NINJA_THEME = os.path.join(PRJ_PATH, "addins", "theme", "ninja_dark.qss")
 
+NINJA__THEME_CLASSIC = os.path.join(
+    PRJ_PATH, "addins", "theme", "ninja_theme.qss")
+
 NINJA_THEME_DOWNLOAD = os.path.join(HOME_NINJA_PATH, "addins", "theme")
 
 LOG_FILE_PATH = os.path.join(HOME_NINJA_PATH, 'ninja_ide.log')
