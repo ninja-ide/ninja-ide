@@ -317,7 +317,7 @@ class GeneralExecution(QWidget):
         self.comboWarning.addItems(
             ['default', 'ignore', 'all', 'module', 'once', 'error'])
         self.check_x = QCheckBox(self.tr("-x: skip first line of source"))
-        self.check_3 = QCheckBox(self.tr("-3: warn about Python 3.x " \
+        self.check_3 = QCheckBox(self.tr("-3: warn about Python 3.x "
             "incompatibilities that 2to3 cannot trivially fix"))
         grid.addWidget(self.check_B)
         grid.addWidget(self.check_d)
@@ -1691,6 +1691,7 @@ class ThemeChooser(QWidget):
     def _refresh_list(self):
         self.list_skins.clear()
         self.list_skins.addItem("Default")
+        self.list_skins.addItem("Classic Theme")
 
         files = [file_manager.get_file_name(filename) for filename in \
             file_manager.get_files_from_folder(
@@ -1700,6 +1701,8 @@ class ThemeChooser(QWidget):
 
         if settings.NINJA_SKIN == 'Default':
             self.list_skins.setCurrentRow(0)
+        elif settings.NINJA_SKIN == 'Classic Theme':
+            self.list_skins.setCurrentRow(1)
         elif settings.NINJA_SKIN in files:
             index = files.index(settings.NINJA_SKIN)
             self.list_skins.setCurrentRow(index + 1)
@@ -1719,6 +1722,8 @@ class ThemeChooser(QWidget):
     def preview_theme(self):
         if self.list_skins.currentRow() == 0:
             qss_file = resources.NINJA_THEME
+        elif self.list_skins.currentRow() == 1:
+            qss_file = resources.NINJA__THEME_CLASSIC
         else:
             file_name = ("%s.qss" %
                 self.list_skins.currentItem().text())
@@ -1768,6 +1773,8 @@ class ThemeDesigner(QWidget):
         if not self.edit_qss.document().isModified():
             if self._parent.theme_chooser.list_skins.currentRow() == 0:
                 qss_file = resources.NINJA_THEME
+            if self._parent.theme_chooser.list_skins.currentRow() == 1:
+                qss_file = resources.NINJA__THEME_CLASSIC
             else:
                 file_name = ("%s.qss" %
                     self._parent.theme_chooser.list_skins.currentItem().text())
