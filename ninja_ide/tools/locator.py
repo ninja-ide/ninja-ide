@@ -257,15 +257,15 @@ class LocateThread(QThread):
         locations = self.get_locations()
         if self._isVariable:
             preResults = [
-                [file_manager.get_basename(x.path), x.path, x.lineno, ''] \
-                for x in locations \
+                [file_manager.get_basename(x.path), x.path, x.lineno, '']
+                for x in locations
                 if (x.type == FILTERS['attribs']) and (x.name == self._search)]
         else:
             preResults = [
                 [file_manager.get_basename(x.path), x.path, x.lineno, '']
-                for x in locations \
-                if ((x.type == FILTERS['functions']) or \
-                   (x.type == FILTERS['classes'])) and \
+                for x in locations
+                if ((x.type == FILTERS['functions']) or
+                   (x.type == FILTERS['classes'])) and
                    (x.name.startswith(self._search))]
         for data in preResults:
             file_object = QFile(data[1])
@@ -512,7 +512,7 @@ class LocateCompleter(QLineEdit):
         #Create the list items
         begin = self.items_in_page
         self.items_in_page += self.page_items_step
-        locations_view = [(LocateItem(x), LocateWidget(x)) \
+        locations_view = [(LocateItem(x), LocateWidget(x))
             for x in locations[begin:self.items_in_page]]
         return locations_view
 
@@ -550,20 +550,20 @@ class LocateCompleter(QLineEdit):
                         self._parent._thread.get_this_file_locations(
                             editorWidget.ID)
                     self.__prefix = unicode(self.__prefix)[1:].lstrip()
-                    self.tempLocations = [x for x in self.tempLocations \
+                    self.tempLocations = [x for x in self.tempLocations
                         if x.comparison.lower().find(self.__prefix) > -1]
             elif filterOption == FILTERS['tabs']:
                 tab1, tab2 = main.get_opened_documents()
                 opened = tab1 + tab2
                 self.tempLocations = [ResultItem(FILTERS['files'],
-                    file_manager.get_basename(f[0]), f[0]) \
+                    file_manager.get_basename(f[0]), f[0])
                     for f in opened]
                 self.__prefix = unicode(self.__prefix)[1:].lstrip()
             elif filterOption == FILTERS['lines']:
                 editorWidget = main.get_actual_editor()
                 self.tempLocations = [
-                    x for x in self._parent._thread.get_locations() \
-                        if x.type == FILTERS['files'] and \
+                    x for x in self._parent._thread.get_locations()
+                        if x.type == FILTERS['files'] and
                         x.path == editorWidget.ID]
                 inCurrentFile = True
                 if filterOptions[1].isdigit():
@@ -581,7 +581,7 @@ class LocateCompleter(QLineEdit):
         if self.__prefix and not inCurrentFile:
             #if prefix (user search now) is not empty, filter words that1
             #contain the user input
-            self.tempLocations = [x for x in self.tempLocations \
+            self.tempLocations = [x for x in self.tempLocations
                 if x.comparison.lower().find(self.__prefix) > -1]
 
         return self._create_list_widget_items(self.tempLocations)
@@ -624,7 +624,7 @@ class LocateCompleter(QLineEdit):
                 self._classFilter = self._filterData.name
             symbols = self._parent._thread.get_symbols_for_class(filePath,
                 self._classFilter)
-            self.tempLocations = [x for x in symbols \
+            self.tempLocations = [x for x in symbols
                 if x.type == filterOptions[4]]
         elif len(filterOptions) == 4 and filterOptions[2] == FILTERS['lines']:
             self.tempLocations = [
@@ -634,7 +634,7 @@ class LocateCompleter(QLineEdit):
                 return
         else:
             self.tempLocations = [
-                x for x in mapping_locations.get(filePath, []) \
+                x for x in mapping_locations.get(filePath, [])
                 if x.type == filterOptions[2]]
         moveIndex += 3
         if len(filterOptions) > moveIndex and filterOptions[moveIndex]:
@@ -656,7 +656,7 @@ class LocateCompleter(QLineEdit):
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Space:
             item = self.frame.listWidget.currentItem()
-            self.setText(unicode(item._data[1]))
+            self.setText(unicode(item._data.comparison))
             return
 
         QLineEdit.keyPressEvent(self, event)
