@@ -37,7 +37,6 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
     def __init__(self):
         super(NinjaFileSystemWatcher, self).__init__()
         self.observer = fsevents.Observer()
-        self.observer.start()
         self.watching_paths = {}
         self.event_mapping = {
             fsevents.IN_CREATE: ADDED,
@@ -66,6 +65,8 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
                     path, file_events=True)
                 self.observer.schedule(stream)
                 self.watching_paths[path] = stream
+                if not self.observer.is_alive():
+                    self.observer.start()
             except Exception, reason:
                 print reason
                 logger.debug("Path could not be added: %r" % path)
@@ -76,6 +77,9 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
                 stream = self.watching_paths[path]
                 self.observer.unschedule(stream)
                 self.watching_paths.remove(path)
+                self.observer.join()
+                if not self.observer.is_alive():
+                    self.observer = fsevents.Observer()
         except:
             logger.debug("Stream could not be removed for path: %r" % path)
 
