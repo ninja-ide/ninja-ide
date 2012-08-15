@@ -169,6 +169,8 @@ class TreeProjectsWidget(QTreeWidget):
             self._add_context_menu_for_files(menu, item)
         if item.parent() is None:
             #get the extra context menu for this projectType
+            if isinstance(item, ProjectItem):
+                return
             handler = settings.get_project_type_handler(item.projectType)
             self._add_context_menu_for_root(menu, item)
 
