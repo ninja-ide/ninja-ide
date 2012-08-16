@@ -269,7 +269,7 @@ class Checker(object):
     def ignore(self, node):
         pass
 
-    STMT = PRINT = PRINTNL = TUPLE = LIST = ASSTUPLE = ASSATTR = \
+    STMT = SET = PRINT = PRINTNL = TUPLE = LIST = ASSTUPLE = ASSATTR = \
     ASSLIST = GETATTR = SLICE = SLICEOBJ = IF = CALLFUNC = DISCARD = \
     RETURN = ADD = MOD = SUB = NOT = UNARYSUB = INVERT = ASSERT = COMPARE = \
     SUBSCRIPT = AND = OR = TRYEXCEPT = RAISE = YIELD = DICT = LEFTSHIFT = \
