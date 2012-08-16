@@ -737,7 +737,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if brace not in settings.BRACES:
             # Thou shalt not waste cpu cycles if this brace compleion dissabled
             return
-        text = self.textCursor().block().text()
+        text = unicode(self.textCursor().block().text())
         complementary_brace = BRACE_DICT.get(brace)
         token_buffer = []
         _, tokens = self.__tokenize_text(text)
