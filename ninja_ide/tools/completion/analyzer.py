@@ -130,6 +130,10 @@ class Analyzer(object):
     def _assign_disambiguation(self, type_name, line_content):
         """Provide a specific builtin for the cases were ast doesn't work."""
         line = line_content.split('=')
+        if len(line) < 2:
+            logger.error('_assign_disambiguation, line not valid: %r' %
+                line_content)
+            return type_name
         value = line[1].strip()
         # TODO: We have to analyze when the assign is: x,y = 1, 2
         if type_name is _ast.Num and '.' in value:
@@ -259,7 +263,6 @@ class Analyzer(object):
                 logger.error('_process_function, error: %r' % reason)
                 logger.error('line number: %d' % symbol.lineno)
                 logger.error('line: %s' % self.content[symbol.lineno])
-                logger.error('source: \n%s' % ''.join(self.content))
                 raise
             assign = model.Assign(arg.id)
             data_type = (model.late_resolution, None)
