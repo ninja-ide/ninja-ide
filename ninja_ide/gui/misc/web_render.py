@@ -18,6 +18,7 @@ from __future__ import absolute_import
 
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QVBoxLayout
+from PyQt4.QtGui import QPushButton
 from PyQt4.QtWebKit import QWebView
 from PyQt4.QtCore import QUrl
 from PyQt4.QtWebKit import QWebSettings
@@ -33,6 +34,19 @@ class WebRender(QWidget):
         self.webFrame = QWebView()
         QWebSettings.globalSettings().setAttribute(
             QWebSettings.DeveloperExtrasEnabled, True)
+        
+        # FireBug Web Developer Debugging Tools (on Demand injection) Loader
+        firebugize = QPushButton("FireBugize !")
+        #firebugize.setShortcut('Ctrl+?')
+        #firebugize.setToolTip("Load FireBug debug tools")
+        self.connect(firebugize, QtCore.SIGNAL('clicked()'),
+            lambda: self.webFrame.page().mainFrame().evaluateJavaScript("""
+            var firebug = document.createElement('script');
+            firebug.setAttribute('src', 'https://getfirebug.com/firebug-lite-beta.js#startOpened'); 
+            document.body.appendChild(firebug); """)
+        )
+        vbox.addWidget(firebugize)
+                
         vbox.addWidget(self.webFrame)
 
     def render_page(self, url):
