@@ -16,8 +16,8 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
-#import fsevents
 
+#import fsevents
 #from PyQt4.QtCore import SIGNAL
 
 from ninja_ide.tools.logger import NinjaLogger
