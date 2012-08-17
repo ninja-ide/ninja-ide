@@ -375,7 +375,7 @@ class __MainContainer(QSplitter):
             QMessageBox.information(self, self.tr("Incorrect File"),
                 self.tr("The image couldn\'t be open"))
 
-    def open_file(self, filename='', cursorPosition=-1, \
+    def open_file(self, filename='', cursorPosition=-1,
                     tabIndex=None, positionIsLineNumber=False, notStart=True):
         filename = unicode(filename)
         if not filename:
@@ -391,7 +391,7 @@ class __MainContainer(QSplitter):
                 elif editorWidget is not None and editorWidget.ID:
                     directory = file_manager.get_folder(editorWidget.ID)
             extensions = ';;'.join(
-                ['(*%s)' % e for e in \
+                ['(*%s)' % e for e in
                     settings.SUPPORTED_EXTENSIONS + ['.*', '']])
             fileNames = list(QFileDialog.getOpenFileNames(self,
                 self.tr("Open File"), directory, extensions))
@@ -465,7 +465,7 @@ class __MainContainer(QSplitter):
         for folder in opened_projects:
             if file_manager.belongs_to_folder(folder, filename):
                 alone = False
-        if alone:
+        if alone or sys.platform == 'darwin':
             self._file_watcher.add_file_watch(filename)
             self._watched_simple_files.append(filename)
 
