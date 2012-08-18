@@ -501,7 +501,7 @@ def comment_multiple_lines(cursor, block_start, block_end, comment_wildcard):
 def check_for_assistance_completion(editorWidget, line):
     #This will be possible when code completion is working
     global patClass
-    if patClass.match(line):
+    if patClass.match(line) and editorWidget.lang == 'python':
         source = unicode(editorWidget.toPlainText())
         source = source.encode(editorWidget.encoding)
         symbols = introspection.obtain_symbols(source)
