@@ -41,24 +41,24 @@ def get_leading_spaces(line):
     return ''
 
 
-def get_indentation(line):
+def get_indentation(line, indent=settings.INDENT, useTabs=settings.USE_TABS):
     global patIndent
     global endCharsForIndent
     indentation = ''
     if len(line) > 0 and line[-1] in endCharsForIndent:
-        if settings.USE_TABS:
+        if useTabs:
             indentation = '\t'
         else:
-            indentation = ' ' * settings.INDENT
+            indentation = ' ' * indent
     elif len(line) > 0 and line[-1] == ',':
         count = filter(lambda x:
             (line.count(x) - line.count(closeBraces[x])) % 2 != 0,
             endCharsForIndent[1:])
         if count:
-            if settings.USE_TABS:
+            if useTabs:
                 indentation = '\t'
             else:
-                indentation = ' ' * settings.INDENT
+                indentation = ' ' * indent
     space = patIndent.match(line)
     if space is not None:
         return space.group() + indentation
@@ -124,7 +124,7 @@ def insert_title_comment(editorWidget):
 
 def replace_tabs_with_spaces(editorWidget):
     text = editorWidget.toPlainText()
-    text = text.replace('\t', ' ' * settings.INDENT)
+    text = text.replace('\t', ' ' * editorWidget.indent)
     editorWidget.setPlainText(text)
 
 
