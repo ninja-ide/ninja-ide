@@ -506,12 +506,12 @@ def check_for_assistance_completion(editorWidget, line):
                if init.startswith('__init__')]:
                 return
         editorWidget.textCursor().insertText('\n')
-        indent = get_indentation(line)
+        indent = get_indentation(line, editorWidget.indent, editorWidget.useTabs)
         editorWidget.textCursor().insertText(indent + 'def __init__(self):\n')
-        if settings.USE_TABS:
+        if editorWidget.useTabs:
             indent += '\t'
         else:
-            indent += ' ' * settings.INDENT
+            indent += ' ' * editorWidget.indent
         if line.find('(') != -1:
             classes = line.split('(')
             parents = []
