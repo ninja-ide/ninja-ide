@@ -213,7 +213,12 @@ COLOR_SCHEME = {
     "error-underline": "red",
     "pep8-underline": "yellow",
     "sidebar-background": "#c4c4c4",
-    "sidebar-foreground": "black"}
+    "sidebar-foreground": "black",
+    "locator-name": "white",
+    "locator-name-selected": "black",
+    "locator-path": "gray",
+    "locator-path-selected": "white",
+}
 
 CUSTOM_SCHEME = {}
 

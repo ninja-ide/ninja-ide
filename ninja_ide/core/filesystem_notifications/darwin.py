@@ -45,7 +45,8 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
             #fsevents.IN_MOVED_FROM: REMOVE,
             #fsevents.IN_MOVED_TO: ADDED}
 
-    #def shutdown_notification(self):
+    def shutdown_notification(self):
+        pass
         #base_watcher.BaseWatcher.shutdown_notification(self)
         #try:
             #for path in self.watching_paths:
@@ -56,7 +57,8 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
         #self.observer.stop()
         #self.observer.join()
 
-    #def add_watch(self, path):
+    def add_watch(self, path):
+        pass
         #if path not in self.watching_paths:
             #try:
                 #if isinstance(path, unicode):
@@ -71,7 +73,8 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
                 #print reason
                 #logger.debug("Path could not be added: %r" % path)
 
-    #def remove_watch(self, path):
+    def remove_watch(self, path):
+        pass
         #try:
             #if path in self.watching_paths:
                 #stream = self.watching_paths[path]
@@ -83,7 +86,8 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
         #except:
             #logger.debug("Stream could not be removed for path: %r" % path)
 
-    #def _emit_signal_on_change(self, event):
+    def _emit_signal_on_change(self, event):
+        pass
         #oper = self.event_mapping.get(event.mask, None)
         #if oper is None:
             #return
