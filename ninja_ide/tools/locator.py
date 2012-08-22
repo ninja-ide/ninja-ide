@@ -466,9 +466,33 @@ class LocateWidget(QLabel):
 
     def __init__(self, data):
         QLabel.__init__(self)
-        self.setText(u"<span style='color: white;'>{0}</span><br>"
-            "<span style='font-size: 12px; color: gray;'>({1})</span>".format(
-                data.name, data.path))
+        self.name = data.name
+        self.path = data.path
+        locator_name = resources.CUSTOM_SCHEME.get('locator-name',
+            resources.COLOR_SCHEME['locator-name'])
+        locator_path = resources.CUSTOM_SCHEME.get('locator-path',
+            resources.COLOR_SCHEME['locator-path'])
+        self.setText(u"<span style='color: {2};'>{0}</span><br>"
+            "<span style='font-size: 12px; color: {3};'>({1})</span>".format(
+                data.name, data.path, locator_name, locator_path))
+
+    def set_selected(self):
+        locator_name = resources.CUSTOM_SCHEME.get('locator-name-selected',
+            resources.COLOR_SCHEME['locator-name-selected'])
+        locator_path = resources.CUSTOM_SCHEME.get('locator-path-selected',
+            resources.COLOR_SCHEME['locator-path-selected'])
+        self.setText(u"<span style='color: {2};'>{0}</span><br>"
+            "<span style='font-size: 12px; color: {3};'>({1})</span>".format(
+                self.name, self.path, locator_name, locator_path))
+
+    def set_not_selected(self):
+        locator_name = resources.CUSTOM_SCHEME.get('locator-name',
+            resources.COLOR_SCHEME['locator-name'])
+        locator_path = resources.CUSTOM_SCHEME.get('locator-path',
+            resources.COLOR_SCHEME['locator-path'])
+        self.setText(u"<span style='color: {2};'>{0}</span><br>"
+            "<span style='font-size: 12px; color: {3};'>({1})</span>".format(
+                self.name, self.path, locator_name, locator_path))
 
 
 class LocateCompleter(QLineEdit):
@@ -638,7 +662,7 @@ class LocateCompleter(QLineEdit):
                 if x.type == filterOptions[2]]
         moveIndex += 3
         if len(filterOptions) > moveIndex and filterOptions[moveIndex]:
-            self.tempLocations = [x for x in self.tempLocations \
+            self.tempLocations = [x for x in self.tempLocations
               if x.comparison.lower().find(filterOptions[moveIndex]) > -1]
 
     def _advanced_filter_by_file(self, filterOptions):
@@ -646,7 +670,7 @@ class LocateCompleter(QLineEdit):
             index = 2
         else:
             index = 3
-        self.tempLocations = [x for x in self.tempLocations \
+        self.tempLocations = [x for x in self.tempLocations
             if file_manager.get_basename(x.path).lower().find(
                 filterOptions[index]) > -1]
 
@@ -714,6 +738,18 @@ class PopupCompleter(QFrame):
         self.listWidget = QListWidget()
         self.listWidget.setMinimumHeight(350)
         vbox.addWidget(self.listWidget)
+
+        self.listWidget.currentItemChanged.connect(self._repaint_items)
+
+    def _repaint_items(self, current, previous):
+        if current is not None:
+            widget = self.listWidget.itemWidget(current)
+            if widget is not None:
+                widget.set_selected()
+        if previous is not None:
+            widget = self.listWidget.itemWidget(previous)
+            if widget is not None:
+                widget.set_not_selected()
 
     def reload(self, model):
         """Reload the data of the Popup Completer, and restart the state."""
