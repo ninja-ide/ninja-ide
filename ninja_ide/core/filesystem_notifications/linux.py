@@ -109,14 +109,18 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
 
     def add_watch(self, path):
         if path not in self.watching_paths:
-            wm = WatchManager()
-            notifier = QNotifier(wm, self._emit_signal_on_change)
-            notifier.start()
-            exclude = ExcludeFilter([os.path.join(path, folder)
-                for folder in self._ignore_hidden])
-            wm.add_watch(path, mask, rec=True, auto_add=True,
-                exclude_filter=exclude)
-            self.watching_paths[path] = notifier
+            try:
+                wm = WatchManager()
+                notifier = QNotifier(wm, self._emit_signal_on_change)
+                notifier.start()
+                exclude = ExcludeFilter([os.path.join(path, folder)
+                    for folder in self._ignore_hidden])
+                wm.add_watch(path, mask, rec=True, auto_add=True,
+                    exclude_filter=exclude)
+                self.watching_paths[path] = notifier
+            except OSError:
+                pass
+                #Shit happens, most likely temp file
 
     def remove_watch(self, path):
         if path in self.watching_paths:
