@@ -253,7 +253,7 @@ class __Actions(QObject):
         self.connect(self.shortAddBookmark, SIGNAL("activated()"),
             self._add_bookmark_breakpoint)
         self.connect(self.shortShowPasteHistory, SIGNAL("activated()"),
-            self.ide.central.lateralPanel.combo.showPopup)
+            self.ide.central.lateralDock.combo.showPopup)
         self.connect(self.shortCopyHistory, SIGNAL("activated()"),
             self._copy_history)
         self.connect(self.shortPasteHistory, SIGNAL("activated()"),
@@ -371,14 +371,14 @@ class __Actions(QObject):
         if editorWidget and editorWidget.hasFocus():
             cursor = editorWidget.textCursor()
             copy = cursor.selectedText()
-            self.ide.central.lateralPanel.add_new_copy(copy)
+            self.ide.central.lateralDock.add_new_copy(copy)
 
     def _paste_history(self):
         """Paste the text from the copy/paste history."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget and editorWidget.hasFocus():
             cursor = editorWidget.textCursor()
-            paste = self.ide.central.lateralPanel.get_paste()
+            paste = self.ide.central.lateralDock.get_paste()
             cursor.insertText(paste)
 
     def _add_bookmark_breakpoint(self):
@@ -723,12 +723,12 @@ class __Actions(QObject):
     def hide_all(self):
         """Hide/Show all the containers except the editor."""
         if self.ide.menuBar().isVisible():
-            self.ide.central.lateralPanel.hide()
+            self.ide.central.lateralDock.hide()
             self.ide.misc.hide()
             self.ide.toolbar.hide()
             self.ide.menuBar().hide()
         else:
-            self.ide.central.lateralPanel.show()
+            self.ide.central.lateralDock.show()
             self.ide.toolbar.show()
             self.ide.menuBar().show()
         self.ide._menuView.hideAllAction.setChecked(
@@ -738,7 +738,7 @@ class __Actions(QObject):
         self.ide._menuView.hideEditorAction.setChecked(
             self.ide.central.mainContainer.isVisible())
         self.ide._menuView.hideExplorerAction.setChecked(
-            self.ide.central.lateralPanel.isVisible())
+            self.ide.central.lateralDock.isVisible())
         self.ide._menuView.hideToolbarAction.setChecked(
             self.ide.toolbar.isVisible())
 
@@ -755,7 +755,7 @@ class __Actions(QObject):
     def view_explorer_visibility(self):
         self.ide.central.change_explorer_visibility()
         self.ide._menuView.hideExplorerAction.setChecked(
-            self.ide.central.lateralPanel.isVisible())
+            self.ide.central.lateralDock.isVisible())
 
     def save_project(self):
         """Save all the opened files that belongs to the actual project."""
