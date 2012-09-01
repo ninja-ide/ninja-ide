@@ -17,11 +17,11 @@
 from __future__ import absolute_import
 
 from PyQt4.QtGui import QTabWidget
+from PyQt4.QtGui import QCursor
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QMenu
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QApplication
@@ -124,8 +124,8 @@ class TabWidget(QTabWidget):
             self.titles.append(title)
             return
         indexes = [i for i in xrange(self.count())
-            if type(self.widget(i)) is editor.Editor and \
-            self.tabText(i) == title and \
+            if type(self.widget(i)) is editor.Editor and
+            self.tabText(i) == title and
             self.widget(i).ID]
         self.dontLoopInExpandTitle = True
         for i in indexes:
@@ -147,9 +147,12 @@ class TabWidget(QTabWidget):
 
     def tab_was_modified(self, val):
         ed = self.currentWidget()
-        if type(ed) is editor.Editor and self.notOpening and val:
+        text = unicode(self.tabBar().tabText(self.currentIndex()))
+        if type(ed) is editor.Editor and self.notOpening and val and \
+           not text.startswith('(*) '):
             ed.textModified = True
-            self.tabBar().setTabTextColor(self.currentIndex(), QColor(Qt.red))
+            text = '(*) %s' % self.tabBar().tabText(self.currentIndex())
+            self.tabBar().setTabText(self.currentIndex(), text)
 
     def focusInEvent(self, event):
         QTabWidget.focusInEvent(self, event)
@@ -220,7 +223,10 @@ class TabWidget(QTabWidget):
 
     def tab_was_saved(self, ed):
         index = self.indexOf(ed)
-        self.tabBar().setTabTextColor(index, QColor(Qt.gray))
+        text = unicode(self.tabBar().tabText(self.currentIndex()))
+        if text.startswith('(*) '):
+            text = text[4:]
+        self.tabBar().setTabText(index, text)
 
     def is_open(self, identifier):
         """Check if a Tab with id = identifier is open"""
@@ -485,10 +491,12 @@ class TabNavigator(QWidget):
         hbox = QHBoxLayout(self)
         self.btnPrevious = QPushButton(
             QIcon(resources.IMAGES['nav-code-left']), '')
+        self.btnPrevious.setObjectName('navigation_button')
         self.btnPrevious.setToolTip(
             self.tr("Right click to change navigation options"))
         self.btnNext = QPushButton(
             QIcon(resources.IMAGES['nav-code-right']), '')
+        self.btnNext.setObjectName('navigation_button')
         self.btnNext.setToolTip(
             self.tr("Right click to change navigation options"))
         hbox.addWidget(self.btnPrevious)
@@ -520,7 +528,10 @@ class TabNavigator(QWidget):
             self._show_bookmarks)
 
     def contextMenuEvent(self, event):
-        self.menuNavigate.exec_(event.globalPos())
+        self.show_menu_navigation()
+
+    def show_menu_navigation(self):
+        self.menuNavigate.exec_(QCursor.pos())
 
     def _show_bookmarks(self):
         self.btnPrevious.setIcon(QIcon(resources.IMAGES['book-left']))

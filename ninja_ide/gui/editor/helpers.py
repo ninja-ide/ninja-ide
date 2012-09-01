@@ -51,7 +51,7 @@ def get_indentation(line):
         else:
             indentation = ' ' * settings.INDENT
     elif len(line) > 0 and line[-1] == ',':
-        count = filter(lambda x: \
+        count = filter(lambda x:
             (line.count(x) - line.count(closeBraces[x])) % 2 != 0,
             endCharsForIndent[1:])
         if count:
@@ -465,7 +465,14 @@ def comment_single_line(cursor, block_start, block_end, comment_wildcard):
     #Move the COPY cursor
     while block_start != block_end:
         cursor.setPosition(block_start.position())
-        cursor.insertText(comment_wildcard[0])
+        block_number = block_start.blockNumber()
+        cursor.select(QTextCursor.WordUnderCursor)
+        word = unicode(cursor.selectedText())
+        cursor.movePosition(QTextCursor.StartOfBlock)
+        if not word:
+            cursor.movePosition(QTextCursor.WordRight)
+        if block_number == cursor.blockNumber():
+            cursor.insertText(comment_wildcard[0])
         block_start = block_start.next()
     #End a undo block
     cursor.endEditBlock()
@@ -494,12 +501,12 @@ def comment_multiple_lines(cursor, block_start, block_end, comment_wildcard):
 def check_for_assistance_completion(editorWidget, line):
     #This will be possible when code completion is working
     global patClass
-    if patClass.match(line):
+    if patClass.match(line) and editorWidget.lang == 'python':
         source = unicode(editorWidget.toPlainText())
         source = source.encode(editorWidget.encoding)
         symbols = introspection.obtain_symbols(source)
         clazzName = [name for name in
-            re.split("(\\s)*class(\\s)+|:|\(", line) \
+            re.split("(\\s)*class(\\s)+|:|\(", line)
             if name is not None and name.strip()][0]
         clazz_key = [item for item in symbols.get('classes', []) \
             if item.startswith(clazzName)]
@@ -509,12 +516,12 @@ def check_for_assistance_completion(editorWidget, line):
                if init.startswith('__init__')]:
                 return
         editorWidget.textCursor().insertText('\n')
-        spaces = get_leading_spaces(line)
-        indent = ' ' * 4
-        if spaces:
-            indent += ' ' * (len(spaces) - 1)
+        indent = get_indentation(line)
         editorWidget.textCursor().insertText(indent + 'def __init__(self):\n')
-        indent += ' ' * 4
+        if settings.USE_TABS:
+            indent += '\t'
+        else:
+            indent += ' ' * settings.INDENT
         if line.find('(') != -1:
             classes = line.split('(')
             parents = []

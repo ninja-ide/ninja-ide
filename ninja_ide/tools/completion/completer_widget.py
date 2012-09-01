@@ -126,7 +126,7 @@ class CodeCompletionWidget(QFrame):
         point = self._editor.mapToGlobal(cr.topLeft())
         cr.moveTopLeft(point)
         #Check new position according desktop geometry
-        width = (self.completion_list.sizeHintForColumn(0) + \
+        width = (self.completion_list.sizeHintForColumn(0) +
             self.completion_list.verticalScrollBar().sizeHint().width() + 10)
         height = 200
         orientation = (point.y() + height) < desktop_geometry.height()
@@ -160,17 +160,17 @@ class CodeCompletionWidget(QFrame):
     def set_completion_prefix(self, prefix, valid=True):
         self._prefix = prefix
         proposals = []
-        proposals += [('m', item) \
-            for item in self._completion_results.get('modules', []) \
+        proposals += [('m', item)
+            for item in self._completion_results.get('modules', [])
             if item.startswith(prefix)]
-        proposals += [('c', item) \
-            for item in self._completion_results.get('classes', []) \
+        proposals += [('c', item)
+            for item in self._completion_results.get('classes', [])
             if item.startswith(prefix)]
-        proposals += [('a', item) \
-            for item in self._completion_results.get('attributes', []) \
+        proposals += [('a', item)
+            for item in self._completion_results.get('attributes', [])
             if item.startswith(prefix)]
-        proposals += [('f', item) \
-            for item in self._completion_results.get('functions', []) \
+        proposals += [('f', item)
+            for item in self._completion_results.get('functions', [])
             if item.startswith(prefix)]
         if proposals and valid:
             self.complete(proposals)
@@ -189,8 +189,8 @@ class CodeCompletionWidget(QFrame):
         return result
 
     def fill_completer(self, force_completion=False):
-        if not force_completion and (self._editor.cursor_inside_string() or \
-           self._editor.cursor_inside_comment() or \
+        if not force_completion and (self._editor.cursor_inside_string() or
+           self._editor.cursor_inside_comment() or
            self._invalid_completion_position()):
             return
         source = self._editor.get_text()
@@ -234,9 +234,9 @@ class CodeCompletionWidget(QFrame):
             prefix, valid = self.cc.get_prefix(source, offset)
             self.set_completion_prefix(prefix, valid)
             self.completion_list.setCurrentRow(0)
-        force_completion = (event.key() == Qt.Key_Space and \
+        force_completion = (event.key() == Qt.Key_Space and
                             event.modifiers() == Qt.ControlModifier)
-        if event.key() == Qt.Key_Period  or force_completion:
+        if event.key() == Qt.Key_Period or force_completion:
             self.fill_completer(force_completion)
 
 
@@ -269,7 +269,7 @@ class CompleterWidget(QCompleter):
         proposals += results.get('functions', [])
         self.model().setStringList(proposals)
         self.popup().setCurrentIndex(self.model().index(0, 0))
-        cr.setWidth(self.popup().sizeHintForColumn(0) \
+        cr.setWidth(self.popup().sizeHintForColumn(0)
             + self.popup().verticalScrollBar().sizeHint().width() + 10)
         QCompleter.complete(self, cr)
 

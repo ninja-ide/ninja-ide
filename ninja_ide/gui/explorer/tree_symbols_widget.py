@@ -57,7 +57,8 @@ class TreeSymbolsWidget(QTreeWidget):
         self.connect(self, SIGNAL("itemClicked(QTreeWidgetItem *, int)"),
             self._go_to_definition)
         self.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.connect(self, SIGNAL("customContextMenuRequested(const QPoint &)"),
+        self.connect(self,
+            SIGNAL("customContextMenuRequested(const QPoint &)"),
             self._menu_context_tree)
 
     def _menu_context_tree(self, point):

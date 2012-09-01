@@ -145,12 +145,13 @@ class __StatusBar(QStatusBar):
             self.show()
 
     def show_locator(self):
-        self.clearMessage()
-        self._searchWidget.setVisible(False)
-        self.show()
-        self._codeLocator.setVisible(True)
-        self._codeLocator._completer.setFocus()
-        self._codeLocator.show_suggestions()
+        if not self._codeLocator.isVisible():
+            self.clearMessage()
+            self._searchWidget.setVisible(False)
+            self.show()
+            self._codeLocator.setVisible(True)
+            self._codeLocator._completer.setFocus()
+            self._codeLocator.show_suggestions()
 
     def show_file_opener(self):
         self.clearMessage()

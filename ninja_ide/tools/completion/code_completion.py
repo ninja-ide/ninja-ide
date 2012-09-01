@@ -206,8 +206,11 @@ class CodeCompletion(object):
                 word = ''
         self.cdaemon.lock.acquire()
         module = self.cdaemon.get_module(self.module_id)
-        imports = module.get_imports()
-        result = module.get_type(attr_name, word, scopes)
+        if module:
+            imports = module.get_imports()
+            result = module.get_type(attr_name, word, scopes)
+        else:
+            result = {'found': False, 'type': None}
         self.cdaemon.lock.release()
         if result['found'] and result['type'] is not None:
             prefix = attr_name

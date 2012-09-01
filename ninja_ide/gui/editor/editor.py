@@ -407,7 +407,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.go_to_line(line[0] - 1)
 
     def _find_occurrences(self):
-        word = self._text_under_cursor()
+        if self.textCursor().hasSelection():
+            word = self.textCursor().selectedText()
+        else:
+            word = self._text_under_cursor()
         self.emit(SIGNAL("findOcurrences(QString)"), word)
 
     def go_to_line(self, lineno):
@@ -734,7 +737,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if brace not in settings.BRACES:
             # Thou shalt not waste cpu cycles if this brace compleion dissabled
             return
-        text = self.textCursor().block().text()
+        text = unicode(self.textCursor().block().text())
         complementary_brace = BRACE_DICT.get(brace)
         token_buffer = []
         _, tokens = self.__tokenize_text(text)
@@ -819,7 +822,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             painter.begin(self.viewport())
             painter.setPen(QColor('#FE9E9A'))
             offset = self.contentOffset()
-            painter.drawLine(self.pos_margin + offset.x(), 0, \
+            painter.drawLine(self.pos_margin + offset.x(), 0,
                 self.pos_margin + offset.x(), self.viewport().height())
             painter.end()
 

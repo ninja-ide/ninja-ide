@@ -317,7 +317,7 @@ class GeneralExecution(QWidget):
         self.comboWarning.addItems(
             ['default', 'ignore', 'all', 'module', 'once', 'error'])
         self.check_x = QCheckBox(self.tr("-x: skip first line of source"))
-        self.check_3 = QCheckBox(self.tr("-3: warn about Python 3.x " \
+        self.check_3 = QCheckBox(self.tr("-3: warn about Python 3.x "
             "incompatibilities that 2to3 cannot trivially fix"))
         grid.addWidget(self.check_B)
         grid.addWidget(self.check_d)
@@ -836,6 +836,7 @@ class EditorGeneral(QWidget):
         self.thread_callback = ui_tools.ThreadExecution(self._get_editor_skins)
         self.connect(self.thread_callback, SIGNAL("finished()"),
             self._show_editor_skins)
+        self.thread_callback.start()
 
     def _get_editor_skins(self):
         qsettings = QSettings()
@@ -1627,7 +1628,7 @@ class EditorSchemeDesigner(QWidget):
                 self.tr("Scheme already exists"),
                 self.tr("Do you want to override the file: %s?" % fileName),
                 QMessageBox.Yes, QMessageBox.No)
-        if name != '' and answer == QMessageBox.Yes:
+        if name != '' and answer in (QMessageBox.Yes, True):
             scheme = self._preview_style()
             json_manager.save_editor_skins(fileName, scheme)
             QMessageBox.information(self, self.tr("Scheme Saved"),
@@ -1690,6 +1691,7 @@ class ThemeChooser(QWidget):
     def _refresh_list(self):
         self.list_skins.clear()
         self.list_skins.addItem("Default")
+        self.list_skins.addItem("Classic Theme")
 
         files = [file_manager.get_file_name(filename) for filename in \
             file_manager.get_files_from_folder(
@@ -1699,6 +1701,8 @@ class ThemeChooser(QWidget):
 
         if settings.NINJA_SKIN == 'Default':
             self.list_skins.setCurrentRow(0)
+        elif settings.NINJA_SKIN == 'Classic Theme':
+            self.list_skins.setCurrentRow(1)
         elif settings.NINJA_SKIN in files:
             index = files.index(settings.NINJA_SKIN)
             self.list_skins.setCurrentRow(index + 1)
@@ -1718,6 +1722,8 @@ class ThemeChooser(QWidget):
     def preview_theme(self):
         if self.list_skins.currentRow() == 0:
             qss_file = resources.NINJA_THEME
+        elif self.list_skins.currentRow() == 1:
+            qss_file = resources.NINJA__THEME_CLASSIC
         else:
             file_name = ("%s.qss" %
                 self.list_skins.currentItem().text())
@@ -1764,30 +1770,24 @@ class ThemeDesigner(QWidget):
             self.save_stylesheet)
 
     def showEvent(self, event):
-        if self._parent.theme_chooser.list_skins.currentRow() == 0:
-            qss_file = resources.NINJA_THEME
-        else:
-            file_name = ("%s.qss" %
-                self._parent.theme_chooser.list_skins.currentItem().text())
-            qss_file = file_manager.create_path(resources.NINJA_THEME_DOWNLOAD,
-                file_name)
-        with open(qss_file) as f:
-            qss = f.read()
-            self.edit_qss.setPlainText(qss)
-            self.edit_qss.document().setModified(False)
-        self.line_name.setText("%s_%s" %
-            (self._parent.theme_chooser.list_skins.currentItem().text(),
-            getpass.getuser()))
+        if not self.edit_qss.document().isModified():
+            if self._parent.theme_chooser.list_skins.currentRow() == 0:
+                qss_file = resources.NINJA_THEME
+            if self._parent.theme_chooser.list_skins.currentRow() == 1:
+                qss_file = resources.NINJA__THEME_CLASSIC
+            else:
+                file_name = ("%s.qss" %
+                    self._parent.theme_chooser.list_skins.currentItem().text())
+                qss_file = file_manager.create_path(
+                    resources.NINJA_THEME_DOWNLOAD, file_name)
+            with open(qss_file) as f:
+                qss = f.read()
+                self.edit_qss.setPlainText(qss)
+                self.edit_qss.document().setModified(False)
+            self.line_name.setText("%s_%s" %
+                (self._parent.theme_chooser.list_skins.currentItem().text(),
+                getpass.getuser()))
         super(ThemeDesigner, self).showEvent(event)
-
-    def hideEvent(self, event):
-        if self.edit_qss.document().isModified():
-            answer = QMessageBox.question(self, self.tr("Theme Modified"),
-                self.tr("Do you want to save the theme changes?"),
-                QMessageBox.Ok | QMessageBox.No, QMessageBox.Ok)
-            if answer == QMessageBox.Ok:
-                self.save_stylesheet()
-        super(ThemeDesigner, self).hideEvent(event)
 
     def apply_stylesheet(self):
         qss = self.edit_qss.toPlainText()

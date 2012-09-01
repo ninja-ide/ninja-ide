@@ -129,7 +129,6 @@ class __Actions(QObject):
         self.shortSplitVertical = QShortcut(short("Split-vertical"), self.ide)
         self.shortFollowMode = QShortcut(short("Follow-mode"), self.ide)
         self.shortReloadFile = QShortcut(short("Reload-file"), self.ide)
-        self.shortJump = QShortcut(short("Jump"), self.ide)
         self.shortFindInFiles = QShortcut(short("Find-in-files"), self.ide)
         self.shortImport = QShortcut(short("Import"), self.ide)
         self.shortGoToDefinition = QShortcut(short("Go-to-definition"),
@@ -144,10 +143,6 @@ class __Actions(QObject):
         self.shortOpenLastTabOpened = QShortcut(short("Open-recent-closed"),
             self.ide)
         self.shortShowCodeNav = QShortcut(short("Show-Code-Nav"), self.ide)
-        self.shortShowBookmarksNav = QShortcut(short("Show-Bookmarks-Nav"),
-            self.ide)
-        self.shortShowBreakpointsNav = QShortcut(short("Show-Breakpoints-Nav"),
-            self.ide)
         self.shortShowPasteHistory = QShortcut(short("Show-Paste-History"),
             self.ide)
         self.shortPasteHistory = QShortcut(short("History-Paste"), self.ide)
@@ -195,8 +190,6 @@ class __Actions(QObject):
             self.view_explorer_visibility)
         self.connect(self.shortHideAll, SIGNAL("activated()"),
             self.hide_all)
-        self.connect(self.shortJump, SIGNAL("activated()"),
-            self.ide.mainContainer.editor_jump_to_line)
         self.connect(self.shortFullscreen, SIGNAL("activated()"),
             self.fullscreen_mode)
         self.connect(self.shortOpen, SIGNAL("activated()"),
@@ -256,11 +249,7 @@ class __Actions(QObject):
         self.connect(self.shortChangeTabReverse, SIGNAL("activated()"),
             self.ide.mainContainer.change_tab_reverse)
         self.connect(self.shortShowCodeNav, SIGNAL("activated()"),
-            self.ide.mainContainer.show_code_navigation_buttons)
-        self.connect(self.shortShowBookmarksNav, SIGNAL("activated()"),
-            self.ide.mainContainer.show_bookmarks_buttons)
-        self.connect(self.shortShowBreakpointsNav, SIGNAL("activated()"),
-            self.ide.mainContainer.show_breakpoints_buttons)
+            self.ide.mainContainer.show_navigation_buttons)
         self.connect(self.shortAddBookmark, SIGNAL("activated()"),
             self._add_bookmark_breakpoint)
         self.connect(self.shortShowPasteHistory, SIGNAL("activated()"),
@@ -338,7 +327,6 @@ class __Actions(QObject):
         self.shortSplitVertical.setKey(short("Split-vertical"))
         self.shortFollowMode.setKey(short("Follow-mode"))
         self.shortReloadFile.setKey(short("Reload-file"))
-        self.shortJump.setKey(short("Jump"))
         self.shortFindInFiles.setKey(short("Find-in-files"))
         self.shortImport.setKey(short("Import"))
         self.shortGoToDefinition.setKey(short("Go-to-definition"))
@@ -350,8 +338,6 @@ class __Actions(QObject):
         self.shortChangeTabReverse.setKey(short("Change-Tab-Reverse"))
         self.shortAddBookmark.setKey(short("Add-Bookmark-or-Breakpoint"))
         self.shortShowCodeNav.setKey(short("Show-Code-Nav"))
-        self.shortShowBookmarksNav.setKey(short("Show-Bookmarks-Nav"))
-        self.shortShowBreakpointsNav.setKey(short("Show-Breakpoints-Nav"))
         self.shortShowPasteHistory.setKey(short("Show-Paste-History"))
 
     def switch_focus(self):
@@ -448,7 +434,7 @@ class __Actions(QObject):
             editorWidget._file_saved()
         except file_manager.NinjaFileExistsException, ex:
             QMessageBox.information(self, self.tr("File Already Exists"),
-                self.tr("Invalid Path: the file '%s' already exists." % \
+                self.tr("Invalid Path: the file '%s' already exists." %
                     ex.filename))
 
     def add_project_to_console(self, projectFolder):
@@ -618,6 +604,7 @@ class __Actions(QObject):
 
     def editor_indent_more(self):
         """Indent 1 position to the right for the current line or selection."""
+        print 'yes'
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget and editorWidget.hasFocus():
             editorWidget.indent_more()

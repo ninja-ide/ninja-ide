@@ -21,7 +21,7 @@ import unittest
 
 from ninja_ide.tools.completion import analyzer
 from ninja_ide.tools.completion import model
-from tests.tools.completion import SOURCE_ANALYZER_NATIVE
+from ninja_tests.tools.completion import SOURCE_ANALYZER_NATIVE
 
 
 class AnalyzerTestCase(unittest.TestCase):

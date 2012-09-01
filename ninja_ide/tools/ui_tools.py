@@ -510,6 +510,7 @@ class LineEditButton(object):
         lineEdit.setLayout(hbox)
         hbox.addStretch()
         btnOperation = QPushButton(lineEdit)
+        btnOperation.setObjectName('line_button')
         if icon:
             btnOperation.setIcon(QIcon(icon))
         hbox.addWidget(btnOperation)
