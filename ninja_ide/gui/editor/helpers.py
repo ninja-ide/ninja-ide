@@ -27,6 +27,7 @@ from ninja_ide.tools import introspection
 
 
 patIndent = re.compile('^\s+')
+patSymbol = re.compile(r'[^\w]')
 patIsLocalFunction = re.compile('(\s)+self\.(\w)+\(\)')
 patClass = re.compile("(\\s)*class.+\\:$")
 endCharsForIndent = [':', '{', '(', '[']
@@ -79,7 +80,7 @@ def get_first_keyword(line):
 
 
 def remove_symbols(word):
-    return re.sub(r'[^\w]', '', word)
+    return patSymbol.sub('', word)
 
 
 def clean_line(editorWidget):
