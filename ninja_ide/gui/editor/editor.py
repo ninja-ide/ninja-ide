@@ -630,8 +630,17 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             move = QTextCursor.KeepAnchor
         else:
             move = QTextCursor.MoveAnchor
-        if self.textCursor().atBlockStart():
-            self.moveCursor(QTextCursor.WordRight, move)
+        cursor = self.textCursor()
+
+        pos_current_selection = cursor.selectionEnd()
+        pos_current = cursor.position()
+        cursor.movePosition(QTextCursor.StartOfLine)
+        cursor.movePosition(QTextCursor.WordRight)
+        pos_start_text = cursor.position()
+        if pos_current != pos_start_text:
+            cursor.setPosition(pos_current_selection)
+            cursor.setPosition(pos_start_text, move)
+            self.setTextCursor(cursor)
             return True
 
     def __ignore_extended_line(self, event):
