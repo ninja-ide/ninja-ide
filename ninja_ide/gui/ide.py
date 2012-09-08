@@ -256,8 +256,6 @@ class __IDE(QMainWindow):
             self.status.explore_file_code)
         #Create Explorer Panel
         self.explorer = explorer_container.ExplorerContainer(self)
-        self.connect(self.central, SIGNAL("splitterCentralRotated()"),
-            self.explorer.rotate_tab_position)
         self.connect(self.explorer, SIGNAL("updateLocator()"),
             self.status.explore_code)
         self.connect(self.explorer, SIGNAL("goToDefinition(int)"),
@@ -271,6 +269,9 @@ class __IDE(QMainWindow):
 
         centralWidget.insert_central_container(self.mainContainer)
         centralWidget.insert_lateral_container(self.explorer)
+        self.connect(centralWidget.lateralDock, SIGNAL("dockLocationChanged(Qt::DockWidgetArea)"),
+            centralWidget.lateralDock.location_changed)
+
         centralWidget.insert_bottom_container(self.misc)
         self.connect(self.mainContainer,
             SIGNAL("cursorPositionChange(int, int)"),
@@ -378,8 +379,6 @@ class __IDE(QMainWindow):
             qsettings.setValue("window/size", self.size())
             qsettings.setValue("window/pos", self.pos())
         #Save the size of de splitters
-        qsettings.setValue("window/central/areaSize",
-            self.central.get_area_sizes())
         qsettings.setValue("window/central/mainSize",
             self.central.get_main_sizes())
         #Save the toolbar visibility

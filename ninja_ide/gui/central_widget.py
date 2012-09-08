@@ -27,6 +27,7 @@ from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QSplitter
 from PyQt4.QtGui import QScrollBar
+from PyQt4.QtGui import QTabWidget
 from PyQt4.QtGui import QDockWidget
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
@@ -49,28 +50,18 @@ def CentralWidget(*args, **kw):
 class __CentralWidget(QWidget):
 
 ###############################################################################
-# CentralWidget SIGNALS
-###############################################################################
-
-    """
-    splitterCentralRotated()
-    """
-
-###############################################################################
 
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         self.parent = parent
         #This variables are used to save the splitter sizes before hide
         self._splitterMainSizes = None
-        self._splitterAreaSizes = None
         self.lateralDock = None
 
         hbox = QHBoxLayout(self)
         hbox.setContentsMargins(0, 0, 0, 0)
         hbox.setSpacing(0)
         #Create Splitters to divide the UI in: MainPanel, Explorer, Misc
-        self._splitterArea = QSplitter(Qt.Horizontal)
         self._splitterMain = QSplitter(Qt.Vertical)
 
         #Create scrollbar for follow mode
@@ -83,7 +74,7 @@ class __CentralWidget(QWidget):
 
         #Add to Main Layout
         hbox.addWidget(self.scrollBar)
-        hbox.addWidget(self._splitterArea)
+        hbox.addWidget(self._splitterMain)
 
     def insert_central_container(self, container):
         self.mainContainer = container
@@ -103,10 +94,10 @@ class __CentralWidget(QWidget):
         #Show Event
         QWidget.showEvent(self, event)
         #Avoid recalculate the panel sizes if they are already loaded
-        if self._splitterArea.count() == 2:
-            return
+        # !!!!
+
         #Rearrange widgets on Window
-        self._splitterArea.insertWidget(0, self._splitterMain)
+        #self._splitterArea.insertWidget(0, self._splitterMain)
         qsettings = QSettings()
         #Lists of sizes as list of QVariant- heightList = [QVariant, QVariant]
         heightList = qsettings.value("window/central/mainSize",
@@ -115,8 +106,6 @@ class __CentralWidget(QWidget):
             [(self.width() / 6) * 5, self.width() / 6]).toList()
         self._splitterMainSizes = [
             heightList[0].toInt()[0], heightList[1].toInt()[0]]
-        self._splitterAreaSizes = [
-            widthList[0].toInt()[0], widthList[1].toInt()[0]]
         if not event.spontaneous():
             self.change_misc_visibility()
         if bin(settings.UI_LAYOUT)[-1] == '1':
@@ -127,7 +116,6 @@ class __CentralWidget(QWidget):
             self.splitter_central_orientation()
         #Set the sizes to splitters
         self._splitterMain.setSizes(self._splitterMainSizes)
-        self._splitterArea.setSizes(self._splitterAreaSizes)
 
     def change_misc_visibility(self):
         if self.misc.isVisible():
@@ -148,16 +136,19 @@ class __CentralWidget(QWidget):
 
     def change_explorer_visibility(self):
         if self.lateralDock.isVisible():
-            self._splitterAreaSizes = self._splitterArea.sizes()
             self.lateralDock.hide()
         else:
             self.lateralDock.show()
 
-    def splitter_central_rotate(self):
-        w1, w2 = self._splitterArea.widget(0), self._splitterArea.widget(1)
-        self._splitterArea.insertWidget(0, w2)
-        self._splitterArea.insertWidget(1, w1)
-        self.emit(SIGNAL("splitterCentralRotated()"))
+    def lateral_dock_rotate(self):
+        area = self.parent.dockWidgetArea(self.lateralDock)
+        self.parent.removeDockWidget(self.lateralDock)
+        if area == Qt.RightDockWidgetArea:
+            self.parent.addDockWidget(Qt.LeftDockWidgetArea, self.lateralDock)
+        else:
+            self.parent.addDockWidget(Qt.RightDockWidgetArea, self.lateralDock)
+        self.lateralDock.show()
+        #self.emit(SIGNAL("dockLateralRotated()"))
 
     def splitter_central_orientation(self):
         if self._splitterArea.orientation() == Qt.Horizontal:
@@ -165,7 +156,7 @@ class __CentralWidget(QWidget):
         else:
             self._splitterArea.setOrientation(Qt.Horizontal)
 
-    def splitter_misc_rotate(self):
+    def splitter_central_rotate(self):
         w1, w2 = self._splitterMain.widget(0), self._splitterMain.widget(1)
         self._splitterMain.insertWidget(0, w2)
         self._splitterMain.insertWidget(1, w1)
@@ -175,11 +166,6 @@ class __CentralWidget(QWidget):
             self._splitterMain.setOrientation(Qt.Vertical)
         else:
             self._splitterMain.setOrientation(Qt.Horizontal)
-
-    def get_area_sizes(self):
-        if self.lateralDock.isVisible():
-            self._splitterAreaSizes = self._splitterArea.sizes()
-        return self._splitterAreaSizes
 
     def get_main_sizes(self):
         if self.misc.isVisible():
@@ -229,14 +215,21 @@ class LateralDock(QDockWidget):
     def get_paste(self):
         return unicode(self.combo.currentText())
 
+    def location_changed(self, area):
+        if area == Qt.RightDockWidgetArea:
+            self._lateralPanel.setTabPosition(QTabWidget.East)
+        else:
+            self._lateralPanel.setTabPosition(QTabWidget.West)
+
 
 class LateralPanel(QWidget):
 
     def __init__(self, explorer):
+        self.explorer = explorer
         QWidget.__init__(self)
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
-        vbox.addWidget(explorer)
+        vbox.addWidget(self.explorer)
         hbox = QHBoxLayout()
         hbox.setContentsMargins(0, 0, 0, 0)
         self.labelText = "Ln: %1, Col: %2"
@@ -256,3 +249,6 @@ class LateralPanel(QWidget):
         self.combo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         hbox.addWidget(self.combo)
         vbox.addLayout(hbox)
+
+    def setTabPosition(self, position):
+        self.explorer.setTabPosition(position)

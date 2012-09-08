@@ -542,7 +542,7 @@ class InterfaceTab(QWidget):
         self.connect(self._btnCentralRotate, SIGNAL('clicked()'),
             central_widget.CentralWidget().splitter_central_rotate)
         self.connect(self._btnPanelsRotate, SIGNAL('clicked()'),
-            central_widget.CentralWidget().splitter_misc_rotate)
+            central_widget.CentralWidget().lateral_dock_rotate)
         self.connect(self._btnCentralOrientation, SIGNAL('clicked()'),
             central_widget.CentralWidget().splitter_central_orientation)
         self.connect(self._btnItemAdd, SIGNAL("clicked()"),
