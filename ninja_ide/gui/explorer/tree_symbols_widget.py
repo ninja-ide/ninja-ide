@@ -61,6 +61,10 @@ class TreeSymbolsWidget(QTreeWidget):
             SIGNAL("customContextMenuRequested(const QPoint &)"),
             self._menu_context_tree)
 
+    def select_current_item(self, line, col):
+        #TODO
+        print line, col
+
     def _menu_context_tree(self, point):
         index = self.indexAt(point)
         if not index.isValid():
