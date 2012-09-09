@@ -274,7 +274,7 @@ class __PluginManager(object):
             #return the plugin instance
             return plugin_instance
         except(ImportError, AttributeError), reason:
-            raise PluginManagerException('Error loading "%s": %s' %\
+            raise PluginManagerException('Error loading "%s": %s' %
                  (module, reason))
         finally:
             sys.path = old_syspath
