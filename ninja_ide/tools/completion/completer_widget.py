@@ -198,7 +198,13 @@ class CodeCompletionWidget(QFrame):
         offset = self._editor.textCursor().position()
         results = self.cc.get_completion(source, offset)
         self._completion_results = results
-        prefix = self._editor._text_under_cursor()
+        if force_completion:
+            cursor = self._editor.textCursor()
+            cursor.movePosition(QTextCursor.StartOfWord,
+                QTextCursor.KeepAnchor)
+            prefix = cursor.selectedText()
+        else:
+            prefix = self._editor._text_under_cursor()
         self.set_completion_prefix(prefix)
 
     def hide_completer(self):
@@ -293,7 +299,7 @@ class CompleterWidget(QCompleter):
             self.popup().setCurrentIndex(
                 self.completionModel().index(0, 0))
             self.setCurrentRow(0)
-        if event.key() == Qt.Key_Period  or (event.key() == Qt.Key_Space and \
+        if event.key() == Qt.Key_Period or (event.key() == Qt.Key_Space and
         event.modifiers() == Qt.ControlModifier):
             self.fill_completer()
 

@@ -1693,7 +1693,7 @@ class ThemeChooser(QWidget):
         self.list_skins.addItem("Default")
         self.list_skins.addItem("Classic Theme")
 
-        files = [file_manager.get_file_name(filename) for filename in \
+        files = [file_manager.get_file_name(filename) for filename in
             file_manager.get_files_from_folder(
             resources.NINJA_THEME_DOWNLOAD, "qss")]
         files.sort()
@@ -1805,5 +1805,5 @@ class ThemeDesigner(QWidget):
             self.edit_qss.document().setModified(False)
         except file_manager.NinjaFileExistsException, ex:
             QMessageBox.information(self, self.tr("File Already Exists"),
-                self.tr("Invalid File Name: the file '%s' already exists." % \
+                self.tr("Invalid File Name: the file '%s' already exists." %
                     ex.filename))
