@@ -274,11 +274,15 @@ class __IDE(QMainWindow):
         centralWidget.insert_bottom_container(self.misc)
         self.connect(self.mainContainer,
             SIGNAL("cursorPositionChange(int, int)"),
+<<<<<<< HEAD
             self.central.lateralPanel.update_line_col)
         # TODO: Change current symbol on move
         #self.connect(self.mainContainer,
             #SIGNAL("cursorPositionChange(int, int)"),
             #self.explorer.update_current_symbol)
+=======
+            self.central.lateralDock.update_line_col)
+>>>>>>> upstream/master
         self.connect(self.mainContainer, SIGNAL("enabledFollowMode(bool)"),
             self.central.enable_follow_mode_scrollbar)
 
