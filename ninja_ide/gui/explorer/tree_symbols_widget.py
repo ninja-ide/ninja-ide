@@ -63,7 +63,8 @@ class TreeSymbolsWidget(QTreeWidget):
 
     def select_current_item(self, line, col):
         #TODO
-        print line, col
+        #print line, col
+        pass
 
     def _menu_context_tree(self, point):
         index = self.indexAt(point)
