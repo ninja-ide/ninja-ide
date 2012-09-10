@@ -55,14 +55,11 @@ class __CentralWidget(QWidget):
         QWidget.__init__(self, parent)
         self.parent = parent
         #This variables are used to save the splitter sizes before hide
-        self._splitterMainSizes = None
         self.lateralDock = None
 
-        hbox = QHBoxLayout(self)
-        hbox.setContentsMargins(0, 0, 0, 0)
-        hbox.setSpacing(0)
-        #Create Splitters to divide the UI in: MainPanel, Explorer, Misc
-        self._splitterMain = QSplitter(Qt.Vertical)
+        self.hbox = QHBoxLayout(self)
+        self.hbox.setContentsMargins(0, 0, 0, 0)
+        self.hbox.setSpacing(0)
 
         #Create scrollbar for follow mode
         self.scrollBar = QScrollBar(Qt.Vertical, self)
@@ -73,22 +70,25 @@ class __CentralWidget(QWidget):
             self.move_follow_scrolls)
 
         #Add to Main Layout
-        hbox.addWidget(self.scrollBar)
-        hbox.addWidget(self._splitterMain)
+        self.hbox.addWidget(self.scrollBar)
 
     def insert_central_container(self, container):
         self.mainContainer = container
-        self._splitterMain.insertWidget(0, container)
+        self.hbox.addWidget(self.mainContainer)
 
     def insert_lateral_container(self, container):
-        self.lateralDock = LateralDock(container)
+        self.lateralDock = LateralDock(self.tr("Explorer"), container)
         self.lateralDock.setAllowedAreas(Qt.LeftDockWidgetArea |
             Qt.RightDockWidgetArea)
         self.parent.addDockWidget(Qt.RightDockWidgetArea, self.lateralDock)
 
     def insert_bottom_container(self, container):
         self.misc = container
-        self._splitterMain.insertWidget(1, container)
+        #self._splitterMain.insertWidget(1, container)
+        self.bottomDock = BottomDock(self.tr("Console"), container)
+        self.bottomDock.setAllowedAreas(Qt.TopDockWidgetArea |
+            Qt.BottomDockWidgetArea)
+        self.parent.addDockWidget(Qt.BottomDockWidgetArea, self.bottomDock)
 
     def showEvent(self, event):
         #Show Event
@@ -100,33 +100,37 @@ class __CentralWidget(QWidget):
         #self._splitterArea.insertWidget(0, self._splitterMain)
         qsettings = QSettings()
         #Lists of sizes as list of QVariant- heightList = [QVariant, QVariant]
-        heightList = qsettings.value("window/central/mainSize",
-            [(self.height() / 3) * 2, self.height() / 3]).toList()
-        widthList = qsettings.value("window/central/areaSize",
-            [(self.width() / 6) * 5, self.width() / 6]).toList()
-        self._splitterMainSizes = [
-            heightList[0].toInt()[0], heightList[1].toInt()[0]]
-        if not event.spontaneous():
-            self.change_misc_visibility()
-        if bin(settings.UI_LAYOUT)[-1] == '1':
-            self.splitter_central_rotate()
-        if bin(settings.UI_LAYOUT >> 1)[-1] == '1':
-            self.splitter_misc_rotate()
-        if bin(settings.UI_LAYOUT >> 2)[-1] == '1':
-            self.splitter_central_orientation()
-        #Set the sizes to splitters
-        self._splitterMain.setSizes(self._splitterMainSizes)
+        # heightList = qsettings.value("window/central/mainSize",
+        #     [(self.height() / 3) * 2, self.height() / 3]).toList()
+        # widthList = qsettings.value("window/central/areaSize",
+        #     [(self.width() / 6) * 5, self.width() / 6]).toList()
+        # self._splitterMainSizes = [
+        #     heightList[0].toInt()[0], heightList[1].toInt()[0]]
+        # if not event.spontaneous():
+        #     self.change_misc_visibility()
+        # if bin(settings.UI_LAYOUT)[-1] == '1':
+        #     self.splitter_central_rotate()
+        # if bin(settings.UI_LAYOUT >> 1)[-1] == '1':
+        #     self.splitter_misc_rotate()
+        # if bin(settings.UI_LAYOUT >> 2)[-1] == '1':
+        #     self.splitter_central_orientation()
+        # #Set the sizes to splitters
+        # self._splitterMain.setSizes(self._splitterMainSizes)
 
     def change_misc_visibility(self):
-        if self.misc.isVisible():
-            self._splitterMainSizes = self._splitterMain.sizes()
-            self.misc.hide()
-            widget = self.mainContainer.get_actual_widget()
-            if widget:
-                widget.setFocus()
+        if self.bottomDock.isVisible():
+            self.bottomDock.hide()
         else:
-            self.misc.show()
-            self.misc.gain_focus()
+            self.bottomDock.show()
+        # if self.misc.isVisible():
+        #     self._splitterMainSizes = self._splitterMain.sizes()
+        #     self.misc.hide()
+        #     widget = self.mainContainer.get_actual_widget()
+        #     if widget:
+        #         widget.setFocus()
+        # else:
+        #     self.misc.show()
+        #     self.misc.gain_focus()
 
     def change_main_visibility(self):
         if self.mainContainer.isVisible():
@@ -148,24 +152,26 @@ class __CentralWidget(QWidget):
         else:
             self.parent.addDockWidget(Qt.RightDockWidgetArea, self.lateralDock)
         self.lateralDock.show()
-        #self.emit(SIGNAL("dockLateralRotated()"))
 
-    def splitter_central_orientation(self):
-        if self._splitterArea.orientation() == Qt.Horizontal:
-            self._splitterArea.setOrientation(Qt.Vertical)
+    def dock_orientation(self):
+        if self.lateralDock.isAreaAllowed(Qt.RightDockWidgetArea):
+            self.parent.removeDockWidget(self.lateralDock)
+            self.lateralDock.setAllowedAreas(Qt.TopDockWidgetArea | Qt.BottomDockWidgetArea)
+            self.parent.addDockWidget(Qt.BottomDockWidgetArea, self.lateralDock)
         else:
-            self._splitterArea.setOrientation(Qt.Horizontal)
+            self.parent.removeDockWidget(self.lateralDock)
+            self.lateralDock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+            self.parent.addDockWidget(Qt.RightDockWidgetArea, self.lateralDock)
+        self.lateralDock.show()
 
-    def splitter_central_rotate(self):
-        w1, w2 = self._splitterMain.widget(0), self._splitterMain.widget(1)
-        self._splitterMain.insertWidget(0, w2)
-        self._splitterMain.insertWidget(1, w1)
-
-    def splitter_misc_orientation(self):
-        if self._splitterMain.orientation() == Qt.Horizontal:
-            self._splitterMain.setOrientation(Qt.Vertical)
+    def bottom_dock_rotate(self):
+        area = self.parent.dockWidgetArea(self.bottomDock)
+        self.parent.removeDockWidget(self.bottomDock)
+        if area == Qt.TopDockWidgetArea:
+            self.parent.addDockWidget(Qt.BottomDockWidgetArea, self.bottomDock)
         else:
-            self._splitterMain.setOrientation(Qt.Horizontal)
+            self.parent.addDockWidget(Qt.TopDockWidgetArea, self.bottomDock)
+        self.bottomDock.show()
 
     def get_main_sizes(self):
         if self.misc.isVisible():
@@ -190,11 +196,19 @@ class __CentralWidget(QWidget):
         s1.setValue(val)
         s2.setValue(val + diff)
 
+class BottomDock(QDockWidget):
+    def __init__(self, title, container):
+        QDockWidget.__init__(self, title)
+        self._container = container
+        self.setWidget(self._container)
+
+    def location_changed(self, area):
+        pass
 
 class LateralDock(QDockWidget):
 
-    def __init__(self, explorer):
-        QDockWidget.__init__(self)
+    def __init__(self, title, explorer):
+        QDockWidget.__init__(self, title)
         self._lateralPanel = LateralPanel(explorer)
         self.setWidget(self._lateralPanel)
 

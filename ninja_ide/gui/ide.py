@@ -269,15 +269,25 @@ class __IDE(QMainWindow):
 
         centralWidget.insert_central_container(self.mainContainer)
         centralWidget.insert_lateral_container(self.explorer)
+        centralWidget.insert_bottom_container(self.misc)
+
         self.connect(centralWidget.lateralDock, SIGNAL("dockLocationChanged(Qt::DockWidgetArea)"),
             centralWidget.lateralDock.location_changed)
 
-        centralWidget.insert_bottom_container(self.misc)
+        self.connect(centralWidget.bottomDock, SIGNAL("dockLocationChanged(Qt::DockWidgetArea)"),
+            centralWidget.bottomDock.location_changed)
+
         self.connect(self.mainContainer,
             SIGNAL("cursorPositionChange(int, int)"),
             self.central.lateralDock.update_line_col)
         self.connect(self.mainContainer, SIGNAL("enabledFollowMode(bool)"),
             self.central.enable_follow_mode_scrollbar)
+
+        self.setCorner(Qt.TopRightCorner, Qt.RightDockWidgetArea)
+        self.setCorner(Qt.BottomRightCorner, Qt.RightDockWidgetArea)
+        self.setCorner(Qt.TopLeftCorner, Qt.LeftDockWidgetArea)
+        self.setCorner(Qt.BottomLeftCorner, Qt.LeftDockWidgetArea)
+        self.setDockNestingEnabled(False)
 
         if settings.SHOW_START_PAGE:
             self.mainContainer.show_start_page()
@@ -378,9 +388,6 @@ class __IDE(QMainWindow):
             #Save the size and position of the mainwindow
             qsettings.setValue("window/size", self.size())
             qsettings.setValue("window/pos", self.pos())
-        #Save the size of de splitters
-        qsettings.setValue("window/central/mainSize",
-            self.central.get_main_sizes())
         #Save the toolbar visibility
         qsettings.setValue("window/hide_toolbar",
             not self.toolbar.isVisible() and self.menuBar().isVisible())
