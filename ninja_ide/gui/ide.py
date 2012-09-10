@@ -179,7 +179,7 @@ class __IDE(QMainWindow):
         self.connect(self.mainContainer, SIGNAL("fileSaved(QString)"),
             self.show_status_message)
         #Load the size and the position of the main window
-        self.load_window_geometry()
+        #self.load_window_geometry()
 
     def _process_connection(self):
         connection = self.s_listener.nextPendingConnection()
@@ -393,10 +393,14 @@ class __IDE(QMainWindow):
     def load_window_geometry(self):
         """Load from QSettings the window size of de Ninja IDE"""
         qsettings = QSettings()
-        self.restoreGeometry(qsettings.value("window/geometry").toByteArray())
         self.restoreState(qsettings.value("window/state").toByteArray())
         if qsettings.value("window/maximized", True).toBool():
             self.setWindowState(Qt.WindowMaximized)
+        else:
+            self.restoreGeometry(qsettings.value("window/geometry").toByteArray())
+
+    def showEvent(self, event):
+        self.load_window_geometry()
 
     def closeEvent(self, event):
         if self.s_listener:

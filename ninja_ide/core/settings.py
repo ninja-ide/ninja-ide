@@ -50,9 +50,8 @@ MIN_OPACITY = 0.3
 
 TOOLBAR_AREA = 1
 #UI LAYOUT
-#001 : Central Rotate
-#010 : Panels Rotate
-#100 : Central Orientation
+#0 : Allow vertical orientation for lateral dock
+#1 : Not allow vertical orientation for lateral dock
 UI_LAYOUT = 0
 
 LANGUAGE = ""

@@ -79,13 +79,18 @@ class __CentralWidget(QWidget):
     def insert_lateral_container(self, container):
         self.lateralDock = LateralDock(self.tr("Explorer"), container)
         self.lateralDock.setObjectName('explorer')
-        self.lateralDock.setAllowedAreas(Qt.LeftDockWidgetArea |
-            Qt.RightDockWidgetArea)
-        self.parent.addDockWidget(Qt.RightDockWidgetArea, self.lateralDock)
+        if settings.UI_LAYOUT:
+            self.lateralDock.setAllowedAreas(Qt.TopDockWidgetArea | 
+                Qt.BottomDockWidgetArea)
+            self.parent.addDockWidget(Qt.BottomDockWidgetArea, self.lateralDock,
+                Qt.Vertical)
+        else:
+            self.lateralDock.setAllowedAreas(Qt.LeftDockWidgetArea |
+                Qt.RightDockWidgetArea)
+            self.parent.addDockWidget(Qt.RightDockWidgetArea, self.lateralDock)
 
     def insert_bottom_container(self, container):
         self.misc = container
-        #self._splitterMain.insertWidget(1, container)
         self.bottomDock = BottomDock(self.tr("Console"), container)
         self.bottomDock.setObjectName('console')
         self.bottomDock.setAllowedAreas(Qt.TopDockWidgetArea |
@@ -119,35 +124,19 @@ class __CentralWidget(QWidget):
         else:
             self.lateralDock.show()
 
-    def lateral_dock_rotate(self):
-        area = self.parent.dockWidgetArea(self.lateralDock)
-        self.parent.removeDockWidget(self.lateralDock)
-        if area == Qt.RightDockWidgetArea:
-            self.parent.addDockWidget(Qt.LeftDockWidgetArea, self.lateralDock)
-        else:
-            self.parent.addDockWidget(Qt.RightDockWidgetArea, self.lateralDock)
-        self.lateralDock.show()
-
     def dock_orientation(self):
         if self.lateralDock.isAreaAllowed(Qt.RightDockWidgetArea):
             self.parent.removeDockWidget(self.lateralDock)
-            self.lateralDock.setAllowedAreas(Qt.TopDockWidgetArea | Qt.BottomDockWidgetArea)
-            self.parent.addDockWidget(Qt.BottomDockWidgetArea,
-                self.lateralDock, Qt.Vertical)
+            self.lateralDock.setAllowedAreas(Qt.TopDockWidgetArea |
+                Qt.BottomDockWidgetArea)
+            self.parent.addDockWidget(Qt.BottomDockWidgetArea, self.lateralDock,
+                Qt.Vertical)
         else:
             self.parent.removeDockWidget(self.lateralDock)
-            self.lateralDock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+            self.lateralDock.setAllowedAreas(Qt.LeftDockWidgetArea |
+                Qt.RightDockWidgetArea)
             self.parent.addDockWidget(Qt.RightDockWidgetArea, self.lateralDock)
         self.lateralDock.show()
-
-    def bottom_dock_rotate(self):
-        area = self.parent.dockWidgetArea(self.bottomDock)
-        self.parent.removeDockWidget(self.bottomDock)
-        if area == Qt.TopDockWidgetArea:
-            self.parent.addDockWidget(Qt.BottomDockWidgetArea, self.bottomDock)
-        else:
-            self.parent.addDockWidget(Qt.TopDockWidgetArea, self.bottomDock)
-        self.bottomDock.show()
 
     def get_main_sizes(self):
         if self.misc.isVisible():
