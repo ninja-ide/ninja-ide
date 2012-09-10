@@ -78,6 +78,7 @@ class __CentralWidget(QWidget):
 
     def insert_lateral_container(self, container):
         self.lateralDock = LateralDock(self.tr("Explorer"), container)
+        self.lateralDock.setObjectName('explorer')
         self.lateralDock.setAllowedAreas(Qt.LeftDockWidgetArea |
             Qt.RightDockWidgetArea)
         self.parent.addDockWidget(Qt.RightDockWidgetArea, self.lateralDock)
@@ -86,51 +87,25 @@ class __CentralWidget(QWidget):
         self.misc = container
         #self._splitterMain.insertWidget(1, container)
         self.bottomDock = BottomDock(self.tr("Console"), container)
+        self.bottomDock.setObjectName('console')
         self.bottomDock.setAllowedAreas(Qt.TopDockWidgetArea |
             Qt.BottomDockWidgetArea)
-        self.parent.addDockWidget(Qt.BottomDockWidgetArea, self.bottomDock)
+        self.parent.addDockWidget(Qt.BottomDockWidgetArea, self.bottomDock,
+            Qt.Vertical)
 
     def showEvent(self, event):
         #Show Event
         QWidget.showEvent(self, event)
-        #Avoid recalculate the panel sizes if they are already loaded
-        # !!!!
-
-        #Rearrange widgets on Window
-        #self._splitterArea.insertWidget(0, self._splitterMain)
-        qsettings = QSettings()
-        #Lists of sizes as list of QVariant- heightList = [QVariant, QVariant]
-        # heightList = qsettings.value("window/central/mainSize",
-        #     [(self.height() / 3) * 2, self.height() / 3]).toList()
-        # widthList = qsettings.value("window/central/areaSize",
-        #     [(self.width() / 6) * 5, self.width() / 6]).toList()
-        # self._splitterMainSizes = [
-        #     heightList[0].toInt()[0], heightList[1].toInt()[0]]
-        # if not event.spontaneous():
-        #     self.change_misc_visibility()
-        # if bin(settings.UI_LAYOUT)[-1] == '1':
-        #     self.splitter_central_rotate()
-        # if bin(settings.UI_LAYOUT >> 1)[-1] == '1':
-        #     self.splitter_misc_rotate()
-        # if bin(settings.UI_LAYOUT >> 2)[-1] == '1':
-        #     self.splitter_central_orientation()
-        # #Set the sizes to splitters
-        # self._splitterMain.setSizes(self._splitterMainSizes)
 
     def change_misc_visibility(self):
         if self.bottomDock.isVisible():
             self.bottomDock.hide()
+            widget = self.mainContainer.get_actual_widget()
+            if widget:
+                widget.setFocus()
         else:
             self.bottomDock.show()
-        # if self.misc.isVisible():
-        #     self._splitterMainSizes = self._splitterMain.sizes()
-        #     self.misc.hide()
-        #     widget = self.mainContainer.get_actual_widget()
-        #     if widget:
-        #         widget.setFocus()
-        # else:
-        #     self.misc.show()
-        #     self.misc.gain_focus()
+            self.bottomDock.misc_focus()
 
     def change_main_visibility(self):
         if self.mainContainer.isVisible():
@@ -157,7 +132,8 @@ class __CentralWidget(QWidget):
         if self.lateralDock.isAreaAllowed(Qt.RightDockWidgetArea):
             self.parent.removeDockWidget(self.lateralDock)
             self.lateralDock.setAllowedAreas(Qt.TopDockWidgetArea | Qt.BottomDockWidgetArea)
-            self.parent.addDockWidget(Qt.BottomDockWidgetArea, self.lateralDock)
+            self.parent.addDockWidget(Qt.BottomDockWidgetArea,
+                self.lateralDock, Qt.Vertical)
         else:
             self.parent.removeDockWidget(self.lateralDock)
             self.lateralDock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
@@ -197,10 +173,13 @@ class __CentralWidget(QWidget):
         s2.setValue(val + diff)
 
 class BottomDock(QDockWidget):
-    def __init__(self, title, container):
+    def __init__(self, title, misc):
         QDockWidget.__init__(self, title)
-        self._container = container
-        self.setWidget(self._container)
+        self._misc = misc
+        self.setWidget(self._misc)
+
+    def misc_focus(self):
+        self._misc.gain_focus()
 
     def location_changed(self, area):
         pass

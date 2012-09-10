@@ -100,8 +100,6 @@ class __IDE(QMainWindow):
         QMainWindow.__init__(self)
         self.setWindowTitle('NINJA-IDE {Ninja-IDE Is Not Just Another IDE}')
         self.setMinimumSize(700, 500)
-        #Load the size and the position of the main window
-        self.load_window_geometry()
 
         #Start server if needed
         self.s_listener = None
@@ -129,11 +127,10 @@ class __IDE(QMainWindow):
 
         #ToolBar
         self.toolbar = QToolBar(self)
+        self.toolbar.setObjectName('toolbar')
         self.toolbar.setToolTip(self.tr("Press and Drag to Move"))
         self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
         self.addToolBar(settings.TOOLBAR_AREA, self.toolbar)
-        if settings.HIDE_TOOLBAR:
-            self.toolbar.hide()
 
         #Install Shortcuts after the UI has been initialized
         self.actions.install_shortcuts(self)
@@ -181,6 +178,8 @@ class __IDE(QMainWindow):
 
         self.connect(self.mainContainer, SIGNAL("fileSaved(QString)"),
             self.show_status_message)
+        #Load the size and the position of the main window
+        self.load_window_geometry()
 
     def _process_connection(self):
         connection = self.s_listener.nextPendingConnection()
@@ -287,7 +286,7 @@ class __IDE(QMainWindow):
         self.setCorner(Qt.BottomRightCorner, Qt.RightDockWidgetArea)
         self.setCorner(Qt.TopLeftCorner, Qt.LeftDockWidgetArea)
         self.setCorner(Qt.BottomLeftCorner, Qt.LeftDockWidgetArea)
-        self.setDockNestingEnabled(False)
+        self.setDockOptions(QMainWindow.AnimatedDocks)
 
         if settings.SHOW_START_PAGE:
             self.mainContainer.show_start_page()
@@ -378,35 +377,26 @@ class __IDE(QMainWindow):
         qsettings.setValue('preferences/editor/bookmarks', settings.BOOKMARKS)
         qsettings.setValue('preferences/editor/breakpoints',
             settings.BREAKPOINTS)
-        qsettings.setValue('preferences/general/toolbarArea',
-            self.toolBarArea(self.toolbar))
         #Save if the windows state is maximixed
         if(self.isMaximized()):
             qsettings.setValue("window/maximized", True)
         else:
             qsettings.setValue("window/maximized", False)
-            #Save the size and position of the mainwindow
-            qsettings.setValue("window/size", self.size())
-            qsettings.setValue("window/pos", self.pos())
-        #Save the toolbar visibility
-        qsettings.setValue("window/hide_toolbar",
-            not self.toolbar.isVisible() and self.menuBar().isVisible())
         #Save Profiles
         if self.profile is not None:
             self.actions.save_profile(self.profile)
         else:
             qsettings.setValue('ide/profiles', settings.PROFILES)
+        qsettings.setValue("window/geometry", self.saveGeometry())
+        qsettings.setValue("window/state", self.saveState())
 
     def load_window_geometry(self):
         """Load from QSettings the window size of de Ninja IDE"""
         qsettings = QSettings()
+        self.restoreGeometry(qsettings.value("window/geometry").toByteArray())
+        self.restoreState(qsettings.value("window/state").toByteArray())
         if qsettings.value("window/maximized", True).toBool():
             self.setWindowState(Qt.WindowMaximized)
-        else:
-            self.resize(qsettings.value("window/size",
-                QSize(800, 600)).toSize())
-            self.move(qsettings.value("window/pos",
-                QPoint(100, 100)).toPoint())
 
     def closeEvent(self, event):
         if self.s_listener:
