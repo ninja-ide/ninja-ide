@@ -58,7 +58,7 @@ for mn, urlm in NEEDED_MODULES:
     try:
         __import__(mn)
     except ImportError:
-        print "Module '%s' not found. For more details see '%s'.\n" % (mn, urlm)
+        print "Module '%s' not found. For more details: '%s'.\n" % (mn, urlm)
         sys.exit(1)
 
 
