@@ -223,7 +223,7 @@ class TabWidget(QTabWidget):
 
     def tab_was_saved(self, ed):
         index = self.indexOf(ed)
-        text = unicode(self.tabBar().tabText(self.currentIndex()))
+        text = unicode(self.tabBar().tabText(index))
         if text.startswith('(*) '):
             text = text[4:]
         self.tabBar().setTabText(index, text)
@@ -270,7 +270,7 @@ class TabWidget(QTabWidget):
                         self, self.tr('The file %1 was not saved').arg(
                             fileName),
                             self.tr("Do you want to save before closing?"),
-                            QMessageBox.Yes | QMessageBox.No | \
+                            QMessageBox.Yes | QMessageBox.No |
                             QMessageBox.Cancel)
                 if val == QMessageBox.Cancel:
                     return
