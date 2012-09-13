@@ -508,11 +508,11 @@ def check_for_assistance_completion(editorWidget, line):
         clazzName = [name for name in
             re.split("(\\s)*class(\\s)+|:|\(", line)
             if name is not None and name.strip()][0]
-        clazz_key = [item for item in symbols.get('classes', []) \
+        clazz_key = [item for item in symbols.get('classes', [])
             if item.startswith(clazzName)]
         if clazz_key:
             clazz = symbols['classes'][clazz_key[0]]
-            if [init for init in clazz[1]['functions'] \
+            if [init for init in clazz[1]['functions']
                if init.startswith('__init__')]:
                 return
         editorWidget.textCursor().insertText('\n')

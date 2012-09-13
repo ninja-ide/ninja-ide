@@ -178,7 +178,7 @@ class RunWidget(QWidget):
                 env.insert('PYTHONPATH', path)
             self._proc.setProcessEnvironment(env)
 
-        self._proc.start(self.pythonPath, options + [self.fileName] + \
+        self._proc.start(self.pythonPath, options + [self.fileName] +
             [p.strip() for p in self.programParams.split(',') if p])
 
     def __pre_execution(self):

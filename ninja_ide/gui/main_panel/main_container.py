@@ -411,7 +411,7 @@ class __MainContainer(QSplitter):
                 self.__open_file(filename, cursorPosition,
                     tabIndex, positionIsLineNumber, notStart)
 
-    def __open_file(self, fileName='', cursorPosition=-1,\
+    def __open_file(self, fileName='', cursorPosition=-1,
                     tabIndex=None, positionIsLineNumber=False, notStart=True):
         try:
             if not self.is_open(fileName):
@@ -600,7 +600,7 @@ class __MainContainer(QSplitter):
         except file_manager.NinjaFileExistsException, ex:
             editorWidget.just_saved = False
             QMessageBox.information(self, self.tr("File Already Exists"),
-                self.tr("Invalid Path: the file '%s' already exists." % \
+                self.tr("Invalid Path: the file '%s' already exists." %
                     ex.filename))
         except Exception, reason:
             editorWidget.just_saved = False
