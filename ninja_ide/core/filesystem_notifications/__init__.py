@@ -26,9 +26,13 @@ if sys.platform == 'win32':
 elif sys.platform == 'darwin':
     from ninja_ide.core.filesystem_notifications import darwin
     source = darwin
-else:
+elif sys.platform.startswith("linux"):
     from ninja_ide.core.filesystem_notifications import linux
     source = linux
+else:
+    #Aything we do not have a clue how to handle
+    from ninja_ide.core.filesystem_notifications import openbsd
+    source = openbsd
 
 
 NinjaFileSystemWatcher = source.NinjaFileSystemWatcher()
