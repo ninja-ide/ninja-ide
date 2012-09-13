@@ -118,7 +118,7 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
                 wm.add_watch(path, mask, rec=True, auto_add=True,
                     exclude_filter=exclude)
                 self.watching_paths[path] = notifier
-            except OSError:
+            except (OSError, IOError):
                 pass
                 #Shit happens, most likely temp file
 
