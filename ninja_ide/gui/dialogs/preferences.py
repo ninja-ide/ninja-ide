@@ -458,28 +458,14 @@ class InterfaceTab(QWidget):
         vboxExplorer.addWidget(self._checkWebInspetor)
         vboxExplorer.addWidget(self._checkFileErrors)
         #GUI
-        self._btnCentralRotate = QPushButton(
-            QIcon(resources.IMAGES['splitCPosition']), '')
-        self._btnCentralRotate.setIconSize(QSize(64, 64))
-        self._btnCentralRotate.setCheckable(True)
-        self._btnPanelsRotate = QPushButton(
-            QIcon(resources.IMAGES['splitMPosition']), '')
-        self._btnPanelsRotate.setIconSize(QSize(64, 64))
-        self._btnPanelsRotate.setCheckable(True)
         self._btnCentralOrientation = QPushButton(
             QIcon(resources.IMAGES['splitCRotate']), '')
         self._btnCentralOrientation.setIconSize(QSize(64, 64))
         self._btnCentralOrientation.setCheckable(True)
         gridGuiConfig = QGridLayout(groupBoxGui)
-        gridGuiConfig.addWidget(self._btnCentralRotate, 0, 0)
-        gridGuiConfig.addWidget(self._btnPanelsRotate, 0, 1)
-        gridGuiConfig.addWidget(self._btnCentralOrientation, 0, 2)
+        gridGuiConfig.addWidget(self._btnCentralOrientation, 0, 0)
         gridGuiConfig.addWidget(QLabel(
-            self.tr("Rotate Central")), 1, 0, Qt.AlignCenter)
-        gridGuiConfig.addWidget(QLabel(
-            self.tr("Rotate Lateral")), 1, 1, Qt.AlignCenter)
-        gridGuiConfig.addWidget(QLabel(
-            self.tr("Central Orientation")), 1, 2, Qt.AlignCenter)
+            self.tr("Central Orientation")), 1, 0, Qt.AlignCenter)
         #GUI - Toolbar
         vbox_toolbar = QVBoxLayout(groupBoxToolbar)
         hbox_select_items = QHBoxLayout()
@@ -527,11 +513,8 @@ class InterfaceTab(QWidget):
         self._checkWebInspetor.setChecked(settings.SHOW_WEB_INSPECTOR)
         self._checkFileErrors.setChecked(settings.SHOW_ERRORS_LIST)
         #ui layout
-        self._btnCentralRotate.setChecked(bin(settings.UI_LAYOUT)[-1] == '1')
-        self._btnPanelsRotate.setChecked(bin(
-            settings.UI_LAYOUT >> 1)[-1] == '1')
-        self._btnCentralOrientation.setChecked(
-            bin(settings.UI_LAYOUT >> 2)[-1] == '1')
+        if settings.UI_LAYOUT:
+            self._btnCentralOrientation.setChecked(True)
 
         vbox.addWidget(groupBoxExplorer)
         vbox.addWidget(groupBoxGui)
@@ -539,12 +522,8 @@ class InterfaceTab(QWidget):
         vbox.addWidget(groupBoxLang)
 
         #Signals
-        self.connect(self._btnCentralRotate, SIGNAL('clicked()'),
-            central_widget.CentralWidget().splitter_central_rotate)
-        self.connect(self._btnPanelsRotate, SIGNAL('clicked()'),
-            central_widget.CentralWidget().splitter_misc_rotate)
         self.connect(self._btnCentralOrientation, SIGNAL('clicked()'),
-            central_widget.CentralWidget().splitter_central_orientation)
+            central_widget.CentralWidget().dock_orientation)
         self.connect(self._btnItemAdd, SIGNAL("clicked()"),
             self.toolbar_item_added)
         self.connect(self._btnItemRemove, SIGNAL("clicked()"),
@@ -714,9 +693,7 @@ class InterfaceTab(QWidget):
         else:
             explorer_container.ExplorerContainer().remove_tab_errors()
         #ui layout
-        uiLayout = 1 if self._btnCentralRotate.isChecked() else 0
-        uiLayout += 2 if self._btnPanelsRotate.isChecked() else 0
-        uiLayout += 4 if self._btnCentralOrientation.isChecked() else 0
+        uiLayout = 1 if self._btnCentralOrientation.isChecked() else 0
         qsettings.setValue('uiLayout', uiLayout)
         qsettings.setValue('toolbar', settings.TOOLBAR_ITEMS)
         qsettings.setValue('language', lang)
