@@ -274,7 +274,7 @@ class __IDE(QMainWindow):
         centralWidget.insert_bottom_container(self.misc)
         self.connect(self.mainContainer,
             SIGNAL("cursorPositionChange(int, int)"),
-            self.central.lateralDock.update_line_col)
+            self.central.lateralPanel.update_line_col)
         # TODO: Change current symbol on move
         #self.connect(self.mainContainer,
             #SIGNAL("cursorPositionChange(int, int)"),
