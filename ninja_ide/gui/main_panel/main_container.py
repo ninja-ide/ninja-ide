@@ -755,6 +755,7 @@ class __MainContainer(QSplitter):
             self.actualTab = self._tabSecondary
             if files:
                 self._tabSecondary.show()
+                self.splitted = True
 
         for fileData in files:
             if file_manager.file_exists(unicode(fileData[0])):
