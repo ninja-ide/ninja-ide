@@ -169,6 +169,8 @@ class TreeProjectsWidget(QTreeWidget):
             self._add_context_menu_for_files(menu, item)
         if item.parent() is None:
             #get the extra context menu for this projectType
+            if isinstance(item, ProjectItem):
+                return
             handler = settings.get_project_type_handler(item.projectType)
             self._add_context_menu_for_root(menu, item)
 
@@ -244,7 +246,7 @@ class TreeProjectsWidget(QTreeWidget):
             self.tr("Create '__init__' Complete"))
         self.connect(action_create_init, SIGNAL("triggered()"),
             self._create_init)
-        if item.isFolder and (item.parent() != None):
+        if item.isFolder and (item.parent() is not None):
             action_remove_folder = menu.addAction(self.tr("Remove Folder"))
             self.connect(action_remove_folder, SIGNAL("triggered()"),
                 self._delete_folder)
@@ -313,7 +315,7 @@ class TreeProjectsWidget(QTreeWidget):
     def set_default_project(self, item):
         item.setForeground(0, QBrush(QColor(0, 204, 82)))
         if self._actualProject:
-            self._actualProject.setForeground(0, QBrush(Qt.darkGray))
+            item.setForeground(0, QBrush(QColor(255, 165, 0)))
         self._actualProject = item
 
     def open_project_properties(self):
@@ -330,7 +332,7 @@ class TreeProjectsWidget(QTreeWidget):
             p_path = unicode(each_project.path)
             if file_manager.belongs_to_folder(p_path, folder) and \
                file_manager.is_supported_extension(folder,
-                   each_project.extensions):
+                   each_project.extensions) and folder[:1] != '.':
                 self._refresh_project(each_project)
                 break
 
@@ -424,7 +426,7 @@ class TreeProjectsWidget(QTreeWidget):
                 main_container.MainContainer().save_file()
             except file_manager.NinjaFileExistsException, ex:
                 QMessageBox.information(self, self.tr("File Already Exists"),
-                    self.tr("Invalid Path: the file '%s' already exists." % \
+                    self.tr("Invalid Path: the file '%s' already exists." %
                         ex.filename))
 
     def add_existing_file(self, path):
@@ -467,7 +469,7 @@ class TreeProjectsWidget(QTreeWidget):
     def _delete_file(self):
         item = self.currentItem()
         val = QMessageBox.question(self, self.tr("Delete File"),
-                self.tr("Do you want to delete the following file: ") \
+                self.tr("Do you want to delete the following file: ")
                 + os.path.join(item.path, unicode(item.text(0))),
                 QMessageBox.Yes, QMessageBox.No)
         if val == QMessageBox.Yes:
@@ -482,7 +484,7 @@ class TreeProjectsWidget(QTreeWidget):
     def _delete_folder(self):
         item = self.currentItem()
         val = QMessageBox.question(self, self.tr("Delete Folder"),
-                self.tr("Do you want to delete the following folder: ") \
+                self.tr("Do you want to delete the following folder: ")
                 + os.path.join(item.path, unicode(item.text(0))),
                 QMessageBox.Yes, QMessageBox.No)
         if val == QMessageBox.Yes:
@@ -519,7 +521,7 @@ class TreeProjectsWidget(QTreeWidget):
                 subitem.parent().takeChild(index)
             except file_manager.NinjaFileExistsException, ex:
                 QMessageBox.information(self, self.tr("File Already Exists"),
-                    self.tr("Invalid Path: the file '%s' already exists." % \
+                    self.tr("Invalid Path: the file '%s' already exists." %
                         ex.filename))
 
     def _copy_file(self):
@@ -551,7 +553,7 @@ class TreeProjectsWidget(QTreeWidget):
             self.add_existing_file(path)
         except file_manager.NinjaFileExistsException, ex:
                 QMessageBox.information(self, self.tr("File Already Exists"),
-                    self.tr("Invalid Path: the file '%s' already exists." % \
+                    self.tr("Invalid Path: the file '%s' already exists." %
                         ex.filename))
 
     def _move_file(self):
@@ -578,7 +580,7 @@ class TreeProjectsWidget(QTreeWidget):
             self.add_existing_file(path)
         except file_manager.NinjaFileExistsException, ex:
                 QMessageBox.information(self, self.tr("File Already Exists"),
-                    self.tr("Invalid Path: the file '%s' already exists." % \
+                    self.tr("Invalid Path: the file '%s' already exists." %
                         ex.filename))
 
     def _edit_ui_file(self):
@@ -698,7 +700,7 @@ class TreeProjectsWidget(QTreeWidget):
         return self._projects.values()
 
     def is_open(self, path):
-        return len([True for item in self._projects.values() \
+        return len([True for item in self._projects.values()
             if item.path == path]) != 0
 
     def _set_current_project(self, path):
@@ -765,7 +767,7 @@ class ProjectTree(QTreeWidgetItem):
         self.setText(0, _name)
         self.path = path
         self.isFolder = True
-        self.setForeground(0, QBrush(Qt.darkGray))
+        self.setForeground(0, QBrush(QColor(255, 165, 0)))
         project = json_manager.read_ninja_project(path)
         self.name = project.get('name', '')
         if self.name == '':

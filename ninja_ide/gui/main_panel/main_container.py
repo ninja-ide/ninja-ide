@@ -85,6 +85,7 @@ class __MainContainer(QSplitter):
         self._parent = parent
         self._tabMain = tab_widget.TabWidget(self)
         self._tabSecondary = tab_widget.TabWidget(self)
+        self.setAcceptDrops(True)
         self.addWidget(self._tabMain)
         self.addWidget(self._tabSecondary)
         self.setSizes([1, 1])
@@ -143,6 +144,16 @@ class __MainContainer(QSplitter):
             self._navigate_code)
         self.connect(self._tabSecondary, SIGNAL("navigateCode(bool, int)"),
             self._navigate_code)
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.accept()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event):
+        file_path = event.mimeData().urls()[0].toLocalFile()
+        self.open_file(unicode(file_path))
 
     def _navigate_code(self, val, op):
         self.emit(SIGNAL("navigateCode(bool, int)"), val, op)
@@ -364,7 +375,7 @@ class __MainContainer(QSplitter):
             QMessageBox.information(self, self.tr("Incorrect File"),
                 self.tr("The image couldn\'t be open"))
 
-    def open_file(self, filename='', cursorPosition=0, \
+    def open_file(self, filename='', cursorPosition=-1,
                     tabIndex=None, positionIsLineNumber=False, notStart=True):
         filename = unicode(filename)
         if not filename:
@@ -380,7 +391,7 @@ class __MainContainer(QSplitter):
                 elif editorWidget is not None and editorWidget.ID:
                     directory = file_manager.get_folder(editorWidget.ID)
             extensions = ';;'.join(
-                ['(*%s)' % e for e in \
+                ['(*%s)' % e for e in
                     settings.SUPPORTED_EXTENSIONS + ['.*', '']])
             fileNames = list(QFileDialog.getOpenFileNames(self,
                 self.tr("Open File"), directory, extensions))
@@ -400,7 +411,7 @@ class __MainContainer(QSplitter):
                 self.__open_file(filename, cursorPosition,
                     tabIndex, positionIsLineNumber, notStart)
 
-    def __open_file(self, fileName='', cursorPosition=0,\
+    def __open_file(self, fileName='', cursorPosition=-1,
                     tabIndex=None, positionIsLineNumber=False, notStart=True):
         try:
             if not self.is_open(fileName):
@@ -416,6 +427,8 @@ class __MainContainer(QSplitter):
                 editorWidget.async_highlight()
                 encoding = file_manager.get_file_encoding(content)
                 editorWidget.encoding = encoding
+                if cursorPosition == -1:
+                    cursorPosition = 0
                 if not positionIsLineNumber:
                     editorWidget.set_cursor_position(cursorPosition)
                 else:
@@ -429,7 +442,7 @@ class __MainContainer(QSplitter):
             else:
                 self.move_to_open(fileName)
                 editorWidget = self.get_actual_editor()
-                if editorWidget and notStart:
+                if editorWidget and notStart and cursorPosition != -1:
                     if positionIsLineNumber:
                         editorWidget.go_to_line(cursorPosition)
                     else:
@@ -452,7 +465,7 @@ class __MainContainer(QSplitter):
         for folder in opened_projects:
             if file_manager.belongs_to_folder(folder, filename):
                 alone = False
-        if alone:
+        if alone or sys.platform == 'darwin':
             self._file_watcher.add_file_watch(filename)
             self._watched_simple_files.append(filename)
 
@@ -589,7 +602,7 @@ class __MainContainer(QSplitter):
         except file_manager.NinjaFileExistsException, ex:
             editorWidget.just_saved = False
             QMessageBox.information(self, self.tr("File Already Exists"),
-                self.tr("Invalid Path: the file '%s' already exists." % \
+                self.tr("Invalid Path: the file '%s' already exists." %
                     ex.filename))
         except Exception, reason:
             editorWidget.just_saved = False
@@ -744,6 +757,7 @@ class __MainContainer(QSplitter):
             self.actualTab = self._tabSecondary
             if files:
                 self._tabSecondary.show()
+                self.splitted = True
 
         for fileData in files:
             if file_manager.file_exists(unicode(fileData[0])):
@@ -808,14 +822,8 @@ class __MainContainer(QSplitter):
         """Change the tab in the current TabWidget backwards."""
         self.actualTab.change_tab_reverse()
 
-    def show_code_navigation_buttons(self):
-        self.actualTab.navigator._show_code_nav()
-
-    def show_breakpoints_buttons(self):
-        self.actualTab.navigator._show_breakpoints()
-
-    def show_bookmarks_buttons(self):
-        self.actualTab.navigator._show_bookmarks()
+    def show_navigation_buttons(self):
+        self.actualTab.navigator.show_menu_navigation()
 
     def change_split_focus(self):
         if self.actualTab == self._tabMain and self._tabSecondary.isVisible():

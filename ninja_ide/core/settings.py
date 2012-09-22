@@ -58,7 +58,6 @@ UI_LAYOUT = 0
 LANGUAGE = ""
 
 SHOW_START_PAGE = True
-USE_STYLESHEET = True
 
 CONFIRM_EXIT = True
 NOTIFY_UPDATES = True
@@ -331,7 +330,7 @@ def load_settings():
         profile_list = list(profileDict[key].toList())
         files = []
         if profile_list:
-            files = [item \
+            files = [item
                 for item in profile_list[0].toList()]
         tempFiles = []
         for file_ in files:
@@ -342,7 +341,7 @@ def load_settings():
         files = tempFiles
         projects = []
         if len(profile_list) > 1:
-            projects = [unicode(item.toString()) \
+            projects = [unicode(item.toString())
                 for item in profile_list[1].toList()]
         PROFILES[unicode(key)] = [files, projects]
     toolbar_items = [str(item.toString()) for item in qsettings.value(

@@ -52,23 +52,19 @@ class MenuEdit(QObject):
                     QKeySequence.NativeText)))
         findReplaceAction = menuEdit.addAction(
             QIcon(resources.IMAGES['findReplace']),
-            self.tr("Find/Replace (%s)" % \
+            self.tr("Find/Replace (%s)" %
                 resources.get_shortcut("Find-replace").toString(
                     QKeySequence.NativeText)))
         findWithWordAction = menuEdit.addAction(
-            self.tr("Find using word under cursor (%s)" % \
+            self.tr("Find using word under cursor (%s)" %
                 resources.get_shortcut("Find-with-word").toString(
                     QKeySequence.NativeText)))
         findInFilesAction = menuEdit.addAction(QIcon(resources.IMAGES['find']),
             self.tr("Find in Files (%s)" %
                 resources.get_shortcut("Find-in-files").toString(
                     QKeySequence.NativeText)))
-        jumpAction = menuEdit.addAction(
-            self.tr("Jump to Line (%s)" % \
-                resources.get_shortcut("Jump").toString(
-                    QKeySequence.NativeText)))
         locatorAction = menuEdit.addAction(QIcon(resources.IMAGES['locator']),
-            self.tr("Code Locator (%s)" % \
+            self.tr("Code Locator (%s)" %
                 resources.get_shortcut("Code-locator").toString(
                     QKeySequence.NativeText)))
         menuEdit.addSeparator()
@@ -105,8 +101,6 @@ class MenuEdit(QObject):
             status_bar.StatusBar().show)
         self.connect(findWithWordAction, SIGNAL("triggered()"),
             status_bar.StatusBar().show_with_word)
-        self.connect(jumpAction, SIGNAL("triggered()"),
-            lambda: self.jump_to_editor_line())
         self.connect(findReplaceAction, SIGNAL("triggered()"),
             status_bar.StatusBar().show_replace)
         self.connect(findInFilesAction, SIGNAL("triggered()"),
@@ -184,11 +178,6 @@ class MenuEdit(QObject):
         editorWidget = main_container.MainContainer().get_actual_editor()
         if editorWidget:
             editorWidget.undo()
-
-    def jump_to_editor_line(self):
-        editor = main_container.MainContainer().get_actual_editor()
-        if editor:
-            editor.jump_to_line()
 
     def _show_preferences(self):
         pref = preferences.PreferencesWidget(main_container.MainContainer())

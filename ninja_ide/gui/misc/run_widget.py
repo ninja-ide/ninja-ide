@@ -18,7 +18,6 @@ from __future__ import absolute_import
 
 import time
 import re
-import sys
 
 from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QLabel
@@ -93,32 +92,32 @@ class RunWidget(QWidget):
         self.lblInput.hide()
         self.input.hide()
         self._proc.kill()
-        format = QTextCharFormat()
-        format.setAnchor(True)
-        format.setForeground(Qt.red)
+        format_ = QTextCharFormat()
+        format_.setAnchor(True)
+        format_.setForeground(Qt.red)
         if error == 0:
             self.output.textCursor().insertText(self.tr('Failed to start'),
-                format)
+                format_)
         else:
             self.output.textCursor().insertText(
                 self.tr('Error during execution, QProcess error: %d' % error),
-                format)
+                format_)
 
     def finish_execution(self, exitCode, exitStatus):
         """Print a message and hide the input line when the execution ends."""
         self.lblInput.hide()
         self.input.hide()
-        format = QTextCharFormat()
-        format.setAnchor(True)
+        format_ = QTextCharFormat()
+        format_.setAnchor(True)
         self.output.textCursor().insertText('\n\n')
         if exitStatus == QProcess.NormalExit:
-            format.setForeground(Qt.green)
+            format_.setForeground(Qt.green)
             self.output.textCursor().insertText(
-                self.tr("Execution Successful!"), format)
+                self.tr("Execution Successful!"), format_)
         else:
-            format.setForeground(Qt.red)
+            format_.setForeground(Qt.red)
             self.output.textCursor().insertText(
-                self.tr("Execution Interrupted"), format)
+                self.tr("Execution Interrupted"), format_)
         self.output.textCursor().insertText('\n\n')
         self.__post_execution()
 
@@ -126,6 +125,7 @@ class RunWidget(QWidget):
         """Take the user input and send it to the process."""
         text = self.input.text() + '\n'
         self._proc.writeData(text)
+        self.output.textCursor().insertText(text, self.output.plain_format)
         self.input.setText("")
 
     def start_process(self, fileName, pythonPath=False, PYTHONPATH=None,
@@ -178,7 +178,7 @@ class RunWidget(QWidget):
                 env.insert('PYTHONPATH', path)
             self._proc.setProcessEnvironment(env)
 
-        self._proc.start(self.pythonPath, options + [self.fileName] + \
+        self._proc.start(self.pythonPath, options + [self.fileName] +
             [p.strip() for p in self.programParams.split(',') if p])
 
     def __pre_execution(self):
@@ -216,11 +216,11 @@ class RunWidget(QWidget):
     def __post_execution_message(self):
         """Print post execution message."""
         self.output.textCursor().insertText('\n\n')
-        format = QTextCharFormat()
-        format.setAnchor(True)
-        format.setForeground(Qt.green)
+        format_ = QTextCharFormat()
+        format_.setAnchor(True)
+        format_.setForeground(Qt.green)
         self.output.textCursor().insertText(
-            self.tr("Post Execution Script Successfully executed."), format)
+            self.tr("Post Execution Script Successfully executed."), format_)
 
     def kill_process(self):
         """Kill the running process."""

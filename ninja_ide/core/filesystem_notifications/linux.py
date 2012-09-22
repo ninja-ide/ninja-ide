@@ -17,9 +17,11 @@
 
 from __future__ import absolute_import
 
+import os
+
 from PyQt4.QtCore import SIGNAL, QThread
 from pyinotify import ProcessEvent, IN_CREATE, IN_DELETE, IN_DELETE_SELF, \
-                        IN_MODIFY, WatchManager, Notifier
+                        IN_MODIFY, WatchManager, Notifier, ExcludeFilter
 
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.core.filesystem_notifications.linux')
@@ -103,14 +105,22 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
     def __init__(self):
         self.watching_paths = {}
         super(NinjaFileSystemWatcher, self).__init__()
+        self._ignore_hidden = ('.git', '.hg', '.svn', '.bzr')
 
     def add_watch(self, path):
         if path not in self.watching_paths:
-            wm = WatchManager()
-            notifier = QNotifier(wm, self._emit_signal_on_change)
-            notifier.start()
-            wm.add_watch(path, mask, rec=True, auto_add=True)
-            self.watching_paths[path] = notifier
+            try:
+                wm = WatchManager()
+                notifier = QNotifier(wm, self._emit_signal_on_change)
+                notifier.start()
+                exclude = ExcludeFilter([os.path.join(path, folder)
+                    for folder in self._ignore_hidden])
+                wm.add_watch(path, mask, rec=True, auto_add=True,
+                    exclude_filter=exclude)
+                self.watching_paths[path] = notifier
+            except (OSError, IOError):
+                pass
+                #Shit happens, most likely temp file
 
     def remove_watch(self, path):
         if path in self.watching_paths:

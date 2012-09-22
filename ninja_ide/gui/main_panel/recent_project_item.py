@@ -45,7 +45,9 @@ class RecentProjectItem(QWidget):
         self.__content = content.toMap()
         self.__project = project
         self.__favorite = QPushButton(self)
+        self.__favorite.setObjectName('web_list_button')
         self.__delete = QPushButton(self)
+        self.__delete.setObjectName('web_list_button')
         self.__delete.setIcon(QIcon(resources.IMAGES['delProj']))
         self.__name = QLineEdit(self)
         self.__itemRelated = itemRelated

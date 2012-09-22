@@ -144,6 +144,11 @@ class __ExplorerContainer(QTabWidget):
             self.connect(self._treeSymbols, SIGNAL("goToDefinition(int)"),
                 _go_to_definition)
 
+    def update_current_symbol(self, line, col):
+        """Select the proper item in the symbols list."""
+        if self._treeSymbols is not None:
+            self._treeSymbols.select_current_item(line, col)
+
     def add_tab_inspector(self):
         if not settings.WEBINSPECTOR_SUPPORTED:
             QMessageBox.information(self,

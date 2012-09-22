@@ -17,17 +17,18 @@
 from __future__ import absolute_import
 
 from PyQt4.QtGui import QTabWidget
+from PyQt4.QtGui import QCursor
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QMenu
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QClipboard
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
+from PyQt4.QtCore import QDir
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -41,6 +42,7 @@ from ninja_ide.gui.main_panel import browser_widget
 from ninja_ide.tools.logger import NinjaLogger
 
 logger = NinjaLogger('ninja_ide.gui.main_panel.tab_widget')
+DEBUG = logger.debug
 
 
 class TabWidget(QTabWidget):
@@ -122,8 +124,8 @@ class TabWidget(QTabWidget):
             self.titles.append(title)
             return
         indexes = [i for i in xrange(self.count())
-            if type(self.widget(i)) is editor.Editor and \
-            self.tabText(i) == title and \
+            if type(self.widget(i)) is editor.Editor and
+            self.tabText(i) == title and
             self.widget(i).ID]
         self.dontLoopInExpandTitle = True
         for i in indexes:
@@ -145,9 +147,12 @@ class TabWidget(QTabWidget):
 
     def tab_was_modified(self, val):
         ed = self.currentWidget()
-        if type(ed) is editor.Editor and self.notOpening and val:
+        text = unicode(self.tabBar().tabText(self.currentIndex()))
+        if type(ed) is editor.Editor and self.notOpening and val and \
+           not text.startswith('(*) '):
             ed.textModified = True
-            self.tabBar().setTabTextColor(self.currentIndex(), QColor(Qt.red))
+            text = '(*) %s' % self.tabBar().tabText(self.currentIndex())
+            self.tabBar().setTabText(self.currentIndex(), text)
 
     def focusInEvent(self, event):
         QTabWidget.focusInEvent(self, event)
@@ -184,20 +189,25 @@ class TabWidget(QTabWidget):
                             'The file has deleted from disc!',
                 self.tr("%s\n" % editorWidget.ID),
                 QMessageBox.Yes)
+        self.question_already_open = False
 
     def _file_changed(self, change_type, file_path):
-        file_path = unicode(file_path)
+
+        file_path = unicode(QDir.toNativeSeparators(file_path))
         editorWidget = self.currentWidget()
+        current_open = unicode(QDir.toNativeSeparators(editorWidget and
+                                                        editorWidget.ID or ""))
         opened = [path for path, _ in self.get_documents_data()]
 
         if (file_path in opened) and \
-            ((not editorWidget) or (editorWidget.ID != file_path)) and \
+            ((not editorWidget) or (current_open != file_path)) and \
             (change_type in (MODIFIED, DELETED)):
+
             self._change_map.setdefault(unicode(file_path),
                                         []).append(change_type)
         elif not editorWidget:
             return
-        elif (editorWidget.ID == file_path) and \
+        elif (current_open == file_path) and \
             (not self.question_already_open):
             #dont ask again if you are already asking!
             self._prompt_reload(editorWidget, change_type)
@@ -213,7 +223,10 @@ class TabWidget(QTabWidget):
 
     def tab_was_saved(self, ed):
         index = self.indexOf(ed)
-        self.tabBar().setTabTextColor(index, QColor(Qt.gray))
+        text = unicode(self.tabBar().tabText(index))
+        if text.startswith('(*) '):
+            text = text[4:]
+        self.tabBar().setTabText(index, text)
 
     def is_open(self, identifier):
         """Check if a Tab with id = identifier is open"""
@@ -257,7 +270,7 @@ class TabWidget(QTabWidget):
                         self, self.tr('The file %s was not saved' %
                             fileName),
                             self.tr("Do you want to save before closing?"),
-                            QMessageBox.Yes | QMessageBox.No | \
+                            QMessageBox.Yes | QMessageBox.No |
                             QMessageBox.Cancel)
                 if val == QMessageBox.Cancel:
                     return
@@ -478,10 +491,12 @@ class TabNavigator(QWidget):
         hbox = QHBoxLayout(self)
         self.btnPrevious = QPushButton(
             QIcon(resources.IMAGES['nav-code-left']), '')
+        self.btnPrevious.setObjectName('navigation_button')
         self.btnPrevious.setToolTip(
             self.tr("Right click to change navigation options"))
         self.btnNext = QPushButton(
             QIcon(resources.IMAGES['nav-code-right']), '')
+        self.btnNext.setObjectName('navigation_button')
         self.btnNext.setToolTip(
             self.tr("Right click to change navigation options"))
         hbox.addWidget(self.btnPrevious)
@@ -513,7 +528,10 @@ class TabNavigator(QWidget):
             self._show_bookmarks)
 
     def contextMenuEvent(self, event):
-        self.menuNavigate.exec_(event.globalPos())
+        self.show_menu_navigation()
+
+    def show_menu_navigation(self):
+        self.menuNavigate.exec_(QCursor.pos())
 
     def _show_bookmarks(self):
         self.btnPrevious.setIcon(QIcon(resources.IMAGES['book-left']))

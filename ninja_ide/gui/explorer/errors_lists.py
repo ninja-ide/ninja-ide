@@ -40,7 +40,9 @@ class ErrorsWidget(QWidget):
 
         vbox = QVBoxLayout(self)
         self.listErrors = QListWidget()
+        self.listErrors.setSortingEnabled(True)
         self.listPep8 = QListWidget()
+        self.listPep8.setSortingEnabled(True)
         self.errorsLabel = QLabel(self.tr(ERRORS_TEXT % 0))
         vbox.addWidget(self.errorsLabel)
         vbox.addWidget(self.listErrors)

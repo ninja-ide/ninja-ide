@@ -59,6 +59,7 @@ class __CentralWidget(QWidget):
 
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
+        self.parent = parent
         #This variables are used to save the splitter sizes before hide
         self._splitterMainSizes = None
         self._splitterAreaSizes = None

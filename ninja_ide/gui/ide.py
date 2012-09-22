@@ -14,7 +14,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
-
 from __future__ import absolute_import
 
 import sys
@@ -276,6 +275,10 @@ class __IDE(QMainWindow):
         self.connect(self.mainContainer,
             SIGNAL("cursorPositionChange(int, int)"),
             self.central.lateralPanel.update_line_col)
+        # TODO: Change current symbol on move
+        #self.connect(self.mainContainer,
+            #SIGNAL("cursorPositionChange(int, int)"),
+            #self.explorer.update_current_symbol)
         self.connect(self.mainContainer, SIGNAL("enabledFollowMode(bool)"),
             self.central.enable_follow_mode_scrollbar)
 
@@ -502,21 +505,28 @@ def start(filenames=None, projects_path=None,
     settings.load_settings()
 
     #Set Stylesheet
-    if settings.USE_STYLESHEET:
-        if settings.NINJA_SKIN == 'Default':
-            with open(resources.NINJA_THEME) as f:
-                qss = f.read()
-                app.setStyleSheet(qss)
-        else:
-            file_name = ("%s.qss" % settings.NINJA_SKIN)
-            qss_file = file_manager.create_path(resources.NINJA_THEME_DOWNLOAD,
-                file_name)
+    style_applied = False
+    if settings.NINJA_SKIN not in ('Default', 'Classic Theme'):
+        file_name = ("%s.qss" % settings.NINJA_SKIN)
+        qss_file = file_manager.create_path(resources.NINJA_THEME_DOWNLOAD,
+            file_name)
+        if file_manager.file_exists(qss_file):
             with open(qss_file) as f:
                 qss = f.read()
                 app.setStyleSheet(qss)
+                style_applied = True
+    if not style_applied:
+        if settings.NINJA_SKIN == 'Default':
+            with open(resources.NINJA_THEME) as f:
+                qss = f.read()
+        else:
+            with open(resources.NINJA__THEME_CLASSIC) as f:
+                qss = f.read()
+        app.setStyleSheet(qss)
 
     #Loading Schemes
-    splash.showMessage("Loading Schemes", Qt.AlignRight | Qt.AlignTop, Qt.black)
+    splash.showMessage("Loading Schemes",
+        Qt.AlignRight | Qt.AlignTop, Qt.black)
     scheme = unicode(qsettings.value('preferences/editor/scheme',
         "default").toString())
     if scheme != 'default':
