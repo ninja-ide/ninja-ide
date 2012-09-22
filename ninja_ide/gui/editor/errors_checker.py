@@ -81,7 +81,7 @@ class ErrorsChecker(QThread):
                     self.errorsSummary[0] = [message]
             finally:
                 ignored_range, ignored_lines = self._get_ignore_range()
-                to_remove = [x for x in self.errorsSummary \
+                to_remove = [x for x in self.errorsSummary
                              for r in ignored_range if r[0] < x < r[1]]
                 to_remove += ignored_lines
                 for line in to_remove:
@@ -94,15 +94,15 @@ class ErrorsChecker(QThread):
         ignored_lines = []
         block = self._editor.document().begin()
         while block.isValid():
-            if self.pat_disable_lint.match(unicode(block.text())):
+            if self.pat_disable_lint.match(block.text()):
                 start = block.blockNumber()
                 while block.isValid():
                     block = block.next()
-                    if self.pat_enable_lint.match(unicode(block.text())):
+                    if self.pat_enable_lint.match(block.text()):
                         end = block.blockNumber()
                         ignored_range.append((start, end))
                         break
-            elif self.pat_ignore_lint.match(unicode(block.text())):
+            elif self.pat_ignore_lint.match(block.text()):
                 ignored_lines.append(block.blockNumber())
             block = block.next()
 

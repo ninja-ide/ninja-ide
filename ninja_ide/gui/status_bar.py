@@ -180,8 +180,8 @@ class __StatusBar(QStatusBar):
         flags = 0 + s + w
         editor = main_container.MainContainer().get_actual_editor()
         if editor:
-            editor.replace_match(unicode(self._searchWidget._line.text()),
-                unicode(self._replaceWidget._lineReplace.text()), flags)
+            editor.replace_match(self._searchWidget._line.text(),
+                self._replaceWidget._lineReplace.text(), flags)
         if not editor.textCursor().hasSelection():
             self.find()
 
@@ -196,8 +196,8 @@ class __StatusBar(QStatusBar):
         flags = 0 + s + w
         editor = main_container.MainContainer().get_actual_editor()
         if editor:
-            editor.replace_match(unicode(self._searchWidget._line.text()),
-                unicode(self._replaceWidget._lineReplace.text()), flags, True,
+            editor.replace_match(self._searchWidget._line.text(),
+                self._replaceWidget._lineReplace.text(), flags, True,
                 selected)
 
     def find(self):
@@ -208,7 +208,7 @@ class __StatusBar(QStatusBar):
         flags = s + w
         editor = main_container.MainContainer().get_actual_editor()
         if editor:
-            editor.find_match(unicode(self._searchWidget._line.text()), flags)
+            editor.find_match(self._searchWidget._line.text(), flags)
 
     def find_next(self):
         s = 0 if not self._searchWidget._checkSensitive.isChecked() \
@@ -218,8 +218,7 @@ class __StatusBar(QStatusBar):
         flags = 0 + s + w
         editor = main_container.MainContainer().get_actual_editor()
         if editor:
-            editor.find_match(unicode(self._searchWidget._line.text()),
-                flags, True)
+            editor.find_match(self._searchWidget._line.text(), flags, True)
 
     def find_previous(self):
         s = 0 if not self._searchWidget._checkSensitive.isChecked() \
@@ -229,8 +228,7 @@ class __StatusBar(QStatusBar):
         flags = 1 + s + w
         editor = main_container.MainContainer().get_actual_editor()
         if editor:
-            editor.find_match(unicode(self._searchWidget._line.text()),
-                flags, True)
+            editor.find_match(self._searchWidget._line.text(), flags, True)
 
     def showMessage(self, message, timeout):
         self._widgetStatus.hide()
@@ -264,12 +262,12 @@ class SearchWidget(QWidget):
         self._btnFind = QPushButton(QIcon(resources.IMAGES['find']), '')
         self.btnPrevious = QPushButton(
             self.style().standardIcon(QStyle.SP_ArrowLeft), '')
-        self.btnPrevious.setToolTip(self.tr("Press %1").arg(
+        self.btnPrevious.setToolTip(self.tr("Press %s" %
                 resources.get_shortcut("Find-previous").toString(
                     QKeySequence.NativeText)))
         self.btnNext = QPushButton(
             self.style().standardIcon(QStyle.SP_ArrowRight), '')
-        self.btnNext.setToolTip(self.tr("Press %1").arg(
+        self.btnNext.setToolTip(self.tr("Press %s" %
                 resources.get_shortcut("Find-next").toString(
                     QKeySequence.NativeText)))
         hSearch.addWidget(self._btnClose)
@@ -340,7 +338,7 @@ class SearchWidget(QWidget):
             cursor.movePosition(QTextCursor.WordLeft)
             cursor.movePosition(QTextCursor.Start,
                 QTextCursor.KeepAnchor)
-            text = unicode(cursor.selectedText())
+            text = cursor.selectedText()
             self.index = text.count(search) + 1
         else:
             self.index = 0
@@ -422,7 +420,7 @@ class FileSystemOpener(QWidget):
             self._open_file)
 
     def _open_file(self):
-        path = unicode(self.pathLine.text())
+        path = self.pathLine.text()
         main_container.MainContainer().open_file(path)
         self.emit(SIGNAL("requestHide()"))
 

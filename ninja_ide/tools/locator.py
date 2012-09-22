@@ -275,15 +275,13 @@ class LocateThread(QThread):
             stream = QTextStream(file_object)
             line_index = 0
             line = stream.readLine()
-            while not self._cancel:
+            while not self._cancel and not stream.atEnd():
                 if line_index == data[2]:
-                    data[3] = unicode(line)
+                    data[3] = line
                     self.results.append(data)
                     break
                 #take the next line!
                 line = stream.readLine()
-                if line.isNull():
-                    break
                 line_index += 1
         self._search = None
         self._isVariable = None
@@ -519,7 +517,7 @@ class LocateCompleter(QLineEdit):
 
     def set_prefix(self, prefix):
         """Set the prefix for the completer."""
-        self.__prefix = unicode(prefix.toLower())
+        self.__prefix = unicode(prefix.lower())
         self._refresh_filter()
 
     def complete(self):
@@ -675,7 +673,8 @@ class LocateCompleter(QLineEdit):
                 filterOptions[index]) > -1]
 
     def _refresh_filter(self):
-        self.frame.refresh(self.filter())
+        has_text = len(self.text()) != 0
+        self.frame.refresh(self.filter(), has_text)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Space:
@@ -764,9 +763,11 @@ class PopupCompleter(QFrame):
         """Remove all the items of the list (deleted), and reload the help."""
         self.listWidget.clear()
 
-    def refresh(self, model):
+    def refresh(self, model, has_text=True):
         """Refresh the list when the user search for some word."""
         self.listWidget.clear()
+        if not has_text:
+            self.add_help()
         for item in model:
             self.listWidget.addItem(item[0])
             self.listWidget.setItemWidget(item[0], item[1])

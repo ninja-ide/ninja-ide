@@ -113,14 +113,14 @@ class PluginsManagerWidget(QDialog):
         self._reload_plugins()
 
     def show_plugin_info(self, data):
-        plugin_description = unicode(data[2].toString()).replace('\n', '<br>')
+        plugin_description = data[2].toString().replace('\n', '<br>')
         html = HTML_STYLE.format(name=data[0].toString(),
             version=data[1].toString(), description=plugin_description,
             author=data[3].toString(), link=data[4].toString())
         self._txt_data.setHtml(html)
 
     def _open_link(self, url):
-        link = unicode(url.toString())
+        link = url.toString()
         if link.startswith('/plugins/'):
             link = 'http://ninja-ide.org' + link
         webbrowser.open(link)
@@ -274,7 +274,7 @@ class AvailableWidget(QWidget):
         btnInstall = QPushButton('Install')
         btnInstall.setMaximumWidth(100)
         hbox.addWidget(btnInstall)
-        hbox.addWidget(QLabel(self.tr("NINJA needs to be restarted for " \
+        hbox.addWidget(QLabel(self.tr("NINJA needs to be restarted for "
             "changes to take effect.")))
         vbox.addLayout(hbox)
 
