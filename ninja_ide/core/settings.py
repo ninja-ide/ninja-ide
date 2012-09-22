@@ -310,8 +310,8 @@ def load_settings():
     HIDE_TOOLBAR = qsettings.value("window/hide_toolbar", False).toBool()
     TOOLBAR_AREA = qsettings.value(
         'preferences/general/toolbarArea', 1).toInt()[0]
-    LANGUAGE = unicode(qsettings.value(
-        'preferences/interface/language', '').toString())
+    LANGUAGE = qsettings.value(
+        'preferences/interface/language', '').toString()
     SHOW_START_PAGE = qsettings.value(
         'preferences/general/showStartPage', True).toBool()
     CONFIRM_EXIT = qsettings.value('preferences/general/confirmExit',
@@ -320,11 +320,10 @@ def load_settings():
         0).toInt()[0]
     NOTIFY_UPDATES = qsettings.value(
         'preferences/general/notifyUpdates', True).toBool()
-    PYTHON_PATH = unicode(
-        qsettings.value('preferences/execution/pythonPath',
-        'python').toString())
-    NINJA_SKIN = unicode(
-        qsettings.value('preferences/theme/skin', 'Default').toString())
+    PYTHON_PATH = qsettings.value('preferences/execution/pythonPath',
+        'python').toString()
+    NINJA_SKIN = qsettings.value('preferences/theme/skin',
+        'Default').toString()
     profileDict = qsettings.value('ide/profiles', {}).toMap()
     for key in profileDict:
         profile_list = list(profileDict[key].toList())
@@ -336,28 +335,26 @@ def load_settings():
         for file_ in files:
             fileData = file_.toList()
             if len(fileData) > 0:
-                tempFiles.append([unicode(fileData[0].toString()),
+                tempFiles.append([fileData[0].toString(),
                     fileData[1].toInt()[0]])
         files = tempFiles
         projects = []
         if len(profile_list) > 1:
-            projects = [unicode(item.toString())
-                for item in profile_list[1].toList()]
-        PROFILES[unicode(key)] = [files, projects]
+            projects = [item.toString() for item in profile_list[1].toList()]
+        PROFILES[key] = [files, projects]
     toolbar_items = [str(item.toString()) for item in qsettings.value(
         'preferences/interface/toolbar', []).toList()]
     if toolbar_items:
         TOOLBAR_ITEMS = toolbar_items
     #EXECUTION OPTIONS
-    EXECUTION_OPTIONS = unicode(
-        qsettings.value('preferences/execution/executionOptions',
-        '').toString())
-    extensions = [unicode(item.toString()) for item in qsettings.value(
+    EXECUTION_OPTIONS = qsettings.value(
+        'preferences/execution/executionOptions', '').toString()
+    extensions = [item.toString() for item in qsettings.value(
         'preferences/general/supportedExtensions', []).toList()]
     if extensions:
         SUPPORTED_EXTENSIONS = extensions
-    WORKSPACE = unicode(qsettings.value(
-        'preferences/general/workspace', "").toString())
+    WORKSPACE = qsettings.value(
+        'preferences/general/workspace', "").toString()
     #Editor
     SHOW_MINIMAP = qsettings.value(
         'preferences/editor/minimapShow', False).toBool()
@@ -387,8 +384,8 @@ def load_settings():
         'preferences/editor/completeDeclarations', True).toBool()
     HIGHLIGHT_WHOLE_LINE = qsettings.value(
         'preferences/editor/highlightWholeLine', True).toBool()
-    font_family = unicode(qsettings.value(
-        'preferences/editor/fontFamily', "").toString())
+    font_family = qsettings.value(
+        'preferences/editor/fontFamily', "").toString()
     if font_family:
         FONT_FAMILY = font_family
     font_size = qsettings.value('preferences/editor/fontSize',
@@ -442,12 +439,12 @@ def load_settings():
     bookmarks = qsettings.value('preferences/editor/bookmarks', {}).toMap()
     for key in bookmarks:
         if key:
-            BOOKMARKS[unicode(key)] = [
+            BOOKMARKS[key] = [
                 i.toInt()[0] for i in bookmarks[key].toList()]
     breakpoints = qsettings.value('preferences/editor/breakpoints', {}).toMap()
     for key in breakpoints:
         if key:
-            BREAKPOINTS[unicode(key)] = [
+            BREAKPOINTS[key] = [
                 i.toInt()[0] for i in breakpoints[key].toList()]
     # Checkers
     CHECK_FOR_DOCSTRINGS = qsettings.value(

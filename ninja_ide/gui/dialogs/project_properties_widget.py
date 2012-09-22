@@ -82,33 +82,28 @@ class ProjectProperties(QDialog):
         self.connect(self.btnSave, SIGNAL("clicked()"), self.save_properties)
 
     def save_properties(self):
-        if unicode(self.projectData.name.text()).strip() == '':
+        if self.projectData.name.text().strip() == '':
             QMessageBox.critical(self, self.tr("Properties Invalid"),
                 self.tr("The Project must have a name."))
             return
 
         tempName = self._item.name
-        self._item.name = unicode(self.projectData.name.text())
-        self._item.description = unicode(
-            self.projectData.description.toPlainText())
-        self._item.license = unicode(self.projectData.cboLicense.currentText())
-        self._item.mainFile = unicode(self.projectExecution.path.text())
-        self._item.url = unicode(self.projectData.url.text())
-        self._item.projectType = unicode(self.projectData.txtType.text())
-        self._item.pythonPath = unicode(
-            self.projectExecution.txtPythonPath.text())  # FIXME
-        self._item.PYTHONPATH = unicode(
-            self.projectExecution.PYTHONPATH.toPlainText())
-        self._item.preExecScript = unicode(
-            self.projectExecution.txtPreExec.text())
-        self._item.postExecScript = unicode(
-            self.projectExecution.txtPostExec.text())
-        self._item.programParams = unicode(
-            self.projectExecution.txtParams.text())
-        self._item.venv = unicode(self.projectExecution.txtVenvPath.text())
-        extensions = unicode(self.projectData.txtExtensions.text()).split(', ')
+        self._item.name = self.projectData.name.text()
+        self._item.description = self.projectData.description.toPlainText()
+        self._item.license = self.projectData.cboLicense.currentText()
+        self._item.mainFile = self.projectExecution.path.text()
+        self._item.url = self.projectData.url.text()
+        self._item.projectType = self.projectData.txtType.text()
+        # FIXME
+        self._item.pythonPath = self.projectExecution.txtPythonPath.text()
+        self._item.PYTHONPATH = self.projectExecution.PYTHONPATH.toPlainText()
+        self._item.preExecScript = self.projectExecution.txtPreExec.text()
+        self._item.postExecScript = self.projectExecution.txtPostExec.text()
+        self._item.programParams = self.projectExecution.txtParams.text()
+        self._item.venv = self.projectExecution.txtVenvPath.text()
+        extensions = self.projectData.txtExtensions.text().split(', ')
         self._item.extensions = tuple(extensions)
-        related = unicode(self.projectMetadata.txt_projects.toPlainText())
+        related = self.projectMetadata.txt_projects.toPlainText()
         related = [path for path in related.split('\n') if path != '']
         self._item.related_projects = related
         #save project properties
@@ -188,8 +183,7 @@ class ProjectData(QWidget):
         grid.addWidget(self.cboLicense, 4, 1)
 
         self.txtExtensions = QLineEdit()
-        self.txtExtensions.setText(
-            unicode(', '.join(self._parent._item.extensions)))
+        self.txtExtensions.setText(', '.join(self._parent._item.extensions))
         grid.addWidget(QLabel(self.tr("Supported Extensions:")), 5, 0)
         grid.addWidget(self.txtExtensions, 5, 1)
 
@@ -281,13 +275,13 @@ class ProjectExecution(QWidget):
             self.select_post_exec_script)
 
     def _load_python_path(self):
-        path = unicode(QFileDialog.getOpenFileName(
-            self, self.tr("Select Python Path")))
+        path = QFileDialog.getOpenFileName(
+            self, self.tr("Select Python Path"))
         self.txtPythonPath.setText(path)
 
     def _load_python_venv(self):
-        venv = unicode(QFileDialog.getExistingDirectory(
-            self, self.tr("Select Virtualenv Folder")))
+        venv = QFileDialog.getExistingDirectory(
+            self, self.tr("Select Virtualenv Folder"))
         if sys.platform == 'win32':
             venv = os.path.join(venv, 'Scripts', 'python.exe')
         else:
@@ -302,27 +296,27 @@ class ProjectExecution(QWidget):
             self.txtVenvPath.setText(venv)
 
     def select_file(self):
-        fileName = unicode(QFileDialog.getOpenFileName(
+        fileName = QFileDialog.getOpenFileName(
             self, self.tr("Select Main File"),
-                        self._parent._item.path, '(*.py);;(*.*)'))
+                        self._parent._item.path, '(*.py);;(*.*)')
         if fileName != '':
             fileName = file_manager.convert_to_relative(
                 self._parent._item.path, fileName)
             self.path.setText(fileName)
 
     def select_pre_exec_script(self):
-        fileName = unicode(QFileDialog.getOpenFileName(
+        fileName = QFileDialog.getOpenFileName(
             self, self.tr("Select Pre Execution Script File"),
-                        self._parent._item.path, '(*.*)'))
+                        self._parent._item.path, '(*.*)')
         if fileName != '':
             fileName = file_manager.convert_to_relative(
                 self._parent._item.path, fileName)
             self.txtPreExec.setText(fileName)
 
     def select_post_exec_script(self):
-        fileName = unicode(QFileDialog.getOpenFileName(
+        fileName = QFileDialog.getOpenFileName(
             self, self.tr("Select Post Execution Script File"),
-                        self._parent._item.path, '(*.*)'))
+                        self._parent._item.path, '(*.*)')
         if fileName != '':
             fileName = file_manager.convert_to_relative(
                 self._parent._item.path, fileName)

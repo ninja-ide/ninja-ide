@@ -24,9 +24,9 @@ import ninja_ide
 
 usage = "$python ninja-ide.py <option, [option3...option n]>"
 
-epilog = "This program comes with ABSOLUTELY NO WARRANTY." + \
-    "This is free software, and you are welcome to redistribute " + \
-    "it under certain conditions; for details see LICENSE.txt."
+epilog = ("This program comes with ABSOLUTELY NO WARRANTY."
+          "This is free software, and you are welcome to redistribute "
+          "it under certain conditions; for details see LICENSE.txt.")
 
 try:
     import argparse
@@ -144,13 +144,13 @@ def parse():
             else []
         projects_path = opts.project \
             if isinstance(opts.project, list) \
-            else  [opts.project]
+            else [opts.project]
         linenos = opts.lineno \
             if hasattr(opts, 'lineno') \
-            else  [opts.lineno]
+            else [opts.lineno]
         extra_plugins = opts.plugin \
             if isinstance(opts.plugin, list) \
-            else  [opts.plugin]
+            else [opts.plugin]
         log_level = opts.loglevel
         log_file = opts.logfile
 

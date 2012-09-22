@@ -33,7 +33,7 @@ class MenuAbout(QObject):
         QObject.__init__(self)
 
         startPageAction = menuAbout.addAction(self.tr("Show Start Page"))
-        helpAction = menuAbout.addAction(self.tr("Python Help (%1)").arg(
+        helpAction = menuAbout.addAction(self.tr("Python Help (%s)" %
             resources.get_shortcut("Help").toString(QKeySequence.NativeText)))
         menuAbout.addSeparator()
         reportBugAction = menuAbout.addAction(self.tr("Report Bugs!"))

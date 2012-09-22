@@ -117,7 +117,6 @@ class TabWidget(QTabWidget):
             logger.error(msg)
 
     def expand_tab_name(self, title):
-        title = unicode(title)
         if title == 'New Document':
             return
         elif title not in self.titles:
@@ -147,7 +146,7 @@ class TabWidget(QTabWidget):
 
     def tab_was_modified(self, val):
         ed = self.currentWidget()
-        text = unicode(self.tabBar().tabText(self.currentIndex()))
+        text = self.tabBar().tabText(self.currentIndex())
         if type(ed) is editor.Editor and self.notOpening and val and \
            not text.startswith('(*) '):
             ed.textModified = True
@@ -177,7 +176,7 @@ class TabWidget(QTabWidget):
                 editorWidget.just_saved = False
                 return
             val = QMessageBox.question(self, 'The file has changed on disc!',
-                self.tr("%1\nDo you want to reload it?").arg(editorWidget.ID),
+                self.tr("%s\nDo you want to reload it?" % editorWidget.ID),
                 QMessageBox.Yes, QMessageBox.No)
             if val == QMessageBox.Yes:
                 self.emit(SIGNAL("reloadFile(QWidget)"), editorWidget)
@@ -187,23 +186,22 @@ class TabWidget(QTabWidget):
         elif change == DELETED:
                 val = QMessageBox.information(self,
                             'The file has deleted from disc!',
-                self.tr("%1\n").arg(editorWidget.ID),
+                self.tr("%s\n" % editorWidget.ID),
                 QMessageBox.Yes)
         self.question_already_open = False
 
     def _file_changed(self, change_type, file_path):
-
-        file_path = unicode(QDir.toNativeSeparators(file_path))
+        file_path = QDir.toNativeSeparators(file_path)
         editorWidget = self.currentWidget()
-        current_open = unicode(QDir.toNativeSeparators(editorWidget and
-                                                        editorWidget.ID or ""))
+        current_open = QDir.toNativeSeparators(editorWidget and
+                                                    editorWidget.ID or "")
         opened = [path for path, _ in self.get_documents_data()]
 
         if (file_path in opened) and \
             ((not editorWidget) or (current_open != file_path)) and \
             (change_type in (MODIFIED, DELETED)):
 
-            self._change_map.setdefault(unicode(file_path),
+            self._change_map.setdefault(file_path,
                                         []).append(change_type)
         elif not editorWidget:
             return
@@ -223,7 +221,7 @@ class TabWidget(QTabWidget):
 
     def tab_was_saved(self, ed):
         index = self.indexOf(ed)
-        text = unicode(self.tabBar().tabText(index))
+        text = self.tabBar().tabText(index)
         if text.startswith('(*) '):
             text = text[4:]
         self.tabBar().setTabText(index, text)
@@ -245,8 +243,8 @@ class TabWidget(QTabWidget):
     def remove_title(self, index):
         """Looks for the title of the tab at index and removes it from
         self.titles, if it's there.'"""
-        if unicode(self.tabText(index)) in self.titles:
-            self.titles.remove(unicode(self.tabText(index)))
+        if self.tabText(index) in self.titles:
+            self.titles.remove(self.tabText(index))
 
     def update_current_widget(self):
         """Sets the focus to the current widget. If this is the last tab in the
@@ -267,7 +265,7 @@ class TabWidget(QTabWidget):
                 if widget.textModified and not self.follow_mode:
                     fileName = self.tabBar().tabText(self.currentIndex())
                     val = QMessageBox.question(
-                        self, self.tr('The file %1 was not saved').arg(
+                        self, self.tr('The file %s was not saved' %
                             fileName),
                             self.tr("Do you want to save before closing?"),
                             QMessageBox.Yes | QMessageBox.No |
@@ -460,7 +458,7 @@ class TabWidget(QTabWidget):
         for i in range(self.count()):
             widget = self.widget(i)
             if type(widget) is editor.Editor and widget.textModified:
-                files.append(unicode(self.tabText(i)))
+                files.append(self.tabText(i))
         return files
 
     def change_tab(self):

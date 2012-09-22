@@ -28,7 +28,7 @@ import sys
 # PATHS
 ###############################################################################
 
-HOME_PATH = unicode(QDir.toNativeSeparators(QDir.homePath()))
+HOME_PATH = QDir.toNativeSeparators(QDir.homePath())
 
 NINJA_EXECUTABLE = os.path.realpath(sys.argv[0])
 
