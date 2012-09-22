@@ -55,7 +55,7 @@ class Results(QWidget):
             self._open_result)
 
     def _open_result(self, item, col):
-        filename = unicode(item.toolTip(1))
+        filename = item.toolTip(1)
         line = int(item.text(2)) - 1
         main_container.MainContainer().open_file(
                 filename=filename,

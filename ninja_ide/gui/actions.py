@@ -406,16 +406,15 @@ class __Actions(QObject):
             return
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if not editorWidget.ID:
-            name = unicode(QInputDialog.getText(None,
-                self.tr("Add File To Project"), self.tr("File Name:"))[0])
+            name = QInputDialog.getText(None,
+                self.tr("Add File To Project"), self.tr("File Name:"))[0]
             if not name:
                 QMessageBox.information(self, self.tr("Invalid Name"),
                     self.tr("The file name is empty, please enter a name"))
                 return
         else:
             name = file_manager.get_basename(editorWidget.ID)
-        path = file_manager.create_path(
-            unicode(addToProject.pathSelected), name)
+        path = file_manager.create_path(addToProject.pathSelected, name)
         try:
             path = file_manager.store_file_content(
                 path, editorWidget.get_text(), newFile=True)
@@ -449,7 +448,7 @@ class __Actions(QObject):
         """Show the dialog to insert an import from any place in the editor."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
-            text = unicode(editorWidget.get_text())
+            text = editorWidget.get_text()
             froms = re.findall('^from (.*)', text, re.MULTILINE)
             fromSection = list(set([f.split(' import')[0] for f in froms]))
             dialog = from_import_dialog.FromImportDialog(fromSection,
@@ -458,7 +457,7 @@ class __Actions(QObject):
 
     def open_project(self, path=''):
         """Open a Project and load the symbols in the Code Locator."""
-        self.ide.explorer.open_project_folder(unicode(path))
+        self.ide.explorer.open_project_folder(path)
 
     def open_project_properties(self):
         """Open a Project and load the symbols in the Code Locator."""
@@ -472,7 +471,7 @@ class __Actions(QObject):
                 "be associated to this profile.\n"
                 "Profile Name:"))
         if profileInfo[1]:
-            profileName = unicode(profileInfo[0])
+            profileName = profileInfo[0]
             if not profileName or profileName in settings.PROFILES:
                 QMessageBox.information(self, self.tr("Profile Name Invalid"),
                     self.tr("The Profile name is invalid or already exists."))
@@ -509,7 +508,6 @@ class __Actions(QObject):
 
     def close_files_from_project(self, project):
         """Close the files related to this project."""
-        project = unicode(project)
         if project:
             tabMain = self.ide.mainContainer._tabMain
             for tabIndex in reversed(xrange(tabMain.count())):
@@ -529,7 +527,7 @@ class __Actions(QObject):
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             blanks = re.findall('(^\n)|(^(\s+)?#)|(^( +)?($|\n))',
-                unicode(editorWidget.get_text()), re.M)
+                editorWidget.get_text(), re.M)
             resume = self.tr("Lines code: %s\n" %
                 editorWidget.blockCount() - len(blanks))
             resume += self.tr("Blanks and commented lines: %s\n\n" %
@@ -799,7 +797,7 @@ class __Actions(QObject):
             #obtain a symbols handler for this file extension
             symbols_handler = settings.get_symbols_handler(ext)
             if symbols_handler:
-                source = unicode(editorWidget.toPlainText())
+                source = editorWidget.toPlainText()
                 if editorWidget.encoding is not None:
                     source = source.encode(editorWidget.encoding)
                 if ext == 'py':

@@ -114,10 +114,9 @@ class MenuEdit(QObject):
         if editorWidget:
             editorWidget.textCursor().beginEditBlock()
             if editorWidget.textCursor().hasSelection():
-                text = unicode(
-                    editorWidget.textCursor().selectedText()).upper()
+                text = editorWidget.textCursor().selectedText().upper()
             else:
-                text = unicode(editorWidget._text_under_cursor()).upper()
+                text = editorWidget._text_under_cursor().upper()
                 editorWidget.moveCursor(QTextCursor.StartOfWord)
                 editorWidget.moveCursor(QTextCursor.EndOfWord,
                     QTextCursor.KeepAnchor)
@@ -129,10 +128,9 @@ class MenuEdit(QObject):
         if editorWidget:
             editorWidget.textCursor().beginEditBlock()
             if editorWidget.textCursor().hasSelection():
-                text = unicode(
-                    editorWidget.textCursor().selectedText()).lower()
+                text = editorWidget.textCursor().selectedText().lower()
             else:
-                text = unicode(editorWidget._text_under_cursor()).lower()
+                text = editorWidget._text_under_cursor().lower()
                 editorWidget.moveCursor(QTextCursor.StartOfWord)
                 editorWidget.moveCursor(QTextCursor.EndOfWord,
                     QTextCursor.KeepAnchor)
@@ -144,10 +142,9 @@ class MenuEdit(QObject):
         if editorWidget:
             editorWidget.textCursor().beginEditBlock()
             if editorWidget.textCursor().hasSelection():
-                text = unicode(
-                    editorWidget.textCursor().selectedText()).title()
+                text = editorWidget.textCursor().selectedText().title()
             else:
-                text = unicode(editorWidget._text_under_cursor()).title()
+                text = editorWidget._text_under_cursor().title()
                 editorWidget.moveCursor(QTextCursor.StartOfWord)
                 editorWidget.moveCursor(QTextCursor.EndOfWord,
                     QTextCursor.KeepAnchor)

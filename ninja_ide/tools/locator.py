@@ -275,15 +275,13 @@ class LocateThread(QThread):
             stream = QTextStream(file_object)
             line_index = 0
             line = stream.readLine()
-            while not self._cancel:
+            while not self._cancel and not stream.atEnd():
                 if line_index == data[2]:
-                    data[3] = unicode(line)
+                    data[3] = line
                     self.results.append(data)
                     break
                 #take the next line!
                 line = stream.readLine()
-                if line.isNull():
-                    break
                 line_index += 1
         self._search = None
         self._isVariable = None

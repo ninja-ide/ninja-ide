@@ -219,7 +219,7 @@ class LateralPanel(QWidget):
             self.style().standardPixmap(self.style().SP_TrashIcon))
         self.combo.setToolTip(self.tr("Select the item from the Paste "
             "Historial list.\nYou can Copy items into this list with: "
-            "%s\nor Paste them using: %s" % \
+            "%s\nor Paste them using: %s" %
                 (resources.get_shortcut("History-Copy").toString(
                     QKeySequence.NativeText),
                 resources.get_shortcut("History-Paste").toString(
@@ -239,4 +239,4 @@ class LateralPanel(QWidget):
             self.combo.removeItem(self.combo.count() - 1)
 
     def get_paste(self):
-        return unicode(self.combo.currentText())
+        return self.combo.currentText()

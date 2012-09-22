@@ -372,7 +372,7 @@ class AddToProject(QDialog):
     def _select_path(self):
         item = self._tree.currentItem()
         if item:
-            self.pathSelected = unicode(item.toolTip(0))
+            self.pathSelected = item.toolTip(0)
             self.close()
 
     def _load_project(self, folderStructure, folder):
@@ -463,7 +463,7 @@ class ProfilesLoader(QDialog):
         item = self.profileList.currentItem()
         self.contentList.clear()
         if item is not None:
-            key = unicode(item.text())
+            key = item.text()
             files = [self.tr('Files:')] + \
                 [file[0] for file in self._profiles[key][0]]
             projects = [self.tr('Projects:')] + self._profiles[key][1]
@@ -477,7 +477,7 @@ class ProfilesLoader(QDialog):
 
     def save_profile(self):
         if self.profileList.currentItem():
-            profileName = unicode(self.profileList.currentItem().text())
+            profileName = self.profileList.currentItem().text()
             self.save_function(profileName)
             self.ide.show_status_message(self.tr("Profile %1 Updated!" %
                 profileName))
@@ -485,14 +485,14 @@ class ProfilesLoader(QDialog):
 
     def open_profile(self):
         if self.profileList.currentItem():
-            key = unicode(self.profileList.currentItem().text())
+            key = self.profileList.currentItem().text()
             self.load_function(key)
             self.ide.Profile = key
             self.close()
 
     def delete_profile(self):
         if self.profileList.currentItem():
-            key = unicode(self.profileList.currentItem().text())
+            key = self.profileList.currentItem().text()
             self._profiles.pop(key)
             self.profileList.takeItem(self.profileList.currentRow())
             self.contentList.clear()

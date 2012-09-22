@@ -243,8 +243,8 @@ class __ExplorerContainer(QTabWidget):
                     directory = current_project
                 elif editorWidget is not None and editorWidget.ID:
                     directory = file_manager.get_folder(editorWidget.ID)
-            folderName = unicode(QFileDialog.getExistingDirectory(self,
-                self.tr("Open Project Directory"), directory))
+            folderName = QFileDialog.getExistingDirectory(self,
+                self.tr("Open Project Directory"), directory)
         try:
             if not folderName:
                 return

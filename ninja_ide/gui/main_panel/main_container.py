@@ -153,7 +153,7 @@ class __MainContainer(QSplitter):
 
     def dropEvent(self, event):
         file_path = event.mimeData().urls()[0].toLocalFile()
-        self.open_file(unicode(file_path))
+        self.open_file(file_path)
 
     def _navigate_code(self, val, op):
         self.emit(SIGNAL("navigateCode(bool, int)"), val, op)
@@ -170,7 +170,7 @@ class __MainContainer(QSplitter):
 
     def _reopen_last_tab(self, tab, path):
         self.actualTab = tab
-        self.open_file(unicode(path))
+        self.open_file(path)
 
     def _change_actual(self, tabWidget):
         if not self._followMode:
@@ -204,7 +204,7 @@ class __MainContainer(QSplitter):
             self.splitted = False
             for i in xrange(self._tabSecondary.count()):
                 widget = self._tabSecondary.widget(0)
-                name = unicode(self._tabSecondary.tabText(0))
+                name = self._tabSecondary.tabText(0)
                 self._tabMain.add_tab(widget, name)
                 if name in self._tabSecondary.titles:
                     self._tabSecondary.titles.remove(name)
@@ -213,7 +213,7 @@ class __MainContainer(QSplitter):
             self.actualTab = self._tabMain
         elif not self._tabSecondary.isVisible() and not closingFollowMode:
             widget = self.get_actual_widget()
-            name = unicode(self._tabMain.tabText(self._tabMain.currentIndex()))
+            name = self._tabMain.tabText(self._tabMain.currentIndex())
             self._tabSecondary.add_tab(widget, name)
             if name in self._tabMain.titles:
                 self._tabMain.titles.remove(name)
@@ -377,7 +377,6 @@ class __MainContainer(QSplitter):
 
     def open_file(self, filename='', cursorPosition=-1,
                     tabIndex=None, positionIsLineNumber=False, notStart=True):
-        filename = unicode(filename)
         if not filename:
             if settings.WORKSPACE:
                 directory = settings.WORKSPACE
@@ -401,7 +400,6 @@ class __MainContainer(QSplitter):
             return
 
         for filename in fileNames:
-            filename = unicode(filename)
             if file_manager.get_file_extension(filename) in ('jpg', 'png'):
                 self.open_image(filename)
             elif file_manager.get_file_extension(filename).endswith('ui'):
@@ -436,7 +434,7 @@ class __MainContainer(QSplitter):
                 self.add_standalone_watcher(editorWidget.ID, notStart)
 
                 if not editorWidget.has_write_permission():
-                    fileName += unicode(self.tr(" (Read-Only)"))
+                    fileName += self.tr(" (Read-Only)")
                     index = self.actualTab.currentIndex()
                     self.actualTab.setTabText(index, fileName)
             else:
@@ -574,8 +572,8 @@ class __MainContainer(QSplitter):
                 if ext != 'py':
                     filters = '(*.%s);;(*.py);;(*.*)' % ext
             save_folder = self._get_save_folder(editorWidget.ID)
-            fileName = unicode(QFileDialog.getSaveFileName(
-                self._parent, self.tr("Save File"), save_folder, filters))
+            fileName = QFileDialog.getSaveFileName(
+                self._parent, self.tr("Save File"), save_folder, filters)
             if not fileName:
                 return False
 
@@ -720,7 +718,7 @@ class __MainContainer(QSplitter):
         else:
             self._followMode = True
             self.setOrientation(Qt.Horizontal)
-            name = unicode(self._tabMain.tabText(self._tabMain.currentIndex()))
+            name = self._tabMain.tabText(self._tabMain.currentIndex())
             editor2 = editor.create_editor()
             editor2.setDocument(editorWidget.document())
             self._tabSecondary.add_tab(editor2, name)
@@ -760,9 +758,8 @@ class __MainContainer(QSplitter):
                 self.splitted = True
 
         for fileData in files:
-            if file_manager.file_exists(unicode(fileData[0])):
-                self.open_file(unicode(fileData[0]),
-                    fileData[1], notStart=notIDEStart)
+            if file_manager.file_exists(fileData[0]):
+                self.open_file(fileData[0], fileData[1], notStart=notIDEStart)
         self.actualTab = self._tabMain
 
     def check_for_unsaved_tabs(self):

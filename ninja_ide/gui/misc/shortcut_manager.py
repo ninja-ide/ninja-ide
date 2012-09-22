@@ -235,14 +235,14 @@ class ShortcutConfiguration(QWidget):
         if keysequence.isEmpty():
             return True
 
-        keyname = unicode(self.result_widget.currentItem().text(0))
+        keyname = self.result_widget.currentItem().text(0)
         keystr = keysequence
 
         for top_index in xrange(self.result_widget.topLevelItemCount()):
             top_item = self.result_widget.topLevelItem(top_index)
 
-            if unicode(top_item.text(0)) != keyname:
-                itmseq = unicode(top_item.text(1))
+            if top_item.text(0) != keyname:
+                itmseq = top_item.text(1)
                 if keystr == itmseq:
                     val = QMessageBox.warning(self,
                             self.tr('Shortcut is already in use'),

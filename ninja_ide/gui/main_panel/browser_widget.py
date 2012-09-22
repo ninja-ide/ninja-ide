@@ -100,7 +100,7 @@ class BrowserWidget(QWidget, itab_item.ITabItem):
             Qt.Horizontal, policy)
 
     def start_page_operations(self, url):
-        opt = file_manager.get_basename(unicode(url.toString()))
+        opt = file_manager.get_basename(url.toString())
         self.emit(SIGNAL(opt))
 
     def shutdown_pydoc(self):
@@ -156,7 +156,7 @@ class WebPluginList(QListWidget):
                      recent_projects_dict[recent_project_path[0]])
 
     def append_to_list(self, path, content):
-        if file_manager.folder_exists(unicode(path)):
+        if file_manager.folder_exists(path):
             item = QListWidgetItem("")
             widget = recent_project_item.RecentProjectItem(path, content, item)
             self.connect(widget, SIGNAL("clicked(QString)"),
