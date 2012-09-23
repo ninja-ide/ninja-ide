@@ -194,6 +194,14 @@ class __MainContainer(QSplitter):
         else:
             self.show_split(Qt.Vertical)
 
+    def change_tabs_visibility(self):
+        if self._tabMain.tabBar().isVisible():
+            self._tabMain.tabBar().hide()
+            self._tabSecondary.tabBar().hide()
+        else:
+            self._tabMain.tabBar().show()
+            self._tabSecondary.tabBar().show()
+
     def show_split(self, orientation):
         closingFollowMode = self._followMode
         if self._followMode:

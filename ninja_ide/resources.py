@@ -285,6 +285,7 @@ SHORTCUTS = {
     "Add-Bookmark-or-Breakpoint": QKeySequence(Qt.CTRL + Qt.Key_B),
     "change-split-focus": QKeySequence(Qt.CTRL + Qt.Key_Tab),
     "move-tab-to-next-split": QKeySequence(Qt.SHIFT + Qt.Key_F10),
+    "change-tab-visibility": QKeySequence(Qt.SHIFT + Qt.Key_F1),
     "Highlight-Word": QKeySequence(Qt.CTRL + Qt.Key_Down)}
 
 CUSTOM_SHORTCUTS = {}

@@ -188,6 +188,10 @@ class ShortcutConfiguration(QWidget):
                 "Change the keyboard focus between the current splits"),
             "Add-Bookmark-or-Breakpoint": self.tr(
                 "Insert Bookmark/Breakpoint"),
+            "move-tab-to-next-split": self.tr(
+                "Move the current Tab to the next split."),
+            "change-tab-visibility": self.tr(
+                "Show/Hide the Tabs in the Editor Area."),
             "Highlight-Word": self.tr(
                 "Highlight occurrences for word under cursor")}
 
