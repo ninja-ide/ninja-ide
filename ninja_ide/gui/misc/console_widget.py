@@ -243,8 +243,6 @@ class ConsoleWidget(QPlainTextEdit):
             self.moveCursor(QTextCursor.Left)
             self.textCursor().insertText(selection)
         completionPrefix = self._text_under_cursor()
-        if completionPrefix.contains(self.okPrefix):
-            completionPrefix = completionPrefix.remove(self.okPrefix)
         if event.key() == Qt.Key_Period or (event.key() == Qt.Key_Space and
         event.modifiers() == Qt.ControlModifier):
             self.completer.setCompletionPrefix(completionPrefix)
