@@ -150,6 +150,8 @@ class __Actions(QObject):
         self.shortHighlightWord = QShortcut(short("Highlight-Word"), self.ide)
         self.shortChangeSplitFocus = QShortcut(short("change-split-focus"),
             self.ide)
+        self.shortMoveTabSplit = QShortcut(short("move-tab-to-next-split"),
+            self.ide)
 
         #Connect Shortcuts Signals
         self.connect(self.shortNavigateBack, SIGNAL("activated()"),
@@ -262,6 +264,8 @@ class __Actions(QObject):
             self.editor_highlight_word)
         self.connect(self.shortChangeSplitFocus, SIGNAL("activated()"),
             self.ide.mainContainer.change_split_focus)
+        self.connect(self.shortMoveTabSplit, SIGNAL("activated()"),
+            self.move_tab_to_next_split)
 
         key = Qt.Key_1
         for i in xrange(10):
@@ -339,6 +343,11 @@ class __Actions(QObject):
         self.shortAddBookmark.setKey(short("Add-Bookmark-or-Breakpoint"))
         self.shortShowCodeNav.setKey(short("Show-Code-Nav"))
         self.shortShowPasteHistory.setKey(short("Show-Paste-History"))
+        self.shortMoveTabSplit.setKey(short("move-tab-to-next-split"))
+
+    def move_tab_to_next_split(self):
+        self.ide.mainContainer.move_tab_to_next_split(
+            self.ide.mainContainer.actualTab)
 
     def switch_focus(self):
         widget = QApplication.focusWidget()
