@@ -152,6 +152,8 @@ class __Actions(QObject):
             self.ide)
         self.shortMoveTabSplit = QShortcut(short("move-tab-to-next-split"),
             self.ide)
+        self.shortChangeTabVisibility = QShortcut(
+            short("change-tab-visibility"), self.ide)
 
         #Connect Shortcuts Signals
         self.connect(self.shortNavigateBack, SIGNAL("activated()"),
@@ -266,6 +268,8 @@ class __Actions(QObject):
             self.ide.mainContainer.change_split_focus)
         self.connect(self.shortMoveTabSplit, SIGNAL("activated()"),
             self.move_tab_to_next_split)
+        self.connect(self.shortChangeTabVisibility, SIGNAL("activated()"),
+            self.ide.mainContainer.change_tabs_visibility)
 
         key = Qt.Key_1
         for i in xrange(10):
@@ -344,6 +348,7 @@ class __Actions(QObject):
         self.shortShowCodeNav.setKey(short("Show-Code-Nav"))
         self.shortShowPasteHistory.setKey(short("Show-Paste-History"))
         self.shortMoveTabSplit.setKey(short("move-tab-to-next-split"))
+        self.shortChangeTabVisibility.setKey(short("change-tab-visibility"))
 
     def move_tab_to_next_split(self):
         self.ide.mainContainer.move_tab_to_next_split(
