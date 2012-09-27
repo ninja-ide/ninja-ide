@@ -17,7 +17,6 @@
 
 from __future__ import absolute_import
 
-from PyQt4.QtCore import SIGNAL
 from threading import Thread
 import win32con
 import win32file
@@ -252,7 +251,3 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
             each_path = self.watching_paths[each_path]
             each_path.stop()
             each_path.join()
-
-    def _emit_signal_on_change(self, event, path):
-        DEBUG("About to emit the signal")
-        self.emit(SIGNAL("fileChanged(int, QString)"), event, path)
