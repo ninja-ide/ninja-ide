@@ -341,7 +341,7 @@ class Highlighter(QSyntaxHighlighter):
             while index >= 0:
                 # We actually want the index of the nth match
                 index = expression.pos(nth)
-                length = expression.cap(nth).length()
+                length = len(expression.cap(nth))
                 char_format = highlight_errors(char_format, user_data)
 
                 if (self.format(index) != STYLES['string']):
@@ -373,7 +373,7 @@ class Highlighter(QSyntaxHighlighter):
 
             while index >= 0:
                 index = self.selected_word_pattern.pos(0)
-                length = self.selected_word_pattern.cap(0).length()
+                length = len(self.selected_word_pattern.cap(0))
                 char_format = self.format(index)
                 color = QColor()
                 color.setNamedColor(STYLES['selectedWord'])
@@ -388,7 +388,7 @@ class Highlighter(QSyntaxHighlighter):
         index = expression.indexIn(text, 0)
         while index >= 0:
             index = expression.pos(0)
-            length = expression.cap(0).length()
+            length = len(expression.cap(0))
             char_format = STYLES['spaces']
             if settings.HIGHLIGHT_WHOLE_LINE:
                 char_format = highlight_errors(char_format, user_data)
@@ -452,7 +452,7 @@ class Highlighter(QSyntaxHighlighter):
             # No; multi-line string
             else:
                 self.setCurrentBlockState(in_state)
-                length = text.length() - start + add
+                length = len(text) - start + add
 
             st_fmt = self.format(start)
             start_collides = [pos for pos in hls if pos[0] < start < pos[1]]
@@ -485,7 +485,7 @@ class Highlighter(QSyntaxHighlighter):
             commentLength = 0
             if endIndex == -1:
                 self.setCurrentBlockState(1)
-                commentLength = text.length() - startIndex
+                commentLength = len(text) - startIndex
             else:
                 commentLength = endIndex - startIndex + \
                     delimiter_end.matchedLength()
@@ -515,7 +515,7 @@ class HighlightParserThread(QThread):
                 while index >= 0:
                     # We actually want the index of the nth match
                     index = expression.pos(nth)
-                    length = expression.cap(nth).length()
+                    length = len(expression.cap(nth))
 
                     formats.append((index, length, char_format))
                     index = expression.indexIn(text, index + length)
@@ -525,7 +525,7 @@ class HighlightParserThread(QThread):
             index = expression.indexIn(text, 0)
             while index >= 0:
                 index = expression.pos(0)
-                length = expression.cap(0).length()
+                length = len(expression.cap(0))
                 formats.append((index, length, STYLES['spaces']))
                 index = expression.indexIn(text, index + length)
 

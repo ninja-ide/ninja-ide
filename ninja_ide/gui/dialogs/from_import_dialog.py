@@ -54,8 +54,8 @@ class FromImportDialog(QDialog):
             self._add_import)
 
     def _add_import(self):
-        fromItem = unicode(self._lineFrom.text())
-        importItem = unicode(self._lineImport.text())
+        fromItem = self._lineFrom.text()
+        importItem = self._lineImport.text()
         if fromItem in self._fromSection:
             cursor = self._editorWidget.document().find(fromItem)
         elif self._fromSection:

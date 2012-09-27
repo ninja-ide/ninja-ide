@@ -26,7 +26,6 @@ from PyQt4.QtGui import QListWidget
 from PyQt4.QtGui import QListWidgetItem
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QUrl
-from PyQt4.QtCore import QString
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtWebKit import QWebView
@@ -101,7 +100,7 @@ class BrowserWidget(QWidget, itab_item.ITabItem):
             Qt.Horizontal, policy)
 
     def start_page_operations(self, url):
-        opt = file_manager.get_basename(unicode(url.toString()))
+        opt = file_manager.get_basename(url.toString())
         self.emit(SIGNAL(opt))
 
     def shutdown_pydoc(self):
@@ -132,12 +131,12 @@ class WebPluginList(QListWidget):
                   'recentProjects', {}).toMap()
         #Filter for favorites
         for recent_project_path, content in recent_projects_dict.iteritems():
-            if content.toMap()[QString("isFavorite")].toBool():
+            if content.toMap()[u"isFavorite"].toBool():
                 listByFavorites.append((recent_project_path,
-                    content.toMap()[QString("lastopen")].toDateTime()))
+                    content.toMap()[u"lastopen"].toDateTime()))
             else:
                 listNoneFavorites.append((recent_project_path,
-                    content.toMap()[QString("lastopen")].toDateTime()))
+                    content.toMap()[u"lastopen"].toDateTime()))
         if len(listByFavorites) > 1:
             # sort by date favorites
             listByFavorites = sorted(listByFavorites,
@@ -157,10 +156,10 @@ class WebPluginList(QListWidget):
                      recent_projects_dict[recent_project_path[0]])
 
     def append_to_list(self, path, content):
-        if file_manager.folder_exists(unicode(path)):
+        if file_manager.folder_exists(path):
             item = QListWidgetItem("")
             widget = recent_project_item.RecentProjectItem(path, content, item)
-            self.connect(widget, SIGNAL(" clicked (QString)"),
+            self.connect(widget, SIGNAL("clicked(QString)"),
                 self._open_selected)
             self.connect(widget, SIGNAL("favoriteChange(bool)"),
                 self._favorite_changed)

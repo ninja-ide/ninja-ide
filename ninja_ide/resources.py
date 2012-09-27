@@ -28,7 +28,7 @@ import sys
 # PATHS
 ###############################################################################
 
-HOME_PATH = unicode(QDir.toNativeSeparators(QDir.homePath()))
+HOME_PATH = QDir.toNativeSeparators(QDir.homePath())
 
 NINJA_EXECUTABLE = os.path.realpath(sys.argv[0])
 
@@ -284,6 +284,8 @@ SHORTCUTS = {
     "History-Paste": QKeySequence(Qt.CTRL + Qt.ALT + Qt.Key_V),
     "Add-Bookmark-or-Breakpoint": QKeySequence(Qt.CTRL + Qt.Key_B),
     "change-split-focus": QKeySequence(Qt.CTRL + Qt.Key_Tab),
+    "move-tab-to-next-split": QKeySequence(Qt.SHIFT + Qt.Key_F10),
+    "change-tab-visibility": QKeySequence(Qt.SHIFT + Qt.Key_F1),
     "Highlight-Word": QKeySequence(Qt.CTRL + Qt.Key_Down)}
 
 CUSTOM_SHORTCUTS = {}

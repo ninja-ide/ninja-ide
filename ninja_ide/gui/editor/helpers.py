@@ -70,21 +70,19 @@ def remove_trailing_spaces(editorWidget):
     cursor.beginEditBlock()
     block = editorWidget.document().findBlockByLineNumber(0)
     while block.isValid():
-        text = unicode(block.text())
+        text = block.text()
         if text.endswith(' '):
             cursor.setPosition(block.position())
             cursor.select(QTextCursor.LineUnderCursor)
             cursor.insertText(text.rstrip())
         block = block.next()
     cursor.movePosition(QTextCursor.End, QTextCursor.MoveAnchor)
-    if not cursor.block().text().isEmpty():
-        cursor.insertText('\n')
     cursor.endEditBlock()
 
 
 def insert_horizontal_line(editorWidget):
     editorWidget.moveCursor(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
-    text = unicode(editorWidget.textCursor().selection().toPlainText())
+    text = editorWidget.textCursor().selection().toPlainText()
     editorWidget.moveCursor(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
     lang = file_manager.get_file_extension(editorWidget.ID)
     key = settings.EXTENSIONS.get(lang, 'python')
@@ -221,7 +219,7 @@ def move_up(editorWidget):
             editorWidget.setTextCursor(cursor)
         else:
             block_previous = block_actual.previous()
-            tempLine = unicode(block_actual.text())
+            tempLine = block_actual.text()
             cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
             cursor.movePosition(QTextCursor.StartOfLine,
                 QTextCursor.KeepAnchor)
@@ -278,7 +276,7 @@ def move_down(editorWidget):
             editorWidget.setTextCursor(cursor)
         else:
             block_next = block_actual.next()
-            tempLine = unicode(block_actual.text())
+            tempLine = block_actual.text()
             cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
             cursor.movePosition(QTextCursor.StartOfLine,
                 QTextCursor.KeepAnchor)
@@ -393,9 +391,9 @@ def uncomment_single_line(cursor, block_start, block_end, comment_wildcard):
     cursor.beginEditBlock()
     while (block_start != block_end):
         # Find the position of the comment in the line
-        comment_position = unicode(block_start.text()).find(
+        comment_position = block_start.text().find(
             comment_wildcard[0])
-        if unicode(block_start.text()).startswith(
+        if block_start.text().startswith(
            " " * comment_position + comment_wildcard[0]):
             cursor.setPosition(block_start.position() + comment_position)
             cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
@@ -410,18 +408,18 @@ def uncomment_multiple_lines(cursor, block_start, block_end, comment_wildcard):
     #begin Undo feature
     cursor.beginEditBlock()
     #Remove start symbol comment if correspond
-    if unicode(block_start.previous().text()).startswith(
+    if block_start.previous().text().startswith(
         comment_wildcard['open']):
         block_start = block_start.previous()
         delete_lines_selected(cursor, block_start)
-    if unicode(block_start.text()).startswith(comment_wildcard['open']):
+    if block_start.text().startswith(comment_wildcard['open']):
         delete_lines_selected(cursor, block_start)
     #Remove end symbol comment if correspond
-    if unicode(block_end.previous().text()).startswith(
+    if block_end.previous().text().startswith(
         comment_wildcard['close']):
         block_end = block_end.previous()
         delete_lines_selected(cursor, block_end)
-    if unicode(block_end.text()).startswith(comment_wildcard['close']):
+    if block_end.text().startswith(comment_wildcard['close']):
         delete_lines_selected(cursor, block_end)
     cursor.endEditBlock()
 
@@ -467,7 +465,7 @@ def comment_single_line(cursor, block_start, block_end, comment_wildcard):
         cursor.setPosition(block_start.position())
         block_number = block_start.blockNumber()
         cursor.select(QTextCursor.WordUnderCursor)
-        word = unicode(cursor.selectedText())
+        word = cursor.selectedText()
         cursor.movePosition(QTextCursor.StartOfBlock)
         if not word:
             cursor.movePosition(QTextCursor.WordRight)
@@ -502,7 +500,7 @@ def check_for_assistance_completion(editorWidget, line):
     #This will be possible when code completion is working
     global patClass
     if patClass.match(line) and editorWidget.lang == 'python':
-        source = unicode(editorWidget.toPlainText())
+        source = editorWidget.toPlainText()
         source = source.encode(editorWidget.encoding)
         symbols = introspection.obtain_symbols(source)
         clazzName = [name for name in

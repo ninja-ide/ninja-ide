@@ -124,7 +124,7 @@ class SidebarWidget(QWidget):
         return block.isVisible()
 
     def _find_fold_closing(self, block):
-        text = unicode(block.text())
+        text = block.text()
         pat = re.compile('(\s)*#begin-fold:')
         patBrace = re.compile('(.)*{$')
         if pat.match(text):
@@ -136,11 +136,11 @@ class SidebarWidget(QWidget):
         pat = re.compile('^\s*$|^\s*#')
         block = block.next()
         while block.isValid():
-            text2 = unicode(block.text())
+            text2 = block.text()
             if not pat.match(text2):
                 spacesEnd = helpers.get_leading_spaces(text2)
                 if len(spacesEnd) <= len(spaces):
-                    if pat.match(unicode(block.previous().text())):
+                    if pat.match(block.previous().text()):
                         return block.previous().blockNumber()
                     else:
                         return block.blockNumber()
@@ -148,12 +148,12 @@ class SidebarWidget(QWidget):
         return block.previous().blockNumber()
 
     def _find_fold_closing_label(self, block):
-        text = unicode(block.text())
+        text = block.text()
         label = text.split(':')[1]
         block = block.next()
         pat = re.compile('\s*#end-fold:' + label)
         while block.isValid():
-            if pat.match(unicode(block.text())):
+            if pat.match(block.text()):
                 return block.blockNumber() + 1
             block = block.next()
         return block.blockNumber()
@@ -161,8 +161,8 @@ class SidebarWidget(QWidget):
     def _find_fold_closing_brace(self, block):
         block = block.next()
         while block.isValid():
-            openBrace = unicode(block.text()).count('{')
-            closeBrace = unicode(block.text()).count('}') - openBrace
+            openBrace = block.text().count('{')
+            closeBrace = block.text().count('}') - openBrace
             if closeBrace > 0:
                 return block.blockNumber() + 1
             block = block.next()
@@ -231,9 +231,9 @@ class SidebarWidget(QWidget):
             # Draw the line number right justified at the y position of the
             # line. 3 is a magic padding number. drawText(x, y, text).
             if block.isVisible():
-                painter.drawText(self.width() - self.foldArea - \
+                painter.drawText(self.width() - self.foldArea -
                     font_metrics.width(str(line_count)) - 3,
-                    round(position.y()) + font_metrics.ascent() + \
+                    round(position.y()) + font_metrics.ascent() +
                     font_metrics.descent() - 1,
                     str(line_count))
 
@@ -296,7 +296,7 @@ class SidebarWidget(QWidget):
             if position.y() > page_bottom:
                 break
 
-            if pattern.match(unicode(block.text())) and block.isVisible():
+            if pattern.match(block.text()) and block.isVisible():
                 if block.blockNumber() in self._foldedBlocks:
                     painter.drawPixmap(xofs, round(position.y()),
                         self.rightArrowIcon)
