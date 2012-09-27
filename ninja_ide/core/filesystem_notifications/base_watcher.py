@@ -18,6 +18,10 @@ import os
 from PyQt4.QtCore import QObject
 from PyQt4.QtCore import SIGNAL, QThread
 
+from ninja_ide.tools.logger import NinjaLogger
+logger = NinjaLogger('ninja_ide.core.filesystem_notifications.Watcher')
+DEBUG = logger.debug
+
 ADDED = 1
 MODIFIED = 2
 DELETED = 3
@@ -115,4 +119,5 @@ class BaseWatcher(QObject):
             self._single_file_watcher.quit()
 
     def _emit_signal_on_change(self, event, path):
+        DEBUG("About to emit the signal")
         self.emit(SIGNAL("fileChanged(int, QString)"), event, path)
