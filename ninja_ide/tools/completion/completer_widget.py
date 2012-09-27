@@ -182,7 +182,7 @@ class CodeCompletionWidget(QFrame):
         cursor = self._editor.textCursor()
         cursor.movePosition(QTextCursor.StartOfLine,
             QTextCursor.KeepAnchor)
-        selection = unicode(cursor.selectedText())[:-1].split(' ')
+        selection = cursor.selectedText()[:-1].split(' ')
         if len(selection) == 0 or selection[-1] == '' or \
            selection[-1].isdigit():
             result = True
@@ -214,7 +214,7 @@ class CodeCompletionWidget(QFrame):
     def pre_key_insert_completion(self):
         type_ = ord('a')
         current = self.completion_list.currentItem()
-        insert = unicode(current.text())
+        insert = current.text()
         if not insert.endswith(')'):
             type_ = current.type()
         self.insert_completion(insert, type_)
@@ -263,8 +263,8 @@ class CompleterWidget(QCompleter):
             self.insert_completion)
 
     def insert_completion(self, insert):
-        extra = insert.length() - self.completionPrefix().length()
-        self.widget().textCursor().insertText(insert.right(extra))
+        self.widget().textCursor().insertText(
+            insert[len(self.completionPrefix()):])
         self.popup().hide()
 
     def complete(self, cr, results):

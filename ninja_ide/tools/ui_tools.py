@@ -105,10 +105,10 @@ class LoadingItem(QLabel):
     def add_item_to_tree(self, folder, tree, item_type=None, parent=None):
         if item_type is None:
             item = QTreeWidgetItem()
-            item.setText(0, self.tr('       LOADING: "%1"').arg(folder))
+            item.setText(0, self.tr('       LOADING: "%s"' % folder))
         else:
             item = item_type(parent,
-                self.tr('       LOADING: "%1"').arg(folder), folder)
+                self.tr('       LOADING: "%s"' % folder), folder)
         tree.addTopLevelItem(item)
         tree.setItemWidget(item, 0, self)
         return item
@@ -372,7 +372,7 @@ class AddToProject(QDialog):
     def _select_path(self):
         item = self._tree.currentItem()
         if item:
-            self.pathSelected = unicode(item.toolTip(0))
+            self.pathSelected = item.toolTip(0)
             self.close()
 
     def _load_project(self, folderStructure, folder):
@@ -463,7 +463,7 @@ class ProfilesLoader(QDialog):
         item = self.profileList.currentItem()
         self.contentList.clear()
         if item is not None:
-            key = unicode(item.text())
+            key = item.text()
             files = [self.tr('Files:')] + \
                 [file[0] for file in self._profiles[key][0]]
             projects = [self.tr('Projects:')] + self._profiles[key][1]
@@ -477,22 +477,22 @@ class ProfilesLoader(QDialog):
 
     def save_profile(self):
         if self.profileList.currentItem():
-            profileName = unicode(self.profileList.currentItem().text())
+            profileName = self.profileList.currentItem().text()
             self.save_function(profileName)
-            self.ide.show_status_message(self.tr("Profile %1 Updated!").arg(
+            self.ide.show_status_message(self.tr("Profile %s Updated!" %
                 profileName))
             self.load_profile_content()
 
     def open_profile(self):
         if self.profileList.currentItem():
-            key = unicode(self.profileList.currentItem().text())
+            key = self.profileList.currentItem().text()
             self.load_function(key)
             self.ide.Profile = key
             self.close()
 
     def delete_profile(self):
         if self.profileList.currentItem():
-            key = unicode(self.profileList.currentItem().text())
+            key = self.profileList.currentItem().text()
             self._profiles.pop(key)
             self.profileList.takeItem(self.profileList.currentRow())
             self.contentList.clear()
@@ -547,7 +547,7 @@ class LineEditCount(QObject):
         lineEdit.setTextMargins(0, 0, 60, 0)
 
     def update_count(self, index, total, hasSearch=False):
-        message = self.tr("%1 of %2").arg(index).arg(total)
+        message = self.tr("%s of %s" % (index, total))
         self.counter.setText(message)
         self.counter.setStyleSheet("background: none;color: gray;")
         if index == 0 and total == 0 and hasSearch:

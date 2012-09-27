@@ -150,6 +150,10 @@ class __Actions(QObject):
         self.shortHighlightWord = QShortcut(short("Highlight-Word"), self.ide)
         self.shortChangeSplitFocus = QShortcut(short("change-split-focus"),
             self.ide)
+        self.shortMoveTabSplit = QShortcut(short("move-tab-to-next-split"),
+            self.ide)
+        self.shortChangeTabVisibility = QShortcut(
+            short("change-tab-visibility"), self.ide)
 
         #Connect Shortcuts Signals
         self.connect(self.shortNavigateBack, SIGNAL("activated()"),
@@ -253,7 +257,7 @@ class __Actions(QObject):
         self.connect(self.shortAddBookmark, SIGNAL("activated()"),
             self._add_bookmark_breakpoint)
         self.connect(self.shortShowPasteHistory, SIGNAL("activated()"),
-            self.ide.central.lateralDock.combo.showPopup)
+            self.ide.central.lateralPanel.combo.showPopup)
         self.connect(self.shortCopyHistory, SIGNAL("activated()"),
             self._copy_history)
         self.connect(self.shortPasteHistory, SIGNAL("activated()"),
@@ -262,6 +266,10 @@ class __Actions(QObject):
             self.editor_highlight_word)
         self.connect(self.shortChangeSplitFocus, SIGNAL("activated()"),
             self.ide.mainContainer.change_split_focus)
+        self.connect(self.shortMoveTabSplit, SIGNAL("activated()"),
+            self.move_tab_to_next_split)
+        self.connect(self.shortChangeTabVisibility, SIGNAL("activated()"),
+            self.ide.mainContainer.change_tabs_visibility)
 
         key = Qt.Key_1
         for i in xrange(10):
@@ -339,6 +347,12 @@ class __Actions(QObject):
         self.shortAddBookmark.setKey(short("Add-Bookmark-or-Breakpoint"))
         self.shortShowCodeNav.setKey(short("Show-Code-Nav"))
         self.shortShowPasteHistory.setKey(short("Show-Paste-History"))
+        self.shortMoveTabSplit.setKey(short("move-tab-to-next-split"))
+        self.shortChangeTabVisibility.setKey(short("change-tab-visibility"))
+
+    def move_tab_to_next_split(self):
+        self.ide.mainContainer.move_tab_to_next_split(
+            self.ide.mainContainer.actualTab)
 
     def switch_focus(self):
         widget = QApplication.focusWidget()
@@ -371,14 +385,14 @@ class __Actions(QObject):
         if editorWidget and editorWidget.hasFocus():
             cursor = editorWidget.textCursor()
             copy = cursor.selectedText()
-            self.ide.central.lateralDock.add_new_copy(copy)
+            self.ide.central.lateralPanel.add_new_copy(copy)
 
     def _paste_history(self):
         """Paste the text from the copy/paste history."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget and editorWidget.hasFocus():
             cursor = editorWidget.textCursor()
-            paste = self.ide.central.lateralDock.get_paste()
+            paste = self.ide.central.lateralPanel.get_paste()
             cursor.insertText(paste)
 
     def _add_bookmark_breakpoint(self):
@@ -406,16 +420,15 @@ class __Actions(QObject):
             return
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if not editorWidget.ID:
-            name = unicode(QInputDialog.getText(None,
-                self.tr("Add File To Project"), self.tr("File Name:"))[0])
+            name = QInputDialog.getText(None,
+                self.tr("Add File To Project"), self.tr("File Name:"))[0]
             if not name:
                 QMessageBox.information(self, self.tr("Invalid Name"),
                     self.tr("The file name is empty, please enter a name"))
                 return
         else:
             name = file_manager.get_basename(editorWidget.ID)
-        path = file_manager.create_path(
-            unicode(addToProject.pathSelected), name)
+        path = file_manager.create_path(addToProject.pathSelected, name)
         try:
             path = file_manager.store_file_content(
                 path, editorWidget.get_text(), newFile=True)
@@ -449,7 +462,7 @@ class __Actions(QObject):
         """Show the dialog to insert an import from any place in the editor."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
-            text = unicode(editorWidget.get_text())
+            text = editorWidget.get_text()
             froms = re.findall('^from (.*)', text, re.MULTILINE)
             fromSection = list(set([f.split(' import')[0] for f in froms]))
             dialog = from_import_dialog.FromImportDialog(fromSection,
@@ -458,7 +471,7 @@ class __Actions(QObject):
 
     def open_project(self, path=''):
         """Open a Project and load the symbols in the Code Locator."""
-        self.ide.explorer.open_project_folder(unicode(path))
+        self.ide.explorer.open_project_folder(path)
 
     def open_project_properties(self):
         """Open a Project and load the symbols in the Code Locator."""
@@ -472,7 +485,7 @@ class __Actions(QObject):
                 "be associated to this profile.\n"
                 "Profile Name:"))
         if profileInfo[1]:
-            profileName = unicode(profileInfo[0])
+            profileName = profileInfo[0]
             if not profileName or profileName in settings.PROFILES:
                 QMessageBox.information(self, self.tr("Profile Name Invalid"),
                     self.tr("The Profile name is invalid or already exists."))
@@ -509,7 +522,6 @@ class __Actions(QObject):
 
     def close_files_from_project(self, project):
         """Close the files related to this project."""
-        project = unicode(project)
         if project:
             tabMain = self.ide.mainContainer._tabMain
             for tabIndex in reversed(xrange(tabMain.count())):
@@ -529,12 +541,12 @@ class __Actions(QObject):
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             blanks = re.findall('(^\n)|(^(\s+)?#)|(^( +)?($|\n))',
-                unicode(editorWidget.get_text()), re.M)
-            resume = self.tr("Lines code: %1\n").arg(
+                editorWidget.get_text(), re.M)
+            resume = self.tr("Lines code: %s\n" %
                 editorWidget.blockCount() - len(blanks))
-            resume += self.tr("Blanks and commented lines: %1\n\n").arg(
+            resume += self.tr("Blanks and commented lines: %s\n\n" %
                 len(blanks))
-            resume += self.tr("Total lines: %1").arg(editorWidget.blockCount())
+            resume += self.tr("Total lines: %s" % editorWidget.blockCount())
             msgBox = QMessageBox(QMessageBox.Information,
                 self.tr("Summary of lines"), resume,
                 QMessageBox.Ok, editorWidget)
@@ -723,12 +735,12 @@ class __Actions(QObject):
     def hide_all(self):
         """Hide/Show all the containers except the editor."""
         if self.ide.menuBar().isVisible():
-            self.ide.central.lateralDock.hide()
+            self.ide.central.lateralPanel.hide()
             self.ide.misc.hide()
             self.ide.toolbar.hide()
             self.ide.menuBar().hide()
         else:
-            self.ide.central.lateralDock.show()
+            self.ide.central.lateralPanel.show()
             self.ide.toolbar.show()
             self.ide.menuBar().show()
         self.ide._menuView.hideAllAction.setChecked(
@@ -738,7 +750,7 @@ class __Actions(QObject):
         self.ide._menuView.hideEditorAction.setChecked(
             self.ide.central.mainContainer.isVisible())
         self.ide._menuView.hideExplorerAction.setChecked(
-            self.ide.central.lateralDock.isVisible())
+            self.ide.central.lateralPanel.isVisible())
         self.ide._menuView.hideToolbarAction.setChecked(
             self.ide.toolbar.isVisible())
 
@@ -755,7 +767,7 @@ class __Actions(QObject):
     def view_explorer_visibility(self):
         self.ide.central.change_explorer_visibility()
         self.ide._menuView.hideExplorerAction.setChecked(
-            self.ide.central.lateralDock.isVisible())
+            self.ide.central.lateralPanel.isVisible())
 
     def save_project(self):
         """Save all the opened files that belongs to the actual project."""
@@ -799,7 +811,7 @@ class __Actions(QObject):
             #obtain a symbols handler for this file extension
             symbols_handler = settings.get_symbols_handler(ext)
             if symbols_handler:
-                source = unicode(editorWidget.toPlainText())
+                source = editorWidget.toPlainText()
                 if editorWidget.encoding is not None:
                     source = source.encode(editorWidget.encoding)
                 if ext == 'py':

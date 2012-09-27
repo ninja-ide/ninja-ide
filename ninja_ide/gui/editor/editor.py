@@ -354,7 +354,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         """
         Returns all the plain text of the editor
         """
-        return unicode(self.toPlainText())
+        return self.toPlainText()
 
     def get_lines_count(self):
         """
@@ -551,7 +551,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             text = tc.selectedText()
             old_len = len(text)
             max_replace = -1  # all
-            text = unicode(text).replace(wordOld, wordNew, max_replace)
+            text = text.replace(wordOld, wordNew, max_replace)
             new_len = len(text)
             tc.insertText(text)
             offset = new_len - old_len
@@ -615,7 +615,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             return False
         cursor = self.textCursor()
         cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
-        text = unicode(cursor.selection().toPlainText())
+        text = cursor.selection().toPlainText()
         if (len(text) % settings.INDENT == 0) and text.isspace():
             cursor.movePosition(QTextCursor.StartOfLine)
             cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
@@ -657,7 +657,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             begin -= 1
             cursor.setPosition(cursor_position + begin)
         cursor.setPosition(cursor_position - end, QTextCursor.KeepAnchor)
-        selected_text = unicode(cursor.selectedText())
+        selected_text = cursor.selectedText()
         return selected_text
 
     def __quot_completion(self, event):
@@ -733,11 +733,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         """Complete () [] and {} using a mild inteligence to see if corresponds
         and also do some more magic such as complete in classes and functions.
         """
-        brace = unicode(event.text())
+        brace = event.text()
         if brace not in settings.BRACES:
             # Thou shalt not waste cpu cycles if this brace compleion dissabled
             return
-        text = unicode(self.textCursor().block().text())
+        text = self.textCursor().block().text()
         complementary_brace = BRACE_DICT.get(brace)
         token_buffer = []
         _, tokens = self.__tokenize_text(text)
@@ -775,7 +775,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         cursor = self.textCursor()
         cursor.movePosition(QTextCursor.StartOfLine,
             QTextCursor.KeepAnchor)
-        symbol = unicode(event.text())
+        symbol = event.text()
         if symbol in settings.QUOTES:
             pre_context = self.__reverse_select_text_portion_from_offset(0, 3)
             if pre_context == 3 * symbol:
@@ -810,7 +810,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def _text_under_cursor(self):
         tc = self.textCursor()
         tc.select(QTextCursor.WordUnderCursor)
-        word = unicode(tc.selectedText())
+        word = tc.selectedText()
         result = self._patIsWord.findall(word)
         word = result[0] if result else ''
         return word
@@ -879,8 +879,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if event.modifiers() == Qt.ControlModifier:
             cursor.select(QTextCursor.WordUnderCursor)
             cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
-            if cursor.selectedText().endsWith('(') or \
-            cursor.selectedText().endsWith('.'):
+            if cursor.selectedText().endswith('(') or \
+            cursor.selectedText().endswith('.'):
                 cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
                 self.extraSelections = []
                 selection = QTextEdit.ExtraSelection()
@@ -928,11 +928,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             cursor = self.textCursor()
         cursor.select(QTextCursor.WordUnderCursor)
         cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
-        if cursor.selectedText().endsWith('('):
+        if cursor.selectedText().endswith('('):
             cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
             self.emit(SIGNAL("locateFunction(QString, QString, bool)"),
                 cursor.selectedText(), self.ID, False)
-        elif cursor.selectedText().endsWith('.'):
+        elif cursor.selectedText().endswith('.'):
             cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
             self.emit(SIGNAL("locateFunction(QString, QString, bool)"),
                 cursor.selectedText(), self.ID, True)
@@ -946,9 +946,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             cursor.setPosition(cursor2.position(), QTextCursor.KeepAnchor)
         else:
             cursor.setPosition(posEnd, QTextCursor.KeepAnchor)
-        text = cursor.selection().toPlainText()
-
-        return unicode(text)
+        return cursor.selection().toPlainText()
 
     def __get_abs_position_on_text(self, text, position):
         """tokens give us position of char in a given line, we need
@@ -1043,7 +1041,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             return
         cursor.movePosition(QTextCursor.PreviousCharacter,
                              QTextCursor.KeepAnchor)
-        text = unicode(cursor.selectedText())
+        text = cursor.selectedText()
         pos1 = cursor.position()
         if text in (")", "]", "}"):
             pos2 = self._match_braces(pos1, text, forward=False)

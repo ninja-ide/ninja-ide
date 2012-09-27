@@ -185,7 +185,7 @@ class __IDE(QMainWindow):
     def _process_connection(self):
         connection = self.s_listener.nextPendingConnection()
         connection.waitForReadyRead()
-        data = unicode(connection.readAll())
+        data = connection.readAll()
         connection.close()
         if data:
             files, projects = data.split(ipc.project_delimiter, 1)
@@ -274,7 +274,7 @@ class __IDE(QMainWindow):
         centralWidget.insert_bottom_container(self.misc)
         self.connect(self.mainContainer,
             SIGNAL("cursorPositionChange(int, int)"),
-            self.central.lateralDock.update_line_col)
+            self.central.lateralPanel.update_line_col)
         # TODO: Change current symbol on move
         #self.connect(self.mainContainer,
             #SIGNAL("cursorPositionChange(int, int)"),
@@ -331,7 +331,7 @@ class __IDE(QMainWindow):
 
     def change_window_title(self, title):
         if self.profile is None:
-            self.setWindowTitle('NINJA-IDE - %s' % title)
+            self.setWindowTitle('NINJA-IDE (EXPERIMENTAL) - %s' % title)
         else:
             self.setWindowTitle('NINJA-IDE (PROFILE: %s) - %s' % (
                 self.profile, title))
@@ -415,7 +415,7 @@ class __IDE(QMainWindow):
             txt = '\n'.join(unsaved_files)
             val = QMessageBox.question(self,
                 self.tr("Some changes were not saved"),
-                self.tr("%1\n\nDo you want to exit anyway?").arg(txt),
+                self.tr("%s\n\nDo you want to exit anyway?" % txt),
                 QMessageBox.Yes, QMessageBox.No)
             if val == QMessageBox.No:
                 event.ignore()
@@ -481,15 +481,15 @@ def start(filenames=None, projects_path=None,
     #Translator
     qsettings = QSettings()
     language = QLocale.system().language()
-    lang = unicode(qsettings.value(
-        'preferences/interface/language', language).toString()) + '.qm'
-    lang_path = file_manager.create_path(resources.LANGS, unicode(lang))
+    lang = qsettings.value(
+        'preferences/interface/language', language).toString() + '.qm'
+    lang_path = file_manager.create_path(resources.LANGS, lang)
     if file_manager.file_exists(lang_path):
         settings.LANGUAGE = lang_path
     elif file_manager.file_exists(file_manager.create_path(
-      resources.LANGS_DOWNLOAD, unicode(lang))):
+      resources.LANGS_DOWNLOAD, lang)):
         settings.LANGUAGE = file_manager.create_path(
-            resources.LANGS_DOWNLOAD, unicode(lang))
+            resources.LANGS_DOWNLOAD, lang)
     translator = QTranslator()
     if settings.LANGUAGE:
         translator.load(settings.LANGUAGE)
@@ -527,8 +527,8 @@ def start(filenames=None, projects_path=None,
     #Loading Schemes
     splash.showMessage("Loading Schemes",
         Qt.AlignRight | Qt.AlignTop, Qt.black)
-    scheme = unicode(qsettings.value('preferences/editor/scheme',
-        "default").toString())
+    scheme = qsettings.value('preferences/editor/scheme',
+        "default").toString()
     if scheme != 'default':
         scheme = file_manager.create_path(resources.EDITOR_SKINS,
             scheme + '.color')
@@ -552,23 +552,20 @@ def start(filenames=None, projects_path=None,
     tempFiles = []
     for file_ in mainFiles:
         fileData = file_.toList()
-        tempFiles.append((unicode(fileData[0].toString()),
-            fileData[1].toInt()[0]))
+        tempFiles.append((fileData[0].toString(), fileData[1].toInt()[0]))
     mainFiles = tempFiles
     #Files in Secondary Tab
     secondaryFiles = qsettings.value('openFiles/secondaryTab', []).toList()
     tempFiles = []
     for file_ in secondaryFiles:
         fileData = file_.toList()
-        tempFiles.append((unicode(fileData[0].toString()),
-            fileData[1].toInt()[0]))
+        tempFiles.append((fileData[0].toString(), fileData[1].toInt()[0]))
     secondaryFiles = tempFiles
     #Current File
-    current_file = unicode(
-        qsettings.value('openFiles/currentFile', '').toString())
+    current_file = qsettings.value('openFiles/currentFile', '').toString()
     #Projects
     projects = qsettings.value('openFiles/projects', []).toList()
-    projects = [unicode(project.toString()) for project in projects]
+    projects = [project.toString() for project in projects]
     #Include files received from console args
     file_with_nro = map(lambda f: (f[0], f[1] - 1), zip(filenames, linenos))
     file_without_nro = map(lambda f: (f, 0), filenames[len(linenos):])

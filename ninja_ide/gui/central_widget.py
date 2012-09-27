@@ -27,7 +27,6 @@ from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QSplitter
 from PyQt4.QtGui import QScrollBar
-from PyQt4.QtGui import QDockWidget
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QSettings
@@ -64,7 +63,7 @@ class __CentralWidget(QWidget):
         #This variables are used to save the splitter sizes before hide
         self._splitterMainSizes = None
         self._splitterAreaSizes = None
-        self.lateralDock = None
+        self.lateralPanel = None
 
         hbox = QHBoxLayout(self)
         hbox.setContentsMargins(0, 0, 0, 0)
@@ -90,10 +89,8 @@ class __CentralWidget(QWidget):
         self._splitterMain.insertWidget(0, container)
 
     def insert_lateral_container(self, container):
-        self.lateralDock = LateralDock(container)
-        self.lateralDock.setAllowedAreas(Qt.LeftDockWidgetArea |
-            Qt.RightDockWidgetArea)
-        self.parent.addDockWidget(Qt.RightDockWidgetArea, self.lateralDock)
+        self.lateralPanel = LateralPanel(container)
+        self._splitterArea.insertWidget(0, self.lateralPanel)
 
     def insert_bottom_container(self, container):
         self.misc = container
@@ -147,11 +144,11 @@ class __CentralWidget(QWidget):
             self.mainContainer.show()
 
     def change_explorer_visibility(self):
-        if self.lateralDock.isVisible():
+        if self.lateralPanel.isVisible():
             self._splitterAreaSizes = self._splitterArea.sizes()
-            self.lateralDock.hide()
+            self.lateralPanel.hide()
         else:
-            self.lateralDock.show()
+            self.lateralPanel.show()
 
     def splitter_central_rotate(self):
         w1, w2 = self._splitterArea.widget(0), self._splitterArea.widget(1)
@@ -177,7 +174,7 @@ class __CentralWidget(QWidget):
             self._splitterMain.setOrientation(Qt.Horizontal)
 
     def get_area_sizes(self):
-        if self.lateralDock.isVisible():
+        if self.lateralPanel.isVisible():
             self._splitterAreaSizes = self._splitterArea.sizes()
         return self._splitterAreaSizes
 
@@ -205,31 +202,6 @@ class __CentralWidget(QWidget):
         s2.setValue(val + diff)
 
 
-class LateralDock(QDockWidget):
-
-    def __init__(self, explorer):
-        QDockWidget.__init__(self)
-        self._lateralPanel = LateralPanel(explorer)
-        self.setWidget(self._lateralPanel)
-
-    @property
-    def combo(self):
-        return self._lateralPanel.combo
-
-    def update_line_col(self, line, col):
-        self._lateralPanel.labelCursorPosition.setText(self.tr(
-            self._lateralPanel.labelText).arg(line).arg(col))
-
-    def add_new_copy(self, copy):
-        self.combo.insertItem(0, copy)
-        self.combo.setCurrentIndex(0)
-        if self.combo.count() > settings.COPY_HISTORY_BUFFER:
-            self.combo.removeItem(self.combo.count() - 1)
-
-    def get_paste(self):
-        return unicode(self.combo.currentText())
-
-
 class LateralPanel(QWidget):
 
     def __init__(self, explorer):
@@ -239,20 +211,32 @@ class LateralPanel(QWidget):
         vbox.addWidget(explorer)
         hbox = QHBoxLayout()
         hbox.setContentsMargins(0, 0, 0, 0)
-        self.labelText = "Ln: %1, Col: %2"
-        self.labelCursorPosition = QLabel(self.tr(self.labelText).arg(
-            0).arg(0))
+        self.labelText = "Ln: %s, Col: %s"
+        self.labelCursorPosition = QLabel(self.tr(self.labelText % (0, 0)))
         hbox.addWidget(self.labelCursorPosition)
         self.combo = QComboBox()
         ui_tools.ComboBoxButton(self.combo, self.combo.clear,
             self.style().standardPixmap(self.style().SP_TrashIcon))
         self.combo.setToolTip(self.tr("Select the item from the Paste "
             "Historial list.\nYou can Copy items into this list with: "
-            "%1\nor Paste them using: %2").arg(
-                resources.get_shortcut("History-Copy").toString(
-                    QKeySequence.NativeText)).arg(
+            "%s\nor Paste them using: %s" %
+                (resources.get_shortcut("History-Copy").toString(
+                    QKeySequence.NativeText),
                 resources.get_shortcut("History-Paste").toString(
-                    QKeySequence.NativeText)))
+                    QKeySequence.NativeText))))
         self.combo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         hbox.addWidget(self.combo)
         vbox.addLayout(hbox)
+
+    def update_line_col(self, line, col):
+        self.labelCursorPosition.setText(self.tr(
+            self.labelText % (line, col)))
+
+    def add_new_copy(self, copy):
+        self.combo.insertItem(0, copy)
+        self.combo.setCurrentIndex(0)
+        if self.combo.count() > settings.COPY_HISTORY_BUFFER:
+            self.combo.removeItem(self.combo.count() - 1)
+
+    def get_paste(self):
+        return self.combo.currentText()

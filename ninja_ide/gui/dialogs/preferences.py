@@ -230,13 +230,12 @@ class GeneralConfiguration(QWidget):
             SIGNAL('clicked()'), self._reset_preferences)
 
     def _load_workspace(self):
-        path = unicode(QFileDialog.getExistingDirectory(
-            self, self.tr("Select Workspace")))
+        path = QFileDialog.getExistingDirectory(
+            self, self.tr("Select Workspace"))
         self._txtWorkspace.setText(path)
 
     def _load_python_path(self):
-        path = unicode(QFileDialog.getOpenFileName(
-            self, self.tr("Select Python Path")))
+        path = QFileDialog.getOpenFileName(self, self.tr("Select Python Path"))
         if path:
             self._txtPythonPath.setText(path)
 
@@ -255,7 +254,7 @@ class GeneralConfiguration(QWidget):
         qsettings.setValue('confirmExit', self._checkConfirmExit.isChecked())
         settings.CONFIRM_EXIT = self._checkConfirmExit.isChecked()
         qsettings.setValue('workspace', self._txtWorkspace.text())
-        settings.WORKSPACE = unicode(self._txtWorkspace.text())
+        settings.WORKSPACE = self._txtWorkspace.text()
         extensions = str(self._txtExtensions.text()).split(',')
         extensions = [e.strip() for e in extensions]
         qsettings.setValue('supportedExtensions', extensions)
@@ -387,8 +386,7 @@ class GeneralExecution(QWidget):
             SIGNAL("clicked()"), self._load_python_path)
 
     def _load_python_path(self):
-        path = unicode(QFileDialog.getOpenFileName(
-            self, self.tr("Select Python Path")))
+        path = QFileDialog.getOpenFileName(self, self.tr("Select Python Path"))
         if path:
             self._txtPythonPath.setText(path)
 
@@ -397,7 +395,7 @@ class GeneralExecution(QWidget):
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('execution')
         qsettings.setValue('pythonPath', self._txtPythonPath.text())
-        settings.PYTHON_PATH = unicode(self._txtPythonPath.text())
+        settings.PYTHON_PATH = self._txtPythonPath.text()
         options = ''
         if self.check_B.isChecked():
             options += ' -B'
@@ -410,7 +408,7 @@ class GeneralExecution(QWidget):
         if self.check_OO.isChecked():
             options += ' -OO'
         if self.check_Q.isChecked():
-            options += ' -Q' + unicode(self.comboDivision.currentText())
+            options += ' -Q' + self.comboDivision.currentText()
         if self.check_s.isChecked():
             options += ' -s'
         if self.check_S.isChecked():
@@ -422,7 +420,7 @@ class GeneralExecution(QWidget):
         if self.check_v.isChecked():
             options += ' -v'
         if self.check_W.isChecked():
-            options += ' -W' + unicode(self.comboWarning.currentText())
+            options += ' -W' + self.comboWarning.currentText()
         if self.check_x.isChecked():
             options += ' -x'
         if self.check_3.isChecked():
@@ -682,7 +680,7 @@ class InterfaceTab(QWidget):
 
     def save(self):
         settings.TOOLBAR_ITEMS = self.toolbar_settings
-        lang = unicode(self._comboLang.currentText())
+        lang = self._comboLang.currentText()
         qsettings = QSettings()
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('interface')
@@ -720,7 +718,7 @@ class InterfaceTab(QWidget):
         qsettings.setValue('uiLayout', uiLayout)
         qsettings.setValue('toolbar', settings.TOOLBAR_ITEMS)
         qsettings.setValue('language', lang)
-        lang = unicode(lang + '.qm')
+        lang = lang + '.qm'
         settings.LANGUAGE = os.path.join(resources.LANGS, lang)
         qsettings.endGroup()
         qsettings.endGroup()
@@ -868,7 +866,7 @@ class EditorGeneral(QWidget):
             editorWidget._sidebarWidget.repaint()
 
     def _preview_style(self):
-        scheme = unicode(self._listScheme.currentItem().text())
+        scheme = self._listScheme.currentItem().text()
         editorWidget = main_container.MainContainer().get_actual_editor()
         if editorWidget is not None:
             resources.CUSTOM_SCHEME = self._schemes.get(scheme,
@@ -891,7 +889,7 @@ class EditorGeneral(QWidget):
         if (font.isEmpty()):
             font = QFont(settings.FONT_FAMILY, settings.FONT_SIZE)
         else:
-            listFont = unicode(font).split(',')
+            listFont = font.split(',')
             font = QFont(listFont[0].strip(), int(listFont[1].strip()))
         return font
 
@@ -915,13 +913,13 @@ class EditorGeneral(QWidget):
         qsettings.setValue('minimapMaxOpacity', settings.MINIMAP_MAX_OPACITY)
         qsettings.setValue('minimapMinOpacity', settings.MINIMAP_MIN_OPACITY)
         qsettings.setValue('minimapSizeProportion', settings.SIZE_PROPORTION)
-        fontText = unicode(self._btnEditorFont.text().remove(' '))
+        fontText = self._btnEditorFont.text().remove(' ')
         settings.FONT_FAMILY = fontText.split(',')[0]
         settings.FONT_SIZE = int(fontText.split(',')[1])
         qsettings.setValue('fontFamily', settings.FONT_FAMILY)
         qsettings.setValue('fontSize', settings.FONT_SIZE)
         editorWidget = main_container.MainContainer().get_actual_editor()
-        scheme = unicode(self._listScheme.currentItem().text())
+        scheme = self._listScheme.currentItem().text()
         self.original_style = resources.CUSTOM_SCHEME
         if editorWidget is not None:
             editorWidget.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
@@ -1118,7 +1116,7 @@ class EditorCompletion(QWidget):
         self._checkDoubleQuotes.setChecked('"' in settings.QUOTES)
         self._checkCompleteDeclarations = QCheckBox(
             self.tr("Complete Declarations\n"
-            "(execute the opposite action with: %1).").arg(
+            "(execute the opposite action with: %s)." %
                 resources.get_shortcut("Complete-Declarations").toString(
                     QKeySequence.NativeText)))
         self._checkCompleteDeclarations.setChecked(
@@ -1604,7 +1602,7 @@ class EditorSchemeDesigner(QWidget):
     def showEvent(self, event):
         super(EditorSchemeDesigner, self).showEvent(event)
         schemes = self._parent._editorGeneral._schemes
-        scheme = unicode(self._parent._editorGeneral.current_scheme)
+        scheme = self._parent._editorGeneral.current_scheme
         resources.CUSTOM_SCHEME = schemes.get(scheme, resources.COLOR_SCHEME)
         editorWidget = main_container.MainContainer().get_actual_editor()
         if editorWidget is not None:
@@ -1619,7 +1617,7 @@ class EditorSchemeDesigner(QWidget):
         pass
 
     def save_scheme(self):
-        name = unicode(self.line_name.text()).strip()
+        name = self.line_name.text().strip()
         fileName = file_manager.create_path(
             resources.EDITOR_SKINS, name) + '.color'
         answer = True
@@ -1798,7 +1796,7 @@ class ThemeDesigner(QWidget):
             file_name = "%s.qss" % self.line_name.text()
             file_name = file_manager.create_path(
                 resources.NINJA_THEME_DOWNLOAD, file_name)
-            content = unicode(self.edit_qss.toPlainText())
+            content = self.edit_qss.toPlainText()
             file_manager.store_file_content(file_name, content, newFile=True)
             QMessageBox.information(self, self.tr("Style Sheet Saved"),
                 self.tr("Theme saved at: '%s'." % file_name))

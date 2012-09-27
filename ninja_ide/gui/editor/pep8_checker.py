@@ -59,8 +59,8 @@ class Pep8Checker(QThread):
                     startPos = tempData[i].find('.%s:' % file_ext) + offset
                     endPos = tempData[i].find(':', startPos)
                     lineno = int(tempData[i][startPos:endPos]) - 1
-                    error = unicode(tempData[i][tempData[i].find(
-                        ':', endPos + 1) + 2:])
+                    error = tempData[i][tempData[i].find(
+                        ':', endPos + 1) + 2:]
                     line = u'\n'.join(
                         [error, tempData[i + 1], tempData[i + 2]])
                 except:

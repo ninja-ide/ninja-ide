@@ -32,7 +32,6 @@ from PyQt4.QtGui import QMessageBox
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QEvent
-from PyQt4.QtCore import QString
 from PyQt4.QtCore import QSettings
 
 from ninja_ide import resources
@@ -117,7 +116,7 @@ class ShortcutDialog(QDialog):
         if evt.modifiers() & Qt.MetaModifier:
             self.keys += Qt.META
         #set the keys
-        self.set_shortcut(QString(QKeySequence(self.keys)))
+        self.set_shortcut(QKeySequence(self.keys))
 
 
 class ShortcutConfiguration(QWidget):
@@ -189,6 +188,10 @@ class ShortcutConfiguration(QWidget):
                 "Change the keyboard focus between the current splits"),
             "Add-Bookmark-or-Breakpoint": self.tr(
                 "Insert Bookmark/Breakpoint"),
+            "move-tab-to-next-split": self.tr(
+                "Move the current Tab to the next split."),
+            "change-tab-visibility": self.tr(
+                "Show/Hide the Tabs in the Editor Area."),
             "Highlight-Word": self.tr(
                 "Highlight occurrences for word under cursor")}
 
@@ -227,7 +230,7 @@ class ShortcutConfiguration(QWidget):
         Validate and set a new shortcut
         """
         if self.__validate_shortcut(keysequence):
-            self.result_widget.currentItem().setText(1, QString(keysequence))
+            self.result_widget.currentItem().setText(1, keysequence)
 
     def __validate_shortcut(self, keysequence):
         """
@@ -236,14 +239,14 @@ class ShortcutConfiguration(QWidget):
         if keysequence.isEmpty():
             return True
 
-        keyname = unicode(self.result_widget.currentItem().text(0))
-        keystr = unicode(QString(keysequence))
+        keyname = self.result_widget.currentItem().text(0)
+        keystr = keysequence
 
         for top_index in xrange(self.result_widget.topLevelItemCount()):
             top_item = self.result_widget.topLevelItem(top_index)
 
-            if unicode(top_item.text(0)) != keyname:
-                itmseq = unicode(top_item.text(1))
+            if top_item.text(0) != keyname:
+                itmseq = top_item.text(1)
                 if keystr == itmseq:
                     val = QMessageBox.warning(self,
                             self.tr('Shortcut is already in use'),
@@ -266,7 +269,7 @@ class ShortcutConfiguration(QWidget):
         if item.childCount():
             return
 
-        self.shortcut_dialog.set_shortcut(QString(QKeySequence(item.text(1))))
+        self.shortcut_dialog.set_shortcut(QKeySequence(item.text(1)))
         self.shortcut_dialog.exec_()
 
     def save(self):
