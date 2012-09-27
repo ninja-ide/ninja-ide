@@ -19,7 +19,7 @@ from __future__ import absolute_import
 
 import os
 
-from PyQt4.QtCore import SIGNAL, QThread
+from PyQt4.QtCore import QThread
 from pyinotify import ProcessEvent, IN_CREATE, IN_DELETE, IN_DELETE_SELF, \
                         IN_MODIFY, WatchManager, Notifier, ExcludeFilter
 
@@ -137,6 +137,3 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
             notifier = self.watching_paths[each_path]
             notifier.keep_running = False
             notifier.quit()
-
-    def _emit_signal_on_change(self, event, path):
-        self.emit(SIGNAL("fileChanged(int, QString)"), event, path)

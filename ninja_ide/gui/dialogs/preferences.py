@@ -913,7 +913,7 @@ class EditorGeneral(QWidget):
         qsettings.setValue('minimapMaxOpacity', settings.MINIMAP_MAX_OPACITY)
         qsettings.setValue('minimapMinOpacity', settings.MINIMAP_MIN_OPACITY)
         qsettings.setValue('minimapSizeProportion', settings.SIZE_PROPORTION)
-        fontText = self._btnEditorFont.text().remove(' ')
+        fontText = self._btnEditorFont.text().replace(' ', '')
         settings.FONT_FAMILY = fontText.split(',')[0]
         settings.FONT_SIZE = int(fontText.split(',')[1])
         qsettings.setValue('fontFamily', settings.FONT_FAMILY)

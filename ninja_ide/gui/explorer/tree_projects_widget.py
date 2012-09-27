@@ -36,6 +36,7 @@ from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QStyle
 from PyQt4.QtGui import QCursor
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import QTimer
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QUrl
 from PyQt4.QtGui import QDesktopServices
@@ -96,6 +97,8 @@ class TreeProjectsWidget(QTreeWidget):
         self._thread_execution = {}
         self.__enableCloseNotification = True
         self._fileWatcher = NinjaFileSystemWatcher
+        self._refresh_projects_queue = []
+        self._timer_running = False
 
         self.header().setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.header().setResizeMode(0, QHeaderView.ResizeToContents)
@@ -323,6 +326,13 @@ class TreeProjectsWidget(QTreeWidget):
         proj = project_properties_widget.ProjectProperties(item, self)
         proj.show()
 
+    def _timeout(self):
+        projects = set(self._refresh_projects_queue)
+        self._refresh_projects_queue = []
+        self._timer_running = False
+        for prefresh in projects:
+            self._refresh_project(prefresh)
+
     def _refresh_project_by_path(self, event, folder):
         if event not in (DELETED, ADDED, REMOVE, RENAME):
             return
@@ -333,8 +343,12 @@ class TreeProjectsWidget(QTreeWidget):
             if file_manager.belongs_to_folder(p_path, folder) and \
                file_manager.is_supported_extension(folder,
                    each_project.extensions) and folder[:1] != '.':
-                self._refresh_project(each_project)
+                self._refresh_projects_queue.append(each_project)
                 break
+        if not self._timer_running:
+            self._timeout()
+            QTimer.singleShot(3000, self._timeout)
+            self._timer_running = True
 
     def _refresh_project(self, item=None):
         if item is None:
