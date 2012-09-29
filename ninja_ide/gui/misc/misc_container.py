@@ -20,8 +20,12 @@ from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QToolBar
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QIcon
+from PyQt4.QtGui import QStyle
 from PyQt4.QtGui import QStackedWidget
+from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QVBoxLayout
+from PyQt4.QtGui import QSpacerItem
+from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtWebKit import QWebPage
 
@@ -57,7 +61,9 @@ class __MiscContainer(QWidget):
         vbox.setSpacing(0)
 
         self.__toolbar = QToolBar()
-        vbox.addWidget(self.__toolbar)
+        self.__toolbar.setObjectName('custom')
+        hbox = QHBoxLayout()
+        vbox.addLayout(hbox)
 
         self.stack = StackedWidget()
         vbox.addWidget(self.stack)
@@ -87,10 +93,19 @@ class __MiscContainer(QWidget):
         self._btnWeb.setToolTip(self.tr("Web Preview"))
         self._btnFind = QPushButton(QIcon(resources.IMAGES['find']), '')
         self._btnFind.setToolTip(self.tr("Find in Files"))
+        #Toolbar
+        hbox.addWidget(self.__toolbar)
         self.__toolbar.addWidget(self._btnConsole)
         self.__toolbar.addWidget(self._btnRun)
         self.__toolbar.addWidget(self._btnWeb)
         self.__toolbar.addWidget(self._btnFind)
+        self.__toolbar.addSeparator()
+        hbox.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
+        btn_close = QPushButton(
+            self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
+        btn_close.setObjectName('navigation_button')
+        btn_close.setToolTip(self.tr('F4: Show/Hide'))
+        hbox.addWidget(btn_close)
 
         self.connect(self._btnConsole, SIGNAL("clicked()"),
             lambda: self._item_changed(0))
@@ -100,6 +115,7 @@ class __MiscContainer(QWidget):
             lambda: self._item_changed(2))
         self.connect(self._btnFind, SIGNAL("clicked()"),
             lambda: self._item_changed(3))
+        self.connect(btn_close, SIGNAL('clicked()'), self.hide)
 
     def gain_focus(self):
         self._console.setFocus()

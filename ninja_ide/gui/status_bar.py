@@ -25,7 +25,6 @@ from PyQt4.QtGui import QCompleter
 from PyQt4.QtGui import QFileSystemModel
 from PyQt4.QtGui import QTextDocument
 from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QShortcut
 from PyQt4.QtGui import QKeySequence
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
@@ -84,8 +83,6 @@ class __StatusBar(QStatusBar):
 
         self.addWidget(self._widgetStatus)
 
-        self._shortEsc = QShortcut(QKeySequence(Qt.Key_Escape), self)
-
         self.connect(self, SIGNAL("messageChanged(QString)"), self.message_end)
         self.connect(self._replaceWidget._btnCloseReplace, SIGNAL("clicked()"),
             lambda: self._replaceWidget.setVisible(False))
@@ -95,7 +92,6 @@ class __StatusBar(QStatusBar):
             self.replace_all)
         self.connect(self._replaceWidget._btnReplaceSelection,
             SIGNAL("clicked()"), self.replace_selected)
-        self.connect(self._shortEsc, SIGNAL("activated()"), self.hide_status)
         self.connect(self._fileSystemOpener.btnClose, SIGNAL("clicked()"),
             self.hide_status)
         self.connect(self._fileSystemOpener, SIGNAL("requestHide()"),
