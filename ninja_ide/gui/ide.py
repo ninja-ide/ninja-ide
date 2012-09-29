@@ -573,8 +573,6 @@ def start(filenames=None, projects_path=None,
     #Include projects received from console args
     if projects_path:
         projects += projects_path
-    mainFiles.reverse()
-    secondaryFiles.reverse()
     ide.load_session_files_projects(mainFiles, secondaryFiles, projects,
         current_file)
     #Load external plugins
