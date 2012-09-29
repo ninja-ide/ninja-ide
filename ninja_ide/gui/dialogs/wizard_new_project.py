@@ -303,14 +303,14 @@ class PageProjectProperties(QWizardPage):
         hPlace = QHBoxLayout()
         self.txtPlace = QLineEdit()
         self.txtPlace.setReadOnly(True)
-        self.btnExamine = QPushButton(self.tr("Examine..."))
+        self.btnExamine = QPushButton(self.tr("Browse..."))
         hPlace.addWidget(self.txtPlace)
         hPlace.addWidget(self.btnExamine)
         #Virtualenv
         vPlace = QHBoxLayout()
         self.vtxtPlace = QLineEdit()
         self.vtxtPlace.setReadOnly(True)
-        self.vbtnExamine = QPushButton(self.tr("Examine..."))
+        self.vbtnExamine = QPushButton(self.tr("Browse..."))
         vPlace.addWidget(self.vtxtPlace)
         vPlace.addWidget(self.vbtnExamine)
         #Project Description

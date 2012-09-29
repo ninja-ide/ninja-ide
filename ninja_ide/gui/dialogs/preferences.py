@@ -168,7 +168,7 @@ class GeneralConfiguration(QWidget):
             self.tr("Load files from last session"))
         self._checkActivatePlugins = QCheckBox(self.tr("Activate Plugins"))
         self._checkNotifyUpdates = QCheckBox(
-            self.tr("Nofity me for new available updates."))
+            self.tr("Notify me of new updates."))
         self._checkShowStartPage = QCheckBox(self.tr("Show Start Page"))
         vboxStart.addWidget(self._checkLastSession)
         vboxStart.addWidget(self._checkActivatePlugins)
