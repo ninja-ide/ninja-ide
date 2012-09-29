@@ -31,6 +31,8 @@ from PyQt4.QtGui import QTabWidget
 from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
+from PyQt4.QtGui import QSpacerItem
+from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
@@ -86,9 +88,14 @@ class PluginsManagerWidget(QDialog):
         self._txt_data.setOpenLinks(False)
         vbox.addWidget(QLabel(self.tr("Description:")))
         vbox.addWidget(self._txt_data)
+        # Footer
+        hbox = QHBoxLayout()
+        btn_close = QPushButton(self.tr('Close'))
         btnReload = QPushButton(self.tr("Reload"))
-        btnReload.setMaximumWidth(100)
-        vbox.addWidget(btnReload)
+        hbox.addWidget(btn_close)
+        hbox.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
+        hbox.addWidget(btnReload)
+        vbox.addLayout(hbox)
         self.overlay = ui_tools.Overlay(self)
         self.overlay.hide()
 
@@ -109,6 +116,7 @@ class PluginsManagerWidget(QDialog):
             self._after_uninstall_plugin)
         self.connect(self._txt_data, SIGNAL("anchorClicked(const QUrl&)"),
             self._open_link)
+        self.connect(btn_close, SIGNAL('clicked()'), self.close)
         self.overlay.show()
         self._reload_plugins()
 
