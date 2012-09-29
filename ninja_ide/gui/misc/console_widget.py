@@ -420,13 +420,12 @@ class ConsoleWidget(QPlainTextEdit):
         command = self.document().findBlockByLineNumber(
                     self.document().lineCount() - 1).text()
         #remove the prompt from the QString
-        command = command.remove(0, len(self.prompt)).toUtf8().data()
-        command_execute = command.decode('utf8')
-        self._add_history(command_execute)
-        incomplete = self._write(command_execute)
-        if self.patFrom.match(command_execute) or \
-        self.patImport.match(command_execute):
-            self.imports += [command_execute]
+        command = command[len(self.prompt):]
+        self._add_history(command)
+        incomplete = self._write(command)
+        if self.patFrom.match(command) or \
+        self.patImport.match(command):
+            self.imports += [command]
         if not incomplete:
             output = self._read()
             if output is not None:
