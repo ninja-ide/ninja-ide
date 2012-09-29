@@ -295,6 +295,11 @@ class __Actions(QObject):
         self.connect(self.ide.mainContainer,
             SIGNAL("openProject(QString)"), self.open_project)
 
+        # Not Configurable Shortcuts
+        self._shortEsc = QShortcut(QKeySequence(Qt.Key_Escape), self.ide)
+        self.connect(self._shortEsc, SIGNAL("activated()"),
+            self._shortcut_escape)
+
     def update_shortcuts(self):
         """If the user update the key binded to any shortcut, update them."""
         resources.load_shortcuts()
@@ -349,6 +354,12 @@ class __Actions(QObject):
         self.shortShowPasteHistory.setKey(short("Show-Paste-History"))
         self.shortMoveTabSplit.setKey(short("move-tab-to-next-split"))
         self.shortChangeTabVisibility.setKey(short("change-tab-visibility"))
+
+    def _shortcut_escape(self):
+        if self.ide.misc.isVisible():
+            self.ide.misc.hide()
+        elif self.ide.status.isVisible():
+            self.ide.status.hide_status()
 
     def move_tab_to_next_split(self):
         self.ide.mainContainer.move_tab_to_next_split(
