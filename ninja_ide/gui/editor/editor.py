@@ -222,8 +222,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def _update_file_metadata(self, val):
         """Update the info of bookmarks, breakpoint, pep8 and static errors."""
-        if self.pep8.pep8checks or self.errors.errorsSummary or \
-        self._sidebarWidget._bookmarks or self._sidebarWidget._breakpoints:
+        if (self.pep8.pep8checks or self.errors.errorsSummary or
+           self._sidebarWidget._bookmarks or
+           self._sidebarWidget._breakpoints or
+           self._sidebarWidget._foldedBlocks):
             cursor = self.textCursor()
             if self.__lines_count:
                 diference = val - self.__lines_count
@@ -248,6 +250,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 self._sidebarWidget._bookmarks = self._add_line_increment(
                     self._sidebarWidget._bookmarks, blockNumber, diference)
                 settings.BOOKMARKS[self.ID] = self._sidebarWidget._bookmarks
+            if self._sidebarWidget._foldedBlocks and self.ID:
+                print 'YESSSSSSSSSS'
+                self._sidebarWidget._foldedBlocks = self._add_line_increment(
+                    self._sidebarWidget._foldedBlocks, blockNumber - 1,
+                    diference)
         self.__lines_count = val
         self.highlight_current_line()
 
