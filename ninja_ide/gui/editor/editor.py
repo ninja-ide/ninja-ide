@@ -251,7 +251,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                     self._sidebarWidget._bookmarks, blockNumber, diference)
                 settings.BOOKMARKS[self.ID] = self._sidebarWidget._bookmarks
             if self._sidebarWidget._foldedBlocks and self.ID:
-                print 'YESSSSSSSSSS'
                 self._sidebarWidget._foldedBlocks = self._add_line_increment(
                     self._sidebarWidget._foldedBlocks, blockNumber - 1,
                     diference)
