@@ -338,10 +338,15 @@ class __IDE(QMainWindow):
 
     def change_window_title(self, title):
         if self.profile is None:
-            self.setWindowTitle('NINJA-IDE (EXPERIMENTAL) - %s' % title)
+            self.setWindowTitle('NINJA-IDE - %s' % title)
         else:
             self.setWindowTitle('NINJA-IDE (PROFILE: %s) - %s' % (
                 self.profile, title))
+        currentEditor = self.mainContainer.get_actual_editor()
+        if currentEditor is not None:
+            line = currentEditor.textCursor().blockNumber() + 1
+            col = currentEditor.textCursor().columnNumber()
+            self.central.lateralPanel.update_line_col(line, col)
 
     def wheelEvent(self, event):
         if event.modifiers() == Qt.ShiftModifier:
