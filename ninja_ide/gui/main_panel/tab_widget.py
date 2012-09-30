@@ -314,17 +314,6 @@ class TabWidget(QTabWidget):
                 self.widget(i)._sidebarWidget._save_breakpoints_bookmarks()
         return files
 
-#    def mouseMoveEvent(self, event):
-#        if event.buttons() != Qt.RightButton:
-#            return
-#        mimeData = QMimeData()
-#        drag = QDrag(self)
-#        drag.setMimeData(mimeData)
-#        drag.setHotSpot(event.pos() - self.rect().topLeft())
-#        dropAction = drag.start(Qt.MoveAction)
-#        if dropAction == Qt.MoveAction:
-#            self.close()
-
     def mousePressEvent(self, event):
         QTabWidget.mousePressEvent(self, event)
         if self.follow_mode:
