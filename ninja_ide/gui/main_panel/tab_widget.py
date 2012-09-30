@@ -63,6 +63,7 @@ class TabWidget(QTabWidget):
     syntaxChanged(QWidget, QString)
     reloadFile(QWidget)
     navigateCode(bool, int)
+    recentTabsModified(QStringList)
     """
 ###############################################################################
 
@@ -92,14 +93,20 @@ class TabWidget(QTabWidget):
         self.connect(self.navigator.btnNext, SIGNAL("clicked()"),
             lambda: self._navigate_code(True))
 
+    def get_recent_files_list(self):
+        return self.__lastOpened
+
     def _navigate_code(self, val):
         op = self.navigator.operation
         self.emit(SIGNAL("navigateCode(bool, int)"), val, op)
 
     def _add_to_last_opened(self, path):
-        self.__lastOpened.append(path)
-        if len(self.__lastOpened) > settings.MAX_REMEMBER_TABS:
-            self.__lastOpened = self.__lastOpened[1:]
+        if path not in self.__lastOpened:
+            self.__lastOpened.append(path)
+            if len(self.__lastOpened) > settings.MAX_REMEMBER_TABS:
+                self.__lastOpened = self.__lastOpened[1:]
+            self.emit(SIGNAL("recentTabsModified(QStringList)"),
+                self.__lastOpened)
 
     def add_tab(self, widget, title, index=None):
         try:
@@ -412,7 +419,8 @@ class TabWidget(QTabWidget):
 
     def _reopen_last_tab(self):
         self.emit(SIGNAL("reopenTab(QTabWidget, QString)"),
-        self, self.__lastOpened.pop())
+            self, self.__lastOpened.pop())
+        self.emit(SIGNAL("recentTabsModified(QStringList)"), self.__lastOpened)
 
     def _split_this_tab(self, orientation):
         self.emit(SIGNAL("splitTab(QTabWidget, int, bool)"),
@@ -431,13 +439,6 @@ class TabWidget(QTabWidget):
         for i in xrange(self.count()):
             if self.count() > 1:
                 self.removeTab(1)
-
-#    def dragEnterEvent(self, event):
-#        event.accept()
-#
-#    def dropEvent(self, event):
-#        event.accept()
-#        self.emit(SIGNAL("dropTab(QTabWidget)"), self)
 
     def _check_unsaved_tabs(self):
         """

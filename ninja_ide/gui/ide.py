@@ -179,8 +179,13 @@ class __IDE(QMainWindow):
         self.trayIcon = updates.TrayIconUpdates(self)
         self.trayIcon.show()
 
+        self.connect(self._menuFile, SIGNAL("openFile(QString)"),
+            self.mainContainer.open_file)
         self.connect(self.mainContainer, SIGNAL("fileSaved(QString)"),
             self.show_status_message)
+        self.connect(self.mainContainer,
+            SIGNAL("recentTabsModified(QStringList)"),
+            self._menuFile.update_recent_files)
 
     def _process_connection(self):
         connection = self.s_listener.nextPendingConnection()
@@ -300,13 +305,15 @@ class __IDE(QMainWindow):
         self.mainContainer.actualTab.close_tab()
 
     def load_session_files_projects(self, filesTab1, filesTab2, projects,
-        current_file):
+        current_file, recent_files=None):
         self.mainContainer.open_files(filesTab1, notIDEStart=False)
         self.mainContainer.open_files(filesTab2, mainTab=False,
             notIDEStart=False)
         self.explorer.open_session_projects(projects, notIDEStart=False)
         if current_file:
             self.mainContainer.open_file(current_file, notStart=False)
+        if recent_files is not None:
+            self._menuFile.update_recent_files(recent_files)
 
     def open_file(self, filename):
         if filename:
@@ -357,8 +364,8 @@ class __IDE(QMainWindow):
         current_file = ''
         if editor_widget is not None:
             current_file = editor_widget.ID
-        openedFiles = self.mainContainer.get_opened_documents()
         if qsettings.value('preferences/general/loadFiles', True).toBool():
+            openedFiles = self.mainContainer.get_opened_documents()
             projects_obj = self.explorer.get_opened_projects()
             projects = [p.path for p in projects_obj]
             qsettings.setValue('openFiles/projects',
@@ -368,6 +375,8 @@ class __IDE(QMainWindow):
             if len(openedFiles) == 2:
                 qsettings.setValue('openFiles/secondaryTab', openedFiles[1])
             qsettings.setValue('openFiles/currentFile', current_file)
+            qsettings.setValue('openFiles/recentFiles',
+                self.mainContainer._tabMain.get_recent_files_list())
         qsettings.setValue('preferences/editor/bookmarks', settings.BOOKMARKS)
         qsettings.setValue('preferences/editor/breakpoints',
             settings.BREAKPOINTS)
@@ -561,6 +570,9 @@ def start(filenames=None, projects_path=None,
         fileData = file_.toList()
         tempFiles.append((fileData[0].toString(), fileData[1].toInt()[0]))
     secondaryFiles = tempFiles
+    # Recent Files
+    recent_files = qsettings.value('openFiles/recentFiles', []).toList()
+    recent_files = [file_.toString() for file_ in recent_files]
     #Current File
     current_file = qsettings.value('openFiles/currentFile', '').toString()
     #Projects
@@ -574,7 +586,7 @@ def start(filenames=None, projects_path=None,
     if projects_path:
         projects += projects_path
     ide.load_session_files_projects(mainFiles, secondaryFiles, projects,
-        current_file)
+        current_file, recent_files)
     #Load external plugins
     if extra_plugins:
         ide.load_external_plugins(extra_plugins)

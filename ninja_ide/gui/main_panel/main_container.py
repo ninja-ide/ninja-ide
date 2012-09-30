@@ -77,6 +77,7 @@ class __MainContainer(QSplitter):
     fileOpened(QString)
     newFileOpened(QString)
     enabledFollowMode(bool)
+    recentTabsModified(QStringList)
     """
 ###############################################################################
 
@@ -144,6 +145,12 @@ class __MainContainer(QSplitter):
             self._navigate_code)
         self.connect(self._tabSecondary, SIGNAL("navigateCode(bool, int)"),
             self._navigate_code)
+        # Refresh recent tabs
+        self.connect(self._tabMain, SIGNAL("recentTabsModified(QStringList)"),
+            self._recent_files_changed)
+
+    def _recent_files_changed(self, files):
+        self.emit(SIGNAL("recentTabsModified(QStringList)"), files)
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
