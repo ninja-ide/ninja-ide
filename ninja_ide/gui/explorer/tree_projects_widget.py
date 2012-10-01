@@ -435,13 +435,6 @@ class TreeProjectsWidget(QTreeWidget):
                 subitem.setIcon(0, self._get_file_icon(name))
                 mainContainer = main_container.MainContainer()
                 mainContainer.open_file(fileName)
-                editorWidget = mainContainer.get_actual_editor()
-                ext = file_manager.get_file_extension(fileName)
-                python_syntax = settings.SYNTAX.get('python', {})
-                if ext in python_syntax.get('extension', []):
-                    coding_line = "# -*- coding: utf-8 -*-"
-                    editorWidget.textCursor().insertText(coding_line)
-                    main_container.MainContainer().save_file()
             except file_manager.NinjaFileExistsException, ex:
                 QMessageBox.information(self, self.tr("File Already Exists"),
                     self.tr("Invalid Path: the file '%s' already exists." %

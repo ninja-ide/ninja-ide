@@ -31,6 +31,10 @@ patIsLocalFunction = re.compile('(\s)+self\.(\w)+\(\)')
 patClass = re.compile("(\\s)*class.+\\:$")
 endCharsForIndent = [':', '{', '(', '[']
 closeBraces = {'{': '}', '(': ')', '[': ']'}
+#Coding line by language
+CODING_LINE = {
+    'python': '# -*- coding: utf-8 -*-'
+}
 
 
 def get_leading_spaces(line):
@@ -120,6 +124,14 @@ def insert_title_comment(editorWidget):
         editorWidget.textCursor().insertText(comment)
         editorWidget.textCursor().insertBlock()
         editorWidget.textCursor().endEditBlock()
+
+
+def insert_coding_line(editorWidget):
+    lang = file_manager.get_file_extension(editorWidget.ID)
+    key = settings.EXTENSIONS.get(lang)
+    coding_line = CODING_LINE.get(key)
+    if coding_line:
+        editorWidget.textCursor().insertText("%s\n" % coding_line)
 
 
 def replace_tabs_with_spaces(editorWidget):
