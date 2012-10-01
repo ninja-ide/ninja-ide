@@ -77,6 +77,7 @@ class __MainContainer(QSplitter):
     fileOpened(QString)
     newFileOpened(QString)
     enabledFollowMode(bool)
+    recentTabsModified(QStringList)
     """
 ###############################################################################
 
@@ -144,6 +145,12 @@ class __MainContainer(QSplitter):
             self._navigate_code)
         self.connect(self._tabSecondary, SIGNAL("navigateCode(bool, int)"),
             self._navigate_code)
+        # Refresh recent tabs
+        self.connect(self._tabMain, SIGNAL("recentTabsModified(QStringList)"),
+            self._recent_files_changed)
+
+    def _recent_files_changed(self, files):
+        self.emit(SIGNAL("recentTabsModified(QStringList)"), files)
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
@@ -295,6 +302,42 @@ class __MainContainer(QSplitter):
         self.emit(SIGNAL("fileOpened(QString)"), fileName)
 
         return editorWidget
+
+    def reset_pep8_warnings(self, value):
+        for i in range(self._tabMain.count()):
+            widget = self._tabMain.widget(i)
+            if type(widget) is editor.Editor:
+                if value:
+                    widget.syncDocErrorsSignal = True
+                    widget.pep8.check_style()
+                else:
+                    widget.hide_pep8_errors()
+        for i in range(self._tabSecondary.count()):
+            widget = self._tabSecondary.widget(i)
+            if type(widget) is editor.Editor:
+                if value:
+                    widget.syncDocErrorsSignal = True
+                    widget.pep8.check_style()
+                else:
+                    widget.hide_pep8_errors()
+
+    def reset_lint_warnings(self, value):
+        for i in range(self._tabMain.count()):
+            widget = self._tabMain.widget(i)
+            if type(widget) is editor.Editor:
+                if value:
+                    widget.syncDocErrorsSignal = True
+                    widget.errors.check_errors()
+                else:
+                    widget.hide_lint_errors()
+        for i in range(self._tabSecondary.count()):
+            widget = self._tabSecondary.widget(i)
+            if type(widget) is editor.Editor:
+                if value:
+                    widget.syncDocErrorsSignal = True
+                    widget.errors.check_errors()
+                else:
+                    widget.hide_lint_errors()
 
     def _cursor_position_changed(self, row, col):
         self.emit(SIGNAL("cursorPositionChange(int, int)"), row, col)

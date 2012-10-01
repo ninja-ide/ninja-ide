@@ -22,6 +22,9 @@ import urllib2
 
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QVBoxLayout
+from PyQt4.QtGui import QHBoxLayout
+from PyQt4.QtGui import QSpacerItem
+from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QTabWidget
 from PyQt4.QtGui import QTableWidget
 from PyQt4.QtGui import QPushButton
@@ -45,9 +48,14 @@ class ThemesManagerWidget(QDialog):
         vbox = QVBoxLayout(self)
         self._tabs = QTabWidget()
         vbox.addWidget(self._tabs)
+        # Footer
+        hbox = QHBoxLayout()
+        btn_close = QPushButton(self.tr('Close'))
         btnReload = QPushButton(self.tr("Reload"))
-        btnReload.setMaximumWidth(100)
-        vbox.addWidget(btnReload)
+        hbox.addWidget(btn_close)
+        hbox.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
+        hbox.addWidget(btnReload)
+        vbox.addLayout(hbox)
         self.overlay = ui_tools.Overlay(self)
         self.overlay.show()
 
@@ -59,6 +67,7 @@ class ThemesManagerWidget(QDialog):
         self.connect(btnReload, SIGNAL("clicked()"), self._reload_themes)
         self._thread = ui_tools.ThreadExecution(self.execute_thread)
         self.connect(self._thread, SIGNAL("finished()"), self.load_skins_data)
+        self.connect(btn_close, SIGNAL('clicked()'), self.close)
         self._reload_themes()
 
     def _reload_themes(self):
@@ -91,7 +100,7 @@ class ThemesManagerWidget(QDialog):
             schemes = json_manager.parse(descriptor_schemes)
             schemes = [(d['name'], d['download']) for d in schemes]
             local_schemes = self.get_local_schemes()
-            schemes = [schemes[i] for i in range(len(schemes)) if \
+            schemes = [schemes[i] for i in range(len(schemes)) if
                 os.path.basename(schemes[i][1]) not in local_schemes]
             self._schemes = schemes
         except urllib2.URLError:

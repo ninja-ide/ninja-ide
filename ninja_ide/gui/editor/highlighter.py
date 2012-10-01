@@ -409,7 +409,7 @@ class Highlighter(QSyntaxHighlighter):
         block = self.document().begin()
         while block.isValid():
             user_data = block.userData()
-            if (user_data is not None) and (user_data.error == True):
+            if (user_data is not None) and (user_data.error):
                 errors_lines.append(block.blockNumber())
             block = block.next()
         return errors_lines
@@ -458,7 +458,7 @@ class Highlighter(QSyntaxHighlighter):
             start_collides = [pos for pos in hls if pos[0] < start < pos[1]]
 
             # Apply formatting
-            if ((st_fmt != STYLES['comment']) or \
+            if ((st_fmt != STYLES['comment']) or
                ((st_fmt == STYLES['comment']) and
                (self.previousBlockState() != 0))) and \
                 (len(start_collides) == 0):

@@ -61,6 +61,9 @@ class NinjaProcessEvent(ProcessEvent):
     def process_IN_MOVED_TO(self, event):
         self._process_callback((REMOVE, event.pathname))
 
+    def process_IN_MOVED_FROM(self, event):
+        self._process_callback((REMOVE, event.pathname))
+
     def process_IN_MOVE_SELF(self, event):
         self._process_callback((RENAME, event.pathname))
 

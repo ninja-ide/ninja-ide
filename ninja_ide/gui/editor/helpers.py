@@ -65,6 +65,16 @@ def get_indentation(line):
     return indentation
 
 
+def get_start_end_selection(editorWidget, cursor):
+    start = editorWidget.document().findBlock(
+        cursor.selectionStart()).firstLineNumber()
+    end = editorWidget.document().findBlock(
+        cursor.selectionEnd()).firstLineNumber()
+    if cursor.blockNumber() == end and cursor.atBlockStart():
+        end -= 1
+    return start, end
+
+
 def remove_trailing_spaces(editorWidget):
     cursor = editorWidget.textCursor()
     cursor.beginEditBlock()
@@ -129,10 +139,7 @@ def lint_ignore_selection(editorWidget):
     cursor = editorWidget.textCursor()
     if cursor.hasSelection():
         cursor.beginEditBlock()
-        start = editorWidget.document().findBlock(
-            cursor.selectionStart()).firstLineNumber()
-        end = editorWidget.document().findBlock(
-            cursor.selectionEnd()).firstLineNumber()
+        start, end = get_start_end_selection(editorWidget, cursor)
         position = editorWidget.document().findBlockByLineNumber(
             start).position()
         cursor.setPosition(position)
@@ -159,10 +166,7 @@ def insert_debugging_prints(editorWidget):
             print_text = "%s: " % result
         #begin Undo feature
         cursor.beginEditBlock()
-        start = editorWidget.document().findBlock(
-            cursor.selectionStart()).firstLineNumber()
-        end = editorWidget.document().findBlock(
-            cursor.selectionEnd()).firstLineNumber()
+        start, end = get_start_end_selection(editorWidget, cursor)
         lines = end - start
         for i in range(lines):
             position = editorWidget.document().findBlockByLineNumber(
@@ -181,10 +185,7 @@ def move_up(editorWidget):
     block_actual = cursor.block()
     if block_actual.blockNumber() > 0:
         #line where indent_more should start and end
-        start = editorWidget.document().findBlock(
-            cursor.selectionStart()).firstLineNumber()
-        end = editorWidget.document().findBlock(
-            cursor.selectionEnd()).firstLineNumber()
+        start, end = get_start_end_selection(editorWidget, cursor)
         if cursor.hasSelection() and (start != end):
             #get the position of the line
             startPosition = editorWidget.document().findBlockByLineNumber(
@@ -240,10 +241,7 @@ def move_down(editorWidget):
     cursor = editorWidget.textCursor()
     block_actual = cursor.block()
     if block_actual.blockNumber() < (editorWidget.blockCount() - 1):
-        start = editorWidget.document().findBlock(
-            cursor.selectionStart()).firstLineNumber()
-        end = editorWidget.document().findBlock(
-            cursor.selectionEnd()).firstLineNumber()
+        start, end = get_start_end_selection(editorWidget, cursor)
         if cursor.hasSelection() and (start != end):
             #get the position of the line
             startPosition = editorWidget.document().findBlockByLineNumber(
@@ -298,12 +296,9 @@ def remove_line(editorWidget):
     cursor.beginEditBlock()
 
     if cursor.hasSelection():
-        block_start = editorWidget.document().findBlock(
-            cursor.selectionStart()).firstLineNumber()
-        block_end = editorWidget.document().findBlock(
-            cursor.selectionEnd()).firstLineNumber()
+        start, end = get_start_end_selection(editorWidget, cursor)
 
-        if block_start == block_end:  # same block selection
+        if start == end:  # same block selection
             cursor.movePosition(QTextCursor.StartOfLine)
             cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
             cursor.removeSelectedText()
@@ -314,12 +309,12 @@ def remove_line(editorWidget):
 
             cursor.setPosition(selection_end)
             if cursor.atBlockStart():
-                block_end = block_end - 1
+                end = end - 1
 
             cursor.setPosition(selection_start)
             cursor.movePosition(QTextCursor.StartOfLine)
             cursor.movePosition(QTextCursor.Down, QTextCursor.KeepAnchor,
-                block_end - block_start)
+                end - start)
             cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
 
             cursor.removeSelectedText()
@@ -335,10 +330,7 @@ def duplicate(editorWidget):
     cursor = editorWidget.textCursor()
     cursor.beginEditBlock()
     if cursor.hasSelection():
-        start = editorWidget.document().findBlock(
-            cursor.selectionStart()).firstLineNumber()
-        end = editorWidget.document().findBlock(
-            cursor.selectionEnd()).firstLineNumber()
+        start, end = get_start_end_selection(editorWidget, cursor)
         #get the position of the line
         startPosition = editorWidget.document().findBlockByLineNumber(
             start).position()
