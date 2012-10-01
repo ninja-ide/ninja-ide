@@ -264,6 +264,13 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         else:
             self.syncDocErrorsSignal = True
 
+    def hide_pep8_errors(self):
+        """Hide the pep8 errors from the sidebar and lines highlighted."""
+        self._sidebarWidget.pep8_check_lines([])
+        self.pep8.reset()
+        self.highlighter.rehighlight_lines([])
+        self._sync_tab_icon_notification_signal()
+
     def show_static_errors(self):
         self._sidebarWidget.static_errors_lines(
             self.errors.errorsSummary.keys())
@@ -271,6 +278,13 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self._sync_tab_icon_notification_signal()
         else:
             self.syncDocErrorsSignal = True
+
+    def hide_lint_errors(self):
+        """Hide the lint errors from the sidebar and lines highlighted."""
+        self._sidebarWidget.static_errors_lines([])
+        self.errors.reset()
+        self.highlighter.rehighlight_lines([])
+        self._sync_tab_icon_notification_signal()
 
     def _sync_tab_icon_notification_signal(self):
         self.syncDocErrorsSignal = False

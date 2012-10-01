@@ -303,6 +303,42 @@ class __MainContainer(QSplitter):
 
         return editorWidget
 
+    def reset_pep8_warnings(self, value):
+        for i in range(self._tabMain.count()):
+            widget = self._tabMain.widget(i)
+            if type(widget) is editor.Editor:
+                if value:
+                    widget.syncDocErrorsSignal = True
+                    widget.pep8.check_style()
+                else:
+                    widget.hide_pep8_errors()
+        for i in range(self._tabSecondary.count()):
+            widget = self._tabSecondary.widget(i)
+            if type(widget) is editor.Editor:
+                if value:
+                    widget.syncDocErrorsSignal = True
+                    widget.pep8.check_style()
+                else:
+                    widget.hide_pep8_errors()
+
+    def reset_lint_warnings(self, value):
+        for i in range(self._tabMain.count()):
+            widget = self._tabMain.widget(i)
+            if type(widget) is editor.Editor:
+                if value:
+                    widget.syncDocErrorsSignal = True
+                    widget.errors.check_errors()
+                else:
+                    widget.hide_lint_errors()
+        for i in range(self._tabSecondary.count()):
+            widget = self._tabSecondary.widget(i)
+            if type(widget) is editor.Editor:
+                if value:
+                    widget.syncDocErrorsSignal = True
+                    widget.errors.check_errors()
+                else:
+                    widget.hide_lint_errors()
+
     def _cursor_position_changed(self, row, col):
         self.emit(SIGNAL("cursorPositionChange(int, int)"), row, col)
 
