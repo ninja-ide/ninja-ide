@@ -115,6 +115,10 @@ class __StatusBar(QStatusBar):
     def show(self):
         self.clearMessage()
         QStatusBar.show(self)
+        editor = main_container.MainContainer().get_actual_editor()
+        if editor and editor.textCursor().hasSelection():
+            text = editor.textCursor().selectedText()
+            self._searchWidget._line.setText(text)
         if self._widgetStatus.isVisible():
             self._searchWidget._line.setFocus()
             self._searchWidget._line.selectAll()

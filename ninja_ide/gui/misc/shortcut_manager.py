@@ -116,7 +116,7 @@ class ShortcutDialog(QDialog):
         if evt.modifiers() & Qt.MetaModifier:
             self.keys += Qt.META
         #set the keys
-        self.set_shortcut(QKeySequence(self.keys))
+        self.set_shortcut(QKeySequence(self.keys).toString())
 
 
 class ShortcutConfiguration(QWidget):
@@ -230,7 +230,7 @@ class ShortcutConfiguration(QWidget):
         Validate and set a new shortcut
         """
         if self.__validate_shortcut(keysequence):
-            self.result_widget.currentItem().setText(1, keysequence)
+            self.result_widget.currentItem().setText(1, keysequence.toString())
 
     def __validate_shortcut(self, keysequence):
         """
@@ -269,7 +269,8 @@ class ShortcutConfiguration(QWidget):
         if item.childCount():
             return
 
-        self.shortcut_dialog.set_shortcut(QKeySequence(item.text(1)))
+        self.shortcut_dialog.set_shortcut(
+            QKeySequence(item.text(1)).toString())
         self.shortcut_dialog.exec_()
 
     def save(self):
