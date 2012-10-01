@@ -37,6 +37,8 @@ from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QMessageBox
+from PyQt4.QtGui import QSpinBox
+from PyQt4.QtGui import QCheckBox
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 
@@ -103,6 +105,8 @@ class ProjectProperties(QDialog):
         self._item.venv = self.projectExecution.txtVenvPath.text()
         extensions = self.projectData.txtExtensions.text().split(', ')
         self._item.extensions = tuple(extensions)
+        self._item.indentation = self.projectData.spinIndentation.value()
+        self._item.useTabs = self.projectData.checkUseTabs.isChecked()
         related = self.projectMetadata.txt_projects.toPlainText()
         related = [path for path in related.split('\n') if path != '']
         self._item.related_projects = related
@@ -115,6 +119,8 @@ class ProjectProperties(QDialog):
         project['mainFile'] = self._item.mainFile
         project['project-type'] = self._item.projectType
         project['supported-extensions'] = self._item.extensions
+        project['indentation'] = self._item.indentation
+        project['use-tabs'] = self._item.useTabs
         project['pythonPath'] = self._item.pythonPath  # FIXME
         project['PYTHONPATH'] = self._item.PYTHONPATH
         project['preExecScript'] = self._item.preExecScript
@@ -187,6 +193,14 @@ class ProjectData(QWidget):
         grid.addWidget(QLabel(self.tr("Supported Extensions:")), 5, 0)
         grid.addWidget(self.txtExtensions, 5, 1)
 
+        grid.addWidget(QLabel(self.tr("Indentation: ")), 6, 0)
+        self.spinIndentation = QSpinBox()
+        self.spinIndentation.setValue(self._parent._item.indentation)
+        self.spinIndentation.setMinimum(1)
+        grid.addWidget(self.spinIndentation, 6, 1)
+        self.checkUseTabs = QCheckBox(self.tr("Use Tabs."))
+        self.checkUseTabs.setChecked(self._parent._item.useTabs)
+        grid.addWidget(self.checkUseTabs, 6, 2)
 
 class ProjectExecution(QWidget):
 
