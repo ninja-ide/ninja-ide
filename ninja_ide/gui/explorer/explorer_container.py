@@ -164,6 +164,10 @@ class __ExplorerContainer(QTabWidget):
         if not self._listErrors:
             self._listErrors = errors_lists.ErrorsWidget()
             self.addTab(self._listErrors, self.tr("Errors"))
+            self.connect(self._listErrors, SIGNAL("pep8Activated(bool)"),
+                self.__ide.mainContainer.reset_pep8_warnings)
+            self.connect(self._listErrors, SIGNAL("lintActivated(bool)"),
+                self.__ide.mainContainer.reset_lint_warnings)
 
     def remove_tab_errors(self):
         if self._listErrors:
