@@ -259,7 +259,7 @@ SHORTCUTS = {
     "Full-screen": QKeySequence(Qt.CTRL + Qt.Key_F11),
     "Find": QKeySequence(Qt.CTRL + Qt.Key_F),
     "Find-replace": QKeySequence(Qt.CTRL + Qt.Key_H),
-    "Find-with-word": QKeySequence(Qt.CTRL + Qt.Key_G),
+    "Find-with-word": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_F),
     "Find-next": QKeySequence(Qt.CTRL + Qt.Key_F3),
     "Find-previous": QKeySequence(Qt.SHIFT + Qt.Key_F3),
     "Help": QKeySequence(Qt.Key_F1),
