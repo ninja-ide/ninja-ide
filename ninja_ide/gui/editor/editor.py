@@ -657,9 +657,40 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             move = QTextCursor.KeepAnchor
         else:
             move = QTextCursor.MoveAnchor
+
         if self.textCursor().atBlockStart():
             self.moveCursor(QTextCursor.WordRight, move)
             return True
+
+        cursor = self.textCursor()
+
+        start = cursor.position()
+        current_col = cursor.columnNumber()
+        cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
+        text = cursor.selection().toPlainText()
+        num_of_spaces = 0
+
+        # CODE-REVIEW: More efficient ways? I think the limit is O(n)
+        for c in text:
+            if c in (" ", "\t"):
+                num_of_spaces += 1
+            else:
+                break
+
+        new_pos = start - current_col
+        # This happens when the user is at the beginning.
+        # This means that if the user presses home twice, he/she will jump
+        # to the absolute start of the line, instead of just the beginning
+        # without space.
+        if current_col > num_of_spaces:
+            new_pos += num_of_spaces
+
+        cursor = self.textCursor()
+        cursor.setPosition(new_pos, move)
+        self.setTextCursor(cursor)
+
+        return True
+
 
     def __ignore_extended_line(self, event):
         if event.modifiers() == Qt.ShiftModifier:
