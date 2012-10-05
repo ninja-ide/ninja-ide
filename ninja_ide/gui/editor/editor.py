@@ -661,6 +661,14 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.moveCursor(QTextCursor.WordRight, move)
             return True
 
+        cursor = self.textCursor()
+        position = cursor.position()
+        self.moveCursor(QTextCursor.StartOfLine, move)
+        self.moveCursor(QTextCursor.WordRight, move)
+        if position != self.textCursor().position() and \
+           cursor.block().text().startswith(' '):
+            return True
+
     def __ignore_extended_line(self, event):
         if event.modifiers() == Qt.ShiftModifier:
             return True
