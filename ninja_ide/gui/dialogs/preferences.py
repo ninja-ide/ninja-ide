@@ -16,6 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
 import os
 import copy
@@ -120,7 +121,7 @@ class PreferencesWidget(QDialog):
         self.close()
 
     def _save(self):
-        for i in xrange(self._tabs.count()):
+        for i in range(self._tabs.count()):
             self._tabs.widget(i).save()
         self.close()
 
@@ -146,7 +147,7 @@ class GeneralTab(QWidget):
         vbox.addWidget(self._tabs)
 
     def save(self):
-        for i in xrange(self._tabs.count()):
+        for i in range(self._tabs.count()):
             self._tabs.widget(i).save()
 
 
@@ -206,9 +207,9 @@ class GeneralConfiguration(QWidget):
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('general')
         self._checkLastSession.setChecked(
-            qsettings.value('loadFiles', True).toBool())
+            qsettings.value('loadFiles', 'true') == 'true')
         self._checkActivatePlugins.setChecked(
-            qsettings.value('activatePlugins', True).toBool())
+            qsettings.value('activatePlugins', 'true') == 'true')
         self._checkNotifyUpdates.setChecked(settings.NOTIFY_UPDATES)
         self._checkShowStartPage.setChecked(settings.SHOW_START_PAGE)
         self._checkConfirmExit.setChecked(settings.CONFIRM_EXIT)
@@ -553,13 +554,12 @@ class InterfaceTab(QWidget):
     def toolbar_item_added(self):
         data = self._comboToolbarItems.itemData(
             self._comboToolbarItems.currentIndex())
-        data = str(data.toString())
         if data not in self.toolbar_settings or data == 'separator':
             selected = self.actionGroup.checkedAction()
             if selected is None:
                 self.toolbar_settings.append(data)
             else:
-                dataAction = str(selected.data().toString())
+                dataAction = selected.data()
                 self.toolbar_settings.insert(
                     self.toolbar_settings.index(dataAction) + 1, data)
             self._load_toolbar()
@@ -567,7 +567,6 @@ class InterfaceTab(QWidget):
     def toolbar_item_removed(self):
         data = self._comboToolbarItems.itemData(
             self._comboToolbarItems.currentIndex())
-        data = str(data.toString())
         if data in self.toolbar_settings and data != 'separator':
             self.toolbar_settings.pop(self.toolbar_settings.index(data))
             self._load_toolbar()
@@ -745,7 +744,7 @@ class EditorTab(QWidget):
         vbox.addWidget(self._tabs)
 
     def save(self):
-        for i in xrange(self._tabs.count()):
+        for i in range(self._tabs.count()):
             self._tabs.widget(i).save()
 
 
@@ -810,7 +809,7 @@ class EditorGeneral(QWidget):
         for item in self._schemes:
             self._listScheme.addItem(item)
         items = self._listScheme.findItems(
-            qsettings.value('scheme', '').toString(), Qt.MatchExactly)
+            qsettings.value('scheme', ''), Qt.MatchExactly)
         if items:
             self._listScheme.setCurrentItem(items[0])
         else:
@@ -841,7 +840,7 @@ class EditorGeneral(QWidget):
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('editor')
         self._schemes = json_manager.load_editor_skins()
-        self._selected_scheme = qsettings.value('scheme', '').toString()
+        self._selected_scheme = qsettings.value('scheme', '')
         qsettings.endGroup()
         qsettings.endGroup()
 
@@ -1473,7 +1472,7 @@ class EditorSchemeDesigner(QWidget):
                 btnSidebarForeground))
 
         # Connect Buttons
-        for i in xrange(0, 26):
+        for i in range(0, 26):
             item = grid.itemAtPosition(i, 1).widget()
             btn = grid.itemAtPosition(i, 2).widget()
             self.connect(item, SIGNAL("returnPressed()"),
@@ -1801,7 +1800,7 @@ class ThemeDesigner(QWidget):
             QMessageBox.information(self, self.tr("Style Sheet Saved"),
                 self.tr("Theme saved at: '%s'." % file_name))
             self.edit_qss.document().setModified(False)
-        except file_manager.NinjaFileExistsException, ex:
+        except file_manager.NinjaFileExistsException as ex:
             QMessageBox.information(self, self.tr("File Already Exists"),
                 self.tr("Invalid File Name: the file '%s' already exists." %
                     ex.filename))

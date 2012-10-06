@@ -50,17 +50,17 @@ class PluginPreferences(QWidget):
                 preferences_widget = plugin.get_preferences_widget()
                 if preferences_widget:
                     self._tabs.addTab(preferences_widget, plugin_name)
-            except Exception, reason:
+            except Exception as reason:
                 logger.error("Unable to add the preferences widget (%s): %s",
                     plugin_name, reason)
                 continue
 
     def save(self):
         logger.info("Saving plugins preferences")
-        for i in xrange(self._tabs.count()):
+        for i in range(self._tabs.count()):
             try:
                 self._tabs.widget(i).save()
-            except Exception, reason:
+            except Exception as reason:
                 logger.error("Unable to save preferences (%s): %s",
                     self._tabs.tabText(i), reason)
                 continue

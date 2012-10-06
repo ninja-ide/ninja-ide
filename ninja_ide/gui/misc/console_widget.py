@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
 import re
 
@@ -50,14 +51,14 @@ BRACES = {"'": "'",
 class ConsoleWidget(QPlainTextEdit):
 
     def __init__(self):
-        QPlainTextEdit.__init__(self, u'>>> ')
+        QPlainTextEdit.__init__(self, '>>> ')
         self.setUndoRedoEnabled(False)
         self.apply_editor_style()
         self.setToolTip(self.tr("Show/Hide (F4)"))
         self.moveCursor(QTextCursor.EndOfLine)
 
         self._patIsWord = re.compile('\w+')
-        self.prompt = u'>>> '
+        self.prompt = '>>> '
         self._console = console.Console()
         self._history = []
         self._braces = None
@@ -88,7 +89,7 @@ class ConsoleWidget(QPlainTextEdit):
     def _add_system_path_for_frozen(self):
         try:
             self._proc.start(settings.PYTHON_PATH, [resources.GET_SYSTEM_PATH])
-        except Exception, reason:
+        except Exception as reason:
             logger.warning('Could not get system path, error: %r' % reason)
 
     def _python_path_detected(self):
@@ -151,7 +152,7 @@ class ConsoleWidget(QPlainTextEdit):
 
     def setCursorPosition(self, position, mode=QTextCursor.MoveAnchor):
         self.moveCursor(QTextCursor.StartOfLine, mode)
-        for i in xrange(len(self.prompt) + position):
+        for i in range(len(self.prompt) + position):
             self.moveCursor(QTextCursor.Right, mode)
 
     def keyPressEvent(self, event):
@@ -437,7 +438,7 @@ class ConsoleWidget(QPlainTextEdit):
     def _set_command(self, command):
         self.moveCursor(QTextCursor.End)
         self.moveCursor(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
-        for i in xrange(len(self.prompt)):
+        for i in range(len(self.prompt)):
             self.moveCursor(QTextCursor.Right, QTextCursor.KeepAnchor)
         self.textCursor().removeSelectedText()
         self.textCursor().insertText(command)

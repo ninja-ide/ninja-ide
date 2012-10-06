@@ -67,10 +67,10 @@ NINJA-IDE provides tools to simplify the Python-software development
 and handles all kinds of situations thanks to its rich extensibility.""")))
         vbox.addWidget(QLabel(self.tr("Version: %s" % ninja_ide.__version__)))
         link_ninja = QLabel(
-            self.tr("Website: <a href='%1'>%s</a>" % ninja_ide.__url__))
+            self.tr("Website: <a href='%s'>%s</a>" % ninja_ide.__url__))
         vbox.addWidget(link_ninja)
         link_source = QLabel(
-            self.tr("Source Code: <a href='%s'>%s</a>" % \
+            self.tr("Source Code: <a href='%s'>%s</a>" %
                 (ninja_ide.__source__, ninja_ide.__source__)))
         vbox.addWidget(link_source)
 

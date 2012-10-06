@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
 import time
 import re
@@ -152,7 +153,7 @@ class RunWidget(QWidget):
             message = self.tr(
                 "Pre Execution Script Successfully executed.\n\n")
         self.output.setPlainText(message + 'Running: %s (%s)\n\n' %
-            (self.fileName, unicode(time.ctime())))
+            (self.fileName, time.ctime()))
         self.output.moveCursor(QTextCursor.Down)
         self.output.moveCursor(QTextCursor.Down)
         self.output.moveCursor(QTextCursor.Down)
@@ -294,7 +295,7 @@ class OutputWidget(QPlainTextEdit):
         cursor = self.cursorForPosition(event.pos())
         text = cursor.block().text()
         if self.patLink.match(text):
-            file_path, lineno = self._parse_traceback(unicode(text))
+            file_path, lineno = self._parse_traceback(text)
             main = main_container.MainContainer()
             main.open_file(file_path)
             main.editor_jump_to_line(lineno=int(lineno) - 1)

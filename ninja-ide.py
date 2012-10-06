@@ -23,16 +23,6 @@
 
 from __future__ import absolute_import
 
-###############################################################################
-# SET PYQT API 2
-###############################################################################
-
-import sip
-API_NAMES = ["QDate", "QDateTime", "QString", "QTime", "QUrl", "QTextStream"]
-API_VERSION = 2
-for name in API_NAMES:
-    sip.setapi(name, API_VERSION)
-
 import ninja_ide
 
 

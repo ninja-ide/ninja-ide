@@ -106,8 +106,8 @@ class __CompletionDaemon(Thread):
                 module = self.analyzer.analyze(source)
                 self.inspect_module(filename, module, False)
                 return True
-        except Exception, reason:
-            print reason
+        except Exception as reason:
+            print(reason)
         return False
 
     def unload_module(self, path_id):
@@ -190,10 +190,11 @@ class _DaemonProcess(Process):
                     self.queue_send.put((path_id, module, self.packages))
                 else:
                     self.queue_send.put((path_id, module, []))
-            except Exception, reason:
+            except Exception as reason:
                 # Try to not die whatever happend
                 message = 'Daemon Fail with: %r', reason
                 print(message)
+                raise
             finally:
                 self.packages = []
 

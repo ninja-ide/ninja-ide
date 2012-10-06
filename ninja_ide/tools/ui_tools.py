@@ -65,7 +65,7 @@ def load_table(table, headers, data, checkFirstColumn=True):
     table.setHorizontalHeaderLabels(headers)
     table.horizontalHeader().setStretchLastSection(True)
     table.setSelectionBehavior(QAbstractItemView.SelectRows)
-    for i in xrange(table.rowCount()):
+    for i in range(table.rowCount()):
         table.removeRow(0)
     for r, row in enumerate(data):
         table.insertRow(r)
@@ -85,7 +85,7 @@ def remove_get_selected_items(table, data):
     rows = table.rowCount()
     pos = rows - 1
     selected = []
-    for i in xrange(rows):
+    for i in range(rows):
         if table.item(pos - i, 0) is not None and \
         table.item(pos - i, 0).checkState() == Qt.Checked:
             selected.append(data.pop(pos - i))
@@ -213,7 +213,7 @@ class Overlay(QWidget):
         painter.fillRect(event.rect(), QBrush(QColor(255, 255, 255, 127)))
         painter.setPen(QPen(Qt.NoPen))
 
-        for i in xrange(6):
+        for i in range(6):
             x_pos = self.width() / 2 + 30 * \
                 math.cos(2 * math.pi * i / 6.0) - 10
             y_pos = self.height() / 2 + 30 * \

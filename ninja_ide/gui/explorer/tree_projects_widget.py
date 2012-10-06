@@ -16,6 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
 import os
 
@@ -336,10 +337,9 @@ class TreeProjectsWidget(QTreeWidget):
     def _refresh_project_by_path(self, event, folder):
         if event not in (DELETED, ADDED, REMOVE, RENAME):
             return
-        folder = unicode(folder)
         oprojects = self.get_open_projects()
         for each_project in oprojects:
-            p_path = unicode(each_project.path)
+            p_path = each_project.path
             if file_manager.belongs_to_folder(p_path, folder) and \
                file_manager.is_supported_extension(folder,
                    each_project.extensions) and folder[:1] != '.':
@@ -359,7 +359,7 @@ class TreeProjectsWidget(QTreeWidget):
         if item.parent() is None:
             path = item.path
         else:
-            path = file_manager.create_path(item.path, unicode(item.text(0)))
+            path = file_manager.create_path(item.path, item.text(0))
 
         thread = ui_tools.ThreadProjectExplore()
         self._thread_execution[path] = thread
@@ -409,7 +409,7 @@ class TreeProjectsWidget(QTreeWidget):
             pathFolder = os.path.join(item.path, str(item.text(0)))
         try:
             file_manager.create_init_file_complete(pathFolder)
-        except file_manager.NinjaFileExistsException, ex:
+        except file_manager.NinjaFileExistsException as ex:
             QMessageBox.information(self, self.tr("Create INIT fail"),
                 ex.message)
         self._refresh_project(item)
@@ -419,10 +419,10 @@ class TreeProjectsWidget(QTreeWidget):
         if item.parent() is None:
             pathForFile = item.path
         else:
-            pathForFile = os.path.join(item.path, unicode(item.text(0)))
+            pathForFile = os.path.join(item.path, item.text(0))
         result = QInputDialog.getText(self, self.tr("New File"),
             self.tr("Enter the File Name:"))
-        fileName = unicode(result[0])
+        fileName = result[0]
 
         if result[1] and fileName.strip() != '':
             try:
@@ -435,7 +435,7 @@ class TreeProjectsWidget(QTreeWidget):
                 subitem.setIcon(0, self._get_file_icon(name))
                 mainContainer = main_container.MainContainer()
                 mainContainer.open_file(fileName)
-            except file_manager.NinjaFileExistsException, ex:
+            except file_manager.NinjaFileExistsException as ex:
                 QMessageBox.information(self, self.tr("File Already Exists"),
                     self.tr("Invalid Path: the file '%s' already exists." %
                         ex.filename))
@@ -446,7 +446,7 @@ class TreeProjectsWidget(QTreeWidget):
         paths = relative.split(os.sep)[:-1]
         itemParent = self._actualProject
         for p in paths:
-            for i in xrange(itemParent.childCount()):
+            for i in range(itemParent.childCount()):
                 item = itemParent.child(i)
                 if item.text(0) == p:
                     itemParent = item
@@ -530,7 +530,7 @@ class TreeProjectsWidget(QTreeWidget):
                 subitem.setIcon(0, self._get_file_icon(name))
                 index = item.parent().indexOfChild(item)
                 subitem.parent().takeChild(index)
-            except file_manager.NinjaFileExistsException, ex:
+            except file_manager.NinjaFileExistsException as ex:
                 QMessageBox.information(self, self.tr("File Already Exists"),
                     self.tr("Invalid Path: the file '%s' already exists." %
                         ex.filename))
@@ -559,7 +559,7 @@ class TreeProjectsWidget(QTreeWidget):
             content = file_manager.read_file_content(pathForFile)
             path = file_manager.store_file_content(path, content, newFile=True)
             self.add_existing_file(path)
-        except file_manager.NinjaFileExistsException, ex:
+        except file_manager.NinjaFileExistsException as ex:
                 QMessageBox.information(self, self.tr("File Already Exists"),
                     self.tr("Invalid Path: the file '%s' already exists." %
                         ex.filename))
@@ -585,7 +585,7 @@ class TreeProjectsWidget(QTreeWidget):
             index = item.parent().indexOfChild(item)
             item.parent().takeChild(index)
             self.add_existing_file(path)
-        except file_manager.NinjaFileExistsException, ex:
+        except file_manager.NinjaFileExistsException as ex:
                 QMessageBox.information(self, self.tr("File Already Exists"),
                     self.tr("Invalid Path: the file '%s' already exists." %
                         ex.filename))
@@ -718,7 +718,7 @@ class TreeProjectsWidget(QTreeWidget):
 
     def _close_open_projects(self):
         self.__enableCloseNotification = False
-        for i in xrange(self.topLevelItemCount()):
+        for i in range(self.topLevelItemCount()):
             self.setCurrentItem(self.topLevelItem(0))
             self._close_project()
         self.__enableCloseNotification = True

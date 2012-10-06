@@ -307,7 +307,7 @@ def load_shortcuts():
         default_action = SHORTCUTS[action].toString()
         #get the custom shortcut or the default
         shortcut_action = settings.value("shortcuts/%s" % action,
-            default_action).toString()
+            default_action)
         #set the shortcut
         CUSTOM_SHORTCUTS[action] = QKeySequence(shortcut_action)
 

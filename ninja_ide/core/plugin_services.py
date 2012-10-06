@@ -16,6 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
 from PyQt4.QtCore import QObject
 from PyQt4.QtCore import SIGNAL
@@ -257,7 +258,7 @@ class MainService(QObject):
         """
         Signal emitted after save a file
         """
-        fileName = unicode(fileName.split(":")[-1]).strip()
+        fileName = fileName.split(":")[-1].strip()
         self.fileSaved.emit(fileName)
 
     def _currentTabChanged(self, fileName):
