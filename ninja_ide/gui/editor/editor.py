@@ -15,7 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
-
 import re
 
 from tokenize import generate_tokens, TokenError
@@ -43,6 +42,7 @@ from PyQt4.QtCore import Qt
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
+from ninja_ide.tools import json_manager
 from ninja_ide.tools.completion import completer_widget
 from ninja_ide.gui.main_panel import itab_item
 from ninja_ide.gui.editor import highlighter
@@ -77,7 +77,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     """
 ###############################################################################
 
-    def __init__(self, filename, project):
+    def __init__(self, filename, project, project_obj=None):
         QPlainTextEdit.__init__(self)
         itab_item.ITabItem.__init__(self)
         #Config Editor
@@ -109,6 +109,13 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.__encoding = None
         #Completer
         self.completer = completer_widget.CodeCompletionWidget(self)
+        #Indentation
+        if project_obj is not None:
+            self.indent = project_obj.indentation
+            self.useTabs = project_obj.useTabs
+        else:
+            self.indent = settings.INDENT
+            self.useTabs = settings.USE_TABS
         #Flag to dont bug the user when answer *the modification dialog*
         self.ask_if_externally_modified = False
         self.just_saved = False
@@ -152,7 +159,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
                 self._mini.update_visible_area)
         #Set tab usage
-        if settings.USE_TABS:
+        if self.useTabs:
             self.set_tab_usage()
 
         #Context Menu Options
@@ -188,7 +195,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.setCenterOnScroll(settings.CENTER_ON_SCROLL)
 
     def set_tab_usage(self):
-        tab_size = self.pos_margin / settings.MARGIN_LINE * settings.INDENT
+        tab_size = self.pos_margin / settings.MARGIN_LINE * self.indent
         self.setTabStopWidth(tab_size)
         if self._mini:
             self._mini.setTabStopWidth(tab_size)
@@ -502,10 +509,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         cursor.setPosition(block.position())
         while block != end:
             cursor.setPosition(block.position())
-            if settings.USE_TABS:
+            if self.useTabs:
                 cursor.insertText('\t')
             else:
-                cursor.insertText(' ' * settings.INDENT)
+                cursor.insertText(' ' * self.indent)
             block = block.next()
 
         #End a undo block
@@ -529,15 +536,15 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         while block != end:
             cursor.setPosition(block.position())
             #Select Settings.indent chars from the current line
-            if settings.USE_TABS:
+            if self.useTabs:
                 cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
             else:
                 cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
-                    settings.INDENT)
+                    self.indent)
             text = cursor.selectedText()
-            if not settings.USE_TABS and text == ' ' * settings.INDENT:
+            if not self.useTabs and text == ' ' * self.indent:
                 cursor.removeSelectedText()
-            elif settings.USE_TABS and text == '\t':
+            elif self.useTabs and text == '\t':
                 cursor.removeSelectedText()
             block = block.next()
 
@@ -624,22 +631,22 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def __insert_indentation(self, event):
         if self.textCursor().hasSelection():
             self.indent_more()
-        elif settings.USE_TABS:
+        elif self.useTabs:
             return False
         else:
-            self.textCursor().insertText(' ' * settings.INDENT)
+            self.textCursor().insertText(' ' * self.indent)
         return True
 
     def __backspace(self, event):
-        if self.textCursor().hasSelection() or settings.USE_TABS:
+        if self.textCursor().hasSelection() or self.useTabs:
             return False
         cursor = self.textCursor()
         cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
         text = cursor.selection().toPlainText()
-        if (len(text) % settings.INDENT == 0) and text.isspace():
+        if (len(text) % self.indent == 0) and text.isspace():
             cursor.movePosition(QTextCursor.StartOfLine)
             cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
-                settings.INDENT)
+                self.indent)
             cursor.removeSelectedText()
             return True
 
@@ -652,6 +659,14 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             move = QTextCursor.MoveAnchor
         if self.textCursor().atBlockStart():
             self.moveCursor(QTextCursor.WordRight, move)
+            return True
+
+        cursor = self.textCursor()
+        position = cursor.position()
+        self.moveCursor(QTextCursor.StartOfLine, move)
+        self.moveCursor(QTextCursor.WordRight, move)
+        if position != self.textCursor().position() and \
+           cursor.block().text().startswith(' '):
             return True
 
     def __ignore_extended_line(self, event):
@@ -726,7 +741,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def __auto_indent(self, event):
         text = unicode(self.textCursor().block().previous().text())
-        spaces = helpers.get_indentation(text)
+        spaces = helpers.get_indentation(text, self.indent, self.useTabs)
         self.textCursor().insertText(spaces)
         if text != '' and text == ' ' * len(text):
             self.moveCursor(QTextCursor.Up)
@@ -1129,8 +1144,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
 
 def create_editor(fileName='', project=None, syntax=None,
-                  use_open_highlight=False):
-    editor = Editor(fileName, project)
+                  use_open_highlight=False, project_obj=None):
+    editor = Editor(fileName, project, project_obj=project_obj)
     #if syntax is specified, use it
     if syntax:
         editor.register_syntax(syntax)

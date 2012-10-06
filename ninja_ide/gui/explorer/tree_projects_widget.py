@@ -787,6 +787,8 @@ class ProjectTree(QTreeWidgetItem):
         self.mainFile = project.get('mainFile', '')
         self.preExecScript = project.get('preExecScript', '')
         self.postExecScript = project.get('postExecScript', '')
+        self.indentation = project.get('indentation', settings.INDENT)
+        self.useTabs = project.get('use-tabs', settings.USE_TABS)
         self.extensions = project.get('supported-extensions',
             settings.SUPPORTED_EXTENSIONS)
         self.pythonPath = project.get('pythonPath', settings.PYTHON_PATH)
