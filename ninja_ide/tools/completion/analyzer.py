@@ -78,7 +78,7 @@ class Analyzer(object):
         astModule = None
         try:
             astModule = ast.parse(source)
-        except SyntaxError, reason:
+        except SyntaxError as reason:
             line = reason.lineno - 1
             if line != self._fixed_line and reason.text is not None:
                 self._fixed_line = line
@@ -259,7 +259,7 @@ class Analyzer(object):
             try:
                 if arg.id == 'self':
                     continue
-            except Exception, reason:
+            except Exception as reason:
                 logger.error('_process_function, error: %r' % reason)
                 logger.error('line number: %d' % symbol.lineno)
                 logger.error('line: %s' % self.content[symbol.lineno])

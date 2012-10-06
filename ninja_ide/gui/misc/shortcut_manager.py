@@ -242,7 +242,7 @@ class ShortcutConfiguration(QWidget):
         keyname = self.result_widget.currentItem().text(0)
         keystr = keysequence
 
-        for top_index in xrange(self.result_widget.topLevelItemCount()):
+        for top_index in range(self.result_widget.topLevelItemCount()):
             top_item = self.result_widget.topLevelItem(top_index)
 
             if top_item.text(0) != keyname:
@@ -270,7 +270,7 @@ class ShortcutConfiguration(QWidget):
             return
 
         self.shortcut_dialog.set_shortcut(
-            QKeySequence(item.text(1)).toString())
+            QKeySequence(item.text(1)))
         self.shortcut_dialog.exec_()
 
     def save(self):
@@ -279,7 +279,7 @@ class ShortcutConfiguration(QWidget):
         """
         settings = QSettings()
         settings.beginGroup("shortcuts")
-        for index in xrange(self.result_widget.topLevelItemCount()):
+        for index in range(self.result_widget.topLevelItemCount()):
             item = self.result_widget.topLevelItem(index)
             shortcut_keys = item.text(1)
             shortcut_name = item.text(2)

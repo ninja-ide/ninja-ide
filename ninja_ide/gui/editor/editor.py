@@ -15,11 +15,18 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
+from __future__ import unicode_literals
+
 import re
 
 from tokenize import generate_tokens, TokenError
 import token as tkn
-from StringIO import StringIO
+#lint:disable
+try:
+    from StringIO import StringIO
+except:
+    from io import StringIO
+#lint:enable
 
 from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QFontMetricsF
@@ -42,7 +49,6 @@ from PyQt4.QtCore import Qt
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
-from ninja_ide.tools import json_manager
 from ninja_ide.tools.completion import completer_widget
 from ninja_ide.gui.main_panel import itab_item
 from ninja_ide.gui.editor import highlighter
@@ -701,7 +707,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         simmetrical symbol, is a little more cumbersome guessing the completion
         table.
         """
-        text = unicode(event.text())
+        text = event.text()
         PENTA_Q = 5 * text
         TETRA_Q = 4 * text
         TRIPLE_Q = 3 * text
@@ -729,7 +735,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         """Indicate if this symbol is part of a given pair and needs to be
         completed.
         """
-        text = unicode(event.text())
+        text = event.text()
         if text in settings.BRACES.values():
             portion = self.__reverse_select_text_portion_from_offset(1, 1)
             brace_open = portion[0]
@@ -740,7 +746,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 return True
 
     def __auto_indent(self, event):
-        text = unicode(self.textCursor().block().previous().text())
+        text = self.textCursor().block().previous().text()
         spaces = helpers.get_indentation(text, self.indent, self.useTabs)
         self.textCursor().insertText(spaces)
         if text != '' and text == ' ' * len(text):

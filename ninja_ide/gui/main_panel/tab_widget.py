@@ -118,7 +118,7 @@ class TabWidget(QTabWidget):
             self.expand_tab_name(title)
             widget.setFocus()
             return inserted_index
-        except AttributeError, reason:
+        except AttributeError as reason:
             msg = "Widget couldn't be added, doesn't inherit from ITabWidget"
             logger.error('add_tab: %s', reason)
             logger.error(msg)
@@ -129,7 +129,7 @@ class TabWidget(QTabWidget):
         elif title not in self.titles:
             self.titles.append(title)
             return
-        indexes = [i for i in xrange(self.count())
+        indexes = [i for i in range(self.count())
             if type(self.widget(i)) is editor.Editor and
             self.tabText(i) == title and
             self.widget(i).ID]
@@ -235,14 +235,14 @@ class TabWidget(QTabWidget):
 
     def is_open(self, identifier):
         """Check if a Tab with id = identifier is open"""
-        for i in xrange(self.count()):
+        for i in range(self.count()):
             if self.widget(i) == identifier:
                 return i
         return -1
 
     def move_to_open(self, identifier):
         """Set the selected Tab for the widget with id = identifier"""
-        for i in xrange(self.count()):
+        for i in range(self.count()):
             if self.widget(i) == identifier:
                 self.setCurrentIndex(i)
                 return
@@ -420,12 +420,12 @@ class TabWidget(QTabWidget):
         QApplication.clipboard().setText(widget.ID, QClipboard.Clipboard)
 
     def _close_all_tabs(self):
-        for i in xrange(self.count()):
+        for i in range(self.count()):
             self.removeTab(0)
 
     def _close_all_tabs_except_this(self):
         self.tabBar().moveTab(self.currentIndex(), 0)
-        for i in xrange(self.count()):
+        for i in range(self.count()):
             if self.count() > 1:
                 self.removeTab(1)
 

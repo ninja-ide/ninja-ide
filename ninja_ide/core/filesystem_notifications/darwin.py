@@ -69,7 +69,7 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
                 #self.watching_paths[path] = stream
                 #if not self.observer.is_alive():
                     #self.observer.start()
-            #except Exception, reason:
+            #except Exception as reason:
                 #print reason
                 #logger.debug("Path could not be added: %r" % path)
 

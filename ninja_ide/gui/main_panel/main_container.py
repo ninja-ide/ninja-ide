@@ -217,7 +217,7 @@ class __MainContainer(QSplitter):
         orientation == self.orientation():
             self._tabSecondary.hide()
             self.splitted = False
-            for i in xrange(self._tabSecondary.count()):
+            for i in range(self._tabSecondary.count()):
                 widget = self._tabSecondary.widget(0)
                 name = self._tabSecondary.tabText(0)
                 self._tabMain.add_tab(widget, name)
@@ -424,7 +424,7 @@ class __MainContainer(QSplitter):
                 viewer.id = fileName
             else:
                 self.move_to_open(fileName)
-        except Exception, reason:
+        except Exception as reason:
             logger.error('open_image: %s', reason)
             QMessageBox.information(self, self.tr("Incorrect File"),
                 self.tr("The image couldn\'t be open"))
@@ -507,12 +507,11 @@ class __MainContainer(QSplitter):
                     else:
                         editorWidget.set_cursor_position(cursorPosition)
             self.emit(SIGNAL("currentTabChanged(QString)"), fileName)
-        except file_manager.NinjaIOException, reason:
+        except file_manager.NinjaIOException as reason:
             if not notStart:
                 QMessageBox.information(self,
-                    self.tr("The file couldn't be open"),
-                    unicode(reason))
-        except Exception, reason:
+                    self.tr("The file couldn't be open"), reason)
+        except Exception as reason:
             logger.error('open_file: %s', reason)
         self.actualTab.notOpening = True
 
@@ -612,8 +611,8 @@ class __MainContainer(QSplitter):
                 self.tr("File Saved: %s" % fileName))
             editorWidget._file_saved()
             return True
-        except Exception, reason:
-            print reason
+        except Exception as reason:
+            print(reason)
             raise
             editorWidget.just_saved = False
             logger.error('save_file: %s', reason)
@@ -658,12 +657,12 @@ class __MainContainer(QSplitter):
             self.add_standalone_watcher(fileName)
             self._file_watcher.allow_kill = True
             return True
-        except file_manager.NinjaFileExistsException, ex:
+        except file_manager.NinjaFileExistsException as ex:
             editorWidget.just_saved = False
             QMessageBox.information(self, self.tr("File Already Exists"),
                 self.tr("Invalid Path: the file '%s' already exists." %
                     ex.filename))
-        except Exception, reason:
+        except Exception as reason:
             editorWidget.just_saved = False
             logger.error('save_file_as: %s', reason)
             QMessageBox.information(self, self.tr("Save Error"),
@@ -682,7 +681,7 @@ class __MainContainer(QSplitter):
         return os.path.expanduser("~")
 
     def save_project(self, projectFolder):
-        for i in xrange(self._tabMain.count()):
+        for i in range(self._tabMain.count()):
             editorWidget = self._tabMain.widget(i)
             if type(editorWidget) is editor.Editor and \
             file_manager.belongs_to_folder(projectFolder, editorWidget.ID):
@@ -690,7 +689,7 @@ class __MainContainer(QSplitter):
                     editorWidget)
                 if not reloaded:
                     self.save_file(editorWidget)
-        for i in xrange(self._tabSecondary.count()):
+        for i in range(self._tabSecondary.count()):
             editorWidget = self._tabSecondary.widget(i)
             if type(editorWidget) is editor.Editor and \
             file_manager.belongs_to_folder(projectFolder, editorWidget.ID):
@@ -700,14 +699,14 @@ class __MainContainer(QSplitter):
                     self.save_file(editorWidget)
 
     def save_all(self):
-        for i in xrange(self._tabMain.count()):
+        for i in range(self._tabMain.count()):
             editorWidget = self._tabMain.widget(i)
             if type(editorWidget) is editor.Editor:
                 reloaded = self._tabMain.check_for_external_modifications(
                     editorWidget)
                 if not reloaded:
                     self.save_file(editorWidget)
-        for i in xrange(self._tabSecondary.count()):
+        for i in range(self._tabSecondary.count()):
             editorWidget = self._tabSecondary.widget(i)
             self._tabSecondary.check_for_external_modifications(editorWidget)
             if type(editorWidget) is editor.Editor:
@@ -719,12 +718,12 @@ class __MainContainer(QSplitter):
     def call_editors_function(self, call_function, *arguments):
         args = arguments[0]
         kwargs = arguments[1]
-        for i in xrange(self._tabMain.count()):
+        for i in range(self._tabMain.count()):
             editorWidget = self._tabMain.widget(i)
             if type(editorWidget) is editor.Editor:
                 function = getattr(editorWidget, call_function)
                 function(*args, **kwargs)
-        for i in xrange(self._tabSecondary.count()):
+        for i in range(self._tabSecondary.count()):
             editorWidget = self._tabSecondary.widget(i)
             self._tabSecondary.check_for_external_modifications(editorWidget)
             if type(editorWidget) is editor.Editor:
@@ -846,12 +845,12 @@ class __MainContainer(QSplitter):
             widget.restyle(syntaxLang)
 
     def apply_editor_theme(self, family, size):
-        for i in xrange(self._tabMain.count()):
+        for i in range(self._tabMain.count()):
             widget = self._tabMain.widget(i)
             if type(widget) is editor.Editor:
                 widget.restyle()
                 widget.set_font(family, size)
-        for i in xrange(self._tabSecondary.count()):
+        for i in range(self._tabSecondary.count()):
             widget = self._tabSecondary.widget(i)
             if type(widget) is editor.Editor:
                 widget.restyle()
