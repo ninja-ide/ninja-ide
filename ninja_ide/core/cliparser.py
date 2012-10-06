@@ -22,6 +22,13 @@ import sys
 import ninja_ide
 
 
+try:
+    # For Python2
+    str = unicode  # lint:ok
+except NameError:
+    # We are in Python3
+    pass
+
 usage = "$python ninja-ide.py <option, [option3...option n]>"
 
 epilog = ("This program comes with ABSOLUTELY NO WARRANTY."
@@ -80,7 +87,7 @@ except ImportError:
                 final_nargs = nargs
         return final_nargs
 
-    def _get_parser():
+    def _get_parser():  # lint:ok
         global usage
         global epilog
 
