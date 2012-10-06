@@ -16,6 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import unicode_literals
 
+import sys
 import os
 import re
 import threading
@@ -24,6 +25,11 @@ import shutil
 from PyQt4 import QtCore
 
 from ninja_ide.core import settings
+
+if sys.version_info.major == 3:
+    python3 = True
+else:
+    python3 = False
 
 
 #Lock to protect the file's writing operation
@@ -148,7 +154,9 @@ def read_file_content(fileName):
         with open(fileName, mode='rU') as f:
             content = f.read()
             encoding = get_file_encoding(content)
-            content.decode(encoding)
+            print(python3)
+            if not python3:
+                content.decode(encoding)
     except IOError as reason:
         raise NinjaIOException(reason)
     return content
