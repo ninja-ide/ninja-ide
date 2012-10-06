@@ -473,9 +473,10 @@ class __MainContainer(QSplitter):
                     use_open_highlight=True)
                 editorWidget.highlighter.set_open_visible_area(
                     positionIsLineNumber, cursorPosition)
+
                 #Add content
-                editorWidget.setPlainText(content)
                 editorWidget.ID = fileName
+                editorWidget.setPlainText(content)
                 editorWidget.async_highlight()
                 encoding = file_manager.get_file_encoding(content)
                 editorWidget.encoding = encoding
@@ -487,10 +488,16 @@ class __MainContainer(QSplitter):
                     editorWidget.go_to_line(cursorPosition)
                 self.add_standalone_watcher(editorWidget.ID, notStart)
 
+                #New file then try to add a coding line
+                if not content:
+                    helpers.insert_coding_line(editorWidget)
+                    self.save_file(editorWidget=editorWidget)
+
                 if not editorWidget.has_write_permission():
                     fileName += self.tr(" (Read-Only)")
                     index = self.actualTab.currentIndex()
                     self.actualTab.setTabText(index, fileName)
+
             else:
                 self.move_to_open(fileName)
                 editorWidget = self.get_actual_editor()
