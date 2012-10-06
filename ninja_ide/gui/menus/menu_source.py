@@ -80,6 +80,8 @@ class MenuSource(QObject):
         menu_debugging = menuSource.addMenu(self.tr("Debugging Tricks"))
         insertPrints = menu_debugging.addAction(
             self.tr("Insert Prints per selected line."))
+        insertPdb = menu_debugging.addAction(
+            self.tr("Insert pdb.set_trace()"))
 #        organizeImportsAction = menuSource.addAction(
 #            self.tr("&Organize Imports"))
 #        removeUnusedImportsAction = menuSource.addAction(
@@ -154,3 +156,5 @@ class MenuSource(QObject):
             actions.Actions().editor_remove_line)
         self.connect(insertPrints, SIGNAL("triggered()"),
             actions.Actions().editor_insert_debugging_prints)
+        self.connect(insertPdb, SIGNAL("triggered()"),
+            actions.Actions().editor_insert_pdb)

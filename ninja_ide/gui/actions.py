@@ -636,6 +636,12 @@ class __Actions(QObject):
         if editorWidget:
             helpers.insert_debugging_prints(editorWidget)
 
+    def editor_insert_pdb(self):
+        """Insert a pdb.set_trace() statement in tjhe current line."""
+        editorWidget = self.ide.mainContainer.get_actual_editor()
+        if editorWidget:
+            helpers.insert_pdb(editorWidget)
+
     def editor_comment(self):
         """Mark the current line or selection as a comment."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
