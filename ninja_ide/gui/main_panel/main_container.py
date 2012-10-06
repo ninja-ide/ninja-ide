@@ -513,7 +513,6 @@ class __MainContainer(QSplitter):
                 QMessageBox.information(self,
                     self.tr("The file couldn't be open"), reason)
         except Exception as reason:
-            raise
             logger.error('open_file: %s', reason)
         self.actualTab.notOpening = True
 
