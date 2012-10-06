@@ -308,8 +308,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         else:
             self.emit(SIGNAL("cleanDocument(QPlainTextEdit)"), self)
         if self.highlighter:
-            lines = list(set(self.errors.errorsSummary.keys() +
-                        self.pep8.pep8checks.keys()))
+            lines = list(set(list(self.errors.errorsSummary.keys()) +
+                        list(self.pep8.pep8checks.keys())))
             self.highlighter.rehighlight_lines(lines)
 
     def has_write_permission(self):
