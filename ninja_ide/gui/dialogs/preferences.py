@@ -16,6 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
 import os
 import copy
@@ -553,13 +554,12 @@ class InterfaceTab(QWidget):
     def toolbar_item_added(self):
         data = self._comboToolbarItems.itemData(
             self._comboToolbarItems.currentIndex())
-        data = str(data.toString())
         if data not in self.toolbar_settings or data == 'separator':
             selected = self.actionGroup.checkedAction()
             if selected is None:
                 self.toolbar_settings.append(data)
             else:
-                dataAction = str(selected.data().toString())
+                dataAction = selected.data()
                 self.toolbar_settings.insert(
                     self.toolbar_settings.index(dataAction) + 1, data)
             self._load_toolbar()
@@ -567,7 +567,6 @@ class InterfaceTab(QWidget):
     def toolbar_item_removed(self):
         data = self._comboToolbarItems.itemData(
             self._comboToolbarItems.currentIndex())
-        data = str(data.toString())
         if data in self.toolbar_settings and data != 'separator':
             self.toolbar_settings.pop(self.toolbar_settings.index(data))
             self._load_toolbar()
@@ -810,7 +809,7 @@ class EditorGeneral(QWidget):
         for item in self._schemes:
             self._listScheme.addItem(item)
         items = self._listScheme.findItems(
-            qsettings.value('scheme', '').toString(), Qt.MatchExactly)
+            qsettings.value('scheme', ''), Qt.MatchExactly)
         if items:
             self._listScheme.setCurrentItem(items[0])
         else:
@@ -841,7 +840,7 @@ class EditorGeneral(QWidget):
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('editor')
         self._schemes = json_manager.load_editor_skins()
-        self._selected_scheme = qsettings.value('scheme', '').toString()
+        self._selected_scheme = qsettings.value('scheme', '')
         qsettings.endGroup()
         qsettings.endGroup()
 

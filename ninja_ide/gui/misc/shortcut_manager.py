@@ -270,7 +270,7 @@ class ShortcutConfiguration(QWidget):
             return
 
         self.shortcut_dialog.set_shortcut(
-            QKeySequence(item.text(1)).toString())
+            QKeySequence(item.text(1)))
         self.shortcut_dialog.exec_()
 
     def save(self):

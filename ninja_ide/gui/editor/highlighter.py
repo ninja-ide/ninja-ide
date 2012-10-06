@@ -17,6 +17,7 @@
 # based on Python Syntax highlighting from:
 # http://diotavelli.net/PyQtWiki/Python%20syntax%20highlighting
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QTextCharFormat

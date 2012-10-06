@@ -122,10 +122,10 @@ class PluginsManagerWidget(QDialog):
         self._reload_plugins()
 
     def show_plugin_info(self, data):
-        plugin_description = data[2].toString().replace('\n', '<br>')
-        html = HTML_STYLE.format(name=data[0].toString(),
-            version=data[1].toString(), description=plugin_description,
-            author=data[3].toString(), link=data[4].toString())
+        plugin_description = data[2].replace('\n', '<br>')
+        html = HTML_STYLE.format(name=data[0],
+            version=data[1], description=plugin_description,
+            author=data[3], link=data[4])
         self._txt_data.setHtml(html)
 
     def _open_link(self, url):
