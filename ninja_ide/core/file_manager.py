@@ -116,8 +116,8 @@ def _search_coding_line(txt):
     """Search a pattern like this: # -*- coding: utf-8 -*-."""
     coding_pattern = "coding[:=]\s*([-\w.]+)"
     pat_coding = re.search(coding_pattern, txt)
-    if pat_coding and unicode(pat_coding.groups()[0]) != 'None':
-        return unicode(pat_coding.groups()[0])
+    if pat_coding and pat_coding.groups()[0] != 'None':
+        return pat_coding.groups()[0]
     return None
 
 
@@ -147,8 +147,8 @@ def read_file_content(fileName):
             content = f.read()
             encoding = get_file_encoding(content)
             content.decode(encoding)
-    except IOError, reason:
-        raise NinjaIOException(unicode(reason))
+    except IOError as reason:
+        raise NinjaIOException(reason)
     return content
 
 

@@ -14,6 +14,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+from __future__ import unicode_literals
 
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QTextCursor
@@ -54,7 +55,7 @@ class CodeCompletionWidget(QFrame):
 
         self.cc = code_completion.CodeCompletion()
         self._completion_results = {}
-        self._prefix = u''
+        self._prefix = ''
         self.setVisible(False)
         self.source = ''
         self._key_operations = {

@@ -110,14 +110,14 @@ class ErrorsWidget(QWidget):
     def errors_selected(self):
         editorWidget = main_container.MainContainer().get_actual_editor()
         if editorWidget and self._outRefresh:
-            lineno = self.listErrors.currentItem().data(Qt.UserRole).toInt()[0]
+            lineno = int(self.listErrors.currentItem().data(Qt.UserRole))
             editorWidget.jump_to_line(lineno)
             editorWidget.setFocus()
 
     def pep8_selected(self):
         editorWidget = main_container.MainContainer().get_actual_editor()
         if editorWidget and self._outRefresh:
-            lineno = self.listPep8.currentItem().data(Qt.UserRole).toInt()[0]
+            lineno = int(self.listPep8.currentItem().data(Qt.UserRole))
             editorWidget.jump_to_line(lineno)
             editorWidget.setFocus()
 

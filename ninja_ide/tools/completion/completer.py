@@ -21,7 +21,10 @@ from __future__ import absolute_import
 import sys
 import types
 #import inspect
-import StringIO
+try:
+    import StringIO
+except:
+    import io as StringIO
 from ninja_ide.tools.logger import NinjaLogger
 
 logger = NinjaLogger('ninja_ide.tools.completion.completer')
@@ -47,7 +50,7 @@ def get_completions_per_type(object_dir):
         sig = ""
         try:
             obj = _load_symbol(attr, globals(), locals())
-        except Exception, ex:
+        except Exception as ex:
             logger.error('Could not load symbol: %r', ex)
             return {}
 
@@ -102,7 +105,8 @@ def _import_modules(imports, dglobals):
     if imports is not None:
         for stmt in imports:
             try:
-                exec stmt in dglobals
+                for stmt in dglobals:
+                    exec(stmt)
             except TypeError:
                 raise TypeError('invalid type: %s' % stmt)
             except Exception:
@@ -124,7 +128,6 @@ def get_all_completions(s, imports=None):
             continue
         try:
             try:
-                s = unicode(s)
                 if s.startswith('PyQt4.') and s.endswith(')'):
                     s = s[:s.rindex('(')]
                 sym = eval(s, globals(), dlocals)

@@ -15,10 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
 import sys
 import os
 import time
+import datetime
 
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QVBoxLayout
@@ -127,16 +129,15 @@ class WebPluginList(QListWidget):
         settings = QSettings()
         listByFavorites = []
         listNoneFavorites = []
-        recent_projects_dict = settings.value(
-                  'recentProjects', {}).toMap()
+        recent_projects_dict = dict(settings.value('recentProjects', {}))
         #Filter for favorites
-        for recent_project_path, content in recent_projects_dict.iteritems():
-            if content.toMap()[u"isFavorite"].toBool():
+        for recent_project_path, content in recent_projects_dict.items():
+            if bool(dict(content)["isFavorite"]):
                 listByFavorites.append((recent_project_path,
-                    content.toMap()[u"lastopen"].toDateTime()))
+                    content["lastopen"]))
             else:
                 listNoneFavorites.append((recent_project_path,
-                    content.toMap()[u"lastopen"].toDateTime()))
+                    content["lastopen"]))
         if len(listByFavorites) > 1:
             # sort by date favorites
             listByFavorites = sorted(listByFavorites,

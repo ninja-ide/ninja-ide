@@ -257,7 +257,7 @@ class MainService(QObject):
         """
         Signal emitted after save a file
         """
-        fileName = unicode(fileName.split(":")[-1]).strip()
+        fileName = fileName.split(":")[-1].strip()
         self.fileSaved.emit(fileName)
 
     def _currentTabChanged(self, fileName):

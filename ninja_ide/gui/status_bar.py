@@ -322,8 +322,8 @@ class SearchWidget(QWidget):
     def find_matches(self, editor):
         if editor is None:
             return
-        text = unicode(editor.toPlainText())
-        search = unicode(self._line.text())
+        text = editor.toPlainText()
+        search = self._line.text()
         hasSearch = len(search) > 0
         if self._checkWholeWord.isChecked():
             pattern = r'\b%s\b' % search

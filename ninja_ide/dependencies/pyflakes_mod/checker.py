@@ -2,15 +2,20 @@
 # (c) 2005-2008 Divmod, Inc.
 # See LICENSE file for details
 
-import __builtin__
 import os.path
 from compiler import ast
+#lint:disable
+try:
+    import builtins
+except ImportError:
+    import __builtin__ as builtins
+#lint:enable
 
 from ninja_ide.core import settings
 from ninja_ide.dependencies.pyflakes_mod import messages
 
 
-PYTHON_BUILTINS = dir(__builtin__)
+PYTHON_BUILTINS = dir(builtins)
 
 
 class Binding(object):
@@ -34,10 +39,11 @@ class Binding(object):
         return self.name
 
     def __repr__(self):
-        return '<%s object %r from line %r at 0x%x>' % (self.__class__.__name__,
-                                                        self.name,
-                                                        self.source.lineno,
-                                                        id(self))
+        return '<%s object %r from line %r at 0x%x>' % (
+                                                    self.__class__.__name__,
+                                                    self.name,
+                                                    self.source.lineno,
+                                                    id(self))
 
 
 class UnBinding(Binding):
@@ -134,7 +140,7 @@ class ModuleScope(Scope):
     pass
 
 
-# Globally defined names which are not attributes of the __builtin__ module.
+# Globally defined names which are not attributes of the builtins module.
 _MAGIC_GLOBALS = ['__file__', '__builtins__']
 
 
@@ -216,22 +222,22 @@ class Checker(object):
         for scope in self.dead_scopes:
             export = isinstance(scope.get('__all__'), ExportBinding)
             if export:
-                all = scope['__all__'].names()
+                alls = scope['__all__'].names()
                 if os.path.split(self.filename)[1] != '__init__.py':
                     # Look for possible mistakes in the export list
-                    undefined = set(all) - set(scope)
+                    undefined = set(alls) - set(scope)
                     for name in undefined:
                         self.report(
                             messages.UndefinedExport,
                             scope['__all__'].source.lineno,
                             name)
             else:
-                all = []
+                alls = []
 
             # Look for imported names that aren't used.
             for importation in scope.itervalues():
                 if isinstance(importation, Importation):
-                    if not importation.used and importation.name not in all:
+                    if not importation.used and importation.name not in alls:
                         self.report(
                             messages.UnusedImport,
                             importation.source.lineno,
@@ -299,7 +305,7 @@ class Checker(object):
                 existing = scope.get(value.name)
                 if (isinstance(existing, Importation)
                         and not existing.used
-                        and (not isinstance(value, Importation) or \
+                        and (not isinstance(value, Importation) or
                         value.fullName == existing.fullName)
                         and reportRedef):
 
@@ -315,7 +321,7 @@ class Checker(object):
             self.scope[value.name] = value
 
         if settings.CHECK_FOR_DOCSTRINGS and \
-           ((value.__class__ is FunctionDefinition) or \
+           ((value.__class__ is FunctionDefinition) or
            (value.source.__class__.__name__.upper() == "CLASS")):
             doc = value.source.doc
             if doc is None:
@@ -358,17 +364,17 @@ class Checker(object):
         """
         Process bindings for loop variables.
         """
-        vars = []
+        variables = []
 
         def collectLoopVars(n):
             if hasattr(n, 'name'):
-                vars.append(n.name)
+                variables.append(n.name)
             else:
                 for c in n.getChildNodes():
                     collectLoopVars(c)
 
         collectLoopVars(node.assign)
-        for varn in vars:
+        for varn in variables:
             if (isinstance(self.scope.get(varn), Importation)
                     # unused ones will get an unused import warning
                     and self.scope[varn].used):
@@ -409,7 +415,7 @@ class Checker(object):
         try:
             self.scopeStack[0][node.name].used = (self.scope, node.lineno)
         except KeyError:
-            if ((not hasattr(__builtin__, node.name))
+            if ((not hasattr(builtins, node.name))
                     and node.name not in _MAGIC_GLOBALS
                     and not importStarred):
                 if (os.path.basename(self.filename) == '__init__.py' and
@@ -543,7 +549,6 @@ class Checker(object):
         for name, alias in node.names:
             if name == '*':
                 self.scope.importStarred = True
-                #self.report(messages.ImportStarUsed, node.lineno, node.modname)
                 continue
             name = alias or name
             importation = Importation(name, node)

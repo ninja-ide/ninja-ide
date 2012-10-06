@@ -120,7 +120,7 @@ class PreferencesWidget(QDialog):
         self.close()
 
     def _save(self):
-        for i in xrange(self._tabs.count()):
+        for i in range(self._tabs.count()):
             self._tabs.widget(i).save()
         self.close()
 
@@ -146,7 +146,7 @@ class GeneralTab(QWidget):
         vbox.addWidget(self._tabs)
 
     def save(self):
-        for i in xrange(self._tabs.count()):
+        for i in range(self._tabs.count()):
             self._tabs.widget(i).save()
 
 
@@ -206,9 +206,9 @@ class GeneralConfiguration(QWidget):
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('general')
         self._checkLastSession.setChecked(
-            qsettings.value('loadFiles', True).toBool())
+            qsettings.value('loadFiles', 'true') == 'true')
         self._checkActivatePlugins.setChecked(
-            qsettings.value('activatePlugins', True).toBool())
+            qsettings.value('activatePlugins', 'true') == 'true')
         self._checkNotifyUpdates.setChecked(settings.NOTIFY_UPDATES)
         self._checkShowStartPage.setChecked(settings.SHOW_START_PAGE)
         self._checkConfirmExit.setChecked(settings.CONFIRM_EXIT)
@@ -745,7 +745,7 @@ class EditorTab(QWidget):
         vbox.addWidget(self._tabs)
 
     def save(self):
-        for i in xrange(self._tabs.count()):
+        for i in range(self._tabs.count()):
             self._tabs.widget(i).save()
 
 
@@ -1473,7 +1473,7 @@ class EditorSchemeDesigner(QWidget):
                 btnSidebarForeground))
 
         # Connect Buttons
-        for i in xrange(0, 26):
+        for i in range(0, 26):
             item = grid.itemAtPosition(i, 1).widget()
             btn = grid.itemAtPosition(i, 2).widget()
             self.connect(item, SIGNAL("returnPressed()"),
@@ -1801,7 +1801,7 @@ class ThemeDesigner(QWidget):
             QMessageBox.information(self, self.tr("Style Sheet Saved"),
                 self.tr("Theme saved at: '%s'." % file_name))
             self.edit_qss.document().setModified(False)
-        except file_manager.NinjaFileExistsException, ex:
+        except file_manager.NinjaFileExistsException as ex:
             QMessageBox.information(self, self.tr("File Already Exists"),
                 self.tr("Invalid File Name: the file '%s' already exists." %
                     ex.filename))

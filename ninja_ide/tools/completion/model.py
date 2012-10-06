@@ -33,7 +33,7 @@ def filter_data_type(data_types):
             occurrences[type_.name] = item
     values = [occurrences[key][0] for key in occurrences]
     maximum = max(values)
-    data_type = [occurrences[key][1] for key in occurrences \
+    data_type = [occurrences[key][1] for key in occurrences
                 if occurrences[key][0] == maximum]
     return data_type[0]
 
@@ -199,7 +199,7 @@ class Module(Structure):
             if value is not None and value.__class__ is not Clazz:
                 data_type = value.get_data_type()
                 result['found'], result['type'] = True, data_type
-                if child_attrs or (isinstance(data_type, basestring) and \
+                if child_attrs or (isinstance(data_type, basestring) and
                    data_type.endswith(main_attr)):
                     result['main_attr_replace'] = True
             elif value.__class__ is Clazz:
@@ -385,8 +385,8 @@ class Function(Structure):
             self.return_type.append(info)
 
     def get_data_type(self):
-        possible = [d.data_type for d in self.return_type \
-                    if d.data_type is not late_resolution and \
+        possible = [d.data_type for d in self.return_type
+                    if d.data_type is not late_resolution and
                     d.data_type is not None]
         if possible:
             return filter_data_type(possible)
@@ -407,7 +407,7 @@ class Assign(object):
             self.data.append(info)
 
     def get_data_type(self):
-        possible = [d.data_type for d in self.data \
+        possible = [d.data_type for d in self.data
                     if d.data_type is not late_resolution]
         if possible:
             return filter_data_type(possible)
