@@ -92,6 +92,7 @@ before the docstring, you can use \n for newline, \t for tab and \s
 for space.
 
 """
+from __future__ import unicode_literals
 
 __version__ = '1.3.4a0'
 
