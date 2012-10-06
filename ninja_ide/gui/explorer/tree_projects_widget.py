@@ -435,9 +435,6 @@ class TreeProjectsWidget(QTreeWidget):
                 subitem.setIcon(0, self._get_file_icon(name))
                 mainContainer = main_container.MainContainer()
                 mainContainer.open_file(fileName)
-                editorWidget = mainContainer.get_actual_editor()
-                editorWidget.textCursor().insertText("# -*- coding: utf-8 *-*")
-                main_container.MainContainer().save_file()
             except file_manager.NinjaFileExistsException as ex:
                 QMessageBox.information(self, self.tr("File Already Exists"),
                     self.tr("Invalid Path: the file '%s' already exists." %
