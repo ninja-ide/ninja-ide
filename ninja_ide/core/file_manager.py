@@ -154,7 +154,6 @@ def read_file_content(fileName):
         with open(fileName, mode='rU') as f:
             content = f.read()
             encoding = get_file_encoding(content)
-            print(python3)
             if not python3:
                 content.decode(encoding)
     except IOError as reason:
