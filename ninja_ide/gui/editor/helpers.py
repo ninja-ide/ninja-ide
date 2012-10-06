@@ -192,6 +192,13 @@ def insert_debugging_prints(editorWidget):
         cursor.endEditBlock()
 
 
+def insert_pdb(editorWidget):
+    """Insert a pdb statement into the current line to debug code."""
+    cursor = editorWidget.textCursor()
+    indentation = get_indentation(cursor.block().text())
+    cursor.insertText("\n%simport pdb; pdb.set_trace()" % indentation)
+
+
 def move_up(editorWidget):
     cursor = editorWidget.textCursor()
     block_actual = cursor.block()
@@ -518,7 +525,8 @@ def check_for_assistance_completion(editorWidget, line):
                if init.startswith('__init__')]:
                 return
         editorWidget.textCursor().insertText('\n')
-        indent = get_indentation(line, editorWidget.indent, editorWidget.useTabs)
+        indent = get_indentation(
+            line, editorWidget.indent, editorWidget.useTabs)
         editorWidget.textCursor().insertText(indent + 'def __init__(self):\n')
         if editorWidget.useTabs:
             indent += '\t'
