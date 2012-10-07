@@ -15,21 +15,22 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
-import unittest
+from __future__ import unicode_literals
 from ninja_ide.gui.editor import highlighter
 from PyQt4.QtGui import QFont
+import unittest
 
 
 class HighlighterFormatTestCase(unittest.TestCase):
 
     def setUp(self):
-        self._old_font = u"Monospace"
+        self._old_font = "Monospace"
         highlighter.settings.FONT_FAMILY = self._old_font
         self._color = "#000000"
         self._a_format = highlighter.format(self._color)
         b_i_string = "bold italic"
         self._bold_italic = highlighter.format(self._color, b_i_string)
-        self._new_font = u"Arial"
+        self._new_font = "Arial"
         highlighter.settings.FONT_FAMILY = self._new_font
         self._new_font_format = highlighter.format(self._color)
 
