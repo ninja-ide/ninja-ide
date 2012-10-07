@@ -36,7 +36,9 @@ from PyQt4.QtCore import QTranslator
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QTextCodec
 from PyQt4.QtCore import QSize
+from PyQt4.QtCore import QSizeF
 from PyQt4.QtCore import QPoint
+from PyQt4.QtCore import QPointF
 from PyQt4.QtNetwork import QLocalServer
 
 from ninja_ide import resources
@@ -414,11 +416,14 @@ class __IDE(QMainWindow):
         qsettings = QSettings()
         if qsettings.value("window/maximized", 'true') == 'true':
             self.setWindowState(Qt.WindowMaximized)
-        else:
+        else: 
+            print dir(QSizeF) 
+
+
             self.resize(qsettings.value("window/size",
-                QSize(800, 600)).toSize())
+                QSizeF(800, 600)).toSize())
             self.move(qsettings.value("window/pos",
-                QPoint(100, 100)).toPoint())
+                QPointF(100, 100)).toPoint())
 
     def closeEvent(self, event):
         if self.s_listener:
