@@ -41,13 +41,13 @@ class MenuProject(QObject):
 #                    QKeySequence.NativeText)))
         runFileAction = menuProject.addAction(
             QIcon(resources.IMAGES['file-run']),
-            self.tr("Run File (%s)" %
+            self.tr(u"Run File (%s)".format( 
                 resources.get_shortcut("Run-file").toString(
-                    QKeySequence.NativeText)))
+                    QKeySequence.NativeText))))
         stopAction = menuProject.addAction(QIcon(resources.IMAGES['stop']),
-            self.tr("Stop (%s)" %
+            self.tr("Stop (%s)".format(
                 resources.get_shortcut("Stop-execution").toString(
-                    QKeySequence.NativeText)))
+                    QKeySequence.NativeText))))
         menuProject.addSeparator()
         projectPropertiesAction = menuProject.addAction(
             self.tr("Open Project Properties"))

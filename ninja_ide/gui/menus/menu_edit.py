@@ -36,37 +36,37 @@ class MenuEdit(QObject):
         QObject.__init__(self)
 
         undoAction = menuEdit.addAction(QIcon(resources.IMAGES['undo']),
-            self.tr("Undo (%s+Z)" % settings.OS_KEY))
+            self.tr(u"Undo (%s+Z)".format( settings.OS_KEY)))
         redoAction = menuEdit.addAction(QIcon(resources.IMAGES['redo']),
-            self.tr("Redo (%s)" % resources.get_shortcut("Redo").toString(
-                    QKeySequence.NativeText)))
+            self.tr(u"Redo (%s)".format( resources.get_shortcut("Redo").toString(
+                    QKeySequence.NativeText))))
         cutAction = menuEdit.addAction(QIcon(resources.IMAGES['cut']),
-            self.tr("&Cut (%s+X)" % settings.OS_KEY))
+            self.tr(u"&Cut (%s+X)".format(  settings.OS_KEY)))
         copyAction = menuEdit.addAction(QIcon(resources.IMAGES['copy']),
-            self.tr("&Copy (%s+C)" % settings.OS_KEY))
+            self.tr(u"&Copy (%s+C)".format( settings.OS_KEY)))
         pasteAction = menuEdit.addAction(QIcon(resources.IMAGES['paste']),
-            self.tr("&Paste (%s+V)" % settings.OS_KEY))
+            self.tr(u"&Paste (%s+V)".format(  settings.OS_KEY)))
         menuEdit.addSeparator()
         findAction = menuEdit.addAction(QIcon(resources.IMAGES['find']),
-            self.tr("Find (%s)" % resources.get_shortcut("Find").toString(
-                    QKeySequence.NativeText)))
+            self.tr(u"Find (%s)".format(  resources.get_shortcut("Find").toString(
+                    QKeySequence.NativeText))))
         findReplaceAction = menuEdit.addAction(
             QIcon(resources.IMAGES['findReplace']),
-            self.tr("Find/Replace (%s)" %
+            self.tr(u"Find/Replace (%s)".format( 
                 resources.get_shortcut("Find-replace").toString(
-                    QKeySequence.NativeText)))
+                    QKeySequence.NativeText))))
         findWithWordAction = menuEdit.addAction(
-            self.tr("Find using word under cursor (%s)" %
+            self.tr(u"Find using word under cursor (%s)".format( 
                 resources.get_shortcut("Find-with-word").toString(
-                    QKeySequence.NativeText)))
+                    QKeySequence.NativeText))))
         findInFilesAction = menuEdit.addAction(QIcon(resources.IMAGES['find']),
-            self.tr("Find in Files (%s)" %
+            self.tr(u"Find in Files (%s)".format( 
                 resources.get_shortcut("Find-in-files").toString(
-                    QKeySequence.NativeText)))
+                    QKeySequence.NativeText))))
         locatorAction = menuEdit.addAction(QIcon(resources.IMAGES['locator']),
-            self.tr("Code Locator (%s)" %
+            self.tr(u"Code Locator (%s)".format( 
                 resources.get_shortcut("Code-locator").toString(
-                    QKeySequence.NativeText)))
+                    QKeySequence.NativeText))))
         menuEdit.addSeparator()
         upperAction = menuEdit.addAction(
             self.tr("Convert selected Text to: UPPER"))

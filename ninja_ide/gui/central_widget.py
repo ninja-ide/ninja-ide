@@ -215,13 +215,13 @@ class LateralPanel(QWidget):
         self.combo = QComboBox()
         ui_tools.ComboBoxButton(self.combo, self.combo.clear,
             self.style().standardPixmap(self.style().SP_TrashIcon))
-        self.combo.setToolTip(self.tr("Select the item from the Paste "
+        self.combo.setToolTip(self.tr(u"Select the item from the Paste "
             "Historial list.\nYou can Copy items into this list with: "
-            "%s\nor Paste them using: %s" %
+            "%s\nor Paste them using: %s".format( 
                 (resources.get_shortcut("History-Copy").toString(
                     QKeySequence.NativeText),
                 resources.get_shortcut("History-Paste").toString(
-                    QKeySequence.NativeText))))
+                    QKeySequence.NativeText)))))
         self.combo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         hbox.addWidget(self.combo)
         vbox.addLayout(hbox)

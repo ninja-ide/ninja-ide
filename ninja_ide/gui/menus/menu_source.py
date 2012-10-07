@@ -34,24 +34,24 @@ class MenuSource(QObject):
 
         indentMoreAction = menuSource.addAction(
             QIcon(resources.IMAGES['indent-more']),
-            self.tr("Indent More (%s)" %
-                QKeySequence(Qt.Key_Tab).toString(QKeySequence.NativeText)))
+            self.tr(u"Indent More (%s)".format( 
+                QKeySequence(Qt.Key_Tab).toString(QKeySequence.NativeText))))
         indentLessAction = menuSource.addAction(
             QIcon(resources.IMAGES['indent-less']),
-            self.tr("Indent Less (%s)" %
+            self.tr(u"Indent Less (%s)".format(
                 resources.get_shortcut("Indent-less").toString(
-                    QKeySequence.NativeText)))
+                    QKeySequence.NativeText))))
         menuSource.addSeparator()
         commentAction = menuSource.addAction(
             QIcon(resources.IMAGES['comment-code']),
-            self.tr("Comment (%s)" %
+            self.tr(u"Comment (%s)".format( 
                 resources.get_shortcut("Comment").toString(
-                    QKeySequence.NativeText)))
+                    QKeySequence.NativeText))))
         unCommentAction = menuSource.addAction(
             QIcon(resources.IMAGES['uncomment-code']),
-            self.tr("Uncomment (%s)" %
+            self.tr(u"Uncomment (%s)".format(
                 resources.get_shortcut("Uncomment").toString(
-                    QKeySequence.NativeText)))
+                    QKeySequence.NativeText))))
         horizontalLineAction = menuSource.addAction(
             self.tr("Insert Horizontal Line (%s)" %
                 resources.get_shortcut("Horizontal-line").toString(
@@ -68,15 +68,15 @@ class MenuSource(QObject):
 #        tellTaleAction.setEnabled(False)
         goToDefinitionAction = menuSource.addAction(
             QIcon(resources.IMAGES['go-to-definition']),
-            self.tr("Go To Definition (%s or %s+Click)" %
+            self.tr(u"Go To Definition (%s or %s+Click)".format( 
                 (resources.get_shortcut("Go-to-definition").toString(
                     QKeySequence.NativeText),
-                settings.OS_KEY)))
+                settings.OS_KEY))))
         insertImport = menuSource.addAction(
             QIcon(resources.IMAGES['insert-import']),
-            self.tr("Insert &Import (%s)" %
+            self.tr(u"Insert &Import (%s)".format( 
                 resources.get_shortcut("Import").toString(
-                    QKeySequence.NativeText)))
+                    QKeySequence.NativeText))))
         menu_debugging = menuSource.addMenu(self.tr("Debugging Tricks"))
         insertPrints = menu_debugging.addAction(
             self.tr("Insert Prints per selected line."))
@@ -93,20 +93,20 @@ class MenuSource(QObject):
             self.tr("&Remove Trailing Spaces"))
         replaceTabsSpaces = menuSource.addAction(
             self.tr("Replace Tabs With &Spaces"))
-        moveUp = menuSource.addAction(self.tr("Move &Up (%s)" %
+        moveUp = menuSource.addAction(self.tr(u"Move &Up (%s)".format( 
             resources.get_shortcut("Move-up").toString(
-                QKeySequence.NativeText)))
-        moveDown = menuSource.addAction(self.tr("Move &Down (%s)" %
+                QKeySequence.NativeText))))
+        moveDown = menuSource.addAction(self.tr(u"Move &Down (%s)".format( 
             resources.get_shortcut("Move-down").toString(
-                QKeySequence.NativeText)))
+                QKeySequence.NativeText))))
         duplicate = menuSource.addAction(
-            self.tr("Duplica&te (%s)" %
+            self.tr("Duplica&te (%s)".format( 
                 resources.get_shortcut("Duplicate").toString(
-                    QKeySequence.NativeText)))
+                    QKeySequence.NativeText))))
         remove = menuSource.addAction(
-            self.tr("&Remove Line (%s)" %
+            self.tr(u"&Remove Line (%s)".format( 
                 resources.get_shortcut("Remove-line").toString(
-                    QKeySequence.NativeText)))
+                    QKeySequence.NativeText))))
 
         self.toolbar_items = {
             'indent-more': indentMoreAction,
