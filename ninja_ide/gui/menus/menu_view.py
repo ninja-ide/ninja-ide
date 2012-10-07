@@ -58,9 +58,9 @@ class MenuView(QObject):
         self.hideToolbarAction.setCheckable(True)
         self.fullscreenAction = menuView.addAction(
             QIcon(resources.IMAGES['fullscreen']),
-            self.tr("Full Screen &Mode (%s)" %
+            self.tr(u"Full Screen &Mode (%s)".format( 
                 resources.get_shortcut("Full-screen").toString(
-                    QKeySequence.NativeText)))
+                    QKeySequence.NativeText))))
         menuView.addSeparator()
         splitTabHAction = menuView.addAction(
             QIcon(resources.IMAGES['splitH']),
@@ -74,9 +74,9 @@ class MenuView(QObject):
                     QKeySequence.NativeText)))
         followModeAction = menuView.addAction(
             QIcon(resources.IMAGES['follow']),
-            self.tr("Follow Mode (%s)" %
+            self.tr(u"Follow Mode (%s)".format( 
                 resources.get_shortcut("Follow-mode").toString(
-                    QKeySequence.NativeText)))
+                    QKeySequence.NativeText))))
         groupTabsAction = menuView.addAction(self.tr("Group Tabs by Project"))
         deactivateGroupTabsAction = menuView.addAction(
             self.tr("Deactivate Group Tabs"))
