@@ -27,6 +27,14 @@ from ninja_ide import resources
 
 class MenuFile(QObject):
 
+###############################################################################
+# MENU FILE SIGNALS
+###############################################################################
+    """
+    openFile(QString)
+    """
+###############################################################################
+
     def __init__(self, menuFile, toolbar, ide):
         QObject.__init__(self)
 
@@ -69,6 +77,7 @@ class MenuFile(QObject):
             self.tr("Open &Project (%s)" %
                 resources.get_shortcut("Open-project").toString(
                     QKeySequence.NativeText)))
+        self.recent_files = menuFile.addMenu(self.tr('Open Recent Files'))
         menuFile.addSeparator()
         activateProfileAction = menuFile.addAction(
             QIcon(resources.IMAGES['activate-profile']),
@@ -139,3 +148,16 @@ class MenuFile(QObject):
             ide.actions.deactivate_profile)
         self.connect(activateProfileAction, SIGNAL("triggered()"),
             ide.actions.activate_profile)
+        self.connect(self.recent_files, SIGNAL("triggered(QAction*)"),
+            self._open_file)
+
+    def update_recent_files(self, files):
+        """Recreate the recent files menu."""
+        self.recent_files.clear()
+        for file_ in files:
+            self.recent_files.addAction(file_)
+
+    def _open_file(self, action):
+        """Open the file selected in the recent files menu."""
+        path = action.text()
+        self.emit(SIGNAL("openFile(QString)"), path)

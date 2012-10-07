@@ -15,13 +15,21 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
-
 import os
-import urllib2
+#lint:disable
+try:
+    from urllib.request import urlopen
+    from urllib.error import URLError
+except ImportError:
+    from urllib2 import urlopen
+    from urllib2 import URLError
+#lint:enable
 
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QVBoxLayout
+from PyQt4.QtGui import QHBoxLayout
+from PyQt4.QtGui import QSpacerItem
+from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QTabWidget
 from PyQt4.QtGui import QTableWidget
 from PyQt4.QtGui import QPushButton
@@ -45,9 +53,14 @@ class ThemesManagerWidget(QDialog):
         vbox = QVBoxLayout(self)
         self._tabs = QTabWidget()
         vbox.addWidget(self._tabs)
+        # Footer
+        hbox = QHBoxLayout()
+        btn_close = QPushButton(self.tr('Close'))
         btnReload = QPushButton(self.tr("Reload"))
-        btnReload.setMaximumWidth(100)
-        vbox.addWidget(btnReload)
+        hbox.addWidget(btn_close)
+        hbox.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
+        hbox.addWidget(btnReload)
+        vbox.addLayout(hbox)
         self.overlay = ui_tools.Overlay(self)
         self.overlay.show()
 
@@ -59,6 +72,7 @@ class ThemesManagerWidget(QDialog):
         self.connect(btnReload, SIGNAL("clicked()"), self._reload_themes)
         self._thread = ui_tools.ThreadExecution(self.execute_thread)
         self.connect(self._thread, SIGNAL("finished()"), self.load_skins_data)
+        self.connect(btn_close, SIGNAL('clicked()'), self.close)
         self._reload_themes()
 
     def _reload_themes(self):
@@ -87,14 +101,14 @@ class ThemesManagerWidget(QDialog):
 
     def execute_thread(self):
         try:
-            descriptor_schemes = urllib2.urlopen(resources.SCHEMES_URL)
+            descriptor_schemes = urlopen(resources.SCHEMES_URL)
             schemes = json_manager.parse(descriptor_schemes)
             schemes = [(d['name'], d['download']) for d in schemes]
             local_schemes = self.get_local_schemes()
-            schemes = [schemes[i] for i in range(len(schemes)) if \
+            schemes = [schemes[i] for i in range(len(schemes)) if
                 os.path.basename(schemes[i][1]) not in local_schemes]
             self._schemes = schemes
-        except urllib2.URLError:
+        except URLError:
             self._schemes = []
 
     def get_local_schemes(self):
@@ -111,11 +125,11 @@ class ThemesManagerWidget(QDialog):
     def download(self, url, folder):
         fileName = os.path.join(folder, os.path.basename(url))
         try:
-            content = urllib2.urlopen(url)
+            content = urlopen(url)
             f = open(fileName, 'w')
             f.write(content.read())
             f.close()
-        except urllib2.URLError:
+        except URLError:
             return
 
 

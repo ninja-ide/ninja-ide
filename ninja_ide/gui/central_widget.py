@@ -106,14 +106,12 @@ class __CentralWidget(QWidget):
         self._splitterArea.insertWidget(0, self._splitterMain)
         qsettings = QSettings()
         #Lists of sizes as list of QVariant- heightList = [QVariant, QVariant]
-        heightList = qsettings.value("window/central/mainSize",
-            [(self.height() / 3) * 2, self.height() / 3]).toList()
-        widthList = qsettings.value("window/central/areaSize",
-            [(self.width() / 6) * 5, self.width() / 6]).toList()
-        self._splitterMainSizes = [
-            heightList[0].toInt()[0], heightList[1].toInt()[0]]
-        self._splitterAreaSizes = [
-            widthList[0].toInt()[0], widthList[1].toInt()[0]]
+        heightList = list(qsettings.value("window/central/mainSize",
+            [(self.height() / 3) * 2, self.height() / 3]))
+        widthList = list(qsettings.value("window/central/areaSize",
+            [(self.width() / 6) * 5, self.width() / 6]))
+        self._splitterMainSizes = [int(heightList[0]), int(heightList[1])]
+        self._splitterAreaSizes = [int(widthList[0]), int(widthList[1])]
         if not event.spontaneous():
             self.change_misc_visibility()
         if bin(settings.UI_LAYOUT)[-1] == '1':

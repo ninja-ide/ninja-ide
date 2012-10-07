@@ -22,7 +22,10 @@
 import re
 import token as tkn
 from tokenize import generate_tokens, TokenError
-from StringIO import StringIO
+try:
+    from StringIO import StringIO
+except:
+    from io import StringIO
 
 from ninja_ide.core import settings
 from ninja_ide.gui.editor import helpers
@@ -59,14 +62,16 @@ class CodeCompletion(object):
     def unload_module(self):
         self.cdaemon.unload_module(self.module_id)
 
-    def analyze_file(self, path, source=None):
+    def analyze_file(self, path, source=None, indent=settings.INDENT,
+        useTabs=settings.USE_TABS):
         if source is None:
             with open(path) as f:
                 source = f.read()
         split_last_lines = source.rsplit('\n', 2)
         if len(split_last_lines) > 1 and \
            split_last_lines[-2].endswith(':') and split_last_lines[-1] == '':
-            indent = helpers.get_indentation(split_last_lines[-2])
+            indent = helpers.get_indentation(split_last_lines[-2], indent,
+                useTabs)
             source += '%spass;' % indent
 
         self.module_id = path

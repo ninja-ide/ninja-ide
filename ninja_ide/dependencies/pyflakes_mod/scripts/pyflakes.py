@@ -35,7 +35,7 @@ def check(codeString, filename):
             if sys.version_info[:2] == (2, 4):
                 raise SyntaxError(None)
             raise
-    except (SyntaxError, IndentationError), value:
+    except (SyntaxError, IndentationError) as value:
         msg = value.args[0]
 
         (lineno, offset, text) = value.lineno, value.offset, value.text
@@ -75,7 +75,7 @@ def checkPath(filename):
     """
     try:
         return check(file(filename, 'U').read() + '\n', filename)
-    except IOError, msg:
+    except IOError as msg:
         return 1
 
 

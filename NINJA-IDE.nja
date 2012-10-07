@@ -1,5 +1,6 @@
 {
   "mainFile": "ninja-ide.py", 
+  "use-tabs": false, 
   "venv": "", 
   "relatedProjects": [], 
   "name": "NINJA-IDE", 
@@ -8,6 +9,7 @@
   "pythonPath": "python", 
   "preExecScript": "", 
   "programParams": "", 
+  "indentation": 4, 
   "PYTHONPATH": "", 
   "supported-extensions": [
     ".py", 

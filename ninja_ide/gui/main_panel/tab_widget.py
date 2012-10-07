@@ -63,6 +63,7 @@ class TabWidget(QTabWidget):
     syntaxChanged(QWidget, QString)
     reloadFile(QWidget)
     navigateCode(bool, int)
+    recentTabsModified(QStringList)
     """
 ###############################################################################
 
@@ -92,14 +93,20 @@ class TabWidget(QTabWidget):
         self.connect(self.navigator.btnNext, SIGNAL("clicked()"),
             lambda: self._navigate_code(True))
 
+    def get_recent_files_list(self):
+        return self.__lastOpened
+
     def _navigate_code(self, val):
         op = self.navigator.operation
         self.emit(SIGNAL("navigateCode(bool, int)"), val, op)
 
     def _add_to_last_opened(self, path):
-        self.__lastOpened.append(path)
-        if len(self.__lastOpened) > settings.MAX_REMEMBER_TABS:
-            self.__lastOpened = self.__lastOpened[1:]
+        if path not in self.__lastOpened:
+            self.__lastOpened.append(path)
+            if len(self.__lastOpened) > settings.MAX_REMEMBER_TABS:
+                self.__lastOpened = self.__lastOpened[1:]
+            self.emit(SIGNAL("recentTabsModified(QStringList)"),
+                self.__lastOpened)
 
     def add_tab(self, widget, title, index=None):
         try:
@@ -111,7 +118,7 @@ class TabWidget(QTabWidget):
             self.expand_tab_name(title)
             widget.setFocus()
             return inserted_index
-        except AttributeError, reason:
+        except AttributeError as reason:
             msg = "Widget couldn't be added, doesn't inherit from ITabWidget"
             logger.error('add_tab: %s', reason)
             logger.error(msg)
@@ -122,7 +129,7 @@ class TabWidget(QTabWidget):
         elif title not in self.titles:
             self.titles.append(title)
             return
-        indexes = [i for i in xrange(self.count())
+        indexes = [i for i in range(self.count())
             if type(self.widget(i)) is editor.Editor and
             self.tabText(i) == title and
             self.widget(i).ID]
@@ -228,14 +235,14 @@ class TabWidget(QTabWidget):
 
     def is_open(self, identifier):
         """Check if a Tab with id = identifier is open"""
-        for i in xrange(self.count()):
+        for i in range(self.count()):
             if self.widget(i) == identifier:
                 return i
         return -1
 
     def move_to_open(self, identifier):
         """Set the selected Tab for the widget with id = identifier"""
-        for i in xrange(self.count()):
+        for i in range(self.count()):
             if self.widget(i) == identifier:
                 self.setCurrentIndex(i)
                 return
@@ -306,17 +313,6 @@ class TabWidget(QTabWidget):
                     self.widget(i).get_cursor_position()])
                 self.widget(i)._sidebarWidget._save_breakpoints_bookmarks()
         return files
-
-#    def mouseMoveEvent(self, event):
-#        if event.buttons() != Qt.RightButton:
-#            return
-#        mimeData = QMimeData()
-#        drag = QDrag(self)
-#        drag.setMimeData(mimeData)
-#        drag.setHotSpot(event.pos() - self.rect().topLeft())
-#        dropAction = drag.start(Qt.MoveAction)
-#        if dropAction == Qt.MoveAction:
-#            self.close()
 
     def mousePressEvent(self, event):
         QTabWidget.mousePressEvent(self, event)
@@ -412,7 +408,8 @@ class TabWidget(QTabWidget):
 
     def _reopen_last_tab(self):
         self.emit(SIGNAL("reopenTab(QTabWidget, QString)"),
-        self, self.__lastOpened.pop())
+            self, self.__lastOpened.pop())
+        self.emit(SIGNAL("recentTabsModified(QStringList)"), self.__lastOpened)
 
     def _split_this_tab(self, orientation):
         self.emit(SIGNAL("splitTab(QTabWidget, int, bool)"),
@@ -423,21 +420,14 @@ class TabWidget(QTabWidget):
         QApplication.clipboard().setText(widget.ID, QClipboard.Clipboard)
 
     def _close_all_tabs(self):
-        for i in xrange(self.count()):
+        for i in range(self.count()):
             self.removeTab(0)
 
     def _close_all_tabs_except_this(self):
         self.tabBar().moveTab(self.currentIndex(), 0)
-        for i in xrange(self.count()):
+        for i in range(self.count()):
             if self.count() > 1:
                 self.removeTab(1)
-
-#    def dragEnterEvent(self, event):
-#        event.accept()
-#
-#    def dropEvent(self, event):
-#        event.accept()
-#        self.emit(SIGNAL("dropTab(QTabWidget)"), self)
 
     def _check_unsaved_tabs(self):
         """

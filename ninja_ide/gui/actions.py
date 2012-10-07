@@ -272,7 +272,7 @@ class __Actions(QObject):
             self.ide.mainContainer.change_tabs_visibility)
 
         key = Qt.Key_1
-        for i in xrange(10):
+        for i in range(10):
             if sys.platform == "darwin":
                 short = TabShortcuts(
                     QKeySequence(Qt.CTRL + Qt.ALT + key), self.ide, i)
@@ -294,6 +294,16 @@ class __Actions(QObject):
             SIGNAL("addToProject(QString)"), self._add_file_to_project)
         self.connect(self.ide.mainContainer,
             SIGNAL("openProject(QString)"), self.open_project)
+
+        # Not Configurable Shortcuts
+        self._shortEscStatus = QShortcut(QKeySequence(Qt.Key_Escape),
+            self.ide.status)
+        self._shortEscMisc = QShortcut(QKeySequence(Qt.Key_Escape),
+            self.ide.misc)
+        self.connect(self._shortEscStatus, SIGNAL("activated()"),
+            self.ide.status.hide_status)
+        self.connect(self._shortEscMisc, SIGNAL("activated()"),
+            self.ide.misc.hide)
 
     def update_shortcuts(self):
         """If the user update the key binded to any shortcut, update them."""
@@ -445,7 +455,7 @@ class __Actions(QObject):
             self.ide.mainContainer.actualTab.setTabText(
                 self.ide.mainContainer.actualTab.currentIndex(), name)
             editorWidget._file_saved()
-        except file_manager.NinjaFileExistsException, ex:
+        except file_manager.NinjaFileExistsException as ex:
             QMessageBox.information(self, self.tr("File Already Exists"),
                 self.tr("Invalid Path: the file '%s' already exists." %
                     ex.filename))
@@ -524,13 +534,13 @@ class __Actions(QObject):
         """Close the files related to this project."""
         if project:
             tabMain = self.ide.mainContainer._tabMain
-            for tabIndex in reversed(xrange(tabMain.count())):
+            for tabIndex in reversed(range(tabMain.count())):
                 if file_manager.belongs_to_folder(
                 project, tabMain.widget(tabIndex).ID):
                     tabMain.removeTab(tabIndex)
 
             tabSecondary = self.ide.mainContainer._tabSecondary
-            for tabIndex in reversed(xrange(tabSecondary.count())):
+            for tabIndex in reversed(range(tabSecondary.count())):
                 if file_manager.belongs_to_folder(
                 project, tabSecondary.widget(tabIndex).ID):
                     tabSecondary.removeTab(tabIndex)
@@ -616,7 +626,6 @@ class __Actions(QObject):
 
     def editor_indent_more(self):
         """Indent 1 position to the right for the current line or selection."""
-        print 'yes'
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget and editorWidget.hasFocus():
             editorWidget.indent_more()
@@ -626,6 +635,12 @@ class __Actions(QObject):
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
             helpers.insert_debugging_prints(editorWidget)
+
+    def editor_insert_pdb(self):
+        """Insert a pdb.set_trace() statement in tjhe current line."""
+        editorWidget = self.ide.mainContainer.get_actual_editor()
+        if editorWidget:
+            helpers.insert_pdb(editorWidget)
 
     def editor_comment(self):
         """Mark the current line or selection as a comment."""
@@ -800,8 +815,8 @@ class __Actions(QObject):
             self.__codeBack.append((editorWidget.ID,
                 editorWidget.textCursor().position()))
             self.__codeForward = []
-        self._locator.navigate_to(unicode(function),
-            unicode(filePath), isVariable)
+        self._locator.navigate_to(function,
+            filePath, isVariable)
 
     def update_explorer(self):
         """Update the symbols in the Symbol Explorer when a file is saved."""
@@ -946,7 +961,7 @@ class __Actions(QObject):
             if not projectName:
                 projectName = file_manager.get_basename(project)
             tabGroup = tab_group.TabGroup(project, projectName, self)
-            for index in reversed(xrange(
+            for index in reversed(range(
             self.ide.mainContainer._tabMain.count())):
                 widget = self.ide.mainContainer._tabMain.widget(index)
                 if type(widget) is editor.Editor and \
@@ -958,7 +973,7 @@ class __Actions(QObject):
 
     def deactivate_tabs_groups(self):
         """Deactivate tab grouping based in the project they belong."""
-        for index in reversed(xrange(
+        for index in reversed(range(
         self.ide.mainContainer._tabMain.count())):
             widget = self.ide.mainContainer._tabMain.widget(index)
             if type(widget) is tab_group.TabGroup:

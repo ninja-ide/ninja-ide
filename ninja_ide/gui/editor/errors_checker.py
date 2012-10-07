@@ -15,15 +15,22 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
 import re
-import compiler
+try:
+    import compiler
+except ImportError:
+    print('Errors checker not working in Python3')
 
 from PyQt4.QtCore import QThread
 
 from ninja_ide.core import file_manager
 from ninja_ide.core import settings
-from ninja_ide.dependencies.pyflakes_mod import checker
+try:
+    from ninja_ide.dependencies.pyflakes_mod import checker
+except ImportError:
+    print('Errors checker not working in Python3')
 
 
 class ErrorsChecker(QThread):
@@ -68,7 +75,7 @@ class ErrorsChecker(QThread):
                         message = self.errorsSummary[lineno]
                         message += [m.message % m.message_args]
                     self.errorsSummary[lineno] = message
-            except Exception, reason:
+            except Exception as reason:
                 message = ''
                 if hasattr(reason, 'msg'):
                     message = reason.msg

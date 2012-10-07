@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
 import sys
 
@@ -179,8 +180,13 @@ class __IDE(QMainWindow):
         self.trayIcon = updates.TrayIconUpdates(self)
         self.trayIcon.show()
 
+        self.connect(self._menuFile, SIGNAL("openFile(QString)"),
+            self.mainContainer.open_file)
         self.connect(self.mainContainer, SIGNAL("fileSaved(QString)"),
             self.show_status_message)
+        self.connect(self.mainContainer,
+            SIGNAL("recentTabsModified(QStringList)"),
+            self._menuFile.update_recent_files)
 
     def _process_connection(self):
         connection = self.s_listener.nextPendingConnection()
@@ -300,17 +306,19 @@ class __IDE(QMainWindow):
         self.mainContainer.actualTab.close_tab()
 
     def load_session_files_projects(self, filesTab1, filesTab2, projects,
-        current_file):
+        current_file, recent_files=None):
         self.mainContainer.open_files(filesTab1, notIDEStart=False)
         self.mainContainer.open_files(filesTab2, mainTab=False,
             notIDEStart=False)
         self.explorer.open_session_projects(projects, notIDEStart=False)
         if current_file:
             self.mainContainer.open_file(current_file, notStart=False)
+        if recent_files is not None:
+            self._menuFile.update_recent_files(recent_files)
 
     def open_file(self, filename):
         if filename:
-            self.mainContainer.open_file(unicode(filename))
+            self.mainContainer.open_file(filename)
 
     def open_project(self, project):
         if project:
@@ -331,10 +339,15 @@ class __IDE(QMainWindow):
 
     def change_window_title(self, title):
         if self.profile is None:
-            self.setWindowTitle('NINJA-IDE (EXPERIMENTAL) - %s' % title)
+            self.setWindowTitle('NINJA-IDE - %s' % title)
         else:
             self.setWindowTitle('NINJA-IDE (PROFILE: %s) - %s' % (
                 self.profile, title))
+        currentEditor = self.mainContainer.get_actual_editor()
+        if currentEditor is not None:
+            line = currentEditor.textCursor().blockNumber() + 1
+            col = currentEditor.textCursor().columnNumber()
+            self.central.lateralPanel.update_line_col(line, col)
 
     def wheelEvent(self, event):
         if event.modifiers() == Qt.ShiftModifier:
@@ -357,8 +370,8 @@ class __IDE(QMainWindow):
         current_file = ''
         if editor_widget is not None:
             current_file = editor_widget.ID
-        openedFiles = self.mainContainer.get_opened_documents()
-        if qsettings.value('preferences/general/loadFiles', True).toBool():
+        if qsettings.value('preferences/general/loadFiles', 'true') == 'true':
+            openedFiles = self.mainContainer.get_opened_documents()
             projects_obj = self.explorer.get_opened_projects()
             projects = [p.path for p in projects_obj]
             qsettings.setValue('openFiles/projects',
@@ -368,6 +381,8 @@ class __IDE(QMainWindow):
             if len(openedFiles) == 2:
                 qsettings.setValue('openFiles/secondaryTab', openedFiles[1])
             qsettings.setValue('openFiles/currentFile', current_file)
+            qsettings.setValue('openFiles/recentFiles',
+                self.mainContainer._tabMain.get_recent_files_list())
         qsettings.setValue('preferences/editor/bookmarks', settings.BOOKMARKS)
         qsettings.setValue('preferences/editor/breakpoints',
             settings.BREAKPOINTS)
@@ -387,8 +402,7 @@ class __IDE(QMainWindow):
         qsettings.setValue("window/central/mainSize",
             self.central.get_main_sizes())
         #Save the toolbar visibility
-        qsettings.setValue("window/hide_toolbar",
-            not self.toolbar.isVisible() and self.menuBar().isVisible())
+        qsettings.setValue("window/hide_toolbar", not self.toolbar.isVisible())
         #Save Profiles
         if self.profile is not None:
             self.actions.save_profile(self.profile)
@@ -398,7 +412,7 @@ class __IDE(QMainWindow):
     def load_window_geometry(self):
         """Load from QSettings the window size of de Ninja IDE"""
         qsettings = QSettings()
-        if qsettings.value("window/maximized", True).toBool():
+        if qsettings.value("window/maximized", 'true') == 'true':
             self.setWindowState(Qt.WindowMaximized)
         else:
             self.resize(qsettings.value("window/size",
@@ -480,9 +494,8 @@ def start(filenames=None, projects_path=None,
 
     #Translator
     qsettings = QSettings()
-    language = QLocale.system().language()
-    lang = qsettings.value(
-        'preferences/interface/language', language).toString() + '.qm'
+    language = QLocale.system().name()
+    lang = qsettings.value('preferences/interface/language', language) + '.qm'
     lang_path = file_manager.create_path(resources.LANGS, lang)
     if file_manager.file_exists(lang_path):
         settings.LANGUAGE = lang_path
@@ -527,8 +540,7 @@ def start(filenames=None, projects_path=None,
     #Loading Schemes
     splash.showMessage("Loading Schemes",
         Qt.AlignRight | Qt.AlignTop, Qt.black)
-    scheme = qsettings.value('preferences/editor/scheme',
-        "default").toString()
+    scheme = qsettings.value('preferences/editor/scheme', "default")
     if scheme != 'default':
         scheme = file_manager.create_path(resources.EDITOR_SKINS,
             scheme + '.color')
@@ -548,35 +560,53 @@ def start(filenames=None, projects_path=None,
     splash.showMessage("Loading Files and Projects",
         Qt.AlignRight | Qt.AlignTop, Qt.black)
     #Files in Main Tab
-    mainFiles = qsettings.value('openFiles/mainTab', []).toList()
+    main_files = qsettings.value('openFiles/mainTab', [])
+    if main_files is not None:
+        mainFiles = list(main_files)
+    else:
+        mainFiles = list()
     tempFiles = []
     for file_ in mainFiles:
-        fileData = file_.toList()
-        tempFiles.append((fileData[0].toString(), fileData[1].toInt()[0]))
+        fileData = list(file_)
+        tempFiles.append((fileData[0], int(fileData[1])))
     mainFiles = tempFiles
     #Files in Secondary Tab
-    secondaryFiles = qsettings.value('openFiles/secondaryTab', []).toList()
+    sec_files = qsettings.value('openFiles/secondaryTab', [])
+    if sec_files is not None:
+        secondaryFiles = list(sec_files)
+    else:
+        secondaryFiles = list()
     tempFiles = []
     for file_ in secondaryFiles:
-        fileData = file_.toList()
-        tempFiles.append((fileData[0].toString(), fileData[1].toInt()[0]))
+        fileData = list(file_)
+        tempFiles.append((fileData[0], int(fileData[1])))
     secondaryFiles = tempFiles
+    # Recent Files
+    recent = qsettings.value('openFiles/recentFiles', [])
+    if recent is not None:
+        recent_files = list(recent)
+    else:
+        recent_files = list()
+    recent_files = [file_ for file_ in recent_files]
     #Current File
-    current_file = qsettings.value('openFiles/currentFile', '').toString()
+    current_file = qsettings.value('openFiles/currentFile', '')
     #Projects
-    projects = qsettings.value('openFiles/projects', []).toList()
-    projects = [project.toString() for project in projects]
+    projects_list = qsettings.value('openFiles/projects', [])
+    if projects_list is not None:
+        projects = list(projects_list)
+    else:
+        projects = list()
+    projects = [project for project in projects]
     #Include files received from console args
-    file_with_nro = map(lambda f: (f[0], f[1] - 1), zip(filenames, linenos))
-    file_without_nro = map(lambda f: (f, 0), filenames[len(linenos):])
+    file_with_nro = list(map(lambda f: (f[0], f[1] - 1),
+        zip(filenames, linenos)))
+    file_without_nro = list(map(lambda f: (f, 0), filenames[len(linenos):]))
     mainFiles += file_with_nro + file_without_nro
     #Include projects received from console args
     if projects_path:
         projects += projects_path
-    mainFiles.reverse()
-    secondaryFiles.reverse()
     ide.load_session_files_projects(mainFiles, secondaryFiles, projects,
-        current_file)
+        current_file, recent_files)
     #Load external plugins
     if extra_plugins:
         ide.load_external_plugins(extra_plugins)

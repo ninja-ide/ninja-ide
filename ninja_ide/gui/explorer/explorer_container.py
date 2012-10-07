@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
 import os
 
@@ -164,6 +165,10 @@ class __ExplorerContainer(QTabWidget):
         if not self._listErrors:
             self._listErrors = errors_lists.ErrorsWidget()
             self.addTab(self._listErrors, self.tr("Errors"))
+            self.connect(self._listErrors, SIGNAL("pep8Activated(bool)"),
+                self.__ide.mainContainer.reset_pep8_warnings)
+            self.connect(self._listErrors, SIGNAL("lintActivated(bool)"),
+                self.__ide.mainContainer.reset_lint_warnings)
 
     def remove_tab_errors(self):
         if self._listErrors:
@@ -262,7 +267,7 @@ class __ExplorerContainer(QTabWidget):
                 thread.open_folder(folderName)
             else:
                 self._treeProjects._set_current_project(folderName)
-        except Exception, reason:
+        except Exception as reason:
             logger.error('open_project_folder: %s', reason)
             if not notIDEStart:
                 QMessageBox.information(self, self.tr("Incorrect Project"),
@@ -312,6 +317,13 @@ class __ExplorerContainer(QTabWidget):
             return self._treeProjects.get_project_main_file()
         return ''
 
+    def get_project_given_filename(self, filename):
+        projects = self.get_opened_projects()
+        for project in projects:
+            if filename.startswith(project.path):
+                return project
+        return None
+
     def get_opened_projects(self):
         if self._treeProjects:
             return self._treeProjects.get_open_projects()
@@ -333,7 +345,7 @@ class __ExplorerContainer(QTabWidget):
             self._treeProjects._close_open_projects()
 
     def save_recent_projects(self, folder):
-        recent_project_list = QSettings().value('recentProjects', {}).toMap()
+        recent_project_list = QSettings().value('recentProjects', {})
         #if already exist on the list update the date time
         projectProperties = json_manager.read_ninja_project(folder)
         name = projectProperties.get('name', '')
@@ -346,7 +358,7 @@ class __ExplorerContainer(QTabWidget):
             description = self.tr('no description available')
 
         if folder in recent_project_list:
-            properties = recent_project_list[folder].toMap()
+            properties = recent_project_list[folder]
             properties["lastopen"] = QDateTime.currentDateTime()
             properties["name"] = name
             properties["description"] = description
@@ -364,12 +376,11 @@ class __ExplorerContainer(QTabWidget):
         QSettings().setValue('recentProjects', recent_project_list)
 
     def find_most_old_open(self):
-        recent_project_list = QSettings().value('recentProjects', {}).toMap()
+        recent_project_list = QSettings().value('recentProjects', {})
         listFounder = []
-        for recent_project_path, content in recent_project_list.iteritems():
+        for recent_project_path, content in recent_project_list.items():
             listFounder.append((recent_project_path, int(
-                content.toMap()[u"lastopen"].toDateTime().toString(
-                "yyyyMMddHHmmzzz"))))
+                content["lastopen"].toString("yyyyMMddHHmmzzz"))))
         listFounder = sorted(listFounder, key=lambda date: listFounder[1],
             reverse=True)   # sort by date last used
         return listFounder[0][0]

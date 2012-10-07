@@ -385,7 +385,7 @@ if __name__ == "__main__":
     import sys
     sys.exit(6)
 
-    if not tb.spawn_figure(I): raise Exception, "RAAR"
+    if not tb.spawn_figure(I): raise Exception("RAAR")
     tb.move_figure_right()
     for i in range(8): tb.move_figure_down()
 

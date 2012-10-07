@@ -22,6 +22,13 @@ import sys
 import ninja_ide
 
 
+try:
+    # For Python2
+    str = unicode  # lint:ok
+except NameError:
+    # We are in Python3
+    pass
+
 usage = "$python ninja-ide.py <option, [option3...option n]>"
 
 epilog = ("This program comes with ABSOLUTELY NO WARRANTY."
@@ -39,16 +46,16 @@ try:
 
         parser = argparse.ArgumentParser(description=usage, epilog=epilog)
 
-        parser.add_argument('file', metavar='file', type=unicode,
+        parser.add_argument('file', metavar='file', type=str,
             nargs='*', help='A file/s to edit', default=[])
-        parser.add_argument('-f', '--files', metavar='file', type=unicode,
+        parser.add_argument('-f', '--files', metavar='file', type=str,
             nargs='+', help='A file/s to edit', default=[])
         parser.add_argument('-l', '--lineno', metavar='lineno', type=int,
             nargs='+', help='Line number for the files to open', default=[])
-        parser.add_argument('-p', '--project', metavar='project', type=unicode,
+        parser.add_argument('-p', '--project', metavar='project', type=str,
             nargs='+', help='A project/s to edit', default=[])
         parser.add_argument('--plugin',
-            metavar='plugin', type=unicode,
+            metavar='plugin', type=str,
             nargs='+', help='A plugin to load', default=[])
         parser.add_argument('--loglevel', help="Level to use for logging, "
                     "one of 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'",
@@ -80,7 +87,7 @@ except ImportError:
                 final_nargs = nargs
         return final_nargs
 
-    def _get_parser():
+    def _get_parser():  # lint:ok
         global usage
         global epilog
 
@@ -154,7 +161,7 @@ def parse():
         log_level = opts.loglevel
         log_file = opts.logfile
 
-    except Exception, reason:
+    except Exception as reason:
         print("Args couldn't be parsed.")
         print(reason)
     return (filenames, projects_path, extra_plugins, linenos, log_level,

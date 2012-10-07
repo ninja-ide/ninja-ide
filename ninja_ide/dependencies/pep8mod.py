@@ -92,6 +92,7 @@ before the docstring, you can use \n for newline, \t for tab and \s
 for space.
 
 """
+from __future__ import unicode_literals
 
 __version__ = '1.3.4a0'
 
@@ -1330,8 +1331,8 @@ def run_check(fileName, source):
     try:
         lines = [line + '\n' for line in source.splitlines()]
         return Checker(fileName, lines).check_all()
-    except Exception, reason:
+    except Exception as reason:
         print('pep8mod couldn\'t parse file: {0}'.format(fileName))
-        print reason
+        print(reason)
         raise
     return []

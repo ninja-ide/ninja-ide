@@ -116,7 +116,7 @@ class ShortcutDialog(QDialog):
         if evt.modifiers() & Qt.MetaModifier:
             self.keys += Qt.META
         #set the keys
-        self.set_shortcut(QKeySequence(self.keys))
+        self.set_shortcut(QKeySequence(self.keys).toString())
 
 
 class ShortcutConfiguration(QWidget):
@@ -230,7 +230,7 @@ class ShortcutConfiguration(QWidget):
         Validate and set a new shortcut
         """
         if self.__validate_shortcut(keysequence):
-            self.result_widget.currentItem().setText(1, keysequence)
+            self.result_widget.currentItem().setText(1, keysequence.toString())
 
     def __validate_shortcut(self, keysequence):
         """
@@ -242,7 +242,7 @@ class ShortcutConfiguration(QWidget):
         keyname = self.result_widget.currentItem().text(0)
         keystr = keysequence
 
-        for top_index in xrange(self.result_widget.topLevelItemCount()):
+        for top_index in range(self.result_widget.topLevelItemCount()):
             top_item = self.result_widget.topLevelItem(top_index)
 
             if top_item.text(0) != keyname:
@@ -269,7 +269,8 @@ class ShortcutConfiguration(QWidget):
         if item.childCount():
             return
 
-        self.shortcut_dialog.set_shortcut(QKeySequence(item.text(1)))
+        self.shortcut_dialog.set_shortcut(
+            QKeySequence(item.text(1)))
         self.shortcut_dialog.exec_()
 
     def save(self):
@@ -278,7 +279,7 @@ class ShortcutConfiguration(QWidget):
         """
         settings = QSettings()
         settings.beginGroup("shortcuts")
-        for index in xrange(self.result_widget.topLevelItemCount()):
+        for index in range(self.result_widget.topLevelItemCount()):
             item = self.result_widget.topLevelItem(index)
             shortcut_keys = item.text(1)
             shortcut_name = item.text(2)

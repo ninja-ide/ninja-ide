@@ -94,8 +94,7 @@ class TrayIconUpdates(QSystemTrayIcon):
                         self._show_download()
             else:
                 self.hide()
-        except Exception, reason:
-            print reason
+        except Exception as reason:
             logger.warning('Versions can not be compared: %r', reason)
             self.hide()
 

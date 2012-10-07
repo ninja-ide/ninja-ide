@@ -31,6 +31,10 @@ patIsLocalFunction = re.compile('(\s)+self\.(\w)+\(\)')
 patClass = re.compile("(\\s)*class.+\\:$")
 endCharsForIndent = [':', '{', '(', '[']
 closeBraces = {'{': '}', '(': ')', '[': ']'}
+#Coding line by language
+CODING_LINE = {
+    'python': '# -*- coding: utf-8 -*-'
+}
 
 
 def get_leading_spaces(line):
@@ -41,28 +45,38 @@ def get_leading_spaces(line):
     return ''
 
 
-def get_indentation(line):
+def get_indentation(line, indent=settings.INDENT, useTabs=settings.USE_TABS):
     global patIndent
     global endCharsForIndent
     indentation = ''
     if len(line) > 0 and line[-1] in endCharsForIndent:
-        if settings.USE_TABS:
+        if useTabs:
             indentation = '\t'
         else:
-            indentation = ' ' * settings.INDENT
+            indentation = ' ' * indent
     elif len(line) > 0 and line[-1] == ',':
         count = filter(lambda x:
             (line.count(x) - line.count(closeBraces[x])) % 2 != 0,
             endCharsForIndent[1:])
         if count:
-            if settings.USE_TABS:
+            if useTabs:
                 indentation = '\t'
             else:
-                indentation = ' ' * settings.INDENT
+                indentation = ' ' * indent
     space = patIndent.match(line)
     if space is not None:
         return space.group() + indentation
     return indentation
+
+
+def get_start_end_selection(editorWidget, cursor):
+    start = editorWidget.document().findBlock(
+        cursor.selectionStart()).firstLineNumber()
+    end = editorWidget.document().findBlock(
+        cursor.selectionEnd()).firstLineNumber()
+    if cursor.blockNumber() == end and cursor.atBlockStart():
+        end -= 1
+    return start, end
 
 
 def remove_trailing_spaces(editorWidget):
@@ -112,9 +126,17 @@ def insert_title_comment(editorWidget):
         editorWidget.textCursor().endEditBlock()
 
 
+def insert_coding_line(editorWidget):
+    lang = file_manager.get_file_extension(editorWidget.ID)
+    key = settings.EXTENSIONS.get(lang)
+    coding_line = CODING_LINE.get(key)
+    if coding_line:
+        editorWidget.textCursor().insertText("%s\n" % coding_line)
+
+
 def replace_tabs_with_spaces(editorWidget):
     text = editorWidget.toPlainText()
-    text = text.replace('\t', ' ' * settings.INDENT)
+    text = text.replace('\t', ' ' * editorWidget.indent)
     editorWidget.setPlainText(text)
 
 
@@ -129,10 +151,7 @@ def lint_ignore_selection(editorWidget):
     cursor = editorWidget.textCursor()
     if cursor.hasSelection():
         cursor.beginEditBlock()
-        start = editorWidget.document().findBlock(
-            cursor.selectionStart()).firstLineNumber()
-        end = editorWidget.document().findBlock(
-            cursor.selectionEnd()).firstLineNumber()
+        start, end = get_start_end_selection(editorWidget, cursor)
         position = editorWidget.document().findBlockByLineNumber(
             start).position()
         cursor.setPosition(position)
@@ -159,10 +178,7 @@ def insert_debugging_prints(editorWidget):
             print_text = "%s: " % result
         #begin Undo feature
         cursor.beginEditBlock()
-        start = editorWidget.document().findBlock(
-            cursor.selectionStart()).firstLineNumber()
-        end = editorWidget.document().findBlock(
-            cursor.selectionEnd()).firstLineNumber()
+        start, end = get_start_end_selection(editorWidget, cursor)
         lines = end - start
         for i in range(lines):
             position = editorWidget.document().findBlockByLineNumber(
@@ -176,15 +192,19 @@ def insert_debugging_prints(editorWidget):
         cursor.endEditBlock()
 
 
+def insert_pdb(editorWidget):
+    """Insert a pdb statement into the current line to debug code."""
+    cursor = editorWidget.textCursor()
+    indentation = get_indentation(cursor.block().text())
+    cursor.insertText("\n%simport pdb; pdb.set_trace()" % indentation)
+
+
 def move_up(editorWidget):
     cursor = editorWidget.textCursor()
     block_actual = cursor.block()
     if block_actual.blockNumber() > 0:
         #line where indent_more should start and end
-        start = editorWidget.document().findBlock(
-            cursor.selectionStart()).firstLineNumber()
-        end = editorWidget.document().findBlock(
-            cursor.selectionEnd()).firstLineNumber()
+        start, end = get_start_end_selection(editorWidget, cursor)
         if cursor.hasSelection() and (start != end):
             #get the position of the line
             startPosition = editorWidget.document().findBlockByLineNumber(
@@ -240,10 +260,7 @@ def move_down(editorWidget):
     cursor = editorWidget.textCursor()
     block_actual = cursor.block()
     if block_actual.blockNumber() < (editorWidget.blockCount() - 1):
-        start = editorWidget.document().findBlock(
-            cursor.selectionStart()).firstLineNumber()
-        end = editorWidget.document().findBlock(
-            cursor.selectionEnd()).firstLineNumber()
+        start, end = get_start_end_selection(editorWidget, cursor)
         if cursor.hasSelection() and (start != end):
             #get the position of the line
             startPosition = editorWidget.document().findBlockByLineNumber(
@@ -298,12 +315,9 @@ def remove_line(editorWidget):
     cursor.beginEditBlock()
 
     if cursor.hasSelection():
-        block_start = editorWidget.document().findBlock(
-            cursor.selectionStart()).firstLineNumber()
-        block_end = editorWidget.document().findBlock(
-            cursor.selectionEnd()).firstLineNumber()
+        start, end = get_start_end_selection(editorWidget, cursor)
 
-        if block_start == block_end:  # same block selection
+        if start == end:  # same block selection
             cursor.movePosition(QTextCursor.StartOfLine)
             cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
             cursor.removeSelectedText()
@@ -314,12 +328,12 @@ def remove_line(editorWidget):
 
             cursor.setPosition(selection_end)
             if cursor.atBlockStart():
-                block_end = block_end - 1
+                end = end - 1
 
             cursor.setPosition(selection_start)
             cursor.movePosition(QTextCursor.StartOfLine)
             cursor.movePosition(QTextCursor.Down, QTextCursor.KeepAnchor,
-                block_end - block_start)
+                end - start)
             cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
 
             cursor.removeSelectedText()
@@ -335,10 +349,7 @@ def duplicate(editorWidget):
     cursor = editorWidget.textCursor()
     cursor.beginEditBlock()
     if cursor.hasSelection():
-        start = editorWidget.document().findBlock(
-            cursor.selectionStart()).firstLineNumber()
-        end = editorWidget.document().findBlock(
-            cursor.selectionEnd()).firstLineNumber()
+        start, end = get_start_end_selection(editorWidget, cursor)
         #get the position of the line
         startPosition = editorWidget.document().findBlockByLineNumber(
             start).position()
@@ -514,12 +525,13 @@ def check_for_assistance_completion(editorWidget, line):
                if init.startswith('__init__')]:
                 return
         editorWidget.textCursor().insertText('\n')
-        indent = get_indentation(line)
+        indent = get_indentation(
+            line, editorWidget.indent, editorWidget.useTabs)
         editorWidget.textCursor().insertText(indent + 'def __init__(self):\n')
-        if settings.USE_TABS:
+        if editorWidget.useTabs:
             indent += '\t'
         else:
-            indent += ' ' * settings.INDENT
+            indent += ' ' * editorWidget.indent
         if line.find('(') != -1:
             classes = line.split('(')
             parents = []

@@ -15,13 +15,21 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
-
 import os
-import urllib2
+#lint:disable
+try:
+    from urllib.request import urlopen
+    from urllib.error import URLError
+except ImportError:
+    from urllib2 import urlopen
+    from urllib2 import URLError
+#lint:enable
 
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QVBoxLayout
+from PyQt4.QtGui import QHBoxLayout
+from PyQt4.QtGui import QSpacerItem
+from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QTabWidget
 from PyQt4.QtGui import QTableWidget
 from PyQt4.QtGui import QPushButton
@@ -45,9 +53,14 @@ class LanguagesManagerWidget(QDialog):
         vbox = QVBoxLayout(self)
         self._tabs = QTabWidget()
         vbox.addWidget(self._tabs)
+        # Footer
+        hbox = QHBoxLayout()
+        btn_close = QPushButton(self.tr('Close'))
         btnReload = QPushButton(self.tr("Reload"))
-        btnReload.setMaximumWidth(100)
-        vbox.addWidget(btnReload)
+        hbox.addWidget(btn_close)
+        hbox.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
+        hbox.addWidget(btnReload)
+        vbox.addLayout(hbox)
         self.overlay = ui_tools.Overlay(self)
         self.overlay.show()
 
@@ -60,6 +73,7 @@ class LanguagesManagerWidget(QDialog):
         self._thread = ui_tools.ThreadExecution(self.execute_thread)
         self.connect(self._thread, SIGNAL("finished()"),
             self.load_languages_data)
+        self.connect(btn_close, SIGNAL('clicked()'), self.close)
         self._reload_languages()
 
     def _reload_languages(self):
@@ -89,14 +103,14 @@ class LanguagesManagerWidget(QDialog):
 
     def execute_thread(self):
         try:
-            descriptor_languages = urllib2.urlopen(resources.LANGUAGES_URL)
+            descriptor_languages = urlopen(resources.LANGUAGES_URL)
             languages = json_manager.parse(descriptor_languages)
             languages = [[name, languages[name]] for name in languages]
             local_languages = self.get_local_languages()
-            languages = [languages[i] for i in range(len(languages)) if \
+            languages = [languages[i] for i in range(len(languages)) if
                 os.path.basename(languages[i][1]) not in local_languages]
             self._languages = languages
-        except urllib2.URLError:
+        except URLError:
             self._languages = []
 
     def get_local_languages(self):
@@ -114,11 +128,11 @@ class LanguagesManagerWidget(QDialog):
     def download(self, url, folder):
         fileName = os.path.join(folder, os.path.basename(url))
         try:
-            content = urllib2.urlopen(url)
+            content = urlopen(url)
             f = open(fileName, 'wb')
             f.write(content.read())
             f.close()
-        except urllib2.URLError:
+        except URLError:
             return
 
 
