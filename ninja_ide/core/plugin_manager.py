@@ -276,7 +276,7 @@ class __PluginManager(object):
         old_syspath = copy.copy(sys.path)
         try:
             sys.path.insert(1, dir_name)
-            module = __import__(module, globals(), locals(), ['plugin'])
+            module = __import__(module, globals(), locals(), [])
             klass = getattr(module, klassname)
             #Instanciate the plugin
             plugin_instance = klass(self._service_locator, metadata=metadata)
