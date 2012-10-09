@@ -144,7 +144,7 @@ class __PluginManager(object):
     def __create_list(self, obj):
         if isinstance(obj, (list, tuple)):
             return obj
-        elif isinstance(obj, str):
+        elif isinstance(obj, basestring):
             return [obj]
 
     def add_plugin_dir(self, plugin_dir):
@@ -163,9 +163,17 @@ class __PluginManager(object):
 
     def get_active_plugins(self):
         '''
-        Return a list the instances
+        Returns a list the instances
         '''
         return [plugin[0] for plugin in list(self._active_plugins.values())]
+
+    def _get_dir_from_plugin_name(self, plugin_name):
+        '''
+        Returns the dir of the plugin_name
+        '''
+        for dir_, plug_names in self._plugins_by_dir.items():
+            if plugin_name in plug_names:
+                return dir_
 
     def __getitem__(self, plugin_name):
         '''
@@ -189,9 +197,10 @@ class __PluginManager(object):
 
         if plugin_name in self._found_plugins:
             if not plugin_name in self._active_plugins:
-                self.load(plugin_name)
+                dir_ = self._get_dir_from_plugin_name(plugin_name)
+                self.load(plugin_name, dir_)
             return self._active_plugins[plugin_name][0]
-        return KeyError(plugin_name)
+        raise KeyError(plugin_name)
 
     def __contains__(self, plugin_name):
         '''
