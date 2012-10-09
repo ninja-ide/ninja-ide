@@ -879,8 +879,7 @@ class EditorGeneral(QWidget):
             font = self._load_font(
                 self._get_font_from_string(self._btnEditorFont.text()), self)
             self._btnEditorFont.setText(font)
-        except Exception as a:
-            print a
+        except:
             QMessageBox.warning(self,
                 self.tr("Invalid Font"),
                 self.tr("This font can not be used in the Editor."))
