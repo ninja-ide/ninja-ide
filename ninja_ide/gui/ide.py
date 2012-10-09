@@ -416,9 +416,9 @@ class __IDE(QMainWindow):
             self.setWindowState(Qt.WindowMaximized)
         else:
             self.resize(qsettings.value("window/size",
-                QSize(800, 600)).toSize())
+                QSize(800, 600)))
             self.move(qsettings.value("window/pos",
-                QPoint(100, 100)).toPoint())
+                QPoint(100, 100)))
 
     def closeEvent(self, event):
         if self.s_listener:
