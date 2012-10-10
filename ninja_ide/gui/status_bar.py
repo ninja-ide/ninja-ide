@@ -253,8 +253,8 @@ class SearchWidget(QWidget):
         self._parent = parent
         hSearch = QHBoxLayout(self)
         hSearch.setContentsMargins(0, 0, 0, 0)
-        self._checkSensitive = QCheckBox(self.tr("Respect Case Sensitive"))
-        self._checkWholeWord = QCheckBox(self.tr("Find Whole Words"))
+        self._checkSensitive = QCheckBox(self.trUtf8("Respect Case Sensitive"))
+        self._checkWholeWord = QCheckBox(self.trUtf8("Find Whole Words"))
         self._line = TextLine(self)
         self._line.setMinimumWidth(250)
         self._btnClose = QPushButton(
@@ -262,12 +262,12 @@ class SearchWidget(QWidget):
         self._btnFind = QPushButton(QIcon(resources.IMAGES['find']), '')
         self.btnPrevious = QPushButton(
             self.style().standardIcon(QStyle.SP_ArrowLeft), '')
-        self.btnPrevious.setToolTip(self.tr("Press %s" %
+        self.btnPrevious.setToolTip(self.trUtf8("Press %s" %
                 resources.get_shortcut("Find-previous").toString(
                     QKeySequence.NativeText)))
         self.btnNext = QPushButton(
             self.style().standardIcon(QStyle.SP_ArrowRight), '')
-        self.btnNext.setToolTip(self.tr("Press %s" %
+        self.btnNext.setToolTip(self.trUtf8("Press %s" %
                 resources.get_shortcut("Find-next").toString(
                     QKeySequence.NativeText)))
         hSearch.addWidget(self._btnClose)
@@ -359,9 +359,9 @@ class ReplaceWidget(QWidget):
         self._lineReplace.setMinimumWidth(250)
         self._btnCloseReplace = QPushButton(
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
-        self._btnReplace = QPushButton(self.tr("Replace"))
-        self._btnReplaceAll = QPushButton(self.tr("Replace All"))
-        self._btnReplaceSelection = QPushButton(self.tr("Replace Selection"))
+        self._btnReplace = QPushButton(self.trUtf8("Replace"))
+        self._btnReplaceAll = QPushButton(self.trUtf8("Replace All"))
+        self._btnReplaceSelection = QPushButton(self.trUtf8("Replace Selection"))
         hReplace.addWidget(self._btnCloseReplace)
         hReplace.addWidget(self._lineReplace)
         hReplace.addWidget(self._btnReplace)
@@ -410,7 +410,7 @@ class FileSystemOpener(QWidget):
         self.btnOpen = QPushButton(
             self.style().standardIcon(QStyle.SP_ArrowRight), 'Open!')
         hbox.addWidget(self.btnClose)
-        hbox.addWidget(QLabel(self.tr("Path:")))
+        hbox.addWidget(QLabel(self.trUtf8("Path:")))
         hbox.addWidget(self.pathLine)
         hbox.addWidget(self.btnOpen)
 
