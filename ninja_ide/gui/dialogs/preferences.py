@@ -885,7 +885,7 @@ class EditorGeneral(QWidget):
                 self.tr("This font can not be used in the Editor."))
 
     def _get_font_from_string(self, font):
-        if (font.isEmpty()):
+        if not font:
             font = QFont(settings.FONT_FAMILY, settings.FONT_SIZE)
         else:
             listFont = font.split(',')
@@ -896,9 +896,9 @@ class EditorGeneral(QWidget):
         font, ok = QFontDialog.getFont(initialFont, parent)
         if ok:
             newFont = font.toString().split(',')
-            return newFont[0] + ', ' + newFont[1]
         else:
-            return initialFont
+            newFont = initialFont.toString().split(',')
+        return newFont[0] + ', ' + newFont[1]
 
     def save(self):
         qsettings = QSettings()
