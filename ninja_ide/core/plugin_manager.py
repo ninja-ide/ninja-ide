@@ -144,8 +144,8 @@ class __PluginManager(object):
     def __create_list(self, obj):
         if isinstance(obj, (list, tuple)):
             return obj
-        elif isinstance(obj, basestring):
-            return [obj]
+        #string then returns a list of one item!
+        return [obj]
 
     def add_plugin_dir(self, plugin_dir):
         '''
