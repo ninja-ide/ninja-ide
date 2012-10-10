@@ -476,8 +476,10 @@ class __MainContainer(QSplitter):
                     positionIsLineNumber, cursorPosition)
 
                 #Add content
-                editorWidget.ID = fileName
+                #we HAVE to add the editor's content before set the ID
+                #because of the minimap logic
                 editorWidget.setPlainText(content)
+                editorWidget.ID = fileName
                 editorWidget.async_highlight()
                 encoding = file_manager.get_file_encoding(content)
                 editorWidget.encoding = encoding
