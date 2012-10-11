@@ -95,14 +95,15 @@ params = {
 
     # include all resources
     "include_package_data": True,
-    "package_data": {'': ['*.png', '*.json', '*.qss',
-        '*.js', '*.html', '*.css']},
+    "package_data": {'': ['*.png', '*.gif', '*.jpg', '*.json', '*.qss',
+        '*.js', '*.html', '*.css', '*.qm']},
 
     # include ninja pkg and setup the run script
     "packages": find_packages() + [
         'ninja_ide/addins',
         'ninja_ide/addins/syntax',
         'ninja_ide/addins/theme',
+        'ninja_ide/addins/lang',
         'ninja_ide/doc',
         'ninja_ide/doc/css',
         'ninja_ide/doc/img',
