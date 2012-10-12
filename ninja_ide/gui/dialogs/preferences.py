@@ -1555,41 +1555,41 @@ class EditorSchemeDesigner(QWidget):
             btn.setStyleSheet(style)
 
     def _preview_style(self):
+        scheme = {
+            "keyword": str(self.txtKeyword.text()),
+            "operator": str(self.txtOperator.text()),
+            "brace": str(self.txtBrace.text()),
+            "definition": str(self.txtDefinition.text()),
+            "string": str(self.txtString.text()),
+            "string2": str(self.txtString2.text()),
+            "comment": str(self.txtComment.text()),
+            "properObject": str(self.txtProperObject.text()),
+            "numbers": str(self.txtNumbers.text()),
+            "spaces": str(self.txtSpaces.text()),
+            "extras": str(self.txtExtras.text()),
+            "editor-background": str(self.txtEditorBackground.text()),
+            "editor-selection-color": str(
+                self.txtEditorSelectionColor.text()),
+            "editor-selection-background": str(
+                self.txtEditorSelectionBackground.text()),
+            "editor-text": str(self.txtEditorText.text()),
+            "current-line": str(self.txtCurrentLine.text()),
+            "selected-word": str(self.txtSelectedWord.text()),
+            "fold-area": str(self.txtFoldArea.text()),
+            "fold-arrow": str(self.txtFoldArrow.text()),
+            "linkNavigate": str(self.txtLinkNavigate.text()),
+            "brace-background": str(self.txtBraceBackground.text()),
+            "brace-foreground": str(self.txtBraceForeground.text()),
+            "error-underline": str(self.txtErrorUnderline.text()),
+            "pep8-underline": str(self.txtPep8Underline.text()),
+            "sidebar-background": str(self.txtSidebarBackground.text()),
+            "sidebar-foreground": str(self.txtSidebarForeground.text())}
+        resources.CUSTOM_SCHEME = scheme
         editorWidget = main_container.MainContainer().get_actual_editor()
         if editorWidget is not None:
-            scheme = {
-                "keyword": str(self.txtKeyword.text()),
-                "operator": str(self.txtOperator.text()),
-                "brace": str(self.txtBrace.text()),
-                "definition": str(self.txtDefinition.text()),
-                "string": str(self.txtString.text()),
-                "string2": str(self.txtString2.text()),
-                "comment": str(self.txtComment.text()),
-                "properObject": str(self.txtProperObject.text()),
-                "numbers": str(self.txtNumbers.text()),
-                "spaces": str(self.txtSpaces.text()),
-                "extras": str(self.txtExtras.text()),
-                "editor-background": str(self.txtEditorBackground.text()),
-                "editor-selection-color": str(
-                    self.txtEditorSelectionColor.text()),
-                "editor-selection-background": str(
-                    self.txtEditorSelectionBackground.text()),
-                "editor-text": str(self.txtEditorText.text()),
-                "current-line": str(self.txtCurrentLine.text()),
-                "selected-word": str(self.txtSelectedWord.text()),
-                "fold-area": str(self.txtFoldArea.text()),
-                "fold-arrow": str(self.txtFoldArrow.text()),
-                "linkNavigate": str(self.txtLinkNavigate.text()),
-                "brace-background": str(self.txtBraceBackground.text()),
-                "brace-foreground": str(self.txtBraceForeground.text()),
-                "error-underline": str(self.txtErrorUnderline.text()),
-                "pep8-underline": str(self.txtPep8Underline.text()),
-                "sidebar-background": str(self.txtSidebarBackground.text()),
-                "sidebar-foreground": str(self.txtSidebarForeground.text())}
-            resources.CUSTOM_SCHEME = scheme
             editorWidget.restyle(editorWidget.lang)
             editorWidget._sidebarWidget.repaint()
-            return scheme
+        return scheme
 
     def hideEvent(self, event):
         super(EditorSchemeDesigner, self).hideEvent(event)
