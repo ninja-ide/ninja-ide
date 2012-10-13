@@ -38,30 +38,47 @@ def parse(descriptor):
 def load_syntax():
     files = os.listdir(resources.SYNTAX_FILES)
     for f in files:
-        if f.endswith('.json'):
-            structure = None
-            fileName = os.path.join(resources.SYNTAX_FILES, f)
-            read = open(fileName, 'r')
-            try:
-                structure = json.load(read)
-            except Exception as exc:
-                logger.error("The syntax file %s couldn't be loaded" % fileName)
-                logger.error(exc)
-                continue
-            finally:
-                read.close()
-            name = f[:-5]
-            settings.SYNTAX[name] = structure
-            for ext in structure.get('extension'):
-                if ext is not None:
-                    settings.EXTENSIONS[ext] = name
+        if not f.endswith('.json'):
+            continue
+        fileName = os.path.join(resources.SYNTAX_FILES, f)
+        read = open(fileName, 'r')
+
+        try:
+            structure = json.load(read)
+        except Exception as exc:
+            logger.error("The syntax file %s couldn't be loaded" % fileName)
+            logger.error(exc)
+            continue
+        finally:
+            read.close()
+
+        name = f[:-5]
+        settings.SYNTAX[name] = structure
+        for ext in structure.get('extension'):
+            if ext is not None:
+                settings.EXTENSIONS[ext] = name
 
 
 def create_ninja_project(path, project, structure):
-    fileName = os.path.join(path, project.replace(' ', '_') + '.nja')
-    f = open(fileName, mode='w')
-    json.dump(structure, f, indent=2)
-    f.close()
+
+    def delete_emtpy_spaces(string_):
+
+        lastchar = ''
+        newstring = ''
+        string_ = string_.strip()
+
+        for ch in string_:
+            if ch == lastchar:
+                continue
+            newstring += ch if ch != ' ' else '_'
+            lastchar = ch
+
+        return newstring
+
+    projectName = delete_emtpy_spaces(project.lower()) + '.nja'
+    fileName = os.path.join(path, projectName)
+    with open(fileName, 'w') as fp:
+        json.dump(structure, fp, indent=2)
 
 
 def read_ninja_project(path):
