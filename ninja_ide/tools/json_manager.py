@@ -36,8 +36,11 @@ def parse(descriptor):
 
 
 def load_syntax():
+
     files = os.listdir(resources.SYNTAX_FILES)
+
     for f in files:
+
         if not f.endswith('.json'):
             continue
         fileName = os.path.join(resources.SYNTAX_FILES, f)

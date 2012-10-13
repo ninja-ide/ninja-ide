@@ -17,6 +17,7 @@
 
 
 import os
+import json
 import unittest
 
 from tests.tools.jsonmanager import samples
@@ -50,6 +51,13 @@ class TestSyntaxLoader(unittest.TestCase):
         self.assertTrue(py_syntax_name not in settings.SYNTAX)
         load_syntax()
         self.assertTrue(py_syntax_name in settings.SYNTAX)
+
+        with open(py_syntax_file, 'r') as fp:
+            content = json.load(fp)
+            extensions = content.get('extension')
+            for kw in extensions:
+                self.assertTrue(kw in settings.EXTENSIONS)
+                self.assertEquals(settings.EXTENSIONS[kw], py_syntax_name)
 
     def test_load_bad_json_syntax_file(self):
 
