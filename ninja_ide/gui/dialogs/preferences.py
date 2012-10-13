@@ -1588,6 +1588,7 @@ class EditorSchemeDesigner(QWidget):
         editorWidget = main_container.MainContainer().get_actual_editor()
         if editorWidget is not None:
             editorWidget.restyle(editorWidget.lang)
+            editorWidget.highlight_current_line()
             editorWidget._sidebarWidget.repaint()
         return scheme
 
@@ -1618,16 +1619,16 @@ class EditorSchemeDesigner(QWidget):
     @staticmethod
     def _is_valid_scheme_name(name):
         """Check if a given name is a valid name for an editor scheme.
-        
+
         Params:
             name := the name to check
-            
+
         Returns:
             True if and only if the name is okay to use for a scheme
-        
+
         """
         return not (name in ('', 'default'))
-        
+
     def save_scheme(self):
         name = self.line_name.text().strip()
         if not self._is_valid_scheme_name(name):
@@ -1643,7 +1644,7 @@ class EditorSchemeDesigner(QWidget):
                 self.tr("Scheme already exists"),
                 self.tr("Do you want to override the file: %s?" % fileName),
                 QMessageBox.Yes, QMessageBox.No)
-                
+
         if name != '' and answer in (QMessageBox.Yes, True):
             scheme = self._preview_style()
             qsettings = QSettings()

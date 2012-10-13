@@ -1062,7 +1062,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             selection = QTextEdit.ExtraSelection()
             lineColor = QColor(resources.CUSTOM_SCHEME.get('current-line',
                         resources.COLOR_SCHEME['current-line']))
-            lineColor.setAlpha(20)
+            lineColor.setAlpha(255)
             selection.format.setBackground(lineColor)
             selection.format.setProperty(QTextFormat.FullWidthSelection, True)
             selection.cursor = self.textCursor()
