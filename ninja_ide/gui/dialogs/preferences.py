@@ -1615,8 +1615,26 @@ class EditorSchemeDesigner(QWidget):
         """All the widgets in preferences must contain a save method."""
         pass
 
+    @staticmethod
+    def _is_valid_scheme_name(name):
+        """Check if a given name is a valid name for an editor scheme.
+        
+        Params:
+            name := the name to check
+            
+        Returns:
+            True if and only if the name is okay to use for a scheme
+        
+        """
+        return not (name in ('', 'default'))
+        
     def save_scheme(self):
         name = self.line_name.text().strip()
+        if not self._is_valid_scheme_name(name):
+            QMessageBox.information(self, self.tr("Invalid Scheme Name"),
+                self.tr("The scheme name you have chosen is invalid.\nPlease "
+                    "pick a different name."))
+            return
         fileName = ('{0}.color'.format(
             file_manager.create_path(resources.EDITOR_SKINS, name)))
         answer = True
@@ -1631,7 +1649,7 @@ class EditorSchemeDesigner(QWidget):
             qsettings = QSettings()
             qsettings.beginGroup('preferences')
             qsettings.beginGroup('editor')
-            if qsettings.value('scheme', '') == name:
+            if qsettings.value('scheme', '') == name and name != 'default':
                 self.original_style = copy.copy(scheme)
             json_manager.save_editor_skins(fileName, scheme)
             QMessageBox.information(self, self.tr("Scheme Saved"),
