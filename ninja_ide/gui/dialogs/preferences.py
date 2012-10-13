@@ -1617,16 +1617,22 @@ class EditorSchemeDesigner(QWidget):
 
     def save_scheme(self):
         name = self.line_name.text().strip()
-        fileName = file_manager.create_path(
-            resources.EDITOR_SKINS, name) + '.color'
+        fileName = ('{0}.color'.format(
+            file_manager.create_path(resources.EDITOR_SKINS, name)))
         answer = True
         if file_manager.file_exists(fileName):
             answer = QMessageBox.question(self,
                 self.tr("Scheme already exists"),
                 self.tr("Do you want to override the file: %s?" % fileName),
                 QMessageBox.Yes, QMessageBox.No)
+                
         if name != '' and answer in (QMessageBox.Yes, True):
             scheme = self._preview_style()
+            qsettings = QSettings()
+            qsettings.beginGroup('preferences')
+            qsettings.beginGroup('editor')
+            if qsettings.value('scheme', '') == name:
+                self.original_style = copy.copy(scheme)
             json_manager.save_editor_skins(fileName, scheme)
             QMessageBox.information(self, self.tr("Scheme Saved"),
                     self.tr("The scheme has been saved at: %s." % fileName))
