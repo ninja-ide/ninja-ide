@@ -41,14 +41,15 @@ def load_syntax():
         if f.endswith('.json'):
             structure = None
             fileName = os.path.join(resources.SYNTAX_FILES, f)
+            read = open(fileName, 'r')
             try:
-                read = open(fileName, 'r')
                 structure = json.load(read)
-                read.close()
             except Exception as exc:
-                logger.error("The syntax file couldn't be loaded")
+                logger.error("The syntax file %s couldn't be loaded" % fileName)
                 logger.error(exc)
                 continue
+            finally:
+                read.close()
             name = f[:-5]
             settings.SYNTAX[name] = structure
             for ext in structure.get('extension'):

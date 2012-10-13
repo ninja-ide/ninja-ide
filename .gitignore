@@ -1,3 +1,4 @@
 # Ignore .pyc files
 *.pyc
 *.swp
+tests/tools/build/
