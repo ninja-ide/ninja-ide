@@ -16,11 +16,8 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import json
 import logging
-try:
-    import json
-except ImportError:
-    import simplejson as json
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -44,9 +41,14 @@ def load_syntax():
         if f.endswith('.json'):
             structure = None
             fileName = os.path.join(resources.SYNTAX_FILES, f)
-            read = open(fileName, 'r')
-            structure = json.load(read)
-            read.close()
+            try:
+                read = open(fileName, 'r')
+                structure = json.load(read)
+                read.close()
+            except Exception as exc:
+                logger.error("The syntax file couldn't be loaded")
+                logger.error(exc)
+                continue
             name = f[:-5]
             settings.SYNTAX[name] = structure
             for ext in structure.get('extension'):
