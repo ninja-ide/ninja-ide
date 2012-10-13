@@ -151,13 +151,12 @@ def get_file_encoding(content):
 def read_file_content(fileName):
     """Read a file content, this function is used to load Editor content."""
     try:
-        with open(fileName, mode='rU') as f:
+        with open(fileName, 'rU') as f:
             content = f.read()
-            encoding = get_file_encoding(content)
-            if not python3:
-                content.decode(encoding)
     except IOError as reason:
         raise NinjaIOException(reason)
+    except:
+        raise
     return content
 
 
