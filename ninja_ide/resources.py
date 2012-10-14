@@ -75,7 +75,7 @@ GET_SYSTEM_PATH = os.path.join(PRJ_PATH, 'tools', 'get_system_path.py')
 
 BUGS_PAGE = "https://github.com/ninja-ide/ninja-ide/issues"
 
-PLUGINS_DOC = "http://code.google.com/p/ninja-ide/wiki/New_Plugins_API"
+PLUGINS_DOC = "http://ninja-ide.readthedocs.org/en/latest/"
 
 UPDATES_URL = 'http://ninja-ide.org/updates'
 
