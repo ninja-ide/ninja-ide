@@ -1,0 +1,8 @@
+{
+  "module": "test_plugin",
+  "class": "TestPlugin",
+  "authors": "Martin Alderete <malderete@ninja-ide.org>",
+  "version": "0.1",
+  "description": "Plugin for UnitTest",
+  "url": "http://ninja-ide.org"
+}

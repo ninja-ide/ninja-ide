@@ -210,12 +210,12 @@ class LateralPanel(QWidget):
         hbox = QHBoxLayout()
         hbox.setContentsMargins(0, 0, 0, 0)
         self.labelText = "Ln: %s, Col: %s"
-        self.labelCursorPosition = QLabel(self.tr(self.labelText % (0, 0)))
+        self.labelCursorPosition = QLabel(self.trUtf8(self.labelText % (0, 0)))
         hbox.addWidget(self.labelCursorPosition)
         self.combo = QComboBox()
         ui_tools.ComboBoxButton(self.combo, self.combo.clear,
             self.style().standardPixmap(self.style().SP_TrashIcon))
-        self.combo.setToolTip(self.tr("Select the item from the Paste "
+        self.combo.setToolTip(self.trUtf8("Select the item from the Paste "
             "Historial list.\nYou can Copy items into this list with: "
             "%s\nor Paste them using: %s" %
                 (resources.get_shortcut("History-Copy").toString(
@@ -227,7 +227,7 @@ class LateralPanel(QWidget):
         vbox.addLayout(hbox)
 
     def update_line_col(self, line, col):
-        self.labelCursorPosition.setText(self.tr(
+        self.labelCursorPosition.setText(self.trUtf8(
             self.labelText % (line, col)))
 
     def add_new_copy(self, copy):

@@ -18,6 +18,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 import re
+import sys
 
 from tokenize import generate_tokens, TokenError
 import token as tkn
@@ -62,6 +63,12 @@ from ninja_ide.tools.logger import NinjaLogger
 
 BRACE_DICT = {')': '(', ']': '[', '}': '{', '(': ')', '[': ']', '{': '}'}
 logger = NinjaLogger('ninja_ide.gui.editor.editor')
+
+
+if sys.version_info.major == 3:
+    python3 = True
+else:
+    python3 = False
 
 
 class Editor(QPlainTextEdit, itab_item.ITabItem):
@@ -210,10 +217,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         super(Editor, self).set_id(id_)
         if self._mini:
             self._mini.set_code(self.toPlainText())
-        if settings.CHECK_STYLE:
-            self.pep8.check_style()
-        if settings.FIND_ERRORS:
-            self.errors.check_errors()
+        if not python3:
+            if settings.CHECK_STYLE:
+                self.pep8.check_style()
+            if settings.FIND_ERRORS:
+                self.errors.check_errors()
 
     def _add_line_increment(self, lines, blockModified, diference):
         def _inner_increment(line):
