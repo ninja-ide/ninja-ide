@@ -21,6 +21,7 @@ import shutil
 import unittest
 import tempfile
 
+from ninja_ide.tools.json_manager import read_ninja_plugin
 from ninja_ide.tools.json_manager import read_ninja_project
 from ninja_ide.tools.json_manager import create_ninja_project
 
@@ -74,6 +75,37 @@ class TestNinjaProject(unittest.TestCase):
         create_ninja_project(path, project, structure)
         structure = read_ninja_project(path)
         assert structure['foo'] == 'bar'
+
+    def test_read_ninja_bad_file_project(self):
+
+        path = self.tmpdir
+        frula_file = os.path.join(path, 'frula.nja')
+        with open(frula_file, 'w') as fp:
+            fp.write('frula\n')
+
+        structure = read_ninja_project(path)
+        assert structure == dict()
+
+    def test_read_ninja_plugin(self):
+
+        path = self.tmpdir
+        content = dict(samurai='ki')
+        plugin_file = os.path.join(path, 'samurai.plugin')
+        with open(plugin_file, 'w') as fp:
+            json.dump(content, fp)
+
+        structure = read_ninja_plugin(path)
+        assert structure['samurai'] == 'ki'
+
+    def test_read_ninja_bad_file_plugin(self):
+
+        path = self.tmpdir
+        frula_file = os.path.join(path, 'frula.plugin')
+        with open(frula_file, 'w') as fp:
+            fp.write('frula\n')
+
+        structure = read_ninja_plugin(path)
+        assert structure == dict()
 
 
 if __name__ == '__main__':
