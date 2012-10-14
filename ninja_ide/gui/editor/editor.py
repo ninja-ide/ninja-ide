@@ -15,13 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
 import re
-import logging
+import sys
 
 from tokenize import generate_tokens, TokenError
 import token as tkn
-from StringIO import StringIO
+#lint:disable
+try:
+    from StringIO import StringIO
+except:
+    from io import StringIO
+#lint:enable
 
 from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QFontMetricsF
@@ -53,8 +59,16 @@ from ninja_ide.gui.editor import pep8_checker
 from ninja_ide.gui.editor import errors_checker
 from ninja_ide.gui.editor import sidebar_widget
 
+from ninja_ide.tools.logger import NinjaLogger
+
 BRACE_DICT = {')': '(', ']': '[', '}': '{', '(': ')', '[': ']', '{': '}'}
-logger = logging.getLogger('ninja_ide.gui.editor.editor')
+logger = NinjaLogger('ninja_ide.gui.editor.editor')
+
+
+if sys.version_info.major == 3:
+    python3 = True
+else:
+    python3 = False
 
 
 class Editor(QPlainTextEdit, itab_item.ITabItem):
@@ -76,7 +90,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     """
 ###############################################################################
 
-    def __init__(self, filename, project):
+    def __init__(self, filename, project, project_obj=None):
         QPlainTextEdit.__init__(self)
         itab_item.ITabItem.__init__(self)
         #Config Editor
@@ -105,10 +119,16 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self._patIsWord = re.compile('\w+')
         #Brace matching
         self._braces = None
-        self._mtime = None
         self.__encoding = None
         #Completer
         self.completer = completer_widget.CodeCompletionWidget(self)
+        #Indentation
+        if project_obj is not None:
+            self.indent = project_obj.indentation
+            self.useTabs = project_obj.useTabs
+        else:
+            self.indent = settings.INDENT
+            self.useTabs = settings.USE_TABS
         #Flag to dont bug the user when answer *the modification dialog*
         self.ask_if_externally_modified = False
         self.just_saved = False
@@ -152,7 +172,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
                 self._mini.update_visible_area)
         #Set tab usage
-        if settings.USE_TABS:
+        if self.useTabs:
             self.set_tab_usage()
 
         #Context Menu Options
@@ -188,20 +208,20 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.setCenterOnScroll(settings.CENTER_ON_SCROLL)
 
     def set_tab_usage(self):
-        tab_size = self.pos_margin / settings.MARGIN_LINE * settings.INDENT
+        tab_size = self.pos_margin / settings.MARGIN_LINE * self.indent
         self.setTabStopWidth(tab_size)
         if self._mini:
             self._mini.setTabStopWidth(tab_size)
 
     def set_id(self, id_):
         super(Editor, self).set_id(id_)
-        self._mtime = file_manager.get_last_modification(id_)
         if self._mini:
             self._mini.set_code(self.toPlainText())
-        if settings.CHECK_STYLE:
-            self.pep8.check_style()
-        if settings.FIND_ERRORS:
-            self.errors.check_errors()
+        if not python3:
+            if settings.CHECK_STYLE:
+                self.pep8.check_style()
+            if settings.FIND_ERRORS:
+                self.errors.check_errors()
 
     def _add_line_increment(self, lines, blockModified, diference):
         def _inner_increment(line):
@@ -223,8 +243,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def _update_file_metadata(self, val):
         """Update the info of bookmarks, breakpoint, pep8 and static errors."""
-        if self.pep8.pep8checks or self.errors.errorsSummary or \
-        self._sidebarWidget._bookmarks or self._sidebarWidget._breakpoints:
+        if (self.pep8.pep8checks or self.errors.errorsSummary or
+           self._sidebarWidget._bookmarks or
+           self._sidebarWidget._breakpoints or
+           self._sidebarWidget._foldedBlocks):
             cursor = self.textCursor()
             if self.__lines_count:
                 diference = val - self.__lines_count
@@ -249,6 +271,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 self._sidebarWidget._bookmarks = self._add_line_increment(
                     self._sidebarWidget._bookmarks, blockNumber, diference)
                 settings.BOOKMARKS[self.ID] = self._sidebarWidget._bookmarks
+            if self._sidebarWidget._foldedBlocks and self.ID:
+                self._sidebarWidget._foldedBlocks = self._add_line_increment(
+                    self._sidebarWidget._foldedBlocks, blockNumber - 1,
+                    diference)
         self.__lines_count = val
         self.highlight_current_line()
 
@@ -259,6 +285,13 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         else:
             self.syncDocErrorsSignal = True
 
+    def hide_pep8_errors(self):
+        """Hide the pep8 errors from the sidebar and lines highlighted."""
+        self._sidebarWidget.pep8_check_lines([])
+        self.pep8.reset()
+        self.highlighter.rehighlight_lines([])
+        self._sync_tab_icon_notification_signal()
+
     def show_static_errors(self):
         self._sidebarWidget.static_errors_lines(
             self.errors.errorsSummary.keys())
@@ -266,6 +299,13 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self._sync_tab_icon_notification_signal()
         else:
             self.syncDocErrorsSignal = True
+
+    def hide_lint_errors(self):
+        """Hide the lint errors from the sidebar and lines highlighted."""
+        self._sidebarWidget.static_errors_lines([])
+        self.errors.reset()
+        self.highlighter.rehighlight_lines([])
+        self._sync_tab_icon_notification_signal()
 
     def _sync_tab_icon_notification_signal(self):
         self.syncDocErrorsSignal = False
@@ -276,16 +316,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         else:
             self.emit(SIGNAL("cleanDocument(QPlainTextEdit)"), self)
         if self.highlighter:
-            lines = list(set(self.errors.errorsSummary.keys() +
-                        self.pep8.pep8checks.keys()))
+            lines = list(set(list(self.errors.errorsSummary.keys()) +
+                        list(self.pep8.pep8checks.keys())))
             self.highlighter.rehighlight_lines(lines)
-
-    def check_external_modification(self):
-        if self.newDocument:
-            return False
-        #Saved document we can ask for modification!
-        return file_manager.check_for_external_modification(
-            self.get_id(), self._mtime)
 
     def has_write_permission(self):
         if self.newDocument:
@@ -362,7 +395,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         """
         Returns all the plain text of the editor
         """
-        return unicode(self.toPlainText())
+        return self.toPlainText()
 
     def get_lines_count(self):
         """
@@ -396,17 +429,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def set_font(self, family=settings.FONT_FAMILY, size=settings.FONT_SIZE):
         font = QFont(family, size)
         self.document().setDefaultFont(font)
-        # Fix for older version of Qt which doens't has ForceIntegerMetrics
-        if "ForceIntegerMetrics" in dir(QFont):
-            self.document().defaultFont().setStyleStrategy(
-                QFont.ForceIntegerMetrics)
-        font_metrics = QFontMetricsF(self.document().defaultFont())
-        if (font_metrics.width("#") * settings.MARGIN_LINE) == \
-           (font_metrics.width(" ") * settings.MARGIN_LINE):
-            self.pos_margin = font_metrics.width('#') * settings.MARGIN_LINE
-        else:
-            char_width = font_metrics.averageCharWidth()
-            self.pos_margin = char_width * settings.MARGIN_LINE
+        self._update_margin_line(font)
 
     def jump_to_line(self, lineno=None):
         """
@@ -425,7 +448,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.go_to_line(line[0] - 1)
 
     def _find_occurrences(self):
-        word = self._text_under_cursor()
+        if self.textCursor().hasSelection():
+            word = self.textCursor().selectedText()
+        else:
+            word = self._text_under_cursor()
         self.emit(SIGNAL("findOcurrences(QString)"), word)
 
     def go_to_line(self, lineno):
@@ -445,6 +471,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             size += 2
             font.setPointSize(size)
         self.setFont(font)
+        self._update_margin_line(font)
 
     def zoom_out(self):
         font = self.document().defaultFont()
@@ -453,6 +480,20 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             size -= 2
             font.setPointSize(size)
         self.setFont(font)
+        self._update_margin_line(font)
+
+    def _update_margin_line(self, font):
+        # Fix for older version of Qt which doens't has ForceIntegerMetrics
+        if "ForceIntegerMetrics" in dir(QFont):
+            self.document().defaultFont().setStyleStrategy(
+                QFont.ForceIntegerMetrics)
+        font_metrics = QFontMetricsF(self.document().defaultFont())
+        if (font_metrics.width("#") * settings.MARGIN_LINE) == \
+           (font_metrics.width(" ") * settings.MARGIN_LINE):
+            self.pos_margin = font_metrics.width('#') * settings.MARGIN_LINE
+        else:
+            char_width = font_metrics.averageCharWidth()
+            self.pos_margin = char_width * settings.MARGIN_LINE
 
     def get_parent_project(self):
         return ''
@@ -482,10 +523,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         cursor.setPosition(block.position())
         while block != end:
             cursor.setPosition(block.position())
-            if settings.USE_TABS:
+            if self.useTabs:
                 cursor.insertText('\t')
             else:
-                cursor.insertText(' ' * settings.INDENT)
+                cursor.insertText(' ' * self.indent)
             block = block.next()
 
         #End a undo block
@@ -509,15 +550,15 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         while block != end:
             cursor.setPosition(block.position())
             #Select Settings.indent chars from the current line
-            if settings.USE_TABS:
+            if self.useTabs:
                 cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
             else:
                 cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
-                    settings.INDENT)
+                    self.indent)
             text = cursor.selectedText()
-            if not settings.USE_TABS and text == ' ' * settings.INDENT:
+            if not self.useTabs and text == ' ' * self.indent:
                 cursor.removeSelectedText()
-            elif settings.USE_TABS and text == '\t':
+            elif self.useTabs and text == '\t':
                 cursor.removeSelectedText()
             block = block.next()
 
@@ -551,7 +592,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             text = tc.selectedText()
             old_len = len(text)
             max_replace = -1  # all
-            text = unicode(text).replace(wordOld, wordNew, max_replace)
+            text = text.replace(wordOld, wordNew, max_replace)
             new_len = len(text)
             tc.insertText(text)
             offset = new_len - old_len
@@ -604,22 +645,22 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def __insert_indentation(self, event):
         if self.textCursor().hasSelection():
             self.indent_more()
-        elif settings.USE_TABS:
+        elif self.useTabs:
             return False
         else:
-            self.textCursor().insertText(' ' * settings.INDENT)
+            self.textCursor().insertText(' ' * self.indent)
         return True
 
     def __backspace(self, event):
-        if self.textCursor().hasSelection() or settings.USE_TABS:
+        if self.textCursor().hasSelection() or self.useTabs:
             return False
         cursor = self.textCursor()
         cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
-        text = unicode(cursor.selection().toPlainText())
-        if (len(text) % settings.INDENT == 0) and text.isspace():
+        text = cursor.selection().toPlainText()
+        if (len(text) % self.indent == 0) and text.isspace():
             cursor.movePosition(QTextCursor.StartOfLine)
             cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
-                settings.INDENT)
+                self.indent)
             cursor.removeSelectedText()
             return True
 
@@ -632,6 +673,14 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             move = QTextCursor.MoveAnchor
         if self.textCursor().atBlockStart():
             self.moveCursor(QTextCursor.WordRight, move)
+            return True
+
+        cursor = self.textCursor()
+        position = cursor.position()
+        self.moveCursor(QTextCursor.StartOfLine, move)
+        self.moveCursor(QTextCursor.WordRight, move)
+        if position != self.textCursor().position() and \
+           cursor.block().text().startswith(' '):
             return True
 
     def __ignore_extended_line(self, event):
@@ -657,7 +706,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             begin -= 1
             cursor.setPosition(cursor_position + begin)
         cursor.setPosition(cursor_position - end, QTextCursor.KeepAnchor)
-        selected_text = unicode(cursor.selectedText())
+        selected_text = cursor.selectedText()
         return selected_text
 
     def __quot_completion(self, event):
@@ -666,7 +715,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         simmetrical symbol, is a little more cumbersome guessing the completion
         table.
         """
-        text = unicode(event.text())
+        text = event.text()
         PENTA_Q = 5 * text
         TETRA_Q = 4 * text
         TRIPLE_Q = 3 * text
@@ -694,7 +743,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         """Indicate if this symbol is part of a given pair and needs to be
         completed.
         """
-        text = unicode(event.text())
+        text = event.text()
         if text in settings.BRACES.values():
             portion = self.__reverse_select_text_portion_from_offset(1, 1)
             brace_open = portion[0]
@@ -705,8 +754,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 return True
 
     def __auto_indent(self, event):
-        text = unicode(self.textCursor().block().previous().text())
-        spaces = helpers.get_indentation(text)
+        text = self.textCursor().block().previous().text()
+        spaces = helpers.get_indentation(text, self.indent, self.useTabs)
         self.textCursor().insertText(spaces)
         if text != '' and text == ' ' * len(text):
             self.moveCursor(QTextCursor.Up)
@@ -733,7 +782,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         """Complete () [] and {} using a mild inteligence to see if corresponds
         and also do some more magic such as complete in classes and functions.
         """
-        brace = unicode(event.text())
+        brace = event.text()
         if brace not in settings.BRACES:
             # Thou shalt not waste cpu cycles if this brace compleion dissabled
             return
@@ -775,7 +824,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         cursor = self.textCursor()
         cursor.movePosition(QTextCursor.StartOfLine,
             QTextCursor.KeepAnchor)
-        symbol = unicode(event.text())
+        symbol = event.text()
         if symbol in settings.QUOTES:
             pre_context = self.__reverse_select_text_portion_from_offset(0, 3)
             if pre_context == 3 * symbol:
@@ -810,7 +859,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def _text_under_cursor(self):
         tc = self.textCursor()
         tc.select(QTextCursor.WordUnderCursor)
-        word = unicode(tc.selectedText())
+        word = tc.selectedText()
         result = self._patIsWord.findall(word)
         word = result[0] if result else ''
         return word
@@ -822,7 +871,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             painter.begin(self.viewport())
             painter.setPen(QColor('#FE9E9A'))
             offset = self.contentOffset()
-            painter.drawLine(self.pos_margin + offset.x(), 0, \
+            painter.drawLine(self.pos_margin + offset.x(), 0,
                 self.pos_margin + offset.x(), self.viewport().height())
             painter.end()
 
@@ -879,8 +928,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if event.modifiers() == Qt.ControlModifier:
             cursor.select(QTextCursor.WordUnderCursor)
             cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
-            if cursor.selectedText().endsWith('(') or \
-            cursor.selectedText().endsWith('.'):
+            if cursor.selectedText().endswith('(') or \
+            cursor.selectedText().endswith('.'):
                 cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
                 self.extraSelections = []
                 selection = QTextEdit.ExtraSelection()
@@ -928,11 +977,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             cursor = self.textCursor()
         cursor.select(QTextCursor.WordUnderCursor)
         cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
-        if cursor.selectedText().endsWith('('):
+        if cursor.selectedText().endswith('('):
             cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
             self.emit(SIGNAL("locateFunction(QString, QString, bool)"),
                 cursor.selectedText(), self.ID, False)
-        elif cursor.selectedText().endsWith('.'):
+        elif cursor.selectedText().endswith('.'):
             cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
             self.emit(SIGNAL("locateFunction(QString, QString, bool)"),
                 cursor.selectedText(), self.ID, True)
@@ -946,9 +995,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             cursor.setPosition(cursor2.position(), QTextCursor.KeepAnchor)
         else:
             cursor.setPosition(posEnd, QTextCursor.KeepAnchor)
-        text = cursor.selection().toPlainText()
-
-        return unicode(text)
+        return cursor.selection().toPlainText()
 
     def __get_abs_position_on_text(self, text, position):
         """tokens give us position of char in a given line, we need
@@ -1043,7 +1090,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             return
         cursor.movePosition(QTextCursor.PreviousCharacter,
                              QTextCursor.KeepAnchor)
-        text = unicode(cursor.selectedText())
+        text = cursor.selectedText()
         pos1 = cursor.position()
         if text in (")", "]", "}"):
             pos2 = self._match_braces(pos1, text, forward=False)
@@ -1111,8 +1158,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
 
 def create_editor(fileName='', project=None, syntax=None,
-                  use_open_highlight=False):
-    editor = Editor(fileName, project)
+                  use_open_highlight=False, project_obj=None):
+    editor = Editor(fileName, project, project_obj=project_obj)
     #if syntax is specified, use it
     if syntax:
         editor.register_syntax(syntax)

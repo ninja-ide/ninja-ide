@@ -14,19 +14,22 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+from __future__ import unicode_literals
 
+import sys
 import os
 import re
 import threading
 import shutil
-import logging
 
 from PyQt4 import QtCore
 
 from ninja_ide.core import settings
 
-logger = logging.getLogger('ninja_ide.gui.explorer.file_manager')
-DEBUG = logger.debug
+if sys.version_info.major == 3:
+    python3 = True
+else:
+    python3 = False
 
 
 #Lock to protect the file's writing operation
@@ -121,8 +124,8 @@ def _search_coding_line(txt):
     """Search a pattern like this: # -*- coding: utf-8 -*-."""
     coding_pattern = "coding[:=]\s*([-\w.]+)"
     pat_coding = re.search(coding_pattern, txt)
-    if pat_coding and unicode(pat_coding.groups()[0]) != 'None':
-        return unicode(pat_coding.groups()[0])
+    if pat_coding and pat_coding.groups()[0] != 'None':
+        return pat_coding.groups()[0]
     return None
 
 
@@ -148,12 +151,12 @@ def get_file_encoding(content):
 def read_file_content(fileName):
     """Read a file content, this function is used to load Editor content."""
     try:
-        with open(fileName, mode='rU') as f:
+        with open(fileName, 'rU') as f:
             content = f.read()
-            encoding = get_file_encoding(content)
-            content.decode(encoding)
-    except IOError, reason:
-        raise NinjaIOException(unicode(reason))
+    except IOError as reason:
+        raise NinjaIOException(reason)
+    except:
+        raise
     return content
 
 
@@ -202,7 +205,7 @@ def open_project(path):
     d = {}
     for root, dirs, files in os.walk(path, followlinks=True):
         d[root] = [[f for f in files
-                if (os.path.splitext(f.lower())[-1]) in \
+                if (os.path.splitext(f.lower())[-1]) in
                 settings.SUPPORTED_EXTENSIONS],
                 dirs]
     return d
@@ -217,7 +220,7 @@ def open_project_with_extensions(path, extensions):
     d = {}
     for root, dirs, files in os.walk(path, followlinks=True):
         d[root] = [[f for f in files
-                if (os.path.splitext(f.lower())[-1]) in extensions or \
+                if (os.path.splitext(f.lower())[-1]) in extensions or
                 '.*' in extensions],
                 dirs]
     return d

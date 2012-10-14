@@ -20,18 +20,32 @@ from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QListWidget
 from PyQt4.QtGui import QListWidgetItem
 from PyQt4.QtGui import QLabel
+from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QVBoxLayout
+from PyQt4.QtGui import QPushButton
+from PyQt4.QtGui import QSpacerItem
+from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
+from ninja_ide.core import settings
 from ninja_ide.gui.main_panel import main_container
 
 
-ERRORS_TEXT = "Static Errors: %1"
-PEP8_TEXT = "PEP8 Errors: %1"
+ERRORS_TEXT = "Static Errors: %s"
+PEP8_TEXT = "PEP8 Errors: %s"
 
 
 class ErrorsWidget(QWidget):
+
+###############################################################################
+# ERRORS WIDGET SIGNALS
+###############################################################################
+    """
+    pep8Activated(bool)
+    lintActivated(bool)
+    """
+###############################################################################
 
     def __init__(self):
         QWidget.__init__(self)
@@ -40,30 +54,70 @@ class ErrorsWidget(QWidget):
 
         vbox = QVBoxLayout(self)
         self.listErrors = QListWidget()
+        self.listErrors.setSortingEnabled(True)
         self.listPep8 = QListWidget()
-        self.errorsLabel = QLabel(self.tr(ERRORS_TEXT).arg(0))
-        vbox.addWidget(self.errorsLabel)
+        self.listPep8.setSortingEnabled(True)
+        hbox_lint = QHBoxLayout()
+        if settings.FIND_ERRORS:
+            self.btn_lint_activate = QPushButton(self.tr("Lint: ON"))
+        else:
+            self.btn_lint_activate = QPushButton(self.tr("Lint: OFF"))
+        self.errorsLabel = QLabel(self.tr(ERRORS_TEXT % 0))
+        hbox_lint.addWidget(self.errorsLabel)
+        hbox_lint.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
+        hbox_lint.addWidget(self.btn_lint_activate)
+        vbox.addLayout(hbox_lint)
         vbox.addWidget(self.listErrors)
-        self.pep8Label = QLabel(self.tr(PEP8_TEXT).arg(0))
-        vbox.addWidget(self.pep8Label)
+        hbox_pep8 = QHBoxLayout()
+        if settings.CHECK_STYLE:
+            self.btn_pep8_activate = QPushButton(self.tr("PEP8: ON"))
+        else:
+            self.btn_pep8_activate = QPushButton(self.tr("PEP8: OFF"))
+        self.pep8Label = QLabel(self.tr(PEP8_TEXT % 0))
+        hbox_pep8.addWidget(self.pep8Label)
+        hbox_pep8.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
+        hbox_pep8.addWidget(self.btn_pep8_activate)
+        vbox.addLayout(hbox_pep8)
         vbox.addWidget(self.listPep8)
 
         self.connect(self.listErrors, SIGNAL("itemSelectionChanged()"),
             self.errors_selected)
         self.connect(self.listPep8, SIGNAL("itemSelectionChanged()"),
             self.pep8_selected)
+        self.connect(self.btn_lint_activate, SIGNAL("clicked()"),
+            self._turn_on_off_lint)
+        self.connect(self.btn_pep8_activate, SIGNAL("clicked()"),
+            self._turn_on_off_pep8)
+
+    def _turn_on_off_lint(self):
+        """Change the status of the lint checker state."""
+        settings.FIND_ERRORS = not settings.FIND_ERRORS
+        if settings.FIND_ERRORS:
+            self.btn_lint_activate.setText(self.tr("Lint: ON"))
+        else:
+            self.btn_lint_activate.setText(self.tr("Lint: OFF"))
+        self.emit(SIGNAL("lintActivated(bool)"), settings.FIND_ERRORS)
+
+    def _turn_on_off_pep8(self):
+        """Change the status of the lint checker state."""
+        settings.CHECK_STYLE = not settings.CHECK_STYLE
+        if settings.CHECK_STYLE:
+            self.btn_pep8_activate.setText(self.tr("PEP8: ON"))
+        else:
+            self.btn_pep8_activate.setText(self.tr("PEP8: OFF"))
+        self.emit(SIGNAL("pep8Activated(bool)"), settings.CHECK_STYLE)
 
     def errors_selected(self):
         editorWidget = main_container.MainContainer().get_actual_editor()
         if editorWidget and self._outRefresh:
-            lineno = self.listErrors.currentItem().data(Qt.UserRole).toInt()[0]
+            lineno = int(self.listErrors.currentItem().data(Qt.UserRole))
             editorWidget.jump_to_line(lineno)
             editorWidget.setFocus()
 
     def pep8_selected(self):
         editorWidget = main_container.MainContainer().get_actual_editor()
         if editorWidget and self._outRefresh:
-            lineno = self.listPep8.currentItem().data(Qt.UserRole).toInt()[0]
+            lineno = int(self.listPep8.currentItem().data(Qt.UserRole))
             editorWidget.jump_to_line(lineno)
             editorWidget.setFocus()
 
@@ -78,7 +132,7 @@ class ErrorsWidget(QWidget):
                 item.setToolTip(linenostr + data)
                 item.setData(Qt.UserRole, lineno)
                 self.listErrors.addItem(item)
-        self.errorsLabel.setText(self.tr(ERRORS_TEXT).arg(
+        self.errorsLabel.setText(self.tr(ERRORS_TEXT %
             len(errors.errorsSummary)))
         for lineno in pep8.pep8checks:
             linenostr = 'L%s\t' % str(lineno + 1)
@@ -87,6 +141,6 @@ class ErrorsWidget(QWidget):
                 item.setToolTip(linenostr + data.split('\n')[0])
                 item.setData(Qt.UserRole, lineno)
                 self.listPep8.addItem(item)
-        self.pep8Label.setText(self.tr(PEP8_TEXT).arg(
+        self.pep8Label.setText(self.tr(PEP8_TEXT %
             len(pep8.pep8checks)))
         self._outRefresh = True

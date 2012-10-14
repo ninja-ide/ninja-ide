@@ -34,62 +34,62 @@ class MenuView(QObject):
         self.__ide = ide
 
         self.hideConsoleAction = menuView.addAction(
-            self.tr("Show/Hide &Console (%1)").arg(
+            self.trUtf8("Show/Hide &Console (%s)" %
                 resources.get_shortcut("Hide-misc").toString(
                     QKeySequence.NativeText)))
         self.hideConsoleAction.setCheckable(True)
         self.hideEditorAction = menuView.addAction(
-            self.tr("Show/Hide &Editor (%1)").arg(
+            self.trUtf8("Show/Hide &Editor (%s)" %
                 resources.get_shortcut("Hide-editor").toString(
                     QKeySequence.NativeText)))
         self.hideEditorAction.setCheckable(True)
         self.hideAllAction = menuView.addAction(
-            self.tr("Show/Hide &All (%1)").arg(
+            self.trUtf8("Show/Hide &All (%s)" %
                 resources.get_shortcut("Hide-all").toString(
                     QKeySequence.NativeText)))
         self.hideAllAction.setCheckable(True)
         self.hideExplorerAction = menuView.addAction(
-            self.tr("Show/Hide &Explorer (%1)").arg(
+            self.trUtf8("Show/Hide &Explorer (%s)" %
                 resources.get_shortcut("Hide-explorer").toString(
                     QKeySequence.NativeText)))
         self.hideExplorerAction.setCheckable(True)
         self.hideToolbarAction = menuView.addAction(
-            self.tr("Show/Hide &Toolbar"))
+            self.trUtf8("Show/Hide &Toolbar"))
         self.hideToolbarAction.setCheckable(True)
         self.fullscreenAction = menuView.addAction(
             QIcon(resources.IMAGES['fullscreen']),
-            self.tr("Full Screen &Mode (%1)").arg(
+            self.trUtf8("Full Screen &Mode (%s)" %
                 resources.get_shortcut("Full-screen").toString(
                     QKeySequence.NativeText)))
         menuView.addSeparator()
         splitTabHAction = menuView.addAction(
             QIcon(resources.IMAGES['splitH']),
-            self.tr("Split Tabs Horizontally (%1)").arg(
+            self.trUtf8("Split Tabs Horizontally (%s)" %
                 resources.get_shortcut("Split-horizontal").toString(
                     QKeySequence.NativeText)))
         splitTabVAction = menuView.addAction(
             QIcon(resources.IMAGES['splitV']),
-            self.tr("Split Tabs Vertically (%1)").arg(
+            self.trUtf8("Split Tabs Vertically (%s)" %
                 resources.get_shortcut("Split-vertical").toString(
                     QKeySequence.NativeText)))
         followModeAction = menuView.addAction(
             QIcon(resources.IMAGES['follow']),
-            self.tr("Follow Mode (%1)").arg(
+            self.trUtf8("Follow Mode (%s)" %
                 resources.get_shortcut("Follow-mode").toString(
                     QKeySequence.NativeText)))
-        groupTabsAction = menuView.addAction(self.tr("Group Tabs by Project"))
+        groupTabsAction = menuView.addAction(self.trUtf8("Group Tabs by Project"))
         deactivateGroupTabsAction = menuView.addAction(
-            self.tr("Deactivate Group Tabs"))
+            self.trUtf8("Deactivate Group Tabs"))
         menuView.addSeparator()
         #Zoom
         zoomInAction = menuView.addAction(QIcon(resources.IMAGES['zoom-in']),
-            self.tr("Zoom &In (Shift+Wheel-Up)"))
+            self.trUtf8("Zoom &In (Shift+Wheel-Up)"))
         zoomOutAction = menuView.addAction(QIcon(resources.IMAGES['zoom-out']),
-            self.tr("Zoom &Out (Shift+Wheel-Down)"))
+            self.trUtf8("Zoom &Out (Shift+Wheel-Down)"))
         menuView.addSeparator()
-        fadeInAction = menuView.addAction(self.tr("Fade In (Alt+Wheel-Up)"))
+        fadeInAction = menuView.addAction(self.trUtf8("Fade In (Alt+Wheel-Up)"))
         fadeOutAction = menuView.addAction(
-            self.tr("Fade Out (Alt+Wheel-Down)"))
+            self.trUtf8("Fade Out (Alt+Wheel-Down)"))
 
         self.toolbar_items = {
             'splith': splitTabHAction,

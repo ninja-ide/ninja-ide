@@ -17,12 +17,14 @@
 
 from __future__ import absolute_import
 
-from PyQt4.QtCore import SIGNAL, QThread
-from pyinotify import ProcessEvent, IN_CREATE, IN_DELETE, IN_DELETE_SELF, \
-                        IN_MODIFY, WatchManager, Notifier
+import os
 
-import logging
-logger = logging.getLogger('ninja_ide.core.filesystem_notifications.linux')
+from PyQt4.QtCore import QThread
+from pyinotify import ProcessEvent, IN_CREATE, IN_DELETE, IN_DELETE_SELF, \
+                        IN_MODIFY, WatchManager, Notifier, ExcludeFilter
+
+from ninja_ide.tools.logger import NinjaLogger
+logger = NinjaLogger('ninja_ide.core.filesystem_notifications.linux')
 DEBUG = logger.debug
 
 from ninja_ide.core.filesystem_notifications import base_watcher
@@ -59,6 +61,9 @@ class NinjaProcessEvent(ProcessEvent):
     def process_IN_MOVED_TO(self, event):
         self._process_callback((REMOVE, event.pathname))
 
+    def process_IN_MOVED_FROM(self, event):
+        self._process_callback((REMOVE, event.pathname))
+
     def process_IN_MOVE_SELF(self, event):
         self._process_callback((RENAME, event.pathname))
 
@@ -67,14 +72,18 @@ class QNotifier(QThread):
     def __init__(self, wm, processor):
         self.event_queue = list()
         self._processor = processor
-        self.notifier = Notifier(wm, NinjaProcessEvent(self.event_queue.append))
+        self.notifier = Notifier(wm,
+                            NinjaProcessEvent(self.event_queue.append))
         self.notifier.coalesce_events(True)
         self.keep_running = True
         QThread.__init__(self)
 
     def run(self):
         while self.keep_running:
-            self.notifier.process_events()
+            try:
+                self.notifier.process_events()
+            except OSError:
+                pass  # OSError: [Errno 2] No such file or directory happens
             e_dict = {}
             while len(self.event_queue):
                 e_type, e_path = self.event_queue.pop(0)
@@ -99,14 +108,22 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
     def __init__(self):
         self.watching_paths = {}
         super(NinjaFileSystemWatcher, self).__init__()
+        self._ignore_hidden = ('.git', '.hg', '.svn', '.bzr')
 
     def add_watch(self, path):
         if path not in self.watching_paths:
-            wm = WatchManager()
-            notifier = QNotifier(wm, self._emit_signal_on_change)
-            notifier.start()
-            wm.add_watch(path, mask, rec=True, auto_add=True)
-            self.watching_paths[path] = notifier
+            try:
+                wm = WatchManager()
+                notifier = QNotifier(wm, self._emit_signal_on_change)
+                notifier.start()
+                exclude = ExcludeFilter([os.path.join(path, folder)
+                    for folder in self._ignore_hidden])
+                wm.add_watch(path, mask, rec=True, auto_add=True,
+                    exclude_filter=exclude)
+                self.watching_paths[path] = notifier
+            except (OSError, IOError):
+                pass
+                #Shit happens, most likely temp file
 
     def remove_watch(self, path):
         if path in self.watching_paths:
@@ -115,10 +132,8 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
             notifier.quit()
 
     def shutdown_notification(self):
+        base_watcher.BaseWatcher.shutdown_notification(self)
         for each_path in self.watching_paths:
             notifier = self.watching_paths[each_path]
             notifier.keep_running = False
             notifier.quit()
-
-    def _emit_signal_on_change(self, event, path):
-        self.emit(SIGNAL("fileChanged(int, QString)"), event, path)

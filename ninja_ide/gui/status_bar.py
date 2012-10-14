@@ -18,7 +18,6 @@
 from __future__ import absolute_import
 
 import re
-import logging
 
 from PyQt4.QtGui import QStatusBar
 from PyQt4.QtGui import QLabel
@@ -26,7 +25,6 @@ from PyQt4.QtGui import QCompleter
 from PyQt4.QtGui import QFileSystemModel
 from PyQt4.QtGui import QTextDocument
 from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QShortcut
 from PyQt4.QtGui import QKeySequence
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
@@ -43,8 +41,9 @@ from ninja_ide import resources
 from ninja_ide.tools import locator
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.main_panel import main_container
+from ninja_ide.tools.logger import NinjaLogger
 
-logger = logging.getLogger('ninja_ide.gui.status_bar')
+logger = NinjaLogger('ninja_ide.gui.status_bar')
 DEBUG = logger.debug
 
 __statusBarInstance = None
@@ -84,8 +83,6 @@ class __StatusBar(QStatusBar):
 
         self.addWidget(self._widgetStatus)
 
-        self._shortEsc = QShortcut(QKeySequence(Qt.Key_Escape), self)
-
         self.connect(self, SIGNAL("messageChanged(QString)"), self.message_end)
         self.connect(self._replaceWidget._btnCloseReplace, SIGNAL("clicked()"),
             lambda: self._replaceWidget.setVisible(False))
@@ -95,7 +92,6 @@ class __StatusBar(QStatusBar):
             self.replace_all)
         self.connect(self._replaceWidget._btnReplaceSelection,
             SIGNAL("clicked()"), self.replace_selected)
-        self.connect(self._shortEsc, SIGNAL("activated()"), self.hide_status)
         self.connect(self._fileSystemOpener.btnClose, SIGNAL("clicked()"),
             self.hide_status)
         self.connect(self._fileSystemOpener, SIGNAL("requestHide()"),
@@ -119,6 +115,10 @@ class __StatusBar(QStatusBar):
     def show(self):
         self.clearMessage()
         QStatusBar.show(self)
+        editor = main_container.MainContainer().get_actual_editor()
+        if editor and editor.textCursor().hasSelection():
+            text = editor.textCursor().selectedText()
+            self._searchWidget._line.setText(text)
         if self._widgetStatus.isVisible():
             self._searchWidget._line.setFocus()
             self._searchWidget._line.selectAll()
@@ -145,12 +145,13 @@ class __StatusBar(QStatusBar):
             self.show()
 
     def show_locator(self):
-        self.clearMessage()
-        self._searchWidget.setVisible(False)
-        self.show()
-        self._codeLocator.setVisible(True)
-        self._codeLocator._completer.setFocus()
-        self._codeLocator.show_suggestions()
+        if not self._codeLocator.isVisible():
+            self.clearMessage()
+            self._searchWidget.setVisible(False)
+            self.show()
+            self._codeLocator.setVisible(True)
+            self._codeLocator._completer.setFocus()
+            self._codeLocator.show_suggestions()
 
     def show_file_opener(self):
         self.clearMessage()
@@ -179,8 +180,8 @@ class __StatusBar(QStatusBar):
         flags = 0 + s + w
         editor = main_container.MainContainer().get_actual_editor()
         if editor:
-            editor.replace_match(unicode(self._searchWidget._line.text()),
-                unicode(self._replaceWidget._lineReplace.text()), flags)
+            editor.replace_match(self._searchWidget._line.text(),
+                self._replaceWidget._lineReplace.text(), flags)
         if not editor.textCursor().hasSelection():
             self.find()
 
@@ -195,8 +196,8 @@ class __StatusBar(QStatusBar):
         flags = 0 + s + w
         editor = main_container.MainContainer().get_actual_editor()
         if editor:
-            editor.replace_match(unicode(self._searchWidget._line.text()),
-                unicode(self._replaceWidget._lineReplace.text()), flags, True,
+            editor.replace_match(self._searchWidget._line.text(),
+                self._replaceWidget._lineReplace.text(), flags, True,
                 selected)
 
     def find(self):
@@ -207,7 +208,7 @@ class __StatusBar(QStatusBar):
         flags = s + w
         editor = main_container.MainContainer().get_actual_editor()
         if editor:
-            editor.find_match(unicode(self._searchWidget._line.text()), flags)
+            editor.find_match(self._searchWidget._line.text(), flags)
 
     def find_next(self):
         s = 0 if not self._searchWidget._checkSensitive.isChecked() \
@@ -217,8 +218,7 @@ class __StatusBar(QStatusBar):
         flags = 0 + s + w
         editor = main_container.MainContainer().get_actual_editor()
         if editor:
-            editor.find_match(unicode(self._searchWidget._line.text()),
-                flags, True)
+            editor.find_match(self._searchWidget._line.text(), flags, True)
 
     def find_previous(self):
         s = 0 if not self._searchWidget._checkSensitive.isChecked() \
@@ -228,8 +228,7 @@ class __StatusBar(QStatusBar):
         flags = 1 + s + w
         editor = main_container.MainContainer().get_actual_editor()
         if editor:
-            editor.find_match(unicode(self._searchWidget._line.text()),
-                flags, True)
+            editor.find_match(self._searchWidget._line.text(), flags, True)
 
     def showMessage(self, message, timeout):
         self._widgetStatus.hide()
@@ -254,8 +253,8 @@ class SearchWidget(QWidget):
         self._parent = parent
         hSearch = QHBoxLayout(self)
         hSearch.setContentsMargins(0, 0, 0, 0)
-        self._checkSensitive = QCheckBox(self.tr("Respect Case Sensitive"))
-        self._checkWholeWord = QCheckBox(self.tr("Find Whole Words"))
+        self._checkSensitive = QCheckBox(self.trUtf8("Respect Case Sensitive"))
+        self._checkWholeWord = QCheckBox(self.trUtf8("Find Whole Words"))
         self._line = TextLine(self)
         self._line.setMinimumWidth(250)
         self._btnClose = QPushButton(
@@ -263,12 +262,12 @@ class SearchWidget(QWidget):
         self._btnFind = QPushButton(QIcon(resources.IMAGES['find']), '')
         self.btnPrevious = QPushButton(
             self.style().standardIcon(QStyle.SP_ArrowLeft), '')
-        self.btnPrevious.setToolTip(self.tr("Press %1").arg(
+        self.btnPrevious.setToolTip(self.trUtf8("Press %s" %
                 resources.get_shortcut("Find-previous").toString(
                     QKeySequence.NativeText)))
         self.btnNext = QPushButton(
             self.style().standardIcon(QStyle.SP_ArrowRight), '')
-        self.btnNext.setToolTip(self.tr("Press %1").arg(
+        self.btnNext.setToolTip(self.trUtf8("Press %s" %
                 resources.get_shortcut("Find-next").toString(
                     QKeySequence.NativeText)))
         hSearch.addWidget(self._btnClose)
@@ -323,8 +322,8 @@ class SearchWidget(QWidget):
     def find_matches(self, editor):
         if editor is None:
             return
-        text = unicode(editor.toPlainText())
-        search = unicode(self._line.text())
+        text = editor.toPlainText()
+        search = self._line.text()
         hasSearch = len(search) > 0
         if self._checkWholeWord.isChecked():
             pattern = r'\b%s\b' % search
@@ -339,7 +338,7 @@ class SearchWidget(QWidget):
             cursor.movePosition(QTextCursor.WordLeft)
             cursor.movePosition(QTextCursor.Start,
                 QTextCursor.KeepAnchor)
-            text = unicode(cursor.selectedText())
+            text = cursor.selectedText()
             self.index = text.count(search) + 1
         else:
             self.index = 0
@@ -360,9 +359,9 @@ class ReplaceWidget(QWidget):
         self._lineReplace.setMinimumWidth(250)
         self._btnCloseReplace = QPushButton(
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
-        self._btnReplace = QPushButton(self.tr("Replace"))
-        self._btnReplaceAll = QPushButton(self.tr("Replace All"))
-        self._btnReplaceSelection = QPushButton(self.tr("Replace Selection"))
+        self._btnReplace = QPushButton(self.trUtf8("Replace"))
+        self._btnReplaceAll = QPushButton(self.trUtf8("Replace All"))
+        self._btnReplaceSelection = QPushButton(self.trUtf8("Replace Selection"))
         hReplace.addWidget(self._btnCloseReplace)
         hReplace.addWidget(self._lineReplace)
         hReplace.addWidget(self._btnReplace)
@@ -411,7 +410,7 @@ class FileSystemOpener(QWidget):
         self.btnOpen = QPushButton(
             self.style().standardIcon(QStyle.SP_ArrowRight), 'Open!')
         hbox.addWidget(self.btnClose)
-        hbox.addWidget(QLabel(self.tr("Path:")))
+        hbox.addWidget(QLabel(self.trUtf8("Path:")))
         hbox.addWidget(self.pathLine)
         hbox.addWidget(self.btnOpen)
 
@@ -421,7 +420,7 @@ class FileSystemOpener(QWidget):
             self._open_file)
 
     def _open_file(self):
-        path = unicode(self.pathLine.text())
+        path = self.pathLine.text()
         main_container.MainContainer().open_file(path)
         self.emit(SIGNAL("requestHide()"))
 

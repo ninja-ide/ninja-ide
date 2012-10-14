@@ -28,7 +28,7 @@ import sys
 # PATHS
 ###############################################################################
 
-HOME_PATH = unicode(QDir.toNativeSeparators(QDir.homePath()))
+HOME_PATH = QDir.toNativeSeparators(QDir.homePath())
 
 NINJA_EXECUTABLE = os.path.realpath(sys.argv[0])
 
@@ -58,7 +58,10 @@ EDITOR_SKINS = os.path.join(HOME_NINJA_PATH, "addins", "schemes")
 
 START_PAGE_URL = os.path.join(PRJ_PATH, "doc", "startPage.html")
 
-NINJA_THEME = os.path.join(PRJ_PATH, "addins", "theme", "ninja_theme.qss")
+NINJA_THEME = os.path.join(PRJ_PATH, "addins", "theme", "ninja_dark.qss")
+
+NINJA__THEME_CLASSIC = os.path.join(
+    PRJ_PATH, "addins", "theme", "ninja_theme.qss")
 
 NINJA_THEME_DOWNLOAD = os.path.join(HOME_NINJA_PATH, "addins", "theme")
 
@@ -172,6 +175,8 @@ IMAGES = {
     "locate-nonpython": os.path.join(PRJ_PATH, "img", "locate-nonpython.png"),
     "locate-on-this-file": os.path.join(PRJ_PATH, "img",
         "locate-on-this-file.png"),
+    "locate-tab": os.path.join(PRJ_PATH, "img", "locate-tab.png"),
+    "locate-line": os.path.join(PRJ_PATH, "img", "locate-line.png"),
     "add": os.path.join(PRJ_PATH, "img", "add.png"),
     "delete": os.path.join(PRJ_PATH, "img", "delete.png"),
     "loading": os.path.join(PRJ_PATH, "img", "loading.gif"),
@@ -208,7 +213,12 @@ COLOR_SCHEME = {
     "error-underline": "red",
     "pep8-underline": "yellow",
     "sidebar-background": "#c4c4c4",
-    "sidebar-foreground": "black"}
+    "sidebar-foreground": "black",
+    "locator-name": "white",
+    "locator-name-selected": "black",
+    "locator-path": "gray",
+    "locator-path-selected": "white",
+}
 
 CUSTOM_SCHEME = {}
 
@@ -219,23 +229,23 @@ CUSTOM_SCHEME = {}
 
 #default shortcuts
 SHORTCUTS = {
-    "Duplicate": QKeySequence(Qt.CTRL + Qt.Key_E),
-    "Remove-line": QKeySequence(Qt.CTRL + Qt.Key_Q),
+    "Duplicate": QKeySequence(Qt.CTRL + Qt.Key_R),  # Replicate
+    "Remove-line": QKeySequence(Qt.CTRL + Qt.Key_E),  # Eliminate
     "Move-up": QKeySequence(Qt.ALT + Qt.Key_Up),
     "Move-down": QKeySequence(Qt.ALT + Qt.Key_Down),
     "Close-tab": QKeySequence(Qt.CTRL + Qt.Key_W),
     "New-file": QKeySequence(Qt.CTRL + Qt.Key_N),
-    "New-project": QKeySequence(Qt.CTRL + Qt.Key_M),
+    "New-project": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_N),
     "Open-file": QKeySequence(Qt.CTRL + Qt.Key_O),
-    "Open-project": QKeySequence(Qt.CTRL + Qt.Key_P),
+    "Open-project": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_O),
     "Save-file": QKeySequence(Qt.CTRL + Qt.Key_S),
     "Save-project": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_S),
-    "Print-file": QKeySequence(Qt.CTRL + Qt.Key_I),
+    "Print-file": QKeySequence(Qt.CTRL + Qt.Key_P),
     "Redo": QKeySequence(Qt.CTRL + Qt.Key_Y),
     "Comment": QKeySequence(Qt.CTRL + Qt.Key_D),
     "Uncomment": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_D),
-    "Horizontal-line": QKeySequence(Qt.CTRL + Qt.Key_R),
-    "Title-comment": QKeySequence(Qt.CTRL + Qt.Key_T),
+    "Horizontal-line": QKeySequence(),
+    "Title-comment": QKeySequence(),
     "Indent-less": QKeySequence(Qt.SHIFT + Qt.Key_Tab),
     "Hide-misc": QKeySequence(Qt.Key_F4),
     "Hide-editor": QKeySequence(Qt.Key_F3),
@@ -243,23 +253,22 @@ SHORTCUTS = {
     "Run-file": QKeySequence(Qt.CTRL + Qt.Key_F6),
     "Run-project": QKeySequence(Qt.Key_F6),
     "Debug": QKeySequence(Qt.Key_F7),
-    "Switch-Focus": QKeySequence(Qt.Key_F8),
-    "Stop-execution": QKeySequence(Qt.CTRL + Qt.Key_F5),
+    "Switch-Focus": QKeySequence(Qt.CTRL + Qt.Key_QuoteLeft),
+    "Stop-execution": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_F6),
     "Hide-all": QKeySequence(Qt.Key_F11),
     "Full-screen": QKeySequence(Qt.CTRL + Qt.Key_F11),
     "Find": QKeySequence(Qt.CTRL + Qt.Key_F),
     "Find-replace": QKeySequence(Qt.CTRL + Qt.Key_H),
-    "Find-with-word": QKeySequence(Qt.CTRL + Qt.Key_G),
+    "Find-with-word": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_F),
     "Find-next": QKeySequence(Qt.CTRL + Qt.Key_F3),
-    "Find-previous": QKeySequence(Qt.CTRL + Qt.Key_F2),
+    "Find-previous": QKeySequence(Qt.SHIFT + Qt.Key_F3),
     "Help": QKeySequence(Qt.Key_F1),
     "Split-horizontal": QKeySequence(Qt.Key_F10),
     "Split-vertical": QKeySequence(Qt.Key_F9),
     "Follow-mode": QKeySequence(Qt.CTRL + Qt.Key_F10),
     "Reload-file": QKeySequence(Qt.Key_F5),
-    "Jump": QKeySequence(Qt.CTRL + Qt.Key_J),
     "Find-in-files": QKeySequence(Qt.CTRL + Qt.Key_L),
-    "Import": QKeySequence(Qt.CTRL + Qt.Key_U),
+    "Import": QKeySequence(Qt.CTRL + Qt.Key_I),
     "Go-to-definition": QKeySequence(Qt.CTRL + Qt.Key_Return),
     "Complete-Declarations": QKeySequence(Qt.ALT + Qt.Key_Return),
     "Code-locator": QKeySequence(Qt.CTRL + Qt.Key_K),
@@ -267,16 +276,16 @@ SHORTCUTS = {
     "Navigate-back": QKeySequence(Qt.ALT + Qt.Key_Left),
     "Navigate-forward": QKeySequence(Qt.ALT + Qt.Key_Right),
     "Open-recent-closed": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_T),
-    "Change-Tab": QKeySequence(Qt.CTRL + Qt.Key_Tab),
-    "Change-Tab-Reverse": QKeySequence(Qt.CTRL + Qt.Key_Shift + Qt.Key_Tab),
+    "Change-Tab": QKeySequence(Qt.CTRL + Qt.Key_PageDown),
+    "Change-Tab-Reverse": QKeySequence(Qt.CTRL + Qt.Key_PageUp),
     "Show-Code-Nav": QKeySequence(Qt.CTRL + Qt.Key_1),
-    "Show-Bookmarks-Nav": QKeySequence(Qt.CTRL + Qt.Key_2),
-    "Show-Breakpoints-Nav": QKeySequence(Qt.CTRL + Qt.Key_3),
     "Show-Paste-History": QKeySequence(Qt.CTRL + Qt.Key_4),
     "History-Copy": QKeySequence(Qt.CTRL + Qt.ALT + Qt.Key_C),
     "History-Paste": QKeySequence(Qt.CTRL + Qt.ALT + Qt.Key_V),
     "Add-Bookmark-or-Breakpoint": QKeySequence(Qt.CTRL + Qt.Key_B),
-    "change-split-focus": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_F10),
+    "change-split-focus": QKeySequence(Qt.CTRL + Qt.Key_Tab),
+    "move-tab-to-next-split": QKeySequence(Qt.SHIFT + Qt.Key_F10),
+    "change-tab-visibility": QKeySequence(Qt.SHIFT + Qt.Key_F1),
     "Highlight-Word": QKeySequence(Qt.CTRL + Qt.Key_Down)}
 
 CUSTOM_SHORTCUTS = {}
@@ -298,7 +307,7 @@ def load_shortcuts():
         default_action = SHORTCUTS[action].toString()
         #get the custom shortcut or the default
         shortcut_action = settings.value("shortcuts/%s" % action,
-            default_action).toString()
+            default_action)
         #set the shortcut
         CUSTOM_SHORTCUTS[action] = QKeySequence(shortcut_action)
 

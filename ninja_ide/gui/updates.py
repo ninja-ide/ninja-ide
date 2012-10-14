@@ -17,7 +17,6 @@
 
 import urllib
 import webbrowser
-import logging
 from distutils import version
 
 from PyQt4.QtGui import QSystemTrayIcon
@@ -32,9 +31,9 @@ import ninja_ide
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.tools import json_manager
+from ninja_ide.tools.logger import NinjaLogger
 
-
-logger = logging.getLogger('ninja_ide.gui.updates')
+logger = NinjaLogger('ninja_ide.gui.updates')
 
 
 class TrayIconUpdates(QSystemTrayIcon):
@@ -60,7 +59,7 @@ class TrayIconUpdates(QSystemTrayIcon):
     def setup_menu(self, show_downloads=False):
         self.menu = QMenu()
         if show_downloads:
-            self.download = QAction(self.tr("Download Version: %1!").arg(
+            self.download = QAction(self.tr("Download Version: %s!" % \
                 self.ide_version),
                 self, triggered=self._show_download)
             self.menu.addAction(self.download)
@@ -81,21 +80,21 @@ class TrayIconUpdates(QSystemTrayIcon):
                 if self.supportsMessages():
                     self.setup_menu(True)
                     self.showMessage(self.tr("NINJA-IDE Updates"),
-                        self.tr("New Version of NINJA-IDE\nAvailable: ") + \
-                        self.ide_version + \
-                        self.tr("\n\nCheck the Update Icon Menu to Download!"),
+                        self.tr("New Version of NINJA-IDE\nAvailable: ") +
+                        self.ide_version +
+                        self.tr("\n\nCheck the Update Menu in the NINJA-IDE "
+                                "System Tray icon to Download!"),
                         QSystemTrayIcon.Information, 10000)
                 else:
                     button = QMessageBox.information(self.parent(),
                         self.tr("NINJA-IDE Updates"),
-                        self.tr("New Version of NINJA-IDE\nAvailable: ") + \
+                        self.tr("New Version of NINJA-IDE\nAvailable: ") +
                         self.ide_version)
                     if button == QMessageBox.Ok:
                         self._show_download()
             else:
                 self.hide()
-        except Exception, reason:
-            print reason
+        except Exception as reason:
             logger.warning('Versions can not be compared: %r', reason)
             self.hide()
 

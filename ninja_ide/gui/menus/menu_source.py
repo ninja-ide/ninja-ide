@@ -34,75 +34,77 @@ class MenuSource(QObject):
 
         indentMoreAction = menuSource.addAction(
             QIcon(resources.IMAGES['indent-more']),
-            self.tr("Indent More (%1)").arg(
+            self.trUtf8("Indent More (%s)" %
                 QKeySequence(Qt.Key_Tab).toString(QKeySequence.NativeText)))
         indentLessAction = menuSource.addAction(
             QIcon(resources.IMAGES['indent-less']),
-            self.tr("Indent Less (%1)").arg(
+            self.trUtf8("Indent Less (%s)" %
                 resources.get_shortcut("Indent-less").toString(
                     QKeySequence.NativeText)))
         menuSource.addSeparator()
         commentAction = menuSource.addAction(
             QIcon(resources.IMAGES['comment-code']),
-            self.tr("Comment (%1)").arg(
+            self.trUtf8("Comment (%s)" %
                 resources.get_shortcut("Comment").toString(
                     QKeySequence.NativeText)))
         unCommentAction = menuSource.addAction(
             QIcon(resources.IMAGES['uncomment-code']),
-            self.tr("Uncomment (%1)").arg(
+            self.trUtf8("Uncomment (%s)" %
                 resources.get_shortcut("Uncomment").toString(
                     QKeySequence.NativeText)))
         horizontalLineAction = menuSource.addAction(
-            self.tr("Insert Horizontal Line (%1)").arg(
+            self.trUtf8("Insert Horizontal Line (%s)" %
                 resources.get_shortcut("Horizontal-line").toString(
                     QKeySequence.NativeText)))
         titleCommentAction = menuSource.addAction(
-            self.tr("Insert Title Comment (%1)").arg(
+            self.trUtf8("Insert Title Comment (%s)" %
                 resources.get_shortcut("Title-comment").toString(
                     QKeySequence.NativeText)))
         countCodeLinesAction = menuSource.addAction(
-            self.tr("Count Code Lines"))
+            self.trUtf8("Count Code Lines"))
         menuSource.addSeparator()
 #        tellTaleAction = menuSource.addAction(
-#            self.tr("Tell me a Tale of Code"))
+#            self.trUtf8("Tell me a Tale of Code"))
 #        tellTaleAction.setEnabled(False)
         goToDefinitionAction = menuSource.addAction(
             QIcon(resources.IMAGES['go-to-definition']),
-            self.tr("Go To Definition (%1 or %2+Click)").arg(
-                resources.get_shortcut("Go-to-definition").toString(
+            self.trUtf8("Go To Definition (%s or %s+Click)" %
+                (resources.get_shortcut("Go-to-definition").toString(
                     QKeySequence.NativeText),
-                settings.OS_KEY))
+                settings.OS_KEY)))
         insertImport = menuSource.addAction(
             QIcon(resources.IMAGES['insert-import']),
-            self.tr("Insert &Import (%1)").arg(
+            self.trUtf8("Insert &Import (%s)" %
                 resources.get_shortcut("Import").toString(
                     QKeySequence.NativeText)))
-        menu_debugging = menuSource.addMenu(self.tr("Debugging Tricks"))
+        menu_debugging = menuSource.addMenu(self.trUtf8("Debugging Tricks"))
         insertPrints = menu_debugging.addAction(
-            self.tr("Insert Prints per selected line."))
+            self.trUtf8("Insert Prints per selected line."))
+        insertPdb = menu_debugging.addAction(
+            self.trUtf8("Insert pdb.set_trace()"))
 #        organizeImportsAction = menuSource.addAction(
-#            self.tr("&Organize Imports"))
+#            self.trUtf8("&Organize Imports"))
 #        removeUnusedImportsAction = menuSource.addAction(
-#            self.tr("Remove Unused &Imports"))
+#            self.trUtf8("Remove Unused &Imports"))
 #        extractMethodAction = menuSource.addAction(
-#            self.tr("Extract selected &code as Method"))
+#            self.trUtf8("Extract selected &code as Method"))
         menuSource.addSeparator()
         removeTrailingSpaces = menuSource.addAction(
-            self.tr("&Remove Trailing Spaces"))
+            self.trUtf8("&Remove Trailing Spaces"))
         replaceTabsSpaces = menuSource.addAction(
-            self.tr("Replace Tabs With &Spaces"))
-        moveUp = menuSource.addAction(self.tr("Move &Up (%1)").arg(
+            self.trUtf8("Replace Tabs With &Spaces"))
+        moveUp = menuSource.addAction(self.trUtf8("Move &Up (%s)" %
             resources.get_shortcut("Move-up").toString(
                 QKeySequence.NativeText)))
-        moveDown = menuSource.addAction(self.tr("Move &Down (%1)").arg(
+        moveDown = menuSource.addAction(self.trUtf8("Move &Down (%s)" %
             resources.get_shortcut("Move-down").toString(
                 QKeySequence.NativeText)))
         duplicate = menuSource.addAction(
-            self.tr("Duplica&te (%1)").arg(
+            self.trUtf8("Duplica&te (%s)" %
                 resources.get_shortcut("Duplicate").toString(
                     QKeySequence.NativeText)))
         remove = menuSource.addAction(
-            self.tr("&Remove Line (%1)").arg(
+            self.trUtf8("&Remove Line (%s)" %
                 resources.get_shortcut("Remove-line").toString(
                     QKeySequence.NativeText)))
 
@@ -154,3 +156,5 @@ class MenuSource(QObject):
             actions.Actions().editor_remove_line)
         self.connect(insertPrints, SIGNAL("triggered()"),
             actions.Actions().editor_insert_debugging_prints)
+        self.connect(insertPdb, SIGNAL("triggered()"),
+            actions.Actions().editor_insert_pdb)

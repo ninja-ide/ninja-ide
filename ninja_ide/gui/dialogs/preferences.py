@@ -16,6 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
 import os
 import copy
@@ -120,7 +121,7 @@ class PreferencesWidget(QDialog):
         self.close()
 
     def _save(self):
-        for i in xrange(self._tabs.count()):
+        for i in range(self._tabs.count()):
             self._tabs.widget(i).save()
         self.close()
 
@@ -146,7 +147,7 @@ class GeneralTab(QWidget):
         vbox.addWidget(self._tabs)
 
     def save(self):
-        for i in xrange(self._tabs.count()):
+        for i in range(self._tabs.count()):
             self._tabs.widget(i).save()
 
 
@@ -168,7 +169,7 @@ class GeneralConfiguration(QWidget):
             self.tr("Load files from last session"))
         self._checkActivatePlugins = QCheckBox(self.tr("Activate Plugins"))
         self._checkNotifyUpdates = QCheckBox(
-            self.tr("Nofity me for new available updates."))
+            self.tr("Notify me of new updates."))
         self._checkShowStartPage = QCheckBox(self.tr("Show Start Page"))
         vboxStart.addWidget(self._checkLastSession)
         vboxStart.addWidget(self._checkActivatePlugins)
@@ -206,9 +207,9 @@ class GeneralConfiguration(QWidget):
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('general')
         self._checkLastSession.setChecked(
-            qsettings.value('loadFiles', True).toBool())
+            qsettings.value('loadFiles', 'true') == 'true')
         self._checkActivatePlugins.setChecked(
-            qsettings.value('activatePlugins', True).toBool())
+            qsettings.value('activatePlugins', 'true') == 'true')
         self._checkNotifyUpdates.setChecked(settings.NOTIFY_UPDATES)
         self._checkShowStartPage.setChecked(settings.SHOW_START_PAGE)
         self._checkConfirmExit.setChecked(settings.CONFIRM_EXIT)
@@ -230,13 +231,12 @@ class GeneralConfiguration(QWidget):
             SIGNAL('clicked()'), self._reset_preferences)
 
     def _load_workspace(self):
-        path = unicode(QFileDialog.getExistingDirectory(
-            self, self.tr("Select Workspace")))
+        path = QFileDialog.getExistingDirectory(
+            self, self.tr("Select Workspace"))
         self._txtWorkspace.setText(path)
 
     def _load_python_path(self):
-        path = unicode(QFileDialog.getOpenFileName(
-            self, self.tr("Select Python Path")))
+        path = QFileDialog.getOpenFileName(self, self.tr("Select Python Path"))
         if path:
             self._txtPythonPath.setText(path)
 
@@ -255,7 +255,7 @@ class GeneralConfiguration(QWidget):
         qsettings.setValue('confirmExit', self._checkConfirmExit.isChecked())
         settings.CONFIRM_EXIT = self._checkConfirmExit.isChecked()
         qsettings.setValue('workspace', self._txtWorkspace.text())
-        settings.WORKSPACE = unicode(self._txtWorkspace.text())
+        settings.WORKSPACE = self._txtWorkspace.text()
         extensions = str(self._txtExtensions.text()).split(',')
         extensions = [e.strip() for e in extensions]
         qsettings.setValue('supportedExtensions', extensions)
@@ -317,7 +317,7 @@ class GeneralExecution(QWidget):
         self.comboWarning.addItems(
             ['default', 'ignore', 'all', 'module', 'once', 'error'])
         self.check_x = QCheckBox(self.tr("-x: skip first line of source"))
-        self.check_3 = QCheckBox(self.tr("-3: warn about Python 3.x " \
+        self.check_3 = QCheckBox(self.tr("-3: warn about Python 3.x "
             "incompatibilities that 2to3 cannot trivially fix"))
         grid.addWidget(self.check_B)
         grid.addWidget(self.check_d)
@@ -387,8 +387,7 @@ class GeneralExecution(QWidget):
             SIGNAL("clicked()"), self._load_python_path)
 
     def _load_python_path(self):
-        path = unicode(QFileDialog.getOpenFileName(
-            self, self.tr("Select Python Path")))
+        path = QFileDialog.getOpenFileName(self, self.tr("Select Python Path"))
         if path:
             self._txtPythonPath.setText(path)
 
@@ -397,7 +396,7 @@ class GeneralExecution(QWidget):
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('execution')
         qsettings.setValue('pythonPath', self._txtPythonPath.text())
-        settings.PYTHON_PATH = unicode(self._txtPythonPath.text())
+        settings.PYTHON_PATH = self._txtPythonPath.text()
         options = ''
         if self.check_B.isChecked():
             options += ' -B'
@@ -410,7 +409,7 @@ class GeneralExecution(QWidget):
         if self.check_OO.isChecked():
             options += ' -OO'
         if self.check_Q.isChecked():
-            options += ' -Q' + unicode(self.comboDivision.currentText())
+            options += ' -Q' + self.comboDivision.currentText()
         if self.check_s.isChecked():
             options += ' -s'
         if self.check_S.isChecked():
@@ -422,7 +421,7 @@ class GeneralExecution(QWidget):
         if self.check_v.isChecked():
             options += ' -v'
         if self.check_W.isChecked():
-            options += ' -W' + unicode(self.comboWarning.currentText())
+            options += ' -W' + self.comboWarning.currentText()
         if self.check_x.isChecked():
             options += ' -x'
         if self.check_3.isChecked():
@@ -555,13 +554,12 @@ class InterfaceTab(QWidget):
     def toolbar_item_added(self):
         data = self._comboToolbarItems.itemData(
             self._comboToolbarItems.currentIndex())
-        data = str(data.toString())
         if data not in self.toolbar_settings or data == 'separator':
             selected = self.actionGroup.checkedAction()
             if selected is None:
                 self.toolbar_settings.append(data)
             else:
-                dataAction = str(selected.data().toString())
+                dataAction = selected.data()
                 self.toolbar_settings.insert(
                     self.toolbar_settings.index(dataAction) + 1, data)
             self._load_toolbar()
@@ -569,7 +567,6 @@ class InterfaceTab(QWidget):
     def toolbar_item_removed(self):
         data = self._comboToolbarItems.itemData(
             self._comboToolbarItems.currentIndex())
-        data = str(data.toString())
         if data in self.toolbar_settings and data != 'separator':
             self.toolbar_settings.pop(self.toolbar_settings.index(data))
             self._load_toolbar()
@@ -682,7 +679,7 @@ class InterfaceTab(QWidget):
 
     def save(self):
         settings.TOOLBAR_ITEMS = self.toolbar_settings
-        lang = unicode(self._comboLang.currentText())
+        lang = self._comboLang.currentText()
         qsettings = QSettings()
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('interface')
@@ -720,7 +717,7 @@ class InterfaceTab(QWidget):
         qsettings.setValue('uiLayout', uiLayout)
         qsettings.setValue('toolbar', settings.TOOLBAR_ITEMS)
         qsettings.setValue('language', lang)
-        lang = unicode(lang + '.qm')
+        lang = lang + '.qm'
         settings.LANGUAGE = os.path.join(resources.LANGS, lang)
         qsettings.endGroup()
         qsettings.endGroup()
@@ -747,7 +744,7 @@ class EditorTab(QWidget):
         vbox.addWidget(self._tabs)
 
     def save(self):
-        for i in xrange(self._tabs.count()):
+        for i in range(self._tabs.count()):
             self._tabs.widget(i).save()
 
 
@@ -812,7 +809,7 @@ class EditorGeneral(QWidget):
         for item in self._schemes:
             self._listScheme.addItem(item)
         items = self._listScheme.findItems(
-            qsettings.value('scheme', '').toString(), Qt.MatchExactly)
+            qsettings.value('scheme', ''), Qt.MatchExactly)
         if items:
             self._listScheme.setCurrentItem(items[0])
         else:
@@ -836,13 +833,14 @@ class EditorGeneral(QWidget):
         self.thread_callback = ui_tools.ThreadExecution(self._get_editor_skins)
         self.connect(self.thread_callback, SIGNAL("finished()"),
             self._show_editor_skins)
+        self.thread_callback.start()
 
     def _get_editor_skins(self):
         qsettings = QSettings()
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('editor')
         self._schemes = json_manager.load_editor_skins()
-        self._selected_scheme = qsettings.value('scheme', '').toString()
+        self._selected_scheme = qsettings.value('scheme', '')
         qsettings.endGroup()
         qsettings.endGroup()
 
@@ -867,7 +865,7 @@ class EditorGeneral(QWidget):
             editorWidget._sidebarWidget.repaint()
 
     def _preview_style(self):
-        scheme = unicode(self._listScheme.currentItem().text())
+        scheme = self._listScheme.currentItem().text()
         editorWidget = main_container.MainContainer().get_actual_editor()
         if editorWidget is not None:
             resources.CUSTOM_SCHEME = self._schemes.get(scheme,
@@ -887,10 +885,10 @@ class EditorGeneral(QWidget):
                 self.tr("This font can not be used in the Editor."))
 
     def _get_font_from_string(self, font):
-        if (font.isEmpty()):
+        if not font:
             font = QFont(settings.FONT_FAMILY, settings.FONT_SIZE)
         else:
-            listFont = unicode(font).split(',')
+            listFont = font.split(',')
             font = QFont(listFont[0].strip(), int(listFont[1].strip()))
         return font
 
@@ -898,9 +896,9 @@ class EditorGeneral(QWidget):
         font, ok = QFontDialog.getFont(initialFont, parent)
         if ok:
             newFont = font.toString().split(',')
-            return newFont[0] + ', ' + newFont[1]
         else:
-            return initialFont
+            newFont = initialFont.toString().split(',')
+        return newFont[0] + ', ' + newFont[1]
 
     def save(self):
         qsettings = QSettings()
@@ -914,13 +912,13 @@ class EditorGeneral(QWidget):
         qsettings.setValue('minimapMaxOpacity', settings.MINIMAP_MAX_OPACITY)
         qsettings.setValue('minimapMinOpacity', settings.MINIMAP_MIN_OPACITY)
         qsettings.setValue('minimapSizeProportion', settings.SIZE_PROPORTION)
-        fontText = unicode(self._btnEditorFont.text().remove(' '))
+        fontText = self._btnEditorFont.text().replace(' ', '')
         settings.FONT_FAMILY = fontText.split(',')[0]
         settings.FONT_SIZE = int(fontText.split(',')[1])
         qsettings.setValue('fontFamily', settings.FONT_FAMILY)
         qsettings.setValue('fontSize', settings.FONT_SIZE)
         editorWidget = main_container.MainContainer().get_actual_editor()
-        scheme = unicode(self._listScheme.currentItem().text())
+        scheme = self._listScheme.currentItem().text()
         self.original_style = resources.CUSTOM_SCHEME
         if editorWidget is not None:
             editorWidget.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
@@ -1117,7 +1115,7 @@ class EditorCompletion(QWidget):
         self._checkDoubleQuotes.setChecked('"' in settings.QUOTES)
         self._checkCompleteDeclarations = QCheckBox(
             self.tr("Complete Declarations\n"
-            "(execute the opposite action with: %1).").arg(
+            "(execute the opposite action with: %s)." %
                 resources.get_shortcut("Complete-Declarations").toString(
                     QKeySequence.NativeText)))
         self._checkCompleteDeclarations.setChecked(
@@ -1474,7 +1472,7 @@ class EditorSchemeDesigner(QWidget):
                 btnSidebarForeground))
 
         # Connect Buttons
-        for i in xrange(0, 26):
+        for i in range(0, 26):
             item = grid.itemAtPosition(i, 1).widget()
             btn = grid.itemAtPosition(i, 2).widget()
             self.connect(item, SIGNAL("returnPressed()"),
@@ -1557,41 +1555,41 @@ class EditorSchemeDesigner(QWidget):
             btn.setStyleSheet(style)
 
     def _preview_style(self):
+        scheme = {
+            "keyword": str(self.txtKeyword.text()),
+            "operator": str(self.txtOperator.text()),
+            "brace": str(self.txtBrace.text()),
+            "definition": str(self.txtDefinition.text()),
+            "string": str(self.txtString.text()),
+            "string2": str(self.txtString2.text()),
+            "comment": str(self.txtComment.text()),
+            "properObject": str(self.txtProperObject.text()),
+            "numbers": str(self.txtNumbers.text()),
+            "spaces": str(self.txtSpaces.text()),
+            "extras": str(self.txtExtras.text()),
+            "editor-background": str(self.txtEditorBackground.text()),
+            "editor-selection-color": str(
+                self.txtEditorSelectionColor.text()),
+            "editor-selection-background": str(
+                self.txtEditorSelectionBackground.text()),
+            "editor-text": str(self.txtEditorText.text()),
+            "current-line": str(self.txtCurrentLine.text()),
+            "selected-word": str(self.txtSelectedWord.text()),
+            "fold-area": str(self.txtFoldArea.text()),
+            "fold-arrow": str(self.txtFoldArrow.text()),
+            "linkNavigate": str(self.txtLinkNavigate.text()),
+            "brace-background": str(self.txtBraceBackground.text()),
+            "brace-foreground": str(self.txtBraceForeground.text()),
+            "error-underline": str(self.txtErrorUnderline.text()),
+            "pep8-underline": str(self.txtPep8Underline.text()),
+            "sidebar-background": str(self.txtSidebarBackground.text()),
+            "sidebar-foreground": str(self.txtSidebarForeground.text())}
+        resources.CUSTOM_SCHEME = scheme
         editorWidget = main_container.MainContainer().get_actual_editor()
         if editorWidget is not None:
-            scheme = {
-                "keyword": str(self.txtKeyword.text()),
-                "operator": str(self.txtOperator.text()),
-                "brace": str(self.txtBrace.text()),
-                "definition": str(self.txtDefinition.text()),
-                "string": str(self.txtString.text()),
-                "string2": str(self.txtString2.text()),
-                "comment": str(self.txtComment.text()),
-                "properObject": str(self.txtProperObject.text()),
-                "numbers": str(self.txtNumbers.text()),
-                "spaces": str(self.txtSpaces.text()),
-                "extras": str(self.txtExtras.text()),
-                "editor-background": str(self.txtEditorBackground.text()),
-                "editor-selection-color": str(
-                    self.txtEditorSelectionColor.text()),
-                "editor-selection-background": str(
-                    self.txtEditorSelectionBackground.text()),
-                "editor-text": str(self.txtEditorText.text()),
-                "current-line": str(self.txtCurrentLine.text()),
-                "selected-word": str(self.txtSelectedWord.text()),
-                "fold-area": str(self.txtFoldArea.text()),
-                "fold-arrow": str(self.txtFoldArrow.text()),
-                "linkNavigate": str(self.txtLinkNavigate.text()),
-                "brace-background": str(self.txtBraceBackground.text()),
-                "brace-foreground": str(self.txtBraceForeground.text()),
-                "error-underline": str(self.txtErrorUnderline.text()),
-                "pep8-underline": str(self.txtPep8Underline.text()),
-                "sidebar-background": str(self.txtSidebarBackground.text()),
-                "sidebar-foreground": str(self.txtSidebarForeground.text())}
-            resources.CUSTOM_SCHEME = scheme
             editorWidget.restyle(editorWidget.lang)
             editorWidget._sidebarWidget.repaint()
-            return scheme
+        return scheme
 
     def hideEvent(self, event):
         super(EditorSchemeDesigner, self).hideEvent(event)
@@ -1603,7 +1601,7 @@ class EditorSchemeDesigner(QWidget):
     def showEvent(self, event):
         super(EditorSchemeDesigner, self).showEvent(event)
         schemes = self._parent._editorGeneral._schemes
-        scheme = unicode(self._parent._editorGeneral.current_scheme)
+        scheme = self._parent._editorGeneral.current_scheme
         resources.CUSTOM_SCHEME = schemes.get(scheme, resources.COLOR_SCHEME)
         editorWidget = main_container.MainContainer().get_actual_editor()
         if editorWidget is not None:
@@ -1618,7 +1616,7 @@ class EditorSchemeDesigner(QWidget):
         pass
 
     def save_scheme(self):
-        name = unicode(self.line_name.text()).strip()
+        name = self.line_name.text().strip()
         fileName = file_manager.create_path(
             resources.EDITOR_SKINS, name) + '.color'
         answer = True
@@ -1627,7 +1625,7 @@ class EditorSchemeDesigner(QWidget):
                 self.tr("Scheme already exists"),
                 self.tr("Do you want to override the file: %s?" % fileName),
                 QMessageBox.Yes, QMessageBox.No)
-        if name != '' and answer == QMessageBox.Yes:
+        if name != '' and answer in (QMessageBox.Yes, True):
             scheme = self._preview_style()
             json_manager.save_editor_skins(fileName, scheme)
             QMessageBox.information(self, self.tr("Scheme Saved"),
@@ -1690,8 +1688,9 @@ class ThemeChooser(QWidget):
     def _refresh_list(self):
         self.list_skins.clear()
         self.list_skins.addItem("Default")
+        self.list_skins.addItem("Classic Theme")
 
-        files = [file_manager.get_file_name(filename) for filename in \
+        files = [file_manager.get_file_name(filename) for filename in
             file_manager.get_files_from_folder(
             resources.NINJA_THEME_DOWNLOAD, "qss")]
         files.sort()
@@ -1699,6 +1698,8 @@ class ThemeChooser(QWidget):
 
         if settings.NINJA_SKIN == 'Default':
             self.list_skins.setCurrentRow(0)
+        elif settings.NINJA_SKIN == 'Classic Theme':
+            self.list_skins.setCurrentRow(1)
         elif settings.NINJA_SKIN in files:
             index = files.index(settings.NINJA_SKIN)
             self.list_skins.setCurrentRow(index + 1)
@@ -1718,6 +1719,8 @@ class ThemeChooser(QWidget):
     def preview_theme(self):
         if self.list_skins.currentRow() == 0:
             qss_file = resources.NINJA_THEME
+        elif self.list_skins.currentRow() == 1:
+            qss_file = resources.NINJA__THEME_CLASSIC
         else:
             file_name = ("%s.qss" %
                 self.list_skins.currentItem().text())
@@ -1764,30 +1767,24 @@ class ThemeDesigner(QWidget):
             self.save_stylesheet)
 
     def showEvent(self, event):
-        if self._parent.theme_chooser.list_skins.currentRow() == 0:
-            qss_file = resources.NINJA_THEME
-        else:
-            file_name = ("%s.qss" %
-                self._parent.theme_chooser.list_skins.currentItem().text())
-            qss_file = file_manager.create_path(resources.NINJA_THEME_DOWNLOAD,
-                file_name)
-        with open(qss_file) as f:
-            qss = f.read()
-            self.edit_qss.setPlainText(qss)
-            self.edit_qss.document().setModified(False)
-        self.line_name.setText("%s_%s" %
-            (self._parent.theme_chooser.list_skins.currentItem().text(),
-            getpass.getuser()))
+        if not self.edit_qss.document().isModified():
+            if self._parent.theme_chooser.list_skins.currentRow() == 0:
+                qss_file = resources.NINJA_THEME
+            if self._parent.theme_chooser.list_skins.currentRow() == 1:
+                qss_file = resources.NINJA__THEME_CLASSIC
+            else:
+                file_name = ("%s.qss" %
+                    self._parent.theme_chooser.list_skins.currentItem().text())
+                qss_file = file_manager.create_path(
+                    resources.NINJA_THEME_DOWNLOAD, file_name)
+            with open(qss_file) as f:
+                qss = f.read()
+                self.edit_qss.setPlainText(qss)
+                self.edit_qss.document().setModified(False)
+            self.line_name.setText("%s_%s" %
+                (self._parent.theme_chooser.list_skins.currentItem().text(),
+                getpass.getuser()))
         super(ThemeDesigner, self).showEvent(event)
-
-    def hideEvent(self, event):
-        if self.edit_qss.document().isModified():
-            answer = QMessageBox.question(self, self.tr("Theme Modified"),
-                self.tr("Do you want to save the theme changes?"),
-                QMessageBox.Ok | QMessageBox.No, QMessageBox.Ok)
-            if answer == QMessageBox.Ok:
-                self.save_stylesheet()
-        super(ThemeDesigner, self).hideEvent(event)
 
     def apply_stylesheet(self):
         qss = self.edit_qss.toPlainText()
@@ -1798,12 +1795,12 @@ class ThemeDesigner(QWidget):
             file_name = "%s.qss" % self.line_name.text()
             file_name = file_manager.create_path(
                 resources.NINJA_THEME_DOWNLOAD, file_name)
-            content = unicode(self.edit_qss.toPlainText())
+            content = self.edit_qss.toPlainText()
             file_manager.store_file_content(file_name, content, newFile=True)
             QMessageBox.information(self, self.tr("Style Sheet Saved"),
                 self.tr("Theme saved at: '%s'." % file_name))
             self.edit_qss.document().setModified(False)
-        except file_manager.NinjaFileExistsException, ex:
+        except file_manager.NinjaFileExistsException as ex:
             QMessageBox.information(self, self.tr("File Already Exists"),
-                self.tr("Invalid File Name: the file '%s' already exists." % \
+                self.tr("Invalid File Name: the file '%s' already exists." %
                     ex.filename))

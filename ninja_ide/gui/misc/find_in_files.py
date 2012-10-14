@@ -15,14 +15,18 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
 import os
-import Queue
+import re
+try:
+    import Queue
+except:
+    import queue as Queue
 
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QDir
 from PyQt4.QtCore import QFile
-from PyQt4.QtCore import QString
 from PyQt4.QtCore import QTextStream
 from PyQt4.QtCore import QRegExp
 from PyQt4.QtCore import QThread
@@ -101,8 +105,8 @@ class FindInFilesThread(QThread):
         if not self.by_phrase:
             with open(file_path, 'r') as f:
                 content = f.read()
-            words = [word for word in \
-                unicode(self.search_pattern.pattern()).split('|')]
+            words = [word for word in
+                self.search_pattern.pattern().split('|')]
             words.insert(0, True)
 
             def check_whole_words(result, word):
@@ -117,18 +121,16 @@ class FindInFilesThread(QThread):
         lines = []
         line_index = 0
         line = stream.readLine()
-        while not self._cancel:
+        while not self._cancel and not stream.atEnd():
             column = self.search_pattern.indexIn(line)
             if column != -1:
                 lines.append((line_index, line))
             #take the next line!
             line = stream.readLine()
-            if line.isNull():
-                break
             line_index += 1
         #emit a signal!
         relative_file_name = file_manager.convert_to_relative(
-            unicode(self.root_dir), unicode(file_path))
+            self.root_dir, file_path)
         self.emit(SIGNAL("found_pattern(PyQt_PyObject)"),
             (relative_file_name, lines))
 
@@ -153,7 +155,7 @@ class FindInFilesResult(QTreeWidget):
                 dir_name_root)
             root_item.setExpanded(True)
             for line, content in items:
-                QTreeWidgetItem(root_item, (content, QString.number(line + 1)))
+                QTreeWidgetItem(root_item, (content, str(line + 1)))
 
 
 class FindInFilesRootItem(QTreeWidgetItem):
@@ -322,10 +324,15 @@ class FindInFilesDialog(QDialog):
         self.result_widget.clear()
         pattern = self.pattern_line_edit.text()
         dir_name = self.dir_combo.currentText()
-        filters = self.filters_line_edit.text().split(QRegExp("[,;]"),
-            QString.SkipEmptyParts)
+
+        filters = re.split("[,;]", self.filters_line_edit.text())
+
+        # Version of PyQt API 1
+        # filters = self.filters_line_edit.text().split(QRegExp("[,;]"),
+        #     QString.SkipEmptyParts)
+
         #remove the spaces in the words Ex. (" *.foo"--> "*.foo")
-        filters = [f.simplified() for f in filters]
+        filters = [f.strip() for f in filters]
         case_sensitive = self.case_checkbox.isChecked()
         type_ = QRegExp.RegExp if \
             self.type_checkbox.isChecked() else QRegExp.FixedString
@@ -337,7 +344,7 @@ class FindInFilesDialog(QDialog):
             by_phrase = False
             type_ = QRegExp.RegExp
             pattern = '|'.join(
-                [word.strip() for word in unicode(pattern).split()])
+                [word.strip() for word in pattern.split()])
             regExp = QRegExp(pattern, case_sensitive, type_)
         #save a reference to the root directory where we find
         self.dir_name_root = dir_name
@@ -396,6 +403,8 @@ class FindInFilesWidget(QWidget):
         self.connect(self._clear_button, SIGNAL("clicked()"),
             self._clear_results)
         self.connect(self._result_widget, SIGNAL(
+            "itemActivated(QTreeWidgetItem *, int)"), self._go_to)
+        self.connect(self._result_widget, SIGNAL(
             "itemClicked(QTreeWidgetItem *, int)"), self._go_to)
         self.connect(self._find_widget, SIGNAL("finished()"),
             self._find_finished)
@@ -417,6 +426,7 @@ class FindInFilesWidget(QWidget):
         else:
             self._replace_button.setEnabled(False)
             self.replace_widget.setVisible(False)
+        self._result_widget.setFocus()
 
     def _find_stop(self):
         self._find_widget._kill_thread()
@@ -431,12 +441,12 @@ class FindInFilesWidget(QWidget):
     def _go_to(self, item, val):
         if item.text(1):
             parent = item.parent()
-            file_name = unicode(parent.text(0))
+            file_name = parent.text(0)
             lineno = item.text(1)
-            root_dir_name = unicode(parent.dir_name_root)
+            root_dir_name = parent.dir_name_root
             file_path = file_manager.create_path(root_dir_name, file_name)
             #open the file and jump_to_line
-            self._main_container.open_file(unicode(file_path))
+            self._main_container.open_file(file_path)
             self._main_container.editor_jump_to_line(lineno=int(lineno) - 1)
 
     def open(self):
@@ -461,6 +471,7 @@ class FindInFilesWidget(QWidget):
                 break
         self._find_widget.dir_combo.clear()
         self._find_widget.dir_combo.addItem(project)
+        self._find_widget.case_checkbox.setChecked(True)
         self._find_widget._find_in_files()
 
     def _replace_results(self):
@@ -469,10 +480,10 @@ class FindInFilesWidget(QWidget):
                     "this files?\n(The change is not reversible)"),
             buttons=QMessageBox.Yes | QMessageBox.No)
         if result == QMessageBox.Yes:
-            for index in xrange(self._result_widget.topLevelItemCount()):
+            for index in range(self._result_widget.topLevelItemCount()):
                 parent = self._result_widget.topLevelItem(index)
-                root_dir_name = unicode(parent.dir_name_root)
-                file_name = unicode(parent.text(0))
+                root_dir_name = parent.dir_name_root
+                file_name = parent.text(0)
                 file_path = file_manager.create_path(root_dir_name, file_name)
                 file_object = QFile(file_path)
                 if not file_object.open(QFile.ReadOnly):

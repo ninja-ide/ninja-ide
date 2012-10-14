@@ -7,7 +7,7 @@
     "close": "\\*/"
   },
   "extension": [
-    "js"
+    "js", "qml"
   ],
   "definition": [
     "function"

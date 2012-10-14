@@ -65,7 +65,7 @@ def load_table(table, headers, data, checkFirstColumn=True):
     table.setHorizontalHeaderLabels(headers)
     table.horizontalHeader().setStretchLastSection(True)
     table.setSelectionBehavior(QAbstractItemView.SelectRows)
-    for i in xrange(table.rowCount()):
+    for i in range(table.rowCount()):
         table.removeRow(0)
     for r, row in enumerate(data):
         table.insertRow(r)
@@ -85,7 +85,7 @@ def remove_get_selected_items(table, data):
     rows = table.rowCount()
     pos = rows - 1
     selected = []
-    for i in xrange(rows):
+    for i in range(rows):
         if table.item(pos - i, 0) is not None and \
         table.item(pos - i, 0).checkState() == Qt.Checked:
             selected.append(data.pop(pos - i))
@@ -105,10 +105,10 @@ class LoadingItem(QLabel):
     def add_item_to_tree(self, folder, tree, item_type=None, parent=None):
         if item_type is None:
             item = QTreeWidgetItem()
-            item.setText(0, self.tr('       LOADING: "%1"').arg(folder))
+            item.setText(0, self.tr('       LOADING: "%s"' % folder))
         else:
             item = item_type(parent,
-                self.tr('       LOADING: "%1"').arg(folder), folder)
+                self.tr('       LOADING: "%s"' % folder), folder)
         tree.addTopLevelItem(item)
         tree.setItemWidget(item, 0, self)
         return item
@@ -213,7 +213,7 @@ class Overlay(QWidget):
         painter.fillRect(event.rect(), QBrush(QColor(255, 255, 255, 127)))
         painter.setPen(QPen(Qt.NoPen))
 
-        for i in xrange(6):
+        for i in range(6):
             x_pos = self.width() / 2 + 30 * \
                 math.cos(2 * math.pi * i / 6.0) - 10
             y_pos = self.height() / 2 + 30 * \
@@ -372,7 +372,7 @@ class AddToProject(QDialog):
     def _select_path(self):
         item = self._tree.currentItem()
         if item:
-            self.pathSelected = unicode(item.toolTip(0))
+            self.pathSelected = item.toolTip(0)
             self.close()
 
     def _load_project(self, folderStructure, folder):
@@ -463,7 +463,7 @@ class ProfilesLoader(QDialog):
         item = self.profileList.currentItem()
         self.contentList.clear()
         if item is not None:
-            key = unicode(item.text())
+            key = item.text()
             files = [self.tr('Files:')] + \
                 [file[0] for file in self._profiles[key][0]]
             projects = [self.tr('Projects:')] + self._profiles[key][1]
@@ -477,22 +477,22 @@ class ProfilesLoader(QDialog):
 
     def save_profile(self):
         if self.profileList.currentItem():
-            profileName = unicode(self.profileList.currentItem().text())
+            profileName = self.profileList.currentItem().text()
             self.save_function(profileName)
-            self.ide.show_status_message(self.tr("Profile %1 Updated!").arg(
+            self.ide.show_status_message(self.tr("Profile %s Updated!" %
                 profileName))
             self.load_profile_content()
 
     def open_profile(self):
         if self.profileList.currentItem():
-            key = unicode(self.profileList.currentItem().text())
+            key = self.profileList.currentItem().text()
             self.load_function(key)
             self.ide.Profile = key
             self.close()
 
     def delete_profile(self):
         if self.profileList.currentItem():
-            key = unicode(self.profileList.currentItem().text())
+            key = self.profileList.currentItem().text()
             self._profiles.pop(key)
             self.profileList.takeItem(self.profileList.currentRow())
             self.contentList.clear()
@@ -510,6 +510,7 @@ class LineEditButton(object):
         lineEdit.setLayout(hbox)
         hbox.addStretch()
         btnOperation = QPushButton(lineEdit)
+        btnOperation.setObjectName('line_button')
         if icon:
             btnOperation.setIcon(QIcon(icon))
         hbox.addWidget(btnOperation)
@@ -546,7 +547,7 @@ class LineEditCount(QObject):
         lineEdit.setTextMargins(0, 0, 60, 0)
 
     def update_count(self, index, total, hasSearch=False):
-        message = self.tr("%1 of %2").arg(index).arg(total)
+        message = self.tr("%s of %s" % (index, total))
         self.counter.setText(message)
         self.counter.setStyleSheet("background: none;color: gray;")
         if index == 0 and total == 0 and hasSearch:

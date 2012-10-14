@@ -22,10 +22,14 @@
 import re
 import token as tkn
 from tokenize import generate_tokens, TokenError
-from StringIO import StringIO
+try:
+    from StringIO import StringIO
+except:
+    from io import StringIO
 
 from ninja_ide.core import settings
 from ninja_ide.gui.editor import helpers
+from ninja_ide.tools.completion import model
 from ninja_ide.tools.completion import analyzer
 from ninja_ide.tools.completion import completer
 from ninja_ide.tools.completion import completion_daemon
@@ -41,29 +45,45 @@ class CodeCompletion(object):
     def __init__(self):
         self.analyzer = analyzer.Analyzer()
         self.cdaemon = completion_daemon.CompletionDaemon()
+        # Set modules reference to model
+        model.MODULES = self.cdaemon.modules
         self.module_id = None
         self.patIndent = re.compile('^\s+')
+        self.patClass = re.compile("class (\w+?)\(")
+        self.patFunction = re.compile("(\w+?)\(")
+        self.patWords = re.compile('\W+')
         self._valid_op = (')', '}', ']')
         self._invalid_op = ('(', '{', '[')
+        self._invalid_words = ('if', 'elif', 'for', 'while', 'in', 'return',
+            'and', 'or', 'del', 'except', 'from', 'import', 'is', 'print',
+            'super', 'yield')
         self.keywords = settings.SYNTAX['python']['keywords']
 
-    def analyze_file(self, path, source=None):
+    def unload_module(self):
+        self.cdaemon.unload_module(self.module_id)
+
+    def analyze_file(self, path, source=None, indent=settings.INDENT,
+        useTabs=settings.USE_TABS):
         if source is None:
             with open(path) as f:
                 source = f.read()
         split_last_lines = source.rsplit('\n', 2)
         if len(split_last_lines) > 1 and \
            split_last_lines[-2].endswith(':') and split_last_lines[-1] == '':
-            indent = helpers.get_indentation(split_last_lines[-2])
+            indent = helpers.get_indentation(split_last_lines[-2], indent,
+                useTabs)
             source += '%spass;' % indent
 
         self.module_id = path
+        if not self.cdaemon.daemon.is_alive():
+            completion_daemon.shutdown_daemon()
+            del self.cdaemon
+            self.cdaemon = completion_daemon.CompletionDaemon()
+            # Set modules reference to model
+            model.MODULES = self.cdaemon.modules
         module = self.cdaemon.get_module(self.module_id)
         module = self.analyzer.analyze(source, module)
         self.cdaemon.inspect_module(self.module_id, module)
-
-    def update_file(self, path):
-        pass
 
     def _tokenize_text(self, code):
         # TODO Optimization, only iterate until the previous line of a class??
@@ -134,9 +154,12 @@ class CodeCompletion(object):
                 keep_iter = False
         segment = ''
         brace_stack = 0
+        first_element = True
         for t in tokens:
             token_str = t[1]
-            if token_str in self._valid_op:
+            if token_str in self._invalid_words and not first_element:
+                break
+            elif token_str in self._valid_op:
                 if brace_stack == 0:
                     segment = token_str + segment
                 brace_stack += 1
@@ -145,6 +168,7 @@ class CodeCompletion(object):
                 if brace_stack == 0:
                     segment = token_str + segment
                     continue
+            first_element = False
             if brace_stack != 0:
                 continue
 
@@ -174,7 +198,8 @@ class CodeCompletion(object):
         var_segment = self._search_for_completion_segment(token_code)
         words = var_segment.split('.', 1)
         words_final = var_segment.rsplit('.', 1)
-        attr_name = words[0].strip()
+        main_attribute = words[0].strip().split('(', 1)
+        attr_name = main_attribute[0]
         word = ''
         final_word = ''
         if var_segment.count(".") > 0:
@@ -186,28 +211,38 @@ class CodeCompletion(object):
                 word = ''
         self.cdaemon.lock.acquire()
         module = self.cdaemon.get_module(self.module_id)
-        imports = module.get_imports()
-        result = module.get_type(attr_name, word, scopes)
+        if module:
+            imports = module.get_imports()
+            result = module.get_type(attr_name, word, scopes)
+        else:
+            result = {'found': False, 'type': None}
         self.cdaemon.lock.release()
-        if result[0] and result[1] is not None:
+        if result['found'] and result['type'] is not None:
             prefix = attr_name
-            if result[1] != attr_name:
-                prefix = result[1]
+            if result['type'] != attr_name:
+                prefix = result['type']
                 word = final_word
             to_complete = "%s.%s" % (prefix, word)
+            if result.get('main_attr_replace', False):
+                to_complete = var_segment.replace(attr_name, result['type'], 1)
+            imports = [imp.split('.')[0] for imp in imports]
             data = completer.get_all_completions(to_complete, imports)
+            __attrib = [d for d in data.get('attributes', []) if d[:2] == '__']
+            if __attrib:
+                map(lambda i: data['attributes'].remove(i), __attrib)
+                data['attributes'] += __attrib
             if data:
                 return data
             else:
-                result = (None, None)
+                result = {'found': None, 'type': None}
 
-        if result[1] is not None and len(result[1]) > 0:
-            data = {'attributes': result[1][0],
-                'functions': result[1][1]}
+        if result['type'] is not None and len(result['type']) > 0:
+            data = {'attributes': result['type']['attributes'],
+                'functions': result['type']['functions']}
         else:
-            clazzes = sorted(set(re.findall("class (\w+?)\(", code)))
-            funcs = sorted(set(re.findall("(\w+?)\(", code)))
-            attrs = sorted(set(re.split('\W+', code)))
+            clazzes = sorted(set(self.patClass.findall(code)))
+            funcs = sorted(set(self.patFunction.findall(code)))
+            attrs = sorted(set(self.patWords.split(code)))
             if final_word in attrs:
                 attrs.remove(final_word)
             if attr_name in attrs:

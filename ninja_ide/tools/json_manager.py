@@ -17,13 +17,13 @@
 
 import os
 import json
-import logging
 
 from ninja_ide import resources
 from ninja_ide.core import settings
 
+from ninja_ide.tools.logger import NinjaLogger
 
-logger = logging.getLogger('ninja_ide.tools.json_manager')
+logger = NinjaLogger('ninja_ide.tools.json_manager')
 
 
 def parse(descriptor):
@@ -84,7 +84,7 @@ def create_ninja_project(path, project, structure):
 
 def read_ninja_project(path):
     files = os.listdir(path)
-    nja = filter(lambda y: y.endswith('.nja'), files)
+    nja = list(filter(lambda y: y.endswith('.nja'), files))
     if len(nja) == 0:
         return {}
     structure = None
@@ -97,13 +97,13 @@ def read_ninja_project(path):
 
 def get_ninja_project_file(path):
     files = os.listdir(path)
-    nja = filter(lambda y: y.endswith('.nja'), files)
+    nja = list(filter(lambda y: y.endswith('.nja'), files))
     return nja[0] if nja else ''
 
 
 def read_ninja_plugin(path):
     files = os.listdir(path)
-    plugins = filter(lambda y: y.endswith('.plugin'), files)
+    plugins = list(filter(lambda y: y.endswith('.plugin'), files))
     if len(plugins) == 0:
         return {}
     structure = None
@@ -116,7 +116,7 @@ def read_ninja_plugin(path):
 
 def read_json(path):
     files = os.listdir(path)
-    jsons = filter(lambda y: y.endswith('.json'), files)
+    jsons = list(filter(lambda y: y.endswith('.json'), files))
     if len(jsons) == 0:
         return {}
     structure = None
@@ -146,7 +146,7 @@ def load_editor_skins():
             read = open(fileName, 'r')
             structure = json.load(read)
             read.close()
-            name = unicode(f[:-6])
+            name = f[:-6]
             skins[name] = structure
     return skins
 

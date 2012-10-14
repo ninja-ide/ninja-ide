@@ -15,10 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
 import re
-import logging
-import Queue
+try:
+    import Queue
+except:
+    import queue as Queue
 
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QLabel
@@ -50,8 +53,10 @@ from ninja_ide.core import file_manager
 from ninja_ide.core import settings
 from ninja_ide.tools import json_manager
 
+from ninja_ide.tools.logger import NinjaLogger
 
-logger = logging.getLogger('ninja_ide.tools.locator')
+
+logger = NinjaLogger('ninja_ide.tools.locator')
 
 mapping_locations = {}
 
@@ -68,7 +73,9 @@ FILTERS = {
     'functions': '>',
     'attribs': '-',
     'non-python': '!',
-    'this-file': '.'}
+    'this-file': '.',
+    'tabs': '/',
+    'lines': ':'}
 
 
 class Locator(QObject):
@@ -168,7 +175,7 @@ class LocateThread(QThread):
             self.start()
 
     def find_file_code_location(self, path):
-        self._file_path = unicode(path)
+        self._file_path = path
         if not self._file_path:
             return
         self.execute = self.locate_file_code
@@ -198,7 +205,7 @@ class LocateThread(QThread):
                 continue
 
             project_data = project = json_manager.read_ninja_project(
-                unicode(current_dir.path()))
+                current_dir.path())
             extensions = project_data.get('supported-extensions',
                 settings.SUPPORTED_EXTENSIONS)
 
@@ -229,10 +236,9 @@ class LocateThread(QThread):
             #process all files in current dir!
             for one_file in current_files:
                 try:
-                    self._grep_file_locate(
-                        unicode(one_file.absoluteFilePath()),
+                    self._grep_file_locate(one_file.absoluteFilePath(),
                         one_file.fileName())
-                except Exception, reason:
+                except Exception as reason:
                     logger.error(
                         '__locate_code_in_project, error: %r' % reason)
                     logger.error(
@@ -245,7 +251,7 @@ class LocateThread(QThread):
             self._grep_file_locate(self._file_path, file_name)
             self.dirty = True
             self.execute = self.locate_code
-        except Exception, reason:
+        except Exception as reason:
             logger.error('locate_file_code, error: %r' % reason)
 
     def go_to_definition(self):
@@ -254,15 +260,15 @@ class LocateThread(QThread):
         locations = self.get_locations()
         if self._isVariable:
             preResults = [
-                [file_manager.get_basename(x.path), x.path, x.lineno, ''] \
-                for x in locations \
+                [file_manager.get_basename(x.path), x.path, x.lineno, '']
+                for x in locations
                 if (x.type == FILTERS['attribs']) and (x.name == self._search)]
         else:
             preResults = [
                 [file_manager.get_basename(x.path), x.path, x.lineno, '']
-                for x in locations \
-                if ((x.type == FILTERS['functions']) or \
-                   (x.type == FILTERS['classes'])) and \
+                for x in locations
+                if ((x.type == FILTERS['functions']) or
+                   (x.type == FILTERS['classes'])) and
                    (x.name.startswith(self._search))]
         for data in preResults:
             file_object = QFile(data[1])
@@ -272,15 +278,13 @@ class LocateThread(QThread):
             stream = QTextStream(file_object)
             line_index = 0
             line = stream.readLine()
-            while not self._cancel:
+            while not self._cancel and not stream.atEnd():
                 if line_index == data[2]:
-                    data[3] = unicode(line)
+                    data[3] = line
                     self.results.append(data)
                     break
                 #take the next line!
                 line = stream.readLine()
-                if line.isNull():
-                    break
                 line_index += 1
         self._search = None
         self._isVariable = None
@@ -301,7 +305,7 @@ class LocateThread(QThread):
                 thisFileLocations = mapping_locations.get(path, ())
             thisFileLocations = sorted(thisFileLocations[1:],
                 key=lambda item: item.name)
-        except Exception, reason:
+        except Exception as reason:
             logger.error('get_this_file_locations, error: %r' % reason)
         return thisFileLocations
 
@@ -315,14 +319,14 @@ class LocateThread(QThread):
         #type - file_name - file_path
         global mapping_locations
         exts = settings.SYNTAX.get('python')['extension']
-        if file_manager.get_file_extension(unicode(file_name)) not in exts:
-            mapping_locations[unicode(file_path)] = [
-                ResultItem(type=FILTERS['non-python'], name=unicode(file_name),
-                    path=unicode(file_path), lineno=0)]
+        if file_manager.get_file_extension(file_name) not in exts:
+            mapping_locations[file_path] = [
+                ResultItem(type=FILTERS['non-python'], name=file_name,
+                    path=file_path, lineno=0)]
         else:
-            mapping_locations[unicode(file_path)] = [
-                ResultItem(type=FILTERS['files'], name=unicode(file_name),
-                        path=unicode(file_path), lineno=0)]
+            mapping_locations[file_path] = [
+                ResultItem(type=FILTERS['files'], name=file_name,
+                        path=file_path, lineno=0)]
         ext = file_manager.get_file_extension(file_path)
         #obtain a symbols handler for this file extension
         symbols_handler = settings.get_symbols_handler(ext)
@@ -338,34 +342,34 @@ class LocateThread(QThread):
                     line_number = symbols['classes'][claz][0] - 1
                     members = symbols['classes'][claz][1]
                     results.append(ResultItem(type=FILTERS['classes'],
-                        name=claz, path=unicode(file_path),
+                        name=claz, path=file_path,
                         lineno=line_number))
                     if 'attributes' in members:
                         for attr in members['attributes']:
                             line_number = members['attributes'][attr] - 1
                             results.append(ResultItem(type=FILTERS['attribs'],
-                                name=attr, path=unicode(file_path),
+                                name=attr, path=file_path,
                                 lineno=line_number))
                     if 'functions' in members:
                         for func in members['functions']:
                             line_number = members['functions'][func] - 1
                             results.append(ResultItem(
                                 type=FILTERS['functions'], name=func,
-                                path=unicode(file_path), lineno=line_number))
+                                path=file_path, lineno=line_number))
             if 'attributes' in symbols:
                 for attr in symbols['attributes']:
                     line_number = symbols['attributes'][attr] - 1
                     results.append(ResultItem(type=FILTERS['attribs'],
-                        name=attr, path=unicode(file_path),
+                        name=attr, path=file_path,
                         lineno=line_number))
             if 'functions' in symbols:
                 for func in symbols['functions']:
                     line_number = symbols['functions'][func] - 1
                     results.append(ResultItem(
                         type=FILTERS['functions'], name=func,
-                        path=unicode(file_path), lineno=line_number))
+                        path=file_path, lineno=line_number))
         if results:
-            mapping_locations[unicode(file_path)] += results
+            mapping_locations[file_path] += results
 
     def get_symbols_for_class(self, file_path, clazzName):
         lines = []
@@ -383,18 +387,18 @@ class LocateThread(QThread):
                     clazz = symbols['classes'][claz]
                     line_number = clazz[0] - 1
                     lines.append(ResultItem(type=FILTERS['classes'], name=claz,
-                        path=unicode(file_path), lineno=line_number))
+                        path=file_path, lineno=line_number))
                     if 'attributes' in clazz[1]:
                         for attr in clazz[1]['attributes']:
                             line_number = clazz[1]['attributes'][attr] - 1
                             lines.append(ResultItem(
                                 type=FILTERS['attribs'], name=attr,
-                                path=unicode(file_path), lineno=line_number))
+                                path=file_path, lineno=line_number))
                     if 'functions' in clazz[1]:
                         for func in clazz[1]['functions']:
                             line_number = clazz[1]['functions'][func] - 1
                             lines.append(ResultItem(type=FILTERS['functions'],
-                                name=func, path=unicode(file_path),
+                                name=func, path=file_path,
                                 lineno=line_number))
                     return lines
             return []
@@ -463,9 +467,33 @@ class LocateWidget(QLabel):
 
     def __init__(self, data):
         QLabel.__init__(self)
-        self.setText(u"{0}<br>"
-            "<span style='font-size: 12px; color: grey;'>({1})</span>".format(
-                data.name, data.path))
+        self.name = data.name
+        self.path = data.path
+        locator_name = resources.CUSTOM_SCHEME.get('locator-name',
+            resources.COLOR_SCHEME['locator-name'])
+        locator_path = resources.CUSTOM_SCHEME.get('locator-path',
+            resources.COLOR_SCHEME['locator-path'])
+        self.setText("<span style='color: {2};'>{0}</span><br>"
+            "<span style='font-size: 12px; color: {3};'>({1})</span>".format(
+                data.name, data.path, locator_name, locator_path))
+
+    def set_selected(self):
+        locator_name = resources.CUSTOM_SCHEME.get('locator-name-selected',
+            resources.COLOR_SCHEME['locator-name-selected'])
+        locator_path = resources.CUSTOM_SCHEME.get('locator-path-selected',
+            resources.COLOR_SCHEME['locator-path-selected'])
+        self.setText("<span style='color: {2};'>{0}</span><br>"
+            "<span style='font-size: 12px; color: {3};'>({1})</span>".format(
+                self.name, self.path, locator_name, locator_path))
+
+    def set_not_selected(self):
+        locator_name = resources.CUSTOM_SCHEME.get('locator-name',
+            resources.COLOR_SCHEME['locator-name'])
+        locator_path = resources.CUSTOM_SCHEME.get('locator-path',
+            resources.COLOR_SCHEME['locator-path'])
+        self.setText("<span style='color: {2};'>{0}</span><br>"
+            "<span style='font-size: 12px; color: {3};'>({1})</span>".format(
+                self.name, self.path, locator_name, locator_path))
 
 
 class LocateCompleter(QLineEdit):
@@ -475,13 +503,14 @@ class LocateCompleter(QLineEdit):
         self._parent = parent
         self.__prefix = ''
         self.frame = PopupCompleter()
-        self.filterPrefix = re.compile(r'^(@|<|>|-|!|\.)(\s)*')
-        self.advancePrefix = re.compile(r'(@|<|>|-|!)')
+        self.filterPrefix = re.compile(r'^(@|<|>|-|!|\.|/|:)(\s)*')
+        self.advancePrefix = re.compile(r'(@|<|>|-|!|/|:)')
         self.tempLocations = []
         self.setMinimumWidth(700)
         self.items_in_page = 0
         self.page_items_step = 10
         self._filterData = [None, None, None, None]
+        self._line_jump = -1
 
         self.connect(self, SIGNAL("textChanged(QString)"),
             self.set_prefix)
@@ -491,7 +520,7 @@ class LocateCompleter(QLineEdit):
 
     def set_prefix(self, prefix):
         """Set the prefix for the completer."""
-        self.__prefix = unicode(prefix.toLower())
+        self.__prefix = prefix.lower()
         self._refresh_filter()
 
     def complete(self):
@@ -508,16 +537,16 @@ class LocateCompleter(QLineEdit):
         #Create the list items
         begin = self.items_in_page
         self.items_in_page += self.page_items_step
-        locations_view = [(LocateItem(x), LocateWidget(x)) \
+        locations_view = [(LocateItem(x), LocateWidget(x))
             for x in locations[begin:self.items_in_page]]
         return locations_view
 
     def filter(self):
+        self._line_jump = -1
         self.items_in_page = 0
         #Clean the objects from the listWidget
         inCurrentFile = False
-        filterOptions = self.advancePrefix.split(
-            unicode(self.__prefix).lstrip())
+        filterOptions = self.advancePrefix.split(self.__prefix.lstrip())
         if filterOptions[0] == '':
             del filterOptions[0]
 
@@ -535,32 +564,48 @@ class LocateCompleter(QLineEdit):
         #if the user type any of the prefix
         if self.filterPrefix.match(self.__prefix):
             filterOption = self.__prefix[:1]
+            main = main_container.MainContainer()
             #if the prefix is "." it means only the metadata of current file
             if filterOption == FILTERS['this-file']:
                 inCurrentFile = True
-                main = main_container.MainContainer()
                 editorWidget = main.get_actual_editor()
                 if editorWidget:
                     self.tempLocations = \
                         self._parent._thread.get_this_file_locations(
                             editorWidget.ID)
-                    self.__prefix = unicode(self.__prefix)[1:].lstrip()
-                    self.tempLocations = [x for x in self.tempLocations \
+                    self.__prefix = self.__prefix[1:].lstrip()
+                    self.tempLocations = [x for x in self.tempLocations
                         if x.comparison.lower().find(self.__prefix) > -1]
+            elif filterOption == FILTERS['tabs']:
+                tab1, tab2 = main.get_opened_documents()
+                opened = tab1 + tab2
+                self.tempLocations = [ResultItem(FILTERS['files'],
+                    file_manager.get_basename(f[0]), f[0])
+                    for f in opened]
+                self.__prefix = self.__prefix[1:].lstrip()
+            elif filterOption == FILTERS['lines']:
+                editorWidget = main.get_actual_editor()
+                self.tempLocations = [
+                    x for x in self._parent._thread.get_locations()
+                        if x.type == FILTERS['files'] and
+                        x.path == editorWidget.ID]
+                inCurrentFile = True
+                if filterOptions[1].isdigit():
+                    self._line_jump = int(filterOptions[1]) - 1
             else:
                 #Is not "." filter by the other options
                 self.tempLocations = [
                     x for x in self._parent._thread.get_locations()
                     if x.type == filterOption]
                 #Obtain the user input without the filter prefix
-                self.__prefix = unicode(self.__prefix)[1:].lstrip()
+                self.__prefix = self.__prefix[1:].lstrip()
         else:
             self.tempLocations = self._parent._thread.get_locations()
 
         if self.__prefix and not inCurrentFile:
             #if prefix (user search now) is not empty, filter words that1
             #contain the user input
-            self.tempLocations = [x for x in self.tempLocations \
+            self.tempLocations = [x for x in self.tempLocations
                 if x.comparison.lower().find(self.__prefix) > -1]
 
         return self._create_list_widget_items(self.tempLocations)
@@ -568,12 +613,16 @@ class LocateCompleter(QLineEdit):
     def _advanced_filter(self, filterOptions):
         was_this_file = filterOptions[0] == FILTERS['this-file']
         if was_this_file:
+            previous_filter = filterOptions[0]
             filterOptions[0] = FILTERS['files']
             main = main_container.MainContainer()
             editorWidget = main.get_actual_editor()
             if editorWidget:
                 filterOptions.insert(1, editorWidget.ID)
-        elif filterOptions[0] in (FILTERS['classes'], FILTERS['files']):
+            if previous_filter == FILTERS['lines']:
+                filterOptions.insert(2, ':')
+        elif filterOptions[0] in (
+             FILTERS['classes'], FILTERS['files'], FILTERS['tabs']):
             currentItem = self.frame.listWidget.currentItem()
             if type(currentItem) is LocateItem:
                 if currentItem._data.type in (FILTERS['files'],
@@ -599,32 +648,40 @@ class LocateCompleter(QLineEdit):
                 self._classFilter = self._filterData.name
             symbols = self._parent._thread.get_symbols_for_class(filePath,
                 self._classFilter)
-            self.tempLocations = [x for x in symbols \
+            self.tempLocations = [x for x in symbols
                 if x.type == filterOptions[4]]
+        elif len(filterOptions) == 4 and filterOptions[2] == FILTERS['lines']:
+            self.tempLocations = [
+                x for x in self.tempLocations if x.path == filePath]
+            if filterOptions[3].isdigit():
+                self._line_jump = int(filterOptions[3]) - 1
+                return
         else:
             self.tempLocations = [
-                x for x in mapping_locations.get(filePath, []) \
+                x for x in mapping_locations.get(filePath, [])
                 if x.type == filterOptions[2]]
-        if filterOptions[3 + moveIndex]:
-            self.tempLocations = [x for x in self.tempLocations \
-              if x.comparison.lower().find(filterOptions[3 + moveIndex]) > -1]
+        moveIndex += 3
+        if len(filterOptions) > moveIndex and filterOptions[moveIndex]:
+            self.tempLocations = [x for x in self.tempLocations
+              if x.comparison.lower().find(filterOptions[moveIndex]) > -1]
 
     def _advanced_filter_by_file(self, filterOptions):
         if filterOptions[1] == FILTERS['files']:
             index = 2
         else:
             index = 3
-        self.tempLocations = [x for x in self.tempLocations \
+        self.tempLocations = [x for x in self.tempLocations
             if file_manager.get_basename(x.path).lower().find(
                 filterOptions[index]) > -1]
 
     def _refresh_filter(self):
-        self.frame.refresh(self.filter())
+        has_text = len(self.text()) != 0
+        self.frame.refresh(self.filter(), has_text)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Space:
             item = self.frame.listWidget.currentItem()
-            self.setText(unicode(item._data[1]))
+            self.setText(item._data.comparison)
             return
 
         QLineEdit.keyPressEvent(self, event)
@@ -662,11 +719,14 @@ class LocateCompleter(QLineEdit):
 
     def _open_item(self, data):
         """Open the item received."""
+        main = main_container.MainContainer()
         if file_manager.get_file_extension(data.path) in ('jpg', 'png'):
-            main_container.MainContainer().open_image(data.path)
+            main.open_image(data.path)
         else:
-            main_container.MainContainer().open_file(
-                data.path, data.lineno, None, True)
+            if self._line_jump != -1:
+                main.open_file(data.path, self._line_jump, None, True)
+            else:
+                main.open_file(data.path, data.lineno, None, True)
 
 
 class PopupCompleter(QFrame):
@@ -677,8 +737,20 @@ class PopupCompleter(QFrame):
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
         self.listWidget = QListWidget()
-        self.listWidget.setMinimumHeight(300)
+        self.listWidget.setMinimumHeight(350)
         vbox.addWidget(self.listWidget)
+
+        self.listWidget.currentItemChanged.connect(self._repaint_items)
+
+    def _repaint_items(self, current, previous):
+        if current is not None:
+            widget = self.listWidget.itemWidget(current)
+            if widget is not None:
+                widget.set_selected()
+        if previous is not None:
+            widget = self.listWidget.itemWidget(previous)
+            if widget is not None:
+                widget.set_not_selected()
 
     def reload(self, model):
         """Reload the data of the Popup Completer, and restart the state."""
@@ -687,15 +759,17 @@ class PopupCompleter(QFrame):
         for item in model:
             self.listWidget.addItem(item[0])
             self.listWidget.setItemWidget(item[0], item[1])
-        self.listWidget.setCurrentRow(6)
+        self.listWidget.setCurrentRow(8)
 
     def clear(self):
         """Remove all the items of the list (deleted), and reload the help."""
         self.listWidget.clear()
 
-    def refresh(self, model):
+    def refresh(self, model, has_text=True):
         """Refresh the list when the user search for some word."""
         self.listWidget.clear()
+        if not has_text:
+            self.add_help()
         for item in model:
             self.listWidget.addItem(item[0])
             self.listWidget.setItemWidget(item[0], item[1])
@@ -754,6 +828,26 @@ class PopupCompleter(QFrame):
         thisFileItem.setForeground(QBrush(Qt.black))
         thisFileItem.setFont(font)
         self.listWidget.addItem(thisFileItem)
+        tabsItem = QListWidgetItem(
+            QIcon(resources.IMAGES['locate-tab']),
+                '/\t(Filter only by the current Tabs)')
+        font = tabsItem.font()
+        font.setBold(True)
+        tabsItem.setSizeHint(QSize(20, 30))
+        tabsItem.setBackground(QBrush(Qt.lightGray))
+        tabsItem.setForeground(QBrush(Qt.black))
+        tabsItem.setFont(font)
+        self.listWidget.addItem(tabsItem)
+        lineItem = QListWidgetItem(
+            QIcon(resources.IMAGES['locate-line']),
+                ':\t(Go to Line)')
+        font = lineItem.font()
+        font.setBold(True)
+        lineItem.setSizeHint(QSize(20, 30))
+        lineItem.setBackground(QBrush(Qt.lightGray))
+        lineItem.setForeground(QBrush(Qt.black))
+        lineItem.setFont(font)
+        self.listWidget.addItem(lineItem)
         nonPythonItem = QListWidgetItem(
             QIcon(resources.IMAGES['locate-nonpython']),
                 '!\t(Filter only by Non Python Files)')

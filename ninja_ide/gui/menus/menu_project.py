@@ -31,31 +31,31 @@ class MenuProject(QObject):
         QObject.__init__(self)
 
         runAction = menuProject.addAction(QIcon(resources.IMAGES['play']),
-            self.tr("Run Project (%1)").arg(
+            self.trUtf8("Run Project (%s)" %
                 resources.get_shortcut("Run-project").toString(
                     QKeySequence.NativeText)))
 #        debugAction = menuProject.addAction(
 #            QIcon(resources.IMAGES['debug']),
-#            self.tr("Debug Project (%1)").arg(
+#            self.trUtf8("Debug Project (%s)" %
 #                resources.get_shortcut("Debug").toString(
 #                    QKeySequence.NativeText)))
         runFileAction = menuProject.addAction(
             QIcon(resources.IMAGES['file-run']),
-            self.tr("Run File (%1)").arg(
+            self.trUtf8("Run File (%s)" %
                 resources.get_shortcut("Run-file").toString(
                     QKeySequence.NativeText)))
         stopAction = menuProject.addAction(QIcon(resources.IMAGES['stop']),
-            self.tr("Stop (%1)").arg(
+            self.trUtf8("Stop (%s)" %
                 resources.get_shortcut("Stop-execution").toString(
                     QKeySequence.NativeText)))
         menuProject.addSeparator()
         projectPropertiesAction = menuProject.addAction(
-            self.tr("Open Project Properties"))
+            self.trUtf8("Open Project Properties"))
         menuProject.addSeparator()
         previewAction = menuProject.addAction(
             QIcon(resources.IMAGES['preview-web']),
-            self.tr("Preview Web in Default Browser"))
-#        diagramView = menuProject.addAction(self.tr("Diagram View"))
+            self.trUtf8("Preview Web in Default Browser"))
+#        diagramView = menuProject.addAction(self.trUtf8("Diagram View"))
 
         self.toolbar_items = {
             'run-project': runAction,

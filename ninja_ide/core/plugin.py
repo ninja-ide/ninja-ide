@@ -19,9 +19,10 @@ from __future__ import absolute_import
 
 import os
 import sys
-import logging
 
 from PyQt4.QtCore import QObject
+
+from ninja_ide.tools.logger import NinjaLogger
 
 
 class Plugin(QObject):
@@ -37,7 +38,9 @@ class Plugin(QObject):
             self.metadata = {}
         else:
             self.metadata = metadata
-        self.logger = PluginLogger(self)
+        klass = self.__class__
+        plugin_name = "%s.%s" % (klass.__module__, klass.__name__)
+        self.logger = NinjaLogger('ninja_ide.plugins.%s' % plugin_name)
         #set the path!
         try:
             self_module = self.__module__
@@ -59,31 +62,3 @@ class Plugin(QObject):
     @property
     def path(self):
         return self._path
-
-
-class PluginLogger(object):
-    """
-    Logger for plugins, it wrap the python logger
-    to set the class name to the logger
-    """
-
-    def __init__(self, instance):
-        klass = instance.__class__
-        plugin_name = "%s.%s" % (klass.__module__, klass.__name__)
-        self.logger = logging.getLogger('ninja_ide.plugins.%s' % plugin_name)
-        self.logger.setLevel(logging.DEBUG)
-
-    def debug(self, *a, **k):
-        self.logger.debug(*a, **k)
-
-    def info(self, *a, **k):
-        self.logger.info(*a, **k)
-
-    def warning(self, *a, **k):
-        self.logger.warning(*a, **k)
-
-    def error(self, *a, **k):
-        self.logger.error(*a, **k)
-
-    def critical(self, *a, **k):
-        self.logger.critical(*a, **k)

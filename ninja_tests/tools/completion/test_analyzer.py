@@ -21,7 +21,7 @@ import unittest
 
 from ninja_ide.tools.completion import analyzer
 from ninja_ide.tools.completion import model
-from tests.tools.completion import SOURCE_ANALYZER_NATIVE
+from ninja_tests.tools.completion import SOURCE_ANALYZER_NATIVE
 
 
 class AnalyzerTestCase(unittest.TestCase):
@@ -149,7 +149,7 @@ class AnalyzerTestCase(unittest.TestCase):
         attrs.sort()
         self.assertEqual(result_f, functions)
         self.assertEqual(result_a, attrs)
-        self.assertEqual(clazz.bases, ['object'])
+        self.assertEqual(clazz.bases, {'object': None})
 
     def test_simple_class_attrs(self):
         module = self.analyzer.analyze(SOURCE_ANALYZER_NATIVE)

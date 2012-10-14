@@ -37,6 +37,8 @@ from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QMessageBox
+from PyQt4.QtGui import QSpinBox
+from PyQt4.QtGui import QCheckBox
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 
@@ -45,6 +47,11 @@ from ninja_ide.core import file_manager
 from ninja_ide.core import settings
 from ninja_ide.tools import json_manager
 from ninja_ide.tools import ui_tools
+
+
+from ninja_ide.tools.logger import NinjaLogger
+logger = NinjaLogger('ninja_ide.gui.dialogs.project_properties_widget')
+DEBUG = logger.debug
 
 
 class ProjectProperties(QDialog):
@@ -57,9 +64,12 @@ class ProjectProperties(QDialog):
         self.tab_widget = QTabWidget()
         self.projectData = ProjectData(self)
         self.projectExecution = ProjectExecution(self)
+        self.projectMetadata = ProjectMetadata(self)
         self.tab_widget.addTab(self.projectData, self.tr("Project Data"))
         self.tab_widget.addTab(self.projectExecution,
             self.tr("Project Execution"))
+        self.tab_widget.addTab(self.projectMetadata,
+            self.tr("Project Metadata"))
 
         vbox.addWidget(self.tab_widget)
         self.btnSave = QPushButton(self.tr("Save"))
@@ -74,31 +84,32 @@ class ProjectProperties(QDialog):
         self.connect(self.btnSave, SIGNAL("clicked()"), self.save_properties)
 
     def save_properties(self):
-        if unicode(self.projectData.name.text()).strip() == '':
+        if self.projectData.name.text().strip() == '':
             QMessageBox.critical(self, self.tr("Properties Invalid"),
                 self.tr("The Project must have a name."))
             return
+
         tempName = self._item.name
-        self._item.name = unicode(self.projectData.name.text())
-        self._item.description = unicode(
-            self.projectData.description.toPlainText())
-        self._item.license = unicode(self.projectData.cboLicense.currentText())
-        self._item.mainFile = unicode(self.projectExecution.path.text())
-        self._item.url = unicode(self.projectData.url.text())
-        self._item.projectType = unicode(self.projectData.txtType.text())
-        self._item.pythonPath = unicode(
-            self.projectExecution.txtPythonPath.text())  # FIXME
-        self._item.PYTHONPATH = unicode(
-            self.projectExecution.PYTHONPATH.toPlainText())
-        self._item.preExecScript = unicode(
-            self.projectExecution.txtPreExec.text())
-        self._item.postExecScript = unicode(
-            self.projectExecution.txtPostExec.text())
-        self._item.programParams = unicode(
-            self.projectExecution.txtParams.text())
-        self._item.venv = unicode(self.projectExecution.txtVenvPath.text())
-        extensions = unicode(self.projectData.txtExtensions.text()).split(', ')
+        self._item.name = self.projectData.name.text()
+        self._item.description = self.projectData.description.toPlainText()
+        self._item.license = self.projectData.cboLicense.currentText()
+        self._item.mainFile = self.projectExecution.path.text()
+        self._item.url = self.projectData.url.text()
+        self._item.projectType = self.projectData.txtType.text()
+        # FIXME
+        self._item.pythonPath = self.projectExecution.txtPythonPath.text()
+        self._item.PYTHONPATH = self.projectExecution.PYTHONPATH.toPlainText()
+        self._item.preExecScript = self.projectExecution.txtPreExec.text()
+        self._item.postExecScript = self.projectExecution.txtPostExec.text()
+        self._item.programParams = self.projectExecution.txtParams.text()
+        self._item.venv = self.projectExecution.txtVenvPath.text()
+        extensions = self.projectData.txtExtensions.text().split(', ')
         self._item.extensions = tuple(extensions)
+        self._item.indentation = self.projectData.spinIndentation.value()
+        self._item.useTabs = self.projectData.checkUseTabs.isChecked()
+        related = self.projectMetadata.txt_projects.toPlainText()
+        related = [path for path in related.split('\n') if path != '']
+        self._item.related_projects = related
         #save project properties
         project = {}
         project['name'] = self._item.name
@@ -108,12 +119,15 @@ class ProjectProperties(QDialog):
         project['mainFile'] = self._item.mainFile
         project['project-type'] = self._item.projectType
         project['supported-extensions'] = self._item.extensions
+        project['indentation'] = self._item.indentation
+        project['use-tabs'] = self._item.useTabs
         project['pythonPath'] = self._item.pythonPath  # FIXME
         project['PYTHONPATH'] = self._item.PYTHONPATH
         project['preExecScript'] = self._item.preExecScript
         project['postExecScript'] = self._item.postExecScript
         project['venv'] = self._item.venv
         project['programParams'] = self._item.programParams
+        project['relatedProjects'] = self._item.related_projects
         if tempName != self._item.name and \
             file_manager.file_exists(self._item.path, tempName + '.nja'):
             file_manager.delete_file(self._item.path, tempName + '.nja')
@@ -123,6 +137,7 @@ class ProjectProperties(QDialog):
         self._item.setToolTip(0, self._item.name)
         if self._item.extensions != settings.SUPPORTED_EXTENSIONS:
             self._item._parent._refresh_project(self._item)
+        self._item.update_paths()
         self.close()
 
 
@@ -174,11 +189,18 @@ class ProjectData(QWidget):
         grid.addWidget(self.cboLicense, 4, 1)
 
         self.txtExtensions = QLineEdit()
-        self.txtExtensions.setText(
-            unicode(', '.join(self._parent._item.extensions)))
+        self.txtExtensions.setText(', '.join(self._parent._item.extensions))
         grid.addWidget(QLabel(self.tr("Supported Extensions:")), 5, 0)
         grid.addWidget(self.txtExtensions, 5, 1)
 
+        grid.addWidget(QLabel(self.tr("Indentation: ")), 6, 0)
+        self.spinIndentation = QSpinBox()
+        self.spinIndentation.setValue(self._parent._item.indentation)
+        self.spinIndentation.setMinimum(1)
+        grid.addWidget(self.spinIndentation, 6, 1)
+        self.checkUseTabs = QCheckBox(self.tr("Use Tabs."))
+        self.checkUseTabs.setChecked(self._parent._item.useTabs)
+        grid.addWidget(self.checkUseTabs, 6, 2)
 
 class ProjectExecution(QWidget):
 
@@ -267,13 +289,13 @@ class ProjectExecution(QWidget):
             self.select_post_exec_script)
 
     def _load_python_path(self):
-        path = unicode(QFileDialog.getOpenFileName(
-            self, self.tr("Select Python Path")))
+        path = QFileDialog.getOpenFileName(
+            self, self.tr("Select Python Path"))
         self.txtPythonPath.setText(path)
 
     def _load_python_venv(self):
-        venv = unicode(QFileDialog.getExistingDirectory(
-            self, self.tr("Select Virtualenv Folder")))
+        venv = QFileDialog.getExistingDirectory(
+            self, self.tr("Select Virtualenv Folder"))
         if sys.platform == 'win32':
             venv = os.path.join(venv, 'Scripts', 'python.exe')
         else:
@@ -288,28 +310,47 @@ class ProjectExecution(QWidget):
             self.txtVenvPath.setText(venv)
 
     def select_file(self):
-        fileName = unicode(QFileDialog.getOpenFileName(
+        fileName = QFileDialog.getOpenFileName(
             self, self.tr("Select Main File"),
-                        self._parent._item.path, '(*.py);;(*.*)'))
+                        self._parent._item.path, '(*.py);;(*.*)')
         if fileName != '':
             fileName = file_manager.convert_to_relative(
                 self._parent._item.path, fileName)
             self.path.setText(fileName)
 
     def select_pre_exec_script(self):
-        fileName = unicode(QFileDialog.getOpenFileName(
+        fileName = QFileDialog.getOpenFileName(
             self, self.tr("Select Pre Execution Script File"),
-                        self._parent._item.path, '(*.*)'))
+                        self._parent._item.path, '(*.*)')
         if fileName != '':
             fileName = file_manager.convert_to_relative(
                 self._parent._item.path, fileName)
             self.txtPreExec.setText(fileName)
 
     def select_post_exec_script(self):
-        fileName = unicode(QFileDialog.getOpenFileName(
+        fileName = QFileDialog.getOpenFileName(
             self, self.tr("Select Post Execution Script File"),
-                        self._parent._item.path, '(*.*)'))
+                        self._parent._item.path, '(*.*)')
         if fileName != '':
             fileName = file_manager.convert_to_relative(
                 self._parent._item.path, fileName)
             self.txtPostExec.setText(fileName)
+
+
+class ProjectMetadata(QWidget):
+
+    def __init__(self, parent):
+        super(ProjectMetadata, self).__init__()
+        self._parent = parent
+
+        vbox = QVBoxLayout(self)
+        vbox.addWidget(QLabel(self.tr(
+                        "Insert the path of Python Projects related"
+                        "to this one in order\nto improve Code Completion.")))
+        self.txt_projects = QPlainTextEdit()
+        vbox.addWidget(self.txt_projects)
+        vbox.addWidget(QLabel(
+            self.tr("Split your paths using newlines [ENTER].")))
+
+        paths = '\n'.join(self._parent._item.related_projects)
+        self.txt_projects.setPlainText(paths)

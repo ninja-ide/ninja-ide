@@ -16,9 +16,9 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
 import webbrowser
-import logging
 from copy import copy
 from distutils import version
 
@@ -32,6 +32,8 @@ from PyQt4.QtGui import QTabWidget
 from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
+from PyQt4.QtGui import QSpacerItem
+from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
@@ -41,8 +43,9 @@ from ninja_ide.core import plugin_manager
 from ninja_ide.core import file_manager
 from ninja_ide.tools import ui_tools
 
+from ninja_ide.tools.logger import NinjaLogger
 
-logger = logging.getLogger('ninja_ide.gui.dialogs.plugin_manager')
+logger = NinjaLogger('ninja_ide.gui.dialogs.plugin_manager')
 
 TABLE_HEADER = ('Name', 'Version')
 HTML_STYLE = """
@@ -61,7 +64,7 @@ HTML_STYLE = """
 def _get_plugin(plugin_name, plugin_list):
     plugin = None
     for plug in plugin_list:
-        if unicode(plug["name"]) == unicode(plugin_name):
+        if plug["name"] == plugin_name:
             plugin = plug
             break
     return plugin
@@ -86,9 +89,14 @@ class PluginsManagerWidget(QDialog):
         self._txt_data.setOpenLinks(False)
         vbox.addWidget(QLabel(self.tr("Description:")))
         vbox.addWidget(self._txt_data)
+        # Footer
+        hbox = QHBoxLayout()
+        btn_close = QPushButton(self.tr('Close'))
         btnReload = QPushButton(self.tr("Reload"))
-        btnReload.setMaximumWidth(100)
-        vbox.addWidget(btnReload)
+        hbox.addWidget(btn_close)
+        hbox.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
+        hbox.addWidget(btnReload)
+        vbox.addLayout(hbox)
         self.overlay = ui_tools.Overlay(self)
         self.overlay.hide()
 
@@ -109,18 +117,19 @@ class PluginsManagerWidget(QDialog):
             self._after_uninstall_plugin)
         self.connect(self._txt_data, SIGNAL("anchorClicked(const QUrl&)"),
             self._open_link)
+        self.connect(btn_close, SIGNAL('clicked()'), self.close)
         self.overlay.show()
         self._reload_plugins()
 
     def show_plugin_info(self, data):
-        plugin_description = unicode(data[2].toString()).replace('\n', '<br>')
-        html = HTML_STYLE.format(name=data[0].toString(),
-            version=data[1].toString(), description=plugin_description,
-            author=data[3].toString(), link=data[4].toString())
+        plugin_description = data[2].replace('\n', '<br>')
+        html = HTML_STYLE.format(name=data[0],
+            version=data[1], description=plugin_description,
+            author=data[3], link=data[4])
         self._txt_data.setHtml(html)
 
     def _open_link(self, url):
-        link = unicode(url.toString())
+        link = url.toString()
         if link.startswith('/plugins/'):
             link = 'http://ninja-ide.org' + link
         webbrowser.open(link)
@@ -238,7 +247,7 @@ class UpdatesWidget(QWidget):
     def _show_item_description(self):
         item = self._table.currentItem()
         if item is not None:
-            data = item.data(Qt.UserRole).toList()
+            data = list(item.data(Qt.UserRole))
             self._parent.show_plugin_info(data)
 
     def _update_plugins(self):
@@ -248,7 +257,7 @@ class UpdatesWidget(QWidget):
         for p_row in plugins:
             #search the plugin
             for p_dict in self._updates:
-                if unicode(p_dict["name"]) == unicode(p_row[0]):
+                if p_dict["name"] == p_row[0]:
                     p_data = p_dict
                     break
             #append the downlod link
@@ -274,7 +283,7 @@ class AvailableWidget(QWidget):
         btnInstall = QPushButton('Install')
         btnInstall.setMaximumWidth(100)
         hbox.addWidget(btnInstall)
-        hbox.addWidget(QLabel(self.tr("NINJA needs to be restarted for " \
+        hbox.addWidget(QLabel(self.tr("NINJA needs to be restarted for "
             "changes to take effect.")))
         vbox.addLayout(hbox)
 
@@ -285,7 +294,7 @@ class AvailableWidget(QWidget):
     def _show_item_description(self):
         item = self._table.currentItem()
         if item is not None:
-            data = item.data(Qt.UserRole).toList()
+            data = list(item.data(Qt.UserRole))
             self._parent.show_plugin_info(data)
 
     def _install_plugins(self):
@@ -295,7 +304,7 @@ class AvailableWidget(QWidget):
         for p_row in plugins:
             #search the plugin
             for p_dict in self._available:
-                if unicode(p_dict["name"]) == unicode(p_row[0]):
+                if p_dict["name"] == p_row[0]:
                     p_data = p_dict
                     break
             #append the downlod link
@@ -355,7 +364,7 @@ class InstalledWidget(QWidget):
     def _show_item_description(self):
         item = self._table.currentItem()
         if item is not None:
-            data = item.data(Qt.UserRole).toList()
+            data = list(item.data(Qt.UserRole))
             self._parent.show_plugin_info(data)
 
     def remove_item(self, plugin_name):
@@ -416,11 +425,11 @@ class ThreadLoadPlugins(QThread):
             if plug_oficial:
                 ava = plug_oficial
                 oficial_available = [p for p in oficial_available
-                        if unicode(p["name"]) != unicode(local_data["name"])]
+                        if p["name"] != local_data["name"]]
             elif plug_community:
                 ava = plug_community
                 community_available = [p for p in community_available
-                        if unicode(p["name"]) != unicode(local_data["name"])]
+                        if p["name"] != local_data["name"]]
             #check versions
             if ava:
                 available_version = version.LooseVersion(str(ava["version"]))
@@ -449,7 +458,7 @@ class ThreadLoadPlugins(QThread):
                 if req_command[0]:
                     self._manager._requirements[p[0]] = req_command[1]
                 self.emit(SIGNAL("plugin_downloaded(PyQt_PyObject)"), p)
-            except Exception, e:
+            except Exception as e:
                 logger.warning("Impossible to install (%s): %s", p[0], e)
 
     def uninstall_plugins_thread(self):
@@ -457,7 +466,7 @@ class ThreadLoadPlugins(QThread):
             try:
                 plugin_manager.uninstall_plugin(p)
                 self.emit(SIGNAL("plugin_uninstalled(PyQt_PyObject)"), p)
-            except Exception, e:
+            except Exception as e:
                 logger.warning("Impossible to uninstall (%s): %s", p[0], e)
 
     def update_plugin_thread(self):
@@ -471,7 +480,7 @@ class ThreadLoadPlugins(QThread):
                 p.append(name)
                 plugin_manager.update_local_plugin_descriptor([p])
                 self._manager.reset_installed_plugins()
-            except Exception, e:
+            except Exception as e:
                 logger.warning("Impossible to update (%s): %s", p[0], e)
 
 

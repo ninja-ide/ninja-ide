@@ -21,14 +21,6 @@ from PyQt4.QtCore import QSettings
 
 from ninja_ide.dependencies import pep8mod
 
-import logging
-
-LOGLEVEL = logging.DEBUG
-logger = logging.getLogger('ninja_ide.gui.core.settings')
-#All logger calls will default to this level, since is the one set up
-#In production environement should be nolog
-logger.setLevel(LOGLEVEL)
-logging.basicConfig()
 
 ###############################################################################
 # OS DETECTOR
@@ -66,7 +58,6 @@ UI_LAYOUT = 0
 LANGUAGE = ""
 
 SHOW_START_PAGE = True
-USE_STYLESHEET = True
 
 CONFIRM_EXIT = True
 NOTIFY_UPDATES = True
@@ -316,151 +307,136 @@ def load_settings():
     global MINIMAP_MIN_OPACITY
     global SIZE_PROPORTION
     #General
-    HIDE_TOOLBAR = qsettings.value("window/hide_toolbar", False).toBool()
-    TOOLBAR_AREA = qsettings.value(
-        'preferences/general/toolbarArea', 1).toInt()[0]
-    LANGUAGE = unicode(qsettings.value(
-        'preferences/interface/language', '').toString())
+    HIDE_TOOLBAR = qsettings.value("window/hide_toolbar", 'false') == 'true'
+    TOOLBAR_AREA = int(qsettings.value('preferences/general/toolbarArea', 1))
+    LANGUAGE = qsettings.value('preferences/interface/language', '')
     SHOW_START_PAGE = qsettings.value(
-        'preferences/general/showStartPage', True).toBool()
+        'preferences/general/showStartPage', 'true') == 'true'
     CONFIRM_EXIT = qsettings.value('preferences/general/confirmExit',
-        True).toBool()
-    UI_LAYOUT = qsettings.value('preferences/interface/uiLayout',
-        0).toInt()[0]
+        'true') == 'true'
+    UI_LAYOUT = int(qsettings.value('preferences/interface/uiLayout', 0))
     NOTIFY_UPDATES = qsettings.value(
-        'preferences/general/notifyUpdates', True).toBool()
-    PYTHON_PATH = unicode(
-        qsettings.value('preferences/execution/pythonPath',
-        'python').toString())
-    NINJA_SKIN = unicode(
-        qsettings.value('preferences/theme/skin', 'Default').toString())
-    profileDict = qsettings.value('ide/profiles', {}).toMap()
+        'preferences/general/notifyUpdates', 'true') == 'true'
+    PYTHON_PATH = qsettings.value('preferences/execution/pythonPath',
+        'python')
+    NINJA_SKIN = qsettings.value('preferences/theme/skin',
+        'Default')
+    profileDict = dict(qsettings.value('ide/profiles', {}))
     for key in profileDict:
-        profile_list = list(profileDict[key].toList())
+        profile_list = list(profileDict[key])
         files = []
         if profile_list:
-            files = [item \
-                for item in profile_list[0].toList()]
+            files = [item
+                for item in list(profile_list[0])]
         tempFiles = []
         for file_ in files:
-            fileData = file_.toList()
+            fileData = list(file_)
             if len(fileData) > 0:
-                tempFiles.append([unicode(fileData[0].toString()),
-                    fileData[1].toInt()[0]])
+                tempFiles.append([fileData[0], int(fileData[1])])
         files = tempFiles
         projects = []
         if len(profile_list) > 1:
-            projects = [unicode(item.toString()) \
-                for item in profile_list[1].toList()]
-        PROFILES[unicode(key)] = [files, projects]
-    toolbar_items = [str(item.toString()) for item in qsettings.value(
-        'preferences/interface/toolbar', []).toList()]
+            projects = [item for item in list(profile_list[1])]
+        PROFILES[key] = [files, projects]
+    toolbar_items = [item for item in list(qsettings.value(
+        'preferences/interface/toolbar', []))]
     if toolbar_items:
         TOOLBAR_ITEMS = toolbar_items
     #EXECUTION OPTIONS
-    EXECUTION_OPTIONS = unicode(
-        qsettings.value('preferences/execution/executionOptions',
-        '').toString())
-    extensions = [unicode(item.toString()) for item in qsettings.value(
-        'preferences/general/supportedExtensions', []).toList()]
+    EXECUTION_OPTIONS = qsettings.value(
+        'preferences/execution/executionOptions', '')
+    extensions = [item for item in list(qsettings.value(
+        'preferences/general/supportedExtensions', []))]
     if extensions:
         SUPPORTED_EXTENSIONS = extensions
-    WORKSPACE = unicode(qsettings.value(
-        'preferences/general/workspace', "").toString())
+    WORKSPACE = qsettings.value(
+        'preferences/general/workspace', "")
     #Editor
     SHOW_MINIMAP = qsettings.value(
-        'preferences/editor/minimapShow', False).toBool()
-    MINIMAP_MAX_OPACITY = qsettings.value(
-        'preferences/editor/minimapMaxOpacity', 0.8).toFloat()[0]
-    MINIMAP_MIN_OPACITY = qsettings.value(
-        'preferences/editor/minimapMinOpacity', 0.1).toFloat()[0]
-    SIZE_PROPORTION = qsettings.value(
-        'preferences/editor/minimapSizeProportion', 0.17).toFloat()[0]
-    INDENT = qsettings.value('preferences/editor/indent',
-        4).toInt()[0]
-    MARGIN_LINE = qsettings.value('preferences/editor/marginLine',
-        80).toInt()[0]
+        'preferences/editor/minimapShow', 'false') == 'true'
+    MINIMAP_MAX_OPACITY = float(qsettings.value(
+        'preferences/editor/minimapMaxOpacity', 0.8))
+    MINIMAP_MIN_OPACITY = float(qsettings.value(
+        'preferences/editor/minimapMinOpacity', 0.1))
+    SIZE_PROPORTION = float(qsettings.value(
+        'preferences/editor/minimapSizeProportion', 0.17))
+    INDENT = int(qsettings.value('preferences/editor/indent', 4))
+    MARGIN_LINE = int(qsettings.value('preferences/editor/marginLine', 80))
     pep8mod.MAX_LINE_LENGTH = MARGIN_LINE
     REMOVE_TRAILING_SPACES = qsettings.value(
-        'preferences/editor/removeTrailingSpaces', True).toBool()
+        'preferences/editor/removeTrailingSpaces', 'true') == 'true'
     SHOW_TABS_AND_SPACES = qsettings.value(
-        'preferences/editor/showTabsAndSpaces', True).toBool()
-    USE_TABS = qsettings.value(
-        'preferences/editor/useTabs', False).toBool()
+        'preferences/editor/showTabsAndSpaces', 'true') == 'true'
+    USE_TABS = qsettings.value('preferences/editor/useTabs', 'false') == 'true'
     if USE_TABS:
         pep8mod.options.ignore.append("W191")
         pep8mod.refresh_checks()
     ALLOW_WORD_WRAP = qsettings.value(
-        'preferences/editor/allowWordWrap', False).toBool()
+        'preferences/editor/allowWordWrap', 'false') == 'true'
     COMPLETE_DECLARATIONS = qsettings.value(
-        'preferences/editor/completeDeclarations', True).toBool()
+        'preferences/editor/completeDeclarations', 'true') == 'true'
     HIGHLIGHT_WHOLE_LINE = qsettings.value(
-        'preferences/editor/highlightWholeLine', True).toBool()
-    font_family = unicode(qsettings.value(
-        'preferences/editor/fontFamily', "").toString())
+        'preferences/editor/highlightWholeLine', 'true') == 'true'
+    font_family = qsettings.value(
+        'preferences/editor/fontFamily', "")
     if font_family:
         FONT_FAMILY = font_family
-    font_size = qsettings.value('preferences/editor/fontSize',
-        0).toInt()[0]
+    font_size = int(qsettings.value('preferences/editor/fontSize', 0))
     if font_size != 0:
         FONT_SIZE = font_size
     SHOW_MARGIN_LINE = qsettings.value(
-        'preferences/editor/showMarginLine', True).toBool()
+        'preferences/editor/showMarginLine', 'true') == 'true'
     FIND_ERRORS = qsettings.value('preferences/editor/errors',
-        True).toBool()
+        'true') == 'true'
     ERRORS_HIGHLIGHT_LINE = qsettings.value(
-        'preferences/editor/errorsInLine', True).toBool()
+        'preferences/editor/errorsInLine', 'true') == 'true'
     CHECK_STYLE = qsettings.value('preferences/editor/checkStyle',
-        True).toBool()
+        'true') == 'true'
     CHECK_HIGHLIGHT_LINE = qsettings.value(
-        'preferences/editor/checkStyleInline', True).toBool()
+        'preferences/editor/checkStyleInline', 'true') == 'true'
     CODE_COMPLETION = qsettings.value(
-        'preferences/editor/codeCompletion', True).toBool()
+        'preferences/editor/codeCompletion', 'true') == 'true'
     CENTER_ON_SCROLL = qsettings.value(
-        'preferences/editor/centerOnScroll', True).toBool()
+        'preferences/editor/centerOnScroll', 'true') == 'true'
     parentheses = qsettings.value('preferences/editor/parentheses',
-        True).toBool()
+        'true') == 'true'
     if not parentheses:
         del BRACES['(']
-    brackets = qsettings.value('preferences/editor/brackets',
-        True).toBool()
+    brackets = qsettings.value('preferences/editor/brackets', 'true') == 'true'
     if not brackets:
         del BRACES['[']
-    keys = qsettings.value('preferences/editor/keys',
-        True).toBool()
+    keys = qsettings.value('preferences/editor/keys', 'true') == 'true'
     if not keys:
         del BRACES['{']
     simpleQuotes = qsettings.value('preferences/editor/simpleQuotes',
-        True).toBool()
+        'true') == 'true'
     if not simpleQuotes:
         del QUOTES["'"]
     doubleQuotes = qsettings.value('preferences/editor/doubleQuotes',
-        True).toBool()
+        'true') == 'true'
     if not doubleQuotes:
         del QUOTES['"']
     #Projects
     SHOW_PROJECT_EXPLORER = qsettings.value(
-        'preferences/interface/showProjectExplorer', True).toBool()
+        'preferences/interface/showProjectExplorer', 'true') == 'true'
     SHOW_SYMBOLS_LIST = qsettings.value(
-        'preferences/interface/showSymbolsList', True).toBool()
+        'preferences/interface/showSymbolsList', 'true') == 'true'
     SHOW_WEB_INSPECTOR = qsettings.value(
-        'preferences/interface/showWebInspector', False).toBool()
+        'preferences/interface/showWebInspector', 'false') == 'true'
     SHOW_ERRORS_LIST = qsettings.value(
-        'preferences/interface/showErrorsList', False).toBool()
+        'preferences/interface/showErrorsList', 'false') == 'true'
     #Bookmarks and Breakpoints
-    bookmarks = qsettings.value('preferences/editor/bookmarks', {}).toMap()
+    bookmarks = dict(qsettings.value('preferences/editor/bookmarks', {}))
     for key in bookmarks:
         if key:
-            BOOKMARKS[unicode(key)] = [
-                i.toInt()[0] for i in bookmarks[key].toList()]
-    breakpoints = qsettings.value('preferences/editor/breakpoints', {}).toMap()
+            BOOKMARKS[key] = [int(i) for i in list(bookmarks[key])]
+    breakpoints = dict(qsettings.value('preferences/editor/breakpoints', {}))
     for key in breakpoints:
         if key:
-            BREAKPOINTS[unicode(key)] = [
-                i.toInt()[0] for i in breakpoints[key].toList()]
+            BREAKPOINTS[key] = [int(i) for i in list(breakpoints[key])]
     # Checkers
     CHECK_FOR_DOCSTRINGS = qsettings.value(
-        'preferences/editor/checkForDocstrings', False).toBool()
+        'preferences/editor/checkForDocstrings', 'false') == 'true'
     # Import introspection here, it not needed in the namespace of
     # the rest of the file.
     from ninja_ide.tools import introspection

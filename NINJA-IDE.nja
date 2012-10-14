@@ -1,12 +1,15 @@
 {
   "mainFile": "ninja-ide.py", 
+  "use-tabs": false, 
   "venv": "", 
+  "relatedProjects": [], 
   "name": "NINJA-IDE", 
   "license": "GNU General Public License v3", 
   "url": "http://ninja-ide.org", 
   "pythonPath": "python", 
   "preExecScript": "", 
   "programParams": "", 
+  "indentation": 4, 
   "PYTHONPATH": "", 
   "supported-extensions": [
     ".py", 

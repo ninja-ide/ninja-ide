@@ -18,7 +18,6 @@ from __future__ import absolute_import
 
 import sys
 import os
-import logging
 
 from PyQt4 import uic
 from PyQt4.QtGui import QSplitter
@@ -33,6 +32,7 @@ from PyQt4.QtCore import QDir
 from ninja_ide import resources
 from ninja_ide.core import file_manager
 from ninja_ide.core import settings
+from ninja_ide.core.filesystem_notifications import NinjaFileSystemWatcher
 from ninja_ide.gui.main_panel import tab_widget
 from ninja_ide.gui.editor import editor
 from ninja_ide.gui.editor import highlighter
@@ -41,8 +41,9 @@ from ninja_ide.gui.main_panel import browser_widget
 from ninja_ide.gui.main_panel import image_viewer
 from ninja_ide.tools import runner
 
+from ninja_ide.tools.logger import NinjaLogger
 
-logger = logging.getLogger('ninja_ide.gui.main_panel.main_container')
+logger = NinjaLogger('ninja_ide.gui.main_panel.main_container')
 
 __mainContainerInstance = None
 
@@ -76,6 +77,7 @@ class __MainContainer(QSplitter):
     fileOpened(QString)
     newFileOpened(QString)
     enabledFollowMode(bool)
+    recentTabsModified(QStringList)
     """
 ###############################################################################
 
@@ -84,6 +86,7 @@ class __MainContainer(QSplitter):
         self._parent = parent
         self._tabMain = tab_widget.TabWidget(self)
         self._tabSecondary = tab_widget.TabWidget(self)
+        self.setAcceptDrops(True)
         self.addWidget(self._tabMain)
         self.addWidget(self._tabSecondary)
         self.setSizes([1, 1])
@@ -94,6 +97,9 @@ class __MainContainer(QSplitter):
         highlighter.restyle(resources.CUSTOM_SCHEME)
         #documentation browser
         self.docPage = None
+        # File Watcher
+        self._file_watcher = NinjaFileSystemWatcher
+        self._watched_simple_files = []
 
         self.connect(self._tabMain, SIGNAL("currentChanged(int)"),
             self._current_tab_changed)
@@ -139,6 +145,22 @@ class __MainContainer(QSplitter):
             self._navigate_code)
         self.connect(self._tabSecondary, SIGNAL("navigateCode(bool, int)"),
             self._navigate_code)
+        # Refresh recent tabs
+        self.connect(self._tabMain, SIGNAL("recentTabsModified(QStringList)"),
+            self._recent_files_changed)
+
+    def _recent_files_changed(self, files):
+        self.emit(SIGNAL("recentTabsModified(QStringList)"), files)
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.accept()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event):
+        file_path = event.mimeData().urls()[0].toLocalFile()
+        self.open_file(file_path)
 
     def _navigate_code(self, val, op):
         self.emit(SIGNAL("navigateCode(bool, int)"), val, op)
@@ -155,7 +177,7 @@ class __MainContainer(QSplitter):
 
     def _reopen_last_tab(self, tab, path):
         self.actualTab = tab
-        self.open_file(unicode(path))
+        self.open_file(path)
 
     def _change_actual(self, tabWidget):
         if not self._followMode:
@@ -179,6 +201,14 @@ class __MainContainer(QSplitter):
         else:
             self.show_split(Qt.Vertical)
 
+    def change_tabs_visibility(self):
+        if self._tabMain.tabBar().isVisible():
+            self._tabMain.tabBar().hide()
+            self._tabSecondary.tabBar().hide()
+        else:
+            self._tabMain.tabBar().show()
+            self._tabSecondary.tabBar().show()
+
     def show_split(self, orientation):
         closingFollowMode = self._followMode
         if self._followMode:
@@ -187,9 +217,9 @@ class __MainContainer(QSplitter):
         orientation == self.orientation():
             self._tabSecondary.hide()
             self.splitted = False
-            for i in xrange(self._tabSecondary.count()):
+            for i in range(self._tabSecondary.count()):
                 widget = self._tabSecondary.widget(0)
-                name = unicode(self._tabSecondary.tabText(0))
+                name = self._tabSecondary.tabText(0)
                 self._tabMain.add_tab(widget, name)
                 if name in self._tabSecondary.titles:
                     self._tabSecondary.titles.remove(name)
@@ -198,7 +228,7 @@ class __MainContainer(QSplitter):
             self.actualTab = self._tabMain
         elif not self._tabSecondary.isVisible() and not closingFollowMode:
             widget = self.get_actual_widget()
-            name = unicode(self._tabMain.tabText(self._tabMain.currentIndex()))
+            name = self._tabMain.tabText(self._tabMain.currentIndex())
             self._tabSecondary.add_tab(widget, name)
             if name in self._tabMain.titles:
                 self._tabMain.titles.remove(name)
@@ -229,8 +259,12 @@ class __MainContainer(QSplitter):
 
     def add_editor(self, fileName="", project=None, tabIndex=None,
         syntax=None, use_open_highlight=False):
+
+        project_obj = self._parent.explorer.get_project_given_filename(
+            fileName)
         editorWidget = editor.create_editor(fileName=fileName, project=project,
-            syntax=syntax, use_open_highlight=use_open_highlight)
+            syntax=syntax, use_open_highlight=use_open_highlight,
+            project_obj=project_obj)
 
         if not fileName:
             tabName = "New Document"
@@ -272,6 +306,42 @@ class __MainContainer(QSplitter):
         self.emit(SIGNAL("fileOpened(QString)"), fileName)
 
         return editorWidget
+
+    def reset_pep8_warnings(self, value):
+        for i in range(self._tabMain.count()):
+            widget = self._tabMain.widget(i)
+            if type(widget) is editor.Editor:
+                if value:
+                    widget.syncDocErrorsSignal = True
+                    widget.pep8.check_style()
+                else:
+                    widget.hide_pep8_errors()
+        for i in range(self._tabSecondary.count()):
+            widget = self._tabSecondary.widget(i)
+            if type(widget) is editor.Editor:
+                if value:
+                    widget.syncDocErrorsSignal = True
+                    widget.pep8.check_style()
+                else:
+                    widget.hide_pep8_errors()
+
+    def reset_lint_warnings(self, value):
+        for i in range(self._tabMain.count()):
+            widget = self._tabMain.widget(i)
+            if type(widget) is editor.Editor:
+                if value:
+                    widget.syncDocErrorsSignal = True
+                    widget.errors.check_errors()
+                else:
+                    widget.hide_lint_errors()
+        for i in range(self._tabSecondary.count()):
+            widget = self._tabSecondary.widget(i)
+            if type(widget) is editor.Editor:
+                if value:
+                    widget.syncDocErrorsSignal = True
+                    widget.errors.check_errors()
+                else:
+                    widget.hide_lint_errors()
 
     def _cursor_position_changed(self, row, col):
         self.emit(SIGNAL("cursorPositionChange(int, int)"), row, col)
@@ -334,6 +404,7 @@ class __MainContainer(QSplitter):
             editorWidget = self.get_actual_editor()
         if editorWidget is not None and editorWidget.ID:
             fileName = editorWidget.ID
+            self._file_watcher.allow_kill = False
             old_cursor_position = editorWidget.textCursor().position()
             old_widget_index = self.actualTab.indexOf(editorWidget)
             self.actualTab.removeTab(old_widget_index)
@@ -344,6 +415,7 @@ class __MainContainer(QSplitter):
             cursor = editorWidget.textCursor()
             cursor.setPosition(old_cursor_position)
             editorWidget.setTextCursor(cursor)
+            self._file_watcher.allow_kill = True
 
     def open_image(self, fileName):
         try:
@@ -353,14 +425,13 @@ class __MainContainer(QSplitter):
                 viewer.id = fileName
             else:
                 self.move_to_open(fileName)
-        except Exception, reason:
+        except Exception as reason:
             logger.error('open_image: %s', reason)
             QMessageBox.information(self, self.tr("Incorrect File"),
                 self.tr("The image couldn\'t be open"))
 
-    def open_file(self, filename='', cursorPosition=0, \
+    def open_file(self, filename='', cursorPosition=-1,
                     tabIndex=None, positionIsLineNumber=False, notStart=True):
-        filename = unicode(filename)
         if not filename:
             if settings.WORKSPACE:
                 directory = settings.WORKSPACE
@@ -374,7 +445,7 @@ class __MainContainer(QSplitter):
                 elif editorWidget is not None and editorWidget.ID:
                     directory = file_manager.get_folder(editorWidget.ID)
             extensions = ';;'.join(
-                ['(*%s)' % e for e in \
+                ['(*%s)' % e for e in
                     settings.SUPPORTED_EXTENSIONS + ['.*', '']])
             fileNames = list(QFileDialog.getOpenFileNames(self,
                 self.tr("Open File"), directory, extensions))
@@ -384,7 +455,6 @@ class __MainContainer(QSplitter):
             return
 
         for filename in fileNames:
-            filename = unicode(filename)
             if file_manager.get_file_extension(filename) in ('jpg', 'png'):
                 self.open_image(filename)
             elif file_manager.get_file_extension(filename).endswith('ui'):
@@ -394,7 +464,7 @@ class __MainContainer(QSplitter):
                 self.__open_file(filename, cursorPosition,
                     tabIndex, positionIsLineNumber, notStart)
 
-    def __open_file(self, fileName='', cursorPosition=0,\
+    def __open_file(self, fileName='', cursorPosition=-1,
                     tabIndex=None, positionIsLineNumber=False, notStart=True):
         try:
             if not self.is_open(fileName):
@@ -404,38 +474,66 @@ class __MainContainer(QSplitter):
                     use_open_highlight=True)
                 editorWidget.highlighter.set_open_visible_area(
                     positionIsLineNumber, cursorPosition)
+
                 #Add content
+                #we HAVE to add the editor's content before set the ID
+                #because of the minimap logic
                 editorWidget.setPlainText(content)
                 editorWidget.ID = fileName
                 editorWidget.async_highlight()
                 encoding = file_manager.get_file_encoding(content)
                 editorWidget.encoding = encoding
+                if cursorPosition == -1:
+                    cursorPosition = 0
                 if not positionIsLineNumber:
                     editorWidget.set_cursor_position(cursorPosition)
                 else:
                     editorWidget.go_to_line(cursorPosition)
+                self.add_standalone_watcher(editorWidget.ID, notStart)
+
+                #New file then try to add a coding line
+                if not content:
+                    helpers.insert_coding_line(editorWidget)
+                    self.save_file(editorWidget=editorWidget)
 
                 if not editorWidget.has_write_permission():
-                    fileName += unicode(self.tr(" (Read-Only)"))
+                    fileName += self.tr(" (Read-Only)")
                     index = self.actualTab.currentIndex()
                     self.actualTab.setTabText(index, fileName)
+
             else:
                 self.move_to_open(fileName)
                 editorWidget = self.get_actual_editor()
-                if editorWidget and notStart:
+                if editorWidget and notStart and cursorPosition != -1:
                     if positionIsLineNumber:
                         editorWidget.go_to_line(cursorPosition)
                     else:
                         editorWidget.set_cursor_position(cursorPosition)
             self.emit(SIGNAL("currentTabChanged(QString)"), fileName)
-        except file_manager.NinjaIOException, reason:
+        except file_manager.NinjaIOException as reason:
             if not notStart:
                 QMessageBox.information(self,
-                    self.tr("The file couldn't be open"),
-                    unicode(reason))
-        except Exception, reason:
+                    self.tr("The file couldn't be open"), reason)
+        except Exception as reason:
             logger.error('open_file: %s', reason)
         self.actualTab.notOpening = True
+
+    def add_standalone_watcher(self, filename, not_start=True):
+        # Add File Watcher if needed
+        opened_projects = self._parent.explorer.get_opened_projects()
+        opened_projects = [p.path for p in opened_projects]
+        alone = not_start
+        for folder in opened_projects:
+            if file_manager.belongs_to_folder(folder, filename):
+                alone = False
+        if alone or sys.platform == 'darwin':
+            self._file_watcher.add_file_watch(filename)
+            self._watched_simple_files.append(filename)
+
+    def remove_standalone_watcher(self, filename):
+        if filename in self._watched_simple_files:
+            self._file_watcher.remove_file_watch(filename)
+            self._watched_simple_files.remove(filename)
 
     def is_open(self, filename):
         return self._tabMain.is_open(filename) != -1 or \
@@ -504,14 +602,21 @@ class __MainContainer(QSplitter):
             content = editorWidget.get_text()
             file_manager.store_file_content(
                 fileName, content, addExtension=False)
+            self._file_watcher.allow_kill = False
+            if editorWidget.ID != fileName:
+                self.remove_standalone_watcher(editorWidget.ID)
+            self.add_standalone_watcher(fileName)
+            self._file_watcher.allow_kill = True
             editorWidget.ID = fileName
             encoding = file_manager.get_file_encoding(content)
             editorWidget.encoding = encoding
             self.emit(SIGNAL("fileSaved(QString)"),
-                self.tr("File Saved: %1").arg(fileName))
+                self.tr("File Saved: %s" % fileName))
             editorWidget._file_saved()
             return True
-        except Exception, reason:
+        except Exception as reason:
+            print(reason)
+            raise
             editorWidget.just_saved = False
             logger.error('save_file: %s', reason)
             QMessageBox.information(self, self.tr("Save Error"),
@@ -530,8 +635,8 @@ class __MainContainer(QSplitter):
                 if ext != 'py':
                     filters = '(*.%s);;(*.py);;(*.*)' % ext
             save_folder = self._get_save_folder(editorWidget.ID)
-            fileName = unicode(QFileDialog.getSaveFileName(
-                self._parent, self.tr("Save File"), save_folder, filters))
+            fileName = QFileDialog.getSaveFileName(
+                self._parent, self.tr("Save File"), save_folder, filters)
             if not fileName:
                 return False
 
@@ -545,17 +650,22 @@ class __MainContainer(QSplitter):
                 file_manager.get_basename(fileName))
             editorWidget.register_syntax(
                 file_manager.get_file_extension(fileName))
+            self._file_watcher.allow_kill = False
+            if editorWidget.ID != fileName:
+                self.remove_standalone_watcher(editorWidget.ID)
             editorWidget.ID = fileName
             self.emit(SIGNAL("fileSaved(QString)"),
-                self.tr("File Saved: %1").arg(fileName))
+                self.tr("File Saved: %s" % fileName))
             editorWidget._file_saved()
+            self.add_standalone_watcher(fileName)
+            self._file_watcher.allow_kill = True
             return True
-        except file_manager.NinjaFileExistsException, ex:
+        except file_manager.NinjaFileExistsException as ex:
             editorWidget.just_saved = False
             QMessageBox.information(self, self.tr("File Already Exists"),
-                self.tr("Invalid Path: the file '%s' already exists." % \
+                self.tr("Invalid Path: the file '%s' already exists." %
                     ex.filename))
-        except Exception, reason:
+        except Exception as reason:
             editorWidget.just_saved = False
             logger.error('save_file_as: %s', reason)
             QMessageBox.information(self, self.tr("Save Error"),
@@ -574,7 +684,7 @@ class __MainContainer(QSplitter):
         return os.path.expanduser("~")
 
     def save_project(self, projectFolder):
-        for i in xrange(self._tabMain.count()):
+        for i in range(self._tabMain.count()):
             editorWidget = self._tabMain.widget(i)
             if type(editorWidget) is editor.Editor and \
             file_manager.belongs_to_folder(projectFolder, editorWidget.ID):
@@ -582,7 +692,7 @@ class __MainContainer(QSplitter):
                     editorWidget)
                 if not reloaded:
                     self.save_file(editorWidget)
-        for i in xrange(self._tabSecondary.count()):
+        for i in range(self._tabSecondary.count()):
             editorWidget = self._tabSecondary.widget(i)
             if type(editorWidget) is editor.Editor and \
             file_manager.belongs_to_folder(projectFolder, editorWidget.ID):
@@ -592,14 +702,14 @@ class __MainContainer(QSplitter):
                     self.save_file(editorWidget)
 
     def save_all(self):
-        for i in xrange(self._tabMain.count()):
+        for i in range(self._tabMain.count()):
             editorWidget = self._tabMain.widget(i)
             if type(editorWidget) is editor.Editor:
                 reloaded = self._tabMain.check_for_external_modifications(
                     editorWidget)
                 if not reloaded:
                     self.save_file(editorWidget)
-        for i in xrange(self._tabSecondary.count()):
+        for i in range(self._tabSecondary.count()):
             editorWidget = self._tabSecondary.widget(i)
             self._tabSecondary.check_for_external_modifications(editorWidget)
             if type(editorWidget) is editor.Editor:
@@ -611,12 +721,12 @@ class __MainContainer(QSplitter):
     def call_editors_function(self, call_function, *arguments):
         args = arguments[0]
         kwargs = arguments[1]
-        for i in xrange(self._tabMain.count()):
+        for i in range(self._tabMain.count()):
             editorWidget = self._tabMain.widget(i)
             if type(editorWidget) is editor.Editor:
                 function = getattr(editorWidget, call_function)
                 function(*args, **kwargs)
-        for i in xrange(self._tabSecondary.count()):
+        for i in range(self._tabSecondary.count()):
             editorWidget = self._tabSecondary.widget(i)
             self._tabSecondary.check_for_external_modifications(editorWidget)
             if type(editorWidget) is editor.Editor:
@@ -671,7 +781,7 @@ class __MainContainer(QSplitter):
         else:
             self._followMode = True
             self.setOrientation(Qt.Horizontal)
-            name = unicode(self._tabMain.tabText(self._tabMain.currentIndex()))
+            name = self._tabMain.tabText(self._tabMain.currentIndex())
             editor2 = editor.create_editor()
             editor2.setDocument(editorWidget.document())
             self._tabSecondary.add_tab(editor2, name)
@@ -708,11 +818,11 @@ class __MainContainer(QSplitter):
             self.actualTab = self._tabSecondary
             if files:
                 self._tabSecondary.show()
+                self.splitted = True
 
         for fileData in files:
-            if file_manager.file_exists(unicode(fileData[0])):
-                self.open_file(unicode(fileData[0]),
-                    fileData[1], notStart=notIDEStart)
+            if file_manager.file_exists(fileData[0]):
+                self.open_file(fileData[0], fileData[1], notStart=notIDEStart)
         self.actualTab = self._tabMain
 
     def check_for_unsaved_tabs(self):
@@ -738,12 +848,12 @@ class __MainContainer(QSplitter):
             widget.restyle(syntaxLang)
 
     def apply_editor_theme(self, family, size):
-        for i in xrange(self._tabMain.count()):
+        for i in range(self._tabMain.count()):
             widget = self._tabMain.widget(i)
             if type(widget) is editor.Editor:
                 widget.restyle()
                 widget.set_font(family, size)
-        for i in xrange(self._tabSecondary.count()):
+        for i in range(self._tabSecondary.count()):
             widget = self._tabSecondary.widget(i)
             if type(widget) is editor.Editor:
                 widget.restyle()
@@ -772,14 +882,8 @@ class __MainContainer(QSplitter):
         """Change the tab in the current TabWidget backwards."""
         self.actualTab.change_tab_reverse()
 
-    def show_code_navigation_buttons(self):
-        self.actualTab.navigator._show_code_nav()
-
-    def show_breakpoints_buttons(self):
-        self.actualTab.navigator._show_breakpoints()
-
-    def show_bookmarks_buttons(self):
-        self.actualTab.navigator._show_bookmarks()
+    def show_navigation_buttons(self):
+        self.actualTab.navigator.show_menu_navigation()
 
     def change_split_focus(self):
         if self.actualTab == self._tabMain and self._tabSecondary.isVisible():

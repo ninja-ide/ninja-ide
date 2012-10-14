@@ -22,12 +22,12 @@
 import re
 import ast
 import _ast
-import logging
 
+from ninja_ide.tools.logger import NinjaLogger
 from ninja_ide.tools.completion import model
 
 
-logger = logging.getLogger('ninja_ide.tools.completion.analyzer')
+logger = NinjaLogger('ninja_ide.tools.completion.analyzer')
 
 MAX_THRESHOLD = 3
 
@@ -57,6 +57,7 @@ class Analyzer(object):
     __mapping = {
         _ast.Tuple: '__builtin__.tuple',
         _ast.List: '__builtin__.list',
+        _ast.ListComp: '__builtin__.list',
         _ast.Str: '__builtin__.str',
         _ast.Dict: '__builtin__.dict',
         _ast.Num: '__builtin__.int',
@@ -70,20 +71,21 @@ class Analyzer(object):
     def __init__(self):
         self._fixed_line = -1
         self.content = None
+#        self._functions = {}
 
     def _get_valid_module(self, source, retry=0):
         """Try to parse the module and fix some errors if it has some."""
         astModule = None
         try:
             astModule = ast.parse(source)
-        except SyntaxError, reason:
+        except SyntaxError as reason:
             line = reason.lineno - 1
-            if line != self._fixed_line:
+            if line != self._fixed_line and reason.text is not None:
                 self._fixed_line = line
                 new_line = ''
                 #This is failing sometimes, it should remaing commented
                 #until we find the proper fix.
-                indent = re.match('^\s+', unicode(reason.text))
+                indent = re.match('^\s+', str(reason.text))
                 if indent is not None:
                     new_line = indent.group() + 'pass'
                 split_source = source.splitlines()
@@ -111,27 +113,63 @@ class Analyzer(object):
                 module.add_class(self._process_class(symbol))
             elif symbol.__class__ is ast.FunctionDef:
                 module.add_function(self._process_function(symbol))
+#            elif symbol.__class__ is ast.Expr:
+#                self._process_expression(symbol.value)
         if old_module is not None:
             self._resolve_module(module, old_module)
 
         self.content = None
+#        self._functions = {}
         return module
 
     def _resolve_module(self, module, old_module):
-        module.update_attributes(old_module.attributes)
-        module.update_functions(old_module.functions)
         module.update_classes(old_module.classes)
+        module.update_functions(old_module.functions)
+        module.update_attributes(old_module.attributes)
 
     def _assign_disambiguation(self, type_name, line_content):
         """Provide a specific builtin for the cases were ast doesn't work."""
         line = line_content.split('=')
+        if len(line) < 2:
+            logger.error('_assign_disambiguation, line not valid: %r' %
+                line_content)
+            return type_name
         value = line[1].strip()
         # TODO: We have to analyze when the assign is: x,y = 1, 2
         if type_name is _ast.Num and '.' in value:
             type_name = '_ast.Float'
         elif value in ('True', 'False'):
             type_name = '_ast.Bool'
+        elif value == 'None':
+            type_name = None
         return type_name
+
+#    def _process_expression(self, expr):
+#        """Process expression, not assignment."""
+#        if expr.__class__ is not ast.Call:
+#            return
+#        args = expr.args
+#        keywords = expr.keywords
+#        ar = []
+#        kw = {}
+#        for arg in args:
+#            type_value = arg.__class__
+#            arg_name = ''
+#            if type_value is ast.Call:
+#                arg_name = expand_attribute(arg.func)
+#            elif type_value is ast.Attribute:
+#                arg_name = expand_attribute(arg.attr)
+#            data_type = self.__mapping.get(type_value, model.late_resolution)
+#            ar.append((arg_name, data_type))
+#        for key in keywords:
+#            type_value = key.value.__class__
+#            data_type = self.__mapping.get(type_value, model.late_resolution)
+#            kw[key.arg] = data_type
+#        if expr.func.__class__ is ast.Attribute:
+#            name = expand_attribute(expr.func)
+#        else:
+#            name = expr.func.id
+#        self._functions[name] = (ar, kw)
 
     def _process_assign(self, symbol):
         """Process an ast.Assign object to extract the proper info."""
@@ -143,7 +181,9 @@ class Analyzer(object):
             if type_value in (_ast.Num, _ast.Name):
                 type_value = self._assign_disambiguation(
                     type_value, line_content)
-            data_type = self.__mapping.get(type_value, None)
+                if type_value is None:
+                    continue
+            data_type = self.__mapping.get(type_value, model.late_resolution)
             if var.__class__ == ast.Attribute:
                 data = (var.attr, symbol.lineno, data_type, line_content,
                     type_value)
@@ -152,6 +192,8 @@ class Analyzer(object):
                 data = (var.id, symbol.lineno, data_type, line_content,
                     type_value)
                 assigns.append(data)
+#            if type_value is ast.Call:
+#                self._process_expression(symbol.value)
         return (assigns, attributes)
 
     def _process_import(self, symbol):
@@ -172,8 +214,10 @@ class Analyzer(object):
         """Process an ast.ClassDef object to extract data."""
         clazz = model.Clazz(symbol.name)
         for base in symbol.bases:
+            if base == 'object':
+                continue
             name = expand_attribute(base)
-            clazz.bases.append(name)
+            clazz.add_parent(name)
         #TODO: Decotator
 #        for decorator in symbol.decorator_list:
 #            clazz.decorators.append(decorator.id)
@@ -184,6 +228,8 @@ class Analyzer(object):
                 clazz.add_attributes(assigns)
             elif sym.__class__ is ast.FunctionDef:
                 clazz.add_function(self._process_function(sym, clazz))
+        clazz.update_bases()
+        clazz.update_with_parent_data()
         return clazz
 
     def _process_function(self, symbol, parent=None):
@@ -213,11 +259,10 @@ class Analyzer(object):
             try:
                 if arg.id == 'self':
                     continue
-            except Exception, reason:
+            except Exception as reason:
                 logger.error('_process_function, error: %r' % reason)
                 logger.error('line number: %d' % symbol.lineno)
                 logger.error('line: %s' % self.content[symbol.lineno])
-                logger.error('source: \n%s' % ''.join(self.content))
                 raise
             assign = model.Assign(arg.id)
             data_type = (model.late_resolution, None)
@@ -264,3 +309,5 @@ class Analyzer(object):
                 self._search_recursive_for_types(function, sym, parent)
             for else_item in symbol.finalbody:
                 self._search_recursive_for_types(function, else_item, parent)
+#        elif symbol.__class__ is ast.Expr:
+#            self._process_expression(symbol.value)

@@ -15,9 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
 import re
-import logging
 
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QPlainTextEdit
@@ -37,8 +37,9 @@ from ninja_ide.gui.editor import highlighter
 from ninja_ide.tools.completion import completer
 from ninja_ide.tools.completion import completer_widget
 
+from ninja_ide.tools.logger import NinjaLogger
 
-logger = logging.getLogger('ninja_ide.gui.misc.console_widget')
+logger = NinjaLogger('ninja_ide.gui.misc.console_widget')
 
 BRACES = {"'": "'",
     '"': '"',
@@ -50,14 +51,14 @@ BRACES = {"'": "'",
 class ConsoleWidget(QPlainTextEdit):
 
     def __init__(self):
-        QPlainTextEdit.__init__(self, u'>>> ')
+        QPlainTextEdit.__init__(self, '>>> ')
         self.setUndoRedoEnabled(False)
         self.apply_editor_style()
         self.setToolTip(self.tr("Show/Hide (F4)"))
         self.moveCursor(QTextCursor.EndOfLine)
 
         self._patIsWord = re.compile('\w+')
-        self.prompt = u'>>> '
+        self.prompt = '>>> '
         self._console = console.Console()
         self._history = []
         self._braces = None
@@ -88,7 +89,7 @@ class ConsoleWidget(QPlainTextEdit):
     def _add_system_path_for_frozen(self):
         try:
             self._proc.start(settings.PYTHON_PATH, [resources.GET_SYSTEM_PATH])
-        except Exception, reason:
+        except Exception as reason:
             logger.warning('Could not get system path, error: %r' % reason)
 
     def _python_path_detected(self):
@@ -151,7 +152,7 @@ class ConsoleWidget(QPlainTextEdit):
 
     def setCursorPosition(self, position, mode=QTextCursor.MoveAnchor):
         self.moveCursor(QTextCursor.StartOfLine, mode)
-        for i in xrange(len(self.prompt) + position):
+        for i in range(len(self.prompt) + position):
             self.moveCursor(QTextCursor.Right, mode)
 
     def keyPressEvent(self, event):
@@ -203,7 +204,7 @@ class ConsoleWidget(QPlainTextEdit):
             cursor = self.textCursor()
             cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor,
                 settings.INDENT)
-            text = unicode(cursor.selection().toPlainText())
+            text = cursor.selection().toPlainText()
             if text == ' ' * settings.INDENT:
                 cursor.removeSelectedText()
                 return True
@@ -218,34 +219,32 @@ class ConsoleWidget(QPlainTextEdit):
         elif event.key() in (Qt.Key_Enter, Qt.Key_Return) and \
           event.modifiers() == Qt.ShiftModifier:
             return
-        elif unicode(event.text()) in \
+        elif event.text() in \
         (set(BRACES.values()) - set(["'", '"'])):
             cursor = self.textCursor()
             cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
-            brace = unicode(cursor.selection().toPlainText())
+            brace = cursor.selection().toPlainText()
             cursor = self.textCursor()
             cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
-            braceClose = unicode(cursor.selection().toPlainText())
-            if BRACES.get(brace, False) == unicode(event.text()) and \
-              braceClose == unicode(event.text()):
+            braceClose = cursor.selection().toPlainText()
+            if BRACES.get(brace, False) == event.text() and \
+              braceClose == event.text():
                 self.moveCursor(QTextCursor.Right)
                 return
         selection = self.textCursor().selectedText()
 
         QPlainTextEdit.keyPressEvent(self, event)
 
-        if unicode(event.text()) in BRACES:
+        if event.text() in BRACES:
             cursor = self.textCursor()
             cursor.movePosition(QTextCursor.StartOfLine,
                 QTextCursor.KeepAnchor)
             self.textCursor().insertText(
-                BRACES[unicode(event.text())])
+                BRACES[event.text()])
             self.moveCursor(QTextCursor.Left)
             self.textCursor().insertText(selection)
         completionPrefix = self._text_under_cursor()
-        if completionPrefix.contains(self.okPrefix):
-            completionPrefix = completionPrefix.remove(self.okPrefix)
-        if event.key() == Qt.Key_Period or (event.key() == Qt.Key_Space and \
+        if event.key() == Qt.Key_Period or (event.key() == Qt.Key_Space and
         event.modifiers() == Qt.ControlModifier):
             self.completer.setCompletionPrefix(completionPrefix)
             self._resolve_completion_argument()
@@ -265,7 +264,7 @@ class ConsoleWidget(QPlainTextEdit):
             cursor = self.textCursor()
             cursor.movePosition(QTextCursor.StartOfLine,
                 QTextCursor.KeepAnchor)
-            var = unicode(cursor.selectedText())
+            var = cursor.selectedText()
             chars = self.patObject.findall(var)
             var = var[var.rfind(chars[-1]) + 1:]
             cr = self.cursorRect()
@@ -311,7 +310,7 @@ class ConsoleWidget(QPlainTextEdit):
             return
         cursor.movePosition(QTextCursor.PreviousCharacter,
                              QTextCursor.KeepAnchor)
-        text = unicode(cursor.selectedText())
+        text = cursor.selectedText()
         pos1 = cursor.position()
         if text in (')', ']', '}'):
             pos2 = self._match_braces(pos1, text, forward=False)
@@ -370,8 +369,7 @@ class ConsoleWidget(QPlainTextEdit):
             cursor.setPosition(cursor2.position(), QTextCursor.KeepAnchor)
         else:
             cursor.setPosition(posEnd, QTextCursor.KeepAnchor)
-        text = cursor.selectedText()
-        return unicode(text)
+        return cursor.selectedText()
 
     def _match_braces(self, position, brace, forward):
         """based on: http://gitorious.org/khteditor"""
@@ -423,13 +421,12 @@ class ConsoleWidget(QPlainTextEdit):
         command = self.document().findBlockByLineNumber(
                     self.document().lineCount() - 1).text()
         #remove the prompt from the QString
-        command = command.remove(0, len(self.prompt)).toUtf8().data()
-        command_execute = command.decode('utf8')
-        self._add_history(command_execute)
-        incomplete = self._write(command_execute)
-        if self.patFrom.match(command_execute) or \
-        self.patImport.match(command_execute):
-            self.imports += [command_execute]
+        command = command[len(self.prompt):]
+        self._add_history(command)
+        incomplete = self._write(command)
+        if self.patFrom.match(command) or \
+        self.patImport.match(command):
+            self.imports += [command]
         if not incomplete:
             output = self._read()
             if output is not None:
@@ -441,7 +438,7 @@ class ConsoleWidget(QPlainTextEdit):
     def _set_command(self, command):
         self.moveCursor(QTextCursor.End)
         self.moveCursor(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
-        for i in xrange(len(self.prompt)):
+        for i in range(len(self.prompt)):
             self.moveCursor(QTextCursor.Right, QTextCursor.KeepAnchor)
         self.textCursor().removeSelectedText()
         self.textCursor().insertText(command)

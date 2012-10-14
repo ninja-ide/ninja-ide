@@ -14,6 +14,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+from __future__ import unicode_literals
 
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QTextCursor
@@ -37,6 +38,8 @@ class CodeCompletionWidget(QFrame):
         super(CodeCompletionWidget, self).__init__(
             None, Qt.FramelessWindowHint | Qt.ToolTip)
         self._editor = editor
+        self._revision = 0
+        self._block = 0
         self.stack_layout = QStackedLayout(self)
         self.stack_layout.setContentsMargins(0, 0, 0, 0)
         self.stack_layout.setSpacing(0)
@@ -52,7 +55,7 @@ class CodeCompletionWidget(QFrame):
 
         self.cc = code_completion.CodeCompletion()
         self._completion_results = {}
-        self._prefix = u''
+        self._prefix = ''
         self.setVisible(False)
         self.source = ''
         self._key_operations = {
@@ -72,15 +75,14 @@ class CodeCompletionWidget(QFrame):
             Qt.ShiftModifier: self.hide_completer,
         }
 
-        desktop = QApplication.instance().desktop()
-        self._desktop_geometry = desktop.availableGeometry()
+        self.desktop = QApplication.instance().desktop()
 
         self.connect(self.completion_list,
             SIGNAL("itemClicked(QListWidgetItem*)"),
             self.pre_key_insert_completion)
-        self.connect(self._editor.document(), SIGNAL("blockCountChanged(int)"),
+        self.connect(self._editor.document(),
+            SIGNAL("cursorPositionChanged(QTextCursor)"),
             self.update_metadata)
-        self.update_metadata()
 
     def _select_next_row(self, move=1):
         new_row = self.completion_list.currentRow() + move
@@ -99,10 +101,15 @@ class CodeCompletionWidget(QFrame):
                 self.completion_list.count() - move)
         return True
 
-    def update_metadata(self):
-        source = self._editor.get_text()
-        source = source.encode(self._editor.encoding)
-        self.cc.analyze_file(self._editor.ID, source)
+    def update_metadata(self, cursor):
+        if settings.CODE_COMPLETION:
+            if self._editor.document().revision() != self._revision and \
+               cursor.block().blockNumber() != self._block:
+                source = self._editor.get_text()
+                source = source.encode(self._editor.encoding)
+                self.cc.analyze_file(self._editor.ID, source, self._editor.indent, self._editor.useTabs)
+                self._revision = self._editor.document().revision()
+                self._block = cursor.block().blockNumber()
 
     def insert_completion(self, insert, type_=ord('a')):
         if insert != self._prefix:
@@ -116,20 +123,21 @@ class CodeCompletionWidget(QFrame):
 
     def _get_geometry(self):
         cr = self._editor.cursorRect()
+        desktop_geometry = self.desktop.availableGeometry(self._editor)
         point = self._editor.mapToGlobal(cr.topLeft())
         cr.moveTopLeft(point)
         #Check new position according desktop geometry
-        width = (self.completion_list.sizeHintForColumn(0) + \
+        width = (self.completion_list.sizeHintForColumn(0) +
             self.completion_list.verticalScrollBar().sizeHint().width() + 10)
         height = 200
-        orientation = (point.y() + height) < self._desktop_geometry.height()
+        orientation = (point.y() + height) < desktop_geometry.height()
         if orientation:
             cr.moveTop(cr.bottom())
         cr.setWidth(width)
         cr.setHeight(height)
         if not orientation:
             cr.moveBottom(cr.top())
-        xpos = self._desktop_geometry.width() - (point.x() + width)
+        xpos = desktop_geometry.width() - (point.x() + width)
         if xpos < 0:
             cr.moveLeft(cr.left() + xpos)
         return cr
@@ -153,17 +161,17 @@ class CodeCompletionWidget(QFrame):
     def set_completion_prefix(self, prefix, valid=True):
         self._prefix = prefix
         proposals = []
-        proposals += [('m', item) \
-            for item in self._completion_results.get('modules', []) \
+        proposals += [('m', item)
+            for item in self._completion_results.get('modules', [])
             if item.startswith(prefix)]
-        proposals += [('c', item) \
-            for item in self._completion_results.get('classes', []) \
+        proposals += [('c', item)
+            for item in self._completion_results.get('classes', [])
             if item.startswith(prefix)]
-        proposals += [('a', item) \
-            for item in self._completion_results.get('attributes', []) \
+        proposals += [('a', item)
+            for item in self._completion_results.get('attributes', [])
             if item.startswith(prefix)]
-        proposals += [('f', item) \
-            for item in self._completion_results.get('functions', []) \
+        proposals += [('f', item)
+            for item in self._completion_results.get('functions', [])
             if item.startswith(prefix)]
         if proposals and valid:
             self.complete(proposals)
@@ -175,23 +183,29 @@ class CodeCompletionWidget(QFrame):
         cursor = self._editor.textCursor()
         cursor.movePosition(QTextCursor.StartOfLine,
             QTextCursor.KeepAnchor)
-        selection = unicode(cursor.selectedText())[:-1].split(' ')
+        selection = cursor.selectedText()[:-1].split(' ')
         if len(selection) == 0 or selection[-1] == '' or \
            selection[-1].isdigit():
             result = True
         return result
 
-    def fill_completer(self):
-        if self._editor.cursor_inside_string() or \
-           self._editor.cursor_inside_comment() or \
-           self._invalid_completion_position():
+    def fill_completer(self, force_completion=False):
+        if not force_completion and (self._editor.cursor_inside_string() or
+           self._editor.cursor_inside_comment() or
+           self._invalid_completion_position()):
             return
         source = self._editor.get_text()
         source = source.encode(self._editor.encoding)
         offset = self._editor.textCursor().position()
         results = self.cc.get_completion(source, offset)
         self._completion_results = results
-        prefix = self._editor._text_under_cursor()
+        if force_completion:
+            cursor = self._editor.textCursor()
+            cursor.movePosition(QTextCursor.StartOfWord,
+                QTextCursor.KeepAnchor)
+            prefix = cursor.selectedText()
+        else:
+            prefix = self._editor._text_under_cursor()
         self.set_completion_prefix(prefix)
 
     def hide_completer(self):
@@ -201,7 +215,7 @@ class CodeCompletionWidget(QFrame):
     def pre_key_insert_completion(self):
         type_ = ord('a')
         current = self.completion_list.currentItem()
-        insert = unicode(current.text())
+        insert = current.text()
         if not insert.endswith(')'):
             type_ = current.type()
         self.insert_completion(insert, type_)
@@ -227,9 +241,10 @@ class CodeCompletionWidget(QFrame):
             prefix, valid = self.cc.get_prefix(source, offset)
             self.set_completion_prefix(prefix, valid)
             self.completion_list.setCurrentRow(0)
-        if event.key() == Qt.Key_Period  or (event.key() == Qt.Key_Space and \
-           event.modifiers() == Qt.ControlModifier):
-            self.fill_completer()
+        force_completion = (event.key() == Qt.Key_Space and
+                            event.modifiers() == Qt.ControlModifier)
+        if event.key() == Qt.Key_Period or force_completion:
+            self.fill_completer(force_completion)
 
 
 class CompleterWidget(QCompleter):
@@ -249,8 +264,8 @@ class CompleterWidget(QCompleter):
             self.insert_completion)
 
     def insert_completion(self, insert):
-        extra = insert.length() - self.completionPrefix().length()
-        self.widget().textCursor().insertText(insert.right(extra))
+        self.widget().textCursor().insertText(
+            insert[len(self.completionPrefix()):])
         self.popup().hide()
 
     def complete(self, cr, results):
@@ -261,7 +276,7 @@ class CompleterWidget(QCompleter):
         proposals += results.get('functions', [])
         self.model().setStringList(proposals)
         self.popup().setCurrentIndex(self.model().index(0, 0))
-        cr.setWidth(self.popup().sizeHintForColumn(0) \
+        cr.setWidth(self.popup().sizeHintForColumn(0)
             + self.popup().verticalScrollBar().sizeHint().width() + 10)
         QCompleter.complete(self, cr)
 
@@ -285,7 +300,7 @@ class CompleterWidget(QCompleter):
             self.popup().setCurrentIndex(
                 self.completionModel().index(0, 0))
             self.setCurrentRow(0)
-        if event.key() == Qt.Key_Period  or (event.key() == Qt.Key_Space and \
+        if event.key() == Qt.Key_Period or (event.key() == Qt.Key_Space and
         event.modifiers() == Qt.ControlModifier):
             self.fill_completer()
 

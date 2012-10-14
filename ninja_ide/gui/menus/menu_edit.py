@@ -36,53 +36,47 @@ class MenuEdit(QObject):
         QObject.__init__(self)
 
         undoAction = menuEdit.addAction(QIcon(resources.IMAGES['undo']),
-            self.tr("Undo (%1+Z)").arg(settings.OS_KEY))
+            self.trUtf8("Undo (%s+Z)" % settings.OS_KEY))
         redoAction = menuEdit.addAction(QIcon(resources.IMAGES['redo']),
-            self.tr("Redo (%1)").arg(
-                resources.get_shortcut("Redo").toString(
+            self.trUtf8("Redo (%s)" % resources.get_shortcut("Redo").toString(
                     QKeySequence.NativeText)))
         cutAction = menuEdit.addAction(QIcon(resources.IMAGES['cut']),
-            self.tr("&Cut (%1+X)").arg(settings.OS_KEY))
+            self.trUtf8("&Cut (%s+X)" % settings.OS_KEY))
         copyAction = menuEdit.addAction(QIcon(resources.IMAGES['copy']),
-            self.tr("&Copy (%1+C)").arg(settings.OS_KEY))
+            self.trUtf8("&Copy (%s+C)" % settings.OS_KEY))
         pasteAction = menuEdit.addAction(QIcon(resources.IMAGES['paste']),
-            self.tr("&Paste (%1+V)").arg(settings.OS_KEY))
+            self.trUtf8("&Paste (%s+V)" % settings.OS_KEY))
         menuEdit.addSeparator()
         findAction = menuEdit.addAction(QIcon(resources.IMAGES['find']),
-            self.tr("Find (%1)").arg(
-                resources.get_shortcut("Find").toString(
+            self.trUtf8("Find (%s)" % resources.get_shortcut("Find").toString(
                     QKeySequence.NativeText)))
         findReplaceAction = menuEdit.addAction(
             QIcon(resources.IMAGES['findReplace']),
-            self.tr("Find/Replace (%1)").arg(
+            self.trUtf8("Find/Replace (%s)" %
                 resources.get_shortcut("Find-replace").toString(
                     QKeySequence.NativeText)))
         findWithWordAction = menuEdit.addAction(
-            self.tr("Find using word under cursor (%1)").arg(
+            self.trUtf8("Find using word under cursor (%s)" %
                 resources.get_shortcut("Find-with-word").toString(
                     QKeySequence.NativeText)))
         findInFilesAction = menuEdit.addAction(QIcon(resources.IMAGES['find']),
-            self.tr("Find in Files (%1)").arg(
+            self.trUtf8("Find in Files (%s)" %
                 resources.get_shortcut("Find-in-files").toString(
                     QKeySequence.NativeText)))
-        jumpAction = menuEdit.addAction(
-            self.tr("Jump to Line (%1)").arg(
-                resources.get_shortcut("Jump").toString(
-                    QKeySequence.NativeText)))
         locatorAction = menuEdit.addAction(QIcon(resources.IMAGES['locator']),
-            self.tr("Code Locator (%1)").arg(
+            self.trUtf8("Code Locator (%s)" %
                 resources.get_shortcut("Code-locator").toString(
                     QKeySequence.NativeText)))
         menuEdit.addSeparator()
         upperAction = menuEdit.addAction(
-            self.tr("Convert selected Text to: UPPER"))
+            self.trUtf8("Convert selected Text to: UPPER"))
         lowerAction = menuEdit.addAction(
-            self.tr("Convert selected Text to: lower"))
+            self.trUtf8("Convert selected Text to: lower"))
         titleAction = menuEdit.addAction(
-            self.tr("Convert selected Text to: Title Word"))
+            self.trUtf8("Convert selected Text to: Title Word"))
         menuEdit.addSeparator()
         prefAction = menuEdit.addAction(QIcon(resources.IMAGES['pref']),
-            self.tr("Preference&s"))
+            self.trUtf8("Preference&s"))
 
         self.toolbar_items = {
             'undo': undoAction,
@@ -107,8 +101,6 @@ class MenuEdit(QObject):
             status_bar.StatusBar().show)
         self.connect(findWithWordAction, SIGNAL("triggered()"),
             status_bar.StatusBar().show_with_word)
-        self.connect(jumpAction, SIGNAL("triggered()"),
-            lambda: self.jump_to_editor_line())
         self.connect(findReplaceAction, SIGNAL("triggered()"),
             status_bar.StatusBar().show_replace)
         self.connect(findInFilesAction, SIGNAL("triggered()"),
@@ -122,10 +114,9 @@ class MenuEdit(QObject):
         if editorWidget:
             editorWidget.textCursor().beginEditBlock()
             if editorWidget.textCursor().hasSelection():
-                text = unicode(
-                    editorWidget.textCursor().selectedText()).upper()
+                text = editorWidget.textCursor().selectedText().upper()
             else:
-                text = unicode(editorWidget._text_under_cursor()).upper()
+                text = editorWidget._text_under_cursor().upper()
                 editorWidget.moveCursor(QTextCursor.StartOfWord)
                 editorWidget.moveCursor(QTextCursor.EndOfWord,
                     QTextCursor.KeepAnchor)
@@ -137,10 +128,9 @@ class MenuEdit(QObject):
         if editorWidget:
             editorWidget.textCursor().beginEditBlock()
             if editorWidget.textCursor().hasSelection():
-                text = unicode(
-                    editorWidget.textCursor().selectedText()).lower()
+                text = editorWidget.textCursor().selectedText().lower()
             else:
-                text = unicode(editorWidget._text_under_cursor()).lower()
+                text = editorWidget._text_under_cursor().lower()
                 editorWidget.moveCursor(QTextCursor.StartOfWord)
                 editorWidget.moveCursor(QTextCursor.EndOfWord,
                     QTextCursor.KeepAnchor)
@@ -152,10 +142,9 @@ class MenuEdit(QObject):
         if editorWidget:
             editorWidget.textCursor().beginEditBlock()
             if editorWidget.textCursor().hasSelection():
-                text = unicode(
-                    editorWidget.textCursor().selectedText()).title()
+                text = editorWidget.textCursor().selectedText().title()
             else:
-                text = unicode(editorWidget._text_under_cursor()).title()
+                text = editorWidget._text_under_cursor().title()
                 editorWidget.moveCursor(QTextCursor.StartOfWord)
                 editorWidget.moveCursor(QTextCursor.EndOfWord,
                     QTextCursor.KeepAnchor)
@@ -186,11 +175,6 @@ class MenuEdit(QObject):
         editorWidget = main_container.MainContainer().get_actual_editor()
         if editorWidget:
             editorWidget.undo()
-
-    def jump_to_editor_line(self):
-        editor = main_container.MainContainer().get_actual_editor()
-        if editor:
-            editor.jump_to_line()
 
     def _show_preferences(self):
         pref = preferences.PreferencesWidget(main_container.MainContainer())

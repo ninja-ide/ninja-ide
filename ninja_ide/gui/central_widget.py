@@ -59,6 +59,7 @@ class __CentralWidget(QWidget):
 
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
+        self.parent = parent
         #This variables are used to save the splitter sizes before hide
         self._splitterMainSizes = None
         self._splitterAreaSizes = None
@@ -105,14 +106,12 @@ class __CentralWidget(QWidget):
         self._splitterArea.insertWidget(0, self._splitterMain)
         qsettings = QSettings()
         #Lists of sizes as list of QVariant- heightList = [QVariant, QVariant]
-        heightList = qsettings.value("window/central/mainSize",
-            [(self.height() / 3) * 2, self.height() / 3]).toList()
-        widthList = qsettings.value("window/central/areaSize",
-            [(self.width() / 6) * 5, self.width() / 6]).toList()
-        self._splitterMainSizes = [
-            heightList[0].toInt()[0], heightList[1].toInt()[0]]
-        self._splitterAreaSizes = [
-            widthList[0].toInt()[0], widthList[1].toInt()[0]]
+        heightList = list(qsettings.value("window/central/mainSize",
+            [(self.height() / 3) * 2, self.height() / 3]))
+        widthList = list(qsettings.value("window/central/areaSize",
+            [(self.width() / 6) * 5, self.width() / 6]))
+        self._splitterMainSizes = [int(heightList[0]), int(heightList[1])]
+        self._splitterAreaSizes = [int(widthList[0]), int(widthList[1])]
         if not event.spontaneous():
             self.change_misc_visibility()
         if bin(settings.UI_LAYOUT)[-1] == '1':
@@ -210,27 +209,26 @@ class LateralPanel(QWidget):
         vbox.addWidget(explorer)
         hbox = QHBoxLayout()
         hbox.setContentsMargins(0, 0, 0, 0)
-        self.labelText = "Ln: %1, Col: %2"
-        self.labelCursorPosition = QLabel(self.tr(self.labelText).arg(
-            0).arg(0))
+        self.labelText = "Ln: %s, Col: %s"
+        self.labelCursorPosition = QLabel(self.trUtf8(self.labelText % (0, 0)))
         hbox.addWidget(self.labelCursorPosition)
         self.combo = QComboBox()
         ui_tools.ComboBoxButton(self.combo, self.combo.clear,
             self.style().standardPixmap(self.style().SP_TrashIcon))
-        self.combo.setToolTip(self.tr("Select the item from the Paste "
+        self.combo.setToolTip(self.trUtf8("Select the item from the Paste "
             "Historial list.\nYou can Copy items into this list with: "
-            "%1\nor Paste them using: %2").arg(
-                resources.get_shortcut("History-Copy").toString(
-                    QKeySequence.NativeText)).arg(
+            "%s\nor Paste them using: %s" %
+                (resources.get_shortcut("History-Copy").toString(
+                    QKeySequence.NativeText),
                 resources.get_shortcut("History-Paste").toString(
-                    QKeySequence.NativeText)))
+                    QKeySequence.NativeText))))
         self.combo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         hbox.addWidget(self.combo)
         vbox.addLayout(hbox)
 
     def update_line_col(self, line, col):
-        self.labelCursorPosition.setText(self.tr(
-            self.labelText).arg(line).arg(col))
+        self.labelCursorPosition.setText(self.trUtf8(
+            self.labelText % (line, col)))
 
     def add_new_copy(self, copy):
         self.combo.insertItem(0, copy)
@@ -239,4 +237,4 @@ class LateralPanel(QWidget):
             self.combo.removeItem(self.combo.count() - 1)
 
     def get_paste(self):
-        return unicode(self.combo.currentText())
+        return self.combo.currentText()

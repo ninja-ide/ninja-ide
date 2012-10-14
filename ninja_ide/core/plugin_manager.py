@@ -16,24 +16,35 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
 import os
 import sys
 import copy
-import urllib2
+import json
 import zipfile
 import traceback
-import logging
+#lint:disable
 try:
-    import json
+    from urllib.request import urlopen
+    from urllib.error import URLError
 except ImportError:
-    import simplejson as json
+    from urllib2 import urlopen
+    from urllib2 import URLError
+#lint:enable
 
 from ninja_ide import resources
+from ninja_ide.tools.logger import NinjaLogger
 
-logger = logging.getLogger('ninja_ide.core.plugin_manager')
+logger = NinjaLogger('ninja_ide.core.plugin_manager')
 REQUIREMENTS = 'requirements.txt'
 COMMAND_FOR_PIP_INSTALL = 'pip install -r %s'
+try:
+    # For Python2
+    str = unicode  # lint:ok
+except NameError:
+    # We are in Python3
+    pass
 
 
 class ServiceLocator(object):
@@ -49,7 +60,7 @@ class ServiceLocator(object):
         return self.__services.get(name)
 
     def get_availables_services(self):
-        return self.__services.keys()
+        return list(self.__services.keys())
 
 
 '''
@@ -133,8 +144,8 @@ class __PluginManager(object):
     def __create_list(self, obj):
         if isinstance(obj, (list, tuple)):
             return obj
-        elif isinstance(obj, basestring):
-            return [obj]
+        #string then returns a list of one item!
+        return [obj]
 
     def add_plugin_dir(self, plugin_dir):
         '''
@@ -152,9 +163,17 @@ class __PluginManager(object):
 
     def get_active_plugins(self):
         '''
-        Return a list the instances
+        Returns a list the instances
         '''
-        return [plugin[0] for plugin in self._active_plugins.values()]
+        return [plugin[0] for plugin in list(self._active_plugins.values())]
+
+    def _get_dir_from_plugin_name(self, plugin_name):
+        '''
+        Returns the dir of the plugin_name
+        '''
+        for dir_, plug_names in self._plugins_by_dir.items():
+            if plugin_name in plug_names:
+                return dir_
 
     def __getitem__(self, plugin_name):
         '''
@@ -178,9 +197,10 @@ class __PluginManager(object):
 
         if plugin_name in self._found_plugins:
             if not plugin_name in self._active_plugins:
-                self.load(plugin_name)
+                dir_ = self._get_dir_from_plugin_name(plugin_name)
+                self.load(plugin_name, dir_)
             return self._active_plugins[plugin_name][0]
-        return KeyError(plugin_name)
+        raise KeyError(plugin_name)
 
     def __contains__(self, plugin_name):
         '''
@@ -211,7 +231,7 @@ class __PluginManager(object):
         '''
         return len(self._found_plugins)
 
-    def __nonzero__(self):
+    def __bool__(self):
         '''
         Magic method to indicate that any
         instance must pass the if conditional
@@ -265,14 +285,14 @@ class __PluginManager(object):
         old_syspath = copy.copy(sys.path)
         try:
             sys.path.insert(1, dir_name)
-            module = __import__(module, globals(), locals(), ['plugin'])
+            module = __import__(module, globals(), locals(), [])
             klass = getattr(module, klassname)
             #Instanciate the plugin
             plugin_instance = klass(self._service_locator, metadata=metadata)
             #return the plugin instance
             return plugin_instance
-        except(ImportError, AttributeError), reason:
-            raise PluginManagerException('Error loading "%s": %s' %\
+        except(ImportError, AttributeError) as reason:
+            raise PluginManagerException('Error loading "%s": %s' %
                  (module, reason))
         finally:
             sys.path = old_syspath
@@ -282,7 +302,7 @@ class __PluginManager(object):
         global PLUGIN_EXTENSION
         if plugin_name in self._active_plugins:
             return
-        for dir_name, plugin_list in self._plugins_by_dir.iteritems():
+        for dir_name, plugin_list in self._plugins_by_dir.items():
             if plugin_name in plugin_list:
                 ext = PLUGIN_EXTENSION
                 plugin_filename = os.path.join(dir_name, plugin_name)
@@ -305,7 +325,7 @@ class __PluginManager(object):
                         #tuple (instance, metadata)
                         plugin_metadata = (plugin_instance, plugin_structure)
                         self._active_plugins[plugin_name] = plugin_metadata
-                    except (PluginManagerException, Exception), reason:
+                    except (PluginManagerException, Exception) as reason:
                         logger.error("Not instanciated (%s): %s", plugin_name,
                             reason)
                         #remove the plugin because has errors
@@ -319,7 +339,7 @@ class __PluginManager(object):
                             plugin_name)
 
     def load_all(self):
-        for dir, pl in self._plugins_by_dir.iteritems():
+        for dir, pl in self._plugins_by_dir.items():
             #Copy the list because may be we REMOVE item while iterate!
             found_plugins_aux = copy.copy(pl)
             for plugin_name in found_plugins_aux:
@@ -337,7 +357,7 @@ class __PluginManager(object):
             #call a special method *finish* in the plugin!
             plugin_object.finish()
             del self._active_plugins[plugin_name]
-        except Exception, reason:
+        except Exception as reason:
             logger.error("Finishing plugin (%s): %s", plugin_name, reason)
         else:
             logger.info("Successfuly finished (%s)", plugin_name)
@@ -373,10 +393,10 @@ def _availables_plugins(url):
     Return the availables plugins from an url in NINJA-IDE web page
     """
     try:
-        descriptor = urllib2.urlopen(url)
+        descriptor = urlopen(url)
         plugins = json.load(descriptor)
         return plugins
-    except urllib2.URLError:
+    except URLError:
         return {}
 
 
@@ -424,7 +444,7 @@ def download_plugin(file_):
     plugins_installed_before = set(__get_all_plugin_descriptors())
     #download the plugin
     fileName = os.path.join(resources.PLUGINS, os.path.basename(file_))
-    content = urllib2.urlopen(file_)
+    content = urlopen(file_)
     f = open(fileName, 'wb')
     f.write(content.read())
     f.close()
@@ -459,7 +479,8 @@ def has_dependencies(plug):
             p_descriptor_file.close()
             module = p_json.get('module')
             #plugin_module/requirements.txt
-            req_file = os.path.join(os.path.join(PLUGINS, module), REQUIREMENTS)
+            req_file = os.path.join(os.path.join(PLUGINS, module),
+                REQUIREMENTS)
             if os.path.isfile(req_file):
                 return (True, COMMAND_FOR_PIP_INSTALL % req_file)
             #the plugin was found but no requirement then break!
@@ -524,7 +545,7 @@ def uninstall_plugin(plug):
         for root, dirs, files in os.walk(pluginDir):
             pluginFiles = [os.path.join(root, f) for f in files]
             #remove all files
-            map(os.remove, pluginFiles)
+            list(map(os.remove, pluginFiles))
             #collect subfolders
             folders += [os.path.join(root, d) for d in dirs]
         folders.reverse()

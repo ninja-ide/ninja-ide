@@ -21,12 +21,12 @@ from __future__ import absolute_import
 # METADATA
 ###############################################################################
 
-__prj__ = "ninja-ide"
+__prj__ = "NINJA-IDE"
 __author__ = "The NINJA-IDE Team"
 __mail__ = "ninja-ide at googlegroups dot com"
 __url__ = "http://www.ninja-ide.org"
 __source__ = "https://github.com/ninja-ide/ninja-ide"
-__version__ = "2.0-RC"
+__version__ = "2.1.1"
 __license__ = "GPL3"
 
 ###############################################################################
@@ -40,6 +40,19 @@ tools and utilities of NINJA-IDE, making the task of writing software easier
 and more enjoyable.
 """
 
+
+###############################################################################
+# SET PYQT API 2
+###############################################################################
+
+import sip
+API_NAMES = ["QDate", "QDateTime", "QString", "QTime", "QUrl", "QTextStream",
+             "QVariant"]
+API_VERSION = 2
+for name in API_NAMES:
+    sip.setapi(name, API_VERSION)
+
+
 ###############################################################################
 # START
 ###############################################################################
@@ -49,6 +62,10 @@ def setup_and_run():
     # import only on run
     # Dont import always this, setup.py will fail
     from ninja_ide import core
+    from multiprocessing import freeze_support
+
+    # Used to support multiprocessing on windows packages
+    freeze_support()
 
     # Run NINJA-IDE
     core.run_ninja()

@@ -14,6 +14,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+from __future__ import unicode_literals
 
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QPushButton
@@ -23,7 +24,6 @@ from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QCursor
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QSettings
-from PyQt4.QtCore import QString
 from PyQt4.QtCore import Qt
 
 from ninja_ide import resources
@@ -43,18 +43,20 @@ class RecentProjectItem(QWidget):
 
     def __init__(self, project, content, itemRelated, parent=None):
         QWidget.__init__(self, parent)
-        self.__content = content.toMap()
+        self.__content = content
         self.__project = project
         self.__favorite = QPushButton(self)
+        self.__favorite.setObjectName('web_list_button')
         self.__delete = QPushButton(self)
+        self.__delete.setObjectName('web_list_button')
         self.__delete.setIcon(QIcon(resources.IMAGES['delProj']))
         self.__name = QLineEdit(self)
         self.__itemRelated = itemRelated
         self.setMouseTracking(True)
-        self.__name.setText(self.__content[QString("name")].toString())
+        self.__name.setText(self.__content["name"])
 
-        if QString("description") in self.__content:
-            description = self.__content[QString("description")].toString()
+        if "description" in self.__content:
+            description = self.__content["description"]
         else:
             description = self.tr("no description available")
         self.__name.setToolTip(self.tr(self.__project) + '\n\n' + description)
@@ -75,11 +77,11 @@ class RecentProjectItem(QWidget):
         #TODO: Change this click listen it doesn't work with ReadOnly = True
         self.connect(self.__name,
             SIGNAL("cursorPositionChanged(int, int)"), self.__on_click_on_name)
-        self._set_favorite(self.__content[QString("isFavorite")].toBool())
+        self._set_favorite(bool(self.__content["isFavorite"]))
 
     def __on_click_on_delete(self):
         settings = QSettings()
-        recent_projects = settings.value("recentProjects").toMap()
+        recent_projects = settings.value("recentProjects")
         if self.__project in recent_projects:
             del recent_projects[self.__project]
             settings.setValue("recentProjects", recent_projects)
@@ -87,15 +89,13 @@ class RecentProjectItem(QWidget):
 
     def __on_click_on_favorite(self):
         settings = QSettings()
-        recent_projects = settings.value("recentProjects").toMap()
-        properties = recent_projects[self.__project].toMap()
-        properties[QString("isFavorite")] = not properties[
-            QString("isFavorite")].toBool()
+        recent_projects = settings.value("recentProjects")
+        properties = recent_projects[self.__project]
+        properties["isFavorite"] = not bool(properties["isFavorite"])
         recent_projects[self.__project] = properties
         settings.setValue("recentProjects", recent_projects)
-        self.emit(SIGNAL("favoriteChange(bool)"), properties[
-            QString("isFavorite")])
-        self._set_favorite(properties[QString("isFavorite")])
+        self.emit(SIGNAL("favoriteChange(bool)"), properties["isFavorite"])
+        self._set_favorite(properties["isFavorite"])
 
     def __on_click_on_name(self, uno, dos):
         self.emit(SIGNAL("clicked(QString)"), self.__project)

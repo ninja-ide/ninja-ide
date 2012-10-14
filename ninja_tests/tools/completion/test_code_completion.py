@@ -20,7 +20,7 @@ import unittest
 
 from ninja_ide.tools.completion import code_completion
 from ninja_ide.tools.completion import completion_daemon
-from tests.tools.completion import get_source_data, SOURCE_COMPLETION
+from ninja_tests.tools.completion import get_source_data, SOURCE_COMPLETION
 
 
 class CodeCompletionTestCase(unittest.TestCase):
@@ -59,6 +59,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(int)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_global_attr_not_recognized_in_class(self):
@@ -77,6 +79,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(list)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_dict_completion_in_class_not_attr(self):
@@ -87,6 +91,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(dict)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_int_completion_in_class_not_attr(self):
@@ -97,6 +103,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(int)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_float_completion_in_class_not_attr(self):
@@ -107,6 +115,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(float)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_tuple_completion_in_class_not_attr(self):
@@ -117,6 +127,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(tuple)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_bool_completion_in_class_not_attr(self):
@@ -127,6 +139,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(bool)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_str_completion_in_class_not_attr(self):
@@ -137,6 +151,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(str)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     @unittest.skip("FIX LATER")
@@ -148,6 +164,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(unicode)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results)
 
     def test_invalid_var_in_class_function(self):
@@ -168,6 +186,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(int)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_float_completion_in_class_attr(self):
@@ -178,6 +198,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(float)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_list_completion_in_class_attr(self):
@@ -188,6 +210,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(list)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_dict_completion_in_class_attr(self):
@@ -198,6 +222,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(dict)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_tuple_completion_in_class_attr(self):
@@ -208,6 +234,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(tuple)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_bool_completion_in_class_attr(self):
@@ -218,6 +246,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(bool)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_str_completion_in_class_attr(self):
@@ -228,6 +258,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(str)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     @unittest.skip("FIX LATER")
@@ -239,6 +271,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(unicode)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results)
 
     def test_invalid_var_in_class_function_attr(self):
@@ -260,6 +294,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(dict)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_int_completion_in_class_attr_diff_func(self):
@@ -272,6 +308,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(int)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_float_completion_in_class_attr_diff_func(self):
@@ -284,6 +322,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(float)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_list_completion_in_class_attr_diff_func(self):
@@ -296,6 +336,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(list)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_tuple_completion_in_class_attr_diff_func(self):
@@ -308,6 +350,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(tuple)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_bool_completion_in_class_attr_diff_func(self):
@@ -320,6 +364,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(bool)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_str_completion_in_class_attr_diff_func(self):
@@ -332,6 +378,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(str)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     @unittest.skip("FIX LATER")
@@ -345,6 +393,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(unicode)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results)
 
     def test_module_import_attribute(self):
@@ -371,6 +421,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(str)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_list_completion(self):
@@ -381,6 +433,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(list)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_dict_completion(self):
@@ -391,6 +445,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(dict)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_int_completion(self):
@@ -401,6 +457,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(int)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_float_completion(self):
@@ -411,6 +469,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(float)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_tuple_completion(self):
@@ -421,6 +481,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(tuple)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_bool_completion(self):
@@ -431,6 +493,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(bool)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_builtin_str_completion(self):
@@ -441,6 +505,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(str)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     @unittest.skip("FIX LATER")
@@ -452,6 +518,8 @@ class CodeCompletionTestCase(unittest.TestCase):
         offset = len(source_code)
         results = self.cc.get_completion(source_code, offset)
         expected = dir(unicode)
+        __attrib = [d for d in expected if d[:2] == '__']
+        expected = expected[len(__attrib):] + __attrib
         self.assertEqual(expected, results['attributes'])
 
     def test_invalid_var(self):
