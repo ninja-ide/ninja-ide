@@ -21,6 +21,7 @@ import shutil
 import unittest
 import tempfile
 
+from ninja_ide.tools.json_manager import read_ninja_project
 from ninja_ide.tools.json_manager import create_ninja_project
 
 
@@ -59,6 +60,20 @@ class TestNinjaProject(unittest.TestCase):
         with open(os.path.join(path, expected_name), 'r')  as fp:
             content = json.load(fp)
             assert content['foo'] == 'bar'
+
+    def test_read_ninja_project(self):
+
+        path = self.tmpdir
+        project = 'This is My Project'
+        structure = dict(foo='bar')
+
+        structure = read_ninja_project(path)
+        self.assertEquals(structure, dict())
+
+        structure = dict(foo='bar')
+        create_ninja_project(path, project, structure)
+        structure = read_ninja_project(path)
+        assert structure['foo'] == 'bar'
 
 
 if __name__ == '__main__':

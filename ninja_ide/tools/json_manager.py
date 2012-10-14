@@ -43,17 +43,15 @@ def load_syntax():
 
         if not f.endswith('.json'):
             continue
-        fileName = os.path.join(resources.SYNTAX_FILES, f)
-        read = open(fileName, 'r')
 
-        try:
-            structure = json.load(read)
-        except Exception as exc:
-            logger.error("The syntax file %s couldn't be loaded" % fileName)
-            logger.error(exc)
-            continue
-        finally:
-            read.close()
+        fname = os.path.join(resources.SYNTAX_FILES, f)
+        with open(fname, 'r') as fp:
+            try:
+                structure = json.load(fp)
+            except Exception as exc:
+                logger.error("The syntax file %s couldn't be loaded" % fname)
+                logger.error(exc)
+                continue
 
         name = f[:-5]
         settings.SYNTAX[name] = structure
@@ -80,7 +78,7 @@ def create_ninja_project(path, project, structure):
 
     projectName = delete_emtpy_spaces(project.lower()) + '.nja'
     fileName = os.path.join(path, projectName)
-    with open(fileName, 'w') as fp:
+    with open(fileName, mode='w') as fp:
         json.dump(structure, fp, indent=2)
 
 
