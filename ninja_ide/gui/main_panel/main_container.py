@@ -753,7 +753,7 @@ class __MainContainer(QSplitter):
 
     def show_python_doc(self):
         if sys.platform == 'win32':
-            self.docPage = browser_widget.BrowserWidget('http://pydoc.org/')
+            self.docPage = browser_widget.BrowserWidget('http://docs.python.org/')
             self.add_tab(self.docPage, self.tr("Python Documentation"))
         else:
             process = runner.start_pydoc()
