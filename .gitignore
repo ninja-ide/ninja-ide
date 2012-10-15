@@ -1,2 +1,5 @@
 # Ignore .pyc files
 *.pyc
+*.swp
+tests/tools/build/
+_trial_temp
