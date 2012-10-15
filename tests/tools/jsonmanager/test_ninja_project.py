@@ -51,11 +51,11 @@ class TestNinjaProject(unittest.TestCase):
     def test_create_ninja_project_with_lot_of_spaces_in_name(self):
 
         path = self.tmpdir
-        project = 'This is My             Project '
+        project = 'This is My         Project '
         structure = dict(foo='bar')
 
         create_ninja_project(path, project, structure)
-        expected_name = 'this_is_my_project.nja'
+        expected_name = 'this_is_my_________project.nja'
 
         self.assertTrue(expected_name in os.listdir(path))
         with open(os.path.join(path, expected_name), 'r')  as fp:

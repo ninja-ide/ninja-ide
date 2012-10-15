@@ -85,21 +85,7 @@ def load_syntax():
 
 def create_ninja_project(path, project, structure):
 
-    def delete_emtpy_spaces(string_):
-
-        lastchar = ''
-        newstring = ''
-        string_ = string_.strip()
-
-        for ch in string_:
-            if ch == lastchar:
-                continue
-            newstring += ch if ch != ' ' else '_'
-            lastchar = ch
-
-        return newstring
-
-    projectName = delete_emtpy_spaces(project.lower()) + '.nja'
+    projectName = project.lower().strip().replace(' ', '_') + '.nja'
     fileName = os.path.join(path, projectName)
     with open(fileName, mode='w') as fp:
         json.dump(structure, fp, indent=2)
