@@ -64,6 +64,7 @@ def read_json(arg_):
 
 def load_syntax():
 
+    empty = dict()
     files = os.listdir(resources.SYNTAX_FILES)
 
     for f in files:
@@ -73,7 +74,7 @@ def load_syntax():
 
         fname = os.path.join(resources.SYNTAX_FILES, f)
         structure = read_json(fname)
-        if structure is None:
+        if structure == empty:
             continue
 
         name = f[:-5]
