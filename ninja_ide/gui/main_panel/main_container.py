@@ -513,7 +513,7 @@ class __MainContainer(QSplitter):
         except file_manager.NinjaIOException as reason:
             if not notStart:
                 QMessageBox.information(self,
-                    self.tr("The file couldn't be open"), reason)
+                    self.tr("The file couldn't be open"), str(reason))
         except Exception as reason:
             logger.error('open_file: %s', reason)
         self.actualTab.notOpening = True
