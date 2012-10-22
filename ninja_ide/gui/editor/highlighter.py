@@ -50,34 +50,32 @@ def format(color, style=''):
 
 # Syntax styles that can be shared by all languages
 STYLES = {}
+SDEFAULTS = (
+    ("keyword", "keyword", "bold"),
+    ("operator", "operator", None),
+    ("brace", "brace", None),
+    ("definition", "definition", "bold"),
+    ("string", "string", None),
+    ("string2", "string2", None),
+    ("comment", "comment", "italic"),
+    ("properObject", "properObject", None),
+    ("numbers", "numbers", None),
+    ("spaces", "spaces", None),
+    ("extras", "extras", "bold"),
+    ("selectedWord", "selected-word", None),
+)
 
 
 def restyle(scheme):
     """Reset the style for each highlighting item when the scheme change."""
-    STYLES['keyword'] = format(scheme.get('keyword',
-        resources.COLOR_SCHEME['keyword']), 'bold')
-    STYLES['operator'] = format(scheme.get('operator',
-        resources.COLOR_SCHEME['operator']))
-    STYLES['brace'] = format(scheme.get('brace',
-        resources.COLOR_SCHEME['brace']))
-    STYLES['definition'] = format(scheme.get('definition',
-        resources.COLOR_SCHEME['definition']), 'bold')
-    STYLES['string'] = format(scheme.get('string',
-        resources.COLOR_SCHEME['string']))
-    STYLES['string2'] = format(scheme.get('string2',
-        resources.COLOR_SCHEME['string2']))
-    STYLES['comment'] = format(scheme.get('comment',
-        resources.COLOR_SCHEME['comment']), 'italic')
-    STYLES['properObject'] = format(scheme.get('properObject',
-        resources.COLOR_SCHEME['properObject']), 'italic')
-    STYLES['numbers'] = format(scheme.get('numbers',
-        resources.COLOR_SCHEME['numbers']))
-    STYLES['spaces'] = format(scheme.get('spaces',
-        resources.COLOR_SCHEME['spaces']))
-    STYLES['extras'] = format(scheme.get('extras',
-        resources.COLOR_SCHEME['extras']), 'bold')
-    STYLES['selectedWord'] = scheme.get('selected-word',
-        resources.COLOR_SCHEME['selected-word'])
+    rescs = resources.COLOR_SCHEME
+    global STYLES
+
+    for stkw, srkw, default in SDEFAULTS:
+        if default:
+            STYLES[stkw] = format(scheme.get(srkw, rescs[srkw]), default)
+        else:
+            STYLES[stkw] = format(scheme.get(srkw, rescs[srkw]))
 
 
 class SyntaxUserData(QTextBlockUserData):
