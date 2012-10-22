@@ -16,10 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 import os
-try:
-    import json
-except ImportError:
-    import simplejson as json
+import json
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -38,99 +35,148 @@ def parse(descriptor):
     return {}
 
 
+def read_json(arg_):
+
+    empty = dict()
+    fileName = None
+
+    if os.path.isdir(arg_):
+        path = arg_
+        json_file = get_ninja_json_file(path)
+        fileName = os.path.join(path, json_file)
+
+    if os.path.isfile(arg_):
+        fileName = arg_
+
+    if fileName is None:
+        return empty
+
+    with open(fileName, 'r') as fp:
+        try:
+            structure = json.load(fp)
+        except Exception as exc:
+            logger.error('Error reading Ninja File %s' % fileName)
+            logger.error(exc)
+            return empty
+
+    return structure
+
+
 def load_syntax():
+
+    empty = dict()
     files = os.listdir(resources.SYNTAX_FILES)
+
     for f in files:
-        if f.endswith('.json'):
-            structure = None
-            fileName = os.path.join(resources.SYNTAX_FILES, f)
-            read = open(fileName, 'r')
-            structure = json.load(read)
-            read.close()
-            name = f[:-5]
-            settings.SYNTAX[name] = structure
-            for ext in structure.get('extension'):
-                if ext is not None:
-                    settings.EXTENSIONS[ext] = name
+
+        if not f.endswith('.json'):
+            continue
+
+        fname = os.path.join(resources.SYNTAX_FILES, f)
+        structure = read_json(fname)
+        if structure == empty:
+            continue
+
+        name = f[:-5]
+        settings.SYNTAX[name] = structure
+        for ext in structure.get('extension'):
+            if ext is not None:
+                settings.EXTENSIONS[ext] = name
 
 
 def create_ninja_project(path, project, structure):
-    fileName = os.path.join(path, project.replace(' ', '_') + '.nja')
-    f = open(fileName, mode='w')
-    json.dump(structure, f, indent=2)
-    f.close()
+
+    projectName = project.lower().strip().replace(' ', '_') + '.nja'
+    fileName = os.path.join(path, projectName)
+    with open(fileName, mode='w') as fp:
+        json.dump(structure, fp, indent=2)
 
 
-def read_ninja_project(path):
+def get_ninja_file(path, extension, only_first=False):
+
     files = os.listdir(path)
-    nja = list(filter(lambda y: y.endswith('.nja'), files))
-    if len(nja) == 0:
-        return {}
-    structure = None
-    fileName = os.path.join(path, nja[0])
-    read = open(fileName, 'r')
-    structure = json.load(read)
-    read.close()
-    return structure
+    if not extension.startswith('.'):
+        extension = '.'.join(extension)
+
+    nja = list(filter(lambda y: y.endswith(extension), files))
+
+    if only_first:
+        nja = nja[0] if nja else None
+
+    return nja if nja else None
+
+
+def get_ninja_json_file(path):
+
+    extension = '.json'
+    return get_ninja_file(path, extension, only_first=True)
+
+
+def get_ninja_plugin_file(path):
+
+    extension = '.plugin'
+    return get_ninja_file(path, extension, only_first=True)
 
 
 def get_ninja_project_file(path):
-    files = os.listdir(path)
-    nja = list(filter(lambda y: y.endswith('.nja'), files))
-    return nja[0] if nja else ''
+
+    extension = '.nja'
+    return get_ninja_file(path, extension, only_first=True)
+
+
+def get_ninja_editor_skins_files(path):
+
+    extension = '.color'
+    return get_ninja_file(path, extension)
+
+
+def read_ninja_project(path):
+
+    empty = dict()
+    project_file = get_ninja_project_file(path)
+
+    if project_file is None:
+        return empty
+
+    return read_json(os.path.join(path, project_file))
 
 
 def read_ninja_plugin(path):
-    files = os.listdir(path)
-    plugins = list(filter(lambda y: y.endswith('.plugin'), files))
-    if len(plugins) == 0:
-        return {}
-    structure = None
-    fileName = os.path.join(path, plugins[0])
-    read = open(fileName, 'r')
-    structure = json.load(read)
-    read.close()
-    return structure
 
+    empty = dict()
+    plugin_file = get_ninja_plugin_file(path)
 
-def read_json(path):
-    files = os.listdir(path)
-    jsons = list(filter(lambda y: y.endswith('.json'), files))
-    if len(jsons) == 0:
-        return {}
-    structure = None
-    fileName = os.path.join(path, jsons[0])
-    read = open(fileName, 'r')
-    structure = json.load(read)
-    read.close()
-    return structure
+    if plugin_file is None:
+        return empty
+
+    return read_json(os.path.join(path, plugin_file))
 
 
 def json_to_dict(fileName):
-    structure = None
-    if os.path.exists(fileName):
-        read = open(fileName, 'r')
-        structure = json.load(read)
-        read.close()
-    return structure
+    return read_json(fileName)
 
 
 def load_editor_skins():
-    files = os.listdir(resources.EDITOR_SKINS)
-    skins = {}
-    for f in files:
-        if f.endswith('.color'):
-            structure = None
-            fileName = os.path.join(resources.EDITOR_SKINS, f)
-            read = open(fileName, 'r')
-            structure = json.load(read)
-            read.close()
-            name = f[:-6]
-            skins[name] = structure
+
+    skins = dict()
+    files = get_ninja_editor_skins_files(resources.EDITOR_SKINS)
+
+    for fname in files:
+        fileName = os.path.join(resources.EDITOR_SKINS, fname)
+        structure = read_json(fileName)
+        if structure is None:
+            continue
+        name = fname[:-6]
+        skins[name] = structure
+
     return skins
 
 
 def save_editor_skins(filename, scheme):
-    f = open(filename, mode='w')
-    json.dump(scheme, f, indent=2)
-    f.close()
+
+    with open(filename, 'w') as fp:
+        try:
+            json.dump(scheme, fp, indent=2)
+        except Exception as exc:
+            logger.error('Error writing file %s' % filename)
+            logger.error(exc)
