@@ -249,7 +249,7 @@ def rename_file(old, new):
     """Rename a file, changing its name from 'old' to 'new'."""
     if os.path.isfile(old):
         ext = (os.path.splitext(new)[-1])[1:]
-        if ext == '':
+        if ext == '' and (os.path.splitext(old)[-1])[1:] != 'py':
             new += '.py'
         if file_exists(new):
             raise NinjaFileExistsException(new)
