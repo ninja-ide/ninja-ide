@@ -161,9 +161,12 @@ def load_editor_skins():
     skins = dict()
     files = get_ninja_editor_skins_files(resources.EDITOR_SKINS)
 
+    if not files:
+        return {}
+
     for fname in files:
-        fileName = os.path.join(resources.EDITOR_SKINS, fname)
-        structure = read_json(fileName)
+        file_name = os.path.join(resources.EDITOR_SKINS, fname)
+        structure = read_json(file_name)
         if structure is None:
             continue
         name = fname[:-6]
