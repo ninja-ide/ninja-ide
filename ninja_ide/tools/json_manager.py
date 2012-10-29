@@ -103,7 +103,7 @@ def get_ninja_file(path, extension, only_first=False):
     if only_first:
         nja = nja[0] if nja else None
 
-    return nja if nja else None
+    return nja if nja else []
 
 
 def get_ninja_json_file(path):
@@ -160,9 +160,6 @@ def load_editor_skins():
 
     skins = dict()
     files = get_ninja_editor_skins_files(resources.EDITOR_SKINS)
-
-    if not files:
-        return {}
 
     for fname in files:
         file_name = os.path.join(resources.EDITOR_SKINS, fname)
