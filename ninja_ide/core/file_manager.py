@@ -244,24 +244,21 @@ def delete_folder(path, fileName=None):
     if os.path.isdir(path):
         shutil.rmtree(path)
 
+def get_file_extension(fileName):
+    """Get the file extension in the form of: 'py'"""
+    return os.path.splitext(fileName.lower())[-1][1:]
 
 def rename_file(old, new):
     """Rename a file, changing its name from 'old' to 'new'."""
     if os.path.isfile(old):
-        ext = (os.path.splitext(new)[-1])[1:]
-        if ext == '' and (os.path.splitext(old)[-1])[1:] != 'py':
+        ext = get_file_extension(new)
+        if ext == '' and (get_file_extension(old) not in ('py', 'pyw')):
             new += '.py'
         if file_exists(new):
             raise NinjaFileExistsException(new)
         os.rename(old, new)
         return new
     return ''
-
-
-def get_file_extension(fileName):
-    """Get the file extension in the form of: 'py'"""
-    return os.path.splitext(fileName.lower())[-1][1:]
-
 
 def get_file_name(fileName):
     """Get the file name, without the extension."""
