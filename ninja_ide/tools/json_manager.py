@@ -85,7 +85,6 @@ def load_syntax():
 
 
 def create_ninja_project(path, project, structure):
-
     projectName = project.lower().strip().replace(' ', '_') + '.nja'
     fileName = os.path.join(path, projectName)
     with open(fileName, mode='w') as fp:
@@ -93,7 +92,6 @@ def create_ninja_project(path, project, structure):
 
 
 def get_ninja_file(path, extension, only_first=False):
-
     files = os.listdir(path)
     if not extension.startswith('.'):
         extension = '.'.join(extension)
@@ -135,7 +133,7 @@ def read_ninja_project(path):
     empty = dict()
     project_file = get_ninja_project_file(path)
 
-    if project_file is None:
+    if not project_file:
         return empty
 
     return read_json(os.path.join(path, project_file))
