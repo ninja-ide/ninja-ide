@@ -753,7 +753,8 @@ class __MainContainer(QSplitter):
 
     def show_python_doc(self):
         if sys.platform == 'win32':
-            self.docPage = browser_widget.BrowserWidget('http://docs.python.org/')
+            self.docPage = browser_widget.BrowserWidget(
+                'http://docs.python.org/')
             self.add_tab(self.docPage, self.tr("Python Documentation"))
         else:
             process = runner.start_pydoc()
@@ -858,6 +859,16 @@ class __MainContainer(QSplitter):
             if type(widget) is editor.Editor:
                 widget.restyle()
                 widget.set_font(family, size)
+
+    def update_editor_margin_line(self):
+        for i in range(self._tabMain.count()):
+            widget = self._tabMain.widget(i)
+            if type(widget) is editor.Editor:
+                widget._update_margin_line()
+        for i in range(self._tabSecondary.count()):
+            widget = self._tabSecondary.widget(i)
+            if type(widget) is editor.Editor:
+                widget._update_margin_line()
 
     def open_project(self, path):
         self.emit(SIGNAL("openProject(QString)"), path)
