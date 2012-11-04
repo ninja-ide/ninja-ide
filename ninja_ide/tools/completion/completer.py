@@ -142,9 +142,7 @@ def get_all_completions(s, imports=None):
                         sym = __import__(s, globals(), dlocals, [])
                     except ImportError:
                         pass
-        except (AttributeError, NameError, TypeError, SyntaxError), reason:
-            print reason
-            raise
+        except (AttributeError, NameError, TypeError, SyntaxError):
             return {}
     if sym is not None:
         var = s
