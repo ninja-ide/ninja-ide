@@ -15,15 +15,23 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
+import sys
+
+from PyQt4.QtGui import QApplication
+
+from ninja_ide.gui import status_bar
+from ninja_tests import BaseTest
 
 
-class BaseTest(unittest.TestCase):
+class StatusBarTestCase(BaseTest):
 
     def setUp(self):
-        super(BaseTest, self).setUp()
-        self._original_values = []
+        super(StatusBarTestCase, self).setUp()
+        self.app = QApplication(sys.argv)
+        self.status = status_bar.StatusBar()
 
-    def patch(self, obj, attr, new_value):
-        self._original_values.append((obj, attr, getattr(obj, attr)))
-        setattr(obj, attr, new_value)
+    def test_yes(self):
+        self.assertTrue(True)
