@@ -49,8 +49,6 @@ class Pep8Checker(QThread):
         if file_ext in exts:
             self.reset()
             source = self._editor.get_text()
-            if self._encoding is not None:
-                source = source.encode(self._encoding)
             tempData = pep8mod.run_check(self._path, source)
             i = 0
             while i < len(tempData):
