@@ -327,7 +327,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def restyle(self, syntaxLang=None):
         self.apply_editor_style()
-        if self.highlighter is None:
+        if self.highlighter is None or isinstance(self.highlighter,
+           highlighter.EmpyHighlighter):
             self.highlighter = highlighter.Highlighter(self.document(),
                 None, resources.CUSTOM_SCHEME, self.errors, self.pep8)
         if not syntaxLang:
@@ -341,10 +342,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                     resources.CUSTOM_SCHEME)
         else:
             self.highlighter.apply_highlight(
-                str(syntaxLang), resources.CUSTOM_SCHEME)
+                syntaxLang, resources.CUSTOM_SCHEME)
             if self._mini:
                 self._mini.highlighter.apply_highlight(
-                    str(syntaxLang), resources.CUSTOM_SCHEME)
+                    syntaxLang, resources.CUSTOM_SCHEME)
 
     def apply_editor_style(self):
         css = 'QPlainTextEdit {color: %s; background-color: %s;' \
