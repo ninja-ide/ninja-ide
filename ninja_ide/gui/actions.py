@@ -583,7 +583,6 @@ class __Actions(QObject):
           self.ide.explorer._treeProjects._actualProject:
             self.ide.explorer._treeProjects.open_project_properties()
         elif mainFile:
-
             self.save_project()
             path = self.ide.explorer.get_actual_project()
             #emit a signal for plugin!
@@ -591,13 +590,15 @@ class __Actions(QObject):
 
             # load our jutsus!
             project = json_manager.read_ninja_project(path)
-            venv = project.get('venv', False)
+            python_exec = project.get('venv', False)
+            if not python_exec:
+                python_exec = project.get('pythonPath', 'python')
             PYTHONPATH = project.get('PYTHONPATH', None)
             params = project.get('programParams', '')
             preExec = project.get('preExecScript', '')
             postExec = project.get('postExecScript', '')
             mainFile = file_manager.create_path(path, mainFile)
-            self.ide.misc.run_application(mainFile, pythonPath=venv,
+            self.ide.misc.run_application(mainFile, pythonPath=python_exec,
                 PYTHONPATH=PYTHONPATH,
                 programParams=params, preExec=preExec, postExec=postExec)
 
