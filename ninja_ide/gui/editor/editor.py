@@ -482,7 +482,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.setFont(font)
         self._update_margin_line(font)
 
-    def _update_margin_line(self, font):
+    def _update_margin_line(self, font=None):
+        if not font:
+            font = self.document().defaultFont()
         # Fix for older version of Qt which doens't has ForceIntegerMetrics
         if "ForceIntegerMetrics" in dir(QFont):
             self.document().defaultFont().setStyleStrategy(

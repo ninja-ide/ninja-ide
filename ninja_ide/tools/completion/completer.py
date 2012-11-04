@@ -105,8 +105,7 @@ def _import_modules(imports, dglobals):
     if imports is not None:
         for stmt in imports:
             try:
-                for stmt in dglobals:
-                    exec(stmt)
+                exec(stmt, dglobals)
             except TypeError:
                 raise TypeError('invalid type: %s' % stmt)
             except Exception:
@@ -143,7 +142,9 @@ def get_all_completions(s, imports=None):
                         sym = __import__(s, globals(), dlocals, [])
                     except ImportError:
                         pass
-        except (AttributeError, NameError, TypeError, SyntaxError):
+        except (AttributeError, NameError, TypeError, SyntaxError), reason:
+            print reason
+            raise
             return {}
     if sym is not None:
         var = s

@@ -107,7 +107,6 @@ class AnalyzerTestCase(unittest.TestCase):
         self.assertEqual(result_data.line_content, expected_data.line_content)
         self.assertEqual(result_data.operation, expected_data.operation)
         self.assertFalse(result_data.is_native)
-#        self.assertTrue(result_data.from_import)
         #Assign: 3
         assign = func.attributes['di']
         self.assertEqual(assign.name, 'di')
@@ -133,7 +132,6 @@ class AnalyzerTestCase(unittest.TestCase):
         self.assertEqual(result_data.line_content, expected_data.line_content)
         self.assertEqual(result_data.operation, expected_data.operation)
         self.assertFalse(result_data.is_native)
-#        self.assertFalse(result_data.from_import)
 
     def test_simple_class_data(self):
         module = self.analyzer.analyze(SOURCE_ANALYZER_NATIVE)
@@ -283,7 +281,7 @@ class AnalyzerTestCase(unittest.TestCase):
 
         #Decorators
         self.assertEqual(func.decorators, [])
-#        #Return Type
+        #Return Type
         self.assertEqual(func.return_type, [])
         #Attributes
         self.assertEqual(func.name, 'func_args')
