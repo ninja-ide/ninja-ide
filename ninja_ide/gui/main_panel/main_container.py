@@ -656,6 +656,7 @@ class __MainContainer(QSplitter):
             editorWidget.ID = fileName
             self.emit(SIGNAL("fileSaved(QString)"),
                 self.tr("File Saved: %s" % fileName))
+            self.emit(SIGNAL("currentTabChanged(QString)"), fileName)
             editorWidget._file_saved()
             self.add_standalone_watcher(fileName)
             self._file_watcher.allow_kill = True
