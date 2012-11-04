@@ -1,6 +1,6 @@
 {
   "mainFile": "ninja-ide.py", 
-  "use-tabs": true, 
+  "use-tabs": false, 
   "venv": "", 
   "relatedProjects": [], 
   "name": "NINJA-IDE", 
