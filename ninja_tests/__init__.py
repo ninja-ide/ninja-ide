@@ -27,3 +27,8 @@ class BaseTest(unittest.TestCase):
     def patch(self, obj, attr, new_value):
         self._original_values.append((obj, attr, getattr(obj, attr)))
         setattr(obj, attr, new_value)
+
+    def tearDown(self):
+        for values in self._original_values:
+            obj, attr, old_value = values
+            setattr(obj, attr, old_value)
