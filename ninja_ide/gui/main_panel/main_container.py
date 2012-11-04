@@ -511,9 +511,9 @@ class __MainContainer(QSplitter):
                         editorWidget.set_cursor_position(cursorPosition)
             self.emit(SIGNAL("currentTabChanged(QString)"), fileName)
         except file_manager.NinjaIOException as reason:
-            if not notStart:
+            if notStart:
                 QMessageBox.information(self,
-                    self.tr("The file couldn't be open"), reason)
+                    self.tr("The file couldn't be open"), str(reason))
         except Exception as reason:
             logger.error('open_file: %s', reason)
         self.actualTab.notOpening = True
