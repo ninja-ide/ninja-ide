@@ -119,6 +119,7 @@ class __StatusBar(QStatusBar):
         if editor and editor.textCursor().hasSelection():
             text = editor.textCursor().selectedText()
             self._searchWidget._line.setText(text)
+            self._searchWidget.find_matches(editor, True)
         if self._widgetStatus.isVisible():
             self._searchWidget._line.setFocus()
             self._searchWidget._line.selectAll()
@@ -319,7 +320,7 @@ class SearchWidget(QWidget):
             self._parent.find_previous()
         self._line.counter.update_count(self.index, self.totalMatches)
 
-    def find_matches(self, editor):
+    def find_matches(self, editor, in_place=False):
         if editor is None:
             return
         text = editor.toPlainText()
@@ -345,7 +346,7 @@ class SearchWidget(QWidget):
             self.totalMatches = 0
         self._line.counter.update_count(self.index, self.totalMatches,
             hasSearch)
-        if hasSearch:
+        if hasSearch and not in_place:
             self._parent.find()
 
 
@@ -361,7 +362,8 @@ class ReplaceWidget(QWidget):
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
         self._btnReplace = QPushButton(self.trUtf8("Replace"))
         self._btnReplaceAll = QPushButton(self.trUtf8("Replace All"))
-        self._btnReplaceSelection = QPushButton(self.trUtf8("Replace Selection"))
+        self._btnReplaceSelection = QPushButton(
+            self.trUtf8("Replace Selection"))
         hReplace.addWidget(self._btnCloseReplace)
         hReplace.addWidget(self._lineReplace)
         hReplace.addWidget(self._btnReplace)
