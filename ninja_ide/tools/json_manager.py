@@ -85,7 +85,6 @@ def load_syntax():
 
 
 def create_ninja_project(path, project, structure):
-
     projectName = project.lower().strip().replace(' ', '_') + '.nja'
     fileName = os.path.join(path, projectName)
     with open(fileName, mode='w') as fp:
@@ -93,7 +92,6 @@ def create_ninja_project(path, project, structure):
 
 
 def get_ninja_file(path, extension, only_first=False):
-
     files = os.listdir(path)
     if not extension.startswith('.'):
         extension = '.'.join(extension)
@@ -103,7 +101,7 @@ def get_ninja_file(path, extension, only_first=False):
     if only_first:
         nja = nja[0] if nja else None
 
-    return nja if nja else None
+    return nja if nja else []
 
 
 def get_ninja_json_file(path):
@@ -135,7 +133,7 @@ def read_ninja_project(path):
     empty = dict()
     project_file = get_ninja_project_file(path)
 
-    if project_file is None:
+    if not project_file:
         return empty
 
     return read_json(os.path.join(path, project_file))
@@ -162,8 +160,8 @@ def load_editor_skins():
     files = get_ninja_editor_skins_files(resources.EDITOR_SKINS)
 
     for fname in files:
-        fileName = os.path.join(resources.EDITOR_SKINS, fname)
-        structure = read_json(fileName)
+        file_name = os.path.join(resources.EDITOR_SKINS, fname)
+        structure = read_json(file_name)
         if structure is None:
             continue
         name = fname[:-6]

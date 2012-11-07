@@ -1053,6 +1053,7 @@ class EditorConfiguration(QWidget):
         qsettings.setValue('marginLine', self._spinMargin.value())
         settings.MARGIN_LINE = self._spinMargin.value()
         pep8mod.MAX_LINE_LENGTH = settings.MARGIN_LINE - 1
+        pep8mod.options.max_line_length = settings.MARGIN_LINE
         qsettings.setValue('showMarginLine', self._checkShowMargin.isChecked())
         settings.SHOW_MARGIN_LINE = self._checkShowMargin.isChecked()
         settings.HIGHLIGHT_WHOLE_LINE = self._checkHighlightLine.isChecked()
@@ -1089,10 +1090,10 @@ class EditorConfiguration(QWidget):
         action.call_editors_function("set_tab_usage")
         if settings.USE_TABS:
             pep8mod.options.ignore.append("W191")
-            pep8mod.refresh_checks()
         elif "W191" in pep8mod.options.ignore:
             pep8mod.options.ignore.remove("W191")
-            pep8mod.refresh_checks()
+        pep8mod.refresh_checks()
+        main_container.MainContainer().update_editor_margin_line()
 
 
 class EditorCompletion(QWidget):

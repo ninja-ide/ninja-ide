@@ -105,8 +105,7 @@ def _import_modules(imports, dglobals):
     if imports is not None:
         for stmt in imports:
             try:
-                for stmt in dglobals:
-                    exec(stmt)
+                exec(stmt, dglobals)
             except TypeError:
                 raise TypeError('invalid type: %s' % stmt)
             except Exception:

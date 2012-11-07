@@ -61,5 +61,54 @@ class HighlighterFormatTestCase(unittest.TestCase):
         self.assertEqual(self._new_font, font)
 
 
+class HighlighterRestyleTestCase(unittest.TestCase):
+
+    def setUp(self):
+        highlighter.SDEFAULTS = (("style_key", "scheme_key", "default"),)
+        a_scheme = {"scheme_key": "#BBBBBB"}
+        highlighter.resources.COLOR_SCHEME = a_scheme
+        highlighter.restyle(a_scheme)
+
+    def tearDown(self):
+        reload(highlighter)
+
+    def test_scheme_populates_styles(self):
+        scolor = highlighter.STYLES["style_key"].foreground().color().name()
+        self.assertEqual(scolor.lower(), "#bbbbbb")
+
+
+class SyntaxUserDataTestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.err_sud = highlighter.SyntaxUserData(error=True)
+        self.noerr_sud = highlighter.SyntaxUserData(error=False)
+
+    def test_initializes_correctly(self):
+        self.assertTrue(self.err_sud.error)
+        self.assertFalse(self.noerr_sud.error)
+        self.assertEqual(self.err_sud.str_groups, [])
+        self.assertEqual(self.noerr_sud.str_groups, [])
+        self.assertEqual(self.err_sud.comment_start, -1)
+        self.assertEqual(self.noerr_sud.comment_start, -1)
+
+    def test_clears_correctly(self):
+        self.err_sud.error = True
+        self.err_sud.str_groups = [1, 2, 3]
+        self.err_sud.comment_start = 2
+        self.err_sud.clear_data()
+        self.assertFalse(self.err_sud.error)
+        self.assertEqual(self.err_sud.str_groups, [])
+        self.assertEqual(self.err_sud.comment_start, -1)
+
+    def test_adds_string(self):
+        self.assertNotIn((2, 2), self.err_sud.str_groups)
+        self.err_sud.add_str_group(1, 2)
+        self.assertIn((2, 2), self.err_sud.str_groups)
+
+    def test_comment_start(self):
+        self.assertEqual(self.err_sud.comment_start, -1)
+        self.err_sud.comment_start_at(2)
+        self.assertEqual(self.err_sud.comment_start, 2)
+
 if __name__ == '__main__':
     unittest.main()
