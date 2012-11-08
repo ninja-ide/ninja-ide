@@ -194,7 +194,7 @@ class __IDE(QMainWindow):
         data = connection.readAll()
         connection.close()
         if data:
-            files, projects = data.split(ipc.project_delimiter, 1)
+            files, projects = str(data).split(ipc.project_delimiter, 1)
             files = map(lambda x: (x.split(':')[0], int(x.split(':')[1])),
                 files.split(ipc.file_delimiter))
             projects = projects.split(ipc.project_delimiter)

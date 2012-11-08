@@ -818,7 +818,7 @@ class ProjectTree(QTreeWidgetItem):
         Returns the full path of the project
         '''
         project_file = json_manager.get_ninja_project_file(self.path)
-        if project_file is None:  # FIXME: If we dont have a project file
+        if not project_file:  # FIXME: If we dont have a project file
             project_file = ''     # we should do SOMETHING! like kill zombies!
         return os.path.join(self.path, project_file)
 

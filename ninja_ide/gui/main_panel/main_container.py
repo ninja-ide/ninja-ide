@@ -511,9 +511,9 @@ class __MainContainer(QSplitter):
                         editorWidget.set_cursor_position(cursorPosition)
             self.emit(SIGNAL("currentTabChanged(QString)"), fileName)
         except file_manager.NinjaIOException as reason:
-            if not notStart:
+            if notStart:
                 QMessageBox.information(self,
-                    self.tr("The file couldn't be open"), reason)
+                    self.tr("The file couldn't be open"), str(reason))
         except Exception as reason:
             logger.error('open_file: %s', reason)
         self.actualTab.notOpening = True
@@ -656,6 +656,7 @@ class __MainContainer(QSplitter):
             editorWidget.ID = fileName
             self.emit(SIGNAL("fileSaved(QString)"),
                 self.tr("File Saved: %s" % fileName))
+            self.emit(SIGNAL("currentTabChanged(QString)"), fileName)
             editorWidget._file_saved()
             self.add_standalone_watcher(fileName)
             self._file_watcher.allow_kill = True
@@ -753,7 +754,8 @@ class __MainContainer(QSplitter):
 
     def show_python_doc(self):
         if sys.platform == 'win32':
-            self.docPage = browser_widget.BrowserWidget('http://pydoc.org/')
+            self.docPage = browser_widget.BrowserWidget(
+                'http://docs.python.org/')
             self.add_tab(self.docPage, self.tr("Python Documentation"))
         else:
             process = runner.start_pydoc()
@@ -858,6 +860,16 @@ class __MainContainer(QSplitter):
             if type(widget) is editor.Editor:
                 widget.restyle()
                 widget.set_font(family, size)
+
+    def update_editor_margin_line(self):
+        for i in range(self._tabMain.count()):
+            widget = self._tabMain.widget(i)
+            if type(widget) is editor.Editor:
+                widget._update_margin_line()
+        for i in range(self._tabSecondary.count()):
+            widget = self._tabSecondary.widget(i)
+            if type(widget) is editor.Editor:
+                widget._update_margin_line()
 
     def open_project(self, path):
         self.emit(SIGNAL("openProject(QString)"), path)

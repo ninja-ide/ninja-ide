@@ -44,7 +44,7 @@ class TestNinjaProject(unittest.TestCase):
         expected_name = 'this_is_my_project.nja'
 
         self.assertTrue(expected_name in os.listdir(path))
-        with open(os.path.join(path, expected_name), 'r')  as fp:
+        with open(os.path.join(path, expected_name), 'r') as fp:
             content = json.load(fp)
             assert content['foo'] == 'bar'
 
@@ -58,7 +58,7 @@ class TestNinjaProject(unittest.TestCase):
         expected_name = 'this_is_my_________project.nja'
 
         self.assertTrue(expected_name in os.listdir(path))
-        with open(os.path.join(path, expected_name), 'r')  as fp:
+        with open(os.path.join(path, expected_name), 'r') as fp:
             content = json.load(fp)
             assert content['foo'] == 'bar'
 
