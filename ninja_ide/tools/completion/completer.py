@@ -24,7 +24,7 @@ import types
 try:
     import StringIO
 except:
-    import io as StringIO
+    import io as StringIO  # lint:ok
 from ninja_ide.tools.logger import NinjaLogger
 
 logger = NinjaLogger('ninja_ide.tools.completion.completer')
@@ -57,7 +57,7 @@ def get_completions_per_type(object_dir):
         if type(obj) in (types.ClassType, types.TypeType):
             # Look for the highest __init__ in the class chain.
             obj = _find_constructor(obj)
-        elif type(obj) == types.MethodType:
+        elif isinstance(obj, types.MethodType):
             # bit of a hack for methods - turn it into a function
             # but we drop the "self" param.
             obj = obj.im_func
