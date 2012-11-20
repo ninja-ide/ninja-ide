@@ -550,13 +550,14 @@ class __Actions(QObject):
         """Count the lines of code in the current file."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:
+            block_count = editorWidget.blockCount()
             blanks = re.findall('(^\n)|(^(\s+)?#)|(^( +)?($|\n))',
                 editorWidget.get_text(), re.M)
-            resume = self.tr("Lines code: %s\n" %
-                editorWidget.blockCount() - len(blanks))
+            blanks_count = len(blanks)
+            resume = self.tr("Lines code: %s\n" % (block_count - blanks_count))
             resume += self.tr("Blanks and commented lines: %s\n\n" %
-                len(blanks))
-            resume += self.tr("Total lines: %s" % editorWidget.blockCount())
+                blanks_count)
+            resume += self.tr("Total lines: %s" % block_count)
             msgBox = QMessageBox(QMessageBox.Information,
                 self.tr("Summary of lines"), resume,
                 QMessageBox.Ok, editorWidget)
