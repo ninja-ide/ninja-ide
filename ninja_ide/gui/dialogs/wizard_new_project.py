@@ -259,7 +259,7 @@ class PageProjectType(QWizardPage):
         self.listWidget.setCurrentRow(0)
 
         self.connect(self.listWidget,
-            SIGNAL("itemActivated(QListWidgetItem*)"),
+            SIGNAL("itemClicked(QListWidgetItem *)"),
             self.load_pages)
 
     def validatePage(self):
