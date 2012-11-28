@@ -270,7 +270,7 @@ class ShortcutConfiguration(QWidget):
             return
 
         self.shortcut_dialog.set_shortcut(
-            QKeySequence(item.text(1)))
+            QKeySequence(item.text(1)).toString())
         self.shortcut_dialog.exec_()
 
     def save(self):
@@ -297,11 +297,13 @@ class ShortcutConfiguration(QWidget):
             item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
 
     def _load_defaults_shortcuts(self):
+        #clean custom shortcuts and UI widget
+        resources.clean_custom_shortcuts()
         self.result_widget.clear()
-        for name, action in resources.SHORTCUTS.iteritems():
-            shortcut_action = action
+        for action in resources.SHORTCUTS:
+            shortcut_action = resources.get_shortcut(action)
             #populate the tree widget
-            tree_data = [self.shortcuts_text[name],
-                shortcut_action.toString(QKeySequence.NativeText)]
+            tree_data = [self.shortcuts_text[action],
+                shortcut_action.toString(QKeySequence.NativeText), action]
             item = QTreeWidgetItem(self.result_widget, tree_data)
             item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)

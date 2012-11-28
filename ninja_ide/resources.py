@@ -322,6 +322,14 @@ def get_shortcut(shortcut_name):
     return CUSTOM_SHORTCUTS.get(shortcut_name, SHORTCUTS.get(shortcut_name))
 
 
+def clean_custom_shortcuts():
+    """
+    Cleans CUSTOMS_SHORTCUTS
+    """
+    global CUSTOM_SHORTCUTS
+    CUSTOM_SHORTCUTS = {}
+
+
 def create_home_dir_structure():
     """
     Create the necesary directories structure for NINJA-IDE
