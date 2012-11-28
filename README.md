@@ -25,13 +25,6 @@ And one of these:
 -   [pywin32](http://sourceforge.net/projects/pywin32/files/pywin32/) (on Windows)
 -   [macfsevents](http://pypi.python.org/pypi/MacFSEvents) (on Mac OS)
 
-## Installing and Running
-
-Assuming you have pip installed, you can install and run Ninja-ide like this:
-
-    sudo pip install ninja-ide
-    ninja-ide
-
 ## Cloning and Running
 
 You can clone this repo and simply execute:
