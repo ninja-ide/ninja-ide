@@ -1,38 +1,38 @@
-About
-=====
+# **Ninja-ide** | Ninja-ide Is Not Just Another IDE.
 
-**Ninja-IDE** Is Not Just Another IDE.
+Ninja-IDE is a cross-platform integrated development environment (IDE) that runs
+on Linux/X11, Mac OS X and Windows desktop operating systems. Ninja-IDE allows
+developers to create applications for any purpose making the task of writing
+software easier and more enjoyable.
 
-**Ninja-IDE** is a cross-platform integrated development environment (IDE) that runs on Linux/X11, Mac OS X and Windows desktop operating systems.
+## Contact
 
-**Ninja-IDE** allows developers to create applications for any purpose making the task of writing software easier and more enjoyable
+-   [Homepage](http://ninja-ide.org) at ninja-ide.org
+-   [Mailing List](http://groups.google.com/group/ninja-ide/topics) at Google Groups
+-   [@ninja\_ide](https://twitter.com/ninja_ide) at Twitter
+-   [#ninja-ide](irc://freenode.net/ninja-ide) at Freenode.net
 
+## Dependencies
 
-Contact
--------
+Both of these:
 
-[Homepage] (http://ninja-ide.org)
+-   [Python](http://python.org/) >= 2.7 (Not Python3)
+-   [PyQt](http://www.riverbankcomputing.com/software/pyqt/intro) >= 4.8
 
-Mail list: http://groups.google.com/group/ninja-ide/topics
+And one of these:
 
-Twitter: @ninja\_ide
+-   [pyinotify](https://github.com/seb-m/pyinotify) (on Linux)
+-   [pywin32](http://sourceforge.net/projects/pywin32/files/pywin32/) (on Windows)
+-   [macfsevents](http://pypi.python.org/pypi/MacFSEvents) (on Mac OS)
 
-IRC: #ninja-ide (at Freenode)
+## Installing and Running
 
+Assuming you have pip installed, you can install and run Ninja-ide like this:
 
-Dependencies
-------------
+    sudo pip install ninja-ide
+    ninja-ide
 
-* Python >= 2.7 (Not Python3)
-* PyQt >= 4.8
-
-* Linux: pyinotify (Ubuntu$ sudo apt-get install python-pyinotify)
-* Windows: pywin32 (http://sourceforge.net/projects/pywin32/files/pywin32/)
-* MAC OS: macfsevents ($ pip install macfsevents)
-
-
-Running Ninja-IDE
------------------
+## Cloning and Running
 
 You can clone this repo and simply execute:
 
@@ -42,9 +42,6 @@ You can clone this repo and simply execute:
 
 Piece of cake, uh?
 
+## License
 
-License
--------
-
-GPL v3
-
+-   GPL v3
