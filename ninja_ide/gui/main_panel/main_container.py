@@ -189,10 +189,15 @@ class __MainContainer(QSplitter):
                 self.actualTab.widget(index)._id)
 
     def split_tab(self, orientationHorizontal):
+        """Split the main container in 2 areas.
+
+        We are inverting the horizontal and vertical property here,
+        because Qt see it Horizontal as side by side, but is confusing
+        for the user."""
         if orientationHorizontal:
-            self.show_split(Qt.Horizontal)
-        else:
             self.show_split(Qt.Vertical)
+        else:
+            self.show_split(Qt.Horizontal)
 
     def _split_this_tab(self, tab, index, orientationHorizontal):
         tab.setCurrentIndex(index)
