@@ -77,7 +77,8 @@ class MenuView(QObject):
             self.trUtf8("Follow Mode (%s)" %
                 resources.get_shortcut("Follow-mode").toString(
                     QKeySequence.NativeText)))
-        groupTabsAction = menuView.addAction(self.trUtf8("Group Tabs by Project"))
+        groupTabsAction = menuView.addAction(
+            self.trUtf8("Group Tabs by Project"))
         deactivateGroupTabsAction = menuView.addAction(
             self.trUtf8("Deactivate Group Tabs"))
         menuView.addSeparator()
@@ -87,13 +88,14 @@ class MenuView(QObject):
         zoomOutAction = menuView.addAction(QIcon(resources.IMAGES['zoom-out']),
             self.trUtf8("Zoom &Out (Shift+Wheel-Down)"))
         menuView.addSeparator()
-        fadeInAction = menuView.addAction(self.trUtf8("Fade In (Alt+Wheel-Up)"))
+        fadeInAction = menuView.addAction(
+            self.trUtf8("Fade In (Alt+Wheel-Up)"))
         fadeOutAction = menuView.addAction(
             self.trUtf8("Fade Out (Alt+Wheel-Down)"))
 
         self.toolbar_items = {
-            'splith': splitTabHAction,
             'splitv': splitTabVAction,
+            'splith': splitTabHAction,
             'follow-mode': followModeAction,
             'zoom-in': zoomInAction,
             'zoom-out': zoomOutAction}
