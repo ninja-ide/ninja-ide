@@ -42,11 +42,33 @@ class Cache(object):
             return output
 
 
+class ExitWrapper(object):
+    """Wrap the built-in function exit in the interpreter."""
+
+    def __call__(self, code=None):
+        return None
+
+    def __repr__(self):
+        return exit.__repr__()
+
+
+class HelpWrapper(object):
+    """Wrap the built-in function help in the interpreter."""
+
+    def __call__(self, *args, **kwds):
+        if args or kwds:
+            return help(*args, **kwds)
+
+    def __repr__(self):
+        return help.__repr__()
+
+
 class Console(InteractiveConsole):
     """Work as a Python Console."""
 
     def __init__(self):
-        InteractiveConsole.__init__(self)
+        InteractiveConsole.__init__(self,
+            locals={'exit': ExitWrapper(), 'help': HelpWrapper()})
         self.stdout = sys.stdout
         self.stderr = sys.stderr
         self._cache = Cache()
@@ -64,8 +86,6 @@ class Console(InteractiveConsole):
 
     def push(self, line):
         """Insert a command into the console."""
-        if line in ('exit()', 'help()'):
-            return
         self.get_output()
         val = InteractiveConsole.push(self, line)
         self.return_output()
