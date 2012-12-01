@@ -256,14 +256,11 @@ class Analyzer(object):
             data_type = self.__mapping.get(type_value, None)
             defaults.append((data_type, type_value))
         for arg in reversed(symbol.args.args):
-            try:
-                if arg.id == 'self':
-                    continue
-            except Exception as reason:
-                logger.error('_process_function, error: %r' % reason)
-                logger.error('line number: %d' % symbol.lineno)
-                logger.error('line: %s' % self.content[symbol.lineno])
-                raise
+            if isinstance(arg, ast.Tuple):
+                self._parse_tuple_in_func_arg(arg, function, symbol.lineno)
+                continue
+            elif arg.id == 'self':
+                continue
             assign = model.Assign(arg.id)
             data_type = (model.late_resolution, None)
             if defaults:
@@ -283,6 +280,14 @@ class Analyzer(object):
                 self._search_recursive_for_types(function, sym, parent)
 
         return function
+
+    def _parse_tuple_in_func_arg(self, symbol_tuple, function, lineno=0):
+        """Parse the tuple inside a function argument call."""
+        for item in symbol_tuple.elts:
+            assign = model.Assign(item.id)
+            data_type = (model.late_resolution, None)
+            assign.add_data(lineno, data_type[0], None, data_type[1])
+            function.args[assign.name] = assign
 
     def _search_recursive_for_types(self, function, symbol, parent=None):
         """Search for return recursively inside the function."""

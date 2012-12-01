@@ -162,8 +162,8 @@ class ShortcutConfiguration(QWidget):
             "Find-next": self.tr("Find Next"),
             "Find-previous": self.tr("Find Previous"),
             "Help": self.tr("Show Python Help"),
-            "Split-horizontal": self.tr("Split Tabs Horizontally"),
             "Split-vertical": self.tr("Split Tabs Vertically"),
+            "Split-horizontal": self.tr("Split Tabs Horizontally"),
             "Follow-mode": self.tr("Activate/Deactivate Follow Mode"),
             "Reload-file": self.tr("Reload File"),
             "Jump": self.tr("Jump to line"),
@@ -270,7 +270,7 @@ class ShortcutConfiguration(QWidget):
             return
 
         self.shortcut_dialog.set_shortcut(
-            QKeySequence(item.text(1)))
+            QKeySequence(item.text(1)).toString())
         self.shortcut_dialog.exec_()
 
     def save(self):

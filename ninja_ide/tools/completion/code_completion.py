@@ -25,7 +25,7 @@ from tokenize import generate_tokens, TokenError
 try:
     from StringIO import StringIO
 except:
-    from io import StringIO
+    from io import StringIO  # lint:ok
 
 from ninja_ide.core import settings
 from ninja_ide.gui.editor import helpers
