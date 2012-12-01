@@ -89,6 +89,10 @@ class MigrationWidget(QWidget):
             if line.startswith('+'):
                 code += '%s\n' % line[1:]
         self.suggestion.setPlainText(code)
+        editorWidget = main_container.MainContainer().get_actual_editor()
+        if editorWidget:
+            editorWidget.jump_to_line(lineno)
+            editorWidget.setFocus()
 
     def refresh_lists(self, migration):
         self._migration = migration
