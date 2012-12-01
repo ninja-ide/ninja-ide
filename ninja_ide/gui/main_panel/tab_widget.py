@@ -384,7 +384,7 @@ class TabWidget(QTabWidget):
             self.removeTab(index)
 
     def _create_menu_syntax(self, menuSyntax):
-        syntax = settings.SYNTAX.keys()
+        syntax = list(settings.SYNTAX.keys())
         syntax.sort()
         for syn in syntax:
             menuSyntax.addAction(syn)

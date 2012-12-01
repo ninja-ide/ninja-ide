@@ -506,5 +506,5 @@ class DependenciesHelpDialog(QDialog):
         self.connect(btnAccept, SIGNAL("clicked()"), self.close)
 
         command_tmpl = "<%s>:\n%s\n"
-        for name, description in requirements_dict.iteritems():
+        for name, description in list(requirements_dict.items()):
             self._editor.insertPlainText(command_tmpl % (name, description))

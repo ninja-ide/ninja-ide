@@ -62,8 +62,7 @@ class Pep8Checker(QThread):
                         ':', endPos + 1) + 2:]
                     line = '\n'.join(
                         [error, tempData[i + 1], tempData[i + 2]])
-                except Exception as e:
-                    print(repr(e))
+                except Exception:
                     line = ''
                 finally:
                     i += 3

@@ -20,7 +20,6 @@ from __future__ import unicode_literals
 import sys
 import os
 import time
-import datetime
 
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QVBoxLayout
@@ -131,7 +130,7 @@ class WebPluginList(QListWidget):
         listNoneFavorites = []
         recent_projects_dict = dict(settings.value('recentProjects', {}))
         #Filter for favorites
-        for recent_project_path, content in recent_projects_dict.items():
+        for recent_project_path, content in list(recent_projects_dict.items()):
             if bool(dict(content)["isFavorite"]):
                 listByFavorites.append((recent_project_path,
                     content["lastopen"]))
