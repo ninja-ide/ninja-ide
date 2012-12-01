@@ -34,12 +34,12 @@ class Logger(object):
         return self._loggers[modname]
 
     def dissable(self):
-        for each_log in self._loggers.values():
+        for each_log in list(self._loggers.values()):
             each_log.setLevel(NOLOG)
 
     def setLevel(self, level):
         self._default_level = level
-        for each_log in self._loggers.values():
+        for each_log in list(self._loggers.values()):
             each_log.setLevel(level)
 
     def add_handler(self, hfile, mode, log_format, time_format, stream=None):
@@ -49,7 +49,7 @@ class Logger(object):
         else:
             handler = logging.FileHandler(hfile, mode)
         handler.setFormatter(formatter)
-        for each_log in self._loggers.values():
+        for each_log in list(self._loggers.values()):
             each_log.addHandler(handler)
         self._handler = handler
 

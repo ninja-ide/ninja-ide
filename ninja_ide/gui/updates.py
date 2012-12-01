@@ -59,7 +59,7 @@ class TrayIconUpdates(QSystemTrayIcon):
     def setup_menu(self, show_downloads=False):
         self.menu = QMenu()
         if show_downloads:
-            self.download = QAction(self.tr("Download Version: %s!" % \
+            self.download = QAction(self.tr("Download Version: %s!" %
                 self.ide_version),
                 self, triggered=self._show_download)
             self.menu.addAction(self.download)

@@ -64,7 +64,7 @@ class SingleFileWatcher(QThread):
             self._watches.pop(file_to_unwatch)
 
     def tick(self):
-        keys = self._watches.keys()
+        keys = list(self._watches.keys())
         for each_file in keys:
             status = do_stat(each_file)
             if not status:

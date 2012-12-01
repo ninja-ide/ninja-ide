@@ -1097,7 +1097,7 @@ def find_checks(argument_name):
     starts with argument_name.
     """
     checks = []
-    for name, function in globals().items():
+    for name, function in list(globals().items()):
         if not inspect.isfunction(function):
             continue
         args = inspect.getargspec(function)[0]
@@ -1332,7 +1332,7 @@ def run_check(fileName, source):
         lines = ['%s\n' % line for line in source.splitlines()]
         return Checker(fileName, lines).check_all()
     except Exception as reason:
-        print('pep8mod couldn\'t parse file: {0}'.format(fileName))
+        print(('pep8mod couldn\'t parse file: {0}'.format(fileName)))
         print(reason)
         raise
     return []

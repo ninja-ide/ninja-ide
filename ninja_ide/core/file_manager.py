@@ -76,7 +76,7 @@ def create_init_file_complete(folderName):
     patClass = re.compile('^class .+')
     patExt = re.compile('.+\\.py')
     files = os.listdir(folderName)
-    files = filter(patExt.match, files)
+    files = list(filter(patExt.match, files))
     files.sort()
     imports_ = []
     for f in files:

@@ -235,7 +235,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             if line < blockModified:
                 return line
             return line + diference
-        return map(_inner_increment, lines)
+        return list(map(_inner_increment, lines))
 
     def _add_line_increment_for_dict(self, data, blockModified, diference):
         def _inner_increment(line):
@@ -245,7 +245,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             summary = data.pop(line)
             data[newLine] = summary
             return newLine
-        map(_inner_increment, data.keys())
+        list(map(_inner_increment, list(data.keys())))
         return data
 
     def _update_file_metadata(self, val):
@@ -264,18 +264,19 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             if self.pep8.pep8checks:
                 self.pep8.pep8checks = self._add_line_increment_for_dict(
                     self.pep8.pep8checks, blockNumber, diference)
-                self._sidebarWidget._pep8Lines = self.pep8.pep8checks.keys()
+                self._sidebarWidget._pep8Lines = list(
+                    self.pep8.pep8checks.keys())
             if self.migration.migration_data:
                 self.migration.migration_data = \
                     self._add_line_increment_for_dict(
                         self.migration.migration_data, blockNumber, diference)
-                self._sidebarWidget._migrationLines = \
-                    self.migration.migration_data.keys()
+                self._sidebarWidget._migrationLines = list(
+                    self.migration.migration_data.keys())
             if self.errors.errorsSummary:
                 self.errors.errorsSummary = self._add_line_increment_for_dict(
                     self.errors.errorsSummary, blockNumber, diference)
-                self._sidebarWidget._errorsLines = \
-                    self.errors.errorsSummary.keys()
+                self._sidebarWidget._errorsLines = list(
+                    self.errors.errorsSummary.keys())
             if self._sidebarWidget._breakpoints and self.ID:
                 self._sidebarWidget._breakpoints = self._add_line_increment(
                     self._sidebarWidget._breakpoints, blockNumber, diference)
@@ -293,14 +294,14 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.highlight_current_line()
 
     def show_pep8_errors(self):
-        self._sidebarWidget.pep8_check_lines(self.pep8.pep8checks.keys())
+        self._sidebarWidget.pep8_check_lines(list(self.pep8.pep8checks.keys()))
         if self.syncDocErrorsSignal:
             self._sync_tab_icon_notification_signal()
         else:
             self.syncDocErrorsSignal = True
 
     def show_migration_info(self):
-        lines = self.migration.migration_data.keys()
+        lines = list(self.migration.migration_data.keys())
         self._sidebarWidget.migration_lines(lines)
         self.highlighter.rehighlight_lines(lines)
         self.emit(SIGNAL("migrationAnalyzed()"))
@@ -314,7 +315,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def show_static_errors(self):
         self._sidebarWidget.static_errors_lines(
-            self.errors.errorsSummary.keys())
+            list(self.errors.errorsSummary.keys()))
         if self.syncDocErrorsSignal:
             self._sync_tab_icon_notification_signal()
         else:
@@ -538,8 +539,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #line where indent_more should start and end
         block = self.document().findBlock(
             cursor.selectionStart())
-        end = self.document().findBlock(
-            cursor.selectionEnd()).next()
+        end = self.document().findBlock(cursor.selectionEnd()).next()
 
         #Start a undo block
         cursor.beginEditBlock()
@@ -565,8 +565,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #line where indent_less should start and end
         block = self.document().findBlock(
             cursor.selectionStart())
-        end = self.document().findBlock(
-            cursor.selectionEnd()).next()
+        end = self.document().findBlock(cursor.selectionEnd()).next()
 
         #Start a undo block
         cursor.beginEditBlock()
@@ -769,7 +768,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         completed.
         """
         text = event.text()
-        if text in settings.BRACES.values():
+        if text in list(settings.BRACES.values()):
             portion = self.__reverse_select_text_portion_from_offset(1, 1)
             brace_open = portion[0]
             brace_close = (len(portion) > 1) and portion[1] or None

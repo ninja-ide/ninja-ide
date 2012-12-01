@@ -534,13 +534,13 @@ class __Actions(QObject):
         """Close the files related to this project."""
         if project:
             tabMain = self.ide.mainContainer._tabMain
-            for tabIndex in reversed(range(tabMain.count())):
+            for tabIndex in reversed(list(range(tabMain.count()))):
                 if file_manager.belongs_to_folder(
                 project, tabMain.widget(tabIndex).ID):
                     tabMain.removeTab(tabIndex)
 
             tabSecondary = self.ide.mainContainer._tabSecondary
-            for tabIndex in reversed(range(tabSecondary.count())):
+            for tabIndex in reversed(list(range(tabSecondary.count()))):
                 if file_manager.belongs_to_folder(
                 project, tabSecondary.widget(tabIndex).ID):
                     tabSecondary.removeTab(tabIndex)
@@ -876,7 +876,7 @@ class __Actions(QObject):
 
     def _navigate_breakpoints(self, val):
         """Navigate between the breakpoints."""
-        breakList = settings.BREAKPOINTS.keys()
+        breakList = list(settings.BREAKPOINTS.keys())
         breakList.sort()
         if not breakList:
             return
@@ -915,7 +915,7 @@ class __Actions(QObject):
 
     def _navigate_bookmarks(self, val):
         """Navigate between the bookmarks."""
-        bookList = settings.BOOKMARKS.keys()
+        bookList = list(settings.BOOKMARKS.keys())
         bookList.sort()
         if not bookList:
             return
@@ -971,8 +971,8 @@ class __Actions(QObject):
             if not projectName:
                 projectName = file_manager.get_basename(project)
             tabGroup = tab_group.TabGroup(project, projectName, self)
-            for index in reversed(range(
-            self.ide.mainContainer._tabMain.count())):
+            for index in reversed(list(range(
+            self.ide.mainContainer._tabMain.count()))):
                 widget = self.ide.mainContainer._tabMain.widget(index)
                 if type(widget) is editor.Editor and \
                 file_manager.belongs_to_folder(project, widget.ID):
@@ -983,8 +983,8 @@ class __Actions(QObject):
 
     def deactivate_tabs_groups(self):
         """Deactivate tab grouping based in the project they belong."""
-        for index in reversed(range(
-        self.ide.mainContainer._tabMain.count())):
+        for index in reversed(list(range(
+        self.ide.mainContainer._tabMain.count()))):
             widget = self.ide.mainContainer._tabMain.widget(index)
             if type(widget) is tab_group.TabGroup:
                 widget.only_expand()

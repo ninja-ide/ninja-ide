@@ -223,7 +223,7 @@ def get_all_project_types():
     Returns the availables project types
     """
     global PROJECT_TYPES
-    return PROJECT_TYPES.keys()
+    return list(PROJECT_TYPES.keys())
 
 
 def set_symbols_handler(file_extension, symbols_handler):

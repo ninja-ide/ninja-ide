@@ -96,7 +96,7 @@ def get_ninja_file(path, extension, only_first=False):
     if not extension.startswith('.'):
         extension = '.'.join(extension)
 
-    nja = list(filter(lambda y: y.endswith(extension), files))
+    nja = list([y for y in files if y.endswith(extension)])
 
     if only_first:
         nja = nja[0] if nja else None
