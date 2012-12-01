@@ -218,6 +218,7 @@ COLOR_SCHEME = {
     "locator-name-selected": "black",
     "locator-path": "gray",
     "locator-path-selected": "white",
+    "migration-underline": "blue",
 }
 
 CUSTOM_SCHEME = {}
