@@ -171,7 +171,7 @@ class __PluginManager(object):
         '''
         Returns the dir of the plugin_name
         '''
-        for dir_, plug_names in self._plugins_by_dir.items():
+        for dir_, plug_names in list(self._plugins_by_dir.items()):
             if plugin_name in plug_names:
                 return dir_
 
@@ -302,7 +302,7 @@ class __PluginManager(object):
         global PLUGIN_EXTENSION
         if plugin_name in self._active_plugins:
             return
-        for dir_name, plugin_list in self._plugins_by_dir.items():
+        for dir_name, plugin_list in list(self._plugins_by_dir.items()):
             if plugin_name in plugin_list:
                 ext = PLUGIN_EXTENSION
                 plugin_filename = os.path.join(dir_name, plugin_name)
@@ -339,7 +339,7 @@ class __PluginManager(object):
                             plugin_name)
 
     def load_all(self):
-        for dir, pl in self._plugins_by_dir.items():
+        for dir, pl in list(self._plugins_by_dir.items()):
             #Copy the list because may be we REMOVE item while iterate!
             found_plugins_aux = copy.copy(pl)
             for plugin_name in found_plugins_aux:

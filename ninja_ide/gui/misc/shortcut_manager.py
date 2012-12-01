@@ -298,7 +298,7 @@ class ShortcutConfiguration(QWidget):
 
     def _load_defaults_shortcuts(self):
         self.result_widget.clear()
-        for name, action in resources.SHORTCUTS.iteritems():
+        for name, action in list(resources.SHORTCUTS.items()):
             shortcut_action = action
             #populate the tree widget
             tree_data = [self.shortcuts_text[name],

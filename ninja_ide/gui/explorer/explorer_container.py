@@ -396,7 +396,7 @@ class __ExplorerContainer(QTabWidget):
     def find_most_old_open(self):
         recent_project_list = QSettings().value('recentProjects', {})
         listFounder = []
-        for recent_project_path, content in recent_project_list.items():
+        for recent_project_path, content in list(recent_project_list.items()):
             listFounder.append((recent_project_path, int(
                 content["lastopen"].toString("yyyyMMddHHmmzzz"))))
         listFounder = sorted(listFounder, key=lambda date: listFounder[1],

@@ -96,7 +96,7 @@ class FileEventCallback(object):
                 pass
 
             observed = set(current)
-            for name, snap_stat in snapshot.items():
+            for name, snap_stat in list(snapshot.items()):
                 filename = os.path.join(path, name)
                 if name in observed:
 
@@ -211,7 +211,7 @@ class ThreadedFSWatcher(Thread):
                     full_filename = os.path.join(self._watch_path, afile)
                     result_stack.setdefault(full_filename,
                                          []).append(ACTIONS.get(action))
-            keys = result_stack.keys()
+            keys = list(result_stack.keys())
             while len(keys):
                 key = keys.pop(0)
                 event = result_stack.pop(key)
