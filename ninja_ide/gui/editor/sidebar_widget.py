@@ -55,6 +55,7 @@ class SidebarWidget(QWidget):
         self._bookmarks = []
         self._pep8Lines = []
         self._errorsLines = []
+        self._migrationLines = []
 
     def update_area(self):
         maxLine = math.ceil(math.log10(self.edit.blockCount()))
@@ -74,6 +75,9 @@ class SidebarWidget(QWidget):
 
     def static_errors_lines(self, lines):
         self._errorsLines = lines
+
+    def migration_lines(self, lines):
+        self._migrationLines = lines
 
     def code_folding_event(self, lineNumber):
         if self._is_folded(lineNumber):
@@ -184,6 +188,8 @@ class SidebarWidget(QWidget):
             resources.COLOR_SCHEME['pep8-underline'])
         errorcolor = resources.CUSTOM_SCHEME.get('error-underline',
             resources.COLOR_SCHEME['error-underline'])
+        migrationcolor = resources.CUSTOM_SCHEME.get('migration-underline',
+            resources.COLOR_SCHEME['migration-underline'])
         painter.fillRect(self.rect(), QColor(background))
 
         block = self.edit.firstVisibleBlock()
@@ -212,6 +218,14 @@ class SidebarWidget(QWidget):
             elif settings.FIND_ERRORS and \
                  ((line_count - 1) in self._errorsLines):
                 painter.setPen(QColor(errorcolor))
+                font = painter.font()
+                font.setItalic(True)
+                font.setUnderline(True)
+                painter.setFont(font)
+                error = True
+            elif settings.SHOW_MIGRATION_TIPS and \
+                 ((line_count - 1) in self._migrationLines):
+                painter.setPen(QColor(migrationcolor))
                 font = painter.font()
                 font.setItalic(True)
                 font.setUnderline(True)

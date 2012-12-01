@@ -257,6 +257,10 @@ class __IDE(QMainWindow):
             self._dont_show_start_page_again)
         self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
             self.status.handle_tab_changed)
+        self.connect(self.mainContainer, SIGNAL("updateFileMetadata(QString)"),
+            self.actions.update_migration_tips)
+        self.connect(self.mainContainer, SIGNAL("migrationAnalyzed()"),
+            self.actions.update_migration_tips)
         # Update symbols
         self.connect(self.mainContainer, SIGNAL("updateLocator(QString)"),
             self.status.explore_file_code)
