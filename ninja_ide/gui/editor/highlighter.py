@@ -109,11 +109,12 @@ class Highlighter(QSyntaxHighlighter):
     braces = ['\\(', '\\)', '\\{', '\\}', '\\[', '\\]']
 
     def __init__(self, document, lang=None, scheme=None,
-      errors=None, pep8=None):
+      errors=None, pep8=None, migration=None):
         QSyntaxHighlighter.__init__(self, document)
         self.highlight_function = self.realtime_highlight
         self.errors = errors
         self.pep8 = pep8
+        self.migration = migration
         self.selected_word_lines = []
         self.visible_limits = (0, 50)
         self._styles = {}
@@ -250,6 +251,17 @@ class Highlighter(QSyntaxHighlighter):
             QTextCharFormat.WaveUnderline)
         return char_format
 
+    def __highlight_migration(self, char_format, user_data):
+        """Highlight the lines with lint errors."""
+        user_data.error = True
+        char_format = char_format.toCharFormat()
+        char_format.setUnderlineColor(QColor(
+            resources.CUSTOM_SCHEME.get('migration-underline',
+                resources.COLOR_SCHEME['migration-underline'])))
+        char_format.setUnderlineStyle(
+            QTextCharFormat.WaveUnderline)
+        return char_format
+
     def highlightBlock(self, text):
         """Apply syntax highlighting to the given block of text."""
         self.highlight_function(text)
@@ -311,6 +323,9 @@ class Highlighter(QSyntaxHighlighter):
             highlight_errors = self.__highlight_lint
         elif self.pep8 and (block_number in self.pep8.pep8checks):
             highlight_errors = self.__highlight_pep8
+        elif self.migration and (
+             block_number in self.migration.migration_data):
+            highlight_errors = self.__highlight_migration
 
         char_format = block.charFormat()
         char_format = highlight_errors(char_format, user_data)
@@ -362,6 +377,9 @@ class Highlighter(QSyntaxHighlighter):
             highlight_errors = self.__highlight_lint
         elif self.pep8 and (block_number in self.pep8.pep8checks):
             highlight_errors = self.__highlight_pep8
+        elif self.migration and (
+             block_number in self.migration.migration_data):
+            highlight_errors = self.__highlight_migration
 
         char_format = block.charFormat()
         char_format = highlight_errors(char_format, user_data)

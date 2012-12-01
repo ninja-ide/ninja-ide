@@ -78,6 +78,7 @@ class __MainContainer(QSplitter):
     newFileOpened(QString)
     enabledFollowMode(bool)
     recentTabsModified(QStringList)
+    migrationAnalyzed()
     """
 ###############################################################################
 
@@ -300,6 +301,8 @@ class __MainContainer(QSplitter):
             self._hide_icon_tab_indicator)
         self.connect(editorWidget, SIGNAL("findOcurrences(QString)"),
             self._find_occurrences)
+        self.connect(editorWidget, SIGNAL("migrationAnalyzed()"),
+            lambda: self.emit(SIGNAL("migrationAnalyzed()")))
         #Cursor position changed
         self.connect(editorWidget, SIGNAL("cursorPositionChange(int, int)"),
             self._cursor_position_changed)

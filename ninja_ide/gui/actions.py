@@ -844,6 +844,14 @@ class __Actions(QObject):
                 self.ide.explorer.update_errors(
                     editorWidget.errors, editorWidget.pep8)
 
+    def update_migration_tips(self):
+        """Update the migration tips in the Explorer."""
+        # This should be refactored with the new definition of singals in
+        # the MainContainer
+        editorWidget = self.ide.mainContainer.get_actual_editor()
+        if editorWidget:
+            self.ide.explorer.update_migration(editorWidget.migration)
+
     def navigate_code_history(self, val, op):
         """Navigate the code history."""
         self.__operations[op](val)
