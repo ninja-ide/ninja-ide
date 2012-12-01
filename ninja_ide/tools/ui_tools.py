@@ -58,6 +58,7 @@ from PyQt4.QtCore import QTimeLine
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
+from ninja_ide.core.file_manager import NinjaIOException
 from ninja_ide.tools import json_manager
 
 
@@ -168,9 +169,13 @@ class ThreadProjectExplore(QThread):
             folderStructure = file_manager.open_project_with_extensions(
                 self._folder_path, self._extensions)
         else:
-            folderStructure = file_manager.open_project(self._folder_path)
+            try:
+                folderStructure = file_manager.open_project(self._folder_path)
+            except NinjaIOException:
+                pass  # There is not much we can do at this point
 
-        if folderStructure.get(self._folder_path, [None, None])[1] is not None:
+        if folderStructure and (folderStructure.get(self._folder_path,
+                                                [None, None])[1] is not None):
             folderStructure[self._folder_path][1].sort()
             values = (self._folder_path, self._item, folderStructure)
             self.emit(SIGNAL("folderDataRefreshed(PyQt_PyObject)"), values)
