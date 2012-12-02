@@ -187,6 +187,12 @@ class __IDE(QMainWindow):
         self.connect(self.mainContainer,
             SIGNAL("recentTabsModified(QStringList)"),
             self._menuFile.update_recent_files)
+        self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
+            self.actions.update_migration_tips)
+        self.connect(self.mainContainer, SIGNAL("updateFileMetadata(QString)"),
+            self.actions.update_migration_tips)
+        self.connect(self.mainContainer, SIGNAL("migrationAnalyzed()"),
+            self.actions.update_migration_tips)
 
     def _process_connection(self):
         connection = self.s_listener.nextPendingConnection()

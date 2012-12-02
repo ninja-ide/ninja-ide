@@ -229,7 +229,7 @@ class CodeCompletion(object):
             data = completer.get_all_completions(to_complete, imports)
             __attrib = [d for d in data.get('attributes', []) if d[:2] == '__']
             if __attrib:
-                map(lambda i: data['attributes'].remove(i), __attrib)
+                list(map(lambda i: data['attributes'].remove(i), __attrib))
                 data['attributes'] += __attrib
             if data:
                 return data

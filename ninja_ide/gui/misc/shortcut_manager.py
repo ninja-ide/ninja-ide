@@ -300,8 +300,8 @@ class ShortcutConfiguration(QWidget):
         #clean custom shortcuts and UI widget
         resources.clean_custom_shortcuts()
         self.result_widget.clear()
-        for action in resources.SHORTCUTS:
-            shortcut_action = resources.get_shortcut(action)
+        for name, action in list(resources.SHORTCUTS.items()):
+            shortcut_action = action
             #populate the tree widget
             tree_data = [self.shortcuts_text[action],
                 shortcut_action.toString(QKeySequence.NativeText), action]

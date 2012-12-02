@@ -202,6 +202,7 @@ class ProjectData(QWidget):
         self.checkUseTabs.setChecked(self._parent._item.useTabs)
         grid.addWidget(self.checkUseTabs, 6, 2)
 
+
 class ProjectExecution(QWidget):
 
     def __init__(self, parent):

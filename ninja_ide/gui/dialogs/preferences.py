@@ -452,10 +452,12 @@ class InterfaceTab(QWidget):
         self._checkSymbols = QCheckBox(self.tr("Show Symbols List."))
         self._checkWebInspetor = QCheckBox(self.tr("Show Web Inspector."))
         self._checkFileErrors = QCheckBox(self.tr("Show File Errors."))
+        self._checkMigrationTips = QCheckBox(self.tr("Show Migration Tips."))
         vboxExplorer.addWidget(self._checkProjectExplorer)
         vboxExplorer.addWidget(self._checkSymbols)
         vboxExplorer.addWidget(self._checkWebInspetor)
         vboxExplorer.addWidget(self._checkFileErrors)
+        vboxExplorer.addWidget(self._checkMigrationTips)
         #GUI
         self._btnCentralRotate = QPushButton(
             QIcon(resources.IMAGES['splitCPosition']), '')
@@ -525,6 +527,7 @@ class InterfaceTab(QWidget):
         self._checkSymbols.setChecked(settings.SHOW_SYMBOLS_LIST)
         self._checkWebInspetor.setChecked(settings.SHOW_WEB_INSPECTOR)
         self._checkFileErrors.setChecked(settings.SHOW_ERRORS_LIST)
+        self._checkMigrationTips.setChecked(settings.SHOW_MIGRATION_LIST)
         #ui layout
         self._btnCentralRotate.setChecked(bin(settings.UI_LAYOUT)[-1] == '1')
         self._btnPanelsRotate.setChecked(bin(
@@ -710,6 +713,13 @@ class InterfaceTab(QWidget):
             explorer_container.ExplorerContainer().add_tab_errors()
         else:
             explorer_container.ExplorerContainer().remove_tab_errors()
+        qsettings.setValue('showMigrationList',
+            self._checkMigrationTips.isChecked())
+        settings.SHOW_MIGRATION_LIST = self._checkMigrationTips.isChecked()
+        if settings.SHOW_MIGRATION_LIST:
+            explorer_container.ExplorerContainer().add_tab_migration()
+        else:
+            explorer_container.ExplorerContainer().remove_tab_migration()
         #ui layout
         uiLayout = 1 if self._btnCentralRotate.isChecked() else 0
         uiLayout += 2 if self._btnPanelsRotate.isChecked() else 0
@@ -994,32 +1004,37 @@ class EditorConfiguration(QWidget):
         self._checkStyleOnLine = QCheckBox(
             self.tr("Show Tool tip information about the PEP8 errors."))
         self._checkStyleOnLine.setChecked(settings.CHECK_HIGHLIGHT_LINE)
-        self.connect(self._checkStyleOnLine, SIGNAL("	stateChanged(int)"),
+        self.connect(self._checkStyleOnLine, SIGNAL("stateChanged(int)"),
             self._enable_check_inline)
         grid.addWidget(self._checkStyleOnLine, 7, 2, 1, 1, Qt.AlignTop)
+        # Python3 Migration
+        self._showMigrationTips = QCheckBox(
+            self.tr("Show Python3 Migration Tips."))
+        self._showMigrationTips.setChecked(settings.SHOW_MIGRATION_TIPS)
+        grid.addWidget(self._showMigrationTips, 8, 1, 1, 2, Qt.AlignTop)
         #Center On Scroll
         self._checkCenterScroll = QCheckBox(
             self.tr("Center on Scroll."))
         self._checkCenterScroll.setChecked(settings.CENTER_ON_SCROLL)
-        grid.addWidget(self._checkCenterScroll, 8, 1, 1, 2,
+        grid.addWidget(self._checkCenterScroll, 9, 1, 1, 2,
             alignment=Qt.AlignTop)
         #Remove Trailing Spaces add Last empty line automatically
         self._checkTrailing = QCheckBox(self.tr(
             "Remove Trailing Spaces and\nadd Last Line automatically."))
         self._checkTrailing.setChecked(settings.REMOVE_TRAILING_SPACES)
-        grid.addWidget(self._checkTrailing, 9, 1, 1, 2, alignment=Qt.AlignTop)
+        grid.addWidget(self._checkTrailing, 10, 1, 1, 2, alignment=Qt.AlignTop)
         #Show Tabs and Spaces
         self._checkShowSpaces = QCheckBox(self.tr("Show Tabs and Spaces."))
         self._checkShowSpaces.setChecked(settings.SHOW_TABS_AND_SPACES)
-        grid.addWidget(self._checkShowSpaces, 10, 1, 1, 2,
+        grid.addWidget(self._checkShowSpaces, 11, 1, 1, 2,
             alignment=Qt.AlignTop)
         self._allowWordWrap = QCheckBox(self.tr("Allow Word Wrap."))
         self._allowWordWrap.setChecked(settings.ALLOW_WORD_WRAP)
-        grid.addWidget(self._allowWordWrap, 11, 1, 1, 2, alignment=Qt.AlignTop)
+        grid.addWidget(self._allowWordWrap, 12, 1, 1, 2, alignment=Qt.AlignTop)
         self._checkForDocstrings = QCheckBox(
             self.tr("Check for Docstrings in Classes and Functions."))
         self._checkForDocstrings.setChecked(settings.CHECK_FOR_DOCSTRINGS)
-        grid.addWidget(self._checkForDocstrings, 12, 1, 1, 2,
+        grid.addWidget(self._checkForDocstrings, 13, 1, 1, 2,
             alignment=Qt.AlignTop)
 
     def _enable_check_inline(self, val):
@@ -1064,6 +1079,9 @@ class EditorConfiguration(QWidget):
         settings.ERRORS_HIGHLIGHT_LINE = self._showErrorsOnLine.isChecked()
         qsettings.setValue('checkStyle', self._checkStyle.isChecked())
         settings.CHECK_STYLE = self._checkStyle.isChecked()
+        qsettings.setValue('showMigrationTips',
+            self._showMigrationTips.isChecked())
+        settings.SHOW_MIGRATION_TIPS = self._showMigrationTips.isChecked()
         qsettings.setValue('checkStyleInline',
             self._checkStyleOnLine.isChecked())
         settings.CHECK_HIGHLIGHT_LINE = self._checkStyleOnLine.isChecked()

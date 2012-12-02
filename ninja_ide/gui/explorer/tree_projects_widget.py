@@ -681,7 +681,7 @@ class TreeProjectsWidget(QTreeWidget):
     def get_project_by_name(self, projectName):
         """Return the name of the project item based on the project name."""
         # Return the item or None if it's not found
-        for item in self._projects.values():
+        for item in list(self._projects.values()):
             if item.name == projectName:
                 return item
 
@@ -704,14 +704,14 @@ class TreeProjectsWidget(QTreeWidget):
         return rootItem.lang()
 
     def get_open_projects(self):
-        return self._projects.values()
+        return list(self._projects.values())
 
     def is_open(self, path):
-        return len([True for item in self._projects.values()
+        return len([True for item in list(self._projects.values())
             if item.path == path]) != 0
 
     def _set_current_project(self, path):
-        for item in self._projects.values():
+        for item in list(self._projects.values()):
             if item.path == path:
                 self.set_default_project(item)
                 break
