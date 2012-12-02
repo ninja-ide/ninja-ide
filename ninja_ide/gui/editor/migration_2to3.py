@@ -49,7 +49,7 @@ class MigrationTo3(QThread):
             lines_to_add = []
             parsing_adds = False
             try:
-                output = subprocess.check_output(['2to333', self._path])
+                output = subprocess.check_output(['2to3', self._path])
                 output = output.split('\n')
             except OSError:
                 settings.VALID_2TO3 = False
