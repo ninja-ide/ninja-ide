@@ -89,7 +89,7 @@ class QNotifier(QThread):
                 e_type, e_path = self.event_queue.pop(0)
                 e_dict.setdefault(e_path, []).append(e_type)
 
-            keys = e_dict.keys()
+            keys = list(e_dict.keys())
             while len(keys):
                 key = keys.pop(0)
                 event = e_dict.pop(key)

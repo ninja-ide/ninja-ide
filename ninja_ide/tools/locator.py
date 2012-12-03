@@ -21,7 +21,7 @@ import re
 try:
     import Queue
 except:
-    import queue as Queue
+    import queue as Queue  # lint:ok
 
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QLabel
@@ -55,6 +55,13 @@ from ninja_ide.tools import json_manager
 
 from ninja_ide.tools.logger import NinjaLogger
 
+
+try:
+    # For Python2
+    str = unicode  # lint:ok
+except NameError:
+    # We are in Python3
+    pass
 
 logger = NinjaLogger('ninja_ide.tools.locator')
 
@@ -115,7 +122,7 @@ class Locator(QObject):
 class ResultItem(object):
 
     def __init__(self, type='', name='', path='', lineno=-1):
-        if isinstance(name, basestring):
+        if isinstance(name, str):
             self.type = type
             self.name = name
             self.path = path
