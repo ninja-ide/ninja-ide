@@ -56,13 +56,6 @@ from ninja_ide.tools import json_manager
 from ninja_ide.tools.logger import NinjaLogger
 
 
-try:
-    # For Python2
-    str = unicode  # lint:ok
-except NameError:
-    # We are in Python3
-    pass
-
 logger = NinjaLogger('ninja_ide.tools.locator')
 
 mapping_locations = {}
@@ -122,7 +115,7 @@ class Locator(QObject):
 class ResultItem(object):
 
     def __init__(self, type='', name='', path='', lineno=-1):
-        if isinstance(name, str):
+        if name:
             self.type = type
             self.name = name
             self.path = path
