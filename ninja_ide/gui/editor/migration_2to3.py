@@ -34,7 +34,7 @@ class MigrationTo3(QThread):
         self.migration_data = {}
 
     def check_style(self):
-        if not self.isRunning():
+        if not self.isRunning() and settings.VALID_2TO3:
             self._path = self._editor.ID
             self.start()
 
@@ -48,8 +48,12 @@ class MigrationTo3(QThread):
             lines_to_remove = []
             lines_to_add = []
             parsing_adds = False
-            output = subprocess.check_output(['2to3', self._path])
-            output = output.split('\n')
+            try:
+                output = subprocess.check_output(['2to3', self._path])
+                output = output.split('\n')
+            except OSError:
+                settings.VALID_2TO3 = False
+                return
             for line in output[2:]:
                 if line.startswith('+'):
                     lines_to_add.append(line)
