@@ -435,18 +435,31 @@ class __IDE(QMainWindow):
             txt = '\n'.join(unsaved_files)
             val = QMessageBox.question(self,
                 self.tr("Some changes were not saved"),
-                self.tr("%s\n\nDo you want to exit anyway?" % txt),
-                QMessageBox.Yes, QMessageBox.No)
-            if val == QMessageBox.No:
+                self.tr("%s\n\nDo you want to save them?" % txt),
+                QMessageBox.Yes, QMessageBox.No, QMessageBox.Cancel)
+            if val == QMessageBox.No:        
+                QApplication.instance().setCursorFlashTime(cursor_flash_time)
+                self.emit(SIGNAL("goingDown()"))
+                self.save_settings()
+                #TODO: dont repeat yourself
+                completion_daemon.shutdown_daemon()
+                #close python documentation server (if running)
+                self.mainContainer.close_python_doc()
+                #Shutdown PluginManager
+                self.plugin_manager.shutdown()
+            if val == QMessageBox.Yes:
+                #Saves all open files
+                self.mainContainer.save_all()
+                QApplication.instance().setCursorFlashTime(cursor_flash_time)
+                self.emit(SIGNAL("goingDown()"))
+                self.save_settings()
+                completion_daemon.shutdown_daemon()
+                #close python documentation server (if running)
+                self.mainContainer.close_python_doc()
+                #Shutdown PluginManager
+                self.plugin_manager.shutdown()
+            if val == QMessageBox.Cancel:
                 event.ignore()
-        QApplication.instance().setCursorFlashTime(cursor_flash_time)
-        self.emit(SIGNAL("goingDown()"))
-        self.save_settings()
-        completion_daemon.shutdown_daemon()
-        #close python documentation server (if running)
-        self.mainContainer.close_python_doc()
-        #Shutdown PluginManager
-        self.plugin_manager.shutdown()
 
     def notify_plugin_errors(self):
         errors = self.plugin_manager.errors
