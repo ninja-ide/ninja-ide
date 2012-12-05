@@ -84,9 +84,9 @@ class MenuView(QObject):
         menuView.addSeparator()
         #Zoom
         zoomInAction = menuView.addAction(QIcon(resources.IMAGES['zoom-in']),
-            self.trUtf8("Zoom &In (Shift+Wheel-Up)"))
+            self.trUtf8("Zoom &In (Ctrl+Wheel-Up)"))
         zoomOutAction = menuView.addAction(QIcon(resources.IMAGES['zoom-out']),
-            self.trUtf8("Zoom &Out (Shift+Wheel-Down)"))
+            self.trUtf8("Zoom &Out (Ctrl+Wheel-Down)"))
         menuView.addSeparator()
         fadeInAction = menuView.addAction(
             self.trUtf8("Fade In (Alt+Wheel-Up)"))
