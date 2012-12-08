@@ -429,26 +429,19 @@ class __IDE(QMainWindow):
     def closeEvent(self, event):
         if self.s_listener:
             self.s_listener.close()
-        if settings.CONFIRM_EXIT and \
-        self.mainContainer.check_for_unsaved_tabs():
+        if(settings.CONFIRM_EXIT and 
+                self.mainContainer.check_for_unsaved_tabs()):
             unsaved_files = self.mainContainer.get_unsaved_files()
             txt = '\n'.join(unsaved_files)
             val = QMessageBox.question(self,
                 self.tr("Some changes were not saved"),
                 self.tr("%s\n\nDo you want to save them?" % txt),
                 QMessageBox.Yes, QMessageBox.No, QMessageBox.Cancel)
-            if val == QMessageBox.No:        
-                self._close()
             if val == QMessageBox.Yes:
                 #Saves all open files
                 self.mainContainer.save_all()
-                self._close()
             if val == QMessageBox.Cancel:
                 event.ignore()
-        else:
-            self._close()
-
-    def _close(self):
         QApplication.instance().setCursorFlashTime(cursor_flash_time)
         self.emit(SIGNAL("goingDown()"))
         self.save_settings()
@@ -457,7 +450,6 @@ class __IDE(QMainWindow):
         self.mainContainer.close_python_doc()
         #Shutdown PluginManager
         self.plugin_manager.shutdown()
-
 
     def notify_plugin_errors(self):
         errors = self.plugin_manager.errors
