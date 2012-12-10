@@ -454,9 +454,6 @@ def load_syntax(syntax, context=None):
     scanners = {}
     for part_name, part_scanner in list(syntax.get("scanner", {}).items()):
         scanners[part_name] = Scanner(part_scanner)
-    print '\n\n'
-    print repr(scanners)
-    print '\n\n'
 
     formats = []
     for fname, fstyle in list(syntax.get("formats", {}).items()):
