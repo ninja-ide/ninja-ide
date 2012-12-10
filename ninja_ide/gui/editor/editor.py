@@ -53,6 +53,7 @@ from ninja_ide.core import file_manager
 from ninja_ide.tools.completion import completer_widget
 from ninja_ide.gui.main_panel import itab_item
 from ninja_ide.gui.editor import highlighter
+from ninja_ide.gui.editor import syntax_highlighter
 from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.editor import minimap
 from ninja_ide.gui.editor import pep8_checker
@@ -70,6 +71,22 @@ if sys.version_info.major == 3:
     python3 = True
 else:
     python3 = False
+
+
+scheme = {
+  "syntax_comment": dict(color="#80FF80", italic=True),
+  "syntax_string": "#B369BF",
+  "syntax_builtin": "#ee8859",
+  "syntax_keyword": ("#6EC7D7", True),
+  "syntax_definition": ("#F6EC2A", True),
+  "syntax_braces": "#FFFFFF",
+  "syntax_number": "#F8A008",
+  "syntax_proper_object": "#6EC7D7",
+  "syntax_operators": "#FFFFFF",
+  "syntax_spaces": "#7b7b7b",
+  "syntax_highlight_word": dict(color="red", background="blue"),
+}
+from ninja_ide.gui.editor import python_syntax
 
 
 class Editor(QPlainTextEdit, itab_item.ITabItem):
@@ -348,26 +365,26 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def restyle(self, syntaxLang=None):
         self.apply_editor_style()
-        if self.highlighter is None or isinstance(self.highlighter,
-           highlighter.EmpyHighlighter):
-            self.highlighter = highlighter.Highlighter(self.document(),
-                None, resources.CUSTOM_SCHEME, self.errors, self.pep8,
-                self.migration)
-        if not syntaxLang:
-            ext = file_manager.get_file_extension(self.ID)
-            self.highlighter.apply_highlight(
-                settings.EXTENSIONS.get(ext, 'python'),
-                resources.CUSTOM_SCHEME)
-            if self._mini:
-                self._mini.highlighter.apply_highlight(
-                    settings.EXTENSIONS.get(ext, 'python'),
-                    resources.CUSTOM_SCHEME)
-        else:
-            self.highlighter.apply_highlight(
-                syntaxLang, resources.CUSTOM_SCHEME)
-            if self._mini:
-                self._mini.highlighter.apply_highlight(
-                    syntaxLang, resources.CUSTOM_SCHEME)
+        #if self.highlighter is None or isinstance(self.highlighter,
+           #highlighter.EmpyHighlighter):
+            #self.highlighter = highlighter.Highlighter(self.document(),
+                #None, resources.CUSTOM_SCHEME, self.errors, self.pep8,
+                #self.migration)
+        #if not syntaxLang:
+            #ext = file_manager.get_file_extension(self.ID)
+            #self.highlighter.apply_highlight(
+                #settings.EXTENSIONS.get(ext, 'python'),
+                #resources.CUSTOM_SCHEME)
+            #if self._mini:
+                #self._mini.highlighter.apply_highlight(
+                    #settings.EXTENSIONS.get(ext, 'python'),
+                    #resources.CUSTOM_SCHEME)
+        #else:
+            #self.highlighter.apply_highlight(
+                #syntaxLang, resources.CUSTOM_SCHEME)
+            #if self._mini:
+                #self._mini.highlighter.apply_highlight(
+                    #syntaxLang, resources.CUSTOM_SCHEME)
 
     def apply_editor_style(self):
         css = 'QPlainTextEdit {color: %s; background-color: %s;' \
@@ -391,7 +408,17 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def register_syntax(self, lang='', syntax=None):
         self.lang = settings.EXTENSIONS.get(lang, 'python')
-        if lang in settings.EXTENSIONS:
+        if self.lang == 'python':
+            parts_scanner, code_scanner, formats = \
+                syntax_highlighter.load_syntax(
+                    python_syntax.syntax, scheme)
+            self.highlighter = syntax_highlighter.SyntaxHighlighter(
+                self.document(),
+                parts_scanner, code_scanner, formats,
+                errors=self.errors, pep8=self.pep8, migration=self.migration)
+            self._mini.highlighter = syntax_highlighter.SyntaxHighlighter(
+                self._mini.document(), parts_scanner, code_scanner, formats)
+        elif lang in settings.EXTENSIONS:
             self.highlighter = highlighter.Highlighter(self.document(),
                 self.lang, resources.CUSTOM_SCHEME, self.errors, self.pep8,
                 self.migration)
@@ -1182,7 +1209,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.highlighter.rehighlight_lines(lines, False)
 
     def async_highlight(self):
-        self.highlighter.async_highlight()
+        pass
+        #self.highlighter.async_highlight()
 
 
 def create_editor(fileName='', project=None, syntax=None,
@@ -1199,9 +1227,5 @@ def create_editor(fileName='', project=None, syntax=None,
             editor.register_syntax('py')
         else:
             editor.register_syntax(ext)
-
-    if use_open_highlight:
-        editor.highlighter.highlight_function = \
-            editor.highlighter.open_highlight
 
     return editor

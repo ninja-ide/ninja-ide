@@ -37,10 +37,9 @@ def is_running():
 def send_data(socket, filenames, projects_path, linenos):
     global file_delimiter
     global project_delimiter
-    file_with_nro = map(lambda f: '%s:%i' % (f[0], f[1] - 1),
-        zip(filenames, linenos))
-    file_without_nro = map(lambda f: '%s:%i' % (f, 0),
-        filenames[len(linenos):])
+    file_with_nro = ['%s:%i' % (f[0], f[1] - 1)
+        for f in zip(filenames, linenos)]
+    file_without_nro = ['%s:%i' % (f, 0) for f in filenames[len(linenos):]]
     filenames = file_with_nro + file_without_nro
     files = file_delimiter.join(filenames)
     projects = project_delimiter.join(projects_path)
