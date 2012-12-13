@@ -416,8 +416,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 self.document(),
                 parts_scanner, code_scanner, formats,
                 errors=self.errors, pep8=self.pep8, migration=self.migration)
-            self._mini.highlighter = syntax_highlighter.SyntaxHighlighter(
-                self._mini.document(), parts_scanner, code_scanner, formats)
+            if self._mini:
+                self._mini.highlighter = syntax_highlighter.SyntaxHighlighter(
+                    self._mini.document(), parts_scanner,
+                    code_scanner, formats)
         elif lang in settings.EXTENSIONS:
             self.highlighter = highlighter.Highlighter(self.document(),
                 self.lang, resources.CUSTOM_SCHEME, self.errors, self.pep8,
