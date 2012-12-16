@@ -14,10 +14,33 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
-#This file is not for NINJA-IDE internal use, but to execute it using
-#the System Python and obtain the correct sys.path for frozen applications
+
+from __future__ import absolute_import
+from __future__ import unicode_literals
 
 import sys
 
+# Import this before Qt to set the correct API
+import ninja_ide  # lint:ok
 
-print(sys.path)
+from PyQt4.QtGui import QApplication
+
+from ninja_ide.tools import locator
+from ninja_tests import BaseTest
+
+
+class LocatorTestCase(BaseTest):
+
+    def setUp(self):
+        super(LocatorTestCase, self).setUp()
+        self.app = QApplication(sys.argv)
+        self.locator = locator.Locator()
+
+    def test_navigate_to(self):
+        pass
+
+    def test_load_results(self):
+        pass
+
+    def test_get_classes_from_project(self):
+        pass

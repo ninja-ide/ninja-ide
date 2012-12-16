@@ -53,10 +53,12 @@ from ninja_ide.core import file_manager
 from ninja_ide.tools.completion import completer_widget
 from ninja_ide.gui.main_panel import itab_item
 from ninja_ide.gui.editor import highlighter
+from ninja_ide.gui.editor import syntax_highlighter
 from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.editor import minimap
 from ninja_ide.gui.editor import pep8_checker
 from ninja_ide.gui.editor import errors_checker
+from ninja_ide.gui.editor import migration_2to3
 from ninja_ide.gui.editor import sidebar_widget
 
 from ninja_ide.tools.logger import NinjaLogger
@@ -69,6 +71,22 @@ if sys.version_info.major == 3:
     python3 = True
 else:
     python3 = False
+
+
+scheme = {
+  "syntax_comment": dict(color="#80FF80", italic=True),
+  "syntax_string": "#B369BF",
+  "syntax_builtin": "#ee8859",
+  "syntax_keyword": ("#6EC7D7", True),
+  "syntax_definition": ("#F6EC2A", True),
+  "syntax_braces": "#FFFFFF",
+  "syntax_number": "#F8A008",
+  "syntax_proper_object": "#6EC7D7",
+  "syntax_operators": "#FFFFFF",
+  "syntax_spaces": "#7b7b7b",
+  "syntax_highlight_word": dict(color="red", background="blue"),
+}
+from ninja_ide.gui.editor import python_syntax
 
 
 class Editor(QPlainTextEdit, itab_item.ITabItem):
@@ -87,6 +105,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     cleanDocument(QPlainTextEdit)
     findOcurrences(QString)
     cursorPositionChange(int, int)    #row, col
+    migrationAnalyzed()
     """
 ###############################################################################
 
@@ -104,6 +123,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self._sidebarWidget._bookmarks = settings.BOOKMARKS[filename]
         self.pep8 = pep8_checker.Pep8Checker(self)
         self.errors = errors_checker.ErrorsChecker(self)
+        self.migration = migration_2to3.MigrationTo3(self)
 
         self.textModified = False
         self.newDocument = True
@@ -160,6 +180,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.connect(self, SIGNAL("cursorPositionChanged()"),
             self.highlight_current_line)
         self.connect(self.pep8, SIGNAL("finished()"), self.show_pep8_errors)
+        self.connect(self.migration, SIGNAL("finished()"),
+            self.show_migration_info)
         self.connect(self.errors, SIGNAL("finished()"),
             self.show_static_errors)
         self.connect(self, SIGNAL("blockCountChanged(int)"),
@@ -217,9 +239,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         super(Editor, self).set_id(id_)
         if self._mini:
             self._mini.set_code(self.toPlainText())
+        if settings.CHECK_STYLE:
+            self.pep8.check_style()
+        if settings.SHOW_MIGRATION_TIPS:
+            self.migration.check_style()
         if not python3:
-            if settings.CHECK_STYLE:
-                self.pep8.check_style()
             if settings.FIND_ERRORS:
                 self.errors.check_errors()
 
@@ -228,7 +252,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             if line < blockModified:
                 return line
             return line + diference
-        return map(_inner_increment, lines)
+        return list(map(_inner_increment, lines))
 
     def _add_line_increment_for_dict(self, data, blockModified, diference):
         def _inner_increment(line):
@@ -238,12 +262,13 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             summary = data.pop(line)
             data[newLine] = summary
             return newLine
-        map(_inner_increment, data.keys())
+        list(map(_inner_increment, list(data.keys())))
         return data
 
     def _update_file_metadata(self, val):
         """Update the info of bookmarks, breakpoint, pep8 and static errors."""
         if (self.pep8.pep8checks or self.errors.errorsSummary or
+           self.migration.migration_data or
            self._sidebarWidget._bookmarks or
            self._sidebarWidget._breakpoints or
            self._sidebarWidget._foldedBlocks):
@@ -256,12 +281,19 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             if self.pep8.pep8checks:
                 self.pep8.pep8checks = self._add_line_increment_for_dict(
                     self.pep8.pep8checks, blockNumber, diference)
-                self._sidebarWidget._pep8Lines = self.pep8.pep8checks.keys()
+                self._sidebarWidget._pep8Lines = list(
+                    self.pep8.pep8checks.keys())
+            if self.migration.migration_data:
+                self.migration.migration_data = \
+                    self._add_line_increment_for_dict(
+                        self.migration.migration_data, blockNumber, diference)
+                self._sidebarWidget._migrationLines = list(
+                    self.migration.migration_data.keys())
             if self.errors.errorsSummary:
                 self.errors.errorsSummary = self._add_line_increment_for_dict(
                     self.errors.errorsSummary, blockNumber, diference)
-                self._sidebarWidget._errorsLines = \
-                    self.errors.errorsSummary.keys()
+                self._sidebarWidget._errorsLines = list(
+                    self.errors.errorsSummary.keys())
             if self._sidebarWidget._breakpoints and self.ID:
                 self._sidebarWidget._breakpoints = self._add_line_increment(
                     self._sidebarWidget._breakpoints, blockNumber, diference)
@@ -279,11 +311,17 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.highlight_current_line()
 
     def show_pep8_errors(self):
-        self._sidebarWidget.pep8_check_lines(self.pep8.pep8checks.keys())
+        self._sidebarWidget.pep8_check_lines(list(self.pep8.pep8checks.keys()))
         if self.syncDocErrorsSignal:
             self._sync_tab_icon_notification_signal()
         else:
             self.syncDocErrorsSignal = True
+
+    def show_migration_info(self):
+        lines = list(self.migration.migration_data.keys())
+        self._sidebarWidget.migration_lines(lines)
+        self.highlighter.rehighlight_lines(lines)
+        self.emit(SIGNAL("migrationAnalyzed()"))
 
     def hide_pep8_errors(self):
         """Hide the pep8 errors from the sidebar and lines highlighted."""
@@ -294,7 +332,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def show_static_errors(self):
         self._sidebarWidget.static_errors_lines(
-            self.errors.errorsSummary.keys())
+            list(self.errors.errorsSummary.keys()))
         if self.syncDocErrorsSignal:
             self._sync_tab_icon_notification_signal()
         else:
@@ -327,25 +365,26 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def restyle(self, syntaxLang=None):
         self.apply_editor_style()
-        if self.highlighter is None or isinstance(self.highlighter,
-           highlighter.EmpyHighlighter):
-            self.highlighter = highlighter.Highlighter(self.document(),
-                None, resources.CUSTOM_SCHEME, self.errors, self.pep8)
-        if not syntaxLang:
-            ext = file_manager.get_file_extension(self.ID)
-            self.highlighter.apply_highlight(
-                settings.EXTENSIONS.get(ext, 'python'),
-                resources.CUSTOM_SCHEME)
-            if self._mini:
-                self._mini.highlighter.apply_highlight(
-                    settings.EXTENSIONS.get(ext, 'python'),
-                    resources.CUSTOM_SCHEME)
-        else:
-            self.highlighter.apply_highlight(
-                syntaxLang, resources.CUSTOM_SCHEME)
-            if self._mini:
-                self._mini.highlighter.apply_highlight(
-                    syntaxLang, resources.CUSTOM_SCHEME)
+        #if self.highlighter is None or isinstance(self.highlighter,
+           #highlighter.EmpyHighlighter):
+            #self.highlighter = highlighter.Highlighter(self.document(),
+                #None, resources.CUSTOM_SCHEME, self.errors, self.pep8,
+                #self.migration)
+        #if not syntaxLang:
+            #ext = file_manager.get_file_extension(self.ID)
+            #self.highlighter.apply_highlight(
+                #settings.EXTENSIONS.get(ext, 'python'),
+                #resources.CUSTOM_SCHEME)
+            #if self._mini:
+                #self._mini.highlighter.apply_highlight(
+                    #settings.EXTENSIONS.get(ext, 'python'),
+                    #resources.CUSTOM_SCHEME)
+        #else:
+            #self.highlighter.apply_highlight(
+                #syntaxLang, resources.CUSTOM_SCHEME)
+            #if self._mini:
+                #self._mini.highlighter.apply_highlight(
+                    #syntaxLang, resources.CUSTOM_SCHEME)
 
     def apply_editor_style(self):
         css = 'QPlainTextEdit {color: %s; background-color: %s;' \
@@ -369,9 +408,22 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def register_syntax(self, lang='', syntax=None):
         self.lang = settings.EXTENSIONS.get(lang, 'python')
-        if lang in settings.EXTENSIONS:
+        if self.lang == 'python':
+            parts_scanner, code_scanner, formats = \
+                syntax_highlighter.load_syntax(
+                    python_syntax.syntax, scheme)
+            self.highlighter = syntax_highlighter.SyntaxHighlighter(
+                self.document(),
+                parts_scanner, code_scanner, formats,
+                errors=self.errors, pep8=self.pep8, migration=self.migration)
+            if self._mini:
+                self._mini.highlighter = syntax_highlighter.SyntaxHighlighter(
+                    self._mini.document(), parts_scanner,
+                    code_scanner, formats)
+        elif lang in settings.EXTENSIONS:
             self.highlighter = highlighter.Highlighter(self.document(),
-                self.lang, resources.CUSTOM_SCHEME, self.errors, self.pep8)
+                self.lang, resources.CUSTOM_SCHEME, self.errors, self.pep8,
+                self.migration)
             if self._mini:
                 self._mini.highlighter = highlighter.Highlighter(
                     self._mini.document(),
@@ -516,8 +568,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #line where indent_more should start and end
         block = self.document().findBlock(
             cursor.selectionStart())
-        end = self.document().findBlock(
-            cursor.selectionEnd()).next()
+        end = self.document().findBlock(cursor.selectionEnd()).next()
 
         #Start a undo block
         cursor.beginEditBlock()
@@ -543,8 +594,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #line where indent_less should start and end
         block = self.document().findBlock(
             cursor.selectionStart())
-        end = self.document().findBlock(
-            cursor.selectionEnd()).next()
+        end = self.document().findBlock(cursor.selectionEnd()).next()
 
         #Start a undo block
         cursor.beginEditBlock()
@@ -747,7 +797,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         completed.
         """
         text = event.text()
-        if text in settings.BRACES.values():
+        if text in list(settings.BRACES.values()):
             portion = self.__reverse_select_text_portion_from_offset(1, 1)
             brace_open = portion[0]
             brace_close = (len(portion) > 1) and portion[1] or None
@@ -923,6 +973,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 self.errors.errorsSummary[block.blockNumber()])
             QToolTip.showText(self.mapToGlobal(position),
                 message, self)
+        elif settings.SHOW_MIGRATION_TIPS and \
+             block.blockNumber() in self.migration.migration_data:
+            message = self.migration.migration_data[block.blockNumber()][0]
+            QToolTip.showText(self.mapToGlobal(position), message, self)
         elif settings.CHECK_HIGHLIGHT_LINE and \
         (block.blockNumber()) in self.pep8.pep8checks:
             message = '\n'.join(
@@ -1157,7 +1211,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.highlighter.rehighlight_lines(lines, False)
 
     def async_highlight(self):
-        self.highlighter.async_highlight()
+        pass
+        #self.highlighter.async_highlight()
 
 
 def create_editor(fileName='', project=None, syntax=None,
@@ -1174,9 +1229,5 @@ def create_editor(fileName='', project=None, syntax=None,
             editor.register_syntax('py')
         else:
             editor.register_syntax(ext)
-
-    if use_open_highlight:
-        editor.highlighter.highlight_function = \
-            editor.highlighter.open_highlight
 
     return editor

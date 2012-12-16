@@ -55,9 +55,8 @@ def get_indentation(line, indent=settings.INDENT, useTabs=settings.USE_TABS):
         else:
             indentation = ' ' * indent
     elif len(line) > 0 and line[-1] == ',':
-        count = filter(lambda x:
-            (line.count(x) - line.count(closeBraces[x])) % 2 != 0,
-            endCharsForIndent[1:])
+        count = [x for x in endCharsForIndent[1:]
+            if (line.count(x) - line.count(closeBraces[x])) % 2 != 0]
         if count:
             if useTabs:
                 indentation = '\t'

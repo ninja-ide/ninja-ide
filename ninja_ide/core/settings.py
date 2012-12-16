@@ -118,6 +118,8 @@ CHECK_HIGHLIGHT_LINE = True
 CODE_COMPLETION = True
 COMPLETE_DECLARATIONS = True
 HIGHLIGHT_WHOLE_LINE = True
+SHOW_MIGRATION_TIPS = True
+VALID_2TO3 = True
 
 CENTER_ON_SCROLL = True
 
@@ -133,7 +135,7 @@ BOOKMARKS = {}
 # CHECKERS
 ###############################################################################
 
-CHECK_FOR_DOCSTRINGS = False
+CHECK_FOR_DOCSTRINGS = True
 
 
 ###############################################################################
@@ -180,6 +182,7 @@ SHOW_PROJECT_EXPLORER = True
 SHOW_SYMBOLS_LIST = True
 SHOW_WEB_INSPECTOR = False
 SHOW_ERRORS_LIST = False
+SHOW_MIGRATION_LIST = True
 
 #Symbols handler per language (file extension)
 SYMBOLS_HANDLER = {}
@@ -221,7 +224,7 @@ def get_all_project_types():
     Returns the availables project types
     """
     global PROJECT_TYPES
-    return PROJECT_TYPES.keys()
+    return list(PROJECT_TYPES.keys())
 
 
 def set_symbols_handler(file_extension, symbols_handler):
@@ -290,12 +293,14 @@ def load_settings():
     global ERRORS_HIGHLIGHT_LINE
     global CHECK_STYLE
     global CHECK_HIGHLIGHT_LINE
+    global SHOW_MIGRATION_TIPS
     global CODE_COMPLETION
     global CENTER_ON_SCROLL
     global SHOW_PROJECT_EXPLORER
     global SHOW_SYMBOLS_LIST
     global SHOW_WEB_INSPECTOR
     global SHOW_ERRORS_LIST
+    global SHOW_MIGRATION_LIST
     global BOOKMARKS
     global CHECK_FOR_DOCSTRINGS
     global BREAKPOINTS
@@ -388,6 +393,8 @@ def load_settings():
         'preferences/editor/showMarginLine', 'true') == 'true'
     FIND_ERRORS = qsettings.value('preferences/editor/errors',
         'true') == 'true'
+    SHOW_MIGRATION_TIPS = qsettings.value(
+        'preferences/editor/showMigrationTips', 'true') == 'true'
     ERRORS_HIGHLIGHT_LINE = qsettings.value(
         'preferences/editor/errorsInLine', 'true') == 'true'
     CHECK_STYLE = qsettings.value('preferences/editor/checkStyle',
@@ -425,6 +432,8 @@ def load_settings():
         'preferences/interface/showWebInspector', 'false') == 'true'
     SHOW_ERRORS_LIST = qsettings.value(
         'preferences/interface/showErrorsList', 'false') == 'true'
+    SHOW_MIGRATION_LIST = qsettings.value(
+        'preferences/interface/showMigrationList', 'true') == 'true'
     #Bookmarks and Breakpoints
     bookmarks = dict(qsettings.value('preferences/editor/bookmarks', {}))
     for key in bookmarks:

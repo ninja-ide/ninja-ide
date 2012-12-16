@@ -25,6 +25,12 @@ from ninja_ide.tools.completion import completer
 from ninja_ide.tools.completion import analyzer
 
 
+try:
+    unicode
+except NameError:
+    # Python 3
+    basestring = unicode = str  # lint:ok
+
 __completion_daemon_instance = None
 WAITING_BEFORE_START = 5
 PROJECTS = {}

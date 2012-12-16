@@ -36,6 +36,7 @@ from ninja_ide.core import file_manager
 from ninja_ide.gui.explorer import tree_projects_widget
 from ninja_ide.gui.explorer import tree_symbols_widget
 from ninja_ide.gui.explorer import errors_lists
+from ninja_ide.gui.explorer import migration_lists
 from ninja_ide.gui.main_panel import main_container
 from ninja_ide.gui.dialogs import wizard_new_project
 from ninja_ide.tools import json_manager
@@ -94,6 +95,9 @@ class __ExplorerContainer(QTabWidget):
         self._listErrors = None
         if settings.SHOW_ERRORS_LIST:
             self.add_tab_errors()
+        self._listMigration = None
+        if settings.SHOW_MIGRATION_LIST:
+            self.add_tab_migration()
 
     def update_symbols(self, symbols, fileName):
         if self._treeSymbols:
@@ -103,8 +107,17 @@ class __ExplorerContainer(QTabWidget):
         if self._listErrors:
             self._listErrors.refresh_lists(errors, pep8)
 
+    def update_migration(self, migration):
+        if self._listMigration:
+            self._listMigration.refresh_lists(migration)
+
     def addTab(self, tab, title):
         QTabWidget.addTab(self, tab, title)
+
+    def add_tab_migration(self):
+        if not self._listMigration:
+            self._listMigration = migration_lists.MigrationWidget()
+            self.addTab(self._listMigration, self.tr("Migration 2to3"))
 
     def add_tab_projects(self):
         if not self._treeProjects:
@@ -169,6 +182,11 @@ class __ExplorerContainer(QTabWidget):
                 self.__ide.mainContainer.reset_pep8_warnings)
             self.connect(self._listErrors, SIGNAL("lintActivated(bool)"),
                 self.__ide.mainContainer.reset_lint_warnings)
+
+    def remove_tab_migration(self):
+        if self._listMigration:
+            self.removeTab(self.indexOf(self._listMigration))
+            self._listMigration = None
 
     def remove_tab_errors(self):
         if self._listErrors:
@@ -378,7 +396,7 @@ class __ExplorerContainer(QTabWidget):
     def find_most_old_open(self):
         recent_project_list = QSettings().value('recentProjects', {})
         listFounder = []
-        for recent_project_path, content in recent_project_list.items():
+        for recent_project_path, content in list(recent_project_list.items()):
             listFounder.append((recent_project_path, int(
                 content["lastopen"].toString("yyyyMMddHHmmzzz"))))
         listFounder = sorted(listFounder, key=lambda date: listFounder[1],

@@ -229,7 +229,8 @@ class CodeCompletion(object):
             data = completer.get_all_completions(to_complete, imports)
             __attrib = [d for d in data.get('attributes', []) if d[:2] == '__']
             if __attrib:
-                map(lambda i: data['attributes'].remove(i), __attrib)
+                __attrib = list(
+                    [data['attributes'].remove(i) for i in __attrib])
                 data['attributes'] += __attrib
             if data:
                 return data
@@ -249,8 +250,8 @@ class CodeCompletion(object):
                 attrs.remove(attr_name)
             filter_attrs = lambda x: (x not in funcs) and \
                 not x.isdigit() and (x not in self.keywords)
-            attrs = filter(filter_attrs, attrs)
-            funcs = filter(lambda x: x not in clazzes, funcs)
+            attrs = list(filter(filter_attrs, attrs))
+            funcs = [x for x in funcs if x not in clazzes]
             data = {'attributes': attrs,
                 'functions': funcs,
                 'classes': clazzes}

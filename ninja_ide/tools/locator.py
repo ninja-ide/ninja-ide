@@ -21,7 +21,7 @@ import re
 try:
     import Queue
 except:
-    import queue as Queue
+    import queue as Queue  # lint:ok
 
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QLabel
@@ -115,7 +115,7 @@ class Locator(QObject):
 class ResultItem(object):
 
     def __init__(self, type='', name='', path='', lineno=-1):
-        if isinstance(name, basestring):
+        if name:
             self.type = type
             self.name = name
             self.path = path

@@ -187,6 +187,12 @@ class __IDE(QMainWindow):
         self.connect(self.mainContainer,
             SIGNAL("recentTabsModified(QStringList)"),
             self._menuFile.update_recent_files)
+        self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
+            self.actions.update_migration_tips)
+        self.connect(self.mainContainer, SIGNAL("updateFileMetadata(QString)"),
+            self.actions.update_migration_tips)
+        self.connect(self.mainContainer, SIGNAL("migrationAnalyzed()"),
+            self.actions.update_migration_tips)
 
     def _process_connection(self):
         connection = self.s_listener.nextPendingConnection()
@@ -195,8 +201,8 @@ class __IDE(QMainWindow):
         connection.close()
         if data:
             files, projects = str(data).split(ipc.project_delimiter, 1)
-            files = map(lambda x: (x.split(':')[0], int(x.split(':')[1])),
-                files.split(ipc.file_delimiter))
+            files = [(x.split(':')[0], int(x.split(':')[1]))
+                for x in files.split(ipc.file_delimiter)]
             projects = projects.split(ipc.project_delimiter)
             self.load_session_files_projects(files, [], projects, None)
 
@@ -598,9 +604,8 @@ def start(filenames=None, projects_path=None,
         projects = list()
     projects = [project for project in projects]
     #Include files received from console args
-    file_with_nro = list(map(lambda f: (f[0], f[1] - 1),
-        zip(filenames, linenos)))
-    file_without_nro = list(map(lambda f: (f, 0), filenames[len(linenos):]))
+    file_with_nro = list([(f[0], f[1] - 1) for f in zip(filenames, linenos)])
+    file_without_nro = list([(f, 0) for f in filenames[len(linenos):]])
     mainFiles += file_with_nro + file_without_nro
     #Include projects received from console args
     if projects_path:

@@ -78,6 +78,7 @@ class __MainContainer(QSplitter):
     newFileOpened(QString)
     enabledFollowMode(bool)
     recentTabsModified(QStringList)
+    migrationAnalyzed()
     """
 ###############################################################################
 
@@ -300,6 +301,8 @@ class __MainContainer(QSplitter):
             self._hide_icon_tab_indicator)
         self.connect(editorWidget, SIGNAL("findOcurrences(QString)"),
             self._find_occurrences)
+        self.connect(editorWidget, SIGNAL("migrationAnalyzed()"),
+            lambda: self.emit(SIGNAL("migrationAnalyzed()")))
         #Cursor position changed
         self.connect(editorWidget, SIGNAL("cursorPositionChange(int, int)"),
             self._cursor_position_changed)
@@ -477,8 +480,6 @@ class __MainContainer(QSplitter):
                 content = file_manager.read_file_content(fileName)
                 editorWidget = self.add_editor(fileName, tabIndex=tabIndex,
                     use_open_highlight=True)
-                editorWidget.highlighter.set_open_visible_area(
-                    positionIsLineNumber, cursorPosition)
 
                 #Add content
                 #we HAVE to add the editor's content before set the ID
@@ -520,6 +521,8 @@ class __MainContainer(QSplitter):
                 QMessageBox.information(self,
                     self.tr("The file couldn't be open"), str(reason))
         except Exception as reason:
+            print(reason)
+            raise
             logger.error('open_file: %s', reason)
         self.actualTab.notOpening = True
 

@@ -70,7 +70,7 @@ class ClassDiagram(QWidget, itab_item.ITabItem):
         items = introspection.obtain_symbols(content)
         mYPadding = 10
         mXPadding = 10
-        for classname, classdetail in items["classes"].iteritems():
+        for classname, classdetail in list(items["classes"].items()):
             cl = ClassModel(self.graphicView, self.scene)
             cl.set_class_name(classname)
             self.fill_clases(cl, classdetail[1])
