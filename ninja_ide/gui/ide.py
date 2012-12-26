@@ -574,7 +574,8 @@ def start(filenames=None, projects_path=None,
     tempFiles = []
     for file_ in mainFiles:
         fileData = list(file_)
-        tempFiles.append((fileData[0], int(fileData[1])))
+        if fileData:
+            tempFiles.append((fileData[0], int(fileData[1])))
     mainFiles = tempFiles
     #Files in Secondary Tab
     sec_files = qsettings.value('openFiles/secondaryTab', [])
