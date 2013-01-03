@@ -15,6 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
+# Import this before Qt to set the correct API
+import ninja_ide  # lint:ok
+
 from PyQt4.QtGui import QPlainTextEdit
 
 
@@ -55,6 +61,9 @@ class FakeQSettings(object):
 
     def setValue(self, key, val):
         self.values[key] = val
+
+    def value(self, key, default_val):
+        return self.values.get(key, default_val)
 
 
 class FakeActions(object):

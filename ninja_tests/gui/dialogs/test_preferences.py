@@ -24,8 +24,13 @@ import sys
 import ninja_ide  # lint:ok
 
 from PyQt4.QtGui import QApplication
+from PyQt4.QtGui import QKeySequence
+from PyQt4.QtGui import QTreeWidgetItem
+from PyQt4.QtCore import Qt
 
+from ninja_ide import resources
 from ninja_ide.gui.dialogs import preferences
+from ninja_ide.gui.misc import shortcut_manager
 from ninja_tests import gui
 from ninja_tests import BaseTest
 
@@ -84,3 +89,56 @@ class PreferencesEditorConfigurationTestCase(BaseTest):
         self.assertEqual([True, True], data)
         self._check_values(True, 4, True, 80, False, True, True, True, True,
             False, True, True, True, False)
+
+
+class PreferencesShortcutManagerConfigurationTestCase(BaseTest):
+
+    def setUp(self):
+        super(PreferencesShortcutManagerConfigurationTestCase, self).setUp()
+        self.app = QApplication(sys.argv)
+        self.settings = gui.FakeQSettings()
+        self.patch(shortcut_manager, 'QSettings', lambda: self.settings)
+        self.patch(resources, 'QSettings', lambda: self.settings)
+        # Test data
+        custom_default_data = {
+            "New-file": QKeySequence(Qt.CTRL + Qt.Key_N)
+        }
+        # patch shortcuts with test data
+        self.patch(resources, 'CUSTOM_SHORTCUTS', custom_default_data)
+        self.shortcuts_manager = shortcut_manager.ShortcutConfiguration()
+
+    def test_load_default_shortcuts(self):
+        shorts_count = self.shortcuts_manager.result_widget.topLevelItemCount()
+        item = self.shortcuts_manager.result_widget.topLevelItem(0)
+        shortcut_keys = item.text(1)
+        # Expected data
+        expected_key = QKeySequence(Qt.CTRL + Qt.Key_N)
+        expected_key_str = expected_key.toString(QKeySequence.NativeText)
+        # Just one shortcut should be loaded
+        self.assertEqual(shorts_count, 1)
+        # The key should be the same as the expected
+        self.assertEqual(shortcut_keys, expected_key_str)
+
+    def test_save_shortcuts(self):
+        data = []
+
+        def called():
+            data.append(True)
+
+        actions = gui.FakeActions()
+        setattr(actions, 'update_shortcuts', called)
+        self.patch(shortcut_manager.actions, 'Actions', lambda: actions)
+        self.shortcuts_manager.result_widget.clear()
+        key = QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_N)
+        key_str = key.toString(QKeySequence.NativeText)
+        tree_data = ["New File", key_str, "New-File"]
+        item = QTreeWidgetItem(self.shortcuts_manager.result_widget, tree_data)
+        item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+        # Before save there is nothing in QSettings
+        self.assertEqual(self.settings.value("New-File", None), None)
+        # Save
+        self.shortcuts_manager.save()
+        # After save there is a value for New-File QSettings
+        self.assertEqual(self.settings.values["New-File"], key_str)
+        # After save check if NINJA call the update_shortcuts in actios.Actions
+        self.assertEqual(data, [True])
