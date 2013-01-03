@@ -62,7 +62,7 @@ class FakeQSettings(object):
     def setValue(self, key, val):
         self.values[key] = val
 
-    def value(self, key, default_val):
+    def value(self, key, default_val=None):
         return self.values.get(key, default_val)
 
 
