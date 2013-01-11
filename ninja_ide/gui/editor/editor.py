@@ -174,6 +174,21 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             Qt.Key_Apostrophe: self.__complete_quotes,
             Qt.Key_QuoteDbl: self.__complete_quotes}
 
+        self._line_colors = {
+            'current-line': QColor(
+                            resources.CUSTOM_SCHEME.get('current-line',
+                            resources.COLOR_SCHEME['current-line'])),
+            'error-line': QColor(
+                            resources.CUSTOM_SCHEME.get('error-underline',
+                            resources.COLOR_SCHEME['error-underline'])),
+            'pep8-line': QColor(
+                            resources.CUSTOM_SCHEME.get('pep8-underline',
+                            resources.COLOR_SCHEME['pep8-underline'])),
+            'migration-line': QColor(
+                            resources.CUSTOM_SCHEME.get('migration-underline',
+                            resources.COLOR_SCHEME['migration-underline'])),
+        }
+
         self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
             self._sidebarWidget.update_area)
         self.connect(self, SIGNAL("undoAvailable(bool)"), self._file_saved)
@@ -357,6 +372,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             lines = list(set(list(self.errors.errorsSummary.keys()) +
                         list(self.pep8.pep8checks.keys())))
             self.highlighter.rehighlight_lines(lines)
+            self.highlight_current_line()
 
     def has_write_permission(self):
         if self.newDocument:
@@ -1124,10 +1140,20 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.extraSelections = []
 
         if not self.isReadOnly():
+            block = self.textCursor()
             selection = QTextEdit.ExtraSelection()
-            lineColor = QColor(resources.CUSTOM_SCHEME.get('current-line',
-                        resources.COLOR_SCHEME['current-line']))
-            lineColor.setAlpha(20)
+            if block.blockNumber() in self.errors.errorsSummary:
+                lineColor = self._line_colors['error-line']
+                lineColor.setAlpha(60)
+            elif block.blockNumber() in self.pep8.pep8checks:
+                lineColor = self._line_colors['pep8-line']
+                lineColor.setAlpha(60)
+            elif block.blockNumber() in self.migration.migration_data:
+                lineColor = self._line_colors['migration-line']
+                lineColor.setAlpha(60)
+            else:
+                lineColor = self._line_colors['current-line']
+                lineColor.setAlpha(20)
             selection.format.setBackground(lineColor)
             selection.format.setProperty(QTextFormat.FullWidthSelection, True)
             selection.cursor = self.textCursor()
