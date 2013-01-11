@@ -177,7 +177,8 @@ class __MiscContainer(QWidget):
         #create a button in the toolbar to show the widget
         button = QPushButton(QIcon(icon_path), '')
         button.setToolTip(description)
-        func = lambda: self._item_changed(self.stack.count() - 1)
+        index = self.stack.count() - 1
+        func = lambda: self._item_changed(index)
         self.connect(button, SIGNAL("clicked()"), func)
         self.__toolbar.addWidget(button)
 

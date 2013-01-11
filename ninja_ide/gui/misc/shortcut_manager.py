@@ -193,7 +193,8 @@ class ShortcutConfiguration(QWidget):
             "change-tab-visibility": self.tr(
                 "Show/Hide the Tabs in the Editor Area."),
             "Highlight-Word": self.tr(
-                "Highlight occurrences for word under cursor")}
+                "Highlight occurrences for word under cursor")
+        }
 
         self.shortcut_dialog = ShortcutDialog(self)
         #main layout
@@ -297,11 +298,13 @@ class ShortcutConfiguration(QWidget):
             item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
 
     def _load_defaults_shortcuts(self):
+        #clean custom shortcuts and UI widget
+        resources.clean_custom_shortcuts()
         self.result_widget.clear()
         for name, action in list(resources.SHORTCUTS.items()):
             shortcut_action = action
             #populate the tree widget
             tree_data = [self.shortcuts_text[name],
-                shortcut_action.toString(QKeySequence.NativeText)]
+                shortcut_action.toString(QKeySequence.NativeText), name]
             item = QTreeWidgetItem(self.result_widget, tree_data)
             item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)

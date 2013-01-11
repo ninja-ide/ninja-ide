@@ -17,10 +17,9 @@
 
 
 import os
-import json
 import unittest
 
-from tests.tools.jsonmanager import samples
+from  ninja_tests.tools.jsonmanager import samples
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -37,6 +36,8 @@ class TestSyntaxLoader(unittest.TestCase):
         self.samples = os.path.dirname(samples.__file__)
         self.goodsamples = os.path.join(self.samples, 'goodfiles')
         self.badsamples = os.path.join(self.samples, 'badfiles')
+        # Clean SYNTAX before each test
+        settings.SYNTAX = {}
 
     def test_load_nice_json_syntax_file(self):
 
@@ -52,12 +53,11 @@ class TestSyntaxLoader(unittest.TestCase):
         load_syntax()
         self.assertTrue(py_syntax_name in settings.SYNTAX)
 
-        with open(py_syntax_file, 'r') as fp:
-            content = json.load(fp)
-            extensions = content.get('extension')
-            for kw in extensions:
-                self.assertTrue(kw in settings.EXTENSIONS)
-                self.assertEquals(settings.EXTENSIONS[kw], py_syntax_name)
+        python_syntax = settings.SYNTAX["python"]
+        extensions = python_syntax['extension']
+        for kw in extensions:
+            self.assertTrue(kw in settings.EXTENSIONS)
+            self.assertEquals(settings.EXTENSIONS[kw], py_syntax_name)
 
     def test_load_bad_json_syntax_file(self):
 
