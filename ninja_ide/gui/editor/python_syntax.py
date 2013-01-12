@@ -15,7 +15,7 @@ syntax =  {'formats': {'builtin': '%(syntax_builtin)s',
                 ('string', '[bruBRU]?"""', '"""', True),
                 ('string', '[bruBRU]?"', '"')],
  'scanner': {None: [('hexnumber', '(0x)([0-9a-fA-F])+?'),
-                    ('number', '\\d+(\\.\\d*)?'),
+                    ('number', '(?<![A-Za-z_])\\d+(\\.\\d*)?'),
                     ('definition',
                         ["(?<=def)\ *?\w+(?=\ *?\()",
                             "(?<=class)\ *?\w+(?=\ *?\()"]
