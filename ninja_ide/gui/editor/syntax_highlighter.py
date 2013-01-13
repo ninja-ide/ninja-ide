@@ -422,6 +422,8 @@ class SyntaxHighlighter(QSyntaxHighlighter):
             return
         for line in lines:
             block = self.document().findBlockByNumber(line)
+            self.document().markContentsDirty(block.position(),
+                block.position() + block.length())
             self.rehighlightBlock(block)
 
     def _get_errors_lines(self):
@@ -442,8 +444,8 @@ class SyntaxHighlighter(QSyntaxHighlighter):
             refresh_lines = set(lines + errors_lines)
         else:
             refresh_lines = set(lines)
-            #self.selected_word_lines = lines
-        #self._rehighlight_lines(refresh_lines)
+            self.selected_word_lines = lines
+        self._rehighlight_lines(refresh_lines)
 
 
 def load_syntax(syntax, context=None):
