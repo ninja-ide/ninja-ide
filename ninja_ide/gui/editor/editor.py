@@ -880,9 +880,12 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
            self.selected_text:
             self.textCursor().insertText(self.selected_text)
         elif is_unbalance:
-            self.textCursor().insertText(complementary_brace)
-            self.moveCursor(QTextCursor.Left)
-            self.textCursor().insertText(self.selected_text)
+            pos = self.textCursor().position()
+            next_char = self.get_selection(pos, pos + 1)
+            if self.selected_text or next_char == "":
+                self.textCursor().insertText(complementary_brace)
+                self.moveCursor(QTextCursor.Left)
+                self.textCursor().insertText(self.selected_text)
 
     def __complete_quotes(self, event):
         """
