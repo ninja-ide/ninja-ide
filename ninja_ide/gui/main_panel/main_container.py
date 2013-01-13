@@ -480,8 +480,6 @@ class __MainContainer(QSplitter):
                 content = file_manager.read_file_content(fileName)
                 editorWidget = self.add_editor(fileName, tabIndex=tabIndex,
                     use_open_highlight=True)
-                editorWidget.highlighter.set_open_visible_area(
-                    positionIsLineNumber, cursorPosition)
 
                 #Add content
                 #we HAVE to add the editor's content before set the ID

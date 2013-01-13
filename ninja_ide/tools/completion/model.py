@@ -15,6 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+try:
+    unicode
+except NameError:
+    # Python 3
+    basestring = unicode = str  # lint:ok
+
 
 MODULES = None
 late_resolution = 0

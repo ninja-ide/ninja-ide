@@ -70,10 +70,8 @@ class MiniMap(QPlainTextEdit):
         self.update_visible_area()
 
     def set_code(self, source):
-        self.highlighter.highlight_function = self.highlighter.open_highlight
         self.setPlainText(source)
         self.__calculate_max()
-        self.highlighter.async_highlight()
 
     def adjust_to_parent(self):
         self.setFixedHeight(self._parent.height())
