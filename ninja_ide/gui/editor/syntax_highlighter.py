@@ -56,7 +56,7 @@ class SyntaxUserData(QTextBlockUserData):
 
     def add_str_group(self, start, end):
         """Add a pair of values setting the beggining and end of a string."""
-        self.str_groups.append((start + 1, end))
+        self.str_groups.append((start, end + 1))
 
     def comment_start_at(self, pos):
         """Set the position in the line where the comment starts."""
@@ -390,6 +390,8 @@ class SyntaxHighlighter(QSyntaxHighlighter):
                             f = highlight_errors(f, user_data)
                             set_format(start + token_pos,
                                 token_end - token_pos, f)
+            if partition and partition == "string":
+                user_data.add_str_group(start, end)
 
         block.setUserData(user_data)
         self.setCurrentBlockState(new_state)
