@@ -624,7 +624,7 @@ class TreeProjectsWidget(QTreeWidget):
         name = file_manager.get_basename(folder)
         item = ProjectTree(self, name, folder)
         item.isFolder = True
-        item.setToolTip(0, name)
+        item.setToolTip(0, folder)
         item.setIcon(0, QIcon(resources.IMAGES['tree-app']))
         self._projects[folder] = item
         if folderStructure[folder][1] is not None:
