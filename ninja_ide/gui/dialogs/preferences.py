@@ -1610,6 +1610,7 @@ class EditorSchemeDesigner(QWidget):
         editorWidget = main_container.MainContainer().get_actual_editor()
         if editorWidget is not None:
             editorWidget.restyle(editorWidget.lang)
+            editorWidget.highlight_current_line()
             editorWidget._sidebarWidget.repaint()
         return scheme
 
@@ -1637,18 +1638,42 @@ class EditorSchemeDesigner(QWidget):
         """All the widgets in preferences must contain a save method."""
         pass
 
+    @staticmethod
+    def _is_valid_scheme_name(name):
+        """Check if a given name is a valid name for an editor scheme.
+
+        Params:
+            name := the name to check
+
+        Returns:
+            True if and only if the name is okay to use for a scheme
+
+        """
+        return not (name in ('', 'default'))
+
     def save_scheme(self):
         name = self.line_name.text().strip()
-        fileName = file_manager.create_path(
-            resources.EDITOR_SKINS, name) + '.color'
+        if not self._is_valid_scheme_name(name):
+            QMessageBox.information(self, self.tr("Invalid Scheme Name"),
+                self.tr("The scheme name you have chosen is invalid.\nPlease "
+                    "pick a different name."))
+            return
+        fileName = ('{0}.color'.format(
+            file_manager.create_path(resources.EDITOR_SKINS, name)))
         answer = True
         if file_manager.file_exists(fileName):
             answer = QMessageBox.question(self,
                 self.tr("Scheme already exists"),
                 self.tr("Do you want to override the file: %s?" % fileName),
                 QMessageBox.Yes, QMessageBox.No)
+
         if name != '' and answer in (QMessageBox.Yes, True):
             scheme = self._preview_style()
+            qsettings = QSettings()
+            qsettings.beginGroup('preferences')
+            qsettings.beginGroup('editor')
+            if qsettings.value('scheme', '') == name and name != 'default':
+                self.original_style = copy.copy(scheme)
             json_manager.save_editor_skins(fileName, scheme)
             QMessageBox.information(self, self.tr("Scheme Saved"),
                     self.tr("The scheme has been saved at: %s." % fileName))

@@ -432,15 +432,18 @@ class __IDE(QMainWindow):
     def closeEvent(self, event):
         if self.s_listener:
             self.s_listener.close()
-        if settings.CONFIRM_EXIT and \
-        self.mainContainer.check_for_unsaved_tabs():
+        if(settings.CONFIRM_EXIT and 
+                self.mainContainer.check_for_unsaved_tabs()):
             unsaved_files = self.mainContainer.get_unsaved_files()
             txt = '\n'.join(unsaved_files)
             val = QMessageBox.question(self,
                 self.tr("Some changes were not saved"),
-                self.tr("%s\n\nDo you want to exit anyway?" % txt),
-                QMessageBox.Yes, QMessageBox.No)
-            if val == QMessageBox.No:
+                self.tr("%s\n\nDo you want to save them?" % txt),
+                QMessageBox.Yes, QMessageBox.No, QMessageBox.Cancel)
+            if val == QMessageBox.Yes:
+                #Saves all open files
+                self.mainContainer.save_all()
+            if val == QMessageBox.Cancel:
                 event.ignore()
         QApplication.instance().setCursorFlashTime(cursor_flash_time)
         self.emit(SIGNAL("goingDown()"))
@@ -577,7 +580,8 @@ def start(filenames=None, projects_path=None,
     tempFiles = []
     for file_ in mainFiles:
         fileData = list(file_)
-        tempFiles.append((fileData[0], int(fileData[1])))
+        if fileData:
+            tempFiles.append((fileData[0], int(fileData[1])))
     mainFiles = tempFiles
     #Files in Secondary Tab
     sec_files = qsettings.value('openFiles/secondaryTab', [])
