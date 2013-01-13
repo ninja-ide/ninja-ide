@@ -117,9 +117,9 @@ CHECK_STYLE = True
 CHECK_HIGHLIGHT_LINE = True
 CODE_COMPLETION = True
 COMPLETE_DECLARATIONS = True
-HIGHLIGHT_WHOLE_LINE = True
 SHOW_MIGRATION_TIPS = True
 VALID_2TO3 = True
+UNDERLINE_NOT_BACKGROUND = True
 
 CENTER_ON_SCROLL = True
 
@@ -285,7 +285,7 @@ def load_settings():
     global USE_TABS
     global ALLOW_WORD_WRAP
     global COMPLETE_DECLARATIONS
-    global HIGHLIGHT_WHOLE_LINE
+    global UNDERLINE_NOT_BACKGROUND
     global FONT_FAMILY
     global FONT_SIZE
     global SHOW_MARGIN_LINE
@@ -380,8 +380,8 @@ def load_settings():
         'preferences/editor/allowWordWrap', 'false') == 'true'
     COMPLETE_DECLARATIONS = qsettings.value(
         'preferences/editor/completeDeclarations', 'true') == 'true'
-    HIGHLIGHT_WHOLE_LINE = qsettings.value(
-        'preferences/editor/highlightWholeLine', 'true') == 'true'
+    UNDERLINE_NOT_BACKGROUND = qsettings.value(
+        'preferences/editor/errorsUnderlineBackground', 'true') == 'true'
     font_family = qsettings.value(
         'preferences/editor/fontFamily', "")
     if font_family:

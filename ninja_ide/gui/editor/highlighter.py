@@ -439,8 +439,7 @@ class Highlighter(QSyntaxHighlighter):
             index = expression.pos(0)
             length = len(expression.cap(0))
             char_format = STYLES['spaces']
-            if settings.HIGHLIGHT_WHOLE_LINE:
-                char_format = highlight_errors(char_format, user_data)
+            char_format = highlight_errors(char_format, user_data)
             self.setFormat(index, length, char_format)
             index = expression.indexIn(text, index + length)
 
