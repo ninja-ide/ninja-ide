@@ -17,8 +17,8 @@ syntax = {'formats': {'builtin': '%(syntax_builtin)s',
  'scanner': {None: [('hexnumber', '(0x)([0-9a-fA-F])+?'),
                     ('number', '(?<![A-Za-z_])\\d+(\\.\\d*)?'),
                     ('definition',
-                        ["(?<=def)\ *?\w+(?=\ *?\()",
-                            "(?<=class)\ *?\w+(?=\ *?\()"]
+                        ["(?<=def)\ +?\w+(?=\ *?\()",
+                            "(?<=class)\ +?\w+(?=\ *?\()"]
                         ),
                     ('proper_object', ['self']),
                     #('highlight_word', 'error'),
