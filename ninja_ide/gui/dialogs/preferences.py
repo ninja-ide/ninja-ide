@@ -979,8 +979,9 @@ class EditorConfiguration(QWidget):
         grid.addWidget(self._checkShowMargin, 2, 2, alignment=Qt.AlignTop)
         #Find Errors
         self._checkHighlightLine = QCheckBox(
-            self.tr("Highlight the whole line for Errors and PEP8."))
-        self._checkHighlightLine.setChecked(settings.HIGHLIGHT_WHOLE_LINE)
+            self.tr("Check: Highlight errors using Underline\n"
+                "Uncheck: Highlight errors using Background"))
+        self._checkHighlightLine.setChecked(settings.UNDERLINE_NOT_BACKGROUND)
         grid.addWidget(self._checkHighlightLine, 3, 1, 1, 2,
             alignment=Qt.AlignTop)
         self._checkErrors = QCheckBox(self.tr("Find and Show Errors."))
@@ -1071,8 +1072,10 @@ class EditorConfiguration(QWidget):
         pep8mod.options.max_line_length = settings.MARGIN_LINE
         qsettings.setValue('showMarginLine', self._checkShowMargin.isChecked())
         settings.SHOW_MARGIN_LINE = self._checkShowMargin.isChecked()
-        settings.HIGHLIGHT_WHOLE_LINE = self._checkHighlightLine.isChecked()
-        qsettings.setValue('highlightWholeLine', settings.HIGHLIGHT_WHOLE_LINE)
+        settings.UNDERLINE_NOT_BACKGROUND = \
+            self._checkHighlightLine.isChecked()
+        qsettings.setValue('errorsUnderlineBackground',
+            settings.UNDERLINE_NOT_BACKGROUND)
         qsettings.setValue('errors', self._checkErrors.isChecked())
         settings.FIND_ERRORS = self._checkErrors.isChecked()
         qsettings.setValue('errorsInLine', self._showErrorsOnLine.isChecked())
