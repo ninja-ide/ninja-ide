@@ -53,6 +53,7 @@ from ninja_ide.core import file_manager
 from ninja_ide.tools.completion import completer_widget
 from ninja_ide.gui.main_panel import itab_item
 from ninja_ide.gui.editor import highlighter
+from ninja_ide.gui.editor import syntax_highlighter
 from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.editor import minimap
 from ninja_ide.gui.editor import pep8_checker
@@ -70,6 +71,22 @@ if sys.version_info.major == 3:
     python3 = True
 else:
     python3 = False
+
+
+scheme = {
+  "syntax_comment": dict(color="#80FF80", italic=True),
+  "syntax_string": "#B369BF",
+  "syntax_builtin": "#ee8859",
+  "syntax_keyword": ("#6EC7D7", True),
+  "syntax_definition": ("#F6EC2A", True),
+  "syntax_braces": "#FFFFFF",
+  "syntax_number": "#F8A008",
+  "syntax_proper_object": "#6EC7D7",
+  "syntax_operators": "#FFFFFF",
+  "syntax_spaces": "#7b7b7b",
+  "syntax_highlight_word": dict(color="red", background="blue"),
+}
+from ninja_ide.gui.editor import python_syntax
 
 
 class Editor(QPlainTextEdit, itab_item.ITabItem):
@@ -156,6 +173,21 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             Qt.Key_ParenLeft: self.__complete_braces,
             Qt.Key_Apostrophe: self.__complete_quotes,
             Qt.Key_QuoteDbl: self.__complete_quotes}
+
+        self._line_colors = {
+            'current-line': QColor(
+                            resources.CUSTOM_SCHEME.get('current-line',
+                            resources.COLOR_SCHEME['current-line'])),
+            'error-line': QColor(
+                            resources.CUSTOM_SCHEME.get('error-underline',
+                            resources.COLOR_SCHEME['error-underline'])),
+            'pep8-line': QColor(
+                            resources.CUSTOM_SCHEME.get('pep8-underline',
+                            resources.COLOR_SCHEME['pep8-underline'])),
+            'migration-line': QColor(
+                            resources.CUSTOM_SCHEME.get('migration-underline',
+                            resources.COLOR_SCHEME['migration-underline'])),
+        }
 
         self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
             self._sidebarWidget.update_area)
@@ -340,6 +372,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             lines = list(set(list(self.errors.errorsSummary.keys()) +
                         list(self.pep8.pep8checks.keys())))
             self.highlighter.rehighlight_lines(lines)
+            self.highlight_current_line()
 
     def has_write_permission(self):
         if self.newDocument:
@@ -348,26 +381,26 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def restyle(self, syntaxLang=None):
         self.apply_editor_style()
-        if self.highlighter is None or isinstance(self.highlighter,
-           highlighter.EmpyHighlighter):
-            self.highlighter = highlighter.Highlighter(self.document(),
-                None, resources.CUSTOM_SCHEME, self.errors, self.pep8,
-                self.migration)
-        if not syntaxLang:
-            ext = file_manager.get_file_extension(self.ID)
-            self.highlighter.apply_highlight(
-                settings.EXTENSIONS.get(ext, 'python'),
-                resources.CUSTOM_SCHEME)
-            if self._mini:
-                self._mini.highlighter.apply_highlight(
-                    settings.EXTENSIONS.get(ext, 'python'),
-                    resources.CUSTOM_SCHEME)
-        else:
-            self.highlighter.apply_highlight(
-                syntaxLang, resources.CUSTOM_SCHEME)
-            if self._mini:
-                self._mini.highlighter.apply_highlight(
-                    syntaxLang, resources.CUSTOM_SCHEME)
+        #if self.highlighter is None or isinstance(self.highlighter,
+           #highlighter.EmpyHighlighter):
+            #self.highlighter = highlighter.Highlighter(self.document(),
+                #None, resources.CUSTOM_SCHEME, self.errors, self.pep8,
+                #self.migration)
+        #if not syntaxLang:
+            #ext = file_manager.get_file_extension(self.ID)
+            #self.highlighter.apply_highlight(
+                #settings.EXTENSIONS.get(ext, 'python'),
+                #resources.CUSTOM_SCHEME)
+            #if self._mini:
+                #self._mini.highlighter.apply_highlight(
+                    #settings.EXTENSIONS.get(ext, 'python'),
+                    #resources.CUSTOM_SCHEME)
+        #else:
+            #self.highlighter.apply_highlight(
+                #syntaxLang, resources.CUSTOM_SCHEME)
+            #if self._mini:
+                #self._mini.highlighter.apply_highlight(
+                    #syntaxLang, resources.CUSTOM_SCHEME)
 
     def apply_editor_style(self):
         css = 'QPlainTextEdit {color: %s; background-color: %s;' \
@@ -391,7 +424,19 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def register_syntax(self, lang='', syntax=None):
         self.lang = settings.EXTENSIONS.get(lang, 'python')
-        if lang in settings.EXTENSIONS:
+        if self.lang == 'python':
+            parts_scanner, code_scanner, formats = \
+                syntax_highlighter.load_syntax(
+                    python_syntax.syntax, scheme)
+            self.highlighter = syntax_highlighter.SyntaxHighlighter(
+                self.document(),
+                parts_scanner, code_scanner, formats,
+                errors=self.errors, pep8=self.pep8, migration=self.migration)
+            if self._mini:
+                self._mini.highlighter = syntax_highlighter.SyntaxHighlighter(
+                    self._mini.document(), parts_scanner,
+                    code_scanner, formats)
+        elif lang in settings.EXTENSIONS:
             self.highlighter = highlighter.Highlighter(self.document(),
                 self.lang, resources.CUSTOM_SCHEME, self.errors, self.pep8,
                 self.migration)
@@ -1095,10 +1140,20 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.extraSelections = []
 
         if not self.isReadOnly():
+            block = self.textCursor()
             selection = QTextEdit.ExtraSelection()
-            lineColor = QColor(resources.CUSTOM_SCHEME.get('current-line',
-                        resources.COLOR_SCHEME['current-line']))
-            lineColor.setAlpha(20)
+            if block.blockNumber() in self.errors.errorsSummary:
+                lineColor = self._line_colors['error-line']
+                lineColor.setAlpha(60)
+            elif block.blockNumber() in self.pep8.pep8checks:
+                lineColor = self._line_colors['pep8-line']
+                lineColor.setAlpha(60)
+            elif block.blockNumber() in self.migration.migration_data:
+                lineColor = self._line_colors['migration-line']
+                lineColor.setAlpha(60)
+            else:
+                lineColor = self._line_colors['current-line']
+                lineColor.setAlpha(20)
             selection.format.setBackground(lineColor)
             selection.format.setProperty(QTextFormat.FullWidthSelection, True)
             selection.cursor = self.textCursor()
@@ -1182,7 +1237,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.highlighter.rehighlight_lines(lines, False)
 
     def async_highlight(self):
-        self.highlighter.async_highlight()
+        pass
+        #self.highlighter.async_highlight()
 
 
 def create_editor(fileName='', project=None, syntax=None,
@@ -1199,9 +1255,5 @@ def create_editor(fileName='', project=None, syntax=None,
             editor.register_syntax('py')
         else:
             editor.register_syntax(ext)
-
-    if use_open_highlight:
-        editor.highlighter.highlight_function = \
-            editor.highlighter.open_highlight
 
     return editor
