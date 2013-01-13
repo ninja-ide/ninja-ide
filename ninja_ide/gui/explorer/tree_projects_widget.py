@@ -638,6 +638,7 @@ class TreeProjectsWidget(QTreeWidget):
             self.setCurrentItem(item)
         self._fileWatcher.add_watch(folder)
         completion_daemon.add_project_folder(folder)
+        self.sortItems(0, Qt.AscendingOrder)
 
     def _load_folder(self, folderStructure, folder, parentItem):
         """Load the Tree Project structure recursively."""
