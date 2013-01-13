@@ -29,6 +29,7 @@ from PyQt4.QtGui import (
     QColor, QTextCharFormat, QTextBlockUserData, QFont, QBrush, QTextFormat)
 
 from ninja_ide import resources
+from ninja_ide.core import settings
 
 
 try:
@@ -312,39 +313,45 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         self.scan_partitions = partition_scanner.scan
         self.get_format = self.formats.get
 
+    def __apply_proper_style(self, char_format, color):
+        if settings.UNDERLINE_NOT_BACKGROUND:
+            char_format.setUnderlineColor(color)
+            char_format.setUnderlineStyle(QTextCharFormat.WaveUnderline)
+        else:
+            color.setAlpha(60)
+            char_format.setBackground(color)
+
     def __highlight_pep8(self, char_format, user_data=None):
         """Highlight the lines with pep8 errors."""
         user_data.error = True
-        char_format.setUnderlineColor(QColor(
+        color = QColor(
             resources.CUSTOM_SCHEME.get('pep8-underline',
-                resources.COLOR_SCHEME['pep8-underline'])))
-        char_format.setUnderlineStyle(
-            QTextCharFormat.WaveUnderline)
+            resources.COLOR_SCHEME['pep8-underline']))
+        self.__apply_proper_style(char_format, color)
         return char_format
 
     def __highlight_lint(self, char_format, user_data):
         """Highlight the lines with lint errors."""
         user_data.error = True
-        char_format.setUnderlineColor(QColor(
+        color = QColor(
             resources.CUSTOM_SCHEME.get('error-underline',
-                resources.COLOR_SCHEME['error-underline'])))
-        char_format.setUnderlineStyle(
-            QTextCharFormat.WaveUnderline)
+            resources.COLOR_SCHEME['error-underline']))
+        self.__apply_proper_style(char_format, color)
         return char_format
 
     def __highlight_migration(self, char_format, user_data):
         """Highlight the lines with lint errors."""
         user_data.error = True
-        char_format.setUnderlineColor(QColor(
+        color = QColor(
             resources.CUSTOM_SCHEME.get('migration-underline',
-                resources.COLOR_SCHEME['migration-underline'])))
-        char_format.setUnderlineStyle(
-            QTextCharFormat.WaveUnderline)
+            resources.COLOR_SCHEME['migration-underline']))
+        self.__apply_proper_style(char_format, color)
         return char_format
 
     def __remove_error_highlight(self, char_format, user_data):
         user_data.error = False
         char_format.setUnderlineStyle(QTextCharFormat.NoUnderline)
+        char_format.clearBackground()
         return char_format
 
     def highlightBlock(self, text):
@@ -444,7 +451,6 @@ class SyntaxHighlighter(QSyntaxHighlighter):
             refresh_lines = set(lines + errors_lines)
         else:
             refresh_lines = set(lines)
-            self.selected_word_lines = lines
         self._rehighlight_lines(refresh_lines)
 
 
