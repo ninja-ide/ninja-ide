@@ -785,6 +785,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         table.
         """
         text = event.text()
+        pos = self.textCursor().position()
+        next_char = self.get_selection(pos, pos + 1)
+        if self.cursor_inside_string() and text == next_char:
+            self.moveCursor(QTextCursor.Right)
+            return True
         PENTA_Q = 5 * text
         TETRA_Q = 4 * text
         TRIPLE_Q = 3 * text

@@ -1,4 +1,4 @@
-syntax =  {'formats': {'builtin': '%(syntax_builtin)s',
+syntax = {'formats': {'builtin': '%(syntax_builtin)s',
              'comment': '%(syntax_comment)s',
              'hexnumber': '%(syntax_number)s',
              'keyword': '%(syntax_keyword)s',
