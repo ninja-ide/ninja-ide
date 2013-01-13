@@ -432,7 +432,7 @@ class __IDE(QMainWindow):
     def closeEvent(self, event):
         if self.s_listener:
             self.s_listener.close()
-        if(settings.CONFIRM_EXIT and 
+        if (settings.CONFIRM_EXIT and
                 self.mainContainer.check_for_unsaved_tabs()):
             unsaved_files = self.mainContainer.get_unsaved_files()
             txt = '\n'.join(unsaved_files)
