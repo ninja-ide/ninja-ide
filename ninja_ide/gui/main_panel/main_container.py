@@ -244,6 +244,7 @@ class __MainContainer(QSplitter):
             self.splitted = True
             self.setSizes([1, 1])
             self.actualTab = self._tabSecondary
+            self.emit(SIGNAL("currentTabChanged(QString)"), widget.ID)
         self.setOrientation(orientation)
 
     def move_tab_to_next_split(self, tab_from):
