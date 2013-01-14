@@ -219,6 +219,8 @@ COLOR_SCHEME = {
     "locator-path": "gray",
     "locator-path-selected": "white",
     "migration-underline": "blue",
+    "current-line-opacity": 20,
+    "error-background-opacity": 60,
 }
 
 CUSTOM_SCHEME = {}
