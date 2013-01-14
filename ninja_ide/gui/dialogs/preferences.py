@@ -876,6 +876,8 @@ class EditorGeneral(QWidget):
 
     def _preview_style(self):
         scheme = self._listScheme.currentItem().text()
+        if scheme == self.current_scheme:
+            return
         editorWidget = main_container.MainContainer().get_actual_editor()
         if editorWidget is not None:
             resources.CUSTOM_SCHEME = self._schemes.get(scheme,
