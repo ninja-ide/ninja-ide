@@ -404,7 +404,9 @@ def uncomment_single_line(cursor, block_start, block_end, comment_wildcard):
         comment_position = block_start.text().find(
             comment_wildcard[0])
         if block_start.text().startswith(
-           " " * comment_position + comment_wildcard[0]):
+           " " * comment_position + comment_wildcard[0]) or (
+           settings.USE_TABS and block_start.text().startswith(
+           "\t" * comment_position + comment_wildcard[0])):
             cursor.setPosition(block_start.position() + comment_position)
             cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
                 len(comment_wildcard))
@@ -418,15 +420,13 @@ def uncomment_multiple_lines(cursor, block_start, block_end, comment_wildcard):
     #begin Undo feature
     cursor.beginEditBlock()
     #Remove start symbol comment if correspond
-    if block_start.previous().text().startswith(
-        comment_wildcard['open']):
+    if block_start.previous().text().startswith(comment_wildcard['open']):
         block_start = block_start.previous()
         delete_lines_selected(cursor, block_start)
     if block_start.text().startswith(comment_wildcard['open']):
         delete_lines_selected(cursor, block_start)
     #Remove end symbol comment if correspond
-    if block_end.previous().text().startswith(
-        comment_wildcard['close']):
+    if block_end.previous().text().startswith(comment_wildcard['close']):
         block_end = block_end.previous()
         delete_lines_selected(cursor, block_end)
     if block_end.text().startswith(comment_wildcard['close']):
