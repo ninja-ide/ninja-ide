@@ -1152,16 +1152,24 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             selection = QTextEdit.ExtraSelection()
             if block.blockNumber() in self.errors.errorsSummary:
                 lineColor = self._line_colors['error-line']
-                lineColor.setAlpha(60)
+                lineColor.setAlpha(resources.CUSTOM_SCHEME.get(
+                    "error-background-opacity",
+                    resources.COLOR_SCHEME["error-background-opacity"]))
             elif block.blockNumber() in self.pep8.pep8checks:
                 lineColor = self._line_colors['pep8-line']
-                lineColor.setAlpha(60)
+                lineColor.setAlpha(resources.CUSTOM_SCHEME.get(
+                    "error-background-opacity",
+                    resources.COLOR_SCHEME["error-background-opacity"]))
             elif block.blockNumber() in self.migration.migration_data:
                 lineColor = self._line_colors['migration-line']
-                lineColor.setAlpha(60)
+                lineColor.setAlpha(resources.CUSTOM_SCHEME.get(
+                    "error-background-opacity",
+                    resources.COLOR_SCHEME["error-background-opacity"]))
             else:
                 lineColor = self._line_colors['current-line']
-                lineColor.setAlpha(20)
+                lineColor.setAlpha(resources.CUSTOM_SCHEME.get(
+                    "current-line-opacity",
+                    resources.COLOR_SCHEME["current-line-opacity"]))
             selection.format.setBackground(lineColor)
             selection.format.setProperty(QTextFormat.FullWidthSelection, True)
             selection.cursor = self.textCursor()
