@@ -48,7 +48,10 @@ class SidebarWidget(QWidget):
         self.foldArea = 15
         self.rightArrowIcon = QPixmap()
         self.downArrowIcon = QPixmap()
-        self.pat = re.compile('(\s)*def |(\s)*class |(\s)*#begin-fold:')
+        self.pat = re.compile(
+            "(\s)*def |(\s)*class |(\s)*if |(\s)*while |"
+            "(\s)*else:|(\s)*elif |(\s)*for |"
+            "(\s)*try:|(\s)*except:|(\s)*except |(\s)*#begin-fold:")
         self.patNotPython = re.compile('(\s)*#begin-fold:|(.)*{')
         self._foldedBlocks = []
         self._breakpoints = []
