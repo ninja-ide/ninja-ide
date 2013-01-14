@@ -218,21 +218,30 @@ class Scanner(object):
         self.search = re.compile(pat).search
 
     def add_token(self, token):
-        t = Token(*token)
-        gdef = "?P<%s>" % t.name
-        if gdef in t.pattern:
-            p = t.pattern
-        else:
-            p = ("(%s%s)" % (gdef, t.pattern))
-        p = t.prefix + p + t.suffix
-        for g in self.groups:
-            if g.startswith('(?P<highlight_word>'):
-                self.groups.remove(g)
-                break
-        self.groups.append(p)
-        self.tokens.append(t)
+        self.__clean_highlight()
+        tpattern = token[1]
+        if tpattern != "":
+            t = Token(*token)
+            gdef = "?P<%s>" % t.name
+            if gdef in t.pattern:
+                p = t.pattern
+            else:
+                p = ("(%s%s)" % (gdef, t.pattern))
+            p = t.prefix + p + t.suffix
+            self.groups.append(p)
+            self.tokens.append(t)
         pat = "|".join(self.groups)
         self.search = re.compile(pat).search
+
+    def __clean_highlight(self):
+        for group in self.groups:
+            if group.startswith('(?P<highlight_word>'):
+                self.groups.remove(group)
+                break
+        for token in self.tokens:
+            if token.name == "highlight_word":
+                self.tokens.remove(token)
+                break
 
     def scan(self, s):
         search = self.search
@@ -412,18 +421,18 @@ class SyntaxHighlighter(QSyntaxHighlighter):
             valid_error_line = True
         return valid_error_line, highlight_errors
 
-    def set_selected_word(self, word):
+    def set_selected_word(self, word, partial=False):
         """Set the word to highlight."""
         if len(word) > 2:
-            #inside_scanner = Scanner(('highlight_word', word))
+            suffix = "(?![A-Za-z_\d])"
+            prefix = "(?<![A-Za-z_\d])"
+            word = re.escape(word)
+            if not partial:
+                word = "%s%s%s" % (prefix, word, suffix)
             self.scanner[None].add_token(('highlight_word', word))
-            self.rehighlight()
-            #self.scanner['highlight_word'] = inside_scanner
-            #self.selected_word_pattern = QRegExp(
-                #r'\b%s\b' % self.sanitize(word))
         else:
-            self.partition_scanner.pop('highlight_word', None)
-            #self.selected_word_pattern = None
+            self.scanner[None].add_token(('highlight_word', ""))
+        self.rehighlight()
 
     def _rehighlight_lines(self, lines):
         """If the document is valid, highlight the list of lines received."""

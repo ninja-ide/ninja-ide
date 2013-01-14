@@ -208,4 +208,5 @@ syntax = {'formats': {'builtin': '%(syntax_builtin)s',
                       'zip'],
                      '(^|[^\\.\\w])??(?<!\w|\\.)',
                      '[\\x08\\W]+?'),
-                    ('ident', '[A-Za-z_][A-Za-z_0-9]*?')]}}
+                    #('ident', '[A-Za-z_][A-Za-z_0-9]*?')
+                    ]}}
