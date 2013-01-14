@@ -355,8 +355,8 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         return char_format
 
     def highlightBlock(self, text):
-        "automatically called by Qt"
-        text = str(text) + "\n"
+        """automatically called by Qt"""
+        text += "\n"
         previous_state = self.previousBlockState()
         new_state = previous_state
         # User data and errors
