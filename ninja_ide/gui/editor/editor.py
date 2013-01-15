@@ -786,7 +786,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         """
         text = event.text()
         pos = self.textCursor().position()
-        next_char = self.get_selection(pos, pos + 1).strip(" ")
+        next_char = self.get_selection(pos, pos + 1).strip()
         if self.cursor_inside_string() and text == next_char:
             self.moveCursor(QTextCursor.Right)
             return True
@@ -886,7 +886,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.textCursor().insertText(self.selected_text)
         elif is_unbalance:
             pos = self.textCursor().position()
-            next_char = self.get_selection(pos, pos + 1).strip(" ")
+            next_char = self.get_selection(pos, pos + 1).strip()
             if self.selected_text or next_char == "":
                 self.textCursor().insertText(complementary_brace)
                 self.moveCursor(QTextCursor.Left)
