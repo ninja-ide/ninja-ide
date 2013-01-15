@@ -786,7 +786,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         """
         text = event.text()
         pos = self.textCursor().position()
-        next_char = self.get_selection(pos, pos + 1)
+        next_char = self.get_selection(pos, pos + 1).strip()
         if self.cursor_inside_string() and text == next_char:
             self.moveCursor(QTextCursor.Right)
             return True
@@ -886,7 +886,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.textCursor().insertText(self.selected_text)
         elif is_unbalance:
             pos = self.textCursor().position()
-            next_char = self.get_selection(pos, pos + 1)
+            next_char = self.get_selection(pos, pos + 1).strip()
             if self.selected_text or next_char == "":
                 self.textCursor().insertText(complementary_brace)
                 self.moveCursor(QTextCursor.Left)
@@ -1234,23 +1234,19 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def highlight_selected_word(self, word_find=None):
         #Highlight selected variable
         word = self._text_under_cursor()
-        if word == '' and word_find is not None:
+        partial = False
+        if word_find is not None:
             word = word_find
         if word != self._selected_word:
             self._selected_word = word
-            self.highlighter.set_selected_word(word)
-            #Search for blocks
-            lines = []
-            position = 0
-            word_len = len(word)
-            cursor = self.document().find(word, position,
-                QTextDocument.FindCaseSensitively)
-            while cursor.position() != -1:
-                lines.append(cursor.blockNumber())
-                position = cursor.position() + word_len
-                cursor = self.document().find(word, position,
-                    QTextDocument.FindCaseSensitively)
-            self.highlighter.rehighlight_lines(lines, False)
+            if word_find:
+                partial = True
+            self.highlighter.set_selected_word(word, partial)
+        elif (word == self._selected_word) and (word_find is None):
+            self._selected_word = None
+            self.highlighter.set_selected_word("", partial=True)
+        elif (word == self._selected_word) and (word_find is not None):
+            self.highlighter.set_selected_word(word_find, partial=True)
 
     def async_highlight(self):
         pass
