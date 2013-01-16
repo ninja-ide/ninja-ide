@@ -221,8 +221,9 @@ class Highlighter(QSyntaxHighlighter):
         #Apply Highlight to the document... (when colors change)
         self.rehighlight()
 
-    def set_selected_word(self, word):
+    def set_selected_word(self, word, partial=True):
         """Set the word to highlight."""
+        # partial = True for new highlighter compatibility
         if len(word) > 2:
             self.selected_word_pattern = QRegExp(
                 r'\b%s\b' % self.sanitize(word))
