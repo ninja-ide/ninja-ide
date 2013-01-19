@@ -33,6 +33,8 @@ from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QListWidget
+from PyQt4.QtGui import QCompleter
+from PyQt4.QtGui import QDirModel
 from PyQt4.QtGui import QPixmap
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
@@ -309,7 +311,9 @@ class PageProjectProperties(QWizardPage):
         #Virtualenv
         vPlace = QHBoxLayout()
         self.vtxtPlace = QLineEdit()
-        self.vtxtPlace.setReadOnly(True)
+        self._dir_completer = QCompleter()
+        self._dir_completer.setModel(QDirModel(self._dir_completer))
+        self.vtxtPlace.setCompleter(self._dir_completer)
         self.vbtnExamine = QPushButton(self.tr("Browse..."))
         vPlace.addWidget(self.vtxtPlace)
         vPlace.addWidget(self.vbtnExamine)
