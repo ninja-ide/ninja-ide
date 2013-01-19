@@ -30,6 +30,7 @@ from PyQt4.QtGui import QGridLayout
 from PyQt4.QtGui import QLineEdit
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QCompleter
+from PyQt4.QtGui import QDirModel
 from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QComboBox
 from PyQt4.QtGui import QPushButton
@@ -278,7 +279,9 @@ class ProjectExecution(QWidget):
         ui_tools.LineEditButton(self.txtVenvPath, self.txtVenvPath.clear,
             self.style().standardPixmap(self.style().SP_TrashIcon))
         self.txtVenvPath.setText(self._parent._item.venv)
-        self.txtVenvPath.setReadOnly(True)
+        self._dir_completer = QCompleter()
+        self._dir_completer.setModel(QDirModel(self._dir_completer))
+        self.txtVenvPath.setCompleter(self._dir_completer)
         self.btnVenvPath = QPushButton(QIcon(resources.IMAGES['open']), '')
         grid.addWidget(QLabel(self.tr("Virtualenv Folder:")), 8, 0)
         grid.addWidget(self.txtVenvPath, 8, 1)
