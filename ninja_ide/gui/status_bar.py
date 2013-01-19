@@ -242,9 +242,6 @@ class __StatusBar(QStatusBar):
             self.hide()
             QStatusBar.clearMessage(self)
             self._widgetStatus.show()
-            widget = main_container.MainContainer().get_actual_widget()
-            if widget:
-                widget.setFocus()
 
 
 class SearchWidget(QWidget):
