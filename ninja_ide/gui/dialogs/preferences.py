@@ -171,10 +171,12 @@ class GeneralConfiguration(QWidget):
         self._checkNotifyUpdates = QCheckBox(
             self.tr("Notify me of new updates."))
         self._checkShowStartPage = QCheckBox(self.tr("Show Start Page"))
+        self._checkShowExplorerPanel = QCheckBox(self.tr("Show Explorer Panel"))
         vboxStart.addWidget(self._checkLastSession)
         vboxStart.addWidget(self._checkActivatePlugins)
         vboxStart.addWidget(self._checkNotifyUpdates)
         vboxStart.addWidget(self._checkShowStartPage)
+        vboxStart.addWidget(self._checkShowExplorerPanel)
         #Close
         vboxClose = QVBoxLayout(groupBoxClose)
         self._checkConfirmExit = QCheckBox(self.tr("Confirm Exit."))
@@ -212,6 +214,7 @@ class GeneralConfiguration(QWidget):
             qsettings.value('activatePlugins', 'true') == 'true')
         self._checkNotifyUpdates.setChecked(settings.NOTIFY_UPDATES)
         self._checkShowStartPage.setChecked(settings.SHOW_START_PAGE)
+        self._checkShowExplorerPanel.setChecked(settings.SHOW_EXPLORER_PANEL)
         self._checkConfirmExit.setChecked(settings.CONFIRM_EXIT)
         self._txtWorkspace.setText(settings.WORKSPACE)
         extensions = ', '.join(settings.SUPPORTED_EXTENSIONS)
@@ -251,6 +254,8 @@ class GeneralConfiguration(QWidget):
             self._checkNotifyUpdates.isChecked())
         qsettings.setValue('showStartPage',
             self._checkShowStartPage.isChecked())
+        qsettings.setValue('showExplorerPanel',
+            self._checkShowExplorerPanel.isChecked())
         settings.NOTIFY_UPDATES = self._checkNotifyUpdates.isChecked()
         qsettings.setValue('confirmExit', self._checkConfirmExit.isChecked())
         settings.CONFIRM_EXIT = self._checkConfirmExit.isChecked()

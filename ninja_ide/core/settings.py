@@ -269,6 +269,7 @@ def load_settings():
     global TOOLBAR_AREA
     global LANGUAGE
     global SHOW_START_PAGE
+    global SHOW_EXPLORER_PANEL
     global CONFIRM_EXIT
     global UI_LAYOUT
     global NOTIFY_UPDATES
@@ -317,6 +318,8 @@ def load_settings():
     LANGUAGE = qsettings.value('preferences/interface/language', '')
     SHOW_START_PAGE = qsettings.value(
         'preferences/general/showStartPage', 'true') == 'true'
+    SHOW_EXPLORER_PANEL = qsettings.value(
+        'preferences/general/showExplorerPanel', 'true') == 'true'
     CONFIRM_EXIT = qsettings.value('preferences/general/confirmExit',
         'true') == 'true'
     UI_LAYOUT = int(qsettings.value('preferences/interface/uiLayout', 0))

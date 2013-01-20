@@ -297,6 +297,10 @@ class __IDE(QMainWindow):
         if settings.SHOW_START_PAGE:
             self.mainContainer.show_start_page()
 
+        if not settings.SHOW_EXPLORER_PANEL:
+            centralWidget._splitterAreaSizes = centralWidget._splitterArea.sizes()
+            centralWidget.lateralPanel.hide()
+
     def _show_preferences(self):
         pref = preferences.PreferencesWidget(self.mainContainer)
         pref.show()
