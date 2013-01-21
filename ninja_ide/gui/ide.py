@@ -263,7 +263,7 @@ class __IDE(QMainWindow):
             self._dont_show_start_page_again)
         self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
             self.status.handle_tab_changed)
-        # When close the last tab remove symbols
+        # When close the last tab cleanup
         self.connect(self.mainContainer, SIGNAL("allTabsClosed()"),
             self._last_tab_closed)
         # Update symbols
