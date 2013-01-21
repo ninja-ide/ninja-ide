@@ -172,6 +172,7 @@ class __MainContainer(QSplitter):
             self._exit_follow_mode()
         elif self._tabSecondary.isVisible():
             self.show_split(self.orientation())
+        self.emit(SIGNAL("allTabsClosed()"))
 
     def _secondary_without_tabs(self):
         self.show_split(self.orientation())
