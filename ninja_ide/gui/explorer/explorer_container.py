@@ -409,6 +409,18 @@ class __ExplorerContainer(QTabWidget):
             if item is not None:
                 return item.name
 
+    def cleanup_tabs(self):
+        """
+        Cleans depending on what objects are visible
+        """
+        # Clean up tabs
+        if self._treeSymbols:
+            self._treeSymbols.clear()
+        if self._listErrors:
+            self._listErrors.clear()
+        if self._listMigration:
+            self._listMigration.clear()
+
 
 class WebInspector(QWidget):
 
