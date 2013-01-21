@@ -144,3 +144,10 @@ class ErrorsWidget(QWidget):
         self.pep8Label.setText(self.tr(PEP8_TEXT %
             len(pep8.pep8checks)))
         self._outRefresh = True
+
+    def clear(self):
+        """
+        Clear the widget
+        """
+        self.listErrors.clear()
+        self.listPep8.clear()

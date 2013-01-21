@@ -113,3 +113,10 @@ class MigrationWidget(QWidget):
             item.setToolTip(linenostr + message)
             item.setData(Qt.UserRole, lineno)
             self.current_list.addItem(item)
+
+    def clear(self):
+        """
+        Clear the widget
+        """
+        self.current_list.clear()
+        self.suggestion.clear()

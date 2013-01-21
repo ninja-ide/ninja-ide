@@ -304,8 +304,7 @@ class __IDE(QMainWindow):
         """
         Called when the last tasb is closed
         """
-        # clean up symbols explorer
-        self.explorer.update_symbols({}, fileName='')
+        self.explorer.cleanup_tabs()
 
     def _show_preferences(self):
         pref = preferences.PreferencesWidget(self.mainContainer)
