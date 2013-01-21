@@ -263,6 +263,9 @@ class __IDE(QMainWindow):
             self._dont_show_start_page_again)
         self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
             self.status.handle_tab_changed)
+        # When close the last tab remove symbols
+        self.connect(self.mainContainer, SIGNAL("allTabsClosed()"),
+            self._last_tab_closed)
         # Update symbols
         self.connect(self.mainContainer, SIGNAL("updateLocator(QString)"),
             self.status.explore_file_code)
@@ -296,6 +299,13 @@ class __IDE(QMainWindow):
 
         if settings.SHOW_START_PAGE:
             self.mainContainer.show_start_page()
+
+    def _last_tab_closed(self):
+        """
+        Called when the last tasb is closed
+        """
+        # clean up symbols explorer
+        self.explorer.update_symbols({}, fileName='')
 
     def _show_preferences(self):
         pref = preferences.PreferencesWidget(self.mainContainer)
