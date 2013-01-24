@@ -287,6 +287,8 @@ class __IDE(QMainWindow):
         centralWidget.insert_central_container(self.mainContainer)
         centralWidget.insert_lateral_container(self.explorer)
         centralWidget.insert_bottom_container(self.misc)
+        if self.explorer.count() == 0:
+            centralWidget.change_explorer_visibility(force_hide=True)
         self.connect(self.mainContainer,
             SIGNAL("cursorPositionChange(int, int)"),
             self.central.lateralPanel.update_line_col)

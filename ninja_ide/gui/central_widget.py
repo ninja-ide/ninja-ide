@@ -141,8 +141,8 @@ class __CentralWidget(QWidget):
         else:
             self.mainContainer.show()
 
-    def change_explorer_visibility(self):
-        if self.lateralPanel.isVisible():
+    def change_explorer_visibility(self, force_hide=False):
+        if self.lateralPanel.isVisible() or force_hide:
             self._splitterAreaSizes = self._splitterArea.sizes()
             self.lateralPanel.hide()
         else:

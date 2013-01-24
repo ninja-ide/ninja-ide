@@ -686,6 +686,9 @@ class InterfaceTab(QWidget):
         qsettings = QSettings()
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('interface')
+        previous_state = (settings.SHOW_PROJECT_EXPLORER or
+            settings.SHOW_SYMBOLS_LIST or settings.SHOW_MIGRATION_LIST or
+            settings.SHOW_ERRORS_LIST or settings.SHOW_WEB_INSPECTOR)
         qsettings.setValue('showProjectExplorer',
             self._checkProjectExplorer.isChecked())
         settings.SHOW_PROJECT_EXPLORER = self._checkProjectExplorer.isChecked()
@@ -732,6 +735,11 @@ class InterfaceTab(QWidget):
         qsettings.endGroup()
         qsettings.endGroup()
         actions.Actions().reload_toolbar()
+        end_state = (settings.SHOW_PROJECT_EXPLORER or
+            settings.SHOW_SYMBOLS_LIST or settings.SHOW_MIGRATION_LIST or
+            settings.SHOW_ERRORS_LIST or settings.SHOW_WEB_INSPECTOR)
+        if previous_state != end_state:
+            actions.Actions().view_explorer_visibility()
 
 
 class EditorTab(QWidget):
