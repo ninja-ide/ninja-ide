@@ -79,8 +79,6 @@ logger = NinjaLogger('ninja_ide.gui.ide')
 # IDE: MAIN CONTAINER
 ###############################################################################
 __ideInstance = None
-#Save cursor flash time to restore it on close (necessary for Windows)
-cursor_flash_time = 0
 
 
 def IDE(*args, **kw):
@@ -456,7 +454,6 @@ class __IDE(QMainWindow):
                 self.mainContainer.save_all()
             if val == QMessageBox.Cancel:
                 event.ignore()
-        QApplication.instance().setCursorFlashTime(cursor_flash_time)
         self.emit(SIGNAL("goingDown()"))
         self.save_settings()
         completion_daemon.shutdown_daemon()
@@ -508,9 +505,8 @@ def start(filenames=None, projects_path=None,
     app.processEvents()
 
     # Set the cursor to unblinking
-    global cursor_flash_time
-    cursor_flash_time = app.cursorFlashTime()
-    app.setCursorFlashTime(0)
+    if sys.platform != 'win32':
+        app.setCursorFlashTime(0)
 
     #Set the codec for strings (QString)
     QTextCodec.setCodecForCStrings(QTextCodec.codecForName('utf-8'))
