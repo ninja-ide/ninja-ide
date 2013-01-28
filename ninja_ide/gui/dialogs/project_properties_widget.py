@@ -100,6 +100,9 @@ class ProjectProperties(QDialog):
         # FIXME
         self._item.pythonPath = self.projectExecution.txtPythonPath.text()
         self._item.PYTHONPATH = self.projectExecution.PYTHONPATH.toPlainText()
+        self._item.additional_builtins = filter(
+                lambda e: e, # remove empty names
+                self.projectExecution.additional_builtins.text().split(' '))
         self._item.preExecScript = self.projectExecution.txtPreExec.text()
         self._item.postExecScript = self.projectExecution.txtPostExec.text()
         self._item.programParams = self.projectExecution.txtParams.text()
@@ -124,6 +127,7 @@ class ProjectProperties(QDialog):
         project['use-tabs'] = self._item.useTabs
         project['pythonPath'] = self._item.pythonPath  # FIXME
         project['PYTHONPATH'] = self._item.PYTHONPATH
+        project['additional_builtins'] = self._item.additional_builtins
         project['preExecScript'] = self._item.preExecScript
         project['postExecScript'] = self._item.postExecScript
         project['venv'] = self._item.venv
@@ -244,36 +248,46 @@ class ProjectExecution(QWidget):
         self.PYTHONPATH.setToolTip(self.tr("One path per line"))
         grid.addWidget(self.PYTHONPATH, 2, 1)
 
+        # Additional builtins/globals for pyflakes
+        grid.addWidget(QLabel(self.tr("Additional builtins/globals:")), 3, 0)
+        self.additional_builtins = QLineEdit()
+        self.additional_builtins.setText(
+                ' '.join(self._parent._item.additional_builtins))
+        self.additional_builtins.setToolTip(self.tr(
+                "Space-separated list of symbols that will be considered as "
+                "builtin in every file"))
+        grid.addWidget(self.additional_builtins, 3, 1)
+
         self.txtPreExec = QLineEdit()
         ui_tools.LineEditButton(self.txtPreExec, self.txtPreExec.clear,
             self.style().standardPixmap(self.style().SP_TrashIcon))
         self.txtPreExec.setReadOnly(True)
         self.txtPreExec.setText(self._parent._item.preExecScript)
         self.btnPreExec = QPushButton(QIcon(resources.IMAGES['open']), '')
-        grid.addWidget(QLabel(self.tr("Pre-exec Script:")), 3, 0)
-        grid.addWidget(self.txtPreExec, 3, 1)
-        grid.addWidget(self.btnPreExec, 3, 2)
+        grid.addWidget(QLabel(self.tr("Pre-exec Script:")), 4, 0)
+        grid.addWidget(self.txtPreExec, 4, 1)
+        grid.addWidget(self.btnPreExec, 4, 2)
         self.txtPostExec = QLineEdit()
         ui_tools.LineEditButton(self.txtPostExec, self.txtPostExec.clear,
             self.style().standardPixmap(self.style().SP_TrashIcon))
         self.txtPostExec.setReadOnly(True)
         self.txtPostExec.setText(self._parent._item.postExecScript)
         self.btnPostExec = QPushButton(QIcon(resources.IMAGES['open']), '')
-        grid.addWidget(QLabel(self.tr("Post-exec Script:")), 4, 0)
-        grid.addWidget(self.txtPostExec, 4, 1)
-        grid.addWidget(self.btnPostExec, 4, 2)
+        grid.addWidget(QLabel(self.tr("Post-exec Script:")), 5, 0)
+        grid.addWidget(self.txtPostExec, 5, 1)
+        grid.addWidget(self.btnPostExec, 5, 2)
 
         grid.addItem(QSpacerItem(5, 10, QSizePolicy.Expanding,
-            QSizePolicy.Expanding), 5, 0)
+            QSizePolicy.Expanding), 6, 0)
 
         # Properties
-        grid.addWidget(QLabel(self.tr("Properties:")), 6, 0)
+        grid.addWidget(QLabel(self.tr("Properties:")), 7, 0)
         self.txtParams = QLineEdit()
         self.txtParams.setToolTip(
             self.tr("Separate the params with commas (ie: help, verbose)"))
         self.txtParams.setText(self._parent._item.programParams)
-        grid.addWidget(QLabel(self.tr("Params (comma separated):")), 7, 0)
-        grid.addWidget(self.txtParams, 7, 1)
+        grid.addWidget(QLabel(self.tr("Params (comma separated):")), 8, 0)
+        grid.addWidget(self.txtParams, 8, 1)
         #Widgets for virtualenv properties
         self.txtVenvPath = QLineEdit()
         ui_tools.LineEditButton(self.txtVenvPath, self.txtVenvPath.clear,
@@ -283,9 +297,9 @@ class ProjectExecution(QWidget):
         self._dir_completer.setModel(QDirModel(self._dir_completer))
         self.txtVenvPath.setCompleter(self._dir_completer)
         self.btnVenvPath = QPushButton(QIcon(resources.IMAGES['open']), '')
-        grid.addWidget(QLabel(self.tr("Virtualenv Folder:")), 8, 0)
-        grid.addWidget(self.txtVenvPath, 8, 1)
-        grid.addWidget(self.btnVenvPath, 8, 2)
+        grid.addWidget(QLabel(self.tr("Virtualenv Folder:")), 9, 0)
+        grid.addWidget(self.txtVenvPath, 9, 1)
+        grid.addWidget(self.btnVenvPath, 9, 2)
 
         self.connect(self.btnBrowse, SIGNAL("clicked()"), self.select_file)
         self.connect(self.btnPythonPath, SIGNAL("clicked()"),

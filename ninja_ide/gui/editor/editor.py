@@ -122,7 +122,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if filename in settings.BOOKMARKS:
             self._sidebarWidget._bookmarks = settings.BOOKMARKS[filename]
         self.pep8 = pep8_checker.Pep8Checker(self)
-        self.errors = errors_checker.ErrorsChecker(self)
+        if project_obj is not None:
+            additional_builtins = project_obj.additional_builtins
+        else:
+            additional_builtins = []
+        self.errors = errors_checker.ErrorsChecker(self, additional_builtins)
         self.migration = migration_2to3.MigrationTo3(self)
 
         self.textModified = False
