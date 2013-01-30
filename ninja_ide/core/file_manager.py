@@ -248,9 +248,6 @@ def delete_folder(path, fileName=None):
 def rename_file(old, new):
     """Rename a file, changing its name from 'old' to 'new'."""
     if os.path.isfile(old):
-        ext = (os.path.splitext(new)[-1])[1:]
-        if ext == '':
-            new += '.py'
         if file_exists(new):
             raise NinjaFileExistsException(new)
         os.rename(old, new)
