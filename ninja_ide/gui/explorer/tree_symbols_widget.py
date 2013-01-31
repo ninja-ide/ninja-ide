@@ -52,6 +52,7 @@ class TreeSymbolsWidget(QTreeWidget):
         self.header().setStretchLastSection(False)
         self.actualSymbols = ('', {})
         self.docstrings = {}
+        self.collapsedItems = {}
 
         self.connect(self, SIGNAL("itemClicked(QTreeWidgetItem *, int)"),
             self._go_to_definition)
@@ -61,6 +62,10 @@ class TreeSymbolsWidget(QTreeWidget):
         self.connect(self,
             SIGNAL("customContextMenuRequested(const QPoint &)"),
             self._menu_context_tree)
+        self.connect(self, SIGNAL("itemCollapsed(QTreeWidgetItem *)"),
+            self._item_collapsed)
+        self.connect(self, SIGNAL("itemExpanded(QTreeWidgetItem *)"),
+            self._item_expanded)
 
     def select_current_item(self, line, col):
         #TODO
@@ -79,6 +84,8 @@ class TreeSymbolsWidget(QTreeWidget):
         u_class = menu.addAction(self.tr("Unfold classes"))
         u_class_method = menu.addAction(self.tr("Unfold classes and methods"))
         u_class_attr = menu.addAction(self.tr("Unfold classes and attributes"))
+        menu.addSeparator()
+        #save_state = menu.addAction(self.tr("Save State"))
 
         self.connect(f_all, SIGNAL("triggered()"),
             lambda: self.collapseAll())
@@ -89,6 +96,8 @@ class TreeSymbolsWidget(QTreeWidget):
             self._unfold_class_method)
         self.connect(u_class_attr, SIGNAL("triggered()"),
             self._unfold_class_attribute)
+        #self.connect(save_state, SIGNAL("triggered()"),
+            #self._save_symbols_state)
 
         menu.exec_(QCursor.pos())
 
@@ -141,11 +150,47 @@ class TreeSymbolsWidget(QTreeWidget):
                     item.setExpanded(False)
                     break
 
+    def _save_symbols_state(self):
+        #filename = self.actualSymbols[0]
+        #TODO: persist self.collapsedItems[filename] in QSettings
+        print("Saving state...")
+        pass
+
+    def _get_expand(self, item):
+        """
+        Returns True or False to be used as setExpanded() with the items
+        It method is based on the user preferences
+        """
+        name = self._get_unique_name(item)
+        filename = self.actualSymbols[0]
+        collapsed_items = self.collapsedItems.get(filename, [])
+        can_check = (not item.isClickable) or item.isClass or item.isMethod
+        if can_check and name in collapsed_items:
+            return False
+        return True
+
+    @staticmethod
+    def _get_unique_name(item):
+        """
+        Returns a string used as unique name
+        """
+        # className_Attributes/className_Functions
+        parent = item.parent()
+        if parent:
+            return "%s_%s" % (parent.text(0), item.text(0))
+        return "_%s" % item.text(0)
+
     def update_symbols_tree(self, symbols, filename='', parent=None):
         if not parent:
             if filename == self.actualSymbols[0] and \
                 self.actualSymbols[1] and not symbols:
                     return
+
+            if symbols == self.actualSymbols[1]:
+                # Nothing new then return
+                return
+
+            # we have new symbols refresh it
             self.clear()
             self.actualSymbols = (filename, symbols)
             self.docstrings = symbols.get('docstrings', {})
@@ -154,15 +199,18 @@ class TreeSymbolsWidget(QTreeWidget):
             globalAttribute = ItemTree(parent, [self.tr("Attributes")])
             globalAttribute.isClickable = False
             globalAttribute.isAttribute = True
+            globalAttribute.setExpanded(self._get_expand(globalAttribute))
             for glob in sorted(symbols['attributes']):
                 globItem = ItemTree(globalAttribute, [glob],
                     lineno=symbols['attributes'][glob])
                 globItem.isAttribute = True
                 globItem.setIcon(0, QIcon(resources.IMAGES['attribute']))
+                globItem.setExpanded(self._get_expand(globItem))
         if 'functions' in symbols:
             functionsItem = ItemTree(parent, [self.tr("Functions")])
             functionsItem.isClickable = False
             functionsItem.isMethod = True
+            functionsItem.setExpanded(self._get_expand(functionsItem))
             for func in sorted(symbols['functions']):
                 item = ItemTree(functionsItem, [func],
                     lineno=symbols['functions'][func])
@@ -170,10 +218,12 @@ class TreeSymbolsWidget(QTreeWidget):
                 item.isMethod = True
                 item.setToolTip(0, tooltip)
                 item.setIcon(0, QIcon(resources.IMAGES['function']))
+                item.setExpanded(self._get_expand(item))
         if 'classes' in symbols:
             classItem = ItemTree(self, [self.tr("Classes")])
             classItem.isClickable = False
             classItem.isClass = True
+            classItem.setExpanded(self._get_expand(classItem))
             for claz in sorted(symbols['classes']):
                 line_number = symbols['classes'][claz][0]
                 item = ItemTree(classItem, [claz], lineno=line_number)
@@ -181,10 +231,11 @@ class TreeSymbolsWidget(QTreeWidget):
                 tooltip = self.create_tooltip(claz, line_number)
                 item.setToolTip(0, tooltip)
                 item.setIcon(0, QIcon(resources.IMAGES['class']))
+                item.setExpanded(self._get_expand(item))
                 self.update_symbols_tree(symbols['classes'][claz][1],
                     parent=item)
 
-        self.expandAll()
+        #self.expandAll()
 
     def _go_to_definition(self, item):
         if item.isClickable:
@@ -198,6 +249,25 @@ class TreeSymbolsWidget(QTreeWidget):
             doc = '\n' + doc
         tooltip = name + doc
         return tooltip
+
+    def _item_collapsed(self, item):
+        super(TreeSymbolsWidget, self).collapseItem(item)
+
+        can_check = (not item.isClickable) or item.isClass or item.isMethod
+        if can_check:
+            n = self._get_unique_name(item)
+            filename = self.actualSymbols[0]
+            self.collapsedItems.setdefault(filename, [])
+            if not n in self.collapsedItems[filename]:
+                self.collapsedItems[filename].append(n)
+
+    def _item_expanded(self, item):
+        super(TreeSymbolsWidget, self).expandItem(item)
+
+        n = self._get_unique_name(item)
+        filename = self.actualSymbols[0]
+        if n in self.collapsedItems.get(filename, []):
+            self.collapsedItems[filename].remove(n)
 
 
 class ItemTree(QTreeWidgetItem):
