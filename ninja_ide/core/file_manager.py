@@ -172,6 +172,18 @@ def get_folder(fileName):
     return os.path.dirname(fileName)
 
 
+def get_end_of_line(os_family):
+    """
+    Returns the chars to be used as end-of-line based
+    """
+    eol = {
+        "Unix": None,
+        "Windows": "\r\n",
+        "Mac": "\r",
+    }
+    return eol.get(os_family)
+
+
 def store_file_content(fileName, content, addExtension=True, newFile=False):
     """Save content on disk with the given file name."""
     if fileName == '':
@@ -185,8 +197,15 @@ def store_file_content(fileName, content, addExtension=True, newFile=False):
         f = QtCore.QFile(fileName)
         if not f.open(QtCore.QIODevice.WriteOnly | QtCore.QIODevice.Truncate):
             raise NinjaIOException(f.errorString())
+
         stream = QtCore.QTextStream(f)
         encoding = get_file_encoding(content)
+        # NINJA-IDE internally always use UNIX style \n if the user set
+        # a different EOL replace UNIX style with the user choice
+        eol_chars = get_end_of_line(settings.END_OF_LINE)
+        if eol_chars:
+            content = content.replace('\n', eol_chars)
+
         if encoding:
             stream.setCodec(encoding)
         encoded_stream = stream.codec().fromUnicode(content)
