@@ -523,10 +523,19 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             word = self._text_under_cursor()
         self.emit(SIGNAL("findOcurrences(QString)"), word)
 
+    def _unfold_blocks_for_jump(self, lineno):
+        """Unfold the blocks previous to the lineno."""
+        for line in self._sidebarWidget._foldedBlocks:
+            if lineno >= line:
+                self._sidebarWidget.code_folding_event(line + 1)
+            else:
+                break
+
     def go_to_line(self, lineno):
         """
         Go to an specific line
         """
+        self._unfold_blocks_for_jump(lineno)
         if self.blockCount() >= lineno:
             cursor = self.textCursor()
             cursor.setPosition(self.document().findBlockByLineNumber(
