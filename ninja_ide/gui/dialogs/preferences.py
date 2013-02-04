@@ -66,7 +66,6 @@ from ninja_ide.gui.misc import shortcut_manager
 from ninja_ide.gui.misc import plugin_preferences
 from ninja_ide.gui.main_panel import main_container
 from ninja_ide.gui.explorer import explorer_container
-from ninja_ide.dependencies import pep8mod
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
 from ninja_ide.tools import ui_tools
@@ -1086,10 +1085,10 @@ class EditorConfiguration(QWidget):
         settings.INDENT = self._spin.value()
         qsettings.setValue('endOfLine', self._comboEndOfLine.currentText())
         settings.END_OF_LINE = self._comboEndOfLine.currentText()
-        qsettings.setValue('marginLine', self._spinMargin.value())
-        settings.MARGIN_LINE = self._spinMargin.value()
-        pep8mod.MAX_LINE_LENGTH = settings.MARGIN_LINE - 1
-        pep8mod.options.max_line_length = settings.MARGIN_LINE
+        margin_line = self._spinMargin.value()
+        qsettings.setValue('marginLine', margin_line)
+        settings.MARGIN_LINE = margin_line
+        settings.pep8mod_update_margin_line_length(margin_line)
         qsettings.setValue('showMarginLine', self._checkShowMargin.isChecked())
         settings.SHOW_MARGIN_LINE = self._checkShowMargin.isChecked()
         settings.UNDERLINE_NOT_BACKGROUND = \
@@ -1130,10 +1129,10 @@ class EditorConfiguration(QWidget):
         action.reset_editor_flags()
         action.call_editors_function("set_tab_usage")
         if settings.USE_TABS:
-            pep8mod.options.ignore.append("W191")
-        elif "W191" in pep8mod.options.ignore:
-            pep8mod.options.ignore.remove("W191")
-        pep8mod.refresh_checks()
+            settings.pep8mod_add_ignore("W191")
+        else:
+            settings.pep8mod_remove_ignore("W191")
+        settings.pep8mod_refresh_checks()
         main_container.MainContainer().update_editor_margin_line()
 
 
