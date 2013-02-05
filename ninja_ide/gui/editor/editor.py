@@ -1135,7 +1135,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 brace_buffer.append((tkn_rep, tkn_pos))
         if not forward:
             brace_buffer.reverse()
-        if not ((not forward) and invalid_syntax):
+        if forward and (not invalid_syntax):
             #Exclude the brace that triggered all this
             brace_buffer = brace_buffer[1:]
 
