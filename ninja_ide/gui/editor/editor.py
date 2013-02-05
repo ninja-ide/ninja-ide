@@ -523,10 +523,19 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             word = self._text_under_cursor()
         self.emit(SIGNAL("findOcurrences(QString)"), word)
 
+    def _unfold_blocks_for_jump(self, lineno):
+        """Unfold the blocks previous to the lineno."""
+        for line in self._sidebarWidget._foldedBlocks:
+            if lineno >= line:
+                self._sidebarWidget.code_folding_event(line + 1)
+            else:
+                break
+
     def go_to_line(self, lineno):
         """
         Go to an specific line
         """
+        self._unfold_blocks_for_jump(lineno)
         if self.blockCount() >= lineno:
             cursor = self.textCursor()
             cursor.setPosition(self.document().findBlockByLineNumber(
@@ -1126,7 +1135,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 brace_buffer.append((tkn_rep, tkn_pos))
         if not forward:
             brace_buffer.reverse()
-        if not ((not forward) and invalid_syntax):
+        if forward and (not invalid_syntax):
             #Exclude the brace that triggered all this
             brace_buffer = brace_buffer[1:]
 
