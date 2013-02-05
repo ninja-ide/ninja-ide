@@ -268,6 +268,9 @@ class TreeSymbolsWidget(QTreeWidget):
         filename = self.actualSymbols[0]
         if n in self.collapsedItems.get(filename, []):
             self.collapsedItems[filename].remove(n)
+            if not len(self.collapsedItems[filename]):
+                # no more items, free space
+                del self.collapsedItems[filename]
 
 
 class ItemTree(QTreeWidgetItem):
