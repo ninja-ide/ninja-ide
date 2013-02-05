@@ -988,13 +988,9 @@ class EditorConfiguration(QWidget):
         self._checkShowMargin.setChecked(settings.SHOW_MARGIN_LINE)
         grid.addWidget(self._checkShowMargin, 2, 2, alignment=Qt.AlignTop)
         #End of line
-        grid.addWidget(QLabel(self.tr("End of Line:")), 3, 0, Qt.AlignRight)
-        self._comboEndOfLine = QComboBox()
-        self._comboEndOfLine.addItems(["Unix", "Windows", "Mac"])
-        index = self._comboEndOfLine.findText(settings.END_OF_LINE)
-        index = index if index > -1 else 0
-        self._comboEndOfLine.setCurrentIndex(index)
-        grid.addWidget(self._comboEndOfLine, 3, 1, alignment=Qt.AlignTop)
+        self._checkEndOfLine = QCheckBox(self.tr("Use Platform End of Line"))
+        self._checkEndOfLine.setChecked(settings.USE_PLATFORM_END_OF_LINE)
+        grid.addWidget(self._checkEndOfLine, 3, 1, alignment=Qt.AlignTop)
         #Find Errors
         self._checkHighlightLine = QCheckBox(
             self.tr("Check: Highlight errors using Underline\n"
@@ -1084,10 +1080,10 @@ class EditorConfiguration(QWidget):
         qsettings.beginGroup('editor')
         qsettings.setValue('indent', self._spin.value())
         settings.INDENT = self._spin.value()
-        qsettings.setValue('endOfLine', self._comboEndOfLine.currentText())
-        settings.END_OF_LINE = self._comboEndOfLine.currentText()
         qsettings.setValue('marginLine', self._spinMargin.value())
-        settings.MARGIN_LINE = self._spinMargin.value()
+        endOfLine = self._checkEndOfLine.isChecked()
+        qsettings.setValue('platformEndOfLine', endOfLine)
+        settings.USE_PLATFORM_END_OF_LINE = endOfLine
         pep8mod.MAX_LINE_LENGTH = settings.MARGIN_LINE - 1
         pep8mod.options.max_line_length = settings.MARGIN_LINE
         qsettings.setValue('showMarginLine', self._checkShowMargin.isChecked())
