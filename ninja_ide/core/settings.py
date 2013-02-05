@@ -30,7 +30,6 @@ OS_KEY = "Ctrl"
 
 FONT_FAMILY = 'Monospace'
 FONT_SIZE = 11
-EOL_DEFAULT = 'Unix'
 if sys.platform == "darwin":
     from PyQt4.QtGui import QKeySequence
     from PyQt4.QtCore import Qt
@@ -38,11 +37,9 @@ if sys.platform == "darwin":
     FONT_FAMILY = 'Monaco'
     FONT_SIZE = 11
     OS_KEY = QKeySequence(Qt.CTRL).toString(QKeySequence.NativeText)
-    EOL_DEFAULT = 'Mac'
 elif sys.platform == "win32":
     FONT_FAMILY = 'Courier'
     FONT_SIZE = 10
-    EOL_DEFAULT = 'Windows'
 
 ###############################################################################
 # IDE
@@ -99,7 +96,7 @@ USE_TABS = False
 ALLOW_WORD_WRAP = False
 INDENT = 4
 # by default Unix (\n) is used
-END_OF_LINE = None
+USE_PLATFORM_END_OF_LINE = False
 MARGIN_LINE = 80
 SHOW_MARGIN_LINE = True
 REMOVE_TRAILING_SPACES = True
@@ -264,9 +261,14 @@ def get_toolbar_item_for_plugins():
     return TOOLBAR_ITEMS_PLUGINS
 
 
+def use_platform_specific_eol():
+    global USE_PLATFORM_END_OF_LINE
+    return USE_PLATFORM_END_OF_LINE
+
 ###############################################################################
 # Utility functions to update (patch at runtime) pep8mod.py
 ###############################################################################
+
 
 def pep8mod_refresh_checks():
     """
@@ -324,8 +326,7 @@ def load_settings():
     global SUPPORTED_EXTENSIONS
     global WORKSPACE
     global INDENT
-    global END_OF_LINE
-    global EOL_DEFAULT
+    global USE_PLATFORM_END_OF_LINE
     global MARGIN_LINE
     global REMOVE_TRAILING_SPACES
     global SHOW_TABS_AND_SPACES
@@ -413,7 +414,8 @@ def load_settings():
     SIZE_PROPORTION = float(qsettings.value(
         'preferences/editor/minimapSizeProportion', 0.17))
     INDENT = int(qsettings.value('preferences/editor/indent', 4))
-    END_OF_LINE = qsettings.value('preferences/editor/endOfLine', EOL_DEFAULT)
+    eol = qsettings.value('preferences/editor/platformEndOfLine', 'false')
+    USE_PLATFORM_END_OF_LINE = eol == 'true'
     MARGIN_LINE = int(qsettings.value('preferences/editor/marginLine', 80))
     pep8mod_update_margin_line_length(MARGIN_LINE)
     REMOVE_TRAILING_SPACES = qsettings.value(

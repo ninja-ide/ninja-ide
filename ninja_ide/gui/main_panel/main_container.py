@@ -623,8 +623,6 @@ class __MainContainer(QSplitter):
             editorWidget._file_saved()
             return True
         except Exception as reason:
-            print(reason)
-            raise
             editorWidget.just_saved = False
             logger.error('save_file: %s', reason)
             QMessageBox.information(self, self.tr("Save Error"),
