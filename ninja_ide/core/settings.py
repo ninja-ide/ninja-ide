@@ -95,6 +95,8 @@ NINJA_SKIN = 'Default'
 USE_TABS = False
 ALLOW_WORD_WRAP = False
 INDENT = 4
+# by default Unix (\n) is used
+USE_PLATFORM_END_OF_LINE = False
 MARGIN_LINE = 80
 SHOW_MARGIN_LINE = True
 REMOVE_TRAILING_SPACES = True
@@ -258,6 +260,51 @@ def get_toolbar_item_for_plugins():
     global TOOLBAR_ITEMS_PLUGINS
     return TOOLBAR_ITEMS_PLUGINS
 
+
+def use_platform_specific_eol():
+    global USE_PLATFORM_END_OF_LINE
+    return USE_PLATFORM_END_OF_LINE
+
+###############################################################################
+# Utility functions to update (patch at runtime) pep8mod.py
+###############################################################################
+
+
+def pep8mod_refresh_checks():
+    """
+    Force to reload all checks in pep8mod.py
+    """
+    pep8mod.refresh_checks()
+
+
+def pep8mod_add_ignore(ignore_code):
+    """
+    Patch pep8mod.py to ignore a given check by code
+    EXAMPLE:
+        pep8mod_add_ignore('W191')
+        'W1919': 'indentation contains tabs'
+    """
+    pep8mod.options.ignore.append(ignore_code)
+
+
+def pep8mod_remove_ignore(ignore_code):
+    """
+    Patch pep8mod.py to remove the ignore of a give check
+    EXAMPLE:
+        pep8mod_remove_ignore('W191')
+        'W1919': 'indentation contains tabs'
+    """
+    if ignore_code in pep8mod.options.ignore:
+        pep8mod.options.ignore.remove(ignore_code)
+
+
+def pep8mod_update_margin_line_length(new_margin_line):
+    """
+    Patch pep8mod.py to update the margin line length with a new value
+    """
+    pep8mod.MAX_LINE_LENGTH = new_margin_line
+    pep8mod.options.max_line_length = new_margin_line
+
 ###############################################################################
 # LOAD SETTINGS
 ###############################################################################
@@ -279,6 +326,7 @@ def load_settings():
     global SUPPORTED_EXTENSIONS
     global WORKSPACE
     global INDENT
+    global USE_PLATFORM_END_OF_LINE
     global MARGIN_LINE
     global REMOVE_TRAILING_SPACES
     global SHOW_TABS_AND_SPACES
@@ -366,8 +414,10 @@ def load_settings():
     SIZE_PROPORTION = float(qsettings.value(
         'preferences/editor/minimapSizeProportion', 0.17))
     INDENT = int(qsettings.value('preferences/editor/indent', 4))
+    eol = qsettings.value('preferences/editor/platformEndOfLine', 'false')
+    USE_PLATFORM_END_OF_LINE = eol == 'true'
     MARGIN_LINE = int(qsettings.value('preferences/editor/marginLine', 80))
-    pep8mod.MAX_LINE_LENGTH = MARGIN_LINE
+    pep8mod_update_margin_line_length(MARGIN_LINE)
     REMOVE_TRAILING_SPACES = qsettings.value(
         'preferences/editor/removeTrailingSpaces', 'true') == 'true'
     SHOW_TABS_AND_SPACES = qsettings.value(

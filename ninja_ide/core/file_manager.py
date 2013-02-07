@@ -182,13 +182,19 @@ def store_file_content(fileName, content, addExtension=True, newFile=False):
     if newFile and file_exists(fileName):
         raise NinjaFileExistsException(fileName)
     try:
+        flags = QtCore.QIODevice.WriteOnly | QtCore.QIODevice.Truncate
         f = QtCore.QFile(fileName)
-        if not f.open(QtCore.QIODevice.WriteOnly | QtCore.QIODevice.Truncate):
+        if settings.use_platform_specific_eol():
+            flags |= QtCore.QIODevice.Text
+
+        if not f.open(flags):
             raise NinjaIOException(f.errorString())
+
         stream = QtCore.QTextStream(f)
         encoding = get_file_encoding(content)
         if encoding:
             stream.setCodec(encoding)
+
         encoded_stream = stream.codec().fromUnicode(content)
         f.write(encoded_stream)
         f.flush()

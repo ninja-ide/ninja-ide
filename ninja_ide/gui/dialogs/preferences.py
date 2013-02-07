@@ -66,7 +66,6 @@ from ninja_ide.gui.misc import shortcut_manager
 from ninja_ide.gui.misc import plugin_preferences
 from ninja_ide.gui.main_panel import main_container
 from ninja_ide.gui.explorer import explorer_container
-from ninja_ide.dependencies import pep8mod
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
 from ninja_ide.tools import ui_tools
@@ -987,16 +986,20 @@ class EditorConfiguration(QWidget):
         self._checkShowMargin = QCheckBox(self.tr("Show Margin Line"))
         self._checkShowMargin.setChecked(settings.SHOW_MARGIN_LINE)
         grid.addWidget(self._checkShowMargin, 2, 2, alignment=Qt.AlignTop)
+        #End of line
+        self._checkEndOfLine = QCheckBox(self.tr("Use Platform End of Line"))
+        self._checkEndOfLine.setChecked(settings.USE_PLATFORM_END_OF_LINE)
+        grid.addWidget(self._checkEndOfLine, 3, 1, alignment=Qt.AlignTop)
         #Find Errors
         self._checkHighlightLine = QCheckBox(
             self.tr("Check: Highlight errors using Underline\n"
                 "Uncheck: Highlight errors using Background"))
         self._checkHighlightLine.setChecked(settings.UNDERLINE_NOT_BACKGROUND)
-        grid.addWidget(self._checkHighlightLine, 3, 1, 1, 2,
+        grid.addWidget(self._checkHighlightLine, 4, 1, 1, 2,
             alignment=Qt.AlignTop)
         self._checkErrors = QCheckBox(self.tr("Find and Show Errors."))
         self._checkErrors.setChecked(settings.FIND_ERRORS)
-        grid.addWidget(self._checkErrors, 4, 1, 1, 2, alignment=Qt.AlignTop)
+        grid.addWidget(self._checkErrors, 5, 1, 1, 2, alignment=Qt.AlignTop)
         self.connect(self._checkErrors, SIGNAL("stateChanged(int)"),
             self._disable_show_errors)
         self._showErrorsOnLine = QCheckBox(
@@ -1004,12 +1007,12 @@ class EditorConfiguration(QWidget):
         self._showErrorsOnLine.setChecked(settings.ERRORS_HIGHLIGHT_LINE)
         self.connect(self._showErrorsOnLine, SIGNAL("stateChanged(int)"),
             self._enable_errors_inline)
-        grid.addWidget(self._showErrorsOnLine, 5, 2, 1, 1, Qt.AlignTop)
+        grid.addWidget(self._showErrorsOnLine, 6, 2, 1, 1, Qt.AlignTop)
         #Find Check Style
         self._checkStyle = QCheckBox(
             self.tr("Find and Show Check Style errors."))
         self._checkStyle.setChecked(settings.CHECK_STYLE)
-        grid.addWidget(self._checkStyle, 6, 1, 1, 2, alignment=Qt.AlignTop)
+        grid.addWidget(self._checkStyle, 7, 1, 1, 2, alignment=Qt.AlignTop)
         self.connect(self._checkStyle, SIGNAL("stateChanged(int)"),
             self._disable_check_style)
         self._checkStyleOnLine = QCheckBox(
@@ -1017,35 +1020,35 @@ class EditorConfiguration(QWidget):
         self._checkStyleOnLine.setChecked(settings.CHECK_HIGHLIGHT_LINE)
         self.connect(self._checkStyleOnLine, SIGNAL("stateChanged(int)"),
             self._enable_check_inline)
-        grid.addWidget(self._checkStyleOnLine, 7, 2, 1, 1, Qt.AlignTop)
+        grid.addWidget(self._checkStyleOnLine, 8, 2, 1, 1, Qt.AlignTop)
         # Python3 Migration
         self._showMigrationTips = QCheckBox(
             self.tr("Show Python3 Migration Tips."))
         self._showMigrationTips.setChecked(settings.SHOW_MIGRATION_TIPS)
-        grid.addWidget(self._showMigrationTips, 8, 1, 1, 2, Qt.AlignTop)
+        grid.addWidget(self._showMigrationTips, 9, 1, 1, 2, Qt.AlignTop)
         #Center On Scroll
         self._checkCenterScroll = QCheckBox(
             self.tr("Center on Scroll."))
         self._checkCenterScroll.setChecked(settings.CENTER_ON_SCROLL)
-        grid.addWidget(self._checkCenterScroll, 9, 1, 1, 2,
+        grid.addWidget(self._checkCenterScroll, 10, 1, 1, 2,
             alignment=Qt.AlignTop)
         #Remove Trailing Spaces add Last empty line automatically
         self._checkTrailing = QCheckBox(self.tr(
             "Remove Trailing Spaces and\nadd Last Line automatically."))
         self._checkTrailing.setChecked(settings.REMOVE_TRAILING_SPACES)
-        grid.addWidget(self._checkTrailing, 10, 1, 1, 2, alignment=Qt.AlignTop)
+        grid.addWidget(self._checkTrailing, 11, 1, 1, 2, alignment=Qt.AlignTop)
         #Show Tabs and Spaces
         self._checkShowSpaces = QCheckBox(self.tr("Show Tabs and Spaces."))
         self._checkShowSpaces.setChecked(settings.SHOW_TABS_AND_SPACES)
-        grid.addWidget(self._checkShowSpaces, 11, 1, 1, 2,
+        grid.addWidget(self._checkShowSpaces, 12, 1, 1, 2,
             alignment=Qt.AlignTop)
         self._allowWordWrap = QCheckBox(self.tr("Allow Word Wrap."))
         self._allowWordWrap.setChecked(settings.ALLOW_WORD_WRAP)
-        grid.addWidget(self._allowWordWrap, 12, 1, 1, 2, alignment=Qt.AlignTop)
+        grid.addWidget(self._allowWordWrap, 13, 1, 1, 2, alignment=Qt.AlignTop)
         self._checkForDocstrings = QCheckBox(
             self.tr("Check for Docstrings in Classes and Functions."))
         self._checkForDocstrings.setChecked(settings.CHECK_FOR_DOCSTRINGS)
-        grid.addWidget(self._checkForDocstrings, 13, 1, 1, 2,
+        grid.addWidget(self._checkForDocstrings, 14, 1, 1, 2,
             alignment=Qt.AlignTop)
 
     def _enable_check_inline(self, val):
@@ -1076,10 +1079,13 @@ class EditorConfiguration(QWidget):
         qsettings.beginGroup('editor')
         qsettings.setValue('indent', self._spin.value())
         settings.INDENT = self._spin.value()
-        qsettings.setValue('marginLine', self._spinMargin.value())
-        settings.MARGIN_LINE = self._spinMargin.value()
-        pep8mod.MAX_LINE_LENGTH = settings.MARGIN_LINE - 1
-        pep8mod.options.max_line_length = settings.MARGIN_LINE
+        endOfLine = self._checkEndOfLine.isChecked()
+        qsettings.setValue('platformEndOfLine', endOfLine)
+        settings.USE_PLATFORM_END_OF_LINE = endOfLine
+        margin_line = self._spinMargin.value()
+        qsettings.setValue('marginLine', margin_line)
+        settings.MARGIN_LINE = margin_line
+        settings.pep8mod_update_margin_line_length(margin_line)
         qsettings.setValue('showMarginLine', self._checkShowMargin.isChecked())
         settings.SHOW_MARGIN_LINE = self._checkShowMargin.isChecked()
         settings.UNDERLINE_NOT_BACKGROUND = \
@@ -1120,10 +1126,10 @@ class EditorConfiguration(QWidget):
         action.reset_editor_flags()
         action.call_editors_function("set_tab_usage")
         if settings.USE_TABS:
-            pep8mod.options.ignore.append("W191")
-        elif "W191" in pep8mod.options.ignore:
-            pep8mod.options.ignore.remove("W191")
-        pep8mod.refresh_checks()
+            settings.pep8mod_add_ignore("W191")
+        else:
+            settings.pep8mod_remove_ignore("W191")
+        settings.pep8mod_refresh_checks()
         main_container.MainContainer().update_editor_margin_line()
 
 
