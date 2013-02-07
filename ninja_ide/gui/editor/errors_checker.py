@@ -39,9 +39,10 @@ class ErrorsChecker(QThread):
     pat_enable_lint = re.compile('(\s)*#lint:enable$')
     pat_ignore_lint = re.compile('(.)+#lint:ok$|(.)+# lint:ok$')
 
-    def __init__(self, editor):
+    def __init__(self, editor, additional_builtins=[]):
         super(ErrorsChecker, self).__init__()
         self._editor = editor
+        self._builtins = additional_builtins
         self._path = ''
         self._encoding = ''
         self.errorsSummary = {}
@@ -66,7 +67,8 @@ class ErrorsChecker(QThread):
                 if self._encoding is not None:
                     source = source.encode(self._encoding)
                 parseResult = compiler.parse(source)
-                lint_checker = checker.Checker(parseResult, self._path)
+                lint_checker = checker.Checker(parseResult, self._path,
+                                               builtins=self._builtins)
                 for m in lint_checker.messages:
                     lineno = m.lineno - 1
                     if lineno not in self.errorsSummary:
