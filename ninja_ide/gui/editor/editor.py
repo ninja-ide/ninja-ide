@@ -67,7 +67,7 @@ BRACE_DICT = {')': '(', ']': '[', '}': '{', '(': ')', '[': ']', '{': '}'}
 logger = NinjaLogger('ninja_ide.gui.editor.editor')
 
 
-if sys.version_info.major == 3:
+if sys.version_info[0] == 3:
     python3 = True
 else:
     python3 = False

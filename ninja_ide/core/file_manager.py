@@ -26,7 +26,7 @@ from PyQt4 import QtCore
 
 from ninja_ide.core import settings
 
-if sys.version_info.major == 3:
+if sys.version_info[0] == 3:
     python3 = True
 else:
     python3 = False
