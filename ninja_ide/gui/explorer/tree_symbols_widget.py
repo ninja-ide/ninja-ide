@@ -159,7 +159,7 @@ class TreeSymbolsWidget(QTreeWidget):
     def _get_expand(self, item):
         """
         Returns True or False to be used as setExpanded() with the items
-        It method is based on the user preferences
+        It method is based on the click that the user made in the tree
         """
         name = self._get_unique_name(item)
         filename = self.actualSymbols[0]
@@ -271,6 +271,13 @@ class TreeSymbolsWidget(QTreeWidget):
             if not len(self.collapsedItems[filename]):
                 # no more items, free space
                 del self.collapsedItems[filename]
+
+    def clean(self):
+        """
+        Reset the tree and reset attributes
+        """
+        self.clear()
+        self.collapsedItems = {}
 
 
 class ItemTree(QTreeWidgetItem):

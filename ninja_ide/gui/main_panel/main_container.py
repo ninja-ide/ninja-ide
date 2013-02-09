@@ -79,6 +79,7 @@ class __MainContainer(QSplitter):
     enabledFollowMode(bool)
     recentTabsModified(QStringList)
     migrationAnalyzed()
+    allTabClosed()
     """
 ###############################################################################
 
