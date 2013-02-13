@@ -26,6 +26,11 @@ from ninja_ide.dependencies import pep8mod
 # OS DETECTOR
 ###############################################################################
 
+# Use this flags instead of sys.platform spreaded in the source code
+IS_WINDOWS = False
+IS_MAC = False
+IS_LINUX = True
+
 OS_KEY = "Ctrl"
 
 FONT_FAMILY = 'Monospace'
@@ -39,10 +44,14 @@ if sys.platform == "darwin":
     FONT_SIZE = 11
     OS_KEY = QKeySequence(Qt.CTRL).toString(QKeySequence.NativeText)
     EOL_DEFAULT = 'Mac'
+    IS_MAC = True
+    IS_LINUX = False
 elif sys.platform == "win32":
     FONT_FAMILY = 'Courier'
     FONT_SIZE = 10
     EOL_DEFAULT = 'Windows'
+    IS_WINDOWS = True
+    IS_LINUX = False
 
 ###############################################################################
 # IDE
