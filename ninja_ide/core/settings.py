@@ -26,6 +26,11 @@ from ninja_ide.dependencies import pep8mod
 # OS DETECTOR
 ###############################################################################
 
+# Use this flags instead of sys.platform spreaded in the source code
+IS_WINDOWS = False
+IS_MAC = False
+IS_LINUX = True
+
 OS_KEY = "Ctrl"
 
 FONT_FAMILY = 'Monospace'
@@ -37,9 +42,13 @@ if sys.platform == "darwin":
     FONT_FAMILY = 'Monaco'
     FONT_SIZE = 11
     OS_KEY = QKeySequence(Qt.CTRL).toString(QKeySequence.NativeText)
+    IS_MAC = True
+    IS_LINUX = False
 elif sys.platform == "win32":
     FONT_FAMILY = 'Courier'
     FONT_SIZE = 10
+    IS_WINDOWS = True
+    IS_LINUX = False
 
 ###############################################################################
 # IDE
@@ -424,8 +433,8 @@ def load_settings():
         'preferences/editor/showTabsAndSpaces', 'true') == 'true'
     USE_TABS = qsettings.value('preferences/editor/useTabs', 'false') == 'true'
     if USE_TABS:
-        pep8mod.options.ignore.append("W191")
-        pep8mod.refresh_checks()
+        pep8mod_add_ignore("W191")
+        pep8mod_refresh_checks
     ALLOW_WORD_WRAP = qsettings.value(
         'preferences/editor/allowWordWrap', 'false') == 'true'
     COMPLETE_DECLARATIONS = qsettings.value(

@@ -109,8 +109,13 @@ class TreeProjectsWidget(QTreeWidget):
         self.connect(self, SIGNAL(
             "customContextMenuRequested(const QPoint &)"),
             self._menu_context_tree)
-        self.connect(self, SIGNAL("itemClicked(QTreeWidgetItem *, int)"),
-            self._open_file)
+
+        signal_name = "itemClicked(QTreeWidgetItem *, int)"
+        # For windows double click instead of single click
+        if settings.IS_WINDOWS:
+            signal_name = "itemDoubleClicked(QTreeWidgetItem *, int)"
+
+        self.connect(self, SIGNAL(signal_name), self._open_file)
         self.connect(self._fileWatcher, SIGNAL("fileChanged(int, QString)"),
             self._refresh_project_by_path)
         self.itemExpanded.connect(self._item_expanded)
