@@ -181,8 +181,8 @@ class ConsoleWidget(QPlainTextEdit):
     def keyPressEvent(self, event):
         global locked
         if locked:
-            if event.key() == Qt.Key_C \
-            and event.modifiers() == Qt.ControlModifier:
+            if event.key() == Qt.Key_C and \
+            event.modifiers() == Qt.ControlModifier:
                 self.write_thread.terminate()
                 locked = False
                 self._add_prompt(False)
