@@ -25,7 +25,7 @@ from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QTextFormat
 from PyQt4.QtGui import QTextEdit
 from PyQt4.QtGui import QColor
-from PyQt4 import QtCore
+from PyQt4.QtCore import pyqtSignal
 from PyQt4.QtCore import QThread
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QProcess
@@ -53,7 +53,7 @@ locked = False
 
 
 class WriteThread(QThread):
-    outputted = QtCore.pyqtSignal(str, bool)
+    outputted = pyqtSignal(str, bool)
 
     def __init__(self, console, line):
         global locked
