@@ -25,7 +25,7 @@ from __future__ import unicode_literals
 import re
 
 from PyQt4.QtGui import (
-    QSyntaxHighlighter,
+    QSyntaxHighlighter, QTextBlock,
     QColor, QTextCharFormat, QTextBlockUserData, QFont, QBrush, QTextFormat)
 
 from ninja_ide import resources
@@ -42,11 +42,14 @@ except NameError:
 class SyntaxUserData(QTextBlockUserData):
     """Store the information of the errors, str and comments for each block."""
 
-    def __init__(self, error=False):
+    def __init__(self, error=False, parentdata=None):
         super(SyntaxUserData, self).__init__()
         self.error = error
         self.str_groups = []
         self.comment_start = -1
+
+        if parentdata is not None:
+            self.__dict__.update(parentdata.__dict__)
 
     def clear_data(self):
         """Clear the data stored for the current block."""
@@ -61,6 +64,19 @@ class SyntaxUserData(QTextBlockUserData):
     def comment_start_at(self, pos):
         """Set the position in the line where the comment starts."""
         self.comment_start = pos
+
+
+class Syntax(QTextBlock):
+
+    def __init__(self, parentdata=None):
+        super(Syntax, self).__init__()
+
+        if parentdata is not None:
+            self.__dict__.update(parentdata.__dict__)
+
+    def userData(self):
+        user_data = super(Syntax, self).userData()
+        return SyntaxUserData(parentdata=user_data)
 
 
 class TextCharFormat(QTextCharFormat):
@@ -321,6 +337,10 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         self.get_scanner = scan_inside.get
         self.scan_partitions = partition_scanner.scan
         self.get_format = self.formats.get
+
+    def currentBlock(self):
+        block = super(SyntaxHighlighter, self).currentBlock()
+        return Syntax(parentdata=block)
 
     def __apply_proper_style(self, char_format, color):
         if settings.UNDERLINE_NOT_BACKGROUND:
