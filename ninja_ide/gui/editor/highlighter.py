@@ -116,7 +116,10 @@ class Syntax(QTextBlock):
 
     def userData(self):
         user_data = super(Syntax, self).userData()
-        return SyntaxUserData(parentdata=user_data)
+        if user_data:
+            user_data = SyntaxUserData(parentdata=user_data)
+
+        return user_data
 
 
 class Highlighter(QSyntaxHighlighter):
@@ -140,7 +143,10 @@ class Highlighter(QSyntaxHighlighter):
 
     def currentBlock(self):
         block = super(Highlighter, self).currentBlock()
-        return Syntax(parentdata=block)
+        if block:
+            block = Syntax(parentdata=block)
+
+        return block
 
     def sanitize(self, word):
         """Sanitize the string to avoid problems with the regex."""

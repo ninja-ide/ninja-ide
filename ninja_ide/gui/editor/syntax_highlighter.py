@@ -76,7 +76,10 @@ class Syntax(QTextBlock):
 
     def userData(self):
         user_data = super(Syntax, self).userData()
-        return SyntaxUserData(parentdata=user_data)
+        if user_data:
+            user_data = SyntaxUserData(parentdata=user_data)
+
+        return user_data
 
 
 class TextCharFormat(QTextCharFormat):
@@ -340,7 +343,10 @@ class SyntaxHighlighter(QSyntaxHighlighter):
 
     def currentBlock(self):
         block = super(SyntaxHighlighter, self).currentBlock()
-        return Syntax(parentdata=block)
+        if block:
+            block = Syntax(parentdata=block)
+
+        return block
 
     def __apply_proper_style(self, char_format, color):
         if settings.UNDERLINE_NOT_BACKGROUND:
