@@ -434,7 +434,7 @@ def load_settings():
     USE_TABS = qsettings.value('preferences/editor/useTabs', 'false') == 'true'
     if USE_TABS:
         pep8mod_add_ignore("W191")
-        pep8mod_refresh_checks
+        pep8mod_refresh_checks()
     ALLOW_WORD_WRAP = qsettings.value(
         'preferences/editor/allowWordWrap', 'false') == 'true'
     COMPLETE_DECLARATIONS = qsettings.value(
