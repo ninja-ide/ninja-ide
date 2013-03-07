@@ -183,7 +183,7 @@ class TabWidget(QTabWidget):
                 editorWidget.just_saved = False
                 return
             val = QMessageBox.question(self, 'The file has changed on disc!',
-                self.tr("%s\nDo you want to reload it?" % editorWidget.ID),
+                (self.tr("%s\nDo you want to reload it?") % editorWidget.ID),
                 QMessageBox.Yes, QMessageBox.No)
             if val == QMessageBox.Yes:
                 self.emit(SIGNAL("reloadFile(QWidget)"), editorWidget)
@@ -193,7 +193,7 @@ class TabWidget(QTabWidget):
         elif change == DELETED:
                 val = QMessageBox.information(self,
                             'The file has deleted from disc!',
-                self.tr("%s\n" % editorWidget.ID),
+                (self.tr("%s\n") % editorWidget.ID),
                 QMessageBox.Yes)
         self.question_already_open = False
 
@@ -272,7 +272,7 @@ class TabWidget(QTabWidget):
                 if widget.textModified and not self.follow_mode:
                     fileName = self.tabBar().tabText(self.currentIndex())
                     val = QMessageBox.question(
-                        self, self.tr('The file %s was not saved' %
+                        self, (self.tr('The file %s was not saved') %
                             fileName),
                             self.tr("Do you want to save before closing?"),
                             QMessageBox.Yes | QMessageBox.No |

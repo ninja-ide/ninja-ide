@@ -955,51 +955,55 @@ class EditorConfiguration(QWidget):
 
     def __init__(self):
         QWidget.__init__(self)
-        grid = QGridLayout(self)
+        vbox = QVBoxLayout(self)
 
         #Indentation
         groupBoxFeatures = QGroupBox(self.tr("Features:"))
-        grid.addWidget(groupBoxFeatures, 0, 0, alignment=Qt.AlignTop)
-        grid.addWidget(QLabel(
+        formFeatures = QGridLayout(groupBoxFeatures)
+        formFeatures.addWidget(QLabel(
             self.tr("Indentation Length:")), 1, 0, Qt.AlignRight)
         self._spin = QSpinBox()
         self._spin.setAlignment(Qt.AlignRight)
         self._spin.setMinimum(1)
         self._spin.setValue(settings.INDENT)
-        grid.addWidget(self._spin, 1, 1, alignment=Qt.AlignTop)
+        formFeatures.addWidget(self._spin, 1, 1, alignment=Qt.AlignTop)
         self._checkUseTabs = QCheckBox(
             self.tr("Use Tabs."))
         self._checkUseTabs.setChecked(settings.USE_TABS)
         self.connect(self._checkUseTabs, SIGNAL("stateChanged(int)"),
             self._change_tab_spaces)
-        grid.addWidget(self._checkUseTabs, 1, 2, alignment=Qt.AlignTop)
+        formFeatures.addWidget(self._checkUseTabs, 1, 2, alignment=Qt.AlignTop)
         if settings.USE_TABS:
             self._spin.setSuffix(self.tr("  (tab size)"))
         else:
             self._spin.setSuffix(self.tr("  (spaces)"))
         #Margin Line
-        grid.addWidget(QLabel(self.tr("Margin Line:")), 2, 0, Qt.AlignRight)
+        formFeatures.addWidget(QLabel(self.tr("Margin Line:")), 2, 0,
+            Qt.AlignRight)
         self._spinMargin = QSpinBox()
         self._spinMargin.setMaximum(200)
         self._spinMargin.setValue(settings.MARGIN_LINE)
-        grid.addWidget(self._spinMargin, 2, 1, alignment=Qt.AlignTop)
+        formFeatures.addWidget(self._spinMargin, 2, 1, alignment=Qt.AlignTop)
         self._checkShowMargin = QCheckBox(self.tr("Show Margin Line"))
         self._checkShowMargin.setChecked(settings.SHOW_MARGIN_LINE)
-        grid.addWidget(self._checkShowMargin, 2, 2, alignment=Qt.AlignTop)
+        formFeatures.addWidget(self._checkShowMargin, 2, 2,
+            alignment=Qt.AlignTop)
         #End of line
         self._checkEndOfLine = QCheckBox(self.tr("Use Platform End of Line"))
         self._checkEndOfLine.setChecked(settings.USE_PLATFORM_END_OF_LINE)
-        grid.addWidget(self._checkEndOfLine, 3, 1, alignment=Qt.AlignTop)
+        formFeatures.addWidget(self._checkEndOfLine, 3, 1,
+            alignment=Qt.AlignTop)
         #Find Errors
         self._checkHighlightLine = QCheckBox(
             self.tr("Check: Highlight errors using Underline\n"
                 "Uncheck: Highlight errors using Background"))
         self._checkHighlightLine.setChecked(settings.UNDERLINE_NOT_BACKGROUND)
-        grid.addWidget(self._checkHighlightLine, 4, 1, 1, 2,
+        formFeatures.addWidget(self._checkHighlightLine, 4, 1, 1, 2,
             alignment=Qt.AlignTop)
         self._checkErrors = QCheckBox(self.tr("Find and Show Errors."))
         self._checkErrors.setChecked(settings.FIND_ERRORS)
-        grid.addWidget(self._checkErrors, 5, 1, 1, 2, alignment=Qt.AlignTop)
+        formFeatures.addWidget(self._checkErrors, 5, 1, 1, 2,
+            alignment=Qt.AlignTop)
         self.connect(self._checkErrors, SIGNAL("stateChanged(int)"),
             self._disable_show_errors)
         self._showErrorsOnLine = QCheckBox(
@@ -1007,12 +1011,13 @@ class EditorConfiguration(QWidget):
         self._showErrorsOnLine.setChecked(settings.ERRORS_HIGHLIGHT_LINE)
         self.connect(self._showErrorsOnLine, SIGNAL("stateChanged(int)"),
             self._enable_errors_inline)
-        grid.addWidget(self._showErrorsOnLine, 6, 2, 1, 1, Qt.AlignTop)
+        formFeatures.addWidget(self._showErrorsOnLine, 6, 2, 1, 1, Qt.AlignTop)
         #Find Check Style
         self._checkStyle = QCheckBox(
             self.tr("Find and Show Check Style errors."))
         self._checkStyle.setChecked(settings.CHECK_STYLE)
-        grid.addWidget(self._checkStyle, 7, 1, 1, 2, alignment=Qt.AlignTop)
+        formFeatures.addWidget(self._checkStyle, 7, 1, 1, 2,
+            alignment=Qt.AlignTop)
         self.connect(self._checkStyle, SIGNAL("stateChanged(int)"),
             self._disable_check_style)
         self._checkStyleOnLine = QCheckBox(
@@ -1020,36 +1025,43 @@ class EditorConfiguration(QWidget):
         self._checkStyleOnLine.setChecked(settings.CHECK_HIGHLIGHT_LINE)
         self.connect(self._checkStyleOnLine, SIGNAL("stateChanged(int)"),
             self._enable_check_inline)
-        grid.addWidget(self._checkStyleOnLine, 8, 2, 1, 1, Qt.AlignTop)
+        formFeatures.addWidget(self._checkStyleOnLine, 8, 2, 1, 1, Qt.AlignTop)
         # Python3 Migration
         self._showMigrationTips = QCheckBox(
             self.tr("Show Python3 Migration Tips."))
         self._showMigrationTips.setChecked(settings.SHOW_MIGRATION_TIPS)
-        grid.addWidget(self._showMigrationTips, 9, 1, 1, 2, Qt.AlignTop)
+        formFeatures.addWidget(self._showMigrationTips, 9, 1, 1, 2,
+            Qt.AlignTop)
         #Center On Scroll
         self._checkCenterScroll = QCheckBox(
             self.tr("Center on Scroll."))
         self._checkCenterScroll.setChecked(settings.CENTER_ON_SCROLL)
-        grid.addWidget(self._checkCenterScroll, 10, 1, 1, 2,
+        formFeatures.addWidget(self._checkCenterScroll, 10, 1, 1, 2,
             alignment=Qt.AlignTop)
         #Remove Trailing Spaces add Last empty line automatically
         self._checkTrailing = QCheckBox(self.tr(
             "Remove Trailing Spaces and\nadd Last Line automatically."))
         self._checkTrailing.setChecked(settings.REMOVE_TRAILING_SPACES)
-        grid.addWidget(self._checkTrailing, 11, 1, 1, 2, alignment=Qt.AlignTop)
+        formFeatures.addWidget(self._checkTrailing, 11, 1, 1, 2,
+            alignment=Qt.AlignTop)
         #Show Tabs and Spaces
         self._checkShowSpaces = QCheckBox(self.tr("Show Tabs and Spaces."))
         self._checkShowSpaces.setChecked(settings.SHOW_TABS_AND_SPACES)
-        grid.addWidget(self._checkShowSpaces, 12, 1, 1, 2,
+        formFeatures.addWidget(self._checkShowSpaces, 12, 1, 1, 2,
             alignment=Qt.AlignTop)
         self._allowWordWrap = QCheckBox(self.tr("Allow Word Wrap."))
         self._allowWordWrap.setChecked(settings.ALLOW_WORD_WRAP)
-        grid.addWidget(self._allowWordWrap, 13, 1, 1, 2, alignment=Qt.AlignTop)
+        formFeatures.addWidget(self._allowWordWrap, 13, 1, 1, 2,
+            alignment=Qt.AlignTop)
         self._checkForDocstrings = QCheckBox(
             self.tr("Check for Docstrings in Classes and Functions."))
         self._checkForDocstrings.setChecked(settings.CHECK_FOR_DOCSTRINGS)
-        grid.addWidget(self._checkForDocstrings, 14, 1, 1, 2,
+        formFeatures.addWidget(self._checkForDocstrings, 14, 1, 1, 2,
             alignment=Qt.AlignTop)
+
+        vbox.addWidget(groupBoxFeatures)
+        vbox.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
+            QSizePolicy.Expanding))
 
     def _enable_check_inline(self, val):
         if val == Qt.Checked:
@@ -1137,10 +1149,10 @@ class EditorCompletion(QWidget):
 
     def __init__(self):
         QWidget.__init__(self)
-        grid = QGridLayout(self)
+        vbox = QVBoxLayout(self)
 
         groupBoxClose = QGroupBox(self.tr("Complete:"))
-        grid.addWidget(groupBoxClose, 0, 0, alignment=Qt.AlignTop)
+        formClose = QGridLayout(groupBoxClose)
         self._checkParentheses = QCheckBox(self.tr("Parentheses: ()"))
         self._checkParentheses.setChecked('(' in settings.BRACES)
         self._checkKeys = QCheckBox(self.tr("Keys: {}"))
@@ -1153,27 +1165,33 @@ class EditorCompletion(QWidget):
         self._checkDoubleQuotes.setChecked('"' in settings.QUOTES)
         self._checkCompleteDeclarations = QCheckBox(
             self.tr("Complete Declarations\n"
-            "(execute the opposite action with: %s)." %
+            "(execute the opposite action with: %s).") %
                 resources.get_shortcut("Complete-Declarations").toString(
-                    QKeySequence.NativeText)))
+                    QKeySequence.NativeText))
         self._checkCompleteDeclarations.setChecked(
             settings.COMPLETE_DECLARATIONS)
-        grid.addWidget(self._checkParentheses, 1, 1, alignment=Qt.AlignTop)
-        grid.addWidget(self._checkKeys, 1, 2, alignment=Qt.AlignTop)
-        grid.addWidget(self._checkBrackets, 2, 1, alignment=Qt.AlignTop)
-        grid.addWidget(self._checkSimpleQuotes, 2, 2, alignment=Qt.AlignTop)
-        grid.addWidget(self._checkDoubleQuotes, 3, 1, alignment=Qt.AlignTop)
+        formClose.addWidget(self._checkParentheses, 1, 1,
+            alignment=Qt.AlignTop)
+        formClose.addWidget(self._checkKeys, 1, 2, alignment=Qt.AlignTop)
+        formClose.addWidget(self._checkBrackets, 2, 1, alignment=Qt.AlignTop)
+        formClose.addWidget(self._checkSimpleQuotes, 2, 2,
+            alignment=Qt.AlignTop)
+        formClose.addWidget(self._checkDoubleQuotes, 3, 1,
+            alignment=Qt.AlignTop)
+        vbox.addWidget(groupBoxClose)
 
         groupBoxCode = QGroupBox(self.tr("Code Completion:"))
-        grid.addWidget(groupBoxCode, 4, 0, alignment=Qt.AlignTop)
+        formCode = QGridLayout(groupBoxCode)
         self._checkCodeDot = QCheckBox(
             self.tr("Activate Code Completion with: \".\""))
         self._checkCodeDot.setChecked(settings.CODE_COMPLETION)
-        grid.addWidget(self._checkCompleteDeclarations, 5, 1,
+        formCode.addWidget(self._checkCompleteDeclarations, 5, 1,
             alignment=Qt.AlignTop)
-        grid.addWidget(self._checkCodeDot, 6, 1, alignment=Qt.AlignTop)
-        grid.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
-            QSizePolicy.Expanding), 7, 0)
+
+        formCode.addWidget(self._checkCodeDot, 6, 1, alignment=Qt.AlignTop)
+        vbox.addWidget(groupBoxCode)
+        vbox.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
+            QSizePolicy.Expanding))
 
     def save(self):
         qsettings = QSettings()
@@ -1680,7 +1698,7 @@ class EditorSchemeDesigner(QWidget):
         if file_manager.file_exists(fileName):
             answer = QMessageBox.question(self,
                 self.tr("Scheme already exists"),
-                self.tr("Do you want to override the file: %s?" % fileName),
+                (self.tr("Do you want to override the file: %s?") % fileName),
                 QMessageBox.Yes, QMessageBox.No)
 
         if name != '' and answer in (QMessageBox.Yes, True):
@@ -1692,7 +1710,7 @@ class EditorSchemeDesigner(QWidget):
                 self.original_style = copy.copy(scheme)
             json_manager.save_editor_skins(fileName, scheme)
             QMessageBox.information(self, self.tr("Scheme Saved"),
-                    self.tr("The scheme has been saved at: %s." % fileName))
+                    (self.tr("The scheme has been saved at: %s.") % fileName))
         elif answer == QMessageBox.Yes:
             QMessageBox.information(self, self.tr("Scheme Not Saved"),
                 self.tr("The name probably is invalid."))
@@ -1861,9 +1879,9 @@ class ThemeDesigner(QWidget):
             content = self.edit_qss.toPlainText()
             file_manager.store_file_content(file_name, content, newFile=True)
             QMessageBox.information(self, self.tr("Style Sheet Saved"),
-                self.tr("Theme saved at: '%s'." % file_name))
+                (self.tr("Theme saved at: '%s'." % file_name)))
             self.edit_qss.document().setModified(False)
         except file_manager.NinjaFileExistsException as ex:
             QMessageBox.information(self, self.tr("File Already Exists"),
-                self.tr("Invalid File Name: the file '%s' already exists." %
+                (self.tr("Invalid File Name: the file '%s' already exists.") %
                     ex.filename))

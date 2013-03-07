@@ -36,35 +36,35 @@ class MenuEdit(QObject):
         QObject.__init__(self)
 
         undoAction = menuEdit.addAction(QIcon(resources.IMAGES['undo']),
-            self.trUtf8("Undo (%s+Z)" % settings.OS_KEY))
+            (self.trUtf8("Undo (%s+Z)") % settings.OS_KEY))
         redoAction = menuEdit.addAction(QIcon(resources.IMAGES['redo']),
-            self.trUtf8("Redo (%s)" % resources.get_shortcut("Redo").toString(
+            (self.trUtf8("Redo (%s)") % resources.get_shortcut("Redo").toString(
                     QKeySequence.NativeText)))
         cutAction = menuEdit.addAction(QIcon(resources.IMAGES['cut']),
-            self.trUtf8("&Cut (%s+X)" % settings.OS_KEY))
+            (self.trUtf8("&Cut (%s+X)") % settings.OS_KEY))
         copyAction = menuEdit.addAction(QIcon(resources.IMAGES['copy']),
-            self.trUtf8("&Copy (%s+C)" % settings.OS_KEY))
+            (self.trUtf8("&Copy (%s+C)") % settings.OS_KEY))
         pasteAction = menuEdit.addAction(QIcon(resources.IMAGES['paste']),
-            self.trUtf8("&Paste (%s+V)" % settings.OS_KEY))
+            (self.trUtf8("&Paste (%s+V)") % settings.OS_KEY))
         menuEdit.addSeparator()
         findAction = menuEdit.addAction(QIcon(resources.IMAGES['find']),
-            self.trUtf8("Find (%s)" % resources.get_shortcut("Find").toString(
+            (self.trUtf8("Find (%s)") % resources.get_shortcut("Find").toString(
                     QKeySequence.NativeText)))
         findReplaceAction = menuEdit.addAction(
             QIcon(resources.IMAGES['findReplace']),
-            self.trUtf8("Find/Replace (%s)" %
+            (self.trUtf8("Find/Replace (%s)") %
                 resources.get_shortcut("Find-replace").toString(
                     QKeySequence.NativeText)))
         findWithWordAction = menuEdit.addAction(
-            self.trUtf8("Find using word under cursor (%s)" %
+            (self.trUtf8("Find using word under cursor (%s)") %
                 resources.get_shortcut("Find-with-word").toString(
                     QKeySequence.NativeText)))
         findInFilesAction = menuEdit.addAction(QIcon(resources.IMAGES['find']),
-            self.trUtf8("Find in Files (%s)" %
+            (self.trUtf8("Find in Files (%s)") %
                 resources.get_shortcut("Find-in-files").toString(
                     QKeySequence.NativeText)))
         locatorAction = menuEdit.addAction(QIcon(resources.IMAGES['locator']),
-            self.trUtf8("Code Locator (%s)" %
+            (self.trUtf8("Code Locator (%s)") %
                 resources.get_shortcut("Code-locator").toString(
                     QKeySequence.NativeText)))
         menuEdit.addSeparator()
