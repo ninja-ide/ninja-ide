@@ -619,7 +619,7 @@ class __MainContainer(QSplitter):
             encoding = file_manager.get_file_encoding(content)
             editorWidget.encoding = encoding
             self.emit(SIGNAL("fileSaved(QString)"),
-                self.tr("File Saved: %s" % fileName))
+                (self.tr("File Saved: %s") % fileName))
             editorWidget._file_saved()
             return True
         except Exception as reason:
@@ -661,7 +661,7 @@ class __MainContainer(QSplitter):
                 self.remove_standalone_watcher(editorWidget.ID)
             editorWidget.ID = fileName
             self.emit(SIGNAL("fileSaved(QString)"),
-                self.tr("File Saved: %s" % fileName))
+                (self.tr("File Saved: %s") % fileName))
             self.emit(SIGNAL("currentTabChanged(QString)"), fileName)
             editorWidget._file_saved()
             self.add_standalone_watcher(fileName)
@@ -670,7 +670,7 @@ class __MainContainer(QSplitter):
         except file_manager.NinjaFileExistsException as ex:
             editorWidget.just_saved = False
             QMessageBox.information(self, self.tr("File Already Exists"),
-                self.tr("Invalid Path: the file '%s' already exists." %
+                (self.tr("Invalid Path: the file '%s' already exists.") %
                     ex.filename))
         except Exception as reason:
             editorWidget.just_saved = False
