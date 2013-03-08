@@ -447,7 +447,7 @@ class __IDE(QMainWindow):
             txt = '\n'.join(unsaved_files)
             val = QMessageBox.question(self,
                 self.tr("Some changes were not saved"),
-                self.tr("%s\n\nDo you want to save them?" % txt),
+                (self.tr("%s\n\nDo you want to save them?") % txt),
                 QMessageBox.Yes, QMessageBox.No, QMessageBox.Cancel)
             if val == QMessageBox.Yes:
                 #Saves all open files

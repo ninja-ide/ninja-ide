@@ -217,11 +217,11 @@ class LateralPanel(QWidget):
             self.style().standardPixmap(self.style().SP_TrashIcon))
         self.combo.setToolTip(self.trUtf8("Select the item from the Paste "
             "Historial list.\nYou can Copy items into this list with: "
-            "%s\nor Paste them using: %s" %
+            "%s\nor Paste them using: %s") %
                 (resources.get_shortcut("History-Copy").toString(
                     QKeySequence.NativeText),
                 resources.get_shortcut("History-Paste").toString(
-                    QKeySequence.NativeText))))
+                    QKeySequence.NativeText)))
         self.combo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         hbox.addWidget(self.combo)
         vbox.addLayout(hbox)
