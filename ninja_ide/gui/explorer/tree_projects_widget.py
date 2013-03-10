@@ -437,7 +437,7 @@ class TreeProjectsWidget(QTreeWidget):
                 mainContainer.open_file(fileName)
             except file_manager.NinjaFileExistsException as ex:
                 QMessageBox.information(self, self.tr("File Already Exists"),
-                    self.tr("Invalid Path: the file '%s' already exists." %
+                    (self.tr("Invalid Path: the file '%s' already exists.") %
                         ex.filename))
 
     def add_existing_file(self, path):
@@ -532,7 +532,7 @@ class TreeProjectsWidget(QTreeWidget):
                 subitem.parent().takeChild(index)
             except file_manager.NinjaFileExistsException as ex:
                 QMessageBox.information(self, self.tr("File Already Exists"),
-                    self.tr("Invalid Path: the file '%s' already exists." %
+                    (self.tr("Invalid Path: the file '%s' already exists.") %
                         ex.filename))
 
     def _copy_file(self):
@@ -561,7 +561,7 @@ class TreeProjectsWidget(QTreeWidget):
             self.add_existing_file(path)
         except file_manager.NinjaFileExistsException as ex:
                 QMessageBox.information(self, self.tr("File Already Exists"),
-                    self.tr("Invalid Path: the file '%s' already exists." %
+                    (self.tr("Invalid Path: the file '%s' already exists.") %
                         ex.filename))
 
     def _move_file(self):
@@ -587,7 +587,7 @@ class TreeProjectsWidget(QTreeWidget):
             self.add_existing_file(path)
         except file_manager.NinjaFileExistsException as ex:
                 QMessageBox.information(self, self.tr("File Already Exists"),
-                    self.tr("Invalid Path: the file '%s' already exists." %
+                    (self.tr("Invalid Path: the file '%s' already exists.") %
                         ex.filename))
 
     def _edit_ui_file(self):
