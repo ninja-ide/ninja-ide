@@ -40,7 +40,6 @@ if sys.platform == "darwin":
     FONT_FAMILY = 'Monaco'
     FONT_SIZE = 11
     OS_KEY = QKeySequence(Qt.CTRL).toString(QKeySequence.NativeText)
-    EOL_DEFAULT = 'Mac'
 elif sys.platform == "win32":
     FONT_FAMILY = 'Courier'
     FONT_SIZE = 10
