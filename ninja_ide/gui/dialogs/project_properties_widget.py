@@ -101,7 +101,7 @@ class ProjectProperties(QDialog):
         self._item.pythonPath = self.projectExecution.txtPythonPath.text()
         self._item.PYTHONPATH = self.projectExecution.PYTHONPATH.toPlainText()
         self._item.additional_builtins = filter(
-                lambda e: e, # remove empty names
+                lambda e: e,  # remove empty names
                 self.projectExecution.additional_builtins.text().split(' '))
         self._item.preExecScript = self.projectExecution.txtPreExec.text()
         self._item.postExecScript = self.projectExecution.txtPostExec.text()

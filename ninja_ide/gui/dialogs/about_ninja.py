@@ -65,17 +65,17 @@ cross-platform integrated development environment specially design
 to build Python Applications.
 NINJA-IDE provides tools to simplify the Python-software development
 and handles all kinds of situations thanks to its rich extensibility.""")))
-        vbox.addWidget(QLabel(self.tr("Version: %s" % ninja_ide.__version__)))
+        vbox.addWidget(QLabel(self.tr("Version: %s") % ninja_ide.__version__))
         link_ninja = QLabel(
             self.tr('Website: <a href="%s"><span style=" '
                 'text-decoration: underline; color:#ff9e21;">'
-                '%s</span></a>' %
-                (ninja_ide.__url__, ninja_ide.__url__)))
+                '%s</span></a>') %
+                (ninja_ide.__url__, ninja_ide.__url__))
         vbox.addWidget(link_ninja)
         link_source = QLabel(
             self.tr('Source Code: <a href="%s"><span style=" '
-            'text-decoration: underline; color:#ff9e21;">%s</span></a>' %
-                (ninja_ide.__source__, ninja_ide.__source__)))
+            'text-decoration: underline; color:#ff9e21;">%s</span></a>') %
+                (ninja_ide.__source__, ninja_ide.__source__))
         vbox.addWidget(link_source)
 
         self.connect(link_ninja, SIGNAL("linkActivated(QString)"),

@@ -101,7 +101,7 @@ class RunWidget(QWidget):
                 format_)
         else:
             self.output.textCursor().insertText(
-                self.tr('Error during execution, QProcess error: %d' % error),
+                (self.tr('Error during execution, QProcess error: %d') % error),
                 format_)
 
     def finish_execution(self, exitCode, exitStatus):

@@ -464,7 +464,7 @@ class __Actions(QObject):
             editorWidget._file_saved()
         except file_manager.NinjaFileExistsException as ex:
             QMessageBox.information(self, self.tr("File Already Exists"),
-                self.tr("Invalid Path: the file '%s' already exists." %
+                (self.tr("Invalid Path: the file '%s' already exists.") %
                     ex.filename))
 
     def add_project_to_console(self, projectFolder):
@@ -561,10 +561,10 @@ class __Actions(QObject):
             blanks = re.findall('(^\n)|(^(\s+)?#)|(^( +)?($|\n))',
                 editorWidget.get_text(), re.M)
             blanks_count = len(blanks)
-            resume = self.tr("Lines code: %s\n" % (block_count - blanks_count))
-            resume += self.tr("Blanks and commented lines: %s\n\n" %
+            resume = self.tr("Lines code: %s\n") % (block_count - blanks_count)
+            resume += (self.tr("Blanks and commented lines: %s\n\n") %
                 blanks_count)
-            resume += self.tr("Total lines: %s" % block_count)
+            resume += self.tr("Total lines: %s") % block_count
             msgBox = QMessageBox(QMessageBox.Information,
                 self.tr("Summary of lines"), resume,
                 QMessageBox.Ok, editorWidget)
