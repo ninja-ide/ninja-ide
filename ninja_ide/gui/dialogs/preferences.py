@@ -452,11 +452,14 @@ class InterfaceTab(QWidget):
         self._checkWebInspetor = QCheckBox(self.tr("Show Web Inspector."))
         self._checkFileErrors = QCheckBox(self.tr("Show File Errors."))
         self._checkMigrationTips = QCheckBox(self.tr("Show Migration Tips."))
+        self._checkStatusBarNotifications = QCheckBox(
+            self.tr("Show Status Bar Notifications."))
         vboxExplorer.addWidget(self._checkProjectExplorer)
         vboxExplorer.addWidget(self._checkSymbols)
         vboxExplorer.addWidget(self._checkWebInspetor)
         vboxExplorer.addWidget(self._checkFileErrors)
         vboxExplorer.addWidget(self._checkMigrationTips)
+        vboxExplorer.addWidget(self._checkStatusBarNotifications)
         #GUI
         self._btnCentralRotate = QPushButton(
             QIcon(resources.IMAGES['splitCPosition']), '')
@@ -527,6 +530,8 @@ class InterfaceTab(QWidget):
         self._checkWebInspetor.setChecked(settings.SHOW_WEB_INSPECTOR)
         self._checkFileErrors.setChecked(settings.SHOW_ERRORS_LIST)
         self._checkMigrationTips.setChecked(settings.SHOW_MIGRATION_LIST)
+        self._checkStatusBarNotifications.setChecked(
+            settings.SHOW_STATUS_NOTIFICATIONS)
         #ui layout
         self._btnCentralRotate.setChecked(bin(settings.UI_LAYOUT)[-1] == '1')
         self._btnPanelsRotate.setChecked(bin(
@@ -722,6 +727,10 @@ class InterfaceTab(QWidget):
             explorer_container.ExplorerContainer().add_tab_migration()
         else:
             explorer_container.ExplorerContainer().remove_tab_migration()
+        qsettings.setValue('showStatusNotifications',
+            self._checkStatusBarNotifications.isChecked())
+        settings.SHOW_STATUS_NOTIFICATIONS = \
+            self._checkStatusBarNotifications.isChecked()
         #ui layout
         uiLayout = 1 if self._btnCentralRotate.isChecked() else 0
         uiLayout += 2 if self._btnPanelsRotate.isChecked() else 0

@@ -66,6 +66,7 @@ SHOW_START_PAGE = True
 CONFIRM_EXIT = True
 NOTIFY_UPDATES = True
 HIDE_TOOLBAR = False
+SHOW_STATUS_NOTIFICATIONS = True
 
 PYTHON_PATH = "python"
 EXECUTION_OPTIONS = ""
@@ -358,6 +359,7 @@ def load_settings():
     global BREAKPOINTS
     global BRACES
     global HIDE_TOOLBAR
+    global SHOW_STATUS_NOTIFICATIONS
     global TOOLBAR_ITEMS
     global SHOW_MINIMAP
     global MINIMAP_MAX_OPACITY
@@ -365,6 +367,8 @@ def load_settings():
     global SIZE_PROPORTION
     #General
     HIDE_TOOLBAR = qsettings.value("window/hide_toolbar", 'false') == 'true'
+    SHOW_STATUS_NOTIFICATIONS = qsettings.value(
+        "preferences/interface/showStatusNotifications", 'true') == 'true'
     TOOLBAR_AREA = int(qsettings.value('preferences/general/toolbarArea', 1))
     LANGUAGE = qsettings.value('preferences/interface/language', '')
     SHOW_START_PAGE = qsettings.value(
