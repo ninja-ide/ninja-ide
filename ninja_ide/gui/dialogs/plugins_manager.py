@@ -178,6 +178,7 @@ class PluginsManagerWidget(QDialog):
             self._tabs.addTab(self._installedWidget, self.tr("Installed"))
             self._loading = False
         self.overlay.hide()
+        self.thread.wait()
 
     def download_plugins(self, plugs):
         """

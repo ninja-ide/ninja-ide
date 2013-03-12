@@ -90,6 +90,7 @@ class LanguagesManagerWidget(QDialog):
                 self.tr("Languages"))
             self._loading = False
         self.overlay.hide()
+        self._thread.wait()
 
     def download_language(self, language):
         self.overlay.show()

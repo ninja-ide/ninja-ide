@@ -294,6 +294,7 @@ class FindInFilesDialog(QDialog):
 
     def _find_thread_finished(self):
         self.emit(SIGNAL("finished()"))
+        self._find_thread.wait()
 
     def _select_dir(self):
         dir_name = QFileDialog.getExistingDirectory(self,

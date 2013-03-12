@@ -298,7 +298,9 @@ class __ExplorerContainer(QTabWidget):
             if thread and not thread.isRunning():
                 paths_to_delete.append(path)
         for path in paths_to_delete:
-            self._thread_execution.pop(path, None)
+            thread = self._thread_execution.pop(path, None)
+            if thread:
+                thread.wait()
         if len(self._thread_execution) == 0:
             self._treeProjects.mute_signals = False
 

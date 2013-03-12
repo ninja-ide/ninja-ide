@@ -873,6 +873,7 @@ class EditorGeneral(QWidget):
             self._listScheme.setCurrentItem(items[0])
         else:
             self._listScheme.setCurrentRow(0)
+        self.thread_callback.wait()
 
     def hideEvent(self, event):
         super(EditorGeneral, self).hideEvent(event)
