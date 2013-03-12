@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Ninja IDE
+Comment=A Python IDE
+Exec=ninja-ide
+Icon=ninja-ide
+Terminal=false
+Type=Application
+Categories=Development;
+StartupNotify=true
+MimeType=application/x-python;application/x-ninja-ide;
