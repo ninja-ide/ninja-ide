@@ -97,6 +97,8 @@ class TrayIconUpdates(QSystemTrayIcon):
         except Exception as reason:
             logger.warning('Versions can not be compared: %r', reason)
             self.hide()
+        finally:
+            self.thread.wait()
 
     def _show_download(self):
         webbrowser.open(self.download_link)

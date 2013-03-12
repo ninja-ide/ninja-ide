@@ -111,6 +111,7 @@ class BaseWatcher(QObject):
                 self._single_file_watcher.quit()
 
     def on_destroy(self):
+        self._single_file_watcher.wait()
         self._single_file_watcher = None
 
     def shutdown_notification(self):

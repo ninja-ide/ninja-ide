@@ -465,6 +465,10 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         self._rehighlight_lines(refresh_lines)
 
 
+def _create_scheme():
+    pass
+
+
 def load_syntax(syntax, context=None):
     context = context or {}
 

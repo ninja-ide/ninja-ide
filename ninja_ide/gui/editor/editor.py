@@ -335,12 +335,14 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self._sync_tab_icon_notification_signal()
         else:
             self.syncDocErrorsSignal = True
+        self.pep8.wait()
 
     def show_migration_info(self):
         lines = list(self.migration.migration_data.keys())
         self._sidebarWidget.migration_lines(lines)
         self.highlighter.rehighlight_lines(lines)
         self.emit(SIGNAL("migrationAnalyzed()"))
+        self.migration.wait()
 
     def hide_pep8_errors(self):
         """Hide the pep8 errors from the sidebar and lines highlighted."""
@@ -356,6 +358,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self._sync_tab_icon_notification_signal()
         else:
             self.syncDocErrorsSignal = True
+        self.errors.wait()
 
     def hide_lint_errors(self):
         """Hide the lint errors from the sidebar and lines highlighted."""
