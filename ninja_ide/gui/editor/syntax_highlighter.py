@@ -371,7 +371,7 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         # User data and errors
         block = self.currentBlock()
         user_data = block.userData()
-        if user_data is None:
+        if user_data is None or not isinstance(user_data, SyntaxUserData):
             user_data = SyntaxUserData(False)
         user_data.clear_data()
         valid_error_line, highlight_errors = self.get_error_highlighter(block)
