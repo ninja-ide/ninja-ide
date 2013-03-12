@@ -38,6 +38,7 @@ from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 
 from ninja_ide import resources
+from ninja_ide.core import settings
 from ninja_ide.tools import locator
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.main_panel import main_container
@@ -232,10 +233,11 @@ class __StatusBar(QStatusBar):
             editor.find_match(self._searchWidget._line.text(), flags, True)
 
     def showMessage(self, message, timeout):
-        self._widgetStatus.hide()
-        self._replaceWidget.setVisible(False)
-        self.show()
-        QStatusBar.showMessage(self, message, timeout)
+        if settings.SHOW_STATUS_NOTIFICATIONS:
+            self._widgetStatus.hide()
+            self._replaceWidget.setVisible(False)
+            self.show()
+            QStatusBar.showMessage(self, message, timeout)
 
     def message_end(self, message):
         if message == '':
