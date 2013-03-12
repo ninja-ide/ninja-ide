@@ -119,4 +119,3 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     dialog = AboutDialog()
     dialog.exec_()
-
