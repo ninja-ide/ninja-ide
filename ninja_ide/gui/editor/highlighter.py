@@ -370,7 +370,7 @@ class Highlighter(QSyntaxHighlighter):
         hls = []
         block = self.currentBlock()
         user_data = block.userData()
-        if user_data is None:
+        if user_data is None or not isinstance(user_data, SyntaxUserData):
             user_data = SyntaxUserData(False)
         user_data.clear_data()
         block_number = block.blockNumber()
