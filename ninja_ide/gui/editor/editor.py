@@ -860,13 +860,17 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def complete_declaration(self):
         settings.COMPLETE_DECLARATIONS = not settings.COMPLETE_DECLARATIONS
-        cursor = self.textCursor()
-        cursor.movePosition(QTextCursor.EndOfLine)
-        if cursor.atEnd():
-            cursor.insertBlock()
-        self.moveCursor(QTextCursor.Down)
-        self.__auto_indent(None)
+        self.insert_new_line()
         settings.COMPLETE_DECLARATIONS = not settings.COMPLETE_DECLARATIONS
+
+    def insert_new_line(self):
+        cursor = self.textCursor()
+        at_block_end = cursor.atBlockEnd()
+        cursor.movePosition(QTextCursor.EndOfLine)
+        cursor.insertBlock()
+        if not at_block_end:
+            self.moveCursor(QTextCursor.Down)
+        self.__auto_indent(None)
 
     def __complete_braces(self, event):
         """Complete () [] and {} using a mild inteligence to see if corresponds
