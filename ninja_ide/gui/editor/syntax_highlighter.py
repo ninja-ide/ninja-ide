@@ -450,7 +450,8 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         block = self.document().begin()
         while block.isValid():
             user_data = block.userData()
-            if (user_data is not None) and (user_data.error):
+            if ((user_data is not None) and
+                isinstance(user_data, SyntaxUserData) and (user_data.error)):
                 errors_lines.append(block.blockNumber())
             block = block.next()
         return errors_lines
