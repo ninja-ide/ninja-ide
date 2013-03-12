@@ -421,6 +421,8 @@ class __IDE(QMainWindow):
             qsettings.setValue("window/hide_toolbar", True)
         else:
             qsettings.setValue("window/hide_toolbar", False)
+        #Save Misc state
+        qsettings.setValue("window/show_misc", self.misc.isVisible())
         #Save Profiles
         if self.profile is not None:
             self.actions.save_profile(self.profile)
