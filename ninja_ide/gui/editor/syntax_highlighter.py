@@ -467,11 +467,37 @@ class SyntaxHighlighter(QSyntaxHighlighter):
 
 
 def _create_scheme():
-    pass
+    scheme = {
+      "syntax_comment": dict(color=resources.CUSTOM_SCHEME.get(
+          "comment", resources.COLOR_SCHEME["comment"]), italic=True),
+      "syntax_string": resources.CUSTOM_SCHEME.get(
+          "string", resources.COLOR_SCHEME["string"]),
+      "syntax_builtin": resources.CUSTOM_SCHEME.get(
+          "extras", resources.COLOR_SCHEME["extras"]),
+      "syntax_keyword": (resources.CUSTOM_SCHEME.get(
+          "keyword", resources.COLOR_SCHEME["keyword"]), True),
+      "syntax_definition": (resources.CUSTOM_SCHEME.get(
+          "definition", resources.COLOR_SCHEME["definition"]), True),
+      "syntax_braces": resources.CUSTOM_SCHEME.get(
+          "brace", resources.COLOR_SCHEME["brace"]),
+      "syntax_number": resources.CUSTOM_SCHEME.get(
+          "numbers", resources.COLOR_SCHEME["numbers"]),
+      "syntax_proper_object": resources.CUSTOM_SCHEME.get(
+          "properObject", resources.COLOR_SCHEME["properObject"]),
+      "syntax_operators": resources.CUSTOM_SCHEME.get(
+          "operator", resources.COLOR_SCHEME["operator"]),
+      "syntax_highlight_word": dict(color=resources.CUSTOM_SCHEME.get(
+          "selected-word", resources.COLOR_SCHEME["selected-word"]),
+          background=resources.CUSTOM_SCHEME.get(
+          "selected-word-background",
+          resources.COLOR_SCHEME["selected-word-background"])),
+    }
+
+    return scheme
 
 
-def load_syntax(syntax, context=None):
-    context = context or {}
+def load_syntax(syntax):
+    context = _create_scheme() or {}
 
     partition_scanner = PartitionScanner(syntax.get("partitions", []))
 
