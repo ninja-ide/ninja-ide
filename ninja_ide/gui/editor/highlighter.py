@@ -316,7 +316,7 @@ class Highlighter(QSyntaxHighlighter):
         hls = []
         block = self.currentBlock()
         user_data = block.userData()
-        if user_data is None:
+        if user_data is None or not isinstance(user_data, SyntaxUserData):
             user_data = SyntaxUserData(False)
         user_data.clear_data()
         block_number = block.blockNumber()
@@ -461,7 +461,8 @@ class Highlighter(QSyntaxHighlighter):
         block = self.document().begin()
         while block.isValid():
             user_data = block.userData()
-            if (user_data is not None) and (user_data.error):
+            if ((user_data is not None) and
+                isinstance(user_data, SyntaxUserData) and (user_data.error)):
                 errors_lines.append(block.blockNumber())
             block = block.next()
         return errors_lines
@@ -515,7 +516,8 @@ class Highlighter(QSyntaxHighlighter):
                ((st_fmt == STYLES['comment']) and
                (self.previousBlockState() != 0))) and \
                 (len(start_collides) == 0):
-                if user_data is not None:
+                if (user_data is not None and
+                    isinstance(user_data, SyntaxUserData)):
                     style = highlight_errors(style, user_data)
                 self.setFormat(start, length, style)
             else:
