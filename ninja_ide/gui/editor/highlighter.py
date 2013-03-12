@@ -23,6 +23,7 @@ from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QTextCharFormat
 from PyQt4.QtGui import QFont
 from PyQt4.QtGui import QSyntaxHighlighter
+from PyQt4.QtGui import QTextBlock
 from PyQt4.QtGui import QTextBlockUserData
 from PyQt4.QtCore import QThread
 from PyQt4.QtCore import QRegExp
@@ -81,11 +82,14 @@ def restyle(scheme):
 class SyntaxUserData(QTextBlockUserData):
     """Store the information of the errors, str and comments for each block."""
 
-    def __init__(self, error=False):
+    def __init__(self, error=False, parentdata=None):
         super(SyntaxUserData, self).__init__()
         self.error = error
         self.str_groups = []
         self.comment_start = -1
+
+        if parentdata is not None:
+            self.__dict__.update(parentdata.__dict__)
 
     def clear_data(self):
         """Clear the data stored for the current block."""
@@ -100,6 +104,22 @@ class SyntaxUserData(QTextBlockUserData):
     def comment_start_at(self, pos):
         """Set the position in the line where the comment starts."""
         self.comment_start = pos
+
+
+class Syntax(QTextBlock):
+
+    def __init__(self, parentdata=None):
+        super(Syntax, self).__init__()
+
+        if parentdata is not None:
+            self.__dict__.update(parentdata.__dict__)
+
+    def userData(self):
+        user_data = super(Syntax, self).userData()
+        if user_data:
+            user_data = SyntaxUserData(parentdata=user_data)
+
+        return user_data
 
 
 class Highlighter(QSyntaxHighlighter):
@@ -120,6 +140,13 @@ class Highlighter(QSyntaxHighlighter):
         self._styles = {}
         if lang is not None:
             self.apply_highlight(lang, scheme)
+
+    def currentBlock(self):
+        block = super(Highlighter, self).currentBlock()
+        if block:
+            block = Syntax(parentdata=block)
+
+        return block
 
     def sanitize(self, word):
         """Sanitize the string to avoid problems with the regex."""
