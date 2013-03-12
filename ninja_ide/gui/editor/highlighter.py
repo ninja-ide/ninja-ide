@@ -304,6 +304,7 @@ class Highlighter(QSyntaxHighlighter):
         else:
             self._styles = {}
         self.highlight_function = self.realtime_highlight
+        self.thread_highlight.wait()
 
     def threaded_highlight(self, text):
         """Highlight each line using the info collected by the thread.

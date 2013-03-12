@@ -84,6 +84,11 @@ class Locator(QObject):
         QObject.__init__(self)
         self._thread = LocateThread()
         self.connect(self._thread, SIGNAL("finished()"), self._load_results)
+        self.connect(self._thread, SIGNAL("finished()"), self._cleanup)
+        self.connect(self._thread, SIGNAL("terminated()"), self._cleanup)
+
+    def _cleanup(self):
+        self._thread.wait()
 
     def navigate_to(self, function, filePath, isVariable):
         self._thread.find(function, filePath, isVariable)
@@ -429,6 +434,12 @@ class CodeLocatorWidget(QWidget):
         hLocator.addWidget(self._btnClose)
         hLocator.addWidget(self._completer)
         hLocator.addWidget(self._btnGo)
+
+        self.connect(self._thread, SIGNAL("finished()"), self._cleanup)
+        self.connect(self._thread, SIGNAL("terminated()"), self._cleanup)
+
+    def _cleanup(self):
+        self._thread.wait()
 
     def explore_code(self):
         self._thread.find_code_location()

@@ -88,6 +88,7 @@ class ThemesManagerWidget(QDialog):
             self._tabs.addTab(self._schemeWidget, self.tr("Editor Schemes"))
             self._loading = False
         self.overlay.hide()
+        self._thread.wait()
 
     def download_scheme(self, scheme):
         self.overlay.show()
