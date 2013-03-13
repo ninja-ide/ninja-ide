@@ -173,6 +173,8 @@ class SidebarWidget(QWidget):
             openBrace -= block.text().count('}')
             if openBrace == 0:
                 return block.blockNumber() + 1
+            elif openBrace < 0:
+                return block.blockNumber()
             block = block.next()
         return block.blockNumber()
 
