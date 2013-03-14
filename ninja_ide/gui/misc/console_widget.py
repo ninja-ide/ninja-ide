@@ -25,6 +25,9 @@ from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QTextFormat
 from PyQt4.QtGui import QTextEdit
 from PyQt4.QtGui import QColor
+from PyQt4.QtCore import QMutex
+from PyQt4.QtCore import pyqtSignal
+from PyQt4.QtCore import QThread
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QProcess
 from PyQt4.QtCore import QRegExp
@@ -46,6 +49,24 @@ BRACES = {"'": "'",
     '{': '}',
     '[': ']',
     '(': ')'}
+
+mutex = QMutex()
+
+
+class WriteThread(QThread):
+    outputted = pyqtSignal(str, bool)
+
+    def __init__(self, console, line):
+        self.console = console
+        self.line = line
+
+        mutex.lock()
+        super(WriteThread, self).__init__()
+
+    def run(self):
+        incomplete = self.console.push(self.line)
+        self.outputted.emit(self.line, incomplete)
+        mutex.unlock()
 
 
 class ConsoleWidget(QPlainTextEdit):
@@ -69,7 +90,6 @@ class ConsoleWidget(QPlainTextEdit):
         self.completer = completer_widget.CompleterWidget(self)
         self.okPrefix = QRegExp('[.)}:,\]]')
 
-        #Create Context Menu
         self._create_context_menu()
 
         self._highlighter = highlighter.Highlighter(self.document(), 'python',
@@ -156,6 +176,19 @@ class ConsoleWidget(QPlainTextEdit):
             self.moveCursor(QTextCursor.Right, mode)
 
     def keyPressEvent(self, event):
+        # if we're able to lock it, it must be free
+        if not mutex.tryLock():
+            if event.key() == Qt.Key_C and \
+            event.modifiers() == Qt.ControlModifier:
+                self.write_thread.terminate()
+                self._add_prompt(False)
+                event.accept()
+            else:
+                event.ignore()
+            return
+        else:
+            mutex.unlock()
+
         if self.completer.popup().isVisible():
             if event.key() in (Qt.Key_Enter, Qt.Key_Return, Qt.Key_Tab):
                 event.ignore()
@@ -163,6 +196,7 @@ class ConsoleWidget(QPlainTextEdit):
                 return
             elif event.key in (Qt.Key_Space, Qt.Key_Escape, Qt.Key_Backtab):
                 self.completer.popup().hide()
+
         if event.key() in (Qt.Key_Enter, Qt.Key_Return):
             self._write_command()
             return
@@ -423,9 +457,10 @@ class ConsoleWidget(QPlainTextEdit):
         #remove the prompt from the QString
         command = command[len(self.prompt):]
         self._add_history(command)
-        incomplete = self._write(command)
-        if self.patFrom.match(command) or \
-        self.patImport.match(command):
+        self._write(command)
+
+    def _write_helper(self, command, incomplete):
+        if self.patFrom.match(command) or self.patImport.match(command):
             self.imports += [command]
         if not incomplete:
             output = self._read()
@@ -452,7 +487,10 @@ class ConsoleWidget(QPlainTextEdit):
         self.popup_menu.exec_(event.globalPos())
 
     def _write(self, line):
-        return self._console.push(line)
+        console = self._console
+        self.write_thread = WriteThread(console, line)
+        self.write_thread.outputted.connect(self._write_helper)
+        self.write_thread.start()
 
     def _read(self):
         return self._console.output
