@@ -47,7 +47,6 @@ from ninja_ide.tools.logger import NinjaLogger
 
 logger = NinjaLogger('ninja_ide.gui.dialogs.plugin_manager')
 
-TABLE_HEADER = ('Name', 'Version')
 HTML_STYLE = """
 <html>
 <body>
@@ -235,7 +234,7 @@ class UpdatesWidget(QWidget):
         self._table.setSelectionMode(QTableWidget.SingleSelection)
         self._table.setColumnWidth(0, 500)
         vbox.addWidget(self._table)
-        ui_tools.load_table(self._table, TABLE_HEADER,
+        ui_tools.load_table(self._table, (self.tr('Name'), self.tr('Version')),
             _format_for_table(updates))
         btnUpdate = QPushButton(self.tr("Update"))
         btnUpdate.setMaximumWidth(100)
@@ -277,11 +276,11 @@ class AvailableWidget(QWidget):
         self._table.setSelectionMode(QTableWidget.SingleSelection)
         self._table.removeRow(0)
         vbox.addWidget(self._table)
-        ui_tools.load_table(self._table, TABLE_HEADER,
+        ui_tools.load_table(self._table, (self.tr('Name'), self.tr('Version')),
             _format_for_table(available))
         self._table.setColumnWidth(0, 500)
         hbox = QHBoxLayout()
-        btnInstall = QPushButton('Install')
+        btnInstall = QPushButton(self.tr('Install'))
         btnInstall.setMaximumWidth(100)
         hbox.addWidget(btnInstall)
         hbox.addWidget(QLabel(self.tr("NINJA needs to be restarted for "
@@ -333,7 +332,8 @@ class AvailableWidget(QWidget):
     def add_table_items(self, plugs):
         self._available += plugs
         data = _format_for_table(self._available)
-        ui_tools.load_table(self._table, TABLE_HEADER, data)
+        ui_tools.load_table(self._table, (self.tr('Name'), self.tr('Version')),
+            data)
 
 
 class InstalledWidget(QWidget):
@@ -350,7 +350,7 @@ class InstalledWidget(QWidget):
         self._table.setSelectionMode(QTableWidget.SingleSelection)
         self._table.removeRow(0)
         vbox.addWidget(self._table)
-        ui_tools.load_table(self._table, TABLE_HEADER,
+        ui_tools.load_table(self._table, (self.tr('Name'), self.tr('Version')),
             _format_for_table(installed))
         self._table.setColumnWidth(0, 500)
         btnUninstall = QPushButton(self.tr("Uninstall"))
@@ -375,7 +375,8 @@ class InstalledWidget(QWidget):
     def add_table_items(self, plugs):
         self._installed += plugs
         data = _format_for_table(self._installed)
-        ui_tools.load_table(self._table, TABLE_HEADER, data)
+        ui_tools.load_table(self._table, (self.tr('Name'), self.tr('Version')),
+            data)
 
     def _uninstall_plugins(self):
         data = _format_for_table(self._installed)
@@ -386,7 +387,8 @@ class InstalledWidget(QWidget):
         self._installed = installed
         while self._table.rowCount() > 0:
             self._table.removeRow(0)
-        ui_tools.load_table(self._table, TABLE_HEADER, self._installed)
+        ui_tools.load_table(self._table, (self.tr('Name'), self.tr('Version')),
+            self._installed)
 
 
 class ThreadLoadPlugins(QThread):

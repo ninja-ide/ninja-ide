@@ -839,7 +839,8 @@ class FoldingContextMenu(QMenu):
     """
 
     def __init__(self, tree):
-        super(FoldingContextMenu, self).__init__(tree.tr("Fold/Unfold"))
+        super(FoldingContextMenu, self).__init__()
+        self.setTitle(self.tr("Fold/Unfold"))
         self._tree = tree
         fold_project = self.addAction(self.tr("Fold the project"))
         unfold_project = self.addAction(self.tr("Unfold the project"))
