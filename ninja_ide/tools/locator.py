@@ -428,7 +428,7 @@ class CodeLocatorWidget(QWidget):
         self._btnClose = QPushButton(
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
         self._btnGo = QPushButton(
-            self.style().standardIcon(QStyle.SP_ArrowRight), 'Go!')
+            self.style().standardIcon(QStyle.SP_ArrowRight), self.tr('Go!'))
         self._completer = LocateCompleter(self)
 
         hLocator.addWidget(self._btnClose)

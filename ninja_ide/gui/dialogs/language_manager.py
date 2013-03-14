@@ -85,7 +85,7 @@ class LanguagesManagerWidget(QDialog):
     def load_languages_data(self):
         if self._loading:
             self._tabs.clear()
-            self._languageWidget = languageWidget(self, self._languages)
+            self._languageWidget = LanguageWidget(self, self._languages)
             self._tabs.addTab(self._languageWidget,
                 self.tr("Languages"))
             self._loading = False
@@ -137,7 +137,7 @@ class LanguagesManagerWidget(QDialog):
             return
 
 
-class languageWidget(QWidget):
+class LanguageWidget(QWidget):
 
     def __init__(self, parent, languages):
         QWidget.__init__(self, parent)
@@ -147,8 +147,9 @@ class languageWidget(QWidget):
         self._table = QTableWidget(1, 2)
         self._table.removeRow(0)
         vbox.addWidget(self._table)
-        ui_tools.load_table(self._table, ['Language', 'URL'], self._languages)
-        btnUninstall = QPushButton('Download')
+        ui_tools.load_table(self._table,
+            [self.tr('Language'), self.tr('URL')], self._languages)
+        btnUninstall = QPushButton(self.tr('Download'))
         btnUninstall.setMaximumWidth(100)
         vbox.addWidget(btnUninstall)
         self._table.setColumnWidth(0, 200)

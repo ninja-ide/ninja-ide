@@ -144,8 +144,9 @@ class SchemeWidget(QWidget):
         self._table = QTableWidget(1, 2)
         self._table.removeRow(0)
         vbox.addWidget(self._table)
-        ui_tools.load_table(self._table, ['Name', 'URL'], self._schemes)
-        btnUninstall = QPushButton('Download')
+        ui_tools.load_table(self._table, [self.tr('Name'), self.tr('URL')],
+            self._schemes)
+        btnUninstall = QPushButton(self.tr('Download'))
         btnUninstall.setMaximumWidth(100)
         vbox.addWidget(btnUninstall)
         self._table.setColumnWidth(0, 200)

@@ -32,10 +32,6 @@ from ninja_ide.core import settings
 from ninja_ide.gui.main_panel import main_container
 
 
-ERRORS_TEXT = "Static Errors: %s"
-PEP8_TEXT = "PEP8 Errors: %s"
-
-
 class ErrorsWidget(QWidget):
 
 ###############################################################################
@@ -62,7 +58,7 @@ class ErrorsWidget(QWidget):
             self.btn_lint_activate = QPushButton(self.tr("Lint: ON"))
         else:
             self.btn_lint_activate = QPushButton(self.tr("Lint: OFF"))
-        self.errorsLabel = QLabel(self.tr(ERRORS_TEXT % 0))
+        self.errorsLabel = QLabel(self.tr("Static Errors: %s") % 0)
         hbox_lint.addWidget(self.errorsLabel)
         hbox_lint.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
         hbox_lint.addWidget(self.btn_lint_activate)
@@ -73,7 +69,7 @@ class ErrorsWidget(QWidget):
             self.btn_pep8_activate = QPushButton(self.tr("PEP8: ON"))
         else:
             self.btn_pep8_activate = QPushButton(self.tr("PEP8: OFF"))
-        self.pep8Label = QLabel(self.tr(PEP8_TEXT % 0))
+        self.pep8Label = QLabel(self.tr("PEP8 Errors: %s") % 0)
         hbox_pep8.addWidget(self.pep8Label)
         hbox_pep8.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
         hbox_pep8.addWidget(self.btn_pep8_activate)
@@ -132,8 +128,8 @@ class ErrorsWidget(QWidget):
                 item.setToolTip(linenostr + data)
                 item.setData(Qt.UserRole, lineno)
                 self.listErrors.addItem(item)
-        self.errorsLabel.setText(self.tr(ERRORS_TEXT %
-            len(errors.errorsSummary)))
+        self.errorsLabel.setText(self.tr("Static Errors: %s") %
+            len(errors.errorsSummary))
         for lineno in pep8.pep8checks:
             linenostr = 'L%s\t' % str(lineno + 1)
             for data in pep8.pep8checks[lineno]:
@@ -141,8 +137,8 @@ class ErrorsWidget(QWidget):
                 item.setToolTip(linenostr + data.split('\n')[0])
                 item.setData(Qt.UserRole, lineno)
                 self.listPep8.addItem(item)
-        self.pep8Label.setText(self.tr(PEP8_TEXT %
-            len(pep8.pep8checks)))
+        self.pep8Label.setText(self.tr("PEP8 Errors: %s") %
+            len(pep8.pep8checks))
         self._outRefresh = True
 
     def clear(self):

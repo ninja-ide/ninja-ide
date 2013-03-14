@@ -29,6 +29,7 @@ from PyQt4.QtGui import QToolBar
 from PyQt4.QtGui import QToolTip
 from PyQt4.QtGui import QFont
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import QLibraryInfo
 from PyQt4.QtCore import QLocale
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import QCoreApplication
@@ -528,6 +529,11 @@ def start(filenames=None, projects_path=None,
     if settings.LANGUAGE:
         translator.load(settings.LANGUAGE)
         app.installTranslator(translator)
+
+        qtTranslator = QTranslator()
+        qtTranslator.load("qt_" + language,
+            QLibraryInfo.location(QLibraryInfo.TranslationsPath))
+        app.installTranslator(qtTranslator)
 
     #Loading Syntax
     splash.showMessage("Loading Syntax", Qt.AlignRight | Qt.AlignTop, Qt.black)
