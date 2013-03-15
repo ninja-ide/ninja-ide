@@ -39,6 +39,14 @@ except NameError:
     basestring = unicode = str  # lint:ok
 
 
+def get_user_data(block):
+    user_data = block.userData()
+    if user_data is None or not isinstance(user_data, SyntaxUserData):
+        user_data = SyntaxUserData()
+
+    return user_data
+
+
 class SyntaxUserData(QTextBlockUserData):
     """Store the information of the errors, str and comments for each block."""
 
@@ -370,9 +378,7 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         new_state = previous_state
         # User data and errors
         block = self.currentBlock()
-        user_data = block.userData()
-        if user_data is None or not isinstance(user_data, SyntaxUserData):
-            user_data = SyntaxUserData(False)
+        user_data = get_user_data(block)
         user_data.clear_data()
         valid_error_line, highlight_errors = self.get_error_highlighter(block)
         # speed-up name-lookups
@@ -449,9 +455,8 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         errors_lines = []
         block = self.document().begin()
         while block.isValid():
-            user_data = block.userData()
-            if ((user_data is not None) and
-                isinstance(user_data, SyntaxUserData) and (user_data.error)):
+            user_data = get_user_data(block)
+            if user_data.error:
                 errors_lines.append(block.blockNumber())
             block = block.next()
         return errors_lines
