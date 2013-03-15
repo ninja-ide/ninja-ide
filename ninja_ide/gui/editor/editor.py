@@ -479,23 +479,21 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         inside = False
         cursor = self.textCursor()
         pos = cursor.positionInBlock()
-        user_data = cursor.block().userData()
-        if user_data is not None:
-            for vals in user_data.str_groups:
-                if vals[0] < pos < vals[1]:
-                    inside = True
-                    break
+        user_data = syntax_highlighter.get_user_data(cursor.block())
+        for vals in user_data.str_groups:
+            if vals[0] < pos < vals[1]:
+                inside = True
+                break
         return inside
 
     def cursor_inside_comment(self):
         inside = False
         cursor = self.textCursor()
         pos = cursor.positionInBlock()
-        user_data = cursor.block().userData()
-        if user_data is not None:
-            if (user_data.comment_start != -1) and \
-               (pos > user_data.comment_start):
-                inside = True
+        user_data = syntax_highlighter.get_user_data(cursor.block())
+        if (user_data.comment_start != -1) and \
+           (pos > user_data.comment_start):
+            inside = True
         return inside
 
     def set_font(self, family=settings.FONT_FAMILY, size=settings.FONT_SIZE):
