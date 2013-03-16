@@ -84,7 +84,7 @@ class ErrorsChecker(QThread):
                 else:
                     message = reason.message
 
-                if hasattr(reason, 'lineno'):
+                if hasattr(reason, 'lineno') and reason.lineno:
                     self.errorsSummary[reason.lineno - 1] = [message]
                 else:
                     self.errorsSummary[0] = [message]
