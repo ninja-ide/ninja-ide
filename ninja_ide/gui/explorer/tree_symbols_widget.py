@@ -159,19 +159,22 @@ class TreeSymbolsWidget(QTreeWidget):
                     lineno=symbols['attributes'][glob])
                 globItem.isAttribute = True
                 globItem.setIcon(0, QIcon(resources.IMAGES['attribute']))
-        if 'functions' in symbols:
+        if 'functions' in symbols and symbols['functions']:
             functionsItem = ItemTree(parent, [self.tr("Functions")])
             functionsItem.isClickable = False
             functionsItem.isMethod = True
             for func in sorted(symbols['functions']):
                 item = ItemTree(functionsItem, [func],
                     lineno=symbols['functions'][func])
-                tooltip = self.create_tooltip(func, symbols['functions'][func])
+                tooltip = self.create_tooltip(
+                    func, symbols['functions'][func][0])
                 item.isMethod = True
-                item.setToolTip(0, tooltip)
                 item.setIcon(0, QIcon(resources.IMAGES['function']))
-        if 'classes' in symbols:
-            classItem = ItemTree(self, [self.tr("Classes")])
+                item.setToolTip(0, tooltip)
+                self.update_symbols_tree(symbols['functions'][func][1],
+                    parent=item)
+        if 'classes' in symbols and symbols['classes']:
+            classItem = ItemTree(parent, [self.tr("Classes")])
             classItem.isClickable = False
             classItem.isClass = True
             for claz in sorted(symbols['classes']):

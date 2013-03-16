@@ -51,6 +51,7 @@ def _parse_class(symbol, with_docstrings):
     docstring = {}
     attr = {}
     func = {}
+    clazz = {}
     name = symbol.name + '('
     name += ', '.join([
         analyzer.expand_attribute(base) for base in symbol.bases])
@@ -64,10 +65,14 @@ def _parse_class(symbol, with_docstrings):
             result = _parse_function(sym, with_docstrings)
             attr.update(result['attrs'])
             if with_docstrings:
-                func[result['name']] = result['lineno']
-                docstring[result['lineno']] = result['docstring']
-            else:
-                func[result['name']] = result['lineno']
+                docstring.update(result['docstring'])
+            func[result['name']] = (result['lineno'], result['functions'])
+        elif sym.__class__ is ast.ClassDef:
+            result = _parse_class(sym, with_docstrings)
+            clazz[result['name']] = (result['lineno'],
+                {'attributes': result['attributes'],
+                'functions': result['functions']})
+            docstring.update(result['docstring'])
     if with_docstrings:
         docstring[symbol.lineno] = ast.get_docstring(symbol, clean=True)
 
@@ -76,12 +81,13 @@ def _parse_class(symbol, with_docstrings):
         lineno += 1
 
     return {'name': name, 'attributes': attr, 'functions': func,
-        'lineno': lineno, 'docstring': docstring}
+        'lineno': lineno, 'docstring': docstring, 'classes': clazz}
 
 
 def _parse_function(symbol, with_docstrings):
-    docstring = ''
+    docstring = {}
     attrs = {}
+    func = {'functions': {}}
 
     func_name = symbol.name + '('
     #We store the arguments to compare with default backwards
@@ -121,16 +127,22 @@ def _parse_function(symbol, with_docstrings):
         if sym.__class__ is ast.Assign:
             result = _parse_assign(sym)
             attrs.update(result[1])
+        elif sym.__class__ is ast.FunctionDef:
+            result = _parse_function(sym, with_docstrings)
+            if with_docstrings:
+                docstring.update(result['docstring'])
+            func['functions'][result['name']] = (result['lineno'],
+                result['functions'])
 
     if with_docstrings:
-        docstring = ast.get_docstring(symbol, clean=True)
+        docstring[symbol.lineno] = ast.get_docstring(symbol, clean=True)
 
     lineno = symbol.lineno
     for decorator in symbol.decorator_list:
         lineno += 1
 
     return {'name': func_name, 'lineno': lineno,
-        'attrs': attrs, 'docstring': docstring}
+        'attrs': attrs, 'docstring': docstring, 'functions': func}
 
 
 def obtain_symbols(source, with_docstrings=False, filename=''):
@@ -154,15 +166,15 @@ def obtain_symbols(source, with_docstrings=False, filename=''):
         elif symbol.__class__ is ast.FunctionDef:
             result = _parse_function(symbol, with_docstrings)
             if with_docstrings:
-                globalFunctions[result['name']] = result['lineno']
-                docstrings[result['lineno']] = result['docstring']
-            else:
-                globalFunctions[result['name']] = result['lineno']
+                docstrings.update(result['docstring'])
+            globalFunctions[result['name']] = (result['lineno'],
+                result['functions'])
         elif symbol.__class__ is ast.ClassDef:
             result = _parse_class(symbol, with_docstrings)
             classes[result['name']] = (result['lineno'],
                 {'attributes': result['attributes'],
-                'functions': result['functions']})
+                'functions': result['functions'],
+                'classes': result['classes']})
             docstrings.update(result['docstring'])
     if globalAttributes:
         symbols['attributes'] = globalAttributes
