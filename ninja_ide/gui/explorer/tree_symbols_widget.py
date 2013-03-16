@@ -159,7 +159,7 @@ class TreeSymbolsWidget(QTreeWidget):
                     lineno=symbols['attributes'][glob])
                 globItem.isAttribute = True
                 globItem.setIcon(0, QIcon(resources.IMAGES['attribute']))
-        if 'functions' in symbols:
+        if 'functions' in symbols and symbols['functions']:
             functionsItem = ItemTree(parent, [self.tr("Functions")])
             functionsItem.isClickable = False
             functionsItem.isMethod = True
