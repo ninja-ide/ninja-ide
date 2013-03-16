@@ -107,7 +107,8 @@ class CodeCompletionWidget(QFrame):
                cursor.block().blockNumber() != self._block:
                 source = self._editor.get_text()
                 source = source.encode(self._editor.encoding)
-                self.cc.analyze_file(self._editor.ID, source, self._editor.indent, self._editor.useTabs)
+                self.cc.analyze_file(self._editor.ID, source,
+                    self._editor.indent, self._editor.useTabs)
                 self._revision = self._editor.document().revision()
                 self._block = cursor.block().blockNumber()
 

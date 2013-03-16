@@ -17,6 +17,8 @@
 
 from __future__ import absolute_import
 
+import os
+
 from PyQt4.QtNetwork import QLocalSocket
 
 
@@ -37,9 +39,10 @@ def is_running():
 def send_data(socket, filenames, projects_path, linenos):
     global file_delimiter
     global project_delimiter
-    file_with_nro = ['%s:%i' % (f[0], f[1] - 1)
+    file_with_nro = ['%s:%i' % (os.path.abspath(f[0]), f[1] - 1)
         for f in zip(filenames, linenos)]
-    file_without_nro = ['%s:%i' % (f, 0) for f in filenames[len(linenos):]]
+    file_without_nro = ['%s:%i' % (os.path.abspath(f), 0)
+        for f in filenames[len(linenos):]]
     filenames = file_with_nro + file_without_nro
     files = file_delimiter.join(filenames)
     projects = project_delimiter.join(projects_path)
