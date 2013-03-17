@@ -205,6 +205,7 @@ COLOR_SCHEME = {
     "editor-text": "#B3BFA7",
     "current-line": "#858585",
     "selected-word": "red",
+    "pending": "red",
     "selected-word-background": "#009B00",
     "fold-area": "#FFFFFF",
     "fold-arrow": "#454545",

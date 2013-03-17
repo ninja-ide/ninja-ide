@@ -496,6 +496,7 @@ def _create_scheme():
           background=resources.CUSTOM_SCHEME.get(
           "selected-word-background",
           resources.COLOR_SCHEME["selected-word-background"])),
+      "syntax_pending": resources.COLOR_SCHEME["pending"],
     }
 
     return scheme
