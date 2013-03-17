@@ -8,6 +8,7 @@
   "url": "http://ninja-ide.org", 
   "pythonPath": "python", 
   "preExecScript": "", 
+  "additional_builtins": [], 
   "programParams": "", 
   "indentation": 4, 
   "PYTHONPATH": "", 
@@ -21,7 +22,8 @@
     ".json", 
     ".ini", 
     ".js", 
-    ".qss"
+    ".qss", 
+    ".c"
   ], 
   "project-type": "python", 
   "postExecScript": "", 

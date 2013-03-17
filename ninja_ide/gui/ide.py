@@ -101,6 +101,7 @@ class __IDE(QMainWindow):
         self.setMinimumSize(700, 500)
         #Load the size and the position of the main window
         self.load_window_geometry()
+        self.__project_to_open = 0
 
         #Start server if needed
         self.s_listener = None
@@ -322,14 +323,24 @@ class __IDE(QMainWindow):
 
     def load_session_files_projects(self, filesTab1, filesTab2, projects,
         current_file, recent_files=None):
+        self.__project_to_open = len(projects)
+        self.connect(self.explorer, SIGNAL("projectOpened(QString)"),
+            self._set_editors_project_data)
+        self.explorer.open_session_projects(projects, notIDEStart=False)
         self.mainContainer.open_files(filesTab1, notIDEStart=False)
         self.mainContainer.open_files(filesTab2, mainTab=False,
             notIDEStart=False)
-        self.explorer.open_session_projects(projects, notIDEStart=False)
         if current_file:
             self.mainContainer.open_file(current_file, notStart=False)
         if recent_files is not None:
             self._menuFile.update_recent_files(recent_files)
+
+    def _set_editors_project_data(self):
+        self.__project_to_open -= 1
+        if self.__project_to_open == 0:
+            self.disconnect(self.explorer, SIGNAL("projectOpened(QString)"),
+                self._set_editors_project_data)
+            self.mainContainer.update_editor_project()
 
     def open_file(self, filename):
         if filename:

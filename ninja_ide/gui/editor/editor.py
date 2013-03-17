@@ -132,12 +132,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #Completer
         self.completer = completer_widget.CodeCompletionWidget(self)
         #Indentation
-        if project_obj is not None:
-            self.indent = project_obj.indentation
-            self.useTabs = project_obj.useTabs
-        else:
-            self.indent = settings.INDENT
-            self.useTabs = settings.USE_TABS
+        self.set_project(project_obj)
         #Flag to dont bug the user when answer *the modification dialog*
         self.ask_if_externally_modified = False
         self.just_saved = False
@@ -197,15 +192,26 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self._mini.show()
             self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
                 self._mini.update_visible_area)
-        #Set tab usage
-        if self.useTabs:
-            self.set_tab_usage()
 
         #Context Menu Options
         self.__actionFindOccurrences = QAction(
             self.tr("Find Usages"), self)
         self.connect(self.__actionFindOccurrences, SIGNAL("triggered()"),
             self._find_occurrences)
+
+    def set_project(self, project):
+        if project is not None:
+            self.indent = project.indentation
+            self.useTabs = project.useTabs
+            #Set tab usage
+            if self.useTabs:
+                self.set_tab_usage()
+            self.connect(project._parent,
+                SIGNAL("projectPropertiesUpdated(QTreeWidgetItem)"),
+                self.set_project)
+        else:
+            self.indent = settings.INDENT
+            self.useTabs = settings.USE_TABS
 
     def __get_encoding(self):
         """Get the current encoding of 'utf-8' otherwise."""
