@@ -165,7 +165,7 @@ class TreeSymbolsWidget(QTreeWidget):
             functionsItem.isMethod = True
             for func in sorted(symbols['functions']):
                 item = ItemTree(functionsItem, [func],
-                    lineno=symbols['functions'][func])
+                    lineno=symbols['functions'][func][0])
                 tooltip = self.create_tooltip(
                     func, symbols['functions'][func][0])
                 item.isMethod = True
