@@ -8,6 +8,7 @@
   "url": "http://ninja-ide.org", 
   "pythonPath": "python", 
   "preExecScript": "", 
+  "additional_builtins": [], 
   "programParams": "", 
   "indentation": 4, 
   "PYTHONPATH": "", 
