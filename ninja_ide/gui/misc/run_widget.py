@@ -174,16 +174,17 @@ class RunWidget(QWidget):
         options = ['-u'] + settings.EXECUTION_OPTIONS.split()
         self.currentProcess = self._proc
 
+        env = QProcessEnvironment()
+        system_environemnt = self._proc.systemEnvironment()
+        for e in system_environemnt:
+            key, value = e.split('=', 1)
+            env.insert(key, value)
         if self.PYTHONPATH:
             envpaths = [path for path in self.PYTHONPATH.splitlines()]
-            env = QProcessEnvironment()
-            system_environemnt = self._proc.systemEnvironment()
-            for e in system_environemnt:
-                key, value = e.split('=', 1)
-                env.insert(key, value)
             for path in envpaths:
                 env.insert('PYTHONPATH', path)
-            self._proc.setProcessEnvironment(env)
+        env.insert('PYTHONIOENCODING', 'utf-8')
+        self._proc.setProcessEnvironment(env)
 
         self._proc.start(self.pythonPath, options + [self.fileName] +
             [p.strip() for p in self.programParams.split(',') if p])
