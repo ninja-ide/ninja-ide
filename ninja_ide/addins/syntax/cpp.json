@@ -3,8 +3,8 @@
     "//"
   ],
   "multiline_comment": {
-    "open": "/\\*",
-    "close": "\\*/"
+    "open": "/*",
+    "close": "*/"
   },
   "extension": [
     "cpp"

@@ -19,6 +19,8 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+import re
+
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QTextCharFormat
 from PyQt4.QtGui import QFont
@@ -185,8 +187,10 @@ class Highlighter(QSyntaxHighlighter):
 
         multi = langSyntax.get('multiline_comment', [])
         if multi:
-            self.multi_start = (QRegExp(multi['open']), STYLES['comment'])
-            self.multi_end = (QRegExp(multi['close']), STYLES['comment'])
+            self.multi_start = (QRegExp(
+                re.escape(multi['open'])), STYLES['comment'])
+            self.multi_end = (QRegExp(
+                re.escape(multi['close'])), STYLES['comment'])
         else:
             self.multi_start = None
 
