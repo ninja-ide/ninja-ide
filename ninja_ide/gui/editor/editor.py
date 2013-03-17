@@ -1028,10 +1028,12 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             QToolTip.showText(self.mapToGlobal(position), message, self)
         if event.modifiers() == Qt.ControlModifier:
             cursor.select(QTextCursor.WordUnderCursor)
-            cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
-            if cursor.selectedText().endswith('(') or \
-            cursor.selectedText().endswith('.'):
-                cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
+            selection_start = cursor.selectionStart()
+            selection_end = cursor.selectionEnd()
+            cursor.setPosition(selection_start - 1)
+            cursor.setPosition(selection_end + 1, QTextCursor.KeepAnchor)
+            if cursor.selectedText()[-1:] in ('(', '.') or \
+            cursor.selectedText()[:1] in ('.', '@'):
                 self.extraSelections = []
                 selection = QTextEdit.ExtraSelection()
                 lineColor = QColor(resources.CUSTOM_SCHEME.get('linkNavigate',
@@ -1077,13 +1079,20 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if not cursor:
             cursor = self.textCursor()
         cursor.select(QTextCursor.WordUnderCursor)
-        cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
-        if cursor.selectedText().endswith('('):
-            cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
+        selection_start = cursor.selectionStart()
+        selection_end = cursor.selectionEnd()
+        cursor.setPosition(selection_start - 1)
+        cursor.setPosition(selection_end + 1, QTextCursor.KeepAnchor)
+        if cursor.selectedText().endswith('(') or \
+           cursor.selectedText().startswith('@'):
+            cursor.setPosition(selection_start)
+            cursor.setPosition(selection_end, QTextCursor.KeepAnchor)
             self.emit(SIGNAL("locateFunction(QString, QString, bool)"),
                 cursor.selectedText(), self.ID, False)
-        elif cursor.selectedText().endswith('.'):
-            cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
+        elif cursor.selectedText().endswith('.') or \
+             cursor.selectedText().startswith('.'):
+            cursor.setPosition(selection_start)
+            cursor.setPosition(selection_end, QTextCursor.KeepAnchor)
             self.emit(SIGNAL("locateFunction(QString, QString, bool)"),
                 cursor.selectedText(), self.ID, True)
 
