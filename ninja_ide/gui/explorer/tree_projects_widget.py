@@ -67,6 +67,7 @@ class TreeProjectsWidget(QTreeWidget):
     closeFilesFromProjectClosed(QString)
     addProjectToConsole(QString)
     removeProjectFromConsole(QString)
+    projectPropertiesUpdated(QTreeWidgetItem)
     """
 
 ###############################################################################
@@ -391,6 +392,7 @@ class TreeProjectsWidget(QTreeWidget):
         self._load_folder(structure, path, item)
         #todo: refresh completion
         item.setExpanded(True)
+        self.emit(SIGNAL("projectPropertiesUpdated(QTreeWidgetItem)"), item)
 
     def _close_project(self):
         item = self.currentItem()

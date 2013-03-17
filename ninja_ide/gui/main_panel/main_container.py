@@ -317,6 +317,20 @@ class __MainContainer(QSplitter):
 
         return editorWidget
 
+    def update_editor_project(self):
+        for i in range(self._tabMain.count()):
+            widget = self._tabMain.widget(i)
+            if type(widget) is editor.Editor:
+                project = self._parent.explorer.get_project_given_filename(
+                    widget.ID)
+                widget.set_project(project)
+        for i in range(self._tabSecondary.count()):
+            widget = self._tabSecondary.widget(i)
+            if type(widget) is editor.Editor:
+                project = self._parent.explorer.get_project_given_filename(
+                    widget.ID)
+                widget.set_project(project)
+
     def reset_pep8_warnings(self, value):
         for i in range(self._tabMain.count()):
             widget = self._tabMain.widget(i)
