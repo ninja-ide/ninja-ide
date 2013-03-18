@@ -153,7 +153,6 @@ class TreeSymbolsWidget(QTreeWidget):
     def _save_symbols_state(self):
         #filename = self.actualSymbols[0]
         #TODO: persist self.collapsedItems[filename] in QSettings
-        print("Saving state...")
         pass
 
     def _get_expand(self, item):
@@ -238,8 +237,6 @@ class TreeSymbolsWidget(QTreeWidget):
                 item.setExpanded(self._get_expand(item))
                 self.update_symbols_tree(symbols['classes'][claz][1],
                     parent=item)
-
-        #self.expandAll()
 
     def _go_to_definition(self, item):
         if item.isClickable:
