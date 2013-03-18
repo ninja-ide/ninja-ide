@@ -417,7 +417,7 @@ class __ExplorerContainer(QTabWidget):
         """
         # Clean up tabs
         if self._treeSymbols:
-            self._treeSymbols.clear()
+            self._treeSymbols.clean()
         if self._listErrors:
             self._listErrors.clear()
         if self._listMigration:
