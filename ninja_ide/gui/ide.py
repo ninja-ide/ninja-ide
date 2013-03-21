@@ -528,7 +528,8 @@ def start(filenames=None, projects_path=None,
     #Translator
     qsettings = QSettings()
     language = QLocale.system().name()
-    lang = qsettings.value('preferences/interface/language', language) + '.qm'
+    lang = qsettings.value('preferences/interface/language', language,
+        type='QString') + '.qm'
     lang_path = file_manager.create_path(resources.LANGS, lang)
     if file_manager.file_exists(lang_path):
         settings.LANGUAGE = lang_path
