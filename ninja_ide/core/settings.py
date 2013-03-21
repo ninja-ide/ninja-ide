@@ -405,7 +405,7 @@ def load_settings():
         TOOLBAR_ITEMS = toolbar_items
     #EXECUTION OPTIONS
     EXECUTION_OPTIONS = qsettings.value(
-        'preferences/execution/executionOptions', '')
+        'preferences/execution/executionOptions', defaultValue = '', type = 'QString')
     extensions = [item for item in list(qsettings.value(
         'preferences/general/supportedExtensions', []))]
     if extensions:
