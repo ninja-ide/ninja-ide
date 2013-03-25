@@ -3,3 +3,7 @@
 *.swp
 tests/tools/build/
 _trial_temp
+
+.DS_Store
+
+ninja_ide/addins/plugins/*
