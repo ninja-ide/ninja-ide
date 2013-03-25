@@ -366,22 +366,24 @@ def load_settings():
     global MINIMAP_MIN_OPACITY
     global SIZE_PROPORTION
     #General
-    HIDE_TOOLBAR = qsettings.value("window/hide_toolbar", 'false') == 'true'
+    HIDE_TOOLBAR = qsettings.value("window/hide_toolbar", False, type=bool)
     SHOW_STATUS_NOTIFICATIONS = qsettings.value(
-        "preferences/interface/showStatusNotifications", 'true') == 'true'
-    TOOLBAR_AREA = int(qsettings.value('preferences/general/toolbarArea', 1))
-    LANGUAGE = qsettings.value('preferences/interface/language', '')
+        "preferences/interface/showStatusNotifications", True, type=bool)
+    TOOLBAR_AREA = qsettings.value('preferences/general/toolbarArea', 1,
+        type=int)
+    LANGUAGE = qsettings.value('preferences/interface/language', '',
+        type='QString')
     SHOW_START_PAGE = qsettings.value(
-        'preferences/general/showStartPage', 'true') == 'true'
+        'preferences/general/showStartPage', True, type=bool)
     CONFIRM_EXIT = qsettings.value('preferences/general/confirmExit',
-        'true') == 'true'
-    UI_LAYOUT = int(qsettings.value('preferences/interface/uiLayout', 0))
+        True, type=bool)
+    UI_LAYOUT = qsettings.value('preferences/interface/uiLayout', 0, type=int)
     NOTIFY_UPDATES = qsettings.value(
-        'preferences/general/notifyUpdates', 'true') == 'true'
+        'preferences/general/notifyUpdates', True, type=bool)
     PYTHON_PATH = qsettings.value('preferences/execution/pythonPath',
-        'python')
+        'python', type='QString')
     NINJA_SKIN = qsettings.value('preferences/theme/skin',
-        'Default')
+        'Default', type='QString')
     profileDict = dict(qsettings.value('ide/profiles', {}))
     for key in profileDict:
         profile_list = list(profileDict[key])
@@ -405,93 +407,96 @@ def load_settings():
         TOOLBAR_ITEMS = toolbar_items
     #EXECUTION OPTIONS
     EXECUTION_OPTIONS = qsettings.value(
-        'preferences/execution/executionOptions', '')
+        'preferences/execution/executionOptions',
+        defaultValue='', type='QString')
     extensions = [item for item in list(qsettings.value(
         'preferences/general/supportedExtensions', []))]
     if extensions:
         SUPPORTED_EXTENSIONS = extensions
     WORKSPACE = qsettings.value(
-        'preferences/general/workspace', "")
+        'preferences/general/workspace', "", type='QString')
     #Editor
     SHOW_MINIMAP = qsettings.value(
-        'preferences/editor/minimapShow', 'false') == 'true'
+        'preferences/editor/minimapShow', False, type=bool)
     MINIMAP_MAX_OPACITY = float(qsettings.value(
-        'preferences/editor/minimapMaxOpacity', 0.8))
+        'preferences/editor/minimapMaxOpacity', 0.8, type=float))
     MINIMAP_MIN_OPACITY = float(qsettings.value(
-        'preferences/editor/minimapMinOpacity', 0.1))
+        'preferences/editor/minimapMinOpacity', 0.1, type=float))
     SIZE_PROPORTION = float(qsettings.value(
-        'preferences/editor/minimapSizeProportion', 0.17))
-    INDENT = int(qsettings.value('preferences/editor/indent', 4))
-    eol = qsettings.value('preferences/editor/platformEndOfLine', 'false')
-    USE_PLATFORM_END_OF_LINE = eol == 'true'
-    MARGIN_LINE = int(qsettings.value('preferences/editor/marginLine', 80))
+        'preferences/editor/minimapSizeProportion', 0.17, type=float))
+    INDENT = int(qsettings.value('preferences/editor/indent', 4, type=int))
+
+    USE_PLATFORM_END_OF_LINE = qsettings.value(
+        'preferences/editor/platformEndOfLine', False, type=bool)
+    MARGIN_LINE = qsettings.value('preferences/editor/marginLine', 80,
+        type=int)
     pep8mod_update_margin_line_length(MARGIN_LINE)
     REMOVE_TRAILING_SPACES = qsettings.value(
-        'preferences/editor/removeTrailingSpaces', 'true') == 'true'
+        'preferences/editor/removeTrailingSpaces', True, type=bool)
     SHOW_TABS_AND_SPACES = qsettings.value(
-        'preferences/editor/showTabsAndSpaces', 'true') == 'true'
-    USE_TABS = qsettings.value('preferences/editor/useTabs', 'false') == 'true'
+        'preferences/editor/showTabsAndSpaces', True, type=bool)
+    USE_TABS = qsettings.value('preferences/editor/useTabs', False, type=bool)
     if USE_TABS:
         pep8mod_add_ignore("W191")
         pep8mod_refresh_checks()
     ALLOW_WORD_WRAP = qsettings.value(
-        'preferences/editor/allowWordWrap', 'false') == 'true'
+        'preferences/editor/allowWordWrap', False, type=bool)
     COMPLETE_DECLARATIONS = qsettings.value(
-        'preferences/editor/completeDeclarations', 'true') == 'true'
+        'preferences/editor/completeDeclarations', True, type=bool)
     UNDERLINE_NOT_BACKGROUND = qsettings.value(
-        'preferences/editor/errorsUnderlineBackground', 'true') == 'true'
+        'preferences/editor/errorsUnderlineBackground', True, type=bool)
     font_family = qsettings.value(
-        'preferences/editor/fontFamily', "")
+        'preferences/editor/fontFamily', "", type='QString')
     if font_family:
         FONT_FAMILY = font_family
-    font_size = int(qsettings.value('preferences/editor/fontSize', 0))
+    font_size = qsettings.value('preferences/editor/fontSize', 0, type=int)
     if font_size != 0:
         FONT_SIZE = font_size
     SHOW_MARGIN_LINE = qsettings.value(
-        'preferences/editor/showMarginLine', 'true') == 'true'
+        'preferences/editor/showMarginLine', True, type=bool)
     FIND_ERRORS = qsettings.value('preferences/editor/errors',
-        'true') == 'true'
+        True, type=bool)
     SHOW_MIGRATION_TIPS = qsettings.value(
-        'preferences/editor/showMigrationTips', 'true') == 'true'
+        'preferences/editor/showMigrationTips', True, type=bool)
     ERRORS_HIGHLIGHT_LINE = qsettings.value(
-        'preferences/editor/errorsInLine', 'true') == 'true'
+        'preferences/editor/errorsInLine', True, type=bool)
     CHECK_STYLE = qsettings.value('preferences/editor/checkStyle',
-        'true') == 'true'
+        True, type=bool)
     CHECK_HIGHLIGHT_LINE = qsettings.value(
-        'preferences/editor/checkStyleInline', 'true') == 'true'
+        'preferences/editor/checkStyleInline', True, type=bool)
     CODE_COMPLETION = qsettings.value(
-        'preferences/editor/codeCompletion', 'true') == 'true'
+        'preferences/editor/codeCompletion', True, type=bool)
     CENTER_ON_SCROLL = qsettings.value(
-        'preferences/editor/centerOnScroll', 'true') == 'true'
-    parentheses = qsettings.value('preferences/editor/parentheses',
-        'true') == 'true'
+        'preferences/editor/centerOnScroll', True, type=bool)
+    parentheses = qsettings.value('preferences/editor/parentheses', True,
+        type=bool)
     if not parentheses:
         del BRACES['(']
-    brackets = qsettings.value('preferences/editor/brackets', 'true') == 'true'
+    brackets = qsettings.value('preferences/editor/brackets', True, type=bool)
     if not brackets:
         del BRACES['[']
-    keys = qsettings.value('preferences/editor/keys', 'true') == 'true'
+    keys = qsettings.value('preferences/editor/keys', True, type=bool)
     if not keys:
         del BRACES['{']
     simpleQuotes = qsettings.value('preferences/editor/simpleQuotes',
-        'true') == 'true'
+        True, type=bool)
     if not simpleQuotes:
         del QUOTES["'"]
     doubleQuotes = qsettings.value('preferences/editor/doubleQuotes',
-        'true') == 'true'
+        True, type=bool)
     if not doubleQuotes:
         del QUOTES['"']
     #Projects
     SHOW_PROJECT_EXPLORER = qsettings.value(
-        'preferences/interface/showProjectExplorer', 'true') == 'true'
+        'preferences/interface/showProjectExplorer', True, type=bool)
     SHOW_SYMBOLS_LIST = qsettings.value(
-        'preferences/interface/showSymbolsList', 'true') == 'true'
+        'preferences/interface/showSymbolsList', True, type=bool)
     SHOW_WEB_INSPECTOR = qsettings.value(
-        'preferences/interface/showWebInspector', 'false') == 'true'
+        'preferences/interface/showWebInspector', False, type=bool)
     SHOW_ERRORS_LIST = qsettings.value(
-        'preferences/interface/showErrorsList', 'false') == 'true'
+        'preferences/interface/showErrorsList', False, type=bool)
     SHOW_MIGRATION_LIST = qsettings.value(
-        'preferences/interface/showMigrationList', 'true') == 'true'
+        'preferences/interface/showMigrationList', True, type=bool)
     #Bookmarks and Breakpoints
     bookmarks = dict(qsettings.value('preferences/editor/bookmarks', {}))
     for key in bookmarks:
@@ -503,7 +508,7 @@ def load_settings():
             BREAKPOINTS[key] = [int(i) for i in list(breakpoints[key])]
     # Checkers
     CHECK_FOR_DOCSTRINGS = qsettings.value(
-        'preferences/editor/checkForDocstrings', 'false') == 'true'
+        'preferences/editor/checkForDocstrings', False, type=bool)
     # Import introspection here, it not needed in the namespace of
     # the rest of the file.
     from ninja_ide.tools import introspection

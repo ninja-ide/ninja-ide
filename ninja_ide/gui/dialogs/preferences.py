@@ -206,9 +206,11 @@ class GeneralConfiguration(QWidget):
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('general')
         self._checkLastSession.setChecked(
-            qsettings.value('loadFiles', 'true') == 'true')
+            qsettings.value('loadFiles', defaultValue='true',
+                type=bool))
         self._checkActivatePlugins.setChecked(
-            qsettings.value('activatePlugins', 'true') == 'true')
+            qsettings.value('activatePlugins', defaultValue='true',
+                type=bool))
         self._checkNotifyUpdates.setChecked(settings.NOTIFY_UPDATES)
         self._checkShowStartPage.setChecked(settings.SHOW_START_PAGE)
         self._checkConfirmExit.setChecked(settings.CONFIRM_EXIT)
@@ -845,7 +847,8 @@ class EditorGeneral(QWidget):
         for item in self._schemes:
             self._listScheme.addItem(item)
         items = self._listScheme.findItems(
-            qsettings.value('scheme', ''), Qt.MatchExactly)
+            qsettings.value('scheme', defaultValue='',
+                type='QString'), Qt.MatchExactly)
         if items:
             self._listScheme.setCurrentItem(items[0])
         else:
@@ -876,7 +879,8 @@ class EditorGeneral(QWidget):
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('editor')
         self._schemes = json_manager.load_editor_skins()
-        self._selected_scheme = qsettings.value('scheme', '')
+        self._selected_scheme = qsettings.value('scheme', defaultValue='',
+            type='QString')
         qsettings.endGroup()
         qsettings.endGroup()
 
@@ -1726,7 +1730,8 @@ class EditorSchemeDesigner(QWidget):
             qsettings = QSettings()
             qsettings.beginGroup('preferences')
             qsettings.beginGroup('editor')
-            if qsettings.value('scheme', '') == name and name != 'default':
+            if qsettings.value('scheme', defaultValue='',
+                type='QString') == name and name != 'default':
                 self.original_style = copy.copy(scheme)
             json_manager.save_editor_skins(fileName, scheme)
             QMessageBox.information(self, self.tr("Scheme Saved"),
