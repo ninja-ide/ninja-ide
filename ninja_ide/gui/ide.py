@@ -528,8 +528,8 @@ def start(filenames=None, projects_path=None,
     #Translator
     qsettings = QSettings()
     language = QLocale.system().name()
-    lang = qsettings.value('preferences/interface/language', 
-        defaultValue = language, type = 'QString') + '.qm'
+    lang = qsettings.value('preferences/interface/language',
+        defaultValue=language, type='QString') + '.qm'
     lang_path = file_manager.create_path(resources.LANGS, lang)
     if file_manager.file_exists(lang_path):
         settings.LANGUAGE = lang_path
@@ -579,7 +579,8 @@ def start(filenames=None, projects_path=None,
     #Loading Schemes
     splash.showMessage("Loading Schemes",
         Qt.AlignRight | Qt.AlignTop, Qt.black)
-    scheme = qsettings.value('preferences/editor/scheme', "default", type='QString')
+    scheme = qsettings.value('preferences/editor/scheme', "default",
+        type='QString')
     if scheme != 'default':
         scheme = file_manager.create_path(resources.EDITOR_SKINS,
             scheme + '.color')

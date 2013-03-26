@@ -206,10 +206,10 @@ class GeneralConfiguration(QWidget):
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('general')
         self._checkLastSession.setChecked(
-            qsettings.value('loadFiles', defaultValue='true',
+            qsettings.value('loadFiles', True,
                 type=bool))
         self._checkActivatePlugins.setChecked(
-            qsettings.value('activatePlugins', defaultValue='true',
+            qsettings.value('activatePlugins', defaultValue=True,
                 type=bool))
         self._checkNotifyUpdates.setChecked(settings.NOTIFY_UPDATES)
         self._checkShowStartPage.setChecked(settings.SHOW_START_PAGE)
