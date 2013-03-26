@@ -10,3 +10,5 @@ ninja_ide/addins/plugins/*
 NINJA_IDE.egg-info/*
 build/*
 dist/*
+
+*.pyo
