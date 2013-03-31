@@ -103,9 +103,22 @@ class __StatusBar(QStatusBar):
         Re-run search if tab changed, we use the find of search widget because
         we want the widget to be updated.
         """
+        editor = main_container.MainContainer().get_actual_editor()
+        if self._searchWidget.isVisible():
+            self._searchWidget.find_matches(editor)
+        self.disconnect(editor, SIGNAL("textChanged()"),
+                    self._notify_editor_changed)
+        self.connect(editor, SIGNAL("textChanged()"),
+                    self._notify_editor_changed)
+
+    def _notify_editor_changed(self):
+        """
+        Lets search widget know that the editor contents changed and find
+        needs to be re-run
+        """
         if self._searchWidget.isVisible():
             editor = main_container.MainContainer().get_actual_editor()
-            self._searchWidget.find_matches(editor)
+            self._searchWidget.contents_changed(editor)
 
     def explore_code(self):
         self._codeLocator.explore_code()
@@ -300,8 +313,17 @@ class SearchWidget(QWidget):
         editor.moveCursor(QTextCursor.Start)
         self.find_matches(editor)
 
+    def contents_changed(self, editor):
+        #TODO: Find where the cursor is when finding to position the index
+        current_index = self.find_matches(editor, True)
+        if self.totalMatches >= current_index:
+            self.index = current_index
+        self._line.counter.update_count(self.index, self.totalMatches)
+
     def find_next(self):
         self._parent.find_next()
+        print self.index
+        print self.totalMatches
         if self.totalMatches > 0 and self.index < self.totalMatches:
             self.index += 1
         elif self.totalMatches > 0:
@@ -325,6 +347,7 @@ class SearchWidget(QWidget):
         text = editor.toPlainText()
         search = self._line.text()
         hasSearch = len(search) > 0
+        current_index = 0
         if self._checkWholeWord.isChecked():
             pattern = r'\b%s\b' % search
             temp_text = ' '.join(re.findall(pattern, text, re.IGNORECASE))
@@ -335,11 +358,17 @@ class SearchWidget(QWidget):
             self.totalMatches = text.lower().count(search.lower())
         if hasSearch and self.totalMatches > 0:
             cursor = editor.textCursor()
+            cursor_position = cursor.position()
+
             cursor.movePosition(QTextCursor.WordLeft)
             cursor.movePosition(QTextCursor.Start,
                 QTextCursor.KeepAnchor)
+            current_index = text[:cursor_position].count(search)
             text = cursor.selectedText()
-            self.index = text.count(search) + 1
+            if current_index <= self.totalMatches:
+                self.index = current_index
+            else:
+                self.index = text.count(search) + 1
         else:
             self.index = 0
             self.totalMatches = 0
@@ -347,6 +376,7 @@ class SearchWidget(QWidget):
             hasSearch)
         if hasSearch and not in_place:
             self._parent.find()
+        return current_index
 
 
 class ReplaceWidget(QWidget):
