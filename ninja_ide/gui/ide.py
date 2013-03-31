@@ -397,7 +397,7 @@ class __IDE(QMainWindow):
         current_file = ''
         if editor_widget is not None:
             current_file = editor_widget.ID
-        if qsettings.value('preferences/general/loadFiles', 'true') == 'true':
+        if qsettings.value('preferences/general/loadFiles', True, type=bool):
             openedFiles = self.mainContainer.get_opened_documents()
             projects_obj = self.explorer.get_opened_projects()
             projects = [p.path for p in projects_obj]
@@ -444,13 +444,13 @@ class __IDE(QMainWindow):
     def load_window_geometry(self):
         """Load from QSettings the window size of de Ninja IDE"""
         qsettings = QSettings()
-        if qsettings.value("window/maximized", 'true') == 'true':
+        if qsettings.value("window/maximized", True, type=bool):
             self.setWindowState(Qt.WindowMaximized)
         else:
             self.resize(qsettings.value("window/size",
-                QSizeF(800, 600).toSize()))
+                QSizeF(800, 600).toSize(), type='QSize'))
             self.move(qsettings.value("window/pos",
-                QPointF(100, 100).toPoint()))
+                QPointF(100, 100).toPoint(), type='QPoint'))
 
     def closeEvent(self, event):
         if self.s_listener:
@@ -528,7 +528,8 @@ def start(filenames=None, projects_path=None,
     #Translator
     qsettings = QSettings()
     language = QLocale.system().name()
-    lang = qsettings.value('preferences/interface/language', language) + '.qm'
+    lang = qsettings.value('preferences/interface/language',
+        defaultValue=language, type='QString') + '.qm'
     lang_path = file_manager.create_path(resources.LANGS, lang)
     if file_manager.file_exists(lang_path):
         settings.LANGUAGE = lang_path
@@ -578,7 +579,8 @@ def start(filenames=None, projects_path=None,
     #Loading Schemes
     splash.showMessage("Loading Schemes",
         Qt.AlignRight | Qt.AlignTop, Qt.black)
-    scheme = qsettings.value('preferences/editor/scheme', "default")
+    scheme = qsettings.value('preferences/editor/scheme', "default",
+        type='QString')
     if scheme != 'default':
         scheme = file_manager.create_path(resources.EDITOR_SKINS,
             scheme + '.color')
@@ -628,7 +630,7 @@ def start(filenames=None, projects_path=None,
         recent_files = list()
     recent_files = [file_ for file_ in recent_files]
     #Current File
-    current_file = qsettings.value('openFiles/currentFile', '')
+    current_file = qsettings.value('openFiles/currentFile', '', type='QString')
     #Projects
     projects_list = qsettings.value('openFiles/projects', [])
     if projects_list is not None:

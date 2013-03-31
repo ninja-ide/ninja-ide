@@ -124,7 +124,7 @@ class __CentralWidget(QWidget):
         self._splitterMain.setSizes(self._splitterMainSizes)
         self._splitterArea.setSizes(self._splitterAreaSizes)
         self.misc.setVisible(
-            qsettings.value("window/show_misc", 'false') == 'true')
+            qsettings.value("window/show_misc", False, type=bool))
 
     def change_misc_visibility(self):
         if self.misc.isVisible():
