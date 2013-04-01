@@ -190,7 +190,7 @@ class TabWidget(QTabWidget):
             if editorWidget.just_saved:
                 editorWidget.just_saved = False
                 return
-            val = QMessageBox.question(self, 'The file has changed on disc!',
+            val = QMessageBox.question(self, 'The file has changed on disk!',
                 (self.tr("%s\nDo you want to reload it?") % editorWidget.ID),
                 QMessageBox.Yes, QMessageBox.No)
             if val == QMessageBox.Yes:
@@ -200,7 +200,7 @@ class TabWidget(QTabWidget):
                 editorWidget.ask_if_externally_modified = False
         elif change == DELETED:
                 val = QMessageBox.information(self,
-                            'The file has deleted from disc!',
+                            'The file has been deleted from disk!',
                 (self.tr("%s\n") % editorWidget.ID),
                 QMessageBox.Yes)
         self.question_already_open = False
