@@ -143,8 +143,7 @@ class TabWidget(QTabWidget):
         for i in indexes:
             newName = file_manager.create_path(
                 file_manager.get_basename(
-                    file_manager.get_folder(self.widget(i).ID)),
-                title)
+                    file_manager.get_folder(self.widget(i).ID)), title)
             while newName in self.titles:
                 # Keep prepending the folder name onto the title until it
                 # does not conflict.
