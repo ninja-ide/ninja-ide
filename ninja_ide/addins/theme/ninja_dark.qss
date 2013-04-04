@@ -423,3 +423,7 @@ QSpinBox {
     background : white;
     color: black;
 }
+
+TabWidget::tab-bar {
+    alignment: left;
+}

@@ -330,6 +330,7 @@ class PageProjectProperties(QWizardPage):
         self.cboLicense.addItem('GNU Lesser General Public License')
         self.cboLicense.addItem('MIT License')
         self.cboLicense.addItem('Mozilla Public License 1.1')
+        self.cboLicense.addItem('Mozilla Public License 2.0')
         self.cboLicense.addItem('New BSD License')
         self.cboLicense.addItem('Other Open Source')
         self.cboLicense.addItem('Other')

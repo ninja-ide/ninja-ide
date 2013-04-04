@@ -142,3 +142,7 @@ QLineEdit:focus {
     border-width: 2px;
     border-radius: 1px;
 }
+
+TabWidget::tab-bar {
+    alignment: left;
+}
