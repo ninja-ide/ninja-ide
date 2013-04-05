@@ -80,7 +80,7 @@ class TabWidget(QTabWidget):
         self._parent = parent
         self.follow_mode = False
         self._change_map = {}
-        #On some plataforms there are problem with focusInEvent
+        #On some platforms there are problem with focusInEvent
         self.question_already_open = False
         #Keep track of the tab titles
         self.titles = []
@@ -124,6 +124,12 @@ class TabWidget(QTabWidget):
             logger.error(msg)
 
     def expand_tab_name(self, title):
+        """Expand the tab title to differentiate files with the same name.
+
+        The way it is currently implemented, it will only change the first
+        conflicting title passed in, because it only searches until the new
+        title isn't in the tab titles.
+        """
         if title == 'New Document':
             return
         elif title not in self.titles:
@@ -132,14 +138,15 @@ class TabWidget(QTabWidget):
         indexes = [i for i in range(self.count())
             if type(self.widget(i)) is editor.Editor and
             self.tabText(i) == title and
-            self.widget(i).ID]
+            self.widget(i).ID]  # self.widget.ID returns the basename
         self.dontLoopInExpandTitle = True
         for i in indexes:
             newName = file_manager.create_path(
                 file_manager.get_basename(
-                    file_manager.get_folder(self.widget(i).ID)),
-                title)
+                    file_manager.get_folder(self.widget(i).ID)), title)
             while newName in self.titles:
+                # Keep prepending the folder name onto the title until it
+                # does not conflict.
                 path = self.widget(i).ID
                 tempDir = path[:path.rfind(newName)]
                 newName = file_manager.create_path(
@@ -182,7 +189,7 @@ class TabWidget(QTabWidget):
             if editorWidget.just_saved:
                 editorWidget.just_saved = False
                 return
-            val = QMessageBox.question(self, 'The file has changed on disc!',
+            val = QMessageBox.question(self, 'The file has changed on disk!',
                 (self.tr("%s\nDo you want to reload it?") % editorWidget.ID),
                 QMessageBox.Yes, QMessageBox.No)
             if val == QMessageBox.Yes:
@@ -192,7 +199,7 @@ class TabWidget(QTabWidget):
                 editorWidget.ask_if_externally_modified = False
         elif change == DELETED:
                 val = QMessageBox.information(self,
-                            'The file has deleted from disc!',
+                            'The file has been deleted from disk!',
                 (self.tr("%s\n") % editorWidget.ID),
                 QMessageBox.Yes)
         self.question_already_open = False

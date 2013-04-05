@@ -195,9 +195,13 @@ class CodeCompletion(object):
     def get_completion(self, code, offset):
         token_code = self._tokenize_text(code[:offset])
         scopes = self._search_for_scope(token_code)
+        # Find section to attempt for code completion (var_segment)
         var_segment = self._search_for_completion_segment(token_code)
         words = var_segment.split('.', 1)
         words_final = var_segment.rsplit('.', 1)
+        # Main_attribute is the stem off of which to search for completions
+        # i.e. in exec(ninja_ide.gui. ..., "ninja_ide.gui.main_panel"
+        # would be main_attribute.
         main_attribute = words[0].strip().split('(', 1)
         attr_name = main_attribute[0]
         word = ''
@@ -227,11 +231,14 @@ class CodeCompletion(object):
                 to_complete = var_segment.replace(attr_name, result['type'], 1)
             imports = [imp.split('.')[0] for imp in imports]
             data = completer.get_all_completions(to_complete, imports)
-            __attrib = [d for d in data.get('attributes', []) if d[:2] == '__']
-            if __attrib:
-                __attrib = list(
-                    [data['attributes'].remove(i) for i in __attrib])
-                data['attributes'] += __attrib
+            # Move system attributes beginning in '__' (built_in_attribs)
+            # to the end of the list.
+            built_in_attribs = [d for d in data.get('attributes', [])
+                if d[:2] == '__']
+            if built_in_attribs:
+                for i in built_in_attribs:
+                    data['attributes'].remove(i)
+                data['attributes'] += built_in_attribs
             if data:
                 return data
             else:
