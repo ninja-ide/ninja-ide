@@ -287,6 +287,7 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         self.errors = errors
         self.pep8 = pep8
         self.migration = migration
+        self._old_search = None
 
         if isinstance(partition_scanner, (list, tuple)):
             partition_scanner = PartitionScanner(partition_scanner)
@@ -429,7 +430,8 @@ class SyntaxHighlighter(QSyntaxHighlighter):
 
     def set_selected_word(self, word, partial=False):
         """Set the word to highlight."""
-        if len(word) > 2:
+        hl_worthy = len(word) > 2
+        if hl_worthy:
             suffix = "(?![A-Za-z_\d])"
             prefix = "(?<![A-Za-z_\d])"
             word = re.escape(word)
@@ -438,7 +440,17 @@ class SyntaxHighlighter(QSyntaxHighlighter):
             self.scanner[None].add_token(('highlight_word', word))
         else:
             self.scanner[None].add_token(('highlight_word', ""))
-        self.rehighlight()
+        lines = []
+        pat_find = re.compile(word)
+        document = self.document()
+        for lineno, text in enumerate(document.toPlainText().splitlines()):
+            if hl_worthy and pat_find.search(text):
+                lines.append(lineno)
+            elif self._old_search and self._old_search.search(text):
+                lines.append(lineno)
+        # Ask perrito if i don't know what the next line does:
+        self._old_search = hl_worthy and pat_find
+        self.rehighlight_lines(lines)
 
     def _rehighlight_lines(self, lines):
         """If the document is valid, highlight the list of lines received."""

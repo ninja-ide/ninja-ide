@@ -93,6 +93,7 @@ class Highlighter(QSyntaxHighlighter):
         self.errors = errors
         self.pep8 = pep8
         self.migration = migration
+        self._old_search = None
         self.selected_word_lines = []
         self.visible_limits = (0, 50)
         self._styles = {}
@@ -204,11 +205,29 @@ class Highlighter(QSyntaxHighlighter):
     def set_selected_word(self, word, partial=True):
         """Set the word to highlight."""
         # partial = True for new highlighter compatibility
-        if len(word) > 2:
+        hl_worthy = len(word) > 2
+        if hl_worthy:
             self.selected_word_pattern = QRegExp(
                 r'\b%s\b' % self.sanitize(word))
         else:
             self.selected_word_pattern = None
+
+        suffix = "(?![A-Za-z_\d])"
+        prefix = "(?<![A-Za-z_\d])"
+        word = re.escape(word)
+        if not partial:
+            word = "%s%s%s" % (prefix, word, suffix)
+        lines = []
+        pat_find = re.compile(word)
+        document = self.document()
+        for lineno, text in enumerate(document.toPlainText().splitlines()):
+            if hl_worthy and pat_find.search(text):
+                lines.append(lineno)
+            elif self._old_search and self._old_search.search(text):
+                lines.append(lineno)
+        # Ask perrito if i don't know what the next line does:
+        self._old_search = hl_worthy and pat_find
+        self.rehighlight_lines(lines)
 
     def __highlight_pep8(self, char_format, user_data):
         """Highlight the lines with pep8 errors."""
