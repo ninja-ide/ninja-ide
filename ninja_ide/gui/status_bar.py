@@ -322,8 +322,6 @@ class SearchWidget(QWidget):
 
     def find_next(self):
         self._parent.find_next()
-        print self.index
-        print self.totalMatches
         if self.totalMatches > 0 and self.index < self.totalMatches:
             self.index += 1
         elif self.totalMatches > 0:
