@@ -341,7 +341,6 @@ class TreeProjectsWidget(QTreeWidget):
             self._refresh_project(prefresh)
 
     def _refresh_project_by_path(self, event, folder):
-        return
         if event not in (DELETED, ADDED, REMOVE, RENAME):
             return
         oprojects = self.get_open_projects()
