@@ -666,8 +666,7 @@ class TreeProjectsWidget(QTreeWidget):
             for _folder in folders:
                 if _folder.startswith('.'):
                     continue
-                subfolder = ProjectItem(parentItem, _folder, folder)
-                subfolder.isFolder = True
+                subfolder = ProjectItem(parentItem, _folder, folder, True)
                 subfolder.setToolTip(0, _folder)
                 subfolder.setIcon(0, QIcon(resources.IMAGES['tree-folder']))
                 subFolderPath = os.path.join(folder, _folder)
@@ -752,11 +751,17 @@ class TreeProjectsWidget(QTreeWidget):
 
 class ProjectItem(QTreeWidgetItem):
 
-    def __init__(self, parent, name, path):
+    def __init__(self, parent, name, path, isFolder=False):
         QTreeWidgetItem.__init__(self, parent)
         self.setText(0, name)
         self.path = path
-        self.isFolder = False
+        self.isFolder = isFolder
+
+        if self.isFolder:
+            path = '1%s' % path
+        else:
+            path = '0%s' % path
+        self.setText(1, path)
 
     @property
     def isProject(self):
