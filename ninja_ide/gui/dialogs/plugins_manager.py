@@ -23,6 +23,8 @@ from copy import copy
 from distutils import version
 
 from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QFormLayout
+from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QTextBrowser
@@ -30,15 +32,18 @@ from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QTableWidget
 from PyQt4.QtGui import QTabWidget
 from PyQt4.QtGui import QPlainTextEdit
+from PyQt4.QtGui import QLineEdit
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QSpacerItem
 from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QMessageBox
+from PyQt4.QtGui import QIcon
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QThread
 
+from ninja_ide import resources
 from ninja_ide.core import plugin_manager
 from ninja_ide.core import file_manager
 from ninja_ide.tools import ui_tools
@@ -112,6 +117,9 @@ class PluginsManagerWidget(QDialog):
             self._load_plugins_data)
         self.connect(self.thread, SIGNAL("plugin_downloaded(PyQt_PyObject)"),
             self._after_download_plugin)
+        self.connect(self.thread,
+            SIGNAL("plugin_manually_installed(PyQt_PyObject)"),
+            self._after_manual_install_plugin)
         self.connect(self.thread, SIGNAL("plugin_uninstalled(PyQt_PyObject)"),
             self._after_uninstall_plugin)
         self.connect(self._txt_data, SIGNAL("anchorClicked(const QUrl&)"),
@@ -138,6 +146,15 @@ class PluginsManagerWidget(QDialog):
         self._loading = True
         self.thread.runnable = self.thread.collect_data_thread
         self.thread.start()
+
+    def _after_manual_install_plugin(self, plugin):
+        data = {}
+        data['name'] = plugin[0]
+        data['version'] = plugin[1]
+        data['description'] = ''
+        data['authors'] = ''
+        data['home'] = ''
+        self._installedWidget.add_table_items([data])
 
     def _after_download_plugin(self, plugin):
         oficial_plugin = _get_plugin(plugin[0], self._oficial_available)
@@ -175,6 +192,8 @@ class PluginsManagerWidget(QDialog):
                 self.tr("Community Available"))
             self._tabs.addTab(self._updatesWidget, self.tr("Updates"))
             self._tabs.addTab(self._installedWidget, self.tr("Installed"))
+            self._manualWidget = ManualInstallWidget(self)
+            self._tabs.addTab(self._manualWidget, self.tr("Manual Install"))
             self._loading = False
         self.overlay.hide()
         self.thread.wait()
@@ -187,6 +206,14 @@ class PluginsManagerWidget(QDialog):
         self.thread.plug = plugs
         #set the function to run in the thread
         self.thread.runnable = self.thread.download_plugins_thread
+        self.thread.start()
+
+    def install_plugins_manually(self, plug):
+        """Install plugin from local zip."""
+        self.overlay.show()
+        self.thread.plug = plug
+        #set the function to run in the thread
+        self.thread.runnable = self.thread.manual_install_plugins_thread
         self.thread.start()
 
     def mark_as_available(self, plugs):
@@ -391,6 +418,57 @@ class InstalledWidget(QWidget):
             self._installed)
 
 
+class ManualInstallWidget(QWidget):
+
+    def __init__(self, parent):
+        super(ManualInstallWidget, self).__init__()
+        self._parent = parent
+        vbox = QVBoxLayout(self)
+        form = QFormLayout()
+        self._txtName = QLineEdit()
+        self._txtVersion = QLineEdit()
+        form.addRow(self.tr("Plugin Name:"), self._txtName)
+        form.addRow(self.tr("Plugin Version:"), self._txtVersion)
+        vbox.addLayout(form)
+        hPath = QHBoxLayout()
+        self._txtFilePath = QLineEdit()
+        self._btnFilePath = QPushButton(QIcon(resources.IMAGES['open']), '')
+        hPath.addWidget(QLabel(self.tr("Plugin File:")))
+        hPath.addWidget(self._txtFilePath)
+        hPath.addWidget(self._btnFilePath)
+        vbox.addLayout(hPath)
+        vbox.addSpacerItem(QSpacerItem(0, 1, QSizePolicy.Expanding,
+            QSizePolicy.Expanding))
+
+        hbox = QHBoxLayout()
+        hbox.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
+        self._btnInstall = QPushButton(self.tr("Install"))
+        hbox.addWidget(self._btnInstall)
+        vbox.addLayout(hbox)
+
+        #Signals
+        self.connect(self._btnFilePath,
+            SIGNAL("clicked()"), self._load_plugin_path)
+        self.connect(self._btnInstall, SIGNAL("clicked()"),
+            self.install_plugin)
+
+    def _load_plugin_path(self):
+        path = QFileDialog.getOpenFileName(self, self.tr("Select Plugin Path"))
+        if path:
+            self._txtFilePath.setText(path)
+
+    def install_plugin(self):
+        if self._txtFilePath.text() and self._txtName.text():
+            plug = []
+            plug.append(self._txtName.text())
+            plug.append(self._txtVersion.text())
+            plug.append('')
+            plug.append('')
+            plug.append('')
+            plug.append(self._txtFilePath.text())
+            self._parent.install_plugins_manually([plug])
+
+
 class ThreadLoadPlugins(QThread):
     """
     This thread makes the HEAVY work!
@@ -461,6 +539,23 @@ class ThreadLoadPlugins(QThread):
                 if req_command[0]:
                     self._manager._requirements[p[0]] = req_command[1]
                 self.emit(SIGNAL("plugin_downloaded(PyQt_PyObject)"), p)
+            except Exception as e:
+                logger.warning("Impossible to install (%s): %s", p[0], e)
+
+    def manual_install_plugins_thread(self):
+        """
+        Install a plugin from the a file.
+        """
+        for p in self.plug:
+            try:
+                name = plugin_manager.manual_install(p[5])
+                p.append(name)
+                plugin_manager.update_local_plugin_descriptor((p, ))
+                req_command = plugin_manager.has_dependencies(p)
+                if req_command[0]:
+                    self._manager._requirements[p[0]] = req_command[1]
+                self.emit(
+                    SIGNAL("plugin_manually_installed(PyQt_PyObject)"), p)
             except Exception as e:
                 logger.warning("Impossible to install (%s): %s", p[0], e)
 
