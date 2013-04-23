@@ -20,6 +20,7 @@ from __future__ import unicode_literals
 
 import os
 import sys
+import shutil
 import copy
 import json
 import zipfile
@@ -449,6 +450,27 @@ def download_plugin(file_):
     f.write(content.read())
     f.close()
     #create the zip
+    zipFile = zipfile.ZipFile(fileName, 'r')
+    zipFile.extractall(resources.PLUGINS)
+    zipFile.close()
+    #clean up the enviroment
+    os.remove(fileName)
+    #get the name of the last installed plugin
+    plugins_installed_after = set(__get_all_plugin_descriptors())
+    #using set operations get the difference that is the new plugin
+    new_plugin = (plugins_installed_after - plugins_installed_before).pop()
+    return new_plugin
+
+
+def manual_install(file_):
+    """Copy zip file and install."""
+    global PLUGIN_EXTENSION
+    #get all the .plugin files in local filesystem
+    plugins_installed_before = set(__get_all_plugin_descriptors())
+    #copy the plugin
+    fileName = os.path.join(resources.PLUGINS, os.path.basename(file_))
+    shutil.copyfile(file_, fileName)
+    #extract the zip
     zipFile = zipfile.ZipFile(fileName, 'r')
     zipFile.extractall(resources.PLUGINS)
     zipFile.close()
