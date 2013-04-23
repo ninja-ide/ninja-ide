@@ -819,14 +819,6 @@ class ProjectTree(QTreeWidgetItem):
         self.update_paths()
         self.addedToConsole = False
 
-    def __lt__(self, otherItem):
-        column = self.treeWidget().sortColumn()
-        my_text = ('1%s' % self.text(column).lower() if
-            self.isFolder else '0%s' % self.text(column).lower())
-        other_text = ('1%s' % otherItem.text(column).lower() if
-            otherItem.isFolder else '0%s' % otherItem.text(column).lower())
-        return my_text < other_text
-
     def update_paths(self):
         for path in self.related_projects:
             completion_daemon.add_project_folder(path)
