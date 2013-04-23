@@ -391,7 +391,9 @@ class TreeProjectsWidget(QTreeWidget):
         self._load_folder(structure, path, item)
         #todo: refresh completion
         item.setExpanded(True)
-        self.emit(SIGNAL("projectPropertiesUpdated(QTreeWidgetItem)"), item)
+        if isinstance(item, ProjectTree):
+            self.emit(SIGNAL("projectPropertiesUpdated(QTreeWidgetItem)"),
+                item)
 
     def _close_project(self):
         item = self.currentItem()
@@ -647,7 +649,7 @@ class TreeProjectsWidget(QTreeWidget):
             self.setCurrentItem(item)
         self._fileWatcher.add_watch(folder)
         completion_daemon.add_project_folder(folder)
-        self.sortItems(1, Qt.AscendingOrder)
+        self.sortItems(0, Qt.AscendingOrder)
 
     def _load_folder(self, folderStructure, folder, parentItem):
         """Load the Tree Project structure recursively."""
@@ -757,12 +759,6 @@ class ProjectItem(QTreeWidgetItem):
         self.path = path
         self.isFolder = isFolder
 
-        if self.isFolder:
-            path = '1%s' % path
-        else:
-            path = '0%s' % path
-        self.setText(1, path)
-
     @property
     def isProject(self):
         #flag to check if the item is a project ALWAYS FALSE
@@ -779,6 +775,14 @@ class ProjectItem(QTreeWidgetItem):
 
     def set_item_icon(self, icon):
         self.setIcon(0, icon)
+
+    def __lt__(self, otherItem):
+        column = self.treeWidget().sortColumn()
+        my_text = ('1%s' % self.text(column).lower() if
+            self.isFolder else '0%s' % self.text(column).lower())
+        other_text = ('1%s' % otherItem.text(column).lower() if
+            otherItem.isFolder else '0%s' % otherItem.text(column).lower())
+        return my_text < other_text
 
 
 class ProjectTree(QTreeWidgetItem):
@@ -814,6 +818,14 @@ class ProjectTree(QTreeWidgetItem):
         self.related_projects = project.get('relatedProjects', [])
         self.update_paths()
         self.addedToConsole = False
+
+    def __lt__(self, otherItem):
+        column = self.treeWidget().sortColumn()
+        my_text = ('1%s' % self.text(column).lower() if
+            self.isFolder else '0%s' % self.text(column).lower())
+        other_text = ('1%s' % otherItem.text(column).lower() if
+            otherItem.isFolder else '0%s' % otherItem.text(column).lower())
+        return my_text < other_text
 
     def update_paths(self):
         for path in self.related_projects:
