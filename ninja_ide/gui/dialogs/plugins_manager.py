@@ -458,14 +458,15 @@ class ManualInstallWidget(QWidget):
             self._txtFilePath.setText(path)
 
     def install_plugin(self):
-        plug = []
-        plug.append(self._txtName.text())
-        plug.append(self._txtVersion.text())
-        plug.append('')
-        plug.append('')
-        plug.append('')
-        plug.append(self._txtFilePath.text())
-        self._parent.install_plugins_manually([plug])
+        if self._txtFilePath.text() and self._txtName.text():
+            plug = []
+            plug.append(self._txtName.text())
+            plug.append(self._txtVersion.text())
+            plug.append('')
+            plug.append('')
+            plug.append('')
+            plug.append(self._txtFilePath.text())
+            self._parent.install_plugins_manually([plug])
 
 
 class ThreadLoadPlugins(QThread):
