@@ -67,6 +67,8 @@ mapping_locations = {}
 #- MODULE ATTRIBUTES
 #! NO PYTHON FILES
 #. SYMBOLS IN THIS FILE
+#/ TABS OPENED
+#: LINE NUMBER
 FILTERS = {
     'files': '@',
     'classes': '<',
@@ -79,6 +81,7 @@ FILTERS = {
 
 
 class Locator(QObject):
+    """This class is used Go To Definition feature."""
 
     def __init__(self):
         QObject.__init__(self)
@@ -118,10 +121,11 @@ class Locator(QObject):
 
 
 class ResultItem(object):
+    """The Representation of each item found with the locator."""
 
     def __init__(self, type='', name='', path='', lineno=-1):
         if name:
-            self.type = type
+            self.type = type  # Function, Class, etc
             self.name = name
             self.path = path
             self.lineno = lineno
@@ -160,6 +164,7 @@ class LocateThread(QThread):
 
     def find(self, search, filePath, isVariable):
         self.cancel()
+        self.execute = self.go_to_definition
         self._filePath = filePath
         self._search = search
         self._isVariable = isVariable
@@ -169,10 +174,6 @@ class LocateThread(QThread):
     def find_code_location(self):
         self.cancel()
         self._cancel = False
-        function_ = r'^(\s)*def(\s)+(\w)+(\s)*\(.*'
-        class_ = r'^(\s)*class(\s)+(\w)+.*'
-        self.patFunction = re.compile(function_)
-        self.patClass = re.compile(class_)
         if not self.isRunning():
             global mapping_locations
             mapping_locations = {}
@@ -183,16 +184,15 @@ class LocateThread(QThread):
         self._file_path = path
         if not self._file_path:
             return
-        self.execute = self.locate_file_code
-        function_ = r'(\s)*def(\s)+(\w)+(\s)*\(.*'
-        class_ = r'(\s)*class(\s)+(\w)+.*'
-        self.patFunction = re.compile(function_)
-        self.patClass = re.compile(class_)
         if not self.isRunning():
+            self.execute = self.locate_file_code
             self.start()
 
     def run(self):
         self.execute()
+        self._cancel = False
+        self._search = None
+        self._isVariable = None
 
     def locate_code(self):
         explorerContainer = explorer_container.ExplorerContainer()
@@ -200,16 +200,13 @@ class LocateThread(QThread):
         projects = [p.path for p in projects_obj]
         if not projects:
             return
-        queue = Queue.Queue()
-        for project in projects:
-            queue.put(project)
-        while not self._cancel and not queue.empty():
-            current_dir = QDir(queue.get())
+        while not self._cancel and projects:
+            current_dir = QDir(projects.pop())
             #Skip not readable dirs!
             if not current_dir.isReadable():
                 continue
 
-            project_data = project = json_manager.read_ninja_project(
+            project_data = json_manager.read_ninja_project(
                 current_dir.path())
             extensions = project_data.get('supported-extensions',
                 settings.SUPPORTED_EXTENSIONS)
@@ -236,8 +233,7 @@ class LocateThread(QThread):
 
             #all files in sub_dir first apply the filters
             current_files = current_dir.entryInfoList(
-                ['*{0}'.format(x) for x in extensions],
-                file_filter)
+                ['*{0}'.format(x) for x in extensions], file_filter)
             #process all files in current dir!
             for one_file in current_files:
                 try:
@@ -323,8 +319,10 @@ class LocateThread(QThread):
     def _grep_file_locate(self, file_path, file_name):
         #type - file_name - file_path
         global mapping_locations
+        #TODO: Check if the last know state of the file is valid and load that
         exts = settings.SYNTAX.get('python')['extension']
-        if file_manager.get_file_extension(file_name) not in exts:
+        file_ext = file_manager.get_file_extension(file_path)
+        if file_ext not in exts:
             mapping_locations[file_path] = [
                 ResultItem(type=FILTERS['non-python'], name=file_name,
                     path=file_path, lineno=0)]
@@ -332,9 +330,8 @@ class LocateThread(QThread):
             mapping_locations[file_path] = [
                 ResultItem(type=FILTERS['files'], name=file_name,
                         path=file_path, lineno=0)]
-        ext = file_manager.get_file_extension(file_path)
         #obtain a symbols handler for this file extension
-        symbols_handler = settings.get_symbols_handler(ext)
+        symbols_handler = settings.get_symbols_handler(file_ext)
         if symbols_handler is None:
             return
         results = []
@@ -349,43 +346,55 @@ class LocateThread(QThread):
 
     def __parse_symbols(self, symbols, results, file_path):
         if "classes" in symbols:
-            for claz in symbols['classes']:
-                line_number = symbols['classes'][claz][0] - 1
-                members = symbols['classes'][claz][1]
-                results.append(ResultItem(type=FILTERS['classes'],
-                    name=claz, path=file_path,
-                    lineno=line_number))
-                if 'attributes' in members:
-                    for attr in members['attributes']:
-                        line_number = members['attributes'][attr] - 1
-                        results.append(ResultItem(type=FILTERS['attribs'],
-                            name=attr, path=file_path,
-                            lineno=line_number))
-                if 'functions' in members:
-                    for func in members['functions']:
-                        line_number = members['functions'][func][0] - 1
-                        results.append(ResultItem(
-                            type=FILTERS['functions'], name=func,
-                            path=file_path, lineno=line_number))
-                        self.__parse_symbols(members['functions'][func][1],
-                            results, file_path)
+            self.__parse_class(symbols, results, file_path)
         if 'attributes' in symbols:
-            for attr in symbols['attributes']:
-                line_number = symbols['attributes'][attr] - 1
-                results.append(ResultItem(type=FILTERS['attribs'],
-                    name=attr, path=file_path,
-                    lineno=line_number))
+            self.__parse_attributes(symbols, results, file_path)
         if 'functions' in symbols:
-            for func in symbols['functions']:
-                line_number = symbols['functions'][func][0] - 1
-                results.append(ResultItem(
-                    type=FILTERS['functions'], name=func,
-                    path=file_path, lineno=line_number))
-                self.__parse_symbols(symbols['functions'][func][1],
+            self.__parse_functions(symbols, results, file_path)
+
+    def __parse_class(self, symbols, results, file_path):
+        for claz in symbols['classes']:
+            line_number = symbols['classes'][claz]['lineno'] - 1
+            members = symbols['classes'][claz]['members']
+            results.append(ResultItem(type=FILTERS['classes'],
+                name=claz, path=file_path,
+                lineno=line_number))
+            if 'attributes' in members:
+                for attr in members['attributes']:
+                    line_number = members['attributes'][attr] - 1
+                    results.append(ResultItem(type=FILTERS['attribs'],
+                        name=attr, path=file_path,
+                        lineno=line_number))
+            if 'functions' in members:
+                for func in members['functions']:
+                    line_number = members['functions'][func]['lineno'] - 1
+                    results.append(ResultItem(
+                        type=FILTERS['functions'], name=func,
+                        path=file_path, lineno=line_number))
+                    self.__parse_symbols(
+                        members['functions'][func]['functions'],
                         results, file_path)
+            if 'classes' in members:
+                self.__parse_class(members, results, file_path)
+
+    def __parse_attributes(self, symbols, results, file_path):
+        for attr in symbols['attributes']:
+            line_number = symbols['attributes'][attr] - 1
+            results.append(ResultItem(type=FILTERS['attribs'],
+                name=attr, path=file_path,
+                lineno=line_number))
+
+    def __parse_functions(self, symbols, results, file_path):
+        for func in symbols['functions']:
+            line_number = symbols['functions'][func]['lineno'] - 1
+            results.append(ResultItem(
+                type=FILTERS['functions'], name=func,
+                path=file_path, lineno=line_number))
+            self.__parse_symbols(symbols['functions'][func]['functions'],
+                    results, file_path)
 
     def get_symbols_for_class(self, file_path, clazzName):
-        lines = []
+        results = []
         with open(file_path) as f:
             content = f.read()
             ext = file_manager.get_file_extension(file_path)
@@ -393,28 +402,8 @@ class LocateThread(QThread):
             symbols_handler = settings.get_symbols_handler(ext)
             symbols = symbols_handler.obtain_symbols(content,
                 filename=file_path)
-            if "classes" in symbols:
-                for claz in symbols['classes']:
-                    if claz != clazzName:
-                        continue
-                    clazz = symbols['classes'][claz]
-                    line_number = clazz[0] - 1
-                    lines.append(ResultItem(type=FILTERS['classes'], name=claz,
-                        path=file_path, lineno=line_number))
-                    if 'attributes' in clazz[1]:
-                        for attr in clazz[1]['attributes']:
-                            line_number = clazz[1]['attributes'][attr] - 1
-                            lines.append(ResultItem(
-                                type=FILTERS['attribs'], name=attr,
-                                path=file_path, lineno=line_number))
-                    if 'functions' in clazz[1]:
-                        for func in clazz[1]['functions']:
-                            line_number = clazz[1]['functions'][func][0] - 1
-                            lines.append(ResultItem(type=FILTERS['functions'],
-                                name=func, path=file_path,
-                                lineno=line_number))
-                    return lines
-            return []
+            self.__parse_symbols(symbols, results, file_path)
+        return results
 
     def cancel(self):
         self._cancel = True
