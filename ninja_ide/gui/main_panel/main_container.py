@@ -545,13 +545,13 @@ class __MainContainer(QSplitter):
         # Add File Watcher if needed
         opened_projects = self._parent.explorer.get_opened_projects()
         opened_projects = [p.path for p in opened_projects]
-        alone = not_start
-        for folder in opened_projects:
-            if file_manager.belongs_to_folder(folder, filename):
-                alone = False
-        if alone or sys.platform == 'darwin':
-            self._file_watcher.add_file_watch(filename)
-            self._watched_simple_files.append(filename)
+        #alone = not_start
+        #for folder in opened_projects:
+            #if file_manager.belongs_to_folder(folder, filename):
+                #alone = False
+        #if alone or sys.platform == 'darwin':
+            #self._file_watcher.add_file_watch(filename)
+            #self._watched_simple_files.append(filename)
 
     def remove_standalone_watcher(self, filename):
         if filename in self._watched_simple_files:

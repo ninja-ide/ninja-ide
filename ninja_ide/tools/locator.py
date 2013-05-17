@@ -524,7 +524,7 @@ class LocateCompleter(QLineEdit):
             self.set_prefix)
 
         self.connect(self.frame.listWidget,
-        SIGNAL("itemPressed(QListWidgetItem*)"), self._go_to_location)
+            SIGNAL("itemPressed(QListWidgetItem*)"), self._go_to_location)
 
     def set_prefix(self, prefix):
         """Set the prefix for the completer."""
