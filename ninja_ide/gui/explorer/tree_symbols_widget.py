@@ -213,29 +213,29 @@ class TreeSymbolsWidget(QTreeWidget):
             functionsItem.setExpanded(self._get_expand(functionsItem))
             for func in sorted(symbols['functions']):
                 item = ItemTree(functionsItem, [func],
-                    lineno=symbols['functions'][func][0])
+                    lineno=symbols['functions'][func]['lineno'])
                 tooltip = self.create_tooltip(
-                    func, symbols['functions'][func][0])
+                    func, symbols['functions'][func]['lineno'])
                 item.isMethod = True
                 item.setIcon(0, QIcon(resources.IMAGES['function']))
                 item.setToolTip(0, tooltip)
                 item.setExpanded(self._get_expand(item))
-                self.update_symbols_tree(symbols['functions'][func][1],
-                    parent=item)
+                self.update_symbols_tree(
+                    symbols['functions'][func]['functions'], parent=item)
         if 'classes' in symbols and symbols['classes']:
             classItem = ItemTree(parent, [self.tr("Classes")])
             classItem.isClickable = False
             classItem.isClass = True
             classItem.setExpanded(self._get_expand(classItem))
             for claz in sorted(symbols['classes']):
-                line_number = symbols['classes'][claz][0]
+                line_number = symbols['classes'][claz]['lineno']
                 item = ItemTree(classItem, [claz], lineno=line_number)
                 item.isClass = True
                 tooltip = self.create_tooltip(claz, line_number)
                 item.setToolTip(0, tooltip)
                 item.setIcon(0, QIcon(resources.IMAGES['class']))
                 item.setExpanded(self._get_expand(item))
-                self.update_symbols_tree(symbols['classes'][claz][1],
+                self.update_symbols_tree(symbols['classes'][claz]['members'],
                     parent=item)
 
     def _go_to_definition(self, item):
