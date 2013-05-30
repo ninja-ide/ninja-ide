@@ -194,9 +194,6 @@ class TabWidget(QTabWidget):
                 QMessageBox.Yes, QMessageBox.No)
             if val == QMessageBox.Yes:
                 self.emit(SIGNAL("reloadFile(QWidget)"), editorWidget)
-            else:
-                #dont ask again while the current file is open
-                editorWidget.ask_if_externally_modified = False
         elif change == DELETED:
                 val = QMessageBox.information(self,
                             'The file has been deleted from disk!',

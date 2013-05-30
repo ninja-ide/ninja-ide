@@ -41,7 +41,7 @@ from ninja_ide.gui.editor import helpers
 
 class SidebarWidget(QWidget):
 
-    def __init__(self, editor):
+    def __init__(self, editor, filename):
         QWidget.__init__(self, editor)
         self.edit = editor
         self.highest_line = 0
@@ -59,6 +59,11 @@ class SidebarWidget(QWidget):
         self._pep8Lines = []
         self._errorsLines = []
         self._migrationLines = []
+
+        if filename in settings.BREAKPOINTS:
+            self._breakpoints = settings.BREAKPOINTS[filename]
+        if filename in settings.BOOKMARKS:
+            self._bookmarks = settings.BOOKMARKS[filename]
 
     def update_area(self):
         maxLine = math.ceil(math.log10(self.edit.blockCount()))

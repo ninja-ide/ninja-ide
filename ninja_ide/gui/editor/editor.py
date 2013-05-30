@@ -56,9 +56,6 @@ from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import syntax_highlighter
 from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.editor import minimap
-from ninja_ide.gui.editor import pep8_checker
-from ninja_ide.gui.editor import errors_checker
-from ninja_ide.gui.editor import migration_2to3
 from ninja_ide.gui.editor import sidebar_widget
 from ninja_ide.gui.editor import python_syntax
 
@@ -101,21 +98,15 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.set_flags()
         self.__lines_count = None
 
-        self._sidebarWidget = sidebar_widget.SidebarWidget(self)
-        if filename in settings.BREAKPOINTS:
-            self._sidebarWidget._breakpoints = settings.BREAKPOINTS[filename]
-        if filename in settings.BOOKMARKS:
-            self._sidebarWidget._bookmarks = settings.BOOKMARKS[filename]
-        self.pep8 = pep8_checker.Pep8Checker(self)
-        if project_obj is not None:
-            additional_builtins = project_obj.additional_builtins
-        else:
-            additional_builtins = []
-        self.errors = errors_checker.ErrorsChecker(self, additional_builtins)
-        self.migration = migration_2to3.MigrationTo3(self)
+        self._sidebarWidget = sidebar_widget.SidebarWidget(self, filename)
+        #if project_obj is not None:
+            #additional_builtins = project_obj.additional_builtins
+        #else:
+            #additional_builtins = []
+        #self.pep8 = pep8_checker.Pep8Checker(self)
+        #self.errors = errors_checker.ErrorsChecker(self, additional_builtins)
+        #self.migration = migration_2to3.MigrationTo3(self)
 
-        self.textModified = False
-        self.newDocument = True
         self.highlighter = None
         self.syncDocErrorsSignal = False
         self._selected_word = ''
@@ -124,7 +115,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
         #For Highlighting in document
         self.extraSelections = []
-        self.wordSelection = []
         self._patIsWord = re.compile('\w+')
         #Brace matching
         self._braces = None
@@ -134,7 +124,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #Indentation
         self.set_project(project_obj)
         #Flag to dont bug the user when answer *the modification dialog*
-        self.ask_if_externally_modified = False
         self.just_saved = False
         #Dict functions for KeyPress
         self.preKeyPress = {
@@ -158,31 +147,24 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             Qt.Key_Apostrophe: self.__complete_quotes,
             Qt.Key_QuoteDbl: self.__complete_quotes}
 
-        self._line_colors = {
-            'current-line': QColor(
-                            resources.CUSTOM_SCHEME.get('current-line',
-                            resources.COLOR_SCHEME['current-line'])),
-            'error-line': QColor(
-                            resources.CUSTOM_SCHEME.get('error-underline',
-                            resources.COLOR_SCHEME['error-underline'])),
-            'pep8-line': QColor(
-                            resources.CUSTOM_SCHEME.get('pep8-underline',
-                            resources.COLOR_SCHEME['pep8-underline'])),
-            'migration-line': QColor(
-                            resources.CUSTOM_SCHEME.get('migration-underline',
-                            resources.COLOR_SCHEME['migration-underline'])),
-        }
+        self._current_line_color = QColor(
+            resources.CUSTOM_SCHEME.get('current-line',
+            resources.COLOR_SCHEME['current-line']))
+        self._error_line_color = QColor(
+            resources.CUSTOM_SCHEME.get('error-underline',
+            resources.COLOR_SCHEME['error-underline']))
+        self._pep8_line_color = QColor(
+            resources.CUSTOM_SCHEME.get('pep8-underline',
+            resources.COLOR_SCHEME['pep8-underline']))
+        self._migration_line_color = QColor(
+            resources.CUSTOM_SCHEME.get('migration-underline',
+            resources.COLOR_SCHEME['migration-underline']))
 
         self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
             self._sidebarWidget.update_area)
         self.connect(self, SIGNAL("undoAvailable(bool)"), self._file_saved)
         self.connect(self, SIGNAL("cursorPositionChanged()"),
             self.highlight_current_line)
-        self.connect(self.pep8, SIGNAL("finished()"), self.show_pep8_errors)
-        self.connect(self.migration, SIGNAL("finished()"),
-            self.show_migration_info)
-        self.connect(self.errors, SIGNAL("finished()"),
-            self.show_static_errors)
         self.connect(self, SIGNAL("blockCountChanged(int)"),
             self._update_file_metadata)
 
@@ -1180,22 +1162,22 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             block = self.textCursor()
             selection = QTextEdit.ExtraSelection()
             if block.blockNumber() in self.errors.errorsSummary:
-                lineColor = self._line_colors['error-line']
+                lineColor = self._error_line_color
                 lineColor.setAlpha(resources.CUSTOM_SCHEME.get(
                     "error-background-opacity",
                     resources.COLOR_SCHEME["error-background-opacity"]))
             elif block.blockNumber() in self.pep8.pep8checks:
-                lineColor = self._line_colors['pep8-line']
+                lineColor = self._pep8_line_color
                 lineColor.setAlpha(resources.CUSTOM_SCHEME.get(
                     "error-background-opacity",
                     resources.COLOR_SCHEME["error-background-opacity"]))
             elif block.blockNumber() in self.migration.migration_data:
-                lineColor = self._line_colors['migration-line']
+                lineColor = self._migration_line_color
                 lineColor.setAlpha(resources.CUSTOM_SCHEME.get(
                     "error-background-opacity",
                     resources.COLOR_SCHEME["error-background-opacity"]))
             else:
-                lineColor = self._line_colors['current-line']
+                lineColor = self._current_line_color
                 lineColor.setAlpha(resources.CUSTOM_SCHEME.get(
                     "current-line-opacity",
                     resources.COLOR_SCHEME["current-line-opacity"]))
