@@ -13,7 +13,10 @@ class NEditable(QObject):
         self.text_modified = False
         self.new_document = True
 
-        self.registered_checkers = checkers.get_checkers_for()
+        self.include_checkers()
+
+    def include_checkers(self, lang='python'):
+        self.registered_checkers = checkers.get_checkers_for(lang)
         for i, values in self.registered_checkers:
             Checker, color = values
             check = Checker(self)
