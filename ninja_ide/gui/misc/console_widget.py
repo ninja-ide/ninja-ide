@@ -496,7 +496,7 @@ class ConsoleWidget(QPlainTextEdit):
         if self._history:
             self.history_index = max(0, self.history_index - 1)
             return self._history[self.history_index]
-        return None
+        return ''
 
     def _get_next_history_entry(self):
         if self._history:
@@ -506,7 +506,7 @@ class ConsoleWidget(QPlainTextEdit):
             if self.history_index == hist_len:
                 self.history_index += 1
             return self._history[index]
-        return None
+        return ''
 
     def restyle(self):
         self.apply_editor_style()
