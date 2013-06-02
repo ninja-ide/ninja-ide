@@ -25,6 +25,7 @@ from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QTextFormat
 from PyQt4.QtGui import QTextEdit
 from PyQt4.QtGui import QColor
+from PyQt4.QtGui import QFont
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QProcess
 from PyQt4.QtCore import QRegExp
@@ -33,11 +34,20 @@ from PyQt4.QtCore import SIGNAL
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.tools import console
-from ninja_ide.gui.editor import highlighter
+from ninja_ide.gui.editor import syntax_highlighter
+from ninja_ide.gui.editor import python_syntax
 from ninja_ide.tools.completion import completer
 from ninja_ide.tools.completion import completer_widget
 
 from ninja_ide.tools.logger import NinjaLogger
+
+
+try:
+    # For Python2
+    str = unicode  # lint:ok
+except NameError:
+    # We are in Python3
+    pass
 
 logger = NinjaLogger('ninja_ide.gui.misc.console_widget')
 
@@ -61,6 +71,7 @@ class ConsoleWidget(QPlainTextEdit):
         self.prompt = '>>> '
         self._console = console.Console()
         self._history = []
+        self._current_command = ''
         self._braces = None
         self.imports = ['import __builtin__']
         self.patFrom = re.compile('^(\\s)*from ((\\w)+(\\.)*(\\w)*)+ import')
@@ -69,11 +80,30 @@ class ConsoleWidget(QPlainTextEdit):
         self.completer = completer_widget.CompleterWidget(self)
         self.okPrefix = QRegExp('[.)}:,\]]')
 
+        self._pre_key_press = {
+            Qt.Key_Enter: self._enter_pressed,
+            Qt.Key_Return: self._enter_pressed,
+            Qt.Key_Tab: self._tab_pressed,
+            Qt.Key_Home: self._home_pressed,
+            Qt.Key_PageUp: lambda x: True,
+            Qt.Key_PageDown: lambda x: True,
+            Qt.Key_Left: self._left_pressed,
+            Qt.Key_Up: self._up_pressed,
+            Qt.Key_Down: self._down_pressed,
+            Qt.Key_Backspace: self._backspace,
+        }
+
         #Create Context Menu
         self._create_context_menu()
 
-        self._highlighter = highlighter.Highlighter(self.document(), 'python',
-            resources.CUSTOM_SCHEME)
+        #Set Font
+        self.set_font()
+        #Create Highlighter
+        parts_scanner, code_scanner, formats = \
+            syntax_highlighter.load_syntax(python_syntax.syntax)
+        self.highlighter = syntax_highlighter.SyntaxHighlighter(
+            self.document(),
+            parts_scanner, code_scanner, formats)
 
         self.connect(self, SIGNAL("cursorPositionChanged()"),
             self.highlight_current_line)
@@ -97,6 +127,7 @@ class ConsoleWidget(QPlainTextEdit):
         add_system_path = ('import sys; '
                            'sys.path = list(set(sys.path + %s))' % paths)
         self._write(add_system_path)
+        self._proc.deleteLater()
 
     def process_error(self, error):
         message = ''
@@ -105,6 +136,10 @@ class ConsoleWidget(QPlainTextEdit):
         else:
             message = 'Error during execution, QProcess error: %d' % error
         logger.warning('Could not get system path, error: %r' % message)
+
+    def set_font(self, family=settings.FONT_FAMILY, size=settings.FONT_SIZE):
+        font = QFont(family, size)
+        self.document().setDefaultFont(font)
 
     def _create_context_menu(self):
         self.popup_menu = self.createStandardContextMenu()
@@ -155,6 +190,69 @@ class ConsoleWidget(QPlainTextEdit):
         for i in range(len(self.prompt) + position):
             self.moveCursor(QTextCursor.Right, mode)
 
+    def _check_event_on_selection(self, event):
+        if event.text():
+            cursor = self.textCursor()
+            begin_last_block = (self.document().lastBlock().position() +
+                len(self.prompt))
+            if cursor.hasSelection() and \
+               ((cursor.selectionEnd() < begin_last_block) or
+               (cursor.selectionStart() < begin_last_block)):
+                self.moveCursor(QTextCursor.End)
+
+    def _enter_pressed(self, event):
+        self._write_command()
+        return True
+
+    def _tab_pressed(self, event):
+        self.textCursor().insertText(' ' * settings.INDENT)
+        return True
+
+    def _home_pressed(self, event):
+        if event.modifiers() == Qt.ShiftModifier:
+            self.setCursorPosition(0, QTextCursor.KeepAnchor)
+        else:
+            self.setCursorPosition(0)
+        return True
+
+    def _left_pressed(self, event):
+        return self._get_cursor_position() == 0
+
+    def _up_pressed(self, event):
+        if self.history_index == len(self._history):
+            command = self.document().lastBlock().text()[len(self.prompt):]
+            self._current_command = command
+        self._set_command(self._get_prev_history_entry())
+        return True
+
+    def _down_pressed(self, event):
+        if len(self._history) == self.history_index:
+            command = self._current_command
+        else:
+            command = self._get_next_history_entry()
+        self._set_command(command)
+        return True
+
+    def _backspace(self, event):
+        cursor = self.textCursor()
+        selected_text = cursor.selectedText()
+        cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
+        text = cursor.selectedText()[len(self.prompt):]
+        if (len(text) % settings.INDENT == 0) and text.isspace():
+            cursor.movePosition(QTextCursor.StartOfLine)
+            cursor.movePosition(QTextCursor.Right, QTextCursor.MoveAnchor,
+                settings.INDENT)
+            cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
+                settings.INDENT)
+            cursor.removeSelectedText()
+            return True
+        elif (selected_text ==
+             self.document().lastBlock().text()[len(self.prompt):]):
+            self.textCursor().removeSelectedText()
+            return True
+
+        return self._get_cursor_position() == 0
+
     def keyPressEvent(self, event):
         if self.completer.popup().isVisible():
             if event.key() in (Qt.Key_Enter, Qt.Key_Return, Qt.Key_Tab):
@@ -163,64 +261,12 @@ class ConsoleWidget(QPlainTextEdit):
                 return
             elif event.key in (Qt.Key_Space, Qt.Key_Escape, Qt.Key_Backtab):
                 self.completer.popup().hide()
-        if event.key() in (Qt.Key_Enter, Qt.Key_Return):
-            self._write_command()
-            return
-        if self._get_cursor_position() < 0:
-            self.setCursorPosition(0)
-        if event.key() == Qt.Key_Tab:
-            self.textCursor().insertText(' ' * settings.INDENT)
-            return
-        if event.key() == Qt.Key_Home:
-            if event.modifiers() == Qt.ShiftModifier:
-                self.setCursorPosition(0, QTextCursor.KeepAnchor)
-            else:
-                self.setCursorPosition(0)
-            return
-        if event.key() == Qt.Key_PageUp:
-            return
-        elif event.key() == Qt.Key_Left and self._get_cursor_position() == 0:
-            return
-        elif event.key() == Qt.Key_Up:
-            self._set_command(self._get_prev_history_entry())
-            return
-        elif event.key() == Qt.Key_Down:
-            self._set_command(self._get_next_history_entry())
+
+        self._check_event_on_selection(event)
+        if self._pre_key_press.get(event.key(), lambda x: False)(event):
             return
 
-        if event.key() == Qt.Key_Tab:
-            if self.textCursor().hasSelection():
-                self.indent_more()
-                return
-            else:
-                self.textCursor().insertText(' ' * settings.INDENT)
-                return
-        elif event.key() == Qt.Key_Backspace:
-            if self.textCursor().hasSelection():
-                QPlainTextEdit.keyPressEvent(self, event)
-                return
-            elif self._get_cursor_position() == 0:
-                return
-            cursor = self.textCursor()
-            cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor,
-                settings.INDENT)
-            text = cursor.selection().toPlainText()
-            if text == ' ' * settings.INDENT:
-                cursor.removeSelectedText()
-                return True
-        elif event.key() == Qt.Key_Home:
-            if event.modifiers() == Qt.ShiftModifier:
-                move = QTextCursor.KeepAnchor
-            else:
-                move = QTextCursor.MoveAnchor
-            if self.textCursor().atBlockStart():
-                self.moveCursor(QTextCursor.WordRight, move)
-                return
-        elif event.key() in (Qt.Key_Enter, Qt.Key_Return) and \
-          event.modifiers() == Qt.ShiftModifier:
-            return
-        elif event.text() in \
-        (set(BRACES.values()) - set(["'", '"'])):
+        if event.text() in (set(BRACES.values()) - set(["'", '"'])):
             cursor = self.textCursor()
             cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
             brace = cursor.selection().toPlainText()
@@ -231,7 +277,6 @@ class ConsoleWidget(QPlainTextEdit):
               braceClose == event.text():
                 self.moveCursor(QTextCursor.Right)
                 return
-        selection = self.textCursor().selectedText()
 
         QPlainTextEdit.keyPressEvent(self, event)
 
@@ -242,17 +287,14 @@ class ConsoleWidget(QPlainTextEdit):
             self.textCursor().insertText(
                 BRACES[event.text()])
             self.moveCursor(QTextCursor.Left)
-            self.textCursor().insertText(selection)
+
         completionPrefix = self._text_under_cursor()
         if event.key() == Qt.Key_Period or (event.key() == Qt.Key_Space and
-        event.modifiers() == Qt.ControlModifier):
+           event.modifiers() == Qt.ControlModifier):
             self.completer.setCompletionPrefix(completionPrefix)
             self._resolve_completion_argument()
-        elif event.key() == Qt.Key_Space and \
-        self.completer.popup().isVisible():
-            self.completer.popup().hide()
         if self.completer.popup().isVisible() and \
-        completionPrefix != self.completer.completionPrefix():
+           completionPrefix != self.completer.completionPrefix():
             self.completer.setCompletionPrefix(completionPrefix)
             self.completer.popup().setCurrentIndex(
                 self.completer.completionModel().index(0, 0))
@@ -285,21 +327,16 @@ class ConsoleWidget(QPlainTextEdit):
             self.completer.popup().hide()
 
     def highlight_current_line(self):
-        self.emit(SIGNAL("cursorPositionChange(int, int)"),
-            self.textCursor().blockNumber() + 1,
-            self.textCursor().columnNumber())
         self.extraSelections = []
-
-        if not self.isReadOnly():
-            selection = QTextEdit.ExtraSelection()
-            lineColor = QColor(resources.CUSTOM_SCHEME.get('current-line',
-                        resources.COLOR_SCHEME['current-line']))
-            lineColor.setAlpha(20)
-            selection.format.setBackground(lineColor)
-            selection.format.setProperty(QTextFormat.FullWidthSelection, True)
-            selection.cursor = self.textCursor()
-            selection.cursor.clearSelection()
-            self.extraSelections.append(selection)
+        selection = QTextEdit.ExtraSelection()
+        lineColor = QColor(resources.CUSTOM_SCHEME.get('current-line',
+                    resources.COLOR_SCHEME['current-line']))
+        lineColor.setAlpha(20)
+        selection.format.setBackground(lineColor)
+        selection.format.setProperty(QTextFormat.FullWidthSelection, True)
+        selection.cursor = self.textCursor()
+        selection.cursor.clearSelection()
+        self.extraSelections.append(selection)
         self.setExtraSelections(self.extraSelections)
 
         if self._braces is not None:
@@ -363,8 +400,8 @@ class ConsoleWidget(QPlainTextEdit):
     def get_selection(self, posStart, posEnd):
         cursor = self.textCursor()
         cursor.setPosition(posStart)
-        cursor2 = self.textCursor()
         if posEnd == QTextCursor.End:
+            cursor2 = self.textCursor()
             cursor2.movePosition(posEnd)
             cursor.setPosition(cursor2.position(), QTextCursor.KeepAnchor)
         else:
@@ -418,35 +455,28 @@ class ConsoleWidget(QPlainTextEdit):
         return self.textCursor().columnNumber() - len(self.prompt)
 
     def _write_command(self):
-        command = self.document().findBlockByLineNumber(
-                    self.document().lineCount() - 1).text()
+        command = self.document().lastBlock().text()
         #remove the prompt from the QString
         command = command[len(self.prompt):]
         self._add_history(command)
         incomplete = self._write(command)
-        if self.patFrom.match(command) or \
-        self.patImport.match(command):
+        if self.patFrom.match(command) or self.patImport.match(command):
             self.imports += [command]
         if not incomplete:
             output = self._read()
             if output is not None:
-                if output.__class__.__name__ == 'unicode':
+                if isinstance(output, str):
                     output = output.encode('utf8')
                 self.appendPlainText(output.decode('utf8'))
         self._add_prompt(incomplete)
 
     def _set_command(self, command):
         self.moveCursor(QTextCursor.End)
-        self.moveCursor(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
-        for i in range(len(self.prompt)):
-            self.moveCursor(QTextCursor.Right, QTextCursor.KeepAnchor)
-        self.textCursor().removeSelectedText()
-        self.textCursor().insertText(command)
-        self.moveCursor(QTextCursor.End)
-
-    def mousePressEvent(self, event):
-        #to avoid selection
-        event.ignore()
+        cursor = self.textCursor()
+        cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
+        cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
+            len(self.prompt))
+        cursor.insertText(command)
 
     def contextMenuEvent(self, event):
         self.popup_menu.exec_(event.globalPos())
@@ -466,19 +496,25 @@ class ConsoleWidget(QPlainTextEdit):
         if self._history:
             self.history_index = max(0, self.history_index - 1)
             return self._history[self.history_index]
-        return ''
+        return None
 
     def _get_next_history_entry(self):
         if self._history:
-            hist_len = len(self._history)
+            hist_len = len(self._history) - 1
             self.history_index = min(hist_len, self.history_index + 1)
-            if self.history_index < hist_len:
-                return self._history[self.history_index]
-        return ''
+            index = self.history_index
+            if self.history_index == hist_len:
+                self.history_index += 1
+            return self._history[index]
+        return None
 
     def restyle(self):
         self.apply_editor_style()
-        self._highlighter.apply_highlight('python', resources.CUSTOM_SCHEME)
+        parts_scanner, code_scanner, formats = \
+            syntax_highlighter.load_syntax(python_syntax.syntax)
+        self.highlighter = syntax_highlighter.SyntaxHighlighter(
+            self.document(),
+            parts_scanner, code_scanner, formats)
 
     def apply_editor_style(self):
         css = 'QPlainTextEdit {color: %s; background-color: %s;' \
@@ -492,6 +528,7 @@ class ConsoleWidget(QPlainTextEdit):
             resources.CUSTOM_SCHEME.get('editor-selection-background',
                 resources.COLOR_SCHEME['editor-selection-background']))
         self.setStyleSheet(css)
+        self.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
 
     def load_project_into_console(self, projectFolder):
         """Load the projectFolder received into the sys.path."""
@@ -501,4 +538,4 @@ class ConsoleWidget(QPlainTextEdit):
         """Unload the project from the system path."""
         self._console.push("import sys; "
             "sys.path = [path for path in sys.path "
-            "if path != '/home/gato/Desktop']")
+            "if path != '%s']" % projectFolder)
