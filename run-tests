@@ -1,2 +1,9 @@
+FOLDER=$PWD
+
+if [ $# -eq 1 ]
+  then
+    FOLDER=$PWD/$1
+fi
+
 clear
-python -m unittest discover -v
+python -m unittest discover -v -s $FOLDER
