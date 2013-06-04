@@ -143,3 +143,25 @@ class ConsoleWidgetTestCase(BaseTest):
         self.console_widget.selectAll()
         text = self.console_widget.textCursor().selectedText()
         self.assertEqual(text, self.console_widget.prompt)
+
+    def test_copy_history(self):
+        lines = ("asd", "qwe", "rty")
+        for line in lines:
+            self.console_widget.textCursor().insertText(line)
+            self.console_widget._write_command()
+        self.console_widget._copy_history()
+        paste = self._app.clipboard().text()
+        self.assertEqual(paste, '\n'.join(lines))
+
+    def test_copy_console_content(self):
+        self.console_widget._write_command()
+        self.console_widget._write_command()
+        lines = ("print 'ninja'", "q = 3")
+        for line in lines:
+            self.console_widget.textCursor().insertText(line)
+            self.console_widget._write_command()
+        self.console_widget._copy_console_content()
+        paste = self._app.clipboard().text()
+        content = [">>> ", ">>> "] + [">>> " + line for line in lines]
+        content.insert(-1, 'ninja')
+        self.assertEqual(paste, '\n'.join(content + ['>>> ']))
