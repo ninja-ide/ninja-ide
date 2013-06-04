@@ -26,7 +26,9 @@ from PyQt4.QtGui import QTextFormat
 from PyQt4.QtGui import QTextEdit
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QFont
+from PyQt4.QtGui import QKeyEvent
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import QEvent
 from PyQt4.QtCore import QProcess
 from PyQt4.QtCore import QRegExp
 from PyQt4.QtCore import SIGNAL
@@ -163,17 +165,27 @@ class ConsoleWidget(QPlainTextEdit):
         self.popup_menu.addAction(actionCopyHistory)
         self.popup_menu.addAction(actionCopyConsoleContent)
 
-        self.connect(actionCut, SIGNAL("triggered()"), self.cut)
+        self.connect(actionCut, SIGNAL("triggered()"), self._cut)
         self.connect(actionCopy, SIGNAL("triggered()"), self.copy)
-        self.connect(actionPaste, SIGNAL("triggered()"), self.paste)
+        self.connect(actionPaste, SIGNAL("triggered()"), self._paste)
         self.connect(actionClean, SIGNAL("triggered()"), self._clean_console)
         self.connect(actionCopyHistory, SIGNAL("triggered()"),
             self._copy_history)
         self.connect(actionCopyConsoleContent, SIGNAL("triggered()"),
             self._copy_console_content)
 
+    def _cut(self):
+        event = QKeyEvent(QEvent.KeyPress, Qt.Key_X, Qt.ControlModifier, "x")
+        self.keyPressEvent(event)
+
+    def _paste(self):
+        if self.textCursor().hasSelection():
+            self.moveCursor(QTextCursor.End)
+        self.paste()
+
     def _clean_console(self):
-        self.setPlainText(self.prompt)
+        self.clear()
+        self._add_prompt()
 
     def _copy_history(self):
         historyContent = '\n'.join(self._history)
@@ -443,7 +455,7 @@ class ConsoleWidget(QPlainTextEdit):
             else:
                 return
 
-    def _add_prompt(self, incomplete):
+    def _add_prompt(self, incomplete=False):
         if incomplete:
             prompt = '.' * 3 + ' '
         else:
