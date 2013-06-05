@@ -23,6 +23,7 @@ import ninja_ide  # lint:ok
 
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QTextCursor
+from PyQt4.QtGui import QKeyEvent
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QEvent
 
@@ -165,3 +166,164 @@ class ConsoleWidgetTestCase(BaseTest):
         content = [">>> ", ">>> "] + [">>> " + line for line in lines]
         content.insert(-1, 'ninja')
         self.assertEqual(paste, '\n'.join(content + ['>>> ']))
+
+    def test_check_event_on_selection_all_selected(self):
+        self.console_widget._write_command()
+        self.console_widget._write_command()
+        self.console_widget.textCursor().insertText('a = 5')
+        self.console_widget.selectAll()
+        text = self.console_widget.textCursor().selectedText() + 'a'
+        self.assertTrue(self.console_widget.textCursor().hasSelection())
+        event = QKeyEvent(QEvent.KeyPress, Qt.Key_A, Qt.NoModifier, "a")
+        self.console_widget.keyPressEvent(event)
+        self.assertFalse(self.console_widget.textCursor().hasSelection())
+        self.console_widget.selectAll()
+        text_after = self.console_widget.textCursor().selectedText()
+        self.assertEqual(text, text_after)
+
+    def test_check_event_on_selection_all_selected_no_text(self):
+        self.console_widget._write_command()
+        self.console_widget._write_command()
+        self.console_widget.textCursor().insertText('a = 5')
+        self.console_widget.selectAll()
+        text = self.console_widget.textCursor().selectedText()
+        self.assertTrue(self.console_widget.textCursor().hasSelection())
+        event = QKeyEvent(QEvent.KeyPress, Qt.Key_A, Qt.NoModifier, "")
+        self.console_widget.keyPressEvent(event)
+        self.assertTrue(self.console_widget.textCursor().hasSelection())
+        self.console_widget.selectAll()
+        text_after = self.console_widget.textCursor().selectedText()
+        self.assertEqual(text, text_after)
+
+    def test_check_event_on_selection_last_block_selected(self):
+        self.console_widget._write_command()
+        self.console_widget._write_command()
+        self.console_widget.textCursor().insertText('a = 5')
+        self.console_widget.selectAll()
+        text = self.console_widget.textCursor().selectedText()[:-2] + '2'
+        self.console_widget.moveCursor(QTextCursor.End)
+        self.console_widget.setCursorPosition(3, QTextCursor.KeepAnchor)
+        self.assertTrue(self.console_widget.textCursor().hasSelection())
+        event = QKeyEvent(QEvent.KeyPress, Qt.Key_2, Qt.NoModifier, "2")
+        self.console_widget.keyPressEvent(event)
+        self.assertFalse(self.console_widget.textCursor().hasSelection())
+        self.console_widget.selectAll()
+        text_after = self.console_widget.textCursor().selectedText()
+        self.assertEqual(text, text_after)
+
+    def test_tab_pressed(self):
+        self.console_widget.selectAll()
+        text = self.console_widget.textCursor().selectedText()
+        self.console_widget.moveCursor(QTextCursor.End)
+        self.assertEqual(text, self.console_widget.prompt)
+        self.console_widget._tab_pressed(None)
+        self.console_widget.selectAll()
+        text = self.console_widget.textCursor().selectedText()
+        self.assertEqual(text,
+            self.console_widget.prompt + ' ' * console_widget.settings.INDENT)
+
+    def test_home_pressed(self):
+        self.console_widget._write_command()
+        self.console_widget._write_command()
+        self.console_widget.textCursor().insertText('a = 5')
+        event = QKeyEvent(QEvent.KeyPress, Qt.Key_Home, Qt.NoModifier, "")
+        self.console_widget._home_pressed(event)
+        self.assertEqual(self.console_widget.textCursor().position(),
+            self.console_widget.document().lastBlock().position() +
+            len(self.console_widget.prompt))
+
+    def test_home_pressed_with_shift(self):
+        self.console_widget._write_command()
+        self.console_widget._write_command()
+        self.console_widget.textCursor().insertText('a = 5')
+        event = QKeyEvent(QEvent.KeyPress, Qt.Key_Home, Qt.ShiftModifier, "")
+        self.console_widget._home_pressed(event)
+        text = self.console_widget.textCursor().selectedText()
+        self.assertEqual(text, "a = 5")
+
+    def test_enter_pressed(self):
+        data = []
+
+        self.patch(self.console_widget, "_write_command",
+            lambda: data.append(True))
+        event = QKeyEvent(QEvent.KeyPress, Qt.Key_Enter, Qt.NoModifier, "")
+        self.console_widget.keyPressEvent(event)
+        self.assertEqual(data, [True])
+        event = QKeyEvent(QEvent.KeyPress, Qt.Key_Return, Qt.NoModifier, "")
+        self.console_widget.keyPressEvent(event)
+        self.assertEqual(data, [True, True])
+
+    def test_left_pressed(self):
+        self.console_widget._write_command()
+        self.console_widget.textCursor().insertText('a = 5')
+        val = self.console_widget._left_pressed(None)
+        self.assertFalse(val)
+        self.console_widget.setCursorPosition(0)
+        val = self.console_widget._left_pressed(None)
+        self.assertTrue(val)
+
+    def test_backspace(self):
+        self.console_widget._write_command()
+        self.console_widget._write_command()
+        self.console_widget.textCursor().insertText('a = 5')
+        self.console_widget.selectAll()
+        text = self.console_widget.textCursor().selectedText()[:-1]
+        self.console_widget.moveCursor(QTextCursor.End)
+        event = QKeyEvent(QEvent.KeyPress, Qt.Key_Backspace, Qt.NoModifier, "")
+        self.console_widget.keyPressEvent(event)
+        self.console_widget.selectAll()
+        text_after = self.console_widget.textCursor().selectedText()
+        self.assertEqual(text, text_after)
+
+    def test_backspace_indent(self):
+        self.console_widget._write_command()
+        self.console_widget._write_command()
+        self.console_widget.textCursor().insertText(
+            ' ' * console_widget.settings.INDENT * 2)
+        self.console_widget.selectAll()
+        text = self.console_widget.textCursor().selectedText()[:
+            -console_widget.settings.INDENT]
+        self.console_widget.moveCursor(QTextCursor.End)
+        event = QKeyEvent(QEvent.KeyPress, Qt.Key_Backspace, Qt.NoModifier, "")
+        self.console_widget.keyPressEvent(event)
+        self.console_widget.selectAll()
+        text_after = self.console_widget.textCursor().selectedText()
+        self.assertEqual(text, text_after)
+
+    def test_backspace_remove_selection(self):
+        self.console_widget._write_command()
+        self.console_widget._write_command()
+        self.console_widget.textCursor().insertText("a = 5")
+        self.console_widget.selectAll()
+        text = self.console_widget.textCursor().selectedText()[:-2]
+        self.console_widget.moveCursor(QTextCursor.End)
+        self.console_widget.setCursorPosition(3, QTextCursor.KeepAnchor)
+        event = QKeyEvent(QEvent.KeyPress, Qt.Key_Backspace, Qt.NoModifier, "")
+        self.console_widget.keyPressEvent(event)
+        self.console_widget.selectAll()
+        text_after = self.console_widget.textCursor().selectedText()
+        self.assertEqual(text, text_after)
+
+    def test_navigate_history(self):
+        lines = ("print 'ninja'", "print 'ide'")
+        for line in lines:
+            self.console_widget.textCursor().insertText(line)
+            self.console_widget._write_command()
+        current = 'current_command'
+        self.console_widget.textCursor().insertText(current)
+        self.console_widget._up_pressed(None)
+        line = self.console_widget.document().lastBlock().text()
+        self.assertEqual(line, self.console_widget.prompt + lines[1])
+        self.assertEqual(self.console_widget.history_index, 1)
+        self.console_widget._up_pressed(None)
+        line = self.console_widget.document().lastBlock().text()
+        self.assertEqual(line, self.console_widget.prompt + lines[0])
+        self.assertEqual(self.console_widget.history_index, 0)
+        self.console_widget._down_pressed(None)
+        line = self.console_widget.document().lastBlock().text()
+        self.assertEqual(line, self.console_widget.prompt + lines[1])
+        self.assertEqual(self.console_widget.history_index, 2)
+        self.console_widget._down_pressed(None)
+        line = self.console_widget.document().lastBlock().text()
+        self.assertEqual(line, self.console_widget.prompt + current)
+        self.assertEqual(self.console_widget.history_index, 2)
