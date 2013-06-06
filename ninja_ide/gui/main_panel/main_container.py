@@ -38,6 +38,7 @@ from ninja_ide.gui.editor import editor
 from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.main_panel import browser_widget
+from ninja_ide.gui.main_panel import start_page
 from ninja_ide.gui.main_panel import image_viewer
 from ninja_ide.tools import runner
 
@@ -756,21 +757,9 @@ class __MainContainer(QSplitter):
                 function(*args, **kwargs)
 
     def show_start_page(self):
-        startPage = browser_widget.BrowserWidget(
-            resources.START_PAGE_URL, parent=self)
+        startPage = start_page.StartPage(parent=self)
         self.connect(startPage, SIGNAL("openProject(QString)"),
             self.open_project)
-
-        #Signals Wrapper
-        def emit_start_page_signals(opt):
-            if opt:
-                self.emit(SIGNAL("openPreferences()"))
-            else:
-                self.emit(SIGNAL("dontOpenStartPage()"))
-        self.connect(startPage, SIGNAL("openPreferences()"),
-            lambda: emit_start_page_signals(True))
-        self.connect(startPage, SIGNAL("dontOpenStartPage()"),
-            lambda: emit_start_page_signals(False))
         self.add_tab(startPage, 'Start Page')
 
     def show_python_doc(self):

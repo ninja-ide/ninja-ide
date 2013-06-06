@@ -69,6 +69,8 @@ LOG_FILE_PATH = os.path.join(HOME_NINJA_PATH, 'ninja_ide.log')
 
 GET_SYSTEM_PATH = os.path.join(PRJ_PATH, 'tools', 'get_system_path.py')
 
+QML_FILES = os.path.join(PRJ_PATH, "addins", "qml")
+
 ###############################################################################
 # URLS
 ###############################################################################
@@ -100,9 +102,6 @@ IMAGES = {
     "newProj": os.path.join(PRJ_PATH, "img", "project-new.png"),
     "open": os.path.join(PRJ_PATH, "img", "document-open.png"),
     "openProj": os.path.join(PRJ_PATH, "img", "project-open.png"),
-    "favProj": os.path.join(PRJ_PATH, "img", "favorite-project.png"),
-    "unfavProj": os.path.join(PRJ_PATH, "img", "unfavorite-project.png"),
-    "delProj": os.path.join(PRJ_PATH, "img", "delete-project.png"),
     "openFolder": os.path.join(PRJ_PATH, "img", "folder-open.png"),
     "save": os.path.join(PRJ_PATH, "img", "document-save.png"),
     "saveAs": os.path.join(PRJ_PATH, "img", "document-save-as.png"),
