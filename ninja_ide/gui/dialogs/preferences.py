@@ -972,7 +972,9 @@ class EditorGeneral(QWidget):
         qsettings.endGroup()
         main_container.MainContainer().apply_editor_theme(settings.FONT_FAMILY,
             settings.FONT_SIZE)
-        misc_container.MiscContainer()._console.restyle()
+        misc = misc_container.MiscContainer()
+        misc._console.restyle()
+        misc._runWidget.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
 
 
 class EditorConfiguration(QWidget):
