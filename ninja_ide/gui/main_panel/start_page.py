@@ -34,6 +34,8 @@ class StartPage(QWidget, itab_item.ITabItem):
             self._on_click_on_delete)
         self.connect(self.root, SIGNAL("markAsFavorite(QString, bool)"),
             self._on_click_on_favorite)
+        self.connect(self.root, SIGNAL("openPreferences()"),
+            lambda: self.emit(SIGNAL("openPreferences()")))
 
     def _open_project(self, path):
         self.emit(SIGNAL("openProject(QString)"), path)

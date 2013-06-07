@@ -9,6 +9,7 @@ Rectangle {
     signal markAsFavorite(string pat, bool value)
     signal openProject(string path)
     signal removeProject(string path)
+    signal openPreferences
 
     gradient: Gradient {
          GradientStop { position: 0.0; color: "#1e1e1e" }
@@ -73,6 +74,31 @@ Rectangle {
             wrapMode: Text.WordWrap
         }
 
+        Column {
+            id: colButtons
+            anchors.top: txtDescription.bottom
+            anchors.left: parent.left
+            anchors.leftMargin: root.compressed ? 10 : root.get_padding(colButtons);
+            anchors.topMargin: root.compressed ? 10 : 50
+
+            property int buttonWidth: compressed ? (mainArea.width / 2) - 20 : (mainArea.width / 4) - 50
+            Row {
+                spacing: 10
+                Button {
+                    width: colButtons.buttonWidth
+                    height: 35
+                    text: "Chat with us!"
+                    onClicked: Qt.openUrlExternally("https://kiwiirc.com/client/chat.freenode.net/?nick=Ninja|?&theme=cli#ninja-ide")
+                }
+                Button {
+                    width: colButtons.buttonWidth
+                    height: 35
+                    text: "Preferences"
+                    onClicked: openPreferences();
+                }
+            }
+        }
+
         Text {
             id: txtProjects
             anchors.right: parent.right
@@ -125,6 +151,15 @@ Rectangle {
             id: logoQt
             source: "img/powered_qt.png"
         }
+    }
+
+    Text {
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: parent.height / 14
+        anchors.bottomMargin: 5
+        color: "black"
+        text: "Copyright © 2011-2013 NINJA-IDE under GPLv3 License agreements"
     }
 
     function get_padding(item){

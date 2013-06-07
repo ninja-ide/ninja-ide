@@ -760,6 +760,8 @@ class __MainContainer(QSplitter):
         startPage = start_page.StartPage(parent=self)
         self.connect(startPage, SIGNAL("openProject(QString)"),
             self.open_project)
+        self.connect(startPage, SIGNAL("openPreferences()"),
+            lambda: self.emit(SIGNAL("openPreferences()")))
         self.add_tab(startPage, 'Start Page')
 
     def show_python_doc(self):
