@@ -18,8 +18,6 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-import sys
-
 # Import this before Qt to set the correct API
 import ninja_ide  # lint:ok
 
@@ -37,9 +35,16 @@ from ninja_tests import BaseTest
 
 class PreferencesEditorConfigurationTestCase(BaseTest):
 
+    @classmethod
+    def setUpClass(cls):
+        cls._app = QApplication([])
+
+    @classmethod
+    def tearDownClass(cls):
+        del cls._app
+
     def setUp(self):
         super(PreferencesEditorConfigurationTestCase, self).setUp()
-        self.app = QApplication(sys.argv)
         self.settings = gui.FakeQSettings()
         self.patch(preferences, 'QSettings', lambda: self.settings)
         self.editor_completion = preferences.EditorConfiguration()
@@ -93,9 +98,16 @@ class PreferencesEditorConfigurationTestCase(BaseTest):
 
 class PreferencesShortcutManagerConfigurationTestCase(BaseTest):
 
+    @classmethod
+    def setUpClass(cls):
+        cls._app = QApplication([])
+
+    @classmethod
+    def tearDownClass(cls):
+        del cls._app
+
     def setUp(self):
         super(PreferencesShortcutManagerConfigurationTestCase, self).setUp()
-        self.app = QApplication(sys.argv)
         self.settings = gui.FakeQSettings()
         self.patch(shortcut_manager, 'QSettings', lambda: self.settings)
         self.patch(resources, 'QSettings', lambda: self.settings)
