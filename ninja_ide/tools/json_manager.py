@@ -37,7 +37,7 @@ def parse(descriptor):
 
 def read_json(arg_):
 
-    empty = dict()
+    structure = dict()
     fileName = None
 
     if os.path.isdir(arg_):
@@ -49,7 +49,7 @@ def read_json(arg_):
         fileName = arg_
 
     if fileName is None:
-        return empty
+        return structure
 
     with open(fileName, 'r') as fp:
         try:
@@ -57,9 +57,19 @@ def read_json(arg_):
         except Exception as exc:
             logger.error('Error reading Ninja File %s' % fileName)
             logger.error(exc)
-            return empty
+            return structure
 
     return structure
+
+
+def read_json_from_stream(stream):
+    structure = json.load(stream)
+    return structure
+
+
+def write_json(structure, filename, indent=2):
+    with open(filename, 'w') as fp:
+        json.dump(structure, fp, indent)
 
 
 def load_syntax():
@@ -148,10 +158,6 @@ def read_ninja_plugin(path):
         return empty
 
     return read_json(os.path.join(path, plugin_file))
-
-
-def json_to_dict(fileName):
-    return read_json(fileName)
 
 
 def load_editor_skins():
