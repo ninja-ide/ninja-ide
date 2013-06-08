@@ -31,6 +31,7 @@ from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QTextCharFormat
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QBrush
+from PyQt4.QtGui import QFont
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QProcess
 from PyQt4.QtCore import QProcessEnvironment
@@ -61,6 +62,8 @@ class RunWidget(QWidget):
         hbox.addWidget(self.input)
         vbox.addLayout(hbox)
 
+        self.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
+
         #process
         self.currentProcess = None
         self.__preScriptExecuted = False
@@ -90,6 +93,12 @@ class RunWidget(QWidget):
             SIGNAL("readyReadStandardOutput()"), self.output._refresh_output)
         self.connect(self._postExecScriptProc,
             SIGNAL("readyReadStandardError()"), self.output._refresh_error)
+
+    def set_font(self, family, size):
+        font = QFont(family, size)
+        self.output.document().setDefaultFont(font)
+        self.output.plain_format.setFont(font)
+        self.output.error_format.setFont(font)
 
     def process_error(self, error):
         """Listen to the error signals from the running process."""
@@ -134,6 +143,7 @@ class RunWidget(QWidget):
         self._proc.writeData(text)
         self.output.textCursor().insertText(text, self.output.plain_format)
         self.input.setText("")
+        self.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
 
     def start_process(self, fileName, pythonPath=False, PYTHONPATH=None,
         programParams='', preExec='', postExec=''):
@@ -246,11 +256,14 @@ class OutputWidget(QPlainTextEdit):
         #traceback pattern
         self.patLink = re.compile(r'(\s)*File "(.*?)", line \d.+')
         #formats
+        font = QFont(settings.FONT_FAMILY, settings.FONT_SIZE)
         self.plain_format = QTextCharFormat()
+        self.plain_format.setFont(font)
         self.plain_format.setForeground(QBrush(QColor(
             resources.CUSTOM_SCHEME.get("editor-text",
             resources.COLOR_SCHEME["editor-text"]))))
         self.error_format = QTextCharFormat()
+        self.error_format.setFont(font)
         self.error_format.setAnchor(True)
         self.error_format.setFontUnderline(True)
         self.error_format.setUnderlineStyle(QTextCharFormat.SingleUnderline)
