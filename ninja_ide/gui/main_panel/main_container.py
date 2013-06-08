@@ -757,12 +757,15 @@ class __MainContainer(QSplitter):
                 function(*args, **kwargs)
 
     def show_start_page(self):
-        startPage = start_page.StartPage(parent=self)
-        self.connect(startPage, SIGNAL("openProject(QString)"),
-            self.open_project)
-        self.connect(startPage, SIGNAL("openPreferences()"),
-            lambda: self.emit(SIGNAL("openPreferences()")))
-        self.add_tab(startPage, 'Start Page')
+        if not self.is_open("Start Page"):
+            startPage = start_page.StartPage(parent=self)
+            self.connect(startPage, SIGNAL("openProject(QString)"),
+                self.open_project)
+            self.connect(startPage, SIGNAL("openPreferences()"),
+                lambda: self.emit(SIGNAL("openPreferences()")))
+            self.add_tab(startPage, 'Start Page')
+        else:
+            self.move_to_open("Start Page")
 
     def show_python_doc(self):
         if sys.platform == 'win32':
