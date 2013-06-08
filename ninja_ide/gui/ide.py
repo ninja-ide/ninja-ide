@@ -50,6 +50,7 @@ from ninja_ide.gui import updates
 from ninja_ide.gui import actions
 from ninja_ide.gui.dialogs import preferences
 from ninja_ide.gui.dialogs import traceback_widget
+from ninja_ide.gui.dialogs import python_detect_dialog
 from ninja_ide.tools import json_manager
 from ninja_ide.tools.completion import completion_daemon
 #NINJA-IDE Containers
@@ -485,6 +486,12 @@ class __IDE(QMainWindow):
             #show the dialog
             plugin_error_dialog.exec_()
 
+    def show_python_detection(self):
+        suggested = settings.detect_python_path()
+        if suggested:
+            dialog = python_detect_dialog.PythonDetectDialog(suggested, self)
+            dialog.show()
+
 
 ###############################################################################
 # START NINJA-IDE
@@ -653,4 +660,5 @@ def start(filenames=None, projects_path=None,
 
     splash.finish(ide)
     ide.notify_plugin_errors()
+    ide.show_python_detection()
     sys.exit(app.exec_())
