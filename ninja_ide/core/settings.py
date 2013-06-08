@@ -48,12 +48,13 @@ elif sys.platform == "win32":
 
 
 def detect_python_path():
-    if not IS_WINDOWS and not PYTHON_PATH_CONFIGURED_BY_USER:
+    if (IS_WINDOWS and PYTHON_PATH_CONFIGURED_BY_USER) or not IS_WINDOWS:
         return []
 
     suggested = []
     try:
-        path = "C:\\"
+        #path = "C:\\"
+        path = "/home/gatox/Desktop/python"
         dirs = os.listdir(path)
         for folder in dirs:
             file_path = os.path.join(path, folder, "python.exe")
