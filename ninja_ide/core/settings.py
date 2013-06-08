@@ -53,8 +53,7 @@ def detect_python_path():
 
     suggested = []
     try:
-        #path = "C:\\"
-        path = "/home/gatox/Desktop/python"
+        path = "C:\\"
         dirs = os.listdir(path)
         for folder in dirs:
             file_path = os.path.join(path, folder, "python.exe")
