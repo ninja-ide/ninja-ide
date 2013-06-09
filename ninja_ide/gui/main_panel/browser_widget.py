@@ -36,7 +36,7 @@ from PyQt4.QtWebKit import QWebPluginFactory
 
 
 from ninja_ide import resources
-from ninja_ide.core import file_manager
+from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.main_panel import itab_item
 from ninja_ide.gui.main_panel import recent_project_item
 

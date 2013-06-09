@@ -23,7 +23,7 @@ import win32file
 import win32event
 import pywintypes
 import os
-from ninja_ide.core import file_manager
+from ninja_ide.core.file_handling import file_manager
 
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.core.filesystem_notifications.windows')

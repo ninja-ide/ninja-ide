@@ -30,7 +30,7 @@ from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QDir
 
 from ninja_ide import resources
-from ninja_ide.core import file_manager
+from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
 from ninja_ide.core.filesystem_notifications import NinjaFileSystemWatcher
 from ninja_ide.gui.main_panel import tab_widget

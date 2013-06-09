@@ -22,7 +22,7 @@ from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QInputDialog
 
 from ninja_ide.core import settings
-from ninja_ide.core import file_manager
+from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import introspection
 
 

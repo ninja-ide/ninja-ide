@@ -21,7 +21,7 @@ import subprocess
 
 from PyQt4.QtCore import QThread
 
-from ninja_ide.core import file_manager
+from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
 
 

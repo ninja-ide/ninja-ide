@@ -30,7 +30,7 @@ from PyQt4.QtGui import QVBoxLayout
 
 from ninja_ide.gui.main_panel import itab_item
 from ninja_ide.tools import introspection
-from ninja_ide.core import file_manager
+from ninja_ide.core.file_handling import file_manager
 
 
 class ClassDiagram(QWidget, itab_item.ITabItem):

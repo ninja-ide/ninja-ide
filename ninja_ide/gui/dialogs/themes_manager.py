@@ -38,7 +38,7 @@ from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
-from ninja_ide.core import file_manager
+from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import ui_tools
 from ninja_ide.tools import json_manager
 

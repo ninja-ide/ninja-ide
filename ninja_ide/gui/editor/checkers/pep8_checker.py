@@ -19,7 +19,7 @@ from __future__ import unicode_literals
 
 from PyQt4.QtCore import QThread
 
-from ninja_ide.core import file_manager
+from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
 from ninja_ide.dependencies import pep8mod
 

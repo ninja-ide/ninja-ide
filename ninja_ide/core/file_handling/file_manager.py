@@ -43,6 +43,13 @@ class NinjaIOException(Exception):
     pass
 
 
+class NinjaNoFileNameException(Exception):
+    """
+    Tried to write a file but I lack a file name
+    """
+    pass
+
+
 class NinjaFileExistsException(Exception):
     """
     Try to override existing file without confirmation exception.

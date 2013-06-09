@@ -21,7 +21,7 @@ from __future__ import unicode_literals
 import unittest
 import os
 
-from ninja_ide.core import file_manager
+from ninja_ide.core.file_handling import file_manager
 
 
 CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))

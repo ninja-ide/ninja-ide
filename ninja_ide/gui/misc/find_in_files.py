@@ -55,7 +55,7 @@ from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QFileDialog
 
 from ninja_ide import resources
-from ninja_ide.core import file_manager
+from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.main_panel import main_container
 from ninja_ide.gui.explorer import explorer_container
 

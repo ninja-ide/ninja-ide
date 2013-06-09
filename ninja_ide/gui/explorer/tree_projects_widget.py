@@ -44,7 +44,7 @@ from PyQt4.QtGui import QDesktopServices
 
 from ninja_ide import resources
 from ninja_ide.core import settings
-from ninja_ide.core import file_manager
+from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core.filesystem_notifications import NinjaFileSystemWatcher
 from ninja_ide.core.filesystem_notifications.base_watcher import ADDED, \
                                                     DELETED, REMOVE, RENAME

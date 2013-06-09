@@ -42,7 +42,7 @@ from PyQt4.QtCore import SIGNAL
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core import plugin_interfaces
-from ninja_ide.core import file_manager
+from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import json_manager
 from ninja_ide.tools.logger import NinjaLogger
 
