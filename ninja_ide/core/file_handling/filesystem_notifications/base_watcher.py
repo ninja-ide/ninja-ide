@@ -19,7 +19,7 @@ from PyQt4.QtCore import QObject
 from PyQt4.QtCore import SIGNAL, QThread
 
 from ninja_ide.tools.logger import NinjaLogger
-logger = NinjaLogger('ninja_ide.core.filesystem_notifications.Watcher')
+logger = NinjaLogger('ninja_ide.core.file_handling.filesystem_notifications.Watcher')
 DEBUG = logger.debug
 
 ADDED = 1
