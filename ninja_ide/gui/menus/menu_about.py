@@ -16,6 +16,8 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
+import webbrowser
+
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QKeySequence
 from PyQt4.QtCore import QObject
@@ -60,10 +62,7 @@ class MenuAbout(QObject):
             self.show_plugins_doc)
 
     def show_report_bugs(self):
-        bugsPage = browser_widget.BrowserWidget(resources.BUGS_PAGE,
-            parent=main_container.MainContainer())
-        main_container.MainContainer().add_tab(
-            bugsPage, self.tr("Report Bugs!"))
+        webbrowser.open(resources.BUGS_PAGE)
 
     def show_plugins_doc(self):
         bugsPage = browser_widget.BrowserWidget(resources.PLUGINS_DOC,
