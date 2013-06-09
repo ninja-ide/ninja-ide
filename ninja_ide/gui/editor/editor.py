@@ -230,6 +230,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def set_id(self, id_):
         super(Editor, self).set_id(id_)
         if self._mini:
+            #self._mini.set_code(self.document())
             self._mini.set_code(self.toPlainText())
         if settings.CHECK_STYLE:
             self.pep8.check_style()
