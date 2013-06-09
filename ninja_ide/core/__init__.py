@@ -15,21 +15,4 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
-
-###############################################################################
-# IMPORT SETTINGS
-###############################################################################
-from ninja_ide.core import settings
-
-
-###############################################################################
-# IMPORT CORE FUNCTIONS
-###############################################################################
-from ninja_ide.core.core import run_ninja
-
-
-###############################################################################
-# IMPORT OTHER MODULES
-###############################################################################
-from ninja_ide.core import file_manager
+from .core import *

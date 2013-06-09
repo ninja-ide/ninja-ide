@@ -57,8 +57,8 @@ from PyQt4.QtCore import QTimeLine
 
 from ninja_ide import resources
 from ninja_ide.core import settings
-from ninja_ide.core import file_manager
-from ninja_ide.core.file_manager import NinjaIOException
+from ninja_ide.core.file_handling import file_manager
+from ninja_ide.core.file_handling.file_manager import NinjaIOException
 from ninja_ide.tools import json_manager
 
 

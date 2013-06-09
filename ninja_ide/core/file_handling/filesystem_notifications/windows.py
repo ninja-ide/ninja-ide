@@ -23,13 +23,13 @@ import win32file
 import win32event
 import pywintypes
 import os
-from ninja_ide.core import file_manager
+from ninja_ide.core.file_handling import file_manager
 
 from ninja_ide.tools.logger import NinjaLogger
-logger = NinjaLogger('ninja_ide.core.filesystem_notifications.windows')
+logger = NinjaLogger('ninja_ide.core.file_handling.filesystem_notifications.windows')
 DEBUG = logger.debug
 
-from ninja_ide.core.filesystem_notifications import base_watcher
+from ninja_ide.core.file_handling.filesystem_notifications import base_watcher
 ADDED = base_watcher.ADDED
 DELETED = base_watcher.DELETED
 REMOVE = base_watcher.REMOVE

@@ -44,7 +44,7 @@ from ninja_ide import resources
 from ninja_ide.core import plugin_manager
 from ninja_ide.core import plugin_services
 from ninja_ide.core import settings
-from ninja_ide.core import file_manager
+from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import ipc
 from ninja_ide.gui import updates
 from ninja_ide.gui import actions

@@ -32,7 +32,7 @@ from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import QDateTime
 
 from ninja_ide.core import settings
-from ninja_ide.core import file_manager
+from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.explorer import tree_projects_widget
 from ninja_ide.gui.explorer import tree_symbols_widget
 from ninja_ide.gui.explorer import errors_lists

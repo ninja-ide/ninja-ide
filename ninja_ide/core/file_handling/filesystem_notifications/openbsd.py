@@ -1,5 +1,5 @@
 # -*- coding: utf-8 *-*
-from ninja_ide.core.filesystem_notifications import base_watcher
+from ninja_ide.core.file_handling.filesystem_notifications import base_watcher
 from PyQt4.QtCore import SIGNAL
 
 

@@ -67,7 +67,7 @@ from ninja_ide.gui.misc import plugin_preferences
 from ninja_ide.gui.main_panel import main_container
 from ninja_ide.gui.explorer import explorer_container
 from ninja_ide.core import settings
-from ninja_ide.core import file_manager
+from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import ui_tools
 from ninja_ide.tools import json_manager
 

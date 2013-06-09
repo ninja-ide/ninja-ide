@@ -79,6 +79,7 @@ class NFile(QObject):
             raise NinjaNoFileNameException("I am asked to write a "
                                 "file but no one told me where")
         swap_save_path = u"%s.nsp" % save_path
+        #SIGNAL: Will save (temp, definitive) to warn folder to do something
 
         flags = QIODevice.WriteOnly | QIODevice.Truncate
         f = QFile(swap_save_path)
@@ -128,6 +129,7 @@ class NFile(QObject):
         Phisically move the file
         """
         if self._exists():
+            #SIGNALL: WILL MOVE TO, to warn folder to exist
             shutil.move(self._file_path, new_path)
         self._file_path = new_path
 

@@ -45,7 +45,7 @@ from PyQt4.QtCore import QThread
 
 from ninja_ide import resources
 from ninja_ide.core import plugin_manager
-from ninja_ide.core import file_manager
+from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import ui_tools
 
 from ninja_ide.tools.logger import NinjaLogger

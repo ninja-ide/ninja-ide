@@ -25,7 +25,7 @@ from PyQt4.QtGui import QListWidget
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
 
-from ninja_ide.core import file_manager
+from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.main_panel import itab_item
 
 

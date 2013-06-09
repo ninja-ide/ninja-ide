@@ -21,10 +21,10 @@ from __future__ import absolute_import
 #from PyQt4.QtCore import SIGNAL
 
 from ninja_ide.tools.logger import NinjaLogger
-logger = NinjaLogger('ninja_ide.core.filesystem_notifications.darwin')
+logger = NinjaLogger('ninja_ide.core.file_handling.filesystem_notifications.darwin')
 DEBUG = logger.debug
 
-from ninja_ide.core.filesystem_notifications import base_watcher
+from ninja_ide.core.file_handling.filesystem_notifications import base_watcher
 ADDED = base_watcher.ADDED
 DELETED = base_watcher.DELETED
 REMOVE = base_watcher.REMOVE

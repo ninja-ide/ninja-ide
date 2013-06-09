@@ -31,7 +31,7 @@ from PyQt4.QtGui import QInputDialog
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QShortcut
 
-from ninja_ide.core import file_manager
+from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
 from ninja_ide import resources
 from ninja_ide.tools import ui_tools

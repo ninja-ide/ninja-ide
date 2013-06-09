@@ -23,7 +23,7 @@ from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import pyqtSignal
 
 from ninja_ide.core import settings
-from ninja_ide.core import file_manager
+from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import plugin_util
 from ninja_ide.gui.main_panel import itab_item
 from ninja_ide.gui.main_panel import main_container
