@@ -609,7 +609,8 @@ def start(filenames=None, projects_path=None,
     for file_ in mainFiles:
         fileData = list(file_)
         if fileData:
-            tempFiles.append((fileData[0], int(fileData[1])))
+            lineno = fileData[1]
+            tempFiles.append((fileData[0], lineno))
     mainFiles = tempFiles
     #Files in Secondary Tab
     sec_files = qsettings.value('openFiles/secondaryTab', [])
@@ -620,7 +621,8 @@ def start(filenames=None, projects_path=None,
     tempFiles = []
     for file_ in secondaryFiles:
         fileData = list(file_)
-        tempFiles.append((fileData[0], int(fileData[1])))
+        lineno = fileData[1]
+        tempFiles.append((fileData[0], lineno))
     secondaryFiles = tempFiles
     # Recent Files
     recent = qsettings.value('openFiles/recentFiles', [])
