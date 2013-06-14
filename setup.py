@@ -96,7 +96,7 @@ params = {
     # include all resources
     "include_package_data": True,
     "package_data": {'': ['*.png', '*.gif', '*.jpg', '*.json', '*.qss',
-        '*.js', '*.html', '*.css', '*.qm']},
+        '*.js', '*.html', '*.css', '*.qm', '*.qml']},
 
     # include ninja pkg and setup the run script
     "packages": find_packages() + [
