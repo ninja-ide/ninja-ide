@@ -104,11 +104,6 @@ params = {
         'ninja_ide/addins/syntax',
         'ninja_ide/addins/theme',
         'ninja_ide/addins/lang',
-        'ninja_ide/doc',
-        'ninja_ide/doc/css',
-        'ninja_ide/doc/img',
-        'ninja_ide/doc/js',
-        'ninja_ide/doc/js/libs',
         'ninja_ide/img'],
 
     #auto create scripts
