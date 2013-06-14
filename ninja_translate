@@ -16,14 +16,29 @@ SOURCES += \
     ninja_ide/gui/dialogs/language_manager.py \
     ninja_ide/gui/dialogs/from_import_dialog.py \
     ninja_ide/gui/dialogs/about_ninja.py \
+    ninja_ide/gui/editor/syntax_highlighter.py \
+    ninja_ide/gui/editor/sidebar_widget.py \
+    ninja_ide/gui/editor/python_syntax.py \
+    ninja_ide/gui/editor/pep8_checker.py \
+    ninja_ide/gui/editor/minimap.py\
+    ninja_ide/gui/editor/migration_2to3.py \
+    ninja_ide/gui/editor/highlighter.py \
+    ninja_ide/gui/editor/helpers.py \
+    ninja_ide/gui/editor/errors_checker.py \
     ninja_ide/gui/editor/editor.py \
+    ninja_ide/gui/explorer/migration_lists.py \
+    ninja_ide/gui/explorer/explorer_container.py \
     ninja_ide/gui/explorer/tree_projects_widget.py \
     ninja_ide/gui/explorer/tree_symbols_widget.py \
     ninja_ide/gui/explorer/explorer_container.py \
     ninja_ide/gui/explorer/errors_lists.py \
     ninja_ide/gui/main_panel/tab_widget.py \
     ninja_ide/gui/main_panel/tab_group.py \
-    ninja_ide/gui/main_panel/recent_project_item.py \
+    ninja_ide/gui/main_panel/start_page.py \
+    ninja_ide/gui/main_panel/itab_item.py \
+    ninja_ide/gui/main_panel/image_viewer.py \
+    ninja_ide/gui/main_panel/class_diagram.py \
+    ninja_ide/gui/main_panel/browser_widget.py \
     ninja_ide/gui/main_panel/main_container.py \
     ninja_ide/gui/menus/menu_view.py \
     ninja_ide/gui/menus/menu_source.py \
@@ -32,9 +47,11 @@ SOURCES += \
     ninja_ide/gui/menus/menu_file.py \
     ninja_ide/gui/menus/menu_edit.py \
     ninja_ide/gui/menus/menu_about.py \
+    ninja_ide/gui/misc/web_render.py \
     ninja_ide/gui/misc/run_widget.py \
     ninja_ide/gui/misc/shortcut_manager.py \
     ninja_ide/gui/misc/results.py \
+    ninja_ide/gui/misc/plugin_preferences.py \
     ninja_ide/gui/misc/misc_container.py \
     ninja_ide/gui/misc/find_in_files.py \
     ninja_ide/gui/misc/console_widget.py
