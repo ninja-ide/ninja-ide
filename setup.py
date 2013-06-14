@@ -103,6 +103,7 @@ params = {
         'ninja_ide/addins',
         'ninja_ide/addins/lang',
         'ninja_ide/addins/qml',
+        'ninja_ide/addins/qml/img',
         'ninja_ide/addins/syntax',
         'ninja_ide/addins/theme',
         'ninja_ide/img'],
