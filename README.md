@@ -22,7 +22,7 @@ Both of these:
 And one of these:
 y
 -   [pyinotify](https://github.com/seb-m/pyinotify) (on Linux)
--   [pywin32](http://sourceforge.net/proj3ects/pywin32/files/pywin32/) (on Windows)
+-   [pywin32](http://sourceforge.net/projects/pywin32/files/pywin32/) (on Windows)
 -   [macfsevents](http://pypi.python.org/pypi/MacFSEvents) (on Mac OS)
 
 ## Cloning and Running
