@@ -39,6 +39,7 @@ from PyQt4.QtCore import Qt
 
 from ninja_ide import resources
 from ninja_ide.core import settings
+from ninja_ide.core.pattern import singleton
 from ninja_ide.tools import locator
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.main_panel import main_container
@@ -47,17 +48,9 @@ from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.gui.status_bar')
 DEBUG = logger.debug
 
-__statusBarInstance = None
 
-
-def StatusBar(*args, **kw):
-    global __statusBarInstance
-    if __statusBarInstance is None:
-        __statusBarInstance = __StatusBar(*args, **kw)
-    return __statusBarInstance
-
-
-class __StatusBar(QStatusBar):
+@singleton
+class StatusBar(QStatusBar):
 
     def __init__(self, parent=None):
         QStatusBar.__init__(self, parent)

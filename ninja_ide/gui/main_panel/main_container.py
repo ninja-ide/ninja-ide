@@ -32,12 +32,15 @@ from PyQt4.QtCore import QDir
 from ninja_ide import resources
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
-from ninja_ide.core.file_handling.filesystem_notifications import NinjaFileSystemWatcher
+from ninja_ide.core.pattern import singleton
+from ninja_ide.core.file_handling.filesystem_notifications import (
+    NinjaFileSystemWatcher)
 from ninja_ide.gui.main_panel import tab_widget
 from ninja_ide.gui.editor import editor
 from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.main_panel import browser_widget
+from ninja_ide.gui.main_panel import start_page
 from ninja_ide.gui.main_panel import image_viewer
 from ninja_ide.tools import runner
 
@@ -45,17 +48,9 @@ from ninja_ide.tools.logger import NinjaLogger
 
 logger = NinjaLogger('ninja_ide.gui.main_panel.main_container')
 
-__mainContainerInstance = None
 
-
-def MainContainer(*args, **kw):
-    global __mainContainerInstance
-    if __mainContainerInstance is None:
-        __mainContainerInstance = __MainContainer(*args, **kw)
-    return __mainContainerInstance
-
-
-class __MainContainer(QSplitter):
+@singleton
+class MainContainer(QSplitter):
 
 ###############################################################################
 # MainContainer SIGNALS
@@ -545,13 +540,13 @@ class __MainContainer(QSplitter):
         # Add File Watcher if needed
         opened_projects = self._parent.explorer.get_opened_projects()
         opened_projects = [p.path for p in opened_projects]
-        alone = not_start
-        for folder in opened_projects:
-            if file_manager.belongs_to_folder(folder, filename):
-                alone = False
-        if alone or sys.platform == 'darwin':
-            self._file_watcher.add_file_watch(filename)
-            self._watched_simple_files.append(filename)
+        #alone = not_start
+        #for folder in opened_projects:
+            #if file_manager.belongs_to_folder(folder, filename):
+                #alone = False
+        #if alone or sys.platform == 'darwin':
+            #self._file_watcher.add_file_watch(filename)
+            #self._watched_simple_files.append(filename)
 
     def remove_standalone_watcher(self, filename):
         if filename in self._watched_simple_files:
@@ -756,22 +751,15 @@ class __MainContainer(QSplitter):
                 function(*args, **kwargs)
 
     def show_start_page(self):
-        startPage = browser_widget.BrowserWidget(
-            resources.START_PAGE_URL, parent=self)
-        self.connect(startPage, SIGNAL("openProject(QString)"),
-            self.open_project)
-
-        #Signals Wrapper
-        def emit_start_page_signals(opt):
-            if opt:
-                self.emit(SIGNAL("openPreferences()"))
-            else:
-                self.emit(SIGNAL("dontOpenStartPage()"))
-        self.connect(startPage, SIGNAL("openPreferences()"),
-            lambda: emit_start_page_signals(True))
-        self.connect(startPage, SIGNAL("dontOpenStartPage()"),
-            lambda: emit_start_page_signals(False))
-        self.add_tab(startPage, 'Start Page')
+        if not self.is_open("Start Page"):
+            startPage = start_page.StartPage(parent=self)
+            self.connect(startPage, SIGNAL("openProject(QString)"),
+                self.open_project)
+            self.connect(startPage, SIGNAL("openPreferences()"),
+                lambda: self.emit(SIGNAL("openPreferences()")))
+            self.add_tab(startPage, 'Start Page')
+        else:
+            self.move_to_open("Start Page")
 
     def show_python_doc(self):
         if sys.platform == 'win32':

@@ -66,12 +66,13 @@ def _parse_class(symbol, with_docstrings):
             attr.update(result['attrs'])
             if with_docstrings:
                 docstring.update(result['docstring'])
-            func[result['name']] = (result['lineno'], result['functions'])
+            func[result['name']] = {'lineno': result['lineno'],
+                'functions': result['functions']}
         elif sym.__class__ is ast.ClassDef:
             result = _parse_class(sym, with_docstrings)
-            clazz[result['name']] = (result['lineno'],
-                {'attributes': result['attributes'],
-                'functions': result['functions']})
+            clazz[result['name']] = {'lineno': result['lineno'],
+                'members': {'attributes': result['attributes'],
+                'functions': result['functions']}}
             docstring.update(result['docstring'])
     if with_docstrings:
         docstring[symbol.lineno] = ast.get_docstring(symbol, clean=True)
@@ -131,8 +132,8 @@ def _parse_function(symbol, with_docstrings):
             result = _parse_function(sym, with_docstrings)
             if with_docstrings:
                 docstring.update(result['docstring'])
-            func['functions'][result['name']] = (result['lineno'],
-                result['functions'])
+            func['functions'][result['name']] = {'lineno': result['lineno'],
+                'functions': result['functions']}
 
     if with_docstrings:
         docstring[symbol.lineno] = ast.get_docstring(symbol, clean=True)
@@ -167,14 +168,14 @@ def obtain_symbols(source, with_docstrings=False, filename=''):
             result = _parse_function(symbol, with_docstrings)
             if with_docstrings:
                 docstrings.update(result['docstring'])
-            globalFunctions[result['name']] = (result['lineno'],
-                result['functions'])
+            globalFunctions[result['name']] = {'lineno': result['lineno'],
+                'functions': result['functions']}
         elif symbol.__class__ is ast.ClassDef:
             result = _parse_class(symbol, with_docstrings)
-            classes[result['name']] = (result['lineno'],
-                {'attributes': result['attributes'],
+            classes[result['name']] = {'lineno': result['lineno'],
+                'members': {'attributes': result['attributes'],
                 'functions': result['functions'],
-                'classes': result['classes']})
+                'classes': result['classes']}}
             docstrings.update(result['docstring'])
     if globalAttributes:
         symbols['attributes'] = globalAttributes

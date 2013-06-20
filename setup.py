@@ -96,19 +96,16 @@ params = {
     # include all resources
     "include_package_data": True,
     "package_data": {'': ['*.png', '*.gif', '*.jpg', '*.json', '*.qss',
-        '*.js', '*.html', '*.css', '*.qm']},
+        '*.js', '*.html', '*.css', '*.qm', '*.qml']},
 
     # include ninja pkg and setup the run script
     "packages": find_packages() + [
         'ninja_ide/addins',
+        'ninja_ide/addins/lang',
+        'ninja_ide/addins/qml',
+        'ninja_ide/addins/qml/img',
         'ninja_ide/addins/syntax',
         'ninja_ide/addins/theme',
-        'ninja_ide/addins/lang',
-        'ninja_ide/doc',
-        'ninja_ide/doc/css',
-        'ninja_ide/doc/img',
-        'ninja_ide/doc/js',
-        'ninja_ide/doc/js/libs',
         'ninja_ide/img'],
 
     #auto create scripts
