@@ -17,6 +17,8 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+import collections
+
 from PyQt4.QtGui import QMainWindow
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QToolBar
@@ -75,6 +77,9 @@ class IDE(QMainWindow):
 #
 # goingDown()
 ###############################################################################
+
+    __IDESERVICES = {}
+    __created = False
 
     def __init__(self, start_server=False):
         QMainWindow.__init__(self)
@@ -173,6 +178,20 @@ class IDE(QMainWindow):
             self.actions.update_migration_tips)
         self.connect(self.mainContainer, SIGNAL("migrationAnalyzed()"),
             self.actions.update_migration_tips)
+
+    @classmethod
+    def register_service(cls, obj, service_name=''):
+        if not service_name:
+            service_name = obj.__class__.__name__
+        IDE.__IDESERVICES[service_name] = obj
+        if IDE.__created:
+            IDE().install_service(service_name)
+
+    def install_service(self, service_name):
+        obj = self.__IDESERVICES.get(service_name, None)
+        func = getattr(obj, 'install', None)
+        if isinstance(func, collections.Callable):
+            func(self)
 
     def _process_connection(self):
         connection = self.s_listener.nextPendingConnection()
