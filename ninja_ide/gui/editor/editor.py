@@ -666,10 +666,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if found:
             self.highlight_selected_word(word)
 
-    def replace_match(self, wordOld, wordNew, flags, all=False,
+    def replace_match(self, wordOld, wordNew, flags, allwords=False,
                         selection=False):
         """Find if searched text exists and replace it with new one.
-        If there is a selection just doit inside it and exit.
+        If there is a selection just do it inside it and exit.
         """
         tc = self.textCursor()
         if selection and tc.hasSelection():
@@ -690,9 +690,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         cursor = self.textCursor()
         cursor.beginEditBlock()
 
-        self.moveCursor(QTextCursor.Start)
         replace = True
-        while (replace or all):
+        while (replace or allwords):
             result = False
             result = self.find(wordOld, flags)
 
