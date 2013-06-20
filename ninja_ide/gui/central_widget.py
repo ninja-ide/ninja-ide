@@ -33,19 +33,11 @@ from PyQt4.QtCore import QSettings
 
 from ninja_ide import resources
 from ninja_ide.core import settings
+from ninja_ide.core.pattern import singleton
 
 
-__centralWidgetInstance = None
-
-
-def CentralWidget(*args, **kw):
-    global __centralWidgetInstance
-    if __centralWidgetInstance is None:
-        __centralWidgetInstance = __CentralWidget(*args, **kw)
-    return __centralWidgetInstance
-
-
-class __CentralWidget(QWidget):
+@singleton
+class CentralWidget(QWidget):
 
 ###############################################################################
 # CentralWidget SIGNALS

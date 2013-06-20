@@ -33,6 +33,7 @@ from PyQt4.QtCore import QDateTime
 
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
+from ninja_ide.core.pattern import singleton
 from ninja_ide.gui.explorer import tree_projects_widget
 from ninja_ide.gui.explorer import tree_symbols_widget
 from ninja_ide.gui.explorer import errors_lists
@@ -51,17 +52,9 @@ from ninja_ide.tools.logger import NinjaLogger
 
 logger = NinjaLogger('ninja_ide.gui.explorer.explorer_container')
 
-__explorerContainerInstance = None
 
-
-def ExplorerContainer(*args, **kw):
-    global __explorerContainerInstance
-    if __explorerContainerInstance is None:
-        __explorerContainerInstance = __ExplorerContainer(*args, **kw)
-    return __explorerContainerInstance
-
-
-class __ExplorerContainer(QTabWidget):
+@singleton
+class ExplorerContainer(QTabWidget):
 
 ###############################################################################
 # ExplorerContainer SIGNALS

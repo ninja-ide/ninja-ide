@@ -33,6 +33,7 @@ from PyQt4.QtGui import QShortcut
 
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
+from ninja_ide.core.pattern import singleton
 from ninja_ide import resources
 from ninja_ide.tools import ui_tools
 from ninja_ide.tools import locator
@@ -44,18 +45,8 @@ from ninja_ide.gui.main_panel import class_diagram
 from ninja_ide.gui.main_panel import tab_group
 
 
-__actionsInstance = None
-
-
-# Actions Singleton
-def Actions(*args, **kw):
-    global __actionsInstance
-    if __actionsInstance is None:
-        __actionsInstance = __Actions(*args, **kw)
-    return __actionsInstance
-
-
-class __Actions(QObject):
+@singleton
+class Actions(QObject):
 
     """This class is like the Sauron's Ring:
     One ring to rule them all, One ring to find them,

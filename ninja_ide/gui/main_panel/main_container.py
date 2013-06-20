@@ -32,7 +32,9 @@ from PyQt4.QtCore import QDir
 from ninja_ide import resources
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
-from ninja_ide.core.file_handling.filesystem_notifications import NinjaFileSystemWatcher
+from ninja_ide.core.pattern import singleton
+from ninja_ide.core.file_handling.filesystem_notifications import (
+    NinjaFileSystemWatcher)
 from ninja_ide.gui.main_panel import tab_widget
 from ninja_ide.gui.editor import editor
 from ninja_ide.gui.editor import highlighter
@@ -46,17 +48,9 @@ from ninja_ide.tools.logger import NinjaLogger
 
 logger = NinjaLogger('ninja_ide.gui.main_panel.main_container')
 
-__mainContainerInstance = None
 
-
-def MainContainer(*args, **kw):
-    global __mainContainerInstance
-    if __mainContainerInstance is None:
-        __mainContainerInstance = __MainContainer(*args, **kw)
-    return __mainContainerInstance
-
-
-class __MainContainer(QSplitter):
+@singleton
+class MainContainer(QSplitter):
 
 ###############################################################################
 # MainContainer SIGNALS

@@ -34,6 +34,7 @@ from ninja_ide.core import plugin_manager
 from ninja_ide.core import plugin_services
 from ninja_ide.core import settings
 from ninja_ide.core import ipc
+from ninja_ide.core.pattern import singleton
 from ninja_ide.gui import updates
 from ninja_ide.gui import actions
 from ninja_ide.gui.dialogs import preferences
@@ -66,17 +67,9 @@ logger = NinjaLogger('ninja_ide.gui.ide')
 ###############################################################################
 # IDE: MAIN CONTAINER
 ###############################################################################
-__ideInstance = None
 
-
-def IDE(*args, **kw):
-    global __ideInstance
-    if __ideInstance is None:
-        __ideInstance = __IDE(*args, **kw)
-    return __ideInstance
-
-
-class __IDE(QMainWindow):
+@singleton
+class IDE(QMainWindow):
 ###############################################################################
 # SIGNALS
 #

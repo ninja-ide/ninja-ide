@@ -30,7 +30,8 @@ from PyQt4.QtCore import SIGNAL
 from PyQt4.QtWebKit import QWebPage
 
 from ninja_ide import resources
-from ninja_ide .core import settings
+from ninja_ide.core import settings
+from ninja_ide.core.pattern import singleton
 from ninja_ide.gui.explorer import explorer_container
 from ninja_ide.gui.misc import console_widget
 from ninja_ide.gui.misc import run_widget
@@ -40,17 +41,8 @@ from ninja_ide.gui.misc import results
 from ninja_ide.tools import ui_tools
 
 
-__miscContainerInstance = None
-
-
-def MiscContainer(*args, **kw):
-    global __miscContainerInstance
-    if __miscContainerInstance is None:
-        __miscContainerInstance = __MiscContainer(*args, **kw)
-    return __miscContainerInstance
-
-
-class __MiscContainer(QWidget):
+@singleton
+class MiscContainer(QWidget):
     """From Miscellaneous, contains all the widgets in the bottom area."""
     #Miscellaneous was to long and dificult to write :P
 
