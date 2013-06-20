@@ -93,7 +93,7 @@ class Console(InteractiveConsole):
         return val
 
     def get_type(self, var):
-        """Insert a command into the console."""
+        """Get the type of a variable."""
         type_line = "'.'.join([type(%s).__module__, type(%s).__name__])" % \
             (var[:-1], var[:-1])
         self.get_output()

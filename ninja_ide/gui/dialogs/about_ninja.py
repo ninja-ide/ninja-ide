@@ -61,7 +61,7 @@ class AboutNinja(QDialog):
         #Add description
         vbox.addWidget(QLabel(
 self.tr("""NINJA-IDE (from: "Ninja Is Not Just Another IDE"), is a
-cross-platform integrated development environment specially design
+cross-platform integrated development environment specially designed
 to build Python Applications.
 NINJA-IDE provides tools to simplify the Python-software development
 and handles all kinds of situations thanks to its rich extensibility.""")))

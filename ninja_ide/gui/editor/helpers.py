@@ -519,8 +519,8 @@ def check_for_assistance_completion(editorWidget, line):
         clazz_key = [item for item in symbols.get('classes', [])
             if item.startswith(clazzName)]
         if clazz_key:
-            clazz = symbols['classes'][clazz_key[0]]
-            if [init for init in clazz[1]['functions']
+            clazz = symbols['classes'][clazz_key['lineno']]
+            if [init for init in clazz['members']['functions']
                if init.startswith('__init__')]:
                 return
         editorWidget.textCursor().insertText('\n')

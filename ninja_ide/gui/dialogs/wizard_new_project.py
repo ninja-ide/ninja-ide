@@ -172,13 +172,15 @@ class PythonProjectHandler(plugin_interfaces.IProjectTypeHandler):
         """
         ids = wizard.pageIds()
         page = wizard.page(ids[1])
-        path = page.txtPlace.text()
+        name = page.txtName.text()
+        path = os.path.join(page.txtPlace.text(), name)
         if not path:
             QMessageBox.critical(self, self.tr("Incorrect Location"),
                 self.tr("The project couldn\'t be create"))
             return
+        if not os.path.exists(path):
+            os.makedirs(path)
         project = {}
-        name = page.txtName.text()
         project['name'] = name
         project['description'] = page.txtDescription.toPlainText()
         project['license'] = page.cboLicense.currentText()
@@ -221,13 +223,13 @@ class ImportFromSourcesProjectHandler(plugin_interfaces.IProjectTypeHandler):
         """
         ids = wizard.pageIds()
         page = wizard.page(ids[1])
+        name = page.txtName.text()
         path = page.txtPlace.text()
         if not path:
             QMessageBox.critical(self, self.tr("Incorrect Location"),
                 self.tr("The project couldn\'t be create"))
             return
         project = {}
-        name = page.txtName.text()
         project['name'] = name
         project['description'] = page.txtDescription.toPlainText()
         project['license'] = page.cboLicense.currentText()
@@ -288,7 +290,7 @@ class PageProjectProperties(QWizardPage):
         gbox = QGridLayout(self)
         #Names of the fields to complete
         self.lblName = QLabel(self.tr("New Project Name (*):"))
-        self.lblPlace = QLabel(self.tr("Project Location (*):"))
+        self.lblPlace = QLabel(self.tr("Create in (*):"))
         self.lblDescription = QLabel(self.tr("Project Description:"))
         self.lblLicense = QLabel(self.tr("Project License:"))
         self.lblVenvFolder = QLabel(self.tr("Virtualenv Folder:"))
