@@ -26,13 +26,7 @@ from PyQt4.QtCore import QUrl
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtWebKit import QWebView
 
-<<<<<<< HEAD
-
-from ninja_ide import resources
 from ninja_ide.core.file_handling import file_manager
-=======
-from ninja_ide.core import file_manager
->>>>>>> master
 from ninja_ide.gui.main_panel import itab_item
 
 
