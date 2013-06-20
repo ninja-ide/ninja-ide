@@ -21,6 +21,7 @@ from PyQt4.QtCore import QObject, QFile, QIODevice, QTextStream, SIGNAL
 
 #FIXME: Obtain these form a getter
 from ninja_ide.core import settings
+from ninja_ide.tools.utils import SignalFlowControl
 from file_manager import NinjaIOException, NinjaNoFileNameException, \
 get_file_encoding
 
@@ -79,7 +80,6 @@ class NFile(QObject):
             raise NinjaNoFileNameException("I am asked to write a "
                                 "file but no one told me where")
         swap_save_path = u"%s.nsp" % save_path
-        #SIGNAL: Will save (temp, definitive) to warn folder to do something
 
         flags = QIODevice.WriteOnly | QIODevice.Truncate
         f = QFile(swap_save_path)
@@ -98,6 +98,9 @@ class NFile(QObject):
         f.write(encoded_stream)
         f.flush()
         f.close()
+        #SIGNAL: Will save (temp, definitive) to warn folder to do something
+        self.emit(SIGNAL("willSave(QString, QString)"), swap_save_path,
+                                                        save_path)
         shutil.move(swap_save_path, save_path)
         if not (path and copy):
             self.reset_state()
@@ -129,9 +132,25 @@ class NFile(QObject):
         Phisically move the file
         """
         if self._exists():
+            signal_handler = SignalFlowControl()
             #SIGNALL: WILL MOVE TO, to warn folder to exist
+            self.emit(SIGNAL("willMove(Qt_PyQtObject, QString, QString)"),
+                                                            signal_handler,
+                                                            self._file_path,
+                                                            new_path)
+            if signal_handler.stopped():
+                return
+            if os.path.exists(new_path):
+                signal_handler = SignalFlowControl()
+                self.emit(
+                    SIGNAL("willOverWrite(Qt_PyQtObject, QString, QString)"),
+                                    signal_handler, self._file_path, new_path)
+                if signal_handler.stopped():
+                    return
+
             shutil.move(self._file_path, new_path)
         self._file_path = new_path
+        return
 
     def copy(self, new_path):
         """
@@ -144,10 +163,14 @@ class NFile(QObject):
         This deletes the object and closes the file.
         """
         #if created but exists this file migth to someone else
+        self.close()
         if ((not self._created) or force) and self._exists():
             DEBUG("Deleting our own NFile %s" % self._file_path)
-            os.remove(self._file_path)
-        self.close()
+            signal_handler = SignalFlowControl()
+            self.emit(SIGNAL("willDelete(PyQt_PyObject, PyQt_PyObject)"),
+                                                        signal_handler, self)
+            if not signal_handler.stopped():
+                os.remove(self._file_path)
 
     def close(self):
         """
@@ -161,4 +184,3 @@ class NFile(QObject):
                         self._file_path)
         else:
             self.emit(SIGNAL("fileClosing(QString)"), self._file_path)
-
