@@ -31,9 +31,7 @@ from ninja_ide.gui.dialogs import about_ninja
 
 class MenuAbout(QObject):
 
-    def __init__(self, menuAbout):
-        QObject.__init__(self)
-
+    def install(self, menuAbout):
         startPageAction = menuAbout.addAction(self.tr("Show Start Page"))
         helpAction = menuAbout.addAction(self.tr("Python Help (%s)") %
             resources.get_shortcut("Help").toString(QKeySequence.NativeText))

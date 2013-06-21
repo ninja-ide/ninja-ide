@@ -26,9 +26,9 @@ from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import plugin_util
 from ninja_ide.gui.main_panel import itab_item
-from ninja_ide.gui.main_panel import main_container
-from ninja_ide.gui import actions
-from ninja_ide.gui.explorer import explorer_container
+#from ninja_ide.gui.main_panel import main_container
+#from ninja_ide.gui import actions
+#from ninja_ide.gui.explorer import explorer_container
 
 
 ###############################################################################
@@ -50,22 +50,22 @@ class MainService(QObject):
 
     def __init__(self):
         QObject.__init__(self)
-        self._main = main_container.MainContainer()
-        self._action = actions.Actions()
-        self._explorer = explorer_container.ExplorerContainer()
+        #self._main = main_container.MainContainer()
+        #self._action = actions.Actions()
+        #self._explorer = explorer_container.ExplorerContainer()
         #Connect signals
-        self.connect(self._main, SIGNAL("editorKeyPressEvent(QEvent)"),
-            self._keyPressEvent)
-        self.connect(self._main, SIGNAL("beforeFileSaved(QString)"),
-            self._beforeFileSaved)
-        self.connect(self._main, SIGNAL("fileSaved(QString)"),
-            self._fileSaved)
-        self.connect(self._main, SIGNAL("currentTabChanged(QString)"),
-            self._currentTabChanged)
-        self.connect(self._action, SIGNAL("fileExecuted(QString)"),
-            self._fileExecuted)
-        self.connect(self._main, SIGNAL("fileOpened(QString)"),
-            self._fileOpened)
+        #self.connect(self._main, SIGNAL("editorKeyPressEvent(QEvent)"),
+            #self._keyPressEvent)
+        #self.connect(self._main, SIGNAL("beforeFileSaved(QString)"),
+            #self._beforeFileSaved)
+        #self.connect(self._main, SIGNAL("fileSaved(QString)"),
+            #self._fileSaved)
+        #self.connect(self._main, SIGNAL("currentTabChanged(QString)"),
+            #self._currentTabChanged)
+        #self.connect(self._action, SIGNAL("fileExecuted(QString)"),
+            #self._fileExecuted)
+        #self.connect(self._main, SIGNAL("fileOpened(QString)"),
+            #self._fileOpened)
 
 ###############################################################################
 # Get main GUI Objects

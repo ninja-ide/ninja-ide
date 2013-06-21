@@ -22,7 +22,23 @@ class MenuBar(QObject):
     def __init__(self):
         super(MenuBar, self).__init__()
 
+        self._menuFile = menu_file.MenuFile()
+        self._menuView = menu_view.MenuView()
+        self._menuEdit = menu_edit.MenuEdit()
+        self._menuSource = menu_source.MenuSource()
+        self._menuProject = menu_project.MenuProject()
+        self._menuPlugins = menu_plugins.MenuPlugins()
+        self._menuAbout = menu_about.MenuAbout()
+
         ide.IDE.register_service(self, 'menu_bar')
+        ide.IDE.register_service(self._menuFile, 'menu_file')
+
+        menu_file_connections = (
+            {'target': 'main_container',
+            'signal_name': 'recentTabsModified(QStringList)',
+            'slot': 'update_recent_files'}
+        )
+        ide.IDE.register_signals('menu_file', menu_file_connections)
 
     def install(self, ide):
         #Menu
@@ -36,13 +52,13 @@ class MenuBar(QObject):
         about = menubar.addMenu(self.tr("Abou&t"))
 
         #The order of the icons in the toolbar is defined by this calls
-        self._menuFile = menu_file.MenuFile(file_, ide.toolbar, ide)
-        self._menuView = menu_view.MenuView(view, ide.toolbar, ide)
-        self._menuEdit = menu_edit.MenuEdit(edit, ide.toolbar)
-        self._menuSource = menu_source.MenuSource(source)
-        self._menuProject = menu_project.MenuProject(project, ide.toolbar)
-        self._menuPlugins = menu_plugins.MenuPlugins(ide.pluginsMenu)
-        self._menuAbout = menu_about.MenuAbout(about)
+        self._menuFile.install(file_, ide.toolbar, ide)
+        self._menuView.install(view, ide.toolbar, ide)
+        self._menuEdit.install(edit, ide.toolbar)
+        self._menuSource.install(source)
+        self._menuProject.install(project, ide.toolbar)
+        self._menuPlugins.install(ide.pluginsMenu)
+        self._menuAbout.install(about)
 
         ide.IDE.register_service(self._menuFile, 'menu_file')
 

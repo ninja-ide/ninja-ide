@@ -32,9 +32,7 @@ from ninja_ide.gui.dialogs import preferences
 
 class MenuEdit(QObject):
 
-    def __init__(self, menuEdit, toolbar):
-        QObject.__init__(self)
-
+    def install(self, menuEdit, toolbar):
         undoAction = menuEdit.addAction(QIcon(resources.IMAGES['undo']),
             (self.trUtf8("Undo (%s+Z)") % settings.OS_KEY))
         redoAction = menuEdit.addAction(QIcon(resources.IMAGES['redo']),

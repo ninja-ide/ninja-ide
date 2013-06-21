@@ -37,7 +37,6 @@ from ninja_ide.core import plugin_services
 from ninja_ide.core import settings
 from ninja_ide.core import ipc
 from ninja_ide.gui import updates
-from ninja_ide.gui import actions
 from ninja_ide.gui.dialogs import preferences
 from ninja_ide.gui.dialogs import traceback_widget
 from ninja_ide.tools.completion import completion_daemon
@@ -96,8 +95,6 @@ class IDE(QMainWindow):
         #Opacity
         self.opacity = settings.MAX_OPACITY
 
-        #Define Actions object before the UI
-        self.actions = actions.Actions()
         #Main Widget - Create first than everything else
         self.central = central_widget.CentralWidget(self)
         self.load_ui(self.central)
@@ -135,13 +132,7 @@ class IDE(QMainWindow):
         self.trayIcon = updates.TrayIconUpdates(self)
         self.trayIcon.show()
 
-        self.connect(self.mainContainer,
-            SIGNAL("recentTabsModified(QStringList)"),
-            self._menuFile.update_recent_files)
-
         self.register_service(self, 'ide')
-        #Actions is temporal
-        self.register_service(self.actions, 'actions')
         #Register signals connections
         connections = (
             {'target': 'main_container',
@@ -149,19 +140,6 @@ class IDE(QMainWindow):
             'slot': 'show_status_message'}
             )
         self.register_signals('ide', connections)
-        #Actions is temporal
-        actions_connections = (
-            {'target': 'main_container',
-            'signal_name': 'currentTabChanged(QString)',
-            'slot': 'update_migration_tips'},
-            {'target': 'main_container',
-            'signal_name': 'updateFileMetadata(QString)',
-            'slot': 'update_migration_tips'},
-            {'target': 'main_container',
-            'signal_name': 'migrationAnalyzed()',
-            'slot': 'update_migration_tips'}
-            )
-        self.register_signals('actions', actions_connections)
         for service_name in self.__IDECONNECTIONS:
             self.install_service(service_name)
         self.__created = True

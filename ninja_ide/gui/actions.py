@@ -38,6 +38,7 @@ from ninja_ide import resources
 from ninja_ide.tools import ui_tools
 from ninja_ide.tools import locator
 from ninja_ide.tools import json_manager
+from ninja_ide.gui import ide
 from ninja_ide.gui.editor import editor
 from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.dialogs import from_import_dialog
@@ -71,6 +72,22 @@ class Actions(QObject):
             0: self._navigate_code_jumps,
             1: self._navigate_bookmarks,
             2: self._navigate_breakpoints}
+
+        ide.IDE.register_service(self, 'actions')
+
+        #Register signals connections
+        connections = (
+            {'target': 'main_container',
+            'signal_name': 'currentTabChanged(QString)',
+            'slot': 'update_migration_tips'},
+            {'target': 'main_container',
+            'signal_name': 'updateFileMetadata(QString)',
+            'slot': 'update_migration_tips'},
+            {'target': 'main_container',
+            'signal_name': 'migrationAnalyzed()',
+            'slot': 'update_migration_tips'}
+            )
+        ide.IDE.register_signals('actions', connections)
 
     def install_shortcuts(self, ide):
         """Install the shortcuts to the IDE."""

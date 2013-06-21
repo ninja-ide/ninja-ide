@@ -29,8 +29,7 @@ from ninja_ide import resources
 
 class MenuView(QObject):
 
-    def __init__(self, menuView, toolbar, ide):
-        QObject.__init__(self)
+    def install(self, menuView, toolbar, ide):
         self.__ide = ide
 
         self.hideConsoleAction = menuView.addAction(

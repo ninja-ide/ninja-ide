@@ -27,9 +27,7 @@ from ninja_ide.gui import actions
 
 class MenuProject(QObject):
 
-    def __init__(self, menuProject, toolbar):
-        QObject.__init__(self)
-
+    def install(self, menuProject, toolbar):
         runAction = menuProject.addAction(QIcon(resources.IMAGES['play']),
             (self.trUtf8("Run Project (%s)") %
                 resources.get_shortcut("Run-project").toString(
