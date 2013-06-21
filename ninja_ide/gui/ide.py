@@ -137,18 +137,33 @@ class IDE(QMainWindow):
 
         self.connect(self._menuFile, SIGNAL("openFile(QString)"),
             self.mainContainer.open_file)
-        self.connect(self.mainContainer, SIGNAL("fileSaved(QString)"),
-            self.show_status_message)
         self.connect(self.mainContainer,
             SIGNAL("recentTabsModified(QStringList)"),
             self._menuFile.update_recent_files)
-        self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
-            self.actions.update_migration_tips)
-        self.connect(self.mainContainer, SIGNAL("updateFileMetadata(QString)"),
-            self.actions.update_migration_tips)
-        self.connect(self.mainContainer, SIGNAL("migrationAnalyzed()"),
-            self.actions.update_migration_tips)
 
+        self.register_service(self, 'ide')
+        #Actions is temporal
+        self.register_service(self.actions, 'actions')
+        #Register signals connections
+        connections = (
+            {'target': 'main_container',
+            'signal_name': 'fileSaved(QString)',
+            'slot': 'show_status_message'}
+            )
+        self.register_signals('ide', connections)
+        #Actions is temporal
+        actions_connections = (
+            {'target': 'main_container',
+            'signal_name': 'currentTabChanged(QString)',
+            'slot': 'update_migration_tips'},
+            {'target': 'main_container',
+            'signal_name': 'updateFileMetadata(QString)',
+            'slot': 'update_migration_tips'},
+            {'target': 'main_container',
+            'signal_name': 'migrationAnalyzed()',
+            'slot': 'update_migration_tips'}
+            )
+        self.register_signals('actions', actions_connections)
         for service_name in self.__IDECONNECTIONS:
             self.install_service(service_name)
 
