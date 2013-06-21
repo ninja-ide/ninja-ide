@@ -19,6 +19,7 @@ from __future__ import unicode_literals
 
 import collections
 
+from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QMainWindow
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QToolBar
@@ -137,7 +138,7 @@ class IDE(QMainWindow):
 
         key = Qt.Key_1
         for i in range(10):
-            if sys.platform == "darwin":
+            if settings.IS_MAC_OS:
                 short = TabShortcuts(
                     QKeySequence(Qt.CTRL + Qt.ALT + key), self, i)
             else:
@@ -207,14 +208,11 @@ class IDE(QMainWindow):
             shortcut.setKey(short(shortcut_name))
 
     def _change_tab_index(self):
-        editorWidget = self.get_actual_editor()
-        if editorWidget and editorWidget.hasFocus():
-            container = self.actualTab
-        else:
-            container = ide.IDE.get_service('explorer_container')
-        obj = self.sender()
-        if container and (obj.index < container.count()):
-            container.setCurrentIndex(obj.index)
+        widget = QApplication.focusWidget()
+        shortcut_index = getattr(widget, 'shortcut_index', None)
+        if shortcut_index:
+            obj = self.sender()
+            shortcut_index(obj.index)
 
     def _process_connection(self):
         connection = self.s_listener.nextPendingConnection()
@@ -478,3 +476,10 @@ class IDE(QMainWindow):
                 plugin_error_dialog.add_traceback(err_tuple[0], err_tuple[1])
             #show the dialog
             plugin_error_dialog.exec_()
+
+
+class TabShortcuts(QShortcut):
+
+    def __init__(self, key, parent, index):
+        super(TabShortcuts, self).__init__(key, parent)
+        self.index = index

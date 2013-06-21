@@ -28,6 +28,7 @@ from ninja_ide.dependencies import pep8mod
 
 # Use this flags instead of sys.platform spreaded in the source code
 IS_WINDOWS = False
+IS_MAC_OS = False
 
 OS_KEY = "Ctrl"
 
@@ -40,6 +41,7 @@ if sys.platform == "darwin":
     FONT_FAMILY = 'Monaco'
     FONT_SIZE = 11
     OS_KEY = QKeySequence(Qt.CTRL).toString(QKeySequence.NativeText)
+    IS_MAC_OS = True
 elif sys.platform == "win32":
     FONT_FAMILY = 'Courier'
     FONT_SIZE = 10

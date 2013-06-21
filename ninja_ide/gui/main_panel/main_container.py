@@ -177,6 +177,8 @@ class MainContainer(QWidget):
             )
         ide.IDE.register_signals('main_container', connections)
 
+        self.install_shortcuts()
+
     def install_shortcuts(self):
         short = resources.get_shortcut
         shortChangeTab = QShortcut(short("Change-Tab"), self)
@@ -311,6 +313,123 @@ class MainContainer(QWidget):
             self.move_tab_to_next_split)
         self.connect(self.shortChangeTabVisibility, SIGNAL("activated()"),
             self.ide.mainContainer.change_tabs_visibility)
+
+    def editor_go_to_definition(self):
+        """Search the definition of the method or variable under the cursor.
+
+        If more than one method or variable is found with the same name,
+        shows a table with the results and let the user decide where to go."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            editorWidget.go_to_definition()
+
+    def editor_redo(self):
+        """Execute the redo action in the current editor."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            editorWidget.redo()
+
+    def editor_indent_less(self):
+        """Indent 1 position to the left for the current line or selection."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            editorWidget.indent_less()
+
+    def editor_indent_more(self):
+        """Indent 1 position to the right for the current line or selection."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            editorWidget.indent_more()
+
+    def editor_insert_debugging_prints(self):
+        """Insert a print statement in each selected line."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            helpers.insert_debugging_prints(editorWidget)
+
+    def editor_insert_pdb(self):
+        """Insert a pdb.set_trace() statement in tjhe current line."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            helpers.insert_pdb(editorWidget)
+
+    def editor_comment(self):
+        """Mark the current line or selection as a comment."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            helpers.comment(editorWidget)
+
+    def editor_uncomment(self):
+        """Uncomment the current line or selection."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            helpers.uncomment(editorWidget)
+
+    def editor_insert_horizontal_line(self):
+        """Insert an horizontal lines of comment symbols."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            helpers.insert_horizontal_line(editorWidget)
+
+    def editor_insert_title_comment(self):
+        """Insert a Title surrounded by comment symbols."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            helpers.insert_title_comment(editorWidget)
+
+    def editor_remove_trailing_spaces(self):
+        """Remove the trailing spaces in the current editor."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            helpers.remove_trailing_spaces(editorWidget)
+
+    def editor_replace_tabs_with_spaces(self):
+        """Replace the Tabs with Spaces in the current editor."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            helpers.replace_tabs_with_spaces(editorWidget)
+
+    def editor_move_up(self):
+        """Move the current line or selection one position up."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            helpers.move_up(editorWidget)
+
+    def editor_move_down(self):
+        """Move the current line or selection one position down."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            helpers.move_down(editorWidget)
+
+    def editor_remove_line(self):
+        """Remove the current line or selection."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            helpers.remove_line(editorWidget)
+
+    def editor_duplicate(self):
+        """Duplicate the current line or selection."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            helpers.duplicate(editorWidget)
+
+    def editor_highlight_word(self):
+        """Highlight the occurrences of the current word in the editor."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            editorWidget.highlight_selected_word()
+
+    def editor_complete_declaration(self):
+        """Do the opposite action that Complete Declaration expect."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            editorWidget.complete_declaration()
+
+    def editor_go_to_line(self, line):
+        """Jump to the specified line in the current editor."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            editorWidget.jump_to_line(line)
 
     def _recent_files_changed(self, files):
         self.emit(SIGNAL("recentTabsModified(QStringList)"), files)
@@ -1103,12 +1222,8 @@ class MainContainer(QWidget):
         if widget is not None:
             widget.setFocus()
 
-
-class TabShortcuts(QShortcut):
-
-    def __init__(self, key, parent, index):
-        super(TabShortcuts, self).__init__(key, parent)
-        self.index = index
+    def shortcut_index(self, index):
+        self.actualTab.setCurrentIndex(index)
 
 
 #Register MainContainer
