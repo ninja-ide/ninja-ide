@@ -282,6 +282,8 @@ SHORTCUTS = {
     "Open-recent-closed": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_T),
     "Change-Tab": QKeySequence(Qt.CTRL + Qt.Key_PageDown),
     "Change-Tab-Reverse": QKeySequence(Qt.CTRL + Qt.Key_PageUp),
+    "Move-Tab-to-right": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_0),
+    "Move-Tab-to-left": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_9),
     "Show-Code-Nav": QKeySequence(Qt.CTRL + Qt.Key_1),
     "Show-Paste-History": QKeySequence(Qt.CTRL + Qt.Key_4),
     "History-Copy": QKeySequence(Qt.CTRL + Qt.ALT + Qt.Key_C),
