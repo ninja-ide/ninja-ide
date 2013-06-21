@@ -131,8 +131,6 @@ class IDE(QMainWindow):
         self.trayIcon = updates.TrayIconUpdates(self)
         self.trayIcon.show()
 
-        self.connect(self._menuFile, SIGNAL("openFile(QString)"),
-            self.mainContainer.open_file)
         self.connect(self.mainContainer,
             SIGNAL("recentTabsModified(QStringList)"),
             self._menuFile.update_recent_files)
@@ -162,6 +160,7 @@ class IDE(QMainWindow):
         self.register_signals('actions', actions_connections)
         for service_name in self.__IDECONNECTIONS:
             self.install_service(service_name)
+        self.__created = True
 
     @classmethod
     def get_service(cls, service_name):
@@ -266,7 +265,7 @@ class IDE(QMainWindow):
             #self.status.explore_file_code)
         #Create Explorer Panel
         self.explorer = explorer_container.ExplorerContainer(self)
-        self.connect(self.central, SIGNAL("splitterCentralRotated()"),
+        self.connect(self.central, SIGNAL("splitterBaseRotated()"),
             self.explorer.rotate_tab_position)
         #self.connect(self.explorer, SIGNAL("updateLocator()"),
             #self.status.explore_code)
@@ -418,9 +417,9 @@ class IDE(QMainWindow):
             qsettings.setValue("window/size", self.size())
             qsettings.setValue("window/pos", self.pos())
         #Save the size of de splitters
-        qsettings.setValue("window/central/areaSize",
+        qsettings.setValue("window/central/baseSize",
             self.central.get_area_sizes())
-        qsettings.setValue("window/central/mainSize",
+        qsettings.setValue("window/central/insideSize",
             self.central.get_main_sizes())
         #Save the toolbar visibility
         if not self.toolbar.isVisible() and self.menuBar().isVisible():
@@ -428,7 +427,9 @@ class IDE(QMainWindow):
         else:
             qsettings.setValue("window/hide_toolbar", False)
         #Save Misc state
-        #qsettings.setValue("window/show_misc", self.misc.isVisible())
+
+        qsettings.setValue("window/show_region1", self.misc.isVisible())
+
         #Save Profiles
         if self.profile is not None:
             self.actions.save_profile(self.profile)

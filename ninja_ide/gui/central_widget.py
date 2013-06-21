@@ -26,7 +26,6 @@ from PyQt4.QtGui import QComboBox
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QSplitter
-from PyQt4.QtGui import QScrollBar
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QSettings
@@ -50,157 +49,131 @@ class CentralWidget(QWidget):
 ###############################################################################
 
     def __init__(self, parent=None):
-        QWidget.__init__(self, parent)
+        super(CentralWidget, self).__init__(parent)
         self.parent = parent
         #This variables are used to save the splitter sizes before hide
-        self._splitterMainSizes = None
-        self._splitterAreaSizes = None
+        self._splitterBaseSizes = None
+        self._splitterInsideSizes = None
         self.lateralPanel = None
 
         hbox = QHBoxLayout(self)
         hbox.setContentsMargins(0, 0, 0, 0)
         hbox.setSpacing(0)
-        #Create Splitters to divide the UI in: MainPanel, Explorer, Misc
-        self._splitterArea = QSplitter(Qt.Horizontal)
-        self._splitterMain = QSplitter(Qt.Vertical)
-
-        #Create scrollbar for follow mode
-        self.scrollBar = QScrollBar(Qt.Vertical, self)
-        self.scrollBar.setFixedWidth(20)
-        self.scrollBar.setToolTip('Follow Mode: Scroll the Editors together')
-        self.scrollBar.hide()
-        self.connect(self.scrollBar, SIGNAL("valueChanged(int)"),
-            self.move_follow_scrolls)
+        #Create Splitters to divide the UI 3 regions
+        self._splitterBase = QSplitter(Qt.Horizontal)
+        self._splitterInside = QSplitter(Qt.Vertical)
+        self._splitterBase.addWidget(self._splitterInside)
 
         #Add to Main Layout
-        hbox.addWidget(self.scrollBar)
-        hbox.addWidget(self._splitterArea)
+        hbox.addWidget(self._splitterBase)
 
-    def insert_central_container(self, container):
-        self.mainContainer = container
-        self._splitterMain.insertWidget(0, container)
+    def insert_widget_region0(self, container):
+        self._splitterInside.insertWidget(0, container)
 
-    def insert_lateral_container(self, container):
+    def insert_widget_region1(self, container):
+        self._splitterInside.insertWidget(1, container)
+
+    def insert_widget_region2(self, container):
         self.lateralPanel = LateralPanel(container)
-        self._splitterArea.insertWidget(0, self.lateralPanel)
-
-    def insert_bottom_container(self, container):
-        self.misc = container
-        self._splitterMain.insertWidget(1, container)
+        self._splitterBase.addWidget(self.lateralPanel)
 
     def showEvent(self, event):
         #Show Event
-        QWidget.showEvent(self, event)
+        super(CentralWidget, self).showEvent(event)
         #Avoid recalculate the panel sizes if they are already loaded
-        if self._splitterArea.count() == 2:
+        if self._splitterBase.count() == 2:
             return
         #Rearrange widgets on Window
-        self._splitterArea.insertWidget(0, self._splitterMain)
         qsettings = QSettings()
         #Lists of sizes as list of QVariant- heightList = [QVariant, QVariant]
-        heightList = list(qsettings.value("window/central/mainSize",
+        heightList = list(qsettings.value("window/central/insideSize",
             [(self.height() / 3) * 2, self.height() / 3]))
-        widthList = list(qsettings.value("window/central/areaSize",
+        widthList = list(qsettings.value("window/central/baseSize",
             [(self.width() / 6) * 5, self.width() / 6]))
-        self._splitterMainSizes = [int(heightList[0]), int(heightList[1])]
-        self._splitterAreaSizes = [int(widthList[0]), int(widthList[1])]
+        self._splitterInsideSizes = [int(heightList[0]), int(heightList[1])]
+        self._splitterBaseSizes = [int(widthList[0]), int(widthList[1])]
         if not event.spontaneous():
-            self.change_misc_visibility()
+            self.change_region1_visibility()
         if bin(settings.UI_LAYOUT)[-1] == '1':
-            self.splitter_central_rotate()
+            self.splitter_base_rotate()
         if bin(settings.UI_LAYOUT >> 1)[-1] == '1':
-            self.splitter_misc_rotate()
+            self.splitter_region1_rotate()
         if bin(settings.UI_LAYOUT >> 2)[-1] == '1':
-            self.splitter_central_orientation()
+            self.splitter_base_orientation()
         #Set the sizes to splitters
-        self._splitterMain.setSizes(self._splitterMainSizes)
-        self._splitterArea.setSizes(self._splitterAreaSizes)
-        self.misc.setVisible(
-            qsettings.value("window/show_misc", False, type=bool))
+        self._splitterInside.setSizes(self._splitterInsideSizes)
+        self._splitterBase.setSizes(self._splitterBaseSizes)
+        self.tool.setVisible(
+            qsettings.value("window/show_region1", False, type=bool))
 
-    def change_misc_visibility(self):
-        if self.misc.isVisible():
-            self._splitterMainSizes = self._splitterMain.sizes()
-            self.misc.hide()
-            widget = self.mainContainer.get_actual_widget()
-            if widget:
-                widget.setFocus()
+    def change_region1_visibility(self):
+        region1 = self._splitterInside.widget(1)
+        if region1 and region1.isVisible():
+            self._splitterInsideSizes = self._splitterInside.sizes()
+            region1.hide()
+            region0 = self._splitterInside.widget(0)
+            if region0:
+                region0.setFocus()
         else:
-            self.misc.show()
-            self.misc.gain_focus()
+            region1.show()
+            region1.gain_focus()
 
-    def change_main_visibility(self):
-        if self.mainContainer.isVisible():
-            self.mainContainer.hide()
+    def change_inside_visibility(self):
+        region0 = self._splitterInside.widget(0)
+        if region0 and region0.isVisible():
+            region0.hide()
         else:
-            self.mainContainer.show()
+            region0.show()
 
     def change_explorer_visibility(self, force_hide=False):
-        if self.lateralPanel.isVisible() or force_hide:
-            self._splitterAreaSizes = self._splitterArea.sizes()
+        if self.lateralPanel and (self.lateralPanel.isVisible() or force_hide):
+            self._splitterBaseSizes = self._splitterBase.sizes()
             self.lateralPanel.hide()
         else:
             self.lateralPanel.show()
 
-    def splitter_central_rotate(self):
-        w1, w2 = self._splitterArea.widget(0), self._splitterArea.widget(1)
-        self._splitterArea.insertWidget(0, w2)
-        self._splitterArea.insertWidget(1, w1)
-        self.emit(SIGNAL("splitterCentralRotated()"))
+    def splitter_base_rotate(self):
+        w1, w2 = self._splitterBase.widget(0), self._splitterBase.widget(1)
+        self._splitterBase.insertWidget(0, w2)
+        self._splitterBase.insertWidget(1, w1)
+        self.emit(SIGNAL("splitterBaseRotated()"))
 
-    def splitter_central_orientation(self):
-        if self._splitterArea.orientation() == Qt.Horizontal:
-            self._splitterArea.setOrientation(Qt.Vertical)
+    def splitter_base_orientation(self):
+        if self._splitterBase.orientation() == Qt.Horizontal:
+            self._splitterBase.setOrientation(Qt.Vertical)
         else:
-            self._splitterArea.setOrientation(Qt.Horizontal)
+            self._splitterBase.setOrientation(Qt.Horizontal)
 
-    def splitter_misc_rotate(self):
+    def splitter_inside_rotate(self):
         w1, w2 = self._splitterMain.widget(0), self._splitterMain.widget(1)
         self._splitterMain.insertWidget(0, w2)
         self._splitterMain.insertWidget(1, w1)
 
-    def splitter_misc_orientation(self):
-        if self._splitterMain.orientation() == Qt.Horizontal:
-            self._splitterMain.setOrientation(Qt.Vertical)
+    def splitter_inside_orientation(self):
+        if self._splitterInside.orientation() == Qt.Horizontal:
+            self._splitterInside.setOrientation(Qt.Vertical)
         else:
-            self._splitterMain.setOrientation(Qt.Horizontal)
+            self._splitterInside.setOrientation(Qt.Horizontal)
 
     def get_area_sizes(self):
-        if self.lateralPanel.isVisible():
-            self._splitterAreaSizes = self._splitterArea.sizes()
-        return self._splitterAreaSizes
+        if self.lateralPanel and self.lateralPanel.isVisible():
+            self._splitterBaseSizes = self._splitterBase.sizes()
+        return self._splitterBaseSizes
 
-    def get_main_sizes(self):
-        if self.misc.isVisible():
-            self._splitterMainSizes = self._splitterMain.sizes()
-        return self._splitterMainSizes
-
-    def enable_follow_mode_scrollbar(self, val):
-        if val:
-            editorWidget = self.mainContainer.get_actual_editor()
-            maxScroll = editorWidget.verticalScrollBar().maximum()
-            position = editorWidget.verticalScrollBar().value()
-            self.scrollBar.setMaximum(maxScroll)
-            self.scrollBar.setValue(position)
-        self.scrollBar.setVisible(val)
-
-    def move_follow_scrolls(self, val):
-        widget = self.mainContainer._tabMain.currentWidget()
-        diff = widget._sidebarWidget.highest_line - val
-        s1 = self.mainContainer._tabMain.currentWidget().verticalScrollBar()
-        s2 = self.mainContainer._tabSecondary.\
-            currentWidget().verticalScrollBar()
-        s1.setValue(val)
-        s2.setValue(val + diff)
+    def get_inside_sizes(self):
+        region1 = self._splitterInside.widget(1)
+        if region1.isVisible():
+            self._splitterInsideSizes = self._splitterInside.sizes()
+        return self._splitterInsideSizes
 
 
 class LateralPanel(QWidget):
 
-    def __init__(self, explorer):
+    def __init__(self, component):
         QWidget.__init__(self)
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
-        vbox.addWidget(explorer)
+        vbox.addWidget(component)
         hbox = QHBoxLayout()
         hbox.setContentsMargins(0, 0, 0, 0)
         self.labelText = "Ln: %s, Col: %s"
