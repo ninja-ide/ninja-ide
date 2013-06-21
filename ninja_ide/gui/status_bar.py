@@ -462,5 +462,19 @@ def register_status_bar():
     status = StatusBar()
     ide.IDE.register_service(status, 'status_bar')
 
+    #Register signals connections
+    connections = (
+        {'target': 'main_container',
+        'signal_name': 'currentTabChanged(QString)',
+        'slot': 'handle_tab_changed'},
+        {'target': 'main_container',
+        'signal_name': 'updateLocator(QString)',
+        'slot': 'explore_file_code'},
+        {'target': 'explorer_container',
+        'signal_name': 'updateLocator()',
+        'slot': 'explore_code'}
+        )
+    ide.IDE.register_signals('status_bar', connections)
+
 
 register_status_bar()

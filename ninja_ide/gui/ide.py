@@ -69,6 +69,10 @@ class IDE(QMainWindow):
 
     __IDESERVICES = {}
     __IDECONNECTIONS = {}
+    # CONNECTIONS structure:
+    # ({'target_service': obj, 'signal_name': string,
+    #   'slot': 'name_of_function'},)
+    # On modify add: {connected: True}
     __created = False
 
     def __init__(self, start_server=False):
@@ -146,7 +150,8 @@ class IDE(QMainWindow):
         self.connect(self.mainContainer, SIGNAL("migrationAnalyzed()"),
             self.actions.update_migration_tips)
 
-    def get_service(self, service_name):
+    @classmethod
+    def get_service(cls, service_name):
         return IDE.__IDESERVICES.get(service_name, None)
 
     @classmethod
@@ -163,14 +168,25 @@ class IDE(QMainWindow):
         self._connect_signals()
 
     @classmethod
-    def register_signal(cls, service_name, connections):
+    def register_signals(cls, service_name, connections):
         IDE.__IDECONNECTIONS[service_name] = connections
 
     def _connect_signals(self):
-        for key in self.__IDECONNECTIONS:
-            pass
-        #self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
-            #self.status.handle_tab_changed)
+        for service_name in self.__IDECONNECTIONS:
+            connections = self.__IDECONNECTIONS[service_name]
+            for connection in connections:
+                if connection.get('connected', False):
+                    continue
+                target = self.__IDESERVICES.get(
+                    connection['target_service'], None)
+                service = self.__IDESERVICES.get(
+                    connection[service_name], None)
+                slot = getattr(target, connection['slot'], None)
+                signal_name = connection['signal_name']
+                if service and target and isinstance(
+                   slot, collections.Callable):
+                    self.connect(target, SIGNAL(signal_name), slot)
+                    connection['connected'] = True
 
     def _process_connection(self):
         connection = self.s_listener.nextPendingConnection()
@@ -242,15 +258,10 @@ class IDE(QMainWindow):
         # When close the last tab cleanup
         self.connect(self.mainContainer, SIGNAL("allTabsClosed()"),
             self._last_tab_closed)
-        # Update symbols
-        self.connect(self.mainContainer, SIGNAL("updateLocator(QString)"),
-            self.status.explore_file_code)
         #Create Explorer Panel
         self.explorer = explorer_container.ExplorerContainer(self)
         self.connect(self.central, SIGNAL("splitterCentralRotated()"),
             self.explorer.rotate_tab_position)
-        self.connect(self.explorer, SIGNAL("updateLocator()"),
-            self.status.explore_code)
         self.connect(self.explorer, SIGNAL("goToDefinition(int)"),
             self.actions.editor_go_to_line)
         self.connect(self.explorer, SIGNAL("projectClosed(QString)"),
