@@ -35,6 +35,7 @@ from ninja_ide.core import settings
 from ninja_ide.core.pattern import singleton
 from ninja_ide.core.file_handling.filesystem_notifications import (
     NinjaFileSystemWatcher)
+from ninja_ide.gui import ide
 from ninja_ide.gui.main_panel import tab_widget
 from ninja_ide.gui.editor import editor
 from ninja_ide.gui.editor import highlighter
@@ -145,6 +146,22 @@ class MainContainer(QSplitter):
         # Refresh recent tabs
         self.connect(self._tabMain, SIGNAL("recentTabsModified(QStringList)"),
             self._recent_files_changed)
+
+        ide.IDE.register_service(self, 'main_container')
+
+        #Register signals connections
+        #connections = (
+            #{'target': 'main_container',
+            #'signal_name': 'currentTabChanged(QString)',
+            #'slot': 'handle_tab_changed'},
+            #{'target': 'main_container',
+            #'signal_name': 'updateLocator(QString)',
+            #'slot': 'explore_file_code'},
+            #{'target': 'explorer_container',
+            #'signal_name': 'updateLocator()',
+            #'slot': 'explore_code'}
+            #)
+        #ide.IDE.register_signals('main_container', connections)
 
     def _recent_files_changed(self, files):
         self.emit(SIGNAL("recentTabsModified(QStringList)"), files)
@@ -914,3 +931,7 @@ class MainContainer(QSplitter):
         widget = self.actualTab.currentWidget()
         if widget is not None:
             widget.setFocus()
+
+
+#Register MainContainer
+MainContainer = MainContainer()

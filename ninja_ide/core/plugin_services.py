@@ -361,7 +361,6 @@ class MenuAppService(QObject):
 #        settings.set_symbols_handler(file_extension, symbols_handler)
 
 
-
 class ExplorerService(QObject):
     # SIGNALS
     projectOpened = pyqtSignal("QString")
