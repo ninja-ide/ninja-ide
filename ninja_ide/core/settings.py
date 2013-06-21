@@ -28,6 +28,7 @@ from ninja_ide.dependencies import pep8mod
 
 # Use this flags instead of sys.platform spreaded in the source code
 IS_WINDOWS = False
+IS_MAC_OS_X = False
 
 OS_KEY = "Ctrl"
 
@@ -36,6 +37,7 @@ FONT_SIZE = 11
 if sys.platform == "darwin":
     from PyQt4.QtGui import QKeySequence
     from PyQt4.QtCore import Qt
+    IS_MAC_OS_X = True
 
     FONT_FAMILY = 'Monaco'
     FONT_SIZE = 11
