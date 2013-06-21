@@ -28,6 +28,7 @@ from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QScrollBar
+from PyQt4.QtGui import QShortcut
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QDir
@@ -166,7 +167,7 @@ class MainContainer(QWidget):
         self.connect(self._tabMain, SIGNAL("recentTabsModified(QStringList)"),
             self._recent_files_changed)
 
-        ide.IDE.register_service(self, 'main_container')
+        ide.IDE.register_service('main_container', self)
 
         #Register signals connections
         connections = (
@@ -175,6 +176,141 @@ class MainContainer(QWidget):
             'slot': 'open_file'}
             )
         ide.IDE.register_signals('main_container', connections)
+
+    def install_shortcuts(self):
+        short = resources.get_shortcut
+        shortChangeTab = QShortcut(short("Change-Tab"), self)
+        ide.IDE.register_shortcut('Change-Tab', shortChangeTab)
+        shortChangeTabReverse = QShortcut(short("Change-Tab-Reverse"), self)
+        ide.IDE.register_shortcut('Change-Tab-Reverse', shortChangeTabReverse)
+        shortDuplicate = QShortcut(short("Duplicate"), self)
+        ide.IDE.register_shortcut('Duplicate', shortDuplicate)
+        shortRemove = QShortcut(short("Remove-line"), self)
+        ide.IDE.register_shortcut('Remove-line', shortRemove)
+        shortRemove = QShortcut(short("Remove-line"), self)
+        ide.IDE.register_shortcut('Remove-line', shortRemove)
+        shortMoveUp = QShortcut(short("Move-up"), self)
+        ide.IDE.register_shortcut('Move-up', shortMoveUp)
+        shortMoveDown = QShortcut(short("Move-down"), self)
+        ide.IDE.register_shortcut('Move-down', shortMoveDown)
+        shortCloseTab = QShortcut(short("Close-tab"), self)
+        ide.IDE.register_shortcut('Close-tab', shortCloseTab)
+        shortNew = QShortcut(short("New-file"), self.ide)
+        ide.IDE.register_shortcut('New-file', shortNew)
+        shortOpen = QShortcut(short("Open-file"), self)
+        ide.IDE.register_shortcut('Open-file', shortOpen)
+        shortSave = QShortcut(short("Save-file"), self)
+        ide.IDE.register_shortcut('Save-file', shortSave)
+        shortRedo = QShortcut(short("Redo"), self)
+        ide.IDE.register_shortcut('Redo', shortRedo)
+        shortAddBookmark = QShortcut(short("Add-Bookmark-or-Breakpoint"), self)
+        ide.IDE.register_shortcut('Add-Bookmark-or-Breakpoint',
+            shortAddBookmark)
+        shortComment = QShortcut(short("Comment"), self)
+        ide.IDE.register_shortcut('Comment', shortComment)
+        shortUncomment = QShortcut(short("Uncomment"), self)
+        ide.IDE.register_shortcut('Uncomment', shortUncomment)
+        shortHorizontalLine = QShortcut(short("Horizontal-line"), self)
+        ide.IDE.register_shortcut('Horizontal-line', shortHorizontalLine)
+        shortTitleComment = QShortcut(short("Title-comment"), self)
+        ide.IDE.register_shortcut('Title-comment', shortTitleComment)
+        shortIndentLess = QShortcut(short("Indent-less"), self)
+        ide.IDE.register_shortcut('Indent-less', shortIndentLess)
+        shortSplitHorizontal = QShortcut(short("Split-horizontal"), self)
+        ide.IDE.register_shortcut('Split-horizontal', shortSplitHorizontal)
+        shortSplitVertical = QShortcut(short("Split-vertical"), self)
+        ide.IDE.register_shortcut('Split-vertical', shortSplitVertical)
+        shortFollowMode = QShortcut(short("Follow-mode"), self)
+        ide.IDE.register_shortcut('Follow-mode', shortFollowMode)
+        shortReloadFile = QShortcut(short("Reload-file"), self)
+        ide.IDE.register_shortcut('Reload-file', shortReloadFile)
+        shortImport = QShortcut(short("Import"), self)
+        ide.IDE.register_shortcut('Import', shortImport)
+        shortGoToDefinition = QShortcut(short("Go-to-definition"), self)
+        ide.IDE.register_shortcut('Go-to-definition', shortGoToDefinition)
+        shortCompleteDeclarations = QShortcut(
+            short("Complete-Declarations"), self)
+        ide.IDE.register_shortcut('Complete-Declarations',
+            shortCompleteDeclarations)
+        shortNavigateBack = QShortcut(short("Navigate-back"), self)
+        ide.IDE.register_shortcut('Navigate-back', shortNavigateBack)
+        shortNavigateForward = QShortcut(short("Navigate-forward"), self)
+        ide.IDE.register_shortcut('Navigate-forward', shortNavigateForward)
+        shortOpenLastTabOpened = QShortcut(short("Open-recent-closed"),
+            self)
+        ide.IDE.register_shortcut('Open-recent-closed', shortOpenLastTabOpened)
+        shortShowCodeNav = QShortcut(short("Show-Code-Nav"), self)
+        ide.IDE.register_shortcut('Show-Code-Nav', shortShowCodeNav)
+        shortChangeSplitFocus = QShortcut(short("change-split-focus"), self)
+        ide.IDE.register_shortcut('change-split-focus', shortChangeSplitFocus)
+        shortMoveTabSplit = QShortcut(short("move-tab-to-next-split"), self)
+        ide.IDE.register_shortcut('move-tab-to-next-split', shortMoveTabSplit)
+        shortChangeTabVisibility = QShortcut(
+            short("change-tab-visibility"), self)
+        ide.IDE.register_shortcut('change-tab-visibility',
+            shortChangeTabVisibility)
+        shortHelp = QShortcut(short("Help"), self)
+        ide.IDE.register_shortcut('Help', shortHelp)
+        shortHighlightWord = QShortcut(short("Highlight-Word"), self)
+        ide.IDE.register_shortcut('Highlight-Word', shortHighlightWord)
+
+        #Connect
+        self.connect(self.shortGoToDefinition, SIGNAL("activated()"),
+            self.editor_go_to_definition)
+        self.connect(self.shortCompleteDeclarations, SIGNAL("activated()"),
+            self.editor_complete_declaration)
+        self.connect(self.shortRedo, SIGNAL("activated()"),
+            self.editor_redo)
+        self.connect(self.shortHorizontalLine, SIGNAL("activated()"),
+            self.editor_insert_horizontal_line)
+        self.connect(self.shortTitleComment, SIGNAL("activated()"),
+            self.editor_insert_title_comment)
+        self.connect(self.shortFollowMode, SIGNAL("activated()"),
+            self.ide.mainContainer.show_follow_mode)
+        self.connect(self.shortReloadFile, SIGNAL("activated()"),
+            self.ide.mainContainer.reload_file)
+        self.connect(self.shortSplitHorizontal, SIGNAL("activated()"),
+            lambda: self.ide.mainContainer.split_tab(True))
+        self.connect(self.shortSplitVertical, SIGNAL("activated()"),
+            lambda: self.ide.mainContainer.split_tab(False))
+        self.connect(self.shortNew, SIGNAL("activated()"),
+            self.ide.mainContainer.add_editor)
+        self.connect(self.shortOpen, SIGNAL("activated()"),
+            self.ide.mainContainer.open_file)
+        self.connect(self.shortCloseTab, SIGNAL("activated()"),
+            self.ide.mainContainer.close_tab)
+        self.connect(self.shortSave, SIGNAL("activated()"),
+            self.ide.mainContainer.save_file)
+        self.connect(self.shortIndentLess, SIGNAL("activated()"),
+            self.editor_indent_less)
+        self.connect(self.shortComment, SIGNAL("activated()"),
+            self.editor_comment)
+        self.connect(self.shortUncomment, SIGNAL("activated()"),
+            self.editor_uncomment)
+        self.connect(self.shortHelp, SIGNAL("activated()"),
+            self.ide.mainContainer.show_python_doc)
+        self.connect(self.shortMoveUp, SIGNAL("activated()"),
+            self.editor_move_up)
+        self.connect(self.shortMoveDown, SIGNAL("activated()"),
+            self.editor_move_down)
+        self.connect(self.shortRemove, SIGNAL("activated()"),
+            self.editor_remove_line)
+        self.connect(self.shortDuplicate, SIGNAL("activated()"),
+            self.editor_duplicate)
+        self.connect(self.shortChangeTab, SIGNAL("activated()"),
+            self.ide.mainContainer.change_tab)
+        self.connect(self.shortChangeTabReverse, SIGNAL("activated()"),
+            self.ide.mainContainer.change_tab_reverse)
+        self.connect(self.shortShowCodeNav, SIGNAL("activated()"),
+            self.ide.mainContainer.show_navigation_buttons)
+        self.connect(self.shortHighlightWord, SIGNAL("activated()"),
+            self.editor_highlight_word)
+        self.connect(self.shortChangeSplitFocus, SIGNAL("activated()"),
+            self.ide.mainContainer.change_split_focus)
+        self.connect(self.shortMoveTabSplit, SIGNAL("activated()"),
+            self.move_tab_to_next_split)
+        self.connect(self.shortChangeTabVisibility, SIGNAL("activated()"),
+            self.ide.mainContainer.change_tabs_visibility)
 
     def _recent_files_changed(self, files):
         self.emit(SIGNAL("recentTabsModified(QStringList)"), files)
@@ -966,6 +1102,13 @@ class MainContainer(QWidget):
         widget = self.actualTab.currentWidget()
         if widget is not None:
             widget.setFocus()
+
+
+class TabShortcuts(QShortcut):
+
+    def __init__(self, key, parent, index):
+        super(TabShortcuts, self).__init__(key, parent)
+        self.index = index
 
 
 #Register MainContainer

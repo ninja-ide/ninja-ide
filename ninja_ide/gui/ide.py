@@ -24,6 +24,7 @@ from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QToolBar
 from PyQt4.QtGui import QToolTip
 from PyQt4.QtGui import QFont
+from PyQt4.QtGui import QKeySequence
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import SIGNAL
@@ -68,10 +69,12 @@ class IDE(QMainWindow):
 
     __IDESERVICES = {}
     __IDECONNECTIONS = {}
+    __IDESHORTCUTS = {}
     # CONNECTIONS structure:
     # ({'target': service_name, 'signal_name': string,
     #   'slot': 'name_of_function'},)
     # On modify add: {connected: True}
+    __instance = None
     __created = False
 
     def __init__(self, start_server=False):
@@ -132,7 +135,19 @@ class IDE(QMainWindow):
         self.trayIcon = updates.TrayIconUpdates(self)
         self.trayIcon.show()
 
-        self.register_service(self, 'ide')
+        key = Qt.Key_1
+        for i in range(10):
+            if sys.platform == "darwin":
+                short = TabShortcuts(
+                    QKeySequence(Qt.CTRL + Qt.ALT + key), self, i)
+            else:
+                short = TabShortcuts(QKeySequence(Qt.ALT + key), self, i)
+            key += 1
+            self.connect(short, SIGNAL("activated()"), self._change_tab_index)
+        short = TabShortcuts(QKeySequence(Qt.ALT + Qt.Key_0), self, 10)
+        self.connect(short, SIGNAL("activated()"), self._change_tab_index)
+
+        self.register_service('ide', self)
         #Register signals connections
         connections = (
             {'target': 'main_container',
@@ -149,10 +164,10 @@ class IDE(QMainWindow):
         return IDE.__IDESERVICES.get(service_name, None)
 
     @classmethod
-    def register_service(cls, obj, service_name):
+    def register_service(cls, service_name, obj):
         IDE.__IDESERVICES[service_name] = obj
         if IDE.__created:
-            IDE().install_service(service_name)
+            IDE.__instance.install_service(service_name)
 
     def install_service(self, service_name):
         obj = self.__IDESERVICES.get(service_name, None)
@@ -179,6 +194,27 @@ class IDE(QMainWindow):
                 if target and isinstance(slot, collections.Callable):
                     self.connect(target, SIGNAL(signal_name), slot)
                     connection['connected'] = True
+
+    @classmethod
+    def register_shortcut(cls, shortcut_name, obj):
+        IDE.__IDESHORTCUTS[shortcut_name] = obj
+
+    @classmethod
+    def update_shortcut(cls, shortcut_name):
+        short = resources.get_shortcut
+        shortcut = IDE.__IDESHORTCUTS.get(shortcut_name)
+        if shortcut:
+            shortcut.setKey(short(shortcut_name))
+
+    def _change_tab_index(self):
+        editorWidget = self.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            container = self.actualTab
+        else:
+            container = ide.IDE.get_service('explorer_container')
+        obj = self.sender()
+        if container and (obj.index < container.count()):
+            container.setCurrentIndex(obj.index)
 
     def _process_connection(self):
         connection = self.s_listener.nextPendingConnection()

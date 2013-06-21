@@ -18,7 +18,6 @@
 from __future__ import absolute_import
 
 import re
-import sys
 import webbrowser
 
 from PyQt4.QtCore import Qt
@@ -29,7 +28,6 @@ from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QKeySequence
 from PyQt4.QtGui import QInputDialog
 from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QShortcut
 
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
@@ -42,7 +40,6 @@ from ninja_ide.gui import ide
 from ninja_ide.gui.editor import editor
 from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.dialogs import from_import_dialog
-from ninja_ide.gui.main_panel import class_diagram
 from ninja_ide.gui.main_panel import tab_group
 
 
@@ -94,30 +91,10 @@ class Actions(QObject):
         self.ide = ide
         status = self.ide.get_service('status_bar')
         short = resources.get_shortcut
-        self.shortChangeTab = QShortcut(short("Change-Tab"), self.ide)
-        self.shortChangeTabReverse = QShortcut(
-            short("Change-Tab-Reverse"), self.ide)
-        self.shortDuplicate = QShortcut(short("Duplicate"), self.ide)
-        self.shortRemove = QShortcut(short("Remove-line"), self.ide)
-        self.shortMoveUp = QShortcut(short("Move-up"), self.ide)
-        self.shortMoveDown = QShortcut(short("Move-down"), self.ide)
-        self.shortCloseTab = QShortcut(short("Close-tab"), self.ide)
-        self.shortNew = QShortcut(short("New-file"), self.ide)
         self.shortNewProject = QShortcut(short("New-project"), self.ide)
-        self.shortOpen = QShortcut(short("Open-file"), self.ide)
         self.shortOpenProject = QShortcut(short("Open-project"), self.ide)
-        self.shortSave = QShortcut(short("Save-file"), self.ide)
         self.shortSaveProject = QShortcut(short("Save-project"), self.ide)
         self.shortPrint = QShortcut(short("Print-file"), self.ide)
-        self.shortRedo = QShortcut(short("Redo"), self.ide)
-        self.shortAddBookmark = QShortcut(short("Add-Bookmark-or-Breakpoint"),
-            self.ide)
-        self.shortComment = QShortcut(short("Comment"), self.ide)
-        self.shortUncomment = QShortcut(short("Uncomment"), self.ide)
-        self.shortHorizontalLine = QShortcut(short("Horizontal-line"),
-            self.ide)
-        self.shortTitleComment = QShortcut(short("Title-comment"), self.ide)
-        self.shortIndentLess = QShortcut(short("Indent-less"), self.ide)
         self.shortHideMisc = QShortcut(short("Hide-misc"), self.ide)
         self.shortHideEditor = QShortcut(short("Hide-editor"), self.ide)
         self.shortHideExplorer = QShortcut(short("Hide-explorer"), self.ide)
@@ -132,37 +109,13 @@ class Actions(QObject):
         self.shortFindPrevious = QShortcut(short("Find-previous"), self.ide)
         self.shortFindReplace = QShortcut(short("Find-replace"), self.ide)
         self.shortFindWithWord = QShortcut(short("Find-with-word"), self.ide)
-        self.shortHelp = QShortcut(short("Help"), self.ide)
-        self.shortSplitHorizontal = QShortcut(short("Split-horizontal"),
-            self.ide)
-        self.shortSplitVertical = QShortcut(short("Split-vertical"), self.ide)
-        self.shortFollowMode = QShortcut(short("Follow-mode"), self.ide)
-        self.shortReloadFile = QShortcut(short("Reload-file"), self.ide)
         self.shortFindInFiles = QShortcut(short("Find-in-files"), self.ide)
-        self.shortImport = QShortcut(short("Import"), self.ide)
-        self.shortGoToDefinition = QShortcut(short("Go-to-definition"),
-            self.ide)
-        self.shortCompleteDeclarations = QShortcut(
-            short("Complete-Declarations"), self.ide)
         self.shortCodeLocator = QShortcut(short("Code-locator"), self.ide)
         self.shortFileOpener = QShortcut(short("File-Opener"), self.ide)
-        self.shortNavigateBack = QShortcut(short("Navigate-back"), self.ide)
-        self.shortNavigateForward = QShortcut(short("Navigate-forward"),
-            self.ide)
-        self.shortOpenLastTabOpened = QShortcut(short("Open-recent-closed"),
-            self.ide)
-        self.shortShowCodeNav = QShortcut(short("Show-Code-Nav"), self.ide)
         self.shortShowPasteHistory = QShortcut(short("Show-Paste-History"),
             self.ide)
         self.shortPasteHistory = QShortcut(short("History-Paste"), self.ide)
         self.shortCopyHistory = QShortcut(short("History-Copy"), self.ide)
-        self.shortHighlightWord = QShortcut(short("Highlight-Word"), self.ide)
-        self.shortChangeSplitFocus = QShortcut(short("change-split-focus"),
-            self.ide)
-        self.shortMoveTabSplit = QShortcut(short("move-tab-to-next-split"),
-            self.ide)
-        self.shortChangeTabVisibility = QShortcut(
-            short("change-tab-visibility"), self.ide)
 
         #Connect Shortcuts Signals
         self.connect(self.shortNavigateBack, SIGNAL("activated()"),
@@ -173,26 +126,6 @@ class Actions(QObject):
             status.show_locator)
         self.connect(self.shortFileOpener, SIGNAL("activated()"),
             status.show_file_opener)
-        self.connect(self.shortGoToDefinition, SIGNAL("activated()"),
-            self.editor_go_to_definition)
-        self.connect(self.shortCompleteDeclarations, SIGNAL("activated()"),
-            self.editor_complete_declaration)
-        self.connect(self.shortRedo, SIGNAL("activated()"),
-            self.editor_redo)
-        self.connect(self.shortHorizontalLine, SIGNAL("activated()"),
-            self.editor_insert_horizontal_line)
-        self.connect(self.shortTitleComment, SIGNAL("activated()"),
-            self.editor_insert_title_comment)
-        self.connect(self.shortFollowMode, SIGNAL("activated()"),
-            self.ide.mainContainer.show_follow_mode)
-        self.connect(self.shortReloadFile, SIGNAL("activated()"),
-            self.ide.mainContainer.reload_file)
-        self.connect(self.shortSplitHorizontal, SIGNAL("activated()"),
-            lambda: self.ide.mainContainer.split_tab(True))
-        self.connect(self.shortSplitVertical, SIGNAL("activated()"),
-            lambda: self.ide.mainContainer.split_tab(False))
-        self.connect(self.shortNew, SIGNAL("activated()"),
-            self.ide.mainContainer.add_editor)
         self.connect(self.shortNewProject, SIGNAL("activated()"),
             self.ide.explorer.create_new_project)
         self.connect(self.shortHideMisc, SIGNAL("activated()"),
@@ -205,14 +138,8 @@ class Actions(QObject):
             self.hide_all)
         self.connect(self.shortFullscreen, SIGNAL("activated()"),
             self.fullscreen_mode)
-        self.connect(self.shortOpen, SIGNAL("activated()"),
-            self.ide.mainContainer.open_file)
         self.connect(self.shortOpenProject, SIGNAL("activated()"),
             self.open_project)
-        self.connect(self.shortCloseTab, SIGNAL("activated()"),
-            self.ide.mainContainer.close_tab)
-        self.connect(self.shortSave, SIGNAL("activated()"),
-            self.ide.mainContainer.save_file)
         self.connect(self.shortSaveProject, SIGNAL("activated()"),
             self.save_project)
         self.connect(self.shortPrint, SIGNAL("activated()"),
@@ -235,34 +162,12 @@ class Actions(QObject):
             self.switch_focus)
         self.connect(self.shortStopExecution, SIGNAL("activated()"),
             self.kill_execution)
-        self.connect(self.shortIndentLess, SIGNAL("activated()"),
-            self.editor_indent_less)
-        self.connect(self.shortComment, SIGNAL("activated()"),
-            self.editor_comment)
-        self.connect(self.shortUncomment, SIGNAL("activated()"),
-            self.editor_uncomment)
-        self.connect(self.shortHelp, SIGNAL("activated()"),
-            self.ide.mainContainer.show_python_doc)
         self.connect(self.shortImport, SIGNAL("activated()"),
             self.import_from_everywhere)
         self.connect(self.shortFindInFiles, SIGNAL("activated()"),
             self.ide.misc.show_find_in_files_widget)
-        self.connect(self.shortMoveUp, SIGNAL("activated()"),
-            self.editor_move_up)
-        self.connect(self.shortMoveDown, SIGNAL("activated()"),
-            self.editor_move_down)
-        self.connect(self.shortRemove, SIGNAL("activated()"),
-            self.editor_remove_line)
-        self.connect(self.shortDuplicate, SIGNAL("activated()"),
-            self.editor_duplicate)
         self.connect(self.shortOpenLastTabOpened, SIGNAL("activated()"),
             self.reopen_last_tab)
-        self.connect(self.shortChangeTab, SIGNAL("activated()"),
-            self.ide.mainContainer.change_tab)
-        self.connect(self.shortChangeTabReverse, SIGNAL("activated()"),
-            self.ide.mainContainer.change_tab_reverse)
-        self.connect(self.shortShowCodeNav, SIGNAL("activated()"),
-            self.ide.mainContainer.show_navigation_buttons)
         self.connect(self.shortAddBookmark, SIGNAL("activated()"),
             self._add_bookmark_breakpoint)
         self.connect(self.shortShowPasteHistory, SIGNAL("activated()"),
@@ -271,26 +176,6 @@ class Actions(QObject):
             self._copy_history)
         self.connect(self.shortPasteHistory, SIGNAL("activated()"),
             self._paste_history)
-        self.connect(self.shortHighlightWord, SIGNAL("activated()"),
-            self.editor_highlight_word)
-        self.connect(self.shortChangeSplitFocus, SIGNAL("activated()"),
-            self.ide.mainContainer.change_split_focus)
-        self.connect(self.shortMoveTabSplit, SIGNAL("activated()"),
-            self.move_tab_to_next_split)
-        self.connect(self.shortChangeTabVisibility, SIGNAL("activated()"),
-            self.ide.mainContainer.change_tabs_visibility)
-
-        key = Qt.Key_1
-        for i in range(10):
-            if sys.platform == "darwin":
-                short = TabShortcuts(
-                    QKeySequence(Qt.CTRL + Qt.ALT + key), self.ide, i)
-            else:
-                short = TabShortcuts(QKeySequence(Qt.ALT + key), self.ide, i)
-            key += 1
-            self.connect(short, SIGNAL("activated()"), self._change_tab_index)
-        short = TabShortcuts(QKeySequence(Qt.ALT + Qt.Key_0), self.ide, 10)
-        self.connect(short, SIGNAL("activated()"), self._change_tab_index)
 
         #Connect SIGNALs from other objects
         self.connect(self.ide.mainContainer._tabMain,
@@ -314,68 +199,6 @@ class Actions(QObject):
         self.connect(self._shortEscMisc, SIGNAL("activated()"),
             self.ide.misc.hide)
 
-    def update_shortcuts(self):
-        """If the user update the key binded to any shortcut, update them."""
-        resources.load_shortcuts()
-        short = resources.get_shortcut
-        self.shortDuplicate.setKey(short("Duplicate"))
-        self.shortRemove.setKey(short("Remove-line"))
-        self.shortMoveUp.setKey(short("Move-up"))
-        self.shortMoveDown.setKey(short("Move-down"))
-        self.shortCloseTab.setKey(short("Close-tab"))
-        self.shortNew.setKey(short("New-file"))
-        self.shortNewProject.setKey(short("New-project"))
-        self.shortOpen.setKey(short("Open-file"))
-        self.shortOpenProject.setKey(short("Open-project"))
-        self.shortSave.setKey(short("Save-file"))
-        self.shortSaveProject.setKey(short("Save-project"))
-        self.shortPrint.setKey(short("Print-file"))
-        self.shortRedo.setKey(short("Redo"))
-        self.shortComment.setKey(short("Comment"))
-        self.shortUncomment.setKey(short("Uncomment"))
-        self.shortHorizontalLine.setKey(short("Horizontal-line"))
-        self.shortTitleComment.setKey(short("Title-comment"))
-        self.shortIndentLess.setKey(short("Indent-less"))
-        self.shortHideMisc.setKey(short("Hide-misc"))
-        self.shortHideEditor.setKey(short("Hide-editor"))
-        self.shortHideExplorer.setKey(short("Hide-explorer"))
-        self.shortRunFile.setKey(short("Run-file"))
-        self.shortRunProject.setKey(short("Run-project"))
-        self.shortSwitchFocus.setKey(short("Switch-Focus"))
-        self.shortStopExecution.setKey(short("Stop-execution"))
-        self.shortHideAll.setKey(short("Hide-all"))
-        self.shortFullscreen.setKey(short("Full-screen"))
-        self.shortFind.setKey(short("Find"))
-        self.shortFindNext.setKey(short("Find-next"))
-        self.shortFindPrevious.setKey(short("Find-previous"))
-        self.shortFindReplace.setKey(short("Find-replace"))
-        self.shortFindWithWord.setKey(short("Find-with-word"))
-        self.shortHelp.setKey(short("Help"))
-        self.shortSplitHorizontal.setKey(short("Split-horizontal"))
-        self.shortSplitVertical.setKey(short("Split-vertical"))
-        self.shortFollowMode.setKey(short("Follow-mode"))
-        self.shortReloadFile.setKey(short("Reload-file"))
-        self.shortFindInFiles.setKey(short("Find-in-files"))
-        self.shortImport.setKey(short("Import"))
-        self.shortGoToDefinition.setKey(short("Go-to-definition"))
-        self.shortCompleteDeclarations.setKey(short("Complete-Declarations"))
-        self.shortCodeLocator.setKey(short("Code-locator"))
-        self.shortFileOpener.setKey(short("File-Opener"))
-        self.shortNavigateBack.setKey(short("Navigate-back"))
-        self.shortNavigateForward.setKey(short("Navigate-forward"))
-        self.shortOpenLastTabOpened.setKey(short("Open-recent-closed"))
-        self.shortChangeTab.setKey(short("Change-Tab"))
-        self.shortChangeTabReverse.setKey(short("Change-Tab-Reverse"))
-        self.shortAddBookmark.setKey(short("Add-Bookmark-or-Breakpoint"))
-        self.shortShowCodeNav.setKey(short("Show-Code-Nav"))
-        self.shortShowPasteHistory.setKey(short("Show-Paste-History"))
-        self.shortPasteHistory.setKey(short("History-Paste"))
-        self.shortCopyHistory.setKey(short("History-Copy"))
-        self.shortHighlightWord.setKey(short("Highlight-Word"))
-        self.shortChangeSplitFocus.setKey(short("change-split-focus"))
-        self.shortMoveTabSplit.setKey(short("move-tab-to-next-split"))
-        self.shortChangeTabVisibility.setKey(short("change-tab-visibility"))
-
     def move_tab_to_next_split(self):
         self.ide.mainContainer.move_tab_to_next_split(
             self.ide.mainContainer.actualTab)
@@ -394,16 +217,6 @@ class Actions(QObject):
                     self.ide.mainContainer.actualTab.currentWidget().setFocus()
             elif widget.parent() is self.ide.misc.stack:
                 self.ide.mainContainer.actualTab.currentWidget().setFocus()
-
-    def _change_tab_index(self):
-        editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget and editorWidget.hasFocus():
-            container = self.ide.mainContainer.actualTab
-        else:
-            container = self.ide.explorer
-        obj = self.sender()
-        if obj.index < container.count():
-            container.setCurrentIndex(obj.index)
 
     def _copy_history(self):
         """Copy the selected text into the copy/paste history."""
@@ -1009,18 +822,6 @@ class Actions(QObject):
         """Reopen the last closed tab."""
         self.ide.mainContainer.actualTab._reopen_last_tab()
 
-    def open_class_diagram(self):
-        """Open the Class Diagram Generator."""
-        diagram = class_diagram.ClassDiagram(self)
-        self.ide.mainContainer.add_tab(diagram, self.tr("Class Diagram v.0.1"))
-
     def reload_toolbar(self):
         """Reload the Toolbar."""
         self.ide.load_toolbar()
-
-
-class TabShortcuts(QShortcut):
-
-    def __init__(self, key, parent, index):
-        super(TabShortcuts, self).__init__(key, parent)
-        self.index = index

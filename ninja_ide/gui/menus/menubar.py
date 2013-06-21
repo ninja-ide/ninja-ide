@@ -30,8 +30,8 @@ class MenuBar(QObject):
         self._menuPlugins = menu_plugins.MenuPlugins()
         self._menuAbout = menu_about.MenuAbout()
 
-        ide.IDE.register_service(self, 'menu_bar')
-        ide.IDE.register_service(self._menuFile, 'menu_file')
+        ide.IDE.register_service('menu_bar', self)
+        ide.IDE.register_service('menu_file', self._menuFile)
 
         menu_file_connections = (
             {'target': 'main_container',
@@ -59,8 +59,6 @@ class MenuBar(QObject):
         self._menuProject.install(project, ide.toolbar)
         self._menuPlugins.install(ide.pluginsMenu)
         self._menuAbout.install(about)
-
-        ide.IDE.register_service(self._menuFile, 'menu_file')
 
     def load_toolbar(self, ide):
         toolbar = ide.toolbar

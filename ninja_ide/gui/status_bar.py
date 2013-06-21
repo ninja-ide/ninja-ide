@@ -92,7 +92,7 @@ class StatusBar(QStatusBar):
         self.connect(self._fileSystemOpener, SIGNAL("requestHide()"),
             self.hide_status)
 
-        ide.IDE.register_service(self, 'status_bar')
+        ide.IDE.register_service('status_bar', self)
 
         #Register signals connections
         connections = (
