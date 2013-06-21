@@ -45,7 +45,6 @@ from ninja_ide.tools.completion import completion_daemon
 from ninja_ide.gui import central_widget
 from ninja_ide.gui.main_panel import main_container
 from ninja_ide.gui.explorer import explorer_container
-from ninja_ide.gui.misc import misc_container
 
 ###############################################################################
 # LOGGER INITIALIZE
@@ -256,7 +255,6 @@ class IDE(QMainWindow):
         self.connect(self.explorer, SIGNAL("projectClosed(QString)"),
             self.actions.close_files_from_project)
         #Create Misc Bottom Container
-        self.misc = misc_container.MiscContainer(self)
         self.connect(self.mainContainer, SIGNAL("findOcurrences(QString)"),
             self.misc.show_find_occurrences)
 

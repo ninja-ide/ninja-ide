@@ -46,7 +46,7 @@ from ninja_ide.gui.main_panel import main_container
 
 class RunWidget(QWidget):
 
-    """Widget that show the execution output in the MiscContainer."""
+    """Widget that show the execution output in the Tool Dock."""
 
     def __init__(self):
         QWidget.__init__(self)

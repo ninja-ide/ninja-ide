@@ -36,7 +36,7 @@ from ninja_ide.core import settings
 from ninja_ide.core.pattern import singleton
 from ninja_ide import resources
 from ninja_ide.tools import ui_tools
-from ninja_ide.tools import locator
+#from ninja_ide.tools import locator
 from ninja_ide.tools import json_manager
 from ninja_ide.gui.editor import editor
 from ninja_ide.gui.editor import helpers
@@ -60,7 +60,7 @@ class Actions(QObject):
     def __init__(self):
         QObject.__init__(self)
         #Definition Locator
-        self._locator = locator.Locator()
+        #self._locator = locator.Locator()
         self.__codeBack = []
         self.__codeForward = []
         self.__bookmarksFile = ''
@@ -815,8 +815,8 @@ class Actions(QObject):
             self.__codeBack.append((editorWidget.ID,
                 editorWidget.textCursor().position()))
             self.__codeForward = []
-        self._locator.navigate_to(function,
-            filePath, isVariable)
+        #self._locator.navigate_to(function,
+            #filePath, isVariable)
 
     def update_explorer(self):
         """Update the symbols in the Symbol Explorer when a file is saved."""

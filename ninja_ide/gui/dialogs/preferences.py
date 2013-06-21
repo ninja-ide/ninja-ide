@@ -61,7 +61,6 @@ from ninja_ide import resources
 from ninja_ide.gui import central_widget
 from ninja_ide.gui import actions
 from ninja_ide.gui.editor import editor
-from ninja_ide.gui.misc import misc_container
 from ninja_ide.gui.misc import shortcut_manager
 from ninja_ide.gui.misc import plugin_preferences
 from ninja_ide.gui.main_panel import main_container
@@ -972,9 +971,10 @@ class EditorGeneral(QWidget):
         qsettings.endGroup()
         main_container.MainContainer().apply_editor_theme(settings.FONT_FAMILY,
             settings.FONT_SIZE)
-        misc = misc_container.MiscContainer()
-        misc._console.restyle()
-        misc._runWidget.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
+        #TODO: Fix this, prefs should not touch private misc container
+        #misc = misc_container.MiscContainer()
+        #misc._console.restyle()
+        #misc._runWidget.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
 
 
 class EditorConfiguration(QWidget):

@@ -47,7 +47,7 @@ from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
 from ninja_ide.gui.explorer import explorer_container
-from ninja_ide.gui.misc import misc_container
+from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.main_panel import main_container
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
@@ -107,7 +107,8 @@ class Locator(QObject):
                 self.tr("Definition Not Found"),
                 self.tr("This Definition does not belong to this Project."))
         else:
-            misc_container.MiscContainer().show_results(self._thread.results)
+            tool_dock = IDE.get_service("tool_dock")
+            tool_dock.show_results(self._thread.results)
 
     def get_classes_from_project(self, projectPath):
         global mapping_locations

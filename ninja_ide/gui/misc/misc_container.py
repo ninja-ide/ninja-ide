@@ -32,6 +32,7 @@ from PyQt4.QtWebKit import QWebPage
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core.pattern import singleton
+from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.explorer import explorer_container
 from ninja_ide.gui.misc import console_widget
 from ninja_ide.gui.misc import run_widget
@@ -42,10 +43,10 @@ from ninja_ide.tools import ui_tools
 
 
 @singleton
-class ToolsDock(QWidget):
+class ToolDock(QWidget):
     """Former Miscellaneous, contains all the widgets in the bottom area."""
 
-    def __init__(self, parent=None):
+    def install(self, parent):
         QWidget.__init__(self, parent)
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
@@ -186,3 +187,7 @@ class StackedWidget(QStackedWidget):
 
     def show_display(self, index):
         self.setCurrentIndex(index)
+
+
+def register_tool_dock():
+    IDE.register_service(ToolDock, "tool_dock")

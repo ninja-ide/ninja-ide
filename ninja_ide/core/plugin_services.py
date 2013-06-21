@@ -27,7 +27,7 @@ from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import plugin_util
 from ninja_ide.gui.main_panel import itab_item
 from ninja_ide.gui.main_panel import main_container
-from ninja_ide.gui import actions
+#from ninja_ide.gui import actions
 from ninja_ide.gui.explorer import explorer_container
 
 
@@ -51,7 +51,7 @@ class MainService(QObject):
     def __init__(self):
         QObject.__init__(self)
         self._main = main_container.MainContainer()
-        self._action = actions.Actions()
+        #self._action = actions.Actions()
         self._explorer = explorer_container.ExplorerContainer()
         #Connect signals
         self.connect(self._main, SIGNAL("editorKeyPressEvent(QEvent)"),
@@ -62,8 +62,8 @@ class MainService(QObject):
             self._fileSaved)
         self.connect(self._main, SIGNAL("currentTabChanged(QString)"),
             self._currentTabChanged)
-        self.connect(self._action, SIGNAL("fileExecuted(QString)"),
-            self._fileExecuted)
+        #self.connect(self._action, SIGNAL("fileExecuted(QString)"),
+            #self._fileExecuted)
         self.connect(self._main, SIGNAL("fileOpened(QString)"),
             self._fileOpened)
 
@@ -361,15 +361,6 @@ class MenuAppService(QObject):
 #        settings.set_symbols_handler(file_extension, symbols_handler)
 
 
-class MiscContainerService(QObject):
-
-    def __init__(self, miscContainer):
-        QObject.__init__(self)
-        self._misc = miscContainer
-
-    def add_widget(self, widget, icon_path, description):
-        self._misc.add_to_stack(widget, icon_path, description)
-
 
 class ExplorerService(QObject):
     # SIGNALS
@@ -379,11 +370,11 @@ class ExplorerService(QObject):
     def __init__(self):
         QObject.__init__(self)
         self._explorer = explorer_container.ExplorerContainer()
-        self._action = actions.Actions()
+        #self._action = actions.Actions()
         self.connect(self._explorer, SIGNAL("projectOpened(QString)"),
             self._projectOpened)
-        self.connect(self._action, SIGNAL("projectExecuted(QString)"),
-            self._projectExecuted)
+        #self.connect(self._action, SIGNAL("projectExecuted(QString)"),
+            #self._projectExecuted)
 
     def get_tree_projects(self):
         """
