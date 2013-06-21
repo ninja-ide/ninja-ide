@@ -75,7 +75,6 @@ class Actions(QObject):
     def install_shortcuts(self, ide):
         """Install the shortcuts to the IDE."""
         self.ide = ide
-        status = self.ide.get_service('status_bar')
         short = resources.get_shortcut
         self.shortChangeTab = QShortcut(short("Change-Tab"), self.ide)
         self.shortChangeTabReverse = QShortcut(
@@ -152,10 +151,10 @@ class Actions(QObject):
             lambda: self.__navigate_with_keyboard(False))
         self.connect(self.shortNavigateForward, SIGNAL("activated()"),
             lambda: self.__navigate_with_keyboard(True))
-        self.connect(self.shortCodeLocator, SIGNAL("activated()"),
-            status.show_locator)
-        self.connect(self.shortFileOpener, SIGNAL("activated()"),
-            status.show_file_opener)
+        #self.connect(self.shortCodeLocator, SIGNAL("activated()"),
+            #self.ide.status.show_locator)
+        #self.connect(self.shortFileOpener, SIGNAL("activated()"),
+            #self.ide.status.show_file_opener)
         self.connect(self.shortGoToDefinition, SIGNAL("activated()"),
             self.editor_go_to_definition)
         self.connect(self.shortCompleteDeclarations, SIGNAL("activated()"),
@@ -200,16 +199,16 @@ class Actions(QObject):
             self.save_project)
         self.connect(self.shortPrint, SIGNAL("activated()"),
             self.print_file)
-        self.connect(self.shortFind, SIGNAL("activated()"),
-            status.show)
-        self.connect(self.shortFindPrevious, SIGNAL("activated()"),
-            status._searchWidget.find_previous)
-        self.connect(self.shortFindNext, SIGNAL("activated()"),
-            status._searchWidget.find_next)
-        self.connect(self.shortFindWithWord, SIGNAL("activated()"),
-            status.show_with_word)
-        self.connect(self.shortFindReplace, SIGNAL("activated()"),
-            status.show_replace)
+        #self.connect(self.shortFind, SIGNAL("activated()"),
+            #self.ide.status.show)
+        #self.connect(self.shortFindPrevious, SIGNAL("activated()"),
+            #self.ide.status._searchWidget.find_previous)
+        #self.connect(self.shortFindNext, SIGNAL("activated()"),
+            #self.ide.status._searchWidget.find_next)
+        #self.connect(self.shortFindWithWord, SIGNAL("activated()"),
+            #self.ide.status.show_with_word)
+        #self.connect(self.shortFindReplace, SIGNAL("activated()"),
+            #self.ide.status.show_replace)
         self.connect(self.shortRunFile, SIGNAL("activated()"),
             self.execute_file)
         self.connect(self.shortRunProject, SIGNAL("activated()"),
@@ -228,8 +227,8 @@ class Actions(QObject):
             self.ide.mainContainer.show_python_doc)
         self.connect(self.shortImport, SIGNAL("activated()"),
             self.import_from_everywhere)
-        self.connect(self.shortFindInFiles, SIGNAL("activated()"),
-            self.ide.misc.show_find_in_files_widget)
+        #self.connect(self.shortFindInFiles, SIGNAL("activated()"),
+            #self.ide.misc.show_find_in_files_widget)
         self.connect(self.shortMoveUp, SIGNAL("activated()"),
             self.editor_move_up)
         self.connect(self.shortMoveDown, SIGNAL("activated()"),
@@ -288,14 +287,14 @@ class Actions(QObject):
             SIGNAL("openProject(QString)"), self.open_project)
 
         # Not Configurable Shortcuts
-        self._shortEscStatus = QShortcut(QKeySequence(Qt.Key_Escape),
-            status)
-        self._shortEscMisc = QShortcut(QKeySequence(Qt.Key_Escape),
-            self.ide.misc)
-        self.connect(self._shortEscStatus, SIGNAL("activated()"),
-            status.hide_status)
-        self.connect(self._shortEscMisc, SIGNAL("activated()"),
-            self.ide.misc.hide)
+        #self._shortEscStatus = QShortcut(QKeySequence(Qt.Key_Escape),
+            #self.ide.status)
+        #self._shortEscMisc = QShortcut(QKeySequence(Qt.Key_Escape),
+            #self.ide.misc)
+        #self.connect(self._shortEscStatus, SIGNAL("activated()"),
+            #self.ide.status.hide_status)
+        #self.connect(self._shortEscMisc, SIGNAL("activated()"),
+            #self.ide.misc.hide)
 
     def update_shortcuts(self):
         """If the user update the key binded to any shortcut, update them."""

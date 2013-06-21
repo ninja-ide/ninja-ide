@@ -68,10 +68,6 @@ class IDE(QMainWindow):
 
     __IDESERVICES = {}
     __IDECONNECTIONS = {}
-    # CONNECTIONS structure:
-    # ({'target': service_name, 'signal_name': string,
-    #   'slot': 'name_of_function'},)
-    # On modify add: {connected: True}
     __created = False
 
     def __init__(self, start_server=False):
@@ -115,12 +111,13 @@ class IDE(QMainWindow):
         self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
             self.actions.update_explorer)
 
+        self.load_toolbar()
+
         #Plugin Manager
         services = {
             'editor': plugin_services.MainService(),
             'toolbar': plugin_services.ToolbarService(self.toolbar),
             #'menuApp': plugin_services.MenuAppService(self.pluginsMenu),
-            'menuApp': plugin_services.MenuAppService(None),
             'explorer': plugin_services.ExplorerService(),
             }
         serviceLocator = plugin_manager.ServiceLocator(services)
@@ -134,13 +131,13 @@ class IDE(QMainWindow):
         self.trayIcon = updates.TrayIconUpdates(self)
         self.trayIcon.show()
 
-        self.connect(self._menuFile, SIGNAL("openFile(QString)"),
-            self.mainContainer.open_file)
+        #self.connect(self._menuFile, SIGNAL("openFile(QString)"),
+            #self.mainContainer.open_file)
         self.connect(self.mainContainer, SIGNAL("fileSaved(QString)"),
             self.show_status_message)
-        self.connect(self.mainContainer,
-            SIGNAL("recentTabsModified(QStringList)"),
-            self._menuFile.update_recent_files)
+        #self.connect(self.mainContainer,
+            #SIGNAL("recentTabsModified(QStringList)"),
+            #self._menuFile.update_recent_files)
         self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
             self.actions.update_migration_tips)
         self.connect(self.mainContainer, SIGNAL("updateFileMetadata(QString)"),
@@ -148,11 +145,7 @@ class IDE(QMainWindow):
         self.connect(self.mainContainer, SIGNAL("migrationAnalyzed()"),
             self.actions.update_migration_tips)
 
-        for service_name in self.__IDECONNECTIONS:
-            self.install_service(service_name)
-
-    @classmethod
-    def get_service(cls, service_name):
+    def get_service(self, service_name):
         return IDE.__IDESERVICES.get(service_name, None)
 
     @classmethod
@@ -173,19 +166,10 @@ class IDE(QMainWindow):
         IDE.__IDECONNECTIONS[service_name] = connections
 
     def _connect_signals(self):
-        for service_name in self.__IDECONNECTIONS:
-            connections = self.__IDECONNECTIONS[service_name]
-            for connection in connections:
-                if connection.get('connected', False):
-                    continue
-                target = self.__IDESERVICES.get(
-                    connection['target'], None)
-                service = self.__IDESERVICES.get(service_name, None)
-                slot = getattr(service, connection['slot'], None)
-                signal_name = connection['signal_name']
-                if target and isinstance(slot, collections.Callable):
-                    self.connect(target, SIGNAL(signal_name), slot)
-                    connection['connected'] = True
+        for key in self.__IDECONNECTIONS:
+            pass
+        #self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
+            #self.status.handle_tab_changed)
 
     def _process_connection(self):
         connection = self.s_listener.nextPendingConnection()
@@ -199,6 +183,27 @@ class IDE(QMainWindow):
             projects = projects.split(ipc.project_delimiter)
             self.load_session_files_projects(files, [], projects, None)
 
+    def load_toolbar(self):
+        self.toolbar.clear()
+        toolbar_items = {}
+        #toolbar_items.update(self._menuFile.toolbar_items)
+        #toolbar_items.update(self._menuView.toolbar_items)
+        #toolbar_items.update(self._menuEdit.toolbar_items)
+        #toolbar_items.update(self._menuSource.toolbar_items)
+        #toolbar_items.update(self._menuProject.toolbar_items)
+
+        for item in settings.TOOLBAR_ITEMS:
+            if item == 'separator':
+                self.toolbar.addSeparator()
+            else:
+                tool_item = toolbar_items.get(item, None)
+                if tool_item is not None:
+                    self.toolbar.addAction(tool_item)
+        #load action added by plugins, This is a special case when reload
+        #the toolbar after save the preferences widget
+        for toolbar_action in settings.get_toolbar_item_for_plugins():
+            self.toolbar.addAction(toolbar_action)
+
     def load_external_plugins(self, paths):
         for path in paths:
             self.plugin_manager.add_plugin_dir(path)
@@ -207,7 +212,8 @@ class IDE(QMainWindow):
         self.plugin_manager.load_all()
 
     def show_status_message(self, message):
-        self.status.showMessage(message, 2000)
+        #self.status.showMessage(message, 2000)
+        pass
 
     def load_ui(self, centralWidget):
         #Set Application Font for ToolTips
@@ -236,21 +242,26 @@ class IDE(QMainWindow):
         # When close the last tab cleanup
         self.connect(self.mainContainer, SIGNAL("allTabsClosed()"),
             self._last_tab_closed)
+        # Update symbols
+        #self.connect(self.mainContainer, SIGNAL("updateLocator(QString)"),
+            #self.status.explore_file_code)
         #Create Explorer Panel
         self.explorer = explorer_container.ExplorerContainer(self)
         self.connect(self.central, SIGNAL("splitterCentralRotated()"),
             self.explorer.rotate_tab_position)
+        #self.connect(self.explorer, SIGNAL("updateLocator()"),
+            #self.status.explore_code)
         self.connect(self.explorer, SIGNAL("goToDefinition(int)"),
             self.actions.editor_go_to_line)
         self.connect(self.explorer, SIGNAL("projectClosed(QString)"),
             self.actions.close_files_from_project)
         #Create Misc Bottom Container
-        self.connect(self.mainContainer, SIGNAL("findOcurrences(QString)"),
-            self.misc.show_find_occurrences)
+        #self.connect(self.mainContainer, SIGNAL("findOcurrences(QString)"),
+            #self.misc.show_find_occurrences)
 
         centralWidget.insert_central_container(self.mainContainer)
         centralWidget.insert_lateral_container(self.explorer)
-        centralWidget.insert_bottom_container(self.misc)
+        #centralWidget.insert_bottom_container(self.misc)
         if self.explorer.count() == 0:
             centralWidget.change_explorer_visibility(force_hide=True)
         self.connect(self.mainContainer,
@@ -297,8 +308,8 @@ class IDE(QMainWindow):
             notIDEStart=False)
         if current_file:
             self.mainContainer.open_file(current_file, notStart=False)
-        if recent_files is not None:
-            self._menuFile.update_recent_files(recent_files)
+        #if recent_files is not None:
+            #self._menuFile.update_recent_files(recent_files)
 
     def _set_editors_project_data(self):
         self.__project_to_open -= 1
@@ -398,7 +409,7 @@ class IDE(QMainWindow):
         else:
             qsettings.setValue("window/hide_toolbar", False)
         #Save Misc state
-        qsettings.setValue("window/show_misc", self.misc.isVisible())
+        #qsettings.setValue("window/show_misc", self.misc.isVisible())
         #Save Profiles
         if self.profile is not None:
             self.actions.save_profile(self.profile)
