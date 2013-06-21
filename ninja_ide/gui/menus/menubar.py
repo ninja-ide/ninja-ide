@@ -22,6 +22,8 @@ class MenuBar(QObject):
     def __init__(self):
         super(MenuBar, self).__init__()
 
+        ide.IDE.register_service(self, 'menu_bar')
+
     def install(self, ide):
         #Menu
         menubar = ide.menuBar()
@@ -41,6 +43,8 @@ class MenuBar(QObject):
         self._menuProject = menu_project.MenuProject(project, ide.toolbar)
         self._menuPlugins = menu_plugins.MenuPlugins(ide.pluginsMenu)
         self._menuAbout = menu_about.MenuAbout(about)
+
+        ide.IDE.register_service(self._menuFile, 'menu_file')
 
     def load_toolbar(self, ide):
         toolbar = ide.toolbar
@@ -65,10 +69,4 @@ class MenuBar(QObject):
             toolbar.addAction(toolbar_action)
 
 
-#Register StatusBar
-def register_status_bar():
-    menu = MenuBar()
-    ide.IDE.register_service(menu, 'menu_bar')
-
-
-register_status_bar()
+menu = MenuBar()

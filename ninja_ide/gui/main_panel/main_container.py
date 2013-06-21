@@ -20,11 +20,14 @@ import sys
 import os
 
 from PyQt4 import uic
+from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QSplitter
+from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QStyle
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QIcon
+from PyQt4.QtGui import QScrollBar
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QDir
@@ -38,7 +41,7 @@ from ninja_ide.core.file_handling.filesystem_notifications import (
 from ninja_ide.gui import ide
 from ninja_ide.gui.main_panel import tab_widget
 from ninja_ide.gui.editor import editor
-from ninja_ide.gui.editor import highlighter
+#from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.main_panel import browser_widget
 from ninja_ide.gui.main_panel import start_page
@@ -51,7 +54,7 @@ logger = NinjaLogger('ninja_ide.gui.main_panel.main_container')
 
 
 @singleton
-class MainContainer(QSplitter):
+class MainContainer(QWidget):
 
 ###############################################################################
 # MainContainer SIGNALS
@@ -80,25 +83,41 @@ class MainContainer(QSplitter):
 ###############################################################################
 
     def __init__(self, parent=None):
-        QSplitter.__init__(self, parent)
+        super(MainContainer, self).__init__(parent)
         self._parent = parent
+        hbox = QHBoxLayout(self)
+
+        #Create scrollbar for follow mode
+        self.scrollBar = QScrollBar(Qt.Vertical, self)
+        self.scrollBar.setFixedWidth(20)
+        self.scrollBar.setToolTip(
+            self.tr('Follow Mode: Scroll the Editors together'))
+        self.scrollBar.hide()
+        hbox.addWidget(self.scrollBar)
+
+        self.splitter = QSplitter()
         self._tabMain = tab_widget.TabWidget(self)
         self._tabSecondary = tab_widget.TabWidget(self)
         self.setAcceptDrops(True)
-        self.addWidget(self._tabMain)
-        self.addWidget(self._tabSecondary)
-        self.setSizes([1, 1])
+        self.splitter.addWidget(self._tabMain)
+        self.splitter.addWidget(self._tabSecondary)
+        self.splitter.setSizes([1, 1])
+        hbox.addWidget(self.splitter)
+
         self._tabSecondary.hide()
         self.actualTab = self._tabMain
         self._followMode = False
-        self.splitted = False
-        highlighter.restyle(resources.CUSTOM_SCHEME)
+        self.split_visible = False
+        #TODO: WHY IS THIS????????
+        #highlighter.restyle(resources.CUSTOM_SCHEME)
         #documentation browser
         self.docPage = None
         # File Watcher
         self._file_watcher = NinjaFileSystemWatcher
         self._watched_simple_files = []
 
+        self.connect(self.scrollBar, SIGNAL("valueChanged(int)"),
+            self.move_follow_scrolls)
         self.connect(self._tabMain, SIGNAL("currentChanged(int)"),
             self._current_tab_changed)
         self.connect(self._tabSecondary, SIGNAL("currentChanged(int)"),
@@ -150,18 +169,12 @@ class MainContainer(QSplitter):
         ide.IDE.register_service(self, 'main_container')
 
         #Register signals connections
-        #connections = (
-            #{'target': 'main_container',
-            #'signal_name': 'currentTabChanged(QString)',
-            #'slot': 'handle_tab_changed'},
-            #{'target': 'main_container',
-            #'signal_name': 'updateLocator(QString)',
-            #'slot': 'explore_file_code'},
-            #{'target': 'explorer_container',
-            #'signal_name': 'updateLocator()',
-            #'slot': 'explore_code'}
-            #)
-        #ide.IDE.register_signals('main_container', connections)
+        connections = (
+            {'target': 'menu_file',
+            'signal_name': 'openFile(QString)',
+            'slot': 'open_file'}
+            )
+        ide.IDE.register_signals('main_container', connections)
 
     def _recent_files_changed(self, files):
         self.emit(SIGNAL("recentTabsModified(QStringList)"), files)
@@ -175,6 +188,28 @@ class MainContainer(QSplitter):
     def dropEvent(self, event):
         file_path = event.mimeData().urls()[0].toLocalFile()
         self.open_file(file_path)
+
+    def setFocus(self):
+        widget = self.get_actual_widget()
+        if widget:
+            widget.setFocus()
+
+    def enable_follow_mode_scrollbar(self, val):
+        if val:
+            editorWidget = self.get_actual_editor()
+            maxScroll = editorWidget.verticalScrollBar().maximum()
+            position = editorWidget.verticalScrollBar().value()
+            self.scrollBar.setMaximum(maxScroll)
+            self.scrollBar.setValue(position)
+        self.scrollBar.setVisible(val)
+
+    def move_follow_scrolls(self, val):
+        widget = self._tabMain.currentWidget()
+        diff = widget._sidebarWidget.highest_line - val
+        s1 = self._tabMain.currentWidget().verticalScrollBar()
+        s2 = self._tabSecondary.currentWidget().verticalScrollBar()
+        s1.setValue(val)
+        s2.setValue(val + diff)
 
     def _navigate_code(self, val, op):
         self.emit(SIGNAL("navigateCode(bool, int)"), val, op)
@@ -236,7 +271,7 @@ class MainContainer(QSplitter):
         if self._tabSecondary.isVisible() and \
         orientation == self.orientation():
             self._tabSecondary.hide()
-            self.splitted = False
+            self.split_visible = False
             for i in range(self._tabSecondary.count()):
                 widget = self._tabSecondary.widget(0)
                 name = self._tabSecondary.tabText(0)
@@ -255,7 +290,7 @@ class MainContainer(QSplitter):
             if type(widget) is editor.Editor and widget.textModified:
                 self._tabSecondary.tab_was_modified(True)
             self._tabSecondary.show()
-            self.splitted = True
+            self.split_visible = True
             self.setSizes([1, 1])
             self.actualTab = self._tabSecondary
             self.emit(SIGNAL("currentTabChanged(QString)"), widget.ID)
@@ -846,7 +881,7 @@ class MainContainer(QSplitter):
             self.actualTab = self._tabSecondary
             if files:
                 self._tabSecondary.show()
-                self.splitted = True
+                self.split_visible = True
 
         for fileData in files:
             if file_manager.file_exists(fileData[0]):

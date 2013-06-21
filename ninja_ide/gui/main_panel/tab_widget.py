@@ -339,7 +339,7 @@ class TabWidget(QTabWidget):
                 actionCloseAllNotThis = menu.addAction(
                     self.tr("Close Other Tabs"))
                 menu.addSeparator()
-                if self._parent.splitted:
+                if self._parent.split_visible:
                     actionMoveSplit = menu.addAction(
                         self.tr("Move this Tab to the other Split"))
                     actionCloseSplit = menu.addAction(
