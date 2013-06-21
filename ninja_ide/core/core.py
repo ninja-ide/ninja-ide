@@ -20,6 +20,8 @@ from __future__ import absolute_import
 import sys
 import signal
 
+from PyQt4.QtGui import QApplication
+
 from ninja_ide import resources
 from ninja_ide.core import cliparser
 
@@ -45,5 +47,9 @@ def run_ninja():
     NinjaLogger.argparse(log_level, log_file)
 
     # Start the UI
+    app = QApplication(sys.argv)
+
     from ninja_ide import gui
-    gui.start_ide(filenames, projects_path, extra_plugins, linenos)
+    gui.start_ide(app, filenames, projects_path, extra_plugins, linenos)
+
+    sys.exit(app.exec_())

@@ -17,7 +17,6 @@
 
 import sys
 
-from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QSplashScreen
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QPixmap
@@ -47,8 +46,7 @@ from ninja_ide.gui import ide
 #lint:enable
 
 
-def start_ide(filenames, projects_path, extra_plugins, linenos):
-    app = QApplication(sys.argv)
+def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     QCoreApplication.setOrganizationName('NINJA-IDE')
     QCoreApplication.setOrganizationDomain('NINJA-IDE')
     QCoreApplication.setApplicationName('NINJA-IDE')
@@ -210,4 +208,3 @@ def start_ide(filenames, projects_path, extra_plugins, linenos):
 
     splash.finish(ninjaide)
     ninjaide.notify_plugin_errors()
-    sys.exit(app.exec_())

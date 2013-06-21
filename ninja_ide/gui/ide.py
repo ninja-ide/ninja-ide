@@ -36,7 +36,6 @@ from ninja_ide.core import plugin_manager
 from ninja_ide.core import plugin_services
 from ninja_ide.core import settings
 from ninja_ide.core import ipc
-from ninja_ide.core.pattern import singleton
 from ninja_ide.gui import updates
 from ninja_ide.gui import actions
 from ninja_ide.gui.dialogs import preferences
@@ -47,15 +46,6 @@ from ninja_ide.gui import central_widget
 from ninja_ide.gui.main_panel import main_container
 from ninja_ide.gui.explorer import explorer_container
 from ninja_ide.gui.misc import misc_container
-from ninja_ide.gui import status_bar
-#NINJA-IDE Menus
-from ninja_ide.gui.menus import menu_about
-from ninja_ide.gui.menus import menu_file
-from ninja_ide.gui.menus import menu_edit
-from ninja_ide.gui.menus import menu_view
-from ninja_ide.gui.menus import menu_plugins
-from ninja_ide.gui.menus import menu_project
-from ninja_ide.gui.menus import menu_source
 
 ###############################################################################
 # LOGGER INITIALIZE
@@ -70,7 +60,6 @@ logger = NinjaLogger('ninja_ide.gui.ide')
 # IDE: MAIN CONTAINER
 ###############################################################################
 
-@singleton
 class IDE(QMainWindow):
 ###############################################################################
 # SIGNALS
@@ -104,10 +93,6 @@ class IDE(QMainWindow):
 
         #Define Actions object before the UI
         self.actions = actions.Actions()
-        #StatusBar
-        self.status = status_bar.StatusBar(self)
-        self.status.hide()
-        self.setStatusBar(self.status)
         #Main Widget - Create first than everything else
         self.central = central_widget.CentralWidget(self)
         self.load_ui(self.central)
@@ -125,25 +110,6 @@ class IDE(QMainWindow):
         self.actions.install_shortcuts(self)
         self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
             self.actions.update_explorer)
-
-        #Menu
-        menubar = self.menuBar()
-        file_ = menubar.addMenu(self.tr("&File"))
-        edit = menubar.addMenu(self.tr("&Edit"))
-        view = menubar.addMenu(self.tr("&View"))
-        source = menubar.addMenu(self.tr("&Source"))
-        project = menubar.addMenu(self.tr("&Project"))
-        self.pluginsMenu = menubar.addMenu(self.tr("&Addins"))
-        about = menubar.addMenu(self.tr("Abou&t"))
-
-        #The order of the icons in the toolbar is defined by this calls
-        self._menuFile = menu_file.MenuFile(file_, self.toolbar, self)
-        self._menuView = menu_view.MenuView(view, self.toolbar, self)
-        self._menuEdit = menu_edit.MenuEdit(edit, self.toolbar)
-        self._menuSource = menu_source.MenuSource(source)
-        self._menuProject = menu_project.MenuProject(project, self.toolbar)
-        self._menuPlugins = menu_plugins.MenuPlugins(self.pluginsMenu)
-        self._menuAbout = menu_about.MenuAbout(about)
 
         self.load_toolbar()
 
@@ -192,6 +158,9 @@ class IDE(QMainWindow):
         func = getattr(obj, 'install', None)
         if isinstance(func, collections.Callable):
             func(self)
+
+    def _connect_signals(self):
+        pass
 
     def _process_connection(self):
         connection = self.s_listener.nextPendingConnection()

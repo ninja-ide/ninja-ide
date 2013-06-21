@@ -42,6 +42,7 @@ from ninja_ide.core import settings
 from ninja_ide.core.pattern import singleton
 from ninja_ide.tools import locator
 from ninja_ide.tools import ui_tools
+from ninja_ide.gui import ide
 from ninja_ide.gui.main_panel import main_container
 from ninja_ide.tools.logger import NinjaLogger
 
@@ -52,8 +53,8 @@ DEBUG = logger.debug
 @singleton
 class StatusBar(QStatusBar):
 
-    def __init__(self, parent=None):
-        QStatusBar.__init__(self, parent)
+    def __init__(self):
+        QStatusBar.__init__(self)
 
         self._widgetStatus = QWidget()
         vbox = QVBoxLayout(self._widgetStatus)
@@ -90,6 +91,10 @@ class StatusBar(QStatusBar):
             self.hide_status)
         self.connect(self._fileSystemOpener, SIGNAL("requestHide()"),
             self.hide_status)
+
+    def install(self, ide):
+        self.hide()
+        ide.setStatusBar(self)
 
     def handle_tab_changed(self, new_tab):
         """
@@ -450,3 +455,7 @@ class FileSystemOpener(QWidget):
     def showEvent(self, event):
         super(FileSystemOpener, self).showEvent(event)
         self.pathLine.selectAll()
+
+
+#Register StatusBar
+ide.IDE.register_service(StatusBar(), 'status_bar')
