@@ -2,6 +2,7 @@
 
 from PyQt4.QtCore import QObject
 
+from ninja_ide.core import settings
 from ninja_ide.core.pattern import singleton
 from ninja_ide.gui import ide
 
@@ -41,6 +42,33 @@ class MenuBar(QObject):
         self._menuPlugins = menu_plugins.MenuPlugins(ide.pluginsMenu)
         self._menuAbout = menu_about.MenuAbout(about)
 
+    def load_toolbar(self, ide):
+        toolbar = ide.toolbar
+        toolbar.clear()
+        toolbar_items = {}
+        toolbar_items.update(self._menuFile.toolbar_items)
+        toolbar_items.update(self._menuView.toolbar_items)
+        toolbar_items.update(self._menuEdit.toolbar_items)
+        toolbar_items.update(self._menuSource.toolbar_items)
+        toolbar_items.update(self._menuProject.toolbar_items)
 
-#Register MenuBar
-ide.IDE.register_service(MenuBar(), 'menu_bar')
+        for item in settings.TOOLBAR_ITEMS:
+            if item == 'separator':
+                toolbar.addSeparator()
+            else:
+                tool_item = toolbar_items.get(item, None)
+                if tool_item is not None:
+                    toolbar.addAction(tool_item)
+        #load action added by plugins, This is a special case when reload
+        #the toolbar after save the preferences widget
+        for toolbar_action in settings.get_toolbar_item_for_plugins():
+            toolbar.addAction(toolbar_action)
+
+
+#Register StatusBar
+def register_status_bar():
+    menu = MenuBar()
+    ide.IDE.register_service(menu, 'menu_bar')
+
+
+register_status_bar()
