@@ -42,9 +42,8 @@ from ninja_ide.tools import ui_tools
 
 
 @singleton
-class MiscContainer(QWidget):
-    """From Miscellaneous, contains all the widgets in the bottom area."""
-    #Miscellaneous was to long and dificult to write :P
+class ToolsDock(QWidget):
+    """Former Miscellaneous, contains all the widgets in the bottom area."""
 
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)

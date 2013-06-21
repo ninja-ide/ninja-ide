@@ -119,7 +119,7 @@ class IDE(QMainWindow):
             'toolbar': plugin_services.ToolbarService(self.toolbar),
             'menuApp': plugin_services.MenuAppService(self.pluginsMenu),
             'explorer': plugin_services.ExplorerService(),
-            'misc': plugin_services.MiscContainerService(self.misc)}
+            }
         serviceLocator = plugin_manager.ServiceLocator(services)
         self.plugin_manager = plugin_manager.PluginManager(resources.PLUGINS,
             serviceLocator)
