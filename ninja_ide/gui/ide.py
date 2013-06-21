@@ -68,6 +68,7 @@ class IDE(QMainWindow):
 ###############################################################################
 
     __IDESERVICES = {}
+    __IDECONNECTIONS = {}
     __created = False
 
     def __init__(self, start_server=False):
@@ -145,10 +146,11 @@ class IDE(QMainWindow):
         self.connect(self.mainContainer, SIGNAL("migrationAnalyzed()"),
             self.actions.update_migration_tips)
 
+    def get_service(self, service_name):
+        return IDE.__IDESERVICES.get(service_name, None)
+
     @classmethod
-    def register_service(cls, obj, service_name=''):
-        if not service_name:
-            service_name = obj.__class__.__name__
+    def register_service(cls, obj, service_name):
         IDE.__IDESERVICES[service_name] = obj
         if IDE.__created:
             IDE().install_service(service_name)
@@ -158,9 +160,17 @@ class IDE(QMainWindow):
         func = getattr(obj, 'install', None)
         if isinstance(func, collections.Callable):
             func(self)
+        self._connect_signals()
+
+    @classmethod
+    def register_signal(cls, service_name, connections):
+        IDE.__IDECONNECTIONS[service_name] = connections
 
     def _connect_signals(self):
-        pass
+        for key in self.__IDECONNECTIONS:
+            pass
+        #self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
+            #self.status.handle_tab_changed)
 
     def _process_connection(self):
         connection = self.s_listener.nextPendingConnection()
@@ -229,8 +239,6 @@ class IDE(QMainWindow):
             self._show_preferences)
         self.connect(self.mainContainer, SIGNAL("dontOpenStartPage()"),
             self._dont_show_start_page_again)
-        self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
-            self.status.handle_tab_changed)
         # When close the last tab cleanup
         self.connect(self.mainContainer, SIGNAL("allTabsClosed()"),
             self._last_tab_closed)

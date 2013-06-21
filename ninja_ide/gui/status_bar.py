@@ -458,4 +458,9 @@ class FileSystemOpener(QWidget):
 
 
 #Register StatusBar
-ide.IDE.register_service(StatusBar(), 'status_bar')
+def register_status_bar():
+    status = StatusBar()
+    ide.IDE.register_service(status, 'status_bar')
+
+
+register_status_bar()
