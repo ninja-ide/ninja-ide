@@ -75,6 +75,7 @@ class Actions(QObject):
     def install_shortcuts(self, ide):
         """Install the shortcuts to the IDE."""
         self.ide = ide
+        status = self.ide.get_service('status_bar')
         short = resources.get_shortcut
         self.shortChangeTab = QShortcut(short("Change-Tab"), self.ide)
         self.shortChangeTabReverse = QShortcut(
@@ -152,9 +153,9 @@ class Actions(QObject):
         self.connect(self.shortNavigateForward, SIGNAL("activated()"),
             lambda: self.__navigate_with_keyboard(True))
         self.connect(self.shortCodeLocator, SIGNAL("activated()"),
-            self.ide.status.show_locator)
+            status.show_locator)
         self.connect(self.shortFileOpener, SIGNAL("activated()"),
-            self.ide.status.show_file_opener)
+            status.show_file_opener)
         self.connect(self.shortGoToDefinition, SIGNAL("activated()"),
             self.editor_go_to_definition)
         self.connect(self.shortCompleteDeclarations, SIGNAL("activated()"),
@@ -200,15 +201,15 @@ class Actions(QObject):
         self.connect(self.shortPrint, SIGNAL("activated()"),
             self.print_file)
         self.connect(self.shortFind, SIGNAL("activated()"),
-            self.ide.status.show)
+            status.show)
         self.connect(self.shortFindPrevious, SIGNAL("activated()"),
-            self.ide.status._searchWidget.find_previous)
+            status._searchWidget.find_previous)
         self.connect(self.shortFindNext, SIGNAL("activated()"),
-            self.ide.status._searchWidget.find_next)
+            status._searchWidget.find_next)
         self.connect(self.shortFindWithWord, SIGNAL("activated()"),
-            self.ide.status.show_with_word)
+            status.show_with_word)
         self.connect(self.shortFindReplace, SIGNAL("activated()"),
-            self.ide.status.show_replace)
+            status.show_replace)
         self.connect(self.shortRunFile, SIGNAL("activated()"),
             self.execute_file)
         self.connect(self.shortRunProject, SIGNAL("activated()"),
@@ -288,11 +289,11 @@ class Actions(QObject):
 
         # Not Configurable Shortcuts
         self._shortEscStatus = QShortcut(QKeySequence(Qt.Key_Escape),
-            self.ide.status)
+            status)
         self._shortEscMisc = QShortcut(QKeySequence(Qt.Key_Escape),
             self.ide.misc)
         self.connect(self._shortEscStatus, SIGNAL("activated()"),
-            self.ide.status.hide_status)
+            status.hide_status)
         self.connect(self._shortEscMisc, SIGNAL("activated()"),
             self.ide.misc.hide)
 

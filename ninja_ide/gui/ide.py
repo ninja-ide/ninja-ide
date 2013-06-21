@@ -70,7 +70,7 @@ class IDE(QMainWindow):
     __IDESERVICES = {}
     __IDECONNECTIONS = {}
     # CONNECTIONS structure:
-    # ({'target_service': obj, 'signal_name': string,
+    # ({'target': service_name, 'signal_name': string,
     #   'slot': 'name_of_function'},)
     # On modify add: {connected: True}
     __created = False
@@ -116,13 +116,12 @@ class IDE(QMainWindow):
         self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
             self.actions.update_explorer)
 
-        self.load_toolbar()
-
         #Plugin Manager
         services = {
             'editor': plugin_services.MainService(),
             'toolbar': plugin_services.ToolbarService(self.toolbar),
-            'menuApp': plugin_services.MenuAppService(self.pluginsMenu),
+            #'menuApp': plugin_services.MenuAppService(self.pluginsMenu),
+            'menuApp': plugin_services.MenuAppService(None),
             'explorer': plugin_services.ExplorerService(),
             'misc': plugin_services.MiscContainerService(self.misc)}
         serviceLocator = plugin_manager.ServiceLocator(services)
@@ -149,6 +148,9 @@ class IDE(QMainWindow):
             self.actions.update_migration_tips)
         self.connect(self.mainContainer, SIGNAL("migrationAnalyzed()"),
             self.actions.update_migration_tips)
+
+        for service_name in self.__IDECONNECTIONS:
+            self.install_service(service_name)
 
     @classmethod
     def get_service(cls, service_name):
@@ -178,13 +180,11 @@ class IDE(QMainWindow):
                 if connection.get('connected', False):
                     continue
                 target = self.__IDESERVICES.get(
-                    connection['target_service'], None)
-                service = self.__IDESERVICES.get(
-                    connection[service_name], None)
-                slot = getattr(target, connection['slot'], None)
+                    connection['target'], None)
+                service = self.__IDESERVICES.get(service_name, None)
+                slot = getattr(service, connection['slot'], None)
                 signal_name = connection['signal_name']
-                if service and target and isinstance(
-                   slot, collections.Callable):
+                if target and isinstance(slot, collections.Callable):
                     self.connect(target, SIGNAL(signal_name), slot)
                     connection['connected'] = True
 
@@ -199,27 +199,6 @@ class IDE(QMainWindow):
                 for x in files.split(ipc.file_delimiter)]
             projects = projects.split(ipc.project_delimiter)
             self.load_session_files_projects(files, [], projects, None)
-
-    def load_toolbar(self):
-        self.toolbar.clear()
-        toolbar_items = {}
-        toolbar_items.update(self._menuFile.toolbar_items)
-        toolbar_items.update(self._menuView.toolbar_items)
-        toolbar_items.update(self._menuEdit.toolbar_items)
-        toolbar_items.update(self._menuSource.toolbar_items)
-        toolbar_items.update(self._menuProject.toolbar_items)
-
-        for item in settings.TOOLBAR_ITEMS:
-            if item == 'separator':
-                self.toolbar.addSeparator()
-            else:
-                tool_item = toolbar_items.get(item, None)
-                if tool_item is not None:
-                    self.toolbar.addAction(tool_item)
-        #load action added by plugins, This is a special case when reload
-        #the toolbar after save the preferences widget
-        for toolbar_action in settings.get_toolbar_item_for_plugins():
-            self.toolbar.addAction(toolbar_action)
 
     def load_external_plugins(self, paths):
         for path in paths:
