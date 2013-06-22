@@ -3,7 +3,7 @@
 from PyQt4.QtCore import QObject
 
 from ninja_ide.core import settings
-from ninja_ide.gui import ide
+from ninja_ide.gui.ide import IDE
 
 #NINJA-IDE Menus
 from ninja_ide.gui.menus import menu_about
@@ -28,18 +28,19 @@ class _MenuBar(QObject):
         self._menuPlugins = menu_plugins.MenuPlugins()
         self._menuAbout = menu_about.MenuAbout()
 
-        ide.IDE.register_service('menu_bar', self)
-        ide.IDE.register_service('menu_file', self._menuFile)
-        ide.IDE.register_service('menu_view', self._menuView)
+        IDE.register_service('menu_bar', self)
+        IDE.register_service('menu_file', self._menuFile)
+        IDE.register_service('menu_view', self._menuView)
 
         menu_file_connections = (
             {'target': 'main_container',
             'signal_name': 'recentTabsModified(QStringList)',
             'slot': self._menuFile.update_recent_files},
         )
-        ide.IDE.register_signals('menu_file', menu_file_connections)
+        IDE.register_signals('menu_file', menu_file_connections)
 
-    def install(self, ide):
+    def install(self):
+        ide = IDE.get_service('ide')
         #Menu
         menubar = ide.menuBar()
         file_ = menubar.addMenu(self.tr("&File"))
@@ -58,6 +59,8 @@ class _MenuBar(QObject):
         self._menuProject.install_menu(project, ide.toolbar)
         self._menuPlugins.install_menu(ide.pluginsMenu)
         self._menuAbout.install_menu(about)
+
+        self.load_toolbar(ide)
 
     def load_toolbar(self, ide):
         toolbar = ide.toolbar

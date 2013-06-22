@@ -74,10 +74,11 @@ class CentralWidget(QWidget):
         IDE.register_service('central_container', self)
         IDE.register_signals("central_container", connects)
 
-    def install(self, ide):
-        self.install_shortcuts(ide)
+    def install(self):
+        self.install_shortcuts()
 
-    def install_shortcuts(self, ide):
+    def install_shortcuts(self):
+        ide = IDE.get_service('ide')
         short = resources.get_shortcut
         shortHideRegion1 = QShortcut(short("Hide-misc"), ide)
         IDE.register_shortcut('Hide-misc', shortHideRegion1)
