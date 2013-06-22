@@ -134,6 +134,12 @@ class IDE(QMainWindow):
         self.trayIcon.show()
 
         #Shortcuts
+        shortFullscreen = QShortcut(
+            resources.get_shortcut("Full-screen"), self)
+        IDE.register_shortcut('Full-screen', shortFullscreen)
+        self.connect(shortFullscreen, SIGNAL("activated()"),
+            self.fullscreen_mode)
+
         key = Qt.Key_1
         for i in range(10):
             if settings.IS_MAC_OS:

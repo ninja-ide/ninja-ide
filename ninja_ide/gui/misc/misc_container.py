@@ -122,6 +122,9 @@ class _ToolsDock(QWidget):
             {'target': 'main_container',
             'signal_name': "findOcurrences(QString)",
             'slot': self.show_find_occurrences},
+            {'target': 'main_container',
+            'signal_name': "runFile()",
+            'slot': self.execute_file},
             )
         IDE.register_signals('tools_dock', connections)
         self.install_shortcuts(ide)
