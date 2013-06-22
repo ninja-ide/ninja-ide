@@ -41,7 +41,7 @@ from ninja_ide.core import plugin_manager
 from ninja_ide.core import settings
 from ninja_ide.core import ipc
 from ninja_ide.gui import updates
-#from ninja_ide.gui.dialogs import preferences
+from ninja_ide.gui.dialogs import preferences
 from ninja_ide.gui.dialogs import traceback_widget
 from ninja_ide.tools.completion import completion_daemon
 from ninja_ide.tools import ui_tools
@@ -302,9 +302,9 @@ class IDE(QMainWindow):
         self.explorer.cleanup_tabs()
 
     def _show_preferences(self):
-        pass
-        #pref = preferences.PreferencesWidget(self.mainContainer)
-        #pref.show()
+        pref = preferences.PreferencesWidget(self.mainContainer)
+        pref.set_IDE(self)
+        pref.show()
 
     def load_session_files_projects(self, filesTab1, filesTab2, projects,
         current_file, recent_files=None):
