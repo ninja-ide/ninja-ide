@@ -27,7 +27,6 @@ from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QShortcut
-from PyQt4.QtGui import QInputDialog
 
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QSettings
@@ -101,7 +100,6 @@ class _ExplorerContainer(QTabWidget):
 
         IDE.register_service('explorer_container', self)
 
-    def install(self, ide):
         connections = (
             {'target': 'main_container',
             'signal_name': "findOcurrences(QString)",
@@ -138,8 +136,10 @@ class _ExplorerContainer(QTabWidget):
             'slot': self.rotate_tab_position},
         )
 
+        IDE.register_signals('explorer_container', connections)
+
+    def install(self, ide):
         self.install_shortcuts(ide)
-        IDE.register_signals("explorer_container", connections)
 
     def install_shortcuts(self, ide):
         short = resources.get_shortcut
@@ -176,47 +176,31 @@ class _ExplorerContainer(QTabWidget):
         if self._listMigration:
             self._listMigration.refresh_lists(migration)
 
-    def _add_file_to_project(self, path):
-        """Add the file for 'path' in the project the user choose here."""
-        pathProject = [self.get_actual_project()]
-        addToProject = ui_tools.AddToProject(pathProject, self.ide)
-        addToProject.exec_()
-        if not addToProject.pathSelected:
-            return
+    def update_explorer(self):
+        """Update the symbols in the Symbol Explorer when a file is saved."""
         main_container = IDE.get_service('main_container')
         if not main_container:
             return
         editorWidget = main_container.get_actual_editor()
-        if not editorWidget.ID:
-            name = QInputDialog.getText(None,
-                self.tr("Add File To Project"), self.tr("File Name:"))[0]
-            if not name:
-                QMessageBox.information(self, self.tr("Invalid Name"),
-                    self.tr("The file name is empty, please enter a name"))
-                return
-        else:
-            name = file_manager.get_basename(editorWidget.ID)
-        path = file_manager.create_path(addToProject.pathSelected, name)
-        try:
-            path = file_manager.store_file_content(
-                path, editorWidget.get_text(), newFile=True)
-            main_container._file_watcher.allow_kill = False
-            if path != editorWidget.ID:
-                main_container.remove_standalone_watcher(
-                    editorWidget.ID)
-            editorWidget.ID = path
-            main_container.add_standalone_watcher(path)
-            main_container._file_watcher.allow_kill = True
-            self.add_existing_file(path)
-            self.emit(SIGNAL("changeWindowTitle(QString)"), path)
-            name = file_manager.get_basename(path)
-            main_container.actualTab.setTabText(
-                main_container.actualTab.currentIndex(), name)
-            editorWidget._file_saved()
-        except file_manager.NinjaFileExistsException as ex:
-            QMessageBox.information(self, self.tr("File Already Exists"),
-                (self.tr("Invalid Path: the file '%s' already exists.") %
-                    ex.filename))
+        if editorWidget:
+            ext = file_manager.get_file_extension(editorWidget.ID)
+            #obtain a symbols handler for this file extension
+            symbols_handler = settings.get_symbols_handler(ext)
+            if symbols_handler:
+                source = editorWidget.toPlainText()
+                if editorWidget.encoding is not None:
+                    source = source.encode(editorWidget.encoding)
+                if ext == 'py':
+                    args = (source, True)
+                else:
+                    args = (source,)
+                symbols = symbols_handler.obtain_symbols(*args)
+                self.update_symbols(symbols, editorWidget.ID)
+
+            #TODO: Should we change the code below similar to the code above?
+            exts = settings.SYNTAX.get('python')['extension']
+            if ext in exts or editorWidget.newDocument:
+                self.update_errors(editorWidget.errors, editorWidget.pep8)
 
     def addTab(self, tab, title):
         QTabWidget.addTab(self, tab, title)

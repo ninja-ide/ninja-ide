@@ -18,6 +18,8 @@ from __future__ import absolute_import
 
 import sys
 import os
+import re
+import webbrowser
 
 from PyQt4 import uic
 from PyQt4.QtGui import QWidget
@@ -41,12 +43,15 @@ from ninja_ide.core.file_handling.filesystem_notifications import (
     NinjaFileSystemWatcher)
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.main_panel import tab_widget
+from ninja_ide.gui.main_panel import tab_group
 from ninja_ide.gui.editor import editor
 #from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.main_panel import browser_widget
 from ninja_ide.gui.main_panel import start_page
 from ninja_ide.gui.main_panel import image_viewer
+from ninja_ide.gui.dialogs import from_import_dialog
+from ninja_ide.tools import locator
 from ninja_ide.tools import runner
 from ninja_ide.tools import ui_tools
 
@@ -117,7 +122,22 @@ class _MainContainer(QWidget):
         # File Watcher
         self._file_watcher = NinjaFileSystemWatcher
         self._watched_simple_files = []
+        #Code Navigation
+        self._locator = locator.Locator()
+        self.__codeBack = []
+        self.__codeForward = []
+        self.__bookmarksFile = ''
+        self.__bookmarksPos = -1
+        self.__breakpointsFile = ''
+        self.__breakpointsPos = -1
+        self.__operations = {
+            0: self._navigate_code_jumps,
+            1: self._navigate_bookmarks,
+            2: self._navigate_breakpoints}
 
+        self.connect(self.mainContainer,
+            SIGNAL("locateFunction(QString, QString, bool)"),
+            self.locate_function)
         self.connect(self.scrollBar, SIGNAL("valueChanged(int)"),
             self.move_follow_scrolls)
         self.connect(self._tabMain, SIGNAL("currentChanged(int)"),
@@ -274,6 +294,10 @@ class _MainContainer(QWidget):
         IDE.register_shortcut('Highlight-Word', shortHighlightWord)
         shortPrint = QShortcut(short("Print-file"), ide)
         IDE.register_shortcut('Print-file', shortPrint)
+        shortCopyHistory = QShortcut(short("History-Copy"), ide)
+        IDE.register_shortcut('History-Copy', shortCopyHistory)
+        shortPasteHistory = QShortcut(short("History-Paste"), ide)
+        IDE.register_shortcut('History-Paste', shortPasteHistory)
 
         #Connect
         self.connect(self.shortGoToDefinition, SIGNAL("activated()"),
@@ -334,6 +358,74 @@ class _MainContainer(QWidget):
             self.change_tabs_visibility)
         self.connect(shortPrint, SIGNAL("activated()"),
             self.print_file)
+        self.connect(shortAddBookmark, SIGNAL("activated()"),
+            self._add_bookmark_breakpoint)
+        self.connect(shortImport, SIGNAL("activated()"),
+            self.import_from_everywhere)
+        self.connect(shortNavigateBack, SIGNAL("activated()"),
+            lambda: self.__navigate_with_keyboard(False))
+        self.connect(shortNavigateForward, SIGNAL("activated()"),
+            lambda: self.__navigate_with_keyboard(True))
+        self.connect(shortOpenLastTabOpened, SIGNAL("activated()"),
+            self._reopen_last_tab)
+        self.connect(shortCopyHistory, SIGNAL("activated()"),
+            self._copy_history)
+        self.connect(shortPasteHistory, SIGNAL("activated()"),
+            self._paste_history)
+
+    def locate_function(self, function, filePath, isVariable):
+        """Move the cursor to the proper position in the navigate stack."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            self.__codeBack.append((editorWidget.ID,
+                editorWidget.textCursor().position()))
+            self.__codeForward = []
+        self._locator.navigate_to(function, filePath, isVariable)
+
+    def close_files_from_project(self, project):
+        """Close the files related to this project."""
+        if project:
+            for tabIndex in reversed(list(range(self._tabMain.count()))):
+                if file_manager.belongs_to_folder(
+                project, self._tabMain.widget(tabIndex).ID):
+                    self._tabMain.removeTab(tabIndex)
+
+            for tabIndex in reversed(list(range(self._tabSecondary.count()))):
+                if file_manager.belongs_to_folder(
+                project, self._tabSecondary.widget(tabIndex).ID):
+                    self._tabSecondary.removeTab(tabIndex)
+            self.ide.profile = None
+
+    def _paste_history(self):
+        """Paste the text from the copy/paste history."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            cursor = editorWidget.textCursor()
+            central = IDE.get_service('central_container')
+            if central:
+                paste = central.lateralPanel.get_paste()
+                cursor.insertText(paste)
+
+    def _copy_history(self):
+        """Copy the selected text into the copy/paste history."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            cursor = editorWidget.textCursor()
+            copy = cursor.selectedText()
+            central = IDE.get_service('central_container')
+            if central:
+                central.lateralPanel.add_new_copy(copy)
+
+    def import_from_everywhere(self):
+        """Add an item to the back stack and reset the forward stack."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            text = editorWidget.get_text()
+            froms = re.findall('^from (.*)', text, re.MULTILINE)
+            fromSection = list(set([f.split(' import')[0] for f in froms]))
+            dialog = from_import_dialog.FromImportDialog(fromSection,
+                editorWidget, self.ide)
+            dialog.show()
 
     def add_back_item_navigation(self):
         """Add an item to the back stack and reset the forward stack."""
@@ -342,6 +434,149 @@ class _MainContainer(QWidget):
             self.__codeBack.append((editorWidget.ID,
                 editorWidget.textCursor().position()))
             self.__codeForward = []
+
+    def preview_in_browser(self):
+        """Load the current html file in the default browser."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            if not editorWidget.ID:
+                self.ide.mainContainer.save_file()
+            ext = file_manager.get_file_extension(editorWidget.ID)
+            if ext == 'html':
+                webbrowser.open(editorWidget.ID)
+
+    def _add_bookmark_breakpoint(self):
+        """Add a bookmark or breakpoint to the current file in the editor."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            if self.actualTab.navigator.operation == 1:
+                editorWidget._sidebarWidget.set_bookmark(
+                    editorWidget.textCursor().blockNumber())
+            elif self.actualTab.navigator.operation == 2:
+                editorWidget._sidebarWidget.set_breakpoint(
+                    editorWidget.textCursor().blockNumber())
+
+    def __navigate_with_keyboard(self, val):
+        """Navigate between the positions in the jump history stack."""
+        op = self.actualTab.navigator.operation
+        self.navigate_code_history(val, op)
+
+    def navigate_code_history(self, val, op):
+        """Navigate the code history."""
+        self.__operations[op](val)
+
+    def _navigate_code_jumps(self, val):
+        """Navigate between the jump points."""
+        node = None
+        if not val and self.__codeBack:
+            node = self.__codeBack.pop()
+            editorWidget = self.get_actual_editor()
+            if editorWidget:
+                self.__codeForward.append((editorWidget.ID,
+                    editorWidget.textCursor().position()))
+        elif val and self.__codeForward:
+            node = self.__codeForward.pop()
+            editorWidget = self.get_actual_editor()
+            if editorWidget:
+                self.__codeBack.append((editorWidget.ID,
+                    editorWidget.textCursor().position()))
+        if node:
+            self.open_file(node[0], node[1])
+
+    def _navigate_breakpoints(self, val):
+        """Navigate between the breakpoints."""
+        breakList = list(settings.BREAKPOINTS.keys())
+        breakList.sort()
+        if not breakList:
+            return
+        if self.__breakpointsFile not in breakList:
+            self.__breakpointsFile = breakList[0]
+        index = breakList.index(self.__breakpointsFile)
+        breaks = settings.BREAKPOINTS.get(self.__breakpointsFile, [])
+        lineNumber = 0
+        #val == True: forward
+        if val:
+            if (len(breaks) - 1) > self.__breakpointsPos:
+                self.__breakpointsPos += 1
+                lineNumber = breaks[self.__breakpointsPos]
+            elif len(breaks) > 0:
+                if index < (len(breakList) - 1):
+                    self.__breakpointsFile = breakList[index + 1]
+                else:
+                    self.__breakpointsFile = breakList[0]
+                self.__breakpointsPos = 0
+                breaks = settings.BREAKPOINTS[self.__breakpointsFile]
+                lineNumber = breaks[0]
+        else:
+            if self.__breakpointsPos > 0:
+                self.__breakpointsPos -= 1
+                lineNumber = breaks[self.__breakpointsPos]
+            elif len(breaks) > 0:
+                self.__breakpointsFile = breakList[index - 1]
+                breaks = settings.BREAKPOINTS[self.__breakpointsFile]
+                self.__breakpointsPos = len(breaks) - 1
+                lineNumber = breaks[self.__breakpointsPos]
+        if file_manager.file_exists(self.__breakpointsFile):
+            self.open_file(self.__breakpointsFile,
+                lineNumber, None, True)
+        else:
+            settings.BREAKPOINTS.pop(self.__breakpointsFile)
+
+    def _navigate_bookmarks(self, val):
+        """Navigate between the bookmarks."""
+        bookList = list(settings.BOOKMARKS.keys())
+        bookList.sort()
+        if not bookList:
+            return
+        if self.__bookmarksFile not in bookList:
+            self.__bookmarksFile = bookList[0]
+        index = bookList.index(self.__bookmarksFile)
+        bookms = settings.BOOKMARKS.get(self.__bookmarksFile, [])
+        lineNumber = 0
+        #val == True: forward
+        if val:
+            if (len(bookms) - 1) > self.__bookmarksPos:
+                self.__bookmarksPos += 1
+                lineNumber = bookms[self.__bookmarksPos]
+            elif len(bookms) > 0:
+                if index < (len(bookList) - 1):
+                    self.__bookmarksFile = bookList[index + 1]
+                else:
+                    self.__bookmarksFile = bookList[0]
+                self.__bookmarksPos = 0
+                bookms = settings.BOOKMARKS[self.__bookmarksFile]
+                lineNumber = bookms[0]
+        else:
+            if self.__bookmarksPos > 0:
+                self.__bookmarksPos -= 1
+                lineNumber = bookms[self.__bookmarksPos]
+            elif len(bookms) > 0:
+                self.__bookmarksFile = bookList[index - 1]
+                bookms = settings.BOOKMARKS[self.__bookmarksFile]
+                self.__bookmarksPos = len(bookms) - 1
+                lineNumber = bookms[self.__bookmarksPos]
+        if file_manager.file_exists(self.__bookmarksFile):
+            self.open_file(self.__bookmarksFile,
+                lineNumber, None, True)
+        else:
+            settings.BOOKMARKS.pop(self.__bookmarksFile)
+
+    def count_file_code_lines(self):
+        """Count the lines of code in the current file."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            block_count = editorWidget.blockCount()
+            blanks = re.findall('(^\n)|(^(\s+)?#)|(^( +)?($|\n))',
+                editorWidget.get_text(), re.M)
+            blanks_count = len(blanks)
+            resume = self.tr("Lines code: %s\n") % (block_count - blanks_count)
+            resume += (self.tr("Blanks and commented lines: %s\n\n") %
+                blanks_count)
+            resume += self.tr("Total lines: %s") % block_count
+            msgBox = QMessageBox(QMessageBox.Information,
+                self.tr("Summary of lines"), resume,
+                QMessageBox.Ok, editorWidget)
+            msgBox.exec_()
 
     def editor_go_to_definition(self):
         """Search the definition of the method or variable under the cursor.
@@ -497,6 +732,36 @@ class _MainContainer(QWidget):
 
     def _navigate_code(self, val, op):
         self.emit(SIGNAL("navigateCode(bool, int)"), val, op)
+
+    def group_tabs_together(self):
+        """Group files that belongs to the same project together."""
+        explorer = IDE.get_service('explorer_container')
+        if not explorer or explorer._treeProjects is None:
+            return
+        projects_obj = explorer.get_opened_projects()
+        projects = [p.path for p in projects_obj]
+        for project in projects:
+            projectName = explorer.get_project_name(project)
+            if not projectName:
+                projectName = file_manager.get_basename(project)
+            tabGroup = tab_group.TabGroup(project, projectName, self)
+            for index in reversed(list(range(
+            self._tabMain.count()))):
+                widget = self._tabMain.widget(index)
+                if type(widget) is editor.Editor and \
+                file_manager.belongs_to_folder(project, widget.ID):
+                    tabGroup.add_widget(widget)
+                    self._tabMain.removeTab(index)
+            if tabGroup.tabs:
+                self._tabMain.add_tab(tabGroup, projectName)
+
+    def deactivate_tabs_groups(self):
+        """Deactivate tab grouping based in the project they belong."""
+        for index in reversed(list(range(
+        self._tabMain.count()))):
+            widget = self._tabMain.widget(index)
+            if type(widget) is tab_group.TabGroup:
+                widget.only_expand()
 
     def _main_without_tabs(self):
         if self._followMode:

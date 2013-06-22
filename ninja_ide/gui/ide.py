@@ -498,7 +498,9 @@ class IDE(QMainWindow):
                 QMessageBox.Yes, QMessageBox.No, QMessageBox.Cancel)
             if val == QMessageBox.Yes:
                 #Saves all open files
-                self.mainContainer.save_all()
+                main_container = IDE.get_service('main_container')
+                if main_container:
+                    main_container.save_all()
             if val == QMessageBox.Cancel:
                 event.ignore()
         self.emit(SIGNAL("goingDown()"))
