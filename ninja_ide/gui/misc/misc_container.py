@@ -27,6 +27,8 @@ from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QSpacerItem
 from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QShortcut
+from PyQt4.QtGui import QKeySequence
+from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtWebKit import QWebPage
 
@@ -99,6 +101,10 @@ class _ToolsDock(QWidget):
         btn_close.setToolTip(self.tr('F4: Show/Hide'))
         hbox.addWidget(btn_close)
 
+        # Not Configurable Shortcuts
+        shortEscMisc = QShortcut(QKeySequence(Qt.Key_Escape), self)
+        self.connect(shortEscMisc, SIGNAL("activated()"), self.hide)
+
         self.connect(self._btnConsole, SIGNAL("clicked()"),
             lambda: self._item_changed(0))
         self.connect(self._btnRun, SIGNAL("clicked()"),
@@ -116,6 +122,9 @@ class _ToolsDock(QWidget):
             {'target': 'main_container',
             'signal_name':     "findOcurrences(QString)",
             'slot': self.show_find_occurrences},
+            {'target': 'main_container',
+            'signal_name': "runFile()",
+            'slot': self.execute_file},
             )
         IDE.register_signals('tools_dock', connections)
         self.install_shortcuts(ide)

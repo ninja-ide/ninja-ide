@@ -32,7 +32,6 @@ from ninja_ide.core.pattern import singleton
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui import ide
 from ninja_ide.gui.editor import editor
-from ninja_ide.gui.dialogs import from_import_dialog
 from ninja_ide.gui.main_panel import tab_group
 
 
@@ -52,16 +51,6 @@ class Actions(QObject):
         QObject.__init__(self)
         #Definition Locator
         #self._locator = locator.Locator()
-        self.__codeBack = []
-        self.__codeForward = []
-        self.__bookmarksFile = ''
-        self.__bookmarksPos = -1
-        self.__breakpointsFile = ''
-        self.__breakpointsPos = -1
-        self.__operations = {
-            0: self._navigate_code_jumps,
-            1: self._navigate_bookmarks,
-            2: self._navigate_breakpoints}
 
         ide.IDE.register_service(self, 'actions')
 
@@ -79,124 +68,9 @@ class Actions(QObject):
             )
         ide.IDE.register_signals('actions', connections)
 
-    def install_shortcuts(self, ide):
-        """Install the shortcuts to the IDE."""
-        #Connect Shortcuts Signals
-        self.connect(self.shortNavigateBack, SIGNAL("activated()"),
-            lambda: self.__navigate_with_keyboard(False))
-        self.connect(self.shortNavigateForward, SIGNAL("activated()"),
-            lambda: self.__navigate_with_keyboard(True))
-        self.connect(self.shortFullscreen, SIGNAL("activated()"),
-            self.fullscreen_mode)
-        self.connect(self.shortImport, SIGNAL("activated()"),
-            self.import_from_everywhere)
-        self.connect(self.shortOpenLastTabOpened, SIGNAL("activated()"),
-            self.reopen_last_tab)
-        self.connect(self.shortAddBookmark, SIGNAL("activated()"),
-            self._add_bookmark_breakpoint)
-        self.connect(self.shortShowPasteHistory, SIGNAL("activated()"),
-            self.ide.central.lateralPanel.combo.showPopup)
-        self.connect(self.shortCopyHistory, SIGNAL("activated()"),
-            self._copy_history)
-        self.connect(self.shortPasteHistory, SIGNAL("activated()"),
-            self._paste_history)
-
-        #Connect SIGNALs from other objects
-        self.connect(self.ide.mainContainer._tabMain,
-            SIGNAL("runFile()"), self.execute_file)
-        self.connect(self.ide.mainContainer._tabSecondary,
-            SIGNAL("runFile()"), self.execute_file)
-        self.connect(self.ide.mainContainer._tabMain,
-            SIGNAL("addToProject(QString)"), self._add_file_to_project)
-        self.connect(self.ide.mainContainer._tabSecondary,
-            SIGNAL("addToProject(QString)"), self._add_file_to_project)
-        self.connect(self.ide.mainContainer,
-            SIGNAL("openProject(QString)"), self.open_project)
-
-        # Not Configurable Shortcuts
-        #self._shortEscStatus = QShortcut(QKeySequence(Qt.Key_Escape),
-            #self.ide.status)
-        #self._shortEscMisc = QShortcut(QKeySequence(Qt.Key_Escape),
-            #self.ide.misc)
-        #self.connect(self._shortEscStatus, SIGNAL("activated()"),
-            #self.ide.status.hide_status)
-        #self.connect(self._shortEscMisc, SIGNAL("activated()"),
-            #self.ide.misc.hide)
-
     def move_tab_to_next_split(self):
         self.ide.mainContainer.move_tab_to_next_split(
             self.ide.mainContainer.actualTab)
-
-    def _copy_history(self):
-        """Copy the selected text into the copy/paste history."""
-        editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget and editorWidget.hasFocus():
-            cursor = editorWidget.textCursor()
-            copy = cursor.selectedText()
-            self.ide.central.lateralPanel.add_new_copy(copy)
-
-    def _paste_history(self):
-        """Paste the text from the copy/paste history."""
-        editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget and editorWidget.hasFocus():
-            cursor = editorWidget.textCursor()
-            paste = self.ide.central.lateralPanel.get_paste()
-            cursor.insertText(paste)
-
-    def _add_bookmark_breakpoint(self):
-        """Add a bookmark or breakpoint to the current file in the editor."""
-        editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget and editorWidget.hasFocus():
-            if self.ide.mainContainer.actualTab.navigator.operation == 1:
-                editorWidget._sidebarWidget.set_bookmark(
-                    editorWidget.textCursor().blockNumber())
-            elif self.ide.mainContainer.actualTab.navigator.operation == 2:
-                editorWidget._sidebarWidget.set_breakpoint(
-                    editorWidget.textCursor().blockNumber())
-
-    def __navigate_with_keyboard(self, val):
-        """Navigate between the positions in the jump history stack."""
-        op = self.ide.mainContainer._tabMain.navigator.operation
-        self.navigate_code_history(val, op)
-
-    def _add_file_to_project(self, path):
-        """Add the file for 'path' in the project the user choose here."""
-        pathProject = [self.ide.explorer.get_actual_project()]
-        addToProject = ui_tools.AddToProject(pathProject, self.ide)
-        addToProject.exec_()
-        if not addToProject.pathSelected:
-            return
-        editorWidget = self.ide.mainContainer.get_actual_editor()
-        if not editorWidget.ID:
-            name = QInputDialog.getText(None,
-                self.tr("Add File To Project"), self.tr("File Name:"))[0]
-            if not name:
-                QMessageBox.information(self, self.tr("Invalid Name"),
-                    self.tr("The file name is empty, please enter a name"))
-                return
-        else:
-            name = file_manager.get_basename(editorWidget.ID)
-        path = file_manager.create_path(addToProject.pathSelected, name)
-        try:
-            path = file_manager.store_file_content(
-                path, editorWidget.get_text(), newFile=True)
-            self.ide.mainContainer._file_watcher.allow_kill = False
-            if path != editorWidget.ID:
-                self.ide.mainContainer.remove_standalone_watcher(
-                    editorWidget.ID)
-            editorWidget.ID = path
-            self.ide.mainContainer.add_standalone_watcher(path)
-            self.ide.mainContainer._file_watcher.allow_kill = True
-            self.ide.explorer.add_existing_file(path)
-            self.ide.change_window_title(path)
-            name = file_manager.get_basename(path)
-            self.ide.mainContainer.actualTab.setTabText(
-                self.ide.mainContainer.actualTab.currentIndex(), name)
-            editorWidget._file_saved()
-        except file_manager.NinjaFileExistsException as ex:
-            QMessageBox.information(self, self.tr("File Already Exists"),
-                (self.tr("Invalid Path: the file '%s' already exists.") %
-                    ex.filename))
 
     def add_project_to_console(self, projectFolder):
         """Add the namespace of the project received into the ninja-console."""
@@ -205,17 +79,6 @@ class Actions(QObject):
     def remove_project_from_console(self, projectFolder):
         """Remove the namespace of the project received from the console."""
         self.ide.misc._console.unload_project_from_console(projectFolder)
-
-    def import_from_everywhere(self):
-        """Show the dialog to insert an import from any place in the editor."""
-        editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget:
-            text = editorWidget.get_text()
-            froms = re.findall('^from (.*)', text, re.MULTILINE)
-            fromSection = list(set([f.split(' import')[0] for f in froms]))
-            dialog = from_import_dialog.FromImportDialog(fromSection,
-                editorWidget, self.ide)
-            dialog.show()
 
     def open_project_properties(self):
         """Open a Project and load the symbols in the Code Locator."""
@@ -361,106 +224,6 @@ class Actions(QObject):
         if editorWidget:
             self.ide.explorer.update_migration(editorWidget.migration)
 
-    def navigate_code_history(self, val, op):
-        """Navigate the code history."""
-        self.__operations[op](val)
-
-    def _navigate_code_jumps(self, val):
-        """Navigate between the jump points."""
-        node = None
-        if not val and self.__codeBack:
-            node = self.__codeBack.pop()
-            editorWidget = self.ide.mainContainer.get_actual_editor()
-            if editorWidget:
-                self.__codeForward.append((editorWidget.ID,
-                    editorWidget.textCursor().position()))
-        elif val and self.__codeForward:
-            node = self.__codeForward.pop()
-            editorWidget = self.ide.mainContainer.get_actual_editor()
-            if editorWidget:
-                self.__codeBack.append((editorWidget.ID,
-                    editorWidget.textCursor().position()))
-        if node:
-            self.ide.mainContainer.open_file(node[0], node[1])
-
-    def _navigate_breakpoints(self, val):
-        """Navigate between the breakpoints."""
-        breakList = list(settings.BREAKPOINTS.keys())
-        breakList.sort()
-        if not breakList:
-            return
-        if self.__breakpointsFile not in breakList:
-            self.__breakpointsFile = breakList[0]
-        index = breakList.index(self.__breakpointsFile)
-        breaks = settings.BREAKPOINTS.get(self.__breakpointsFile, [])
-        lineNumber = 0
-        #val == True: forward
-        if val:
-            if (len(breaks) - 1) > self.__breakpointsPos:
-                self.__breakpointsPos += 1
-                lineNumber = breaks[self.__breakpointsPos]
-            elif len(breaks) > 0:
-                if index < (len(breakList) - 1):
-                    self.__breakpointsFile = breakList[index + 1]
-                else:
-                    self.__breakpointsFile = breakList[0]
-                self.__breakpointsPos = 0
-                breaks = settings.BREAKPOINTS[self.__breakpointsFile]
-                lineNumber = breaks[0]
-        else:
-            if self.__breakpointsPos > 0:
-                self.__breakpointsPos -= 1
-                lineNumber = breaks[self.__breakpointsPos]
-            elif len(breaks) > 0:
-                self.__breakpointsFile = breakList[index - 1]
-                breaks = settings.BREAKPOINTS[self.__breakpointsFile]
-                self.__breakpointsPos = len(breaks) - 1
-                lineNumber = breaks[self.__breakpointsPos]
-        if file_manager.file_exists(self.__breakpointsFile):
-            self.ide.mainContainer.open_file(self.__breakpointsFile,
-                lineNumber, None, True)
-        else:
-            settings.BREAKPOINTS.pop(self.__breakpointsFile)
-
-    def _navigate_bookmarks(self, val):
-        """Navigate between the bookmarks."""
-        bookList = list(settings.BOOKMARKS.keys())
-        bookList.sort()
-        if not bookList:
-            return
-        if self.__bookmarksFile not in bookList:
-            self.__bookmarksFile = bookList[0]
-        index = bookList.index(self.__bookmarksFile)
-        bookms = settings.BOOKMARKS.get(self.__bookmarksFile, [])
-        lineNumber = 0
-        #val == True: forward
-        if val:
-            if (len(bookms) - 1) > self.__bookmarksPos:
-                self.__bookmarksPos += 1
-                lineNumber = bookms[self.__bookmarksPos]
-            elif len(bookms) > 0:
-                if index < (len(bookList) - 1):
-                    self.__bookmarksFile = bookList[index + 1]
-                else:
-                    self.__bookmarksFile = bookList[0]
-                self.__bookmarksPos = 0
-                bookms = settings.BOOKMARKS[self.__bookmarksFile]
-                lineNumber = bookms[0]
-        else:
-            if self.__bookmarksPos > 0:
-                self.__bookmarksPos -= 1
-                lineNumber = bookms[self.__bookmarksPos]
-            elif len(bookms) > 0:
-                self.__bookmarksFile = bookList[index - 1]
-                bookms = settings.BOOKMARKS[self.__bookmarksFile]
-                self.__bookmarksPos = len(bookms) - 1
-                lineNumber = bookms[self.__bookmarksPos]
-        if file_manager.file_exists(self.__bookmarksFile):
-            self.ide.mainContainer.open_file(self.__bookmarksFile,
-                lineNumber, None, True)
-        else:
-            settings.BOOKMARKS.pop(self.__bookmarksFile)
-
     def add_back_item_navigation(self):
         """Add an item to the back stack and reset the forward stack."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
@@ -497,10 +260,6 @@ class Actions(QObject):
             widget = self.ide.mainContainer._tabMain.widget(index)
             if type(widget) is tab_group.TabGroup:
                 widget.only_expand()
-
-    def reopen_last_tab(self):
-        """Reopen the last closed tab."""
-        self.ide.mainContainer.actualTab._reopen_last_tab()
 
     def reload_toolbar(self):
         """Reload the Toolbar."""

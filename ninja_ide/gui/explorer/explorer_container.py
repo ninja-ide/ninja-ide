@@ -72,6 +72,7 @@ class _ExplorerContainer(QTabWidget):
 ###############################################################################
 
     def __init__(self, parent=None):
+        super(_ExplorerContainer, self).__init__(parent)
         QTabWidget.__init__(self, parent)
         self.setTabPosition(QTabWidget.East)
         self.__ide = parent

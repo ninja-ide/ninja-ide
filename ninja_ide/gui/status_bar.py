@@ -55,7 +55,7 @@ DEBUG = logger.debug
 class _StatusBar(QStatusBar):
 
     def __init__(self):
-        QStatusBar.__init__(self)
+        super(_StatusBar, self).__init__()
 
         self._widgetStatus = QWidget()
         vbox = QVBoxLayout(self._widgetStatus)
@@ -71,7 +71,6 @@ class _StatusBar(QStatusBar):
         #Code Locator
         self._codeLocator = locator.CodeLocatorWidget(self)
         vbox.addWidget(self._codeLocator)
-        self.connect(self, SIGNAL("hidden(PyQt_PyObject)"), self._hidden_child)
         self._codeLocator.setVisible(False)
         #File system completer
         self._fileSystemOpener = FileSystemOpener()
@@ -79,6 +78,8 @@ class _StatusBar(QStatusBar):
         self._fileSystemOpener.setVisible(False)
 
         self.addWidget(self._widgetStatus)
+        # Not Configurable Shortcuts
+        shortEscStatus = QShortcut(QKeySequence(Qt.Key_Escape), self)
 
         self.connect(self, SIGNAL("messageChanged(QString)"), self.message_end)
         self.connect(self._replaceWidget._btnCloseReplace, SIGNAL("clicked()"),
@@ -93,6 +94,7 @@ class _StatusBar(QStatusBar):
             self.hide_status)
         self.connect(self._fileSystemOpener, SIGNAL("requestHide()"),
             self.hide_status)
+        self.connect(shortEscStatus, SIGNAL("activated()"), self.hide_status)
 
         IDE.register_service('status_bar', self)
 
@@ -226,13 +228,6 @@ class _StatusBar(QStatusBar):
         self._fileSystemOpener.setVisible(True)
         self.show()
         self._fileSystemOpener.pathLine.setFocus()
-
-    def _hidden_child(self, child):
-        """
-        Originally replacing a manual call to hide_status in locator,
-        TODO: please expand to do something with childd
-        """
-        self.hide_status()
 
     def hide_status(self):
         self._searchWidget._checkSensitive.setCheckState(Qt.Unchecked)

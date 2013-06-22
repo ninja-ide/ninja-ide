@@ -69,6 +69,8 @@ class CentralWidget(QWidget):
         #Add to Main Layout
         hbox.addWidget(self._splitterBase)
 
+        IDE.register_service('central_container', self)
+
     def install(self, ide):
         self.install_shortcuts()
 
@@ -84,19 +86,17 @@ class CentralWidget(QWidget):
         IDE.register_shortcut('Hide-all', shortHideAll)
         shortShowPasteHistory = QShortcut(short("Show-Paste-History"), ide)
         IDE.register_shortcut('Show-Paste-History', shortShowPasteHistory)
-        shortPasteHistory = QShortcut(short("History-Paste"), ide)
-        IDE.register_shortcut('History-Paste', shortPasteHistory)
-        shortCopyHistory = QShortcut(short("History-Copy"), ide)
-        IDE.register_shortcut('History-Copy', shortCopyHistory)
 
         self.connect(shortHideRegion1, SIGNAL("activated()"),
             self.view_region1_visibility)
-        self.connect(self.shortHideRegion0, SIGNAL("activated()"),
+        self.connect(shortHideRegion0, SIGNAL("activated()"),
             self.view_region0_visibility)
-        self.connect(self.shortHideRegion2, SIGNAL("activated()"),
+        self.connect(shortHideRegion2, SIGNAL("activated()"),
             self.view_region2_visibility)
-        self.connect(self.shortHideAll, SIGNAL("activated()"),
+        self.connect(shortHideAll, SIGNAL("activated()"),
             self.hide_all)
+        self.connect(shortShowPasteHistory, SIGNAL("activated()"),
+            self.lateralPanel.combo.showPopup)
 
     def insert_widget_region0(self, container):
         self._splitterInside.insertWidget(0, container)
@@ -301,3 +301,6 @@ class LateralPanel(QWidget):
 
     def get_paste(self):
         return self.combo.currentText()
+
+
+central = CentralWidget()

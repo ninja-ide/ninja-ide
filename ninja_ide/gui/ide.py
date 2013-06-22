@@ -114,15 +114,14 @@ class IDE(QMainWindow):
         self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
             self.actions.update_explorer)
 
-        self.load_toolbar()
-
         #Plugin Manager
         services = {
             'editor': plugin_services.MainService(),
             'toolbar': plugin_services.ToolbarService(self.toolbar),
             #'menuApp': plugin_services.MenuAppService(self.pluginsMenu),
+            'menuApp': plugin_services.MenuAppService(None),
             'explorer': plugin_services.ExplorerService(),
-            }
+            'misc': plugin_services.MiscContainerService(self.misc)}
         serviceLocator = plugin_manager.ServiceLocator(services)
         self.plugin_manager = plugin_manager.PluginManager(resources.PLUGINS,
             serviceLocator)
@@ -135,6 +134,12 @@ class IDE(QMainWindow):
         self.trayIcon.show()
 
         #Shortcuts
+        shortFullscreen = QShortcut(
+            resources.get_shortcut("Full-screen"), self)
+        IDE.register_shortcut('Full-screen', shortFullscreen)
+        self.connect(shortFullscreen, SIGNAL("activated()"),
+            self.fullscreen_mode)
+
         key = Qt.Key_1
         for i in range(10):
             if settings.IS_MAC_OS:
@@ -268,8 +273,7 @@ class IDE(QMainWindow):
         self.plugin_manager.load_all()
 
     def show_status_message(self, message):
-        #self.status.showMessage(message, 2000)
-        pass
+        self.status.showMessage(message, 2000)
 
     def load_ui(self, centralWidget):
         #Set Application Font for ToolTips
@@ -295,16 +299,22 @@ class IDE(QMainWindow):
         # When close the last tab cleanup
         self.connect(self.mainContainer, SIGNAL("allTabsClosed()"),
             self._last_tab_closed)
-        # Update symbols
-        #self.connect(self.mainContainer, SIGNAL("updateLocator(QString)"),
-            #self.status.explore_file_code)
         #Create Explorer Panel
         self.explorer = explorer_container.ExplorerContainer(self)
-
+        self.connect(self.central, SIGNAL("splitterBaseRotated()"),
+            self.explorer.rotate_tab_position)
+        self.connect(self.explorer, SIGNAL("goToDefinition(int)"),
+            self.actions.editor_go_to_line)
+        self.connect(self.explorer, SIGNAL("projectClosed(QString)"),
+            self.actions.close_files_from_project)
+        #Create Misc Bottom Container
+        self.misc = misc_container.MiscContainer(self)
+        self.connect(self.mainContainer, SIGNAL("findOcurrences(QString)"),
+            self.misc.show_find_occurrences)
 
         centralWidget.insert_central_container(self.mainContainer)
         centralWidget.insert_lateral_container(self.explorer)
-        #centralWidget.insert_bottom_container(self.misc)
+        centralWidget.insert_bottom_container(self.misc)
         if self.explorer.count() == 0:
             centralWidget.change_explorer_visibility(force_hide=True)
         self.connect(self.mainContainer,
@@ -351,8 +361,8 @@ class IDE(QMainWindow):
             notIDEStart=False)
         if current_file:
             self.mainContainer.open_file(current_file, notStart=False)
-        #if recent_files is not None:
-            #self._menuFile.update_recent_files(recent_files)
+        if recent_files is not None:
+            self._menuFile.update_recent_files(recent_files)
 
     def _set_editors_project_data(self):
         self.__project_to_open -= 1
@@ -452,9 +462,7 @@ class IDE(QMainWindow):
         else:
             qsettings.setValue("window/hide_toolbar", False)
         #Save Misc state
-
         qsettings.setValue("window/show_region1", self.misc.isVisible())
-
         #Save Profiles
         if self.profile is not None:
             self.actions.save_profile(self.profile)
