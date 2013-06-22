@@ -15,53 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
-
 import re
 import webbrowser
 
 from PyQt4.QtCore import QObject
-from PyQt4.QtCore import QSettings
-from PyQt4.QtCore import SIGNAL
-
 from PyQt4.QtGui import QMessageBox
 
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
-from ninja_ide.core.pattern import singleton
-from ninja_ide.tools import ui_tools
-from ninja_ide.gui import ide
 from ninja_ide.gui.editor import editor
 from ninja_ide.gui.main_panel import tab_group
 
 
-@singleton
 class Actions(QObject):
-
-    """This class is like the Sauron's Ring:
-    One ring to rule them all, One ring to find them,
-    One ring to bring them all and in the darkness bind them.
-
-    This Class knows all the containers, and its know by all the containers,
-    but the containers don't need to know between each other, in this way we
-    can keep a better api without the need to tie the behaviour between
-    the widgets, and let them just consume the 'actions' they need."""
-
-    def close_files_from_project(self, project):
-        """Close the files related to this project."""
-        if project:
-            tabMain = self.ide.mainContainer._tabMain
-            for tabIndex in reversed(list(range(tabMain.count()))):
-                if file_manager.belongs_to_folder(
-                project, tabMain.widget(tabIndex).ID):
-                    tabMain.removeTab(tabIndex)
-
-            tabSecondary = self.ide.mainContainer._tabSecondary
-            for tabIndex in reversed(list(range(tabSecondary.count()))):
-                if file_manager.belongs_to_folder(
-                project, tabSecondary.widget(tabIndex).ID):
-                    tabSecondary.removeTab(tabIndex)
-            self.ide.profile = None
 
     def count_file_code_lines(self):
         """Count the lines of code in the current file."""

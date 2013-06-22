@@ -62,6 +62,15 @@ logger = NinjaLogger('ninja_ide.gui.ide')
 ###############################################################################
 
 class IDE(QMainWindow):
+    """This class is like the Sauron's Ring:
+    One ring to rule them all, One ring to find them,
+    One ring to bring them all and in the darkness bind them.
+
+    This Class knows all the containers, and its know by all the containers,
+    but the containers don't need to know between each other, in this way we
+    can keep a better api without the need to tie the behaviour between
+    the widgets, and let them just consume the 'actions' they need."""
+
 ###############################################################################
 # SIGNALS
 #
@@ -310,8 +319,6 @@ class IDE(QMainWindow):
             self.explorer.rotate_tab_position)
         self.connect(self.explorer, SIGNAL("goToDefinition(int)"),
             self.actions.editor_go_to_line)
-        self.connect(self.explorer, SIGNAL("projectClosed(QString)"),
-            self.actions.close_files_from_project)
         #Create Misc Bottom Container
         self.misc = misc_container.MiscContainer(self)
         self.connect(self.mainContainer, SIGNAL("findOcurrences(QString)"),

@@ -196,7 +196,10 @@ class _MainContainer(QWidget):
         connections = (
             {'target': 'menu_file',
             'signal_name': 'openFile(QString)',
-            'slot': self.open_file}
+            'slot': self.open_file},
+            {'target': 'explorer_container',
+            'signal_name': 'projectClosed(QString)',
+            'slot': self.close_files_from_project}
             )
         IDE.register_signals('main_container', connections)
 
@@ -356,6 +359,20 @@ class _MainContainer(QWidget):
             self._copy_history)
         self.connect(shortPasteHistory, SIGNAL("activated()"),
             self._paste_history)
+
+    def close_files_from_project(self, project):
+        """Close the files related to this project."""
+        if project:
+            for tabIndex in reversed(list(range(self._tabMain.count()))):
+                if file_manager.belongs_to_folder(
+                project, self._tabMain.widget(tabIndex).ID):
+                    self._tabMain.removeTab(tabIndex)
+
+            for tabIndex in reversed(list(range(self._tabSecondary.count()))):
+                if file_manager.belongs_to_folder(
+                project, self._tabSecondary.widget(tabIndex).ID):
+                    self._tabSecondary.removeTab(tabIndex)
+            self.ide.profile = None
 
     def _copy_history(self):
         """Copy the selected text into the copy/paste history."""
