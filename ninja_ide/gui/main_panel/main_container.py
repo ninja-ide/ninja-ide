@@ -174,7 +174,14 @@ class _MainContainer(QWidget):
         connections = (
             {'target': 'menu_file',
             'signal_name': 'openFile(QString)',
-            'slot': self.open_file}
+            'slot': self.open_file},
+            {'target': 'explorer_container',
+            'signal_name': 'goToDefinition(int)',
+            'slot': self.editor_go_to_line},
+            {'target': 'explorer_container',
+            'signal_name': 'projectClosed(QString)',
+            'slot': self.close_files_from_project},
+
             )
         IDE.register_signals('main_container', connections)
 

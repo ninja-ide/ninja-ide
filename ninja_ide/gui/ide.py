@@ -45,11 +45,6 @@ from ninja_ide.gui.dialogs import traceback_widget
 from ninja_ide.tools.completion import completion_daemon
 #NINJA-IDE Containers
 from ninja_ide.gui import central_widget
-<<<<<<< HEAD
-=======
-from ninja_ide.gui.main_panel import main_container
-from ninja_ide.gui.explorer import explorer_container
->>>>>>> 42640ad4c3b34485416a647cbb398468a523f5b0
 
 ###############################################################################
 # LOGGER INITIALIZE
@@ -197,7 +192,6 @@ class IDE(QMainWindow):
         IDE.__IDECONNECTIONS[service_name] = connections
 
     def _connect_signals(self):
-<<<<<<< HEAD
         for service_name in self.__IDECONNECTIONS:
             connections = self.__IDECONNECTIONS[service_name]
             for connection in connections:
@@ -210,12 +204,6 @@ class IDE(QMainWindow):
                 if target and isinstance(slot, collections.Callable):
                     self.connect(target, SIGNAL(signal_name), slot)
                     connection['connected'] = True
-=======
-        for key in self.__IDECONNECTIONS:
-            pass
-        #self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
-            #self.status.handle_tab_changed)
->>>>>>> 42640ad4c3b34485416a647cbb398468a523f5b0
 
     @classmethod
     def register_shortcut(cls, shortcut_name, obj):
@@ -265,35 +253,12 @@ class IDE(QMainWindow):
             projects = projects.split(ipc.project_delimiter)
             self.load_session_files_projects(files, [], projects, None)
 
-<<<<<<< HEAD
     def fullscreen_mode(self):
         """Change to fullscreen mode."""
         if self.isFullScreen():
             self.showMaximized()
         else:
             self.showFullScreen()
-=======
-    def load_toolbar(self):
-        self.toolbar.clear()
-        toolbar_items = {}
-        #toolbar_items.update(self._menuFile.toolbar_items)
-        #toolbar_items.update(self._menuView.toolbar_items)
-        #toolbar_items.update(self._menuEdit.toolbar_items)
-        #toolbar_items.update(self._menuSource.toolbar_items)
-        #toolbar_items.update(self._menuProject.toolbar_items)
-
-        for item in settings.TOOLBAR_ITEMS:
-            if item == 'separator':
-                self.toolbar.addSeparator()
-            else:
-                tool_item = toolbar_items.get(item, None)
-                if tool_item is not None:
-                    self.toolbar.addAction(tool_item)
-        #load action added by plugins, This is a special case when reload
-        #the toolbar after save the preferences widget
-        for toolbar_action in settings.get_toolbar_item_for_plugins():
-            self.toolbar.addAction(toolbar_action)
->>>>>>> 42640ad4c3b34485416a647cbb398468a523f5b0
 
     def load_external_plugins(self, paths):
         for path in paths:
@@ -322,10 +287,7 @@ class IDE(QMainWindow):
         self.connect(self.mainContainer,
             SIGNAL("addBackItemNavigation()"),
             self.actions.add_back_item_navigation)
-        self.connect(self.mainContainer, SIGNAL("updateFileMetadata()"),
-            self.actions.update_explorer)
-        self.connect(self.mainContainer, SIGNAL("updateLocator(QString)"),
-            self.actions.update_explorer)
+
         self.connect(self.mainContainer, SIGNAL("openPreferences()"),
             self._show_preferences)
         self.connect(self.mainContainer, SIGNAL("dontOpenStartPage()"),
@@ -338,14 +300,7 @@ class IDE(QMainWindow):
             #self.status.explore_file_code)
         #Create Explorer Panel
         self.explorer = explorer_container.ExplorerContainer(self)
-        self.connect(self.central, SIGNAL("splitterBaseRotated()"),
-            self.explorer.rotate_tab_position)
-        #self.connect(self.explorer, SIGNAL("updateLocator()"),
-            #self.status.explore_code)
-        self.connect(self.explorer, SIGNAL("goToDefinition(int)"),
-            self.actions.editor_go_to_line)
-        self.connect(self.explorer, SIGNAL("projectClosed(QString)"),
-            self.actions.close_files_from_project)
+
 
         centralWidget.insert_central_container(self.mainContainer)
         centralWidget.insert_lateral_container(self.explorer)

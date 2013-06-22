@@ -108,6 +108,7 @@ class _StatusBar(QStatusBar):
             'signal_name': 'updateLocator()',
             'slot': self.explore_code}
             )
+
         IDE.register_signals('status_bar', connections)
 
     def install(self, ide):
