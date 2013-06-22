@@ -85,7 +85,7 @@ class _MainContainer(QWidget):
 ###############################################################################
 
     def __init__(self, parent=None):
-        super(MainContainer, self).__init__(parent)
+        super(_MainContainer, self).__init__(parent)
         self._parent = parent
         hbox = QHBoxLayout(self)
 

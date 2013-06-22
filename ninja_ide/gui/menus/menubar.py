@@ -20,7 +20,7 @@ from ninja_ide.gui.menus import menu_source
 class _MenuBar(QObject):
 
     def __init__(self):
-        super(MenuBar, self).__init__()
+        super(_MenuBar, self).__init__()
 
         self._menuFile = menu_file.MenuFile()
         self._menuView = menu_view.MenuView()

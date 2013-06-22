@@ -113,16 +113,6 @@ class Actions(QObject):
         self.connect(self.ide.mainContainer,
             SIGNAL("openProject(QString)"), self.open_project)
 
-        # Not Configurable Shortcuts
-        #self._shortEscStatus = QShortcut(QKeySequence(Qt.Key_Escape),
-            #self.ide.status)
-        #self._shortEscMisc = QShortcut(QKeySequence(Qt.Key_Escape),
-            #self.ide.misc)
-        #self.connect(self._shortEscStatus, SIGNAL("activated()"),
-            #self.ide.status.hide_status)
-        #self.connect(self._shortEscMisc, SIGNAL("activated()"),
-            #self.ide.misc.hide)
-
     def move_tab_to_next_split(self):
         self.ide.mainContainer.move_tab_to_next_split(
             self.ide.mainContainer.actualTab)
