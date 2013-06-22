@@ -20,12 +20,9 @@ from __future__ import absolute_import
 import re
 import webbrowser
 
-from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QObject
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import SIGNAL
-from PyQt4.QtGui import QApplication
-from PyQt4.QtGui import QKeySequence
 from PyQt4.QtGui import QInputDialog
 from PyQt4.QtGui import QMessageBox
 
@@ -33,7 +30,6 @@ from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
 from ninja_ide.core.pattern import singleton
 from ninja_ide.tools import ui_tools
-from ninja_ide.tools import locator
 from ninja_ide.gui import ide
 from ninja_ide.gui.editor import editor
 from ninja_ide.gui.dialogs import from_import_dialog
@@ -55,7 +51,7 @@ class Actions(QObject):
     def __init__(self):
         QObject.__init__(self)
         #Definition Locator
-        self._locator = locator.Locator()
+        #self._locator = locator.Locator()
         self.__codeBack = []
         self.__codeForward = []
         self.__bookmarksFile = ''
@@ -118,14 +114,14 @@ class Actions(QObject):
             SIGNAL("openProject(QString)"), self.open_project)
 
         # Not Configurable Shortcuts
-        self._shortEscStatus = QShortcut(QKeySequence(Qt.Key_Escape),
-            status)
-        self._shortEscMisc = QShortcut(QKeySequence(Qt.Key_Escape),
-            self.ide.misc)
-        self.connect(self._shortEscStatus, SIGNAL("activated()"),
-            status.hide_status)
-        self.connect(self._shortEscMisc, SIGNAL("activated()"),
-            self.ide.misc.hide)
+        #self._shortEscStatus = QShortcut(QKeySequence(Qt.Key_Escape),
+            #self.ide.status)
+        #self._shortEscMisc = QShortcut(QKeySequence(Qt.Key_Escape),
+            #self.ide.misc)
+        #self.connect(self._shortEscStatus, SIGNAL("activated()"),
+            #self.ide.status.hide_status)
+        #self.connect(self._shortEscMisc, SIGNAL("activated()"),
+            #self.ide.misc.hide)
 
     def move_tab_to_next_split(self):
         self.ide.mainContainer.move_tab_to_next_split(
@@ -330,8 +326,8 @@ class Actions(QObject):
             self.__codeBack.append((editorWidget.ID,
                 editorWidget.textCursor().position()))
             self.__codeForward = []
-        self._locator.navigate_to(function,
-            filePath, isVariable)
+        #self._locator.navigate_to(function,
+            #filePath, isVariable)
 
     def update_explorer(self):
         """Update the symbols in the Symbol Explorer when a file is saved."""

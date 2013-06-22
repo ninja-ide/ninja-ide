@@ -23,9 +23,9 @@ from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QObject
 
 from ninja_ide import resources
+from ninja_ide.gui.ide import IDE
 from ninja_ide.core import settings
 from ninja_ide.gui.main_panel import main_container
-from ninja_ide.gui.misc import misc_container
 from ninja_ide.gui import status_bar
 from ninja_ide.gui.dialogs import preferences
 
@@ -179,4 +179,5 @@ class MenuEdit(QObject):
         pref.show()
 
     def _show_find_in_files(self):
-        misc_container.MiscContainer().show_find_in_files_widget()
+        tool_dock = IDE.get_service("tools_dock")
+        tool_dock.show_find_in_files_widget()

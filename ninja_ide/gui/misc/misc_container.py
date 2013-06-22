@@ -33,7 +33,6 @@ from PyQt4.QtWebKit import QWebPage
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
-from ninja_ide.core.pattern import singleton
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.misc import console_widget
 from ninja_ide.gui.misc import run_widget
@@ -44,13 +43,11 @@ from ninja_ide.tools import ui_tools
 from ninja_ide.tools import json_manager
 
 
-@singleton
-class MiscContainer(QWidget):
-    """From Miscellaneous, contains all the widgets in the bottom area."""
-    #Miscellaneous was to long and dificult to write :P
+class _ToolsDock(QWidget):
+    """Former Miscellaneous, contains all the widgets in the bottom area."""
 
     def __init__(self, parent=None):
-        QWidget.__init__(self, parent)
+        super(_ToolsDock, self).__init__(parent)
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
@@ -111,8 +108,16 @@ class MiscContainer(QWidget):
         self.connect(self._btnFind, SIGNAL("clicked()"),
             lambda: self._item_changed(3))
         self.connect(btn_close, SIGNAL('clicked()'), self.hide)
+        IDE.register_service(self, "tools_dock")
 
     def install(self, ide):
+        #Register signals connections
+        connections = (
+            {'target': 'main_container',
+            'signal_name': "findOcurrences(QString)",
+            'slot': self.show_find_occurrences},
+            )
+        IDE.register_signals('tools_dock', connections)
         self.install_shortcuts(ide)
 
     def install_shortcuts(self, ide):
@@ -261,3 +266,5 @@ class StackedWidget(QStackedWidget):
 
     def show_display(self, index):
         self.setCurrentIndex(index)
+
+ToolsDock = _ToolsDock()

@@ -45,6 +45,11 @@ from ninja_ide.gui.dialogs import traceback_widget
 from ninja_ide.tools.completion import completion_daemon
 #NINJA-IDE Containers
 from ninja_ide.gui import central_widget
+<<<<<<< HEAD
+=======
+from ninja_ide.gui.main_panel import main_container
+from ninja_ide.gui.explorer import explorer_container
+>>>>>>> 42640ad4c3b34485416a647cbb398468a523f5b0
 
 ###############################################################################
 # LOGGER INITIALIZE
@@ -114,14 +119,15 @@ class IDE(QMainWindow):
         self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
             self.actions.update_explorer)
 
+        self.load_toolbar()
+
         #Plugin Manager
         services = {
             'editor': plugin_services.MainService(),
             'toolbar': plugin_services.ToolbarService(self.toolbar),
             #'menuApp': plugin_services.MenuAppService(self.pluginsMenu),
-            'menuApp': plugin_services.MenuAppService(None),
             'explorer': plugin_services.ExplorerService(),
-            'misc': plugin_services.MiscContainerService(self.misc)}
+            }
         serviceLocator = plugin_manager.ServiceLocator(services)
         self.plugin_manager = plugin_manager.PluginManager(resources.PLUGINS,
             serviceLocator)
@@ -191,6 +197,7 @@ class IDE(QMainWindow):
         IDE.__IDECONNECTIONS[service_name] = connections
 
     def _connect_signals(self):
+<<<<<<< HEAD
         for service_name in self.__IDECONNECTIONS:
             connections = self.__IDECONNECTIONS[service_name]
             for connection in connections:
@@ -203,6 +210,12 @@ class IDE(QMainWindow):
                 if target and isinstance(slot, collections.Callable):
                     self.connect(target, SIGNAL(signal_name), slot)
                     connection['connected'] = True
+=======
+        for key in self.__IDECONNECTIONS:
+            pass
+        #self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
+            #self.status.handle_tab_changed)
+>>>>>>> 42640ad4c3b34485416a647cbb398468a523f5b0
 
     @classmethod
     def register_shortcut(cls, shortcut_name, obj):
@@ -252,12 +265,35 @@ class IDE(QMainWindow):
             projects = projects.split(ipc.project_delimiter)
             self.load_session_files_projects(files, [], projects, None)
 
+<<<<<<< HEAD
     def fullscreen_mode(self):
         """Change to fullscreen mode."""
         if self.isFullScreen():
             self.showMaximized()
         else:
             self.showFullScreen()
+=======
+    def load_toolbar(self):
+        self.toolbar.clear()
+        toolbar_items = {}
+        #toolbar_items.update(self._menuFile.toolbar_items)
+        #toolbar_items.update(self._menuView.toolbar_items)
+        #toolbar_items.update(self._menuEdit.toolbar_items)
+        #toolbar_items.update(self._menuSource.toolbar_items)
+        #toolbar_items.update(self._menuProject.toolbar_items)
+
+        for item in settings.TOOLBAR_ITEMS:
+            if item == 'separator':
+                self.toolbar.addSeparator()
+            else:
+                tool_item = toolbar_items.get(item, None)
+                if tool_item is not None:
+                    self.toolbar.addAction(tool_item)
+        #load action added by plugins, This is a special case when reload
+        #the toolbar after save the preferences widget
+        for toolbar_action in settings.get_toolbar_item_for_plugins():
+            self.toolbar.addAction(toolbar_action)
+>>>>>>> 42640ad4c3b34485416a647cbb398468a523f5b0
 
     def load_external_plugins(self, paths):
         for path in paths:
@@ -267,7 +303,8 @@ class IDE(QMainWindow):
         self.plugin_manager.load_all()
 
     def show_status_message(self, message):
-        self.status.showMessage(message, 2000)
+        #self.status.showMessage(message, 2000)
+        pass
 
     def load_ui(self, centralWidget):
         #Set Application Font for ToolTips
@@ -296,22 +333,23 @@ class IDE(QMainWindow):
         # When close the last tab cleanup
         self.connect(self.mainContainer, SIGNAL("allTabsClosed()"),
             self._last_tab_closed)
+        # Update symbols
+        #self.connect(self.mainContainer, SIGNAL("updateLocator(QString)"),
+            #self.status.explore_file_code)
         #Create Explorer Panel
         self.explorer = explorer_container.ExplorerContainer(self)
         self.connect(self.central, SIGNAL("splitterBaseRotated()"),
             self.explorer.rotate_tab_position)
+        #self.connect(self.explorer, SIGNAL("updateLocator()"),
+            #self.status.explore_code)
         self.connect(self.explorer, SIGNAL("goToDefinition(int)"),
             self.actions.editor_go_to_line)
         self.connect(self.explorer, SIGNAL("projectClosed(QString)"),
             self.actions.close_files_from_project)
-        #Create Misc Bottom Container
-        self.misc = misc_container.MiscContainer(self)
-        self.connect(self.mainContainer, SIGNAL("findOcurrences(QString)"),
-            self.misc.show_find_occurrences)
 
         centralWidget.insert_central_container(self.mainContainer)
         centralWidget.insert_lateral_container(self.explorer)
-        centralWidget.insert_bottom_container(self.misc)
+        #centralWidget.insert_bottom_container(self.misc)
         if self.explorer.count() == 0:
             centralWidget.change_explorer_visibility(force_hide=True)
         self.connect(self.mainContainer,
@@ -358,8 +396,8 @@ class IDE(QMainWindow):
             notIDEStart=False)
         if current_file:
             self.mainContainer.open_file(current_file, notStart=False)
-        if recent_files is not None:
-            self._menuFile.update_recent_files(recent_files)
+        #if recent_files is not None:
+            #self._menuFile.update_recent_files(recent_files)
 
     def _set_editors_project_data(self):
         self.__project_to_open -= 1
@@ -459,7 +497,9 @@ class IDE(QMainWindow):
         else:
             qsettings.setValue("window/hide_toolbar", False)
         #Save Misc state
+
         qsettings.setValue("window/show_region1", self.misc.isVisible())
+
         #Save Profiles
         if self.profile is not None:
             self.actions.save_profile(self.profile)
