@@ -119,6 +119,15 @@ class _ExplorerContainer(QTabWidget):
             {'target': 'main_container',
             'signal_name': 'openProject(QString)',
             'slot': self.open_project_folder}
+            {'target': 'main_container',
+            'signal_name': 'currentTabChanged(QString)',
+            'slot': self.update_migration},
+            {'target': 'main_container',
+            'signal_name': 'updateFileMetadata(QString)',
+            'slot': self.update_migration},
+            {'target': 'main_container',
+            'signal_name': 'migrationAnalyzed()',
+            'slot': self.update_migration}
         )
 
 
