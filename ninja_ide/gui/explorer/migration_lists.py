@@ -30,7 +30,7 @@ from PyQt4.QtGui import QTextCursor
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
-from ninja_ide.gui.main_panel import main_container
+from ninja_ide.gui.ide import IDE
 
 
 class MigrationWidget(QWidget):
@@ -71,15 +71,17 @@ class MigrationWidget(QWidget):
             elif line.startswith('+'):
                 code += '%s\n' % line[1:]
 
-        editorWidget = main_container.MainContainer().get_actual_editor()
-        block_start = editorWidget.document().findBlockByLineNumber(lineno)
-        block_end = editorWidget.document().findBlockByLineNumber(
-            lineno + remove)
-        cursor = editorWidget.textCursor()
-        cursor.setPosition(block_start.position())
-        cursor.setPosition(block_end.position(), QTextCursor.KeepAnchor)
-        cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
-        cursor.insertText(code[:-1])
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            editorWidget = main_container.get_actual_editor()
+            block_start = editorWidget.document().findBlockByLineNumber(lineno)
+            block_end = editorWidget.document().findBlockByLineNumber(
+                lineno + remove)
+            cursor = editorWidget.textCursor()
+            cursor.setPosition(block_start.position())
+            cursor.setPosition(block_end.position(), QTextCursor.KeepAnchor)
+            cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
+            cursor.insertText(code[:-1])
 
     def load_suggestion(self, item):
         lineno = int(item.data(Qt.UserRole))
@@ -89,10 +91,12 @@ class MigrationWidget(QWidget):
             if line.startswith('+'):
                 code += '%s\n' % line[1:]
         self.suggestion.setPlainText(code)
-        editorWidget = main_container.MainContainer().get_actual_editor()
-        if editorWidget:
-            editorWidget.jump_to_line(lineno)
-            editorWidget.setFocus()
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            editorWidget = main_container.get_actual_editor()
+            if editorWidget:
+                editorWidget.jump_to_line(lineno)
+                editorWidget.setFocus()
 
     def refresh_lists(self, migration):
         self._migration = migration

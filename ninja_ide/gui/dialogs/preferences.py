@@ -76,6 +76,7 @@ class PreferencesWidget(QDialog):
 
     def __init__(self, parent=None):
         QDialog.__init__(self, parent)
+        self._ide = parent
         self.setWindowTitle(self.tr("NINJA-IDE - Preferences"))
         self.setMaximumSize(QSize(0, 0))
 

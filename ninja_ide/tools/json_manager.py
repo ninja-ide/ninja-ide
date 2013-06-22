@@ -73,7 +73,6 @@ def write_json(structure, filename, indent=2):
 
 
 def load_syntax():
-
     empty = dict()
     files = os.listdir(resources.SYNTAX_FILES)
 

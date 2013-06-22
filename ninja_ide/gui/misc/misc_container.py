@@ -50,6 +50,8 @@ class _ToolsDock(QWidget):
 
     def __init__(self, parent=None):
         super(_ToolsDock, self).__init__(parent)
+
+    def setup_ui(self):
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
@@ -117,10 +119,17 @@ class _ToolsDock(QWidget):
         IDE.register_service(self, "tools_dock")
 
     def install(self, ide):
+        self.setup_ui()
         #Register signals connections
         connections = (
             {'target': 'main_container',
-            'signal_name':     "findOcurrences(QString)",
+            'signal_name': "findOcurrences(QString)",
+            'slot': self.show_find_occurrences},
+            {'target': 'main_container',
+            'signal_name': "updateFileMetadata()",
+            'slot': self.show_find_occurrences},
+            {'target': 'main_container',
+            'signal_name': "findOcurrences(QString)",
             'slot': self.show_find_occurrences},
             {'target': 'main_container',
             'signal_name': "runFile()",
@@ -130,7 +139,7 @@ class _ToolsDock(QWidget):
             'slot': self.remove_project_from_console},
             {'target': 'explorer_container',
             'signal_name': "addProjectToConsole(QString)",
-            'slot': self.add_project_to_console}
+            'slot': self.add_project_to_console},
             )
         IDE.register_signals('tools_dock', connections)
         self.install_shortcuts(ide)

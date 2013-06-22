@@ -33,11 +33,9 @@ from PyQt4.QtCore import QSettings
 
 from ninja_ide import resources
 from ninja_ide.core import settings
-from ninja_ide.core.pattern import singleton
 from ninja_ide.gui.ide import IDE
 
 
-@singleton
 class CentralWidget(QWidget):
 
 ###############################################################################
@@ -56,7 +54,7 @@ class CentralWidget(QWidget):
         #This variables are used to save the splitter sizes before hide
         self._splitterBaseSizes = None
         self._splitterInsideSizes = None
-        self.lateralPanel = None
+        self.lateralPanel = LateralPanel()
 
         hbox = QHBoxLayout(self)
         hbox.setContentsMargins(0, 0, 0, 0)
@@ -71,16 +69,13 @@ class CentralWidget(QWidget):
         connects = (
             {"target": "main_container",
             "signal_name": "cursorPositionChange(int, int)",
-            "slot": self.lateralPanel.update_line_col},
-            {"target": "main_container",
-            "signal_name": "enabledFollowMode(bool)",
-            "slot": self.enable_follow_mode_scrollbar},
+            "slot": self.update_column_number},
         )
-        IDE.register_signals("central_container", connects)
         IDE.register_service('central_container', self)
+        IDE.register_signals("central_container", connects)
 
     def install(self, ide):
-        self.install_shortcuts()
+        self.install_shortcuts(ide)
 
     def install_shortcuts(self, ide):
         short = resources.get_shortcut
@@ -106,6 +101,9 @@ class CentralWidget(QWidget):
         self.connect(shortShowPasteHistory, SIGNAL("activated()"),
             self.lateralPanel.combo.showPopup)
 
+    def update_column_number(self, row, col):
+        self.lateralPanel.update_line_col(row, col)
+
     def insert_widget_region0(self, container):
         self._splitterInside.insertWidget(0, container)
 
@@ -113,7 +111,7 @@ class CentralWidget(QWidget):
         self._splitterInside.insertWidget(1, container)
 
     def insert_widget_region2(self, container):
-        self.lateralPanel = LateralPanel(container)
+        self.lateralPanel.add_component(container)
         self._splitterBase.addWidget(self.lateralPanel)
 
     def _region0(self):
@@ -273,11 +271,10 @@ class CentralWidget(QWidget):
 
 class LateralPanel(QWidget):
 
-    def __init__(self, component):
-        QWidget.__init__(self)
-        vbox = QVBoxLayout(self)
-        vbox.setContentsMargins(0, 0, 0, 0)
-        vbox.addWidget(component)
+    def __init__(self, parent=None):
+        super(LateralPanel, self).__init__(parent)
+        self.vbox = QVBoxLayout(self)
+        self.vbox.setContentsMargins(0, 0, 0, 0)
         hbox = QHBoxLayout()
         hbox.setContentsMargins(0, 0, 0, 0)
         self.labelText = "Ln: %s, Col: %s"
@@ -295,7 +292,10 @@ class LateralPanel(QWidget):
                     QKeySequence.NativeText)))
         self.combo.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         hbox.addWidget(self.combo)
-        vbox.addLayout(hbox)
+        self.vbox.addLayout(hbox)
+
+    def add_component(self, widget):
+        self.vbox.insertWidget(0, widget)
 
     def update_line_col(self, line, col):
         self.labelCursorPosition.setText(self.trUtf8(

@@ -27,7 +27,7 @@ from ninja_ide.gui.dialogs import language_manager
 
 class MenuPlugins(QObject):
 
-    def install(self, menuPlugins):
+    def install_menu(self, menuPlugins):
         manageAction = menuPlugins.addAction(self.tr("Manage Plugins"))
         skinsAction = menuPlugins.addAction(self.tr("Editor Schemes"))
         languagesAction = menuPlugins.addAction(self.tr("Languages Manager"))

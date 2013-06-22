@@ -37,16 +37,14 @@ from PyQt4.QtNetwork import QLocalServer
 
 from ninja_ide import resources
 from ninja_ide.core import plugin_manager
-from ninja_ide.core import plugin_services
+#from ninja_ide.core import plugin_services
 from ninja_ide.core import settings
 from ninja_ide.core import ipc
 from ninja_ide.gui import updates
-from ninja_ide.gui.dialogs import preferences
+#from ninja_ide.gui.dialogs import preferences
 from ninja_ide.gui.dialogs import traceback_widget
 from ninja_ide.tools.completion import completion_daemon
 from ninja_ide.tools import ui_tools
-#NINJA-IDE Containers
-from ninja_ide.gui import central_widget
 
 ###############################################################################
 # LOGGER INITIALIZE
@@ -107,11 +105,6 @@ class IDE(QMainWindow):
         #Opacity
         self.opacity = settings.MAX_OPACITY
 
-        #Main Widget - Create first than everything else
-        self.central = central_widget.CentralWidget(self)
-        self.load_ui(self.central)
-        self.setCentralWidget(self.central)
-
         #ToolBar
         self.toolbar = QToolBar(self)
         self.toolbar.setToolTip(self.tr("Press and Drag to Move"))
@@ -120,20 +113,16 @@ class IDE(QMainWindow):
         if settings.HIDE_TOOLBAR:
             self.toolbar.hide()
 
-        #Install Shortcuts after the UI has been initialized
-        self.actions.install_shortcuts(self)
-        self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
-            self.actions.update_explorer)
-
         #Plugin Manager
-        services = {
-            'editor': plugin_services.MainService(),
-            'toolbar': plugin_services.ToolbarService(self.toolbar),
-            #'menuApp': plugin_services.MenuAppService(self.pluginsMenu),
-            'menuApp': plugin_services.MenuAppService(None),
-            'explorer': plugin_services.ExplorerService(),
-            'misc': plugin_services.MiscContainerService(self.misc)}
-        serviceLocator = plugin_manager.ServiceLocator(services)
+        #services = {
+            #'editor': plugin_services.MainService(),
+            #'toolbar': plugin_services.ToolbarService(self.toolbar),
+            ##'menuApp': plugin_services.MenuAppService(self.pluginsMenu),
+            #'menuApp': plugin_services.MenuAppService(None),
+            #'explorer': plugin_services.ExplorerService(),
+            #'misc': plugin_services.MiscContainerService(self.misc)}
+        #serviceLocator = plugin_manager.ServiceLocator(services)
+        serviceLocator = plugin_manager.ServiceLocator(None)
         self.plugin_manager = plugin_manager.PluginManager(resources.PLUGINS,
             serviceLocator)
         self.plugin_manager.discover()
@@ -189,9 +178,16 @@ class IDE(QMainWindow):
             {'target': 'main_container',
             'signal_name': 'allTabsClosed()',
             'slot': self._last_tab_closed},
+            {'target': 'explorer_container',
+            'signal_name': 'changeWindowTitle(QString)',
+            'slot': self.change_window_title},
             )
         self.register_signals('ide', connections)
-        for service_name in self.__IDECONNECTIONS:
+        # Central Widget MUST always exists
+        self.central = IDE.get_service('central_container')
+        self.setCentralWidget(self.central)
+        # Install Services
+        for service_name in self.__IDESERVICES:
             self.install_service(service_name)
         QToolTip.setFont(QFont(settings.FONT_FAMILY, 10))
         self.__created = True
@@ -212,6 +208,9 @@ class IDE(QMainWindow):
         if isinstance(func, collections.Callable):
             func(self)
         self._connect_signals()
+
+    def place_me_on(self, region=None):
+        pass
 
     @classmethod
     def register_signals(cls, service_name, connections):
@@ -303,22 +302,27 @@ class IDE(QMainWindow):
         self.explorer.cleanup_tabs()
 
     def _show_preferences(self):
-        pref = preferences.PreferencesWidget(self.mainContainer)
-        pref.show()
+        pass
+        #pref = preferences.PreferencesWidget(self.mainContainer)
+        #pref.show()
 
     def load_session_files_projects(self, filesTab1, filesTab2, projects,
         current_file, recent_files=None):
         self.__project_to_open = len(projects)
-        self.connect(self.explorer, SIGNAL("projectOpened(QString)"),
-            self._set_editors_project_data)
-        self.explorer.open_session_projects(projects, notIDEStart=False)
-        self.mainContainer.open_files(filesTab1, notIDEStart=False)
-        self.mainContainer.open_files(filesTab2, mainTab=False,
-            notIDEStart=False)
-        if current_file:
-            self.mainContainer.open_file(current_file, notStart=False)
-        if recent_files is not None:
-            self._menuFile.update_recent_files(recent_files)
+        explorer = IDE.get_service('explorer_container')
+        main_container = IDE.get_service('main_container')
+        if explorer and main_container:
+            self.connect(explorer, SIGNAL("projectOpened(QString)"),
+                self._set_editors_project_data)
+            explorer.open_session_projects(projects, notIDEStart=False)
+            main_container.open_files(filesTab1, notIDEStart=False)
+            main_container.open_files(filesTab2, mainTab=False,
+                notIDEStart=False)
+            if current_file:
+                main_container.open_file(current_file, notStart=False)
+            if recent_files is not None:
+                menu_file = IDE.get_service('menu_file')
+                menu_file.update_recent_files(recent_files)
 
     def _set_editors_project_data(self):
         self.__project_to_open -= 1

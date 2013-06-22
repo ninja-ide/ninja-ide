@@ -45,12 +45,13 @@ from PyQt4.QtGui import QDesktopServices
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
-from ninja_ide.core.file_handling.filesystem_notifications import NinjaFileSystemWatcher
-from ninja_ide.core.file_handling.filesystem_notifications.base_watcher import ADDED, \
-                                                    DELETED, REMOVE, RENAME
+from ninja_ide.core.file_handling.filesystem_notifications import (
+    NinjaFileSystemWatcher)
+from ninja_ide.core.file_handling.filesystem_notifications.base_watcher import (
+    ADDED, DELETED, REMOVE, RENAME)
 from ninja_ide.tools import json_manager
 from ninja_ide.tools import ui_tools
-from ninja_ide.gui.main_panel import main_container
+from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs import project_properties_widget
 from ninja_ide.tools.completion import completion_daemon
 
@@ -313,7 +314,9 @@ class TreeProjectsWidget(QTreeWidget):
     def _open_file(self, item, column):
         if item.childCount() == 0 and not item.isFolder:
             fileName = os.path.join(item.path, item.text(column))
-            main_container.MainContainer().open_file(fileName)
+            main_container = IDE.get_service('main_container')
+            if main_container:
+                main_container.open_file(fileName)
 
     def _get_project_root(self, item=None):
         if item is None:
@@ -444,8 +447,9 @@ class TreeProjectsWidget(QTreeWidget):
                 subitem = ProjectItem(item, name, pathForFile)
                 subitem.setToolTip(0, name)
                 subitem.setIcon(0, self._get_file_icon(name))
-                mainContainer = main_container.MainContainer()
-                mainContainer.open_file(fileName)
+                main_container = IDE.get_service('main_container')
+                if main_container:
+                    main_container.open_file(fileName)
             except file_manager.NinjaFileExistsException as ex:
                 QMessageBox.information(self, self.tr("File Already Exists"),
                     (self.tr("Invalid Path: the file '%s' already exists.") %
@@ -499,9 +503,9 @@ class TreeProjectsWidget(QTreeWidget):
             file_manager.delete_file(item.path, item.text(0))
             index = item.parent().indexOfChild(item)
             item.parent().takeChild(index)
-            mainContainer = main_container.MainContainer()
-            if mainContainer.is_open(path):
-                mainContainer.close_deleted_file(path)
+            main_container = IDE.get_service('main_container')
+            if main_container and main_container.is_open(path):
+                main_container.close_deleted_file(path)
 
     def _delete_folder(self):
         item = self.currentItem()
@@ -532,9 +536,9 @@ class TreeProjectsWidget(QTreeWidget):
             try:
                 fileName = file_manager.rename_file(pathForFile, fileName)
                 name = file_manager.get_basename(fileName)
-                mainContainer = main_container.MainContainer()
-                if mainContainer.is_open(pathForFile):
-                    mainContainer.change_open_tab_name(pathForFile, fileName)
+                main_container = IDE.get_service('main_container')
+                if main_container and main_container.is_open(pathForFile):
+                    main_container.change_open_tab_name(pathForFile, fileName)
                 subitem = ProjectItem(item.parent(), name,
                     file_manager.get_folder(fileName))
                 subitem.setToolTip(0, name)

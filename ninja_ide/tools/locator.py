@@ -48,7 +48,6 @@ from PyQt4.QtCore import SIGNAL
 from ninja_ide import resources
 from ninja_ide.gui.explorer import explorer_container
 from ninja_ide.gui.ide import IDE
-from ninja_ide.gui.main_panel import main_container
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
 from ninja_ide.tools import json_manager
@@ -97,13 +96,16 @@ class Locator(QObject):
         self._thread.find(function, filePath, isVariable)
 
     def _load_results(self):
+        main_container = IDE.get_service('main_container')
+        if not main_container:
+            return
         if len(self._thread.results) == 1:
-            main_container.MainContainer().open_file(
+            main_container.open_file(
                 filename=self._thread.results[0][1],
                 cursorPosition=self._thread.results[0][2],
                 positionIsLineNumber=True)
         elif len(self._thread.results) == 0:
-            QMessageBox.information(main_container.MainContainer(),
+            QMessageBox.information(main_container,
                 self.tr("Definition Not Found"),
                 self.tr("This Definition does not belong to this Project."))
         else:
@@ -573,11 +575,11 @@ class LocateCompleter(QLineEdit):
         #if the user type any of the prefix
         if self.filterPrefix.match(self.__prefix):
             filterOption = self.__prefix[:1]
-            main = main_container.MainContainer()
+            main_container = IDE.get_service('main_container')
             #if the prefix is "." it means only the metadata of current file
-            if filterOption == FILTERS['this-file']:
+            if main_container and filterOption == FILTERS['this-file']:
                 inCurrentFile = True
-                editorWidget = main.get_actual_editor()
+                editorWidget = main_container.get_actual_editor()
                 if editorWidget:
                     self.tempLocations = \
                         self._parent._thread.get_this_file_locations(
@@ -586,14 +588,14 @@ class LocateCompleter(QLineEdit):
                     self.tempLocations = [x for x in self.tempLocations
                         if x.comparison.lower().find(self.__prefix) > -1]
             elif filterOption == FILTERS['tabs']:
-                tab1, tab2 = main.get_opened_documents()
+                tab1, tab2 = main_container.get_opened_documents()
                 opened = tab1 + tab2
                 self.tempLocations = [ResultItem(FILTERS['files'],
                     file_manager.get_basename(f[0]), f[0])
                     for f in opened]
                 self.__prefix = self.__prefix[1:].lstrip()
-            elif filterOption == FILTERS['lines']:
-                editorWidget = main.get_actual_editor()
+            elif main_container and filterOption == FILTERS['lines']:
+                editorWidget = main_container.get_actual_editor()
                 self.tempLocations = [
                     x for x in self._parent._thread.get_locations()
                         if x.type == FILTERS['files'] and
@@ -624,8 +626,10 @@ class LocateCompleter(QLineEdit):
         if was_this_file:
             previous_filter = filterOptions[0]
             filterOptions[0] = FILTERS['files']
-            main = main_container.MainContainer()
-            editorWidget = main.get_actual_editor()
+            main_container = IDE.get_service('main_container')
+            editorWidget = None
+            if main_container:
+                editorWidget = main_container.get_actual_editor()
             if editorWidget:
                 filterOptions.insert(1, editorWidget.ID)
             if previous_filter == FILTERS['lines']:
@@ -728,14 +732,17 @@ class LocateCompleter(QLineEdit):
 
     def _open_item(self, data):
         """Open the item received."""
-        main = main_container.MainContainer()
+        main_container = IDE.get_service('main_container')
+        if not main_container:
+            return
         if file_manager.get_file_extension(data.path) in ('jpg', 'png'):
-            main.open_image(data.path)
+            main_container.open_image(data.path)
         else:
             if self._line_jump != -1:
-                main.open_file(data.path, self._line_jump, None, True)
+                main_container.open_file(
+                    data.path, self._line_jump, None, True)
             else:
-                main.open_file(data.path, data.lineno, None, True)
+                main_container.open_file(data.path, data.lineno, None, True)
 
 
 class PopupCompleter(QFrame):

@@ -19,16 +19,16 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 from PyQt4.QtCore import QObject
-from PyQt4.QtCore import SIGNAL
+#from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import pyqtSignal
 
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import plugin_util
 from ninja_ide.gui.main_panel import itab_item
-from ninja_ide.gui.main_panel import main_container
+#from ninja_ide.gui.main_panel import main_container
 #from ninja_ide.gui import actions
-from ninja_ide.gui.explorer import explorer_container
+#from ninja_ide.gui.explorer import explorer_container
 
 
 ###############################################################################
@@ -368,10 +368,10 @@ class ExplorerService(QObject):
 
     def __init__(self):
         QObject.__init__(self)
-        self._explorer = explorer_container.ExplorerContainer()
+        #self._explorer = explorer_container.ExplorerContainer()
         #self._action = actions.Actions()
-        self.connect(self._explorer, SIGNAL("projectOpened(QString)"),
-            self._projectOpened)
+        #self.connect(self._explorer, SIGNAL("projectOpened(QString)"),
+            #self._projectOpened)
         #self.connect(self._action, SIGNAL("projectExecuted(QString)"),
             #self._projectExecuted)
 
