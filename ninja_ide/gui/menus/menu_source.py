@@ -24,7 +24,7 @@ from PyQt4.QtCore import Qt
 
 from ninja_ide import resources
 from ninja_ide.core import settings
-from ninja_ide.gui import actions
+from ninja_ide.gui.ide import IDE
 
 
 class MenuSource(QObject):
@@ -115,23 +115,23 @@ class MenuSource(QObject):
             'insert-import': insertImport}
 
         self.connect(goToDefinitionAction, SIGNAL("triggered()"),
-            actions.Actions().editor_go_to_definition)
+            self.editor_go_to_definition)
         self.connect(countCodeLinesAction, SIGNAL("triggered()"),
-            actions.Actions().count_file_code_lines)
+            self.count_lines_in_file)
         self.connect(insertImport, SIGNAL("triggered()"),
-            actions.Actions().import_from_everywhere)
+            self.import_from_everywhere)
         self.connect(indentMoreAction, SIGNAL("triggered()"),
-            actions.Actions().editor_indent_more)
+            self.editor_indent_more)
         self.connect(indentLessAction, SIGNAL("triggered()"),
-            actions.Actions().editor_indent_less)
+            self.editor_indent_less)
         self.connect(commentAction, SIGNAL("triggered()"),
-            actions.Actions().editor_comment)
+            self.editor_comment)
         self.connect(unCommentAction, SIGNAL("triggered()"),
-            actions.Actions().editor_uncomment)
+            self.editor_uncomment)
         self.connect(horizontalLineAction, SIGNAL("triggered()"),
-            actions.Actions().editor_insert_horizontal_line)
+            self.editor_insert_horizontal_line)
         self.connect(titleCommentAction, SIGNAL("triggered()"),
-            actions.Actions().editor_insert_title_comment)
+            self.editor_insert_title_comment)
 #        QObject.connect(removeUnusedImportsAction, SIGNAL("triggered()"),
 #        lambda: self._main._central.obtain_editor().remove_unused_imports())
 ##        QObject.connect(addMissingImportsAction, SIGNAL("triggered()"),
@@ -141,18 +141,108 @@ class MenuSource(QObject):
 #        QObject.connect(extractMethodAction, SIGNAL("triggered()"),
 #        lambda: self._main._central.obtain_editor().extract_method())
         self.connect(moveUp, SIGNAL("triggered()"),
-            actions.Actions().editor_move_up)
+            self.editor_move_up)
         self.connect(moveDown, SIGNAL("triggered()"),
-            actions.Actions().editor_move_down)
+            self.editor_move_down)
         self.connect(duplicate, SIGNAL("triggered()"),
-            actions.Actions().editor_duplicate)
+            self.editor_duplicate)
         self.connect(replaceTabsSpaces, SIGNAL("triggered()"),
-            actions.Actions().editor_replace_tabs_with_spaces)
+            self.editor_replace_tabs_with_spaces)
         self.connect(removeTrailingSpaces, SIGNAL("triggered()"),
-            actions.Actions().editor_remove_trailing_spaces)
+            self.editor_remove_trailing_spaces)
         self.connect(remove, SIGNAL("triggered()"),
-            actions.Actions().editor_remove_line)
+            self.editor_remove_line)
         self.connect(insertPrints, SIGNAL("triggered()"),
-            actions.Actions().editor_insert_debugging_prints)
+            self.editor_insert_debugging_prints)
         self.connect(insertPdb, SIGNAL("triggered()"),
-            actions.Actions().editor_insert_pdb)
+            self.editor_insert_pdb)
+
+    def count_lines_in_file(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.count_file_code_lines()
+
+    def editor_go_to_definition(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.editor_go_to_definition()
+
+    def editor_redo(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.editor_redo()
+
+    def editor_indent_less(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.editor_indent_less()
+
+    def editor_indent_more(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.editor_indent_more()
+
+    def editor_insert_debugging_prints(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.editor_insert_debugging_prints()
+
+    def editor_insert_pdb(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.editor_insert_pdb()
+
+    def editor_comment(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.editor_comment()
+
+    def editor_uncomment(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.editor_uncomment()
+
+    def editor_insert_horizontal_line(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.editor_insert_horizontal_line()
+
+    def editor_insert_title_comment(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.editor_insert_title_comment()
+
+    def editor_remove_trailing_spaces(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.editor_remove_trailing_spaces()
+
+    def editor_replace_tabs_with_spaces(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.editor_replace_tabs_with_spaces()
+
+    def editor_move_up(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.editor_move_up()
+
+    def editor_move_down(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.editor_move_down()
+
+    def editor_remove_line(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.editor_remove_line()
+
+    def editor_duplicate(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.editor_duplicate()
+
+    def import_from_everywhere(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.import_from_everywhere()

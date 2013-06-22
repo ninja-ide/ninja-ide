@@ -31,11 +31,10 @@ from ninja_ide.gui.main_panel import itab_item
 
 class TabGroup(QWidget, itab_item.ITabItem):
 
-    def __init__(self, project, name, actions):
-        QWidget.__init__(self)
-        itab_item.ITabItem.__init__(self)
+    def __init__(self, project, name, parent):
+        super(TabGroup, self).__init__(parent)
         vbox = QVBoxLayout(self)
-        self.actions = actions
+        self._parent = parent
         self.project = project
         self.ID = self.project
         self.name = name
@@ -52,27 +51,27 @@ class TabGroup(QWidget, itab_item.ITabItem):
 
         self.connect(btnExpand, SIGNAL("clicked()"), self.expand_this)
         self.connect(btnExpandAll, SIGNAL("clicked()"),
-            self.actions.deactivate_tabs_groups)
+            self._parent.deactivate_tabs_groups)
 
     def add_widget(self, widget):
         self.tabs.append(widget)
         self.listWidget.addItem(widget.ID)
 
     def expand_this(self):
-        self.actions.group_tabs_together()
+        self._parent.group_tabs_together()
         for tab in self.tabs:
             tabName = file_manager.get_basename(tab.ID)
-            self.actions.ide.mainContainer.add_tab(tab, tabName)
-        index = self.actions.ide.mainContainer._tabMain.indexOf(self)
-        self.actions.ide.mainContainer._tabMain.removeTab(index)
+            self._parent.add_tab(tab, tabName)
+        index = self._parent._tabMain.indexOf(self)
+        self.actions._tabMain.removeTab(index)
         self.tabs = []
         self.listWidget.clear()
 
     def only_expand(self):
         for tab in self.tabs:
             tabName = file_manager.get_basename(tab.ID)
-            self.actions.ide.mainContainer.add_tab(tab, tabName)
-        index = self.actions.ide.mainContainer._tabMain.indexOf(self)
-        self.actions.ide.mainContainer._tabMain.removeTab(index)
+            self._parent.add_tab(tab, tabName)
+        index = self._parent_tabMain.indexOf(self)
+        self._parent_tabMain.removeTab(index)
         self.tabs = []
         self.listWidget.clear()

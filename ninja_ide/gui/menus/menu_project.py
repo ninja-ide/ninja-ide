@@ -22,7 +22,6 @@ from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QObject
 
 from ninja_ide import resources
-from ninja_ide.gui import actions
 from ninja_ide.gui.ide import IDE
 
 
@@ -63,13 +62,13 @@ class MenuProject(QObject):
             'preview-web': previewAction}
 
         self.connect(runAction, SIGNAL("triggered()"),
-            actions.Actions().execute_project)
+            self.execute_project)
         self.connect(runFileAction, SIGNAL("triggered()"),
-            actions.Actions().execute_file)
+            self.execute_file)
         self.connect(stopAction, SIGNAL("triggered()"),
-            actions.Actions().kill_execution)
+            self.kill_execution)
         self.connect(previewAction, SIGNAL("triggered()"),
-            actions.Actions().preview_in_browser)
+            self.preview_in_browser)
         self.connect(projectPropertiesAction, SIGNAL("triggered()"),
             self._open_project_properties)
 #        self.connect(debugAction, SIGNAL("triggered()"),
@@ -81,3 +80,23 @@ class MenuProject(QObject):
         explorer = IDE.get_service('explorer_container')
         if explorer:
             explorer.open_project_properties()
+
+    def execute_project(self):
+        tools_dock = IDE.get_service('tools_dock')
+        if tools_dock:
+            tools_dock.execute_project()
+
+    def execute_file(self):
+        tools_dock = IDE.get_service('tools_dock')
+        if tools_dock:
+            tools_dock.execute_file()
+
+    def kill_execution(self):
+        tools_dock = IDE.get_service('tools_dock')
+        if tools_dock:
+            tools_dock.kill_execution()
+
+    def preview_in_browser(self):
+        tools_dock = IDE.get_service('tools_dock')
+        if tools_dock:
+            tools_dock.preview_in_browser()

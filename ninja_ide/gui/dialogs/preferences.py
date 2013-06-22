@@ -58,6 +58,7 @@ from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
+from ninja_ide.gui.ide import IDE
 from ninja_ide.gui import central_widget
 from ninja_ide.gui import actions
 from ninja_ide.gui.editor import editor
@@ -753,7 +754,9 @@ class InterfaceTab(QWidget):
         settings.LANGUAGE = os.path.join(resources.LANGS, lang)
         qsettings.endGroup()
         qsettings.endGroup()
-        actions.Actions().reload_toolbar()
+        ide = IDE.get_service('ide')
+        if ide:
+            ide.reload_toolbar()
         end_state = (settings.SHOW_PROJECT_EXPLORER or
             settings.SHOW_SYMBOLS_LIST or settings.SHOW_MIGRATION_LIST or
             settings.SHOW_ERRORS_LIST or settings.SHOW_WEB_INSPECTOR)
@@ -1160,9 +1163,10 @@ class EditorConfiguration(QWidget):
         settings.CHECK_FOR_DOCSTRINGS = self._checkForDocstrings.isChecked()
         qsettings.endGroup()
         qsettings.endGroup()
-        action = actions.Actions()
-        action.reset_editor_flags()
-        action.call_editors_function("set_tab_usage")
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.reset_editor_flags()
+            main_container.call_editors_function("set_tab_usage")
         if settings.USE_TABS:
             settings.pep8mod_add_ignore("W191")
         else:

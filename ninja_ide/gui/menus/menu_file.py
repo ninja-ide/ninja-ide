@@ -23,6 +23,7 @@ from PyQt4.QtCore import QObject
 from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
+from ninja_ide.gui.ide import IDE
 
 
 class MenuFile(QObject):
@@ -128,7 +129,7 @@ class MenuFile(QObject):
         self.connect(saveAsAction, SIGNAL("triggered()"),
             ide.mainContainer.save_file_as)
         self.connect(saveAllAction, SIGNAL("triggered()"),
-            ide.actions.save_all)
+            self.save_all)
         self.connect(saveProjectAction, SIGNAL("triggered()"),
             ide.actions.save_project)
         self.connect(openProjectAction, SIGNAL("triggered()"),
@@ -159,3 +160,8 @@ class MenuFile(QObject):
         """Open the file selected in the recent files menu."""
         path = action.text()
         self.emit(SIGNAL("openFile(QString)"), path)
+
+    def save_all(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.save_all()

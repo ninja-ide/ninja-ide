@@ -19,6 +19,7 @@ from __future__ import absolute_import
 import sys
 import os
 import re
+import webbrowser
 
 from PyQt4 import uic
 from PyQt4.QtGui import QWidget
@@ -42,6 +43,7 @@ from ninja_ide.core.file_handling.filesystem_notifications import (
     NinjaFileSystemWatcher)
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.main_panel import tab_widget
+from ninja_ide.gui.main_panel import tab_group
 from ninja_ide.gui.editor import editor
 #from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import helpers
@@ -49,6 +51,7 @@ from ninja_ide.gui.main_panel import browser_widget
 from ninja_ide.gui.main_panel import start_page
 from ninja_ide.gui.main_panel import image_viewer
 from ninja_ide.gui.dialogs import from_import_dialog
+from ninja_ide.tools import locator
 from ninja_ide.tools import runner
 from ninja_ide.tools import ui_tools
 
@@ -120,6 +123,7 @@ class _MainContainer(QWidget):
         self._file_watcher = NinjaFileSystemWatcher
         self._watched_simple_files = []
         #Code Navigation
+        self._locator = locator.Locator()
         self.__codeBack = []
         self.__codeForward = []
         self.__bookmarksFile = ''
@@ -131,6 +135,9 @@ class _MainContainer(QWidget):
             1: self._navigate_bookmarks,
             2: self._navigate_breakpoints}
 
+        self.connect(self.mainContainer,
+            SIGNAL("locateFunction(QString, QString, bool)"),
+            self.locate_function)
         self.connect(self.scrollBar, SIGNAL("valueChanged(int)"),
             self.move_follow_scrolls)
         self.connect(self._tabMain, SIGNAL("currentChanged(int)"),
@@ -363,6 +370,15 @@ class _MainContainer(QWidget):
         self.connect(shortPasteHistory, SIGNAL("activated()"),
             self._paste_history)
 
+    def locate_function(self, function, filePath, isVariable):
+        """Move the cursor to the proper position in the navigate stack."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            self.__codeBack.append((editorWidget.ID,
+                editorWidget.textCursor().position()))
+            self.__codeForward = []
+        self._locator.navigate_to(function, filePath, isVariable)
+
     def close_files_from_project(self, project):
         """Close the files related to this project."""
         if project:
@@ -407,6 +423,16 @@ class _MainContainer(QWidget):
             dialog = from_import_dialog.FromImportDialog(fromSection,
                 editorWidget, self.ide)
             dialog.show()
+
+    def preview_in_browser(self):
+        """Load the current html file in the default browser."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            if not editorWidget.ID:
+                self.ide.mainContainer.save_file()
+            ext = file_manager.get_file_extension(editorWidget.ID)
+            if ext == 'html':
+                webbrowser.open(editorWidget.ID)
 
     def _add_bookmark_breakpoint(self):
         """Add a bookmark or breakpoint to the current file in the editor."""
@@ -523,6 +549,23 @@ class _MainContainer(QWidget):
                 lineNumber, None, True)
         else:
             settings.BOOKMARKS.pop(self.__bookmarksFile)
+
+    def count_file_code_lines(self):
+        """Count the lines of code in the current file."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            block_count = editorWidget.blockCount()
+            blanks = re.findall('(^\n)|(^(\s+)?#)|(^( +)?($|\n))',
+                editorWidget.get_text(), re.M)
+            blanks_count = len(blanks)
+            resume = self.tr("Lines code: %s\n") % (block_count - blanks_count)
+            resume += (self.tr("Blanks and commented lines: %s\n\n") %
+                blanks_count)
+            resume += self.tr("Total lines: %s") % block_count
+            msgBox = QMessageBox(QMessageBox.Information,
+                self.tr("Summary of lines"), resume,
+                QMessageBox.Ok, editorWidget)
+            msgBox.exec_()
 
     def editor_go_to_definition(self):
         """Search the definition of the method or variable under the cursor.
@@ -678,6 +721,36 @@ class _MainContainer(QWidget):
 
     def _navigate_code(self, val, op):
         self.emit(SIGNAL("navigateCode(bool, int)"), val, op)
+
+    def group_tabs_together(self):
+        """Group files that belongs to the same project together."""
+        explorer = IDE.get_service('explorer_container')
+        if not explorer or explorer._treeProjects is None:
+            return
+        projects_obj = explorer.get_opened_projects()
+        projects = [p.path for p in projects_obj]
+        for project in projects:
+            projectName = explorer.get_project_name(project)
+            if not projectName:
+                projectName = file_manager.get_basename(project)
+            tabGroup = tab_group.TabGroup(project, projectName, self)
+            for index in reversed(list(range(
+            self._tabMain.count()))):
+                widget = self._tabMain.widget(index)
+                if type(widget) is editor.Editor and \
+                file_manager.belongs_to_folder(project, widget.ID):
+                    tabGroup.add_widget(widget)
+                    self._tabMain.removeTab(index)
+            if tabGroup.tabs:
+                self._tabMain.add_tab(tabGroup, projectName)
+
+    def deactivate_tabs_groups(self):
+        """Deactivate tab grouping based in the project they belong."""
+        for index in reversed(list(range(
+        self._tabMain.count()))):
+            widget = self._tabMain.widget(index)
+            if type(widget) is tab_group.TabGroup:
+                widget.only_expand()
 
     def _main_without_tabs(self):
         if self._followMode:
