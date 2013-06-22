@@ -287,6 +287,10 @@ class _MainContainer(QWidget):
         IDE.register_shortcut('Highlight-Word', shortHighlightWord)
         shortPrint = QShortcut(short("Print-file"), ide)
         IDE.register_shortcut('Print-file', shortPrint)
+        shortCopyHistory = QShortcut(short("History-Copy"), ide)
+        IDE.register_shortcut('History-Copy', shortCopyHistory)
+        shortPasteHistory = QShortcut(short("History-Paste"), ide)
+        IDE.register_shortcut('History-Paste', shortPasteHistory)
 
         #Connect
         self.connect(self.shortGoToDefinition, SIGNAL("activated()"),
@@ -385,6 +389,16 @@ class _MainContainer(QWidget):
                     self._tabSecondary.removeTab(tabIndex)
             self.ide.profile = None
 
+    def _paste_history(self):
+        """Paste the text from the copy/paste history."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            cursor = editorWidget.textCursor()
+            central = IDE.get_service('central_container')
+            if central:
+                paste = central.lateralPanel.get_paste()
+                cursor.insertText(paste)
+
     def _copy_history(self):
         """Copy the selected text into the copy/paste history."""
         editorWidget = self.get_actual_editor()
@@ -395,17 +409,24 @@ class _MainContainer(QWidget):
             if central:
                 central.lateralPanel.add_new_copy(copy)
 
-    def add_back_item_navigation(self):
+    def import_from_everywhere(self):
         """Add an item to the back stack and reset the forward stack."""
         editorWidget = self.get_actual_editor()
         if editorWidget:
-<<<<<<< HEAD
             text = editorWidget.get_text()
             froms = re.findall('^from (.*)', text, re.MULTILINE)
             fromSection = list(set([f.split(' import')[0] for f in froms]))
             dialog = from_import_dialog.FromImportDialog(fromSection,
                 editorWidget, self.ide)
             dialog.show()
+
+    def add_back_item_navigation(self):
+        """Add an item to the back stack and reset the forward stack."""
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            self.__codeBack.append((editorWidget.ID,
+                editorWidget.textCursor().position()))
+            self.__codeForward = []
 
     def preview_in_browser(self):
         """Load the current html file in the default browser."""
@@ -532,11 +553,6 @@ class _MainContainer(QWidget):
                 lineNumber, None, True)
         else:
             settings.BOOKMARKS.pop(self.__bookmarksFile)
-=======
-            self.__codeBack.append((editorWidget.ID,
-                editorWidget.textCursor().position()))
-            self.__codeForward = []
->>>>>>> 91d67774a60bafe1aebc7a9773f527692d4d52ce
 
     def count_file_code_lines(self):
         """Count the lines of code in the current file."""
