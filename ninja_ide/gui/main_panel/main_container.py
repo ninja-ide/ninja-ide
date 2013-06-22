@@ -210,10 +210,11 @@ class _MainContainer(QWidget):
         if settings.SHOW_START_PAGE:
             self.show_start_page()
 
-    def install(self, ide):
-        self.install_shortcuts(ide)
+    def install(self):
+        self.install_shortcuts()
 
-    def install_shortcuts(self, ide):
+    def install_shortcuts(self):
+        ide = IDE.get_service('ide')
         short = resources.get_shortcut
         shortChangeTab = QShortcut(short("Change-Tab"), ide)
         IDE.register_shortcut('Change-Tab', shortChangeTab)

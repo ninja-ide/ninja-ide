@@ -206,7 +206,7 @@ class IDE(QMainWindow):
         obj = self.__IDESERVICES.get(service_name, None)
         func = getattr(obj, 'install', None)
         if isinstance(func, collections.Callable):
-            func(self)
+            func()
         self._connect_signals()
 
     def place_me_on(self, region=None):

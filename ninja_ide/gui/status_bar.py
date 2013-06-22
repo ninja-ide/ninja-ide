@@ -111,8 +111,9 @@ class _StatusBar(QStatusBar):
 
         IDE.register_signals('status_bar', connections)
 
-    def install(self, ide):
+    def install(self):
         self.hide()
+        ide = IDE.get_service('ide')
         ide.setStatusBar(self)
 
         self.install_shortcuts(ide)
