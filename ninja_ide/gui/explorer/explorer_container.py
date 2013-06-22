@@ -26,19 +26,21 @@ from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QIcon
+from PyQt4.QtGui import QShortcut
 
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import QDateTime
 
+from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core.pattern import singleton
+from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.explorer import tree_projects_widget
 from ninja_ide.gui.explorer import tree_symbols_widget
 from ninja_ide.gui.explorer import errors_lists
 from ninja_ide.gui.explorer import migration_lists
-from ninja_ide.gui.main_panel import main_container
 from ninja_ide.gui.dialogs import wizard_new_project
 from ninja_ide.tools import json_manager
 from ninja_ide.tools import ui_tools
@@ -91,6 +93,32 @@ class ExplorerContainer(QTabWidget):
         self._listMigration = None
         if settings.SHOW_MIGRATION_LIST:
             self.add_tab_migration()
+
+    def install(self, ide):
+        self.install_shortcuts(ide)
+
+    def install_shortcuts(self, ide):
+        short = resources.get_shortcut
+        shortNewProject = QShortcut(short("New-project"), ide)
+        IDE.register_shortcut('New-project', shortNewProject)
+        shortOpenProject = QShortcut(short("Open-project"), ide)
+        IDE.register_shortcut('Open-project', shortOpenProject)
+        shortSaveProject = QShortcut(short("Save-project"), ide)
+        IDE.register_shortcut('Save-project', shortSaveProject)
+
+        self.connect(shortNewProject, SIGNAL("activated()"),
+            self.create_new_project)
+        self.connect(shortOpenProject, SIGNAL("activated()"),
+            self.open_project_folder)
+        self.connect(shortSaveProject, SIGNAL("activated()"),
+            self.save_project)
+
+    def save_project(self):
+        """Save all the opened files that belongs to the actual project."""
+        path = self.get_actual_project()
+        main_container = IDE.get_service('main_container')
+        if path and main_container:
+            main_container.save_project(path)
 
     def update_symbols(self, symbols, fileName):
         if self._treeSymbols:
@@ -243,6 +271,7 @@ class ExplorerContainer(QTabWidget):
             self._inspector._webInspector.setVisible(True)
 
     def open_project_folder(self, folderName='', notIDEStart=True):
+        """Open a Project and load the symbols in the Code Locator."""
         if not self._treeProjects and notIDEStart:
             QMessageBox.information(self, self.tr("Projects Disabled"),
                 self.tr("Project support has been disabled from Preferences"))
@@ -253,12 +282,13 @@ class ExplorerContainer(QTabWidget):
             else:
                 directory = os.path.expanduser("~")
                 current_project = self.get_actual_project()
-                mainContainer = main_container.MainContainer()
-                editorWidget = mainContainer.get_actual_editor()
-                if current_project is not None:
-                    directory = current_project
-                elif editorWidget is not None and editorWidget.ID:
-                    directory = file_manager.get_folder(editorWidget.ID)
+                main_container = IDE.get_service('main_container')
+                if main_container:
+                    editorWidget = main_container.get_actual_editor()
+                    if current_project is not None:
+                        directory = current_project
+                    elif editorWidget is not None and editorWidget.ID:
+                        directory = file_manager.get_folder(editorWidget.ID)
             folderName = QFileDialog.getExistingDirectory(self,
                 self.tr("Open Project Directory"), directory)
         try:

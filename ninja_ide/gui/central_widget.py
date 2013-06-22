@@ -26,6 +26,7 @@ from PyQt4.QtGui import QComboBox
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QSplitter
+from PyQt4.QtGui import QShortcut
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QSettings
@@ -33,6 +34,7 @@ from PyQt4.QtCore import QSettings
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core.pattern import singleton
+from ninja_ide.gui.ide import IDE
 
 
 @singleton
@@ -67,6 +69,35 @@ class CentralWidget(QWidget):
         #Add to Main Layout
         hbox.addWidget(self._splitterBase)
 
+    def install(self, ide):
+        self.install_shortcuts()
+
+    def install_shortcuts(self, ide):
+        short = resources.get_shortcut
+        shortHideRegion1 = QShortcut(short("Hide-misc"), ide)
+        IDE.register_shortcut('Hide-misc', shortHideRegion1)
+        shortHideRegion0 = QShortcut(short("Hide-editor"), ide)
+        IDE.register_shortcut('Hide-editor', shortHideRegion0)
+        shortHideRegion2 = QShortcut(short("Hide-explorer"), ide)
+        IDE.register_shortcut('Hide-explorer', shortHideRegion2)
+        shortHideAll = QShortcut(short("Hide-all"), ide)
+        IDE.register_shortcut('Hide-all', shortHideAll)
+        shortShowPasteHistory = QShortcut(short("Show-Paste-History"), ide)
+        IDE.register_shortcut('Show-Paste-History', shortShowPasteHistory)
+        shortPasteHistory = QShortcut(short("History-Paste"), ide)
+        IDE.register_shortcut('History-Paste', shortPasteHistory)
+        shortCopyHistory = QShortcut(short("History-Copy"), ide)
+        IDE.register_shortcut('History-Copy', shortCopyHistory)
+
+        self.connect(shortHideRegion1, SIGNAL("activated()"),
+            self.view_region1_visibility)
+        self.connect(self.shortHideRegion0, SIGNAL("activated()"),
+            self.view_region0_visibility)
+        self.connect(self.shortHideRegion2, SIGNAL("activated()"),
+            self.view_region2_visibility)
+        self.connect(self.shortHideAll, SIGNAL("activated()"),
+            self.hide_all)
+
     def insert_widget_region0(self, container):
         self._splitterInside.insertWidget(0, container)
 
@@ -76,6 +107,71 @@ class CentralWidget(QWidget):
     def insert_widget_region2(self, container):
         self.lateralPanel = LateralPanel(container)
         self._splitterBase.addWidget(self.lateralPanel)
+
+    def _region0(self):
+        return self._splitterInside.widget(0)
+
+    def _region1(self):
+        return self._splitterInside.widget(1)
+
+    def _region2(self):
+        return self._splitterBase.widget(1)
+
+    def view_region1_visibility(self):
+        self.change_region1_visibility()
+        menu_view = IDE.get_service('menu_view')
+        if menu_view:
+            menu_view.hideConsoleAction.setChecked(self._region0().isVisible())
+
+    def view_region0_visibility(self):
+        self.change_inside_visibility()
+        menu_view = IDE.get_service('menu_view')
+        if menu_view:
+            menu_view.hideEditorAction.setChecked(self._region1().isVisible())
+
+    def view_region2_visibility(self):
+        self.change_lateral_panel_visibility()
+        menu_view = IDE.get_service('menu_view')
+        if menu_view:
+            menu_view.hideExplorerAction.setChecked(
+                self._region2().isVisible())
+
+    def hide_all(self):
+        """Hide/Show all the containers except the editor."""
+        menu_bar = IDE.get_service('menu_bar')
+        tools_dock = IDE.get_service('tools_dock')
+        toolbar = IDE.get_service('toolbar')
+        if menu_bar and menu_bar.isVisible():
+            if self.lateralPanel:
+                self.lateralPanel.hide()
+            if tools_dock:
+                tools_dock.hide()
+            if toolbar:
+                toolbar.hide()
+            if menu_bar:
+                menu_bar.hide()
+        else:
+            if self.lateralPanel:
+                self.lateralPanel.show()
+            if toolbar:
+                toolbar.show()
+            if menu_bar:
+                menu_bar.show()
+        menu_view = IDE.get_service('menu_view')
+        if menu_view:
+            if menu_bar:
+                menu_view.hideAllAction.setChecked(menu_bar.isVisible())
+            if tools_dock:
+                menu_view.hideConsoleAction.setChecked(tools_dock.isVisible())
+            main_container = IDE.get_service('main_container')
+            if tools_dock:
+                menu_view.hideEditorAction.setChecked(
+                    main_container.isVisible())
+            if self.lateralPanel:
+                menu_view.hideExplorerAction.setChecked(
+                    self.lateralPanel.isVisible())
+            if toolbar:
+                menu_view.hideToolbarAction.setChecked(toolbar.isVisible())
 
     def showEvent(self, event):
         #Show Event
@@ -125,7 +221,7 @@ class CentralWidget(QWidget):
         else:
             region0.show()
 
-    def change_explorer_visibility(self, force_hide=False):
+    def change_lateral_panel_visibility(self, force_hide=False):
         if self.lateralPanel and (self.lateralPanel.isVisible() or force_hide):
             self._splitterBaseSizes = self._splitterBase.sizes()
             self.lateralPanel.hide()

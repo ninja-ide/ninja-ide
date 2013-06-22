@@ -35,10 +35,8 @@ from ninja_ide.core.pattern import singleton
 from ninja_ide import resources
 from ninja_ide.tools import ui_tools
 from ninja_ide.tools import locator
-from ninja_ide.tools import json_manager
 from ninja_ide.gui import ide
 from ninja_ide.gui.editor import editor
-from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.dialogs import from_import_dialog
 from ninja_ide.gui.main_panel import tab_group
 
@@ -88,84 +86,20 @@ class Actions(QObject):
 
     def install_shortcuts(self, ide):
         """Install the shortcuts to the IDE."""
-        self.ide = ide
-        status = self.ide.get_service('status_bar')
-        short = resources.get_shortcut
-        self.shortNewProject = QShortcut(short("New-project"), self.ide)
-        self.shortOpenProject = QShortcut(short("Open-project"), self.ide)
-        self.shortSaveProject = QShortcut(short("Save-project"), self.ide)
-        self.shortPrint = QShortcut(short("Print-file"), self.ide)
-        self.shortHideMisc = QShortcut(short("Hide-misc"), self.ide)
-        self.shortHideEditor = QShortcut(short("Hide-editor"), self.ide)
-        self.shortHideExplorer = QShortcut(short("Hide-explorer"), self.ide)
-        self.shortRunFile = QShortcut(short("Run-file"), self.ide)
-        self.shortRunProject = QShortcut(short("Run-project"), self.ide)
         self.shortSwitchFocus = QShortcut(short("Switch-Focus"), self.ide)
-        self.shortStopExecution = QShortcut(short("Stop-execution"), self.ide)
-        self.shortHideAll = QShortcut(short("Hide-all"), self.ide)
         self.shortFullscreen = QShortcut(short("Full-screen"), self.ide)
-        self.shortFind = QShortcut(short("Find"), self.ide)
-        self.shortFindNext = QShortcut(short("Find-next"), self.ide)
-        self.shortFindPrevious = QShortcut(short("Find-previous"), self.ide)
-        self.shortFindReplace = QShortcut(short("Find-replace"), self.ide)
-        self.shortFindWithWord = QShortcut(short("Find-with-word"), self.ide)
-        self.shortFindInFiles = QShortcut(short("Find-in-files"), self.ide)
-        self.shortCodeLocator = QShortcut(short("Code-locator"), self.ide)
-        self.shortFileOpener = QShortcut(short("File-Opener"), self.ide)
-        self.shortShowPasteHistory = QShortcut(short("Show-Paste-History"),
-            self.ide)
-        self.shortPasteHistory = QShortcut(short("History-Paste"), self.ide)
-        self.shortCopyHistory = QShortcut(short("History-Copy"), self.ide)
 
         #Connect Shortcuts Signals
         self.connect(self.shortNavigateBack, SIGNAL("activated()"),
             lambda: self.__navigate_with_keyboard(False))
         self.connect(self.shortNavigateForward, SIGNAL("activated()"),
             lambda: self.__navigate_with_keyboard(True))
-        self.connect(self.shortCodeLocator, SIGNAL("activated()"),
-            status.show_locator)
-        self.connect(self.shortFileOpener, SIGNAL("activated()"),
-            status.show_file_opener)
-        self.connect(self.shortNewProject, SIGNAL("activated()"),
-            self.ide.explorer.create_new_project)
-        self.connect(self.shortHideMisc, SIGNAL("activated()"),
-            self.view_misc_visibility)
-        self.connect(self.shortHideEditor, SIGNAL("activated()"),
-            self.view_main_visibility)
-        self.connect(self.shortHideExplorer, SIGNAL("activated()"),
-            self.view_explorer_visibility)
-        self.connect(self.shortHideAll, SIGNAL("activated()"),
-            self.hide_all)
         self.connect(self.shortFullscreen, SIGNAL("activated()"),
             self.fullscreen_mode)
-        self.connect(self.shortOpenProject, SIGNAL("activated()"),
-            self.open_project)
-        self.connect(self.shortSaveProject, SIGNAL("activated()"),
-            self.save_project)
-        self.connect(self.shortPrint, SIGNAL("activated()"),
-            self.print_file)
-        self.connect(self.shortFind, SIGNAL("activated()"),
-            status.show)
-        self.connect(self.shortFindPrevious, SIGNAL("activated()"),
-            status._searchWidget.find_previous)
-        self.connect(self.shortFindNext, SIGNAL("activated()"),
-            status._searchWidget.find_next)
-        self.connect(self.shortFindWithWord, SIGNAL("activated()"),
-            status.show_with_word)
-        self.connect(self.shortFindReplace, SIGNAL("activated()"),
-            status.show_replace)
-        self.connect(self.shortRunFile, SIGNAL("activated()"),
-            self.execute_file)
-        self.connect(self.shortRunProject, SIGNAL("activated()"),
-            self.execute_project)
         self.connect(self.shortSwitchFocus, SIGNAL("activated()"),
             self.switch_focus)
-        self.connect(self.shortStopExecution, SIGNAL("activated()"),
-            self.kill_execution)
         self.connect(self.shortImport, SIGNAL("activated()"),
             self.import_from_everywhere)
-        self.connect(self.shortFindInFiles, SIGNAL("activated()"),
-            self.ide.misc.show_find_in_files_widget)
         self.connect(self.shortOpenLastTabOpened, SIGNAL("activated()"),
             self.reopen_last_tab)
         self.connect(self.shortAddBookmark, SIGNAL("activated()"),
@@ -308,10 +242,6 @@ class Actions(QObject):
                 editorWidget, self.ide)
             dialog.show()
 
-    def open_project(self, path=''):
-        """Open a Project and load the symbols in the Code Locator."""
-        self.ide.explorer.open_project_folder(path)
-
     def open_project_properties(self):
         """Open a Project and load the symbols in the Code Locator."""
         self.ide.explorer.open_project_properties()
@@ -392,50 +322,6 @@ class Actions(QObject):
                 QMessageBox.Ok, editorWidget)
             msgBox.exec_()
 
-    def execute_file(self):
-        """Execute the current file."""
-        editorWidget = self.ide.mainContainer.get_actual_editor()
-        #emit a signal for plugin!
-        self.emit(SIGNAL("fileExecuted(QString)"), editorWidget.ID)
-        if editorWidget:
-            self.ide.mainContainer.save_file(editorWidget)
-            ext = file_manager.get_file_extension(editorWidget.ID)
-            #TODO: Remove the IF statment with polymorphism using Handler
-            if ext == 'py':
-                self.ide.misc.run_application(editorWidget.ID)
-            elif ext == 'html':
-                self.ide.misc.render_web_page(editorWidget.ID)
-
-    def execute_project(self):
-        """Execute the project marked as Main Project."""
-        mainFile = self.ide.explorer.get_project_main_file()
-        if not mainFile and self.ide.explorer._treeProjects and \
-          self.ide.explorer._treeProjects._actualProject:
-            self.ide.explorer._treeProjects.open_project_properties()
-        elif mainFile:
-            self.save_project()
-            path = self.ide.explorer.get_actual_project()
-            #emit a signal for plugin!
-            self.emit(SIGNAL("projectExecuted(QString)"), path)
-
-            # load our jutsus!
-            project = json_manager.read_ninja_project(path)
-            python_exec = project.get('venv', False)
-            if not python_exec:
-                python_exec = project.get('pythonPath', 'python')
-            PYTHONPATH = project.get('PYTHONPATH', None)
-            params = project.get('programParams', '')
-            preExec = project.get('preExecScript', '')
-            postExec = project.get('postExecScript', '')
-            mainFile = file_manager.create_path(path, mainFile)
-            self.ide.misc.run_application(mainFile, pythonPath=python_exec,
-                PYTHONPATH=PYTHONPATH,
-                programParams=params, preExec=preExec, postExec=postExec)
-
-    def kill_execution(self):
-        """Kill the execution of the current file or project."""
-        self.ide.misc.kill_application()
-
     def fullscreen_mode(self):
         """Change to fullscreen mode."""
         if self.ide.isFullScreen():
@@ -461,66 +347,9 @@ class Actions(QObject):
             if ext == 'html':
                 webbrowser.open(editorWidget.ID)
 
-    def hide_all(self):
-        """Hide/Show all the containers except the editor."""
-        if self.ide.menuBar().isVisible():
-            self.ide.central.lateralPanel.hide()
-            self.ide.misc.hide()
-            self.ide.toolbar.hide()
-            self.ide.menuBar().hide()
-        else:
-            self.ide.central.lateralPanel.show()
-            self.ide.toolbar.show()
-            self.ide.menuBar().show()
-        self.ide._menuView.hideAllAction.setChecked(
-            self.ide.menuBar().isVisible())
-        self.ide._menuView.hideConsoleAction.setChecked(
-            self.ide.central.misc.isVisible())
-        self.ide._menuView.hideEditorAction.setChecked(
-            self.ide.central.mainContainer.isVisible())
-        self.ide._menuView.hideExplorerAction.setChecked(
-            self.ide.central.lateralPanel.isVisible())
-        self.ide._menuView.hideToolbarAction.setChecked(
-            self.ide.toolbar.isVisible())
-
-    def view_misc_visibility(self):
-        self.ide.central.change_misc_visibility()
-        self.ide._menuView.hideConsoleAction.setChecked(
-            self.ide.central.misc.isVisible())
-
-    def view_main_visibility(self):
-        self.ide.central.change_main_visibility()
-        self.ide._menuView.hideEditorAction.setChecked(
-            self.ide.central.mainContainer.isVisible())
-
-    def view_explorer_visibility(self):
-        self.ide.central.change_explorer_visibility()
-        self.ide._menuView.hideExplorerAction.setChecked(
-            self.ide.central.lateralPanel.isVisible())
-
-    def save_project(self):
-        """Save all the opened files that belongs to the actual project."""
-        path = self.ide.explorer.get_actual_project()
-        if path:
-            self.ide.mainContainer.save_project(path)
-
     def save_all(self):
         """Save all the opened files."""
         self.ide.mainContainer.save_all()
-
-    def print_file(self):
-        """Call the print of ui_tool
-
-        Call print of ui_tool depending on the focus of the application"""
-        #TODO: Add funtionality for proyect tab and methods tab
-        editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget is not None:
-            fileName = "newDocument.pdf"
-            if editorWidget.ID:
-                fileName = file_manager.get_basename(
-                    editorWidget.ID)
-                fileName = fileName[:fileName.rfind('.')] + '.pdf'
-            ui_tools.print_file(fileName, editorWidget.print_)
 
     def locate_function(self, function, filePath, isVariable):
         """Move the cursor to the proper position in the navigate stack."""

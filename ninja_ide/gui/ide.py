@@ -72,8 +72,7 @@ class IDE(QMainWindow):
     __IDECONNECTIONS = {}
     __IDESHORTCUTS = {}
     # CONNECTIONS structure:
-    # ({'target': service_name, 'signal_name': string,
-    #   'slot': 'name_of_function'},)
+    # ({'target': service_name, 'signal_name': string, 'slot': function_obj},)
     # On modify add: {connected: True}
     __instance = None
     __created = False
@@ -149,6 +148,7 @@ class IDE(QMainWindow):
         self.connect(short, SIGNAL("activated()"), self._change_tab_index)
 
         self.register_service('ide', self)
+        self.register_service('toolbar', self.toolbar)
         #Register signals connections
         connections = (
             {'target': 'main_container',
@@ -189,8 +189,7 @@ class IDE(QMainWindow):
                     continue
                 target = self.__IDESERVICES.get(
                     connection['target'], None)
-                service = self.__IDESERVICES.get(service_name, None)
-                slot = getattr(service, connection['slot'], None)
+                slot = connection['slot']
                 signal_name = connection['signal_name']
                 if target and isinstance(slot, collections.Callable):
                     self.connect(target, SIGNAL(signal_name), slot)

@@ -32,11 +32,12 @@ class MenuBar(QObject):
 
         ide.IDE.register_service('menu_bar', self)
         ide.IDE.register_service('menu_file', self._menuFile)
+        ide.IDE.register_service('menu_view', self._menuView)
 
         menu_file_connections = (
             {'target': 'main_container',
             'signal_name': 'recentTabsModified(QStringList)',
-            'slot': 'update_recent_files'}
+            'slot': self._menuFile.update_recent_files}
         )
         ide.IDE.register_signals('menu_file', menu_file_connections)
 

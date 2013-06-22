@@ -26,12 +26,15 @@ from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QSpacerItem
 from PyQt4.QtGui import QSizePolicy
+from PyQt4.QtGui import QShortcut
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtWebKit import QWebPage
 
 from ninja_ide import resources
 from ninja_ide.core import settings
+from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core.pattern import singleton
+from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.explorer import explorer_container
 from ninja_ide.gui.misc import console_widget
 from ninja_ide.gui.misc import run_widget
@@ -39,6 +42,7 @@ from ninja_ide.gui.misc import web_render
 from ninja_ide.gui.misc import find_in_files
 from ninja_ide.gui.misc import results
 from ninja_ide.tools import ui_tools
+from ninja_ide.tools import json_manager
 
 
 @singleton
@@ -109,6 +113,29 @@ class MiscContainer(QWidget):
             lambda: self._item_changed(3))
         self.connect(btn_close, SIGNAL('clicked()'), self.hide)
 
+    def install(self, ide):
+        self.install_shortcuts(ide)
+
+    def install_shortcuts(self, ide):
+        short = resources.get_shortcut
+        shortFindInFiles = QShortcut(short("Find-in-files"), ide)
+        IDE.register_shortcut('Find-in-files', shortFindInFiles)
+        shortRunFile = QShortcut(short("Run-file"), ide)
+        IDE.register_shortcut('Run-file', shortRunFile)
+        shortRunProject = QShortcut(short("Run-project"), ide)
+        IDE.register_shortcut('Run-project', shortRunProject)
+        shortStopExecution = QShortcut(short("Stop-execution"), ide)
+        IDE.register_shortcut('Stop-execution', shortStopExecution)
+
+        self.connect(shortFindInFiles, SIGNAL("activated()"),
+            self.show_find_in_files_widget)
+        self.connect(shortRunFile, SIGNAL("activated()"),
+            self.execute_file)
+        self.connect(shortRunProject, SIGNAL("activated()"),
+            self.execute_project)
+        self.connect(self.shortStopExecution, SIGNAL("activated()"),
+            self.kill_application)
+
     def gain_focus(self):
         self._console.setFocus()
 
@@ -130,6 +157,49 @@ class MiscContainer(QWidget):
     def load_toolbar(self, toolbar):
         toolbar.addWidget(self._combo)
         toolbar.addSeparator()
+
+    def execute_file(self):
+        """Execute the current file."""
+        main_container = IDE.get_service('main_container')
+        if not main_container:
+            return
+        editorWidget = main_container.get_actual_editor()
+        if editorWidget:
+            #emit a signal for plugin!
+            self.emit(SIGNAL("fileExecuted(QString)"), editorWidget.ID)
+            main_container.save_file(editorWidget)
+            ext = file_manager.get_file_extension(editorWidget.ID)
+            #TODO: Remove the IF statment with polymorphism using Handler
+            if ext == 'py':
+                self.run_application(editorWidget.ID)
+            elif ext == 'html':
+                self.render_web_page(editorWidget.ID)
+
+    def execute_project(self):
+        """Execute the project marked as Main Project."""
+        mainFile = self.ide.explorer.get_project_main_file()
+        if not mainFile and self.ide.explorer._treeProjects and \
+          self.ide.explorer._treeProjects._actualProject:
+            self.ide.explorer._treeProjects.open_project_properties()
+        elif mainFile:
+            self.save_project()
+            path = self.ide.explorer.get_actual_project()
+            #emit a signal for plugin!
+            self.emit(SIGNAL("projectExecuted(QString)"), path)
+
+            # load our jutsus!
+            project = json_manager.read_ninja_project(path)
+            python_exec = project.get('venv', False)
+            if not python_exec:
+                python_exec = project.get('pythonPath', 'python')
+            PYTHONPATH = project.get('PYTHONPATH', None)
+            params = project.get('programParams', '')
+            preExec = project.get('preExecScript', '')
+            postExec = project.get('postExecScript', '')
+            mainFile = file_manager.create_path(path, mainFile)
+            self.ide.misc.run_application(mainFile, pythonPath=python_exec,
+                PYTHONPATH=PYTHONPATH,
+                programParams=params, preExec=preExec, postExec=postExec)
 
     def run_application(self, fileName, pythonPath=False, PYTHONPATH=None,
             programParams='', preExec='', postExec=''):

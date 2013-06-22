@@ -34,6 +34,7 @@ from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QCheckBox
 from PyQt4.QtGui import QStyle
 from PyQt4.QtGui import QIcon
+from PyQt4.QtGui import QShortcut
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 
@@ -42,7 +43,7 @@ from ninja_ide.core import settings
 from ninja_ide.core.pattern import singleton
 from ninja_ide.tools import locator
 from ninja_ide.tools import ui_tools
-from ninja_ide.gui import ide
+from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.main_panel import main_container
 from ninja_ide.tools.logger import NinjaLogger
 
@@ -92,25 +93,59 @@ class StatusBar(QStatusBar):
         self.connect(self._fileSystemOpener, SIGNAL("requestHide()"),
             self.hide_status)
 
-        ide.IDE.register_service('status_bar', self)
+        IDE.register_service('status_bar', self)
 
         #Register signals connections
         connections = (
             {'target': 'main_container',
             'signal_name': 'currentTabChanged(QString)',
-            'slot': 'handle_tab_changed'},
+            'slot': self.handle_tab_changed},
             {'target': 'main_container',
             'signal_name': 'updateLocator(QString)',
-            'slot': 'explore_file_code'},
+            'slot': self.explore_file_code},
             {'target': 'explorer_container',
             'signal_name': 'updateLocator()',
-            'slot': 'explore_code'}
+            'slot': self.explore_code}
             )
-        ide.IDE.register_signals('status_bar', connections)
+        IDE.register_signals('status_bar', connections)
 
     def install(self, ide):
         self.hide()
         ide.setStatusBar(self)
+
+        self.install_shortcuts(ide)
+
+    def install_shortcuts(self, ide):
+        short = resources.get_shortcut
+        shortFind = QShortcut(short("Find"), ide)
+        IDE.register_shortcut('Find', shortFind)
+        shortFindNext = QShortcut(short("Find-next"), ide)
+        IDE.register_shortcut('Find-next', shortFindNext)
+        shortFindPrevious = QShortcut(short("Find-previous"), ide)
+        IDE.register_shortcut('Find-previous', shortFindPrevious)
+        shortFindReplace = QShortcut(short("Find-replace"), ide)
+        IDE.register_shortcut('Find-replace', shortFindReplace)
+        shortFindWithWord = QShortcut(short("Find-with-word"), ide)
+        IDE.register_shortcut('Find-with-word', shortFindWithWord)
+        shortCodeLocator = QShortcut(short("Code-locator"), ide)
+        IDE.register_shortcut('Code-locator', shortCodeLocator)
+        shortFileOpener = QShortcut(short("File-Opener"), ide)
+        IDE.register_shortcut('File-Opener', shortFileOpener)
+
+        self.connect(self.shortCodeLocator, SIGNAL("activated()"),
+            self.show_locator)
+        self.connect(self.shortFileOpener, SIGNAL("activated()"),
+            self.show_file_opener)
+        self.connect(self.shortFind, SIGNAL("activated()"),
+            self.show)
+        self.connect(self.shortFindPrevious, SIGNAL("activated()"),
+            self._searchWidget.find_previous)
+        self.connect(self.shortFindNext, SIGNAL("activated()"),
+            self._searchWidget.find_next)
+        self.connect(self.shortFindWithWord, SIGNAL("activated()"),
+            self.show_with_word)
+        self.connect(self.shortFindReplace, SIGNAL("activated()"),
+            self.show_replace)
 
     def handle_tab_changed(self, new_tab):
         """
