@@ -27,6 +27,7 @@ from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QShortcut
+from PyQt4.QtGui import QInputDialog
 
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QSettings
@@ -93,6 +94,10 @@ class _ExplorerContainer(QTabWidget):
         self._listMigration = None
         if settings.SHOW_MIGRATION_LIST:
             self.add_tab_migration()
+
+        if self.count() == 0:
+            central_container = IDE.get_service("central_container")
+            central_container.change_explorer_visibility(force_hide=True)
 
         IDE.register_service('explorer_container', self)
 
@@ -212,7 +217,6 @@ class _ExplorerContainer(QTabWidget):
             QMessageBox.information(self, self.tr("File Already Exists"),
                 (self.tr("Invalid Path: the file '%s' already exists.") %
                     ex.filename))
-
 
     def addTab(self, tab, title):
         QTabWidget.addTab(self, tab, title)

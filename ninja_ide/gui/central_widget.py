@@ -68,7 +68,15 @@ class CentralWidget(QWidget):
 
         #Add to Main Layout
         hbox.addWidget(self._splitterBase)
-
+        connects = (
+            {"target": "main_container",
+            "signal_name": "cursorPositionChange(int, int)",
+            "slot": self.lateralPanel.update_line_col},
+            {"target": "main_container",
+            "signal_name": "enabledFollowMode(bool)",
+            "slot": self.enable_follow_mode_scrollbar},
+        )
+        IDE.register_signals("central_container", connects)
         IDE.register_service('central_container', self)
 
     def install(self, ide):

@@ -296,40 +296,6 @@ class IDE(QMainWindow):
     def show_status_message(self, message):
         self.status.showMessage(message, 2000)
 
-    def load_ui(self, centralWidget):
-        #Set Application Font for ToolTips
-
-        #Create Main Container to manage Tabs
-
-
-
-        # When close the last tab cleanup
-
-        #Create Explorer Panel
-        #self.explorer = explorer_container.ExplorerContainer(self)
-
-
-        #Create Misc Bottom Container
-        #self.misc = misc_container.MiscContainer(self)
-        self.connect(self.mainContainer, SIGNAL("findOcurrences(QString)"),
-            self.misc.show_find_occurrences) # Misc se conecta a main container
-
-
-        if self.explorer.count() == 0: #Mandar esto al explorar que compruebe despues de que termine el init
-            centralWidget.change_explorer_visibility(force_hide=True) #Si le da 0 pedimos cental y llamamos eso, emite una señal
-        self.connect(self.mainContainer,
-            SIGNAL("cursorPositionChange(int, int)"),
-            self.central.lateralPanel.update_line_col) # Central se conecta a main container
-        # TODO: Change current symbol on move
-        #self.connect(self.mainContainer,
-            #SIGNAL("cursorPositionChange(int, int)"),
-            #self.explorer.update_current_symbol)
-        self.connect(self.mainContainer, SIGNAL("enabledFollowMode(bool)"),
-            self.central.enable_follow_mode_scrollbar) # Central se conecta a main container
-
-        if settings.SHOW_START_PAGE:
-            self.mainContainer.show_start_page() #Esto va en main
-
     def _last_tab_closed(self):
         """
         Called when the last tasb is closed

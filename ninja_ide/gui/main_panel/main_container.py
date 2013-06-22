@@ -183,9 +183,16 @@ class _MainContainer(QWidget):
             'slot': self.close_files_from_project},
             {"target": 'main_container',
             "signal_name": "avigateCode(bool, int)",
-            "slot": self.navigate_code_history}
+            "slot": self.navigate_code_history},
+            {"target": "main_container",
+            "signal_name": "findOcurrences(QString)",
+            "slot": self.show_find_occurences},
             )
+
         IDE.register_signals('main_container', connections)
+
+        if settings.SHOW_START_PAGE:
+            self.show_start_page()
 
     def install(self, ide):
         self.install_shortcuts(ide)
