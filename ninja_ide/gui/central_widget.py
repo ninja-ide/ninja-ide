@@ -56,6 +56,12 @@ class CentralWidget(QWidget):
         self._splitterInsideSizes = None
         self.lateralPanel = LateralPanel()
 
+        self._add_functions = {
+            'region0': self.insert_widget_region0,
+            'region1': self.insert_widget_region1,
+            'region2': self.insert_widget_region2
+        }
+
         hbox = QHBoxLayout(self)
         hbox.setContentsMargins(0, 0, 0, 0)
         hbox.setSpacing(0)
@@ -104,6 +110,9 @@ class CentralWidget(QWidget):
 
     def update_column_number(self, row, col):
         self.lateralPanel.update_line_col(row, col)
+
+    def add_to_region(self, obj, region):
+        self._add_functions.get(region, lambda x: None)(obj)
 
     def insert_widget_region0(self, container):
         self._splitterInside.insertWidget(0, container)

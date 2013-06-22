@@ -209,8 +209,8 @@ class IDE(QMainWindow):
             func()
         self._connect_signals()
 
-    def place_me_on(self, region=None):
-        pass
+    def place_me_on(self, obj, region=None):
+        self.central.add_to_region(obj, region)
 
     @classmethod
     def register_signals(cls, service_name, connections):
@@ -320,9 +320,9 @@ class IDE(QMainWindow):
                 notIDEStart=False)
             if current_file:
                 main_container.open_file(current_file, notStart=False)
-            if recent_files is not None:
-                menu_file = IDE.get_service('menu_file')
-                menu_file.update_recent_files(recent_files)
+            #if recent_files is not None:
+                #menu_file = IDE.get_service('menu_file')
+                #menu_file.update_recent_files(recent_files)
 
     def _set_editors_project_data(self):
         self.__project_to_open -= 1
