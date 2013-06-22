@@ -179,11 +179,21 @@ class IDE(QMainWindow):
         connections = (
             {'target': 'main_container',
             'signal_name': 'fileSaved(QString)',
-            'slot': 'show_status_message'}
+            'slot': self.show_status_message},
+            {'target': 'main_container',
+            'signal_name': 'currentTabChanged(QString)',
+            'slot': self.change_window_title},
+            {'target': 'main_container',
+            'signal_name': 'openPreferences()',
+            'slot': self._show_preferences},
+            {'target': 'main_container',
+            'signal_name': 'allTabsClosed()',
+            'slot': self._last_tab_closed},
             )
         self.register_signals('ide', connections)
         for service_name in self.__IDECONNECTIONS:
             self.install_service(service_name)
+        QToolTip.setFont(QFont(settings.FONT_FAMILY, 10))
         self.__created = True
 
     @classmethod
@@ -288,56 +298,37 @@ class IDE(QMainWindow):
 
     def load_ui(self, centralWidget):
         #Set Application Font for ToolTips
-        QToolTip.setFont(QFont(settings.FONT_FAMILY, 10))
+
         #Create Main Container to manage Tabs
-        self.mainContainer = main_container.MainContainer(self)
-        self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
-            self.change_window_title)
-        self.connect(self.mainContainer,
-            SIGNAL("locateFunction(QString, QString, bool)"),
-            self.actions.locate_function)
-        self.connect(self.mainContainer,
-            SIGNAL("navigateCode(bool, int)"),
-            self.actions.navigate_code_history)
-        self.connect(self.mainContainer,
-            SIGNAL("addBackItemNavigation()"),
-            self.actions.add_back_item_navigation)
 
-        self.connect(self.mainContainer, SIGNAL("openPreferences()"),
-            self._show_preferences)
-        self.connect(self.mainContainer, SIGNAL("dontOpenStartPage()"),
-            self._dont_show_start_page_again)
+
+
         # When close the last tab cleanup
-        self.connect(self.mainContainer, SIGNAL("allTabsClosed()"),
-            self._last_tab_closed)
-        #Create Explorer Panel
-        self.explorer = explorer_container.ExplorerContainer(self)
-        self.connect(self.central, SIGNAL("splitterBaseRotated()"),
-            self.explorer.rotate_tab_position)
-        self.connect(self.explorer, SIGNAL("goToDefinition(int)"),
-            self.actions.editor_go_to_line)
-        #Create Misc Bottom Container
-        self.misc = misc_container.MiscContainer(self)
-        self.connect(self.mainContainer, SIGNAL("findOcurrences(QString)"),
-            self.misc.show_find_occurrences)
 
-        centralWidget.insert_central_container(self.mainContainer)
-        centralWidget.insert_lateral_container(self.explorer)
-        centralWidget.insert_bottom_container(self.misc)
-        if self.explorer.count() == 0:
-            centralWidget.change_explorer_visibility(force_hide=True)
+        #Create Explorer Panel
+        #self.explorer = explorer_container.ExplorerContainer(self)
+
+
+        #Create Misc Bottom Container
+        #self.misc = misc_container.MiscContainer(self)
+        self.connect(self.mainContainer, SIGNAL("findOcurrences(QString)"),
+            self.misc.show_find_occurrences) # Misc se conecta a main container
+
+
+        if self.explorer.count() == 0: #Mandar esto al explorar que compruebe despues de que termine el init
+            centralWidget.change_explorer_visibility(force_hide=True) #Si le da 0 pedimos cental y llamamos eso, emite una señal
         self.connect(self.mainContainer,
             SIGNAL("cursorPositionChange(int, int)"),
-            self.central.lateralPanel.update_line_col)
+            self.central.lateralPanel.update_line_col) # Central se conecta a main container
         # TODO: Change current symbol on move
         #self.connect(self.mainContainer,
             #SIGNAL("cursorPositionChange(int, int)"),
             #self.explorer.update_current_symbol)
         self.connect(self.mainContainer, SIGNAL("enabledFollowMode(bool)"),
-            self.central.enable_follow_mode_scrollbar)
+            self.central.enable_follow_mode_scrollbar) # Central se conecta a main container
 
         if settings.SHOW_START_PAGE:
-            self.mainContainer.show_start_page()
+            self.mainContainer.show_start_page() #Esto va en main
 
     def _last_tab_closed(self):
         """
@@ -348,16 +339,6 @@ class IDE(QMainWindow):
     def _show_preferences(self):
         pref = preferences.PreferencesWidget(self.mainContainer)
         pref.show()
-
-    def _dont_show_start_page_again(self):
-        settings.SHOW_START_PAGE = False
-        qsettings = QSettings()
-        qsettings.beginGroup('preferences')
-        qsettings.beginGroup('general')
-        qsettings.setValue('showStartPage', settings.SHOW_START_PAGE)
-        qsettings.endGroup()
-        qsettings.endGroup()
-        self.mainContainer.actualTab.close_tab()
 
     def load_session_files_projects(self, filesTab1, filesTab2, projects,
         current_file, recent_files=None):

@@ -72,7 +72,6 @@ class _ExplorerContainer(QTabWidget):
 ###############################################################################
 
     def __init__(self, parent=None):
-        super(_ExplorerContainer, self).__init__(parent)
         QTabWidget.__init__(self, parent)
         self.setTabPosition(QTabWidget.East)
         self.__ide = parent
@@ -119,7 +118,7 @@ class _ExplorerContainer(QTabWidget):
             'slot': self._add_file_to_project},
             {'target': 'main_container',
             'signal_name': 'openProject(QString)',
-            'slot': self.open_project_folder}
+            'slot': self.open_project_folder},
             {'target': 'main_container',
             'signal_name': 'currentTabChanged(QString)',
             'slot': self.update_migration},
@@ -128,10 +127,11 @@ class _ExplorerContainer(QTabWidget):
             'slot': self.update_migration},
             {'target': 'main_container',
             'signal_name': 'migrationAnalyzed()',
-            'slot': self.update_migration}
+            'slot': self.update_migration},
+            {'target': 'central_container',
+            'signal_name': 'splitterBaseRotated()',
+            'slot': self.rotate_tab_position},
         )
-
-
 
         self.install_shortcuts(ide)
         IDE.register_signals("explorer_container", connections)
@@ -167,13 +167,9 @@ class _ExplorerContainer(QTabWidget):
         if self._listErrors:
             self._listErrors.refresh_lists(errors, pep8)
 
-    def update_migration(self):
-        main_container = IDE.get_service('main_container')
-        if not main_container:
-            return
-        editorWidget = main_container.get_actual_editor()
+    def update_migration(self, migration):
         if self._listMigration:
-            self._listMigration.refresh_lists(editorWidget.migration)
+            self._listMigration.refresh_lists(migration)
 
     def _add_file_to_project(self, path):
         """Add the file for 'path' in the project the user choose here."""
@@ -236,10 +232,10 @@ class _ExplorerContainer(QTabWidget):
                         self._treeProjects.shutdown)
             self.connect(self._treeProjects,
                 SIGNAL("addProjectToConsole(QString)"),
-                self.emit(SIGNAL("addProjectToConsole(QString)")))
+                self.__ide.actions.add_project_to_console)
             self.connect(self._treeProjects,
                 SIGNAL("removeProjectFromConsole(QString)"),
-                self.emit(SIGNAL("removeProjectFromConsole(QString)")))
+                self.__ide.actions.remove_project_from_console)
 
             def close_project_signal():
                 self.emit(SIGNAL("updateLocator()"))
