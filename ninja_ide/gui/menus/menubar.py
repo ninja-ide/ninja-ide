@@ -17,7 +17,7 @@ from ninja_ide.gui.menus import menu_source
 
 
 @singleton
-class MenuBar(QObject):
+class _MenuBar(QObject):
 
     def __init__(self):
         super(MenuBar, self).__init__()
@@ -84,4 +84,4 @@ class MenuBar(QObject):
             toolbar.addAction(toolbar_action)
 
 
-menu = MenuBar()
+menu = _MenuBar()

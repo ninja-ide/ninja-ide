@@ -35,7 +35,6 @@ from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core.pattern import singleton
 from ninja_ide.gui.ide import IDE
-from ninja_ide.gui.explorer import explorer_container
 from ninja_ide.gui.misc import console_widget
 from ninja_ide.gui.misc import run_widget
 from ninja_ide.gui.misc import web_render
@@ -177,13 +176,16 @@ class MiscContainer(QWidget):
 
     def execute_project(self):
         """Execute the project marked as Main Project."""
-        mainFile = self.ide.explorer.get_project_main_file()
-        if not mainFile and self.ide.explorer._treeProjects and \
-          self.ide.explorer._treeProjects._actualProject:
-            self.ide.explorer._treeProjects.open_project_properties()
+        explorer_container = IDE.get_service('explorer_container')
+        if not explorer_container:
+            return
+        mainFile = explorer_container.get_project_main_file()
+        if not mainFile and explorer_container._treeProjects and \
+          explorer_container._treeProjects._actualProject:
+            explorer_container._treeProjects.open_project_properties()
         elif mainFile:
             self.save_project()
-            path = self.ide.explorer.get_actual_project()
+            path = explorer_container.get_actual_project()
             #emit a signal for plugin!
             self.emit(SIGNAL("projectExecuted(QString)"), path)
 
@@ -197,7 +199,7 @@ class MiscContainer(QWidget):
             preExec = project.get('preExecScript', '')
             postExec = project.get('postExecScript', '')
             mainFile = file_manager.create_path(path, mainFile)
-            self.ide.misc.run_application(mainFile, pythonPath=python_exec,
+            self.run_application(mainFile, pythonPath=python_exec,
                 PYTHONPATH=PYTHONPATH,
                 programParams=params, preExec=preExec, postExec=postExec)
 
@@ -223,11 +225,13 @@ class MiscContainer(QWidget):
         self.show()
         self._web.render_page(url)
         if settings.SHOW_WEB_INSPECTOR:
-            explorer_container.ExplorerContainer().set_inspection_page(
-            self._web.webFrame.page())
-            self._web.webFrame.triggerPageAction(
-                QWebPage.InspectElement, True)
-            explorer_container.ExplorerContainer().refresh_inspector()
+            explorer_container = IDE.get_service('explorer_container')
+            if explorer_container:
+                explorer_container.set_inspection_page(
+                self._web.webFrame.page())
+                self._web.webFrame.triggerPageAction(
+                    QWebPage.InspectElement, True)
+                explorer_container.refresh_inspector()
 
     def add_to_stack(self, widget, icon_path, description):
         """

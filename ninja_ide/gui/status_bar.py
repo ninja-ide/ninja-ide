@@ -52,7 +52,7 @@ DEBUG = logger.debug
 
 
 @singleton
-class StatusBar(QStatusBar):
+class _StatusBar(QStatusBar):
 
     def __init__(self):
         QStatusBar.__init__(self)
@@ -509,4 +509,4 @@ class FileSystemOpener(QWidget):
 
 
 #Register StatusBar
-status = StatusBar()
+status = _StatusBar()

@@ -32,7 +32,6 @@ from PyQt4.QtGui import QMessageBox
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
 from ninja_ide.core.pattern import singleton
-from ninja_ide import resources
 from ninja_ide.tools import ui_tools
 from ninja_ide.tools import locator
 from ninja_ide.gui import ide
@@ -86,9 +85,6 @@ class Actions(QObject):
 
     def install_shortcuts(self, ide):
         """Install the shortcuts to the IDE."""
-        self.shortSwitchFocus = QShortcut(short("Switch-Focus"), self.ide)
-        self.shortFullscreen = QShortcut(short("Full-screen"), self.ide)
-
         #Connect Shortcuts Signals
         self.connect(self.shortNavigateBack, SIGNAL("activated()"),
             lambda: self.__navigate_with_keyboard(False))
@@ -96,8 +92,6 @@ class Actions(QObject):
             lambda: self.__navigate_with_keyboard(True))
         self.connect(self.shortFullscreen, SIGNAL("activated()"),
             self.fullscreen_mode)
-        self.connect(self.shortSwitchFocus, SIGNAL("activated()"),
-            self.switch_focus)
         self.connect(self.shortImport, SIGNAL("activated()"),
             self.import_from_everywhere)
         self.connect(self.shortOpenLastTabOpened, SIGNAL("activated()"),
@@ -136,21 +130,6 @@ class Actions(QObject):
     def move_tab_to_next_split(self):
         self.ide.mainContainer.move_tab_to_next_split(
             self.ide.mainContainer.actualTab)
-
-    def switch_focus(self):
-        widget = QApplication.focusWidget()
-        if widget:
-            if widget in (self.ide.mainContainer.actualTab,
-               self.ide.mainContainer.actualTab.currentWidget()):
-                self.ide.explorer.currentWidget().setFocus()
-            elif widget in (self.ide.explorer,
-                 self.ide.explorer.currentWidget()):
-                if self.ide.misc.isVisible():
-                    self.ide.misc.stack.currentWidget().setFocus()
-                else:
-                    self.ide.mainContainer.actualTab.currentWidget().setFocus()
-            elif widget.parent() is self.ide.misc.stack:
-                self.ide.mainContainer.actualTab.currentWidget().setFocus()
 
     def _copy_history(self):
         """Copy the selected text into the copy/paste history."""
@@ -321,13 +300,6 @@ class Actions(QObject):
                 self.tr("Summary of lines"), resume,
                 QMessageBox.Ok, editorWidget)
             msgBox.exec_()
-
-    def fullscreen_mode(self):
-        """Change to fullscreen mode."""
-        if self.ide.isFullScreen():
-            self.ide.showMaximized()
-        else:
-            self.ide.showFullScreen()
 
     def reset_editor_flags(self):
         """Reset the Flags for all the opened editors."""

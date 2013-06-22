@@ -56,7 +56,7 @@ logger = NinjaLogger('ninja_ide.gui.main_panel.main_container')
 
 
 @singleton
-class MainContainer(QWidget):
+class _MainContainer(QWidget):
 
 ###############################################################################
 # MainContainer SIGNALS
@@ -1246,4 +1246,4 @@ class MainContainer(QWidget):
 
 
 #Register MainContainer
-MainContainer = MainContainer()
+MainContainer = _MainContainer()

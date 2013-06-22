@@ -56,7 +56,7 @@ logger = NinjaLogger('ninja_ide.gui.explorer.explorer_container')
 
 
 @singleton
-class ExplorerContainer(QTabWidget):
+class _ExplorerContainer(QTabWidget):
 
 ###############################################################################
 # ExplorerContainer SIGNALS
@@ -93,6 +93,8 @@ class ExplorerContainer(QTabWidget):
         self._listMigration = None
         if settings.SHOW_MIGRATION_LIST:
             self.add_tab_migration()
+
+        IDE.register_service('explorer_container', self)
 
     def install(self, ide):
         self.install_shortcuts(ide)
@@ -459,3 +461,6 @@ class WebInspector(QWidget):
         vbox.addWidget(self._webInspector)
         self.btnDock = QPushButton(self.tr("Undock"))
         vbox.addWidget(self.btnDock)
+
+
+explorer = _ExplorerContainer()

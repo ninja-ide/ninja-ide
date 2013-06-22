@@ -26,6 +26,7 @@ from PyQt4.QtGui import QToolBar
 from PyQt4.QtGui import QToolTip
 from PyQt4.QtGui import QFont
 from PyQt4.QtGui import QKeySequence
+from PyQt4.QtGui import QShortcut
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import SIGNAL
@@ -44,9 +45,6 @@ from ninja_ide.gui.dialogs import traceback_widget
 from ninja_ide.tools.completion import completion_daemon
 #NINJA-IDE Containers
 from ninja_ide.gui import central_widget
-from ninja_ide.gui.main_panel import main_container
-from ninja_ide.gui.explorer import explorer_container
-from ninja_ide.gui.misc import misc_container
 
 ###############################################################################
 # LOGGER INITIALIZE
@@ -135,6 +133,7 @@ class IDE(QMainWindow):
         self.trayIcon = updates.TrayIconUpdates(self)
         self.trayIcon.show()
 
+        #Shortcuts
         key = Qt.Key_1
         for i in range(10):
             if settings.IS_MAC_OS:
@@ -146,6 +145,16 @@ class IDE(QMainWindow):
             self.connect(short, SIGNAL("activated()"), self._change_tab_index)
         short = TabShortcuts(QKeySequence(Qt.ALT + Qt.Key_0), self, 10)
         self.connect(short, SIGNAL("activated()"), self._change_tab_index)
+
+        short = resources.get_shortcut
+        shortFullscreen = QShortcut(short("Full-screen"), self)
+        shortSwitchFocus = QShortcut(short("Switch-Focus"), self)
+        IDE.register_shortcut('Full-screen', shortFullscreen)
+        IDE.register_shortcut('Switch-Focus', shortSwitchFocus)
+        self.connect(shortFullscreen, SIGNAL("activated()"),
+            self.fullscreen_mode)
+        self.connect(shortSwitchFocus, SIGNAL("activated()"),
+            self.fullscreen_mode)
 
         self.register_service('ide', self)
         self.register_service('toolbar', self.toolbar)
@@ -213,6 +222,24 @@ class IDE(QMainWindow):
             obj = self.sender()
             shortcut_index(obj.index)
 
+    def switch_focus(self):
+        widget = QApplication.focusWidget()
+        main_container = IDE.get_service('main_container')
+        tools_dock = IDE.get_service('tools_dock')
+        explorer_container = IDE.get_service('explorer_container')
+        if widget and main_container and tools_dock and explorer_container:
+            if widget in (main_container.actualTab,
+               main_container.actualTab.currentWidget()):
+                explorer_container.currentWidget().setFocus()
+            elif widget in (explorer_container,
+                 explorer_container.currentWidget()):
+                if tools_dock.isVisible():
+                    tools_dock.stack.currentWidget().setFocus()
+                else:
+                    main_container.actualTab.currentWidget().setFocus()
+            elif widget.parent() is tools_dock.stack:
+                main_container.actualTab.currentWidget().setFocus()
+
     def _process_connection(self):
         connection = self.s_listener.nextPendingConnection()
         connection.waitForReadyRead()
@@ -224,6 +251,13 @@ class IDE(QMainWindow):
                 for x in files.split(ipc.file_delimiter)]
             projects = projects.split(ipc.project_delimiter)
             self.load_session_files_projects(files, [], projects, None)
+
+    def fullscreen_mode(self):
+        """Change to fullscreen mode."""
+        if self.isFullScreen():
+            self.showMaximized()
+        else:
+            self.showFullScreen()
 
     def load_external_plugins(self, paths):
         for path in paths:
