@@ -416,6 +416,9 @@ class ExplorerContainer(QTabWidget):
         if self._listMigration:
             self._listMigration.clear()
 
+    def shortcut_index(self, index):
+        self.setCurrentIndex(index)
+
 
 class WebInspector(QWidget):
 

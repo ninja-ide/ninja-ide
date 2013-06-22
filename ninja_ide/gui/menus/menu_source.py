@@ -29,9 +29,7 @@ from ninja_ide.gui import actions
 
 class MenuSource(QObject):
 
-    def __init__(self, menuSource):
-        QObject.__init__(self)
-
+    def install(self, menuSource):
         indentMoreAction = menuSource.addAction(
             QIcon(resources.IMAGES['indent-more']),
             (self.trUtf8("Indent More (%s)") %

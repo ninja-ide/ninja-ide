@@ -19,11 +19,13 @@ from __future__ import unicode_literals
 
 import collections
 
+from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QMainWindow
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QToolBar
 from PyQt4.QtGui import QToolTip
 from PyQt4.QtGui import QFont
+from PyQt4.QtGui import QKeySequence
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import SIGNAL
@@ -37,7 +39,6 @@ from ninja_ide.core import plugin_services
 from ninja_ide.core import settings
 from ninja_ide.core import ipc
 from ninja_ide.gui import updates
-from ninja_ide.gui import actions
 from ninja_ide.gui.dialogs import preferences
 from ninja_ide.gui.dialogs import traceback_widget
 from ninja_ide.tools.completion import completion_daemon
@@ -68,6 +69,12 @@ class IDE(QMainWindow):
 
     __IDESERVICES = {}
     __IDECONNECTIONS = {}
+    __IDESHORTCUTS = {}
+    # CONNECTIONS structure:
+    # ({'target': service_name, 'signal_name': string,
+    #   'slot': 'name_of_function'},)
+    # On modify add: {connected: True}
+    __instance = None
     __created = False
 
     def __init__(self, start_server=False):
@@ -91,8 +98,6 @@ class IDE(QMainWindow):
         #Opacity
         self.opacity = settings.MAX_OPACITY
 
-        #Define Actions object before the UI
-        self.actions = actions.Actions()
         #Main Widget - Create first than everything else
         self.central = central_widget.CentralWidget(self)
         self.load_ui(self.central)
@@ -131,13 +136,19 @@ class IDE(QMainWindow):
         self.trayIcon = updates.TrayIconUpdates(self)
         self.trayIcon.show()
 
-        self.connect(self.mainContainer,
-            SIGNAL("recentTabsModified(QStringList)"),
-            self._menuFile.update_recent_files)
+        key = Qt.Key_1
+        for i in range(10):
+            if settings.IS_MAC_OS:
+                short = TabShortcuts(
+                    QKeySequence(Qt.CTRL + Qt.ALT + key), self, i)
+            else:
+                short = TabShortcuts(QKeySequence(Qt.ALT + key), self, i)
+            key += 1
+            self.connect(short, SIGNAL("activated()"), self._change_tab_index)
+        short = TabShortcuts(QKeySequence(Qt.ALT + Qt.Key_0), self, 10)
+        self.connect(short, SIGNAL("activated()"), self._change_tab_index)
 
-        self.register_service(self, 'ide')
-        #Actions is temporal
-        self.register_service(self.actions, 'actions')
+        self.register_service('ide', self)
         #Register signals connections
         connections = (
             {'target': 'main_container',
@@ -145,19 +156,6 @@ class IDE(QMainWindow):
             'slot': 'show_status_message'}
             )
         self.register_signals('ide', connections)
-        #Actions is temporal
-        actions_connections = (
-            {'target': 'main_container',
-            'signal_name': 'currentTabChanged(QString)',
-            'slot': 'update_migration_tips'},
-            {'target': 'main_container',
-            'signal_name': 'updateFileMetadata(QString)',
-            'slot': 'update_migration_tips'},
-            {'target': 'main_container',
-            'signal_name': 'migrationAnalyzed()',
-            'slot': 'update_migration_tips'}
-            )
-        self.register_signals('actions', actions_connections)
         for service_name in self.__IDECONNECTIONS:
             self.install_service(service_name)
         self.__created = True
@@ -167,10 +165,10 @@ class IDE(QMainWindow):
         return IDE.__IDESERVICES.get(service_name, None)
 
     @classmethod
-    def register_service(cls, obj, service_name):
+    def register_service(cls, service_name, obj):
         IDE.__IDESERVICES[service_name] = obj
         if IDE.__created:
-            IDE().install_service(service_name)
+            IDE.__instance.install_service(service_name)
 
     def install_service(self, service_name):
         obj = self.__IDESERVICES.get(service_name, None)
@@ -188,6 +186,24 @@ class IDE(QMainWindow):
             pass
         #self.connect(self.mainContainer, SIGNAL("currentTabChanged(QString)"),
             #self.status.handle_tab_changed)
+
+    @classmethod
+    def register_shortcut(cls, shortcut_name, obj):
+        IDE.__IDESHORTCUTS[shortcut_name] = obj
+
+    @classmethod
+    def update_shortcut(cls, shortcut_name):
+        short = resources.get_shortcut
+        shortcut = IDE.__IDESHORTCUTS.get(shortcut_name)
+        if shortcut:
+            shortcut.setKey(short(shortcut_name))
+
+    def _change_tab_index(self):
+        widget = QApplication.focusWidget()
+        shortcut_index = getattr(widget, 'shortcut_index', None)
+        if shortcut_index:
+            obj = self.sender()
+            shortcut_index(obj.index)
 
     def _process_connection(self):
         connection = self.s_listener.nextPendingConnection()
@@ -479,3 +495,10 @@ class IDE(QMainWindow):
                 plugin_error_dialog.add_traceback(err_tuple[0], err_tuple[1])
             #show the dialog
             plugin_error_dialog.exec_()
+
+
+class TabShortcuts(QShortcut):
+
+    def __init__(self, key, parent, index):
+        super(TabShortcuts, self).__init__(key, parent)
+        self.index = index

@@ -35,9 +35,7 @@ class MenuFile(QObject):
     """
 ###############################################################################
 
-    def __init__(self, menuFile, toolbar, ide):
-        QObject.__init__(self)
-
+    def install(self, menuFile, toolbar, ide):
         newAction = menuFile.addAction(QIcon(resources.IMAGES['new']),
             (self.trUtf8("&New File (%s)") %
                 resources.get_shortcut("New-file").toString(
