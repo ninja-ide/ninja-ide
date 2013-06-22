@@ -90,7 +90,7 @@ class _MainContainer(QWidget):
 ###############################################################################
 
     def __init__(self, parent=None):
-        super(_MainContainer, self).__init__(parent)
+        super(MainContainer, self).__init__(parent)
         self._parent = parent
         hbox = QHBoxLayout(self)
 
@@ -187,15 +187,6 @@ class _MainContainer(QWidget):
         # Refresh recent tabs
         self.connect(self._tabMain, SIGNAL("recentTabsModified(QStringList)"),
             self._recent_files_changed)
-        # Propagate signals
-        self.connect(self._tabMain,
-            SIGNAL("runFile()"), self.emit(SIGNAL("runFile()")))
-        self.connect(self._tabSecondary,
-            SIGNAL("runFile()"), self.emit(SIGNAL("runFile()")))
-        self.connect(self._tabMain, SIGNAL("addToProject(QString)"),
-            self.emit(SIGNAL("addToProject(QString)")))
-        self.connect(self._tabSecondary, SIGNAL("addToProject(QString)"),
-            self.emit(SIGNAL("addToProject(QString)")))
 
         IDE.register_service('main_container', self)
 
@@ -210,6 +201,9 @@ class _MainContainer(QWidget):
             {'target': 'explorer_container',
             'signal_name': 'projectClosed(QString)',
             'slot': self.close_files_from_project},
+            {"target": 'main_container',
+            "signal_name": "avigateCode(bool, int)",
+            "slot": self.navigate_code_history}
             )
         IDE.register_signals('main_container', connections)
 
@@ -224,6 +218,8 @@ class _MainContainer(QWidget):
         IDE.register_shortcut('Change-Tab-Reverse', shortChangeTabReverse)
         shortDuplicate = QShortcut(short("Duplicate"), ide)
         IDE.register_shortcut('Duplicate', shortDuplicate)
+        shortRemove = QShortcut(short("Remove-line"), ide)
+        IDE.register_shortcut('Remove-line', shortRemove)
         shortRemove = QShortcut(short("Remove-line"), ide)
         IDE.register_shortcut('Remove-line', shortRemove)
         shortMoveUp = QShortcut(short("Move-up"), ide)
@@ -291,67 +287,63 @@ class _MainContainer(QWidget):
         IDE.register_shortcut('Highlight-Word', shortHighlightWord)
         shortPrint = QShortcut(short("Print-file"), ide)
         IDE.register_shortcut('Print-file', shortPrint)
-        shortCopyHistory = QShortcut(short("History-Copy"), ide)
-        IDE.register_shortcut('History-Copy', shortCopyHistory)
-        shortPasteHistory = QShortcut(short("History-Paste"), ide)
-        IDE.register_shortcut('History-Paste', shortPasteHistory)
 
         #Connect
-        self.connect(shortGoToDefinition, SIGNAL("activated()"),
+        self.connect(self.shortGoToDefinition, SIGNAL("activated()"),
             self.editor_go_to_definition)
-        self.connect(shortCompleteDeclarations, SIGNAL("activated()"),
+        self.connect(self.shortCompleteDeclarations, SIGNAL("activated()"),
             self.editor_complete_declaration)
-        self.connect(shortRedo, SIGNAL("activated()"),
+        self.connect(self.shortRedo, SIGNAL("activated()"),
             self.editor_redo)
-        self.connect(shortHorizontalLine, SIGNAL("activated()"),
+        self.connect(self.shortHorizontalLine, SIGNAL("activated()"),
             self.editor_insert_horizontal_line)
-        self.connect(shortTitleComment, SIGNAL("activated()"),
+        self.connect(self.shortTitleComment, SIGNAL("activated()"),
             self.editor_insert_title_comment)
-        self.connect(shortFollowMode, SIGNAL("activated()"),
+        self.connect(self.shortFollowMode, SIGNAL("activated()"),
             self.show_follow_mode)
-        self.connect(shortReloadFile, SIGNAL("activated()"),
+        self.connect(self.shortReloadFile, SIGNAL("activated()"),
             self.reload_file)
-        self.connect(shortSplitHorizontal, SIGNAL("activated()"),
+        self.connect(self.shortSplitHorizontal, SIGNAL("activated()"),
             lambda: self.split_tab(True))
-        self.connect(shortSplitVertical, SIGNAL("activated()"),
+        self.connect(self.shortSplitVertical, SIGNAL("activated()"),
             lambda: self.split_tab(False))
-        self.connect(shortNew, SIGNAL("activated()"),
+        self.connect(self.shortNew, SIGNAL("activated()"),
             self.add_editor)
-        self.connect(shortOpen, SIGNAL("activated()"),
+        self.connect(self.shortOpen, SIGNAL("activated()"),
             self.open_file)
-        self.connect(shortCloseTab, SIGNAL("activated()"),
+        self.connect(self.shortCloseTab, SIGNAL("activated()"),
             self.close_tab)
-        self.connect(shortSave, SIGNAL("activated()"),
+        self.connect(self.shortSave, SIGNAL("activated()"),
             self.save_file)
-        self.connect(shortIndentLess, SIGNAL("activated()"),
+        self.connect(self.shortIndentLess, SIGNAL("activated()"),
             self.editor_indent_less)
-        self.connect(shortComment, SIGNAL("activated()"),
+        self.connect(self.shortComment, SIGNAL("activated()"),
             self.editor_comment)
-        self.connect(shortUncomment, SIGNAL("activated()"),
+        self.connect(self.shortUncomment, SIGNAL("activated()"),
             self.editor_uncomment)
-        self.connect(shortHelp, SIGNAL("activated()"),
+        self.connect(self.shortHelp, SIGNAL("activated()"),
             self.show_python_doc)
-        self.connect(shortMoveUp, SIGNAL("activated()"),
+        self.connect(self.shortMoveUp, SIGNAL("activated()"),
             self.editor_move_up)
-        self.connect(shortMoveDown, SIGNAL("activated()"),
+        self.connect(self.shortMoveDown, SIGNAL("activated()"),
             self.editor_move_down)
-        self.connect(shortRemove, SIGNAL("activated()"),
+        self.connect(self.shortRemove, SIGNAL("activated()"),
             self.editor_remove_line)
-        self.connect(shortDuplicate, SIGNAL("activated()"),
+        self.connect(self.shortDuplicate, SIGNAL("activated()"),
             self.editor_duplicate)
-        self.connect(shortChangeTab, SIGNAL("activated()"),
+        self.connect(self.shortChangeTab, SIGNAL("activated()"),
             self.change_tab)
-        self.connect(shortChangeTabReverse, SIGNAL("activated()"),
+        self.connect(self.shortChangeTabReverse, SIGNAL("activated()"),
             self.change_tab_reverse)
-        self.connect(shortShowCodeNav, SIGNAL("activated()"),
+        self.connect(self.shortShowCodeNav, SIGNAL("activated()"),
             self.show_navigation_buttons)
-        self.connect(shortHighlightWord, SIGNAL("activated()"),
+        self.connect(self.shortHighlightWord, SIGNAL("activated()"),
             self.editor_highlight_word)
-        self.connect(shortChangeSplitFocus, SIGNAL("activated()"),
+        self.connect(self.shortChangeSplitFocus, SIGNAL("activated()"),
             self.change_split_focus)
-        self.connect(shortMoveTabSplit, SIGNAL("activated()"),
+        self.connect(self.shortMoveTabSplit, SIGNAL("activated()"),
             self.move_tab_to_next_split)
-        self.connect(shortChangeTabVisibility, SIGNAL("activated()"),
+        self.connect(self.shortChangeTabVisibility, SIGNAL("activated()"),
             self.change_tabs_visibility)
         self.connect(shortPrint, SIGNAL("activated()"),
             self.print_file)
@@ -403,20 +395,11 @@ class _MainContainer(QWidget):
             if central:
                 central.lateralPanel.add_new_copy(copy)
 
-    def _paste_history(self):
-        """Paste the text from the copy/paste history."""
-        editorWidget = self.get_actual_editor()
-        if editorWidget and editorWidget.hasFocus():
-            cursor = editorWidget.textCursor()
-            central = IDE.get_service('central_container')
-            if central:
-                paste = central.lateralPanel.get_paste()
-                cursor.insertText(paste)
-
-    def import_from_everywhere(self):
-        """Show the dialog to insert an import from any place in the editor."""
+    def add_back_item_navigation(self):
+        """Add an item to the back stack and reset the forward stack."""
         editorWidget = self.get_actual_editor()
         if editorWidget:
+<<<<<<< HEAD
             text = editorWidget.get_text()
             froms = re.findall('^from (.*)', text, re.MULTILINE)
             fromSection = list(set([f.split(' import')[0] for f in froms]))
@@ -549,6 +532,11 @@ class _MainContainer(QWidget):
                 lineNumber, None, True)
         else:
             settings.BOOKMARKS.pop(self.__bookmarksFile)
+=======
+            self.__codeBack.append((editorWidget.ID,
+                editorWidget.textCursor().position()))
+            self.__codeForward = []
+>>>>>>> 91d67774a60bafe1aebc7a9773f527692d4d52ce
 
     def count_file_code_lines(self):
         """Count the lines of code in the current file."""
@@ -877,7 +865,7 @@ class _MainContainer(QWidget):
         self.connect(editorWidget, SIGNAL("openDropFile(QString)"),
             self.open_file)
         self.connect(editorWidget, SIGNAL("addBackItemNavigation()"),
-            lambda: self.emit(SIGNAL("addBackItemNavigation()")))
+            self.add_back_item_navigation)
         self.connect(editorWidget,
             SIGNAL("locateFunction(QString, QString, bool)"),
             self._editor_locate_function)
