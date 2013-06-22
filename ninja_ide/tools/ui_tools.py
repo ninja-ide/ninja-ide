@@ -484,8 +484,9 @@ class ProfilesLoader(QDialog):
         if self.profileList.currentItem():
             profileName = self.profileList.currentItem().text()
             self.save_function(profileName)
-            self.ide.show_status_message(self.tr("Profile %s Updated!") %
-                profileName)
+            smessage = self.ide.get_service("status_bar")
+            smessage.showMessage(self.tr("Profile %s Updated!") %
+                profileName, 2000)
             self.load_profile_content()
 
     def open_profile(self):

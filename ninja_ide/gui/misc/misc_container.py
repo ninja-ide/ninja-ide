@@ -41,14 +41,11 @@ from ninja_ide.gui.misc import results
 from ninja_ide.tools import ui_tools
 
 
-class _ToolDock(QWidget):
+class _ToolsDock(QWidget):
     """Former Miscellaneous, contains all the widgets in the bottom area."""
 
-    def __init__(self, *args, **kwargs):
-        IDE.register_service(self, "tool_dock")
-
-    def install(self, parent):
-        QWidget.__init__(self, parent)
+    def __init__(self, parent=None):
+        super(_ToolsDock, self).__init__(parent)
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
@@ -109,6 +106,16 @@ class _ToolDock(QWidget):
         self.connect(self._btnFind, SIGNAL("clicked()"),
             lambda: self._item_changed(3))
         self.connect(btn_close, SIGNAL('clicked()'), self.hide)
+        IDE.register_service(self, "tools_dock")
+
+    def install(self, parent):
+        #Register signals connections
+        connections = (
+            {'target': 'main_container',
+            'signal_name': "findOcurrences(QString)",
+            'slot': self.show_find_occurrences},
+            )
+        IDE.register_signals('tools_dock', connections)
 
     def gain_focus(self):
         self._console.setFocus()
@@ -189,4 +196,4 @@ class StackedWidget(QStackedWidget):
     def show_display(self, index):
         self.setCurrentIndex(index)
 
-ToolDock = _ToolDock()
+ToolsDock = _ToolsDock()

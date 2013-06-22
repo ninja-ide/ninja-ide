@@ -70,6 +70,7 @@ class StatusBar(QStatusBar):
         #Code Locator
         self._codeLocator = locator.CodeLocatorWidget(self)
         vbox.addWidget(self._codeLocator)
+        self.connect(self, SIGNAL("hidden(PyQt_PyObject)"), self._hidden_child)
         self._codeLocator.setVisible(False)
         #File system completer
         self._fileSystemOpener = FileSystemOpener()
@@ -189,6 +190,13 @@ class StatusBar(QStatusBar):
         self._fileSystemOpener.setVisible(True)
         self.show()
         self._fileSystemOpener.pathLine.setFocus()
+
+    def _hidden_child(self, child):
+        """
+        Originally replacing a manual call to hide_status in locator,
+        TODO: please expand to do something with childd
+        """
+        self.hide_status()
 
     def hide_status(self):
         self._searchWidget._checkSensitive.setCheckState(Qt.Unchecked)

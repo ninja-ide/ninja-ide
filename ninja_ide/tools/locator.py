@@ -107,7 +107,7 @@ class Locator(QObject):
                 self.tr("Definition Not Found"),
                 self.tr("This Definition does not belong to this Project."))
         else:
-            tool_dock = IDE.get_service("tool_dock")
+            tool_dock = IDE.get_service("tools_dock")
             tool_dock.show_results(self._thread.results)
 
     def get_classes_from_project(self, projectPath):
@@ -719,11 +719,11 @@ class LocateCompleter(QLineEdit):
     def _go_to_location(self, item):
         if type(item) is LocateItem:
             self._open_item(item._data)
-        self._parent.statusBar.hide_status()
+        self.emit(SIGNAL("hidden(PyQt_PyObject)"), self)
 
     def focusOutEvent(self, event):
         """Hide Popup on focus lost."""
-        self._parent.statusBar.hide_status()
+        self.emit(SIGNAL("hidden(PyQt_PyObject)"), self)
         QLineEdit.focusOutEvent(self, event)
 
     def _open_item(self, data):

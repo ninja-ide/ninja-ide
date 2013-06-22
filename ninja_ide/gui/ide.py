@@ -289,9 +289,6 @@ class IDE(QMainWindow):
             self.actions.editor_go_to_line)
         self.connect(self.explorer, SIGNAL("projectClosed(QString)"),
             self.actions.close_files_from_project)
-        #Create Misc Bottom Container
-        #self.connect(self.mainContainer, SIGNAL("findOcurrences(QString)"),
-            #self.misc.show_find_occurrences)
 
         centralWidget.insert_central_container(self.mainContainer)
         centralWidget.insert_lateral_container(self.explorer)
