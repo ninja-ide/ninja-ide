@@ -131,9 +131,13 @@ class _ExplorerContainer(QTabWidget):
         if self._listErrors:
             self._listErrors.refresh_lists(errors, pep8)
 
-    def update_migration(self, migration):
+    def update_migration(self):
+        main_container = IDE.get_service('main_container')
+        if not main_container:
+            return
+        editorWidget = main_container.get_actual_editor()
         if self._listMigration:
-            self._listMigration.refresh_lists(migration)
+            self._listMigration.refresh_lists(editorWidget.migration)
 
     def addTab(self, tab, title):
         QTabWidget.addTab(self, tab, title)
@@ -153,10 +157,10 @@ class _ExplorerContainer(QTabWidget):
                         self._treeProjects.shutdown)
             self.connect(self._treeProjects,
                 SIGNAL("addProjectToConsole(QString)"),
-                self.__ide.actions.add_project_to_console)
+                self.emit(SIGNAL("addProjectToConsole(QString)")))
             self.connect(self._treeProjects,
                 SIGNAL("removeProjectFromConsole(QString)"),
-                self.__ide.actions.remove_project_from_console)
+                self.emit(SIGNAL("removeProjectFromConsole(QString)")))
 
             def close_project_signal():
                 self.emit(SIGNAL("updateLocator()"))

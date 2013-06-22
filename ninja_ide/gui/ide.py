@@ -27,6 +27,7 @@ from PyQt4.QtGui import QToolTip
 from PyQt4.QtGui import QFont
 from PyQt4.QtGui import QKeySequence
 from PyQt4.QtGui import QShortcut
+from PyQt4.QtGui import QInputDialog
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import SIGNAL
@@ -43,6 +44,7 @@ from ninja_ide.gui import updates
 from ninja_ide.gui.dialogs import preferences
 from ninja_ide.gui.dialogs import traceback_widget
 from ninja_ide.tools.completion import completion_daemon
+from ninja_ide.tools import ui_tools
 #NINJA-IDE Containers
 from ninja_ide.gui import central_widget
 
@@ -471,6 +473,55 @@ class IDE(QMainWindow):
             self.actions.save_profile(self.profile)
         else:
             qsettings.setValue('ide/profiles', settings.PROFILES)
+
+    def create_profile(self):
+        """Create a profile binding files and projects to a key."""
+        profileInfo = QInputDialog.getText(None,
+            self.tr("Create Profile"), self.tr(
+                "The Current Files and Projects will "
+                "be associated to this profile.\n"
+                "Profile Name:"))
+        if profileInfo[1]:
+            profileName = profileInfo[0]
+            if not profileName or profileName in settings.PROFILES:
+                QMessageBox.information(self, self.tr("Profile Name Invalid"),
+                    self.tr("The Profile name is invalid or already exists."))
+                return
+            self.save_profile(profileName)
+            return profileName
+
+    def save_profile(self, profileName):
+        """Save the updates from a profile."""
+        explorer = IDE.get_service('explorer_container')
+        main_container = IDE.get_service('main_container')
+        if explorer and main_container:
+            projects_obj = explorer.get_opened_projects()
+            projects = [p.path for p in projects_obj]
+            files = main_container.get_opened_documents()
+            files = files[0] + files[1]
+            settings.PROFILES[profileName] = [files, projects]
+            qsettings = QSettings()
+            qsettings.setValue('ide/profiles', settings.PROFILES)
+
+    def activate_profile(self):
+        """Show the Profile Manager dialog."""
+        profilesLoader = ui_tools.ProfilesLoader(self._load_profile_data,
+            self.create_profile, self.save_profile,
+            settings.PROFILES, self.ide)
+        profilesLoader.show()
+
+    def deactivate_profile(self):
+        """Close the Profile Session."""
+        self.Profile = None
+
+    def _load_profile_data(self, key):
+        """Activate the selected profile, closing the current files/projects"""
+        explorer = IDE.get_service('explorer_container')
+        main_container = IDE.get_service('main_container')
+        if explorer and main_container:
+            explorer.close_opened_projects()
+            main_container.open_files(settings.PROFILES[key][0])
+            explorer.open_session_projects(settings.PROFILES[key][1])
 
     def load_window_geometry(self):
         """Load from QSettings the window size of de Ninja IDE"""

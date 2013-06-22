@@ -23,7 +23,7 @@ import webbrowser
 from PyQt4.QtCore import QObject
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import SIGNAL
-from PyQt4.QtGui import QInputDialog
+
 from PyQt4.QtGui import QMessageBox
 
 from ninja_ide.core.file_handling import file_manager
@@ -46,86 +46,6 @@ class Actions(QObject):
     but the containers don't need to know between each other, in this way we
     can keep a better api without the need to tie the behaviour between
     the widgets, and let them just consume the 'actions' they need."""
-
-    def __init__(self):
-        QObject.__init__(self)
-        #Definition Locator
-        #self._locator = locator.Locator()
-
-        ide.IDE.register_service(self, 'actions')
-
-        #Register signals connections
-        connections = (
-            {'target': 'main_container',
-            'signal_name': 'currentTabChanged(QString)',
-            'slot': 'update_migration_tips'},
-            {'target': 'main_container',
-            'signal_name': 'updateFileMetadata(QString)',
-            'slot': 'update_migration_tips'},
-            {'target': 'main_container',
-            'signal_name': 'migrationAnalyzed()',
-            'slot': 'update_migration_tips'}
-            )
-        ide.IDE.register_signals('actions', connections)
-
-    def move_tab_to_next_split(self):
-        self.ide.mainContainer.move_tab_to_next_split(
-            self.ide.mainContainer.actualTab)
-
-    def add_project_to_console(self, projectFolder):
-        """Add the namespace of the project received into the ninja-console."""
-        self.ide.misc._console.load_project_into_console(projectFolder)
-
-    def remove_project_from_console(self, projectFolder):
-        """Remove the namespace of the project received from the console."""
-        self.ide.misc._console.unload_project_from_console(projectFolder)
-
-    def open_project_properties(self):
-        """Open a Project and load the symbols in the Code Locator."""
-        self.ide.explorer.open_project_properties()
-
-    def create_profile(self):
-        """Create a profile binding files and projects to a key."""
-        profileInfo = QInputDialog.getText(None,
-            self.tr("Create Profile"), self.tr(
-                "The Current Files and Projects will "
-                "be associated to this profile.\n"
-                "Profile Name:"))
-        if profileInfo[1]:
-            profileName = profileInfo[0]
-            if not profileName or profileName in settings.PROFILES:
-                QMessageBox.information(self, self.tr("Profile Name Invalid"),
-                    self.tr("The Profile name is invalid or already exists."))
-                return
-            self.save_profile(profileName)
-            return profileName
-
-    def save_profile(self, profileName):
-        """Save the updates from a profile."""
-        projects_obj = self.ide.explorer.get_opened_projects()
-        projects = [p.path for p in projects_obj]
-        files = self.ide.mainContainer.get_opened_documents()
-        files = files[0] + files[1]
-        settings.PROFILES[profileName] = [files, projects]
-        qsettings = QSettings()
-        qsettings.setValue('ide/profiles', settings.PROFILES)
-
-    def activate_profile(self):
-        """Show the Profile Manager dialog."""
-        profilesLoader = ui_tools.ProfilesLoader(self._load_profile_data,
-            self.create_profile, self.save_profile,
-            settings.PROFILES, self.ide)
-        profilesLoader.show()
-
-    def deactivate_profile(self):
-        """Close the Profile Session."""
-        self.ide.Profile = None
-
-    def _load_profile_data(self, key):
-        """Activate the selected profile, closing the current files/projects"""
-        self.ide.explorer.close_opened_projects()
-        self.ide.mainContainer.open_files(settings.PROFILES[key][0])
-        self.ide.explorer.open_session_projects(settings.PROFILES[key][1])
 
     def close_files_from_project(self, project):
         """Close the files related to this project."""
@@ -215,14 +135,6 @@ class Actions(QObject):
             if ext in exts or editorWidget.newDocument:
                 self.ide.explorer.update_errors(
                     editorWidget.errors, editorWidget.pep8)
-
-    def update_migration_tips(self):
-        """Update the migration tips in the Explorer."""
-        # This should be refactored with the new definition of singals in
-        # the MainContainer
-        editorWidget = self.ide.mainContainer.get_actual_editor()
-        if editorWidget:
-            self.ide.explorer.update_migration(editorWidget.migration)
 
     def add_back_item_navigation(self):
         """Add an item to the back stack and reset the forward stack."""

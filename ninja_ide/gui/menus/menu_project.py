@@ -23,6 +23,7 @@ from PyQt4.QtCore import QObject
 
 from ninja_ide import resources
 from ninja_ide.gui import actions
+from ninja_ide.gui.ide import IDE
 
 
 class MenuProject(QObject):
@@ -70,8 +71,13 @@ class MenuProject(QObject):
         self.connect(previewAction, SIGNAL("triggered()"),
             actions.Actions().preview_in_browser)
         self.connect(projectPropertiesAction, SIGNAL("triggered()"),
-            actions.Actions().open_project_properties)
+            self._open_project_properties)
 #        self.connect(debugAction, SIGNAL("triggered()"),
 #            actions.Actions().debug_file)
 #        self.connect(diagramView, SIGNAL("triggered()"),
 #            actions.Actions().open_class_diagram)
+
+    def _open_project_properties(self):
+        explorer = IDE.get_service('explorer_container')
+        if explorer:
+            explorer.open_project_properties()

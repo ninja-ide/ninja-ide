@@ -125,6 +125,12 @@ class _ToolsDock(QWidget):
             {'target': 'main_container',
             'signal_name': "runFile()",
             'slot': self.execute_file},
+            {'target': 'explorer_container',
+            'signal_name': "removeProjectFromConsole(QString)",
+            'slot': self.remove_project_from_console},
+            {'target': 'explorer_container',
+            'signal_name': "addProjectToConsole(QString)",
+            'slot': self.add_project_to_console}
             )
         IDE.register_signals('tools_dock', connections)
         self.install_shortcuts(ide)
@@ -148,6 +154,14 @@ class _ToolsDock(QWidget):
             self.execute_project)
         self.connect(self.shortStopExecution, SIGNAL("activated()"),
             self.kill_application)
+
+    def add_project_to_console(self, projectFolder):
+        """Add the namespace of the project received into the ninja-console."""
+        self._console.load_project_into_console(projectFolder)
+
+    def remove_project_from_console(self, projectFolder):
+        """Remove the namespace of the project received from the console."""
+        self._console.unload_project_from_console(projectFolder)
 
     def gain_focus(self):
         self._console.setFocus()
