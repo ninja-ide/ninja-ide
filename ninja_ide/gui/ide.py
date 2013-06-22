@@ -304,6 +304,7 @@ class IDE(QMainWindow):
 
     def _show_preferences(self):
         pref = preferences.PreferencesWidget(self.mainContainer)
+        pref.set_IDE(self)
         pref.show()
 
     def load_session_files_projects(self, filesTab1, filesTab2, projects,
