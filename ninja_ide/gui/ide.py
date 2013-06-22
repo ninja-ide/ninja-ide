@@ -302,10 +302,7 @@ class IDE(QMainWindow):
         self.connect(self.mainContainer,
             SIGNAL("addBackItemNavigation()"),
             self.actions.add_back_item_navigation)
-        self.connect(self.mainContainer, SIGNAL("updateFileMetadata()"),
-            self.actions.update_explorer)
-        self.connect(self.mainContainer, SIGNAL("updateLocator(QString)"),
-            self.actions.update_explorer)
+
         self.connect(self.mainContainer, SIGNAL("openPreferences()"),
             self._show_preferences)
         self.connect(self.mainContainer, SIGNAL("dontOpenStartPage()"),

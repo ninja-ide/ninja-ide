@@ -120,7 +120,7 @@ class _ToolsDock(QWidget):
         #Register signals connections
         connections = (
             {'target': 'main_container',
-            'signal_name': "findOcurrences(QString)",
+            'signal_name':     "findOcurrences(QString)",
             'slot': self.show_find_occurrences},
             {'target': 'main_container',
             'signal_name': "runFile()",
