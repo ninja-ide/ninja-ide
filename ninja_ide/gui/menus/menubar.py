@@ -3,7 +3,6 @@
 from PyQt4.QtCore import QObject
 
 from ninja_ide.core import settings
-from ninja_ide.core.pattern import singleton
 from ninja_ide.gui import ide
 
 #NINJA-IDE Menus
@@ -16,7 +15,6 @@ from ninja_ide.gui.menus import menu_project
 from ninja_ide.gui.menus import menu_source
 
 
-@singleton
 class _MenuBar(QObject):
 
     def __init__(self):
@@ -37,7 +35,7 @@ class _MenuBar(QObject):
         menu_file_connections = (
             {'target': 'main_container',
             'signal_name': 'recentTabsModified(QStringList)',
-            'slot': self._menuFile.update_recent_files}
+            'slot': self._menuFile.update_recent_files},
         )
         ide.IDE.register_signals('menu_file', menu_file_connections)
 
@@ -53,13 +51,13 @@ class _MenuBar(QObject):
         about = menubar.addMenu(self.tr("Abou&t"))
 
         #The order of the icons in the toolbar is defined by this calls
-        self._menuFile.install(file_, ide.toolbar, ide)
-        self._menuView.install(view, ide.toolbar, ide)
-        self._menuEdit.install(edit, ide.toolbar)
-        self._menuSource.install(source)
-        self._menuProject.install(project, ide.toolbar)
-        self._menuPlugins.install(ide.pluginsMenu)
-        self._menuAbout.install(about)
+        self._menuFile.install_menu(file_, ide.toolbar, ide)
+        self._menuView.install_menu(view, ide.toolbar, ide)
+        self._menuEdit.install_menu(edit, ide.toolbar)
+        self._menuSource.install_menu(source)
+        self._menuProject.install_menu(project, ide.toolbar)
+        self._menuPlugins.install_menu(ide.pluginsMenu)
+        self._menuAbout.install_menu(about)
 
     def load_toolbar(self, ide):
         toolbar = ide.toolbar

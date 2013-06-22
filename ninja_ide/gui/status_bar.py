@@ -40,7 +40,6 @@ from PyQt4.QtCore import Qt
 
 from ninja_ide import resources
 from ninja_ide.core import settings
-from ninja_ide.core.pattern import singleton
 from ninja_ide.tools import locator
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.ide import IDE
@@ -51,7 +50,6 @@ logger = NinjaLogger('ninja_ide.gui.status_bar')
 DEBUG = logger.debug
 
 
-@singleton
 class _StatusBar(QStatusBar):
 
     def __init__(self):
@@ -108,7 +106,7 @@ class _StatusBar(QStatusBar):
             'slot': self.explore_file_code},
             {'target': 'explorer_container',
             'signal_name': 'updateLocator()',
-            'slot': self.explore_code}
+            'slot': self.explore_code},
             )
 
         IDE.register_signals('status_bar', connections)
@@ -136,19 +134,19 @@ class _StatusBar(QStatusBar):
         shortFileOpener = QShortcut(short("File-Opener"), ide)
         IDE.register_shortcut('File-Opener', shortFileOpener)
 
-        self.connect(self.shortCodeLocator, SIGNAL("activated()"),
+        self.connect(shortCodeLocator, SIGNAL("activated()"),
             self.show_locator)
-        self.connect(self.shortFileOpener, SIGNAL("activated()"),
+        self.connect(shortFileOpener, SIGNAL("activated()"),
             self.show_file_opener)
-        self.connect(self.shortFind, SIGNAL("activated()"),
+        self.connect(shortFind, SIGNAL("activated()"),
             self.show)
-        self.connect(self.shortFindPrevious, SIGNAL("activated()"),
+        self.connect(shortFindPrevious, SIGNAL("activated()"),
             self._searchWidget.find_previous)
-        self.connect(self.shortFindNext, SIGNAL("activated()"),
+        self.connect(shortFindNext, SIGNAL("activated()"),
             self._searchWidget.find_next)
-        self.connect(self.shortFindWithWord, SIGNAL("activated()"),
+        self.connect(shortFindWithWord, SIGNAL("activated()"),
             self.show_with_word)
-        self.connect(self.shortFindReplace, SIGNAL("activated()"),
+        self.connect(shortFindReplace, SIGNAL("activated()"),
             self.show_replace)
 
     def handle_tab_changed(self, new_tab):

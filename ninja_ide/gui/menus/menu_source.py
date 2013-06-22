@@ -29,7 +29,7 @@ from ninja_ide.gui.ide import IDE
 
 class MenuSource(QObject):
 
-    def install(self, menuSource):
+    def install_menu(self, menuSource):
         indentMoreAction = menuSource.addAction(
             QIcon(resources.IMAGES['indent-more']),
             (self.trUtf8("Indent More (%s)") %

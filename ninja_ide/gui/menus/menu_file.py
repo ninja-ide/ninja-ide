@@ -36,7 +36,7 @@ class MenuFile(QObject):
     """
 ###############################################################################
 
-    def install(self, menuFile, toolbar, ide):
+    def install_menu(self, menuFile, toolbar, ide):
         newAction = menuFile.addAction(QIcon(resources.IMAGES['new']),
             (self.trUtf8("&New File (%s)") %
                 resources.get_shortcut("New-file").toString(
@@ -119,36 +119,101 @@ class MenuFile(QObject):
             'close-projects': closeProjectsAction}
 
         self.connect(newAction, SIGNAL("triggered()"),
-            ide.mainContainer.add_editor)
+            self.add_editor)
         self.connect(newProjectAction, SIGNAL("triggered()"),
-            ide.explorer.create_new_project)
+            self.create_new_project)
         self.connect(openAction, SIGNAL("triggered()"),
-            ide.mainContainer.open_file)
+            self.open_file)
         self.connect(saveAction, SIGNAL("triggered()"),
-            ide.mainContainer.save_file)
+            self.save_file)
         self.connect(saveAsAction, SIGNAL("triggered()"),
-            ide.mainContainer.save_file_as)
+            self.save_file_as)
         self.connect(saveAllAction, SIGNAL("triggered()"),
             self.save_all)
         self.connect(saveProjectAction, SIGNAL("triggered()"),
-            ide.actions.save_project)
+            self.save_project)
         self.connect(openProjectAction, SIGNAL("triggered()"),
-            ide.explorer.open_project_folder)
+            self.open_project_folder)
         self.connect(closeAction, SIGNAL("triggered()"),
-            ide.mainContainer.actualTab.close_tab)
+            self.close_tab)
         self.connect(exitAction, SIGNAL("triggered()"),
             ide.close)
         QObject.connect(reloadFileAction, SIGNAL("triggered()"),
-            ide.mainContainer.reload_file)
-        self.connect(printFile, SIGNAL("triggered()"), ide.actions.print_file)
+            self.reload_file)
+        self.connect(printFile, SIGNAL("triggered()"), self.print_file)
         self.connect(closeProjectsAction, SIGNAL("triggered()"),
-            ide.explorer.close_opened_projects)
+            self.close_opened_projects)
         self.connect(deactivateProfileAction, SIGNAL("triggered()"),
-            ide.actions.deactivate_profile)
+            self.deactivate_profile)
         self.connect(activateProfileAction, SIGNAL("triggered()"),
-            ide.actions.activate_profile)
+            self.activate_profile)
         self.connect(self.recent_files, SIGNAL("triggered(QAction*)"),
             self._open_file)
+
+    def print_file(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.print_file()
+
+    def add_editor(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.add_editor()
+
+    def create_new_project(self):
+        explorer = IDE.get_service('explorer_container')
+        if explorer:
+            explorer.create_new_project()
+
+    def open_file(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.open_file()
+
+    def save_file(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.save_file()
+
+    def save_file_as(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.save_file_as()
+
+    def save_project(self):
+        explorer = IDE.get_service('explorer_container')
+        if explorer:
+            explorer.save_project()
+
+    def open_project_folder(self):
+        explorer = IDE.get_service('explorer_container')
+        if explorer:
+            explorer.open_project_folder()
+
+    def close_tab(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.actualTab.close_tab()
+
+    def reload_file(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.reload_file()
+
+    def close_opened_projects(self):
+        explorer = IDE.get_service('explorer_container')
+        if explorer:
+            explorer.close_opened_projects()
+
+    def deactivate_profile(self):
+        ninjaide = IDE.get_service('ide')
+        if ninjaide:
+            ninjaide.deactivate_profile()
+
+    def activate_profile(self):
+        ninjaide = IDE.get_service('ide')
+        if ninjaide:
+            ninjaide.activate_profile()
 
     def update_recent_files(self, files):
         """Recreate the recent files menu."""

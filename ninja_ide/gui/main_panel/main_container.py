@@ -38,7 +38,6 @@ from PyQt4.QtCore import QDir
 from ninja_ide import resources
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
-from ninja_ide.core.pattern import singleton
 from ninja_ide.core.file_handling.filesystem_notifications import (
     NinjaFileSystemWatcher)
 from ninja_ide.gui.ide import IDE
@@ -60,7 +59,6 @@ from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.gui.main_panel.main_container')
 
 
-@singleton
 class _MainContainer(QWidget):
 
 ###############################################################################
@@ -82,7 +80,6 @@ class _MainContainer(QWidget):
     cursorPositionChange(int, int)    #row, col
     fileOpened(QString)
     newFileOpened(QString)
-    enabledFollowMode(bool)
     recentTabsModified(QStringList)
     migrationAnalyzed()
     allTabClosed()
@@ -90,7 +87,7 @@ class _MainContainer(QWidget):
 ###############################################################################
 
     def __init__(self, parent=None):
-        super(MainContainer, self).__init__(parent)
+        super(_MainContainer, self).__init__(parent)
         self._parent = parent
         hbox = QHBoxLayout(self)
 
@@ -135,8 +132,7 @@ class _MainContainer(QWidget):
             1: self._navigate_bookmarks,
             2: self._navigate_breakpoints}
 
-        self.connect(self.mainContainer,
-            SIGNAL("locateFunction(QString, QString, bool)"),
+        self.connect(self, SIGNAL("locateFunction(QString, QString, bool)"),
             self.locate_function)
         self.connect(self.scrollBar, SIGNAL("valueChanged(int)"),
             self.move_follow_scrolls)
@@ -181,9 +177,9 @@ class _MainContainer(QWidget):
             self.save_file)
         #Navigate Code
         self.connect(self._tabMain, SIGNAL("navigateCode(bool, int)"),
-            self._navigate_code)
+            self.navigate_code_history)
         self.connect(self._tabSecondary, SIGNAL("navigateCode(bool, int)"),
-            self._navigate_code)
+            self.navigate_code_history)
         # Refresh recent tabs
         self.connect(self._tabMain, SIGNAL("recentTabsModified(QStringList)"),
             self._recent_files_changed)
@@ -201,12 +197,12 @@ class _MainContainer(QWidget):
             {'target': 'explorer_container',
             'signal_name': 'projectClosed(QString)',
             'slot': self.close_files_from_project},
-            {"target": 'main_container',
-            "signal_name": "avigateCode(bool, int)",
-            "slot": self.navigate_code_history},
-            {"target": "main_container",
-            "signal_name": "findOcurrences(QString)",
-            "slot": self.show_find_occurences},
+            {'target': 'explorer_container',
+            'signal_name': 'pep8Activated(bool)',
+            'slot': self.reset_pep8_warnings},
+            {'target': 'explorer_container',
+            'signal_name': 'lintActivated(bool)',
+            'slot': self.reset_lint_warnings},
             )
 
         IDE.register_signals('main_container', connections)
@@ -300,61 +296,61 @@ class _MainContainer(QWidget):
         IDE.register_shortcut('History-Paste', shortPasteHistory)
 
         #Connect
-        self.connect(self.shortGoToDefinition, SIGNAL("activated()"),
+        self.connect(shortGoToDefinition, SIGNAL("activated()"),
             self.editor_go_to_definition)
-        self.connect(self.shortCompleteDeclarations, SIGNAL("activated()"),
+        self.connect(shortCompleteDeclarations, SIGNAL("activated()"),
             self.editor_complete_declaration)
-        self.connect(self.shortRedo, SIGNAL("activated()"),
+        self.connect(shortRedo, SIGNAL("activated()"),
             self.editor_redo)
-        self.connect(self.shortHorizontalLine, SIGNAL("activated()"),
+        self.connect(shortHorizontalLine, SIGNAL("activated()"),
             self.editor_insert_horizontal_line)
-        self.connect(self.shortTitleComment, SIGNAL("activated()"),
+        self.connect(shortTitleComment, SIGNAL("activated()"),
             self.editor_insert_title_comment)
-        self.connect(self.shortFollowMode, SIGNAL("activated()"),
+        self.connect(shortFollowMode, SIGNAL("activated()"),
             self.show_follow_mode)
-        self.connect(self.shortReloadFile, SIGNAL("activated()"),
+        self.connect(shortReloadFile, SIGNAL("activated()"),
             self.reload_file)
-        self.connect(self.shortSplitHorizontal, SIGNAL("activated()"),
+        self.connect(shortSplitHorizontal, SIGNAL("activated()"),
             lambda: self.split_tab(True))
-        self.connect(self.shortSplitVertical, SIGNAL("activated()"),
+        self.connect(shortSplitVertical, SIGNAL("activated()"),
             lambda: self.split_tab(False))
-        self.connect(self.shortNew, SIGNAL("activated()"),
+        self.connect(shortNew, SIGNAL("activated()"),
             self.add_editor)
-        self.connect(self.shortOpen, SIGNAL("activated()"),
+        self.connect(shortOpen, SIGNAL("activated()"),
             self.open_file)
-        self.connect(self.shortCloseTab, SIGNAL("activated()"),
+        self.connect(shortCloseTab, SIGNAL("activated()"),
             self.close_tab)
-        self.connect(self.shortSave, SIGNAL("activated()"),
+        self.connect(shortSave, SIGNAL("activated()"),
             self.save_file)
-        self.connect(self.shortIndentLess, SIGNAL("activated()"),
+        self.connect(shortIndentLess, SIGNAL("activated()"),
             self.editor_indent_less)
-        self.connect(self.shortComment, SIGNAL("activated()"),
+        self.connect(shortComment, SIGNAL("activated()"),
             self.editor_comment)
-        self.connect(self.shortUncomment, SIGNAL("activated()"),
+        self.connect(shortUncomment, SIGNAL("activated()"),
             self.editor_uncomment)
-        self.connect(self.shortHelp, SIGNAL("activated()"),
+        self.connect(shortHelp, SIGNAL("activated()"),
             self.show_python_doc)
-        self.connect(self.shortMoveUp, SIGNAL("activated()"),
+        self.connect(shortMoveUp, SIGNAL("activated()"),
             self.editor_move_up)
-        self.connect(self.shortMoveDown, SIGNAL("activated()"),
+        self.connect(shortMoveDown, SIGNAL("activated()"),
             self.editor_move_down)
-        self.connect(self.shortRemove, SIGNAL("activated()"),
+        self.connect(shortRemove, SIGNAL("activated()"),
             self.editor_remove_line)
-        self.connect(self.shortDuplicate, SIGNAL("activated()"),
+        self.connect(shortDuplicate, SIGNAL("activated()"),
             self.editor_duplicate)
-        self.connect(self.shortChangeTab, SIGNAL("activated()"),
+        self.connect(shortChangeTab, SIGNAL("activated()"),
             self.change_tab)
-        self.connect(self.shortChangeTabReverse, SIGNAL("activated()"),
+        self.connect(shortChangeTabReverse, SIGNAL("activated()"),
             self.change_tab_reverse)
-        self.connect(self.shortShowCodeNav, SIGNAL("activated()"),
+        self.connect(shortShowCodeNav, SIGNAL("activated()"),
             self.show_navigation_buttons)
-        self.connect(self.shortHighlightWord, SIGNAL("activated()"),
+        self.connect(shortHighlightWord, SIGNAL("activated()"),
             self.editor_highlight_word)
-        self.connect(self.shortChangeSplitFocus, SIGNAL("activated()"),
+        self.connect(shortChangeSplitFocus, SIGNAL("activated()"),
             self.change_split_focus)
-        self.connect(self.shortMoveTabSplit, SIGNAL("activated()"),
+        self.connect(shortMoveTabSplit, SIGNAL("activated()"),
             self.move_tab_to_next_split)
-        self.connect(self.shortChangeTabVisibility, SIGNAL("activated()"),
+        self.connect(shortChangeTabVisibility, SIGNAL("activated()"),
             self.change_tabs_visibility)
         self.connect(shortPrint, SIGNAL("activated()"),
             self.print_file)
@@ -729,9 +725,6 @@ class _MainContainer(QWidget):
         s2 = self._tabSecondary.currentWidget().verticalScrollBar()
         s1.setValue(val)
         s2.setValue(val + diff)
-
-    def _navigate_code(self, val, op):
-        self.emit(SIGNAL("navigateCode(bool, int)"), val, op)
 
     def group_tabs_together(self):
         """Group files that belongs to the same project together."""
@@ -1405,7 +1398,7 @@ class _MainContainer(QWidget):
             self._tabSecondary.setTabsClosable(False)
             self._tabSecondary.follow_mode = True
             self.setSizes([1, 1])
-            self.emit(SIGNAL("enabledFollowMode(bool)"), self._followMode)
+            self.enable_follow_mode_scrollbar(self._followMode)
         self.actualTab = tempTab
 
     def _exit_follow_mode(self):
@@ -1415,7 +1408,7 @@ class _MainContainer(QWidget):
             self._tabSecondary.hide()
             self._tabSecondary.follow_mode = False
             self._tabSecondary.setTabsClosable(True)
-            self.emit(SIGNAL("enabledFollowMode(bool)"), self._followMode)
+            self.enable_follow_mode_scrollbar(self._followMode)
 
     def get_opened_documents(self):
         if self._followMode:

@@ -27,7 +27,7 @@ from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QShortcut
-
+from PyQt4.QtGui import QInputDialog
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import QDateTime
@@ -35,7 +35,6 @@ from PyQt4.QtCore import QDateTime
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
-from ninja_ide.core.pattern import singleton
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.explorer import tree_projects_widget
 from ninja_ide.gui.explorer import tree_symbols_widget
@@ -55,7 +54,6 @@ from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.gui.explorer.explorer_container')
 
 
-@singleton
 class _ExplorerContainer(QTabWidget):
 
 ###############################################################################
@@ -72,49 +70,24 @@ class _ExplorerContainer(QTabWidget):
 ###############################################################################
 
     def __init__(self, parent=None):
-        QTabWidget.__init__(self, parent)
+        super(_ExplorerContainer, self).__init__(parent)
         self.setTabPosition(QTabWidget.East)
-        self.__ide = parent
         self._thread_execution = {}
-
-        #Searching the Preferences
-        self._treeProjects = None
-        if settings.SHOW_PROJECT_EXPLORER:
-            self.add_tab_projects()
-        self._treeSymbols = None
-        if settings.SHOW_SYMBOLS_LIST:
-            self.add_tab_symbols()
-        self._inspector = None
-        if settings.SHOW_WEB_INSPECTOR and settings.WEBINSPECTOR_SUPPORTED:
-            self.add_tab_inspector()
-        self._listErrors = None
-        if settings.SHOW_ERRORS_LIST:
-            self.add_tab_errors()
-        self._listMigration = None
-        if settings.SHOW_MIGRATION_LIST:
-            self.add_tab_migration()
-
-        if self.count() == 0:
-            central_container = IDE.get_service("central_container")
-            central_container.change_explorer_visibility(force_hide=True)
 
         IDE.register_service('explorer_container', self)
 
         connections = (
-            {'target': 'main_container',
-            'signal_name': "findOcurrences(QString)",
-            'slot': self.show_find_occurrences},
             {'target': 'central_container',
             'signal_name': "splitterBaseRotated()",
             'slot': self.rotate_tab_position},
             {'target': 'main_container',
             'signal_name': "updateFileMetadata()",
-            'slot': self.show_find_occurrences},
-            {'target': 'main_container',
-            'signal_name': "updateFileMetadata()",
             'slot': self.update_explorer},
             {'target': 'main_container',
             'signal_name': "updateLocator(QString)",
+            'slot': self.update_explorer},
+            {'target': 'main_container',
+            'signal_name': "currentTabChanged(QString)",
             'slot': self.update_explorer},
             {'target': 'main_container',
             'signal_name': 'addToProject(QString)',
@@ -139,6 +112,26 @@ class _ExplorerContainer(QTabWidget):
         IDE.register_signals('explorer_container', connections)
 
     def install(self, ide):
+        #Searching the Preferences
+        self._treeProjects = None
+        if settings.SHOW_PROJECT_EXPLORER:
+            self.add_tab_projects()
+        self._treeSymbols = None
+        if settings.SHOW_SYMBOLS_LIST:
+            self.add_tab_symbols()
+        self._inspector = None
+        if settings.SHOW_WEB_INSPECTOR and settings.WEBINSPECTOR_SUPPORTED:
+            self.add_tab_inspector()
+        self._listErrors = None
+        if settings.SHOW_ERRORS_LIST:
+            self.add_tab_errors()
+        self._listMigration = None
+        if settings.SHOW_MIGRATION_LIST:
+            self.add_tab_migration()
+
+        if self.count() == 0:
+            central_container = IDE.get_service("central_container")
+            central_container.change_explorer_visibility(force_hide=True)
         self.install_shortcuts(ide)
 
     def install_shortcuts(self, ide):
@@ -156,6 +149,48 @@ class _ExplorerContainer(QTabWidget):
             self.open_project_folder)
         self.connect(shortSaveProject, SIGNAL("activated()"),
             self.save_project)
+
+    def _add_file_to_project(self, path):
+        """Add the file for 'path' in the project the user choose here."""
+        pathProject = [self.get_actual_project()]
+        addToProject = ui_tools.AddToProject(pathProject, self.ide)
+        addToProject.exec_()
+        if not addToProject.pathSelected:
+            return
+        main_container = IDE.get_service('main_container')
+        if not main_container:
+            return
+        editorWidget = main_container.get_actual_editor()
+        if not editorWidget.ID:
+            name = QInputDialog.getText(None,
+                self.tr("Add File To Project"), self.tr("File Name:"))[0]
+            if not name:
+                QMessageBox.information(self, self.tr("Invalid Name"),
+                    self.tr("The file name is empty, please enter a name"))
+                return
+        else:
+            name = file_manager.get_basename(editorWidget.ID)
+        path = file_manager.create_path(addToProject.pathSelected, name)
+        try:
+            path = file_manager.store_file_content(
+                path, editorWidget.get_text(), newFile=True)
+            main_container._file_watcher.allow_kill = False
+            if path != editorWidget.ID:
+                main_container.remove_standalone_watcher(
+                    editorWidget.ID)
+            editorWidget.ID = path
+            main_container.add_standalone_watcher(path)
+            main_container._file_watcher.allow_kill = True
+            self.add_existing_file(path)
+            self.emit(SIGNAL("changeWindowTitle(QString)"), path)
+            name = file_manager.get_basename(path)
+            main_container.actualTab.setTabText(
+                main_container.actualTab.currentIndex(), name)
+            editorWidget._file_saved()
+        except file_manager.NinjaFileExistsException as ex:
+            QMessageBox.information(self, self.tr("File Already Exists"),
+                (self.tr("Invalid Path: the file '%s' already exists.") %
+                    ex.filename))
 
     def save_project(self):
         """Save all the opened files that belongs to the actual project."""
@@ -215,15 +250,17 @@ class _ExplorerContainer(QTabWidget):
             self._treeProjects = tree_projects_widget.TreeProjectsWidget()
             self.addTab(self._treeProjects, self.tr('Projects'))
             self.connect(self._treeProjects, SIGNAL("runProject()"),
-                self.__ide.actions.execute_project)
-            self.connect(self.__ide, SIGNAL("goingDown()"),
-                        self._treeProjects.shutdown)
+                self._execute_project)
+
+            ide = IDE.get_service('ide')
+            self.connect(ide, SIGNAL("goingDown()"),
+                self._treeProjects.shutdown)
             self.connect(self._treeProjects,
                 SIGNAL("addProjectToConsole(QString)"),
-                self.__ide.actions.add_project_to_console)
+                self._add_project_to_console)
             self.connect(self._treeProjects,
                 SIGNAL("removeProjectFromConsole(QString)"),
-                self.__ide.actions.remove_project_from_console)
+                self._remove_project_from_console)
 
             def close_project_signal():
                 self.emit(SIGNAL("updateLocator()"))
@@ -238,6 +275,21 @@ class _ExplorerContainer(QTabWidget):
             self.connect(self._treeProjects,
                 SIGNAL("closeFilesFromProjectClosed(QString)"),
                 close_files_related_to_closed_project)
+
+    def _execute_project(self):
+        tools_dock = IDE.get_service('tools_dock')
+        if tools_dock:
+            tools_dock.execute_project()
+
+    def _add_project_to_console(self):
+        tools_dock = IDE.get_service('tools_dock')
+        if tools_dock:
+            tools_dock.add_project_to_console()
+
+    def _remove_project_from_console(self):
+        tools_dock = IDE.get_service('tools_dock')
+        if tools_dock:
+            tools_dock.remove_project_from_console()
 
     def add_tab_symbols(self):
         if not self._treeSymbols:
@@ -270,9 +322,9 @@ class _ExplorerContainer(QTabWidget):
             self._listErrors = errors_lists.ErrorsWidget()
             self.addTab(self._listErrors, self.tr("Errors"))
             self.connect(self._listErrors, SIGNAL("pep8Activated(bool)"),
-                self.__ide.mainContainer.reset_pep8_warnings)
+                lambda b: self.emit(SIGNAL("pep8Activated(bool)"), b))
             self.connect(self._listErrors, SIGNAL("lintActivated(bool)"),
-                self.__ide.mainContainer.reset_lint_warnings)
+                lambda b: self.emit(SIGNAL("lintActivated(bool)"), b))
 
     def remove_tab_migration(self):
         if self._listMigration:

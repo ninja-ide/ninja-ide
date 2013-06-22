@@ -29,7 +29,7 @@ from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
 from ninja_ide.core import settings
-from ninja_ide.gui.main_panel import main_container
+from ninja_ide.gui.ide import IDE
 
 
 class ErrorsWidget(QWidget):
@@ -104,18 +104,22 @@ class ErrorsWidget(QWidget):
         self.emit(SIGNAL("pep8Activated(bool)"), settings.CHECK_STYLE)
 
     def errors_selected(self):
-        editorWidget = main_container.MainContainer().get_actual_editor()
-        if editorWidget and self._outRefresh:
-            lineno = int(self.listErrors.currentItem().data(Qt.UserRole))
-            editorWidget.jump_to_line(lineno)
-            editorWidget.setFocus()
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            editorWidget = main_container.get_actual_editor()
+            if editorWidget and self._outRefresh:
+                lineno = int(self.listErrors.currentItem().data(Qt.UserRole))
+                editorWidget.jump_to_line(lineno)
+                editorWidget.setFocus()
 
     def pep8_selected(self):
-        editorWidget = main_container.MainContainer().get_actual_editor()
-        if editorWidget and self._outRefresh:
-            lineno = int(self.listPep8.currentItem().data(Qt.UserRole))
-            editorWidget.jump_to_line(lineno)
-            editorWidget.setFocus()
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            editorWidget = main_container.get_actual_editor()
+            if editorWidget and self._outRefresh:
+                lineno = int(self.listPep8.currentItem().data(Qt.UserRole))
+                editorWidget.jump_to_line(lineno)
+                editorWidget.setFocus()
 
     def refresh_lists(self, errors, pep8):
         self._outRefresh = False
