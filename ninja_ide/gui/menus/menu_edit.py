@@ -35,9 +35,6 @@ class MenuEdit(QObject):
     def install_menu(self, menuEdit, toolbar):
         undoAction = menuEdit.addAction(QIcon(resources.IMAGES['undo']),
             (self.trUtf8("Undo (%s+Z)") % settings.OS_KEY))
-        redoAction = menuEdit.addAction(QIcon(resources.IMAGES['redo']),
-            (self.trUtf8("Redo (%s)") % resources.get_shortcut("Redo").toString(
-                    QKeySequence.NativeText)))
         cutAction = menuEdit.addAction(QIcon(resources.IMAGES['cut']),
             (self.trUtf8("&Cut (%s+X)") % settings.OS_KEY))
         copyAction = menuEdit.addAction(QIcon(resources.IMAGES['copy']),

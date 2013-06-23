@@ -231,15 +231,17 @@ class IDE(QMainWindow):
                     connection['connected'] = True
 
     @classmethod
-    def register_shortcut(cls, shortcut_name, obj):
-        IDE.__IDESHORTCUTS[shortcut_name] = obj
+    def register_shortcut(cls, shortcut_name, shortcut, action):
+        IDE.__IDESHORTCUTS[shortcut_name] = (shortcut, action)
 
     @classmethod
     def update_shortcut(cls, shortcut_name):
         short = resources.get_shortcut
-        shortcut = IDE.__IDESHORTCUTS.get(shortcut_name)
+        shortcut, action = IDE.__IDESHORTCUTS.get(shortcut_name)
         if shortcut:
             shortcut.setKey(short(shortcut_name))
+        if action:
+            action.setShortcut(short(shortcut_name))
 
     def _change_tab_index(self):
         widget = QApplication.focusWidget()

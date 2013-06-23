@@ -39,12 +39,6 @@ class MenuSource(QObject):
             (self.trUtf8("Indent Less (%s)") %
                 resources.get_shortcut("Indent-less").toString(
                     QKeySequence.NativeText)))
-        menuSource.addSeparator()
-        commentAction = menuSource.addAction(
-            QIcon(resources.IMAGES['comment-code']),
-            (self.trUtf8("Comment (%s)") %
-                resources.get_shortcut("Comment").toString(
-                    QKeySequence.NativeText)))
         unCommentAction = menuSource.addAction(
             QIcon(resources.IMAGES['uncomment-code']),
             (self.trUtf8("Uncomment (%s)") %
@@ -91,20 +85,6 @@ class MenuSource(QObject):
             self.trUtf8("&Remove Trailing Spaces"))
         replaceTabsSpaces = menuSource.addAction(
             self.trUtf8("Replace Tabs With &Spaces"))
-        moveUp = menuSource.addAction((self.trUtf8("Move &Up (%s)") %
-            resources.get_shortcut("Move-up").toString(
-                QKeySequence.NativeText)))
-        moveDown = menuSource.addAction((self.trUtf8("Move &Down (%s)") %
-            resources.get_shortcut("Move-down").toString(
-                QKeySequence.NativeText)))
-        duplicate = menuSource.addAction(
-            (self.trUtf8("Duplica&te (%s)") %
-                resources.get_shortcut("Duplicate").toString(
-                    QKeySequence.NativeText)))
-        remove = menuSource.addAction(
-            (self.trUtf8("&Remove Line (%s)") %
-                resources.get_shortcut("Remove-line").toString(
-                    QKeySequence.NativeText)))
 
         self.toolbar_items = {
             'indent-more': indentMoreAction,

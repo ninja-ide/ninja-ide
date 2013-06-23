@@ -37,20 +37,12 @@ class MenuFile(QObject):
 ###############################################################################
 
     def install_menu(self, menuFile, toolbar, ide):
-        newAction = menuFile.addAction(QIcon(resources.IMAGES['new']),
-            (self.trUtf8("&New File (%s)") %
-                resources.get_shortcut("New-file").toString(
-                    QKeySequence.NativeText)))
         newProjectAction = menuFile.addAction(
             QIcon(resources.IMAGES['newProj']),
             (self.trUtf8("New Pro&ject (%s)") %
                 resources.get_shortcut("New-project").toString(
                     QKeySequence.NativeText)))
         menuFile.addSeparator()
-        saveAction = menuFile.addAction(QIcon(resources.IMAGES['save']),
-            (self.trUtf8("&Save (%s)") %
-                resources.get_shortcut("Save-file").toString(
-                    QKeySequence.NativeText)))
         saveAsAction = menuFile.addAction(QIcon(resources.IMAGES['saveAs']),
             self.trUtf8("Save &As"))
         saveAllAction = menuFile.addAction(QIcon(resources.IMAGES['saveAll']),
@@ -67,10 +59,6 @@ class MenuFile(QObject):
                 resources.get_shortcut("Reload-file").toString(
                     QKeySequence.NativeText)))
         menuFile.addSeparator()
-        openAction = menuFile.addAction(QIcon(resources.IMAGES['open']),
-            (self.trUtf8("&Open (%s)") %
-                resources.get_shortcut("Open-file").toString(
-                    QKeySequence.NativeText)))
         openProjectAction = menuFile.addAction(
             QIcon(resources.IMAGES['openProj']),
             (self.trUtf8("Open &Project (%s)") %
@@ -88,11 +76,6 @@ class MenuFile(QObject):
         printFile = menuFile.addAction(QIcon(resources.IMAGES['print']),
             (self.trUtf8("Pr&int File (%s)") %
                 resources.get_shortcut("Print-file").toString(
-                    QKeySequence.NativeText)))
-        closeAction = menuFile.addAction(
-            ide.style().standardIcon(QStyle.SP_DialogCloseButton),
-            (self.trUtf8("&Close Tab (%s)") %
-                resources.get_shortcut("Close-tab").toString(
                     QKeySequence.NativeText)))
         closeProjectsAction = menuFile.addAction(
             ide.style().standardIcon(QStyle.SP_DialogCloseButton),
