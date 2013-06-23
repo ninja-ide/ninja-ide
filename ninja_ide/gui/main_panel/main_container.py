@@ -212,7 +212,7 @@ class _MainContainer(QWidget):
 
     def install(self):
         ide = IDE.get_service('ide')
-        ide.place_me_on(self, 'region0')
+        ide.place_me_on(self, 0)
         self.install_shortcuts(ide)
 
     def install_shortcuts(self, ide):

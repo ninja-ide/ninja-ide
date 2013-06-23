@@ -121,7 +121,7 @@ class _ToolsDock(QWidget):
     def install(self):
         self.setup_ui()
         ide = IDE.get_service('ide')
-        ide.place_me_on(self, 'region1')
+        ide.place_me_on(self, 1)
         #Register signals connections
         connections = (
             {'target': 'main_container',
