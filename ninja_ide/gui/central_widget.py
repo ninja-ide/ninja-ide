@@ -25,7 +25,6 @@ from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QComboBox
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QSplitter
 from PyQt4.QtGui import QShortcut
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
@@ -33,6 +32,7 @@ from PyQt4.QtCore import QSettings
 
 from ninja_ide import resources
 from ninja_ide.core import settings
+from ninja_ide.gui import dynamic_splitter
 from ninja_ide.gui.ide import IDE
 
 
@@ -56,12 +56,18 @@ class CentralWidget(QWidget):
         self._splitterInsideSizes = None
         self.lateralPanel = LateralPanel()
 
+        self._add_functions = {
+            0: self.insert_widget_region0,
+            1: self.insert_widget_region1,
+            2: self.insert_widget_region2
+        }
+
         hbox = QHBoxLayout(self)
         hbox.setContentsMargins(0, 0, 0, 0)
         hbox.setSpacing(0)
         #Create Splitters to divide the UI 3 regions
-        self._splitterBase = QSplitter(Qt.Horizontal)
-        self._splitterInside = QSplitter(Qt.Vertical)
+        self._splitterBase = dynamic_splitter.DynamicSplitter(Qt.Horizontal)
+        self._splitterInside = dynamic_splitter.DynamicSplitter(Qt.Vertical)
         self._splitterBase.addWidget(self._splitterInside)
 
         #Add to Main Layout
@@ -105,6 +111,9 @@ class CentralWidget(QWidget):
     def update_column_number(self, row, col):
         self.lateralPanel.update_line_col(row, col)
 
+    def add_to_region(self, obj, region):
+        self._add_functions.get(region, lambda x: None)(obj)
+
     def insert_widget_region0(self, container):
         self._splitterInside.insertWidget(0, container)
 
@@ -112,8 +121,11 @@ class CentralWidget(QWidget):
         self._splitterInside.insertWidget(1, container)
 
     def insert_widget_region2(self, container):
-        self.lateralPanel.add_component(container)
-        self._splitterBase.addWidget(self.lateralPanel)
+        if not self.lateralPanel.has_component:
+            self.lateralPanel.add_component(container)
+            self._splitterBase.addWidget(self.lateralPanel)
+        else:
+            self._splitterBase.addWidget(container)
 
     def _region0(self):
         return self._splitterInside.widget(0)
@@ -274,6 +286,7 @@ class LateralPanel(QWidget):
 
     def __init__(self, parent=None):
         super(LateralPanel, self).__init__(parent)
+        self.has_component = False
         self.vbox = QVBoxLayout(self)
         self.vbox.setContentsMargins(0, 0, 0, 0)
         hbox = QHBoxLayout()
@@ -297,6 +310,7 @@ class LateralPanel(QWidget):
 
     def add_component(self, widget):
         self.vbox.insertWidget(0, widget)
+        self.has_component = True
 
     def update_line_col(self, line, col):
         self.labelCursorPosition.setText(self.trUtf8(

@@ -155,4 +155,4 @@ class _MenuBar(QObject):
             toolbar.addAction(toolbar_action)
 
 
-menu = _MenuBar()
+#menu = _MenuBar()

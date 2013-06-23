@@ -120,6 +120,8 @@ class _ToolsDock(QWidget):
 
     def install(self):
         self.setup_ui()
+        ide = IDE.get_service('ide')
+        ide.place_me_on(self, 1)
         #Register signals connections
         connections = (
             {'target': 'main_container',
@@ -142,10 +144,9 @@ class _ToolsDock(QWidget):
             'slot': self.add_project_to_console},
             )
         IDE.register_signals('tools_dock', connections)
-        self.install_shortcuts()
+        self.install_shortcuts(ide)
 
-    def install_shortcuts(self):
-        ide = IDE.get_service('ide')
+    def install_shortcuts(self, ide):
         short = resources.get_shortcut
         shortFindInFiles = QShortcut(short("Find-in-files"), ide)
         IDE.register_shortcut('Find-in-files', shortFindInFiles)

@@ -112,6 +112,8 @@ class _ExplorerContainer(QTabWidget):
         IDE.register_signals('explorer_container', connections)
 
     def install(self):
+        ide = IDE.get_service('ide')
+        ide.place_me_on(self, 2)
         #Searching the Preferences
         self._treeProjects = None
         if settings.SHOW_PROJECT_EXPLORER:
@@ -132,10 +134,9 @@ class _ExplorerContainer(QTabWidget):
         if self.count() == 0:
             central_container = IDE.get_service("central_container")
             central_container.change_explorer_visibility(force_hide=True)
-        self.install_shortcuts()
+        self.install_shortcuts(ide)
 
-    def install_shortcuts(self):
-        ide = IDE.get_service('ide')
+    def install_shortcuts(self, ide):
         short = resources.get_shortcut
         shortNewProject = QShortcut(short("New-project"), ide)
         IDE.register_shortcut('New-project', shortNewProject)
