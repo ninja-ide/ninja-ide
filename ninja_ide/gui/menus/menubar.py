@@ -1,32 +1,59 @@
 # -*- coding: utf-8 -*-
 
 from PyQt4.QtCore import QObject
+from collections import defaultdict
 
 from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
 
 #NINJA-IDE Menus
-from ninja_ide.gui.menus import menu_about
-from ninja_ide.gui.menus import menu_file
-from ninja_ide.gui.menus import menu_edit
-from ninja_ide.gui.menus import menu_view
-from ninja_ide.gui.menus import menu_plugins
-from ninja_ide.gui.menus import menu_project
-from ninja_ide.gui.menus import menu_source
+#from ninja_ide.gui.menus import menu_about
+#from ninja_ide.gui.menus import menu_file
+#from ninja_ide.gui.menus import menu_edit
+#from ninja_ide.gui.menus import menu_view
+#from ninja_ide.gui.menus import menu_plugins
+#from ninja_ide.gui.menus import menu_project
+#from ninja_ide.gui.menus import menu_source
+
+SEC01 = 100
+SEC02 = 200
+SEC03 = 300
+SEC04 = 400
+SEC05 = 500
+SEC06 = 600
+SEC07 = 700
+SEC08 = 800
+SEC09 = 900
+SEC10 = 1000
+
+
+def menu_add_section(menu, section_parts):
+    """
+    each_part is expected to be a tuple of
+    (QIcon, String, bool) containing respectively the icon, text and flag
+    indicating if this is an action
+    """
+    for each_part, weight in section_parts:
+        icon, text, action = each_part
+        if action:
+            add = menu.addAction
+        else:
+            add = menu.addMenu
+        if icon:
+            add(icon, text)
+        else:
+            add(text)
+    #FIXME: This appends a separator at the end of each menu
+    menu.addSeparator()
 
 
 class _MenuBar(QObject):
 
     def __init__(self):
         super(_MenuBar, self).__init__()
-
-        self._menuFile = menu_file.MenuFile()
-        self._menuView = menu_view.MenuView()
-        self._menuEdit = menu_edit.MenuEdit()
-        self._menuSource = menu_source.MenuSource()
-        self._menuProject = menu_project.MenuProject()
-        self._menuPlugins = menu_plugins.MenuPlugins()
-        self._menuAbout = menu_about.MenuAbout()
+        self._roots = {}
+        self._children = {}
+        self._menu_refs = {}
 
         IDE.register_service('menu_bar', self)
         IDE.register_service('menu_file', self._menuFile)
@@ -39,10 +66,52 @@ class _MenuBar(QObject):
         )
         IDE.register_signals('menu_file', menu_file_connections)
 
+    def add_root(self, root_name, root_weight=None):
+        """
+        Add a root menu with desired weight or at end of list
+        """
+        if root_name not in self._roots:
+            if root_weight is None:
+                root_weight = sorted(self._roots.values())[-1] + 1
+            self._roots[root_name] = root_weight
+
+    def get_root(self):
+        iter_items = self._roots.iteritems()
+        iter_items.sort(key=lambda x: x[1])
+        return iter_items
+
+    def add_child(self, root_name, child_name, child, weight):
+        #FIXME: We should also add plugin namespace for grouping per plugin
+        child_path = (root_name, child_name)
+        if child_path not in self._children:
+            self.add_root(root_name)
+            self._children[child_path] = (child, weight)
+
+    def get_children_of(self, parent):
+        children = defaultdict(lambda: [])
+        for each_child in self._children:
+            if parent == each_child[0]:
+                child, weight = self._children[each_child]
+                children[weight / 100].append((child, weight))
+
+        return children
+
     def install(self):
         ide = IDE.get_service('ide')
-        #Menu
+        #menuBar is the actual QMenuBar object from IDE which is a QMainWindow
         menubar = ide.menuBar()
+        for each_menu in self.get_root():
+            menu_object = menubar.addMenu(self.tr(each_menu))
+            self._menu_refs[each_menu] = menu_object
+            all_children = self.get_children_of(each_menu)
+            for each_child_grp_key in sorted(all_children):
+                each_child_grp = all_children[each_child_grp_key]
+                menu_add_section(menu_object, sorted(each_child_grp,
+                                                key=lambda x: x[1]))
+
+        #FIXME: Now move all this to respective containers and do a builder
+        #FIXME: ... for toolbar
+
         file_ = menubar.addMenu(self.tr("&File"))
         edit = menubar.addMenu(self.tr("&Edit"))
         view = menubar.addMenu(self.tr("&View"))
@@ -63,6 +132,7 @@ class _MenuBar(QObject):
         self.load_toolbar(ide)
 
     def load_toolbar(self, ide):
+        #FIXME: Do the same as above to add items to toolbar
         toolbar = ide.toolbar
         toolbar.clear()
         toolbar_items = {}
