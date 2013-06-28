@@ -99,7 +99,7 @@ class BaseWatcher(QObject):
             self._single_file_watcher = \
                 SingleFileWatcher(self._emit_signal_on_change)
             self.connect(self._single_file_watcher,
-                SIGNAL("destroyed(QObject*)"), self.on_destroy)
+                         SIGNAL("destroyed(QObject*)"), self.on_destroy)
             self._single_file_watcher.start()
         self._single_file_watcher.add_watch(file_path)
 
