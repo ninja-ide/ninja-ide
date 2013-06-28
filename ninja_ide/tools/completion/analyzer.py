@@ -132,7 +132,7 @@ class Analyzer(object):
         line = line_content.split('=')
         if len(line) < 2:
             logger.error('_assign_disambiguation, line not valid: %r' %
-                line_content)
+                         line_content)
             return type_name
         value = line[1].strip()
         # TODO: We have to analyze when the assign is: x,y = 1, 2
@@ -186,11 +186,11 @@ class Analyzer(object):
             data_type = self.__mapping.get(type_value, model.late_resolution)
             if var.__class__ == ast.Attribute:
                 data = (var.attr, symbol.lineno, data_type, line_content,
-                    type_value)
+                        type_value)
                 attributes.append(data)
             elif var.__class__ == ast.Name:
                 data = (var.id, symbol.lineno, data_type, line_content,
-                    type_value)
+                        type_value)
                 assigns.append(data)
 #            if type_value is ast.Call:
 #                self._process_expression(symbol.value)

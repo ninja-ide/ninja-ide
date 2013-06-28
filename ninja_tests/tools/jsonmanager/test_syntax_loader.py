@@ -19,7 +19,7 @@
 import os
 import unittest
 
-from  ninja_tests.tools.jsonmanager import samples
+from ninja_tests.tools.jsonmanager import samples
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -44,8 +44,8 @@ class TestSyntaxLoader(unittest.TestCase):
         resources.SYNTAX_FILES = self.goodsamples
 
         py_syntax_name = 'python'
-        py_syntax_file = os.path.join(
-                self.goodsamples, py_syntax_name + '.json')
+        py_syntax_file = os.path.join(self.goodsamples,
+                                      py_syntax_name + '.json')
 
         assert os.path.isfile(py_syntax_file) is True
 
@@ -64,8 +64,8 @@ class TestSyntaxLoader(unittest.TestCase):
         resources.SYNTAX_FILES = self.badsamples
 
         py_syntax_name = 'python'
-        py_syntax_file = os.path.join(
-                self.goodsamples, py_syntax_name + '.json')
+        py_syntax_file = os.path.join(self.goodsamples,
+                                      py_syntax_name + '.json')
 
         assert os.path.isfile(py_syntax_file) is True
 

@@ -67,12 +67,13 @@ def _parse_class(symbol, with_docstrings):
             if with_docstrings:
                 docstring.update(result['docstring'])
             func[result['name']] = {'lineno': result['lineno'],
-                'functions': result['functions']}
+                                    'functions': result['functions']}
         elif sym.__class__ is ast.ClassDef:
             result = _parse_class(sym, with_docstrings)
             clazz[result['name']] = {'lineno': result['lineno'],
-                'members': {'attributes': result['attributes'],
-                'functions': result['functions']}}
+                                     'members':
+                                     {'attributes': result['attributes'],
+                                      'functions': result['functions']}}
             docstring.update(result['docstring'])
     if with_docstrings:
         docstring[symbol.lineno] = ast.get_docstring(symbol, clean=True)
@@ -82,7 +83,7 @@ def _parse_class(symbol, with_docstrings):
         lineno += 1
 
     return {'name': name, 'attributes': attr, 'functions': func,
-        'lineno': lineno, 'docstring': docstring, 'classes': clazz}
+            'lineno': lineno, 'docstring': docstring, 'classes': clazz}
 
 
 def _parse_function(symbol, with_docstrings):
@@ -133,7 +134,8 @@ def _parse_function(symbol, with_docstrings):
             if with_docstrings:
                 docstring.update(result['docstring'])
             func['functions'][result['name']] = {'lineno': result['lineno'],
-                'functions': result['functions']}
+                                                 'functions':
+                                                 result['functions']}
 
     if with_docstrings:
         docstring[symbol.lineno] = ast.get_docstring(symbol, clean=True)
@@ -143,7 +145,7 @@ def _parse_function(symbol, with_docstrings):
         lineno += 1
 
     return {'name': func_name, 'lineno': lineno,
-        'attrs': attrs, 'docstring': docstring, 'functions': func}
+            'attrs': attrs, 'docstring': docstring, 'functions': func}
 
 
 def obtain_symbols(source, with_docstrings=False, filename=''):
@@ -169,13 +171,17 @@ def obtain_symbols(source, with_docstrings=False, filename=''):
             if with_docstrings:
                 docstrings.update(result['docstring'])
             globalFunctions[result['name']] = {'lineno': result['lineno'],
-                'functions': result['functions']}
+                                               'functions':
+                                               result['functions']}
         elif symbol.__class__ is ast.ClassDef:
             result = _parse_class(symbol, with_docstrings)
             classes[result['name']] = {'lineno': result['lineno'],
-                'members': {'attributes': result['attributes'],
-                'functions': result['functions'],
-                'classes': result['classes']}}
+                                       'members': {'attributes':
+                                                   result['attributes'],
+                                                   'functions':
+                                                   result['functions'],
+                                                   'classes':
+                                                   result['classes']}}
             docstrings.update(result['docstring'])
     if globalAttributes:
         symbols['attributes'] = globalAttributes
@@ -204,9 +210,10 @@ def obtain_imports(source='', body=None):
         if type(sym) is ast.Import:
             for item in sym.names:
                 imports[item.name] = {'asname': item.asname,
-                    'lineno': sym.lineno}
+                                      'lineno': sym.lineno}
         if type(sym) is ast.ImportFrom:
             for item in sym.names:
                 fromImports[item.name] = {'module': sym.module,
-                    'asname': item.asname, 'lineno': sym.lineno}
+                                          'asname': item.asname,
+                                          'lineno': sym.lineno}
     return {'imports': imports, 'fromImports': fromImports}
