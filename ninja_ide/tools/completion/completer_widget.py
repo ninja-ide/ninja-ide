@@ -49,9 +49,9 @@ class CodeCompletionWidget(QFrame):
         self._list_index = self.stack_layout.addWidget(self.completion_list)
 
         self._icons = {'a': resources.IMAGES['attribute'],
-            'f': resources.IMAGES['function'],
-            'c': resources.IMAGES['class'],
-            'm': resources.IMAGES['module']}
+                       'f': resources.IMAGES['function'],
+                       'c': resources.IMAGES['class'],
+                       'm': resources.IMAGES['module']}
 
         self.cc = code_completion.CodeCompletion()
         self._completion_results = {}
@@ -78,11 +78,11 @@ class CodeCompletionWidget(QFrame):
         self.desktop = QApplication.instance().desktop()
 
         self.connect(self.completion_list,
-            SIGNAL("itemClicked(QListWidgetItem*)"),
-            self.pre_key_insert_completion)
+                     SIGNAL("itemClicked(QListWidgetItem*)"),
+                     self.pre_key_insert_completion)
         self.connect(self._editor.document(),
-            SIGNAL("cursorPositionChanged(QTextCursor)"),
-            self.update_metadata)
+                     SIGNAL("cursorPositionChanged(QTextCursor)"),
+                     self.update_metadata)
 
     def _select_next_row(self, move=1):
         new_row = self.completion_list.currentRow() + move
@@ -108,7 +108,7 @@ class CodeCompletionWidget(QFrame):
                 source = self._editor.get_text()
                 source = source.encode(self._editor.encoding)
                 self.cc.analyze_file(self._editor.ID, source,
-                    self._editor.indent, self._editor.useTabs)
+                                     self._editor.indent, self._editor.useTabs)
                 self._revision = self._editor.document().revision()
                 self._block = cursor.block().blockNumber()
 
@@ -129,7 +129,8 @@ class CodeCompletionWidget(QFrame):
         cr.moveTopLeft(point)
         #Check new position according desktop geometry
         width = (self.completion_list.sizeHintForColumn(0) +
-            self.completion_list.verticalScrollBar().sizeHint().width() + 10)
+                 self.completion_list.verticalScrollBar().sizeHint().width() +
+                 10)
         height = 200
         orientation = (point.y() + height) < desktop_geometry.height()
         if orientation:
@@ -156,24 +157,26 @@ class CodeCompletionWidget(QFrame):
         for p in proposals:
             self.completion_list.addItem(
                 QListWidgetItem(
-                QIcon(self._icons.get(p[0], resources.IMAGES['attribute'])),
-                p[1], type=ord(p[0])))
+                    QIcon(
+                        self._icons.get(p[0], resources.IMAGES['attribute'])),
+                    p[1], type=ord(p[0])))
 
     def set_completion_prefix(self, prefix, valid=True):
         self._prefix = prefix
         proposals = []
         proposals += [('m', item)
-            for item in self._completion_results.get('modules', [])
-            if item.startswith(prefix)]
+                      for item in self._completion_results.get('modules', [])
+                      if item.startswith(prefix)]
         proposals += [('c', item)
-            for item in self._completion_results.get('classes', [])
-            if item.startswith(prefix)]
+                      for item in self._completion_results.get('classes', [])
+                      if item.startswith(prefix)]
         proposals += [('a', item)
-            for item in self._completion_results.get('attributes', [])
-            if item.startswith(prefix)]
+                      for item in self._completion_results.get(
+                          'attributes', [])
+                      if item.startswith(prefix)]
         proposals += [('f', item)
-            for item in self._completion_results.get('functions', [])
-            if item.startswith(prefix)]
+                      for item in self._completion_results.get('functions', [])
+                      if item.startswith(prefix)]
         if proposals and valid:
             self.complete(proposals)
         else:
@@ -183,7 +186,7 @@ class CodeCompletionWidget(QFrame):
         result = False
         cursor = self._editor.textCursor()
         cursor.movePosition(QTextCursor.StartOfLine,
-            QTextCursor.KeepAnchor)
+                            QTextCursor.KeepAnchor)
         selection = cursor.selectedText()[:-1].split(' ')
         if len(selection) == 0 or selection[-1] == '' or \
            selection[-1].isdigit():
@@ -203,7 +206,7 @@ class CodeCompletionWidget(QFrame):
         if force_completion:
             cursor = self._editor.textCursor()
             cursor.movePosition(QTextCursor.StartOfWord,
-                QTextCursor.KeepAnchor)
+                                QTextCursor.KeepAnchor)
             prefix = cursor.selectedText()
         else:
             prefix = self._editor._text_under_cursor()
@@ -262,7 +265,7 @@ class CompleterWidget(QCompleter):
         self.completion_results = {}
 
         self.connect(self, SIGNAL("activated(const QString&)"),
-            self.insert_completion)
+                     self.insert_completion)
 
     def insert_completion(self, insert):
         self.widget().textCursor().insertText(
@@ -278,7 +281,7 @@ class CompleterWidget(QCompleter):
         self.model().setStringList(proposals)
         self.popup().setCurrentIndex(self.model().index(0, 0))
         cr.setWidth(self.popup().sizeHintForColumn(0)
-            + self.popup().verticalScrollBar().sizeHint().width() + 10)
+                    + self.popup().verticalScrollBar().sizeHint().width() + 10)
         QCompleter.complete(self, cr)
 
     def is_visible(self):
@@ -302,7 +305,8 @@ class CompleterWidget(QCompleter):
                 self.completionModel().index(0, 0))
             self.setCurrentRow(0)
         if event.key() == Qt.Key_Period or (event.key() == Qt.Key_Space and
-        event.modifiers() == Qt.ControlModifier):
+                                            event.modifiers() ==
+                                            Qt.ControlModifier):
             self.fill_completer()
 
     def fill_completer(self):
