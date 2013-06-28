@@ -47,7 +47,7 @@ keys_desc = [
     ('Ctrl-P', 'Pause / Resume game'),
     ('Ctrl-Q', 'Quit'),
     ('F1', 'About PyQtris'),
-    ]
+]
 
 
 class AboutDialog(QDialog):

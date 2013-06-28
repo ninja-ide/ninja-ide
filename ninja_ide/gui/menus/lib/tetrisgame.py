@@ -1,4 +1,5 @@
-import os, sys
+import os
+import sys
 from collections import namedtuple
 
 from PyQt4.QtCore import *
@@ -43,10 +44,12 @@ class DrawabaleTetrisBoard(QWidget):
         self.bgcolor = QColor(234, 234, 244)
 
         self.setSizePolicy(QSizePolicy(
-                            QSizePolicy.Fixed, QSizePolicy.Fixed))
+            QSizePolicy.Fixed, QSizePolicy.Fixed))
 
-        self.width = self.sinkwidth * 2 + ncols * blocksize + (ncols + 1) * self.gridwidth
-        self.height = self.sinkwidth * 2 + nrows * blocksize + (nrows + 1) * self.gridwidth
+        self.width = self.sinkwidth * 2 + ncols * blocksize + (
+            ncols + 1) * self.gridwidth
+        self.height = self.sinkwidth * 2 + nrows * blocksize + (
+            nrows + 1) * self.gridwidth
 
         self.board = TetrisBoard(nrows, ncols)
 
@@ -60,9 +63,11 @@ class DrawabaleTetrisBoard(QWidget):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
 
-        painter.fillRect(0, 0, self.width, self.height, QBrush(self.bgcolor, Qt.SolidPattern))
+        painter.fillRect(0, 0, self.width, self.height,
+                         QBrush(self.bgcolor, Qt.SolidPattern))
 
-        if self.showgrid: self._draw_grid(painter)
+        if self.showgrid:
+            self._draw_grid(painter)
         self._draw_sink(painter)
 
         self._draw_all_blocks(painter)
@@ -231,7 +236,8 @@ class TetrisPreviewWidget(DrawabaleTetrisBoard):
         figures.
     """
     def __init__(self, parent, nrows, ncols, blocksize):
-        super(TetrisPreviewWidget, self).__init__(parent, nrows, ncols, blocksize)
+        super(TetrisPreviewWidget, self).__init__(
+            parent, nrows, ncols, blocksize)
 
         self.showgrid = False
         self.figure = None
@@ -306,9 +312,10 @@ class TetrisMainWindow(QMainWindow, itab_item.ITabItem):
             self.pause_game()
 
             reply = QMessageBox.question(self,
-                'Restart confirmation',
-                'Are you sure you want to restart the game?',
-                QMessageBox.Yes | QMessageBox.No)
+                                         'Restart confirmation',
+                                         'Are you sure you want '
+                                         'to restart the game?',
+                                         QMessageBox.Yes | QMessageBox.No)
 
             if reply == QMessageBox.Yes:
                 self.restart_game()
@@ -368,8 +375,8 @@ class TetrisMainWindow(QMainWindow, itab_item.ITabItem):
 
         if self.game_score > self.highscores.lowest_score():
             text, ok = QInputDialog.getText(self,
-                "High score!",
-                'Your name:')
+                                            "High score!",
+                                            'Your name:')
 
             if ok and not text.isEmpty():
                 self.highscores.add_score(text, self.game_score)
@@ -403,7 +410,8 @@ class TetrisMainWindow(QMainWindow, itab_item.ITabItem):
                 old_line_count = self.game_lines
                 self.game_lines += num_rows
                 score_bonus = result.drop_height + num_rows ** 2 * 30
-                score_bonus = int(score_bonus * (1 + 0.1 * (self.game_level - 1)))
+                score_bonus = int(score_bonus * (1 + 0.1 * (
+                    self.game_level - 1)))
                 self.game_score += score_bonus
 
                 self.preview_figure = self.figurebank.get_random()
@@ -428,10 +436,11 @@ class TetrisMainWindow(QMainWindow, itab_item.ITabItem):
         nrows = winHeight / 35
         ncols = winWidth / 65
         self.board_widget = MainTetrisWidget(self,
-            nrows=nrows,
-            ncols=ncols,
-            blocksize=25,
-            startfigure=self.figurebank.get_random())
+                                             nrows=nrows,
+                                             ncols=ncols,
+                                             blocksize=25,
+                                             startfigure=
+                                             self.figurebank.get_random())
         self.board_widget.setFocus()
 
         self.control_panel = QFrame(self)
@@ -524,18 +533,18 @@ class TetrisMainWindow(QMainWindow, itab_item.ITabItem):
 
     def create_menu(self):
         new_game_action = self.create_action("New",
-            slot=self.on_restart,
-            tip='New game')
+                                             slot=self.on_restart,
+                                             tip='New game')
         pause_game_action = self.create_action("Pause",
-            slot=self.on_pause,
-            tip='Pause game')
+                                               slot=self.on_pause,
+                                               tip='Pause game')
         highscores_action = self.create_action("High Scores",
-            slot=self.on_highscores,
-            tip='Pause game')
+                                               slot=self.on_highscores,
+                                               tip='Pause game')
 
         about_action = self.create_action("About",
-            slot=self.on_about,
-            tip='About PyQtris')
+                                          slot=self.on_about,
+                                          tip='About PyQtris')
 
         self.toolbar = QToolBar()
         self.toolbar.setFloatable(False)
@@ -549,8 +558,8 @@ class TetrisMainWindow(QMainWindow, itab_item.ITabItem):
         self.toolbar.addSeparator()
 
     def create_action(self, text, slot=None,
-                        icon=None, tip=None, checkable=False,
-                        signal="triggered()"):
+                      icon=None, tip=None, checkable=False,
+                      signal="triggered()"):
         action = QAction(text, self)
         if icon is not None:
             action.setIcon(QIcon(":/%s.png" % icon))
@@ -570,31 +579,38 @@ class TetrisMainWindow(QMainWindow, itab_item.ITabItem):
 
         #  oo
         # oO
-        S = Figure([(0,0), (-1,0), (0,-1), (-1,1)], color=QColor(122, 197, 205))
+        S = Figure([(0, 0), (-1, 0), (0, -1), (-1, 1)],
+                   color=QColor(122, 197, 205))
 
         # oo
         #  Oo
-        Z = Figure([(0,0), (0,1), (-1,-1), (-1,0)], color=QColor(0, 205, 0))
+        Z = Figure([(0, 0), (0, 1), (-1, -1), (-1, 0)],
+                   color=QColor(0, 205, 0))
 
         # oOo
         #  o
-        T = Figure([(0,0), (0,1), (0,-1), (1,0)], color=QColor(238, 238, 0))
+        T = Figure([(0, 0), (0, 1), (0, -1), (1, 0)],
+                   color=QColor(238, 238, 0))
 
         # oOoo
         #
-        I = Figure([(0,0), (0,-1), (0,1), (0,2)], color=QColor(238, 118, 33))
+        I = Figure([(0, 0), (0, -1), (0, 1), (0, 2)],
+                   color=QColor(238, 118, 33))
 
         # oo
         # Oo
-        O = Figure([(0,0), (-1,0), (-1,1), (0,1)], rotatable=False, color=QColor(238, 44, 44))
+        O = Figure([(0, 0), (-1, 0), (-1, 1), (0, 1)],
+                   rotatable=False, color=QColor(238, 44, 44))
 
         # oOo
         # o
-        L = Figure([(0,0), (0,-1), (0,1), (1,-1)], color=QColor(0, 0, 225))
+        L = Figure([(0, 0), (0, -1), (0, 1), (1, -1)],
+                   color=QColor(0, 0, 225))
 
         # oOo
         #   o
-        J = Figure([(0,0), (0,-1), (0,1), (1,1)], color=QColor(148, 0, 211))
+        J = Figure([(0, 0), (0, -1), (0, 1), (1, 1)],
+                   color=QColor(148, 0, 211))
 
         return FigureBank([S, Z, T, I, O, L, J])
 
@@ -603,7 +619,7 @@ class TetrisMainWindow(QMainWindow, itab_item.ITabItem):
             self.board_widget.keyPressEvent(event)
 
     HS_FILENAME = os.path.join(resources.HOME_NINJA_PATH,
-        'pyqtris_highscores')
+                               'pyqtris_highscores')
 
     def init_highscores(self):
         self.highscores = HighScores(10)
@@ -624,4 +640,3 @@ if __name__ == "__main__":
     form = TetrisMainWindow()
     form.show()
     app.exec_()
-
