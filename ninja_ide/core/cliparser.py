@@ -47,22 +47,25 @@ try:
         parser = argparse.ArgumentParser(description=usage, epilog=epilog)
 
         parser.add_argument('file', metavar='file', type=str,
-            nargs='*', help='A file/s to edit', default=[])
+                            nargs='*', help='A file/s to edit', default=[])
         parser.add_argument('-f', '--files', metavar='file', type=str,
-            nargs='+', help='A file/s to edit', default=[])
+                            nargs='+', help='A file/s to edit', default=[])
         parser.add_argument('-l', '--lineno', metavar='lineno', type=int,
-            nargs='+', help='Line number for the files to open', default=[])
+                            nargs='+',
+                            help='Line number for the files to open',
+                            default=[])
         parser.add_argument('-p', '--project', metavar='project', type=str,
-            nargs='+', help='A project/s to edit', default=[])
+                            nargs='+', help='A project/s to edit', default=[])
         parser.add_argument('--plugin',
-            metavar='plugin', type=str,
-            nargs='+', help='A plugin to load', default=[])
+                            metavar='plugin', type=str,
+                            nargs='+', help='A plugin to load', default=[])
         parser.add_argument('--loglevel', help="Level to use for logging, "
-                    "one of 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'",
-                    default=None, metavar="loglevel")
+                            "one of 'DEBUG', 'INFO', 'WARNING', 'ERROR', "
+                            "'CRITICAL'",
+                            default=None, metavar="loglevel")
         parser.add_argument('--logfile', help="A file path to log, special "
-                                        "words STDOUT or STDERR are accepted",
-                                        default=None, metavar="logfile")
+                            "words STDOUT or STDERR are accepted",
+                            default=None, metavar="logfile")
         return parser
 
 except ImportError:
@@ -92,39 +95,39 @@ except ImportError:
         global epilog
 
         parser = optparse.OptionParser(usage, version=ninja_ide.__version__,
-            epilog=epilog)
+                                       epilog=epilog)
 
         parser.add_option("-f", "--file",
-            type="string",
-            action="store",
-            dest="file",
-            default=[],
-            help="A file/s to edit",
-            nargs=_resolve_nargs("-f", "--file"))
+                          type="string",
+                          action="store",
+                          dest="file",
+                          default=[],
+                          help="A file/s to edit",
+                          nargs=_resolve_nargs("-f", "--file"))
 
         parser.add_option("-p", "--project",
-            type="string",
-            action="store",
-            dest="project",
-            default=[],
-            help="A project/s to edit",
-            nargs=_resolve_nargs("-p", "--project"))
+                          type="string",
+                          action="store",
+                          dest="project",
+                          default=[],
+                          help="A project/s to edit",
+                          nargs=_resolve_nargs("-p", "--project"))
 
         parser.add_option("-l", "--lineno",
-            type="int",
-            action="store",
-            dest="lineno",
-            default=[],
-            help="Line number for the files to open",
-            nargs=_resolve_nargs("-l", "--lineno"))
+                          type="int",
+                          action="store",
+                          dest="lineno",
+                          default=[],
+                          help="Line number for the files to open",
+                          nargs=_resolve_nargs("-l", "--lineno"))
 
         parser.add_option("--plugin",
-            type="string",
-            action="store",
-            dest="plugin",
-            default=[],
-            help="A plugin to load",
-            nargs=_resolve_nargs("--plugin"))
+                          type="string",
+                          action="store",
+                          dest="plugin",
+                          default=[],
+                          help="A plugin to load",
+                          nargs=_resolve_nargs("--plugin"))
 
         return parser
 
