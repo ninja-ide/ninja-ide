@@ -67,8 +67,8 @@ class Console(InteractiveConsole):
     """Work as a Python Console."""
 
     def __init__(self):
-        InteractiveConsole.__init__(self,
-            locals={'exit': ExitWrapper(), 'help': HelpWrapper()})
+        InteractiveConsole.__init__(self, locals={'exit': ExitWrapper(),
+                                                  'help': HelpWrapper()})
         self.stdout = sys.stdout
         self.stderr = sys.stderr
         self._cache = Cache()
