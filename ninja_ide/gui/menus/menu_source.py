@@ -71,7 +71,7 @@ class MenuSource(QObject):
             (self.trUtf8("Go To Definition (%s or %s+Click)") %
                 (resources.get_shortcut("Go-to-definition").toString(
                     QKeySequence.NativeText),
-                settings.OS_KEY)))
+                 settings.OS_KEY)))
         insertImport = menuSource.addAction(
             QIcon(resources.IMAGES['insert-import']),
             (self.trUtf8("Insert &Import (%s)") %
@@ -94,11 +94,11 @@ class MenuSource(QObject):
         replaceTabsSpaces = menuSource.addAction(
             self.trUtf8("Replace Tabs With &Spaces"))
         moveUp = menuSource.addAction((self.trUtf8("Move &Up (%s)") %
-            resources.get_shortcut("Move-up").toString(
-                QKeySequence.NativeText)))
+                                       resources.get_shortcut("Move-up").toString(
+                                           QKeySequence.NativeText)))
         moveDown = menuSource.addAction((self.trUtf8("Move &Down (%s)") %
-            resources.get_shortcut("Move-down").toString(
-                QKeySequence.NativeText)))
+                                         resources.get_shortcut("Move-down").toString(
+                                             QKeySequence.NativeText)))
         duplicate = menuSource.addAction(
             (self.trUtf8("Duplica&te (%s)") %
                 resources.get_shortcut("Duplicate").toString(
@@ -117,23 +117,23 @@ class MenuSource(QObject):
             'insert-import': insertImport}
 
         self.connect(goToDefinitionAction, SIGNAL("triggered()"),
-            actions.Actions().editor_go_to_definition)
+                     actions.Actions().editor_go_to_definition)
         self.connect(countCodeLinesAction, SIGNAL("triggered()"),
-            actions.Actions().count_file_code_lines)
+                     actions.Actions().count_file_code_lines)
         self.connect(insertImport, SIGNAL("triggered()"),
-            actions.Actions().import_from_everywhere)
+                     actions.Actions().import_from_everywhere)
         self.connect(indentMoreAction, SIGNAL("triggered()"),
-            actions.Actions().editor_indent_more)
+                     actions.Actions().editor_indent_more)
         self.connect(indentLessAction, SIGNAL("triggered()"),
-            actions.Actions().editor_indent_less)
+                     actions.Actions().editor_indent_less)
         self.connect(commentAction, SIGNAL("triggered()"),
-            actions.Actions().editor_comment)
+                     actions.Actions().editor_comment)
         self.connect(unCommentAction, SIGNAL("triggered()"),
-            actions.Actions().editor_uncomment)
+                     actions.Actions().editor_uncomment)
         self.connect(horizontalLineAction, SIGNAL("triggered()"),
-            actions.Actions().editor_insert_horizontal_line)
+                     actions.Actions().editor_insert_horizontal_line)
         self.connect(titleCommentAction, SIGNAL("triggered()"),
-            actions.Actions().editor_insert_title_comment)
+                     actions.Actions().editor_insert_title_comment)
 #        QObject.connect(removeUnusedImportsAction, SIGNAL("triggered()"),
 #        lambda: self._main._central.obtain_editor().remove_unused_imports())
 ##        QObject.connect(addMissingImportsAction, SIGNAL("triggered()"),
@@ -143,18 +143,18 @@ class MenuSource(QObject):
 #        QObject.connect(extractMethodAction, SIGNAL("triggered()"),
 #        lambda: self._main._central.obtain_editor().extract_method())
         self.connect(moveUp, SIGNAL("triggered()"),
-            actions.Actions().editor_move_up)
+                     actions.Actions().editor_move_up)
         self.connect(moveDown, SIGNAL("triggered()"),
-            actions.Actions().editor_move_down)
+                     actions.Actions().editor_move_down)
         self.connect(duplicate, SIGNAL("triggered()"),
-            actions.Actions().editor_duplicate)
+                     actions.Actions().editor_duplicate)
         self.connect(replaceTabsSpaces, SIGNAL("triggered()"),
-            actions.Actions().editor_replace_tabs_with_spaces)
+                     actions.Actions().editor_replace_tabs_with_spaces)
         self.connect(removeTrailingSpaces, SIGNAL("triggered()"),
-            actions.Actions().editor_remove_trailing_spaces)
+                     actions.Actions().editor_remove_trailing_spaces)
         self.connect(remove, SIGNAL("triggered()"),
-            actions.Actions().editor_remove_line)
+                     actions.Actions().editor_remove_line)
         self.connect(insertPrints, SIGNAL("triggered()"),
-            actions.Actions().editor_insert_debugging_prints)
+                     actions.Actions().editor_insert_debugging_prints)
         self.connect(insertPdb, SIGNAL("triggered()"),
-            actions.Actions().editor_insert_pdb)
+                     actions.Actions().editor_insert_pdb)

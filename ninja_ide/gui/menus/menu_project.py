@@ -31,9 +31,9 @@ class MenuProject(QObject):
         QObject.__init__(self)
 
         runAction = menuProject.addAction(QIcon(resources.IMAGES['play']),
-            (self.trUtf8("Run Project (%s)") %
-                resources.get_shortcut("Run-project").toString(
-                    QKeySequence.NativeText)))
+                                          (self.trUtf8("Run Project (%s)") %
+                                           resources.get_shortcut("Run-project").toString(
+                                               QKeySequence.NativeText)))
 #        debugAction = menuProject.addAction(
 #            QIcon(resources.IMAGES['debug']),
 #            self.trUtf8("Debug Project (%s)" %
@@ -45,9 +45,9 @@ class MenuProject(QObject):
                 resources.get_shortcut("Run-file").toString(
                     QKeySequence.NativeText)))
         stopAction = menuProject.addAction(QIcon(resources.IMAGES['stop']),
-            (self.trUtf8("Stop (%s)") %
-                resources.get_shortcut("Stop-execution").toString(
-                    QKeySequence.NativeText)))
+                                           (self.trUtf8("Stop (%s)") %
+                                            resources.get_shortcut("Stop-execution").toString(
+                                                QKeySequence.NativeText)))
         menuProject.addSeparator()
         projectPropertiesAction = menuProject.addAction(
             self.trUtf8("Open Project Properties"))
@@ -64,15 +64,15 @@ class MenuProject(QObject):
             'preview-web': previewAction}
 
         self.connect(runAction, SIGNAL("triggered()"),
-            actions.Actions().execute_project)
+                     actions.Actions().execute_project)
         self.connect(runFileAction, SIGNAL("triggered()"),
-            actions.Actions().execute_file)
+                     actions.Actions().execute_file)
         self.connect(stopAction, SIGNAL("triggered()"),
-            actions.Actions().kill_execution)
+                     actions.Actions().kill_execution)
         self.connect(previewAction, SIGNAL("triggered()"),
-            actions.Actions().preview_in_browser)
+                     actions.Actions().preview_in_browser)
         self.connect(projectPropertiesAction, SIGNAL("triggered()"),
-            actions.Actions().open_project_properties)
+                     actions.Actions().open_project_properties)
 #        self.connect(debugAction, SIGNAL("triggered()"),
 #            actions.Actions().debug_file)
 #        self.connect(diagramView, SIGNAL("triggered()"),

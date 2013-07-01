@@ -36,20 +36,26 @@ class MenuEdit(QObject):
         QObject.__init__(self)
 
         undoAction = menuEdit.addAction(QIcon(resources.IMAGES['undo']),
-            (self.trUtf8("Undo (%s+Z)") % settings.OS_KEY))
+                                        (self.trUtf8("Undo (%s+Z)")
+                                         % settings.OS_KEY))
         redoAction = menuEdit.addAction(QIcon(resources.IMAGES['redo']),
-            (self.trUtf8("Redo (%s)") % resources.get_shortcut("Redo").toString(
-                    QKeySequence.NativeText)))
+                                        (self.trUtf8("Redo (%s)") %
+                                         resources.get_shortcut("Redo").toString(
+                                             QKeySequence.NativeText)))
         cutAction = menuEdit.addAction(QIcon(resources.IMAGES['cut']),
-            (self.trUtf8("&Cut (%s+X)") % settings.OS_KEY))
+                                       (self.trUtf8("&Cut (%s+X)")
+                                        % settings.OS_KEY))
         copyAction = menuEdit.addAction(QIcon(resources.IMAGES['copy']),
-            (self.trUtf8("&Copy (%s+C)") % settings.OS_KEY))
+                                        (self.trUtf8("&Copy (%s+C)")
+                                         % settings.OS_KEY))
         pasteAction = menuEdit.addAction(QIcon(resources.IMAGES['paste']),
-            (self.trUtf8("&Paste (%s+V)") % settings.OS_KEY))
+                                         (self.trUtf8("&Paste (%s+V)")
+                                          % settings.OS_KEY))
         menuEdit.addSeparator()
         findAction = menuEdit.addAction(QIcon(resources.IMAGES['find']),
-            (self.trUtf8("Find (%s)") % resources.get_shortcut("Find").toString(
-                    QKeySequence.NativeText)))
+                                        (self.trUtf8("Find (%s)")
+                                         % resources.get_shortcut("Find").toString(
+                                             QKeySequence.NativeText)))
         findReplaceAction = menuEdit.addAction(
             QIcon(resources.IMAGES['findReplace']),
             (self.trUtf8("Find/Replace (%s)") %
@@ -60,13 +66,13 @@ class MenuEdit(QObject):
                 resources.get_shortcut("Find-with-word").toString(
                     QKeySequence.NativeText)))
         findInFilesAction = menuEdit.addAction(QIcon(resources.IMAGES['find']),
-            (self.trUtf8("Find in Files (%s)") %
-                resources.get_shortcut("Find-in-files").toString(
-                    QKeySequence.NativeText)))
+                                               (self.trUtf8("Find in Files (%s)") %
+                                                resources.get_shortcut("Find-in-files").toString(
+                                                    QKeySequence.NativeText)))
         locatorAction = menuEdit.addAction(QIcon(resources.IMAGES['locator']),
-            (self.trUtf8("Code Locator (%s)") %
-                resources.get_shortcut("Code-locator").toString(
-                    QKeySequence.NativeText)))
+                                           (self.trUtf8("Code Locator (%s)") %
+                                            resources.get_shortcut("Code-locator").toString(
+                                                QKeySequence.NativeText)))
         menuEdit.addSeparator()
         upperAction = menuEdit.addAction(
             self.trUtf8("Convert selected Text to: UPPER"))
@@ -76,7 +82,7 @@ class MenuEdit(QObject):
             self.trUtf8("Convert selected Text to: Title Word"))
         menuEdit.addSeparator()
         prefAction = menuEdit.addAction(QIcon(resources.IMAGES['pref']),
-            self.trUtf8("Preference&s"))
+                                        self.trUtf8("Preference&s"))
 
         self.toolbar_items = {
             'undo': undoAction,
@@ -98,15 +104,15 @@ class MenuEdit(QObject):
         self.connect(lowerAction, SIGNAL("triggered()"), self._editor_lower)
         self.connect(titleAction, SIGNAL("triggered()"), self._editor_title)
         self.connect(findAction, SIGNAL("triggered()"),
-            status_bar.StatusBar().show)
+                     status_bar.StatusBar().show)
         self.connect(findWithWordAction, SIGNAL("triggered()"),
-            status_bar.StatusBar().show_with_word)
+                     status_bar.StatusBar().show_with_word)
         self.connect(findReplaceAction, SIGNAL("triggered()"),
-            status_bar.StatusBar().show_replace)
+                     status_bar.StatusBar().show_replace)
         self.connect(findInFilesAction, SIGNAL("triggered()"),
-            self._show_find_in_files)
+                     self._show_find_in_files)
         self.connect(locatorAction, SIGNAL("triggered()"),
-            status_bar.StatusBar().show_locator)
+                     status_bar.StatusBar().show_locator)
         self.connect(prefAction, SIGNAL("triggered()"), self._show_preferences)
 
     def _editor_upper(self):
@@ -119,7 +125,7 @@ class MenuEdit(QObject):
                 text = editorWidget._text_under_cursor().upper()
                 editorWidget.moveCursor(QTextCursor.StartOfWord)
                 editorWidget.moveCursor(QTextCursor.EndOfWord,
-                    QTextCursor.KeepAnchor)
+                                        QTextCursor.KeepAnchor)
             editorWidget.textCursor().insertText(text)
             editorWidget.textCursor().endEditBlock()
 
@@ -133,7 +139,7 @@ class MenuEdit(QObject):
                 text = editorWidget._text_under_cursor().lower()
                 editorWidget.moveCursor(QTextCursor.StartOfWord)
                 editorWidget.moveCursor(QTextCursor.EndOfWord,
-                    QTextCursor.KeepAnchor)
+                                        QTextCursor.KeepAnchor)
             editorWidget.textCursor().insertText(text)
             editorWidget.textCursor().endEditBlock()
 
@@ -147,7 +153,7 @@ class MenuEdit(QObject):
                 text = editorWidget._text_under_cursor().title()
                 editorWidget.moveCursor(QTextCursor.StartOfWord)
                 editorWidget.moveCursor(QTextCursor.EndOfWord,
-                    QTextCursor.KeepAnchor)
+                                        QTextCursor.KeepAnchor)
             editorWidget.textCursor().insertText(text)
             editorWidget.textCursor().endEditBlock()
 
