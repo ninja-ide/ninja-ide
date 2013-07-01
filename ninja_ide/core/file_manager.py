@@ -82,7 +82,7 @@ def create_init_file_complete(folderName):
     for f in files:
         read = open(os.path.join(folderName, f), 'r')
         imp = [re.split('\\s|\\(', line)[1] for line in read.readlines()
-                if patDef.match(line) or patClass.match(line)]
+               if patDef.match(line) or patClass.match(line)]
         imports_ += ['from ' + f[:-3] + ' import ' + i for i in imp]
     name = os.path.join(folderName, '__init__.py')
     fi = open(name, 'w')
@@ -211,9 +211,9 @@ def open_project(path):
     d = {}
     for root, dirs, files in os.walk(path, followlinks=True):
         d[root] = [[f for f in files
-                if (os.path.splitext(f.lower())[-1]) in
-                settings.SUPPORTED_EXTENSIONS],
-                dirs]
+                    if (os.path.splitext(f.lower())[-1]) in
+                    settings.SUPPORTED_EXTENSIONS],
+                   dirs]
     return d
 
 
@@ -226,9 +226,9 @@ def open_project_with_extensions(path, extensions):
     d = {}
     for root, dirs, files in os.walk(path, followlinks=True):
         d[root] = [[f for f in files
-                if (os.path.splitext(f.lower())[-1]) in extensions or
-                '.*' in extensions],
-                dirs]
+                    if (os.path.splitext(f.lower())[-1]) in extensions or
+                    '.*' in extensions],
+                   dirs]
     return d
 
 
@@ -314,7 +314,7 @@ def check_for_external_modification(fileName, old_mtime):
     #check the file mtime attribute calling os.stat()
     if new_modification_time > old_mtime:
         return True
-    return  False
+    return False
 
 
 def get_files_from_folder(folder, ext):

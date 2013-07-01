@@ -294,7 +294,7 @@ class __PluginManager(object):
             return plugin_instance
         except(ImportError, AttributeError) as reason:
             raise PluginManagerException('Error loading "%s": %s' %
-                 (module, reason))
+                                         (module, reason))
         finally:
             sys.path = old_syspath
         return None
@@ -314,7 +314,9 @@ class __PluginManager(object):
                 if module is not None and klassname is not None:
                     try:
                         plugin_instance = self._load_module(module,
-                            klassname, plugin_structure, dir_name)
+                                                            klassname,
+                                                            plugin_structure,
+                                                            dir_name)
                         #set a get_plugin method to get the reference to other
                         #setattr(plugin_instance,'get_plugin',self.__getitem__)
                         #call a special method *initialize* in the plugin!
@@ -326,7 +328,7 @@ class __PluginManager(object):
                         self._active_plugins[plugin_name] = plugin_metadata
                     except (PluginManagerException, Exception) as reason:
                         logger.error("Not instanciated (%s): %s", plugin_name,
-                            reason)
+                                     reason)
                         #remove the plugin because has errors
                         self._found_plugins.remove(plugin_name)
                         traceback_msg = traceback.format_exc()
@@ -335,7 +337,7 @@ class __PluginManager(object):
                         self._add_error(plugin_name, traceback_msg)
                     else:
                         logger.info("Successfuly initialized (%s)",
-                            plugin_name)
+                                    plugin_name)
 
     def load_all(self):
         for dir, pl in list(self._plugins_by_dir.items()):
@@ -429,7 +431,7 @@ def __get_all_plugin_descriptors():
     '''
     global PLUGIN_EXTENSION
     return [pf for pf in os.listdir(resources.PLUGINS)
-        if pf.endswith(PLUGIN_EXTENSION)]
+            if pf.endswith(PLUGIN_EXTENSION)]
 
 
 def download_plugin(file_):
@@ -494,7 +496,7 @@ def has_dependencies(plug):
             module = p_json.get('module')
             #plugin_module/requirements.txt
             req_file = os.path.join(os.path.join(PLUGINS, module),
-                REQUIREMENTS)
+                                    REQUIREMENTS)
             if os.path.isfile(req_file):
                 return (True, COMMAND_FOR_PIP_INSTALL % req_file)
             #the plugin was found but no requirement then break!

@@ -21,7 +21,7 @@ import os
 
 from PyQt4.QtCore import QThread
 from pyinotify import ProcessEvent, IN_CREATE, IN_DELETE, IN_DELETE_SELF, \
-                        IN_MODIFY, WatchManager, Notifier, ExcludeFilter
+    IN_MODIFY, WatchManager, Notifier, ExcludeFilter
 
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.core.filesystem_notifications.linux')
@@ -72,8 +72,8 @@ class QNotifier(QThread):
     def __init__(self, wm, processor):
         self.event_queue = list()
         self._processor = processor
-        self.notifier = Notifier(wm,
-                            NinjaProcessEvent(self.event_queue.append))
+        self.notifier = Notifier(wm, NinjaProcessEvent(
+            self.event_queue.append))
         self.notifier.coalesce_events(True)
         self.keep_running = True
         QThread.__init__(self)
@@ -117,9 +117,9 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
                 notifier = QNotifier(wm, self._emit_signal_on_change)
                 notifier.start()
                 exclude = ExcludeFilter([os.path.join(path, folder)
-                    for folder in self._ignore_hidden])
+                                         for folder in self._ignore_hidden])
                 wm.add_watch(path, mask, rec=True, auto_add=True,
-                    exclude_filter=exclude)
+                             exclude_filter=exclude)
                 self.watching_paths[path] = notifier
             except (OSError, IOError):
                 pass

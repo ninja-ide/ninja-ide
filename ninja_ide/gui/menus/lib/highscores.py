@@ -17,7 +17,8 @@ class HighScores(object):
         """ The lowest score currently in the list.
             If the list is still incomplete, returns 0
         """
-        return 0 if len(self.scorelist) < self.max_length else self.scorelist[-1][1]
+        return (0 if len(self.scorelist) < self.max_length
+                else self.scorelist[-1][1])
 
     def add_score(self, name, score):
         """ Adds a score to the high-scores. The score is only
@@ -26,7 +27,8 @@ class HighScores(object):
             is shorter than the maximal length.
         """
         self.scorelist.append((name, score))
-        self.scorelist.sort(reverse = True, cmp = lambda a, b: cmp(a[1], b[1]))
+        self.scorelist.sort(reverse=True,
+                            cmp=lambda a, b: cmp(a[1], b[1]))
 
         if len(self.scorelist) > self.max_length:
             self.scorelist = self.scorelist[0:-1]

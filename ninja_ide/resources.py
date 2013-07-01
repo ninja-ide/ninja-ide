@@ -48,7 +48,7 @@ SYNTAX_FILES = os.path.join(PRJ_PATH, "addins", "syntax")
 PLUGINS = os.path.join(HOME_NINJA_PATH, "addins", "plugins")
 
 PLUGINS_DESCRIPTOR = os.path.join(HOME_NINJA_PATH, "addins",
-                                    "plugins", "descriptor.json")
+                                  "plugins", "descriptor.json")
 
 LANGS = os.path.join(PRJ_PATH, "addins", "lang")
 
@@ -108,7 +108,7 @@ IMAGES = {
     "saveAll": os.path.join(PRJ_PATH, "img", "document-save-all.png"),
     "activate-profile": os.path.join(PRJ_PATH, "img", "activate_profile.png"),
     "deactivate-profile": os.path.join(PRJ_PATH, "img",
-        "deactivate_profile.png"),
+                                       "deactivate_profile.png"),
     "copy": os.path.join(PRJ_PATH, "img", "edit-copy.png"),
     "cut": os.path.join(PRJ_PATH, "img", "edit-cut.png"),
     "paste": os.path.join(PRJ_PATH, "img", "edit-paste.png"),
@@ -137,11 +137,11 @@ IMAGES = {
     "zoom-in": os.path.join(PRJ_PATH, "img", "zoom_in.png"),
     "zoom-out": os.path.join(PRJ_PATH, "img", "zoom_out.png"),
     "splitCPosition": os.path.join(PRJ_PATH, "img",
-                                "panels-change-position.png"),
+                                   "panels-change-position.png"),
     "splitMPosition": os.path.join(PRJ_PATH, "img",
-                                "panels-change-vertical-position.png"),
+                                   "panels-change-vertical-position.png"),
     "splitCRotate": os.path.join(PRJ_PATH, "img",
-                                "panels-change-orientation.png"),
+                                 "panels-change-orientation.png"),
     "indent-less": os.path.join(PRJ_PATH, "img", "indent-less.png"),
     "indent-more": os.path.join(PRJ_PATH, "img", "indent-more.png"),
     "go-to-definition": os.path.join(PRJ_PATH, "img", "go_to_definition.png"),
@@ -170,10 +170,10 @@ IMAGES = {
     "locate-class": os.path.join(PRJ_PATH, "img", "locate-class.png"),
     "locate-function": os.path.join(PRJ_PATH, "img", "locate-function.png"),
     "locate-attributes": os.path.join(PRJ_PATH, "img",
-        "locate-attributes.png"),
+                                      "locate-attributes.png"),
     "locate-nonpython": os.path.join(PRJ_PATH, "img", "locate-nonpython.png"),
     "locate-on-this-file": os.path.join(PRJ_PATH, "img",
-        "locate-on-this-file.png"),
+                                        "locate-on-this-file.png"),
     "locate-tab": os.path.join(PRJ_PATH, "img", "locate-tab.png"),
     "locate-line": os.path.join(PRJ_PATH, "img", "locate-line.png"),
     "add": os.path.join(PRJ_PATH, "img", "add.png"),
@@ -313,7 +313,7 @@ def load_shortcuts():
         default_action = SHORTCUTS[action].toString()
         #get the custom shortcut or the default
         shortcut_action = settings.value("shortcuts/%s" % action,
-            default_action)
+                                         default_action)
         #set the shortcut
         CUSTOM_SHORTCUTS[action] = QKeySequence(shortcut_action)
 
