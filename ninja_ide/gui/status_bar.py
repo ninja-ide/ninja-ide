@@ -86,17 +86,17 @@ class __StatusBar(QStatusBar):
 
         self.connect(self, SIGNAL("messageChanged(QString)"), self.message_end)
         self.connect(self._replaceWidget._btnCloseReplace, SIGNAL("clicked()"),
-            lambda: self._replaceWidget.setVisible(False))
+                     lambda: self._replaceWidget.setVisible(False))
         self.connect(self._replaceWidget._btnReplace, SIGNAL("clicked()"),
-            self.replace)
+                     self.replace)
         self.connect(self._replaceWidget._btnReplaceAll, SIGNAL("clicked()"),
-            self.replace_all)
+                     self.replace_all)
         self.connect(self._replaceWidget._btnReplaceSelection,
-            SIGNAL("clicked()"), self.replace_selected)
+                     SIGNAL("clicked()"), self.replace_selected)
         self.connect(self._fileSystemOpener.btnClose, SIGNAL("clicked()"),
-            self.hide_status)
+                     self.hide_status)
         self.connect(self._fileSystemOpener, SIGNAL("requestHide()"),
-            self.hide_status)
+                     self.hide_status)
 
     def handle_tab_changed(self, new_tab):
         """
@@ -108,9 +108,9 @@ class __StatusBar(QStatusBar):
             self._searchWidget.find_matches(editor)
         if editor:
             self.disconnect(editor, SIGNAL("textChanged()"),
-                        self._notify_editor_changed)
+                            self._notify_editor_changed)
             self.connect(editor, SIGNAL("textChanged()"),
-                        self._notify_editor_changed)
+                         self._notify_editor_changed)
 
     def _notify_editor_changed(self):
         """
@@ -196,7 +196,8 @@ class __StatusBar(QStatusBar):
         flags = 0 + s + w
         editor = main_container.MainContainer().get_actual_editor()
         if editor:
-            editor.replace_match(self._searchWidget._line.text(),
+            editor.replace_match(
+                self._searchWidget._line.text(),
                 self._replaceWidget._lineReplace.text(), flags)
         if not editor.textCursor().hasSelection():
             self.find()
@@ -213,8 +214,8 @@ class __StatusBar(QStatusBar):
         editor = main_container.MainContainer().get_actual_editor()
         if editor:
             editor.replace_match(self._searchWidget._line.text(),
-                self._replaceWidget._lineReplace.text(), flags, True,
-                selected)
+                                 self._replaceWidget._lineReplace.text(),
+                                 flags, True, selected)
 
     def find(self):
         s = 0 if not self._searchWidget._checkSensitive.isChecked() \
@@ -277,13 +278,13 @@ class SearchWidget(QWidget):
         self.btnPrevious = QPushButton(
             self.style().standardIcon(QStyle.SP_ArrowLeft), '')
         self.btnPrevious.setToolTip(self.trUtf8("Press %s") %
-                resources.get_shortcut("Find-previous").toString(
-                    QKeySequence.NativeText))
+                                    resources.get_shortcut("Find-previous").toString(
+                                        QKeySequence.NativeText))
         self.btnNext = QPushButton(
             self.style().standardIcon(QStyle.SP_ArrowRight), '')
         self.btnNext.setToolTip(self.trUtf8("Press %s") %
-                resources.get_shortcut("Find-next").toString(
-                    QKeySequence.NativeText))
+                                resources.get_shortcut("Find-next").toString(
+                                    QKeySequence.NativeText))
         hSearch.addWidget(self._btnClose)
         hSearch.addWidget(self._line)
         hSearch.addWidget(self._btnFind)
@@ -297,17 +298,17 @@ class SearchWidget(QWidget):
         self._line.counter.update_count(self.index, self.totalMatches)
 
         self.connect(self._btnClose, SIGNAL("clicked()"),
-            self._parent.hide_status)
+                     self._parent.hide_status)
         self.connect(self._btnFind, SIGNAL("clicked()"),
-            self.find_next)
+                     self.find_next)
         self.connect(self.btnNext, SIGNAL("clicked()"),
-            self.find_next)
+                     self.find_next)
         self.connect(self.btnPrevious, SIGNAL("clicked()"),
-            self.find_previous)
+                     self.find_previous)
         self.connect(self._checkSensitive, SIGNAL("stateChanged(int)"),
-            self._checks_state_changed)
+                     self._checks_state_changed)
         self.connect(self._checkWholeWord, SIGNAL("stateChanged(int)"),
-            self._checks_state_changed)
+                     self._checks_state_changed)
 
     def _checks_state_changed(self):
         editor = main_container.MainContainer().get_actual_editor()
@@ -361,7 +362,7 @@ class SearchWidget(QWidget):
 
             cursor.movePosition(QTextCursor.WordLeft)
             cursor.movePosition(QTextCursor.Start,
-                QTextCursor.KeepAnchor)
+                                QTextCursor.KeepAnchor)
             current_index = text[:cursor_position].count(search)
             text = cursor.selectedText()
             if current_index <= self.totalMatches:
@@ -372,7 +373,7 @@ class SearchWidget(QWidget):
             self.index = 0
             self.totalMatches = 0
         self._line.counter.update_count(self.index, self.totalMatches,
-            hasSearch)
+                                        hasSearch)
         if hasSearch and not in_place:
             self._parent.find()
         return current_index
@@ -412,12 +413,12 @@ class TextLine(QLineEdit):
             super(TextLine, self).keyPressEvent(event)
             return
         if editor and event.key() in \
-        (Qt.Key_Enter, Qt.Key_Return):
+           (Qt.Key_Enter, Qt.Key_Return):
             self._parent.find_next()
             return
         super(TextLine, self).keyPressEvent(event)
         if int(event.key()) in range(32, 162) or \
-        event.key() == Qt.Key_Backspace:
+           event.key() == Qt.Key_Backspace:
             has_replace = self._parent._parent._replaceWidget.isVisible()
             if not has_replace:
                 self._parent.find_matches(editor)
@@ -445,9 +446,9 @@ class FileSystemOpener(QWidget):
         hbox.addWidget(self.btnOpen)
 
         self.connect(self.pathLine, SIGNAL("returnPressed()"),
-            self._open_file)
+                     self._open_file)
         self.connect(self.btnOpen, SIGNAL("clicked()"),
-            self._open_file)
+                     self._open_file)
 
     def _open_file(self):
         path = self.pathLine.text()
