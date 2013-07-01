@@ -124,15 +124,15 @@ class __ExplorerContainer(QTabWidget):
             self._treeProjects = tree_projects_widget.TreeProjectsWidget()
             self.addTab(self._treeProjects, self.tr('Projects'))
             self.connect(self._treeProjects, SIGNAL("runProject()"),
-                self.__ide.actions.execute_project)
+                         self.__ide.actions.execute_project)
             self.connect(self.__ide, SIGNAL("goingDown()"),
-                        self._treeProjects.shutdown)
+                         self._treeProjects.shutdown)
             self.connect(self._treeProjects,
-                SIGNAL("addProjectToConsole(QString)"),
-                self.__ide.actions.add_project_to_console)
+                         SIGNAL("addProjectToConsole(QString)"),
+                         self.__ide.actions.add_project_to_console)
             self.connect(self._treeProjects,
-                SIGNAL("removeProjectFromConsole(QString)"),
-                self.__ide.actions.remove_project_from_console)
+                         SIGNAL("removeProjectFromConsole(QString)"),
+                         self.__ide.actions.remove_project_from_console)
 
             def close_project_signal():
                 self.emit(SIGNAL("updateLocator()"))
@@ -141,12 +141,12 @@ class __ExplorerContainer(QTabWidget):
                 if project:
                     self.emit(SIGNAL("projectClosed(QString)"), project)
             self.connect(self._treeProjects, SIGNAL("closeProject(QString)"),
-                close_project_signal)
+                         close_project_signal)
             self.connect(self._treeProjects, SIGNAL("refreshProject()"),
-                close_project_signal)
+                         close_project_signal)
             self.connect(self._treeProjects,
-                SIGNAL("closeFilesFromProjectClosed(QString)"),
-                close_files_related_to_closed_project)
+                         SIGNAL("closeFilesFromProjectClosed(QString)"),
+                         close_files_related_to_closed_project)
 
     def add_tab_symbols(self):
         if not self._treeSymbols:
@@ -156,7 +156,7 @@ class __ExplorerContainer(QTabWidget):
             def _go_to_definition(lineno):
                 self.emit(SIGNAL("goToDefinition(int)"), lineno)
             self.connect(self._treeSymbols, SIGNAL("goToDefinition(int)"),
-                _go_to_definition)
+                         _go_to_definition)
 
     def update_current_symbol(self, line, col):
         """Select the proper item in the symbols list."""
@@ -166,22 +166,22 @@ class __ExplorerContainer(QTabWidget):
     def add_tab_inspector(self):
         if not settings.WEBINSPECTOR_SUPPORTED:
             QMessageBox.information(self,
-                self.tr("Web Inspector not Supported"),
-                self.tr("Your Qt version doesn't support the Web Inspector"))
+                                    self.tr("Web Inspector not Supported"),
+                                    self.tr("Your Qt version doesn't support the Web Inspector"))
         if not self._inspector:
             self._inspector = WebInspector(self)
             self.addTab(self._inspector, self.tr("Web Inspector"))
             self.connect(self._inspector.btnDock, SIGNAL("clicked()"),
-                self._dock_inspector)
+                         self._dock_inspector)
 
     def add_tab_errors(self):
         if not self._listErrors:
             self._listErrors = errors_lists.ErrorsWidget()
             self.addTab(self._listErrors, self.tr("Errors"))
             self.connect(self._listErrors, SIGNAL("pep8Activated(bool)"),
-                self.__ide.mainContainer.reset_pep8_warnings)
+                         self.__ide.mainContainer.reset_pep8_warnings)
             self.connect(self._listErrors, SIGNAL("lintActivated(bool)"),
-                self.__ide.mainContainer.reset_lint_warnings)
+                         self.__ide.mainContainer.reset_lint_warnings)
 
     def remove_tab_migration(self):
         if self._listMigration:
@@ -252,7 +252,7 @@ class __ExplorerContainer(QTabWidget):
     def open_project_folder(self, folderName='', notIDEStart=True):
         if not self._treeProjects and notIDEStart:
             QMessageBox.information(self, self.tr("Projects Disabled"),
-                self.tr("Project support has been disabled from Preferences"))
+                                    self.tr("Project support has been disabled from Preferences"))
             return
         if not folderName:
             if settings.WORKSPACE:
@@ -267,7 +267,7 @@ class __ExplorerContainer(QTabWidget):
                 elif editorWidget is not None and editorWidget.ID:
                     directory = file_manager.get_folder(editorWidget.ID)
             folderName = QFileDialog.getExistingDirectory(self,
-                self.tr("Open Project Directory"), directory)
+                                                          self.tr("Open Project Directory"), directory)
         try:
             if not folderName:
                 return
@@ -277,11 +277,11 @@ class __ExplorerContainer(QTabWidget):
                 thread = ui_tools.ThreadProjectExplore()
                 self._thread_execution[folderName] = thread
                 self.connect(thread,
-                    SIGNAL("folderDataAcquired(PyQt_PyObject)"),
-                    self._callback_open_project)
+                             SIGNAL("folderDataAcquired(PyQt_PyObject)"),
+                             self._callback_open_project)
                 self.connect(thread,
-                    SIGNAL("finished()"),
-                    self._unmute_tree_signals_clean_threads)
+                             SIGNAL("finished()"),
+                             self._unmute_tree_signals_clean_threads)
                 thread.open_folder(folderName)
             else:
                 self._treeProjects._set_current_project(folderName)
@@ -289,7 +289,7 @@ class __ExplorerContainer(QTabWidget):
             logger.error('open_project_folder: %s', reason)
             if not notIDEStart:
                 QMessageBox.information(self, self.tr("Incorrect Project"),
-                    self.tr("The project could not be loaded!"))
+                                        self.tr("The project could not be loaded!"))
 
     def _unmute_tree_signals_clean_threads(self):
         paths_to_delete = []
@@ -318,7 +318,7 @@ class __ExplorerContainer(QTabWidget):
     def create_new_project(self):
         if not self._treeProjects:
             QMessageBox.information(self, self.tr("Projects Disabled"),
-                self.tr("Project support has been disabled from Preferences"))
+                                    self.tr("Project support has been disabled from Preferences"))
             return
         wizard = wizard_new_project.WizardNewProject(self)
         wizard.show()
@@ -402,7 +402,7 @@ class __ExplorerContainer(QTabWidget):
             listFounder.append((recent_project_path, int(
                 content["lastopen"].toString("yyyyMMddHHmmzzz"))))
         listFounder = sorted(listFounder, key=lambda date: listFounder[1],
-            reverse=True)   # sort by date last used
+                             reverse=True)   # sort by date last used
         return listFounder[0][0]
 
     def get_project_name(self, path):
