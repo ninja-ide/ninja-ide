@@ -36,7 +36,7 @@ class Results(QWidget):
         vbox = QVBoxLayout(self)
         self._tree = QTreeWidget()
         self._tree.setHeaderLabels((self.tr("Content"),
-            self.tr('File'), self.tr('Line')))
+                                    self.tr('File'), self.tr('Line')))
         self._tree.header().setHorizontalScrollMode(
             QAbstractItemView.ScrollPerPixel)
         self._tree.header().setResizeMode(0, QHeaderView.ResizeToContents)
@@ -49,18 +49,18 @@ class Results(QWidget):
 
         #Signals
         self.connect(self._tree,
-            SIGNAL("itemActivated(QTreeWidgetItem*, int)"),
-            self._open_result)
+                     SIGNAL("itemActivated(QTreeWidgetItem*, int)"),
+                     self._open_result)
         self.connect(self._tree, SIGNAL("itemClicked(QTreeWidgetItem*, int)"),
-            self._open_result)
+                     self._open_result)
 
     def _open_result(self, item, col):
         filename = item.toolTip(1)
         line = int(item.text(2)) - 1
         main_container.MainContainer().open_file(
-                filename=filename,
-                cursorPosition=line,
-                positionIsLineNumber=True)
+            filename=filename,
+            cursorPosition=line,
+            positionIsLineNumber=True)
         self._parent.hide()
 
     def update_result(self, items):

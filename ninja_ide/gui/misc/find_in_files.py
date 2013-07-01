@@ -99,14 +99,14 @@ class FindInFilesThread(QThread):
             #process all files in current dir!
             for one_file in current_files:
                 self._grep_file(one_file.absoluteFilePath(),
-                    one_file.fileName())
+                                one_file.fileName())
 
     def _grep_file(self, file_path, file_name):
         if not self.by_phrase:
             with open(file_path, 'r') as f:
                 content = f.read()
             words = [word for word in
-                self.search_pattern.pattern().split('|')]
+                     self.search_pattern.pattern().split('|')]
             words.insert(0, True)
 
             def check_whole_words(result, word):
@@ -132,7 +132,7 @@ class FindInFilesThread(QThread):
         relative_file_name = file_manager.convert_to_relative(
             self.root_dir, file_path)
         self.emit(SIGNAL("found_pattern(PyQt_PyObject)"),
-            (relative_file_name, lines))
+                  (relative_file_name, lines))
 
     def cancel(self):
         self._cancel = True
@@ -152,7 +152,7 @@ class FindInFilesResult(QTreeWidget):
     def update_result(self, dir_name_root, file_name, items):
         if items:
             root_item = FindInFilesRootItem(self, (file_name, ''),
-                dir_name_root)
+                                            dir_name_root)
             root_item.setExpanded(True)
             for line, content in items:
                 QTreeWidgetItem(root_item, (content, str(line + 1)))
@@ -182,7 +182,7 @@ class FindInFilesDialog(QDialog):
         self.dir_combo.addItem(self.user_home)
         self.dir_combo.setEditable(True)
         self.open_button = QPushButton(QIcon(resources.IMAGES['find']),
-            self.tr("Open"))
+                                       self.tr("Open"))
         self.filters_line_edit = QLineEdit("*.py")
         self.replace_line = QLineEdit()
         self.replace_line.setEnabled(False)
@@ -247,19 +247,19 @@ class FindInFilesDialog(QDialog):
         #signal
         self.connect(self.open_button, SIGNAL("clicked()"), self._select_dir)
         self.connect(self.find_button, SIGNAL("clicked()"),
-            self._find_in_files)
+                     self._find_in_files)
         self.connect(self.cancel_button, SIGNAL("clicked()"),
-            self._kill_thread)
+                     self._kill_thread)
         self.connect(self._find_thread, SIGNAL("found_pattern(PyQt_PyObject)"),
-            self._found_match)
+                     self._found_match)
         self.connect(self._find_thread, SIGNAL("finished()"),
-            self._find_thread_finished)
+                     self._find_thread_finished)
         self.connect(self.type_checkbox, SIGNAL("stateChanged(int)"),
-            self._change_radio_enabled)
+                     self._change_radio_enabled)
         self.connect(self.check_replace, SIGNAL("stateChanged(int)"),
-            self._replace_activated)
+                     self._replace_activated)
         self.connect(self.words_radio, SIGNAL("clicked(bool)"),
-            self._words_radio_pressed)
+                     self._words_radio_pressed)
 
     def _replace_activated(self):
         self.replace_line.setEnabled(self.check_replace.isChecked())
@@ -297,7 +297,8 @@ class FindInFilesDialog(QDialog):
         self._find_thread.wait()
 
     def _select_dir(self):
-        dir_name = QFileDialog.getExistingDirectory(self,
+        dir_name = QFileDialog.getExistingDirectory(
+            self,
             self.tr("Open Directory"),
             self.dir_combo.currentText(),
             QFileDialog.ShowDirsOnly)
@@ -350,7 +351,7 @@ class FindInFilesDialog(QDialog):
         #save a reference to the root directory where we find
         self.dir_name_root = dir_name
         self._find_thread.find_in_files(dir_name, filters, regExp, recursive,
-            by_phrase)
+                                        by_phrase)
 
 
 class FindInFilesWidget(QWidget):
@@ -392,27 +393,28 @@ class FindInFilesWidget(QWidget):
         vbox.addWidget(self._stop_button)
         vbox.addWidget(self._clear_button)
         vbox.addSpacerItem(QSpacerItem(0, 50,
-            QSizePolicy.Fixed, QSizePolicy.Expanding))
+                                       QSizePolicy.Fixed,
+                                       QSizePolicy.Expanding))
         vbox.addWidget(self._replace_button)
         main_hbox.addLayout(vbox)
 
         self._open_find_button.setFocus()
         #signals
         self.connect(self._open_find_button, SIGNAL("clicked()"),
-            self.open)
+                     self.open)
         self.connect(self._stop_button, SIGNAL("clicked()"), self._find_stop)
         self.connect(self._clear_button, SIGNAL("clicked()"),
-            self._clear_results)
+                     self._clear_results)
         self.connect(self._result_widget, SIGNAL(
             "itemActivated(QTreeWidgetItem *, int)"), self._go_to)
         self.connect(self._result_widget, SIGNAL(
             "itemClicked(QTreeWidgetItem *, int)"), self._go_to)
         self.connect(self._find_widget, SIGNAL("finished()"),
-            self._find_finished)
+                     self._find_finished)
         self.connect(self._find_widget, SIGNAL("findStarted()"),
-            self._find_started)
+                     self._find_started)
         self.connect(self._replace_button, SIGNAL("clicked()"),
-            self._replace_results)
+                     self._replace_results)
 
     def _find_finished(self):
         self._stop_button.setEnabled(False)
@@ -457,7 +459,7 @@ class FindInFilesWidget(QWidget):
             actual_projects = [p.path for p in actual_projects_obj]
             actual = self._explorer_container.get_actual_project()
             self._find_widget.show(actual_project=actual_projects,
-                actual=actual)
+                                   actual=actual)
 
     def find_occurrences(self, word):
         self._find_widget.pattern_line_edit.setText(word)
@@ -477,9 +479,11 @@ class FindInFilesWidget(QWidget):
 
     def _replace_results(self):
         result = QMessageBox.question(self, self.tr("Replace Files Contents"),
-            self.tr("Are you sure you want to replace the content in "
-                    "this files?\n(The change is not reversible)"),
-            buttons=QMessageBox.Yes | QMessageBox.No)
+                                      self.tr("Are you sure you want to "
+                                              "replace the content in "
+                                              "this files?\n(The change is "
+                                              "not reversible)"),
+                                      buttons=QMessageBox.Yes | QMessageBox.No)
         if result == QMessageBox.Yes:
             for index in range(self._result_widget.topLevelItemCount()):
                 parent = self._result_widget.topLevelItem(index)

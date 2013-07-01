@@ -54,10 +54,10 @@ except NameError:
 logger = NinjaLogger('ninja_ide.gui.misc.console_widget')
 
 BRACES = {"'": "'",
-    '"': '"',
-    '{': '}',
-    '[': ']',
-    '(': ')'}
+          '"': '"',
+          '{': '}',
+          '[': ']',
+          '(': ')'}
 
 
 class ConsoleWidget(QPlainTextEdit):
@@ -108,14 +108,14 @@ class ConsoleWidget(QPlainTextEdit):
             parts_scanner, code_scanner, formats)
 
         self.connect(self, SIGNAL("cursorPositionChanged()"),
-            self.highlight_current_line)
+                     self.highlight_current_line)
         self.highlight_current_line()
 
         self._proc = QProcess(self)
         self.connect(self._proc, SIGNAL("readyReadStandardOutput()"),
-            self._python_path_detected)
+                     self._python_path_detected)
         self.connect(self._proc, SIGNAL("error(QProcess::ProcessError)"),
-            self.process_error)
+                     self.process_error)
         self._add_system_path_for_frozen()
 
     def _add_system_path_for_frozen(self):
@@ -170,9 +170,9 @@ class ConsoleWidget(QPlainTextEdit):
         self.connect(actionPaste, SIGNAL("triggered()"), self._paste)
         self.connect(actionClean, SIGNAL("triggered()"), self._clean_console)
         self.connect(actionCopyHistory, SIGNAL("triggered()"),
-            self._copy_history)
+                     self._copy_history)
         self.connect(actionCopyConsoleContent, SIGNAL("triggered()"),
-            self._copy_console_content)
+                     self._copy_console_content)
 
     def _cut(self):
         event = QKeyEvent(QEvent.KeyPress, Qt.Key_X, Qt.ControlModifier, "x")
@@ -206,7 +206,7 @@ class ConsoleWidget(QPlainTextEdit):
         if event.text():
             cursor = self.textCursor()
             begin_last_block = (self.document().lastBlock().position() +
-                len(self.prompt))
+                                len(self.prompt))
             if cursor.hasSelection() and \
                ((cursor.selectionEnd() < begin_last_block) or
                (cursor.selectionStart() < begin_last_block)):
@@ -253,13 +253,13 @@ class ConsoleWidget(QPlainTextEdit):
         if (len(text) % settings.INDENT == 0) and text.isspace():
             cursor.movePosition(QTextCursor.StartOfLine)
             cursor.movePosition(QTextCursor.Right, QTextCursor.MoveAnchor,
-                settings.INDENT)
+                                settings.INDENT)
             cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
-                settings.INDENT)
+                                settings.INDENT)
             cursor.removeSelectedText()
             return True
         elif (selected_text ==
-             self.document().lastBlock().text()[len(self.prompt):]):
+              self.document().lastBlock().text()[len(self.prompt):]):
             self.textCursor().removeSelectedText()
             return True
 
@@ -286,7 +286,7 @@ class ConsoleWidget(QPlainTextEdit):
             cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
             braceClose = cursor.selection().toPlainText()
             if BRACES.get(brace, False) == event.text() and \
-              braceClose == event.text():
+               braceClose == event.text():
                 self.moveCursor(QTextCursor.Right)
                 return
 
@@ -295,7 +295,7 @@ class ConsoleWidget(QPlainTextEdit):
         if event.text() in BRACES:
             cursor = self.textCursor()
             cursor.movePosition(QTextCursor.StartOfLine,
-                QTextCursor.KeepAnchor)
+                                QTextCursor.KeepAnchor)
             self.textCursor().insertText(
                 BRACES[event.text()])
             self.moveCursor(QTextCursor.Left)
@@ -317,13 +317,13 @@ class ConsoleWidget(QPlainTextEdit):
         try:
             cursor = self.textCursor()
             cursor.movePosition(QTextCursor.StartOfLine,
-                QTextCursor.KeepAnchor)
+                                QTextCursor.KeepAnchor)
             var = cursor.selectedText()
             chars = self.patObject.findall(var)
             var = var[var.rfind(chars[-1]) + 1:]
             cr = self.cursorRect()
             proposals = completer.get_all_completions(var,
-                imports=self.imports)
+                                                      imports=self.imports)
             if not proposals:
                 if self.completer.popup().isVisible():
                     prefix = var[var.rfind('.') + 1:]
@@ -333,7 +333,7 @@ class ConsoleWidget(QPlainTextEdit):
                 else:
                     var = self._console.get_type(var)
                 proposals = completer.get_all_completions(var,
-                    imports=self.imports)
+                                                          imports=self.imports)
             self.completer.complete(cr, proposals)
         except:
             self.completer.popup().hide()
@@ -341,8 +341,9 @@ class ConsoleWidget(QPlainTextEdit):
     def highlight_current_line(self):
         self.extraSelections = []
         selection = QTextEdit.ExtraSelection()
-        lineColor = QColor(resources.CUSTOM_SCHEME.get('current-line',
-                    resources.COLOR_SCHEME['current-line']))
+        lineColor = QColor(resources.CUSTOM_SCHEME.get(
+            'current-line',
+            resources.COLOR_SCHEME['current-line']))
         lineColor.setAlpha(20)
         selection.format.setBackground(lineColor)
         selection.format.setProperty(QTextFormat.FullWidthSelection, True)
@@ -358,7 +359,7 @@ class ConsoleWidget(QPlainTextEdit):
             self.setExtraSelections(self.extraSelections)
             return
         cursor.movePosition(QTextCursor.PreviousCharacter,
-                             QTextCursor.KeepAnchor)
+                            QTextCursor.KeepAnchor)
         text = cursor.selectedText()
         pos1 = cursor.position()
         if text in (')', ']', '}'):
@@ -373,33 +374,39 @@ class ConsoleWidget(QPlainTextEdit):
             selection = QTextEdit.ExtraSelection()
             selection.format.setForeground(QColor(
                 resources.CUSTOM_SCHEME.get('brace-foreground',
-                resources.COLOR_SCHEME.get('brace-foreground'))))
+                                            resources.COLOR_SCHEME.get(
+                                                'brace-foreground'))))
             selection.format.setBackground(QColor(
                 resources.CUSTOM_SCHEME.get('brace-background',
-                resources.COLOR_SCHEME.get('brace-background'))))
+                                            resources.COLOR_SCHEME.get(
+                                                'brace-background'))))
             selection.cursor = cursor
             self.extraSelections.append(selection)
             selection = QTextEdit.ExtraSelection()
             selection.format.setForeground(QColor(
                 resources.CUSTOM_SCHEME.get('brace-foreground',
-                resources.COLOR_SCHEME.get('brace-foreground'))))
+                                            resources.COLOR_SCHEME.get(
+                                                'brace-foreground'))))
             selection.format.setBackground(QColor(
                 resources.CUSTOM_SCHEME.get('brace-background',
-                resources.COLOR_SCHEME.get('brace-background'))))
+                                            resources.COLOR_SCHEME.get(
+                                                'brace-background'))))
             selection.cursor = self.textCursor()
             selection.cursor.setPosition(pos2)
             selection.cursor.movePosition(QTextCursor.NextCharacter,
-                             QTextCursor.KeepAnchor)
+                                          QTextCursor.KeepAnchor)
             self.extraSelections.append(selection)
         else:
             self._braces = (pos1,)
             selection = QTextEdit.ExtraSelection()
             selection.format.setBackground(QColor(
                 resources.CUSTOM_SCHEME.get('brace-background',
-                resources.COLOR_SCHEME.get('brace-background'))))
+                                            resources.COLOR_SCHEME.get(
+                                                'brace-background'))))
             selection.format.setForeground(QColor(
                 resources.CUSTOM_SCHEME.get('brace-foreground',
-                resources.COLOR_SCHEME.get('brace-foreground'))))
+                                            resources.COLOR_SCHEME.get(
+                                                'brace-foreground'))))
             selection.cursor = cursor
             self.extraSelections.append(selection)
         self.setExtraSelections(self.extraSelections)
@@ -487,7 +494,7 @@ class ConsoleWidget(QPlainTextEdit):
         cursor = self.textCursor()
         cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
         cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
-            len(self.prompt))
+                            len(self.prompt))
         cursor.insertText(command)
 
     def contextMenuEvent(self, event):
@@ -532,13 +539,17 @@ class ConsoleWidget(QPlainTextEdit):
         css = 'QPlainTextEdit {color: %s; background-color: %s;' \
             'selection-color: %s; selection-background-color: %s;}' \
             % (resources.CUSTOM_SCHEME.get('editor-text',
-            resources.COLOR_SCHEME['editor-text']),
-            resources.CUSTOM_SCHEME.get('editor-background',
-                resources.COLOR_SCHEME['editor-background']),
-            resources.CUSTOM_SCHEME.get('editor-selection-color',
-                resources.COLOR_SCHEME['editor-selection-color']),
-            resources.CUSTOM_SCHEME.get('editor-selection-background',
-                resources.COLOR_SCHEME['editor-selection-background']))
+                                           resources.COLOR_SCHEME[
+                                               'editor-text']),
+               resources.CUSTOM_SCHEME.get('editor-background',
+                                           resources.COLOR_SCHEME[
+                                               'editor-background']),
+               resources.CUSTOM_SCHEME.get('editor-selection-color',
+                                           resources.COLOR_SCHEME[
+                                               'editor-selection-color']),
+               resources.CUSTOM_SCHEME.get('editor-selection-background',
+                                           resources.COLOR_SCHEME[
+                                               'editor-selection-background']))
         self.setStyleSheet(css)
         self.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
 
@@ -549,5 +560,5 @@ class ConsoleWidget(QPlainTextEdit):
     def unload_project_from_console(self, projectFolder):
         """Unload the project from the system path."""
         self._console.push("import sys; "
-            "sys.path = [path for path in sys.path "
-            "if path != '%s']" % projectFolder)
+                           "sys.path = [path for path in sys.path "
+                           "if path != '%s']" % projectFolder)
