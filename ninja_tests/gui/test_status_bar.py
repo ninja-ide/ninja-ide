@@ -52,7 +52,7 @@ class StatusBarTestCase(BaseTest):
             data.append(arg)
 
         self.patch(self.status._searchWidget, 'find_matches',
-            fake_find_matches)
+                   fake_find_matches)
         self.status.show()
         expected = [(editor, True)]
         self.assertEqual(data, expected)

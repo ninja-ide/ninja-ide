@@ -24,7 +24,7 @@ class Logger(object):
     def __call__(self, modname):
         if not self._handler:
             self.add_handler(resources.LOG_FILE_PATH, 'w', LOG_FORMAT,
-                                TIME_FORMAT)
+                             TIME_FORMAT)
         if modname not in self._loggers:
             logger = logging.getLogger(modname)
             self._loggers[modname] = logger
@@ -61,13 +61,13 @@ class Logger(object):
         if log_file:
             if log_file == "STDOUT":
                 self.add_handler(sys.stdout, None, LOG_FORMAT, TIME_FORMAT,
-                                    True)
+                                 True)
             if log_file == "STDERR":
                 self.add_handler(sys.stdout, None, LOG_FORMAT, TIME_FORMAT,
-                                    True)
+                                 True)
             else:
                 self.add_handler(log_file, 'w', LOG_FORMAT,
-                                TIME_FORMAT)
+                                 TIME_FORMAT)
 
 
 NinjaLogger = Logger()

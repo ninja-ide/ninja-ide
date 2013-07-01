@@ -63,13 +63,13 @@ class AnalyzerLateResolutionTestCase(unittest.TestCase):
             self.assertEqual(data.data_type, impo.data_type)
             self.assertEqual(data.line_content, impo.line_content)
             self.assertEqual(module.attributes['p'].data[0].lineno,
-                type2.data[0].lineno)
+                             type2.data[0].lineno)
             self.assertEqual(module.attributes['p'].data[0].data_type,
-                type2.data[0].data_type)
+                             type2.data[0].data_type)
             self.assertEqual(module.attributes['p'].data[0].operation,
-                type2.data[0].operation)
+                             type2.data[0].operation)
             self.assertEqual(module.attributes['p'].data[0].line_content,
-                type2.data[0].line_content)
+                             type2.data[0].line_content)
 
     def test_simple_import_late_resolution(self):
         source_code = SOURCE_LATE_RESOLUTION + '\np.'

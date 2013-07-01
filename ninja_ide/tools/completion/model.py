@@ -40,7 +40,7 @@ def filter_data_type(data_types):
     values = [occurrences[key][0] for key in occurrences]
     maximum = max(values)
     data_type = [occurrences[key][1] for key in occurrences
-                if occurrences[key][0] == maximum]
+                 if occurrences[key][0] == maximum]
     return data_type[0]
 
 
@@ -199,9 +199,12 @@ class Module(Structure):
         canonical_attrs = remove_function_arguments(child_attrs)
         if not scope:
             value = self.imports.get(main_attr,
-                self.attributes.get(main_attr,
-                self.functions.get(main_attr,
-                self.classes.get(main_attr, None))))
+                                     self.attributes.get(main_attr,
+                                                         self.functions.get(
+                                                             main_attr,
+                                                             self.classes.get(
+                                                                 main_attr,
+                                                                 None))))
             if value is not None and value.__class__ is not Clazz:
                 data_type = value.get_data_type()
                 result['found'], result['type'] = True, data_type
@@ -221,7 +224,7 @@ class Module(Structure):
         elif scope:
             scope_name = scope[0]
             structure = self.classes.get(scope_name,
-                self.functions.get(scope_name, None))
+                                         self.functions.get(scope_name, None))
             if structure is not None:
                 attrs = [main_attr] + canonical_attrs.split('.')
                 if len(attrs) > 1 and attrs[1] == '':
@@ -230,8 +233,10 @@ class Module(Structure):
                     structure, attrs, scope[1:])
                 if not result['found']:
                     value = self.imports.get(main_attr,
-                        self.attributes.get(main_attr,
-                        self.functions.get(main_attr, None)))
+                                             self.attributes.get(
+                                                 main_attr,
+                                                 self.functions.get(main_attr,
+                                                                    None)))
                     if value is not None:
                         data_type = value.get_data_type()
                         result['found'], result['type'] = True, data_type
@@ -262,7 +267,7 @@ class Module(Structure):
             return result
         attr = attrs[0]
         value = structure.attributes.get(attr,
-            structure.functions.get(attr, None))
+                                         structure.functions.get(attr, None))
         if value is None:
             return result
         data_type = value.get_data_type()
@@ -363,14 +368,14 @@ class Clazz(Structure):
                         continue
                     assign = Assign(attr)
                     assign.add_data(0, parent_name + attr, '',
-                        parent_name + attr)
+                                    parent_name + attr)
                     attributes[attr] = assign
                 for func in data.get('functions', []):
                     if func[:2] == '__' and func[-2:] == '__':
                         continue
                     assign = Assign(func)
                     assign.add_data(0, parent_name + attr, '',
-                        parent_name + attr)
+                                    parent_name + attr)
                     functions[func] = assign
                 self.attributes.update(attributes)
                 self.functions.update(functions)

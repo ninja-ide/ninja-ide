@@ -55,15 +55,15 @@ class CodeCompletion(object):
         self._valid_op = (')', '}', ']')
         self._invalid_op = ('(', '{', '[')
         self._invalid_words = ('if', 'elif', 'for', 'while', 'in', 'return',
-            'and', 'or', 'del', 'except', 'from', 'import', 'is', 'print',
-            'super', 'yield')
+                               'and', 'or', 'del', 'except', 'from',
+                               'import', 'is', 'print', 'super', 'yield')
         self.keywords = settings.SYNTAX['python']['keywords']
 
     def unload_module(self):
         self.cdaemon.unload_module(self.module_id)
 
     def analyze_file(self, path, source=None, indent=settings.INDENT,
-        useTabs=settings.USE_TABS):
+                     useTabs=settings.USE_TABS):
         if source is None:
             with open(path) as f:
                 source = f.read()
@@ -71,7 +71,7 @@ class CodeCompletion(object):
         if len(split_last_lines) > 1 and \
            split_last_lines[-2].endswith(':') and split_last_lines[-1] == '':
             indent = helpers.get_indentation(split_last_lines[-2], indent,
-                useTabs)
+                                             useTabs)
             source += '%spass;' % indent
 
         self.module_id = path
@@ -90,7 +90,7 @@ class CodeCompletion(object):
         token_code = []
         try:
             for tkn_type, tkn_str, pos, _, line, \
-                in generate_tokens(StringIO(code).readline):
+                    in generate_tokens(StringIO(code).readline):
                 token_code.append((tkn_type, tkn_str, pos, line))
         except TokenError:
             #This is an expected situation, where i don't want to do anything
@@ -234,7 +234,7 @@ class CodeCompletion(object):
             # Move system attributes beginning in '__' (built_in_attribs)
             # to the end of the list.
             built_in_attribs = [d for d in data.get('attributes', [])
-                if d[:2] == '__']
+                                if d[:2] == '__']
             if built_in_attribs:
                 for i in built_in_attribs:
                     data['attributes'].remove(i)
@@ -246,7 +246,7 @@ class CodeCompletion(object):
 
         if result['type'] is not None and len(result['type']) > 0:
             data = {'attributes': result['type']['attributes'],
-                'functions': result['type']['functions']}
+                    'functions': result['type']['functions']}
         else:
             clazzes = sorted(set(self.patClass.findall(code)))
             funcs = sorted(set(self.patFunction.findall(code)))
@@ -260,6 +260,6 @@ class CodeCompletion(object):
             attrs = list(filter(filter_attrs, attrs))
             funcs = [x for x in funcs if x not in clazzes]
             data = {'attributes': attrs,
-                'functions': funcs,
-                'classes': clazzes}
+                    'functions': funcs,
+                    'classes': clazzes}
         return data

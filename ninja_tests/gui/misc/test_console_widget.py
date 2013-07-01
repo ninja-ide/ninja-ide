@@ -56,9 +56,9 @@ class ConsoleWidgetTestCase(BaseTest):
     def setUp(self):
         super(ConsoleWidgetTestCase, self).setUp()
         self.patch(console_widget.completer_widget, "CompleterWidget",
-            FakeCompleterWidget)
+                   FakeCompleterWidget)
         self.patch(console_widget.ConsoleWidget, "_create_context_menu",
-            lambda *arg: None)
+                   lambda *arg: None)
         self.console_widget = console_widget.ConsoleWidget()
 
     def test_menu_cut(self):
@@ -99,7 +99,7 @@ class ConsoleWidgetTestCase(BaseTest):
         cursor.movePosition(QTextCursor.End)
         cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
         cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
-            len(self.console_widget.prompt))
+                            len(self.console_widget.prompt))
         # "asdqwe"
         text_word = cursor.selectedText()
         self.console_widget.setTextCursor(cursor)
@@ -219,7 +219,8 @@ class ConsoleWidgetTestCase(BaseTest):
         self.console_widget._tab_pressed(None)
         self.console_widget.selectAll()
         text = self.console_widget.textCursor().selectedText()
-        self.assertEqual(text,
+        self.assertEqual(
+            text,
             self.console_widget.prompt + ' ' * console_widget.settings.INDENT)
 
     def test_home_pressed(self):
@@ -228,7 +229,8 @@ class ConsoleWidgetTestCase(BaseTest):
         self.console_widget.textCursor().insertText('a = 5')
         event = QKeyEvent(QEvent.KeyPress, Qt.Key_Home, Qt.NoModifier, "")
         self.console_widget._home_pressed(event)
-        self.assertEqual(self.console_widget.textCursor().position(),
+        self.assertEqual(
+            self.console_widget.textCursor().position(),
             self.console_widget.document().lastBlock().position() +
             len(self.console_widget.prompt))
 
@@ -245,7 +247,7 @@ class ConsoleWidgetTestCase(BaseTest):
         data = []
 
         self.patch(self.console_widget, "_write_command",
-            lambda: data.append(True))
+                   lambda: data.append(True))
         event = QKeyEvent(QEvent.KeyPress, Qt.Key_Enter, Qt.NoModifier, "")
         self.console_widget.keyPressEvent(event)
         self.assertEqual(data, [True])
@@ -282,7 +284,7 @@ class ConsoleWidgetTestCase(BaseTest):
             ' ' * console_widget.settings.INDENT * 2)
         self.console_widget.selectAll()
         text = self.console_widget.textCursor().selectedText()[:
-            -console_widget.settings.INDENT]
+                                                               -console_widget.settings.INDENT]
         self.console_widget.moveCursor(QTextCursor.End)
         event = QKeyEvent(QEvent.KeyPress, Qt.Key_Backspace, Qt.NoModifier, "")
         self.console_widget.keyPressEvent(event)
