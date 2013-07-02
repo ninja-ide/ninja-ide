@@ -131,8 +131,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.__encoding = None
         #Completer
         self.completer = completer_widget.CodeCompletionWidget(self)
-        #Indentation
-        self.set_project(project_obj)
         #Flag to dont bug the user when answer *the modification dialog*
         self.ask_if_externally_modified = False
         self.just_saved = False
@@ -193,6 +191,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
                 self._mini.update_visible_area)
 
+        #Indentation
+        self.set_project(project_obj)
         #Context Menu Options
         self.__actionFindOccurrences = QAction(
             self.tr("Find Usages"), self)
@@ -242,7 +242,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def set_tab_usage(self):
         tab_size = self.pos_margin / settings.MARGIN_LINE * self.indent
         self.setTabStopWidth(tab_size)
-        if hasattr(self, '_mini') and self._mini:
+        if self._mini:
             self._mini.setTabStopWidth(tab_size)
 
     def set_id(self, id_):
