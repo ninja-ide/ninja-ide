@@ -78,6 +78,7 @@ class IDE(QMainWindow):
     __IDESERVICES = {}
     __IDECONNECTIONS = {}
     __IDESHORTCUTS = {}
+    __IDEMENUS = {}
     # CONNECTIONS structure:
     # ({'target': service_name, 'signal_name': string, 'slot': function_obj},)
     # On modify add: {connected: True}
@@ -231,7 +232,11 @@ class IDE(QMainWindow):
                     connection['connected'] = True
 
     @classmethod
-    def register_shortcut(cls, shortcut_name, shortcut, action):
+    def register_shortcut(cls, shortcut_name, shortcut, action=None):
+        IDE.__IDESHORTCUTS[shortcut_name] = (shortcut, action)
+
+    @classmethod
+    def register_menuitem(cls, menu_action):
         IDE.__IDESHORTCUTS[shortcut_name] = (shortcut, action)
 
     @classmethod

@@ -33,9 +33,6 @@ class MenuAbout(QObject):
 
     def install_menu(self, menuAbout):
         startPageAction = menuAbout.addAction(self.tr("Show Start Page"))
-        helpAction = menuAbout.addAction(self.tr("Python Help (%s)") %
-            resources.get_shortcut("Help").toString(QKeySequence.NativeText))
-        menuAbout.addSeparator()
         reportBugAction = menuAbout.addAction(self.tr("Report Bugs!"))
         pluginsDocAction = menuAbout.addAction(
                                         self.tr("Plugins Documentation"))

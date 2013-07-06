@@ -1409,6 +1409,10 @@ class _MainContainer(QWidget):
         actionSave = QAction(QIcon(resources.IMAGES['save']),
             self.trUtf8("&Save"), ide)
         IDE.register_shortcut('Save-file', shortSave, actionSave)
+        shortSaveAs = QShortcut(short("Save-file"), ide)
+        actionSaveAs = QAction(QIcon(resources.IMAGES['saveAs']),
+            self.trUtf8("Save &As"), ide)
+        IDE.register_shortcut('Save-file', shortSaveAs, actionSaveAs)
         shortRedo = QShortcut(short("Redo"), ide)
         actionRedo = QAction(QIcon(resources.IMAGES['redo']),
             self.trUtf8("Redo"), ide)
@@ -1421,25 +1425,52 @@ class _MainContainer(QWidget):
             self.trUtf8("Comment"), ide)
         IDE.register_shortcut('Comment', shortComment, actionComment)
         shortUncomment = QShortcut(short("Uncomment"), ide)
-        IDE.register_shortcut('Uncomment', shortUncomment)
+        actionUncomment = QAction(QIcon(resources.IMAGES['uncomment-code']),
+            self.trUtf8("Uncomment"), ide)
+        IDE.register_shortcut('Uncomment', shortUncomment, actionUncomment)
         shortHorizontalLine = QShortcut(short("Horizontal-line"), ide)
-        IDE.register_shortcut('Horizontal-line', shortHorizontalLine)
+        actionHorizontalLine = QAction(
+            self.trUtf8("Insert Horizontal Line"), ide)
+        IDE.register_shortcut('Horizontal-line', shortHorizontalLine,
+            actionHorizontalLine)
         shortTitleComment = QShortcut(short("Title-comment"), ide)
-        IDE.register_shortcut('Title-comment', shortTitleComment)
+        actionTitleComment = QAction(
+            self.trUtf8("Insert Title Comment"), ide)
+        IDE.register_shortcut('Title-comment', shortTitleComment,
+            actionTitleComment)
         shortIndentLess = QShortcut(short("Indent-less"), ide)
-        IDE.register_shortcut('Indent-less', shortIndentLess)
+        actionIndentLess = QAction(QIcon(resources.IMAGES['indent-less']),
+            self.trUtf8("Indent Less"), ide)
+        IDE.register_shortcut('Indent-less', shortIndentLess,
+            actionIndentLess)
         shortSplitHorizontal = QShortcut(short("Split-horizontal"), ide)
-        IDE.register_shortcut('Split-horizontal', shortSplitHorizontal)
+        actionSplitHorizontal = QAction(QIcon(resources.IMAGES['splitH']),
+            self.trUtf8("Split Tabs Horizontally"), ide)
+        IDE.register_shortcut('Split-horizontal', shortSplitHorizontal,
+            actionSplitHorizontal)
         shortSplitVertical = QShortcut(short("Split-vertical"), ide)
-        IDE.register_shortcut('Split-vertical', shortSplitVertical)
+        actionSplitVertical = QAction(QIcon(resources.IMAGES['splitV']),
+            self.trUtf8("Split Tabs Vertically"), ide)
+        IDE.register_shortcut('Split-vertical', shortSplitVertical,
+            actionSplitVertical)
         shortFollowMode = QShortcut(short("Follow-mode"), ide)
-        IDE.register_shortcut('Follow-mode', shortFollowMode)
+        actionFollowMode = QAction(QIcon(resources.IMAGES['follow']),
+            self.trUtf8("Follow Mode"), ide)
+        IDE.register_shortcut('Follow-mode', shortFollowMode, actionFollowMode)
         shortReloadFile = QShortcut(short("Reload-file"), ide)
-        IDE.register_shortcut('Reload-file', shortReloadFile)
+        actionReloadFile = QAction(QIcon(resources.IMAGES['reload-file']),
+            self.trUtf8("Reload File"), ide)
+        IDE.register_shortcut('Reload-file', shortReloadFile, actionReloadFile)
         shortImport = QShortcut(short("Import"), ide)
-        IDE.register_shortcut('Import', shortImport)
+        actionImport = QAction(QIcon(resources.IMAGES['insert-import']),
+            self.trUtf8("Insert &Import"), ide)
+        IDE.register_shortcut('Import', shortImport, actionImport)
         shortGoToDefinition = QShortcut(short("Go-to-definition"), ide)
-        IDE.register_shortcut('Go-to-definition', shortGoToDefinition)
+        actionGoToDefinition = QAction(
+            QIcon(resources.IMAGES['go-to-definition']),
+            self.trUtf8("Go To Definition"), ide)
+        IDE.register_shortcut('Go-to-definition', shortGoToDefinition,
+            actionGoToDefinition)
         shortCompleteDeclarations = QShortcut(
             short("Complete-Declarations"), ide)
         IDE.register_shortcut('Complete-Declarations',
@@ -1461,11 +1492,14 @@ class _MainContainer(QWidget):
         IDE.register_shortcut('change-tab-visibility',
             shortChangeTabVisibility)
         shortHelp = QShortcut(short("Help"), ide)
-        IDE.register_shortcut('Help', shortHelp)
+        actionHelp = QAction(self.tr("Python Help"), ide)
+        IDE.register_shortcut('Help', shortHelp, actionHelp)
         shortHighlightWord = QShortcut(short("Highlight-Word"), ide)
         IDE.register_shortcut('Highlight-Word', shortHighlightWord)
         shortPrint = QShortcut(short("Print-file"), ide)
-        IDE.register_shortcut('Print-file', shortPrint)
+        actionPrint = QAction(QIcon(resources.IMAGES['print']),
+            self.trUtf8("Pr&int File"), ide)
+        IDE.register_shortcut('Print-file', shortPrint, actionPrint)
         shortCopyHistory = QShortcut(short("History-Copy"), ide)
         IDE.register_shortcut('History-Copy', shortCopyHistory)
         shortPasteHistory = QShortcut(short("History-Paste"), ide)
@@ -1498,6 +1532,8 @@ class _MainContainer(QWidget):
             self.close_tab)
         self.connect(shortSave, SIGNAL("activated()"),
             self.save_file)
+        self.connect(shortSaveAs, SIGNAL("activated()"),
+            self.save_file_as)
         self.connect(shortIndentLess, SIGNAL("activated()"),
             self.editor_indent_less)
         self.connect(shortComment, SIGNAL("activated()"),
@@ -1547,4 +1583,4 @@ class _MainContainer(QWidget):
 
 
 #Register MainContainer
-MainContainer = _MainContainer()
+main = _MainContainer()

@@ -20,6 +20,7 @@ from __future__ import unicode_literals
 import os
 
 from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QAction
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QTabWidget
 from PyQt4.QtGui import QFileDialog
@@ -139,7 +140,9 @@ class _ExplorerContainer(QTabWidget):
     def install_shortcuts(self, ide):
         short = resources.get_shortcut
         shortNewProject = QShortcut(short("New-project"), ide)
-        IDE.register_shortcut('New-project', shortNewProject)
+        actionNewProject = QAction(QIcon(resources.IMAGES['newProj']),
+            self.trUtf8("New Pro&ject"), ide)
+        IDE.register_shortcut('New-project', shortNewProject, actionNewProject)
         shortOpenProject = QShortcut(short("Open-project"), ide)
         IDE.register_shortcut('Open-project', shortOpenProject)
         shortSaveProject = QShortcut(short("Save-project"), ide)

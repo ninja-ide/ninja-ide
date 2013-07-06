@@ -60,22 +60,6 @@ class MenuView(QObject):
             (self.trUtf8("Full Screen &Mode (%s)") %
                 resources.get_shortcut("Full-screen").toString(
                     QKeySequence.NativeText)))
-        menuView.addSeparator()
-        splitTabHAction = menuView.addAction(
-            QIcon(resources.IMAGES['splitH']),
-            (self.trUtf8("Split Tabs Horizontally (%s)") %
-                resources.get_shortcut("Split-horizontal").toString(
-                    QKeySequence.NativeText)))
-        splitTabVAction = menuView.addAction(
-            QIcon(resources.IMAGES['splitV']),
-            (self.trUtf8("Split Tabs Vertically (%s)") %
-                resources.get_shortcut("Split-vertical").toString(
-                    QKeySequence.NativeText)))
-        followModeAction = menuView.addAction(
-            QIcon(resources.IMAGES['follow']),
-            (self.trUtf8("Follow Mode (%s)") %
-                resources.get_shortcut("Follow-mode").toString(
-                    QKeySequence.NativeText)))
         groupTabsAction = menuView.addAction(
             self.trUtf8("Group Tabs by Project"))
         deactivateGroupTabsAction = menuView.addAction(
