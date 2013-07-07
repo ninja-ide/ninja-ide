@@ -22,7 +22,7 @@ import re
 try:
     import Queue
 except:
-    import queue as Queue
+    import queue as Queue  # lint:ok
 
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QDir
@@ -121,7 +121,7 @@ class FindInFilesThread(QThread):
         lines = []
         line_index = 0
         line = stream.readLine()
-        while not self._cancel and not stream.atEnd():
+        while not self._cancel and not (stream.atEnd() and not line):
             column = self.search_pattern.indexIn(line)
             if column != -1:
                 lines.append((line_index, line))
@@ -486,17 +486,20 @@ class FindInFilesWidget(QWidget):
                 root_dir_name = parent.dir_name_root
                 file_name = parent.text(0)
                 file_path = file_manager.create_path(root_dir_name, file_name)
-                file_object = QFile(file_path)
-                if not file_object.open(QFile.ReadOnly):
-                    return
-                stream = QTextStream(file_object)
-                content = stream.readAll()
-                file_object.close()
-                pattern = self._find_widget.pattern_line_edit.text()
-                case_sensitive = self._find_widget.case_checkbox.isChecked()
-                type_ = QRegExp.RegExp if \
-                    self._find_widget.type_checkbox.isChecked() else \
-                    QRegExp.FixedString
-                target = QRegExp(pattern, case_sensitive, type_)
-                content.replace(target, self._find_widget.replace_line.text())
-                file_manager.store_file_content(file_path, content, False)
+                try:
+                    content = file_manager.read_file_content(file_path)
+                    pattern = self._find_widget.pattern_line_edit.text()
+                    flags = 0
+                    if not self._find_widget.case_checkbox.isChecked():
+                        flags |= re.IGNORECASE
+                    if self._find_widget.type_checkbox.isChecked():
+                        pattern = r'\b%s\b' % pattern
+
+                    new_content = re.sub(pattern,
+                        self._find_widget.replace_line.text(),
+                        content, flags=flags)
+                    file_manager.store_file_content(file_path,
+                        new_content, False)
+                except:
+                    print('File: %s content, could not be replaced' %
+                          file_path)
