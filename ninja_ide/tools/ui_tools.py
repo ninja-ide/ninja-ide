@@ -211,6 +211,7 @@ class Overlay(QWidget):
         palette = QPalette(self.palette())
         palette.setColor(palette.Background, Qt.transparent)
         self.setPalette(palette)
+        self.counter = 0
 
     def paintEvent(self, event):
         painter = QPainter()
@@ -245,7 +246,6 @@ class Overlay(QWidget):
 
     def showEvent(self, event):
         self.timer = self.startTimer(50)
-        self.counter = 0
 
     def timerEvent(self, event):
         self.counter += 1
