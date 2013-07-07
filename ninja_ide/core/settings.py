@@ -98,14 +98,14 @@ TOOLBAR_ITEMS = [
     "separator", "splitv", "splith", "follow-mode", "separator",
     "cut", "copy", "paste", "separator",
     "run-project", "run-file", "stop", "separator",
-    ]
+]
 
 TOOLBAR_ITEMS_DEFAULT = [
     "new-file", "new-project", "open-file", "open-project", "save-file",
     "separator", "splitv", "splith", "follow-mode", "separator",
     "cut", "copy", "paste", "separator",
     "run-project", "run-file", "stop", "separator",
-    ]
+]
 
 #hold the toolbar actions added by plugins
 TOOLBAR_ITEMS_PLUGINS = []
@@ -128,10 +128,10 @@ REMOVE_TRAILING_SPACES = True
 SHOW_TABS_AND_SPACES = True
 
 BRACES = {'{': '}',
-    '[': ']',
-    '(': ')'}
+          '[': ']',
+          '(': ')'}
 QUOTES = {'"': '"',
-    "'": "'"}
+          "'": "'"}
 
 FONT_MAX_SIZE = 28
 FONT_MIN_SIZE = 6
@@ -391,29 +391,29 @@ def load_settings():
     SHOW_STATUS_NOTIFICATIONS = qsettings.value(
         "preferences/interface/showStatusNotifications", True, type=bool)
     TOOLBAR_AREA = qsettings.value('preferences/general/toolbarArea', 1,
-        type=int)
+                                   type=int)
     LANGUAGE = qsettings.value('preferences/interface/language', '',
-        type='QString')
+                               type='QString')
     SHOW_START_PAGE = qsettings.value(
         'preferences/general/showStartPage', True, type=bool)
     CONFIRM_EXIT = qsettings.value('preferences/general/confirmExit',
-        True, type=bool)
+                                   True, type=bool)
     UI_LAYOUT = qsettings.value('preferences/interface/uiLayout', 0, type=int)
     NOTIFY_UPDATES = qsettings.value(
         'preferences/general/notifyUpdates', True, type=bool)
     PYTHON_PATH = qsettings.value('preferences/execution/pythonPath',
-        'python', type='QString')
+                                  'python', type='QString')
     PYTHON_PATH_CONFIGURED_BY_USER = qsettings.value(
         'preferences/execution/pythonPathConfigured', False, type=bool)
     NINJA_SKIN = qsettings.value('preferences/theme/skin',
-        'Default', type='QString')
+                                 'Default', type='QString')
     profileDict = dict(qsettings.value('ide/profiles', {}))
     for key in profileDict:
         profile_list = list(profileDict[key])
         files = []
         if profile_list:
             files = [item
-                for item in list(profile_list[0])]
+                     for item in list(profile_list[0])]
         tempFiles = []
         for file_ in files:
             fileData = list(file_)
@@ -452,7 +452,7 @@ def load_settings():
     USE_PLATFORM_END_OF_LINE = qsettings.value(
         'preferences/editor/platformEndOfLine', False, type=bool)
     MARGIN_LINE = qsettings.value('preferences/editor/marginLine', 80,
-        type=int)
+                                  type=int)
     pep8mod_update_margin_line_length(MARGIN_LINE)
     REMOVE_TRAILING_SPACES = qsettings.value(
         'preferences/editor/removeTrailingSpaces', True, type=bool)
@@ -478,13 +478,13 @@ def load_settings():
     SHOW_MARGIN_LINE = qsettings.value(
         'preferences/editor/showMarginLine', True, type=bool)
     FIND_ERRORS = qsettings.value('preferences/editor/errors',
-        True, type=bool)
+                                  True, type=bool)
     SHOW_MIGRATION_TIPS = qsettings.value(
         'preferences/editor/showMigrationTips', True, type=bool)
     ERRORS_HIGHLIGHT_LINE = qsettings.value(
         'preferences/editor/errorsInLine', True, type=bool)
     CHECK_STYLE = qsettings.value('preferences/editor/checkStyle',
-        True, type=bool)
+                                  True, type=bool)
     CHECK_HIGHLIGHT_LINE = qsettings.value(
         'preferences/editor/checkStyleInline', True, type=bool)
     CODE_COMPLETION = qsettings.value(
@@ -492,7 +492,7 @@ def load_settings():
     CENTER_ON_SCROLL = qsettings.value(
         'preferences/editor/centerOnScroll', True, type=bool)
     parentheses = qsettings.value('preferences/editor/parentheses', True,
-        type=bool)
+                                  type=bool)
     if not parentheses:
         del BRACES['(']
     brackets = qsettings.value('preferences/editor/brackets', True, type=bool)
@@ -502,11 +502,11 @@ def load_settings():
     if not keys:
         del BRACES['{']
     simpleQuotes = qsettings.value('preferences/editor/simpleQuotes',
-        True, type=bool)
+                                   True, type=bool)
     if not simpleQuotes:
         del QUOTES["'"]
     doubleQuotes = qsettings.value('preferences/editor/doubleQuotes',
-        True, type=bool)
+                                   True, type=bool)
     if not doubleQuotes:
         del QUOTES['"']
     #Projects

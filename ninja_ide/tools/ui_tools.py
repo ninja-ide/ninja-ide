@@ -77,7 +77,7 @@ def load_table(table, headers, data, checkFirstColumn=True):
                 item.setData(Qt.UserRole, row)
                 item.setCheckState(Qt.Unchecked)
                 item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled |
-                    Qt.ItemIsUserCheckable)
+                              Qt.ItemIsUserCheckable)
             else:
                 item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
 
@@ -87,8 +87,8 @@ def remove_get_selected_items(table, data):
     pos = rows - 1
     selected = []
     for i in range(rows):
-        if table.item(pos - i, 0) is not None and \
-        table.item(pos - i, 0).checkState() == Qt.Checked:
+        if (table.item(pos - i, 0) is not None and
+                table.item(pos - i, 0).checkState() == Qt.Checked):
             selected.append(data.pop(pos - i))
             table.removeRow(pos - i)
     return selected
@@ -108,8 +108,8 @@ class LoadingItem(QLabel):
             item = QTreeWidgetItem()
             item.setText(0, (self.tr('       LOADING: "%s"') % folder))
         else:
-            item = item_type(parent,
-                (self.tr('       LOADING: "%s"') % folder), folder)
+            item = item_type(parent, (
+                self.tr('       LOADING: "%s"') % folder), folder)
         tree.addTopLevelItem(item)
         tree.setItemWidget(item, 0, self)
         return item
@@ -136,7 +136,7 @@ class ThreadExecution(QThread):
         if self.execute:
             self.result = self.execute(*self.args, **self.kwargs)
         self.emit(SIGNAL("executionFinished(PyQt_PyObject)"),
-            self.signal_return)
+                  self.signal_return)
         self.signal_return = None
 
 
@@ -174,8 +174,9 @@ class ThreadProjectExplore(QThread):
             except NinjaIOException:
                 pass  # There is not much we can do at this point
 
-        if folderStructure and (folderStructure.get(self._folder_path,
-                                                [None, None])[1] is not None):
+        if folderStructure and (folderStructure.get(
+                self._folder_path,
+                [None, None])[1] is not None):
             folderStructure[self._folder_path][1].sort()
             values = (self._folder_path, self._item, folderStructure)
             self.emit(SIGNAL("folderDataRefreshed(PyQt_PyObject)"), values)
@@ -184,7 +185,7 @@ class ThreadProjectExplore(QThread):
         try:
             project = json_manager.read_ninja_project(self._folder_path)
             extensions = project.get('supported-extensions',
-                settings.SUPPORTED_EXTENSIONS)
+                                     settings.SUPPORTED_EXTENSIONS)
             if extensions != settings.SUPPORTED_EXTENSIONS:
                 structure = file_manager.open_project_with_extensions(
                     self._folder_path, extensions)
@@ -192,10 +193,10 @@ class ThreadProjectExplore(QThread):
                 structure = file_manager.open_project(self._folder_path)
 
             self.emit(SIGNAL("folderDataAcquired(PyQt_PyObject)"),
-                (self._folder_path, structure))
+                      (self._folder_path, structure))
         except:
             self.emit(SIGNAL("folderDataAcquired(PyQt_PyObject)"),
-                (self._folder_path, None))
+                      (self._folder_path, None))
 
 
 ###############################################################################
@@ -210,6 +211,7 @@ class Overlay(QWidget):
         palette = QPalette(self.palette())
         palette.setColor(palette.Background, Qt.transparent)
         self.setPalette(palette)
+        self.counter = 0
 
     def paintEvent(self, event):
         painter = QPainter()
@@ -244,7 +246,6 @@ class Overlay(QWidget):
 
     def showEvent(self, event):
         self.timer = self.startTimer(50)
-        self.counter = 0
 
     def timerEvent(self, event):
         self.counter += 1
@@ -345,7 +346,7 @@ class AddToProject(QDialog):
         self._thread_execution = ThreadExecution(
             self._thread_load_projects, args=[pathProjects])
         self.connect(self._thread_execution,
-            SIGNAL("finished()"), self._callback_load_project)
+                     SIGNAL("finished()"), self._callback_load_project)
         self._thread_execution.start()
 
         self.connect(btnCancel, SIGNAL("clicked()"), self.close)
@@ -355,7 +356,7 @@ class AddToProject(QDialog):
         for project in projects:
             loadingItem = LoadingItem()
             item = loadingItem.add_item_to_tree(project, self._tree,
-                parent=self)
+                                                parent=self)
             self._loading_items[project] = item
 
     def _thread_load_projects(self, projects):
@@ -367,12 +368,13 @@ class AddToProject(QDialog):
 
     def _callback_load_project(self):
         structures = self._thread_execution.storage_values
-        for structure, path in structures:
-            item = self._loading_items.pop(path, None)
-            if item is not None:
-                index = self._tree.indexOfTopLevelItem(item)
-                self._tree.takeTopLevelItem(index)
-            self._load_project(structure, path)
+        if structures:
+            for structure, path in structures:
+                item = self._loading_items.pop(path, None)
+                if item is not None:
+                    index = self._tree.indexOfTopLevelItem(item)
+                    self._tree.takeTopLevelItem(index)
+                self._load_project(structure, path)
 
     def _select_path(self):
         item = self._tree.currentItem()
@@ -408,7 +410,7 @@ class AddToProject(QDialog):
             subfolder.setToolTip(0, os.path.join(folder, _file))
             subfolder.setIcon(0, QIcon(resources.IMAGES['tree-folder']))
             self._load_folder(folderStructure,
-                os.path.join(folder, _file), subfolder)
+                              os.path.join(folder, _file), subfolder)
 
 
 ###############################################################################
@@ -418,7 +420,7 @@ class AddToProject(QDialog):
 class ProfilesLoader(QDialog):
 
     def __init__(self, load_func, create_func, save_func,
-    profiles, parent=None):
+                 profiles, parent=None):
         QDialog.__init__(self, parent, Qt.Dialog)
         self.setWindowTitle(self.tr("Profile Manager"))
         self.setMinimumWidth(400)
@@ -429,11 +431,13 @@ class ProfilesLoader(QDialog):
         self.ide = parent
         vbox = QVBoxLayout(self)
         vbox.addWidget(QLabel(self.tr("Save your opened files and projects "
-                        "into a profile and change really quick\n"
-                        "between projects and files sessions.\n"
-                        "This allows you to save your working environment, "
-                        "keep working in another\nproject and then go back "
-                        "exactly where you left.")))
+                                      "into a profile and change really"
+                                      "quick between projects and"
+                                      "files sessions.\n This allows you to "
+                                      "save your working environment, "
+                                      "keep working in another\n"
+                                      "project and then go back "
+                                      "exactly where you left.")))
         self.profileList = QListWidget()
         self.profileList.addItems([key for key in profiles])
         self.profileList.setCurrentRow(0)
@@ -458,7 +462,7 @@ class ProfilesLoader(QDialog):
         vbox.addLayout(hbox)
 
         self.connect(self.profileList, SIGNAL("itemSelectionChanged()"),
-            self.load_profile_content)
+                     self.load_profile_content)
         self.connect(self.btnOpen, SIGNAL("clicked()"), self.open_profile)
         self.connect(self.btnUpdate, SIGNAL("clicked()"), self.save_profile)
         self.connect(self.btnCreate, SIGNAL("clicked()"), self.create_profile)
@@ -485,7 +489,7 @@ class ProfilesLoader(QDialog):
             profileName = self.profileList.currentItem().text()
             self.save_function(profileName)
             self.ide.show_status_message(self.tr("Profile %s Updated!") %
-                profileName)
+                                         profileName)
             self.load_profile_content()
 
     def open_profile(self):
@@ -573,7 +577,7 @@ class LineEditTabCompleter(QLineEdit):
         if (event.type() == QEvent.KeyPress) and (event.key() == Qt.Key_Tab):
             if self.completionType == QCompleter.InlineCompletion:
                 eventTab = QKeyEvent(QEvent.KeyPress,
-                    Qt.Key_End, Qt.NoModifier)
+                                     Qt.Key_End, Qt.NoModifier)
                 super(LineEditTabCompleter, self).event(eventTab)
             else:
                 completion = self.completer.currentCompletion()
@@ -595,7 +599,7 @@ class LineEditTabCompleter(QLineEdit):
             actionCompletion = QAction(
                 self.tr("Set completion type to: Inline Completion"), self)
         self.connect(actionCompletion, SIGNAL("triggered()"),
-            self.change_completion_type)
+                     self.change_completion_type)
         popup_menu.insertSeparator(popup_menu.actions()[0])
         popup_menu.insertAction(popup_menu.actions()[0], actionCompletion)
 

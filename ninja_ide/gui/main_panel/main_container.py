@@ -38,6 +38,7 @@ from ninja_ide.gui.editor import editor
 from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.main_panel import browser_widget
+from ninja_ide.gui.main_panel import start_page
 from ninja_ide.gui.main_panel import image_viewer
 from ninja_ide.tools import runner
 
@@ -572,6 +573,15 @@ class __MainContainer(QSplitter):
         self.actualTab.currentWidget().setFocus()
         self.emit(SIGNAL("currentTabChanged(QString)"), filename)
 
+    def get_widget_for_path(self, filename):
+        if self._tabMain.is_open(filename) != -1:
+            index = self._tabMain.search_for_identifier_index(filename)
+            return self._tabMain.widget(index)
+        elif self._tabSecondary.is_open(filename) != -1:
+            index = self._tabSecondary.search_for_identifier_index(filename)
+            return self._tabSecondary.widget(index)
+        return None
+
     def change_open_tab_name(self, id, newId):
         """Search for the Tab with id, and set the newId to that Tab."""
         index = self._tabMain.is_open(id)
@@ -756,22 +766,15 @@ class __MainContainer(QSplitter):
                 function(*args, **kwargs)
 
     def show_start_page(self):
-        startPage = browser_widget.BrowserWidget(
-            resources.START_PAGE_URL, parent=self)
-        self.connect(startPage, SIGNAL("openProject(QString)"),
-            self.open_project)
-
-        #Signals Wrapper
-        def emit_start_page_signals(opt):
-            if opt:
-                self.emit(SIGNAL("openPreferences()"))
-            else:
-                self.emit(SIGNAL("dontOpenStartPage()"))
-        self.connect(startPage, SIGNAL("openPreferences()"),
-            lambda: emit_start_page_signals(True))
-        self.connect(startPage, SIGNAL("dontOpenStartPage()"),
-            lambda: emit_start_page_signals(False))
-        self.add_tab(startPage, 'Start Page')
+        if not self.is_open("Start Page"):
+            startPage = start_page.StartPage(parent=self)
+            self.connect(startPage, SIGNAL("openProject(QString)"),
+                self.open_project)
+            self.connect(startPage, SIGNAL("openPreferences()"),
+                lambda: self.emit(SIGNAL("openPreferences()")))
+            self.add_tab(startPage, 'Start Page')
+        else:
+            self.move_to_open("Start Page")
 
     def show_python_doc(self):
         if sys.platform == 'win32':

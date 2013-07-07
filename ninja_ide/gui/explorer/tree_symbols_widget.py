@@ -55,17 +55,17 @@ class TreeSymbolsWidget(QTreeWidget):
         self.collapsedItems = {}
 
         self.connect(self, SIGNAL("itemClicked(QTreeWidgetItem *, int)"),
-            self._go_to_definition)
+                     self._go_to_definition)
         self.connect(self, SIGNAL("itemActivated(QTreeWidgetItem *, int)"),
-            self._go_to_definition)
+                     self._go_to_definition)
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.connect(self,
-            SIGNAL("customContextMenuRequested(const QPoint &)"),
-            self._menu_context_tree)
+                     SIGNAL("customContextMenuRequested(const QPoint &)"),
+                     self._menu_context_tree)
         self.connect(self, SIGNAL("itemCollapsed(QTreeWidgetItem *)"),
-            self._item_collapsed)
+                     self._item_collapsed)
         self.connect(self, SIGNAL("itemExpanded(QTreeWidgetItem *)"),
-            self._item_expanded)
+                     self._item_expanded)
 
     def select_current_item(self, line, col):
         #TODO
@@ -88,14 +88,14 @@ class TreeSymbolsWidget(QTreeWidget):
         #save_state = menu.addAction(self.tr("Save State"))
 
         self.connect(f_all, SIGNAL("triggered()"),
-            lambda: self.collapseAll())
+                     lambda: self.collapseAll())
         self.connect(u_all, SIGNAL("triggered()"),
-            lambda: self.expandAll())
+                     lambda: self.expandAll())
         self.connect(u_class, SIGNAL("triggered()"), self._unfold_class)
         self.connect(u_class_method, SIGNAL("triggered()"),
-            self._unfold_class_method)
+                     self._unfold_class_method)
         self.connect(u_class_attr, SIGNAL("triggered()"),
-            self._unfold_class_attribute)
+                     self._unfold_class_attribute)
         #self.connect(save_state, SIGNAL("triggered()"),
             #self._save_symbols_state)
 
@@ -182,7 +182,7 @@ class TreeSymbolsWidget(QTreeWidget):
     def update_symbols_tree(self, symbols, filename='', parent=None):
         if not parent:
             if filename == self.actualSymbols[0] and \
-                self.actualSymbols[1] and not symbols:
+                    self.actualSymbols[1] and not symbols:
                     return
 
             if symbols == self.actualSymbols[1]:
@@ -201,7 +201,7 @@ class TreeSymbolsWidget(QTreeWidget):
             globalAttribute.setExpanded(self._get_expand(globalAttribute))
             for glob in sorted(symbols['attributes']):
                 globItem = ItemTree(globalAttribute, [glob],
-                    lineno=symbols['attributes'][glob])
+                                    lineno=symbols['attributes'][glob])
                 globItem.isAttribute = True
                 globItem.setIcon(0, QIcon(resources.IMAGES['attribute']))
                 globItem.setExpanded(self._get_expand(globItem))
@@ -213,7 +213,7 @@ class TreeSymbolsWidget(QTreeWidget):
             functionsItem.setExpanded(self._get_expand(functionsItem))
             for func in sorted(symbols['functions']):
                 item = ItemTree(functionsItem, [func],
-                    lineno=symbols['functions'][func]['lineno'])
+                                lineno=symbols['functions'][func]['lineno'])
                 tooltip = self.create_tooltip(
                     func, symbols['functions'][func]['lineno'])
                 item.isMethod = True
@@ -236,7 +236,7 @@ class TreeSymbolsWidget(QTreeWidget):
                 item.setIcon(0, QIcon(resources.IMAGES['class']))
                 item.setExpanded(self._get_expand(item))
                 self.update_symbols_tree(symbols['classes'][claz]['members'],
-                    parent=item)
+                                         parent=item)
 
     def _go_to_definition(self, item):
         if item.isClickable:

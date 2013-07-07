@@ -88,6 +88,10 @@ class __Actions(QObject):
         self.shortChangeTab = QShortcut(short("Change-Tab"), self.ide)
         self.shortChangeTabReverse = QShortcut(
             short("Change-Tab-Reverse"), self.ide)
+        self.shortMoveTabToRight = QShortcut(
+            short("Move-Tab-to-right"), self.ide)
+        self.shortMoveTabToLeft = QShortcut(
+            short("Move-Tab-to-left"), self.ide)
         self.shortDuplicate = QShortcut(short("Duplicate"), self.ide)
         self.shortRemove = QShortcut(short("Remove-line"), self.ide)
         self.shortMoveUp = QShortcut(short("Move-up"), self.ide)
@@ -252,6 +256,10 @@ class __Actions(QObject):
             self.ide.mainContainer.change_tab)
         self.connect(self.shortChangeTabReverse, SIGNAL("activated()"),
             self.ide.mainContainer.change_tab_reverse)
+        self.connect(self.shortMoveTabToRight, SIGNAL("activated()"),
+            self.move_tab)
+        self.connect(self.shortMoveTabToLeft, SIGNAL("activated()"),
+            lambda: self.move_tab(next=False))
         self.connect(self.shortShowCodeNav, SIGNAL("activated()"),
             self.ide.mainContainer.show_navigation_buttons)
         self.connect(self.shortAddBookmark, SIGNAL("activated()"),
@@ -357,6 +365,8 @@ class __Actions(QObject):
         self.shortOpenLastTabOpened.setKey(short("Open-recent-closed"))
         self.shortChangeTab.setKey(short("Change-Tab"))
         self.shortChangeTabReverse.setKey(short("Change-Tab-Reverse"))
+        self.shortMoveTabToRight.setKey(short("Move-Tab-to-right"))
+        self.shortMoveTabToLeft.setKey(short("Move-Tab-to-left"))
         self.shortAddBookmark.setKey(short("Add-Bookmark-or-Breakpoint"))
         self.shortShowCodeNav.setKey(short("Show-Code-Nav"))
         self.shortShowPasteHistory.setKey(short("Show-Paste-History"))
@@ -440,7 +450,7 @@ class __Actions(QObject):
             name = QInputDialog.getText(None,
                 self.tr("Add File To Project"), self.tr("File Name:"))[0]
             if not name:
-                QMessageBox.information(self, self.tr("Invalid Name"),
+                QMessageBox.information(None, self.tr("Invalid Name"),
                     self.tr("The file name is empty, please enter a name"))
                 return
         else:
@@ -463,7 +473,7 @@ class __Actions(QObject):
                 self.ide.mainContainer.actualTab.currentIndex(), name)
             editorWidget._file_saved()
         except file_manager.NinjaFileExistsException as ex:
-            QMessageBox.information(self, self.tr("File Already Exists"),
+            QMessageBox.information(None, self.tr("File Already Exists"),
                 (self.tr("Invalid Path: the file '%s' already exists.") %
                     ex.filename))
 
@@ -504,7 +514,7 @@ class __Actions(QObject):
         if profileInfo[1]:
             profileName = profileInfo[0]
             if not profileName or profileName in settings.PROFILES:
-                QMessageBox.information(self, self.tr("Profile Name Invalid"),
+                QMessageBox.information(None, self.tr("Profile Name Invalid"),
                     self.tr("The Profile name is invalid or already exists."))
                 return
             self.save_profile(profileName)
@@ -1008,6 +1018,22 @@ class __Actions(QObject):
     def reload_toolbar(self):
         """Reload the Toolbar."""
         self.ide.load_toolbar()
+
+    def move_tab(self, next=True, widget=None):
+        actualTab = self.ide.mainContainer.actualTab
+        if widget is None:
+            widget = actualTab.currentWidget()
+        if widget is not None:
+            old_widget_index = actualTab.indexOf(widget)
+            if next and old_widget_index < actualTab.count() - 1:
+                new_widget_index = old_widget_index + 1
+            elif old_widget_index > 0 and not next:
+                new_widget_index = old_widget_index - 1
+            else:
+                return
+            tabName = actualTab.tabText(old_widget_index)
+            actualTab.insertTab(new_widget_index, widget, tabName)
+            actualTab.setCurrentIndex(new_widget_index)
 
 
 class TabShortcuts(QShortcut):

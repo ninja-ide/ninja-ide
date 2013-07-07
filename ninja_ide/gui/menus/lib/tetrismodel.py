@@ -186,7 +186,8 @@ class TetrisBoard(object):
             Returns True if the figure was successfully moved,
             and False if the move creates a conflict.
         """
-        if not self.figcenter: return False
+        if not self.figcenter:
+            return False
 
         newrow = self.figcenter[0] + offset[0]
         newcol = self.figcenter[1] + offset[1]
@@ -204,9 +205,12 @@ class TetrisBoard(object):
         for row, col in fig.coords:
             arow, acol = figcenter[0] + row, figcenter[1] + col
 
-            if not 0 <= acol < self.ncols: return True
-            if not 0 <= arow < self.nrows: return True
-            if self.board[arow][acol] != 0: return True
+            if not 0 <= acol < self.ncols:
+                return True
+            if not 0 <= arow < self.nrows:
+                return True
+            if self.board[arow][acol] != 0:
+                return True
 
         return False
 
@@ -215,7 +219,8 @@ class TetrisBoard(object):
             blocks ?
         """
         for ncol in range(self.ncols):
-            if self.board[nrow][ncol] == 0: return False
+            if self.board[nrow][ncol] == 0:
+                return False
 
         return True
 
@@ -237,7 +242,7 @@ class FigureBank(object):
         Basically this is a glorified abstraction of an array
         with a couple of mnemonic operations.
     """
-    def __init__(self, bank = []):
+    def __init__(self, bank=[]):
         self.bank = bank
 
     def add_figure(self, figure):
@@ -268,7 +273,7 @@ class Figure(object):
         Accessible attributes:
             color, coords, maxcol, maxrow, mincol, minrow
     """
-    def __init__(self, coords = [], rotatable = True, color = None):
+    def __init__(self, coords=[], rotatable=True, color=None):
         self.coords = coords
         self.rotatable = rotatable
         self.color = color
@@ -277,10 +282,13 @@ class Figure(object):
     def copy(self):
         return copy.deepcopy(self)
 
-    def width(self): return (self.maxcol - self.mincol) + 1
-    def height(self): return (self.maxrow - self.minrow) + 1
+    def width(self):
+        return (self.maxcol - self.mincol) + 1
 
-    def rotate(self, clockwise = True):
+    def height(self):
+        return (self.maxrow - self.minrow) + 1
+
+    def rotate(self, clockwise=True):
         """ Rotates the figure's coordinates
         """
         if not self.rotatable:
@@ -312,7 +320,8 @@ class Figure(object):
         #
         field = []
 
-        for col in range(9): field.append([0] * 9)
+        for col in range(9):
+            field.append([0] * 9)
 
         for (col, row) in self.coords:
             field[4 + col][4 + row] = 1
@@ -331,10 +340,14 @@ class Figure(object):
         self.minrow = self.mincol = 99
 
         for (row, col) in self.coords:
-            if row > self.maxrow: self.maxrow = row
-            if row < self.minrow: self.minrow = row
-            if col > self.maxcol: self.maxcol = col
-            if col < self.mincol: self.mincol = col
+            if row > self.maxrow:
+                self.maxrow = row
+            if row < self.minrow:
+                self.minrow = row
+            if col > self.maxcol:
+                self.maxcol = col
+            if col < self.mincol:
+                self.mincol = col
 
 
 if __name__ == "__main__":
@@ -349,22 +362,22 @@ if __name__ == "__main__":
     tb = TetrisBoard(nrows, ncols)
 
     myboard = [
-            [0] * ncols,
-            [0] * ncols,
-            [0] * ncols,
-            [0] * ncols,                    # 3
-            [0] * ncols,
-            [0] * ncols,
-            [0] * ncols,
-            [0] * ncols,                    # 7
-            [6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
-            [6, 0, 6, 6, 6, 6, 6, 6, 6, 6],
-            [6, 0, 6, 6, 6, 6, 0, 6, 6, 6],
-            [6, 6, 6, 6, 6, 6, 6, 6, 6, 6], # 11
-        ]
+        [0] * ncols,
+        [0] * ncols,
+        [0] * ncols,
+        [0] * ncols,                    # 3
+        [0] * ncols,
+        [0] * ncols,
+        [0] * ncols,
+        [0] * ncols,                    # 7
+        [6, 6, 6, 6, 6, 6, 6, 6, 6, 6],
+        [6, 0, 6, 6, 6, 6, 6, 6, 6, 6],
+        [6, 0, 6, 6, 6, 6, 0, 6, 6, 6],
+        [6, 6, 6, 6, 6, 6, 6, 6, 6, 6],  # 11
+    ]
 
     tb.reset_board(myboard)
-    tb.spawn_figure(Figure([(0,0), (-1,0), (0,-1), (1,-1)]))
+    tb.spawn_figure(Figure([(0, 0), (-1, 0), (0, -1), (1, -1)]))
 
     tb.print_in_ascii()
 
@@ -385,14 +398,14 @@ if __name__ == "__main__":
     import sys
     sys.exit(6)
 
-    if not tb.spawn_figure(I): raise Exception("RAAR")
+    if not tb.spawn_figure(I):
+        raise Exception("RAAR")
     tb.move_figure_right()
-    for i in range(8): tb.move_figure_down()
+    for i in range(8):
+        tb.move_figure_down()
 
     tb.rotate_figure()
     tb.move_figure_down()
     tb.finish_fall()
 
     tb.print_in_ascii()
-
-

@@ -73,6 +73,7 @@ class ConsoleWidget(QPlainTextEdit):
         self.prompt = '>>> '
         self._console = console.Console()
         self._history = []
+        self.history_index = 0
         self._current_command = ''
         self._braces = None
         self.imports = ['import __builtin__']

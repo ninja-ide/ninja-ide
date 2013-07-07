@@ -32,7 +32,7 @@ HOME_PATH = QDir.toNativeSeparators(QDir.homePath())
 
 NINJA_EXECUTABLE = os.path.realpath(sys.argv[0])
 
-PRJ_PATH = os.path.abspath(os.path.dirname(__file__))
+PRJ_PATH = os.path.abspath(os.path.dirname(__file__)).decode('utf-8')
 #Only for py2exe
 frozen = getattr(sys, 'frozen', '')
 if frozen in ('dll', 'console_exe', 'windows_exe'):
@@ -48,7 +48,7 @@ SYNTAX_FILES = os.path.join(PRJ_PATH, "addins", "syntax")
 PLUGINS = os.path.join(HOME_NINJA_PATH, "addins", "plugins")
 
 PLUGINS_DESCRIPTOR = os.path.join(HOME_NINJA_PATH, "addins",
-                                    "plugins", "descriptor.json")
+                                  "plugins", "descriptor.json")
 
 LANGS = os.path.join(PRJ_PATH, "addins", "lang")
 
@@ -68,6 +68,8 @@ NINJA_THEME_DOWNLOAD = os.path.join(HOME_NINJA_PATH, "addins", "theme")
 LOG_FILE_PATH = os.path.join(HOME_NINJA_PATH, 'ninja_ide.log')
 
 GET_SYSTEM_PATH = os.path.join(PRJ_PATH, 'tools', 'get_system_path.py')
+
+QML_FILES = os.path.join(PRJ_PATH, "addins", "qml")
 
 ###############################################################################
 # URLS
@@ -100,16 +102,13 @@ IMAGES = {
     "newProj": os.path.join(PRJ_PATH, "img", "project-new.png"),
     "open": os.path.join(PRJ_PATH, "img", "document-open.png"),
     "openProj": os.path.join(PRJ_PATH, "img", "project-open.png"),
-    "favProj": os.path.join(PRJ_PATH, "img", "favorite-project.png"),
-    "unfavProj": os.path.join(PRJ_PATH, "img", "unfavorite-project.png"),
-    "delProj": os.path.join(PRJ_PATH, "img", "delete-project.png"),
     "openFolder": os.path.join(PRJ_PATH, "img", "folder-open.png"),
     "save": os.path.join(PRJ_PATH, "img", "document-save.png"),
     "saveAs": os.path.join(PRJ_PATH, "img", "document-save-as.png"),
     "saveAll": os.path.join(PRJ_PATH, "img", "document-save-all.png"),
     "activate-profile": os.path.join(PRJ_PATH, "img", "activate_profile.png"),
     "deactivate-profile": os.path.join(PRJ_PATH, "img",
-        "deactivate_profile.png"),
+                                       "deactivate_profile.png"),
     "copy": os.path.join(PRJ_PATH, "img", "edit-copy.png"),
     "cut": os.path.join(PRJ_PATH, "img", "edit-cut.png"),
     "paste": os.path.join(PRJ_PATH, "img", "edit-paste.png"),
@@ -138,11 +137,11 @@ IMAGES = {
     "zoom-in": os.path.join(PRJ_PATH, "img", "zoom_in.png"),
     "zoom-out": os.path.join(PRJ_PATH, "img", "zoom_out.png"),
     "splitCPosition": os.path.join(PRJ_PATH, "img",
-                                "panels-change-position.png"),
+                                   "panels-change-position.png"),
     "splitMPosition": os.path.join(PRJ_PATH, "img",
-                                "panels-change-vertical-position.png"),
+                                   "panels-change-vertical-position.png"),
     "splitCRotate": os.path.join(PRJ_PATH, "img",
-                                "panels-change-orientation.png"),
+                                 "panels-change-orientation.png"),
     "indent-less": os.path.join(PRJ_PATH, "img", "indent-less.png"),
     "indent-more": os.path.join(PRJ_PATH, "img", "indent-more.png"),
     "go-to-definition": os.path.join(PRJ_PATH, "img", "go_to_definition.png"),
@@ -171,10 +170,10 @@ IMAGES = {
     "locate-class": os.path.join(PRJ_PATH, "img", "locate-class.png"),
     "locate-function": os.path.join(PRJ_PATH, "img", "locate-function.png"),
     "locate-attributes": os.path.join(PRJ_PATH, "img",
-        "locate-attributes.png"),
+                                      "locate-attributes.png"),
     "locate-nonpython": os.path.join(PRJ_PATH, "img", "locate-nonpython.png"),
     "locate-on-this-file": os.path.join(PRJ_PATH, "img",
-        "locate-on-this-file.png"),
+                                        "locate-on-this-file.png"),
     "locate-tab": os.path.join(PRJ_PATH, "img", "locate-tab.png"),
     "locate-line": os.path.join(PRJ_PATH, "img", "locate-line.png"),
     "add": os.path.join(PRJ_PATH, "img", "add.png"),
@@ -283,6 +282,8 @@ SHORTCUTS = {
     "Open-recent-closed": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_T),
     "Change-Tab": QKeySequence(Qt.CTRL + Qt.Key_PageDown),
     "Change-Tab-Reverse": QKeySequence(Qt.CTRL + Qt.Key_PageUp),
+    "Move-Tab-to-right": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_0),
+    "Move-Tab-to-left": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_9),
     "Show-Code-Nav": QKeySequence(Qt.CTRL + Qt.Key_1),
     "Show-Paste-History": QKeySequence(Qt.CTRL + Qt.Key_4),
     "History-Copy": QKeySequence(Qt.CTRL + Qt.ALT + Qt.Key_C),
@@ -312,7 +313,7 @@ def load_shortcuts():
         default_action = SHORTCUTS[action].toString()
         #get the custom shortcut or the default
         shortcut_action = settings.value("shortcuts/%s" % action,
-            default_action)
+                                         default_action)
         #set the shortcut
         CUSTOM_SHORTCUTS[action] = QKeySequence(shortcut_action)
 

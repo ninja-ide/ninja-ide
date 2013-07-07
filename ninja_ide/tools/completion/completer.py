@@ -115,6 +115,8 @@ def _import_modules(imports, dglobals):
 def get_all_completions(s, imports=None):
     '''Return contextual completion of s (string of >= zero chars)'''
     dlocals = {}
+    #FIXXXXXXXXXXXXXXXX
+    #return {}
 
     _import_modules(imports, globals())
 
@@ -148,7 +150,7 @@ def get_all_completions(s, imports=None):
         var = s
         s = dots[-1]
         return get_completions_per_type(["%s.%s" % (var, k) for k in
-            dir(sym) if k.startswith(s)])
+                                         dir(sym) if k.startswith(s)])
     return {}
 
 

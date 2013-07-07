@@ -50,29 +50,30 @@ class PreferencesEditorConfigurationTestCase(BaseTest):
         self.editor_completion = preferences.EditorConfiguration()
 
     def _check_values(self, errors, indent, checkStyle, marginLine,
-        checkForDocstrings, showMarginLine, errorsInLine, centerOnScroll,
-        checkStyleInline, useTabs, highlightWholeLine, removeTrailingSpaces,
-        showTabsAndSpaces, allowWordWrap):
+                      checkForDocstrings, showMarginLine,
+                      errorsInLine, centerOnScroll, checkStyleInline,
+                      useTabs, highlightWholeLine, removeTrailingSpaces,
+                      showTabsAndSpaces, allowWordWrap):
         self.assertEqual(self.settings.values['errors'], errors)
         self.assertEqual(self.settings.values['indent'], indent)
         self.assertEqual(self.settings.values['checkStyle'], checkStyle)
         self.assertEqual(self.settings.values['marginLine'], marginLine)
         self.assertEqual(self.settings.values['checkForDocstrings'],
-            checkForDocstrings)
+                         checkForDocstrings)
         self.assertEqual(self.settings.values['showMarginLine'],
-            showMarginLine)
+                         showMarginLine)
         self.assertEqual(self.settings.values['errorsInLine'], errorsInLine)
         self.assertEqual(self.settings.values['centerOnScroll'],
-            centerOnScroll)
+                         centerOnScroll)
         self.assertEqual(self.settings.values['checkStyleInline'],
-            checkStyleInline)
+                         checkStyleInline)
         self.assertEqual(self.settings.values['useTabs'], useTabs)
         self.assertEqual(self.settings.values['highlightWholeLine'],
-            highlightWholeLine)
+                         highlightWholeLine)
         self.assertEqual(self.settings.values['removeTrailingSpaces'],
-            removeTrailingSpaces)
+                         removeTrailingSpaces)
         self.assertEqual(self.settings.values['showTabsAndSpaces'],
-            showTabsAndSpaces)
+                         showTabsAndSpaces)
         self.assertEqual(self.settings.values['allowWordWrap'], allowWordWrap)
 
     def test_save(self):
@@ -93,7 +94,7 @@ class PreferencesEditorConfigurationTestCase(BaseTest):
         self.assertEqual([], preferences.pep8mod.options.ignore)
         self.assertEqual([True, True], data)
         self._check_values(True, 4, True, 80, False, True, True, True, True,
-            False, True, True, True, False)
+                           False, True, True, True, False)
 
 
 class PreferencesShortcutManagerConfigurationTestCase(BaseTest):

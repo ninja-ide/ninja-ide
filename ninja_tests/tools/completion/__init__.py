@@ -29,8 +29,8 @@ def get_source_data(code, word=""):
         attrs.remove(word)
     funcs = filter(lambda x: x not in clazzes, funcs)
     data = {'attributes': attrs,
-        'functions': funcs,
-        'classes': clazzes}
+            'functions': funcs,
+            'classes': clazzes}
     return data
 
 

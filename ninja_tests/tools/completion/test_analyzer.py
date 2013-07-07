@@ -100,7 +100,7 @@ class AnalyzerTestCase(unittest.TestCase):
         self.assertEqual(assign.name, 'obj')
         assign_test2 = model.Assign('obj')
         assign_test2.add_data(0, model.late_resolution,
-            '    obj = os.path', _ast.Attribute)
+                              '    obj = os.path', _ast.Attribute)
         expected_data = assign_test2.data[0]
         result_data = assign.data[0]
         self.assertEqual(result_data.data_type, expected_data.data_type)
@@ -112,7 +112,7 @@ class AnalyzerTestCase(unittest.TestCase):
         self.assertEqual(assign.name, 'di')
         assign_test2 = model.Assign('di')
         assign_test2.add_data(0, model.late_resolution,
-            '    di = Test()', _ast.Call)
+                              '    di = Test()', _ast.Call)
         expected_data = assign_test2.data[0]
         result_data = assign.data[0]
         self.assertEqual(result_data.data_type, expected_data.data_type)
@@ -125,7 +125,7 @@ class AnalyzerTestCase(unittest.TestCase):
         self.assertEqual(assign.name, 'another')
         assign_test2 = model.Assign('another')
         assign_test2.add_data(0, model.late_resolution,
-            '    another = obj', _ast.Name)
+                              '    another = obj', _ast.Name)
         expected_data = assign_test2.data[0]
         result_data = assign.data[0]
         self.assertEqual(result_data.data_type, expected_data.data_type)
@@ -190,7 +190,7 @@ class AnalyzerTestCase(unittest.TestCase):
         self.assertEqual(assign.name, 'code')
         assign_test1 = model.Assign('code')
         assign_test1.add_data(0, '__builtin__.str', "        code = 'string'",
-            None)
+                              None)
         expected_data = assign_test1.data[0]
         result_data = assign.data[0]
         self.assertEqual(result_data.data_type, expected_data.data_type)
@@ -203,7 +203,7 @@ class AnalyzerTestCase(unittest.TestCase):
         self.assertEqual(assign.name, 'my_var')
         assign_test1 = model.Assign('my_var')
         assign_test1.add_data(0, '__builtin__.str',
-        "            my_var = 'inside if'", None)
+                              "            my_var = 'inside if'", None)
         expected_data = assign_test1.data[0]
         result_data = assign.data[0]
         self.assertEqual(result_data.data_type, expected_data.data_type)
@@ -294,7 +294,7 @@ class AnalyzerTestCase(unittest.TestCase):
         self.assertEqual(assign.name, 'nothing')
         assign_test1 = model.Assign('nothing')
         assign_test1.add_data(0, '__builtin__.bool', "        nothing = False",
-            None)
+                              None)
         expected_data = assign_test1.data[0]
         result_data = assign.data[0]
         self.assertEqual(result_data.data_type, expected_data.data_type)

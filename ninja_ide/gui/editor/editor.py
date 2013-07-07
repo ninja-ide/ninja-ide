@@ -131,8 +131,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.__encoding = None
         #Completer
         self.completer = completer_widget.CodeCompletionWidget(self)
-        #Indentation
-        self.set_project(project_obj)
         #Flag to dont bug the user when answer *the modification dialog*
         self.ask_if_externally_modified = False
         self.just_saved = False
@@ -193,6 +191,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
                 self._mini.update_visible_area)
 
+        #Indentation
+        self.set_project(project_obj)
         #Context Menu Options
         self.__actionFindOccurrences = QAction(
             self.tr("Find Usages"), self)
@@ -666,10 +666,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if found:
             self.highlight_selected_word(word)
 
-    def replace_match(self, wordOld, wordNew, flags, all=False,
+    def replace_match(self, wordOld, wordNew, flags, allwords=False,
                         selection=False):
         """Find if searched text exists and replace it with new one.
-        If there is a selection just doit inside it and exit.
+        If there is a selection just do it inside it and exit.
         """
         tc = self.textCursor()
         if selection and tc.hasSelection():
@@ -685,14 +685,13 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             return
 
         flags = QTextDocument.FindFlags(flags)
-        self.moveCursor(QTextCursor.NoMove, QTextCursor.KeepAnchor)
+        self.moveCursor(QTextCursor.Start, QTextCursor.KeepAnchor)
 
         cursor = self.textCursor()
         cursor.beginEditBlock()
 
-        self.moveCursor(QTextCursor.Start)
         replace = True
-        while (replace or all):
+        while (replace or allwords):
             result = False
             result = self.find(wordOld, flags)
 

@@ -16,7 +16,7 @@ software easier and more enjoyable.
 
 Both of these:
 
--   [Python](http://python.org/) >= 2.7 (Not Python3)
+-   [Python](http://python.org/) >= 2.7 (or Python3)
 -   [PyQt](http://www.riverbankcomputing.com/software/pyqt/intro) >= 4.8
 
 And one of these:
