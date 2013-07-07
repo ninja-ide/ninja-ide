@@ -450,7 +450,7 @@ class __Actions(QObject):
             name = QInputDialog.getText(None,
                 self.tr("Add File To Project"), self.tr("File Name:"))[0]
             if not name:
-                QMessageBox.information(self, self.tr("Invalid Name"),
+                QMessageBox.information(None, self.tr("Invalid Name"),
                     self.tr("The file name is empty, please enter a name"))
                 return
         else:
@@ -473,7 +473,7 @@ class __Actions(QObject):
                 self.ide.mainContainer.actualTab.currentIndex(), name)
             editorWidget._file_saved()
         except file_manager.NinjaFileExistsException as ex:
-            QMessageBox.information(self, self.tr("File Already Exists"),
+            QMessageBox.information(None, self.tr("File Already Exists"),
                 (self.tr("Invalid Path: the file '%s' already exists.") %
                     ex.filename))
 
@@ -514,7 +514,7 @@ class __Actions(QObject):
         if profileInfo[1]:
             profileName = profileInfo[0]
             if not profileName or profileName in settings.PROFILES:
-                QMessageBox.information(self, self.tr("Profile Name Invalid"),
+                QMessageBox.information(None, self.tr("Profile Name Invalid"),
                     self.tr("The Profile name is invalid or already exists."))
                 return
             self.save_profile(profileName)
