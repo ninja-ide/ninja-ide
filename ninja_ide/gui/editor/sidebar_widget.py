@@ -64,7 +64,7 @@ class SidebarWidget(QWidget):
         maxLine = math.ceil(math.log10(self.edit.blockCount()))
         width = QFontMetrics(
             self.edit.document().defaultFont()).width('0' * int(maxLine)) \
-                + 10 + self.foldArea
+            + 10 + self.foldArea
         if self.width() != width:
             self.setFixedWidth(width)
             self.edit.setViewportMargins(width, 0, 0, 0)
@@ -187,15 +187,21 @@ class SidebarWidget(QWidget):
 
         painter = QPainter(self)
         background = resources.CUSTOM_SCHEME.get('sidebar-background',
-            resources.COLOR_SCHEME['sidebar-background'])
+                                                 resources.COLOR_SCHEME[
+                                                     'sidebar-background'])
         foreground = resources.CUSTOM_SCHEME.get('sidebar-foreground',
-            resources.COLOR_SCHEME['sidebar-foreground'])
+                                                 resources.COLOR_SCHEME[
+                                                     'sidebar-foreground'])
         pep8color = resources.CUSTOM_SCHEME.get('pep8-underline',
-            resources.COLOR_SCHEME['pep8-underline'])
+                                                resources.COLOR_SCHEME[
+                                                    'pep8-underline'])
         errorcolor = resources.CUSTOM_SCHEME.get('error-underline',
-            resources.COLOR_SCHEME['error-underline'])
-        migrationcolor = resources.CUSTOM_SCHEME.get('migration-underline',
-            resources.COLOR_SCHEME['migration-underline'])
+                                                 resources.COLOR_SCHEME[
+                                                     'error-underline'])
+        migrationcolor = resources.CUSTOM_SCHEME.get(
+            'migration-underline',
+            resources.COLOR_SCHEME[
+                'migration-underline'])
         painter.fillRect(self.rect(), QColor(background))
 
         block = self.edit.firstVisibleBlock()
@@ -214,7 +220,7 @@ class SidebarWidget(QWidget):
             # Set the Painter Pen depending on special lines
             error = False
             if settings.CHECK_STYLE and \
-               ((line_count - 1) in self._pep8Lines):
+                    ((line_count - 1) in self._pep8Lines):
                 painter.setPen(QColor(pep8color))
                 font = painter.font()
                 font.setItalic(True)
@@ -222,7 +228,7 @@ class SidebarWidget(QWidget):
                 painter.setFont(font)
                 error = True
             elif settings.FIND_ERRORS and \
-                 ((line_count - 1) in self._errorsLines):
+                    ((line_count - 1) in self._errorsLines):
                 painter.setPen(QColor(errorcolor))
                 font = painter.font()
                 font.setItalic(True)
@@ -230,7 +236,7 @@ class SidebarWidget(QWidget):
                 painter.setFont(font)
                 error = True
             elif settings.SHOW_MIGRATION_TIPS and \
-                 ((line_count - 1) in self._migrationLines):
+                    ((line_count - 1) in self._migrationLines):
                 painter.setPen(QColor(migrationcolor))
                 font = painter.font()
                 font.setItalic(True)
@@ -252,10 +258,10 @@ class SidebarWidget(QWidget):
             # line. 3 is a magic padding number. drawText(x, y, text).
             if block.isVisible():
                 painter.drawText(self.width() - self.foldArea -
-                    font_metrics.width(str(line_count)) - 3,
-                    round(position.y()) + font_metrics.ascent() +
-                    font_metrics.descent() - 1,
-                    str(line_count))
+                                 font_metrics.width(str(line_count)) - 3,
+                                 round(position.y()) + font_metrics.ascent() +
+                                 font_metrics.descent() - 1,
+                                 str(line_count))
 
             # Remove the bold style if it was set previously.
             if bold:
@@ -275,8 +281,8 @@ class SidebarWidget(QWidget):
         #Code Folding
         xofs = self.width() - self.foldArea
         painter.fillRect(xofs, 0, self.foldArea, self.height(),
-                QColor(resources.CUSTOM_SCHEME.get('fold-area',
-                resources.COLOR_SCHEME['fold-area'])))
+                         QColor(resources.CUSTOM_SCHEME.get('fold-area',
+                                                            resources.COLOR_SCHEME['fold-area'])))
         if self.foldArea != self.rightArrowIcon.width():
             polygon = QPolygonF()
 
@@ -293,7 +299,7 @@ class SidebarWidget(QWidget):
             iconPainter.setPen(Qt.NoPen)
             iconPainter.setBrush(QColor(
                 resources.CUSTOM_SCHEME.get('fold-arrow',
-                resources.COLOR_SCHEME['fold-arrow'])))
+                                            resources.COLOR_SCHEME['fold-arrow'])))
             iconPainter.drawPolygon(polygon)
 
             polygon.clear()
@@ -305,7 +311,7 @@ class SidebarWidget(QWidget):
             iconPainter.setPen(Qt.NoPen)
             iconPainter.setBrush(QColor(
                 resources.CUSTOM_SCHEME.get('fold-arrow',
-                resources.COLOR_SCHEME['fold-arrow'])))
+                                            resources.COLOR_SCHEME['fold-arrow'])))
             iconPainter.drawPolygon(polygon)
 
         block = self.edit.firstVisibleBlock()
@@ -319,10 +325,10 @@ class SidebarWidget(QWidget):
             if pattern.match(block.text()) and block.isVisible():
                 if block.blockNumber() in self._foldedBlocks:
                     painter.drawPixmap(xofs, round(position.y()),
-                        self.rightArrowIcon)
+                                       self.rightArrowIcon)
                 else:
                     painter.drawPixmap(xofs, round(position.y()),
-                        self.downArrowIcon)
+                                       self.downArrowIcon)
             #Add Bookmarks and Breakpoint
             elif block.blockNumber() in self._breakpoints:
                 linear_gradient = QLinearGradient(
@@ -378,11 +384,11 @@ class SidebarWidget(QWidget):
                     if position.y() > page_bottom:
                         break
                     if position.y() < ys and (position.y() + fh) > ys and \
-                      pattern.match(str(block.text())):
+                            pattern.match(str(block.text())):
                         lineNumber = block.blockNumber() + 1
                         break
                     elif position.y() < ys and (position.y() + fh) > ys and \
-                      event.button() == Qt.LeftButton:
+                            event.button() == Qt.LeftButton:
                         line = block.blockNumber()
                         if line in self._breakpoints:
                             self._breakpoints.remove(line)
@@ -391,7 +397,7 @@ class SidebarWidget(QWidget):
                         self.update()
                         break
                     elif position.y() < ys and (position.y() + fh) > ys and \
-                      event.button() == Qt.RightButton:
+                            event.button() == Qt.RightButton:
                         line = block.blockNumber()
                         if line in self._bookmarks:
                             self._bookmarks.remove(line)

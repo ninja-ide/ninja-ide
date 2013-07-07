@@ -62,7 +62,7 @@ class ShortcutDialog(QDialog):
         self.keys = 0
         #Keyword modifiers!
         self.keyword_modifiers = (Qt.Key_Control, Qt.Key_Meta, Qt.Key_Shift,
-            Qt.Key_Alt, Qt.Key_Menu)
+                                  Qt.Key_Alt, Qt.Key_Menu)
         #main layout
         main_vbox = QVBoxLayout(self)
         self.line_edit = QLineEdit()
@@ -212,18 +212,18 @@ class ShortcutConfiguration(QWidget):
         main_vbox.addLayout(buttons_layout)
         main_vbox.addWidget(QLabel(
             self.tr("The Shortcut's Text in the Menus are "
-            "going to be refreshed on restart.")))
+                    "going to be refreshed on restart.")))
         #load data!
         self.result_widget.setColumnWidth(0, 400)
         self._load_shortcuts()
         #signals
         #open the set shortcut dialog
         self.connect(self.result_widget,
-            SIGNAL("itemDoubleClicked(QTreeWidgetItem*, int)"),
-                self._open_shortcut_dialog)
+                     SIGNAL("itemDoubleClicked(QTreeWidgetItem*, int)"),
+                     self._open_shortcut_dialog)
         #load defaults shortcuts
         self.connect(load_defaults_button, SIGNAL("clicked()"),
-            self._load_defaults_shortcuts)
+                     self._load_defaults_shortcuts)
         #one shortcut has changed
         self.connect(self.shortcut_dialog, SIGNAL('shortcutChanged'),
                      self._shortcut_changed)
@@ -251,10 +251,11 @@ class ShortcutConfiguration(QWidget):
             if top_item.text(0) != keyname:
                 itmseq = top_item.text(1)
                 if keystr == itmseq:
-                    val = QMessageBox.warning(self,
-                            self.tr('Shortcut is already in use'),
-                            self.tr("Do you want to remove it?"),
-                            QMessageBox.Yes, QMessageBox.No)
+                    val = QMessageBox.warning(
+                        self,
+                        self.tr('Shortcut is already in use'),
+                        self.tr("Do you want to remove it?"),
+                        QMessageBox.Yes, QMessageBox.No)
                     if val == QMessageBox.Yes:
                         top_item.setText(1, "")
                         return True
@@ -295,7 +296,8 @@ class ShortcutConfiguration(QWidget):
             shortcut_action = resources.get_shortcut(action)
             #populate the tree widget
             tree_data = [self.shortcuts_text[action],
-                shortcut_action.toString(QKeySequence.NativeText), action]
+                         shortcut_action.toString(QKeySequence.NativeText),
+                         action]
             item = QTreeWidgetItem(self.result_widget, tree_data)
             item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
 
@@ -307,6 +309,7 @@ class ShortcutConfiguration(QWidget):
             shortcut_action = action
             #populate the tree widget
             tree_data = [self.shortcuts_text[name],
-                shortcut_action.toString(QKeySequence.NativeText), name]
+                         shortcut_action.toString(QKeySequence.NativeText),
+                         name]
             item = QTreeWidgetItem(self.result_widget, tree_data)
             item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)

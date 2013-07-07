@@ -39,9 +39,9 @@ class MenuFile(QObject):
         QObject.__init__(self)
 
         newAction = menuFile.addAction(QIcon(resources.IMAGES['new']),
-            (self.trUtf8("&New File (%s)") %
-                resources.get_shortcut("New-file").toString(
-                    QKeySequence.NativeText)))
+                                       (self.trUtf8("&New File (%s)") %
+                                        resources.get_shortcut("New-file").toString(
+                                            QKeySequence.NativeText)))
         newProjectAction = menuFile.addAction(
             QIcon(resources.IMAGES['newProj']),
             (self.trUtf8("New Pro&ject (%s)") %
@@ -49,13 +49,13 @@ class MenuFile(QObject):
                     QKeySequence.NativeText)))
         menuFile.addSeparator()
         saveAction = menuFile.addAction(QIcon(resources.IMAGES['save']),
-            (self.trUtf8("&Save (%s)") %
-                resources.get_shortcut("Save-file").toString(
-                    QKeySequence.NativeText)))
+                                        (self.trUtf8("&Save (%s)") %
+                                         resources.get_shortcut("Save-file").toString(
+                                             QKeySequence.NativeText)))
         saveAsAction = menuFile.addAction(QIcon(resources.IMAGES['saveAs']),
-            self.trUtf8("Save &As"))
+                                          self.trUtf8("Save &As"))
         saveAllAction = menuFile.addAction(QIcon(resources.IMAGES['saveAll']),
-            self.trUtf8("Save All"))
+                                           self.trUtf8("Save All"))
         saveProjectAction = menuFile.addAction(QIcon(
             resources.IMAGES['saveAll']),
             (self.trUtf8("Save Pro&ject  (%s)") %
@@ -69,9 +69,9 @@ class MenuFile(QObject):
                     QKeySequence.NativeText)))
         menuFile.addSeparator()
         openAction = menuFile.addAction(QIcon(resources.IMAGES['open']),
-            (self.trUtf8("&Open (%s)") %
-                resources.get_shortcut("Open-file").toString(
-                    QKeySequence.NativeText)))
+                                        (self.trUtf8("&Open (%s)") %
+                                         resources.get_shortcut("Open-file").toString(
+                                             QKeySequence.NativeText)))
         openProjectAction = menuFile.addAction(
             QIcon(resources.IMAGES['openProj']),
             (self.trUtf8("Open &Project (%s)") %
@@ -87,9 +87,9 @@ class MenuFile(QObject):
             self.trUtf8("Deactivate Profile"))
         menuFile.addSeparator()
         printFile = menuFile.addAction(QIcon(resources.IMAGES['print']),
-            (self.trUtf8("Pr&int File (%s)") %
-                resources.get_shortcut("Print-file").toString(
-                    QKeySequence.NativeText)))
+                                       (self.trUtf8("Pr&int File (%s)") %
+                                        resources.get_shortcut("Print-file").toString(
+                                            QKeySequence.NativeText)))
         closeAction = menuFile.addAction(
             ide.style().standardIcon(QStyle.SP_DialogCloseButton),
             (self.trUtf8("&Close Tab (%s)") %
@@ -120,36 +120,36 @@ class MenuFile(QObject):
             'close-projects': closeProjectsAction}
 
         self.connect(newAction, SIGNAL("triggered()"),
-            ide.mainContainer.add_editor)
+                     ide.mainContainer.add_editor)
         self.connect(newProjectAction, SIGNAL("triggered()"),
-            ide.explorer.create_new_project)
+                     ide.explorer.create_new_project)
         self.connect(openAction, SIGNAL("triggered()"),
-            ide.mainContainer.open_file)
+                     ide.mainContainer.open_file)
         self.connect(saveAction, SIGNAL("triggered()"),
-            ide.mainContainer.save_file)
+                     ide.mainContainer.save_file)
         self.connect(saveAsAction, SIGNAL("triggered()"),
-            ide.mainContainer.save_file_as)
+                     ide.mainContainer.save_file_as)
         self.connect(saveAllAction, SIGNAL("triggered()"),
-            ide.actions.save_all)
+                     ide.actions.save_all)
         self.connect(saveProjectAction, SIGNAL("triggered()"),
-            ide.actions.save_project)
+                     ide.actions.save_project)
         self.connect(openProjectAction, SIGNAL("triggered()"),
-            ide.explorer.open_project_folder)
+                     ide.explorer.open_project_folder)
         self.connect(closeAction, SIGNAL("triggered()"),
-            ide.mainContainer.actualTab.close_tab)
+                     ide.mainContainer.actualTab.close_tab)
         self.connect(exitAction, SIGNAL("triggered()"),
-            ide.close)
+                     ide.close)
         QObject.connect(reloadFileAction, SIGNAL("triggered()"),
-            ide.mainContainer.reload_file)
+                        ide.mainContainer.reload_file)
         self.connect(printFile, SIGNAL("triggered()"), ide.actions.print_file)
         self.connect(closeProjectsAction, SIGNAL("triggered()"),
-            ide.explorer.close_opened_projects)
+                     ide.explorer.close_opened_projects)
         self.connect(deactivateProfileAction, SIGNAL("triggered()"),
-            ide.actions.deactivate_profile)
+                     ide.actions.deactivate_profile)
         self.connect(activateProfileAction, SIGNAL("triggered()"),
-            ide.actions.activate_profile)
+                     ide.actions.activate_profile)
         self.connect(self.recent_files, SIGNAL("triggered(QAction*)"),
-            self._open_file)
+                     self._open_file)
 
     def update_recent_files(self, files):
         """Recreate the recent files menu."""

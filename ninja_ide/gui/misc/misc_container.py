@@ -108,13 +108,13 @@ class __MiscContainer(QWidget):
         hbox.addWidget(btn_close)
 
         self.connect(self._btnConsole, SIGNAL("clicked()"),
-            lambda: self._item_changed(0))
+                     lambda: self._item_changed(0))
         self.connect(self._btnRun, SIGNAL("clicked()"),
-            lambda: self._item_changed(1))
+                     lambda: self._item_changed(1))
         self.connect(self._btnWeb, SIGNAL("clicked()"),
-            lambda: self._item_changed(2))
+                     lambda: self._item_changed(2))
         self.connect(self._btnFind, SIGNAL("clicked()"),
-            lambda: self._item_changed(3))
+                     lambda: self._item_changed(3))
         self.connect(btn_close, SIGNAL('clicked()'), self.hide)
 
     def gain_focus(self):
@@ -140,11 +140,11 @@ class __MiscContainer(QWidget):
         toolbar.addSeparator()
 
     def run_application(self, fileName, pythonPath=False, PYTHONPATH=None,
-            programParams='', preExec='', postExec=''):
+                        programParams='', preExec='', postExec=''):
         self._item_changed(1)
         self.show()
         self._runWidget.start_process(fileName, pythonPath, PYTHONPATH,
-            programParams, preExec, postExec)
+                                      programParams, preExec, postExec)
         self._runWidget.input.setFocus()
 
     def show_results(self, items):
@@ -162,7 +162,7 @@ class __MiscContainer(QWidget):
         self._web.render_page(url)
         if settings.SHOW_WEB_INSPECTOR:
             explorer_container.ExplorerContainer().set_inspection_page(
-            self._web.webFrame.page())
+                self._web.webFrame.page())
             self._web.webFrame.triggerPageAction(
                 QWebPage.InspectElement, True)
             explorer_container.ExplorerContainer().refresh_inspector()
@@ -190,7 +190,7 @@ class StackedWidget(QStackedWidget):
 
     def setCurrentIndex(self, index):
         self.fader_widget = ui_tools.FaderWidget(self.currentWidget(),
-            self.widget(index))
+                                                 self.widget(index))
         QStackedWidget.setCurrentIndex(self, index)
 
     def show_display(self, index):

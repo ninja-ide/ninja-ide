@@ -84,9 +84,11 @@ class MenuView(QObject):
         menuView.addSeparator()
         #Zoom
         zoomInAction = menuView.addAction(QIcon(resources.IMAGES['zoom-in']),
-            self.trUtf8("Zoom &In (Ctrl+Wheel-Up)"))
+                                          self.trUtf8(
+                                              "Zoom &In (Ctrl+Wheel-Up)"))
         zoomOutAction = menuView.addAction(QIcon(resources.IMAGES['zoom-out']),
-            self.trUtf8("Zoom &Out (Ctrl+Wheel-Down)"))
+                                           self.trUtf8(
+                                               "Zoom &Out (Ctrl+Wheel-Down)"))
         menuView.addSeparator()
         fadeInAction = menuView.addAction(
             self.trUtf8("Fade In (Alt+Wheel-Up)"))
@@ -101,34 +103,34 @@ class MenuView(QObject):
             'zoom-out': zoomOutAction}
 
         self.connect(self.hideConsoleAction, SIGNAL("triggered()"),
-            self.__ide.actions.view_misc_visibility)
+                     self.__ide.actions.view_misc_visibility)
         self.connect(self.hideEditorAction, SIGNAL("triggered()"),
-            self.__ide.actions.view_main_visibility)
+                     self.__ide.actions.view_main_visibility)
         self.connect(self.hideExplorerAction, SIGNAL("triggered()"),
-            self.__ide.actions.view_explorer_visibility)
+                     self.__ide.actions.view_explorer_visibility)
         self.connect(self.hideAllAction, SIGNAL("triggered()"),
-            self.__ide.actions.hide_all)
+                     self.__ide.actions.hide_all)
         self.connect(self.fullscreenAction, SIGNAL("triggered()"),
-            self.__ide.actions.fullscreen_mode)
+                     self.__ide.actions.fullscreen_mode)
 
         self.connect(splitTabHAction, SIGNAL("triggered()"),
-            lambda: self.__ide.mainContainer.split_tab(True))
+                     lambda: self.__ide.mainContainer.split_tab(True))
         self.connect(splitTabVAction, SIGNAL("triggered()"),
-            lambda: self.__ide.mainContainer.split_tab(False))
+                     lambda: self.__ide.mainContainer.split_tab(False))
         QObject.connect(followModeAction, SIGNAL("triggered()"),
-            self.__ide.mainContainer.show_follow_mode)
+                        self.__ide.mainContainer.show_follow_mode)
         self.connect(zoomInAction, SIGNAL("triggered()"),
-            self.zoom_in_editor)
+                     self.zoom_in_editor)
         self.connect(zoomOutAction, SIGNAL("triggered()"),
-            self.zoom_out_editor)
+                     self.zoom_out_editor)
         self.connect(fadeInAction, SIGNAL("triggered()"), self._fade_in)
         self.connect(fadeOutAction, SIGNAL("triggered()"), self._fade_out)
         self.connect(self.hideToolbarAction, SIGNAL("triggered()"),
-            self._hide_show_toolbar)
+                     self._hide_show_toolbar)
         self.connect(groupTabsAction, SIGNAL("triggered()"),
-            self.__ide.actions.group_tabs_together)
+                     self.__ide.actions.group_tabs_together)
         self.connect(deactivateGroupTabsAction, SIGNAL("triggered()"),
-            self.__ide.actions.deactivate_tabs_groups)
+                     self.__ide.actions.deactivate_tabs_groups)
 
         #Set proper MenuView checks values:
         self.hideAllAction.setChecked(True)

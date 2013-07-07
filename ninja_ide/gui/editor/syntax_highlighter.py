@@ -80,7 +80,7 @@ class Format(object):
     __slots__ = ("name", "tcf")
 
     def __init__(self, name, color=None, bold=None, italic=None,
-        base_format=None, background=None):
+                 base_format=None, background=None):
         self.name = name
         tcf = TextCharFormat()
         if base_format is not None:
@@ -269,7 +269,7 @@ class Scanner(object):
 class SyntaxHighlighter(QSyntaxHighlighter):
 
     def __init__(self, parent, partition_scanner, scanner, formats,
-        errors=None, pep8=None, migration=None):
+                 errors=None, pep8=None, migration=None):
         """
         :param parent: QDocument or QTextEdit/QPlainTextEdit instance
         'partition_scanner:
@@ -344,7 +344,8 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         user_data.error = True
         color = QColor(
             resources.CUSTOM_SCHEME.get('pep8-underline',
-            resources.COLOR_SCHEME['pep8-underline']))
+                                        resources.COLOR_SCHEME[
+                                            'pep8-underline']))
         self.__apply_proper_style(char_format, color)
         return char_format
 
@@ -353,7 +354,8 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         user_data.error = True
         color = QColor(
             resources.CUSTOM_SCHEME.get('error-underline',
-            resources.COLOR_SCHEME['error-underline']))
+                                        resources.COLOR_SCHEME[
+                                            'error-underline']))
         self.__apply_proper_style(char_format, color)
         return char_format
 
@@ -362,7 +364,8 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         user_data.error = True
         color = QColor(
             resources.CUSTOM_SCHEME.get('migration-underline',
-            resources.COLOR_SCHEME['migration-underline']))
+                                        resources.COLOR_SCHEME[
+                                            'migration-underline']))
         self.__apply_proper_style(char_format, color)
         return char_format
 
@@ -388,7 +391,7 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         get_scanner = self.get_scanner
 
         for start, end, partition, new_state, is_inside in \
-          self.scan_partitions(previous_state, text):
+                self.scan_partitions(previous_state, text):
             f = get_format(partition, None)
             if f:
                 f = highlight_errors(f, user_data)
@@ -405,7 +408,7 @@ class SyntaxHighlighter(QSyntaxHighlighter):
                         if f:
                             f = highlight_errors(f, user_data)
                             set_format(start + token_pos,
-                                token_end - token_pos, f)
+                                       token_end - token_pos, f)
             if partition and partition == "string":
                 user_data.add_str_group(start, end)
 
@@ -422,8 +425,8 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         elif self.pep8 and (block_number in self.pep8.pep8checks):
             highlight_errors = self.__highlight_pep8
             valid_error_line = True
-        elif self.migration and (
-             block_number in self.migration.migration_data):
+        elif self.migration and (block_number
+                                 in self.migration.migration_data):
             highlight_errors = self.__highlight_migration
             valid_error_line = True
         return valid_error_line, highlight_errors
@@ -459,7 +462,8 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         for line in lines:
             block = self.document().findBlockByNumber(line)
             self.document().markContentsDirty(block.position(),
-                block.position() + block.length())
+                                              block.position() +
+                                              block.length())
             self.rehighlightBlock(block)
 
     def _get_errors_lines(self):
@@ -485,30 +489,30 @@ class SyntaxHighlighter(QSyntaxHighlighter):
 
 def _create_scheme():
     scheme = {
-      "syntax_comment": dict(color=resources.CUSTOM_SCHEME.get(
-          "comment", resources.COLOR_SCHEME["comment"]), italic=True),
-      "syntax_string": resources.CUSTOM_SCHEME.get(
-          "string", resources.COLOR_SCHEME["string"]),
-      "syntax_builtin": resources.CUSTOM_SCHEME.get(
-          "extras", resources.COLOR_SCHEME["extras"]),
-      "syntax_keyword": (resources.CUSTOM_SCHEME.get(
-          "keyword", resources.COLOR_SCHEME["keyword"]), True),
-      "syntax_definition": (resources.CUSTOM_SCHEME.get(
-          "definition", resources.COLOR_SCHEME["definition"]), True),
-      "syntax_braces": resources.CUSTOM_SCHEME.get(
-          "brace", resources.COLOR_SCHEME["brace"]),
-      "syntax_number": resources.CUSTOM_SCHEME.get(
-          "numbers", resources.COLOR_SCHEME["numbers"]),
-      "syntax_proper_object": resources.CUSTOM_SCHEME.get(
-          "properObject", resources.COLOR_SCHEME["properObject"]),
-      "syntax_operators": resources.CUSTOM_SCHEME.get(
-          "operator", resources.COLOR_SCHEME["operator"]),
-      "syntax_highlight_word": dict(color=resources.CUSTOM_SCHEME.get(
-          "selected-word", resources.COLOR_SCHEME["selected-word"]),
-          background=resources.CUSTOM_SCHEME.get(
-          "selected-word-background",
-          resources.COLOR_SCHEME["selected-word-background"])),
-      "syntax_pending": resources.COLOR_SCHEME["pending"],
+        "syntax_comment": dict(color=resources.CUSTOM_SCHEME.get(
+            "comment", resources.COLOR_SCHEME["comment"]), italic=True),
+        "syntax_string": resources.CUSTOM_SCHEME.get(
+            "string", resources.COLOR_SCHEME["string"]),
+        "syntax_builtin": resources.CUSTOM_SCHEME.get(
+            "extras", resources.COLOR_SCHEME["extras"]),
+        "syntax_keyword": (resources.CUSTOM_SCHEME.get(
+            "keyword", resources.COLOR_SCHEME["keyword"]), True),
+        "syntax_definition": (resources.CUSTOM_SCHEME.get(
+            "definition", resources.COLOR_SCHEME["definition"]), True),
+        "syntax_braces": resources.CUSTOM_SCHEME.get(
+            "brace", resources.COLOR_SCHEME["brace"]),
+        "syntax_number": resources.CUSTOM_SCHEME.get(
+            "numbers", resources.COLOR_SCHEME["numbers"]),
+        "syntax_proper_object": resources.CUSTOM_SCHEME.get(
+            "properObject", resources.COLOR_SCHEME["properObject"]),
+        "syntax_operators": resources.CUSTOM_SCHEME.get(
+            "operator", resources.COLOR_SCHEME["operator"]),
+        "syntax_highlight_word": dict(color=resources.CUSTOM_SCHEME.get(
+            "selected-word", resources.COLOR_SCHEME["selected-word"]),
+            background=resources.CUSTOM_SCHEME.get("selected-word-background",
+                                                   resources.COLOR_SCHEME[
+                                                       "selected-word-background"])),
+        "syntax_pending": resources.COLOR_SCHEME["pending"],
     }
 
     return scheme
