@@ -799,12 +799,27 @@ class PopupCompleter(QFrame):
             self.listWidget.setItemWidget(item[0], item[1])
         if model:
             self.listWidget.setCurrentItem(model[0][0])
+        else:
+            self.add_no_found()
 
     def fetch_more(self, model):
         """Add more items to the list on user scroll."""
         for item in model:
             self.listWidget.addItem(item[0])
             self.listWidget.setItemWidget(item[0], item[1])
+
+    def add_no_found(self):
+        #Load no results found message
+        noFoundItem = QListWidgetItem(
+            QIcon(resources.IMAGES['delete']),
+                'No results were found!')
+        font = noFoundItem.font()
+        font.setBold(True)
+        noFoundItem.setSizeHint(QSize(20, 30))
+        noFoundItem.setBackground(QBrush(Qt.lightGray))
+        noFoundItem.setForeground(QBrush(Qt.black))
+        noFoundItem.setFont(font)
+        self.listWidget.addItem(noFoundItem)
 
     def add_help(self):
         #Load help
