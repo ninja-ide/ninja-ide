@@ -120,5 +120,5 @@ class BaseWatcher(QObject):
             self._single_file_watcher.quit()
 
     def _emit_signal_on_change(self, event, path):
-        DEBUG("About to emit the signal")
-        self.emit(SIGNAL("fileChanged(int, QString)"), event, path)
+        DEBUG("About to emit the signal" + repr(event))
+        #self.emit(SIGNAL("fileChanged(int, QString)"), event, path)
