@@ -573,6 +573,15 @@ class __MainContainer(QSplitter):
         self.actualTab.currentWidget().setFocus()
         self.emit(SIGNAL("currentTabChanged(QString)"), filename)
 
+    def get_widget_for_path(self, filename):
+        if self._tabMain.is_open(filename) != -1:
+            index = self._tabMain.search_for_identifier_index(filename)
+            return self._tabMain.widget(index)
+        elif self._tabSecondary.is_open(filename) != -1:
+            index = self._tabSecondary.search_for_identifier_index(filename)
+            return self._tabSecondary.widget(index)
+        return None
+
     def change_open_tab_name(self, id, newId):
         """Search for the Tab with id, and set the newId to that Tab."""
         index = self._tabMain.is_open(id)
