@@ -104,14 +104,6 @@ class __CentralWidget(QWidget):
             return
         #Rearrange widgets on Window
         self._splitterArea.insertWidget(0, self._splitterMain)
-        qsettings = QSettings()
-        #Lists of sizes as list of QVariant- heightList = [QVariant, QVariant]
-        heightList = list(qsettings.value("window/central/mainSize",
-            [(self.height() / 3) * 2, self.height() / 3]))
-        widthList = list(qsettings.value("window/central/areaSize",
-            [(self.width() / 6) * 5, self.width() / 6]))
-        self._splitterMainSizes = [int(heightList[0]), int(heightList[1])]
-        self._splitterAreaSizes = [int(widthList[0]), int(widthList[1])]
         if not event.spontaneous():
             self.change_misc_visibility()
         if bin(settings.UI_LAYOUT)[-1] == '1':
@@ -120,13 +112,22 @@ class __CentralWidget(QWidget):
             self.splitter_misc_rotate()
         if bin(settings.UI_LAYOUT >> 2)[-1] == '1':
             self.splitter_central_orientation()
+        qsettings = QSettings()
+        #Lists of sizes as list of QVariant- heightList = [QVariant, QVariant]
+        heightList = list(qsettings.value("window/central/mainSize",
+            [(self.height() / 3) * 2, self.height() / 3]))
+        widthList = list(qsettings.value("window/central/areaSize",
+            [(self.width() / 6) * 5, self.width() / 6]))
+        self._splitterMainSizes = [int(heightList[0]), int(heightList[1])]
+        self._splitterAreaSizes = [int(widthList[0]), int(widthList[1])]
         #Set the sizes to splitters
+        #self._splitterMain.setSizes(self._splitterMainSizes)
         self._splitterMain.setSizes(self._splitterMainSizes)
         self._splitterArea.setSizes(self._splitterAreaSizes)
         self.misc.setVisible(
             qsettings.value("window/show_misc", False, type=bool))
 
-    def change_misc_visibility(self):
+    def change_misc_visibility(self, on_start=False):
         if self.misc.isVisible():
             self._splitterMainSizes = self._splitterMain.sizes()
             self.misc.hide()
