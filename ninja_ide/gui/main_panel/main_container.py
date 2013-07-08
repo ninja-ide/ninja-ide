@@ -1409,10 +1409,12 @@ class _MainContainer(QWidget):
         actionSave = QAction(QIcon(resources.IMAGES['save']),
             self.trUtf8("&Save"), ide)
         IDE.register_shortcut('Save-file', shortSave, actionSave)
-        shortSaveAs = QShortcut(short("Save-file"), ide)
         actionSaveAs = QAction(QIcon(resources.IMAGES['saveAs']),
             self.trUtf8("Save &As"), ide)
-        IDE.register_shortcut('Save-file', shortSaveAs, actionSaveAs)
+        IDE.register_menuitem(actionSaveAs, 'File', 150)
+        actionSaveAll = QAction(QIcon(resources.IMAGES['saveAll']),
+            self.trUtf8("Save All"), ide)
+        IDE.register_menuitem(actionSaveAll, 'File', 160)
         shortRedo = QShortcut(short("Redo"), ide)
         actionRedo = QAction(QIcon(resources.IMAGES['redo']),
             self.trUtf8("Redo"), ide)
@@ -1532,8 +1534,10 @@ class _MainContainer(QWidget):
             self.close_tab)
         self.connect(shortSave, SIGNAL("activated()"),
             self.save_file)
-        self.connect(shortSaveAs, SIGNAL("activated()"),
+        self.connect(actionSaveAs, SIGNAL("triggered()"),
             self.save_file_as)
+        self.connect(actionSaveAll, SIGNAL("triggered()"),
+            self.save_all)
         self.connect(shortIndentLess, SIGNAL("activated()"),
             self.editor_indent_less)
         self.connect(shortComment, SIGNAL("activated()"),

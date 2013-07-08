@@ -17,6 +17,7 @@
 from __future__ import absolute_import
 
 from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QAction
 from PyQt4.QtGui import QToolBar
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QIcon
@@ -149,13 +150,23 @@ class _ToolsDock(QWidget):
     def install_shortcuts(self, ide):
         short = resources.get_shortcut
         shortFindInFiles = QShortcut(short("Find-in-files"), ide)
-        IDE.register_shortcut('Find-in-files', shortFindInFiles)
+        actionFindInFiles = QAction(QIcon(resources.IMAGES['find']),
+            self.trUtf8("Find in Files"), ide)
+        IDE.register_shortcut('Find-in-files', shortFindInFiles,
+            actionFindInFiles)
         shortRunFile = QShortcut(short("Run-file"), ide)
-        IDE.register_shortcut('Run-file', shortRunFile)
+        actionRunFile = QAction(QIcon(resources.IMAGES['file-run']),
+            self.trUtf8("Run File"), ide)
+        IDE.register_shortcut('Run-file', shortRunFile, actionRunFile)
         shortRunProject = QShortcut(short("Run-project"), ide)
-        IDE.register_shortcut('Run-project', shortRunProject)
+        actionRunProject = QAction(QIcon(resources.IMAGES['play']),
+            self.trUtf8("Run Project"), ide)
+        IDE.register_shortcut('Run-project', shortRunProject, actionRunProject)
         shortStopExecution = QShortcut(short("Stop-execution"), ide)
-        IDE.register_shortcut('Stop-execution', shortStopExecution)
+        actionStopExecution = QAction(QIcon(resources.IMAGES['stop']),
+            self.trUtf8("Stop"), ide)
+        IDE.register_shortcut('Stop-execution', shortStopExecution,
+            actionStopExecution)
 
         self.connect(shortFindInFiles, SIGNAL("activated()"),
             self.show_find_in_files_widget)

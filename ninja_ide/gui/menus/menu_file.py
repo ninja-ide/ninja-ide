@@ -17,7 +17,6 @@
 from __future__ import absolute_import
 
 from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QKeySequence
 from PyQt4.QtGui import QStyle
 from PyQt4.QtCore import QObject
 from PyQt4.QtCore import SIGNAL
@@ -37,26 +36,7 @@ class MenuFile(QObject):
 ###############################################################################
 
     def install_menu(self, menuFile, toolbar, ide):
-        newProjectAction = menuFile.addAction(
-            QIcon(resources.IMAGES['newProj']),
-            (self.trUtf8("New Pro&ject (%s)") %
-                resources.get_shortcut("New-project").toString(
-                    QKeySequence.NativeText)))
-        saveAllAction = menuFile.addAction(QIcon(resources.IMAGES['saveAll']),
-            self.trUtf8("Save All"))
-        saveProjectAction = menuFile.addAction(QIcon(
-            resources.IMAGES['saveAll']),
-            (self.trUtf8("Save Pro&ject  (%s)") %
-                resources.get_shortcut("Save-project").toString(
-                    QKeySequence.NativeText)))
-        menuFile.addSeparator()
-        openProjectAction = menuFile.addAction(
-            QIcon(resources.IMAGES['openProj']),
-            (self.trUtf8("Open &Project (%s)") %
-                resources.get_shortcut("Open-project").toString(
-                    QKeySequence.NativeText)))
         self.recent_files = menuFile.addMenu(self.trUtf8('Open Recent Files'))
-        menuFile.addSeparator()
         activateProfileAction = menuFile.addAction(
             QIcon(resources.IMAGES['activate-profile']),
             self.trUtf8("Activate Profile"))
@@ -66,7 +46,6 @@ class MenuFile(QObject):
         closeProjectsAction = menuFile.addAction(
             ide.style().standardIcon(QStyle.SP_DialogCloseButton),
             self.trUtf8("&Close All Projects"))
-        menuFile.addSeparator()
         exitAction = menuFile.addAction(
             ide.style().standardIcon(QStyle.SP_DialogCloseButton),
             self.trUtf8("&Exit"))

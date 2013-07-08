@@ -54,10 +54,6 @@ class MenuEdit(QObject):
             (self.trUtf8("Find using word under cursor (%s)") %
                 resources.get_shortcut("Find-with-word").toString(
                     QKeySequence.NativeText)))
-        findInFilesAction = menuEdit.addAction(QIcon(resources.IMAGES['find']),
-            (self.trUtf8("Find in Files (%s)") %
-                resources.get_shortcut("Find-in-files").toString(
-                    QKeySequence.NativeText)))
         locatorAction = menuEdit.addAction(QIcon(resources.IMAGES['locator']),
             (self.trUtf8("Code Locator (%s)") %
                 resources.get_shortcut("Code-locator").toString(

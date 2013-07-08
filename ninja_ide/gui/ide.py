@@ -236,8 +236,8 @@ class IDE(QMainWindow):
         IDE.__IDESHORTCUTS[shortcut_name] = (shortcut, action)
 
     @classmethod
-    def register_menuitem(cls, menu_action):
-        IDE.__IDESHORTCUTS[shortcut_name] = (shortcut, action)
+    def register_menuitem(cls, menu_action, section, weight):
+        IDE.__IDEMENUS[menu_action] = (section, weight)
 
     @classmethod
     def update_shortcut(cls, shortcut_name):

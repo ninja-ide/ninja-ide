@@ -28,25 +28,11 @@ from ninja_ide.gui.ide import IDE
 class MenuProject(QObject):
 
     def install_menu(self, menuProject, toolbar):
-        runAction = menuProject.addAction(QIcon(resources.IMAGES['play']),
-            (self.trUtf8("Run Project (%s)") %
-                resources.get_shortcut("Run-project").toString(
-                    QKeySequence.NativeText)))
 #        debugAction = menuProject.addAction(
 #            QIcon(resources.IMAGES['debug']),
 #            self.trUtf8("Debug Project (%s)" %
 #                resources.get_shortcut("Debug").toString(
 #                    QKeySequence.NativeText)))
-        runFileAction = menuProject.addAction(
-            QIcon(resources.IMAGES['file-run']),
-            (self.trUtf8("Run File (%s)") %
-                resources.get_shortcut("Run-file").toString(
-                    QKeySequence.NativeText)))
-        stopAction = menuProject.addAction(QIcon(resources.IMAGES['stop']),
-            (self.trUtf8("Stop (%s)") %
-                resources.get_shortcut("Stop-execution").toString(
-                    QKeySequence.NativeText)))
-        menuProject.addSeparator()
         projectPropertiesAction = menuProject.addAction(
             self.trUtf8("Open Project Properties"))
         menuProject.addSeparator()

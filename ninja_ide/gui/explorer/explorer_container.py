@@ -144,9 +144,15 @@ class _ExplorerContainer(QTabWidget):
             self.trUtf8("New Pro&ject"), ide)
         IDE.register_shortcut('New-project', shortNewProject, actionNewProject)
         shortOpenProject = QShortcut(short("Open-project"), ide)
-        IDE.register_shortcut('Open-project', shortOpenProject)
+        actionOpenProject = QAction(QIcon(resources.IMAGES['openProj']),
+            self.trUtf8("Open &Project"), ide)
+        IDE.register_shortcut('Open-project', shortOpenProject,
+            actionOpenProject)
         shortSaveProject = QShortcut(short("Save-project"), ide)
-        IDE.register_shortcut('Save-project', shortSaveProject)
+        actionSaveProject = QAction(QIcon(resources.IMAGES['saveAll']),
+            self.trUtf8("Save Pro&ject"), ide)
+        IDE.register_shortcut('Save-project', shortSaveProject,
+            actionSaveProject)
 
         self.connect(shortNewProject, SIGNAL("activated()"),
             self.create_new_project)
