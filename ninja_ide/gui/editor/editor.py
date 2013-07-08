@@ -65,6 +65,7 @@ from ninja_ide.gui.editor import python_syntax
 from ninja_ide.tools.logger import NinjaLogger
 
 BRACE_DICT = {')': '(', ']': '[', '}': '{', '(': ')', '[': ']', '{': '}'}
+ALLOWS_LESS_INDENTATION_KEYWORDS = ('else', 'elif', 'finally', 'except')
 logger = NinjaLogger('ninja_ide.gui.editor.editor')
 
 
@@ -150,6 +151,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.postKeyPress = {
             Qt.Key_Enter: self.__auto_indent,
             Qt.Key_Return: self.__auto_indent,
+            Qt.Key_Colon: self.__unindent_keywords,
             Qt.Key_BracketLeft: self.__complete_braces,
             Qt.Key_BraceLeft: self.__complete_braces,
             Qt.Key_ParenLeft: self.__complete_braces,
@@ -199,6 +201,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.connect(self.__actionFindOccurrences, SIGNAL("triggered()"),
             self._find_occurrences)
 
+
     def set_project(self, project):
         if project is not None:
             self.indent = project.indentation
@@ -212,6 +215,21 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         else:
             self.indent = settings.INDENT
             self.useTabs = settings.USE_TABS
+
+    def __unindent_keywords(self, event):
+        previous_text = self.textCursor().block().previous().text()
+        current_text = self.textCursor().block().text()
+        previous_spaces = helpers.get_indentation(previous_text)
+        current_spaces = helpers.get_indentation(current_text)
+
+        if len(previous_spaces) != len(current_spaces):
+            last_word = helpers.get_first_keyword(current_text)
+
+            if last_word in ALLOWS_LESS_INDENTATION_KEYWORDS:
+                helpers.remove_line(self)
+                spaces_diff = len(current_spaces) - len(previous_spaces)
+                self.textCursor().insertText(current_text[spaces_diff:])
+
 
     def __get_encoding(self):
         """Get the current encoding of 'utf-8' otherwise."""
