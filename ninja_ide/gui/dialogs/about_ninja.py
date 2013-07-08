@@ -26,13 +26,10 @@ from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QPixmap
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QSize
-from PyQt4.QtCore import QEvent
 from PyQt4.QtCore import SIGNAL
 
 import ninja_ide
 from ninja_ide import resources
-from ninja_ide.gui.main_panel import main_container
-from ninja_ide.gui.menus.lib.tetrisgame import TetrisMainWindow
 
 
 class AboutNinja(QDialog):
@@ -82,19 +79,6 @@ and handles all kinds of situations thanks to its rich extensibility.""")))
             self.link_activated)
         self.connect(link_source, SIGNAL("linkActivated(QString)"),
             self.link_activated)
-        self.lblIcon.installEventFilter(self)
 
     def link_activated(self, link):
         webbrowser.open(str(link))
-
-    def eventFilter(self, obj, event):
-        if obj == self.lblIcon and event.type() == QEvent.MouseButtonPress:
-            self.show_retsae()
-        return False
-
-    def show_retsae(self):
-        height = main_container.MainContainer().size().height()
-        width = main_container.MainContainer().size().width()
-        tetris = TetrisMainWindow(width, height)
-        main_container.MainContainer().add_tab(tetris, 'Tetris')
-        self.close()
