@@ -18,6 +18,8 @@
 import os
 import sys
 
+from PyQt4.QtCore import QDir
+from PyQt4.QtCore import QFileInfo
 from PyQt4.QtCore import QSettings
 
 from ninja_ide.dependencies import pep8mod
@@ -53,11 +55,17 @@ def detect_python_path():
 
     suggested = []
     try:
-        path = "C:\\"
-        dirs = os.listdir(path)
+        drives = [QDir.toNativeSeparators(d.absolutePath())
+                  for d in QDir.drives()]
+        dirs = []
+        for drive in drives:
+            info = QFileInfo(drive)
+            if info.isReadable():
+                dirs += [os.path.join(drive, folder)
+                         for folder in os.listdir(drive)]
         for folder in dirs:
-            file_path = os.path.join(path, folder, "python.exe")
-            if folder.startswith("Python") and os.path.exists(file_path):
+            file_path = os.path.join(folder, "python.exe")
+            if ("Python" in folder) and os.path.exists(file_path):
                 suggested.append(file_path)
     except:
         print("Detection couldnt be executed")

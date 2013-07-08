@@ -25,8 +25,8 @@ class PythonDetectDialog(QDialog):
 
         vbox = QVBoxLayout(self)
 
-        lblMessage = QLabel(self.tr("We have detected that you are using" +
-            "Windows,\nplease configure the proper" +
+        lblMessage = QLabel(self.tr("We have detected that you are using " +
+            "Windows,\nplease choose the proper " +
             "Python application for you:"))
         vbox.addWidget(lblMessage)
 
