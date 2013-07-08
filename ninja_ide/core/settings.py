@@ -15,8 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+import os
 import sys
 
+from PyQt4.QtCore import QDir
+from PyQt4.QtCore import QFileInfo
 from PyQt4.QtCore import QSettings
 
 from ninja_ide.dependencies import pep8mod
@@ -45,6 +48,30 @@ elif sys.platform == "win32":
     FONT_SIZE = 10
     IS_WINDOWS = True
 
+
+def detect_python_path():
+    if (IS_WINDOWS and PYTHON_PATH_CONFIGURED_BY_USER) or not IS_WINDOWS:
+        return []
+
+    suggested = []
+    try:
+        drives = [QDir.toNativeSeparators(d.absolutePath())
+                  for d in QDir.drives()]
+        dirs = []
+        for drive in drives:
+            info = QFileInfo(drive)
+            if info.isReadable():
+                dirs += [os.path.join(drive, folder)
+                         for folder in os.listdir(drive)]
+        for folder in dirs:
+            file_path = os.path.join(folder, "python.exe")
+            if ("Python" in folder) and os.path.exists(file_path):
+                suggested.append(file_path)
+    except:
+        print("Detection couldnt be executed")
+
+    return suggested
+
 ###############################################################################
 # IDE
 ###############################################################################
@@ -69,6 +96,7 @@ HIDE_TOOLBAR = False
 SHOW_STATUS_NOTIFICATIONS = True
 
 PYTHON_PATH = "python"
+PYTHON_PATH_CONFIGURED_BY_USER = False
 EXECUTION_OPTIONS = ""
 
 PROFILES = {}
@@ -325,6 +353,7 @@ def load_settings():
     global UI_LAYOUT
     global NOTIFY_UPDATES
     global PYTHON_PATH
+    global PYTHON_PATH_CONFIGURED_BY_USER
     global PROFILES
     global NINJA_SKIN
     global EXECUTION_OPTIONS
@@ -382,6 +411,8 @@ def load_settings():
         'preferences/general/notifyUpdates', True, type=bool)
     PYTHON_PATH = qsettings.value('preferences/execution/pythonPath',
                                   'python', type='QString')
+    PYTHON_PATH_CONFIGURED_BY_USER = qsettings.value(
+        'preferences/execution/pythonPathConfigured', False, type=bool)
     NINJA_SKIN = qsettings.value('preferences/theme/skin',
                                  'Default', type='QString')
     profileDict = dict(qsettings.value('ide/profiles', {}))
