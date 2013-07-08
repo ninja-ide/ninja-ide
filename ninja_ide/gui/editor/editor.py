@@ -65,6 +65,7 @@ from ninja_ide.gui.editor import python_syntax
 from ninja_ide.tools.logger import NinjaLogger
 
 BRACE_DICT = {')': '(', ']': '[', '}': '{', '(': ')', '[': ']', '{': '}'}
+ALLOWS_LESS_INDENTATION_KEYWORDS = ('else', 'elif', 'finally', 'except')
 logger = NinjaLogger('ninja_ide.gui.editor.editor')
 
 
@@ -114,8 +115,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.errors = errors_checker.ErrorsChecker(self, additional_builtins)
         self.migration = migration_2to3.MigrationTo3(self)
 
-        self.allows_less_indentation = ['else', 'elif', 'finally', 'except']
-
         self.textModified = False
         self.newDocument = True
         self.highlighter = None
@@ -152,7 +151,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.postKeyPress = {
             Qt.Key_Enter: self.__auto_indent,
             Qt.Key_Return: self.__auto_indent,
-            Qt.Key_Colon: self.__retreat_to_keywords,
+            Qt.Key_Colon: self.__unindent_keywords,
             Qt.Key_BracketLeft: self.__complete_braces,
             Qt.Key_BraceLeft: self.__complete_braces,
             Qt.Key_ParenLeft: self.__complete_braces,
@@ -217,18 +216,17 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.indent = settings.INDENT
             self.useTabs = settings.USE_TABS
 
-    def __retreat_to_keywords(self, event):
-        previous_text = unicode(self.textCursor().block().previous().text())
-        current_text = unicode(self.textCursor().block().text())
+    def __unindent_keywords(self, event):
+        previous_text = self.textCursor().block().previous().text()
+        current_text = self.textCursor().block().text()
         previous_spaces = helpers.get_indentation(previous_text)
         current_spaces = helpers.get_indentation(current_text)
 
         if len(previous_spaces) != len(current_spaces):
             last_word = helpers.get_first_keyword(current_text)
 
-            if last_word in self.allows_less_indentation:
-                helpers.clean_line(self)
-
+            if last_word in ALLOWS_LESS_INDENTATION_KEYWORDS:
+                helpers.remove_line(self)
                 spaces_diff = len(current_spaces) - len(previous_spaces)
                 self.textCursor().insertText(current_text[spaces_diff:])
 

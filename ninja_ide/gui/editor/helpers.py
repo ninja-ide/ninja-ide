@@ -82,11 +82,6 @@ def get_first_keyword(line):
 def remove_symbols(word):
     return patSymbol.sub('', word)
 
-
-def clean_line(editorWidget):
-    while editorWidget.textCursor().columnNumber() > 0:
-        editorWidget.textCursor().deletePreviousChar()
-
 def get_start_end_selection(editorWidget, cursor):
     start = editorWidget.document().findBlock(
         cursor.selectionStart()).firstLineNumber()
