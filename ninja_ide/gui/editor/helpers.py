@@ -27,6 +27,7 @@ from ninja_ide.tools import introspection
 
 
 patIndent = re.compile('^\s+')
+patSymbol = re.compile(r'[^\w]')
 patIsLocalFunction = re.compile('(\s)+self\.(\w)+\(\)')
 patClass = re.compile("(\\s)*class.+\\:$")
 endCharsForIndent = [':', '{', '(', '[']
@@ -67,6 +68,19 @@ def get_indentation(line, indent=settings.INDENT, useTabs=settings.USE_TABS):
         return space.group() + indentation
     return indentation
 
+
+def get_first_keyword(line):
+    word = line.split()[0]
+    keyword = remove_symbols(word)
+
+    if keyword in settings.SYNTAX.get('python')['keywords']:
+        return keyword
+
+    return word
+
+
+def remove_symbols(word):
+    return patSymbol.sub('', word)
 
 def get_start_end_selection(editorWidget, cursor):
     start = editorWidget.document().findBlock(
