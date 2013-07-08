@@ -41,6 +41,8 @@ if frozen in ('dll', 'console_exe', 'windows_exe'):
 
 HOME_NINJA_PATH = os.path.join(HOME_PATH, ".ninja_ide")
 
+SETTINGS_PATH = os.path.join(HOME_NINJA_PATH, 'settings.ini')
+
 ADDINS = os.path.join(HOME_NINJA_PATH, "addins")
 
 SYNTAX_FILES = os.path.join(PRJ_PATH, "addins", "syntax")
@@ -307,7 +309,7 @@ def load_shortcuts():
     """
     global SHORTCUTS
     global CUSTOM_SHORTCUTS
-    settings = QSettings()
+    settings = QSettings(SETTINGS_PATH, QSettings.IniFormat)
     for action in SHORTCUTS:
         #default shortcut
         default_action = SHORTCUTS[action].toString()

@@ -315,7 +315,7 @@ class __IDE(QMainWindow):
 
     def _dont_show_start_page_again(self):
         settings.SHOW_START_PAGE = False
-        qsettings = QSettings()
+        qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('general')
         qsettings.setValue('showStartPage', settings.SHOW_START_PAGE)
@@ -393,7 +393,7 @@ class __IDE(QMainWindow):
 
         Info saved: Tabs and projects opened, windows state(size and position).
         """
-        qsettings = QSettings()
+        qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         editor_widget = self.mainContainer.get_actual_editor()
         current_file = ''
         if editor_widget is not None:
@@ -444,7 +444,7 @@ class __IDE(QMainWindow):
 
     def load_window_geometry(self):
         """Load from QSettings the window size of de Ninja IDE"""
-        qsettings = QSettings()
+        qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         if qsettings.value("window/maximized", True, type=bool):
             self.setWindowState(Qt.WindowMaximized)
         else:
@@ -533,7 +533,8 @@ def start(filenames=None, projects_path=None,
     QTextCodec.setCodecForCStrings(QTextCodec.codecForName('utf-8'))
 
     #Translator
-    qsettings = QSettings()
+    #qsettings = QSettings()
+    qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
     language = QLocale.system().name()
     lang = qsettings.value('preferences/interface/language',
         defaultValue=language, type='QString') + '.qm'

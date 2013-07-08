@@ -45,14 +45,14 @@ class StartPage(QWidget, itab_item.ITabItem):
         self.emit(SIGNAL("openProject(QString)"), path)
 
     def _on_click_on_delete(self, path):
-        settings = QSettings()
+        settings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         recent_projects = settings.value("recentProjects")
         if path in recent_projects:
             del recent_projects[path]
             settings.setValue("recentProjects", recent_projects)
 
     def _on_click_on_favorite(self, path, value):
-        settings = QSettings()
+        settings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         recent_projects = settings.value("recentProjects")
         properties = recent_projects[path]
         properties["isFavorite"] = value
@@ -60,7 +60,7 @@ class StartPage(QWidget, itab_item.ITabItem):
         settings.setValue("recentProjects", recent_projects)
 
     def load_items(self):
-        settings = QSettings()
+        settings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         listByFavorites = []
         listNoneFavorites = []
         recent_projects_dict = dict(settings.value('recentProjects', {}))

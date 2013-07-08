@@ -527,7 +527,7 @@ class __Actions(QObject):
         files = self.ide.mainContainer.get_opened_documents()
         files = files[0] + files[1]
         settings.PROFILES[profileName] = [files, projects]
-        qsettings = QSettings()
+        qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         qsettings.setValue('ide/profiles', settings.PROFILES)
 
     def activate_profile(self):
