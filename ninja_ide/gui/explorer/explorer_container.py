@@ -31,6 +31,7 @@ from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import QDateTime
 
+from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core import file_manager
 from ninja_ide.gui.explorer import tree_projects_widget
@@ -166,8 +167,8 @@ class __ExplorerContainer(QTabWidget):
     def add_tab_inspector(self):
         if not settings.WEBINSPECTOR_SUPPORTED:
             QMessageBox.information(self,
-                                    self.tr("Web Inspector not Supported"),
-                                    self.tr("Your Qt version doesn't support the Web Inspector"))
+                self.tr("Web Inspector not Supported"),
+                self.tr("Your Qt version doesn't support the Web Inspector"))
         if not self._inspector:
             self._inspector = WebInspector(self)
             self.addTab(self._inspector, self.tr("Web Inspector"))
@@ -252,7 +253,7 @@ class __ExplorerContainer(QTabWidget):
     def open_project_folder(self, folderName='', notIDEStart=True):
         if not self._treeProjects and notIDEStart:
             QMessageBox.information(self, self.tr("Projects Disabled"),
-                                    self.tr("Project support has been disabled from Preferences"))
+                self.tr("Project support has been disabled from Preferences"))
             return
         if not folderName:
             if settings.WORKSPACE:
@@ -267,7 +268,7 @@ class __ExplorerContainer(QTabWidget):
                 elif editorWidget is not None and editorWidget.ID:
                     directory = file_manager.get_folder(editorWidget.ID)
             folderName = QFileDialog.getExistingDirectory(self,
-                                                          self.tr("Open Project Directory"), directory)
+                                  self.tr("Open Project Directory"), directory)
         try:
             if not folderName:
                 return
@@ -289,7 +290,7 @@ class __ExplorerContainer(QTabWidget):
             logger.error('open_project_folder: %s', reason)
             if not notIDEStart:
                 QMessageBox.information(self, self.tr("Incorrect Project"),
-                                        self.tr("The project could not be loaded!"))
+                                self.tr("The project could not be loaded!"))
 
     def _unmute_tree_signals_clean_threads(self):
         paths_to_delete = []
@@ -318,7 +319,7 @@ class __ExplorerContainer(QTabWidget):
     def create_new_project(self):
         if not self._treeProjects:
             QMessageBox.information(self, self.tr("Projects Disabled"),
-                                    self.tr("Project support has been disabled from Preferences"))
+                self.tr("Project support has been disabled from Preferences"))
             return
         wizard = wizard_new_project.WizardNewProject(self)
         wizard.show()
@@ -365,7 +366,9 @@ class __ExplorerContainer(QTabWidget):
             self._treeProjects._close_open_projects()
 
     def save_recent_projects(self, folder):
-        recent_project_list = QSettings().value('recentProjects', {})
+        recent_project_list = QSettings(
+            resources.SETTINGS_PATH,
+            QSettings.IniFormat).value('recentProjects', {})
         #if already exist on the list update the date time
         projectProperties = json_manager.read_ninja_project(folder)
         name = projectProperties.get('name', '')
@@ -393,10 +396,13 @@ class __ExplorerContainer(QTabWidget):
             #TODO: add the length of available projects to setting
             if len(recent_project_list) > 10:
                 del recent_project_list[self.find_most_old_open()]
-        QSettings().setValue('recentProjects', recent_project_list)
+        QSettings(resources.SETTINGS_PATH, QSettings.IniFormat).setValue(
+            'recentProjects', recent_project_list)
 
     def find_most_old_open(self):
-        recent_project_list = QSettings().value('recentProjects', {})
+        recent_project_list = QSettings(
+            resources.SETTINGS_PATH,
+            QSettings.IniFormat).value('recentProjects', {})
         listFounder = []
         for recent_project_path, content in list(recent_project_list.items()):
             listFounder.append((recent_project_path, int(

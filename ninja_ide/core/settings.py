@@ -22,6 +22,7 @@ from PyQt4.QtCore import QDir
 from PyQt4.QtCore import QFileInfo
 from PyQt4.QtCore import QSettings
 
+from ninja_ide import resources
 from ninja_ide.dependencies import pep8mod
 
 
@@ -344,7 +345,7 @@ def pep8mod_update_margin_line_length(new_margin_line):
 
 
 def load_settings():
-    qsettings = QSettings()
+    qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
     #Globals
     global TOOLBAR_AREA
     global LANGUAGE

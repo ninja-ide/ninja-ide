@@ -112,7 +112,7 @@ class __CentralWidget(QWidget):
             self.splitter_misc_rotate()
         if bin(settings.UI_LAYOUT >> 2)[-1] == '1':
             self.splitter_central_orientation()
-        qsettings = QSettings()
+        qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         #Lists of sizes as list of QVariant- heightList = [QVariant, QVariant]
         heightList = list(qsettings.value("window/central/mainSize",
             [(self.height() / 3) * 2, self.height() / 3]))

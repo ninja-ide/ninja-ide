@@ -13,6 +13,7 @@ from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QSize
 from PyQt4.QtCore import SIGNAL
 
+from ninja_ide import resources
 from ninja_ide.core import settings
 
 
@@ -52,7 +53,7 @@ class PythonDetectDialog(QDialog):
     def _set_python_path(self):
         python_path = self.listPaths.currentItem().text()
 
-        qsettings = QSettings()
+        qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         settings.PYTHON_PATH = python_path
         settings.PYTHON_PATH_CONFIGURED_BY_USER = True
         qsettings.setValue('preferences/execution/pythonPath', python_path)

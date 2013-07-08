@@ -202,7 +202,7 @@ class GeneralConfiguration(QWidget):
         vboxReset.addWidget(self._btnReset, alignment=Qt.AlignLeft)
 
         #Settings
-        qsettings = QSettings()
+        qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('general')
         self._checkLastSession.setChecked(
@@ -242,7 +242,7 @@ class GeneralConfiguration(QWidget):
             self._txtPythonPath.setText(path)
 
     def save(self):
-        qsettings = QSettings()
+        qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('general')
         qsettings.setValue('loadFiles', self._checkLastSession.isChecked())
@@ -269,7 +269,7 @@ class GeneralConfiguration(QWidget):
             self.tr("Are you sure you want to reset your preferences?"),
             buttons=QMessageBox.Yes | QMessageBox.No)
         if result == QMessageBox.Yes:
-            QSettings().clear()
+            QSettings(resources.SETTINGS_PATH, QSettings.IniFormat).clear()
             self._dialog.close()
 
 
@@ -393,7 +393,7 @@ class GeneralExecution(QWidget):
             self._txtPythonPath.setText(path)
 
     def save(self):
-        qsettings = QSettings()
+        qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('execution')
         qsettings.setValue('pythonPath', self._txtPythonPath.text())
@@ -699,7 +699,7 @@ class InterfaceTab(QWidget):
     def save(self):
         settings.TOOLBAR_ITEMS = self.toolbar_settings
         lang = self._comboLang.currentText()
-        qsettings = QSettings()
+        qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('interface')
         previous_state = (settings.SHOW_PROJECT_EXPLORER or
@@ -799,7 +799,7 @@ class EditorGeneral(QWidget):
         groupBoxScheme = QGroupBox(self.tr("Scheme Color:"))
 
         #Settings
-        qsettings = QSettings()
+        qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('editor')
         #Minimap
@@ -875,7 +875,7 @@ class EditorGeneral(QWidget):
         self.thread_callback.start()
 
     def _get_editor_skins(self):
-        qsettings = QSettings()
+        qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('editor')
         self._schemes = json_manager.load_editor_skins()
@@ -944,7 +944,7 @@ class EditorGeneral(QWidget):
         return newFont[0] + ', ' + newFont[1]
 
     def save(self):
-        qsettings = QSettings()
+        qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('editor')
         settings.SHOW_MINIMAP = self._checkShowMinimap.isChecked()
@@ -1112,7 +1112,7 @@ class EditorConfiguration(QWidget):
             self._spin.setSuffix(self.tr("  (tab size)"))
 
     def save(self):
-        qsettings = QSettings()
+        qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('editor')
         qsettings.setValue('indent', self._spin.value())
@@ -1220,7 +1220,7 @@ class EditorCompletion(QWidget):
             QSizePolicy.Expanding))
 
     def save(self):
-        qsettings = QSettings()
+        qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('editor')
         qsettings.setValue('parentheses', self._checkParentheses.isChecked())
@@ -1729,7 +1729,7 @@ class EditorSchemeDesigner(QWidget):
 
         if name != '' and answer in (QMessageBox.Yes, True):
             scheme = self._preview_style()
-            qsettings = QSettings()
+            qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
             qsettings.beginGroup('preferences')
             qsettings.beginGroup('editor')
             if qsettings.value('scheme', defaultValue='',
@@ -1815,7 +1815,7 @@ class ThemeChooser(QWidget):
             self.list_skins.setCurrentRow(0)
 
     def save(self):
-        qsettings = QSettings()
+        qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('theme')
         settings.NINJA_SKIN = self.list_skins.currentItem().text()

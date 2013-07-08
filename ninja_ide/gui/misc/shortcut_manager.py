@@ -280,7 +280,7 @@ class ShortcutConfiguration(QWidget):
         """
         Save all shortcuts to settings
         """
-        settings = QSettings()
+        settings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         settings.beginGroup("shortcuts")
         for index in range(self.result_widget.topLevelItemCount()):
             item = self.result_widget.topLevelItem(index)
