@@ -222,7 +222,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         previous_spaces = helpers.get_indentation(previous_text)
         current_spaces = helpers.get_indentation(current_text)
 
-        if len(previous_spaces) != len(current_spaces):
+        if len(previous_spaces) < len(current_spaces):
             last_word = helpers.get_first_keyword(current_text)
 
             if last_word in ALLOWS_LESS_INDENTATION_KEYWORDS:
