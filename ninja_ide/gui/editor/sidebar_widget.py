@@ -49,10 +49,12 @@ class SidebarWidget(QWidget):
         self.rightArrowIcon = QPixmap()
         self.downArrowIcon = QPixmap()
         self.pat = re.compile(
-            "(\s)*def |(\s)*class |(\s)*if |(\s)*while |"
+            r"(\s)*\"\"\"|(\s)*def |(\s)*class |(\s)*if |(\s)*while |"
             "(\s)*else:|(\s)*elif |(\s)*for |"
             "(\s)*try:|(\s)*except:|(\s)*except |(\s)*#begin-fold:")
         self.patNotPython = re.compile('(\s)*#begin-fold:|(.)*{')
+        self.patComment = re.compile(r"(\s)*\"\"\"")
+        self._endDocstringBlocks = []
         self._foldedBlocks = []
         self._breakpoints = []
         self._bookmarks = []
@@ -138,6 +140,8 @@ class SidebarWidget(QWidget):
             return self._find_fold_closing_label(block)
         elif patBrace.match(text):
             return self._find_fold_closing_brace(block)
+        elif self.patComment.match(text):
+            return self._find_fold_closing_docstring(block)
 
         spaces = helpers.get_leading_spaces(text)
         pat = re.compile('^\s*$|^\s*#')
@@ -161,6 +165,14 @@ class SidebarWidget(QWidget):
         pat = re.compile('\s*#end-fold:' + label)
         while block.isValid():
             if pat.match(block.text()):
+                return block.blockNumber() + 1
+            block = block.next()
+        return block.blockNumber()
+
+    def _find_fold_closing_docstring(self, block):
+        block = block.next()
+        while block.isValid():
+            if block.text().count('"""') > 0:
                 return block.blockNumber() + 1
             block = block.next()
         return block.blockNumber()
@@ -308,6 +320,9 @@ class SidebarWidget(QWidget):
                 resources.COLOR_SCHEME['fold-arrow'])))
             iconPainter.drawPolygon(polygon)
 
+        self.calculate_docstring_block_fold()
+
+        fold_comment_open = False
         block = self.edit.firstVisibleBlock()
         while block.isValid():
             position = self.edit.blockBoundingGeometry(
@@ -317,12 +332,17 @@ class SidebarWidget(QWidget):
                 break
 
             if pattern.match(block.text()) and block.isVisible():
-                if block.blockNumber() in self._foldedBlocks:
-                    painter.drawPixmap(xofs, round(position.y()),
-                        self.rightArrowIcon)
-                else:
-                    painter.drawPixmap(xofs, round(position.y()),
-                        self.downArrowIcon)
+                can_fold = True
+                if self.patComment.match(block.text()) and (block.blockNumber() in self._endDocstringBlocks):
+                    can_fold = False
+
+                if can_fold:
+                    if block.blockNumber() in self._foldedBlocks:
+                        painter.drawPixmap(xofs, round(position.y()),
+                            self.rightArrowIcon)
+                    else:
+                        painter.drawPixmap(xofs, round(position.y()),
+                            self.downArrowIcon)
             #Add Bookmarks and Breakpoint
             elif block.blockNumber() in self._breakpoints:
                 linear_gradient = QLinearGradient(
@@ -356,6 +376,22 @@ class SidebarWidget(QWidget):
 
         painter.end()
         QWidget.paintEvent(self, event)
+
+    def calculate_docstring_block_fold(self):
+        self._endDocstringBlocks = []
+        fold_docstring_open = False
+
+        block = self.edit.firstVisibleBlock()
+        while block.isValid():
+            # check if block is a docstring
+            if self.patComment.match(block.text()):
+                fold_docstring_open = not fold_docstring_open
+                #if we are closing the docstring block we add it's line number,
+                #so we can skip it later
+                if not fold_docstring_open:
+                    self._endDocstringBlocks.append(block.blockNumber())
+            block = block.next()
+
 
     def mousePressEvent(self, event):
         if self.foldArea > 0:
