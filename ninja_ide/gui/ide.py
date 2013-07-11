@@ -78,6 +78,7 @@ class IDE(QMainWindow):
     __IDESERVICES = {}
     __IDECONNECTIONS = {}
     __IDESHORTCUTS = {}
+    __IDEMENUSCATEGORY = {}
     __IDEMENUS = {}
     # CONNECTIONS structure:
     # ({'target': service_name, 'signal_name': string, 'slot': function_obj},)
@@ -190,21 +191,37 @@ class IDE(QMainWindow):
         # Install Services
         for service_name in self.__IDESERVICES:
             self.install_service(service_name)
+        self.install_menu()
         QToolTip.setFont(QFont(settings.FONT_FAMILY, 10))
         self.__created = True
 
     @classmethod
     def get_service(cls, service_name):
-        return IDE.__IDESERVICES.get(service_name, None)
+        return cls.__IDESERVICES.get(service_name, None)
+
+    @classmethod
+    def get_menuitems(cls):
+        return cls.__IDEMENUS
+
+    @classmethod
+    def get_menu_categories(cls):
+        return cls.__IDEMENUSCATEGORY
 
     @classmethod
     def register_service(cls, service_name, obj):
-        IDE.__IDESERVICES[service_name] = obj
-        if IDE.__created:
-            IDE.__instance.install_service(service_name)
+        cls.__IDESERVICES[service_name] = obj
+        if cls.__created:
+            cls.__instance.install_service(service_name)
 
     def install_service(self, service_name):
         obj = self.__IDESERVICES.get(service_name, None)
+        func = getattr(obj, 'install', None)
+        if isinstance(func, collections.Callable):
+            func()
+        self._connect_signals()
+
+    def install_menu(self, menuitem):
+        obj = self.__IDESERVICES.get(menuitem, None)
         func = getattr(obj, 'install', None)
         if isinstance(func, collections.Callable):
             func()
@@ -215,7 +232,7 @@ class IDE(QMainWindow):
 
     @classmethod
     def register_signals(cls, service_name, connections):
-        IDE.__IDECONNECTIONS[service_name] = connections
+        cls.__IDECONNECTIONS[service_name] = connections
 
     def _connect_signals(self):
         for service_name in self.__IDECONNECTIONS:
@@ -233,16 +250,30 @@ class IDE(QMainWindow):
 
     @classmethod
     def register_shortcut(cls, shortcut_name, shortcut, action=None):
-        IDE.__IDESHORTCUTS[shortcut_name] = (shortcut, action)
+        cls.__IDESHORTCUTS[shortcut_name] = (shortcut, action)
 
     @classmethod
     def register_menuitem(cls, menu_action, section, weight):
-        IDE.__IDEMENUS[menu_action] = (section, weight)
+        """Register a QAction or QMenu in the IDE to be loaded later in the
+        menubar using the section(string) to define where is going to be
+        contained, and the weight define the order where is going to be
+        placed.
+        @menu_action: QAction or QMenu
+        @section: String (name)
+        @weight: int"""
+        cls.__IDEMENUS[menu_action] = (section, weight)
+
+    @classmethod
+    def register_menu_category(cls, category_name, weight):
+        """Register a Menu Category to be created with the proper weight.
+        @category_name: string
+        @weight: int"""
+        cls.__IDEMENUSCATEGORY[category_name] = weight
 
     @classmethod
     def update_shortcut(cls, shortcut_name):
         short = resources.get_shortcut
-        shortcut, action = IDE.__IDESHORTCUTS.get(shortcut_name)
+        shortcut, action = cls.__IDESHORTCUTS.get(shortcut_name)
         if shortcut:
             shortcut.setKey(short(shortcut_name))
         if action:
