@@ -18,6 +18,7 @@ from __future__ import absolute_import
 
 import os
 import math
+import collections
 
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QWidget
@@ -35,6 +36,7 @@ from PyQt4.QtGui import QAbstractItemView
 from PyQt4.QtGui import QPrinter
 from PyQt4.QtGui import QPrintPreviewDialog
 from PyQt4.QtGui import QPalette
+from PyQt4.QtGui import QShortcut
 from PyQt4.QtGui import QPainter
 from PyQt4.QtGui import QBrush
 from PyQt4.QtGui import QPixmap
@@ -610,3 +612,23 @@ class LineEditTabCompleter(QLineEdit):
             self.completionType = QCompleter.InlineCompletion
         self.completer.setCompletionMode(self.completionType)
         self.setFocus()
+
+
+def install_shortcuts(self, obj, actions, ide):
+    short = resources.get_shortcut
+    for action in actions:
+        short_key = action.get("shortcut", None)
+        action_data = action.get("action", None)
+        connect = action.get("connect", None)
+
+        func = getattr(obj, connect, None)
+        if isinstance(func, collections.Callable):
+            if short_key:
+                shortcut = QShortcut(short(short_key), ide)
+                self.connect(shortcut, SIGNAL("activated()"), func)
+            if action_data:
+                qaction = QAction(action_data[0], ide)
+                if action_data[1]:
+                    qaction.setIcon(
+                        QIcon(resources.IMAGES[action_data[1]]))
+                self.connect(qaction, SIGNAL("triggered()"), func)
