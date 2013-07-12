@@ -614,21 +614,31 @@ class LineEditTabCompleter(QLineEdit):
         self.setFocus()
 
 
-def install_shortcuts(self, obj, actions, ide):
+def install_shortcuts(obj, actions, ide):
     short = resources.get_shortcut
     for action in actions:
         short_key = action.get("shortcut", None)
         action_data = action.get("action", None)
         connect = action.get("connect", None)
 
+        shortcut = None
+        qaction = None
         func = getattr(obj, connect, None)
         if isinstance(func, collections.Callable):
             if short_key:
                 shortcut = QShortcut(short(short_key), ide)
-                self.connect(shortcut, SIGNAL("activated()"), func)
+                ide.connect(shortcut, SIGNAL("activated()"), func)
             if action_data:
                 qaction = QAction(action_data[0], ide)
                 if action_data[1]:
-                    qaction.setIcon(
-                        QIcon(resources.IMAGES[action_data[1]]))
-                self.connect(qaction, SIGNAL("triggered()"), func)
+                    if isinstance(action_data[1], int):
+                        icon = ide.style().standardIcon(action_data[1])
+                        qaction.setIcon(icon)
+                    elif isinstance(action_data[1], str):
+                        icon = QIcon(resources.IMAGES[action_data[1]])
+                        qaction.setIcon(icon)
+                if shortcut:
+                    qaction.setShortcut(shortcut.key())
+                ide.connect(qaction, SIGNAL("triggered()"), func)
+        if short_key and shortcut:
+            ide.register_shortcut(short_key, shortcut, qaction)

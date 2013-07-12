@@ -191,7 +191,6 @@ class IDE(QMainWindow):
         # Install Services
         for service_name in self.__IDESERVICES:
             self.install_service(service_name)
-        self.install_menu()
         QToolTip.setFont(QFont(settings.FONT_FAMILY, 10))
         self.__created = True
 
@@ -215,13 +214,6 @@ class IDE(QMainWindow):
 
     def install_service(self, service_name):
         obj = self.__IDESERVICES.get(service_name, None)
-        func = getattr(obj, 'install', None)
-        if isinstance(func, collections.Callable):
-            func()
-        self._connect_signals()
-
-    def install_menu(self, menuitem):
-        obj = self.__IDESERVICES.get(menuitem, None)
         func = getattr(obj, 'install', None)
         if isinstance(func, collections.Callable):
             func()

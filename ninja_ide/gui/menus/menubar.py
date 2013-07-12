@@ -69,9 +69,10 @@ class _MenuBar(QObject):
 
     def get_root(self):
         #Get the list of menu categories from ide: IDE.get_menu_categories
-        iter_items = self._roots.iteritems()
-        iter_items.sort(key=lambda x: x[1])
-        return iter_items
+        #iter_items = self._roots.iteritems()
+        #iter_items.sort(key=lambda x: x[1])
+        #return iter_items
+        pass
 
     def add_child(self, root_name, namespace, child_name, child, weight):
         #FIXME: We should also add plugin namespace for grouping per plugin
@@ -98,6 +99,7 @@ class _MenuBar(QObject):
         self._toolbar_sections[section] = (item, weight)
 
     def install(self):
+        return
         ide = IDE.get_service('ide')
         menuitems = IDE.get_menuitems()
         #menuBar is the actual QMenuBar object from IDE which is a QMainWindow
