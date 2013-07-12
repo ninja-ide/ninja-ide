@@ -20,23 +20,21 @@ from __future__ import unicode_literals
 import os
 
 from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QAction
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QTabWidget
 from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QShortcut
 from PyQt4.QtGui import QInputDialog
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import QDateTime
 
-from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.ide import IDE
+from ninja_ide.gui.explorer import actions
 from ninja_ide.gui.explorer import tree_projects_widget
 from ninja_ide.gui.explorer import tree_symbols_widget
 from ninja_ide.gui.explorer import errors_lists
@@ -135,31 +133,7 @@ class _ExplorerContainer(QTabWidget):
         if self.count() == 0:
             central_container = IDE.get_service("central_container")
             central_container.change_explorer_visibility(force_hide=True)
-        self.install_shortcuts(ide)
-
-    def install_shortcuts(self, ide):
-        short = resources.get_shortcut
-        shortNewProject = QShortcut(short("New-project"), ide)
-        actionNewProject = QAction(QIcon(resources.IMAGES['newProj']),
-            self.trUtf8("New Pro&ject"), ide)
-        IDE.register_shortcut('New-project', shortNewProject, actionNewProject)
-        shortOpenProject = QShortcut(short("Open-project"), ide)
-        actionOpenProject = QAction(QIcon(resources.IMAGES['openProj']),
-            self.trUtf8("Open &Project"), ide)
-        IDE.register_shortcut('Open-project', shortOpenProject,
-            actionOpenProject)
-        shortSaveProject = QShortcut(short("Save-project"), ide)
-        actionSaveProject = QAction(QIcon(resources.IMAGES['saveAll']),
-            self.trUtf8("Save Pro&ject"), ide)
-        IDE.register_shortcut('Save-project', shortSaveProject,
-            actionSaveProject)
-
-        self.connect(shortNewProject, SIGNAL("activated()"),
-            self.create_new_project)
-        self.connect(shortOpenProject, SIGNAL("activated()"),
-            self.open_project_folder)
-        self.connect(shortSaveProject, SIGNAL("activated()"),
-            self.save_project)
+        ui_tools.install_shortcuts(self, actions.ACTIONS, ide)
 
     def _add_file_to_project(self, path):
         """Add the file for 'path' in the project the user choose here."""

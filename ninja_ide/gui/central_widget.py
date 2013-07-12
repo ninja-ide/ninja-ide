@@ -18,22 +18,22 @@
 from __future__ import absolute_import
 
 from PyQt4.QtGui import QWidget
-from ninja_ide.tools import ui_tools
 from PyQt4.QtGui import QKeySequence
 from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QComboBox
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QShortcut
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QSettings
 
 from ninja_ide import resources
 from ninja_ide.core import settings
+from ninja_ide.gui import actions
 from ninja_ide.gui import dynamic_splitter
 from ninja_ide.gui.ide import IDE
+from ninja_ide.tools import ui_tools
 
 
 class CentralWidget(QWidget):
@@ -81,32 +81,11 @@ class CentralWidget(QWidget):
         IDE.register_signals("central_container", connects)
 
     def install(self):
-        self.install_shortcuts()
-
-    def install_shortcuts(self):
         ide = IDE.get_service('ide')
-        short = resources.get_shortcut
-        shortHideRegion1 = QShortcut(short("Hide-misc"), ide)
-        IDE.register_shortcut('Hide-misc', shortHideRegion1)
-        shortHideRegion0 = QShortcut(short("Hide-editor"), ide)
-        IDE.register_shortcut('Hide-editor', shortHideRegion0)
-        shortHideRegion2 = QShortcut(short("Hide-explorer"), ide)
-        IDE.register_shortcut('Hide-explorer', shortHideRegion2)
-        shortHideAll = QShortcut(short("Hide-all"), ide)
-        IDE.register_shortcut('Hide-all', shortHideAll)
-        shortShowPasteHistory = QShortcut(short("Show-Paste-History"), ide)
-        IDE.register_shortcut('Show-Paste-History', shortShowPasteHistory)
+        ui_tools.install_shortcuts(self, actions.ACTIONS_CENTRAL, ide)
 
-        self.connect(shortHideRegion1, SIGNAL("activated()"),
-            self.view_region1_visibility)
-        self.connect(shortHideRegion0, SIGNAL("activated()"),
-            self.view_region0_visibility)
-        self.connect(shortHideRegion2, SIGNAL("activated()"),
-            self.view_region2_visibility)
-        self.connect(shortHideAll, SIGNAL("activated()"),
-            self.hide_all)
-        self.connect(shortShowPasteHistory, SIGNAL("activated()"),
-            self.lateralPanel.combo.showPopup)
+    def show_copypaste_history_popup(self):
+        self.lateralPanel.combo.showPopup()
 
     def update_column_number(self, row, col):
         self.lateralPanel.update_line_col(row, col)

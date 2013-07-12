@@ -17,7 +17,6 @@
 from __future__ import absolute_import
 
 from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QAction
 from PyQt4.QtGui import QToolBar
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QIcon
@@ -37,6 +36,7 @@ from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.ide import IDE
+from ninja_ide.gui.misc import actions
 from ninja_ide.gui.misc import console_widget
 from ninja_ide.gui.misc import run_widget
 from ninja_ide.gui.misc import web_render
@@ -145,37 +145,7 @@ class _ToolsDock(QWidget):
             'slot': self.add_project_to_console},
             )
         IDE.register_signals('tools_dock', connections)
-        self.install_shortcuts(ide)
-
-    def install_shortcuts(self, ide):
-        short = resources.get_shortcut
-        shortFindInFiles = QShortcut(short("Find-in-files"), ide)
-        actionFindInFiles = QAction(QIcon(resources.IMAGES['find']),
-            self.trUtf8("Find in Files"), ide)
-        IDE.register_shortcut('Find-in-files', shortFindInFiles,
-            actionFindInFiles)
-        shortRunFile = QShortcut(short("Run-file"), ide)
-        actionRunFile = QAction(QIcon(resources.IMAGES['file-run']),
-            self.trUtf8("Run File"), ide)
-        IDE.register_shortcut('Run-file', shortRunFile, actionRunFile)
-        shortRunProject = QShortcut(short("Run-project"), ide)
-        actionRunProject = QAction(QIcon(resources.IMAGES['play']),
-            self.trUtf8("Run Project"), ide)
-        IDE.register_shortcut('Run-project', shortRunProject, actionRunProject)
-        shortStopExecution = QShortcut(short("Stop-execution"), ide)
-        actionStopExecution = QAction(QIcon(resources.IMAGES['stop']),
-            self.trUtf8("Stop"), ide)
-        IDE.register_shortcut('Stop-execution', shortStopExecution,
-            actionStopExecution)
-
-        self.connect(shortFindInFiles, SIGNAL("activated()"),
-            self.show_find_in_files_widget)
-        self.connect(shortRunFile, SIGNAL("activated()"),
-            self.execute_file)
-        self.connect(shortRunProject, SIGNAL("activated()"),
-            self.execute_project)
-        self.connect(self.shortStopExecution, SIGNAL("activated()"),
-            self.kill_application)
+        ui_tools.install_shortcuts(self, actions.ACTIONS, ide)
 
     def add_project_to_console(self, projectFolder):
         """Add the namespace of the project received into the ninja-console."""

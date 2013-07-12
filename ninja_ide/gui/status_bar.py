@@ -42,6 +42,7 @@ from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.tools import locator
 from ninja_ide.tools import ui_tools
+from ninja_ide.gui import actions
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.main_panel import main_container
 from ninja_ide.tools.logger import NinjaLogger
@@ -116,39 +117,13 @@ class _StatusBar(QStatusBar):
         ide = IDE.get_service('ide')
         ide.setStatusBar(self)
 
-        self.install_shortcuts(ide)
+        ui_tools.install_shortcuts(self, actions.ACTIONS_STATUS, ide)
 
-    def install_shortcuts(self, ide):
-        short = resources.get_shortcut
-        shortFind = QShortcut(short("Find"), ide)
-        IDE.register_shortcut('Find', shortFind)
-        shortFindNext = QShortcut(short("Find-next"), ide)
-        IDE.register_shortcut('Find-next', shortFindNext)
-        shortFindPrevious = QShortcut(short("Find-previous"), ide)
-        IDE.register_shortcut('Find-previous', shortFindPrevious)
-        shortFindReplace = QShortcut(short("Find-replace"), ide)
-        IDE.register_shortcut('Find-replace', shortFindReplace)
-        shortFindWithWord = QShortcut(short("Find-with-word"), ide)
-        IDE.register_shortcut('Find-with-word', shortFindWithWord)
-        shortCodeLocator = QShortcut(short("Code-locator"), ide)
-        IDE.register_shortcut('Code-locator', shortCodeLocator)
-        shortFileOpener = QShortcut(short("File-Opener"), ide)
-        IDE.register_shortcut('File-Opener', shortFileOpener)
+    def find_next_result(self):
+        self._searchWidget.find_next()
 
-        self.connect(shortCodeLocator, SIGNAL("activated()"),
-            self.show_locator)
-        self.connect(shortFileOpener, SIGNAL("activated()"),
-            self.show_file_opener)
-        self.connect(shortFind, SIGNAL("activated()"),
-            self.show)
-        self.connect(shortFindPrevious, SIGNAL("activated()"),
-            self._searchWidget.find_previous)
-        self.connect(shortFindNext, SIGNAL("activated()"),
-            self._searchWidget.find_next)
-        self.connect(shortFindWithWord, SIGNAL("activated()"),
-            self.show_with_word)
-        self.connect(shortFindReplace, SIGNAL("activated()"),
-            self.show_replace)
+    def find_previous_result(self):
+        self._searchWidget.find_previous()
 
     def handle_tab_changed(self, new_tab):
         """
