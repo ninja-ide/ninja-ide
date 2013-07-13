@@ -29,6 +29,7 @@ from PyQt4.QtGui import QFontMetrics
 from PyQt4.QtGui import QPainter
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QPointF
+from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -456,3 +457,5 @@ class SidebarWidget(QWidget):
             self._bookmarks.append(lineno)
         self.update()
         self._save_breakpoints_bookmarks()
+        self.emit(SIGNAL("bookmarks_changed(PyQt_PyObject)"),
+            (self.edit.ID, lineno))

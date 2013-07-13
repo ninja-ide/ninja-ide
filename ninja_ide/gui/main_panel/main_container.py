@@ -307,6 +307,9 @@ class __MainContainer(QSplitter):
             self._find_occurrences)
         self.connect(editorWidget, SIGNAL("migrationAnalyzed()"),
             lambda: self.emit(SIGNAL("migrationAnalyzed()")))
+        #Bookmarks changed
+        self.connect(editorWidget, SIGNAL("bookmarks_changed(PyQt_PyObject)"),
+            self._bookmarks_changed)
         #Cursor position changed
         self.connect(editorWidget, SIGNAL("cursorPositionChange(int, int)"),
             self._cursor_position_changed)
@@ -371,6 +374,10 @@ class __MainContainer(QSplitter):
 
     def _cursor_position_changed(self, row, col):
         self.emit(SIGNAL("cursorPositionChange(int, int)"), row, col)
+
+    def _bookmarks_changed(self, bookmark):
+        self.emit(SIGNAL("bookmarks_changed(PyQt_PyObject)"),
+            bookmark)
 
     def _find_occurrences(self, word):
         self.emit(SIGNAL("findOcurrences(QString)"), word)
