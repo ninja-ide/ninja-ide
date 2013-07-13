@@ -420,23 +420,14 @@ class SidebarWidget(QWidget):
                     elif position.y() < ys and (position.y() + fh) > ys and \
                       event.button() == Qt.LeftButton:
                         line = block.blockNumber()
-                        if line in self._breakpoints:
-                            self._breakpoints.remove(line)
-                        else:
-                            self._breakpoints.append(line)
-                        self.update()
+                        self.set_breakpoint(line)
                         break
                     elif position.y() < ys and (position.y() + fh) > ys and \
                       event.button() == Qt.RightButton:
                         line = block.blockNumber()
-                        if line in self._bookmarks:
-                            self._bookmarks.remove(line)
-                        else:
-                            self._bookmarks.append(line)
-                        self.update()
+                        self.set_bookmark(line)
                         break
                     block = block.next()
-                self._save_breakpoints_bookmarks()
             if lineNumber > 0:
                 self.code_folding_event(lineNumber)
 
