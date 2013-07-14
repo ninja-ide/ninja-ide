@@ -40,6 +40,7 @@ from ninja_ide.core import plugin_manager
 #from ninja_ide.core import plugin_services
 from ninja_ide.core import settings
 from ninja_ide.core import ipc
+from ninja_ide.gui import translations
 from ninja_ide.gui import updates
 from ninja_ide.gui.dialogs import preferences
 from ninja_ide.gui.dialogs import traceback_widget
@@ -164,6 +165,15 @@ class IDE(QMainWindow):
         self.connect(shortSwitchFocus, SIGNAL("activated()"),
             self.fullscreen_mode)
 
+        # Register menu categories
+        IDE.register_menu_category(translations.TR_MENU_FILE, 100)
+        IDE.register_menu_category(translations.TR_MENU_EDIT, 110)
+        IDE.register_menu_category(translations.TR_MENU_VIEW, 120)
+        IDE.register_menu_category(translations.TR_MENU_SOURCE, 130)
+        IDE.register_menu_category(translations.TR_MENU_PROJECT, 140)
+        IDE.register_menu_category(translations.TR_MENU_ADDINS, 150)
+        IDE.register_menu_category(translations.TR_MENU_ABOUT, 160)
+
         self.register_service('ide', self)
         self.register_service('toolbar', self.toolbar)
         #Register signals connections
@@ -193,18 +203,19 @@ class IDE(QMainWindow):
             self.install_service(service_name)
         QToolTip.setFont(QFont(settings.FONT_FAMILY, 10))
         self.__created = True
+        menu_bar = IDE.get_service('menu_bar')
+        if menu_bar:
+            menu_bar.load_menu(self)
 
     @classmethod
     def get_service(cls, service_name):
         return cls.__IDESERVICES.get(service_name, None)
 
-    @classmethod
-    def get_menuitems(cls):
-        return cls.__IDEMENUS
+    def get_menuitems(self):
+        return self.__IDEMENUS
 
-    @classmethod
-    def get_menu_categories(cls):
-        return cls.__IDEMENUSCATEGORY
+    def get_menu_categories(self):
+        return self.__IDEMENUSCATEGORY
 
     @classmethod
     def register_service(cls, service_name, obj):
@@ -225,6 +236,8 @@ class IDE(QMainWindow):
     @classmethod
     def register_signals(cls, service_name, connections):
         cls.__IDECONNECTIONS[service_name] = connections
+        if cls.__created:
+            cls.__instance._connect_signals()
 
     def _connect_signals(self):
         for service_name in self.__IDECONNECTIONS:
@@ -520,30 +533,31 @@ class IDE(QMainWindow):
                 QPointF(100, 100).toPoint(), type='QPoint'))
 
     def closeEvent(self, event):
-        if self.s_listener:
-            self.s_listener.close()
-        if (settings.CONFIRM_EXIT and
-                self.mainContainer.check_for_unsaved_tabs()):
-            unsaved_files = self.mainContainer.get_unsaved_files()
-            txt = '\n'.join(unsaved_files)
-            val = QMessageBox.question(self,
-                self.tr("Some changes were not saved"),
-                (self.tr("%s\n\nDo you want to save them?") % txt),
-                QMessageBox.Yes, QMessageBox.No, QMessageBox.Cancel)
-            if val == QMessageBox.Yes:
-                #Saves all open files
-                main_container = IDE.get_service('main_container')
-                if main_container:
-                    main_container.save_all()
-            if val == QMessageBox.Cancel:
-                event.ignore()
-        self.emit(SIGNAL("goingDown()"))
-        self.save_settings()
-        completion_daemon.shutdown_daemon()
-        #close python documentation server (if running)
-        self.mainContainer.close_python_doc()
-        #Shutdown PluginManager
-        self.plugin_manager.shutdown()
+        #if self.s_listener:
+            #self.s_listener.close()
+        #if (settings.CONFIRM_EXIT and
+                #self.mainContainer.check_for_unsaved_tabs()):
+            #unsaved_files = self.mainContainer.get_unsaved_files()
+            #txt = '\n'.join(unsaved_files)
+            #val = QMessageBox.question(self,
+                #self.tr("Some changes were not saved"),
+                #(self.tr("%s\n\nDo you want to save them?") % txt),
+                #QMessageBox.Yes, QMessageBox.No, QMessageBox.Cancel)
+            #if val == QMessageBox.Yes:
+                ##Saves all open files
+                #main_container = IDE.get_service('main_container')
+                #if main_container:
+                    #main_container.save_all()
+            #if val == QMessageBox.Cancel:
+                #event.ignore()
+        #self.emit(SIGNAL("goingDown()"))
+        #self.save_settings()
+        #completion_daemon.shutdown_daemon()
+        ##close python documentation server (if running)
+        #self.mainContainer.close_python_doc()
+        ##Shutdown PluginManager
+        #self.plugin_manager.shutdown()
+        super(IDE, self).closeEvent(event)
 
     def notify_plugin_errors(self):
         errors = self.plugin_manager.errors

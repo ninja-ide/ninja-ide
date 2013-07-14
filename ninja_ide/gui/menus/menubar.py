@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from PyQt4.QtGui import QAction
+from PyQt4.QtGui import QMenu
 from PyQt4.QtCore import QObject
 from collections import defaultdict
 
@@ -19,22 +21,22 @@ SEC09 = 900
 SEC10 = 1000
 
 
+#WE WILL PROBABLY NEED TO SAVE THE WEIGHT WITH THE ACTIONS SO WE CAN
+#DETERMINE TO LOCATE A PLUGIN LOADED AFTER INITIALIZATION AT THE PROPER PLACE
+
+
 def menu_add_section(menu, section_parts):
-    """
-    each_part is expected to be a tuple of
-    (QIcon, String, bool) containing respectively the icon, text and flag
-    indicating if this is an action
-    """
-    for each_part, weight in section_parts:
+    for each_part in section_parts:
         action, weight = each_part
-        if action:
+        if isinstance(action, QAction):
             add = menu.addAction
         else:
             add = menu.addMenu
         add(action)
 
     #FIXME: This appends a separator at the end of each menu
-    menu.addSeparator()
+    #FIXME: add separator between sections
+    #menu.addSeparator()
 
 
 class _MenuBar(QObject):
@@ -67,10 +69,9 @@ class _MenuBar(QObject):
 
     def get_root(self):
         #Get the list of menu categories from ide: IDE.get_menu_categories
-        #iter_items = self._roots.iteritems()
-        #iter_items.sort(key=lambda x: x[1])
-        #return iter_items
-        pass
+        iter_items = list(self._roots.items())
+        iter_items.sort(key=lambda x: x[1])
+        return [item[0] for item in iter_items]
 
     def add_child(self, root_name, child, weight,
                     namespace="ninjaide"):
@@ -97,30 +98,38 @@ class _MenuBar(QObject):
         section, item, weight = toolbar_item
         self._toolbar_sections[section] = (item, weight)
 
-    def install(self):
-        return
-        ide = IDE.get_service('ide')
+    def load_menu(self, ide):
         #menuBar is the actual QMenuBar object from IDE which is a QMainWindow
         self.menubar = ide.menuBar()
-        # EACH ITEM menu should be obtained from IDE.get_menuitems
+        # Create Root
+        categories = ide.get_menu_categories()
+        for category in categories:
+            self.add_root(category, categories[category])
+
+        # EACH ITEM menu should be obtained from ide.get_menuitems()
         # which is going to return a dict with:
         # key: QAction or QMenu
         # value: (category[string], weight[int])
-        # The menuitem shouldn't be created using text/icon as it is done in:
-        # menu_add_section, we should already receive the proper
         # QAction/QMenu, and ask something like "instanceof" for those
         # objects to see if we should execute an addMenu or addAction to
         # the MenuBar.
-        for each_action, cv_tuple in ide.get_menuitems().iteritems():
-            category, weight, namespace = cv_tuple
-            self.add_toolbar_item((category, each_action, weight))
-            self.add_child(category, each_action, weight, namespace)
+        menuitems = ide.get_menuitems()
+        for action in menuitems:
+            category = menuitems[action][0]
+            weight = menuitems[action][1]
+            self.add_child(category, action, weight)
+
+        #for each_action, cv_tuple in list(ide.get_menuitems().items()):
+            #category, weight, namespace = cv_tuple
+            #self.add_toolbar_item((category, each_action, weight))
+            #self.add_child(category, each_action, weight, namespace)
         #FIXME: This should add to the given methods and they to the actual adding on menu upon add
         #FIXME: To support this we should have a way to add these in order after menu creation
         for each_menu in self.get_root():
-            menu_object = self.menubar.addMenu(self.tr(each_menu))
+            menu_object = self.menubar.addMenu(each_menu)
             self._menu_refs[each_menu] = menu_object
             all_children = self.get_children_of(each_menu)
+            #print self._children
             for each_child_grp_key in sorted(all_children):
                 each_child_grp = all_children[each_child_grp_key]
                 menu_add_section(menu_object, sorted(each_child_grp,

@@ -629,16 +629,21 @@ def install_shortcuts(obj, actions, ide):
                 shortcut = QShortcut(short(short_key), ide)
                 ide.connect(shortcut, SIGNAL("activated()"), func)
             if action_data:
-                qaction = QAction(action_data[0], ide)
-                if action_data[1]:
-                    if isinstance(action_data[1], int):
-                        icon = ide.style().standardIcon(action_data[1])
+                qaction = QAction(action_data['text'], ide)
+                image_name = action_data['image']
+                section = action_data.get('section', None)
+                weight = action_data.get('weight', None)
+                if image_name:
+                    if isinstance(image_name, int):
+                        icon = ide.style().standardIcon(image_name)
                         qaction.setIcon(icon)
-                    elif isinstance(action_data[1], str):
-                        icon = QIcon(resources.IMAGES[action_data[1]])
+                    elif isinstance(image_name, str):
+                        icon = QIcon(resources.IMAGES[image_name])
                         qaction.setIcon(icon)
                 if shortcut:
                     qaction.setShortcut(shortcut.key())
                 ide.connect(qaction, SIGNAL("triggered()"), func)
+                if section and weight:
+                    ide.register_menuitem(qaction, section, weight)
         if short_key and shortcut:
             ide.register_shortcut(short_key, shortcut, qaction)

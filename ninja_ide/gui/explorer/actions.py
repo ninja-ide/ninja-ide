@@ -11,17 +11,26 @@ from ninja_ide.gui import translations
 ACTIONS = (
     {
     "shortcut": "New-project",
-    "action": (translations.TR_NEW_PROJECT, 'newProj'),
+    "action": {'text': translations.TR_NEW_PROJECT,
+               'image': 'newProj',
+               'section': 'File',
+               'weight': 110},
     "connect": "create_new_project"
     },
     {
     "shortcut": "Open-project",
-    "action": (translations.TR_OPEN_PROJECT, 'openProj'),
+    "action": {'text': translations.TR_OPEN_PROJECT,
+               'image': 'openProj',
+               'section': 'File',
+               'weight': 410},
     "connect": "open_project_folder"
     },
     {
     "shortcut": "Save-project",
-    "action": (translations.TR_SAVE_PROJECT, 'saveAll'),
+    "action": {'text': translations.TR_SAVE_PROJECT,
+               'image': 'saveAll',
+               'section': 'File',
+               'weight': 240},
     "connect": "save_project"
     },
 )

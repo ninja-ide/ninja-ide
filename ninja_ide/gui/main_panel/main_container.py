@@ -435,6 +435,11 @@ class _MainContainer(QWidget):
         if editorWidget and editorWidget.hasFocus():
             editorWidget.redo()
 
+    def editor_undo(self):
+        editorWidget = self.get_actual_editor()
+        if editorWidget and editorWidget.hasFocus():
+            editorWidget.undo()
+
     def editor_indent_less(self):
         """Indent 1 position to the left for the current line or selection."""
         editorWidget = self.get_actual_editor()
