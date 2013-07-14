@@ -117,8 +117,7 @@ class _MenuBar(QObject):
         # the MenuBar.
         menuitems = ide.get_menuitems()
         for action in menuitems:
-            category = menuitems[action][0]
-            weight = menuitems[action][1]
+            category, weight = menuitems[action]
             self.add_child(category, action, weight)
 
         #for each_action, cv_tuple in list(ide.get_menuitems().items()):
