@@ -149,7 +149,6 @@ ACTIONS = (
     "connect": "editor_insert_title_comment"
     },
     {
-    "shortcut": "Indent-less",
     "action": {'text': translations.TR_INDENT_MORE,
                'image': 'indent-more',
                'section': 'Source',
