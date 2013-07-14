@@ -83,4 +83,17 @@ ACTIONS_GENERAL = (
                'weight': 120},
     "connect": "show_languages"
     },
+
+    {
+    "action": {'text': translations.TR_ABOUT_NINJA,
+               'section': 'About',
+               'weight': 900},
+    "connect": "show_about_ninja"
+    },
+    {
+    "action": {'text': translations.TR_ABOUT_QT,
+               'section': 'About',
+               'weight': 910},
+    "connect": "show_about_qt"
+    },
 )

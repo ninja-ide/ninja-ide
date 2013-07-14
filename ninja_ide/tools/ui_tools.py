@@ -657,3 +657,10 @@ def install_shortcuts(obj, actions, ide):
 
         if short_key and shortcut:
             ide.register_shortcut(short_key, shortcut, item_ui)
+
+
+class TabShortcuts(QShortcut):
+
+    def __init__(self, key, parent, index):
+        super(TabShortcuts, self).__init__(key, parent)
+        self.index = index

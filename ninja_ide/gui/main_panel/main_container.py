@@ -39,6 +39,7 @@ from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling.filesystem_notifications import (
     NinjaFileSystemWatcher)
+from ninja_ide.gui import translations
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.main_panel import tab_widget
 from ninja_ide.gui.main_panel import tab_group
@@ -1210,11 +1211,17 @@ class _MainContainer(QWidget):
         if sys.platform == 'win32':
             self.docPage = browser_widget.BrowserWidget(
                 'http://docs.python.org/')
-            self.add_tab(self.docPage, self.tr("Python Documentation"))
         else:
             process = runner.start_pydoc()
             self.docPage = browser_widget.BrowserWidget(process[1], process[0])
-            self.add_tab(self.docPage, self.tr("Python Documentation"))
+        self.add_tab(self.docPage, translations.TR_PYTHON_DOC)
+
+    def show_report_bugs(self):
+        webbrowser.open(resources.BUGS_PAGE)
+
+    def show_plugins_doc(self):
+        bugsPage = browser_widget.BrowserWidget(resources.PLUGINS_DOC, self)
+        self.add_tab(bugsPage, translations.TR_HOW_TO_WRITE_PLUGINS)
 
     def editor_jump_to_line(self, lineno=None):
         """Jump to line *lineno* if it is not None

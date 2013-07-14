@@ -271,4 +271,22 @@ ACTIONS = (
     "shortcut": "History-Paste",
     "connect": "paste_history"
     },
+    {
+    "action": {'text': translations.TR_SHOW_START_PAGE,
+               'section': 'About',
+               'weight': 100},
+    "connect": "show_start_page"
+    },
+    {
+    "action": {'text': translations.TR_REPORT_BUGS,
+               'section': 'About',
+               'weight': 200},
+    "connect": "show_report_bugs"
+    },
+    {
+    "action": {'text': translations.TR_PLUGINS_DOCUMENTATION,
+               'section': 'About',
+               'weight': 210},
+    "connect": "show_plugins_doc"
+    },
 )
