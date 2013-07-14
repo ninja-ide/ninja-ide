@@ -26,15 +26,13 @@ def menu_add_section(menu, section_parts):
     indicating if this is an action
     """
     for each_part, weight in section_parts:
-        icon, text, action = each_part
+        action, weight = each_part
         if action:
             add = menu.addAction
         else:
             add = menu.addMenu
-        if icon:
-            add(icon, text)
-        else:
-            add(text)
+        add(action)
+
     #FIXME: This appends a separator at the end of each menu
     menu.addSeparator()
 
@@ -74,9 +72,10 @@ class _MenuBar(QObject):
         #return iter_items
         pass
 
-    def add_child(self, root_name, namespace, child_name, child, weight):
+    def add_child(self, root_name, child, weight,
+                    namespace="ninjaide"):
         #FIXME: We should also add plugin namespace for grouping per plugin
-        child_path = (root_name, namespace, child_name)
+        child_path = (root_name, namespace, child)
         if child_path not in self._children:
             self.add_root(root_name)
             self._children[child_path] = (child, weight)
@@ -101,7 +100,6 @@ class _MenuBar(QObject):
     def install(self):
         return
         ide = IDE.get_service('ide')
-        menuitems = IDE.get_menuitems()
         #menuBar is the actual QMenuBar object from IDE which is a QMainWindow
         self.menubar = ide.menuBar()
         # EACH ITEM menu should be obtained from IDE.get_menuitems
@@ -113,6 +111,12 @@ class _MenuBar(QObject):
         # QAction/QMenu, and ask something like "instanceof" for those
         # objects to see if we should execute an addMenu or addAction to
         # the MenuBar.
+        for each_action, cv_tuple in ide.get_menuitems().iteritems():
+            category, weight, namespace = cv_tuple
+            self.add_toolbar_item((category, each_action, weight))
+            self.add_child(category, each_action, weight, namespace)
+        #FIXME: This should add to the given methods and they to the actual adding on menu upon add
+        #FIXME: To support this we should have a way to add these in order after menu creation
         for each_menu in self.get_root():
             menu_object = self.menubar.addMenu(self.tr(each_menu))
             self._menu_refs[each_menu] = menu_object
