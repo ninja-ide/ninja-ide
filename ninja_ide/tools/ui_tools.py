@@ -22,6 +22,7 @@ import collections
 
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QMenu
 from PyQt4.QtGui import QAction
 from PyQt4.QtGui import QCompleter
 from PyQt4.QtGui import QKeyEvent
@@ -622,28 +623,33 @@ def install_shortcuts(obj, actions, ide):
         connect = action.get("connect", None)
 
         shortcut = None
-        qaction = None
+        item_ui = None
         func = getattr(obj, connect, None)
         if isinstance(func, collections.Callable):
             if short_key:
                 shortcut = QShortcut(short(short_key), ide)
                 ide.connect(shortcut, SIGNAL("activated()"), func)
             if action_data:
-                qaction = QAction(action_data['text'], ide)
+                is_menu = action_data.get('is_menu', False)
+                if is_menu:
+                    item_ui = QMenu(action_data['text'], ide)
+                else:
+                    item_ui = QAction(action_data['text'], ide)
                 image_name = action_data['image']
                 section = action_data.get('section', None)
                 weight = action_data.get('weight', None)
                 if image_name:
                     if isinstance(image_name, int):
                         icon = ide.style().standardIcon(image_name)
-                        qaction.setIcon(icon)
+                        item_ui.setIcon(icon)
                     elif isinstance(image_name, str):
                         icon = QIcon(resources.IMAGES[image_name])
-                        qaction.setIcon(icon)
-                if shortcut:
-                    qaction.setShortcut(shortcut.key())
-                ide.connect(qaction, SIGNAL("triggered()"), func)
+                        item_ui.setIcon(icon)
+                if shortcut and not is_menu:
+                    item_ui.setShortcut(shortcut.key())
+                if not is_menu:
+                    ide.connect(item_ui, SIGNAL("triggered()"), func)
                 if section and weight:
-                    ide.register_menuitem(qaction, section, weight)
+                    ide.register_menuitem(item_ui, section, weight)
         if short_key and shortcut:
-            ide.register_shortcut(short_key, shortcut, qaction)
+            ide.register_shortcut(short_key, shortcut, item_ui)

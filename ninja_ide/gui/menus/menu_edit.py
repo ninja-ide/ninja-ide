@@ -33,8 +33,6 @@ from ninja_ide.gui.dialogs import preferences
 class MenuEdit(QObject):
 
     def install_menu(self, menuEdit, toolbar):
-        undoAction = menuEdit.addAction(QIcon(resources.IMAGES['undo']),
-            (self.trUtf8("Undo (%s+Z)") % settings.OS_KEY))
         cutAction = menuEdit.addAction(QIcon(resources.IMAGES['cut']),
             (self.trUtf8("&Cut (%s+X)") % settings.OS_KEY))
         copyAction = menuEdit.addAction(QIcon(resources.IMAGES['copy']),
@@ -156,16 +154,6 @@ class MenuEdit(QObject):
         editorWidget = main_container.MainContainer().get_actual_editor()
         if editorWidget:
             editorWidget.paste()
-
-    def _editor_redo(self):
-        editorWidget = main_container.MainContainer().get_actual_editor()
-        if editorWidget:
-            editorWidget.redo()
-
-    def _editor_undo(self):
-        editorWidget = main_container.MainContainer().get_actual_editor()
-        if editorWidget:
-            editorWidget.undo()
 
     def _show_preferences(self):
         pref = preferences.PreferencesWidget(main_container.MainContainer())
