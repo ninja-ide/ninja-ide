@@ -260,7 +260,7 @@ ACTIONS = (
     "shortcut": "Print-file",
     "action": {'text': translations.TR_PRINT_FILE,
                'image': 'print',
-               'section': 'Source',
+               'section': 'File',
                'weight': 900},
     "connect": "print_file"
     },
