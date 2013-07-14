@@ -67,32 +67,32 @@ ACTIONS_STATUS = (
 ACTIONS_GENERAL = (
     {
     "action": {'text': translations.TR_MANAGE_PLUGINS,
-               'section': 'Addins',
+               'section': translations.TR_MENU_ADDINS,
                'weight': 100},
     "connect": "show_manager"
     },
     {
     "action": {'text': translations.TR_EDITOR_SCHEMES,
-               'section': 'Addins',
+               'section': translations.TR_MENU_ADDINS,
                'weight': 110},
     "connect": "show_themes"
     },
     {
     "action": {'text': translations.TR_LANGUAGE_MANAGER,
-               'section': 'Addins',
+               'section': translations.TR_MENU_ADDINS,
                'weight': 120},
     "connect": "show_languages"
     },
 
     {
     "action": {'text': translations.TR_ABOUT_NINJA,
-               'section': 'About',
+               'section': translations.TR_MENU_ABOUT,
                'weight': 900},
     "connect": "show_about_ninja"
     },
     {
     "action": {'text': translations.TR_ABOUT_QT,
-               'section': 'About',
+               'section': translations.TR_MENU_ABOUT,
                'weight': 910},
     "connect": "show_about_qt"
     },

@@ -13,7 +13,7 @@ ACTIONS = (
     "shortcut": "New-project",
     "action": {'text': translations.TR_NEW_PROJECT,
                'image': 'newProj',
-               'section': 'File',
+               'section': translations.TR_MENU_FILE,
                'weight': 110},
     "connect": "create_new_project"
     },
@@ -21,7 +21,7 @@ ACTIONS = (
     "shortcut": "Open-project",
     "action": {'text': translations.TR_OPEN_PROJECT,
                'image': 'openProj',
-               'section': 'File',
+               'section': translations.TR_MENU_FILE,
                'weight': 410},
     "connect": "open_project_folder"
     },
@@ -29,7 +29,7 @@ ACTIONS = (
     "shortcut": "Save-project",
     "action": {'text': translations.TR_SAVE_PROJECT,
                'image': 'saveAll',
-               'section': 'File',
+               'section': translations.TR_MENU_FILE,
                'weight': 240},
     "connect": "save_project"
     },

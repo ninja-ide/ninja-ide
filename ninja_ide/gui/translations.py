@@ -5,13 +5,13 @@ from PyQt4 import QtCore
 
 tr = QtCore.QCoreApplication.translate
 
-TR_MENU_FILE = tr("NINJA-IDE", "File")
-TR_MENU_EDIT = tr("NINJA-IDE", "Edit")
-TR_MENU_VIEW = tr("NINJA-IDE", "View")
-TR_MENU_SOURCE = tr("NINJA-IDE", "Source")
-TR_MENU_PROJECT = tr("NINJA-IDE", "Project")
-TR_MENU_ADDINS = tr("NINJA-IDE", "Addins")
-TR_MENU_ABOUT = tr("NINJA-IDE", "About")
+TR_MENU_FILE = tr("NINJA-IDE", "&File")
+TR_MENU_EDIT = tr("NINJA-IDE", "&Edit")
+TR_MENU_VIEW = tr("NINJA-IDE", "&View")
+TR_MENU_SOURCE = tr("NINJA-IDE", "&Source")
+TR_MENU_PROJECT = tr("NINJA-IDE", "&Project")
+TR_MENU_ADDINS = tr("NINJA-IDE", "&Addins")
+TR_MENU_ABOUT = tr("NINJA-IDE", "Abou&t")
 
 TR_DUPLICATE = tr("NINJA-IDE", "Duplicate")
 TR_REMOVE_LINE = tr("NINJA-IDE", "Remove Line")
