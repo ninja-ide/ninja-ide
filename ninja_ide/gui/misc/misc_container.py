@@ -98,7 +98,7 @@ class __MiscContainer(QWidget):
         self._btnWeb.setToolTip(self.tr("Web Preview"))
         self._btnFind = QPushButton(QIcon(resources.IMAGES['find']), '')
         self._btnFind.setToolTip(self.tr("Find in Files"))
-        self._btnBookmark = QPushButton(QIcon(resources.IMAGES['find']), '')
+        self._btnBookmark = QPushButton(QIcon(resources.IMAGES['bookmarks']), '')
         self._btnBookmark.setToolTip(self.tr("Bookmark List"))
         #Toolbar
         hbox.addWidget(self.__toolbar)

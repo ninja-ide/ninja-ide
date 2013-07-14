@@ -162,6 +162,7 @@ IMAGES = {
     "uncomment-code": os.path.join(PRJ_PATH, "img", "uncomment-code.png"),
     "reload-file": os.path.join(PRJ_PATH, "img", "reload-file.png"),
     "print": os.path.join(PRJ_PATH, "img", "document-print.png"),
+    "bookmarks": os.path.join(PRJ_PATH, "img", "bookmarks.png"),
     "book-left": os.path.join(PRJ_PATH, "img", "book-left.png"),
     "book-right": os.path.join(PRJ_PATH, "img", "book-right.png"),
     "break-left": os.path.join(PRJ_PATH, "img", "break-left.png"),
