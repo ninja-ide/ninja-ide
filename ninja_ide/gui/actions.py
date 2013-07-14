@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from ninja_ide.gui import translations
+
 #{
 #"shortcut": "Change-Tab",
 #"action": ("text", "Image [string for ninja, Int for qt, None for nothing]"),
@@ -58,5 +60,27 @@ ACTIONS_STATUS = (
     {
     "shortcut": "File-Opener",
     "connect": "show_file_opener"
+    },
+)
+
+
+ACTIONS_GENERAL = (
+    {
+    "action": {'text': translations.TR_MANAGE_PLUGINS,
+               'section': 'Addins',
+               'weight': 100},
+    "connect": "show_manager"
+    },
+    {
+    "action": {'text': translations.TR_EDITOR_SCHEMES,
+               'section': 'Addins',
+               'weight': 110},
+    "connect": "show_themes"
+    },
+    {
+    "action": {'text': translations.TR_LANGUAGE_MANAGER,
+               'section': 'Addins',
+               'weight': 120},
+    "connect": "show_languages"
     },
 )

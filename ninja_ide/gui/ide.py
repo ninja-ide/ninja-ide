@@ -40,8 +40,12 @@ from ninja_ide.core import plugin_manager
 #from ninja_ide.core import plugin_services
 from ninja_ide.core import settings
 from ninja_ide.core import ipc
+from ninja_ide.gui import actions
 from ninja_ide.gui import translations
 from ninja_ide.gui import updates
+from ninja_ide.gui.dialogs import plugins_manager
+from ninja_ide.gui.dialogs import themes_manager
+from ninja_ide.gui.dialogs import language_manager
 from ninja_ide.gui.dialogs import preferences
 from ninja_ide.gui.dialogs import traceback_widget
 from ninja_ide.tools.completion import completion_daemon
@@ -173,6 +177,8 @@ class IDE(QMainWindow):
         IDE.register_menu_category(translations.TR_MENU_PROJECT, 140)
         IDE.register_menu_category(translations.TR_MENU_ADDINS, 150)
         IDE.register_menu_category(translations.TR_MENU_ABOUT, 160)
+        # Register General Menu Items
+        ui_tools.install_shortcuts(self, actions.ACTIONS_GENERAL, self)
 
         self.register_service('ide', self)
         self.register_service('toolbar', self.toolbar)
@@ -567,6 +573,22 @@ class IDE(QMainWindow):
                 plugin_error_dialog.add_traceback(err_tuple[0], err_tuple[1])
             #show the dialog
             plugin_error_dialog.exec_()
+
+    def show_manager(self):
+        manager = plugins_manager.PluginsManagerWidget(self)
+        manager.show()
+        if manager._requirements:
+            dependencyDialog = plugins_manager.DependenciesHelpDialog(
+                manager._requirements)
+            dependencyDialog.show()
+
+    def show_languages(self):
+        manager = language_manager.LanguagesManagerWidget(self)
+        manager.show()
+
+    def show_themes(self):
+        manager = themes_manager.ThemesManagerWidget(self)
+        manager.show()
 
 
 class TabShortcuts(QShortcut):

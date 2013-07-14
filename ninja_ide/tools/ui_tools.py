@@ -624,32 +624,36 @@ def install_shortcuts(obj, actions, ide):
 
         shortcut = None
         item_ui = None
-        func = getattr(obj, connect, None)
-        if isinstance(func, collections.Callable):
-            if short_key:
-                shortcut = QShortcut(short(short_key), ide)
+        func = None
+        if connect:
+            func = getattr(obj, connect, None)
+
+        if short_key:
+            shortcut = QShortcut(short(short_key), ide)
+            if isinstance(func, collections.Callable):
                 ide.connect(shortcut, SIGNAL("activated()"), func)
-            if action_data:
-                is_menu = action_data.get('is_menu', False)
-                if is_menu:
-                    item_ui = QMenu(action_data['text'], ide)
-                else:
-                    item_ui = QAction(action_data['text'], ide)
-                image_name = action_data['image']
-                section = action_data.get('section', None)
-                weight = action_data.get('weight', None)
-                if image_name:
-                    if isinstance(image_name, int):
-                        icon = ide.style().standardIcon(image_name)
-                        item_ui.setIcon(icon)
-                    elif isinstance(image_name, str):
-                        icon = QIcon(resources.IMAGES[image_name])
-                        item_ui.setIcon(icon)
-                if shortcut and not is_menu:
-                    item_ui.setShortcut(shortcut.key())
-                if not is_menu:
-                    ide.connect(item_ui, SIGNAL("triggered()"), func)
-                if section and weight:
-                    ide.register_menuitem(item_ui, section, weight)
+        if action_data:
+            is_menu = action_data.get('is_menu', False)
+            if is_menu:
+                item_ui = QMenu(action_data['text'], ide)
+            else:
+                item_ui = QAction(action_data['text'], ide)
+            image_name = action_data.get('image', None)
+            section = action_data.get('section', None)
+            weight = action_data.get('weight', None)
+            if image_name:
+                if isinstance(image_name, int):
+                    icon = ide.style().standardIcon(image_name)
+                    item_ui.setIcon(icon)
+                elif isinstance(image_name, str):
+                    icon = QIcon(resources.IMAGES[image_name])
+                    item_ui.setIcon(icon)
+            if shortcut and not is_menu:
+                item_ui.setShortcut(shortcut.key())
+            if isinstance(func, collections.Callable) and not is_menu:
+                ide.connect(item_ui, SIGNAL("triggered()"), func)
+            if section and weight:
+                ide.register_menuitem(item_ui, section, weight)
+
         if short_key and shortcut:
             ide.register_shortcut(short_key, shortcut, item_ui)
