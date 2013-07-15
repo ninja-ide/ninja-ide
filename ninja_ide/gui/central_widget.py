@@ -59,7 +59,6 @@ class CentralWidget(QWidget):
         self._add_functions = {
             0: self.insert_widget_region0,
             1: self.insert_widget_region1,
-            2: self.insert_widget_region2
         }
 
         hbox = QHBoxLayout(self)
@@ -90,21 +89,18 @@ class CentralWidget(QWidget):
     def update_column_number(self, row, col):
         self.lateralPanel.update_line_col(row, col)
 
-    def add_to_region(self, obj, region):
-        self._add_functions.get(region, lambda x: None)(obj)
+    def add_to_region(self, obj, region, top=False):
+        self._add_functions.get(region, lambda x: None)(obj, top)
 
-    def insert_widget_region0(self, container):
-        self._splitterInside.insertWidget(0, container)
+    def insert_widget_region0(self, container, top=False):
+        self._splitterInside.add_widget(container, top)
 
-    def insert_widget_region1(self, container):
-        self._splitterInside.insertWidget(1, container)
-
-    def insert_widget_region2(self, container):
+    def insert_widget_region1(self, container, top=False):
         if not self.lateralPanel.has_component:
             self.lateralPanel.add_component(container)
-            self._splitterBase.addWidget(self.lateralPanel)
+            self._splitterBase.add_widget(self.lateralPanel, top)
         else:
-            self._splitterBase.addWidget(container)
+            self._splitterBase.add_widget(container, top)
 
     def _region0(self):
         return self._splitterInside.widget(0)

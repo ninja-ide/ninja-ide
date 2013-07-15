@@ -52,7 +52,7 @@ from PyQt4.QtGui import QDialog
 #from PyQt4.QtGui import QFileDialog
 #from PyQt4.QtGui import QFontDialog
 #from PyQt4.QtGui import QFont
-#from PyQt4.QtCore import Qt
+from PyQt4.QtCore import Qt
 #from PyQt4.QtCore import QSize
 #from PyQt4.QtCore import QSettings
 #from PyQt4.QtCore import SIGNAL
@@ -75,7 +75,7 @@ from PyQt4.QtGui import QDialog
 class PreferencesWidget(QDialog):
 
     def __init__(self, parent=None):
-        super(PreferencesWidget, QDialog).__init__(parent)
+        super(PreferencesWidget, QDialog).__init__(parent, Qt.Dialog)
         #self.setWindowTitle(self.tr("NINJA-IDE - Preferences"))
         #self.setMaximumSize(QSize(0, 0))
 

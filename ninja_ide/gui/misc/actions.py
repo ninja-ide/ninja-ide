@@ -13,7 +13,7 @@ ACTIONS = (
     "shortcut": "Find-in-files",
     "action": {'text': translations.TR_FIND_IN_FILES,
                'image': 'find',
-               'section': 'Edit',
+               'section': translations.TR_MENU_EDIT,
                'weight': 240},
     "connect": "show_find_in_files_widget"
     },
@@ -21,7 +21,7 @@ ACTIONS = (
     "shortcut": "Run-file",
     "action": {'text': translations.TR_RUN_FILE,
                'image': 'file-run',
-               'section': 'Project',
+               'section': translations.TR_MENU_PROJECT,
                'weight': 110},
     "connect": "execute_file"
     },
@@ -29,7 +29,7 @@ ACTIONS = (
     "shortcut": "Run-project",
     "action": {'text': translations.TR_RUN_PROJECT,
                'image': 'play',
-               'section': 'Project',
+               'section': translations.TR_MENU_PROJECT,
                'weight': 100},
     "connect": "execute_project"
     },
@@ -37,7 +37,7 @@ ACTIONS = (
     "shortcut": "Stop-execution",
     "action": {'text': translations.TR_STOP,
                'image': 'stop',
-               'section': 'Project',
+               'section': translations.TR_MENU_PROJECT,
                'weight': 120},
     "connect": "kill_application"
     },

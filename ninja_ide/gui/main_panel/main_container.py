@@ -39,6 +39,7 @@ from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling.filesystem_notifications import (
     NinjaFileSystemWatcher)
+from ninja_ide.gui import translations
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.main_panel import tab_widget
 from ninja_ide.gui.main_panel import tab_group
@@ -212,7 +213,7 @@ class _MainContainer(QWidget):
 
     def install(self):
         ide = IDE.get_service('ide')
-        ide.place_me_on(self, 0)
+        ide.place_me_on(self, 0, top=True)
         ui_tools.install_shortcuts(self, actions.ACTIONS, ide)
 
     def locate_function(self, function, filePath, isVariable):
@@ -419,6 +420,36 @@ class _MainContainer(QWidget):
                 self.tr("Summary of lines"), resume,
                 QMessageBox.Ok, editorWidget)
             msgBox.exec_()
+
+    def editor_cut(self):
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            editorWidget.cut()
+
+    def editor_copy(self):
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            editorWidget.copy()
+
+    def editor_paste(self):
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            editorWidget.paste()
+
+    def editor_upper(self):
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            editorWidget.to_upper()
+
+    def editor_lower(self):
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            editorWidget.to_lower()
+
+    def editor_title(self):
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            editorWidget.to_title()
 
     def editor_go_to_definition(self):
         """Search the definition of the method or variable under the cursor.
@@ -1210,11 +1241,17 @@ class _MainContainer(QWidget):
         if sys.platform == 'win32':
             self.docPage = browser_widget.BrowserWidget(
                 'http://docs.python.org/')
-            self.add_tab(self.docPage, self.tr("Python Documentation"))
         else:
             process = runner.start_pydoc()
             self.docPage = browser_widget.BrowserWidget(process[1], process[0])
-            self.add_tab(self.docPage, self.tr("Python Documentation"))
+        self.add_tab(self.docPage, translations.TR_PYTHON_DOC)
+
+    def show_report_bugs(self):
+        webbrowser.open(resources.BUGS_PAGE)
+
+    def show_plugins_doc(self):
+        bugsPage = browser_widget.BrowserWidget(resources.PLUGINS_DOC, self)
+        self.add_tab(bugsPage, translations.TR_HOW_TO_WRITE_PLUGINS)
 
     def editor_jump_to_line(self, lineno=None):
         """Jump to line *lineno* if it is not None

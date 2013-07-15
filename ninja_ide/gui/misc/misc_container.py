@@ -51,6 +51,29 @@ class _ToolsDock(QWidget):
 
     def __init__(self, parent=None):
         super(_ToolsDock, self).__init__(parent)
+        #Register signals connections
+        connections = (
+            {'target': 'main_container',
+            'signal_name': "findOcurrences(QString)",
+            'slot': self.show_find_occurrences},
+            {'target': 'main_container',
+            'signal_name': "updateFileMetadata()",
+            'slot': self.show_find_occurrences},
+            {'target': 'main_container',
+            'signal_name': "findOcurrences(QString)",
+            'slot': self.show_find_occurrences},
+            {'target': 'main_container',
+            'signal_name': "runFile()",
+            'slot': self.execute_file},
+            {'target': 'explorer_container',
+            'signal_name': "removeProjectFromConsole(QString)",
+            'slot': self.remove_project_from_console},
+            {'target': 'explorer_container',
+            'signal_name': "addProjectToConsole(QString)",
+            'slot': self.add_project_to_console},
+            )
+        IDE.register_signals('tools_dock', connections)
+        IDE.register_service("tools_dock", self)
 
     def setup_ui(self):
         vbox = QVBoxLayout(self)
@@ -117,34 +140,11 @@ class _ToolsDock(QWidget):
         self.connect(self._btnFind, SIGNAL("clicked()"),
             lambda: self._item_changed(3))
         self.connect(btn_close, SIGNAL('clicked()'), self.hide)
-        IDE.register_service(self, "tools_dock")
 
     def install(self):
         self.setup_ui()
         ide = IDE.get_service('ide')
-        ide.place_me_on(self, 1)
-        #Register signals connections
-        connections = (
-            {'target': 'main_container',
-            'signal_name': "findOcurrences(QString)",
-            'slot': self.show_find_occurrences},
-            {'target': 'main_container',
-            'signal_name': "updateFileMetadata()",
-            'slot': self.show_find_occurrences},
-            {'target': 'main_container',
-            'signal_name': "findOcurrences(QString)",
-            'slot': self.show_find_occurrences},
-            {'target': 'main_container',
-            'signal_name': "runFile()",
-            'slot': self.execute_file},
-            {'target': 'explorer_container',
-            'signal_name': "removeProjectFromConsole(QString)",
-            'slot': self.remove_project_from_console},
-            {'target': 'explorer_container',
-            'signal_name': "addProjectToConsole(QString)",
-            'slot': self.add_project_to_console},
-            )
-        IDE.register_signals('tools_dock', connections)
+        ide.place_me_on(self, 0)
         ui_tools.install_shortcuts(self, actions.ACTIONS, ide)
 
     def add_project_to_console(self, projectFolder):

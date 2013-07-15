@@ -43,6 +43,7 @@ from ninja_ide.core import ipc
 from ninja_ide.gui import actions
 from ninja_ide.gui import translations
 from ninja_ide.gui import updates
+from ninja_ide.gui.dialogs import about_ninja
 from ninja_ide.gui.dialogs import plugins_manager
 from ninja_ide.gui.dialogs import themes_manager
 from ninja_ide.gui.dialogs import language_manager
@@ -150,13 +151,14 @@ class IDE(QMainWindow):
         key = Qt.Key_1
         for i in range(10):
             if settings.IS_MAC_OS:
-                short = TabShortcuts(
+                short = ui_tools.TabShortcuts(
                     QKeySequence(Qt.CTRL + Qt.ALT + key), self, i)
             else:
-                short = TabShortcuts(QKeySequence(Qt.ALT + key), self, i)
+                short = ui_tools.TabShortcuts(
+                    QKeySequence(Qt.ALT + key), self, i)
             key += 1
             self.connect(short, SIGNAL("activated()"), self._change_tab_index)
-        short = TabShortcuts(QKeySequence(Qt.ALT + Qt.Key_0), self, 10)
+        short = ui_tools.TabShortcuts(QKeySequence(Qt.ALT + Qt.Key_0), self, 10)
         self.connect(short, SIGNAL("activated()"), self._change_tab_index)
 
         short = resources.get_shortcut
@@ -192,7 +194,7 @@ class IDE(QMainWindow):
             'slot': self.change_window_title},
             {'target': 'main_container',
             'signal_name': 'openPreferences()',
-            'slot': self._show_preferences},
+            'slot': self.show_preferences},
             {'target': 'main_container',
             'signal_name': 'allTabsClosed()',
             'slot': self._last_tab_closed},
@@ -236,8 +238,8 @@ class IDE(QMainWindow):
             func()
         self._connect_signals()
 
-    def place_me_on(self, obj, region=None):
-        self.central.add_to_region(obj, region)
+    def place_me_on(self, obj, region=None, top=False):
+        self.central.add_to_region(obj, region, top)
 
     @classmethod
     def register_signals(cls, service_name, connections):
@@ -350,8 +352,8 @@ class IDE(QMainWindow):
         """
         self.explorer.cleanup_tabs()
 
-    def _show_preferences(self):
-        pref = preferences.PreferencesWidget(self.mainContainer)
+    def show_preferences(self):
+        pref = preferences.PreferencesWidget(self)
         pref.set_IDE(self)
         pref.show()
 
@@ -590,9 +592,9 @@ class IDE(QMainWindow):
         manager = themes_manager.ThemesManagerWidget(self)
         manager.show()
 
+    def show_about_qt(self):
+        QMessageBox.aboutQt(self, translations.TR_ABOUT_QT)
 
-class TabShortcuts(QShortcut):
-
-    def __init__(self, key, parent, index):
-        super(TabShortcuts, self).__init__(key, parent)
-        self.index = index
+    def show_about_ninja(self):
+        about = about_ninja.AboutNinja(self)
+        about.show()

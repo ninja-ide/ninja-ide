@@ -6,9 +6,18 @@ from ninja_ide.gui import translations
 
 #{
 #"shortcut": "Change-Tab",
-#"action": ("text", "Image [string for ninja, Int for qt, None for nothing]"),
+#"action": {'text': string,
+               #'image': [string for ninja, Int for qt, None for nothing],
+               #'section': string,
+               #'weight': int},
 #"connect": "function_name"
 #}
+
+
+#FIXME: add open recent projects
+#FIXME: add organize import
+#FIXME: add remove unused imports
+#FIXME: add extract method
 
 ACTIONS = (
     {
@@ -23,7 +32,7 @@ ACTIONS = (
     "shortcut": "Duplicate",
     "action": {'text': translations.TR_DUPLICATE,
                'image': None,
-               'section': 'Source',
+               'section': translations.TR_MENU_SOURCE,
                'weight:': 470},
     "connect": "editor_duplicate"
     },
@@ -31,7 +40,7 @@ ACTIONS = (
     "shortcut": "Remove-line",
     "action": {'text': translations.TR_REMOVE_LINE,
                'image': None,
-               'section': 'Source',
+               'section': translations.TR_MENU_SOURCE,
                'weight': 480},
     "connect": "editor_remove_line"
     },
@@ -39,7 +48,7 @@ ACTIONS = (
     "shortcut": "Move-up",
     "action": {'text': translations.TR_MOVE_UP,
                'image': None,
-               'section': 'Source',
+               'section': translations.TR_MENU_SOURCE,
                'weight': 440},
     "connect": "editor_move_up"
     },
@@ -47,7 +56,7 @@ ACTIONS = (
     "shortcut": "Move-down",
     "action": {'text': translations.TR_MOVE_DOWN,
                'image': None,
-               'section': 'Source',
+               'section': translations.TR_MENU_SOURCE,
                'weight': 450},
     "connect": "editor_move_down"
     },
@@ -55,7 +64,7 @@ ACTIONS = (
     "shortcut": "Close-tab",
     "action": {'text': translations.TR_CLOSE_TAB,
                'image': QStyle.SP_DialogCloseButton,
-               'section': 'File',
+               'section': translations.TR_MENU_FILE,
                'weight': 910},
     "connect": "close_tab"
     },
@@ -63,7 +72,7 @@ ACTIONS = (
     "shortcut": "New-file",
     "action": {'text': translations.TR_NEW_FILE,
                'image': 'new',
-               'section': 'File',
+               'section': translations.TR_MENU_FILE,
                'weight': 100},
     "connect": "add_editor"
     },
@@ -71,7 +80,7 @@ ACTIONS = (
     "shortcut": "Open-file",
     "action": {'text': translations.TR_OPEN,
                'image': 'open',
-               'section': 'File',
+               'section': translations.TR_MENU_FILE,
                'weight': 410},
     "connect": "open_file"
     },
@@ -79,28 +88,29 @@ ACTIONS = (
     "shortcut": "Save-file",
     "action": {'text': translations.TR_SAVE,
                'image': 'save',
-               'section': 'File',
+               'section': translations.TR_MENU_FILE,
                'weight': 150},
     "connect": "save_file"
     },
     {
     "action": {'text': translations.TR_SAVE_AS,
                'image': 'saveAs',
-               'section': 'Source',
+               'section': translations.TR_MENU_FILE,
                'weight': 160},
     "connect": "save_file_as"
     },
     {
     "action": {'text': translations.TR_SAVE_ALL,
                'image': 'saveAll',
-               'section': 'Source',
+               'section': translations.TR_MENU_FILE,
                'weight': 170},
     "connect": "save_all"
     },
     {
     "action": {'text': translations.TR_UNDO,
                'image': 'undo',
-               'section': 'Edit',
+               'section': translations.TR_MENU_EDIT,
+               'keysequence': 'undo',
                'weight': 100},
     "connect": "editor_undo"
     },
@@ -108,7 +118,7 @@ ACTIONS = (
     "shortcut": "Redo",
     "action": {'text': translations.TR_REDO,
                'image': 'redo',
-               'section': 'Edit',
+               'section': translations.TR_MENU_EDIT,
                'weight': 110},
     "connect": "editor_redo"
     },
@@ -120,7 +130,7 @@ ACTIONS = (
     "shortcut": "Comment",
     "action": {'text': translations.TR_COMMENT,
                'image': 'comment-code',
-               'section': 'Source',
+               'section': translations.TR_MENU_SOURCE,
                'weight': 130},
     "connect": "editor_comment"
     },
@@ -128,7 +138,7 @@ ACTIONS = (
     "shortcut": "Uncomment",
     "action": {'text': translations.TR_UNCOMMENT,
                'image': 'uncomment-code',
-               'section': 'Source',
+               'section': translations.TR_MENU_SOURCE,
                'weight': 140},
     "connect": "editor_uncomment"
     },
@@ -136,7 +146,7 @@ ACTIONS = (
     "shortcut": "Horizontal-line",
     "action": {'text': translations.TR_HORIZONTAL_LINE,
                'image': None,
-               'section': 'Source',
+               'section': translations.TR_MENU_SOURCE,
                'weight': 150},
     "connect": "editor_insert_horizontal_line"
     },
@@ -144,22 +154,23 @@ ACTIONS = (
     "shortcut": "Title-comment",
     "action": {'text': translations.TR_TITLE_COMMENT,
                'image': None,
-               'section': 'Source',
+               'section': translations.TR_MENU_SOURCE,
                'weight': 160},
     "connect": "editor_insert_title_comment"
     },
     {
     "action": {'text': translations.TR_INDENT_MORE,
                'image': 'indent-more',
-               'section': 'Source',
-               'weight': 100},
+               'section': translations.TR_MENU_SOURCE,
+               'weight': 100,
+               'keysequence': 'Indent-more'},
     "connect": "editor_indent_more"
     },
     {
     "shortcut": "Indent-less",
     "action": {'text': translations.TR_INDENT_LESS,
                'image': 'indent-less',
-               'section': 'Source',
+               'section': translations.TR_MENU_SOURCE,
                'weight': 110},
     "connect": "editor_indent_less"
     },
@@ -167,7 +178,7 @@ ACTIONS = (
     "shortcut": "Split-horizontal",
     "action": {'text': translations.TR_SPLIT_HORIZONTALLY,
                'image': 'splitH',
-               'section': 'View',
+               'section': translations.TR_MENU_VIEW,
                'weight': 200},
     "connect": "split_tabh"
     },
@@ -175,7 +186,7 @@ ACTIONS = (
     "shortcut": "Split-vertical",
     "action": {'text': translations.TR_SPLIT_VERTICALLY,
                'image': 'splitV',
-               'section': 'View',
+               'section': translations.TR_MENU_VIEW,
                'weight': 210},
     "connect": "split_tabv"
     },
@@ -183,7 +194,7 @@ ACTIONS = (
     "shortcut": "Follow-mode",
     "action": {'text': translations.TR_FOLLOW_MODE,
                'image': 'follow',
-               'section': 'View',
+               'section': translations.TR_MENU_VIEW,
                'weight': 220},
     "connect": "show_follow_mode"
     },
@@ -191,7 +202,7 @@ ACTIONS = (
     "shortcut": "Reload-file",
     "action": {'text': translations.TR_RELOAD_FILE,
                'image': 'reload-file',
-               'section': 'File',
+               'section': translations.TR_MENU_FILE,
                'weight': 300},
     "connect": "reload_file"
     },
@@ -199,7 +210,7 @@ ACTIONS = (
     "shortcut": "Import",
     "action": {'text': translations.TR_INSERT_IMPORT,
                'image': 'insert-import',
-               'section': 'Source',
+               'section': translations.TR_MENU_SOURCE,
                'weight': 310},
     "connect": "import_from_everywhere"
     },
@@ -207,7 +218,7 @@ ACTIONS = (
     "shortcut": "Go-to-definition",
     "action": {'text': translations.TR_GO_TO_DEFINITION,
                'image': 'go-to-definition',
-               'section': 'Source',
+               'section': translations.TR_MENU_SOURCE,
                'weight': 300},
     "connect": "editor_go_to_definition"
     },
@@ -247,7 +258,7 @@ ACTIONS = (
     "shortcut": "Help",
     "action": {'text': translations.TR_HELP,
                'image': None,
-               'section': 'About',
+               'section': translations.TR_MENU_ABOUT,
                'weight': 110},
     "connect": "show_python_doc"
     },
@@ -259,7 +270,7 @@ ACTIONS = (
     "shortcut": "Print-file",
     "action": {'text': translations.TR_PRINT_FILE,
                'image': 'print',
-               'section': 'File',
+               'section': translations.TR_MENU_FILE,
                'weight': 900},
     "connect": "print_file"
     },
@@ -270,5 +281,54 @@ ACTIONS = (
     {
     "shortcut": "History-Paste",
     "connect": "paste_history"
+    },
+    {
+    "action": {'text': translations.TR_SHOW_START_PAGE,
+               'section': translations.TR_MENU_ABOUT,
+               'weight': 100},
+    "connect": "show_start_page"
+    },
+    {
+    "action": {'text': translations.TR_REPORT_BUGS,
+               'section': translations.TR_MENU_ABOUT,
+               'weight': 200},
+    "connect": "show_report_bugs"
+    },
+    {
+    "action": {'text': translations.TR_PLUGINS_DOCUMENTATION,
+               'section': translations.TR_MENU_ABOUT,
+               'weight': 210},
+    "connect": "show_plugins_doc"
+    },
+    {
+    "action": {'text': translations.TR_CUT,
+               'section': translations.TR_MENU_EDIT,
+               'image': 'cut',
+               'keysequence': 'cut',
+               'weight': 120},
+    "connect": "editor_cut"
+    },
+    {
+    "action": {'text': translations.TR_COPY,
+               'section': translations.TR_MENU_EDIT,
+               'image': 'copy',
+               'keysequence': 'copy',
+               'weight': 130},
+    "connect": "editor_copy"
+    },
+    {
+    "action": {'text': translations.TR_PASTE,
+               'section': translations.TR_MENU_EDIT,
+               'image': 'paste',
+               'keysequence': 'paste',
+               'weight': 140},
+    "connect": "editor_paste"
+    },
+    {
+    "action": {'text': translations.TR_PREVIEW_IN_BROWSER,
+               'image': 'preview-web',
+               'section': translations.TR_MENU_PROJECT,
+               'weight': 300},
+    "connect": "preview_in_browser"
     },
 )
