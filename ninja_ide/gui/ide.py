@@ -23,7 +23,6 @@ from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QMainWindow
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QToolBar
-from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QToolTip
 from PyQt4.QtGui import QFont
 from PyQt4.QtGui import QKeySequence
@@ -239,8 +238,8 @@ class IDE(QMainWindow):
             func()
         self._connect_signals()
 
-    def place_me_on(self, obj, region=None):
-        self.central.add_to_region(obj, region)
+    def place_me_on(self, obj, region=None, top=False):
+        self.central.add_to_region(obj, region, top)
 
     @classmethod
     def register_signals(cls, service_name, connections):

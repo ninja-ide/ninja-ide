@@ -144,7 +144,7 @@ class _ToolsDock(QWidget):
     def install(self):
         self.setup_ui()
         ide = IDE.get_service('ide')
-        ide.place_me_on(self, 1)
+        ide.place_me_on(self, 0)
         ui_tools.install_shortcuts(self, actions.ACTIONS, ide)
 
     def add_project_to_console(self, projectFolder):

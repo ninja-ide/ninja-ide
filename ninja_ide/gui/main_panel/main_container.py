@@ -213,7 +213,7 @@ class _MainContainer(QWidget):
 
     def install(self):
         ide = IDE.get_service('ide')
-        ide.place_me_on(self, 0)
+        ide.place_me_on(self, 0, top=True)
         ui_tools.install_shortcuts(self, actions.ACTIONS, ide)
 
     def locate_function(self, function, filePath, isVariable):
