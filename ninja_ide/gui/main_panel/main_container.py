@@ -421,6 +421,36 @@ class _MainContainer(QWidget):
                 QMessageBox.Ok, editorWidget)
             msgBox.exec_()
 
+    def editor_cut(self):
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            editorWidget.cut()
+
+    def editor_copy(self):
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            editorWidget.copy()
+
+    def editor_paste(self):
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            editorWidget.paste()
+
+    def editor_upper(self):
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            editorWidget.to_upper()
+
+    def editor_lower(self):
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            editorWidget.to_lower()
+
+    def editor_title(self):
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            editorWidget.to_title()
+
     def editor_go_to_definition(self):
         """Search the definition of the method or variable under the cursor.
 

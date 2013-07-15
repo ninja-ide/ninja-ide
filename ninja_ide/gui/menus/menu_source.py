@@ -30,40 +30,22 @@ from ninja_ide.gui.ide import IDE
 class MenuSource(QObject):
 
     def install_menu(self, menuSource):
-        indentMoreAction = menuSource.addAction(
-            QIcon(resources.IMAGES['indent-more']),
-            (self.trUtf8("Indent More (%s)") %
-                QKeySequence(Qt.Key_Tab).toString(QKeySequence.NativeText)))
         countCodeLinesAction = menuSource.addAction(
             self.trUtf8("Count Code Lines"))
         menuSource.addSeparator()
-#        tellTaleAction = menuSource.addAction(
-#            self.trUtf8("Tell me a Tale of Code"))
-#        tellTaleAction.setEnabled(False)
         menu_debugging = menuSource.addMenu(self.trUtf8("Debugging Tricks"))
         insertPrints = menu_debugging.addAction(
             self.trUtf8("Insert Prints per selected line."))
         insertPdb = menu_debugging.addAction(
             self.trUtf8("Insert pdb.set_trace()"))
-#        organizeImportsAction = menuSource.addAction(
-#            self.trUtf8("&Organize Imports"))
-#        removeUnusedImportsAction = menuSource.addAction(
-#            self.trUtf8("Remove Unused &Imports"))
-#        extractMethodAction = menuSource.addAction(
-#            self.trUtf8("Extract selected &code as Method"))
+
         menuSource.addSeparator()
         removeTrailingSpaces = menuSource.addAction(
             self.trUtf8("&Remove Trailing Spaces"))
         replaceTabsSpaces = menuSource.addAction(
             self.trUtf8("Replace Tabs With &Spaces"))
 
-        self.toolbar_items = {
-            'indent-more': indentMoreAction,
-            'indent-less': indentLessAction,
-            'comment': commentAction,
-            'uncomment': unCommentAction,
-            'go-to-definition': goToDefinitionAction,
-            'insert-import': insertImport}
+
 
         self.connect(goToDefinitionAction, SIGNAL("triggered()"),
             self.editor_go_to_definition)

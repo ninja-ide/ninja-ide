@@ -232,6 +232,7 @@ CUSTOM_SCHEME = {}
 ###############################################################################
 
 #default shortcuts
+
 SHORTCUTS = {
     "Duplicate": QKeySequence(Qt.CTRL + Qt.Key_R),  # Replicate
     "Remove-line": QKeySequence(Qt.CTRL + Qt.Key_E),  # Eliminate
@@ -290,7 +291,12 @@ SHORTCUTS = {
     "change-split-focus": QKeySequence(Qt.CTRL + Qt.Key_Tab),
     "move-tab-to-next-split": QKeySequence(Qt.SHIFT + Qt.Key_F10),
     "change-tab-visibility": QKeySequence(Qt.SHIFT + Qt.Key_F1),
-    "Highlight-Word": QKeySequence(Qt.CTRL + Qt.Key_Down)}
+    "Highlight-Word": QKeySequence(Qt.CTRL + Qt.Key_Down),
+    "undo": QKeySequence(Qt.CTRL + Qt.Key_Z),
+    "Indent-more": QKeySequence(Qt.Key_Tab),
+    "cut": QKeySequence(Qt.CTRL + Qt.Key_X),
+    "copy": QKeySequence(Qt.CTRL + Qt.Key_C),
+    "paste": QKeySequence(Qt.CTRL + Qt.Key_V)}
 
 CUSTOM_SHORTCUTS = {}
 

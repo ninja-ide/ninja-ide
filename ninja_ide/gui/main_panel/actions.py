@@ -13,6 +13,12 @@ from ninja_ide.gui import translations
 #"connect": "function_name"
 #}
 
+
+#FIXME: add open recent projects
+#FIXME: add organize import
+#FIXME: add remove unused imports
+#FIXME: add extract method
+
 ACTIONS = (
     {
     "shortcut": "Change-Tab",
@@ -89,14 +95,14 @@ ACTIONS = (
     {
     "action": {'text': translations.TR_SAVE_AS,
                'image': 'saveAs',
-               'section': translations.TR_MENU_SOURCE,
+               'section': translations.TR_MENU_FILE,
                'weight': 160},
     "connect": "save_file_as"
     },
     {
     "action": {'text': translations.TR_SAVE_ALL,
                'image': 'saveAll',
-               'section': translations.TR_MENU_SOURCE,
+               'section': translations.TR_MENU_FILE,
                'weight': 170},
     "connect": "save_all"
     },
@@ -104,6 +110,7 @@ ACTIONS = (
     "action": {'text': translations.TR_UNDO,
                'image': 'undo',
                'section': translations.TR_MENU_EDIT,
+               'keysequence': 'undo',
                'weight': 100},
     "connect": "editor_undo"
     },
@@ -155,7 +162,8 @@ ACTIONS = (
     "action": {'text': translations.TR_INDENT_MORE,
                'image': 'indent-more',
                'section': translations.TR_MENU_SOURCE,
-               'weight': 100},
+               'weight': 100,
+               'keysequence': 'Indent-more'},
     "connect": "editor_indent_more"
     },
     {
@@ -291,5 +299,36 @@ ACTIONS = (
                'section': translations.TR_MENU_ABOUT,
                'weight': 210},
     "connect": "show_plugins_doc"
+    },
+    {
+    "action": {'text': translations.TR_CUT,
+               'section': translations.TR_MENU_EDIT,
+               'image': 'cut',
+               'keysequence': 'cut',
+               'weight': 120},
+    "connect": "editor_cut"
+    },
+    {
+    "action": {'text': translations.TR_COPY,
+               'section': translations.TR_MENU_EDIT,
+               'image': 'copy',
+               'keysequence': 'copy',
+               'weight': 130},
+    "connect": "editor_copy"
+    },
+    {
+    "action": {'text': translations.TR_PASTE,
+               'section': translations.TR_MENU_EDIT,
+               'image': 'paste',
+               'keysequence': 'paste',
+               'weight': 140},
+    "connect": "editor_paste"
+    },
+    {
+    "action": {'text': translations.TR_PREVIEW_IN_BROWSER,
+               'image': 'preview-web',
+               'section': translations.TR_MENU_PROJECT,
+               'weight': 300},
+    "connect": "preview_in_browser"
     },
 )

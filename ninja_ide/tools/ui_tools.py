@@ -641,6 +641,7 @@ def install_shortcuts(obj, actions, ide):
             image_name = action_data.get('image', None)
             section = action_data.get('section', None)
             weight = action_data.get('weight', None)
+            keysequence = action_data.get('keysequence', None)
             if image_name:
                 if isinstance(image_name, int):
                     icon = ide.style().standardIcon(image_name)
@@ -650,6 +651,8 @@ def install_shortcuts(obj, actions, ide):
                     item_ui.setIcon(icon)
             if shortcut and not is_menu:
                 item_ui.setShortcut(shortcut.key())
+            elif keysequence:
+                item_ui.setShortcut(resources.get_shortcut(keysequence))
             if isinstance(func, collections.Callable) and not is_menu:
                 ide.connect(item_ui, SIGNAL("triggered()"), func)
             if section and weight:

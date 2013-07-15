@@ -1263,6 +1263,41 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         pass
         #self.highlighter.async_highlight()
 
+    def to_upper(self):
+        self.textCursor().beginEditBlock()
+        if self.textCursor().hasSelection():
+            text = self.textCursor().selectedText().upper()
+        else:
+            text = self._text_under_cursor().upper()
+            self.moveCursor(QTextCursor.StartOfWord)
+            self.moveCursor(QTextCursor.EndOfWord,
+                QTextCursor.KeepAnchor)
+        self.textCursor().insertText(text)
+        self.textCursor().endEditBlock()
+
+    def to_lower(self):
+        self.textCursor().beginEditBlock()
+        if self.textCursor().hasSelection():
+            text = self.textCursor().selectedText().lower()
+        else:
+            text = self._text_under_cursor().lower()
+            self.moveCursor(QTextCursor.StartOfWord)
+            self.moveCursor(QTextCursor.EndOfWord,
+                QTextCursor.KeepAnchor)
+        self.textCursor().insertText(text)
+        self.textCursor().endEditBlock()
+
+    def to_title(self):
+        self.textCursor().beginEditBlock()
+        if self.textCursor().hasSelection():
+            text = self.textCursor().selectedText().title()
+        else:
+            text = self._text_under_cursor().title()
+            self.moveCursor(QTextCursor.StartOfWord)
+            self.moveCursor(QTextCursor.EndOfWord, QTextCursor.KeepAnchor)
+        self.textCursor().insertText(text)
+        self.textCursor().endEditBlock()
+
 
 def create_editor(fileName='', project=None, syntax=None,
                   use_open_highlight=False, project_obj=None):

@@ -23,6 +23,7 @@ from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QMainWindow
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QToolBar
+from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QToolTip
 from PyQt4.QtGui import QFont
 from PyQt4.QtGui import QKeySequence
@@ -194,7 +195,7 @@ class IDE(QMainWindow):
             'slot': self.change_window_title},
             {'target': 'main_container',
             'signal_name': 'openPreferences()',
-            'slot': self._show_preferences},
+            'slot': self.show_preferences},
             {'target': 'main_container',
             'signal_name': 'allTabsClosed()',
             'slot': self._last_tab_closed},
@@ -352,8 +353,8 @@ class IDE(QMainWindow):
         """
         self.explorer.cleanup_tabs()
 
-    def _show_preferences(self):
-        pref = preferences.PreferencesWidget(self.mainContainer)
+    def show_preferences(self):
+        pref = preferences.PreferencesWidget(self)
         pref.set_IDE(self)
         pref.show()
 

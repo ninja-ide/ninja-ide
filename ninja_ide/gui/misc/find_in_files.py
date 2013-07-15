@@ -55,6 +55,7 @@ from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QFileDialog
 
 from ninja_ide import resources
+from ninja_ide.gui.ide import IDE
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.main_panel import main_container
 from ninja_ide.gui.explorer import explorer_container
@@ -357,8 +358,8 @@ class FindInFilesWidget(QWidget):
 
     def __init__(self, parent):
         QWidget.__init__(self, parent)
-        self._main_container = main_container.MainContainer()
-        self._explorer_container = explorer_container.ExplorerContainer()
+        self._main_container = IDE.get_service('main_container')
+        self._explorer_container = IDE.get_service('explorer')
         self._result_widget = FindInFilesResult()
         self._open_find_button = QPushButton(self.tr("Find!"))
         self._stop_button = QPushButton(self.tr("Stop"))
