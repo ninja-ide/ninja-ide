@@ -344,7 +344,7 @@ class SidebarWidget(QWidget):
                         painter.drawPixmap(xofs, round(position.y()),
                             self.downArrowIcon)
             #Add Bookmarks and Breakpoint
-            elif block.blockNumber() in self._breakpoints:
+            if block.blockNumber() in self._breakpoints:
                 linear_gradient = QLinearGradient(
                     xofs, round(position.y()),
                     xofs + self.foldArea, round(position.y()) + self.foldArea)
@@ -415,9 +415,10 @@ class SidebarWidget(QWidget):
                         break
                     if position.y() < ys and (position.y() + fh) > ys and \
                       pattern.match(str(block.text())):
-                        lineNumber = block.blockNumber() + 1
-                        break
-                    elif position.y() < ys and (position.y() + fh) > ys and \
+                        if not block.blockNumber() in self._endDocstringBlocks:
+                            lineNumber = block.blockNumber() + 1
+                            break
+                    if position.y() < ys and (position.y() + fh) > ys and \
                       event.button() == Qt.LeftButton:
                         line = block.blockNumber()
                         if line in self._breakpoints:
