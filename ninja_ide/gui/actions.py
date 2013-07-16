@@ -12,22 +12,6 @@ from ninja_ide.gui import translations
 
 ACTIONS_CENTRAL = (
     {
-    "shortcut": "Hide-misc",
-    "connect": "view_region1_visibility"
-    },
-    {
-    "shortcut": "Hide-editor",
-    "connect": "view_region0_visibility"
-    },
-    {
-    "shortcut": "Hide-explorer",
-    "connect": "view_region2_visibility"
-    },
-    {
-    "shortcut": "Hide-all",
-    "connect": "hide_all"
-    },
-    {
     "shortcut": "Show-Paste-History",
     "connect": "show_copypaste_history_popup"
     },

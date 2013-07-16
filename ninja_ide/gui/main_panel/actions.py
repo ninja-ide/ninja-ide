@@ -81,7 +81,7 @@ ACTIONS = (
     "action": {'text': translations.TR_OPEN,
                'image': 'open',
                'section': (translations.TR_MENU_FILE, None),
-               'weight': 410},
+               'weight': 400},
     "connect": "open_file"
     },
     {

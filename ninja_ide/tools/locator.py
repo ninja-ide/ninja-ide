@@ -198,7 +198,9 @@ class LocateThread(QThread):
         self._isVariable = None
 
     def locate_code(self):
-        explorerContainer = explorer_container.ExplorerContainer()
+        explorerContainer = IDE.get_service('explorer_container')
+        if not explorerContainer:
+            return
         projects_obj = explorerContainer.get_opened_projects()
         projects = [p.path for p in projects_obj]
         if not projects:

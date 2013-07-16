@@ -32,7 +32,7 @@ ACTIONS = (
     "action": {'text': translations.TR_SAVE_PROJECT,
                'image': 'saveAll',
                'section': (translations.TR_MENU_FILE, None),
-               'weight': 240},
+               'weight': 190},
     "connect": "save_project"
     },
     {

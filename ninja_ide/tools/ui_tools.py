@@ -628,7 +628,7 @@ def install_shortcuts(obj, actions, ide):
         if connect:
             func = getattr(obj, connect, None)
 
-        if short_key:
+        if short_key and not action_data:
             shortcut = QShortcut(short(short_key), ide)
             if isinstance(func, collections.Callable):
                 ide.connect(shortcut, SIGNAL("activated()"), func)
@@ -651,8 +651,8 @@ def install_shortcuts(obj, actions, ide):
                 elif isinstance(image_name, str):
                     icon = QIcon(resources.IMAGES[image_name])
                     item_ui.setIcon(icon)
-            if shortcut and not is_menu:
-                item_ui.setShortcut(shortcut.key())
+            if short_key and not is_menu:
+                item_ui.setShortcut(short(short_key))
             elif keysequence:
                 item_ui.setShortcut(resources.get_shortcut(keysequence))
             if isinstance(func, collections.Callable) and not is_menu:

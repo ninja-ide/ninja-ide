@@ -25,7 +25,6 @@ from PyQt4.QtGui import QComboBox
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QSettings
 
 from ninja_ide import resources
@@ -57,8 +56,8 @@ class CentralWidget(QWidget):
         self.lateralPanel = LateralPanel()
 
         self._add_functions = {
-            "central": self.insert_widget_region0,
-            "lateral": self.insert_widget_region1,
+            "central": self._insert_widget_region0,
+            "lateral": self._insert_widget_region1,
         }
         self._items = {}
 
@@ -97,43 +96,15 @@ class CentralWidget(QWidget):
     def get_item(self, name):
         return self._items.get(name, None)
 
-    def insert_widget_region0(self, container, top=False):
+    def _insert_widget_region0(self, container, top=False):
         self._splitterInside.add_widget(container, top)
 
-    def insert_widget_region1(self, container, top=False):
+    def _insert_widget_region1(self, container, top=False):
         if not self.lateralPanel.has_component:
             self.lateralPanel.add_component(container)
             self._splitterBase.add_widget(self.lateralPanel, top)
         else:
             self._splitterBase.add_widget(container, top)
-
-    def _region0(self):
-        return self._splitterInside.widget(0)
-
-    def _region1(self):
-        return self._splitterInside.widget(1)
-
-    def _region2(self):
-        return self._splitterBase.widget(1)
-
-    def view_region1_visibility(self):
-        self.change_region1_visibility()
-        menu_view = IDE.get_service('menu_view')
-        if menu_view:
-            menu_view.hideConsoleAction.setChecked(self._region0().isVisible())
-
-    def view_region0_visibility(self):
-        self.change_inside_visibility()
-        menu_view = IDE.get_service('menu_view')
-        if menu_view:
-            menu_view.hideEditorAction.setChecked(self._region1().isVisible())
-
-    def view_region2_visibility(self):
-        self.change_lateral_panel_visibility()
-        menu_view = IDE.get_service('menu_view')
-        if menu_view:
-            menu_view.hideExplorerAction.setChecked(
-                self._region2().isVisible())
 
     def hide_all(self):
         """Hide/Show all the containers except the editor."""
@@ -156,21 +127,6 @@ class CentralWidget(QWidget):
                 toolbar.show()
             if menu_bar:
                 menu_bar.show()
-        menu_view = IDE.get_service('menu_view')
-        if menu_view:
-            if menu_bar:
-                menu_view.hideAllAction.setChecked(menu_bar.isVisible())
-            if tools_dock:
-                menu_view.hideConsoleAction.setChecked(tools_dock.isVisible())
-            main_container = IDE.get_service('main_container')
-            if tools_dock:
-                menu_view.hideEditorAction.setChecked(
-                    main_container.isVisible())
-            if self.lateralPanel:
-                menu_view.hideExplorerAction.setChecked(
-                    self.lateralPanel.isVisible())
-            if toolbar:
-                menu_view.hideToolbarAction.setChecked(toolbar.isVisible())
 
     def showEvent(self, event):
         #Show Event
@@ -201,54 +157,28 @@ class CentralWidget(QWidget):
         self.tool.setVisible(
             qsettings.value("window/show_region1", False, type=bool))
 
-    def change_region1_visibility(self):
-        region1 = self._splitterInside.widget(1)
-        if region1 and region1.isVisible():
-            self._splitterInsideSizes = self._splitterInside.sizes()
-            region1.hide()
-            region0 = self._splitterInside.widget(0)
-            if region0:
-                region0.setFocus()
-        else:
-            region1.show()
-            region1.gain_focus()
+    #def splitter_base_rotate(self):
+        #w1, w2 = self._splitterBase.widget(0), self._splitterBase.widget(1)
+        #self._splitterBase.insertWidget(0, w2)
+        #self._splitterBase.insertWidget(1, w1)
+        #self.emit(SIGNAL("splitterBaseRotated()"))
 
-    def change_inside_visibility(self):
-        region0 = self._splitterInside.widget(0)
-        if region0 and region0.isVisible():
-            region0.hide()
-        else:
-            region0.show()
+    #def splitter_base_orientation(self):
+        #if self._splitterBase.orientation() == Qt.Horizontal:
+            #self._splitterBase.setOrientation(Qt.Vertical)
+        #else:
+            #self._splitterBase.setOrientation(Qt.Horizontal)
 
-    def change_lateral_panel_visibility(self, force_hide=False):
-        if self.lateralPanel and (self.lateralPanel.isVisible() or force_hide):
-            self._splitterBaseSizes = self._splitterBase.sizes()
-            self.lateralPanel.hide()
-        else:
-            self.lateralPanel.show()
+    #def splitter_inside_rotate(self):
+        #w1, w2 = self._splitterMain.widget(0), self._splitterMain.widget(1)
+        #self._splitterMain.insertWidget(0, w2)
+        #self._splitterMain.insertWidget(1, w1)
 
-    def splitter_base_rotate(self):
-        w1, w2 = self._splitterBase.widget(0), self._splitterBase.widget(1)
-        self._splitterBase.insertWidget(0, w2)
-        self._splitterBase.insertWidget(1, w1)
-        self.emit(SIGNAL("splitterBaseRotated()"))
-
-    def splitter_base_orientation(self):
-        if self._splitterBase.orientation() == Qt.Horizontal:
-            self._splitterBase.setOrientation(Qt.Vertical)
-        else:
-            self._splitterBase.setOrientation(Qt.Horizontal)
-
-    def splitter_inside_rotate(self):
-        w1, w2 = self._splitterMain.widget(0), self._splitterMain.widget(1)
-        self._splitterMain.insertWidget(0, w2)
-        self._splitterMain.insertWidget(1, w1)
-
-    def splitter_inside_orientation(self):
-        if self._splitterInside.orientation() == Qt.Horizontal:
-            self._splitterInside.setOrientation(Qt.Vertical)
-        else:
-            self._splitterInside.setOrientation(Qt.Horizontal)
+    #def splitter_inside_orientation(self):
+        #if self._splitterInside.orientation() == Qt.Horizontal:
+            #self._splitterInside.setOrientation(Qt.Vertical)
+        #else:
+            #self._splitterInside.setOrientation(Qt.Horizontal)
 
     def get_area_sizes(self):
         if self.lateralPanel and self.lateralPanel.isVisible():
