@@ -41,4 +41,11 @@ ACTIONS = (
                'weight': 120},
     "connect": "kill_application"
     },
+    {
+    "shortcut": "Hide-misc",
+    "action": {'text': translations.TR_TOOLS_VISIBILITY,
+               'section': translations.TR_MENU_VIEW,
+               'weight': 100},
+    "connect": "change_visibility"
+    },
 )

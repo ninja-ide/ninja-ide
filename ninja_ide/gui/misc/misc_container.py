@@ -147,6 +147,12 @@ class _ToolsDock(QWidget):
         ide.place_me_on("tools_dock", self, "central")
         ui_tools.install_shortcuts(self, actions.ACTIONS, ide)
 
+    def change_visibility(self):
+        if self.isVisible():
+            self.hide()
+        else:
+            self.show()
+
     def add_project_to_console(self, projectFolder):
         """Add the namespace of the project received into the ninja-console."""
         self._console.load_project_into_console(projectFolder)

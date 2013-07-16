@@ -38,7 +38,7 @@ def menu_add_section(menu, section_parts):
 
     #FIXME: This appends a separator at the end of each menu
     #FIXME: add separator between sections
-    #menu.addSeparator()
+    menu.addSeparator()
 
 
 class _MenuBar(QObject):
