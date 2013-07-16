@@ -208,7 +208,7 @@ ACTIONS = (
     "shortcut": "Reload-file",
     "action": {'text': translations.TR_RELOAD_FILE,
                'image': 'reload-file',
-               'section': (translations.TR_MENU_FILE, Noone),
+               'section': (translations.TR_MENU_FILE, None),
                'weight': 300},
     "connect": "reload_file"
     },

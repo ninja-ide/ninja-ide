@@ -121,8 +121,9 @@ class _MenuBar(QObject):
         menuitems = ide.get_menuitems()
         for action in menuitems:
             category, weight = menuitems[action]
+            category, subcategory = category
             #FIXME: Need cateogory and sub, which should be none
-            self.add_child(category, action, weight)
+            self.add_child(category, subcategory, action, weight)
 
         #FIXME: This should add to the given methods and they to the actual adding on menu upon add
         #FIXME: To support this we should have a way to add these in order after menu creation
