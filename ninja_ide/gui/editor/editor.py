@@ -173,6 +173,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                             resources.COLOR_SCHEME['migration-underline'])),
         }
 
+        self.connect(self._sidebarWidget, SIGNAL("bookmarks_changed(PyQt_PyObject)"),
+            self._bookmarks_changed)
         self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
             self._sidebarWidget.update_area)
         self.connect(self, SIGNAL("undoAvailable(bool)"), self._file_saved)
@@ -201,6 +203,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.connect(self.__actionFindOccurrences, SIGNAL("triggered()"),
             self._find_occurrences)
 
+    def _bookmarks_changed(self, bookmark):
+        self.emit(SIGNAL("bookmarks_changed(PyQt_PyObject)"),
+            bookmark)
 
     def set_project(self, project):
         if project is not None:

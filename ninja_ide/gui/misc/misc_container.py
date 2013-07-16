@@ -32,6 +32,7 @@ from PyQt4.QtWebKit import QWebPage
 from ninja_ide import resources
 from ninja_ide .core import settings
 from ninja_ide.gui.explorer import explorer_container
+from ninja_ide.gui.misc import bookmark_list
 from ninja_ide.gui.misc import console_widget
 from ninja_ide.gui.misc import run_widget
 from ninja_ide.gui.misc import web_render
@@ -81,6 +82,10 @@ class __MiscContainer(QWidget):
             self.parent())
         self.stack.addWidget(self._findInFilesWidget)
 
+        self._bookmarkListWidget = bookmark_list.BookmarkListWidget(
+            self.parent())
+        self.stack.addWidget(self._bookmarkListWidget)
+
         #Last Element in the Stacked widget
         self._results = results.Results(self)
         self.stack.addWidget(self._results)
@@ -93,12 +98,15 @@ class __MiscContainer(QWidget):
         self._btnWeb.setToolTip(self.tr("Web Preview"))
         self._btnFind = QPushButton(QIcon(resources.IMAGES['find']), '')
         self._btnFind.setToolTip(self.tr("Find in Files"))
+        self._btnBookmark = QPushButton(QIcon(resources.IMAGES['bookmarks']), '')
+        self._btnBookmark.setToolTip(self.tr("Bookmark List"))
         #Toolbar
         hbox.addWidget(self.__toolbar)
         self.__toolbar.addWidget(self._btnConsole)
         self.__toolbar.addWidget(self._btnRun)
         self.__toolbar.addWidget(self._btnWeb)
         self.__toolbar.addWidget(self._btnFind)
+        self.__toolbar.addWidget(self._btnBookmark)
         self.__toolbar.addSeparator()
         hbox.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
         btn_close = QPushButton(
@@ -116,6 +124,8 @@ class __MiscContainer(QWidget):
         self.connect(self._btnFind, SIGNAL("clicked()"),
             lambda: self._item_changed(3))
         self.connect(btn_close, SIGNAL('clicked()'), self.hide)
+        self.connect(self._btnBookmark, SIGNAL("clicked()"),
+            lambda: self._item_changed(4))
 
     def gain_focus(self):
         self._console.setFocus()

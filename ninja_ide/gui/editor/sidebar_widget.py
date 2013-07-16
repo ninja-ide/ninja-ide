@@ -29,6 +29,7 @@ from PyQt4.QtGui import QFontMetrics
 from PyQt4.QtGui import QPainter
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QPointF
+from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -421,23 +422,14 @@ class SidebarWidget(QWidget):
                     if position.y() < ys and (position.y() + fh) > ys and \
                       event.button() == Qt.LeftButton:
                         line = block.blockNumber()
-                        if line in self._breakpoints:
-                            self._breakpoints.remove(line)
-                        else:
-                            self._breakpoints.append(line)
-                        self.update()
+                        self.set_breakpoint(line)
                         break
                     elif position.y() < ys and (position.y() + fh) > ys and \
                       event.button() == Qt.RightButton:
                         line = block.blockNumber()
-                        if line in self._bookmarks:
-                            self._bookmarks.remove(line)
-                        else:
-                            self._bookmarks.append(line)
-                        self.update()
+                        self.set_bookmark(line)
                         break
                     block = block.next()
-                self._save_breakpoints_bookmarks()
             if lineNumber > 0:
                 self.code_folding_event(lineNumber)
 
@@ -466,3 +458,5 @@ class SidebarWidget(QWidget):
             self._bookmarks.append(lineno)
         self.update()
         self._save_breakpoints_bookmarks()
+        self.emit(SIGNAL("bookmarks_changed(PyQt_PyObject)"),
+            (self.edit.ID, lineno))
