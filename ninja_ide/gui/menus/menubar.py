@@ -26,22 +26,22 @@ SEC10 = 1000
 
 
 def menu_add_section(menu, section_parts):
+    menus = []
     for each_part in section_parts:
         action, weight = each_part
         add = None
-        is_menu = False
         if isinstance(action, QAction):
             add = menu.addAction
         elif isinstance(action, QMenu):
-            is_menu = True
             add = menu.addMenu
+            menus.append(action)
         if add:
             add(action)
-        return is_menu, action
 
     #FIXME: This appends a separator at the end of each menu
     #FIXME: add separator between sections
     menu.addSeparator()
+    return menus
 
 
 class _MenuBar(QObject):
@@ -133,10 +133,10 @@ class _MenuBar(QObject):
             all_children = self.get_children_of(each_menu)
             for each_child_grp_key in sorted(all_children):
                 each_child_grp = all_children[each_child_grp_key]
-                is_menu, menu = menu_add_section(menu_object,
+                menus = menu_add_section(menu_object,
                         sorted(each_child_grp, key=lambda x: x[1]))
                 #FIXME: Prettify the following
-                if is_menu:
+                for menu in menus:
                     self._submenu[(each_menu, menu.title())] = menu
 
         for each_parent, each_submenu in self._submenu.keys():
