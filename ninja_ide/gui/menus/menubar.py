@@ -140,10 +140,11 @@ class _MenuBar(QObject):
                     self._submenu[(each_menu, menu.title())] = menu
 
         for each_parent, each_submenu in self._submenu.keys():
+            menu = self._submenu[(each_parent, each_submenu)]
             all_children = self.get_children_of(each_parent, each_submenu)
             for each_child_grp_key in sorted(all_children):
                 each_child_grp = all_children[each_child_grp_key]
-                menu_add_section(menu_object,
+                menu_add_section(menu,
                         sorted(each_child_grp, key=lambda x: x[1]))
 
                     #ADD A LATER CALLBACK

@@ -378,14 +378,12 @@ ACTIONS = (
     "action": {'text': translations.TR_PRINT_PER_LINE,
                'section': (translations.TR_MENU_SOURCE,
                            translations.TR_DEBUGGING_TRICKS),
-               'is_menu': True,
                'weight': 320},
     },
     {
     "action": {'text': translations.TR_INSERT_PDB,
                'section': (translations.TR_MENU_SOURCE,
                            translations.TR_DEBUGGING_TRICKS),
-               'is_menu': True,
                'weight': 320},
     },
     {
