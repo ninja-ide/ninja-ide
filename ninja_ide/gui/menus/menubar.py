@@ -29,12 +29,15 @@ def menu_add_section(menu, section_parts):
     for each_part in section_parts:
         action, weight = each_part
         add = None
+        is_menu = False
         if isinstance(action, QAction):
             add = menu.addAction
         elif isinstance(action, QMenu):
+            is_menu = True
             add = menu.addMenu
         if add:
             add(action)
+        return is_menu, action
 
     #FIXME: This appends a separator at the end of each menu
     #FIXME: add separator between sections
@@ -47,6 +50,7 @@ class _MenuBar(QObject):
         super(_MenuBar, self).__init__()
         self._roots = {}
         self._children = {}
+        self._submenu = {}
         self._menu_refs = {}
         self._toolbar_index = defaultdict(lambda: [])
 
@@ -75,20 +79,19 @@ class _MenuBar(QObject):
         iter_items.sort(key=lambda x: x[1])
         return [item[0] for item in iter_items]
 
-    def add_child(self, root_name, child, weight,
+    def add_child(self, root_name, sub_name, child, weight,
                     namespace="ninjaide"):
-        #FIXME: We should also add plugin namespace for grouping per plugin
-        child_path = (root_name, namespace, child)
+        child_path = (root_name, sub_name, namespace, child)
         if child_path not in self._children:
             self.add_root(root_name)
             self._children[child_path] = (child, weight)
 
-    def get_children_of(self, parent, namespace=None):
+    def get_children_of(self, parent, sub_name=None, namespace=None):
         children = defaultdict(lambda: [])
         for each_child in self._children:
-            child_parent, child_namespace, child_name = each_child
-            if (parent == child_parent) and ((namespace == child_namespace) or
-                                             (not namespace)):
+            child_parent, sub_parent, child_namespace, child_name = each_child
+            if (parent == child_parent) and (sub_parent == sub_name) \
+                    and ((namespace == child_namespace) or (not namespace)):
                 child, weight = self._children[each_child]
                 #Group by namespace and weight
                 weight_index = "%d_%s" % (weight / 100, namespace)
@@ -117,14 +120,10 @@ class _MenuBar(QObject):
         # the MenuBar.
         menuitems = ide.get_menuitems()
         for action in menuitems:
-            category = menuitems[action][0]
-            weight = menuitems[action][1]
+            category, weight = menuitems[action]
+            #FIXME: Need cateogory and sub, which should be none
             self.add_child(category, action, weight)
 
-        #for each_action, cv_tuple in list(ide.get_menuitems().items()):
-            #category, weight, namespace = cv_tuple
-            #self.add_toolbar_item((category, each_action, weight))
-            #self.add_child(category, each_action, weight, namespace)
         #FIXME: This should add to the given methods and they to the actual adding on menu upon add
         #FIXME: To support this we should have a way to add these in order after menu creation
         for each_menu in self.get_root():
@@ -133,8 +132,20 @@ class _MenuBar(QObject):
             all_children = self.get_children_of(each_menu)
             for each_child_grp_key in sorted(all_children):
                 each_child_grp = all_children[each_child_grp_key]
-                menu_add_section(menu_object, sorted(each_child_grp,
-                                                key=lambda x: x[1]))
+                is_menu, menu = menu_add_section(menu_object,
+                        sorted(each_child_grp, key=lambda x: x[1]))
+                #FIXME: Prettify the following
+                if is_menu:
+                    self._submenu[(each_menu, menu.title())] = menu
+
+        for each_parent, each_submenu in self._submenu.keys():
+            all_children = self.get_children_of(each_parent, each_submenu)
+            for each_child_grp_key in sorted(all_children):
+                each_child_grp = all_children[each_child_grp_key]
+                menu_add_section(menu_object,
+                        sorted(each_child_grp, key=lambda x: x[1]))
+
+                    #ADD A LATER CALLBACK
 
     def load_toolbar(self, ide):
         #FIXME: Do the same as above to add items to toolbar
