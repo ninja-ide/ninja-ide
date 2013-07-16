@@ -638,6 +638,8 @@ def install_shortcuts(obj, actions, ide):
                 item_ui = QMenu(action_data['text'], ide)
             else:
                 item_ui = QAction(action_data['text'], ide)
+                object_name = "%s.%s" % (obj.__class__, connect)
+                item_ui.setObjectName(object_name)
             image_name = action_data.get('image', None)
             section = action_data.get('section', None)
             weight = action_data.get('weight', None)
