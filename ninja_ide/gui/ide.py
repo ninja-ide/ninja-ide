@@ -238,8 +238,8 @@ class IDE(QMainWindow):
             func()
         self._connect_signals()
 
-    def place_me_on(self, obj, region=None, top=False):
-        self.central.add_to_region(obj, region, top)
+    def place_me_on(self, name, obj, region="central", top=False):
+        self.central.add_to_region(name, obj, region, top)
 
     @classmethod
     def register_signals(cls, service_name, connections):

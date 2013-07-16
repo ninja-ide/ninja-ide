@@ -112,7 +112,7 @@ class _ExplorerContainer(QTabWidget):
 
     def install(self):
         ide = IDE.get_service('ide')
-        ide.place_me_on(self, 1)
+        ide.place_me_on("explorer_container", self, "lateral")
         #Searching the Preferences
         self._treeProjects = None
         if settings.SHOW_PROJECT_EXPLORER:
