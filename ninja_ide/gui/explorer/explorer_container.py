@@ -135,6 +135,12 @@ class _ExplorerContainer(QTabWidget):
             central_container.change_explorer_visibility(force_hide=True)
         ui_tools.install_shortcuts(self, actions.ACTIONS, ide)
 
+    def change_visibility(self):
+        if self.isVisible():
+            self.hide()
+        else:
+            self.show()
+
     def _add_file_to_project(self, path):
         """Add the file for 'path' in the project the user choose here."""
         pathProject = [self.get_actual_project()]

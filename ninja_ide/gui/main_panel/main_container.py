@@ -216,6 +216,12 @@ class _MainContainer(QWidget):
         ide.place_me_on("main_container", self, "central", top=True)
         ui_tools.install_shortcuts(self, actions.ACTIONS, ide)
 
+    def change_visibility(self):
+        if self.isVisible():
+            self.hide()
+        else:
+            self.show()
+
     def locate_function(self, function, filePath, isVariable):
         """Move the cursor to the proper position in the navigate stack."""
         editorWidget = self.get_actual_editor()
@@ -572,6 +578,16 @@ class _MainContainer(QWidget):
         editorWidget = self.get_actual_editor()
         if editorWidget:
             editorWidget.jump_to_line(line)
+
+    def zoom_in_editor(self):
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            editorWidget.zoom_in()
+
+    def zoom_out_editor(self):
+        editorWidget = self.get_actual_editor()
+        if editorWidget:
+            editorWidget.zoom_out()
 
     def _recent_files_changed(self, files):
         self.emit(SIGNAL("recentTabsModified(QStringList)"), files)

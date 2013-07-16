@@ -336,6 +336,12 @@ class IDE(QMainWindow):
         else:
             self.showFullScreen()
 
+    def change_toolbar_visibility(self):
+        if self.toolbar.isVisible():
+            self.toolbar.hide()
+        else:
+            self.toolbar.show()
+
     def load_external_plugins(self, paths):
         for path in paths:
             self.plugin_manager.add_plugin_dir(path)
