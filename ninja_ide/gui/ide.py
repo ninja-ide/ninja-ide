@@ -49,7 +49,6 @@ from ninja_ide.gui.dialogs import themes_manager
 from ninja_ide.gui.dialogs import language_manager
 from ninja_ide.gui.dialogs import preferences
 from ninja_ide.gui.dialogs import traceback_widget
-from ninja_ide.tools.completion import completion_daemon
 from ninja_ide.tools import ui_tools
 
 ###############################################################################

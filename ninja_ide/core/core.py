@@ -23,6 +23,7 @@ import signal
 from PyQt4.QtGui import QApplication
 
 from ninja_ide import resources
+from ninja_ide.core import settings
 from ninja_ide.core import cliparser
 
 
@@ -30,15 +31,15 @@ def run_ninja():
     """First obtain the execution args and create the resources folder."""
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     # Change the process name only for linux yet
-    if sys.platform != 'win32' and sys.platform != 'darwin':
+    if not settings.IS_WINDOWS and not settings.IS_MAC_OS:
         try:
             import ctypes
             libc = ctypes.CDLL('libc.so.6')
+            #Set the application name
             procname = 'ninja-ide'
             libc.prctl(15, '%s\0' % procname, 0, 0, 0)
         except:
             print("The process couldn't be renamed'")
-    #Set the application name
     filenames, projects_path, extra_plugins, linenos, log_level, log_file = \
                                                             cliparser.parse()
     # Create NINJA-IDE user folder structure for plugins, themes, etc
