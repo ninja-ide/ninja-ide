@@ -49,6 +49,7 @@ from ninja_ide.gui import ide
 
 
 def start_ide(app, filenames, projects_path, extra_plugins, linenos):
+    """Load all the settings necessary before loading the UI, and start IDE."""
     QCoreApplication.setOrganizationName('NINJA-IDE')
     QCoreApplication.setOrganizationDomain('NINJA-IDE')
     QCoreApplication.setApplicationName('NINJA-IDE')
@@ -74,24 +75,20 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     app.processEvents()
 
     # Set the cursor to unblinking
-    if sys.platform != 'win32':
+    if not settings.IS_WINDOWS:
         app.setCursorFlashTime(0)
 
     #Set the codec for strings (QString)
     QTextCodec.setCodecForCStrings(QTextCodec.codecForName('utf-8'))
 
     #Translator
-    qsettings = QSettings()
+    qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
     language = QLocale.system().name()
     lang = qsettings.value('preferences/interface/language',
         defaultValue=language, type='QString') + '.qm'
     lang_path = file_manager.create_path(resources.LANGS, lang)
     if file_manager.file_exists(lang_path):
         settings.LANGUAGE = lang_path
-    elif file_manager.file_exists(file_manager.create_path(
-      resources.LANGS_DOWNLOAD, lang)):
-        settings.LANGUAGE = file_manager.create_path(
-            resources.LANGS_DOWNLOAD, lang)
     translator = QTranslator()
     if settings.LANGUAGE:
         translator.load(settings.LANGUAGE)
@@ -210,3 +207,4 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
 
     splash.finish(ninjaide)
     ninjaide.notify_plugin_errors()
+    ninjaide.show_python_detection()

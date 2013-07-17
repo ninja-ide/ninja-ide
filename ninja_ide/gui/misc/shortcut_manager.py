@@ -178,6 +178,8 @@ class ShortcutConfiguration(QWidget):
             "Open-recent-closed": self.tr("Open recent closed file"),
             "Change-Tab": self.tr("Change to the next Tab"),
             "Change-Tab-Reverse": self.tr("Change to the previous Tab"),
+            "Move-Tab-to-right": self.tr("Move tab to right"),
+            "Move-Tab-to-left": self.tr("Move tab to left"),
             "Show-Code-Nav": self.tr("Activate History Navigation"),
             "Show-Bookmarks-Nav": self.tr("Activate Bookmarks Navigation"),
             "Show-Breakpoints-Nav": self.tr("Activate Breakpoints Navigation"),
@@ -278,7 +280,7 @@ class ShortcutConfiguration(QWidget):
         """
         Save all shortcuts to settings
         """
-        settings = QSettings()
+        settings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         settings.beginGroup("shortcuts")
         for index in range(self.result_widget.topLevelItemCount()):
             item = self.result_widget.topLevelItem(index)

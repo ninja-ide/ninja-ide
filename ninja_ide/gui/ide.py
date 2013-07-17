@@ -49,6 +49,7 @@ from ninja_ide.gui.dialogs import themes_manager
 from ninja_ide.gui.dialogs import language_manager
 from ninja_ide.gui.dialogs import preferences
 from ninja_ide.gui.dialogs import traceback_widget
+from ninja_ide.gui.dialogs import python_detect_dialog
 from ninja_ide.tools import ui_tools
 
 ###############################################################################
@@ -436,7 +437,7 @@ class IDE(QMainWindow):
 
         Info saved: Tabs and projects opened, windows state(size and position).
         """
-        qsettings = QSettings()
+        qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         editor_widget = self.mainContainer.get_actual_editor()
         current_file = ''
         if editor_widget is not None:
@@ -511,7 +512,7 @@ class IDE(QMainWindow):
             files = main_container.get_opened_documents()
             files = files[0] + files[1]
             settings.PROFILES[profileName] = [files, projects]
-            qsettings = QSettings()
+            qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
             qsettings.setValue('ide/profiles', settings.PROFILES)
 
     def activate_profile(self):
@@ -536,7 +537,7 @@ class IDE(QMainWindow):
 
     def load_window_geometry(self):
         """Load from QSettings the window size of de Ninja IDE"""
-        qsettings = QSettings()
+        qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         if qsettings.value("window/maximized", True, type=bool):
             self.setWindowState(Qt.WindowMaximized)
         else:
@@ -603,3 +604,9 @@ class IDE(QMainWindow):
     def show_about_ninja(self):
         about = about_ninja.AboutNinja(self)
         about.show()
+
+    def show_python_detection(self):
+        suggested = settings.detect_python_path()
+        if suggested:
+            dialog = python_detect_dialog.PythonDetectDialog(suggested, self)
+            dialog.show()

@@ -30,8 +30,10 @@ def is_running():
     local_socket = QLocalSocket()
     local_socket.connectToServer("ninja_ide")
     if local_socket.state():
+        # It's running
         result = (True, local_socket)
     else:
+        # It's not running
         result = (False, local_socket)
     return result
 

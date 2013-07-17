@@ -44,6 +44,7 @@ def run_ninja():
                                                             cliparser.parse()
     # Create NINJA-IDE user folder structure for plugins, themes, etc
     resources.create_home_dir_structure()
+    # Load Logger
     from ninja_ide.tools.logger import NinjaLogger
     NinjaLogger.argparse(log_level, log_file)
 

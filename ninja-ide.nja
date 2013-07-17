@@ -23,7 +23,8 @@
     ".ini", 
     ".js", 
     ".qss", 
-    ".qml"
+    ".qml", 
+    ".md"
   ], 
   "project-type": "python", 
   "postExecScript": "", 

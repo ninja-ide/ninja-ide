@@ -251,6 +251,11 @@ class TabWidget(QTabWidget):
                 self.setCurrentIndex(i)
                 return
 
+    def search_for_identifier_index(self, identifier):
+        for i in range(self.count()):
+            if self.widget(i) == identifier:
+                return i
+
     def remove_title(self, index):
         """Looks for the title of the tab at index and removes it from
         self.titles, if it's there.'"""

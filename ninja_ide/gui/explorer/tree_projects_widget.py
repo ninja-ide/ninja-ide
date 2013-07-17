@@ -600,6 +600,12 @@ class TreeProjectsWidget(QTreeWidget):
             index = item.parent().indexOfChild(item)
             item.parent().takeChild(index)
             self.add_existing_file(path)
+            # Update path of opened file
+            main = IDE.get_service('main_container')
+            if main and main.is_open(pathForFile):
+                widget = main.get_widget_for_path(pathForFile)
+                if widget:
+                    widget.ID = path
         except file_manager.NinjaFileExistsException as ex:
                 QMessageBox.information(self, self.tr("File Already Exists"),
                     (self.tr("Invalid Path: the file '%s' already exists.") %

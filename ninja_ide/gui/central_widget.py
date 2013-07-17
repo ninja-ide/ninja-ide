@@ -134,15 +134,6 @@ class CentralWidget(QWidget):
         #Avoid recalculate the panel sizes if they are already loaded
         if self._splitterBase.count() == 2:
             return
-        #Rearrange widgets on Window
-        qsettings = QSettings()
-        #Lists of sizes as list of QVariant- heightList = [QVariant, QVariant]
-        heightList = list(qsettings.value("window/central/insideSize",
-            [(self.height() / 3) * 2, self.height() / 3]))
-        widthList = list(qsettings.value("window/central/baseSize",
-            [(self.width() / 6) * 5, self.width() / 6]))
-        self._splitterInsideSizes = [int(heightList[0]), int(heightList[1])]
-        self._splitterBaseSizes = [int(widthList[0]), int(widthList[1])]
         if not event.spontaneous():
             self.change_region1_visibility()
         if bin(settings.UI_LAYOUT)[-1] == '1':
@@ -151,6 +142,15 @@ class CentralWidget(QWidget):
             self.splitter_region1_rotate()
         if bin(settings.UI_LAYOUT >> 2)[-1] == '1':
             self.splitter_base_orientation()
+        #Rearrange widgets on Window
+        qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
+        #Lists of sizes as list of QVariant- heightList = [QVariant, QVariant]
+        heightList = list(qsettings.value("window/central/insideSize",
+            [(self.height() / 3) * 2, self.height() / 3]))
+        widthList = list(qsettings.value("window/central/baseSize",
+            [(self.width() / 6) * 5, self.width() / 6]))
+        self._splitterInsideSizes = [int(heightList[0]), int(heightList[1])]
+        self._splitterBaseSizes = [int(widthList[0]), int(widthList[1])]
         #Set the sizes to splitters
         self._splitterInside.setSizes(self._splitterInsideSizes)
         self._splitterBase.setSizes(self._splitterBaseSizes)

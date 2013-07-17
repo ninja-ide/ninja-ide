@@ -213,6 +213,7 @@ class Overlay(QWidget):
         palette = QPalette(self.palette())
         palette.setColor(palette.Background, Qt.transparent)
         self.setPalette(palette)
+        self.counter = 0
 
     def paintEvent(self, event):
         painter = QPainter()
@@ -370,12 +371,13 @@ class AddToProject(QDialog):
 
     def _callback_load_project(self):
         structures = self._thread_execution.storage_values
-        for structure, path in structures:
-            item = self._loading_items.pop(path, None)
-            if item is not None:
-                index = self._tree.indexOfTopLevelItem(item)
-                self._tree.takeTopLevelItem(index)
-            self._load_project(structure, path)
+        if structures:
+            for structure, path in structures:
+                item = self._loading_items.pop(path, None)
+                if item is not None:
+                    index = self._tree.indexOfTopLevelItem(item)
+                    self._tree.takeTopLevelItem(index)
+                self._load_project(structure, path)
 
     def _select_path(self):
         item = self._tree.currentItem()

@@ -25,6 +25,14 @@ ACTIONS = (
     "connect": "change_tab"
     },
     {
+    "shortcut": "Move-Tab-to-right",
+    "connect": "move_tab_right"
+    },
+    {
+    "shortcut": "Move-Tab-to-left",
+    "connect": "move_tab_left"
+    },
+    {
     "shortcut": "Change-Tab-Reverse",
     "connect": "change_tab_reverse"
     },

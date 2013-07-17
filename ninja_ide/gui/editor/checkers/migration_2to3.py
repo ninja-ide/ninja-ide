@@ -17,6 +17,7 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+import os
 import subprocess
 
 from PyQt4.QtCore import QThread
@@ -32,6 +33,12 @@ class MigrationTo3(QThread):
         self._editor = editor
         self._path = ''
         self.migration_data = {}
+        if settings.IS_WINDOWS and settings.PYTHON_PATH_CONFIGURED_BY_USER:
+            tool_path = os.path.join(os.path.dirname(settings.PYTHON_PATH),
+                'Tools', 'Scripts', '2to3.py')
+            self._command = [settings.PYTHON_PATH, tool_path]
+        else:
+            self._command = ['2to3']
 
     def check_style(self):
         if not self.isRunning() and settings.VALID_2TO3:
@@ -49,7 +56,7 @@ class MigrationTo3(QThread):
             lines_to_add = []
             parsing_adds = False
             try:
-                output = subprocess.check_output(['2to3', self._path])
+                output = subprocess.check_output(self._command + [self._path])
                 output = output.split('\n')
             except OSError:
                 settings.VALID_2TO3 = False

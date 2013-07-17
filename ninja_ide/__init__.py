@@ -59,6 +59,7 @@ for name in API_NAMES:
 
 
 def setup_and_run():
+    """Load the Core module and trigger the execution."""
     # import only on run
     # Dont import always this, setup.py will fail
     from ninja_ide import core

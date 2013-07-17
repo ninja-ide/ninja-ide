@@ -31,6 +31,7 @@ from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import QDateTime
 
+from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.ide import IDE
@@ -501,7 +502,9 @@ class _ExplorerContainer(QTabWidget):
             self._treeProjects._close_open_projects()
 
     def save_recent_projects(self, folder):
-        recent_project_list = QSettings().value('recentProjects', {})
+        recent_project_list = QSettings(
+            resources.SETTINGS_PATH, QSettings.IniFormat).value(
+                'recentProjects', {})
         #if already exist on the list update the date time
         projectProperties = json_manager.read_ninja_project(folder)
         name = projectProperties.get('name', '')
@@ -529,10 +532,13 @@ class _ExplorerContainer(QTabWidget):
             #TODO: add the length of available projects to setting
             if len(recent_project_list) > 10:
                 del recent_project_list[self.find_most_old_open()]
-        QSettings().setValue('recentProjects', recent_project_list)
+        QSettings(resources.SETTINGS_PATH, QSettings.IniFormat).setValue(
+            'recentProjects', recent_project_list)
 
     def find_most_old_open(self):
-        recent_project_list = QSettings().value('recentProjects', {})
+        recent_project_list = QSettings(
+            resources.SETTINGS_PATH, QSettings.IniFormat).value(
+                'recentProjects', {})
         listFounder = []
         for recent_project_path, content in list(recent_project_list.items()):
             listFounder.append((recent_project_path, int(

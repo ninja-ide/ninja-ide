@@ -1061,6 +1061,36 @@ class _MainContainer(QWidget):
         self.actualTab.currentWidget().setFocus()
         self.emit(SIGNAL("currentTabChanged(QString)"), filename)
 
+    def move_tab_right(self):
+        self._move_tab()
+
+    def move_tab_left(self):
+        self._move_tab(forward=False)
+
+    def _move_tab(self, forward=True, widget=None):
+        if widget is None:
+            widget = self.actualTab.currentWidget()
+        if widget is not None:
+            old_widget_index = self.actualTab.indexOf(widget)
+            if forward and old_widget_index < self.actualTab.count() - 1:
+                new_widget_index = old_widget_index + 1
+            elif old_widget_index > 0 and not forward:
+                new_widget_index = old_widget_index - 1
+            else:
+                return
+            tabName = self.actualTab.tabText(old_widget_index)
+            self.actualTab.insertTab(new_widget_index, widget, tabName)
+            self.actualTab.setCurrentIndex(new_widget_index)
+
+    def get_widget_for_path(self, filename):
+        if self._tabMain.is_open(filename) != -1:
+            index = self._tabMain.search_for_identifier_index(filename)
+            return self._tabMain.widget(index)
+        elif self._tabSecondary.is_open(filename) != -1:
+            index = self._tabSecondary.search_for_identifier_index(filename)
+            return self._tabSecondary.widget(index)
+        return None
+
     def change_open_tab_name(self, id, newId):
         """Search for the Tab with id, and set the newId to that Tab."""
         index = self._tabMain.is_open(id)

@@ -32,7 +32,7 @@ HOME_PATH = QDir.toNativeSeparators(QDir.homePath())
 
 NINJA_EXECUTABLE = os.path.realpath(sys.argv[0])
 
-PRJ_PATH = os.path.abspath(os.path.dirname(__file__))
+PRJ_PATH = os.path.abspath(os.path.dirname(__file__)).decode('utf-8')
 #Only for py2exe
 frozen = getattr(sys, 'frozen', '')
 if frozen in ('dll', 'console_exe', 'windows_exe'):
@@ -40,6 +40,8 @@ if frozen in ('dll', 'console_exe', 'windows_exe'):
     PRJ_PATH = os.path.abspath(os.path.dirname(sys.executable))
 
 HOME_NINJA_PATH = os.path.join(HOME_PATH, ".ninja_ide")
+
+SETTINGS_PATH = os.path.join(HOME_NINJA_PATH, 'settings.ini')
 
 ADDINS = os.path.join(HOME_NINJA_PATH, "addins")
 
@@ -50,9 +52,7 @@ PLUGINS = os.path.join(HOME_NINJA_PATH, "addins", "plugins")
 PLUGINS_DESCRIPTOR = os.path.join(HOME_NINJA_PATH, "addins",
                                     "plugins", "descriptor.json")
 
-LANGS = os.path.join(PRJ_PATH, "addins", "lang")
-
-LANGS_DOWNLOAD = os.path.join(HOME_NINJA_PATH, "addins", "languages")
+LANGS = os.path.join(HOME_NINJA_PATH, "addins", "languages")
 
 EDITOR_SKINS = os.path.join(HOME_NINJA_PATH, "addins", "schemes")
 
@@ -290,6 +290,8 @@ SHORTCUTS = {
     "Add-Bookmark-or-Breakpoint": QKeySequence(Qt.CTRL + Qt.Key_B),
     "change-split-focus": QKeySequence(Qt.CTRL + Qt.Key_Tab),
     "move-tab-to-next-split": QKeySequence(Qt.SHIFT + Qt.Key_F10),
+    "Move-Tab-to-right": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_0),
+    "Move-Tab-to-left": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_9),
     "change-tab-visibility": QKeySequence(Qt.SHIFT + Qt.Key_F1),
     "Highlight-Word": QKeySequence(Qt.CTRL + Qt.Key_Down),
     "undo": QKeySequence(Qt.CTRL + Qt.Key_Z),
@@ -311,7 +313,7 @@ def load_shortcuts():
     """
     global SHORTCUTS
     global CUSTOM_SHORTCUTS
-    settings = QSettings()
+    settings = QSettings(SETTINGS_PATH, QSettings.IniFormat)
     for action in SHORTCUTS:
         #default shortcut
         default_action = SHORTCUTS[action].toString()
@@ -345,6 +347,6 @@ def create_home_dir_structure():
     Create the necesary directories structure for NINJA-IDE
     """
     for d in (HOME_NINJA_PATH, ADDINS, PLUGINS, EDITOR_SKINS,
-              LANGS_DOWNLOAD, NINJA_THEME_DOWNLOAD):
+              LANGS, NINJA_THEME_DOWNLOAD):
         if not os.path.isdir(d):
             os.mkdir(d)
