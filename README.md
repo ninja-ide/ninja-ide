@@ -5,6 +5,8 @@ on Linux/X11, Mac OS X and Windows desktop operating systems. Ninja-IDE allows
 developers to create applications for any purpose making the task of writing
 software easier and more enjoyable.
 
+# The code in repository is NOT working right now, we are integrating the changes and doing lot of improves for the new Architecture!!
+
 ## Contact
 
 -   [Homepage](http://ninja-ide.org) at ninja-ide.org
