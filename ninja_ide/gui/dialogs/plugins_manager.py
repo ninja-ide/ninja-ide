@@ -248,7 +248,7 @@ class PluginsManagerWidget(QDialog):
 
 class UpdatesWidget(QWidget):
     """
-    This widget show the availables plugins to update
+    This widget shows the available plugins that can be updated
     """
 
     def __init__(self, parent, updates):
@@ -365,7 +365,7 @@ class AvailableWidget(QWidget):
 
 class InstalledWidget(QWidget):
     """
-    This widget show the installed plugins
+    This widget shows the installed plugins
     """
 
     def __init__(self, parent, installed):
@@ -544,7 +544,7 @@ class ThreadLoadPlugins(QThread):
 
     def manual_install_plugins_thread(self):
         """
-        Install a plugin from the a file.
+        Install a plugin from a file.
         """
         for p in self.plug:
             try:

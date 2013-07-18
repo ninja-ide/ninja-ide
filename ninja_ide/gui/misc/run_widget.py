@@ -46,7 +46,7 @@ from ninja_ide.gui.main_panel import main_container
 
 class RunWidget(QWidget):
 
-    """Widget that show the execution output in the MiscContainer."""
+    """Widget that shows the execution output in the MiscContainer."""
 
     def __init__(self):
         QWidget.__init__(self)
@@ -292,8 +292,8 @@ class OutputWidget(QPlainTextEdit):
 
     def mousePressEvent(self, event):
         """
-        When the execution fail, allow to press the links in the traceback,
-        to go to the line when the error occur.
+        When the execution fails, allow to press the links in the traceback,
+        to go to the line where the error occurred.
         """
         QPlainTextEdit.mousePressEvent(self, event)
         self.go_to_error(event)

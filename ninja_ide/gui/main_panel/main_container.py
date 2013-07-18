@@ -193,11 +193,13 @@ class __MainContainer(QSplitter):
                 self.actualTab.widget(index)._id)
 
     def split_tab(self, orientationHorizontal):
-        """Split the main container in 2 areas.
+        """
+        Split the main container in 2 areas.
 
         We are inverting the horizontal and vertical property here,
-        because Qt see it Horizontal as side by side, but is confusing
-        for the user."""
+        because Qt sees Horizontal as side by side, but that is confusing
+        for the user.
+        """
         if orientationHorizontal:
             self.show_split(Qt.Vertical)
         else:
@@ -416,10 +418,12 @@ class __MainContainer(QSplitter):
         return self.actualTab.currentWidget()
 
     def get_actual_editor(self):
-        """Return the Actual Editor or None
+        """
+        Return the Actual Editor or None
 
         Return an instance of Editor if the Current Tab contains
-        an Editor or None if it is not an instance of Editor"""
+        an Editor or None if it is not an instance of Editor.
+        """
         widget = self.actualTab.currentWidget()
         if type(widget) is editor.Editor:
             return widget
@@ -600,7 +604,9 @@ class __MainContainer(QSplitter):
         widget.ID = newId
 
     def close_deleted_file(self, id):
-        """Search for the Tab with id, and ask the user if should be closed."""
+        """
+        Search for the Tab with id, and ask the user if it should be closed.
+        """
         index = self._tabMain.is_open(id)
         if index != -1:
             tabContainer = self._tabMain
@@ -787,8 +793,9 @@ class __MainContainer(QSplitter):
             self.add_tab(self.docPage, self.tr("Python Documentation"))
 
     def editor_jump_to_line(self, lineno=None):
-        """Jump to line *lineno* if it is not None
-        otherwise ask to the user the line number to jump
+        """
+        Jump to line *lineno* if it is not None.
+        Otherwise ask the user the line number to jump to.
         """
         editorWidget = self.get_actual_editor()
         if editorWidget:

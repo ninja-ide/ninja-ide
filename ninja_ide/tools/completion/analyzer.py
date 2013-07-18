@@ -74,7 +74,7 @@ class Analyzer(object):
 #        self._functions = {}
 
     def _get_valid_module(self, source, retry=0):
-        """Try to parse the module and fix some errors if it has some."""
+        """Try to parse the module and fix some errors if it has any."""
         astModule = None
         try:
             astModule = ast.parse(source)

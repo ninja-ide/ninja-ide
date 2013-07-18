@@ -232,7 +232,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
 
     def __get_encoding(self):
-        """Get the current encoding of 'utf-8' otherwise."""
+        """Get the current encoding or 'utf-8' otherwise."""
         if self.__encoding is not None:
             return self.__encoding
         return 'utf-8'
@@ -354,7 +354,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.migration.wait()
 
     def hide_pep8_errors(self):
-        """Hide the pep8 errors from the sidebar and lines highlighted."""
+        """Hide the pep8 errors from the sidebar and highlighted lines."""
         self._sidebarWidget.pep8_check_lines([])
         self.pep8.reset()
         self.highlighter.rehighlight_lines([])
@@ -370,7 +370,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.errors.wait()
 
     def hide_lint_errors(self):
-        """Hide the lint errors from the sidebar and lines highlighted."""
+        """Hide the lint errors from the sidebar and highlighted lines."""
         self._sidebarWidget.static_errors_lines([])
         self.errors.reset()
         self.highlighter.rehighlight_lines([])
@@ -495,7 +495,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def get_lines_count(self):
         """
-        Returns the count of lines in the editor
+        Returns the number of lines in the editor
         """
         return self.textCursor().document().lineCount()
 
@@ -527,7 +527,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def jump_to_line(self, lineno=None):
         """
-        Jump to a specific line number or ask to the user for the line
+        Jump to a specific line number or ask the user for the line
         """
         if lineno is not None:
             self.emit(SIGNAL("addBackItemNavigation()"))
@@ -558,7 +558,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def go_to_line(self, lineno):
         """
-        Go to an specific line
+        Go to a specific line
         """
         self._unfold_blocks_for_jump(lineno)
         if self.blockCount() >= lineno:
@@ -686,7 +686,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def replace_match(self, wordOld, wordNew, flags, allwords=False,
                         selection=False):
-        """Find if searched text exists and replace it with new one.
+        """Find out if searched text exists and replace it with new one.
         If there is a selection just do it inside it and exit.
         """
         tc = self.textCursor()
@@ -812,9 +812,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         return selected_text
 
     def __quot_completion(self, event):
-        """Indicate if this is some sort of quote that needs to be completed
+        """Indicate if this is some sort of quote that needs to be completed.
         This is a very simple boolean table, given that quotes are a
-        simmetrical symbol, is a little more cumbersome guessing the completion
+        symmetrical symbol, is a little more cumbersome guessing the completion
         table.
         """
         text = event.text()
@@ -890,8 +890,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.__auto_indent(None)
 
     def __complete_braces(self, event):
-        """Complete () [] and {} using a mild inteligence to see if corresponds
-        and also do some more magic such as complete in classes and functions.
+        """Complete () [] and {} using a mild intelligence to see if
+        corresponds and also do some more magic such as complete in classes
+        and functions.
         """
         brace = event.text()
         if brace not in settings.BRACES:
@@ -931,9 +932,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def __complete_quotes(self, event):
         """
-        Completion for single and double quotes, which since are simmetrical
-        symbols used for different things can not be balanced as easily as
-        braces or equivalent.
+        Completion for single and double quotes which, since they are
+        symmetrical symbols used for different things, can not be balanced
+        as easily as braces or equivalent.
         """
         cursor = self.textCursor()
         cursor.movePosition(QTextCursor.StartOfLine,
@@ -1125,10 +1126,12 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         return cursor.selection().toPlainText()
 
     def __get_abs_position_on_text(self, text, position):
-        """tokens give us position of char in a given line, we need
-        such position relative to the beginning of the text, also we need
-        to add the number of lines, since our split removes the newlines
-        which are counted as a character in the editor"""
+        """
+        Tokens give us position of char in a given line. We need
+        such position relative to the beginning of the text. We also need
+        to add the number of lines, since our split removes the newlines,
+        which are counted as a character in the editor.
+        """
         line, relative_position = position
         insplit_line = line - 1
         full_lenght = 0
@@ -1138,9 +1141,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def __fancyMoveCursor(self, operation, repeat=1,
                                             moveMode=QTextCursor.MoveAnchor):
-        """Move the cursor a given number of times (with or without
-        anchoring), just a helper given the less than practical way qt
-        has for such a common operation"""
+        """
+        Move the cursor a given number of times (with or without anchoring),
+        just a helper given the less than practical way qt has for such a
+        common operation.
+        """
         cursor = self.textCursor()
         cursor.movePosition(operation, moveMode, repeat)
         self.setTextCursor(cursor)
@@ -1157,7 +1162,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         return (invalid_syntax, token_buffer)
 
     def _match_braces(self, position, brace, forward):
-        """Return the position to hilight of the matching brace"""
+        """Return the position to highlight of the matching brace"""
         braceMatch = BRACE_DICT[brace]
         if forward:
             text = self.get_selection(position, QTextCursor.End)

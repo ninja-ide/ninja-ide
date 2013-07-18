@@ -31,11 +31,11 @@ class Cache(object):
         self.out = []
 
     def write(self, line):
-        """Collect the output into cache to be accesed later."""
+        """Collect the output into cache to be accessed later."""
         self.out.append(line)
 
     def flush(self):
-        """Join together all the outputs and return it to be displayed."""
+        """Join together all the output and return it to be displayed."""
         if len(self.out) > 1:
             output = ''.join(self.out)[:-1]
             self.reset()

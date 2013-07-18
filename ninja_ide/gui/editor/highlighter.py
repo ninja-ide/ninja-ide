@@ -306,12 +306,14 @@ class Highlighter(QSyntaxHighlighter):
         self.thread_highlight.wait()
 
     def threaded_highlight(self, text):
-        """Highlight each line using the info collected by the thread.
+        """
+        Highlight each line using the info collected by the thread.
 
         This function doesn't need to execute the regular expressions to see
-        where the highlighting starts and end for each rule, it just take
+        where the highlighting starts and ends for each rule. It just takes
         the start and end point, and the proper highlighting style from the
-        info returned from the thread and applied that to the document."""
+        info returned from the thread and applies that to the document.
+        """
         hls = []
         block = self.currentBlock()
         user_data = syntax_highlighter.get_user_data(block)
@@ -358,12 +360,14 @@ class Highlighter(QSyntaxHighlighter):
         block.setUserData(user_data)
 
     def realtime_highlight(self, text):
-        """Highlight each line while it is being edited.
+        """
+        Highlight each line while it is being edited.
 
-        This function apply the proper highlight to the line being edited
-        by the user, this is a really fast process for each line once you
+        This function applies the proper highlight to the line being edited
+        by the user. This is a really fast process for each line once you
         already have the document highlighted, but slow to do it the first
-        time to highlight all the lines together."""
+        time (to highlight all the lines together).
+        """
         hls = []
         block = self.currentBlock()
         user_data = syntax_highlighter.get_user_data(block)
@@ -451,7 +455,7 @@ class Highlighter(QSyntaxHighlighter):
             self.rehighlightBlock(block)
 
     def _get_errors_lines(self):
-        """Return the number of lines that contains errors to highlight."""
+        """Return the number of lines that contain errors to highlight."""
         errors_lines = []
         block = self.document().begin()
         while block.isValid():
@@ -524,7 +528,7 @@ class Highlighter(QSyntaxHighlighter):
             return False
 
     def comment_multiline(self, text, delimiter_end, delimiter_start, style):
-        """Process the beggining and end of a multiline comment."""
+        """Process the beginning and end of a multiline comment."""
         startIndex = 0
         if self.previousBlockState() != 1:
             startIndex = delimiter_start.indexIn(text)
@@ -544,7 +548,7 @@ class Highlighter(QSyntaxHighlighter):
 
 
 class HighlightParserThread(QThread):
-    """Thread that collect the highlighting info to the current file."""
+    """Thread that collects the highlighting info of the current file."""
 
     def __init__(self, highlighter):
         super(HighlightParserThread, self).__init__()

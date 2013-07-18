@@ -169,7 +169,7 @@ class __MiscContainer(QWidget):
 
     def add_to_stack(self, widget, icon_path, description):
         """
-        Add a widget to the container and an button(with icon))to the toolbar
+        Add a widget to the container and a button (with icon) to the toolbar
         to show the widget
         """
         #add the widget

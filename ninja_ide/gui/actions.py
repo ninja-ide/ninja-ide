@@ -61,7 +61,7 @@ class __Actions(QObject):
     One ring to rule them all, One ring to find them,
     One ring to bring them all and in the darkness bind them.
 
-    This Class knows all the containers, and its know by all the containers,
+    This Class knows all the containers, and it's known by all the containers,
     but the containers don't need to know between each other, in this way we
     can keep a better api without the need to tie the behaviour between
     the widgets, and let them just consume the 'actions' they need."""
@@ -82,7 +82,7 @@ class __Actions(QObject):
             2: self._navigate_breakpoints}
 
     def install_shortcuts(self, ide):
-        """Install the shortcuts to the IDE."""
+        """Install the shortcuts in the IDE."""
         self.ide = ide
         short = resources.get_shortcut
         self.shortChangeTab = QShortcut(short("Change-Tab"), self.ide)
@@ -314,7 +314,7 @@ class __Actions(QObject):
             self.ide.misc.hide)
 
     def update_shortcuts(self):
-        """If the user update the key binded to any shortcut, update them."""
+        """If the user updates the key binded to any shortcut, update them."""
         resources.load_shortcuts()
         short = resources.get_shortcut
         self.shortDuplicate.setKey(short("Duplicate"))
@@ -674,7 +674,7 @@ class __Actions(QObject):
             helpers.uncomment(editorWidget)
 
     def editor_insert_horizontal_line(self):
-        """Insert an horizontal lines of comment symbols."""
+        """Insert a horizontal line of comment symbols."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget and editorWidget.hasFocus():
             helpers.insert_horizontal_line(editorWidget)
@@ -725,7 +725,7 @@ class __Actions(QObject):
         """Search the definition of the method or variable under the cursor.
 
         If more than one method or variable is found with the same name,
-        shows a table with the results and let the user decide where to go."""
+        show a table with the results and let the user decide where to go."""
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget and editorWidget.hasFocus():
             editorWidget.go_to_definition()
@@ -804,7 +804,7 @@ class __Actions(QObject):
             self.ide.central.lateralPanel.isVisible())
 
     def save_project(self):
-        """Save all the opened files that belongs to the actual project."""
+        """Save all the opened files that belong to the actual project."""
         path = self.ide.explorer.get_actual_project()
         if path:
             self.ide.mainContainer.save_project(path)
@@ -863,7 +863,7 @@ class __Actions(QObject):
 
     def update_migration_tips(self):
         """Update the migration tips in the Explorer."""
-        # This should be refactored with the new definition of singals in
+        # This should be refactored with the new definition of signals in
         # the MainContainer
         editorWidget = self.ide.mainContainer.get_actual_editor()
         if editorWidget:

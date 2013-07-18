@@ -790,7 +790,7 @@ class PopupCompleter(QFrame):
         self.listWidget.clear()
 
     def refresh(self, model, has_text=True):
-        """Refresh the list when the user search for some word."""
+        """Refresh the list when the user searches for some word."""
         self.listWidget.clear()
         if not has_text:
             self.add_help()

@@ -124,7 +124,8 @@ class TabWidget(QTabWidget):
             logger.error(msg)
 
     def expand_tab_name(self, title):
-        """Expand the tab title to differentiate files with the same name.
+        """
+        Expand the tab title to differentiate files with the same name.
 
         The way it is currently implemented, it will only change the first
         conflicting title passed in, because it only searches until the new
@@ -260,22 +261,28 @@ class TabWidget(QTabWidget):
                 return i
 
     def remove_title(self, index):
-        """Looks for the title of the tab at index and removes it from
-        self.titles, if it's there.'"""
+        """
+        Looks for the title of the tab at index and removes it from
+        self.titles, if it's there.
+        """
         if self.tabText(index) in self.titles:
             self.titles.remove(self.tabText(index))
 
     def update_current_widget(self):
-        """Sets the focus to the current widget. If this is the last tab in the
-        current split, the allTabsClosed() signal is emitted.'"""
+        """
+        Sets the focus to the current widget. If this is the last tab in the
+        current split, the allTabsClosed() signal is emitted.
+        """
         if self.currentWidget() is not None:
             self.currentWidget().setFocus()
         else:
             self.emit(SIGNAL("allTabsClosed()"))
 
     def removeTab(self, index):
-        """Remove the Tab at the selected index and check if the
-        widget was modified and need to execute any saving"""
+        """
+        Remove the Tab at the selected index and check if the widget was
+        modified and need to execute any saving.
+        """
         if index != -1:
             self.setCurrentIndex(index)
             widget = self.currentWidget()
@@ -443,7 +450,7 @@ class TabWidget(QTabWidget):
 
     def _check_unsaved_tabs(self):
         """
-        Check if are there any unsaved tab
+        Check if are there any unsaved tabs.
         Returns True or False
         """
         val = False
