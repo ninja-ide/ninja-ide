@@ -58,8 +58,8 @@ DEBUG = logger.debug
 
 class WizardNewProject(QWizard):
     """
-    Wizard to create a new project (of any kind), it implements the base
-    behavior. Also, it set two special projects type handler
+    Wizard to create a new project (of any kind). It implements the base
+    behavior. Also, it sets two special project type handlers
     (PythonProjectHandler, ImportFromSourcesProjectHandler)
     """
     def __init__(self, parent):

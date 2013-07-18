@@ -34,7 +34,7 @@ _STDOUT = sys.stdout
 
 
 def get_completions_per_type(object_dir):
-    '''Return info about function parameters'''
+    """Return info about function parameters"""
 
     if not object_dir:
         return {}
@@ -101,7 +101,7 @@ def _load_symbol(s, dglobals, dlocals):
 
 
 def _import_modules(imports, dglobals):
-    '''If given, execute import statements'''
+    """If given, execute import statements"""
     if imports is not None:
         for stmt in imports:
             try:
@@ -113,7 +113,7 @@ def _import_modules(imports, dglobals):
 
 
 def get_all_completions(s, imports=None):
-    '''Return contextual completion of s (string of >= zero chars)'''
+    """Return contextual completion of s (string of >= zero chars)"""
     dlocals = {}
     #FIXXXXXXXXXXXXXXXX
     #return {}

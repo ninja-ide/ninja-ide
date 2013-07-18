@@ -544,7 +544,7 @@ class ConsoleWidget(QPlainTextEdit):
         self.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
 
     def load_project_into_console(self, projectFolder):
-        """Load the projectFolder received into the sys.path."""
+        """Load the received projectFolder into the sys.path."""
         self._console.push("import sys; sys.path += ['%s']" % projectFolder)
 
     def unload_project_from_console(self, projectFolder):

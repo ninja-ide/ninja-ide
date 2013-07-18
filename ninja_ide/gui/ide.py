@@ -305,7 +305,7 @@ class __IDE(QMainWindow):
 
     def _last_tab_closed(self):
         """
-        Called when the last tasb is closed
+        Called when the last tab is closed
         """
         self.explorer.cleanup_tabs()
 

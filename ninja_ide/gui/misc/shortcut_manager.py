@@ -52,8 +52,8 @@ class TreeResult(QTreeWidget):
 
 class ShortcutDialog(QDialog):
     """
-    Dialog to set a shortcut for an action
-    this class emit the follow signals:
+    Dialog to set a shortcut for an action.
+    This class emits the following signals:
         shortcutChanged(QKeySequence)
     """
 

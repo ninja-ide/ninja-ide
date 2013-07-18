@@ -409,7 +409,7 @@ def uncomment(editorWidget):
 
 
 def uncomment_single_line(cursor, block_start, block_end, comment_wildcard):
-    """Uncoment one or more lines when one line symbol is supported"""
+    """Uncomment one or more lines when one line symbol is supported"""
     comment_wildcard = comment_wildcard[0]
     # Start block undo
     cursor.beginEditBlock()
@@ -456,7 +456,7 @@ def delete_lines_selected(cursor, block_actual):
 
 
 def comment(editorWidget):
-    """ This method comment one or more lines of code """
+    """ This method comments one or more lines of code """
     #cursor is a COPY all changes do not affect the QPlainTextEdit's cursor!!!
     cursor = editorWidget.textCursor()
     block_start = editorWidget.document().findBlock(

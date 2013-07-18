@@ -322,8 +322,7 @@ def load_shortcuts():
 
 def get_shortcut(shortcut_name):
     """
-    Returns the shortcut looking into CUSTOM_SHORTCUTS and
-    SHORTCUTS
+    Returns the shortcut looking into CUSTOM_SHORTCUTS and SHORTCUTS
     """
     global SHORTCUTS
     global CUSTOM_SHORTCUTS
@@ -340,7 +339,7 @@ def clean_custom_shortcuts():
 
 def create_home_dir_structure():
     """
-    Create the necesary directories structure for NINJA-IDE
+    Create the necessary directory structure for NINJA-IDE
     """
     for d in (HOME_NINJA_PATH, ADDINS, PLUGINS, EDITOR_SKINS,
               LANGS_DOWNLOAD, NINJA_THEME_DOWNLOAD):

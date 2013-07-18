@@ -144,20 +144,20 @@ class TreeProjectsWidget(QTreeWidget):
         self._fileWatcher.shutdown_notification()
 
     def add_extra_menu(self, menu, lang='all'):
-        '''
+        """
         Add an extra menu for the given language
         @lang: string with the form 'py', 'php', 'json', etc
-        '''
+        """
         #remove blanks and replace dots Example(.py => py)
         lang = lang.strip().replace('.', '')
         self.extra_menus.setdefault(lang, [])
         self.extra_menus[lang].append(menu)
 
     def add_extra_menu_by_scope(self, menu, scope):
-        '''
+        """
         Add an extra menu for the given language
         @scope: string with the menu scope (all, project, folder, item)
-        '''
+        """
         if scope.project:
             self.extra_menus_by_scope['project'].append(menu)
         if scope.folder:
@@ -775,9 +775,9 @@ class ProjectItem(QTreeWidgetItem):
         return file_manager.get_file_extension(self.text(0))
 
     def get_full_path(self):
-        '''
+        """
         Returns the full path of the file
-        '''
+        """
         return os.path.join(self.path, self.text(0))
 
     def set_item_icon(self, icon):
@@ -842,9 +842,9 @@ class ProjectTree(QTreeWidgetItem):
         return 'py'
 
     def get_full_path(self):
-        '''
+        """
         Returns the full path of the project
-        '''
+        """
         project_file = json_manager.get_ninja_project_file(self.path)
         if not project_file:  # FIXME: If we dont have a project file
             project_file = ''     # we should do SOMETHING! like kill zombies!
@@ -853,7 +853,7 @@ class ProjectTree(QTreeWidgetItem):
 
 class FoldingContextMenu(QMenu):
     """
-    This class represents a menu for Folding/Unfolding task
+    This class represents a menu for Folding/Unfolding tasks
     """
 
     def __init__(self, tree):

@@ -258,13 +258,15 @@ class Overlay(QWidget):
 
 
 def print_file(fileName, printFunction):
-    """This method print a file
+    """
+    This method prints a file.
 
-    This method print a file, fileName is the default fileName,
-    and printFunction is a funcion that takes a QPrinter
-    object and print the file,
+    This method prints a file. fileName is the default fileName,
+    and printFunction is a funcion that takes a QPrinter object and prints
+    the file,
     the print method
-    More info on:http://doc.qt.nokia.com/latest/printing.html"""
+    More info on:http://doc.qt.nokia.com/latest/printing.html
+    """
 
     printer = QPrinter(QPrinter.HighResolution)
     printer.setPageSize(QPrinter.A4)

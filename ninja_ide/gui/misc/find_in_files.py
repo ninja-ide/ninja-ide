@@ -61,10 +61,10 @@ from ninja_ide.gui.explorer import explorer_container
 
 
 class FindInFilesThread(QThread):
-    '''
+    """
     Emit the signal
     found_pattern(PyQt_PyObject)
-    '''
+    """
 
     def find_in_files(self, dir_name, filters, reg_exp, recursive, by_phrase):
         self._cancel = False

@@ -63,7 +63,7 @@ class SyntaxUserData(QTextBlockUserData):
         self.comment_start = -1
 
     def add_str_group(self, start, end):
-        """Add a pair of values setting the beggining and end of a string."""
+        """Add a pair of values setting the beginning and end of a string."""
         self.str_groups.append((start, end + 1))
 
     def comment_start_at(self, pos):
@@ -463,7 +463,7 @@ class SyntaxHighlighter(QSyntaxHighlighter):
             self.rehighlightBlock(block)
 
     def _get_errors_lines(self):
-        """Return the number of lines that contains errors to highlight."""
+        """Return the number of lines that contain errors to highlight."""
         errors_lines = []
         block = self.document().begin()
         while block.isValid():

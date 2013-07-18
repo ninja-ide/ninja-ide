@@ -157,8 +157,8 @@ class TreeSymbolsWidget(QTreeWidget):
 
     def _get_expand(self, item):
         """
-        Returns True or False to be used as setExpanded() with the items
-        It method is based on the click that the user made in the tree
+        Returns True or False to be used as setExpanded() with the items.
+        It's method is based on the click that the user made in the tree.
         """
         name = self._get_unique_name(item)
         filename = self.actualSymbols[0]
