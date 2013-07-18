@@ -1,6 +1,6 @@
 {
   "extension": [
-    "css", "qss"
+    "css", "qss", "scss", "sass"
   ],
   "comment": [
     "//"
