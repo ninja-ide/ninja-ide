@@ -48,6 +48,7 @@ def load_syntax():
 
 
 def parse(descriptor):
+    """Read the content of a json file and return a dict."""
     try:
         return json.load(descriptor)
     except:
