@@ -26,7 +26,29 @@ from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.tools.json_manager')
 
 
+def load_syntax():
+    """Load all the syntax files."""
+    empty = dict()
+    files = os.listdir(resources.SYNTAX_FILES)
+
+    for f in files:
+        if not f.endswith('.json'):
+            continue
+
+        fname = os.path.join(resources.SYNTAX_FILES, f)
+        structure = read_json(fname)
+        if structure == empty:
+            continue
+
+        name = os.path.splitext(f)
+        settings.SYNTAX[name] = structure
+        for ext in structure.get('extension'):
+            if ext is not None:
+                settings.EXTENSIONS[ext] = name
+
+
 def parse(descriptor):
+    """Read the content of a json file and return a dict."""
     try:
         return json.load(descriptor)
     except:
@@ -35,18 +57,17 @@ def parse(descriptor):
     return {}
 
 
-def read_json(arg_):
-
+def read_json(path):
+    """Read a json file if path is a file, or search for a .nja if folder."""
     structure = dict()
     fileName = None
 
-    if os.path.isdir(arg_):
-        path = arg_
+    if os.path.isdir(path):
         json_file = get_ninja_json_file(path)
         fileName = os.path.join(path, json_file)
 
-    if os.path.isfile(arg_):
-        fileName = arg_
+    if os.path.isfile(path):
+        fileName = path
 
     if fileName is None:
         return structure
@@ -72,27 +93,6 @@ def write_json(structure, filename, indent=2):
         json.dump(structure, fp, indent)
 
 
-def load_syntax():
-    empty = dict()
-    files = os.listdir(resources.SYNTAX_FILES)
-
-    for f in files:
-
-        if not f.endswith('.json'):
-            continue
-
-        fname = os.path.join(resources.SYNTAX_FILES, f)
-        structure = read_json(fname)
-        if structure == empty:
-            continue
-
-        name = f[:-5]
-        settings.SYNTAX[name] = structure
-        for ext in structure.get('extension'):
-            if ext is not None:
-                settings.EXTENSIONS[ext] = name
-
-
 def create_ninja_project(path, project, structure):
     projectName = project.lower().strip().replace(' ', '_') + '.nja'
     fileName = os.path.join(path, projectName)
@@ -101,44 +101,44 @@ def create_ninja_project(path, project, structure):
 
 
 def get_ninja_file(path, extension, only_first=False):
+    """Search and return the files with extension in the folder: path."""
     files = os.listdir(path)
     if not extension.startswith('.'):
         extension = '.'.join(extension)
 
-    nja = list([y for y in files if y.endswith(extension)])
+    found = list([y for y in files if y.endswith(extension)])
 
     if only_first:
-        nja = nja[0] if nja else None
+        found = found[0] if found else []
 
-    return nja if nja else []
+    return found
 
 
 def get_ninja_json_file(path):
-
+    """Return the list of json files inside the directory: path."""
     extension = '.json'
     return get_ninja_file(path, extension, only_first=True)
 
 
 def get_ninja_plugin_file(path):
-
+    """Return the list of plugin files inside the directory: path."""
     extension = '.plugin'
     return get_ninja_file(path, extension, only_first=True)
 
 
 def get_ninja_project_file(path):
-
+    """Return the first nja file found inside: path."""
     extension = '.nja'
     return get_ninja_file(path, extension, only_first=True)
 
 
 def get_ninja_editor_skins_files(path):
-
+    """Return the list of json files inside the directory: path."""
     extension = '.color'
     return get_ninja_file(path, extension)
 
 
 def read_ninja_project(path):
-
     empty = dict()
     project_file = get_ninja_project_file(path)
 
@@ -149,7 +149,6 @@ def read_ninja_project(path):
 
 
 def read_ninja_plugin(path):
-
     empty = dict()
     plugin_file = get_ninja_plugin_file(path)
 
@@ -160,7 +159,6 @@ def read_ninja_plugin(path):
 
 
 def load_editor_skins():
-
     skins = dict()
     files = get_ninja_editor_skins_files(resources.EDITOR_SKINS)
 
@@ -176,7 +174,6 @@ def load_editor_skins():
 
 
 def save_editor_skins(filename, scheme):
-
     with open(filename, 'w') as fp:
         try:
             json.dump(scheme, fp, indent=2)
