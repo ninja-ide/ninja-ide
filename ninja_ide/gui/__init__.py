@@ -124,7 +124,7 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
             with open(resources.NINJA_THEME) as f:
                 qss = f.read()
         else:
-            with open(resources.NINJA__THEME_CLASSIC) as f:
+            with open(resources.NINJA_THEME_CLASSIC) as f:
                 qss = f.read()
         app.setStyleSheet(qss)
 
@@ -153,54 +153,38 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
         Qt.AlignRight | Qt.AlignTop, Qt.black)
     #Files in Main Tab
     main_files = qsettings.value('openFiles/mainTab', [])
-    if main_files is not None:
-        mainFiles = list(main_files)
-    else:
-        mainFiles = list()
     tempFiles = []
-    for file_ in mainFiles:
+    for file_ in main_files:
         fileData = list(file_)
         if fileData:
             lineno = fileData[1]
             tempFiles.append((fileData[0], lineno))
-    mainFiles = tempFiles
+    main_files = tempFiles
     #Files in Secondary Tab
     sec_files = qsettings.value('openFiles/secondaryTab', [])
-    if sec_files is not None:
-        secondaryFiles = list(sec_files)
-    else:
-        secondaryFiles = list()
     tempFiles = []
-    for file_ in secondaryFiles:
+    for file_ in sec_files:
         fileData = list(file_)
-        lineno = fileData[1]
-        tempFiles.append((fileData[0], lineno))
-    secondaryFiles = tempFiles
+        if fileData:
+            lineno = fileData[1]
+            tempFiles.append((fileData[0], lineno))
+    sec_files = tempFiles
     # Recent Files
-    recent = qsettings.value('openFiles/recentFiles', [])
-    if recent is not None:
-        recent_files = list(recent)
-    else:
-        recent_files = list()
-    recent_files = [file_ for file_ in recent_files]
+    recent_files = qsettings.value('openFiles/recentFiles', [])
     #Current File
     current_file = qsettings.value('openFiles/currentFile', '', type='QString')
     #Projects
-    projects_list = qsettings.value('openFiles/projects', [])
-    if projects_list is not None:
-        projects = list(projects_list)
-    else:
-        projects = list()
-    projects = [project for project in projects]
+    projects = qsettings.value('openFiles/projects', [])
     #Include files received from console args
     file_with_nro = list([(f[0], f[1] - 1) for f in zip(filenames, linenos)])
     file_without_nro = list([(f, 0) for f in filenames[len(linenos):]])
-    mainFiles += file_with_nro + file_without_nro
+    main_files += file_with_nro + file_without_nro
     #Include projects received from console args
     if projects_path:
         projects += projects_path
-    ninjaide.load_session_files_projects(mainFiles, secondaryFiles, projects,
-        current_file, recent_files)
+    #FIXME: CONTINUE REVISION FROM HERE
+    ninjaide.load_session_files_projects(main_files, sec_files,
+        projects, current_file, recent_files)
     #Load external plugins
     if extra_plugins:
         ninjaide.load_external_plugins(extra_plugins)

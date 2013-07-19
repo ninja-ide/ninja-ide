@@ -1842,7 +1842,7 @@ class PreferencesWidget(QDialog):
         #if self.list_skins.currentRow() == 0:
             #qss_file = resources.NINJA_THEME
         #elif self.list_skins.currentRow() == 1:
-            #qss_file = resources.NINJA__THEME_CLASSIC
+            #qss_file = resources.NINJA_THEME_CLASSIC
         #else:
             #file_name = ("%s.qss" %
                 #self.list_skins.currentItem().text())
@@ -1893,7 +1893,7 @@ class PreferencesWidget(QDialog):
             #if self._parent.theme_chooser.list_skins.currentRow() == 0:
                 #qss_file = resources.NINJA_THEME
             #if self._parent.theme_chooser.list_skins.currentRow() == 1:
-                #qss_file = resources.NINJA__THEME_CLASSIC
+                #qss_file = resources.NINJA_THEME_CLASSIC
             #else:
                 #file_name = ("%s.qss" %
                     #self._parent.theme_chooser.list_skins.currentItem().text())
