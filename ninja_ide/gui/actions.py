@@ -164,4 +164,8 @@ ACTIONS_GENERAL = (
                'weight': 150},
     "connect": "fullscreen_mode"
     },
+    {
+    "shortcut": "Switch-Focus",
+    "connect": "switch_focus"
+    },
 )
