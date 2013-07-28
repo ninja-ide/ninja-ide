@@ -40,7 +40,7 @@ def load_syntax():
         if structure == empty:
             continue
 
-        name = os.path.splitext(f)
+        name = os.path.splitext(f)[0]
         settings.SYNTAX[name] = structure
         for ext in structure.get('extension'):
             if ext is not None:
