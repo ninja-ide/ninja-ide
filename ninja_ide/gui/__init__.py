@@ -154,20 +154,22 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     #Files in Main Tab
     main_files = qsettings.value('openFiles/mainTab', [])
     tempFiles = []
-    for file_ in main_files:
-        fileData = list(file_)
-        if fileData:
-            lineno = fileData[1]
-            tempFiles.append((fileData[0], lineno))
+    if main_files:
+        for file_ in main_files:
+            fileData = list(file_)
+            if fileData:
+                lineno = fileData[1]
+                tempFiles.append((fileData[0], lineno))
     main_files = tempFiles
     #Files in Secondary Tab
     sec_files = qsettings.value('openFiles/secondaryTab', [])
     tempFiles = []
-    for file_ in sec_files:
-        fileData = list(file_)
-        if fileData:
-            lineno = fileData[1]
-            tempFiles.append((fileData[0], lineno))
+    if sec_files:
+        for file_ in sec_files:
+            fileData = list(file_)
+            if fileData:
+                lineno = fileData[1]
+                tempFiles.append((fileData[0], lineno))
     sec_files = tempFiles
     # Recent Files
     recent_files = qsettings.value('openFiles/recentFiles', [])
@@ -182,12 +184,12 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     #Include projects received from console args
     if projects_path:
         projects += projects_path
-    #FIXME: CONTINUE REVISION FROM HERE
-    ninjaide.load_session_files_projects(main_files, sec_files,
-        projects, current_file, recent_files)
+    #FIXME: IMPROVE THIS WITH THE NEW WAY OF DO IT
+    #ninjaide.load_session_files_projects(main_files, sec_files,
+        #projects, current_file, recent_files)
     #Load external plugins
-    if extra_plugins:
-        ninjaide.load_external_plugins(extra_plugins)
+    #if extra_plugins:
+        #ninjaide.load_external_plugins(extra_plugins)
 
     splash.finish(ninjaide)
     ninjaide.notify_plugin_errors()

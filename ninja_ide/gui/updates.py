@@ -37,6 +37,10 @@ logger = NinjaLogger('ninja_ide.gui.updates')
 
 
 class TrayIconUpdates(QSystemTrayIcon):
+    """Tray Icon to show Updates of new versions.
+    @ SIGNALS:
+    @ closeTrayIcon()
+    """
 
     def __init__(self, parent):
         QSystemTrayIcon.__init__(self, parent)
@@ -48,13 +52,10 @@ class TrayIconUpdates(QSystemTrayIcon):
 
         if settings.NOTIFY_UPDATES:
             self.thread = ThreadUpdates()
-
             self.connect(self.thread,
                 SIGNAL("versionReceived(QString, QString)"),
                 self._show_messages)
             self.thread.start()
-        else:
-            self.show = self.hide
 
     def setup_menu(self, show_downloads=False):
         self.menu = QMenu()
@@ -65,7 +66,7 @@ class TrayIconUpdates(QSystemTrayIcon):
             self.menu.addAction(self.download)
             self.menu.addSeparator()
         self.quit_action = QAction(self.tr("Close Update Notifications"),
-            self, triggered=self.hide)
+            self, triggered=self._close)
         self.menu.addAction(self.quit_action)
 
         self.setContextMenu(self.menu)
@@ -93,16 +94,19 @@ class TrayIconUpdates(QSystemTrayIcon):
                     if button == QMessageBox.Ok:
                         self._show_download()
             else:
-                self.hide()
+                self._close()
         except Exception as reason:
             logger.warning('Versions can not be compared: %r', reason)
-            self.hide()
+            self._close()
         finally:
             self.thread.wait()
 
+    def _close(self):
+        self.emit(SIGNAL("closeTrayIcon()"))
+
     def _show_download(self):
         webbrowser.open(self.download_link)
-        self.hide()
+        self._close()
 
 
 class ThreadUpdates(QThread):

@@ -26,7 +26,6 @@ from PyQt4.QtGui import QToolBar
 from PyQt4.QtGui import QToolTip
 from PyQt4.QtGui import QFont
 from PyQt4.QtGui import QKeySequence
-from PyQt4.QtGui import QShortcut
 from PyQt4.QtGui import QInputDialog
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QSettings
@@ -96,6 +95,7 @@ class IDE(QMainWindow):
         QMainWindow.__init__(self)
         self.setWindowTitle('NINJA-IDE {Ninja-IDE Is Not Just Another IDE}')
         self.setMinimumSize(700, 500)
+        QToolTip.setFont(QFont(settings.FONT_FAMILY, 10))
         #Load the size and the position of the main window
         self.load_window_geometry()
         self.__project_to_open = 0
@@ -139,14 +139,9 @@ class IDE(QMainWindow):
 
         #Tray Icon
         self.trayIcon = updates.TrayIconUpdates(self)
+        self.connect(self.trayIcon, SIGNAL("closeTrayIcon()"),
+            self._close_tray_icon)
         self.trayIcon.show()
-
-        #Shortcuts
-        shortFullscreen = QShortcut(
-            resources.get_shortcut("Full-screen"), self)
-        IDE.register_shortcut('Full-screen', shortFullscreen)
-        self.connect(shortFullscreen, SIGNAL("activated()"),
-            self.fullscreen_mode)
 
         key = Qt.Key_1
         for i in range(10):
@@ -160,16 +155,6 @@ class IDE(QMainWindow):
             self.connect(short, SIGNAL("activated()"), self._change_tab_index)
         short = ui_tools.TabShortcuts(QKeySequence(Qt.ALT + Qt.Key_0), self, 10)
         self.connect(short, SIGNAL("activated()"), self._change_tab_index)
-
-        short = resources.get_shortcut
-        shortFullscreen = QShortcut(short("Full-screen"), self)
-        shortSwitchFocus = QShortcut(short("Switch-Focus"), self)
-        IDE.register_shortcut('Full-screen', shortFullscreen)
-        IDE.register_shortcut('Switch-Focus', shortSwitchFocus)
-        self.connect(shortFullscreen, SIGNAL("activated()"),
-            self.fullscreen_mode)
-        self.connect(shortSwitchFocus, SIGNAL("activated()"),
-            self.fullscreen_mode)
 
         # Register menu categories
         IDE.register_menu_category(translations.TR_MENU_FILE, 100)
@@ -209,7 +194,6 @@ class IDE(QMainWindow):
         # Install Services
         for service_name in self.__IDESERVICES:
             self.install_service(service_name)
-        QToolTip.setFont(QFont(settings.FONT_FAMILY, 10))
         self.__created = True
         menu_bar = IDE.get_service('menu_bar')
         if menu_bar:
@@ -217,21 +201,26 @@ class IDE(QMainWindow):
 
     @classmethod
     def get_service(cls, service_name):
+        """Return the instance of a registered service."""
         return cls.__IDESERVICES.get(service_name, None)
 
     def get_menuitems(self):
+        """Return a dictionary with the registered menu items."""
         return self.__IDEMENUS
 
     def get_menu_categories(self):
+        """Get the registered Categories for the Application menus."""
         return self.__IDEMENUSCATEGORY
 
     @classmethod
     def register_service(cls, service_name, obj):
+        """Register a service providing the service name and the instance."""
         cls.__IDESERVICES[service_name] = obj
         if cls.__created:
             cls.__instance.install_service(service_name)
 
     def install_service(self, service_name):
+        """Activate the registered service."""
         obj = self.__IDESERVICES.get(service_name, None)
         func = getattr(obj, 'install', None)
         if isinstance(func, collections.Callable):
@@ -239,15 +228,28 @@ class IDE(QMainWindow):
         self._connect_signals()
 
     def place_me_on(self, name, obj, region="central", top=False):
+        """Place a widget in some of the areas in the IDE.
+        @name: id to access to that widget later if needed.
+        @obj: the instance of the widget to be placed.
+        @region: the area where to put the widget [central, lateral]
+        @top: place the widget as the first item in the split."""
         self.central.add_to_region(name, obj, region, top)
 
     @classmethod
     def register_signals(cls, service_name, connections):
+        """Register all the signals that a particular service wants to be
+        attached of.
+        @service_name: id of the service
+        @connections: list of dictionaries for the connection with:
+            - 'target': 'the_other_service_name',
+            - 'signal_name': 'name of the signal in the other service',
+            - 'slot': function object in this service"""
         cls.__IDECONNECTIONS[service_name] = connections
         if cls.__created:
             cls.__instance._connect_signals()
 
     def _connect_signals(self):
+        """Connect the signals between the different services."""
         for service_name in self.__IDECONNECTIONS:
             connections = self.__IDECONNECTIONS[service_name]
             for connection in connections:
@@ -263,6 +265,7 @@ class IDE(QMainWindow):
 
     @classmethod
     def register_shortcut(cls, shortcut_name, shortcut, action=None):
+        """Register a shortcut and action."""
         cls.__IDESHORTCUTS[shortcut_name] = (shortcut, action)
 
     @classmethod
@@ -285,6 +288,7 @@ class IDE(QMainWindow):
 
     @classmethod
     def update_shortcut(cls, shortcut_name):
+        """Update all the shortcuts of the application."""
         short = resources.get_shortcut
         shortcut, action = cls.__IDESHORTCUTS.get(shortcut_name)
         if shortcut:
@@ -292,7 +296,13 @@ class IDE(QMainWindow):
         if action:
             action.setShortcut(short(shortcut_name))
 
+    def _close_tray_icon(self):
+        """Close the System Tray Icon."""
+        self.trayIcon.hide()
+        self.trayIcon.deleteLater()
+
     def _change_tab_index(self):
+        """Change the tabs of the current TabWidget using alt+numbers."""
         widget = QApplication.focusWidget()
         shortcut_index = getattr(widget, 'shortcut_index', None)
         if shortcut_index:
@@ -300,6 +310,7 @@ class IDE(QMainWindow):
             shortcut_index(obj.index)
 
     def switch_focus(self):
+        """Switch the current keyboard focus to the next widget."""
         widget = QApplication.focusWidget()
         main_container = IDE.get_service('main_container')
         tools_dock = IDE.get_service('tools_dock')
@@ -318,6 +329,7 @@ class IDE(QMainWindow):
                 main_container.actualTab.currentWidget().setFocus()
 
     def _process_connection(self):
+        """Read the ipc input from another instance of ninja."""
         connection = self.s_listener.nextPendingConnection()
         connection.waitForReadyRead()
         data = connection.readAll()
@@ -337,20 +349,19 @@ class IDE(QMainWindow):
             self.showFullScreen()
 
     def change_toolbar_visibility(self):
+        """Switch the toolbar visibility"""
         if self.toolbar.isVisible():
             self.toolbar.hide()
         else:
             self.toolbar.show()
 
     def load_external_plugins(self, paths):
+        """Load external plugins, the ones added to ninja throw the cmd."""
         for path in paths:
             self.plugin_manager.add_plugin_dir(path)
         #load all plugins!
         self.plugin_manager.discover()
         self.plugin_manager.load_all()
-
-    def show_status_message(self, message):
-        self.status.showMessage(message, 2000)
 
     def _last_tab_closed(self):
         """
@@ -359,12 +370,13 @@ class IDE(QMainWindow):
         self.explorer.cleanup_tabs()
 
     def show_preferences(self):
+        """Open the Preferences Dialog."""
         pref = preferences.PreferencesWidget(self)
-        pref.set_IDE(self)
         pref.show()
 
     def load_session_files_projects(self, filesTab1, filesTab2, projects,
         current_file, recent_files=None):
+        """Load the files and projects from previous session."""
         self.__project_to_open = len(projects)
         explorer = IDE.get_service('explorer_container')
         main_container = IDE.get_service('main_container')
@@ -381,20 +393,20 @@ class IDE(QMainWindow):
                 #menu_file = IDE.get_service('menu_file')
                 #menu_file.update_recent_files(recent_files)
 
-    def _set_editors_project_data(self):
-        self.__project_to_open -= 1
-        if self.__project_to_open == 0:
-            self.disconnect(self.explorer, SIGNAL("projectOpened(QString)"),
-                self._set_editors_project_data)
-            self.mainContainer.update_editor_project()
+    #def _set_editors_project_data(self):
+        #self.__project_to_open -= 1
+        #if self.__project_to_open == 0:
+            #self.disconnect(self.explorer, SIGNAL("projectOpened(QString)"),
+                #self._set_editors_project_data)
+            #self.mainContainer.update_editor_project()
 
-    def open_file(self, filename):
-        if filename:
-            self.mainContainer.open_file(filename)
+    #def open_file(self, filename):
+        #if filename:
+            #self.mainContainer.open_file(filename)
 
-    def open_project(self, project):
-        if project:
-            self.actions.open_project(project)
+    #def open_project(self, project):
+        #if project:
+            #self.actions.open_project(project)
 
     def __get_profile(self):
         return self.profile
@@ -410,6 +422,7 @@ class IDE(QMainWindow):
     Profile = property(__get_profile, __set_profile)
 
     def change_window_title(self, title):
+        """Change the title of the Application."""
         if self.profile is None:
             self.setWindowTitle('NINJA-IDE - %s' % title)
         else:
@@ -422,6 +435,7 @@ class IDE(QMainWindow):
             self.central.lateralPanel.update_line_col(line, col)
 
     def wheelEvent(self, event):
+        """Change the opacity of the application."""
         if event.modifiers() == Qt.ShiftModifier:
             if event.delta() == 120 and self.opacity < settings.MAX_OPACITY:
                 self.opacity += 0.1
@@ -547,8 +561,9 @@ class IDE(QMainWindow):
                 QPointF(100, 100).toPoint(), type='QPoint'))
 
     def closeEvent(self, event):
-        #if self.s_listener:
-            #self.s_listener.close()
+        """Saves some global settings before closing."""
+        if self.s_listener:
+            self.s_listener.close()
         #if (settings.CONFIRM_EXIT and
                 #self.mainContainer.check_for_unsaved_tabs()):
             #unsaved_files = self.mainContainer.get_unsaved_files()
@@ -570,10 +585,11 @@ class IDE(QMainWindow):
         ##close python documentation server (if running)
         #self.mainContainer.close_python_doc()
         ##Shutdown PluginManager
-        #self.plugin_manager.shutdown()
+        self.plugin_manager.shutdown()
         super(IDE, self).closeEvent(event)
 
     def notify_plugin_errors(self):
+        #TODO: Check if the Plugin Error dialog can be improved
         errors = self.plugin_manager.errors
         if errors:
             plugin_error_dialog = traceback_widget.PluginErrorDialog()
@@ -583,6 +599,7 @@ class IDE(QMainWindow):
             plugin_error_dialog.exec_()
 
     def show_manager(self):
+        """Open the Plugins Manager to install/uninstall plugins."""
         manager = plugins_manager.PluginsManagerWidget(self)
         manager.show()
         if manager._requirements:
@@ -591,21 +608,27 @@ class IDE(QMainWindow):
             dependencyDialog.show()
 
     def show_languages(self):
+        """Open the Language Manager to install/uninstall languages."""
         manager = language_manager.LanguagesManagerWidget(self)
         manager.show()
 
     def show_themes(self):
+        """Open the Themes Manager to install/uninstall themes."""
         manager = themes_manager.ThemesManagerWidget(self)
         manager.show()
 
     def show_about_qt(self):
+        """Show About Qt Dialog."""
         QMessageBox.aboutQt(self, translations.TR_ABOUT_QT)
 
     def show_about_ninja(self):
+        """Show About NINJA-IDE Dialog."""
         about = about_ninja.AboutNinja(self)
         about.show()
 
     def show_python_detection(self):
+        """Show Python detection dialog for windows."""
+        #TODO: Notify the user when no python version could be found
         suggested = settings.detect_python_path()
         if suggested:
             dialog = python_detect_dialog.PythonDetectDialog(suggested, self)
