@@ -254,10 +254,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self._mini.set_code(self.toPlainText())
 
     def _update_file_metadata(self, val):
-        """Update the info of bookmarks, breakpoint, pep8 and static errors."""
-        if (self._sidebarWidget._bookmarks or
-           self._sidebarWidget._breakpoints or
-           self._sidebarWidget._foldedBlocks):
+        """Update the info of bookmarks, breakpoint and checkers."""
+        if (self._sidebarWidget.bookmarks or
+           self._sidebarWidget.breakpoints or
+           self._sidebarWidget.foldedBlocks):
             cursor = self.textCursor()
             if self.__lines_count:
                 diference = val - self.__lines_count
@@ -362,8 +362,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 syntax_highlighter.load_syntax(python_syntax.syntax)
             self.highlighter = syntax_highlighter.SyntaxHighlighter(
                 self.document(),
-                parts_scanner, code_scanner, formats,
-                errors=self.errors, pep8=self.pep8, migration=self.migration)
+                parts_scanner, code_scanner, formats, self._neditable)
             if self._mini:
                 self._mini.highlighter = syntax_highlighter.SyntaxHighlighter(
                     self._mini.document(), parts_scanner,
@@ -933,21 +932,13 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         position = event.pos()
         cursor = self.cursorForPosition(position)
         block = cursor.block()
-        if settings.ERRORS_HIGHLIGHT_LINE and \
-        (block.blockNumber()) in self.errors.errorsSummary:
-            message = '\n'.join(
-                self.errors.errorsSummary[block.blockNumber()])
-            QToolTip.showText(self.mapToGlobal(position),
-                message, self)
-        elif settings.SHOW_MIGRATION_TIPS and \
-             block.blockNumber() in self.migration.migration_data:
-            message = self.migration.migration_data[block.blockNumber()][0]
-            QToolTip.showText(self.mapToGlobal(position), message, self)
-        elif settings.CHECK_HIGHLIGHT_LINE and \
-        (block.blockNumber()) in self.pep8.pep8checks:
-            message = '\n'.join(
-                self.pep8.pep8checks[block.blockNumber()])
-            QToolTip.showText(self.mapToGlobal(position), message, self)
+        checkers = sorted(self._neditable.registered_checkers,
+            key=lambda x: x[2], reverse=True)
+        for items in checkers:
+            checker, color, _ = items
+            if block.blockNumber() in checker.checks:
+                message = '\n'.join(checker.checks[block.blockNumber()])
+                QToolTip.showText(self.mapToGlobal(position), message, self)
         if event.modifiers() == Qt.ControlModifier:
             cursor.select(QTextCursor.WordUnderCursor)
             selection_start = cursor.selectionStart()
@@ -1235,16 +1226,15 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.textCursor().endEditBlock()
 
 
-def create_editor(fileName='', project=None, syntax=None,
-                  use_open_highlight=False, project_obj=None):
-    editor = Editor(fileName, project, project_obj=project_obj)
+def create_editor(neditable, syntax=None):
+    editor = Editor(neditable)
     #if syntax is specified, use it
     if syntax:
         editor.register_syntax(syntax)
     else:
         #try to set a syntax based on the file extension
-        ext = file_manager.get_file_extension(fileName)
-        if ext not in settings.EXTENSIONS and fileName == '':
+        ext = file_manager.get_file_extension(neditable.ID)
+        if ext not in settings.EXTENSIONS and neditable.ID == '':
             #by default use python syntax
             editor.register_syntax('py')
         else:

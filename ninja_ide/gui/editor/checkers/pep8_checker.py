@@ -17,7 +17,6 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QStyle
 from PyQt4.QtCore import QThread
 
@@ -35,9 +34,7 @@ class Pep8Checker(QThread):
         self._encoding = ''
         self.checks = {}
 
-        style = QStyle()
-        self.checker_icon = QIcon(
-            style.standardIcon(QStyle.SP_MessageBoxWarning))
+        self.checker_icon = QStyle.SP_MessageBoxWarning
 
     def run_checks(self):
         if not self.isRunning():
