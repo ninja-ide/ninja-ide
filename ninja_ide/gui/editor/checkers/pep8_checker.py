@@ -31,7 +31,7 @@ class Pep8Checker(QThread):
         self._editor = editor
         self._path = ''
         self._encoding = ''
-        self.pep8checks = {}
+        self.checks = {}
 
     def check_style(self):
         if not self.isRunning():
@@ -40,7 +40,7 @@ class Pep8Checker(QThread):
             self.start()
 
     def reset(self):
-        self.pep8checks = {}
+        self.checks = {}
 
     def run(self):
         self.sleep(1)
@@ -67,11 +67,11 @@ class Pep8Checker(QThread):
                 finally:
                     i += 3
                 if line and lineno > -1:
-                    if lineno not in self.pep8checks:
-                        self.pep8checks[lineno] = [line]
+                    if lineno not in self.checks:
+                        self.checks[lineno] = [line]
                     else:
-                        message = self.pep8checks[lineno]
+                        message = self.checks[lineno]
                         message += [line]
-                        self.pep8checks[lineno] = message
+                        self.checks[lineno] = message
         else:
             self.reset()

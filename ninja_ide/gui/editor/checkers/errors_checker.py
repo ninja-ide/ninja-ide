@@ -45,7 +45,7 @@ class ErrorsChecker(QThread):
         self._builtins = additional_builtins
         self._path = ''
         self._encoding = ''
-        self.errorsSummary = {}
+        self.checks = {}
 
     def check_errors(self):
         if not self.isRunning():
@@ -54,7 +54,7 @@ class ErrorsChecker(QThread):
             self.start()
 
     def reset(self):
-        self.errorsSummary = {}
+        self.checks = {}
 
     def run(self):
         self.sleep(1)
@@ -71,12 +71,12 @@ class ErrorsChecker(QThread):
                                                builtins=self._builtins)
                 for m in lint_checker.messages:
                     lineno = m.lineno - 1
-                    if lineno not in self.errorsSummary:
+                    if lineno not in self.checks:
                         message = [m.message % m.message_args]
                     else:
-                        message = self.errorsSummary[lineno]
+                        message = self.checks[lineno]
                         message += [m.message % m.message_args]
-                    self.errorsSummary[lineno] = message
+                    self.checks[lineno] = message
             except Exception as reason:
                 message = ''
                 if hasattr(reason, 'msg'):
@@ -85,16 +85,16 @@ class ErrorsChecker(QThread):
                     message = reason.message
 
                 if hasattr(reason, 'lineno') and reason.lineno:
-                    self.errorsSummary[reason.lineno - 1] = [message]
+                    self.checks[reason.lineno - 1] = [message]
                 else:
-                    self.errorsSummary[0] = [message]
+                    self.checks[0] = [message]
             finally:
                 ignored_range, ignored_lines = self._get_ignore_range()
-                to_remove = [x for x in self.errorsSummary
+                to_remove = [x for x in self.checks
                              for r in ignored_range if r[0] < x < r[1]]
                 to_remove += ignored_lines
                 for line in to_remove:
-                    self.errorsSummary.pop(line, None)
+                    self.checks.pop(line, None)
         else:
             self.reset()
 

@@ -91,14 +91,15 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     """
 ###############################################################################
 
-    def __init__(self, filename, project, project_obj=None):
+    def __init__(self, neditable):
         QPlainTextEdit.__init__(self)
         itab_item.ITabItem.__init__(self)
+        self._neditable = neditable
         #Config Editor
         self.set_flags()
         self.__lines_count = None
 
-        self._sidebarWidget = sidebar_widget.SidebarWidget(self, filename)
+        self._sidebarWidget = sidebar_widget.SidebarWidget(self, 'filename')
         #if project_obj is not None:
             #additional_builtins = project_obj.additional_builtins
         #else:
@@ -108,14 +109,14 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #self.migration = migration_2to3.MigrationTo3(self)
 
         self.highlighter = None
-        self.syncDocErrorsSignal = False
-        self._selected_word = ''
+        #self.syncDocErrorsSignal = False
         self.allows_less_indentation = ['else', 'elif', 'finally', 'except']
         #Set editor style
         self.apply_editor_style()
         self.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
         #For Highlighting in document
         self.extraSelections = []
+        self._selected_word = ''
         self._patIsWord = re.compile('\w+')
         #Brace matching
         self._braces = None
@@ -150,15 +151,16 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self._current_line_color = QColor(
             resources.CUSTOM_SCHEME.get('current-line',
             resources.COLOR_SCHEME['current-line']))
-        self._error_line_color = QColor(
-            resources.CUSTOM_SCHEME.get('error-underline',
-            resources.COLOR_SCHEME['error-underline']))
-        self._pep8_line_color = QColor(
-            resources.CUSTOM_SCHEME.get('pep8-underline',
-            resources.COLOR_SCHEME['pep8-underline']))
-        self._migration_line_color = QColor(
-            resources.CUSTOM_SCHEME.get('migration-underline',
-            resources.COLOR_SCHEME['migration-underline']))
+        #FIXME: use neditable data
+        #self._error_line_color = QColor(
+            #resources.CUSTOM_SCHEME.get('error-underline',
+            #resources.COLOR_SCHEME['error-underline']))
+        #self._pep8_line_color = QColor(
+            #resources.CUSTOM_SCHEME.get('pep8-underline',
+            #resources.COLOR_SCHEME['pep8-underline']))
+        #self._migration_line_color = QColor(
+            #resources.CUSTOM_SCHEME.get('migration-underline',
+            #resources.COLOR_SCHEME['migration-underline']))
 
         self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
             self._sidebarWidget.update_area)
@@ -176,28 +178,30 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 self._mini.update_visible_area)
 
         #Indentation
-        self.set_project(project_obj)
+        #FIXME: use neditable data
+        #self.set_project(project_obj)
         #Context Menu Options
         self.__actionFindOccurrences = QAction(
             self.tr("Find Usages"), self)
         self.connect(self.__actionFindOccurrences, SIGNAL("triggered()"),
             self._find_occurrences)
 
-    def set_project(self, project):
-        if project is not None:
-            self.indent = project.indentation
-            self.useTabs = project.useTabs
-            #Set tab usage
-            if self.useTabs:
-                self.set_tab_usage()
-            self.connect(project._parent,
-                SIGNAL("projectPropertiesUpdated(QTreeWidgetItem)"),
-                self.set_project)
-        else:
-            self.indent = settings.INDENT
-            self.useTabs = settings.USE_TABS
+    #def set_project(self, project):
+        #if project is not None:
+            #self.indent = project.indentation
+            #self.useTabs = project.useTabs
+            ##Set tab usage
+            #if self.useTabs:
+                #self.set_tab_usage()
+            #self.connect(project._parent,
+                #SIGNAL("projectPropertiesUpdated(QTreeWidgetItem)"),
+                #self.set_project)
+        #else:
+            #self.indent = settings.INDENT
+            #self.useTabs = settings.USE_TABS
 
     def __retreat_to_keywords(self, event):
+        """Unindent some kind of blocks if needed."""
         previous_text = unicode(self.textCursor().block().previous().text())
         current_text = unicode(self.textCursor().block().text())
         previous_spaces = helpers.get_indentation(previous_text)
@@ -225,6 +229,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     encoding = property(__get_encoding, __set_encoding)
 
     def set_flags(self):
+        """Set some configuration flags for the Editor."""
         if settings.ALLOW_WORD_WRAP:
             self.setWordWrapMode(QTextOption.WrapAtWordBoundaryOrAnywhere)
         else:
@@ -239,6 +244,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.setCenterOnScroll(settings.CENTER_ON_SCROLL)
 
     def set_tab_usage(self):
+        """Update tab stop width and margin line."""
         tab_size = self.pos_margin / settings.MARGIN_LINE * self.indent
         self.setTabStopWidth(tab_size)
         if self._mini:
@@ -247,39 +253,18 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def set_id(self, id_):
         super(Editor, self).set_id(id_)
         if self._mini:
-            #self._mini.set_code(self.document())
             self._mini.set_code(self.toPlainText())
-        if settings.CHECK_STYLE:
-            self.pep8.check_style()
-        if settings.SHOW_MIGRATION_TIPS:
-            self.migration.check_style()
-        if not python3:
-            if settings.FIND_ERRORS:
-                self.errors.check_errors()
-
-    def _add_line_increment(self, lines, blockModified, diference):
-        def _inner_increment(line):
-            if line < blockModified:
-                return line
-            return line + diference
-        return list(map(_inner_increment, lines))
-
-    def _add_line_increment_for_dict(self, data, blockModified, diference):
-        def _inner_increment(line):
-            if line < blockModified:
-                return line
-            newLine = line + diference
-            summary = data.pop(line)
-            data[newLine] = summary
-            return newLine
-        list(map(_inner_increment, list(data.keys())))
-        return data
+        #if settings.CHECK_STYLE:
+            #self.pep8.check_style()
+        #if settings.SHOW_MIGRATION_TIPS:
+            #self.migration.check_style()
+        #if not python3:
+            #if settings.FIND_ERRORS:
+                #self.errors.check_errors()
 
     def _update_file_metadata(self, val):
         """Update the info of bookmarks, breakpoint, pep8 and static errors."""
-        if (self.pep8.pep8checks or self.errors.errorsSummary or
-           self.migration.migration_data or
-           self._sidebarWidget._bookmarks or
+        if (self._sidebarWidget._bookmarks or
            self._sidebarWidget._breakpoints or
            self._sidebarWidget._foldedBlocks):
             cursor = self.textCursor()
@@ -288,35 +273,29 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             else:
                 diference = 0
             blockNumber = cursor.blockNumber() - abs(diference)
-            if self.pep8.pep8checks:
-                self.pep8.pep8checks = self._add_line_increment_for_dict(
-                    self.pep8.pep8checks, blockNumber, diference)
-                self._sidebarWidget._pep8Lines = list(
-                    self.pep8.pep8checks.keys())
-            if self.migration.migration_data:
-                self.migration.migration_data = \
-                    self._add_line_increment_for_dict(
-                        self.migration.migration_data, blockNumber, diference)
-                self._sidebarWidget._migrationLines = list(
-                    self.migration.migration_data.keys())
-            if self.errors.errorsSummary:
-                self.errors.errorsSummary = self._add_line_increment_for_dict(
-                    self.errors.errorsSummary, blockNumber, diference)
-                self._sidebarWidget._errorsLines = list(
-                    self.errors.errorsSummary.keys())
-            if self._sidebarWidget._breakpoints and self.ID:
-                self._sidebarWidget._breakpoints = self._add_line_increment(
-                    self._sidebarWidget._breakpoints, blockNumber, diference)
-                settings.BREAKPOINTS[self.ID] = \
-                    self._sidebarWidget._breakpoints
-            if self._sidebarWidget._bookmarks and self.ID:
-                self._sidebarWidget._bookmarks = self._add_line_increment(
-                    self._sidebarWidget._bookmarks, blockNumber, diference)
-                settings.BOOKMARKS[self.ID] = self._sidebarWidget._bookmarks
+            if self._sidebarWidget.breakpoints:
+                self._sidebarWidget.breakpoints = helpers.add_line_increment(
+                    self._sidebarWidget.breakpoints, blockNumber, diference)
+                #FIXME: use nfile id
+                #settings.BREAKPOINTS[self.ID] = \
+                    #self._sidebarWidget._breakpoints
+            if self._sidebarWidget.bookmarks:
+                self._sidebarWidget.bookmarks = helpers.add_line_increment(
+                    self._sidebarWidget.bookmarks, blockNumber, diference)
+                #FIXME: use nfile id
+                #settings.BOOKMARKS[self.ID] = self._sidebarWidget._bookmarks
             if self._sidebarWidget._foldedBlocks and self.ID:
                 self._sidebarWidget._foldedBlocks = self._add_line_increment(
                     self._sidebarWidget._foldedBlocks, blockNumber - 1,
                     diference)
+        if self._neditable.has_checkers:
+            cursor = self.textCursor()
+            if self.__lines_count:
+                diference = val - self.__lines_count
+            else:
+                diference = 0
+            blockNumber = cursor.blockNumber() - abs(diference)
+            self._neditable.update_checkers_metadata(blockNumber, diference)
         self.__lines_count = val
         self.highlight_current_line()
 

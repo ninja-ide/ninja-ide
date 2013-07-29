@@ -32,7 +32,7 @@ class MigrationTo3(QThread):
         QThread.__init__(self)
         self._editor = editor
         self._path = ''
-        self.migration_data = {}
+        self.checks = {}
         if settings.IS_WINDOWS and settings.PYTHON_PATH_CONFIGURED_BY_USER:
             tool_path = os.path.join(os.path.dirname(settings.PYTHON_PATH),
                 'Tools', 'Scripts', '2to3.py')
@@ -50,7 +50,7 @@ class MigrationTo3(QThread):
         exts = settings.SYNTAX.get('python')['extension']
         file_ext = file_manager.get_file_extension(self._path)
         if file_ext in exts:
-            self.migration_data = {}
+            self.checks = {}
             lineno = 0
             lines_to_remove = []
             lines_to_add = []
@@ -80,7 +80,7 @@ class MigrationTo3(QThread):
                     for nro, _ in lines_to_remove:
                         if lineno == -1:
                             lineno = nro
-                        self.migration_data[nro] = (message, lineno)
+                        self.checks[nro] = (message, lineno)
                     parsing_adds = False
                     lines_to_add = []
                     lines_to_remove = []
