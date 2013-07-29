@@ -221,7 +221,7 @@ COLOR_SCHEME = {
     "locator-path-selected": "white",
     "migration-underline": "blue",
     "current-line-opacity": 20,
-    "error-background-opacity": 60,
+    "checker-background-opacity": 60,
 }
 
 CUSTOM_SCHEME = {}

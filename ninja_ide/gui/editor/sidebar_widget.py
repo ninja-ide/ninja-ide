@@ -41,9 +41,10 @@ from ninja_ide.gui.editor import helpers
 
 class SidebarWidget(QWidget):
 
-    def __init__(self, editor, filename):
+    def __init__(self, editor, neditable):
         QWidget.__init__(self, editor)
         self.edit = editor
+        self._neditable = neditable
         self.highest_line = 0
         self.foldArea = 15
         self.rightArrowIcon = QPixmap()
@@ -58,14 +59,12 @@ class SidebarWidget(QWidget):
         self.foldedBlocks = []
         self.breakpoints = []
         self.bookmarks = []
-        self._pep8Lines = []
-        self._errorsLines = []
-        self._migrationLines = []
 
-        if filename in settings.BREAKPOINTS:
-            self.breakpoints = settings.BREAKPOINTS[filename]
-        if filename in settings.BOOKMARKS:
-            self.bookmarks = settings.BOOKMARKS[filename]
+        #TODO: Extract filename from neditable
+        #if filename in settings.BREAKPOINTS:
+            #self.breakpoints = settings.BREAKPOINTS[filename]
+        #if filename in settings.BOOKMARKS:
+            #self.bookmarks = settings.BOOKMARKS[filename]
 
     def update_area(self):
         maxLine = math.ceil(math.log10(self.edit.blockCount()))
@@ -95,15 +94,6 @@ class SidebarWidget(QWidget):
         if self._foldedBlocks and self.ID:
             self._foldedBlocks = self._add_line_increment(
                 self._foldedBlocks, blockNumber - 1, diference)
-
-    def pep8_check_lines(self, lines):
-        self._pep8Lines = lines
-
-    def static_errors_lines(self, lines):
-        self._errorsLines = lines
-
-    def migration_lines(self, lines):
-        self._migrationLines = lines
 
     def code_folding_event(self, lineNumber):
         if self._is_folded(lineNumber):
@@ -223,12 +213,6 @@ class SidebarWidget(QWidget):
             resources.COLOR_SCHEME['sidebar-background'])
         foreground = resources.CUSTOM_SCHEME.get('sidebar-foreground',
             resources.COLOR_SCHEME['sidebar-foreground'])
-        pep8color = resources.CUSTOM_SCHEME.get('pep8-underline',
-            resources.COLOR_SCHEME['pep8-underline'])
-        errorcolor = resources.CUSTOM_SCHEME.get('error-underline',
-            resources.COLOR_SCHEME['error-underline'])
-        migrationcolor = resources.CUSTOM_SCHEME.get('migration-underline',
-            resources.COLOR_SCHEME['migration-underline'])
         painter.fillRect(self.rect(), QColor(background))
 
         block = self.edit.firstVisibleBlock()
@@ -245,33 +229,20 @@ class SidebarWidget(QWidget):
                 break
 
             # Set the Painter Pen depending on special lines
+            painter.setPen(QColor(foreground))
             error = False
-            if settings.CHECK_STYLE and \
-               ((line_count - 1) in self._pep8Lines):
-                painter.setPen(QColor(pep8color))
-                font = painter.font()
-                font.setItalic(True)
-                font.setUnderline(True)
-                painter.setFont(font)
-                error = True
-            elif settings.FIND_ERRORS and \
-                 ((line_count - 1) in self._errorsLines):
-                painter.setPen(QColor(errorcolor))
-                font = painter.font()
-                font.setItalic(True)
-                font.setUnderline(True)
-                painter.setFont(font)
-                error = True
-            elif settings.SHOW_MIGRATION_TIPS and \
-                 ((line_count - 1) in self._migrationLines):
-                painter.setPen(QColor(migrationcolor))
-                font = painter.font()
-                font.setItalic(True)
-                font.setUnderline(True)
-                painter.setFont(font)
-                error = True
-            else:
-                painter.setPen(QColor(foreground))
+            checkers = sorted(self._neditable.registered_checkers,
+                key=lambda x: x[2], reverse=True)
+            for items in checkers:
+                checker, color, _ = items
+                if (line_count - 1) in checker.checks:
+                    painter.setPen(QColor(color))
+                    font = painter.font()
+                    font.setItalic(True)
+                    font.setUnderline(True)
+                    painter.setFont(font)
+                    error = True
+                    break
 
             # We want the line number for the selected line to be bold.
             bold = False

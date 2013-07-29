@@ -25,7 +25,6 @@ from PyQt4 import uic
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QSplitter
 from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QStyle
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QIcon
@@ -785,10 +784,9 @@ class _MainContainer(QWidget):
         self.connect(editorWidget,
             SIGNAL("locateFunction(QString, QString, bool)"),
             self._editor_locate_function)
-        self.connect(editorWidget, SIGNAL("warningsFound(QPlainTextEdit)"),
-            self._show_warning_tab_indicator)
-        self.connect(editorWidget, SIGNAL("errorsFound(QPlainTextEdit)"),
-            self._show_error_tab_indicator)
+        self.connect(editorWidget,
+            SIGNAL("checksFound(QPlainTextEdit, PyQt_PyObject)"),
+            self._show_tab_indicator)
         self.connect(editorWidget, SIGNAL("cleanDocument(QPlainTextEdit)"),
             self._hide_icon_tab_indicator)
         self.connect(editorWidget, SIGNAL("findOcurrences(QString)"),
@@ -863,19 +861,11 @@ class _MainContainer(QWidget):
     def _find_occurrences(self, word):
         self.emit(SIGNAL("findOcurrences(QString)"), word)
 
-    def _show_warning_tab_indicator(self, editorWidget):
+    def _show_tab_indicator(self, editorWidget, icon):
         index = self.actualTab.indexOf(editorWidget)
         self.emit(SIGNAL("updateFileMetadata()"))
-        if index >= 0:
-            self.actualTab.setTabIcon(index,
-                QIcon(self.style().standardIcon(QStyle.SP_MessageBoxWarning)))
-
-    def _show_error_tab_indicator(self, editorWidget):
-        index = self.actualTab.indexOf(editorWidget)
-        self.emit(SIGNAL("updateFileMetadata()"))
-        if index >= 0:
-            self.actualTab.setTabIcon(index,
-                QIcon(resources.IMAGES['bug']))
+        if index >= 0 and icon:
+            self.actualTab.setTabIcon(index, icon)
 
     def _hide_icon_tab_indicator(self, editorWidget):
         index = self.actualTab.indexOf(editorWidget)
