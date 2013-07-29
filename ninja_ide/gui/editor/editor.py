@@ -82,8 +82,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     locateFunction(QString, QString, bool) [functionName, filePath, isVariable]
     openDropFile(QString)
     addBackItemNavigation()
-    warningsFound(QPlainTextEdit)
-    errorsFound(QPlainTextEdit)
+    checksFound(QPlainTextEdit, PyQt_PyObject)
     cleanDocument(QPlainTextEdit)
     findOcurrences(QString)
     cursorPositionChange(int, int)    #row, col
@@ -99,14 +98,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.set_flags()
         self.__lines_count = None
 
-        self._sidebarWidget = sidebar_widget.SidebarWidget(self, 'filename')
+        self._sidebarWidget = sidebar_widget.SidebarWidget(self, neditable)
         #if project_obj is not None:
             #additional_builtins = project_obj.additional_builtins
         #else:
             #additional_builtins = []
-        #self.pep8 = pep8_checker.Pep8Checker(self)
-        #self.errors = errors_checker.ErrorsChecker(self, additional_builtins)
-        #self.migration = migration_2to3.MigrationTo3(self)
 
         self.highlighter = None
         #self.syncDocErrorsSignal = False
@@ -169,6 +165,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.highlight_current_line)
         self.connect(self, SIGNAL("blockCountChanged(int)"),
             self._update_file_metadata)
+        self.connect(self._neditable, SIGNAL("checkersUpdated()"),
+            self._show_tab_icon_notification)
 
         self._mini = None
         if settings.SHOW_MINIMAP:
@@ -254,13 +252,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         super(Editor, self).set_id(id_)
         if self._mini:
             self._mini.set_code(self.toPlainText())
-        #if settings.CHECK_STYLE:
-            #self.pep8.check_style()
-        #if settings.SHOW_MIGRATION_TIPS:
-            #self.migration.check_style()
-        #if not python3:
-            #if settings.FIND_ERRORS:
-                #self.errors.check_errors()
 
     def _update_file_metadata(self, val):
         """Update the info of bookmarks, breakpoint, pep8 and static errors."""
@@ -285,57 +276,24 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.__lines_count = val
         self.highlight_current_line()
 
-    def show_pep8_errors(self):
-        self._sidebarWidget.pep8_check_lines(list(self.pep8.pep8checks.keys()))
-        if self.syncDocErrorsSignal:
-            self._sync_tab_icon_notification_signal()
-        else:
-            self.syncDocErrorsSignal = True
-        self.pep8.wait()
+    def _show_tab_icon_notification(self):
+        signal_emitted = False
+        for items in self._neditable.registered_checkers:
+            checker, _, _ = items
+            if checker.checks:
+                self.emit(
+                    SIGNAL("checksFound(QPlainTextEdit, PyQt_PyObject)"),
+                    self, checker.checker_icon)
+                signal_emitted = True
 
-    def show_migration_info(self):
-        lines = list(self.migration.migration_data.keys())
-        self._sidebarWidget.migration_lines(lines)
-        self.highlighter.rehighlight_lines(lines)
-        self.emit(SIGNAL("migrationAnalyzed()"))
-        self.migration.wait()
-
-    def hide_pep8_errors(self):
-        """Hide the pep8 errors from the sidebar and lines highlighted."""
-        self._sidebarWidget.pep8_check_lines([])
-        self.pep8.reset()
-        self.highlighter.rehighlight_lines([])
-        self._sync_tab_icon_notification_signal()
-
-    def show_static_errors(self):
-        self._sidebarWidget.static_errors_lines(
-            list(self.errors.errorsSummary.keys()))
-        if self.syncDocErrorsSignal:
-            self._sync_tab_icon_notification_signal()
-        else:
-            self.syncDocErrorsSignal = True
-        self.errors.wait()
-
-    def hide_lint_errors(self):
-        """Hide the lint errors from the sidebar and lines highlighted."""
-        self._sidebarWidget.static_errors_lines([])
-        self.errors.reset()
-        self.highlighter.rehighlight_lines([])
-        self._sync_tab_icon_notification_signal()
-
-    def _sync_tab_icon_notification_signal(self):
-        self.syncDocErrorsSignal = False
-        if self.errors.errorsSummary:
-            self.emit(SIGNAL("errorsFound(QPlainTextEdit)"), self)
-        elif self.pep8.pep8checks:
-            self.emit(SIGNAL("warningsFound(QPlainTextEdit)"), self)
-        else:
+        if not signal_emitted:
             self.emit(SIGNAL("cleanDocument(QPlainTextEdit)"), self)
-        if self.highlighter:
-            lines = list(set(list(self.errors.errorsSummary.keys()) +
-                        list(self.pep8.pep8checks.keys())))
-            self.highlighter.rehighlight_lines(lines)
-            self.highlight_current_line()
+        #TODO:
+        #if self.highlighter:
+            #lines = list(set(list(self.errors.errorsSummary.keys()) +
+                        #list(self.pep8.pep8checks.keys())))
+            #self.highlighter.rehighlight_lines(lines)
+            #self.highlight_current_line()
 
     def has_write_permission(self):
         if self.newDocument:
@@ -1143,26 +1101,22 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if not self.isReadOnly():
             block = self.textCursor()
             selection = QTextEdit.ExtraSelection()
-            if block.blockNumber() in self.errors.errorsSummary:
-                lineColor = self._error_line_color
-                lineColor.setAlpha(resources.CUSTOM_SCHEME.get(
-                    "error-background-opacity",
-                    resources.COLOR_SCHEME["error-background-opacity"]))
-            elif block.blockNumber() in self.pep8.pep8checks:
-                lineColor = self._pep8_line_color
-                lineColor.setAlpha(resources.CUSTOM_SCHEME.get(
-                    "error-background-opacity",
-                    resources.COLOR_SCHEME["error-background-opacity"]))
-            elif block.blockNumber() in self.migration.migration_data:
-                lineColor = self._migration_line_color
-                lineColor.setAlpha(resources.CUSTOM_SCHEME.get(
-                    "error-background-opacity",
-                    resources.COLOR_SCHEME["error-background-opacity"]))
-            else:
-                lineColor = self._current_line_color
-                lineColor.setAlpha(resources.CUSTOM_SCHEME.get(
-                    "current-line-opacity",
-                    resources.COLOR_SCHEME["current-line-opacity"]))
+            lineColor = self._current_line_color
+            lineColor.setAlpha(resources.CUSTOM_SCHEME.get(
+                "current-line-opacity",
+                resources.COLOR_SCHEME["current-line-opacity"]))
+
+            checkers = sorted(self._neditable.registered_checkers,
+                key=lambda x: x[2], reverse=True)
+            for items in checkers:
+                checker, color, _ = items
+                if block.blockNumber() in checker.checks:
+                    lineColor = color
+                    lineColor.setAlpha(resources.CUSTOM_SCHEME.get(
+                        "checker-background-opacity",
+                        resources.COLOR_SCHEME["checker-background-opacity"]))
+                    break
+
             selection.format.setBackground(lineColor)
             selection.format.setProperty(QTextFormat.FullWidthSelection, True)
             selection.cursor = self.textCursor()

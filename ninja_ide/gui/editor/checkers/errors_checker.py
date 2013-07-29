@@ -23,10 +23,12 @@ try:
 except ImportError:
     print('Errors checker not working in Python3')
 
+from PyQt4.QtGui import QIcon
 from PyQt4.QtCore import QThread
 
-from ninja_ide.core.file_handling import file_manager
+from ninja_ide import resources
 from ninja_ide.core import settings
+from ninja_ide.core.file_handling import file_manager
 try:
     from ninja_ide.dependencies.pyflakes_mod import checker
 except ImportError:
@@ -47,7 +49,9 @@ class ErrorsChecker(QThread):
         self._encoding = ''
         self.checks = {}
 
-    def check_errors(self):
+        self.checker_icon = QIcon(resources.IMAGES['bug'])
+
+    def run_checks(self):
         if not self.isRunning():
             self._path = self._editor.ID
             self._encoding = self._editor.encoding
