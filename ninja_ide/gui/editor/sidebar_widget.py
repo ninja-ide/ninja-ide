@@ -80,6 +80,22 @@ class SidebarWidget(QWidget):
     def update(self, *args):
         QWidget.update(self, *args)
 
+    def update_sidebar_marks(self, blockNumber, diference):
+        if self.breakpoints:
+            self.breakpoints = helpers.add_line_increment(
+                self.breakpoints, blockNumber, diference)
+            #FIXME: use nfile id
+            #settings.BREAKPOINTS[self.ID] = \
+                #self._sidebarWidget._breakpoints
+        if self.bookmarks:
+            self.bookmarks = helpers.add_line_increment(
+                self.bookmarks, blockNumber, diference)
+            #FIXME: use nfile id
+            #settings.BOOKMARKS[self.ID] = self._sidebarWidget._bookmarks
+        if self._foldedBlocks and self.ID:
+            self._foldedBlocks = self._add_line_increment(
+                self._foldedBlocks, blockNumber - 1, diference)
+
     def pep8_check_lines(self, lines):
         self._pep8Lines = lines
 

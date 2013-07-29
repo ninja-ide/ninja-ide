@@ -273,21 +273,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             else:
                 diference = 0
             blockNumber = cursor.blockNumber() - abs(diference)
-            if self._sidebarWidget.breakpoints:
-                self._sidebarWidget.breakpoints = helpers.add_line_increment(
-                    self._sidebarWidget.breakpoints, blockNumber, diference)
-                #FIXME: use nfile id
-                #settings.BREAKPOINTS[self.ID] = \
-                    #self._sidebarWidget._breakpoints
-            if self._sidebarWidget.bookmarks:
-                self._sidebarWidget.bookmarks = helpers.add_line_increment(
-                    self._sidebarWidget.bookmarks, blockNumber, diference)
-                #FIXME: use nfile id
-                #settings.BOOKMARKS[self.ID] = self._sidebarWidget._bookmarks
-            if self._sidebarWidget._foldedBlocks and self.ID:
-                self._sidebarWidget._foldedBlocks = self._add_line_increment(
-                    self._sidebarWidget._foldedBlocks, blockNumber - 1,
-                    diference)
+            self._sidebarWidget.update_sidebar_marks(blockNumber, diference)
         if self._neditable.has_checkers:
             cursor = self.textCursor()
             if self.__lines_count:
