@@ -42,6 +42,7 @@ from ninja_ide.core import ipc
 from ninja_ide.gui import actions
 from ninja_ide.gui import translations
 from ninja_ide.gui import updates
+from ninja_ide.gui.editor import neditable
 from ninja_ide.gui.dialogs import about_ninja
 from ninja_ide.gui.dialogs import plugins_manager
 from ninja_ide.gui.dialogs import themes_manager
@@ -99,6 +100,9 @@ class IDE(QMainWindow):
         #Load the size and the position of the main window
         self.load_window_geometry()
         self.__project_to_open = 0
+
+        #Editables
+        self.__neditables = {}
 
         #Start server if needed
         self.s_listener = None
@@ -295,6 +299,13 @@ class IDE(QMainWindow):
             shortcut.setKey(short(shortcut_name))
         if action:
             action.setShortcut(short(shortcut_name))
+
+    def get_editable(self, filename):
+        editable = self.__neditables.get(filename)
+        if editable is None:
+            editable = neditable.NEditable()
+            self.__neditables[editable.ID] = editable
+        return editable
 
     def _close_tray_icon(self):
         """Close the System Tray Icon."""
