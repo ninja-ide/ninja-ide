@@ -40,7 +40,9 @@ class MigrationTo3(QThread):
         else:
             self._command = ['2to3']
 
-    def check_style(self):
+        self.checker_icon = None
+
+    def run_checks(self):
         if not self.isRunning() and settings.VALID_2TO3:
             self._path = self._editor.ID
             self.start()
