@@ -752,16 +752,15 @@ class _MainContainer(QWidget):
             tab_to.tab_was_saved(widget)
         tab_from.update_current_widget()
 
-    def add_editor(self, fileName="", project=None, tabIndex=None,
-        syntax=None, use_open_highlight=False):
+    def add_editor(self, fileName="", tabIndex=None):
 
+        ninjaide = IDE.get_service('ide')
         explorer = IDE.get_service('explorer_container')
         if not explorer:
             return
-        project_obj = explorer.get_project_given_filename(fileName)
-        editorWidget = editor.create_editor(fileName=fileName, project=project,
-            syntax=syntax, use_open_highlight=use_open_highlight,
-            project_obj=project_obj)
+        #project_obj = explorer.get_project_given_filename(fileName)
+        editable = ninjaide.get_editable(fileName)
+        editorWidget = editable.build_ui()
 
         if not fileName:
             tabName = "New Document"
@@ -865,6 +864,8 @@ class _MainContainer(QWidget):
         index = self.actualTab.indexOf(editorWidget)
         self.emit(SIGNAL("updateFileMetadata()"))
         if index >= 0 and icon:
+            if isinstance(icon, int):
+                icon = QIcon(self.style().standardIcon(icon))
             self.actualTab.setTabIcon(index, icon)
 
     def _hide_icon_tab_indicator(self, editorWidget):
@@ -974,8 +975,7 @@ class _MainContainer(QWidget):
             if not self.is_open(fileName):
                 self.actualTab.notOpening = False
                 content = file_manager.read_file_content(fileName)
-                editorWidget = self.add_editor(fileName, tabIndex=tabIndex,
-                    use_open_highlight=True)
+                editorWidget = self.add_editor(fileName, tabIndex=tabIndex)
 
                 #Add content
                 #we HAVE to add the editor's content before set the ID

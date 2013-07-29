@@ -24,7 +24,7 @@ def register_checker(lang='python', checker=None, color=None, priority=1):
     NOTIFICATIONS_CHECKERS[lang] = checkers
 
 
-def get_checker_for(lang='python'):
+def get_checkers_for(lang='python'):
     """Get a registered checker for some language."""
     global NOTIFICATIONS_CHECKERS
     return NOTIFICATIONS_CHECKERS.get(lang, [])

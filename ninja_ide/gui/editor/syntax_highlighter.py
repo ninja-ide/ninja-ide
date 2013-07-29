@@ -269,7 +269,7 @@ class Scanner(object):
 class SyntaxHighlighter(QSyntaxHighlighter):
 
     def __init__(self, parent, partition_scanner, scanner, formats,
-        errors=None, pep8=None, migration=None):
+        neditable=None):
         """
         :param parent: QDocument or QTextEdit/QPlainTextEdit instance
         'partition_scanner:
@@ -284,9 +284,7 @@ class SyntaxHighlighter(QSyntaxHighlighter):
             The name is the name of a partition or token
         """
         super(SyntaxHighlighter, self).__init__(parent)
-        self.errors = errors
-        self.pep8 = pep8
-        self.migration = migration
+        self._neditable = neditable
         self._old_search = None
 
         if isinstance(partition_scanner, (list, tuple)):
@@ -413,19 +411,19 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         self.setCurrentBlockState(new_state)
 
     def get_error_highlighter(self, block):
-        block_number = block.blockNumber()
+        #block_number = block.blockNumber()
         highlight_errors = self.__remove_error_highlight
         valid_error_line = False
-        if self.errors and (block_number in self.errors.errorsSummary):
-            highlight_errors = self.__highlight_lint
-            valid_error_line = True
-        elif self.pep8 and (block_number in self.pep8.pep8checks):
-            highlight_errors = self.__highlight_pep8
-            valid_error_line = True
-        elif self.migration and (
-             block_number in self.migration.migration_data):
-            highlight_errors = self.__highlight_migration
-            valid_error_line = True
+        #if self.errors and (block_number in self.errors.errorsSummary):
+            #highlight_errors = self.__highlight_lint
+            #valid_error_line = True
+        #elif self.pep8 and (block_number in self.pep8.pep8checks):
+            #highlight_errors = self.__highlight_pep8
+            #valid_error_line = True
+        #elif self.migration and (
+             #block_number in self.migration.migration_data):
+            #highlight_errors = self.__highlight_migration
+            #valid_error_line = True
         return valid_error_line, highlight_errors
 
     def set_selected_word(self, word, partial=False):
