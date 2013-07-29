@@ -69,6 +69,28 @@ def get_indentation(line, indent=settings.INDENT, useTabs=settings.USE_TABS):
     return indentation
 
 
+def add_line_increment(self, lines, blockModified, diference):
+    """Increment the line number of the list content when needed."""
+    def _inner_increment(line):
+        if line < blockModified:
+            return line
+        return line + diference
+    return list(map(_inner_increment, lines))
+
+
+def add_line_increment_for_dict(self, data, blockModified, diference):
+    """Increment the line number of the dict content when needed."""
+    def _inner_increment(line):
+        if line < blockModified:
+            return line
+        newLine = line + diference
+        summary = data.pop(line)
+        data[newLine] = summary
+        return newLine
+    list(map(_inner_increment, list(data.keys())))
+    return data
+
+
 def get_first_keyword(line):
     word = line.split()[0]
     keyword = remove_symbols(word)

@@ -55,17 +55,17 @@ class SidebarWidget(QWidget):
         self.patNotPython = re.compile('(\s)*#begin-fold:|(.)*{')
         self.patComment = re.compile(r"(\s)*\"\"\"")
         self._endDocstringBlocks = []
-        self._foldedBlocks = []
-        self._breakpoints = []
-        self._bookmarks = []
+        self.foldedBlocks = []
+        self.breakpoints = []
+        self.bookmarks = []
         self._pep8Lines = []
         self._errorsLines = []
         self._migrationLines = []
 
         if filename in settings.BREAKPOINTS:
-            self._breakpoints = settings.BREAKPOINTS[filename]
+            self.breakpoints = settings.BREAKPOINTS[filename]
         if filename in settings.BOOKMARKS:
-            self._bookmarks = settings.BOOKMARKS[filename]
+            self.bookmarks = settings.BOOKMARKS[filename]
 
     def update_area(self):
         maxLine = math.ceil(math.log10(self.edit.blockCount()))
@@ -109,7 +109,7 @@ class SidebarWidget(QWidget):
             block.setLineCount(0)
             block = block.next()
 
-        self._foldedBlocks.append(startBlock.blockNumber())
+        self.foldedBlocks.append(startBlock.blockNumber())
         self.edit.document().markContentsDirty(startBlock.position(), endPos)
 
     def _unfold(self, lineNumber):
@@ -122,13 +122,13 @@ class SidebarWidget(QWidget):
             block.setVisible(True)
             block.setLineCount(block.layout().lineCount())
             endPos = block.position() + block.length()
-            if block.blockNumber() in self._foldedBlocks:
+            if block.blockNumber() in self.foldedBlocks:
                 close = self._find_fold_closing(block)
                 block = self.edit.document().findBlockByNumber(close)
             else:
                 block = block.next()
 
-        self._foldedBlocks.remove(startBlock.blockNumber())
+        self.foldedBlocks.remove(startBlock.blockNumber())
         self.edit.document().markContentsDirty(startBlock.position(), endPos)
 
     def _is_folded(self, line):
@@ -342,14 +342,14 @@ class SidebarWidget(QWidget):
                     can_fold = False
 
                 if can_fold:
-                    if block.blockNumber() in self._foldedBlocks:
+                    if block.blockNumber() in self.foldedBlocks:
                         painter.drawPixmap(xofs, round(position.y()),
                             self.rightArrowIcon)
                     else:
                         painter.drawPixmap(xofs, round(position.y()),
                             self.downArrowIcon)
             #Add Bookmarks and Breakpoint
-            if block.blockNumber() in self._breakpoints:
+            if block.blockNumber() in self.breakpoints:
                 linear_gradient = QLinearGradient(
                     xofs, round(position.y()),
                     xofs + self.foldArea, round(position.y()) + self.foldArea)
@@ -362,7 +362,7 @@ class SidebarWidget(QWidget):
                     xofs + 1,
                     round(position.y()) + 6,
                     self.foldArea - 1, self.foldArea - 1)
-            elif block.blockNumber() in self._bookmarks:
+            elif block.blockNumber() in self.bookmarks:
                 linear_gradient = QLinearGradient(
                     xofs, round(position.y()),
                     xofs + self.foldArea, round(position.y()) + self.foldArea)
@@ -425,19 +425,19 @@ class SidebarWidget(QWidget):
                     if position.y() < ys and (position.y() + fh) > ys and \
                       event.button() == Qt.LeftButton:
                         line = block.blockNumber()
-                        if line in self._breakpoints:
-                            self._breakpoints.remove(line)
+                        if line in self.breakpoints:
+                            self.breakpoints.remove(line)
                         else:
-                            self._breakpoints.append(line)
+                            self.breakpoints.append(line)
                         self.update()
                         break
                     elif position.y() < ys and (position.y() + fh) > ys and \
                       event.button() == Qt.RightButton:
                         line = block.blockNumber()
-                        if line in self._bookmarks:
-                            self._bookmarks.remove(line)
+                        if line in self.bookmarks:
+                            self.bookmarks.remove(line)
                         else:
-                            self._bookmarks.append(line)
+                            self.bookmarks.append(line)
                         self.update()
                         break
                     block = block.next()
@@ -446,27 +446,27 @@ class SidebarWidget(QWidget):
                 self.code_folding_event(lineNumber)
 
     def _save_breakpoints_bookmarks(self):
-        if self._bookmarks and self.edit.ID != "":
-            settings.BOOKMARKS[self.edit.ID] = self._bookmarks
+        if self.bookmarks and self.edit.ID != "":
+            settings.BOOKMARKS[self.edit.ID] = self.bookmarks
         elif self.edit.ID in settings.BOOKMARKS:
             settings.BOOKMARKS.pop(self.edit.ID)
-        if self._breakpoints and self.edit.ID != "":
-            settings.BREAKPOINTS[self.edit.ID] = self._breakpoints
+        if self.breakpoints and self.edit.ID != "":
+            settings.BREAKPOINTS[self.edit.ID] = self.breakpoints
         elif self.edit.ID in settings.BREAKPOINTS:
             settings.BREAKPOINTS.pop(self.edit.ID)
 
     def set_breakpoint(self, lineno):
-        if lineno in self._breakpoints:
-            self._breakpoints.remove(lineno)
+        if lineno in self.breakpoints:
+            self.breakpoints.remove(lineno)
         else:
-            self._breakpoints.append(lineno)
+            self.breakpoints.append(lineno)
         self.update()
         self._save_breakpoints_bookmarks()
 
     def set_bookmark(self, lineno):
-        if lineno in self._bookmarks:
-            self._bookmarks.remove(lineno)
+        if lineno in self.bookmarks:
+            self.bookmarks.remove(lineno)
         else:
-            self._bookmarks.append(lineno)
+            self.bookmarks.append(lineno)
         self.update()
         self._save_breakpoints_bookmarks()

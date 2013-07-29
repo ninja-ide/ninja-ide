@@ -598,6 +598,10 @@ class IDE(QMainWindow):
             #show the dialog
             plugin_error_dialog.exec_()
 
+    def show_status_message(self, message, duration=1000):
+        """Show status message."""
+        pass
+
     def show_manager(self):
         """Open the Plugins Manager to install/uninstall plugins."""
         manager = plugins_manager.PluginsManagerWidget(self)
