@@ -49,6 +49,7 @@ from ninja_ide.gui.main_panel import actions
 from ninja_ide.gui.main_panel import browser_widget
 from ninja_ide.gui.main_panel import start_page
 from ninja_ide.gui.main_panel import image_viewer
+from ninja_ide.gui.main_panel import split_orientation
 from ninja_ide.gui.dialogs import from_import_dialog
 from ninja_ide.tools import locator
 from ninja_ide.tools import runner
@@ -1456,6 +1457,8 @@ class _MainContainer(QWidget):
         self.split_tab(True)
 
     def split_tabv(self):
+        #dialog = split_orientation.SplitOrientation(self)
+        #dialog.show()
         self.split_tab(False)
 
     def navigate_back(self):

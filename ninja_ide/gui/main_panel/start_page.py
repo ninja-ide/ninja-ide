@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
-import os
-from urlparse import urlparse, urlunparse
 
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtCore import QUrl
-from PyQt4.QtCore import QDir
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtDeclarative import QDeclarativeView
 
 from ninja_ide import resources
+from ninja_ide.tools import ui_tools
 from ninja_ide.gui.main_panel import itab_item
 
 
@@ -23,10 +20,7 @@ class StartPage(QWidget, itab_item.ITabItem):
         self.view = QDeclarativeView()
         self.view.setMinimumWidth(400)
         self.view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
-        path_qml = QDir.fromNativeSeparators(
-            os.path.join(resources.QML_FILES, "StartPage.qml"))
-        path_qml = urlunparse(urlparse(path_qml)._replace(scheme='file'))
-        self.view.setSource(QUrl(path_qml))
+        self.view.setSource(ui_tools.get_qml_resource("StartPage.qml"))
         self.root = self.view.rootObject()
         vbox.addWidget(self.view)
 

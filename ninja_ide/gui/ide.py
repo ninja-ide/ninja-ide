@@ -630,9 +630,10 @@ class IDE(QMainWindow):
             #show the dialog
             plugin_error_dialog.exec_()
 
-    def show_status_message(self, message, duration=1000):
+    def show_status_message(self, message, duration=3000):
         """Show status message."""
-        pass
+        self.notification.set_message(message, duration)
+        self.notification.show()
 
     def show_manager(self):
         """Open the Plugins Manager to install/uninstall plugins."""
