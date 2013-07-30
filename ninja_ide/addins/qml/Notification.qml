@@ -3,52 +3,75 @@ import QtQuick 1.1
 Rectangle {
     id: frame
     width: 400
-    height: 60
+    height: 40
     color: "black"
-    opacity: 0.5
+    opacity: 0
     radius: 15
     border.color: "#aae3ef"
     border.width: 2
 
-    function set_text(message){
-        text.text = message;
+    property int interval: 2000
+    signal close
+
+    function setText(message){
+        textArea.text = message;
+    }
+
+    function start(interval) {
+        frame.interval = interval;
+        showFrame.start();
+    }
+
+    SequentialAnimation {
+        id: showFrame
+        running: false
+        NumberAnimation { target: frame; property: "opacity"; to: 0.5; duration: (frame.interval / 2); easing.type: Easing.InOutQuad }
+        NumberAnimation { target: frame; property: "opacity"; to: 0; duration: (frame.interval / 2); easing.type: Easing.InOutQuad }
+    }
+
+    onOpacityChanged: {
+        if(frame.opacity == 0){
+            frame.close();
+        }
     }
 
     Text{
-        id: text
-        text: "Esta es una notification del sistema."
+        id: textArea
+        text: ""
         wrapMode: Text.WordWrap
-        font.pixelSize: 18
+        font.pixelSize: 16
         font.bold: true
         anchors.fill: parent
-        anchors.topMargin: 20
-        anchors.leftMargin: 20
-        anchors.rightMargin: 20
-        anchors.bottomMargin: 20
+        anchors.margins: 10
         color: "white"
+        width: frame.width
+        elide: Text.ElideRight
     }
-
-    // Animation
-    Behavior on y { PropertyAnimation {duration: 1000} }
-    NumberAnimation { id: show; target: parent; properties: "opacity"; from: 0.5; to: 1; duration: 2000 }
-    NumberAnimation { id: hide; target: parent; properties: "opacity";from: 1; to: 0.5; duration: 2000 }
 
     MouseArea {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
-        onEntered: { show.running = true; }
-        onExited: { hide.running = true; }
     }
 
-    states: State {
-         name: "entered"; when: mouseArea.containsMouse
-         PropertyChanges { target: frame; opacity: 1 }
-     }
+    states: [
+         State {
+             name: "entered";
+             when: mouseArea.containsMouse
+             PropertyChanges { target: frame; opacity: 1 }
+         },
+         State {
+             name: "";
+             when: !mouseArea.containsMouse
+             PropertyChanges { target: frame; opacity: 0.5 }
+         }
+     ]
 
     transitions: Transition {
         reversible: true
-
+        from: ""
+        to: "entered"
+        NumberAnimation { target: parent; properties: "opacity"; duration: 500 }
     }
 
 }

@@ -19,6 +19,7 @@ from __future__ import absolute_import
 import os
 import math
 import collections
+from urlparse import urlparse, urlunparse
 
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QWidget
@@ -51,6 +52,8 @@ from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import QDir
+from PyQt4.QtCore import QUrl
 from PyQt4.QtCore import QSize
 from PyQt4.QtCore import QObject
 from PyQt4.QtCore import SIGNAL
@@ -664,6 +667,13 @@ def install_shortcuts(obj, actions, ide):
 
         if short_key and shortcut:
             ide.register_shortcut(short_key, shortcut, item_ui)
+
+
+def get_qml_resource(qmlpath):
+    path_qml = QDir.fromNativeSeparators(
+        os.path.join(resources.QML_FILES, qmlpath))
+    path_qml = urlunparse(urlparse(path_qml)._replace(scheme='file'))
+    return QUrl(path_qml)
 
 
 class TabShortcuts(QShortcut):
