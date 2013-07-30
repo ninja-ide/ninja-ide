@@ -5,7 +5,6 @@ from PyQt4.QtCore import SIGNAL
 
 from ninja_ide.gui.editor import checkers
 from ninja_ide.gui.editor import helpers
-from ninja_ide.gui.editor import editor
 
 
 class NEditable(QObject):
@@ -14,9 +13,10 @@ class NEditable(QObject):
     @checkersUpdated()
     """
 
-    def __init__(self, filename=None):
+    def __init__(self, filename=None, project=None):
         super(NEditable, self).__init__()
         self.__id = ''
+        self.__editor = None
         #Create NFile
         if filename is None:
             #temp file
@@ -28,13 +28,20 @@ class NEditable(QObject):
         self._has_checkers = False
         self._lang = 'python'
 
+        #Project:
+        self.project = project
+
         #Checkers:
         self.registered_checkers = []
         self._checkers_executed = 0
 
-        self._ui_instance = None
-
+    def set_editor(self, editor):
+        self.__editor = editor
+        # If we have an editor, let's include the checkers:
         self.include_checkers()
+
+    def update_project(self, project):
+        self.project = project
 
     @property
     def ID(self):
@@ -45,13 +52,6 @@ class NEditable(QObject):
         """Return True if checkers where installaed, False otherwise"""
         return self._has_checkers
 
-    def build_ui(self):
-        """Return an Editor instance."""
-        if not self._ui_instance:
-            #TODO: Complete Editor data (analyze)
-            self._ui_instance = editor.create_editor(self)
-        return self._ui_instance
-
     def include_checkers(self, lang='python'):
         """Initialize the Checkers, should be refreshed on checkers change."""
         self._lang = lang
@@ -60,7 +60,7 @@ class NEditable(QObject):
         self._has_checkers = len(self.registered_checkers) > 0
         for i, values in enumerate(self.registered_checkers):
             Checker, color, priority = values
-            check = Checker(self)
+            check = Checker(self.__editor)
             self.registered_checkers[i] = (check, color, priority)
             self.connect(check, SIGNAL("finished()"),
                 self.show_checkers_notifications)
@@ -74,7 +74,7 @@ class NEditable(QObject):
                     checker.checks, blockNumber, diference)
         self.emit(SIGNAL("checkersUpdated()"))
 
-    def run_checkers(self):
+    def run_checkers(self, content, path=None, encoding=None):
         for items in self.registered_checkers:
             checker = items[0]
             checker.run_checks()

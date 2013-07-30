@@ -94,18 +94,14 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         QPlainTextEdit.__init__(self)
         itab_item.ITabItem.__init__(self)
         self._neditable = neditable
+        self._neditable.set_editor(self)
         #Config Editor
         self.set_flags()
         self.__lines_count = None
 
         self._sidebarWidget = sidebar_widget.SidebarWidget(self, neditable)
-        #if project_obj is not None:
-            #additional_builtins = project_obj.additional_builtins
-        #else:
-            #additional_builtins = []
 
         self.highlighter = None
-        #self.syncDocErrorsSignal = False
         self.allows_less_indentation = ['else', 'elif', 'finally', 'except']
         #Set editor style
         self.apply_editor_style()
@@ -147,19 +143,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self._current_line_color = QColor(
             resources.CUSTOM_SCHEME.get('current-line',
             resources.COLOR_SCHEME['current-line']))
-        #FIXME: use neditable data
-        #self._error_line_color = QColor(
-            #resources.CUSTOM_SCHEME.get('error-underline',
-            #resources.COLOR_SCHEME['error-underline']))
-        #self._pep8_line_color = QColor(
-            #resources.CUSTOM_SCHEME.get('pep8-underline',
-            #resources.COLOR_SCHEME['pep8-underline']))
-        #self._migration_line_color = QColor(
-            #resources.CUSTOM_SCHEME.get('migration-underline',
-            #resources.COLOR_SCHEME['migration-underline']))
 
         self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
             self._sidebarWidget.update_area)
+        #FIXME: Should file saved be handled by neditable??
         self.connect(self, SIGNAL("undoAvailable(bool)"), self._file_saved)
         self.connect(self, SIGNAL("cursorPositionChanged()"),
             self.highlight_current_line)
@@ -172,31 +159,34 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if settings.SHOW_MINIMAP:
             self._mini = minimap.MiniMap(self)
             self._mini.show()
-            self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
-                self._mini.update_visible_area)
 
         #Indentation
-        #FIXME: use neditable data
-        #self.set_project(project_obj)
+        self.load_project_config()
         #Context Menu Options
         self.__actionFindOccurrences = QAction(
             self.tr("Find Usages"), self)
         self.connect(self.__actionFindOccurrences, SIGNAL("triggered()"),
             self._find_occurrences)
 
-    #def set_project(self, project):
-        #if project is not None:
-            #self.indent = project.indentation
-            #self.useTabs = project.useTabs
-            ##Set tab usage
-            #if self.useTabs:
-                #self.set_tab_usage()
-            #self.connect(project._parent,
-                #SIGNAL("projectPropertiesUpdated(QTreeWidgetItem)"),
-                #self.set_project)
-        #else:
-            #self.indent = settings.INDENT
-            #self.useTabs = settings.USE_TABS
+    def load_project_config(self):
+        if self._neditable.project is not None:
+            self.indent = self._neditable.project.indentation
+            self.useTabs = self._neditable.project.use_tabs
+            #Set tab usage
+            if self.useTabs:
+                self.set_tab_usage()
+            self.connect(self._neditable.project,
+                SIGNAL("projectPropertiesUpdated()"), self.load_project_config)
+        else:
+            self.indent = settings.INDENT
+            self.useTabs = settings.USE_TABS
+
+    @property
+    def additional_builtins(self):
+        builtins = None
+        if self._neditable.project:
+            builtins = self._neditable.project.additional_builtins
+        return builtins
 
     def __retreat_to_keywords(self, event):
         """Unindent some kind of blocks if needed."""
@@ -296,7 +286,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             #self.highlight_current_line()
 
     def has_write_permission(self):
-        if self.newDocument:
+        if self._neditable.new_document:
             return True
         return file_manager.has_write_permission(self.ID)
 

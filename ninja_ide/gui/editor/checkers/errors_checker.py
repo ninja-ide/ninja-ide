@@ -41,10 +41,9 @@ class ErrorsChecker(QThread):
     pat_enable_lint = re.compile('(\s)*#lint:enable$')
     pat_ignore_lint = re.compile('(.)+#lint:ok$|(.)+# lint:ok$')
 
-    def __init__(self, editor, additional_builtins=[]):
+    def __init__(self, editor):
         super(ErrorsChecker, self).__init__()
         self._editor = editor
-        self._builtins = additional_builtins
         self._path = ''
         self._encoding = ''
         self.checks = {}
@@ -55,6 +54,7 @@ class ErrorsChecker(QThread):
         if not self.isRunning():
             self._path = self._editor.ID
             self._encoding = self._editor.encoding
+            self._builtins = self._editor.additional_builtins
             self.start()
 
     def reset(self):

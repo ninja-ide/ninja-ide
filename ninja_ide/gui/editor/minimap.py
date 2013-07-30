@@ -26,6 +26,7 @@ from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QPen
 from PyQt4.QtGui import QBrush
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QPropertyAnimation
 
 from ninja_ide import resources
@@ -52,6 +53,9 @@ class MiniMap(QPlainTextEdit):
         self._parent = parent
         self.highlighter = None
         self.lines_count = 0
+
+        self.connect(self._parent, SIGNAL("updateRequest(const QRect&, int)"),
+                self.update_visible_area)
 
         if ACTIVATE_OPACITY:
             self.goe = QGraphicsOpacityEffect()
