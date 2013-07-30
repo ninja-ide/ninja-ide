@@ -804,30 +804,10 @@ class ProjectTree(QTreeWidgetItem):
         self.path = path
         self.isFolder = True
         self.setForeground(0, QBrush(QColor(255, 165, 0)))
-        project = json_manager.read_ninja_project(path)
-        self.name = project.get('name', '')
-        if self.name == '':
-            self.name = _name
+
+        #FIXME: Use NProject
         self.setText(0, self.name)
-        self.projectType = project.get('project-type', '')
-        self.description = project.get('description', '')
-        self.url = project.get('url', '')
-        self.license = project.get('license', '')
-        self.mainFile = project.get('mainFile', '')
-        self.preExecScript = project.get('preExecScript', '')
-        self.postExecScript = project.get('postExecScript', '')
-        self.indentation = project.get('indentation', settings.INDENT)
-        self.useTabs = project.get('use-tabs', settings.USE_TABS)
-        self.extensions = project.get('supported-extensions',
-            settings.SUPPORTED_EXTENSIONS)
-        self.pythonPath = project.get('pythonPath', settings.PYTHON_PATH)
-        self.PYTHONPATH = project.get('PYTHONPATH', '')
-        self.additional_builtins = project.get('additional_builtins', [])
-        self.programParams = project.get('programParams', '')
-        self.venv = project.get('venv', '')
-        self.related_projects = project.get('relatedProjects', [])
         self.update_paths()
-        self.addedToConsole = False
 
     def update_paths(self):
         for path in self.related_projects:
