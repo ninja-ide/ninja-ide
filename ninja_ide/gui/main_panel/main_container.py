@@ -49,6 +49,7 @@ from ninja_ide.gui.main_panel import actions
 from ninja_ide.gui.main_panel import browser_widget
 from ninja_ide.gui.main_panel import start_page
 from ninja_ide.gui.main_panel import image_viewer
+from ninja_ide.gui.main_panel import split_orientation
 from ninja_ide.gui.dialogs import from_import_dialog
 from ninja_ide.tools import locator
 from ninja_ide.tools import runner
@@ -730,10 +731,10 @@ class _MainContainer(QWidget):
                 self._tabSecondary.tab_was_modified(True)
             self._tabSecondary.show()
             self.split_visible = True
-            self.setSizes([1, 1])
+            self.splitter.setSizes([1, 1])
             self.actualTab = self._tabSecondary
             self.emit(SIGNAL("currentTabChanged(QString)"), widget.ID)
-        self.setOrientation(orientation)
+        self.splitter.setOrientation(orientation)
 
     def move_tab_to_next_split(self, tab_from):
         if self._followMode:
@@ -1457,6 +1458,13 @@ class _MainContainer(QWidget):
 
     def split_tabv(self):
         self.split_tab(False)
+
+    def split_assistance(self):
+        dialog = split_orientation.SplitOrientation(self)
+        dialog.show()
+
+    def close_split(self):
+        pass
 
     def navigate_back(self):
         self.__navigate_with_keyboard(False)
