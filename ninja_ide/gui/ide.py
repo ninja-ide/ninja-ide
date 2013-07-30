@@ -45,6 +45,7 @@ from ninja_ide.gui import translations
 from ninja_ide.gui import updates
 from ninja_ide.gui import notification
 from ninja_ide.gui.editor import neditable
+from ninja_ide.gui.explorer import nproject
 from ninja_ide.gui.dialogs import about_ninja
 from ninja_ide.gui.dialogs import plugins_manager
 from ninja_ide.gui.dialogs import themes_manager
@@ -323,8 +324,9 @@ class IDE(QMainWindow):
     def get_project(self, path):
         project = self.__projects.get(path)
         if project is None:
-            #FIXME
-            project = 0
+            project = nproject.NProject(path)
+            self.__project[path] = project
+        return project
 
     def _close_tray_icon(self):
         """Close the System Tray Icon."""
