@@ -753,14 +753,14 @@ class _MainContainer(QWidget):
         tab_from.update_current_widget()
 
     def add_editor(self, fileName="", tabIndex=None):
-
         ninjaide = IDE.get_service('ide')
         explorer = IDE.get_service('explorer_container')
         if not explorer:
             return
         #project_obj = explorer.get_project_given_filename(fileName)
-        editable = ninjaide.get_editable(fileName)
-        editorWidget = editable.build_ui()
+        project = ninjaide.get_project_for_file(fileName)
+        editable = ninjaide.get_editable(fileName, project)
+        editorWidget = editor.create_editor(editable)
 
         if not fileName:
             tabName = "New Document"
