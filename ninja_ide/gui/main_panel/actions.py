@@ -205,6 +205,14 @@ ACTIONS = (
     "connect": "split_tabv"
     },
     {
+    "shortcut": "Close-Split",
+    "connect": "close_split"
+    },
+    {
+    "shortcut": "Split-assistance",
+    "connect": "split_assistance"
+    },
+    {
     "shortcut": "Follow-mode",
     "action": {'text': translations.TR_FOLLOW_MODE,
                'image': 'follow',
