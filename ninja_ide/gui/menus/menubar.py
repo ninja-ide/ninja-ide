@@ -52,7 +52,7 @@ class _MenuBar(QObject):
         self._children = {}
         self._submenu = {}
         self._menu_refs = {}
-        self._toolbar_index = defaultdict(lambda: [])
+        self._toolbar_index = {}
 
         IDE.register_service('menu_bar', self)
 
@@ -82,6 +82,9 @@ class _MenuBar(QObject):
     def add_child(self, root_name, sub_name, child, weight,
                     namespace="ninjaide"):
         child_path = (root_name, sub_name, namespace, child)
+        oname = child.objectName()
+        if oname:
+            self._toolbar_index[oname] = child
         if child_path not in self._children:
             self.add_root(root_name)
             self._children[child_path] = (child, weight)
@@ -139,7 +142,7 @@ class _MenuBar(QObject):
                 for menu in menus:
                     self._submenu[(each_menu, menu.title())] = menu
 
-        for each_parent, each_submenu in self._submenu.keys():
+        for each_parent, each_submenu in list(self._submenu.keys()):
             menu = self._submenu[(each_parent, each_submenu)]
             all_children = self.get_children_of(each_parent, each_submenu)
             for each_child_grp_key in sorted(all_children):
@@ -151,43 +154,11 @@ class _MenuBar(QObject):
 
     def load_toolbar(self, ide):
         #FIXME: Do the same as above to add items to toolbar
-        toolbar = ide.toolbar
+        toolbar = ide.get_service("toolbar")
         toolbar.clear()
-        toolbar_sections = sorted(self._toolbar_index.keys())
-        for each_section in toolbar_sections:
-            display = settings.TOOLBAR_ITEMS.get(each_section, None)
-            items = self.get_toolbar_items_for_section(each_section)
-            if display is None:
-                for each_item in items:
-                    #FIXME: Item should be a custom object with action being the actual addable
-                    toolbar.addAction(each_item)
-            else:
-                #FIXME: How to make a map of items with names
-                items_dict = {}
-                for each_item in display:
-                    pass
-                    #
-                #FIXME: Map items in order to get them in settings order
-            toolbar.addSeparator()
-
-        #toolbar_items = {}
-        #toolbar_items.update(self._menuFile.toolbar_items)
-        #toolbar_items.update(self._menuView.toolbar_items)
-        #toolbar_items.update(self._menuEdit.toolbar_items)
-        #toolbar_items.update(self._menuSource.toolbar_items)
-        #toolbar_items.update(self._menuProject.toolbar_items)
-
-        #for item in settings.TOOLBAR_ITEMS:
-            #if item == 'separator':
-                #toolbar.addSeparator()
-            #else:
-                #tool_item = toolbar_items.get(item, None)
-                #if tool_item is not None:
-                    #toolbar.addAction(tool_item)
-        ##load action added by plugins, This is a special case when reload
-        ##the toolbar after save the preferences widget
-        #for toolbar_action in settings.get_toolbar_item_for_plugins():
-            #toolbar.addAction(toolbar_action)
-
+        for toolbar_action in settings.TOOLBAR_ITEMS:
+            tool_item = self._toolbar_index.get(toolbar_action, None)
+            if tool_item:
+                toolbar.addAction(tool_item)
 
 menu = _MenuBar()
