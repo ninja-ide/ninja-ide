@@ -36,12 +36,14 @@ from PyQt4.QtNetwork import QLocalServer
 
 from ninja_ide import resources
 from ninja_ide.core import plugin_manager
+from ninja_ide.core.file_handling import file_manager
 #from ninja_ide.core import plugin_services
 from ninja_ide.core import settings
 from ninja_ide.core import ipc
 from ninja_ide.gui import actions
 from ninja_ide.gui import translations
 from ninja_ide.gui import updates
+from ninja_ide.gui import notification
 from ninja_ide.gui.editor import neditable
 from ninja_ide.gui.dialogs import about_ninja
 from ninja_ide.gui.dialogs import plugins_manager
@@ -124,6 +126,8 @@ class IDE(QMainWindow):
         self.addToolBar(settings.TOOLBAR_AREA, self.toolbar)
         if settings.HIDE_TOOLBAR:
             self.toolbar.hide()
+        #Notificator
+        self.notification = notification.Notification(self)
 
         #Plugin Manager
         #services = {
@@ -300,12 +304,27 @@ class IDE(QMainWindow):
         if action:
             action.setShortcut(short(shortcut_name))
 
-    def get_editable(self, filename):
+    def get_editable(self, filename, project=None):
         editable = self.__neditables.get(filename)
         if editable is None:
-            editable = neditable.NEditable()
+            editable = neditable.NEditable(filename)
             self.__neditables[editable.ID] = editable
         return editable
+
+    def get_project_for_file(self, filename):
+        project = None
+        if filename:
+            for path in list(self.__projects.keys()):
+                if file_manager.belongs_to_folder(path, filename):
+                    project = self.__projects.get(path)
+                    break
+        return project
+
+    def get_project(self, path):
+        project = self.__projects.get(path)
+        if project is None:
+            #FIXME
+            project = 0
 
     def _close_tray_icon(self):
         """Close the System Tray Icon."""

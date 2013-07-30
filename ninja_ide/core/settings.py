@@ -53,7 +53,7 @@ elif sys.platform == "win32":
 
 
 def detect_python_path():
-    if (IS_WINDOWS and PYTHON_PATH_CONFIGURED_BY_USER) or not IS_WINDOWS:
+    if (IS_WINDOWS and PYTHON_EXEC_CONFIGURED_BY_USER) or not IS_WINDOWS:
         return []
 
     suggested = []
@@ -98,8 +98,8 @@ NOTIFY_UPDATES = True
 HIDE_TOOLBAR = False
 SHOW_STATUS_NOTIFICATIONS = True
 
-PYTHON_PATH = "python"
-PYTHON_PATH_CONFIGURED_BY_USER = False
+PYTHON_EXEC = "python"
+PYTHON_EXEC_CONFIGURED_BY_USER = False
 EXECUTION_OPTIONS = ""
 
 PROFILES = {}
@@ -355,8 +355,8 @@ def load_settings():
     global CONFIRM_EXIT
     global UI_LAYOUT
     global NOTIFY_UPDATES
-    global PYTHON_PATH
-    global PYTHON_PATH_CONFIGURED_BY_USER
+    global PYTHON_EXEC
+    global PYTHON_EXEC_CONFIGURED_BY_USER
     global PROFILES
     global NINJA_SKIN
     global EXECUTION_OPTIONS
@@ -412,10 +412,10 @@ def load_settings():
     UI_LAYOUT = qsettings.value('preferences/interface/uiLayout', 0, type=int)
     NOTIFY_UPDATES = qsettings.value(
         'preferences/general/notifyUpdates', True, type=bool)
-    PYTHON_PATH = qsettings.value('preferences/execution/pythonPath',
+    PYTHON_EXEC = qsettings.value('preferences/execution/pythonExec',
         'python', type='QString')
-    PYTHON_PATH_CONFIGURED_BY_USER = qsettings.value(
-        'preferences/execution/pythonPathConfigured', False, type=bool)
+    PYTHON_EXEC_CONFIGURED_BY_USER = qsettings.value(
+        'preferences/execution/pythonExecConfigured', False, type=bool)
     NINJA_SKIN = qsettings.value('preferences/theme/skin',
         'Default', type='QString')
     profileDict = dict(qsettings.value('ide/profiles', {}))
