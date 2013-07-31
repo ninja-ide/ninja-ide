@@ -984,8 +984,8 @@ class _MainContainer(QWidget):
                 #editorWidget.setPlainText(content)
                 editorWidget.ID = fileName
                 editorWidget.async_highlight()
-                encoding = file_manager.get_file_encoding(content)
-                editorWidget.encoding = encoding
+                #encoding = file_manager.get_file_encoding(content)
+                #editorWidget.encoding = encoding
                 if cursorPosition == -1:
                     cursorPosition = 0
                 if not positionIsLineNumber:

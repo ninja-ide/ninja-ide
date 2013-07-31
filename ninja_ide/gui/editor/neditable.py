@@ -4,6 +4,7 @@ from PyQt4.QtCore import QObject
 from PyQt4.QtCore import SIGNAL
 
 from ninja_ide.core.file_handling import nfile
+from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.editor import checkers
 from ninja_ide.gui.editor import helpers
 
@@ -43,6 +44,9 @@ class NEditable(QObject):
         self.__editor = editor
         content = self._nfile.read()
         self.__editor.setPlainText(content)
+        encoding = file_manager.get_file_encoding(content)
+        self.__editor.encoding = encoding
+
         # If we have an editor, let's include the checkers:
         self.include_checkers()
 
