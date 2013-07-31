@@ -3,6 +3,7 @@
 from PyQt4.QtCore import QObject
 from PyQt4.QtCore import SIGNAL
 
+from ninja_ide.core.file_handling import nfile
 from ninja_ide.gui.editor import checkers
 from ninja_ide.gui.editor import helpers
 
@@ -13,16 +14,18 @@ class NEditable(QObject):
     @checkersUpdated()
     """
 
-    def __init__(self, filename=None, project=None):
+    def __init__(self, filepath=None, project=None):
         super(NEditable, self).__init__()
         self.__id = ''
         self.__editor = None
         #Create NFile
-        if filename is None:
+        self._nfile = None
+        if filepath is None:
             #temp file
             self.__id = 'temp'
         else:
-            self.__id = filename
+            self.__id = filepath
+            self._nfile = nfile.NFile(filepath)
         self.text_modified = False
         self.new_document = True
         self._has_checkers = False
@@ -36,9 +39,17 @@ class NEditable(QObject):
         self._checkers_executed = 0
 
     def set_editor(self, editor):
+        """Set the Editor (UI component) associated with this object."""
         self.__editor = editor
+        content = self._nfile.read()
+        self.__editor.setPlainText(content)
         # If we have an editor, let's include the checkers:
         self.include_checkers()
+
+    def save_content(self):
+        """Save the content of the UI to a file."""
+        content = self.__editor.get_text()
+        self._nfile.save(content)
 
     def update_project(self, project):
         self.project = project

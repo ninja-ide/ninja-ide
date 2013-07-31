@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from PyQt.QtCore import QObject
+from PyQt4.QtCore import QObject
 
 
 class SignalFlowControl(QObject):
