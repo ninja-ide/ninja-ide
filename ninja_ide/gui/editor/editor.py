@@ -285,11 +285,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             #self.highlighter.rehighlight_lines(lines)
             #self.highlight_current_line()
 
-    def has_write_permission(self):
-        if self._neditable.new_document:
-            return True
-        return file_manager.has_write_permission(self.ID)
-
     def restyle(self, syntaxLang=None):
         self.apply_editor_style()
         if self.lang == 'python':

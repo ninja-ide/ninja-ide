@@ -995,11 +995,6 @@ class _MainContainer(QWidget):
                     helpers.insert_coding_line(editorWidget)
                     self.save_file(editorWidget=editorWidget)
 
-                if not editorWidget.has_write_permission():
-                    fileName += self.tr(" (Read-Only)")
-                    index = self.actualTab.currentIndex()
-                    self.actualTab.setTabText(index, fileName)
-
             else:
                 self.move_to_open(fileName)
                 editorWidget = self.get_actual_editor()

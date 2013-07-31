@@ -62,7 +62,14 @@ class NFile(QObject):
             display_name = "New Document"
         else:
             display_name = get_basename(self._file_path)
+            if not self.has_write_permission():
+                display_name += self.tr(" (Read-Only)")
         return display_name
+
+    def has_write_permission(self):
+        if self.__created:
+            return True
+        return os.access(self._file_path, os.W_OK)
 
     def _exists(self):
         """
