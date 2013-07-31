@@ -23,7 +23,7 @@ from PyQt4.QtCore import QObject, QFile, QIODevice, QTextStream, SIGNAL
 from ninja_ide.core import settings
 from ninja_ide.tools.utils import SignalFlowControl
 from file_manager import NinjaIOException, NinjaNoFileNameException, \
-get_file_encoding
+get_file_encoding, get_basename
 
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.core.file_handling.nfile')
@@ -54,6 +54,15 @@ class NFile(QObject):
         super(NFile, self).__init__()
         if not self._exists():
             self.__created = True
+
+    @property
+    def display_name(self):
+        display_name = None
+        if self._file_path is None:
+            display_name = "New Document"
+        else:
+            display_name = get_basename(self._file_path)
+        return display_name
 
     def _exists(self):
         """

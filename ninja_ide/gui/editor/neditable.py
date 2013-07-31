@@ -19,14 +19,14 @@ class NEditable(QObject):
         super(NEditable, self).__init__()
         self.__id = ''
         self.__editor = None
+        self._nfile = nfile.NFile(filepath)
         #Create NFile
-        self._nfile = None
         if filepath is None:
             #temp file
             self.__id = 'temp'
         else:
             self.__id = filepath
-            self._nfile = nfile.NFile(filepath)
+
         self.text_modified = False
         self.new_document = True
         self._has_checkers = False
@@ -61,6 +61,10 @@ class NEditable(QObject):
     @property
     def ID(self):
         return self.__id
+
+    @property
+    def display_name(self):
+        return self._nfile.display_name
 
     @property
     def has_checkers(self):
