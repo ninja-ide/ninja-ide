@@ -981,7 +981,7 @@ class _MainContainer(QWidget):
                 #Add content
                 #we HAVE to add the editor's content before set the ID
                 #because of the minimap logic
-                editorWidget.setPlainText(content)
+                #editorWidget.setPlainText(content)
                 editorWidget.ID = fileName
                 editorWidget.async_highlight()
                 encoding = file_manager.get_file_encoding(content)
