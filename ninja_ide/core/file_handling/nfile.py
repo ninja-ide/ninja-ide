@@ -29,6 +29,8 @@ from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.core.file_handling.nfile')
 DEBUG = logger.debug
 
+from ninja_ide.gui import translations
+
 """
 How to continue:
     We need to have a filesystem representation object, said object, registers
@@ -59,11 +61,11 @@ class NFile(QObject):
     def display_name(self):
         display_name = None
         if self._file_path is None:
-            display_name = self.tr("New Document")
+            display_name = translations.TR_NEW_DOCUMENT
         else:
             display_name = get_basename(self._file_path)
             if not self.has_write_permission():
-                display_name += self.tr(" (Read-Only)")
+                display_name += translations.TR_READ_ONLY
         return display_name
 
     def has_write_permission(self):
