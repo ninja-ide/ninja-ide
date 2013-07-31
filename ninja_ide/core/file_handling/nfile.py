@@ -19,11 +19,12 @@ import os
 import shutil
 from PyQt4.QtCore import QObject, QFile, QIODevice, QTextStream, SIGNAL
 
+from ninja_ide import translations
 #FIXME: Obtain these form a getter
 from ninja_ide.core import settings
 from ninja_ide.tools.utils import SignalFlowControl
 from file_manager import NinjaIOException, NinjaNoFileNameException, \
-get_file_encoding
+get_file_encoding, get_basename
 
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.core.file_handling.nfile')
@@ -54,6 +55,22 @@ class NFile(QObject):
         super(NFile, self).__init__()
         if not self._exists():
             self.__created = True
+
+    @property
+    def display_name(self):
+        display_name = None
+        if self._file_path is None:
+            display_name = translations.TR_NEW_DOCUMENT
+        else:
+            display_name = get_basename(self._file_path)
+            if not self.has_write_permission():
+                display_name += translations.TR_READ_ONLY
+        return display_name
+
+    def has_write_permission(self):
+        if not self._exists():
+            return True
+        return os.access(self._file_path, os.W_OK)
 
     def _exists(self):
         """

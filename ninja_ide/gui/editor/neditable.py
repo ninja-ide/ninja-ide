@@ -4,6 +4,7 @@ from PyQt4.QtCore import QObject
 from PyQt4.QtCore import SIGNAL
 
 from ninja_ide.core.file_handling import nfile
+from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.editor import checkers
 from ninja_ide.gui.editor import helpers
 
@@ -18,14 +19,14 @@ class NEditable(QObject):
         super(NEditable, self).__init__()
         self.__id = ''
         self.__editor = None
+        self._nfile = nfile.NFile(filepath)
         #Create NFile
-        self._nfile = None
         if filepath is None:
             #temp file
             self.__id = 'temp'
         else:
             self.__id = filepath
-            self._nfile = nfile.NFile(filepath)
+
         self.text_modified = False
         self.new_document = True
         self._has_checkers = False
@@ -43,6 +44,9 @@ class NEditable(QObject):
         self.__editor = editor
         content = self._nfile.read()
         self.__editor.setPlainText(content)
+        encoding = file_manager.get_file_encoding(content)
+        self.__editor.encoding = encoding
+
         # If we have an editor, let's include the checkers:
         self.include_checkers()
 
@@ -57,6 +61,10 @@ class NEditable(QObject):
     @property
     def ID(self):
         return self.__id
+
+    @property
+    def display_name(self):
+        return self._nfile.display_name
 
     @property
     def has_checkers(self):
