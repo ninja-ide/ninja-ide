@@ -14,6 +14,7 @@ class SplitOrientation(QDialog):
     def __init__(self, parent=None):
         super(SplitOrientation, self).__init__(parent,
             Qt.Dialog | Qt.FramelessWindowHint)
+        self.setModal(True)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setStyleSheet("background:transparent;")
         self.setFixedHeight(180)
