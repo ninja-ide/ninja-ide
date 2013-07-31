@@ -107,6 +107,9 @@ class IDE(QMainWindow):
         #Editables
         self.__neditables = {}
 
+        #Projects
+        self.__projects = {}
+
         #Start server if needed
         self.s_listener = None
         if start_server:
@@ -327,7 +330,7 @@ class IDE(QMainWindow):
         project = self.__projects.get(path)
         if project is None:
             project = nproject.NProject(path)
-            self.__project[path] = project
+            self.__projects[path] = project
         return project
 
     def _close_tray_icon(self):
