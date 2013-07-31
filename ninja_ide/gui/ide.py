@@ -35,13 +35,13 @@ from PyQt4.QtCore import QPointF
 from PyQt4.QtNetwork import QLocalServer
 
 from ninja_ide import resources
+from ninja_ide import translations
 from ninja_ide.core import plugin_manager
 from ninja_ide.core.file_handling import file_manager
 #from ninja_ide.core import plugin_services
 from ninja_ide.core import settings
 from ninja_ide.core import ipc
 from ninja_ide.gui import actions
-from ninja_ide.gui import translations
 from ninja_ide.gui import updates
 from ninja_ide.gui import notification
 from ninja_ide.gui.editor import neditable
@@ -106,6 +106,9 @@ class IDE(QMainWindow):
 
         #Editables
         self.__neditables = {}
+
+        #Projects
+        self.__projects = {}
 
         #Start server if needed
         self.s_listener = None
@@ -327,7 +330,7 @@ class IDE(QMainWindow):
         project = self.__projects.get(path)
         if project is None:
             project = nproject.NProject(path)
-            self.__project[path] = project
+            self.__projects[path] = project
         return project
 
     def _close_tray_icon(self):

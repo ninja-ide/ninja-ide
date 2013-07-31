@@ -34,11 +34,11 @@ from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QDir
 
 from ninja_ide import resources
+from ninja_ide import translations
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling.filesystem_notifications import (
     NinjaFileSystemWatcher)
-from ninja_ide.gui import translations
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.main_panel import tab_widget
 from ninja_ide.gui.main_panel import tab_group
@@ -762,11 +762,7 @@ class _MainContainer(QWidget):
         project = ninjaide.get_project_for_file(fileName)
         editable = ninjaide.get_editable(fileName, project)
         editorWidget = editor.create_editor(editable)
-
-        if not fileName:
-            tabName = "New Document"
-        else:
-            tabName = file_manager.get_basename(fileName)
+        tabName = editor.display_name
 
         #add the tab
         inserted_index = self.add_tab(editorWidget, tabName, tabIndex=tabIndex)
@@ -984,8 +980,6 @@ class _MainContainer(QWidget):
                 #editorWidget.setPlainText(content)
                 editorWidget.ID = fileName
                 editorWidget.async_highlight()
-                encoding = file_manager.get_file_encoding(content)
-                editorWidget.encoding = encoding
                 if cursorPosition == -1:
                     cursorPosition = 0
                 if not positionIsLineNumber:
@@ -998,11 +992,6 @@ class _MainContainer(QWidget):
                 if not content:
                     helpers.insert_coding_line(editorWidget)
                     self.save_file(editorWidget=editorWidget)
-
-                if not editorWidget.has_write_permission():
-                    fileName += self.tr(" (Read-Only)")
-                    index = self.actualTab.currentIndex()
-                    self.actualTab.setTabText(index, fileName)
 
             else:
                 self.move_to_open(fileName)
