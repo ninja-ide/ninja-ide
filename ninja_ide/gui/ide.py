@@ -35,13 +35,13 @@ from PyQt4.QtCore import QPointF
 from PyQt4.QtNetwork import QLocalServer
 
 from ninja_ide import resources
+from ninja_ide import translations
 from ninja_ide.core import plugin_manager
 from ninja_ide.core.file_handling import file_manager
 #from ninja_ide.core import plugin_services
 from ninja_ide.core import settings
 from ninja_ide.core import ipc
 from ninja_ide.gui import actions
-from ninja_ide.gui import translations
 from ninja_ide.gui import updates
 from ninja_ide.gui import notification
 from ninja_ide.gui.editor import neditable

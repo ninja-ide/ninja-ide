@@ -19,6 +19,7 @@ import os
 import shutil
 from PyQt4.QtCore import QObject, QFile, QIODevice, QTextStream, SIGNAL
 
+from ninja_ide import translations
 #FIXME: Obtain these form a getter
 from ninja_ide.core import settings
 from ninja_ide.tools.utils import SignalFlowControl
@@ -28,8 +29,6 @@ get_file_encoding, get_basename
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.core.file_handling.nfile')
 DEBUG = logger.debug
-
-from ninja_ide.gui import translations
 
 """
 How to continue:

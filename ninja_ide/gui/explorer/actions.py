@@ -2,7 +2,7 @@
 
 from PyQt4.QtGui import QStyle
 
-from ninja_ide.gui import translations
+from ninja_ide import translations
 
 #{
 #"shortcut": "Change-Tab",

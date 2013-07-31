@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from ninja_ide.gui import translations
+from ninja_ide import translations
 
 #{
 #"shortcut": "Change-Tab",
