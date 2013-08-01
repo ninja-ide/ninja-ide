@@ -642,8 +642,9 @@ class TreeProjectsWidget(QTreeWidget):
 
         self.remove_loading_icon(folder)
 
-        name = file_manager.get_basename(folder)
-        item = ProjectTree(self, name, folder)
+        ninjaide = IDE.get_service('ide')
+        project = ninjaide.get_project(folder)
+        item = ProjectTree(self, project)
         item.isFolder = True
         item.setToolTip(0, folder)
         item.setIcon(0, QIcon(resources.IMAGES['tree-app']))
@@ -797,20 +798,19 @@ class ProjectItem(QTreeWidgetItem):
 
 class ProjectTree(QTreeWidgetItem):
 
-    def __init__(self, parent, _name, path):
+    def __init__(self, parent, project):
         QTreeWidgetItem.__init__(self, parent)
         self._parent = parent
-        self.setText(0, _name)
-        self.path = path
+        self._project = project
+        self.setText(0, self._project.name)
+        self.path = self._project.path
         self.isFolder = True
         self.setForeground(0, QBrush(QColor(255, 165, 0)))
 
-        #FIXME: Use NProject
-        self.setText(0, self.name)
         self.update_paths()
 
     def update_paths(self):
-        for path in self.related_projects:
+        for path in self._project.related_projects:
             completion_daemon.add_project_folder(path)
 
     @property
@@ -819,18 +819,18 @@ class ProjectTree(QTreeWidgetItem):
         return True
 
     def lang(self):
-        if self.mainFile != '':
-            return file_manager.get_file_extension(self.mainFile)
+        if self._project.main_file != '':
+            return file_manager.get_file_extension(self._project.main_file)
         return 'py'
 
     def get_full_path(self):
         '''
         Returns the full path of the project
         '''
-        project_file = json_manager.get_ninja_project_file(self.path)
+        project_file = json_manager.get_ninja_project_file(self._project.path)
         if not project_file:  # FIXME: If we dont have a project file
             project_file = ''     # we should do SOMETHING! like kill zombies!
-        return os.path.join(self.path, project_file)
+        return os.path.join(self._project.path, project_file)
 
 
 class FoldingContextMenu(QMenu):
