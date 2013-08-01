@@ -49,7 +49,6 @@ from ninja_ide import resources
 from ninja_ide.gui.ide import IDE
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
-from ninja_ide.tools import json_manager
 
 from ninja_ide.tools.logger import NinjaLogger
 
@@ -197,27 +196,20 @@ class LocateThread(QThread):
         self._isVariable = None
 
     def locate_code(self):
-        explorerContainer = IDE.get_service('explorer_container')
-        if not explorerContainer:
-            return
-        projects_obj = explorerContainer.get_opened_projects()
-        projects = [p.path for p in projects_obj]
+        ide = IDE.get_service('ide')
+        projects = ide.get_opened_projects()
         if not projects:
             return
         while not self._cancel and projects:
-            current_dir = QDir(projects.pop())
+            nproject = projects.pop()
+            current_dir = QDir(nproject.path)
             #Skip not readable dirs!
             if not current_dir.isReadable():
                 continue
 
-            project_data = json_manager.read_ninja_project(
-                current_dir.path())
-            extensions = project_data.get('supported-extensions',
-                settings.SUPPORTED_EXTENSIONS)
-
             queue_folders = Queue.Queue()
             queue_folders.put(current_dir)
-            self.__locate_code_in_project(queue_folders, extensions)
+            self.__locate_code_in_project(queue_folders, nproject.extensions)
         self.dirty = True
         self.get_locations()
 
