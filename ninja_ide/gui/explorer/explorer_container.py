@@ -42,7 +42,6 @@ from ninja_ide.gui.explorer import errors_lists
 from ninja_ide.gui.explorer import migration_lists
 from ninja_ide.gui.explorer import nproject
 from ninja_ide.gui.dialogs import wizard_new_project
-from ninja_ide.tools import json_manager
 from ninja_ide.tools import ui_tools
 
 try:

@@ -49,7 +49,6 @@ from ninja_ide.core.file_handling.filesystem_notifications import (
     NinjaFileSystemWatcher)
 from ninja_ide.core.file_handling.filesystem_notifications.base_watcher import (
     ADDED, DELETED, REMOVE, RENAME)
-from ninja_ide.tools import json_manager
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs import project_properties_widget
@@ -827,10 +826,7 @@ class ProjectTree(QTreeWidgetItem):
         '''
         Returns the full path of the project
         '''
-        project_file = json_manager.get_ninja_project_file(self._project.path)
-        if not project_file:  # FIXME: If we dont have a project file
-            project_file = ''     # we should do SOMETHING! like kill zombies!
-        return os.path.join(self._project.path, project_file)
+        return self._project.full_path
 
 
 class FoldingContextMenu(QMenu):
