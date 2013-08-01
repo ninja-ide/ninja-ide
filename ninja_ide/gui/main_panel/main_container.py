@@ -762,7 +762,7 @@ class _MainContainer(QWidget):
         project = ninjaide.get_project_for_file(fileName)
         editable = ninjaide.get_editable(fileName, project)
         editorWidget = editor.create_editor(editable)
-        tabName = editor.display_name
+        tabName = editable.display_name
 
         #add the tab
         inserted_index = self.add_tab(editorWidget, tabName, tabIndex=tabIndex)
