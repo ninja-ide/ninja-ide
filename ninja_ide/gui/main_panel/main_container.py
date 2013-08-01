@@ -24,7 +24,7 @@ import webbrowser
 from PyQt4 import uic
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QSplitter
-from PyQt4.QtGui import QHBoxLayout
+from PyQt4.QtGui import QStackedLayout
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QIcon
@@ -34,11 +34,11 @@ from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QDir
 
 from ninja_ide import resources
-from ninja_ide import translations
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling.filesystem_notifications import (
     NinjaFileSystemWatcher)
+from ninja_ide.gui import translations
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.main_panel import tab_widget
 from ninja_ide.gui.main_panel import tab_group
@@ -49,7 +49,8 @@ from ninja_ide.gui.main_panel import actions
 from ninja_ide.gui.main_panel import browser_widget
 from ninja_ide.gui.main_panel import start_page
 from ninja_ide.gui.main_panel import image_viewer
-from ninja_ide.gui.main_panel import split_orientation
+from ninja_ide.gui.main_panel import combo_tabs
+from ninja_ide.gui.main_panel.helpers import split_orientation
 from ninja_ide.gui.dialogs import from_import_dialog
 from ninja_ide.tools import locator
 from ninja_ide.tools import runner
@@ -90,7 +91,7 @@ class _MainContainer(QWidget):
     def __init__(self, parent=None):
         super(_MainContainer, self).__init__(parent)
         self._parent = parent
-        hbox = QHBoxLayout(self)
+        self.stack = QStackedLayout(self)
 
         #Create scrollbar for follow mode
         self.scrollBar = QScrollBar(Qt.Vertical, self)
@@ -98,7 +99,7 @@ class _MainContainer(QWidget):
         self.scrollBar.setToolTip(
             self.tr('Follow Mode: Scroll the Editors together'))
         self.scrollBar.hide()
-        hbox.addWidget(self.scrollBar)
+        #hbox.addWidget(self.scrollBar)
 
         self.splitter = QSplitter()
         self._tabMain = tab_widget.TabWidget(self)
@@ -107,7 +108,7 @@ class _MainContainer(QWidget):
         self.splitter.addWidget(self._tabMain)
         self.splitter.addWidget(self._tabSecondary)
         self.splitter.setSizes([1, 1])
-        hbox.addWidget(self.splitter)
+        self.stack.addWidget(self.splitter)
 
         self._tabSecondary.hide()
         self.actualTab = self._tabMain
@@ -762,7 +763,11 @@ class _MainContainer(QWidget):
         project = ninjaide.get_project_for_file(fileName)
         editable = ninjaide.get_editable(fileName, project)
         editorWidget = editor.create_editor(editable)
-        tabName = editor.display_name
+
+        if not fileName:
+            tabName = "New Document"
+        else:
+            tabName = file_manager.get_basename(fileName)
 
         #add the tab
         inserted_index = self.add_tab(editorWidget, tabName, tabIndex=tabIndex)
@@ -980,6 +985,8 @@ class _MainContainer(QWidget):
                 #editorWidget.setPlainText(content)
                 editorWidget.ID = fileName
                 editorWidget.async_highlight()
+                encoding = file_manager.get_file_encoding(content)
+                editorWidget.encoding = encoding
                 if cursorPosition == -1:
                     cursorPosition = 0
                 if not positionIsLineNumber:
@@ -992,6 +999,11 @@ class _MainContainer(QWidget):
                 if not content:
                     helpers.insert_coding_line(editorWidget)
                     self.save_file(editorWidget=editorWidget)
+
+                if not editorWidget.has_write_permission():
+                    fileName += self.tr(" (Read-Only)")
+                    index = self.actualTab.currentIndex()
+                    self.actualTab.setTabText(index, fileName)
 
             else:
                 self.move_to_open(fileName)
