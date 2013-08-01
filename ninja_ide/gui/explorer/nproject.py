@@ -2,6 +2,8 @@
 
 from PyQt4.QtCore import QObject
 
+from ninja_ide import translations
+
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import json_manager
@@ -23,6 +25,8 @@ class NProject(QObject):
             self.name = file_manager.get_basename(path)
         self.project_type = project.get('project-type', '')
         self.description = project.get('description', '')
+        if self.description == '':
+            self.description = translations.TR_NO_DESCRIPTION
         self.url = project.get('url', '')
         self.license = project.get('license', '')
         self.main_file = project.get('mainFile', '')

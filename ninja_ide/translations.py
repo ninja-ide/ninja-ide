@@ -95,3 +95,4 @@ TR_CLOSE_SPLIT = tr("NINJA-IDE", "Close Split")
 
 TR_NEW_DOCUMENT = tr("NINJA-IDE", "New Document")
 TR_READ_ONLY = tr("NINJA-IDE", " (Read-Only)")
+TR_NO_DESCRIPTION = tr("NINJA-IDE", "no description available")

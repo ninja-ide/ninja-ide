@@ -40,6 +40,7 @@ from ninja_ide.gui.explorer import tree_projects_widget
 from ninja_ide.gui.explorer import tree_symbols_widget
 from ninja_ide.gui.explorer import errors_lists
 from ninja_ide.gui.explorer import migration_lists
+from ninja_ide.gui.explorer import nproject
 from ninja_ide.gui.dialogs import wizard_new_project
 from ninja_ide.tools import json_manager
 from ninja_ide.tools import ui_tools
@@ -505,27 +506,19 @@ class _ExplorerContainer(QTabWidget):
         recent_project_list = QSettings(
             resources.SETTINGS_PATH, QSettings.IniFormat).value(
                 'recentProjects', {})
+
+        project = nproject.NProject(folder)
         #if already exist on the list update the date time
-        projectProperties = json_manager.read_ninja_project(folder)
-        name = projectProperties.get('name', '')
-        description = projectProperties.get('description', '')
-
-        if name == '':
-            name = file_manager.get_basename(folder)
-
-        if description == '':
-            description = self.tr('no description available')
-
         if folder in recent_project_list:
             properties = recent_project_list[folder]
             properties["lastopen"] = QDateTime.currentDateTime()
-            properties["name"] = name
-            properties["description"] = description
+            properties["name"] = project.name
+            properties["description"] = project.description
             recent_project_list[folder] = properties
         else:
             recent_project_list[folder] = {
-                "name": name,
-                "description": description,
+                "name": project.name,
+                "description": project.description,
                 "isFavorite": False, "lastopen": QDateTime.currentDateTime()}
             #if the length of the project list it's high that 10 then delete
             #the most old
