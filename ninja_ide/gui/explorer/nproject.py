@@ -56,3 +56,12 @@ class NProject(QObject):
         if not project_file:  # FIXME: If we dont have a project file
             project_file = ''     # we should do SOMETHING! like kill zombies!
         return os.path.join(self.path, project_file)
+
+    @property
+    def python_exec_command(self):
+        '''
+        Returns the python exec command of the project
+        '''
+        if self.venv is '':
+            return self.venv
+        return self.python_exec

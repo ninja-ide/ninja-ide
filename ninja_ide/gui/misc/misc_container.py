@@ -43,7 +43,6 @@ from ninja_ide.gui.misc import web_render
 from ninja_ide.gui.misc import find_in_files
 from ninja_ide.gui.misc import results
 from ninja_ide.tools import ui_tools
-from ninja_ide.tools import json_manager
 
 
 class _ToolsDock(QWidget):
@@ -216,18 +215,15 @@ class _ToolsDock(QWidget):
             self.emit(SIGNAL("projectExecuted(QString)"), path)
 
             # load our jutsus!
-            project = json_manager.read_ninja_project(path)
-            python_exec = project.get('venv', False)
-            if not python_exec:
-                python_exec = project.get('pythonPath', 'python')
-            PYTHONPATH = project.get('PYTHONPATH', None)
-            params = project.get('programParams', '')
-            preExec = project.get('preExecScript', '')
-            postExec = project.get('postExecScript', '')
-            mainFile = file_manager.create_path(path, mainFile)
-            self.run_application(mainFile, pythonPath=python_exec,
-                PYTHONPATH=PYTHONPATH,
-                programParams=params, preExec=preExec, postExec=postExec)
+            ide = IDE.get_service('ide')
+            nproject = ide.get_project(path)
+            mainFile = file_manager.create_path(path, nproject.main_file)
+            self.run_application(mainFile,
+                pythonPath=nproject.python_exec_command,
+                PYTHONPATH=nproject.python_path,
+                programParams=nproject.program_params,
+                preExec=nproject.pre_exec_script,
+                postExec=nproject.post_exec_script)
 
     def run_application(self, fileName, pythonPath=False, PYTHONPATH=None,
             programParams='', preExec='', postExec=''):
