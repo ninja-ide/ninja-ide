@@ -106,7 +106,6 @@ class IDE(QMainWindow):
 
         #Editables
         self.__neditables = {}
-
         #Projects
         self.__projects = {}
 
@@ -320,7 +319,7 @@ class IDE(QMainWindow):
     def get_project_for_file(self, filename):
         project = None
         if filename:
-            for path in list(self.__projects.keys()):
+            for path in self.__projects:
                 if file_manager.belongs_to_folder(path, filename):
                     project = self.__projects.get(path)
                     break
@@ -332,6 +331,25 @@ class IDE(QMainWindow):
             project = nproject.NProject(path)
             self.__projects[path] = project
         return project
+
+    def get_current_project(self):
+        current_project = None
+        for project in self.__projects:
+            if self.__projects[project].is_current:
+                current_project = self.__projects[project]
+        return current_project
+
+    def select_current(self, widget):
+        """Show the widget with a 4px lightblue border line."""
+        self.setProperty("highlight", True)
+        self.style().unpolish(self)
+        self.style().polish(self)
+
+    def unselect_current(self, widget):
+        """Remove the 4px lightblue border line from the widget."""
+        self.setProperty("highlight", False)
+        self.style().unpolish(widget)
+        self.style().polish(widget)
 
     def _close_tray_icon(self):
         """Close the System Tray Icon."""

@@ -19,14 +19,14 @@ class NEditable(QObject):
         super(NEditable, self).__init__()
         self.__id = ''
         self.__editor = None
-        self._nfile = nfile.NFile(filepath)
         #Create NFile
+        self._nfile = None
         if filepath is None:
             #temp file
             self.__id = 'temp'
         else:
             self.__id = filepath
-
+            self._nfile = nfile.NFile(filepath)
         self.text_modified = False
         self.new_document = True
         self._has_checkers = False
@@ -47,6 +47,9 @@ class NEditable(QObject):
         encoding = file_manager.get_file_encoding(content)
         self.__editor.encoding = encoding
 
+        #New file then try to add a coding line
+        if not content:
+            helpers.insert_coding_line(self.__editor)
         # If we have an editor, let's include the checkers:
         self.include_checkers()
 

@@ -27,6 +27,8 @@ from PyQt4.QtGui import QPushButton
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
+from ninja_ide.tools import introspection
+
 
 class FromImportDialog(QDialog):
 
@@ -34,12 +36,17 @@ class FromImportDialog(QDialog):
         QDialog.__init__(self, parent, Qt.Dialog)
         self.setWindowTitle('from ... import ...')
         self._editorWidget = editorWidget
-        self._fromSection = fromSection
+
+        text = self._editorWidget.get_text()
+        self._imports = introspection.obtain_imports(text)
+
+        self._froms = sorted(set([self._imports['fromImports'][imp]['module']
+                            for imp in self._imports['fromImports']]))
 
         hbox = QHBoxLayout(self)
         hbox.addWidget(QLabel('from'))
         self._lineFrom = QLineEdit()
-        self._completer = QCompleter(fromSection)
+        self._completer = QCompleter(self._froms)
         self._lineFrom.setCompleter(self._completer)
         hbox.addWidget(self._lineFrom)
         hbox.addWidget(QLabel('import'))
@@ -56,10 +63,15 @@ class FromImportDialog(QDialog):
     def _add_import(self):
         fromItem = self._lineFrom.text()
         importItem = self._lineImport.text()
-        if fromItem in self._fromSection:
-            cursor = self._editorWidget.document().find(fromItem)
-        elif self._fromSection:
-            cursor = self._editorWidget.document().find(self._fromSection[-1])
+        if self._froms:
+            lineno = 0
+            for imp in self._imports:
+                lineno = self._imports[imp]['lineno']
+                if self._imports[imp]['module'] == fromItem:
+                    break
+            block = self._editorWidget.document().findBlockByLineNumber(lineno)
+            cursor = self._editorWidget.textCursor()
+            cursor.setPosition(block.position())
         else:
             cursor = self._editorWidget.textCursor()
             cursor.movePosition(QTextCursor.Start)
@@ -68,7 +80,6 @@ class FromImportDialog(QDialog):
             importLine = '\nfrom {0} import {1}'.format(fromItem, importItem)
         else:
             importLine = '\nimport {0}'.format(importItem)
-        if self._editorWidget.document().find(
-        importLine[1:]).position() == -1:
+        if self._editorWidget.document().find(importLine[1:]).position() == -1:
             cursor.insertText(importLine)
         self.close()

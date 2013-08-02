@@ -3,6 +3,11 @@ QWidget{
     color: white;
 }
 
+QWidget[highlight="true"] {
+     border: 4px solid lightblue;
+     border-radius: 3px;
+}
+
 QMenuBar::item {
     spacing: 3px;
     padding: 1px 4px;
@@ -380,6 +385,45 @@ QComboBox {
 QComboBox:item:selected {
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                 stop: 0 #888dd9, stop: 1 #6a6ea9);
+}
+
+QComboBox#combotab {
+    border: 2px solid lightblue;
+    background-color: transparent;
+    border-radius: 3px;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em;
+}
+
+QComboBox#combotab:hover {
+    border: 2px solid #3fdedc;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+        stop: 0 #363636, stop: 1.0 #727272);
+}
+
+QComboBox#combotab::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 5px;
+    border-left-width: 1px;
+}
+
+QFrame#actionbar {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+        stop: 0 #202020, stop: 1.0 #404040);
+    color: gray;
+    border: 2px solid darkgray;
+    border-radius: 5px;
+}
+
+QLabel#position {
+    border-left-width: 1px;
+    border-left-color: darkgray;
+    border-left-style: solid;
+    border-right-width: 1px;
+    border-right-color: darkgray;
+    border-right-style: solid;
+    spacing: 2px;
 }
 
 QListView {

@@ -91,6 +91,7 @@ TR_PRINT_PER_LINE = tr("NINJA-IDE", "Insert Prints per selected line.")
 TR_INSERT_PDB = tr("NINJA-IDE", "Insert pdb.set_trace()")
 TR_REMOVE_TRAILING_SPACES = tr("NINJA-IDE", "&Remove Trailing Spaces")
 TR_REPLACE_TABS_SPACES = tr("NINJA-IDE", "Replace Tabs With &Spaces")
+TR_CLOSE_SPLIT = tr("NINJA-IDE", "Close Split")
 
 TR_NEW_DOCUMENT = tr("NINJA-IDE", "New Document")
 TR_READ_ONLY = tr("NINJA-IDE", " (Read-Only)")

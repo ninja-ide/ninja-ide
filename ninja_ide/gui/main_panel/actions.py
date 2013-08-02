@@ -269,10 +269,6 @@ ACTIONS = (
     "connect": "change_split_focus"
     },
     {
-    "shortcut": "move-tab-to-next-split",
-    "connect": "move_tab_to_next_split"
-    },
-    {
     "shortcut": "change-tab-visibility",
     "connect": "change_tabs_visibility"
     },
