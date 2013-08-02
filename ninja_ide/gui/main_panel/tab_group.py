@@ -17,26 +17,28 @@
 from __future__ import absolute_import
 
 from PyQt4.QtGui import QWidget
-from PyQt4.QtCore import SIGNAL
 from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QSpacerItem
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QListWidget
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
+from PyQt4.QtCore import SIGNAL
 
-from ninja_ide.core.file_handling import file_manager
+from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.main_panel import itab_item
 
 
 class TabGroup(QWidget, itab_item.ITabItem):
+    """Group tabs from the same project.
+    SIGNALS:
+    @expandAll()
+    """
 
     def __init__(self, project, name, parent):
         super(TabGroup, self).__init__(parent)
         vbox = QVBoxLayout(self)
-        self._parent = parent
-        self.project = project
-        self.ID = self.project
+        self.ID = project
         self.name = name
         self.tabs = []
         self.listWidget = QListWidget()
@@ -49,29 +51,20 @@ class TabGroup(QWidget, itab_item.ITabItem):
         vbox.addLayout(hbox)
         vbox.addWidget(self.listWidget)
 
-        self.connect(btnExpand, SIGNAL("clicked()"), self.expand_this)
+        self.connect(btnExpand, SIGNAL("clicked()"), self.expand)
         self.connect(btnExpandAll, SIGNAL("clicked()"),
-            self._parent.deactivate_tabs_groups)
+            lambda: self.emit(SIGNAL("expandAll()")))
 
     def add_widget(self, widget):
         self.tabs.append(widget)
         self.listWidget.addItem(widget.ID)
 
-    def expand_this(self):
-        self._parent.group_tabs_together()
-        for tab in self.tabs:
-            tabName = file_manager.get_basename(tab.ID)
-            self._parent.add_tab(tab, tabName)
-        index = self._parent._tabMain.indexOf(self)
-        self.actions._tabMain.removeTab(index)
-        self.tabs = []
-        self.listWidget.clear()
-
-    def only_expand(self):
-        for tab in self.tabs:
-            tabName = file_manager.get_basename(tab.ID)
-            self._parent.add_tab(tab, tabName)
-        index = self._parent_tabMain.indexOf(self)
-        self._parent_tabMain.removeTab(index)
-        self.tabs = []
-        self.listWidget.clear()
+    def expand(self):
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            for tab in self.tabs:
+                main_container.add_tab(tab, tab.display_name)
+            index = main_container.tabs.indexOf(self)
+            main_container.tabs.removeTab(index)
+            self.tabs = []
+            self.listWidget.clear()

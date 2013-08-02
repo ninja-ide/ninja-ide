@@ -32,6 +32,9 @@ class ComboTabs(QWidget):
         self.stacked.addWidget(self.editor_widget)
         vbox.addLayout(self.stacked)
 
+    def currentWidget(self):
+        return self.editor_widget
+
 
 class ActionBar(QFrame):
 
@@ -44,6 +47,9 @@ class ActionBar(QFrame):
         combo = QComboBox()
         combo.setObjectName("combotab")
         hbox.addWidget(combo)
+        combo.addItem("main_container.py")
+        combo.addItem("ide.py")
+        combo.addItem("editor.py")
 
         self.lbl_checks = QLabel('')
         self.lbl_checks.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)

@@ -3,6 +3,11 @@ QWidget{
     color: white;
 }
 
+QWidget[highlight="true"] {
+     border: 4px solid lightblue;
+     border-radius: 3px;
+}
+
 QMenuBar::item {
     spacing: 3px;
     padding: 1px 4px;

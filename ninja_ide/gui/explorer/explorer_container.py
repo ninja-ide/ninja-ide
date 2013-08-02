@@ -115,7 +115,7 @@ class _ExplorerContainer(QTabWidget):
         ide = IDE.get_service('ide')
         ide.place_me_on("explorer_container", self, "lateral")
         #Searching the Preferences
-        self._treeProjects = None
+        self.tree_projects = None
         if settings.SHOW_PROJECT_EXPLORER:
             self.add_tab_projects()
         self._treeSymbols = None
@@ -238,19 +238,19 @@ class _ExplorerContainer(QTabWidget):
             self.addTab(self._listMigration, self.tr("Migration 2to3"))
 
     def add_tab_projects(self):
-        if not self._treeProjects:
-            self._treeProjects = tree_projects_widget.TreeProjectsWidget()
-            self.addTab(self._treeProjects, self.tr('Projects'))
-            self.connect(self._treeProjects, SIGNAL("runProject()"),
+        if not self.tree_projects:
+            self.tree_projects = tree_projects_widget.TreeProjectsWidget()
+            self.addTab(self.tree_projects, self.tr('Projects'))
+            self.connect(self.tree_projects, SIGNAL("runProject()"),
                 self._execute_project)
 
             ide = IDE.get_service('ide')
             self.connect(ide, SIGNAL("goingDown()"),
-                self._treeProjects.shutdown)
-            self.connect(self._treeProjects,
+                self.tree_projects.shutdown)
+            self.connect(self.tree_projects,
                 SIGNAL("addProjectToConsole(QString)"),
                 self._add_project_to_console)
-            self.connect(self._treeProjects,
+            self.connect(self.tree_projects,
                 SIGNAL("removeProjectFromConsole(QString)"),
                 self._remove_project_from_console)
 
@@ -260,11 +260,11 @@ class _ExplorerContainer(QTabWidget):
             def close_files_related_to_closed_project(project):
                 if project:
                     self.emit(SIGNAL("projectClosed(QString)"), project)
-            self.connect(self._treeProjects, SIGNAL("closeProject(QString)"),
+            self.connect(self.tree_projects, SIGNAL("closeProject(QString)"),
                 close_project_signal)
-            self.connect(self._treeProjects, SIGNAL("refreshProject()"),
+            self.connect(self.tree_projects, SIGNAL("refreshProject()"),
                 close_project_signal)
-            self.connect(self._treeProjects,
+            self.connect(self.tree_projects,
                 SIGNAL("closeFilesFromProjectClosed(QString)"),
                 close_files_related_to_closed_project)
 
@@ -329,9 +329,9 @@ class _ExplorerContainer(QTabWidget):
             self._listErrors = None
 
     def remove_tab_projects(self):
-        if self._treeProjects:
-            self.removeTab(self.indexOf(self._treeProjects))
-            self._treeProjects = None
+        if self.tree_projects:
+            self.removeTab(self.indexOf(self.tree_projects))
+            self.tree_projects = None
 
     def remove_tab_symbols(self):
         if self._treeSymbols:
@@ -363,8 +363,8 @@ class _ExplorerContainer(QTabWidget):
             self.setTabPosition(QTabWidget.East)
 
     def show_project_tree(self):
-        if self._treeProjects:
-            self.setCurrentWidget(self._treeProjects)
+        if self.tree_projects:
+            self.setCurrentWidget(self.tree_projects)
 
     def show_symbols_tree(self):
         if self._treeSymbols:
@@ -386,7 +386,7 @@ class _ExplorerContainer(QTabWidget):
 
     def open_project_folder(self, folderName='', notIDEStart=True):
         """Open a Project and load the symbols in the Code Locator."""
-        if not self._treeProjects and notIDEStart:
+        if not self.tree_projects and notIDEStart:
             QMessageBox.information(self, self.tr("Projects Disabled"),
                 self.tr("Project support has been disabled from Preferences"))
             return
@@ -408,9 +408,9 @@ class _ExplorerContainer(QTabWidget):
         try:
             if not folderName:
                 return
-            if not self._treeProjects.is_open(folderName):
-                self._treeProjects.mute_signals = True
-                self._treeProjects.loading_project(folderName)
+            if not self.tree_projects.is_open(folderName):
+                self.tree_projects.mute_signals = True
+                self.tree_projects.loading_project(folderName)
                 thread = ui_tools.ThreadProjectExplore()
                 self._thread_execution[folderName] = thread
                 self.connect(thread,
@@ -421,7 +421,7 @@ class _ExplorerContainer(QTabWidget):
                     self._unmute_tree_signals_clean_threads)
                 thread.open_folder(folderName)
             else:
-                self._treeProjects._set_current_project(folderName)
+                self.tree_projects._set_current_project(folderName)
         except Exception as reason:
             logger.error('open_project_folder: %s', reason)
             if not notIDEStart:
@@ -439,21 +439,21 @@ class _ExplorerContainer(QTabWidget):
             if thread:
                 thread.wait()
         if len(self._thread_execution) == 0:
-            self._treeProjects.mute_signals = False
+            self.tree_projects.mute_signals = False
 
     def _callback_open_project(self, value):
         path, structure = value
         if structure is None:
-            self._treeProjects.remove_loading_icon(path)
+            self.tree_projects.remove_loading_icon(path)
             return
 
-        self._treeProjects.load_project(structure, path)
+        self.tree_projects.load_project(structure, path)
         self.save_recent_projects(path)
         self.emit(SIGNAL("projectOpened(QString)"), path)
         self.emit(SIGNAL("updateLocator()"))
 
     def create_new_project(self):
-        if not self._treeProjects:
+        if not self.tree_projects:
             QMessageBox.information(self, self.tr("Projects Disabled"),
                 self.tr("Project support has been disabled from Preferences"))
             return
@@ -461,17 +461,17 @@ class _ExplorerContainer(QTabWidget):
         wizard.show()
 
     def add_existing_file(self, path):
-        if self._treeProjects:
-            self._treeProjects.add_existing_file(path)
+        if self.tree_projects:
+            self.tree_projects.add_existing_file(path)
 
     def get_actual_project(self):
-        if self._treeProjects:
-            return self._treeProjects.get_selected_project_path()
+        if self.tree_projects:
+            return self.tree_projects.get_selected_project_path()
         return None
 
     def get_project_main_file(self):
-        if self._treeProjects:
-            return self._treeProjects.get_project_main_file()
+        if self.tree_projects:
+            return self.tree_projects.get_project_main_file()
         return ''
 
     def get_project_given_filename(self, filename):
@@ -482,24 +482,24 @@ class _ExplorerContainer(QTabWidget):
         return None
 
     def get_opened_projects(self):
-        if self._treeProjects:
-            return self._treeProjects.get_open_projects()
+        if self.tree_projects:
+            return self.tree_projects.get_open_projects()
         return []
 
     def open_session_projects(self, projects, notIDEStart=True):
-        if not self._treeProjects:
+        if not self.tree_projects:
             return
         for project in projects:
             if file_manager.folder_exists(project):
                 self.open_project_folder(project, notIDEStart)
 
     def open_project_properties(self):
-        if self._treeProjects:
-            self._treeProjects.open_project_properties()
+        if self.tree_projects:
+            self.tree_projects.open_project_properties()
 
     def close_opened_projects(self):
-        if self._treeProjects:
-            self._treeProjects._close_open_projects()
+        if self.tree_projects:
+            self.tree_projects._close_open_projects()
 
     def save_recent_projects(self, folder):
         recent_project_list = QSettings(
@@ -548,8 +548,8 @@ class _ExplorerContainer(QTabWidget):
         return listFounder[0][0]
 
     def get_project_name(self, path):
-        if self._treeProjects:
-            item = self._treeProjects._projects.get(path, None)
+        if self.tree_projects:
+            item = self.tree_projects._projects.get(path, None)
             if item is not None:
                 return item.name
 

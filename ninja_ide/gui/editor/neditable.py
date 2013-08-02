@@ -59,6 +59,13 @@ class NEditable(QObject):
         return self.__id
 
     @property
+    def display_name(self):
+        name = ''
+        if self.project:
+            name = self._nfile.display_name
+        return name
+
+    @property
     def has_checkers(self):
         """Return True if checkers where installaed, False otherwise"""
         return self._has_checkers
