@@ -4,6 +4,7 @@ from PyQt4.QtCore import QObject
 from PyQt4.QtCore import SIGNAL
 
 from ninja_ide.core.file_handling import nfile
+from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.editor import checkers
 from ninja_ide.gui.editor import helpers
 
@@ -41,8 +42,14 @@ class NEditable(QObject):
     def set_editor(self, editor):
         """Set the Editor (UI component) associated with this object."""
         self.__editor = editor
-        #content = self._nfile.read()
-        #self.__editor.setPlainText(content)
+        content = self._nfile.read()
+        self.__editor.setPlainText(content)
+        encoding = file_manager.get_file_encoding(content)
+        self.__editor.encoding = encoding
+
+        #New file then try to add a coding line
+        if not content:
+            helpers.insert_coding_line(self.__editor)
         # If we have an editor, let's include the checkers:
         self.include_checkers()
 
@@ -60,10 +67,7 @@ class NEditable(QObject):
 
     @property
     def display_name(self):
-        name = ''
-        if self.project:
-            name = self._nfile.display_name
-        return name
+        return self._nfile.display_name
 
     @property
     def has_checkers(self):

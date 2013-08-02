@@ -598,14 +598,18 @@ class _MainContainer(QWidget):
         if widget:
             self.emit(SIGNAL("currentTabChanged(QString)"), widget.ID)
 
-    #def split_tab(self, orientation):
+    def split_tab(self, orientation):
+        pass
+        #FIXME: check how we handle this
         #"""Split the main container."""
         #if orientationHorizontal:
             #self.show_split(Qt.Vertical)
         #else:
             #self.show_split(Qt.Horizontal)
 
-    #def _split_this_tab(self, tab, index, orientationHorizontal):
+    def _split_this_tab(self, tab, index, orientationHorizontal):
+        pass
+        #FIXME: check how we handle this
         #tab.setCurrentIndex(index)
         #if orientationHorizontal:
             #self.show_split(Qt.Horizontal)
@@ -618,7 +622,9 @@ class _MainContainer(QWidget):
         else:
             self._tabMain.tabBar().show()
 
-    #def show_split(self, orientation):
+    def show_split(self, orientation):
+        pass
+        #FIXME: check how we handle this
         #closingFollowMode = self._followMode
         #if self._followMode:
             #self._exit_follow_mode()
@@ -693,7 +699,9 @@ class _MainContainer(QWidget):
 
         return editorWidget
 
-    #def update_editor_project(self):
+    def update_editor_project(self):
+        pass
+        #FIXME: check how we handle this
         #for i in range(self._tabMain.count()):
             #widget = self._tabMain.widget(i)
             #if type(widget) is editor.Editor:
@@ -701,7 +709,9 @@ class _MainContainer(QWidget):
                     #widget.ID)
                 #widget.set_project(project)
 
-    #def reset_pep8_warnings(self, value):
+    def reset_pep8_warnings(self, value):
+        pass
+        #FIXME: check how we handle this
         #for i in range(self._tabMain.count()):
             #widget = self._tabMain.widget(i)
             #if type(widget) is editor.Editor:
@@ -719,7 +729,9 @@ class _MainContainer(QWidget):
                 #else:
                     #widget.hide_pep8_errors()
 
-    #def reset_lint_warnings(self, value):
+    def reset_lint_warnings(self, value):
+        pass
+        #FIXME: check how we handle this
         #for i in range(self._tabMain.count()):
             #widget = self._tabMain.widget(i)
             #if type(widget) is editor.Editor:
@@ -855,77 +867,36 @@ class _MainContainer(QWidget):
                     tabIndex=None, positionIsLineNumber=False):
         try:
             if not self.is_open(fileName):
-                self.tabs.notOpening = False
-                content = file_manager.read_file_content(fileName)
                 editorWidget = self.add_editor(fileName, tabIndex=tabIndex)
-
-                editorWidget.ID = fileName
-                editorWidget.async_highlight()
-                encoding = file_manager.get_file_encoding(content)
-                editorWidget.encoding = encoding
                 if cursorPosition == -1:
                     cursorPosition = 0
-                if not positionIsLineNumber:
-                    editorWidget.set_cursor_position(cursorPosition)
-                else:
+                if positionIsLineNumber:
                     editorWidget.go_to_line(cursorPosition)
-
-                #New file then try to add a coding line
-                if not content:
-                    helpers.insert_coding_line(editorWidget)
-                    self.save_file(editorWidget=editorWidget)
-
-                if not editorWidget.has_write_permission():
-                    fileName += self.tr(" (Read-Only)")
-                    index = self.actualTab.currentIndex()
-                    self.actualTab.setTabText(index, fileName)
-
+                else:
+                    editorWidget.set_cursor_position(cursorPosition)
             else:
                 self.move_to_open(fileName)
                 editorWidget = self.get_current_editor()
-                if editorWidget and notStart and cursorPosition != -1:
+                if editorWidget and cursorPosition != -1:
                     if positionIsLineNumber:
                         editorWidget.go_to_line(cursorPosition)
                     else:
                         editorWidget.set_cursor_position(cursorPosition)
             self.emit(SIGNAL("currentTabChanged(QString)"), fileName)
         except file_manager.NinjaIOException as reason:
-            if notStart:
-                QMessageBox.information(self,
-                    self.tr("The file couldn't be open"), str(reason))
+            QMessageBox.information(self,
+                self.tr("The file couldn't be open"), str(reason))
         except Exception as reason:
             logger.error('open_file: %s', reason)
-        self.actualTab.notOpening = True
-
-    def add_standalone_watcher(self, filename, not_start=True):
-        # Add File Watcher if needed
-        opened_projects = self._parent.explorer.get_opened_projects()
-        opened_projects = [p.path for p in opened_projects]
-        #alone = not_start
-        #for folder in opened_projects:
-            #if file_manager.belongs_to_folder(folder, filename):
-                #alone = False
-        #if alone or sys.platform == 'darwin':
-            #self._file_watcher.add_file_watch(filename)
-            #self._watched_simple_files.append(filename)
-
-    def remove_standalone_watcher(self, filename):
-        if filename in self._watched_simple_files:
-            self._file_watcher.remove_file_watch(filename)
-            self._watched_simple_files.remove(filename)
 
     def is_open(self, filename):
-        return self._tabMain.is_open(filename) != -1 or \
-            self.tabsecondary.is_open(filename) != -1
+        return self.tabs.is_open(filename) != -1
 
     def move_to_open(self, filename):
-        if self._tabMain.is_open(filename) != -1:
-            self._tabMain.move_to_open(filename)
-            self.actualTab = self._tabMain
-        elif self.tabsecondary.is_open(filename) != -1:
-            self.tabsecondary.move_to_open(filename)
-            self.actualTab = self.tabsecondary
-        self.actualTab.currentWidget().setFocus()
+        #FIXME: add in the current split?
+        if self.tabs.is_open(filename) != -1:
+            self.tabs.move_to_open(filename)
+        self.tabs.currentWidget().setFocus()
         self.emit(SIGNAL("currentTabChanged(QString)"), filename)
 
     def move_tab_right(self):
@@ -936,210 +907,198 @@ class _MainContainer(QWidget):
 
     def _move_tab(self, forward=True, widget=None):
         if widget is None:
-            widget = self.actualTab.currentWidget()
+            widget = self.tabs.currentWidget()
         if widget is not None:
-            old_widget_index = self.actualTab.indexOf(widget)
-            if forward and old_widget_index < self.actualTab.count() - 1:
+            old_widget_index = self.tabs.indexOf(widget)
+            if forward and old_widget_index < self.tabs.count() - 1:
                 new_widget_index = old_widget_index + 1
             elif old_widget_index > 0 and not forward:
                 new_widget_index = old_widget_index - 1
             else:
                 return
-            tabName = self.actualTab.tabText(old_widget_index)
-            self.actualTab.insertTab(new_widget_index, widget, tabName)
-            self.actualTab.setCurrentIndex(new_widget_index)
+            tabName = self.tabs.tabText(old_widget_index)
+            self.tabs.insertTab(new_widget_index, widget, tabName)
+            self.tabs.setCurrentIndex(new_widget_index)
 
-    def get_widget_for_path(self, filename):
-        if self._tabMain.is_open(filename) != -1:
-            index = self._tabMain.search_for_identifier_index(filename)
-            return self._tabMain.widget(index)
-        elif self.tabsecondary.is_open(filename) != -1:
-            index = self.tabsecondary.search_for_identifier_index(filename)
-            return self.tabsecondary.widget(index)
-        return None
-
-    def change_open_tab_name(self, id, newId):
-        """Search for the Tab with id, and set the newId to that Tab."""
-        index = self._tabMain.is_open(id)
+    def get_widget_for_id(self, filename):
+        widget = None
+        index = self.tabs.is_open(filename)
         if index != -1:
-            widget = self._tabMain.widget(index)
-            tabContainer = self._tabMain
-        elif self.tabsecondary.is_open(id):
-            # tabSecondaryIndex is recalculated because there is a really
-            # small chance that the tab is there, so there is no need to
-            # calculate this value by default
-            index = self.tabsecondary.is_open(id)
-            widget = self.tabsecondary.widget(index)
-            tabContainer = self.tabsecondary
-        tabName = file_manager.get_basename(newId)
-        tabContainer.change_open_tab_name(index, tabName)
-        widget.ID = newId
+            widget = self.tabs.widget(index)
+        return widget
 
-    def close_deleted_file(self, id):
+    def change_open_tab_id(self, idname, newId):
+        """Search for the Tab with idname, and set the newId to that Tab."""
+        index = self.tabs.is_open(idname)
+        if index != -1:
+            widget = self.tabs.widget(index)
+            tabName = file_manager.get_basename(newId)
+            self.tabs.change_open_tab_name(index, tabName)
+            widget.ID = newId
+
+    def close_deleted_file(self, idname):
         """Search for the Tab with id, and ask the user if should be closed."""
-        index = self._tabMain.is_open(id)
+        index = self.tabs.is_open(idname)
         if index != -1:
-            tabContainer = self._tabMain
-        elif self.tabsecondary.is_open(id):
-            # tabSecondaryIndex is recalculated because there is a really
-            # small chance that the tab is there, so there is no need to
-            # calculate this value by default
-            index = self.tabsecondary.is_open(id)
-            tabContainer = self.tabsecondary
-        result = QMessageBox.question(self, self.tr("Close Deleted File"),
-            self.tr("Are you sure you want to close the deleted file?\n"
-                    "The content will be completely deleted."),
-            buttons=QMessageBox.Yes | QMessageBox.No)
-        if result == QMessageBox.Yes:
-            tabContainer.removeTab(index)
+            result = QMessageBox.question(self, self.tr("Close Deleted File"),
+                self.tr("Are you sure you want to close the deleted file?\n"
+                        "The content will be completely deleted."),
+                buttons=QMessageBox.Yes | QMessageBox.No)
+            if result == QMessageBox.Yes:
+                self.tabs.removeTab(index)
 
     def save_file(self, editorWidget=None):
-        if not editorWidget:
-            editorWidget = self.get_current_editor()
-        if not editorWidget:
-            return False
-        try:
-            editorWidget.just_saved = True
-            if editorWidget.newDocument or \
-            not file_manager.has_write_permission(editorWidget.ID):
-                return self.save_file_as()
+        pass
+        #FIXME: check how we handle this
+        #if not editorWidget:
+            #editorWidget = self.get_current_editor()
+        #if not editorWidget:
+            #return False
+        #try:
+            #editorWidget.just_saved = True
+            #if editorWidget.newDocument or \
+            #not file_manager.has_write_permission(editorWidget.ID):
+                #return self.save_file_as()
 
-            fileName = editorWidget.ID
-            self.emit(SIGNAL("beforeFileSaved(QString)"), fileName)
-            if settings.REMOVE_TRAILING_SPACES:
-                helpers.remove_trailing_spaces(editorWidget)
-            content = editorWidget.get_text()
-            file_manager.store_file_content(
-                fileName, content, addExtension=False)
-            self._file_watcher.allow_kill = False
-            if editorWidget.ID != fileName:
-                self.remove_standalone_watcher(editorWidget.ID)
-            self.add_standalone_watcher(fileName)
-            self._file_watcher.allow_kill = True
-            editorWidget.ID = fileName
-            encoding = file_manager.get_file_encoding(content)
-            editorWidget.encoding = encoding
-            self.emit(SIGNAL("fileSaved(QString)"),
-                (self.tr("File Saved: %s") % fileName))
-            editorWidget._file_saved()
-            return True
-        except Exception as reason:
-            editorWidget.just_saved = False
-            logger.error('save_file: %s', reason)
-            QMessageBox.information(self, self.tr("Save Error"),
-                self.tr("The file couldn't be saved!"))
-        return False
+            #fileName = editorWidget.ID
+            #self.emit(SIGNAL("beforeFileSaved(QString)"), fileName)
+            #if settings.REMOVE_TRAILING_SPACES:
+                #helpers.remove_trailing_spaces(editorWidget)
+            #content = editorWidget.get_text()
+            #file_manager.store_file_content(
+                #fileName, content, addExtension=False)
+            #self._file_watcher.allow_kill = False
+            #if editorWidget.ID != fileName:
+                #self.remove_standalone_watcher(editorWidget.ID)
+            #self.add_standalone_watcher(fileName)
+            #self._file_watcher.allow_kill = True
+            #editorWidget.ID = fileName
+            #encoding = file_manager.get_file_encoding(content)
+            #editorWidget.encoding = encoding
+            #self.emit(SIGNAL("fileSaved(QString)"),
+                #(self.tr("File Saved: %s") % fileName))
+            #editorWidget._file_saved()
+            #return True
+        #except Exception as reason:
+            #editorWidget.just_saved = False
+            #logger.error('save_file: %s', reason)
+            #QMessageBox.information(self, self.tr("Save Error"),
+                #self.tr("The file couldn't be saved!"))
+        #return False
 
     def save_file_as(self):
-        editorWidget = self.get_current_editor()
-        if not editorWidget:
-            return False
-        try:
-            editorWidget.just_saved = True
-            filters = '(*.py);;(*.*)'
-            if editorWidget.ID:
-                ext = file_manager.get_file_extension(editorWidget.ID)
-                if ext != 'py':
-                    filters = '(*.%s);;(*.py);;(*.*)' % ext
-            save_folder = self._get_save_folder(editorWidget.ID)
-            fileName = QFileDialog.getSaveFileName(
-                self._parent, self.tr("Save File"), save_folder, filters)
-            if not fileName:
-                return False
+        pass
+        #FIXME: check how we handle this
+        #editorWidget = self.get_current_editor()
+        #if not editorWidget:
+            #return False
+        #try:
+            #editorWidget.just_saved = True
+            #filters = '(*.py);;(*.*)'
+            #if editorWidget.ID:
+                #ext = file_manager.get_file_extension(editorWidget.ID)
+                #if ext != 'py':
+                    #filters = '(*.%s);;(*.py);;(*.*)' % ext
+            #save_folder = self._get_save_folder(editorWidget.ID)
+            #fileName = QFileDialog.getSaveFileName(
+                #self._parent, self.tr("Save File"), save_folder, filters)
+            #if not fileName:
+                #return False
 
-            if settings.REMOVE_TRAILING_SPACES:
-                helpers.remove_trailing_spaces(editorWidget)
-            newFile = file_manager.get_file_extension(fileName) == ''
-            fileName = file_manager.store_file_content(
-                fileName, editorWidget.get_text(),
-                addExtension=True, newFile=newFile)
-            self.actualTab.setTabText(self.actualTab.currentIndex(),
-                file_manager.get_basename(fileName))
-            editorWidget.register_syntax(
-                file_manager.get_file_extension(fileName))
-            self._file_watcher.allow_kill = False
-            if editorWidget.ID != fileName:
-                self.remove_standalone_watcher(editorWidget.ID)
-            editorWidget.ID = fileName
-            self.emit(SIGNAL("fileSaved(QString)"),
-                (self.tr("File Saved: %s") % fileName))
-            self.emit(SIGNAL("currentTabChanged(QString)"), fileName)
-            editorWidget._file_saved()
-            self.add_standalone_watcher(fileName)
-            self._file_watcher.allow_kill = True
-            return True
-        except file_manager.NinjaFileExistsException as ex:
-            editorWidget.just_saved = False
-            QMessageBox.information(self, self.tr("File Already Exists"),
-                (self.tr("Invalid Path: the file '%s' already exists.") %
-                    ex.filename))
-        except Exception as reason:
-            editorWidget.just_saved = False
-            logger.error('save_file_as: %s', reason)
-            QMessageBox.information(self, self.tr("Save Error"),
-                self.tr("The file couldn't be saved!"))
-            self.actualTab.setTabText(self.actualTab.currentIndex(),
-                self.tr("New Document"))
-        return False
+            #if settings.REMOVE_TRAILING_SPACES:
+                #helpers.remove_trailing_spaces(editorWidget)
+            #newFile = file_manager.get_file_extension(fileName) == ''
+            #fileName = file_manager.store_file_content(
+                #fileName, editorWidget.get_text(),
+                #addExtension=True, newFile=newFile)
+            #self.actualTab.setTabText(self.actualTab.currentIndex(),
+                #file_manager.get_basename(fileName))
+            #editorWidget.register_syntax(
+                #file_manager.get_file_extension(fileName))
+            #self._file_watcher.allow_kill = False
+            #if editorWidget.ID != fileName:
+                #self.remove_standalone_watcher(editorWidget.ID)
+            #editorWidget.ID = fileName
+            #self.emit(SIGNAL("fileSaved(QString)"),
+                #(self.tr("File Saved: %s") % fileName))
+            #self.emit(SIGNAL("currentTabChanged(QString)"), fileName)
+            #editorWidget._file_saved()
+            #self.add_standalone_watcher(fileName)
+            #self._file_watcher.allow_kill = True
+            #return True
+        #except file_manager.NinjaFileExistsException as ex:
+            #editorWidget.just_saved = False
+            #QMessageBox.information(self, self.tr("File Already Exists"),
+                #(self.tr("Invalid Path: the file '%s' already exists.") %
+                    #ex.filename))
+        #except Exception as reason:
+            #editorWidget.just_saved = False
+            #logger.error('save_file_as: %s', reason)
+            #QMessageBox.information(self, self.tr("Save Error"),
+                #self.tr("The file couldn't be saved!"))
+            #self.actualTab.setTabText(self.actualTab.currentIndex(),
+                #self.tr("New Document"))
+        #return False
 
     def _get_save_folder(self, fileName):
-        """
-        Returns the root directory of the 'Main Project' or the home folder
-        """
-        actual_project = self._parent.explorer.get_actual_project()
-        if actual_project:
-            return actual_project
-        return os.path.expanduser("~")
+        pass
+        #FIXME: check how we handle this
+        #"""
+        #Returns the root directory of the 'Main Project' or the home folder
+        #"""
+        #actual_project = self._parent.explorer.get_actual_project()
+        #if actual_project:
+            #return actual_project
+        #return os.path.expanduser("~")
 
     def save_project(self, projectFolder):
-        for i in range(self._tabMain.count()):
-            editorWidget = self._tabMain.widget(i)
-            if type(editorWidget) is editor.Editor and \
-            file_manager.belongs_to_folder(projectFolder, editorWidget.ID):
-                reloaded = self._tabMain.check_for_external_modifications(
-                    editorWidget)
-                if not reloaded:
-                    self.save_file(editorWidget)
-        for i in range(self.tabsecondary.count()):
-            editorWidget = self.tabsecondary.widget(i)
-            if type(editorWidget) is editor.Editor and \
-            file_manager.belongs_to_folder(projectFolder, editorWidget.ID):
-                reloaded = self.tabsecondary.check_for_external_modifications(
-                    editorWidget)
-                if not reloaded:
-                    self.save_file(editorWidget)
+        pass
+        #FIXME: check how we handle this
+        #for i in range(self._tabMain.count()):
+            #editorWidget = self._tabMain.widget(i)
+            #if type(editorWidget) is editor.Editor and \
+            #file_manager.belongs_to_folder(projectFolder, editorWidget.ID):
+                #reloaded = self._tabMain.check_for_external_modifications(
+                    #editorWidget)
+                #if not reloaded:
+                    #self.save_file(editorWidget)
+        #for i in range(self.tabsecondary.count()):
+            #editorWidget = self.tabsecondary.widget(i)
+            #if type(editorWidget) is editor.Editor and \
+            #file_manager.belongs_to_folder(projectFolder, editorWidget.ID):
+                #reloaded = self.tabsecondary.check_for_external_modifications(
+                    #editorWidget)
+                #if not reloaded:
+                    #self.save_file(editorWidget)
 
     def save_all(self):
-        for i in range(self._tabMain.count()):
-            editorWidget = self._tabMain.widget(i)
-            if type(editorWidget) is editor.Editor:
-                reloaded = self._tabMain.check_for_external_modifications(
-                    editorWidget)
-                if not reloaded:
-                    self.save_file(editorWidget)
-        for i in range(self.tabsecondary.count()):
-            editorWidget = self.tabsecondary.widget(i)
-            self.tabsecondary.check_for_external_modifications(editorWidget)
-            if type(editorWidget) is editor.Editor:
-                reloaded = self.tabsecondary.check_for_external_modifications(
-                    editorWidget)
-                if not reloaded:
-                    self.save_file(editorWidget)
+        pass
+        #FIXME: check how we handle this
+        #for i in range(self._tabMain.count()):
+            #editorWidget = self._tabMain.widget(i)
+            #if type(editorWidget) is editor.Editor:
+                #reloaded = self._tabMain.check_for_external_modifications(
+                    #editorWidget)
+                #if not reloaded:
+                    #self.save_file(editorWidget)
+        #for i in range(self.tabsecondary.count()):
+            #editorWidget = self.tabsecondary.widget(i)
+            #self.tabsecondary.check_for_external_modifications(editorWidget)
+            #if type(editorWidget) is editor.Editor:
+                #reloaded = self.tabsecondary.check_for_external_modifications(
+                    #editorWidget)
+                #if not reloaded:
+                    #self.save_file(editorWidget)
 
     def call_editors_function(self, call_function, *arguments):
         args = arguments[0]
         kwargs = arguments[1]
-        for i in range(self._tabMain.count()):
-            editorWidget = self._tabMain.widget(i)
-            if type(editorWidget) is editor.Editor:
+        for i in range(self.tabs.count()):
+            editorWidget = self.tabs.widget(i)
+            if isinstance(editorWidget, editor.Editor):
                 function = getattr(editorWidget, call_function)
                 function(*args, **kwargs)
-        for i in range(self.tabsecondary.count()):
-            editorWidget = self.tabsecondary.widget(i)
-            self.tabsecondary.check_for_external_modifications(editorWidget)
-            if type(editorWidget) is editor.Editor:
-                function = getattr(editorWidget, call_function)
-                function(*args, **kwargs)
+        #TODO: add other splits
 
     def show_start_page(self):
         if not self.is_open("Start Page"):
@@ -1176,105 +1135,41 @@ class _MainContainer(QWidget):
         if editorWidget:
             editorWidget.jump_to_line(lineno=lineno)
 
-    def show_follow_mode(self):
-        tempTab = self.actualTab
-        self.actualTab = self._tabMain
-        editorWidget = self.get_current_editor()
-        if not editorWidget:
-            return
-        if self.tabsecondary.isVisible() and not self._followMode:
-            self.show_split(self.orientation())
-        if self._followMode:
-            self._exit_follow_mode()
-        else:
-            self._followMode = True
-            self.setOrientation(Qt.Horizontal)
-            name = self._tabMain.tabText(self._tabMain.currentIndex())
-            editor2 = editor.create_editor()
-            editor2.setDocument(editorWidget.document())
-            self.tabsecondary.add_tab(editor2, name)
-            if editorWidget.textModified:
-                self.tabsecondary.tab_was_modified(True)
-            self.tabsecondary.show()
-            editor2.verticalScrollBar().setRange(
-                editorWidget._sidebarWidget.highest_line - 2, 0)
-            self.tabsecondary.setTabsClosable(False)
-            self.tabsecondary.follow_mode = True
-            self.setSizes([1, 1])
-            self.enable_follow_mode_scrollbar(self._followMode)
-        self.actualTab = tempTab
-
-    def _exit_follow_mode(self):
-        if self._followMode:
-            self._followMode = False
-            self.tabsecondary.close_tab()
-            self.tabsecondary.hide()
-            self.tabsecondary.follow_mode = False
-            self.tabsecondary.setTabsClosable(True)
-            self.enable_follow_mode_scrollbar(self._followMode)
-
     def get_opened_documents(self):
-        if self._followMode:
-            return [self._tabMain.get_documents_data(), []]
-        return [self._tabMain.get_documents_data(),
-            self.tabsecondary.get_documents_data()]
+        return self.tabs.get_documents_data()
 
-    def open_files(self, files, mainTab=True, notIDEStart=True):
-        if mainTab:
-            self.actualTab = self._tabMain
-        else:
-            self.actualTab = self.tabsecondary
-            if files:
-                self.tabsecondary.show()
-                self.split_visible = True
-
+    def open_files(self, files):
         for fileData in files:
             if file_manager.file_exists(fileData[0]):
-                self.open_file(fileData[0], fileData[1], notStart=notIDEStart)
-        self.actualTab = self._tabMain
+                self.open_file(fileData[0], fileData[1])
 
     def check_for_unsaved_tabs(self):
-        return self._tabMain._check_unsaved_tabs() or \
-            self.tabsecondary._check_unsaved_tabs()
+        return self.tabs._check_unsaved_tabs()
 
     def get_unsaved_files(self):
-        return self._tabMain.get_unsaved_files() or \
-            self.tabsecondary.get_unsaved_files()
+        return self.tabs.get_unsaved_files()
 
     def reset_editor_flags(self):
-        for i in range(self._tabMain.count()):
-            widget = self._tabMain.widget(i)
-            if type(widget) is editor.Editor:
-                widget.set_flags()
-        for i in range(self.tabsecondary.count()):
-            widget = self.tabsecondary.widget(i)
-            if type(widget) is editor.Editor:
+        for i in range(self.tabs.count()):
+            widget = self.tabs.widget(i)
+            if isinstance(widget, editor.Editor):
                 widget.set_flags()
 
     def _specify_syntax(self, widget, syntaxLang):
-        if type(widget) is editor.Editor:
+        if isinstance(widget, editor.Editor):
             widget.restyle(syntaxLang)
 
     def apply_editor_theme(self, family, size):
-        for i in range(self._tabMain.count()):
-            widget = self._tabMain.widget(i)
-            if type(widget) is editor.Editor:
-                widget.restyle()
-                widget.set_font(family, size)
-        for i in range(self.tabsecondary.count()):
-            widget = self.tabsecondary.widget(i)
-            if type(widget) is editor.Editor:
+        for i in range(self.tabs.count()):
+            widget = self.tabs.widget(i)
+            if isinstance(widget, editor.Editor):
                 widget.restyle()
                 widget.set_font(family, size)
 
     def update_editor_margin_line(self):
-        for i in range(self._tabMain.count()):
-            widget = self._tabMain.widget(i)
-            if type(widget) is editor.Editor:
-                widget._update_margin_line()
-        for i in range(self.tabsecondary.count()):
-            widget = self.tabsecondary.widget(i)
-            if type(widget) is editor.Editor:
+        for i in range(self.tabs.count()):
+            widget = self.tabs.widget(i)
+            if isinstance(widget, editor.Editor):
                 widget._update_margin_line()
 
     def open_project(self, path):
@@ -1283,37 +1178,39 @@ class _MainContainer(QWidget):
     def close_python_doc(self):
         #close the python document server (if running)
         if self.docPage:
-            index = self.actualTab.indexOf(self.docPage)
-            self.actualTab.removeTab(index)
+            index = self.tabs.indexOf(self.docPage)
+            self.tabs.removeTab(index)
             #assign None to the browser
             self.docPage = None
 
     def close_tab(self):
         """Close the current tab in the current TabWidget."""
-        self.actualTab.close_tab()
+        self.tabs.close_tab()
 
     def change_tab(self):
         """Change the tab in the current TabWidget."""
-        self.actualTab.change_tab()
+        self.tabs.change_tab()
 
     def change_tab_reverse(self):
         """Change the tab in the current TabWidget backwards."""
-        self.actualTab.change_tab_reverse()
+        self.tabs.change_tab_reverse()
 
     def show_navigation_buttons(self):
-        self.actualTab.navigator.show_menu_navigation()
+        self.tabs.navigator.show_menu_navigation()
 
     def change_split_focus(self):
-        if self.actualTab == self._tabMain and self.tabsecondary.isVisible():
-            self.actualTab = self.tabsecondary
-        else:
-            self.actualTab = self._tabMain
-        widget = self.actualTab.currentWidget()
-        if widget is not None:
-            widget.setFocus()
+        pass
+        #FIXME: check how we handle this
+        #if self.actualTab == self._tabMain and self.tabsecondary.isVisible():
+            #self.actualTab = self.tabsecondary
+        #else:
+            #self.actualTab = self._tabMain
+        #widget = self.actualTab.currentWidget()
+        #if widget is not None:
+            #widget.setFocus()
 
     def shortcut_index(self, index):
-        self.actualTab.setCurrentIndex(index)
+        self.tabs.setCurrentIndex(index)
 
     def print_file(self):
         """Call the print of ui_tool

@@ -250,11 +250,6 @@ class TabWidget(QTabWidget):
                 self.setCurrentIndex(i)
                 return
 
-    def search_for_identifier_index(self, identifier):
-        for i in range(self.count()):
-            if self.widget(i) == identifier:
-                return i
-
     def remove_title(self, index):
         """Looks for the title of the tab at index and removes it from
         self.titles, if it's there.'"""
@@ -431,8 +426,10 @@ class TabWidget(QTabWidget):
         """
         val = False
         for i in range(self.count()):
-            if type(self.widget(i)) is editor.Editor:
-                val = val or self.widget(i).textModified
+            if (isinstance(self.widget(i), editor.Editor) and
+                self.widget(i).textModified):
+                val = True
+                break
         return val
 
     def get_unsaved_files(self):
