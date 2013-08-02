@@ -151,32 +151,44 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     #Loading Session Files
     splash.showMessage("Loading Files and Projects",
         Qt.AlignRight | Qt.AlignTop, Qt.black)
-    #Files in Main Tab
-    main_files = qsettings.value('openFiles/mainTab', [])
-    tempFiles = []
-    if main_files:
-        for file_ in main_files:
-            fileData = list(file_)
-            if fileData:
-                lineno = fileData[1]
-                tempFiles.append((fileData[0], lineno))
-    main_files = tempFiles
-    #Files in Secondary Tab
-    sec_files = qsettings.value('openFiles/secondaryTab', [])
-    tempFiles = []
-    if sec_files:
-        for file_ in sec_files:
-            fileData = list(file_)
-            if fileData:
-                lineno = fileData[1]
-                tempFiles.append((fileData[0], lineno))
-    sec_files = tempFiles
-    # Recent Files
-    recent_files = qsettings.value('openFiles/recentFiles', [])
-    #Current File
-    current_file = qsettings.value('openFiles/currentFile', '', type='QString')
-    #Projects
-    projects = qsettings.value('openFiles/projects', [])
+
+    #First check if we need to load last session files
+    if qsettings.value('preferences/general/loadFiles', True, type=bool):
+        #Files in Main Tab
+        main_files = qsettings.value('openFiles/mainTab', [])
+        tempFiles = []
+        if main_files:
+            for file_ in main_files:
+                fileData = list(file_)
+                if fileData:
+                    lineno = fileData[1]
+                    tempFiles.append((fileData[0], lineno))
+        main_files = tempFiles
+        #Files in Secondary Tab
+        sec_files = qsettings.value('openFiles/secondaryTab', [])
+        tempFiles = []
+        if sec_files:
+            for file_ in sec_files:
+                fileData = list(file_)
+                if fileData:
+                    lineno = fileData[1]
+                    tempFiles.append((fileData[0], lineno))
+        sec_files = tempFiles
+
+        # Recent Files
+        recent_files = qsettings.value('openFiles/recentFiles', [])
+        #Current File
+        current_file = qsettings.value(
+                        'openFiles/currentFile', '', type='QString')
+        #Projects
+        projects = qsettings.value('openFiles/projects', [])
+    else:
+        main_files = []
+        sec_files = []
+        recent_files = []
+        current_file = ''
+        projects = []
+
     #Include files received from console args
     file_with_nro = list([(f[0], f[1] - 1) for f in zip(filenames, linenos)])
     file_without_nro = list([(f, 0) for f in filenames[len(linenos):]])
