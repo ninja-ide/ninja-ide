@@ -57,6 +57,7 @@ class NEditable(QObject):
         """Save the content of the UI to a file."""
         content = self.__editor.get_text()
         self._nfile.save(content)
+        self.new_document = False
 
     def update_project(self, project):
         self.project = project
