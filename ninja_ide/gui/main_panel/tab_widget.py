@@ -57,7 +57,7 @@ class TabWidget(QTabWidget):
     allTabsClosed()
     changeActualTab(QTabWidget)
     splitTab(QTabWidget, int, bool)
-    reopenTab(QTabWidget, QString)
+    reopenTab(QString)
     runFile()
     addToProject(QString)
     syntaxChanged(QWidget, QString)
@@ -168,8 +168,7 @@ class TabWidget(QTabWidget):
             self.tabBar().setTabText(self.currentIndex(), text)
 
     def focusInEvent(self, event):
-        QTabWidget.focusInEvent(self, event)
-        self.emit(SIGNAL("changeActualTab(QTabWidget)"), self)
+        super(TabWidget, self).focusInEvent(event)
 
         #custom behavior after the default
         editorWidget = self.currentWidget()
@@ -250,11 +249,6 @@ class TabWidget(QTabWidget):
             if self.widget(i) == identifier:
                 self.setCurrentIndex(i)
                 return
-
-    def search_for_identifier_index(self, identifier):
-        for i in range(self.count()):
-            if self.widget(i) == identifier:
-                return i
 
     def remove_title(self, index):
         """Looks for the title of the tab at index and removes it from
@@ -344,27 +338,15 @@ class TabWidget(QTabWidget):
                 actionCloseAllNotThis = menu.addAction(
                     self.tr("Close Other Tabs"))
                 menu.addSeparator()
-                if self._parent.split_visible:
-                    actionMoveSplit = menu.addAction(
-                        self.tr("Move this Tab to the other Split"))
-                    actionCloseSplit = menu.addAction(
-                        self.tr("Close Split"))
-                    #Connect split actions
-                    self.connect(actionMoveSplit, SIGNAL("triggered()"),
-                        lambda: self._parent.move_tab_to_next_split(self))
-                    self.connect(actionCloseSplit, SIGNAL("triggered()"),
-                        lambda: self._parent.split_tab(
-                            self._parent.orientation() == Qt.Horizontal))
-                else:
-                    actionSplitH = menu.addAction(
-                        self.tr("Split this Tab (Vertically)"))
-                    actionSplitV = menu.addAction(
-                        self.tr("Split this Tab (Horizontally)"))
-                    #Connect split actions
-                    self.connect(actionSplitH, SIGNAL("triggered()"),
-                        lambda: self._split_this_tab(True))
-                    self.connect(actionSplitV, SIGNAL("triggered()"),
-                        lambda: self._split_this_tab(False))
+                actionSplitH = menu.addAction(
+                    self.tr("Split this Tab (Vertically)"))
+                actionSplitV = menu.addAction(
+                    self.tr("Split this Tab (Horizontally)"))
+                #Connect split actions
+                self.connect(actionSplitH, SIGNAL("triggered()"),
+                    lambda: self._split_this_tab(True))
+                self.connect(actionSplitV, SIGNAL("triggered()"),
+                    lambda: self._split_this_tab(False))
                 menu.addSeparator()
                 actionCopyPath = menu.addAction(
                     self.tr("Copy file location to Clipboard"))
@@ -416,8 +398,7 @@ class TabWidget(QTabWidget):
             self.emit(SIGNAL("addToProject(QString)"), widget.ID)
 
     def _reopen_last_tab(self):
-        self.emit(SIGNAL("reopenTab(QTabWidget, QString)"),
-            self, self.__lastOpened.pop())
+        self.emit(SIGNAL("reopenTab(QString)"), self.__lastOpened.pop())
         self.emit(SIGNAL("recentTabsModified(QStringList)"), self.__lastOpened)
 
     def _split_this_tab(self, orientation):
@@ -445,8 +426,10 @@ class TabWidget(QTabWidget):
         """
         val = False
         for i in range(self.count()):
-            if type(self.widget(i)) is editor.Editor:
-                val = val or self.widget(i).textModified
+            if (isinstance(self.widget(i), editor.Editor) and
+                self.widget(i).textModified):
+                val = True
+                break
         return val
 
     def get_unsaved_files(self):

@@ -168,6 +168,16 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.connect(self.__actionFindOccurrences, SIGNAL("triggered()"),
             self._find_occurrences)
 
+        self.set_current_selected()
+
+    @property
+    def project(self):
+        self._neditable.project
+
+    @property
+    def display_name(self):
+        self._neditable.display_name
+
     def load_project_config(self):
         if self._neditable.project is not None:
             self.indent = self._neditable.project.indentation

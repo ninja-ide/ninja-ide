@@ -191,6 +191,12 @@ class CentralWidget(QWidget):
             self._splitterInsideSizes = self._splitterInside.sizes()
         return self._splitterInsideSizes
 
+    def get_paste(self):
+        return self.lateralPanel.get_paste()
+
+    def add_copy(self, text):
+        self.lateralPanel.add_new_copy(text)
+
 
 class LateralPanel(QWidget):
 

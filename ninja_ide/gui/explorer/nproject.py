@@ -39,3 +39,4 @@ class NProject(QObject):
         self.venv = project.get('venv', '')
         self.related_projects = project.get('relatedProjects', [])
         self.added_to_console = False
+        self.is_current = False
