@@ -201,24 +201,23 @@ class _ToolsDock(QWidget):
 
     def execute_project(self):
         """Execute the project marked as Main Project."""
+        ide = IDE.get_service('ide')
+        nproject = ide.get_current_project()
+        main_file = nproject.main_file
         explorer_container = IDE.get_service('explorer_container')
         if not explorer_container:
             return
-        mainFile = explorer_container.get_project_main_file()
-        if not mainFile and explorer_container._treeProjects and \
+        if not main_file and explorer_container._treeProjects and \
           explorer_container._treeProjects._actualProject:
             explorer_container._treeProjects.open_project_properties()
-        elif mainFile:
+        elif main_file:
             self.save_project()
-            path = explorer_container.get_actual_project()
             #emit a signal for plugin!
-            self.emit(SIGNAL("projectExecuted(QString)"), path)
+            self.emit(SIGNAL("projectExecuted(QString)"), nproject.path)
 
-            # load our jutsus!
-            ide = IDE.get_service('ide')
-            nproject = ide.get_project(path)
-            mainFile = file_manager.create_path(path, nproject.main_file)
-            self.run_application(mainFile,
+            main_file = file_manager.create_path(nproject.path,
+                nproject.main_file)
+            self.run_application(main_file,
                 pythonPath=nproject.python_exec_command,
                 PYTHONPATH=nproject.python_path,
                 programParams=nproject.program_params,

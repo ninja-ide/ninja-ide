@@ -469,11 +469,6 @@ class _ExplorerContainer(QTabWidget):
             return self.tree_projects.get_selected_project_path()
         return None
 
-    def get_project_main_file(self):
-        if self.tree_projects:
-            return self.tree_projects.get_project_main_file()
-        return ''
-
     def get_project_given_filename(self, filename):
         projects = self.get_opened_projects()
         for project in projects:

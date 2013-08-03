@@ -711,11 +711,6 @@ class TreeProjectsWidget(QTreeWidget):
             return self._actualProject.path
         return None
 
-    def get_project_main_file(self):
-        if self._actualProject:
-            return self._actualProject.mainFile
-        return ''
-
     def get_selected_project_type(self):
         rootItem = self._get_project_root()
         return rootItem.projectType
