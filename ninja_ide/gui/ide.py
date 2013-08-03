@@ -351,6 +351,9 @@ class IDE(QMainWindow):
         self.style().unpolish(widget)
         self.style().polish(widget)
 
+    def get_opened_projects(self):
+        return self.__projects
+
     def _close_tray_icon(self):
         """Close the System Tray Icon."""
         self.trayIcon.hide()
