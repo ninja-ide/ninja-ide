@@ -47,7 +47,9 @@ from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
 from ninja_ide.gui.ide import IDE
+from ninja_ide.core.file_handling import nfile
 from ninja_ide.core.file_handling import file_manager
+from ninja_ide.core.file_handling.file_manager import NinjaIOException
 from ninja_ide.core import settings
 
 from ninja_ide.tools.logger import NinjaLogger
@@ -200,8 +202,10 @@ class LocateThread(QThread):
         projects = ide.get_opened_projects()
         if not projects:
             return
-        while not self._cancel and projects:
-            nproject = projects.pop()
+        for path in projects:
+            if self._cancel:
+                break
+            nproject = projects[path]
             current_dir = QDir(nproject.path)
             #Skip not readable dirs!
             if not current_dir.isReadable():
@@ -209,11 +213,11 @@ class LocateThread(QThread):
 
             queue_folders = Queue.Queue()
             queue_folders.put(current_dir)
-            self.__locate_code_in_project(queue_folders, nproject.extensions)
+            self.__locate_code_in_project(queue_folders, nproject)
         self.dirty = True
         self.get_locations()
 
-    def __locate_code_in_project(self, queue_folders, extensions):
+    def __locate_code_in_project(self, queue_folders, nproject):
         file_filter = QDir.Files | QDir.NoDotAndDotDot | QDir.Readable
         dir_filter = QDir.Dirs | QDir.NoDotAndDotDot | QDir.Readable
         while not self._cancel and not queue_folders.empty():
@@ -229,12 +233,12 @@ class LocateThread(QThread):
 
             #all files in sub_dir first apply the filters
             current_files = current_dir.entryInfoList(
-                ['*{0}'.format(x) for x in extensions], file_filter)
+                ['*{0}'.format(x) for x in nproject.extensions], file_filter)
             #process all files in current dir!
             for one_file in current_files:
                 try:
-                    self._grep_file_locate(one_file.absoluteFilePath(),
-                        one_file.fileName())
+                    nfile_ = nfile.NFile(one_file.absoluteFilePath())
+                    self._grep_file_locate(nfile_)
                 except Exception as reason:
                     logger.error(
                         '__locate_code_in_project, error: %r' % reason)
@@ -243,9 +247,9 @@ class LocateThread(QThread):
                         one_file.absoluteFilePath())
 
     def locate_file_code(self):
-        file_name = file_manager.get_basename(self._file_path)
         try:
-            self._grep_file_locate(self._file_path, file_name)
+            nfile_ = nfile.NFile(self._file_path)
+            self._grep_file_locate(nfile_)
             self.dirty = True
             self.execute = self.locate_code
         except Exception as reason:
@@ -297,8 +301,8 @@ class LocateThread(QThread):
         thisFileLocations = mapping_locations.get(path, ())
         try:
             if not thisFileLocations:
-                file_name = file_manager.get_basename(path)
-                self._grep_file_locate(path, file_name)
+                nfile_ = nfile.NFile(path)
+                self._grep_file_locate(nfile_)
                 thisFileLocations = mapping_locations.get(path, ())
             thisFileLocations = sorted(thisFileLocations[1:],
                 key=lambda item: item.name)
@@ -312,93 +316,99 @@ class LocateThread(QThread):
             for x in mapping_locations[location]]
         self.locations = sorted(self.locations, key=lambda item: item.name)
 
-    def _grep_file_locate(self, file_path, file_name):
+    def _grep_file_locate(self, nfile):
         #type - file_name - file_path
         global mapping_locations
         #TODO: Check if the last know state of the file is valid and load that
         exts = settings.SYNTAX.get('python')['extension']
-        file_ext = file_manager.get_file_extension(file_path)
-        if file_ext not in exts:
-            mapping_locations[file_path] = [
-                ResultItem(type=FILTERS['non-python'], name=file_name,
-                    path=file_path, lineno=0)]
+        if nfile.file_ext not in exts:
+            mapping_locations[nfile.file_path] = [
+                ResultItem(type=FILTERS['non-python'], name=nfile.file_name,
+                    path=nfile.file_path, lineno=0)]
         else:
-            mapping_locations[file_path] = [
-                ResultItem(type=FILTERS['files'], name=file_name,
-                        path=file_path, lineno=0)]
+            mapping_locations[nfile.file_path] = [
+                ResultItem(type=FILTERS['files'], name=nfile.file_name,
+                        path=nfile.file_path, lineno=0)]
         #obtain a symbols handler for this file extension
-        symbols_handler = settings.get_symbols_handler(file_ext)
+        symbols_handler = settings.get_symbols_handler(nfile.file_ext)
         if symbols_handler is None:
             return
         results = []
-        with open(file_path) as f:
-            content = f.read()
-            symbols = symbols_handler.obtain_symbols(content,
-                filename=file_path)
-            self.__parse_symbols(symbols, results, file_path)
+        try:
+            content = nfile.read()
+        except NinjaIOException as reason:
+            content = ''
+            logger.error('_grep_file_locate, error: %r' % reason)
+
+        symbols = symbols_handler.obtain_symbols(content,
+            filename=nfile.file_path)
+        self.__parse_symbols(symbols, results, nfile)
 
         if results:
-            mapping_locations[file_path] += results
+            mapping_locations[nfile.file_path] += results
 
-    def __parse_symbols(self, symbols, results, file_path):
+    def __parse_symbols(self, symbols, results, nfile):
         if "classes" in symbols:
-            self.__parse_class(symbols, results, file_path)
+            self.__parse_class(symbols, results, nfile)
         if 'attributes' in symbols:
-            self.__parse_attributes(symbols, results, file_path)
+            self.__parse_attributes(symbols, results, nfile)
         if 'functions' in symbols:
-            self.__parse_functions(symbols, results, file_path)
+            self.__parse_functions(symbols, results, nfile)
 
-    def __parse_class(self, symbols, results, file_path):
+    def __parse_class(self, symbols, results, nfile):
         for claz in symbols['classes']:
             line_number = symbols['classes'][claz]['lineno'] - 1
             members = symbols['classes'][claz]['members']
             results.append(ResultItem(type=FILTERS['classes'],
-                name=claz, path=file_path,
+                name=claz, path=nfile.file_path,
                 lineno=line_number))
             if 'attributes' in members:
                 for attr in members['attributes']:
                     line_number = members['attributes'][attr] - 1
                     results.append(ResultItem(type=FILTERS['attribs'],
-                        name=attr, path=file_path,
+                        name=attr, path=nfile.file_path,
                         lineno=line_number))
             if 'functions' in members:
                 for func in members['functions']:
                     line_number = members['functions'][func]['lineno'] - 1
                     results.append(ResultItem(
                         type=FILTERS['functions'], name=func,
-                        path=file_path, lineno=line_number))
+                        path=nfile.file_path, lineno=line_number))
                     self.__parse_symbols(
                         members['functions'][func]['functions'],
-                        results, file_path)
+                        results, nfile.file_path)
             if 'classes' in members:
-                self.__parse_class(members, results, file_path)
+                self.__parse_class(members, results, nfile)
 
-    def __parse_attributes(self, symbols, results, file_path):
+    def __parse_attributes(self, symbols, results, nfile):
         for attr in symbols['attributes']:
             line_number = symbols['attributes'][attr] - 1
             results.append(ResultItem(type=FILTERS['attribs'],
-                name=attr, path=file_path,
+                name=attr, path=nfile.file_path,
                 lineno=line_number))
 
-    def __parse_functions(self, symbols, results, file_path):
+    def __parse_functions(self, symbols, results, nfile):
         for func in symbols['functions']:
             line_number = symbols['functions'][func]['lineno'] - 1
             results.append(ResultItem(
                 type=FILTERS['functions'], name=func,
-                path=file_path, lineno=line_number))
+                path=nfile.file_path, lineno=line_number))
             self.__parse_symbols(symbols['functions'][func]['functions'],
-                    results, file_path)
+                    results, nfile)
 
-    def get_symbols_for_class(self, file_path, clazzName):
+    def get_symbols_for_class(self, nfile, clazzName):
         results = []
-        with open(file_path) as f:
-            content = f.read()
-            ext = file_manager.get_file_extension(file_path)
-            #obtain a symbols handler for this file extension
-            symbols_handler = settings.get_symbols_handler(ext)
-            symbols = symbols_handler.obtain_symbols(content,
-                filename=file_path)
-            self.__parse_symbols(symbols, results, file_path)
+        try:
+            content = nfile.read()
+        except NinjaIOException as reason:
+            content = ''
+            logger.error('_grep_file_locate, error: %r' % reason)
+
+        #obtain a symbols handler for this file extension
+        symbols_handler = settings.get_symbols_handler(nfile.file_ext)
+        symbols = symbols_handler.obtain_symbols(content,
+                filename=nfile.file_path)
+        self.__parse_symbols(symbols, results, nfile.file_path)
         return results
 
     def cancel(self):
@@ -652,7 +662,8 @@ class LocateCompleter(QLineEdit):
             moveIndex = 2
             if self._filterData.type == FILTERS['classes']:
                 self._classFilter = self._filterData.name
-            symbols = self._parent._thread.get_symbols_for_class(filePath,
+            nfile_ = nfile.NFile(filePath)
+            symbols = self._parent._thread.get_symbols_for_class(nfile_,
                 self._classFilter)
             self.tempLocations = [x for x in symbols
                 if x.type == filterOptions[4]]
