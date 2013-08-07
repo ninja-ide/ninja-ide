@@ -57,8 +57,6 @@ from PyQt4.QtGui import QFileDialog
 from ninja_ide import resources
 from ninja_ide.gui.ide import IDE
 from ninja_ide.core.file_handling import file_manager
-from ninja_ide.gui.main_panel import main_container
-from ninja_ide.gui.explorer import explorer_container
 
 
 class FindInFilesThread(QThread):
@@ -453,26 +451,23 @@ class FindInFilesWidget(QWidget):
 
     def open(self):
         if not self._find_widget.isVisible():
-            actual_projects_obj = \
-                self._explorer_container.get_opened_projects()
+            ide = IDE.get_service('ide')
+            actual_projects_obj = ide.get_opened_projects()
             actual_projects = [p.path for p in actual_projects_obj]
-            actual = self._explorer_container.get_actual_project()
+            actual = ide.get_current_project()
             self._find_widget.show(actual_project=actual_projects,
-                actual=actual)
+                actual=actual.path)
 
     def find_occurrences(self, word):
         self._find_widget.pattern_line_edit.setText(word)
-        editorWidget = main_container.MainContainer().get_actual_editor()
-        explorerContainer = explorer_container.ExplorerContainer()
-        projects_obj = explorerContainer.get_opened_projects()
-        projects = [p.path for p in projects_obj]
-        project = explorerContainer.get_actual_project()
-        for p in projects:
-            if file_manager.belongs_to_folder(p, editorWidget.ID):
-                project = p
-                break
+        ide = IDE.get_service('ide')
+        main_container = IDE.get_service('main_container')
+        editorWidget = main_container.get_current_editor()
+        nproject = ide.get_project_for_file(editorWidget.ID)
+        if nproject is None:
+            nproject = ide.get_current_project()
         self._find_widget.dir_combo.clear()
-        self._find_widget.dir_combo.addItem(project)
+        self._find_widget.dir_combo.addItem(nproject.path)
         self._find_widget.case_checkbox.setChecked(True)
         self._find_widget._find_in_files()
 

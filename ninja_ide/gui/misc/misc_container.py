@@ -43,7 +43,6 @@ from ninja_ide.gui.misc import web_render
 from ninja_ide.gui.misc import find_in_files
 from ninja_ide.gui.misc import results
 from ninja_ide.tools import ui_tools
-from ninja_ide.tools import json_manager
 
 
 class _ToolsDock(QWidget):
@@ -202,32 +201,28 @@ class _ToolsDock(QWidget):
 
     def execute_project(self):
         """Execute the project marked as Main Project."""
+        ide = IDE.get_service('ide')
+        nproject = ide.get_current_project()
+        main_file = nproject.main_file
         explorer_container = IDE.get_service('explorer_container')
         if not explorer_container:
             return
-        mainFile = explorer_container.get_project_main_file()
-        if not mainFile and explorer_container._treeProjects and \
+        if not main_file and explorer_container._treeProjects and \
           explorer_container._treeProjects._actualProject:
             explorer_container._treeProjects.open_project_properties()
-        elif mainFile:
+        elif main_file:
             self.save_project()
-            path = explorer_container.get_actual_project()
             #emit a signal for plugin!
-            self.emit(SIGNAL("projectExecuted(QString)"), path)
+            self.emit(SIGNAL("projectExecuted(QString)"), nproject.path)
 
-            # load our jutsus!
-            project = json_manager.read_ninja_project(path)
-            python_exec = project.get('venv', False)
-            if not python_exec:
-                python_exec = project.get('pythonPath', 'python')
-            PYTHONPATH = project.get('PYTHONPATH', None)
-            params = project.get('programParams', '')
-            preExec = project.get('preExecScript', '')
-            postExec = project.get('postExecScript', '')
-            mainFile = file_manager.create_path(path, mainFile)
-            self.run_application(mainFile, pythonPath=python_exec,
-                PYTHONPATH=PYTHONPATH,
-                programParams=params, preExec=preExec, postExec=postExec)
+            main_file = file_manager.create_path(nproject.path,
+                nproject.main_file)
+            self.run_application(main_file,
+                pythonPath=nproject.python_exec_command,
+                PYTHONPATH=nproject.python_path,
+                programParams=nproject.program_params,
+                preExec=nproject.pre_exec_script,
+                postExec=nproject.post_exec_script)
 
     def run_application(self, fileName, pythonPath=False, PYTHONPATH=None,
             programParams='', preExec='', postExec=''):

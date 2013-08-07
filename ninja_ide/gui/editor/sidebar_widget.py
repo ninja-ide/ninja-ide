@@ -60,11 +60,10 @@ class SidebarWidget(QWidget):
         self.breakpoints = []
         self.bookmarks = []
 
-        #TODO: Extract filename from neditable
-        #if filename in settings.BREAKPOINTS:
-            #self.breakpoints = settings.BREAKPOINTS[filename]
-        #if filename in settings.BOOKMARKS:
-            #self.bookmarks = settings.BOOKMARKS[filename]
+        if self._neditable.ID in settings.BREAKPOINTS:
+            self.breakpoints = settings.BREAKPOINTS[self._neditable.ID]
+        if self._neditable.ID in settings.BOOKMARKS:
+            self.bookmarks = settings.BOOKMARKS[self._neditable.ID]
 
     def update_area(self):
         maxLine = math.ceil(math.log10(self.edit.blockCount()))
@@ -83,15 +82,16 @@ class SidebarWidget(QWidget):
         if self.breakpoints:
             self.breakpoints = helpers.add_line_increment(
                 self.breakpoints, blockNumber, diference)
-            #FIXME: use nfile id
-            #settings.BREAKPOINTS[self.ID] = \
-                #self._sidebarWidget._breakpoints
+            if not self._neditable.new_document:
+                settings.BREAKPOINTS[self._neditable.ID] = \
+                    self._sidebarWidget._breakpoints
         if self.bookmarks:
             self.bookmarks = helpers.add_line_increment(
                 self.bookmarks, blockNumber, diference)
-            #FIXME: use nfile id
-            #settings.BOOKMARKS[self.ID] = self._sidebarWidget._bookmarks
-        if self._foldedBlocks and self.ID:
+            if not self._neditable.new_document:
+                settings.BOOKMARKS[self._neditable.ID] = \
+                    self._sidebarWidget._bookmarks
+        if self._foldedBlocks and self._neditable.ID:
             self._foldedBlocks = self._add_line_increment(
                 self._foldedBlocks, blockNumber - 1, diference)
 
@@ -424,14 +424,14 @@ class SidebarWidget(QWidget):
                 self.code_folding_event(lineNumber)
 
     def _save_breakpoints_bookmarks(self):
-        if self.bookmarks and self.edit.ID != "":
-            settings.BOOKMARKS[self.edit.ID] = self.bookmarks
-        elif self.edit.ID in settings.BOOKMARKS:
-            settings.BOOKMARKS.pop(self.edit.ID)
-        if self.breakpoints and self.edit.ID != "":
-            settings.BREAKPOINTS[self.edit.ID] = self.breakpoints
-        elif self.edit.ID in settings.BREAKPOINTS:
-            settings.BREAKPOINTS.pop(self.edit.ID)
+        if self.bookmarks and not self._neditable.new_document:
+            settings.BOOKMARKS[self._neditable.ID] = self.bookmarks
+        elif self._neditable.ID in settings.BOOKMARKS:
+            settings.BOOKMARKS.pop(self._neditable.ID)
+        if self.breakpoints and not self._neditable.new_document:
+            settings.BREAKPOINTS[self._neditable.ID] = self.breakpoints
+        elif self._neditable.ID in settings.BREAKPOINTS:
+            settings.BREAKPOINTS.pop(self._neditable.ID)
 
     def set_breakpoint(self, lineno):
         if lineno in self.breakpoints:

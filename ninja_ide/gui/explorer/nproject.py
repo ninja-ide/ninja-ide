@@ -2,6 +2,10 @@
 
 from PyQt4.QtCore import QObject
 
+import os
+
+from ninja_ide import translations
+
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import json_manager
@@ -23,6 +27,8 @@ class NProject(QObject):
             self.name = file_manager.get_basename(path)
         self.project_type = project.get('project-type', '')
         self.description = project.get('description', '')
+        if self.description == '':
+            self.description = translations.TR_NO_DESCRIPTION
         self.url = project.get('url', '')
         self.license = project.get('license', '')
         self.main_file = project.get('mainFile', '')
@@ -40,3 +46,22 @@ class NProject(QObject):
         self.related_projects = project.get('relatedProjects', [])
         self.added_to_console = False
         self.is_current = False
+
+    @property
+    def full_path(self):
+        '''
+        Returns the full path of the project
+        '''
+        project_file = json_manager.get_ninja_project_file(self.path)
+        if not project_file:  # FIXME: If we dont have a project file
+            project_file = ''     # we should do SOMETHING! like kill zombies!
+        return os.path.join(self.path, project_file)
+
+    @property
+    def python_exec_command(self):
+        '''
+        Returns the python exec command of the project
+        '''
+        if self.venv is '':
+            return self.venv
+        return self.python_exec
