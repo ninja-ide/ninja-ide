@@ -47,9 +47,7 @@ from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
 from ninja_ide.gui.ide import IDE
-from ninja_ide.core.file_handling import nfile
 from ninja_ide.core.file_handling import file_manager
-from ninja_ide.core.file_handling.file_manager import NinjaIOException
 from ninja_ide.core import settings
 
 from ninja_ide.tools.logger import NinjaLogger
