@@ -46,6 +46,7 @@ from PyQt4.QtCore import QTextStream
 from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
+from ninja_ide import translations
 from ninja_ide.gui.ide import IDE
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
@@ -792,38 +793,38 @@ class PopupCompleter(QFrame):
     def add_no_found(self):
         """Load no results found message"""
         noFoundItem = self._create_help_item(resources.IMAGES['delete'],
-                'No results were found!')
+                translations.TR_NO_RESULTS)
         self.listWidget.addItem(noFoundItem)
 
     def add_help(self):
         #Load help
         fileItem = self._create_help_item(resources.IMAGES['locate-file'],
-                         '@\t(Filter only by Files)')
+                         translations.TR_ONLY_FILES)
         self.listWidget.addItem(fileItem)
         classItem = self._create_help_item(resources.IMAGES['locate-class'],
-                        '<\t(Filter only by Classes)')
+                        translations.TR_ONLY_CLASSES)
         self.listWidget.addItem(classItem)
         methodItem = self._create_help_item(
                         resources.IMAGES['locate-function'],
-                        '>\t(Filter only by Methods)')
+                        translations.TR_ONLY_METHODS)
         self.listWidget.addItem(methodItem)
         attributeItem = self._create_help_item(
                             resources.IMAGES['locate-attributes'],
-                            '-\t(Filter only by Attributes)')
+                            translations.TR_ONLY_ATRIBUTES)
         self.listWidget.addItem(attributeItem)
         thisFileItem = self._create_help_item(
                     resources.IMAGES['locate-on-this-file'],
-                    '.\t(Filter only by Classes and Methods in this File)')
+                    translations.TR_ONLY_CLASSES_METHODS)
         self.listWidget.addItem(thisFileItem)
         tabsItem = self._create_help_item(resources.IMAGES['locate-tab'],
-                '/\t(Filter only by the current Tabs)')
+                translations.TR_ONLY_CURRENT_TABS)
         self.listWidget.addItem(tabsItem)
         lineItem = self._create_help_item(resources.IMAGES['locate-line'],
-                ':\t(Go to Line)')
+                translations.TR_GO_TO_LINE)
         self.listWidget.addItem(lineItem)
         nonPythonItem = self._create_help_item(
                 resources.IMAGES['locate-nonpython'],
-                '!\t(Filter only by Non Python Files)')
+                translations.TR_ONLY_NON_PYTHON)
         self.listWidget.addItem(nonPythonItem)
 
     def _create_help_item(self, image, text):
