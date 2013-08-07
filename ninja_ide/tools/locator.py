@@ -126,11 +126,12 @@ class Locator(QObject):
 class ResultItem(object):
     """The Representation of each item found with the locator."""
 
-    def __init__(self, type='', name='', path='', lineno=-1):
+    def __init__(self, type='', name='', nfile='', lineno=-1):
         if name:
             self.type = type  # Function, Class, etc
             self.name = name
-            self.path = path
+            self.nfile = nfile
+            self.path = nfile.path
             self.lineno = lineno
             self.comparison = self.name
             index = self.name.find('(')
@@ -261,12 +262,12 @@ class LocateThread(QThread):
         locations = self.get_locations()
         if self._isVariable:
             preResults = [
-                [file_manager.get_basename(x.path), x.path, x.lineno, '']
+                [x.nfile.file_name, x.path, x.lineno, '']
                 for x in locations
                 if (x.type == FILTERS['attribs']) and (x.name == self._search)]
         else:
             preResults = [
-                [file_manager.get_basename(x.path), x.path, x.lineno, '']
+                [x.nfile.file_name, x.path, x.lineno, '']
                 for x in locations
                 if ((x.type == FILTERS['functions']) or
                    (x.type == FILTERS['classes'])) and
@@ -324,11 +325,11 @@ class LocateThread(QThread):
         if nfile.file_ext not in exts:
             mapping_locations[nfile.file_path] = [
                 ResultItem(type=FILTERS['non-python'], name=nfile.file_name,
-                    path=nfile.file_path, lineno=0)]
+                    nfile=nfile, lineno=0)]
         else:
             mapping_locations[nfile.file_path] = [
                 ResultItem(type=FILTERS['files'], name=nfile.file_name,
-                        path=nfile.file_path, lineno=0)]
+                        nfile=nfile, lineno=0)]
         #obtain a symbols handler for this file extension
         symbols_handler = settings.get_symbols_handler(nfile.file_ext)
         if symbols_handler is None:
@@ -360,20 +361,17 @@ class LocateThread(QThread):
             line_number = symbols['classes'][claz]['lineno'] - 1
             members = symbols['classes'][claz]['members']
             results.append(ResultItem(type=FILTERS['classes'],
-                name=claz, path=nfile.file_path,
-                lineno=line_number))
+                name=claz, nfile=nfile, lineno=line_number))
             if 'attributes' in members:
                 for attr in members['attributes']:
                     line_number = members['attributes'][attr] - 1
                     results.append(ResultItem(type=FILTERS['attribs'],
-                        name=attr, path=nfile.file_path,
-                        lineno=line_number))
+                        name=attr, nfile=nfile, lineno=line_number))
             if 'functions' in members:
                 for func in members['functions']:
                     line_number = members['functions'][func]['lineno'] - 1
-                    results.append(ResultItem(
-                        type=FILTERS['functions'], name=func,
-                        path=nfile.file_path, lineno=line_number))
+                    results.append(ResultItem(type=FILTERS['functions'],
+                        name=func, nfile=nfile, lineno=line_number))
                     self.__parse_symbols(
                         members['functions'][func]['functions'],
                         results, nfile.file_path)
@@ -384,15 +382,13 @@ class LocateThread(QThread):
         for attr in symbols['attributes']:
             line_number = symbols['attributes'][attr] - 1
             results.append(ResultItem(type=FILTERS['attribs'],
-                name=attr, path=nfile.file_path,
-                lineno=line_number))
+                name=attr, nfile=nfile, lineno=line_number))
 
     def __parse_functions(self, symbols, results, nfile):
         for func in symbols['functions']:
             line_number = symbols['functions'][func]['lineno'] - 1
-            results.append(ResultItem(
-                type=FILTERS['functions'], name=func,
-                path=nfile.file_path, lineno=line_number))
+            results.append(ResultItem(type=FILTERS['functions'],
+                name=func, nfile=nfile, lineno=line_number))
             self.__parse_symbols(symbols['functions'][func]['functions'],
                     results, nfile)
 
@@ -593,9 +589,11 @@ class LocateCompleter(QLineEdit):
             elif filterOption == FILTERS['tabs']:
                 tab1, tab2 = main_container.get_opened_documents()
                 opened = tab1 + tab2
-                self.tempLocations = [ResultItem(FILTERS['files'],
-                    file_manager.get_basename(f[0]), f[0])
-                    for f in opened]
+                self.tempLocations = []
+                for f in opened:
+                    nfile_ = nfile.NFile(f[0])
+                    self.tempLocations.append(ResultItem(FILTERS['files'],
+                    nfile_.file_name, nfile_))
                 self.__prefix = self.__prefix[1:].lstrip()
             elif main_container and filterOption == FILTERS['lines']:
                 editorWidget = main_container.get_actual_editor()
