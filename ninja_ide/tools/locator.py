@@ -732,14 +732,8 @@ class LocateCompleter(QLineEdit):
         main_container = IDE.get_service('main_container')
         if not main_container:
             return
-        if file_manager.get_file_extension(data.path) in ('jpg', 'png'):
-            main_container.open_image(data.path)
-        else:
-            if self._line_jump != -1:
-                main_container.open_file(
-                    data.path, self._line_jump, None, True)
-            else:
-                main_container.open_file(data.path, data.lineno, None, True)
+        jump = data.lineno if self._line_jump != -1 else self._line_jump
+        main_container.open_file(data.path, jump, None, True)
 
 
 class PopupCompleter(QFrame):
