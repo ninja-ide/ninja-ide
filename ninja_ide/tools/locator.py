@@ -793,88 +793,47 @@ class PopupCompleter(QFrame):
 
     def add_no_found(self):
         """Load no results found message"""
-        noFoundItem = QListWidgetItem(
-            QIcon(resources.IMAGES['delete']),
+        noFoundItem = self._create_help_item(resources.IMAGES['delete'],
                 'No results were found!')
-        font = noFoundItem.font()
-        font.setBold(True)
-        noFoundItem.setSizeHint(QSize(20, 30))
-        noFoundItem.setBackground(QBrush(Qt.lightGray))
-        noFoundItem.setForeground(QBrush(Qt.black))
-        noFoundItem.setFont(font)
         self.listWidget.addItem(noFoundItem)
 
     def add_help(self):
         #Load help
-        fileItem = QListWidgetItem(
-            QIcon(resources.IMAGES['locate-file']),
-                '@\t(Filter only by Files)')
-        font = fileItem.font()
-        font.setBold(True)
-        fileItem.setSizeHint(QSize(20, 30))
-        fileItem.setBackground(QBrush(Qt.lightGray))
-        fileItem.setForeground(QBrush(Qt.black))
-        fileItem.setFont(font)
+        fileItem = self._create_help_item(resources.IMAGES['locate-file'],
+                         '@\t(Filter only by Files)')
         self.listWidget.addItem(fileItem)
-        classItem = QListWidgetItem(
-            QIcon(resources.IMAGES['locate-class']),
-                '<\t(Filter only by Classes)')
+        classItem = self._create_help_item(resources.IMAGES['locate-class'],
+                        '<\t(Filter only by Classes)')
         self.listWidget.addItem(classItem)
-        classItem.setSizeHint(QSize(20, 30))
-        classItem.setBackground(QBrush(Qt.lightGray))
-        classItem.setForeground(QBrush(Qt.black))
-        classItem.setFont(font)
-        methodItem = QListWidgetItem(
-            QIcon(resources.IMAGES['locate-function']),
-                '>\t(Filter only by Methods)')
+        methodItem = self._create_help_item(
+                        resources.IMAGES['locate-function'],
+                        '>\t(Filter only by Methods)')
         self.listWidget.addItem(methodItem)
-        methodItem.setSizeHint(QSize(20, 30))
-        methodItem.setBackground(QBrush(Qt.lightGray))
-        methodItem.setForeground(QBrush(Qt.black))
-        methodItem.setFont(font)
-        attributeItem = QListWidgetItem(
-            QIcon(resources.IMAGES['locate-attributes']),
-                '-\t(Filter only by Attributes)')
+        attributeItem = self._create_help_item(
+                            resources.IMAGES['locate-attributes'],
+                            '-\t(Filter only by Attributes)')
         self.listWidget.addItem(attributeItem)
-        attributeItem.setSizeHint(QSize(20, 30))
-        attributeItem.setBackground(QBrush(Qt.lightGray))
-        attributeItem.setForeground(QBrush(Qt.black))
-        attributeItem.setFont(font)
-        thisFileItem = QListWidgetItem(
-            QIcon(resources.IMAGES['locate-on-this-file']),
-                '.\t(Filter only by Classes and Methods in this File)')
-        font = thisFileItem.font()
-        font.setBold(True)
-        thisFileItem.setSizeHint(QSize(20, 30))
-        thisFileItem.setBackground(QBrush(Qt.lightGray))
-        thisFileItem.setForeground(QBrush(Qt.black))
-        thisFileItem.setFont(font)
+        thisFileItem = self._create_help_item(
+                    resources.IMAGES['locate-on-this-file'],
+                    '.\t(Filter only by Classes and Methods in this File)')
         self.listWidget.addItem(thisFileItem)
-        tabsItem = QListWidgetItem(
-            QIcon(resources.IMAGES['locate-tab']),
+        tabsItem = self._create_help_item(resources.IMAGES['locate-tab'],
                 '/\t(Filter only by the current Tabs)')
-        font = tabsItem.font()
-        font.setBold(True)
-        tabsItem.setSizeHint(QSize(20, 30))
-        tabsItem.setBackground(QBrush(Qt.lightGray))
-        tabsItem.setForeground(QBrush(Qt.black))
-        tabsItem.setFont(font)
         self.listWidget.addItem(tabsItem)
-        lineItem = QListWidgetItem(
-            QIcon(resources.IMAGES['locate-line']),
+        lineItem = self._create_help_item(resources.IMAGES['locate-line'],
                 ':\t(Go to Line)')
-        font = lineItem.font()
-        font.setBold(True)
-        lineItem.setSizeHint(QSize(20, 30))
-        lineItem.setBackground(QBrush(Qt.lightGray))
-        lineItem.setForeground(QBrush(Qt.black))
-        lineItem.setFont(font)
         self.listWidget.addItem(lineItem)
-        nonPythonItem = QListWidgetItem(
-            QIcon(resources.IMAGES['locate-nonpython']),
+        nonPythonItem = self._create_help_item(
+                resources.IMAGES['locate-nonpython'],
                 '!\t(Filter only by Non Python Files)')
         self.listWidget.addItem(nonPythonItem)
-        nonPythonItem.setSizeHint(QSize(20, 30))
-        nonPythonItem.setBackground(QBrush(Qt.lightGray))
-        nonPythonItem.setForeground(QBrush(Qt.black))
-        nonPythonItem.setFont(font)
+
+    def _create_help_item(self, image, text):
+        Item = QListWidgetItem(QIcon(image), text)
+        font = Item.font()
+        font.setBold(True)
+        Item.setSizeHint(QSize(20, 30))
+        Item.setBackground(QBrush(Qt.lightGray))
+        Item.setForeground(QBrush(Qt.black))
+        Item.setFont(font)
+        return Item
