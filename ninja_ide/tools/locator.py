@@ -48,7 +48,6 @@ from PyQt4.QtCore import SIGNAL
 from ninja_ide import resources
 from ninja_ide.gui.ide import IDE
 from ninja_ide.core.file_handling import nfile
-from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core.file_handling.file_manager import NinjaIOException
 from ninja_ide.core import settings
 
@@ -686,7 +685,7 @@ class LocateCompleter(QLineEdit):
         else:
             index = 3
         self.tempLocations = [x for x in self.tempLocations
-            if file_manager.get_basename(x.path).lower().find(
+            if x.nfile.file_name.lower().find(
                 filterOptions[index]) > -1]
 
     def _refresh_filter(self):
@@ -737,7 +736,7 @@ class LocateCompleter(QLineEdit):
         main_container = IDE.get_service('main_container')
         if not main_container:
             return
-        if file_manager.get_file_extension(data.path) in ('jpg', 'png'):
+        if data.nfile.file_ext in ('jpg', 'png'):
             main_container.open_image(data.path)
         else:
             if self._line_jump != -1:
