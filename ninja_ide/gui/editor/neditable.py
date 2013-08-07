@@ -28,7 +28,6 @@ class NEditable(QObject):
             self.__id = filepath
             self._nfile = nfile.NFile(filepath)
         self.text_modified = False
-        self.new_document = True
         self._has_checkers = False
         self._lang = 'python'
 
