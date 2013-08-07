@@ -46,9 +46,9 @@ from PyQt4.QtCore import QTextStream
 from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
+from ninja_ide import translations
 from ninja_ide.gui.ide import IDE
-from ninja_ide.core.file_handling import nfile
-from ninja_ide.core.file_handling.file_manager import NinjaIOException
+from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
 
 from ninja_ide.tools.logger import NinjaLogger
@@ -125,12 +125,11 @@ class Locator(QObject):
 class ResultItem(object):
     """The Representation of each item found with the locator."""
 
-    def __init__(self, type='', name='', nfile='', lineno=-1):
+    def __init__(self, type='', name='', path='', lineno=-1):
         if name:
             self.type = type  # Function, Class, etc
             self.name = name
-            self.nfile = nfile
-            self.path = nfile.path
+            self.path = path
             self.lineno = lineno
             self.comparison = self.name
             index = self.name.find('(')
@@ -237,8 +236,8 @@ class LocateThread(QThread):
             #process all files in current dir!
             for one_file in current_files:
                 try:
-                    nfile_ = nfile.NFile(one_file.absoluteFilePath())
-                    self._grep_file_locate(nfile_)
+                    self._grep_file_locate(one_file.absoluteFilePath(),
+                        one_file.fileName())
                 except Exception as reason:
                     logger.error(
                         '__locate_code_in_project, error: %r' % reason)
@@ -247,9 +246,9 @@ class LocateThread(QThread):
                         one_file.absoluteFilePath())
 
     def locate_file_code(self):
+        file_name = file_manager.get_basename(self._file_path)
         try:
-            nfile_ = nfile.NFile(self._file_path)
-            self._grep_file_locate(nfile_)
+            self._grep_file_locate(self._file_path, file_name)
             self.dirty = True
             self.execute = self.locate_code
         except Exception as reason:
@@ -261,12 +260,12 @@ class LocateThread(QThread):
         locations = self.get_locations()
         if self._isVariable:
             preResults = [
-                [x.nfile.file_name, x.path, x.lineno, '']
+                [file_manager.get_basename(x.path), x.path, x.lineno, '']
                 for x in locations
                 if (x.type == FILTERS['attribs']) and (x.name == self._search)]
         else:
             preResults = [
-                [x.nfile.file_name, x.path, x.lineno, '']
+                [file_manager.get_basename(x.path), x.path, x.lineno, '']
                 for x in locations
                 if ((x.type == FILTERS['functions']) or
                    (x.type == FILTERS['classes'])) and
@@ -301,8 +300,8 @@ class LocateThread(QThread):
         thisFileLocations = mapping_locations.get(path, ())
         try:
             if not thisFileLocations:
-                nfile_ = nfile.NFile(path)
-                self._grep_file_locate(nfile_)
+                file_name = file_manager.get_basename(path)
+                self._grep_file_locate(path, file_name)
                 thisFileLocations = mapping_locations.get(path, ())
             thisFileLocations = sorted(thisFileLocations[1:],
                 key=lambda item: item.name)
@@ -316,94 +315,93 @@ class LocateThread(QThread):
             for x in mapping_locations[location]]
         self.locations = sorted(self.locations, key=lambda item: item.name)
 
-    def _grep_file_locate(self, nfile):
+    def _grep_file_locate(self, file_path, file_name):
         #type - file_name - file_path
         global mapping_locations
         #TODO: Check if the last know state of the file is valid and load that
         exts = settings.SYNTAX.get('python')['extension']
-        if nfile.file_ext not in exts:
-            mapping_locations[nfile.file_path] = [
-                ResultItem(type=FILTERS['non-python'], name=nfile.file_name,
-                    nfile=nfile, lineno=0)]
+        file_ext = file_manager.get_file_extension(file_path)
+        if file_ext not in exts:
+            mapping_locations[file_path] = [
+                ResultItem(type=FILTERS['non-python'], name=file_name,
+                    path=file_path, lineno=0)]
         else:
-            mapping_locations[nfile.file_path] = [
-                ResultItem(type=FILTERS['files'], name=nfile.file_name,
-                        nfile=nfile, lineno=0)]
+            mapping_locations[file_path] = [
+                ResultItem(type=FILTERS['files'], name=file_name,
+                        path=file_path, lineno=0)]
         #obtain a symbols handler for this file extension
-        symbols_handler = settings.get_symbols_handler(nfile.file_ext)
+        symbols_handler = settings.get_symbols_handler(file_ext)
         if symbols_handler is None:
             return
         results = []
-        try:
-            content = nfile.read()
-        except NinjaIOException as reason:
-            content = ''
-            logger.error('_grep_file_locate, error: %r' % reason)
-
-        symbols = symbols_handler.obtain_symbols(content,
-            filename=nfile.file_path)
-        self.__parse_symbols(symbols, results, nfile)
+        with open(file_path) as f:
+            content = f.read()
+            symbols = symbols_handler.obtain_symbols(content,
+                filename=file_path)
+            self.__parse_symbols(symbols, results, file_path)
 
         if results:
-            mapping_locations[nfile.file_path] += results
+            mapping_locations[file_path] += results
 
-    def __parse_symbols(self, symbols, results, nfile):
+    def __parse_symbols(self, symbols, results, file_path):
         if "classes" in symbols:
-            self.__parse_class(symbols, results, nfile)
+            self.__parse_class(symbols, results, file_path)
         if 'attributes' in symbols:
-            self.__parse_attributes(symbols, results, nfile)
+            self.__parse_attributes(symbols, results, file_path)
         if 'functions' in symbols:
-            self.__parse_functions(symbols, results, nfile)
+            self.__parse_functions(symbols, results, file_path)
 
-    def __parse_class(self, symbols, results, nfile):
+    def __parse_class(self, symbols, results, file_path):
         for claz in symbols['classes']:
             line_number = symbols['classes'][claz]['lineno'] - 1
             members = symbols['classes'][claz]['members']
             results.append(ResultItem(type=FILTERS['classes'],
-                name=claz, nfile=nfile, lineno=line_number))
+                name=claz, path=file_path,
+                lineno=line_number))
             if 'attributes' in members:
                 for attr in members['attributes']:
                     line_number = members['attributes'][attr] - 1
                     results.append(ResultItem(type=FILTERS['attribs'],
-                        name=attr, nfile=nfile, lineno=line_number))
+                        name=attr, path=file_path,
+                        lineno=line_number))
             if 'functions' in members:
                 for func in members['functions']:
                     line_number = members['functions'][func]['lineno'] - 1
-                    results.append(ResultItem(type=FILTERS['functions'],
-                        name=func, nfile=nfile, lineno=line_number))
+                    results.append(ResultItem(
+                        type=FILTERS['functions'], name=func,
+                        path=file_path, lineno=line_number))
                     self.__parse_symbols(
                         members['functions'][func]['functions'],
-                        results, nfile.file_path)
+                        results, file_path)
             if 'classes' in members:
-                self.__parse_class(members, results, nfile)
+                self.__parse_class(members, results, file_path)
 
-    def __parse_attributes(self, symbols, results, nfile):
+    def __parse_attributes(self, symbols, results, file_path):
         for attr in symbols['attributes']:
             line_number = symbols['attributes'][attr] - 1
             results.append(ResultItem(type=FILTERS['attribs'],
-                name=attr, nfile=nfile, lineno=line_number))
+                name=attr, path=file_path,
+                lineno=line_number))
 
-    def __parse_functions(self, symbols, results, nfile):
+    def __parse_functions(self, symbols, results, file_path):
         for func in symbols['functions']:
             line_number = symbols['functions'][func]['lineno'] - 1
-            results.append(ResultItem(type=FILTERS['functions'],
-                name=func, nfile=nfile, lineno=line_number))
+            results.append(ResultItem(
+                type=FILTERS['functions'], name=func,
+                path=file_path, lineno=line_number))
             self.__parse_symbols(symbols['functions'][func]['functions'],
-                    results, nfile)
+                    results, file_path)
 
-    def get_symbols_for_class(self, nfile, clazzName):
+    def get_symbols_for_class(self, file_path, clazzName):
         results = []
-        try:
-            content = nfile.read()
-        except NinjaIOException as reason:
-            content = ''
-            logger.error('_grep_file_locate, error: %r' % reason)
-
-        #obtain a symbols handler for this file extension
-        symbols_handler = settings.get_symbols_handler(nfile.file_ext)
-        symbols = symbols_handler.obtain_symbols(content,
-                filename=nfile.file_path)
-        self.__parse_symbols(symbols, results, nfile.file_path)
+        with open(file_path) as f:
+            content = f.read()
+            ext = file_manager.get_file_extension(file_path)
+            #obtain a symbols handler for this file extension
+            symbols_handler = settings.get_symbols_handler(ext)
+            symbols = symbols_handler.obtain_symbols(content,
+                filename=file_path)
+            self.__parse_symbols(symbols, results, file_path)
         return results
 
     def cancel(self):
@@ -588,11 +586,9 @@ class LocateCompleter(QLineEdit):
             elif filterOption == FILTERS['tabs']:
                 tab1, tab2 = main_container.get_opened_documents()
                 opened = tab1 + tab2
-                self.tempLocations = []
-                for f in opened:
-                    nfile_ = nfile.NFile(f[0])
-                    self.tempLocations.append(ResultItem(FILTERS['files'],
-                    nfile_.file_name, nfile_))
+                self.tempLocations = [ResultItem(FILTERS['files'],
+                    file_manager.get_basename(f[0]), f[0])
+                    for f in opened]
                 self.__prefix = self.__prefix[1:].lstrip()
             elif main_container and filterOption == FILTERS['lines']:
                 editorWidget = main_container.get_actual_editor()
@@ -659,8 +655,7 @@ class LocateCompleter(QLineEdit):
             moveIndex = 2
             if self._filterData.type == FILTERS['classes']:
                 self._classFilter = self._filterData.name
-            nfile_ = nfile.NFile(filePath)
-            symbols = self._parent._thread.get_symbols_for_class(nfile_,
+            symbols = self._parent._thread.get_symbols_for_class(filePath,
                 self._classFilter)
             self.tempLocations = [x for x in symbols
                 if x.type == filterOptions[4]]
@@ -685,7 +680,7 @@ class LocateCompleter(QLineEdit):
         else:
             index = 3
         self.tempLocations = [x for x in self.tempLocations
-            if x.nfile.file_name.lower().find(
+            if file_manager.get_basename(x.path).lower().find(
                 filterOptions[index]) > -1]
 
     def _refresh_filter(self):
@@ -736,14 +731,8 @@ class LocateCompleter(QLineEdit):
         main_container = IDE.get_service('main_container')
         if not main_container:
             return
-        if data.nfile.file_ext in ('jpg', 'png'):
-            main_container.open_image(data.path)
-        else:
-            if self._line_jump != -1:
-                main_container.open_file(
-                    data.path, self._line_jump, None, True)
-            else:
-                main_container.open_file(data.path, data.lineno, None, True)
+        jump = data.lineno if self._line_jump != -1 else self._line_jump
+        main_container.open_file(data.path, jump, None, True)
 
 
 class PopupCompleter(QFrame):
@@ -803,88 +792,47 @@ class PopupCompleter(QFrame):
 
     def add_no_found(self):
         """Load no results found message"""
-        noFoundItem = QListWidgetItem(
-            QIcon(resources.IMAGES['delete']),
-                'No results were found!')
-        font = noFoundItem.font()
-        font.setBold(True)
-        noFoundItem.setSizeHint(QSize(20, 30))
-        noFoundItem.setBackground(QBrush(Qt.lightGray))
-        noFoundItem.setForeground(QBrush(Qt.black))
-        noFoundItem.setFont(font)
+        noFoundItem = self._create_help_item(resources.IMAGES['delete'],
+                translations.TR_NO_RESULTS)
         self.listWidget.addItem(noFoundItem)
 
     def add_help(self):
         #Load help
-        fileItem = QListWidgetItem(
-            QIcon(resources.IMAGES['locate-file']),
-                '@\t(Filter only by Files)')
-        font = fileItem.font()
-        font.setBold(True)
-        fileItem.setSizeHint(QSize(20, 30))
-        fileItem.setBackground(QBrush(Qt.lightGray))
-        fileItem.setForeground(QBrush(Qt.black))
-        fileItem.setFont(font)
+        fileItem = self._create_help_item(resources.IMAGES['locate-file'],
+                         translations.TR_ONLY_FILES)
         self.listWidget.addItem(fileItem)
-        classItem = QListWidgetItem(
-            QIcon(resources.IMAGES['locate-class']),
-                '<\t(Filter only by Classes)')
+        classItem = self._create_help_item(resources.IMAGES['locate-class'],
+                        translations.TR_ONLY_CLASSES)
         self.listWidget.addItem(classItem)
-        classItem.setSizeHint(QSize(20, 30))
-        classItem.setBackground(QBrush(Qt.lightGray))
-        classItem.setForeground(QBrush(Qt.black))
-        classItem.setFont(font)
-        methodItem = QListWidgetItem(
-            QIcon(resources.IMAGES['locate-function']),
-                '>\t(Filter only by Methods)')
+        methodItem = self._create_help_item(
+                        resources.IMAGES['locate-function'],
+                        translations.TR_ONLY_METHODS)
         self.listWidget.addItem(methodItem)
-        methodItem.setSizeHint(QSize(20, 30))
-        methodItem.setBackground(QBrush(Qt.lightGray))
-        methodItem.setForeground(QBrush(Qt.black))
-        methodItem.setFont(font)
-        attributeItem = QListWidgetItem(
-            QIcon(resources.IMAGES['locate-attributes']),
-                '-\t(Filter only by Attributes)')
+        attributeItem = self._create_help_item(
+                            resources.IMAGES['locate-attributes'],
+                            translations.TR_ONLY_ATRIBUTES)
         self.listWidget.addItem(attributeItem)
-        attributeItem.setSizeHint(QSize(20, 30))
-        attributeItem.setBackground(QBrush(Qt.lightGray))
-        attributeItem.setForeground(QBrush(Qt.black))
-        attributeItem.setFont(font)
-        thisFileItem = QListWidgetItem(
-            QIcon(resources.IMAGES['locate-on-this-file']),
-                '.\t(Filter only by Classes and Methods in this File)')
-        font = thisFileItem.font()
-        font.setBold(True)
-        thisFileItem.setSizeHint(QSize(20, 30))
-        thisFileItem.setBackground(QBrush(Qt.lightGray))
-        thisFileItem.setForeground(QBrush(Qt.black))
-        thisFileItem.setFont(font)
+        thisFileItem = self._create_help_item(
+                    resources.IMAGES['locate-on-this-file'],
+                    translations.TR_ONLY_CLASSES_METHODS)
         self.listWidget.addItem(thisFileItem)
-        tabsItem = QListWidgetItem(
-            QIcon(resources.IMAGES['locate-tab']),
-                '/\t(Filter only by the current Tabs)')
-        font = tabsItem.font()
-        font.setBold(True)
-        tabsItem.setSizeHint(QSize(20, 30))
-        tabsItem.setBackground(QBrush(Qt.lightGray))
-        tabsItem.setForeground(QBrush(Qt.black))
-        tabsItem.setFont(font)
+        tabsItem = self._create_help_item(resources.IMAGES['locate-tab'],
+                translations.TR_ONLY_CURRENT_TABS)
         self.listWidget.addItem(tabsItem)
-        lineItem = QListWidgetItem(
-            QIcon(resources.IMAGES['locate-line']),
-                ':\t(Go to Line)')
-        font = lineItem.font()
-        font.setBold(True)
-        lineItem.setSizeHint(QSize(20, 30))
-        lineItem.setBackground(QBrush(Qt.lightGray))
-        lineItem.setForeground(QBrush(Qt.black))
-        lineItem.setFont(font)
+        lineItem = self._create_help_item(resources.IMAGES['locate-line'],
+                translations.TR_GO_TO_LINE)
         self.listWidget.addItem(lineItem)
-        nonPythonItem = QListWidgetItem(
-            QIcon(resources.IMAGES['locate-nonpython']),
-                '!\t(Filter only by Non Python Files)')
+        nonPythonItem = self._create_help_item(
+                resources.IMAGES['locate-nonpython'],
+                translations.TR_ONLY_NON_PYTHON)
         self.listWidget.addItem(nonPythonItem)
-        nonPythonItem.setSizeHint(QSize(20, 30))
-        nonPythonItem.setBackground(QBrush(Qt.lightGray))
-        nonPythonItem.setForeground(QBrush(Qt.black))
-        nonPythonItem.setFont(font)
+
+    def _create_help_item(self, image, text):
+        Item = QListWidgetItem(QIcon(image), text)
+        font = Item.font()
+        font.setBold(True)
+        Item.setSizeHint(QSize(20, 30))
+        Item.setBackground(QBrush(Qt.lightGray))
+        Item.setForeground(QBrush(Qt.black))
+        Item.setFont(font)
+        return Item
