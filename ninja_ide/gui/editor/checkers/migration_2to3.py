@@ -75,7 +75,7 @@ class MigrationTo3(QThread):
                         for _, liner in lines_to_remove])
                     adds = '\n'.join(lines_to_add)
                     message = self.tr(
-                        'The actual code look like this:\n%s\n\n'
+                        'The actual code looks like this:\n%s\n\n'
                         'For Python3 support should look like:\n%s' %
                         (removes, adds))
                     lineno = -1
