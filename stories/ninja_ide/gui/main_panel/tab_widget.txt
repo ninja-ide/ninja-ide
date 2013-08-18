@@ -1,0 +1,684 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: tab_widget
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `tab_widget.py </listings/ninja_ide/gui/main_panel/tab_widget.py.html>`_ API
+========================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `ninja_ide.core.file_handling.filesystem_notifications.base_watcher.DELETED </listings/ninja_ide/gui/main_panel/tab_widget.py.html#36>`_
+
+- `ninja_ide.core.file_handling.filesystem_notifications.base_watcher.MODIFIED </listings/ninja_ide/gui/main_panel/tab_widget.py.html#36>`_
+
+- `ninja_ide.core.file_handling.filesystem_notifications.NinjaFileSystemWatcher </listings/ninja_ide/gui/main_panel/tab_widget.py.html#38>`_
+
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/gui/main_panel/tab_widget.py.html#42>`_
+
+- `PyQt4.QtGui.QApplication </listings/ninja_ide/gui/main_panel/tab_widget.py.html#27>`_
+
+- `PyQt4.QtGui.QClipboard </listings/ninja_ide/gui/main_panel/tab_widget.py.html#28>`_
+
+- `PyQt4.QtGui.QCursor </listings/ninja_ide/gui/main_panel/tab_widget.py.html#20>`_
+
+- `PyQt4.QtCore.QDir </listings/ninja_ide/gui/main_panel/tab_widget.py.html#31>`_
+
+- `PyQt4.QtGui.QHBoxLayout </listings/ninja_ide/gui/main_panel/tab_widget.py.html#22>`_
+
+- `PyQt4.QtGui.QIcon </listings/ninja_ide/gui/main_panel/tab_widget.py.html#21>`_
+
+- `PyQt4.QtGui.QMenu </listings/ninja_ide/gui/main_panel/tab_widget.py.html#25>`_
+
+- `PyQt4.QtGui.QMessageBox </listings/ninja_ide/gui/main_panel/tab_widget.py.html#24>`_
+
+- `PyQt4.QtGui.QPushButton </listings/ninja_ide/gui/main_panel/tab_widget.py.html#26>`_
+
+- `PyQt4.QtGui.QTabWidget </listings/ninja_ide/gui/main_panel/tab_widget.py.html#19>`_
+
+- `PyQt4.QtGui.QWidget </listings/ninja_ide/gui/main_panel/tab_widget.py.html#23>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/main_panel/tab_widget.py.html#29>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/main_panel/tab_widget.py.html#30>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/main_panel/tab_widget.py.html#17>`_
+
+- `ninja_ide.gui.main_panel.browser_widget </listings/ninja_ide/gui/main_panel/tab_widget.py.html#40>`_
+
+- `ninja_ide.gui.editor.editor </listings/ninja_ide/gui/main_panel/tab_widget.py.html#39>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/gui/main_panel/tab_widget.py.html#35>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/main_panel/tab_widget.py.html#33>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/main_panel/tab_widget.py.html#34>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `DEBUG [at ln:45] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#45>`_
+
+- `logger [at ln:44] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#44>`_
+
+
+----
+
+
+
+*Class:* `TabNavigator(QWidget) </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-465>`_
+------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class TabNavigator(QWidget):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `bookmarksAction [at ln:491] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#491>`_
+
+- `breakpointsAction [at ln:494] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#494>`_
+
+- `btnNext [at ln:477] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#477>`_
+
+- `btnPrevious [at ln:472] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#472>`_
+
+- `codeAction [at ln:487] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#487>`_
+
+- `menuNavigate [at ln:486] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#486>`_
+
+- `operation [at ln:538] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#538>`_
+
+
+*Function:* `__init__() [at ln:467] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-467>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `_show_bookmarks() [at ln:516] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-516>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _show_bookmarks():
+
+
+No description.
+
+
+----
+
+*Function:* `_show_breakpoints() [at ln:524] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-524>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _show_breakpoints():
+
+
+No description.
+
+
+----
+
+*Function:* `_show_code_nav() [at ln:532] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-532>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _show_code_nav():
+
+
+No description.
+
+
+----
+
+*Function:* `contextMenuEvent(event) [at ln:510] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-510>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def contextMenuEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `show_menu_navigation() [at ln:513] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-513>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show_menu_navigation():
+
+
+No description.
+
+
+----
+
+*Class:* `TabWidget(QTabWidget) </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-48>`_
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class TabWidget(QTabWidget):
+
+| tabCloseRequested(int)
+| dropTab(QTabWidget)
+| saveActualEditor()
+| allTabsClosed()
+| changeActualTab(QTabWidget)
+| splitTab(QTabWidget, int, bool)
+| reopenTab(QString)
+| runFile()
+| addToProject(QString)
+| syntaxChanged(QWidget, QString)
+| reloadFile(QWidget)
+| navigateCode(bool, int)
+| recentTabsModified(QStringList)
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `__lastOpened [at ln:76] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#76>`_
+
+- `_change_map [at ln:82] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#82>`_
+
+- `_parent [at ln:80] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#80>`_
+
+- `_resyntax [at ln:77] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#77>`_
+
+- `dontLoopInExpandTitle [at ln:159] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#159>`_
+
+- `follow_mode [at ln:81] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#81>`_
+
+- `navigator [at ln:78] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#78>`_
+
+- `notOpening [at ln:75] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#75>`_
+
+- `question_already_open [at ln:201] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#201>`_
+
+- `titles [at ln:86] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#86>`_
+
+
+*Function:* `__init__(parent) [at ln:70] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-70>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent):
+
+
+No description.
+
+
+----
+
+*Function:* `_add_to_last_opened(path) [at ln:103] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-103>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _add_to_last_opened(path):
+
+
+No description.
+
+
+----
+
+*Function:* `_add_to_project() [at ln:394] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-394>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _add_to_project():
+
+
+No description.
+
+
+----
+
+*Function:* `_check_unsaved_tabs() [at ln:422] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-422>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _check_unsaved_tabs():
+
+| Check if are there any unsaved tab
+| Returns True or False
+
+
+----
+
+*Function:* `_close_all_tabs() [at ln:412] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-412>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _close_all_tabs():
+
+
+No description.
+
+
+----
+
+*Function:* `_close_all_tabs_except_this() [at ln:416] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-416>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _close_all_tabs_except_this():
+
+
+No description.
+
+
+----
+
+*Function:* `_copy_file_location() [at ln:408] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-408>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _copy_file_location():
+
+
+No description.
+
+
+----
+
+*Function:* `_create_menu_syntax(menuSyntax) [at ln:377] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-377>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _create_menu_syntax(menuSyntax):
+
+
+No description.
+
+
+----
+
+*Function:* `_file_changed(change_type, file_path) [at ln:203] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-203>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _file_changed(change_type, file_path):
+
+
+No description.
+
+
+----
+
+*Function:* `_navigate_code(val) [at ln:99] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-99>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _navigate_code(val):
+
+
+No description.
+
+
+----
+
+*Function:* `_prompt_reload(editorWidget, change) [at ln:185] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-185>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _prompt_reload(editorWidget, change):
+
+
+No description.
+
+
+----
+
+*Function:* `_reapply_syntax(syntaxAction) [at ln:385] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-385>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _reapply_syntax(syntaxAction):
+
+
+No description.
+
+
+----
+
+*Function:* `_reopen_last_tab() [at ln:400] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-400>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _reopen_last_tab():
+
+
+No description.
+
+
+----
+
+*Function:* `_run_this_file() [at ln:391] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-391>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _run_this_file():
+
+
+No description.
+
+
+----
+
+*Function:* `_split_this_tab(orientation) [at ln:404] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-404>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _split_this_tab(orientation):
+
+
+No description.
+
+
+----
+
+*Function:* `add_tab(widget, title, index=None) [at ln:111] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-111>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_tab(widget, title, index=None):
+
+
+No description.
+
+
+----
+
+*Function:* `change_open_tab_name(index, newName) [at ln:458] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-458>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def change_open_tab_name(index, newName):
+
+| Change the name of the tab at index, for the newName.
+
+
+----
+
+*Function:* `change_tab() [at ln:446] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-446>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def change_tab():
+
+
+No description.
+
+
+----
+
+*Function:* `change_tab_reverse() [at ln:452] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-452>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def change_tab_reverse():
+
+
+No description.
+
+
+----
+
+*Function:* `check_for_external_modifications(editorWidget) [at ln:223] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-223>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def check_for_external_modifications(editorWidget):
+
+
+No description.
+
+
+----
+
+*Function:* `close_tab() [at ln:306] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-306>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def close_tab():
+
+
+No description.
+
+
+----
+
+*Function:* `expand_tab_name(title) [at ln:126] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-126>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def expand_tab_name(title):
+
+| Expand the tab title to differentiate files with the same name.
+| 
+| The way it is currently implemented, it will only change the first
+| conflicting title passed in, because it only searches until the new
+| title isn't in the tab titles.
+
+
+----
+
+*Function:* `focusInEvent(event) [at ln:170] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-170>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def focusInEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `get_documents_data() [at ln:309] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-309>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_documents_data():
+
+| Return Editors: path, project, cursor position
+
+
+----
+
+*Function:* `get_recent_files_list() [at ln:96] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-96>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_recent_files_list():
+
+
+No description.
+
+
+----
+
+*Function:* `get_unsaved_files() [at ln:435] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-435>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_unsaved_files():
+
+| Returns a list with the tabText of the unsaved files
+
+
+----
+
+*Function:* `is_open(identifier) [at ln:239] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-239>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def is_open(identifier):
+
+| Check if a Tab with id = identifier is open
+
+
+----
+
+*Function:* `mousePressEvent(event) [at ln:320] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-320>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def mousePressEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `move_to_open(identifier) [at ln:246] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-246>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def move_to_open(identifier):
+
+| Set the selected Tab for the widget with id = identifier
+
+
+----
+
+*Function:* `removeTab(index) [at ln:267] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-267>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def removeTab(index):
+
+| Remove the Tab at the selected index and check if the
+| widget was modified and need to execute any saving
+
+
+----
+
+*Function:* `remove_title(index) [at ln:253] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-253>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def remove_title(index):
+
+| Looks for the title of the tab at index and removes it from
+| self.titles, if it's there.'
+
+
+----
+
+*Function:* `setTabText(index, text) [at ln:301] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-301>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setTabText(index, text):
+
+
+No description.
+
+
+----
+
+*Function:* `tab_was_modified(val) [at ln:161] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-161>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def tab_was_modified(val):
+
+
+No description.
+
+
+----
+
+*Function:* `tab_was_saved(ed) [at ln:232] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-232>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def tab_was_saved(ed):
+
+
+No description.
+
+
+----
+
+*Function:* `update_current_widget() [at ln:259] </listings/ninja_ide/gui/main_panel/tab_widget.py.html#listingsninja_ideguimain_paneltab_widgetpy-259>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_current_widget():
+
+| Sets the focus to the current widget. If this is the last tab in the
+| current split, the allTabsClosed() signal is emitted.'
+
+
+
+

@@ -1,0 +1,87 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: pyflakes
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `pyflakes.py </listings/ninja_ide/dependencies/pyflakes_mod/scripts/pyflakes.py.html>`_ API
+=======================================================================================================
+| Implementation of the command-line I{pyflakes} tool.
+
+
+*Imports:*
+------------
+- `compiler </listings/ninja_ide/dependencies/pyflakes_mod/scripts/pyflakes.py.html#7>`_
+
+- `os </listings/ninja_ide/dependencies/pyflakes_mod/scripts/pyflakes.py.html#8>`_
+
+- `sys </listings/ninja_ide/dependencies/pyflakes_mod/scripts/pyflakes.py.html#6>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `checker [at ln:10] </listings/ninja_ide/dependencies/pyflakes_mod/scripts/pyflakes.py.html#10>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `check(codeString, filename) [at ln:13] </listings/ninja_ide/dependencies/pyflakes_mod/scripts/pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-13>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def check(codeString, filename):
+
+| Check the Python source given by C{codeString} for flakes.
+| 
+| @param codeString: The Python source to check.
+| @type codeString: C{str}
+| 
+| @param filename: The name of the file the source came from, used to report
+|     errors.
+| @type filename: C{str}
+| 
+| @return: The number of warnings emitted.
+| @rtype: C{int}
+
+
+----
+
+*Function:* `checkPath(filename) [at ln:70] </listings/ninja_ide/dependencies/pyflakes_mod/scripts/pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-70>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def checkPath(filename):
+
+| Check the given path, printing out any warnings detected.
+| 
+| @return: the number of warnings printed
+
+
+----
+
+*Function:* `main() [at ln:82] </listings/ninja_ide/dependencies/pyflakes_mod/scripts/pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-82>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def main():
+
+
+No description.
+
+
+
+

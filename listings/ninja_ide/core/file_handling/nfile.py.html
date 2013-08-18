@@ -1,0 +1,539 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="nfile.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>nfile.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../../">/listings</a>
+        </li><li><a href="../../">/ninja_ide</a>
+        </li><li><a href="../">/core</a>
+        </li><li><a href=".">/file_handling</a>
+        </li><li><a href="#">/nfile.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-1">  1</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-2">  2</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-3">  3</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-4">  4</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-5">  5</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-6">  6</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-7">  7</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-8">  8</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-9">  9</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-10"> 10</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-11"> 11</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-12"> 12</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-13"> 13</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-14"> 14</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-15"> 15</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-16"> 16</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-17"> 17</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-18"> 18</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-19"> 19</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-20"> 20</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-21"> 21</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-22"> 22</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-23"> 23</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-24"> 24</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-25"> 25</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-26"> 26</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-27"> 27</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-28"> 28</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-29"> 29</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-30"> 30</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-31"> 31</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-32"> 32</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-33"> 33</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-34"> 34</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-35"> 35</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-36"> 36</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-37"> 37</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-38"> 38</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-39"> 39</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-40"> 40</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-41"> 41</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-42"> 42</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-43"> 43</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-44"> 44</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-45"> 45</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-46"> 46</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-47"> 47</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-48"> 48</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-49"> 49</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-50"> 50</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-51"> 51</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-52"> 52</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-53"> 53</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-54"> 54</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-55"> 55</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-56"> 56</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-57"> 57</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-58"> 58</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-59"> 59</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-60"> 60</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-61"> 61</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-62"> 62</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-63"> 63</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-64"> 64</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-65"> 65</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-66"> 66</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-67"> 67</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-68"> 68</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-69"> 69</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-70"> 70</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-71"> 71</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-72"> 72</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-73"> 73</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-74"> 74</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-75"> 75</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-76"> 76</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-77"> 77</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-78"> 78</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-79"> 79</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-80"> 80</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-81"> 81</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-82"> 82</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-83"> 83</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-84"> 84</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-85"> 85</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-86"> 86</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-87"> 87</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-88"> 88</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-89"> 89</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-90"> 90</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-91"> 91</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-92"> 92</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-93"> 93</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-94"> 94</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-95"> 95</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-96"> 96</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-97"> 97</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-98"> 98</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-99"> 99</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-100">100</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-101">101</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-102">102</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-103">103</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-104">104</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-105">105</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-106">106</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-107">107</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-108">108</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-109">109</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-110">110</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-111">111</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-112">112</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-113">113</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-114">114</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-115">115</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-116">116</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-117">117</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-118">118</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-119">119</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-120">120</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-121">121</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-122">122</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-123">123</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-124">124</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-125">125</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-126">126</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-127">127</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-128">128</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-129">129</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-130">130</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-131">131</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-132">132</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-133">133</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-134">134</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-135">135</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-136">136</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-137">137</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-138">138</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-139">139</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-140">140</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-141">141</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-142">142</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-143">143</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-144">144</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-145">145</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-146">146</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-147">147</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-148">148</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-149">149</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-150">150</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-151">151</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-152">152</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-153">153</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-154">154</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-155">155</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-156">156</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-157">157</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-158">158</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-159">159</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-160">160</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-161">161</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-162">162</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-163">163</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-164">164</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-165">165</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-166">166</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-167">167</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-168">168</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-169">169</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-170">170</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-171">171</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-172">172</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-173">173</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-174">174</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-175">175</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-176">176</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-177">177</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-178">178</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-179">179</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-180">180</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-181">181</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-182">182</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-183">183</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-184">184</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-185">185</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-186">186</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-187">187</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-188">188</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-189">189</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-190">190</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-191">191</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-192">192</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-193">193</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-194">194</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-195">195</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-196">196</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-197">197</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-198">198</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-199">199</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-200">200</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-201">201</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-202">202</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-203">203</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-204">204</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-205">205</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-206">206</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-207">207</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-208">208</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-209">209</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-210">210</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-211">211</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-212">212</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-213">213</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-214">214</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-215">215</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-216">216</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-217">217</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-218">218</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-219">219</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-220">220</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-221">221</a>
+<a href="nfile.py.html#listingsninja_idecorefile_handlingnfilepy-222">222</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_idecorefile_handlingnfilepy-1"></a><span class="c"># -*- coding: utf-8 -*-</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-2"></a><span class="c">#</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-3"></a><span class="c"># This file is part of NINJA-IDE (http://ninja-ide.org).</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-4"></a><span class="c">#</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-5"></a><span class="c"># NINJA-IDE is free software; you can redistribute it and/or modify</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-6"></a><span class="c"># it under the terms of the GNU General Public License as published by</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-7"></a><span class="c"># the Free Software Foundation; either version 3 of the License, or</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-8"></a><span class="c"># any later version.</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-9"></a><span class="c">#</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-10"></a><span class="c"># NINJA-IDE is distributed in the hope that it will be useful,</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-11"></a><span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-12"></a><span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-13"></a><span class="c"># GNU General Public License for more details.</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-14"></a><span class="c">#</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-15"></a><span class="c"># You should have received a copy of the GNU General Public License</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-16"></a><span class="c"># along with NINJA-IDE; If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-17"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-18"></a><span class="kn">import</span> <span class="nn">os</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-19"></a><span class="kn">import</span> <span class="nn">shutil</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-20"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">QObject</span><span class="p">,</span> <span class="n">QFile</span><span class="p">,</span> <span class="n">QIODevice</span><span class="p">,</span> <span class="n">QTextStream</span><span class="p">,</span> <span class="n">SIGNAL</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-21"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-22"></a><span class="kn">from</span> <span class="nn">ninja_ide</span> <span class="kn">import</span> <span class="n">translations</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-23"></a><span class="c">#FIXME: Obtain these form a getter</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-24"></a><span class="kn">from</span> <span class="nn">ninja_ide.core</span> <span class="kn">import</span> <span class="n">settings</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-25"></a><span class="kn">from</span> <span class="nn">ninja_ide.tools.utils</span> <span class="kn">import</span> <span class="n">SignalFlowControl</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-26"></a><span class="kn">from</span> <span class="nn">file_manager</span> <span class="kn">import</span> <span class="n">NinjaIOException</span><span class="p">,</span> <span class="n">NinjaNoFileNameException</span><span class="p">,</span> \
+<a name="listingsninja_idecorefile_handlingnfilepy-27"></a><span class="n">get_file_encoding</span><span class="p">,</span> <span class="n">get_basename</span><span class="p">,</span> <span class="n">get_file_extension</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-28"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-29"></a><span class="kn">from</span> <span class="nn">ninja_ide.tools.logger</span> <span class="kn">import</span> <span class="n">NinjaLogger</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-30"></a><span class="n">logger</span> <span class="o">=</span> <span class="n">NinjaLogger</span><span class="p">(</span><span class="s">'ninja_ide.core.file_handling.nfile'</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-31"></a><span class="n">DEBUG</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">debug</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-32"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-33"></a><span class="sd">"""</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-34"></a><span class="sd">How to continue:</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-35"></a><span class="sd">    We need to have a filesystem representation object, said object, registers</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-36"></a><span class="sd">    himself into the IDE on its __init__.py, thus avoiding all kinds of</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-37"></a><span class="sd">    circular imports, this way all objects should start registering themselves</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-38"></a><span class="sd">    and fail individually if they cant.</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-39"></a><span class="sd">    So, to this object, whoever creates new NFiles should ask for a it, this</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-40"></a><span class="sd">    way it keeps record of the files and can do closing when receives</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-41"></a><span class="sd">    terminate from the ide, and decides to call a changed callback from each</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-42"></a><span class="sd">    file when the watched, that should deppend on it notifies a change.</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-43"></a><span class="sd">"""</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-44"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-45"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-46"></a><span class="k">class</span> <span class="nc">NFile</span><span class="p">(</span><span class="n">QObject</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-47"></a>    <span class="sd">"""</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-48"></a><span class="sd">    """</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-49"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-50"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-51"></a>        <span class="sd">"""</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-52"></a><span class="sd">        """</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-53"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span> <span class="o">=</span> <span class="n">path</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-54"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">__created</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-55"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">NFile</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-56"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exists</span><span class="p">():</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-57"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">__created</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-58"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-59"></a>    <span class="nd">@property</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-60"></a>    <span class="k">def</span> <span class="nf">file_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-61"></a>        <span class="sd">""""Returns filename of nfile"""</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-62"></a>        <span class="n">file_name</span> <span class="o">=</span> <span class="bp">None</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-63"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-64"></a>            <span class="n">file_name</span> <span class="o">=</span> <span class="n">translations</span><span class="o">.</span><span class="n">TR_NEW_DOCUMENT</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-65"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-66"></a>            <span class="n">file_name</span> <span class="o">=</span> <span class="n">get_basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-67"></a>        <span class="k">return</span> <span class="n">file_name</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-68"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-69"></a>    <span class="nd">@property</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-70"></a>    <span class="k">def</span> <span class="nf">display_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-71"></a>        <span class="sd">"""Returns a pretty name to be displayed by tabs"""</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-72"></a>        <span class="n">display_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-73"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_write_permission</span><span class="p">():</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-74"></a>            <span class="n">display_name</span> <span class="o">+=</span> <span class="n">translations</span><span class="o">.</span><span class="n">TR_READ_ONLY</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-75"></a>        <span class="k">return</span> <span class="n">display_name</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-76"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-77"></a>    <span class="nd">@property</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-78"></a>    <span class="k">def</span> <span class="nf">file_ext</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-79"></a>        <span class="sd">""""Returns extension of nfile"""</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-80"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-81"></a>            <span class="k">return</span> <span class="s">''</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-82"></a>        <span class="k">return</span> <span class="n">get_file_extension</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-83"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-84"></a>    <span class="nd">@property</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-85"></a>    <span class="k">def</span> <span class="nf">file_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-86"></a>        <span class="sd">""""Returns file path of nfile"""</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-87"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-88"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-89"></a>    <span class="k">def</span> <span class="nf">has_write_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-90"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exists</span><span class="p">():</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-91"></a>            <span class="k">return</span> <span class="bp">True</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-92"></a>        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">W_OK</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-93"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-94"></a>    <span class="k">def</span> <span class="nf">_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-95"></a>        <span class="sd">"""</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-96"></a><span class="sd">        Check if we have been created with a path and if such path exists</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-97"></a><span class="sd">        In case there is no path, we are most likely a new file.</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-98"></a><span class="sd">        """</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-99"></a>        <span class="n">file_exists</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-100"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-101"></a>            <span class="n">file_exists</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-102"></a>        <span class="k">return</span> <span class="n">file_exists</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-103"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-104"></a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-105"></a>        <span class="sd">"""</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-106"></a><span class="sd">        Write a temprorary file with .tnj extension and copy it over the</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-107"></a><span class="sd">        original one.</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-108"></a><span class="sd">        .nsf = Ninja Swap File</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-109"></a><span class="sd">        #FIXME: Where to locate addExtension, does not fit here</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-110"></a><span class="sd">        """</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-111"></a>        <span class="n">save_path</span> <span class="o">=</span> <span class="n">path</span> <span class="ow">and</span> <span class="n">path</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-112"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">copy</span><span class="p">:</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-113"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span> <span class="o">=</span> <span class="n">save_path</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-114"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-115"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">save_path</span><span class="p">:</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-116"></a>            <span class="k">raise</span> <span class="n">NinjaNoFileNameException</span><span class="p">(</span><span class="s">"I am asked to write a "</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-117"></a>                                <span class="s">"file but no one told me where"</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-118"></a>        <span class="n">swap_save_path</span> <span class="o">=</span> <span class="s">u"</span><span class="si">%s</span><span class="s">.nsp"</span> <span class="o">%</span> <span class="n">save_path</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-119"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-120"></a>        <span class="n">flags</span> <span class="o">=</span> <span class="n">QIODevice</span><span class="o">.</span><span class="n">WriteOnly</span> <span class="o">|</span> <span class="n">QIODevice</span><span class="o">.</span><span class="n">Truncate</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-121"></a>        <span class="n">f</span> <span class="o">=</span> <span class="n">QFile</span><span class="p">(</span><span class="n">swap_save_path</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-122"></a>        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">use_platform_specific_eol</span><span class="p">():</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-123"></a>            <span class="n">flags</span> <span class="o">|=</span> <span class="n">QIODevice</span><span class="o">.</span><span class="n">Text</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-124"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-125"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">f</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">flags</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-126"></a>            <span class="k">raise</span> <span class="n">NinjaIOException</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">errorString</span><span class="p">())</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-127"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-128"></a>        <span class="n">stream</span> <span class="o">=</span> <span class="n">QTextStream</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-129"></a>        <span class="n">encoding</span> <span class="o">=</span> <span class="n">get_file_encoding</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-130"></a>        <span class="k">if</span> <span class="n">encoding</span><span class="p">:</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-131"></a>            <span class="n">stream</span><span class="o">.</span><span class="n">setCodec</span><span class="p">(</span><span class="n">encoding</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-132"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-133"></a>        <span class="n">encoded_stream</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">codec</span><span class="p">()</span><span class="o">.</span><span class="n">fromUnicode</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-134"></a>        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">encoded_stream</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-135"></a>        <span class="n">f</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-136"></a>        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-137"></a>        <span class="c">#SIGNAL: Will save (temp, definitive) to warn folder to do something</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-138"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">"willSave(QString, QString)"</span><span class="p">),</span> <span class="n">swap_save_path</span><span class="p">,</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-139"></a>                                                        <span class="n">save_path</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-140"></a>        <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">swap_save_path</span><span class="p">,</span> <span class="n">save_path</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-141"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">path</span> <span class="ow">and</span> <span class="n">copy</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-142"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">reset_state</span><span class="p">()</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-143"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-144"></a>    <span class="k">def</span> <span class="nf">reset_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-145"></a>        <span class="sd">"""</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-146"></a><span class="sd">        #FIXE: to have a ref to changed I need to have the doc here</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-147"></a><span class="sd">        """</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-148"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_created</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-149"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-150"></a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-151"></a>        <span class="sd">"""</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-152"></a><span class="sd">        Read the file or fail</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-153"></a><span class="sd">        """</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-154"></a>        <span class="n">open_path</span> <span class="o">=</span> <span class="n">path</span> <span class="ow">and</span> <span class="n">path</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-155"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span> <span class="o">=</span> <span class="n">open_path</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-156"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">:</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-157"></a>            <span class="k">raise</span> <span class="n">NinjaNoFileNameException</span><span class="p">(</span><span class="s">"I am asked to read a "</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-158"></a>                                    <span class="s">"file but no one told me from where"</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-159"></a>        <span class="k">try</span><span class="p">:</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-160"></a>            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">open_path</span><span class="p">,</span> <span class="s">'rU'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-161"></a>                <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-162"></a>        <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">reason</span><span class="p">:</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-163"></a>            <span class="k">raise</span> <span class="n">NinjaIOException</span><span class="p">(</span><span class="n">reason</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-164"></a>        <span class="k">return</span> <span class="n">content</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-165"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-166"></a>    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_path</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-167"></a>        <span class="sd">"""</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-168"></a><span class="sd">        Phisically move the file</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-169"></a><span class="sd">        """</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-170"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exists</span><span class="p">():</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-171"></a>            <span class="n">signal_handler</span> <span class="o">=</span> <span class="n">SignalFlowControl</span><span class="p">()</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-172"></a>            <span class="c">#SIGNALL: WILL MOVE TO, to warn folder to exist</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-173"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">"willMove(Qt_PyQtObject, QString, QString)"</span><span class="p">),</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-174"></a>                                                            <span class="n">signal_handler</span><span class="p">,</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-175"></a>                                                            <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">,</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-176"></a>                                                            <span class="n">new_path</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-177"></a>            <span class="k">if</span> <span class="n">signal_handler</span><span class="o">.</span><span class="n">stopped</span><span class="p">():</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-178"></a>                <span class="k">return</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-179"></a>            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">new_path</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-180"></a>                <span class="n">signal_handler</span> <span class="o">=</span> <span class="n">SignalFlowControl</span><span class="p">()</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-181"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-182"></a>                    <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"willOverWrite(Qt_PyQtObject, QString, QString)"</span><span class="p">),</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-183"></a>                                    <span class="n">signal_handler</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">,</span> <span class="n">new_path</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-184"></a>                <span class="k">if</span> <span class="n">signal_handler</span><span class="o">.</span><span class="n">stopped</span><span class="p">():</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-185"></a>                    <span class="k">return</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-186"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-187"></a>            <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">,</span> <span class="n">new_path</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-188"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span> <span class="o">=</span> <span class="n">new_path</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-189"></a>        <span class="k">return</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-190"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-191"></a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_path</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-192"></a>        <span class="sd">"""</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-193"></a><span class="sd">        Copy the file to a new path</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-194"></a><span class="sd">        """</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-195"></a>        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">"Have not yet found use for this"</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-196"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-197"></a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-198"></a>        <span class="sd">"""</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-199"></a><span class="sd">        This deletes the object and closes the file.</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-200"></a><span class="sd">        """</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-201"></a>        <span class="c">#if created but exists this file migth to someone else</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-202"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-203"></a>        <span class="k">if</span> <span class="p">((</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_created</span><span class="p">)</span> <span class="ow">or</span> <span class="n">force</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exists</span><span class="p">():</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-204"></a>            <span class="n">DEBUG</span><span class="p">(</span><span class="s">"Deleting our own NFile </span><span class="si">%s</span><span class="s">"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-205"></a>            <span class="n">signal_handler</span> <span class="o">=</span> <span class="n">SignalFlowControl</span><span class="p">()</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-206"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">"willDelete(PyQt_PyObject, PyQt_PyObject)"</span><span class="p">),</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-207"></a>                                                        <span class="n">signal_handler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-208"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">signal_handler</span><span class="o">.</span><span class="n">stopped</span><span class="p">():</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-209"></a>                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-210"></a>
+<a name="listingsninja_idecorefile_handlingnfilepy-211"></a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-212"></a>        <span class="sd">"""</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-213"></a><span class="sd">        Lets let people know we are going down so they can act upon</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-214"></a><span class="sd">        As you can see close does nothing but let everyone know that we are</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-215"></a><span class="sd">        not saved yet</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-216"></a><span class="sd">        """</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-217"></a>        <span class="n">DEBUG</span><span class="p">(</span><span class="s">"About to close NFile"</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-218"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_created</span><span class="p">:</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-219"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">"neverSavedFileClosing(QString)"</span><span class="p">),</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-220"></a>                        <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-221"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_idecorefile_handlingnfilepy-222"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">"fileClosing(QString)"</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

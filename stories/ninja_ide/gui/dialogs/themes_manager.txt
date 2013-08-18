@@ -1,0 +1,248 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: themes_manager
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `themes_manager.py </listings/ninja_ide/gui/dialogs/themes_manager.py.html>`_ API
+=============================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `os </listings/ninja_ide/gui/dialogs/themes_manager.py.html#18>`_
+
+- `PyQt4.QtGui.QDialog </listings/ninja_ide/gui/dialogs/themes_manager.py.html#36>`_
+
+- `PyQt4.QtGui.QHBoxLayout </listings/ninja_ide/gui/dialogs/themes_manager.py.html#30>`_
+
+- `PyQt4.QtGui.QPushButton </listings/ninja_ide/gui/dialogs/themes_manager.py.html#35>`_
+
+- `PyQt4.QtGui.QSizePolicy </listings/ninja_ide/gui/dialogs/themes_manager.py.html#32>`_
+
+- `PyQt4.QtGui.QSpacerItem </listings/ninja_ide/gui/dialogs/themes_manager.py.html#31>`_
+
+- `PyQt4.QtGui.QTabWidget </listings/ninja_ide/gui/dialogs/themes_manager.py.html#33>`_
+
+- `PyQt4.QtGui.QTableWidget </listings/ninja_ide/gui/dialogs/themes_manager.py.html#34>`_
+
+- `PyQt4.QtGui.QVBoxLayout </listings/ninja_ide/gui/dialogs/themes_manager.py.html#29>`_
+
+- `PyQt4.QtGui.QWidget </listings/ninja_ide/gui/dialogs/themes_manager.py.html#28>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/dialogs/themes_manager.py.html#37>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/dialogs/themes_manager.py.html#38>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/gui/dialogs/themes_manager.py.html#41>`_
+
+- `ninja_ide.tools.json_manager </listings/ninja_ide/gui/dialogs/themes_manager.py.html#43>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/dialogs/themes_manager.py.html#40>`_
+
+- `ninja_ide.tools.ui_tools </listings/ninja_ide/gui/dialogs/themes_manager.py.html#42>`_
+
+
+
+
+
+*Class:* `ThemesManagerWidget(QDialog) </listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-46>`_
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ThemesManagerWidget(QDialog):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_loading [at ln:80] </listings/ninja_ide/gui/dialogs/themes_manager.py.html#80>`_
+
+- `_schemes [at ln:67] </listings/ninja_ide/gui/dialogs/themes_manager.py.html#67>`_
+
+- `_tabs [at ln:54] </listings/ninja_ide/gui/dialogs/themes_manager.py.html#54>`_
+
+- `_thread [at ln:73] </listings/ninja_ide/gui/dialogs/themes_manager.py.html#73>`_
+
+- `downloadItems [at ln:95] </listings/ninja_ide/gui/dialogs/themes_manager.py.html#95>`_
+
+- `execute [at ln:96] </listings/ninja_ide/gui/dialogs/themes_manager.py.html#96>`_
+
+- `overlay [at ln:64] </listings/ninja_ide/gui/dialogs/themes_manager.py.html#64>`_
+
+
+*Function:* `__init__(parent) [at ln:48] </listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-48>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent):
+
+
+No description.
+
+
+----
+
+*Function:* `_download_scheme_thread() [at ln:122] </listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-122>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _download_scheme_thread():
+
+
+No description.
+
+
+----
+
+*Function:* `_reload_themes() [at ln:78] </listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-78>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _reload_themes():
+
+
+No description.
+
+
+----
+
+*Function:* `download(url, folder) [at ln:126] </listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-126>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def download(url, folder):
+
+
+No description.
+
+
+----
+
+*Function:* `download_scheme(scheme) [at ln:93] </listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-93>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def download_scheme(scheme):
+
+
+No description.
+
+
+----
+
+*Function:* `execute_thread() [at ln:103] </listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-103>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def execute_thread():
+
+
+No description.
+
+
+----
+
+*Function:* `get_local_schemes() [at ln:115] </listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-115>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_local_schemes():
+
+
+No description.
+
+
+----
+
+*Function:* `load_skins_data() [at ln:84] </listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-84>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_skins_data():
+
+
+No description.
+
+
+----
+
+*Function:* `resizeEvent(event) [at ln:99] </listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-99>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def resizeEvent(event):
+
+
+No description.
+
+
+----
+
+*Class:* `SchemeWidget(QWidget) </listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-137>`_
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class SchemeWidget(QWidget):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_parent [at ln:141] </listings/ninja_ide/gui/dialogs/themes_manager.py.html#141>`_
+
+- `_schemes [at ln:142] </listings/ninja_ide/gui/dialogs/themes_manager.py.html#142>`_
+
+- `_table [at ln:144] </listings/ninja_ide/gui/dialogs/themes_manager.py.html#144>`_
+
+
+*Function:* `__init__(parent, schemes) [at ln:139] </listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-139>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent, schemes):
+
+
+No description.
+
+
+----
+
+*Function:* `_download_scheme() [at ln:156] </listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-156>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _download_scheme():
+
+
+No description.
+
+
+
+

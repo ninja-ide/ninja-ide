@@ -1,0 +1,170 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: test_analyzer
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `test_analyzer.py </listings/ninja_tests/tools/completion/test_analyzer.py.html>`_ API
+==================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `_ast </listings/ninja_tests/tools/completion/test_analyzer.py.html#19>`_
+
+- `unittest </listings/ninja_tests/tools/completion/test_analyzer.py.html#20>`_
+
+- `ninja_tests.tools.completion.SOURCE_ANALYZER_NATIVE </listings/ninja_tests/tools/completion/test_analyzer.py.html#24>`_
+
+- `__future__.absolute_import </listings/ninja_tests/tools/completion/test_analyzer.py.html#17>`_
+
+- `ninja_ide.tools.completion.analyzer </listings/ninja_tests/tools/completion/test_analyzer.py.html#22>`_
+
+- `ninja_ide.tools.completion.model </listings/ninja_tests/tools/completion/test_analyzer.py.html#23>`_
+
+
+
+
+
+*Class:* `AnalyzerTestCase(unittest.TestCase) </listings/ninja_tests/tools/completion/test_analyzer.py.html#listingsninja_teststoolscompletiontest_analyzerpy-27>`_
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class AnalyzerTestCase(unittest.TestCase):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `analyzer [at ln:30] </listings/ninja_tests/tools/completion/test_analyzer.py.html#30>`_
+
+
+*Function:* `setUp() [at ln:29] </listings/ninja_tests/tools/completion/test_analyzer.py.html#listingsninja_teststoolscompletiontest_analyzerpy-29>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setUp():
+
+
+No description.
+
+
+----
+
+*Function:* `test_attrs_in_class_func() [at ln:172] </listings/ninja_tests/tools/completion/test_analyzer.py.html#listingsninja_teststoolscompletiontest_analyzerpy-172>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_attrs_in_class_func():
+
+
+No description.
+
+
+----
+
+*Function:* `test_attrs_in_class_func_extended() [at ln:215] </listings/ninja_tests/tools/completion/test_analyzer.py.html#listingsninja_teststoolscompletiontest_analyzerpy-215>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_attrs_in_class_func_extended():
+
+
+No description.
+
+
+----
+
+*Function:* `test_attrs_in_module_func() [at ln:72] </listings/ninja_tests/tools/completion/test_analyzer.py.html#listingsninja_teststoolscompletiontest_analyzerpy-72>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_attrs_in_module_func():
+
+
+No description.
+
+
+----
+
+*Function:* `test_content_value() [at ln:36] </listings/ninja_tests/tools/completion/test_analyzer.py.html#listingsninja_teststoolscompletiontest_analyzerpy-36>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_content_value():
+
+
+No description.
+
+
+----
+
+*Function:* `test_imports() [at ln:41] </listings/ninja_tests/tools/completion/test_analyzer.py.html#listingsninja_teststoolscompletiontest_analyzerpy-41>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_imports():
+
+
+No description.
+
+
+----
+
+*Function:* `test_module_class_func_attrs() [at ln:55] </listings/ninja_tests/tools/completion/test_analyzer.py.html#listingsninja_teststoolscompletiontest_analyzerpy-55>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_module_class_func_attrs():
+
+
+No description.
+
+
+----
+
+*Function:* `test_simple_class_attrs() [at ln:152] </listings/ninja_tests/tools/completion/test_analyzer.py.html#listingsninja_teststoolscompletiontest_analyzerpy-152>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_simple_class_attrs():
+
+
+No description.
+
+
+----
+
+*Function:* `test_simple_class_data() [at ln:136] </listings/ninja_tests/tools/completion/test_analyzer.py.html#listingsninja_teststoolscompletiontest_analyzerpy-136>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_simple_class_data():
+
+
+No description.
+
+
+
+

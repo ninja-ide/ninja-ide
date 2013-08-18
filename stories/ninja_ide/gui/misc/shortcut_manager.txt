@@ -1,0 +1,277 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: shortcut_manager
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `shortcut_manager.py </listings/ninja_ide/gui/misc/shortcut_manager.py.html>`_ API
+==============================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `PyQt4.QtGui.QDialog </listings/ninja_ide/gui/misc/shortcut_manager.py.html#25>`_
+
+- `PyQt4.QtCore.QEvent </listings/ninja_ide/gui/misc/shortcut_manager.py.html#34>`_
+
+- `PyQt4.QtGui.QHBoxLayout </listings/ninja_ide/gui/misc/shortcut_manager.py.html#21>`_
+
+- `PyQt4.QtGui.QKeySequence </listings/ninja_ide/gui/misc/shortcut_manager.py.html#29>`_
+
+- `PyQt4.QtGui.QLabel </listings/ninja_ide/gui/misc/shortcut_manager.py.html#27>`_
+
+- `PyQt4.QtGui.QLineEdit </listings/ninja_ide/gui/misc/shortcut_manager.py.html#28>`_
+
+- `PyQt4.QtGui.QMessageBox </listings/ninja_ide/gui/misc/shortcut_manager.py.html#30>`_
+
+- `PyQt4.QtGui.QPushButton </listings/ninja_ide/gui/misc/shortcut_manager.py.html#22>`_
+
+- `PyQt4.QtCore.QSettings </listings/ninja_ide/gui/misc/shortcut_manager.py.html#35>`_
+
+- `PyQt4.QtGui.QTreeWidget </listings/ninja_ide/gui/misc/shortcut_manager.py.html#23>`_
+
+- `PyQt4.QtGui.QTreeWidgetItem </listings/ninja_ide/gui/misc/shortcut_manager.py.html#24>`_
+
+- `PyQt4.QtGui.QVBoxLayout </listings/ninja_ide/gui/misc/shortcut_manager.py.html#20>`_
+
+- `PyQt4.QtGui.QWidget </listings/ninja_ide/gui/misc/shortcut_manager.py.html#26>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/misc/shortcut_manager.py.html#33>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/misc/shortcut_manager.py.html#32>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/misc/shortcut_manager.py.html#18>`_
+
+- `ninja_ide.gui.actions </listings/ninja_ide/gui/misc/shortcut_manager.py.html#38>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/misc/shortcut_manager.py.html#37>`_
+
+
+
+
+
+*Class:* `TreeResult(QTreeWidget) </listings/ninja_ide/gui/misc/shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-41>`_
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class TreeResult(QTreeWidget):
+
+
+No description.
+
+
+*Function:* `__init__() [at ln:43] </listings/ninja_ide/gui/misc/shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-43>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Class:* `ShortcutConfiguration(QWidget) </listings/ninja_ide/gui/misc/shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-122>`_
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ShortcutConfiguration(QWidget):
+
+| Dialog to manage ALL shortcuts
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `result_widget [at ln:207] </listings/ninja_ide/gui/misc/shortcut_manager.py.html#207>`_
+
+- `shortcut_dialog [at ln:201] </listings/ninja_ide/gui/misc/shortcut_manager.py.html#201>`_
+
+- `shortcuts_text [at ln:130] </listings/ninja_ide/gui/misc/shortcut_manager.py.html#130>`_
+
+
+*Function:* `__init__() [at ln:127] </listings/ninja_ide/gui/misc/shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-127>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `__validate_shortcut(keysequence) [at ln:238] </listings/ninja_ide/gui/misc/shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-238>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __validate_shortcut(keysequence):
+
+| Validate a shortcut
+
+
+----
+
+*Function:* `_load_defaults_shortcuts() [at ln:302] </listings/ninja_ide/gui/misc/shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-302>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _load_defaults_shortcuts():
+
+
+No description.
+
+
+----
+
+*Function:* `_load_shortcuts() [at ln:293] </listings/ninja_ide/gui/misc/shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-293>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _load_shortcuts():
+
+
+No description.
+
+
+----
+
+*Function:* `_open_shortcut_dialog(item, column) [at ln:268] </listings/ninja_ide/gui/misc/shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-268>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _open_shortcut_dialog(item, column):
+
+| Open the dialog to set a shortcut
+
+
+----
+
+*Function:* `_shortcut_changed(keysequence) [at ln:231] </listings/ninja_ide/gui/misc/shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-231>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _shortcut_changed(keysequence):
+
+| Validate and set a new shortcut
+
+
+----
+
+*Function:* `save() [at ln:279] </listings/ninja_ide/gui/misc/shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-279>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def save():
+
+| Save all shortcuts to settings
+
+
+----
+
+*Class:* `ShortcutDialog(QDialog) </listings/ninja_ide/gui/misc/shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-53>`_
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ShortcutDialog(QDialog):
+
+| Dialog to set a shortcut for an action
+| this class emit the follow signals:
+|     shortcutChanged(QKeySequence)
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `keys [at ln:62] </listings/ninja_ide/gui/misc/shortcut_manager.py.html#62>`_
+
+- `keyword_modifiers [at ln:64] </listings/ninja_ide/gui/misc/shortcut_manager.py.html#64>`_
+
+- `line_edit [at ln:68] </listings/ninja_ide/gui/misc/shortcut_manager.py.html#68>`_
+
+
+*Function:* `__init__(parent) [at ln:60] </listings/ninja_ide/gui/misc/shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-60>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent):
+
+
+No description.
+
+
+----
+
+*Function:* `eventFilter(watched, event) [at ln:92] </listings/ninja_ide/gui/misc/shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-92>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def eventFilter(watched, event):
+
+
+No description.
+
+
+----
+
+*Function:* `keyPressEvent(evt) [at ln:99] </listings/ninja_ide/gui/misc/shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-99>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def keyPressEvent(evt):
+
+
+No description.
+
+
+----
+
+*Function:* `save_shortcut() [at ln:84] </listings/ninja_ide/gui/misc/shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-84>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def save_shortcut():
+
+
+No description.
+
+
+----
+
+*Function:* `set_shortcut(txt) [at ln:89] </listings/ninja_ide/gui/misc/shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-89>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_shortcut(txt):
+
+
+No description.
+
+
+
+

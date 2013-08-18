@@ -1,0 +1,651 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: console_widget
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `console_widget.py </listings/ninja_ide/gui/misc/console_widget.py.html>`_ API
+==========================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `re </listings/ninja_ide/gui/misc/console_widget.py.html#20>`_
+
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/gui/misc/console_widget.py.html#44>`_
+
+- `PyQt4.QtGui.QApplication </listings/ninja_ide/gui/misc/console_widget.py.html#22>`_
+
+- `PyQt4.QtGui.QColor </listings/ninja_ide/gui/misc/console_widget.py.html#27>`_
+
+- `PyQt4.QtCore.QEvent </listings/ninja_ide/gui/misc/console_widget.py.html#31>`_
+
+- `PyQt4.QtGui.QFont </listings/ninja_ide/gui/misc/console_widget.py.html#28>`_
+
+- `PyQt4.QtGui.QKeyEvent </listings/ninja_ide/gui/misc/console_widget.py.html#29>`_
+
+- `PyQt4.QtGui.QPlainTextEdit </listings/ninja_ide/gui/misc/console_widget.py.html#23>`_
+
+- `PyQt4.QtCore.QProcess </listings/ninja_ide/gui/misc/console_widget.py.html#32>`_
+
+- `PyQt4.QtCore.QRegExp </listings/ninja_ide/gui/misc/console_widget.py.html#33>`_
+
+- `PyQt4.QtGui.QTextCursor </listings/ninja_ide/gui/misc/console_widget.py.html#24>`_
+
+- `PyQt4.QtGui.QTextEdit </listings/ninja_ide/gui/misc/console_widget.py.html#26>`_
+
+- `PyQt4.QtGui.QTextFormat </listings/ninja_ide/gui/misc/console_widget.py.html#25>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/misc/console_widget.py.html#30>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/misc/console_widget.py.html#34>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/misc/console_widget.py.html#17>`_
+
+- `ninja_ide.tools.completion.completer </listings/ninja_ide/gui/misc/console_widget.py.html#41>`_
+
+- `ninja_ide.tools.completion.completer_widget </listings/ninja_ide/gui/misc/console_widget.py.html#42>`_
+
+- `ninja_ide.tools.console </listings/ninja_ide/gui/misc/console_widget.py.html#38>`_
+
+- `ninja_ide.gui.editor.python_syntax </listings/ninja_ide/gui/misc/console_widget.py.html#40>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/misc/console_widget.py.html#36>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/misc/console_widget.py.html#37>`_
+
+- `ninja_ide.gui.editor.syntax_highlighter </listings/ninja_ide/gui/misc/console_widget.py.html#39>`_
+
+- `__future__.unicode_literals </listings/ninja_ide/gui/misc/console_widget.py.html#18>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `BRACES [at ln:56] </listings/ninja_ide/gui/misc/console_widget.py.html#56>`_
+
+- `logger [at ln:54] </listings/ninja_ide/gui/misc/console_widget.py.html#54>`_
+
+
+----
+
+
+
+*Class:* `ConsoleWidget(QPlainTextEdit) </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-63>`_
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ConsoleWidget(QPlainTextEdit):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_braces [at ln:78] </listings/ninja_ide/gui/misc/console_widget.py.html#78>`_
+
+- `_console [at ln:74] </listings/ninja_ide/gui/misc/console_widget.py.html#74>`_
+
+- `_current_command [at ln:77] </listings/ninja_ide/gui/misc/console_widget.py.html#77>`_
+
+- `_history [at ln:75] </listings/ninja_ide/gui/misc/console_widget.py.html#75>`_
+
+- `_patIsWord [at ln:72] </listings/ninja_ide/gui/misc/console_widget.py.html#72>`_
+
+- `_pre_key_press [at ln:86] </listings/ninja_ide/gui/misc/console_widget.py.html#86>`_
+
+- `_proc [at ln:115] </listings/ninja_ide/gui/misc/console_widget.py.html#115>`_
+
+- `completer [at ln:83] </listings/ninja_ide/gui/misc/console_widget.py.html#83>`_
+
+- `cursor [at ln:350] </listings/ninja_ide/gui/misc/console_widget.py.html#350>`_
+
+- `extraSelections [at ln:343] </listings/ninja_ide/gui/misc/console_widget.py.html#343>`_
+
+- `highlighter [at ln:528] </listings/ninja_ide/gui/misc/console_widget.py.html#528>`_
+
+- `history_index [at ln:506] </listings/ninja_ide/gui/misc/console_widget.py.html#506>`_
+
+- `imports [at ln:79] </listings/ninja_ide/gui/misc/console_widget.py.html#79>`_
+
+- `okPrefix [at ln:84] </listings/ninja_ide/gui/misc/console_widget.py.html#84>`_
+
+- `patFrom [at ln:80] </listings/ninja_ide/gui/misc/console_widget.py.html#80>`_
+
+- `patImport [at ln:81] </listings/ninja_ide/gui/misc/console_widget.py.html#81>`_
+
+- `patObject [at ln:82] </listings/ninja_ide/gui/misc/console_widget.py.html#82>`_
+
+- `popup_menu [at ln:148] </listings/ninja_ide/gui/misc/console_widget.py.html#148>`_
+
+- `prompt [at ln:73] </listings/ninja_ide/gui/misc/console_widget.py.html#73>`_
+
+
+*Function:* `__init__() [at ln:65] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-65>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `_add_history(command) [at ln:503] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-503>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _add_history(command):
+
+
+No description.
+
+
+----
+
+*Function:* `_add_prompt(incomplete=False) [at ln:459] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-459>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _add_prompt(incomplete=False):
+
+
+No description.
+
+
+----
+
+*Function:* `_add_system_path_for_frozen() [at ln:122] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-122>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _add_system_path_for_frozen():
+
+
+No description.
+
+
+----
+
+*Function:* `_backspace(event) [at ln:249] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-249>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _backspace(event):
+
+
+No description.
+
+
+----
+
+*Function:* `_check_event_on_selection(event) [at ln:206] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-206>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _check_event_on_selection(event):
+
+
+No description.
+
+
+----
+
+*Function:* `_clean_console() [at ln:187] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-187>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _clean_console():
+
+
+No description.
+
+
+----
+
+*Function:* `_copy_console_content() [at ln:196] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-196>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _copy_console_content():
+
+
+No description.
+
+
+----
+
+*Function:* `_copy_history() [at ln:191] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-191>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _copy_history():
+
+
+No description.
+
+
+----
+
+*Function:* `_create_context_menu() [at ln:147] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-147>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _create_context_menu():
+
+
+No description.
+
+
+----
+
+*Function:* `_cut() [at ln:178] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-178>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _cut():
+
+
+No description.
+
+
+----
+
+*Function:* `_down_pressed(event) [at ln:241] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-241>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _down_pressed(event):
+
+
+No description.
+
+
+----
+
+*Function:* `_enter_pressed(event) [at ln:216] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-216>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _enter_pressed(event):
+
+
+No description.
+
+
+----
+
+*Function:* `_get_cursor_position() [at ln:467] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-467>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _get_cursor_position():
+
+
+No description.
+
+
+----
+
+*Function:* `_get_next_history_entry() [at ln:514] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-514>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _get_next_history_entry():
+
+
+No description.
+
+
+----
+
+*Function:* `_get_prev_history_entry() [at ln:508] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-508>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _get_prev_history_entry():
+
+
+No description.
+
+
+----
+
+*Function:* `_home_pressed(event) [at ln:224] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-224>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _home_pressed(event):
+
+
+No description.
+
+
+----
+
+*Function:* `_left_pressed(event) [at ln:231] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-231>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _left_pressed(event):
+
+
+No description.
+
+
+----
+
+*Function:* `_match_braces(position, brace, forward) [at ln:424] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-424>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _match_braces(position, brace, forward):
+
+| based on: http://gitorious.org/khteditor
+
+
+----
+
+*Function:* `_paste() [at ln:182] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-182>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _paste():
+
+
+No description.
+
+
+----
+
+*Function:* `_python_path_detected() [at ln:128] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-128>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _python_path_detected():
+
+
+No description.
+
+
+----
+
+*Function:* `_read() [at ln:500] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-500>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _read():
+
+
+No description.
+
+
+----
+
+*Function:* `_resolve_completion_argument() [at ln:317] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-317>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _resolve_completion_argument():
+
+
+No description.
+
+
+----
+
+*Function:* `_set_command(command) [at ln:486] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-486>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _set_command(command):
+
+
+No description.
+
+
+----
+
+*Function:* `_tab_pressed(event) [at ln:220] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-220>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _tab_pressed(event):
+
+
+No description.
+
+
+----
+
+*Function:* `_text_under_cursor() [at ln:408] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-408>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _text_under_cursor():
+
+
+No description.
+
+
+----
+
+*Function:* `_up_pressed(event) [at ln:234] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-234>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _up_pressed(event):
+
+
+No description.
+
+
+----
+
+*Function:* `_write(line) [at ln:497] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-497>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _write(line):
+
+
+No description.
+
+
+----
+
+*Function:* `_write_command() [at ln:470] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-470>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _write_command():
+
+
+No description.
+
+
+----
+
+*Function:* `apply_editor_style() [at ln:532] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-532>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def apply_editor_style():
+
+
+No description.
+
+
+----
+
+*Function:* `contextMenuEvent(event) [at ln:494] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-494>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def contextMenuEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `get_selection(posStart, posEnd) [at ln:413] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-413>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_selection(posStart, posEnd):
+
+
+No description.
+
+
+----
+
+*Function:* `highlight_current_line() [at ln:342] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-342>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def highlight_current_line():
+
+
+No description.
+
+
+----
+
+*Function:* `keyPressEvent(event) [at ln:269] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-269>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def keyPressEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `load_project_into_console(projectFolder) [at ln:546] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-546>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_project_into_console(projectFolder):
+
+| Load the projectFolder received into the sys.path.
+
+
+----
+
+*Function:* `process_error(error) [at ln:135] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-135>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def process_error(error):
+
+
+No description.
+
+
+----
+
+*Function:* `restyle() [at ln:524] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-524>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def restyle():
+
+
+No description.
+
+
+----
+
+*Function:* `setCursorPosition(position, mode=QTextCursor.MoveAnchor) [at ln:201] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-201>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setCursorPosition(position, mode=QTextCursor.MoveAnchor):
+
+
+No description.
+
+
+----
+
+*Function:* `set_font(family=settings.FONT_FAMILY, size=settings.FONT_SIZE) [at ln:143] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-143>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_font(family=settings.FONT_FAMILY, size=settings.FONT_SIZE):
+
+
+No description.
+
+
+----
+
+*Function:* `unload_project_from_console(projectFolder) [at ln:550] </listings/ninja_ide/gui/misc/console_widget.py.html#listingsninja_ideguimiscconsole_widgetpy-550>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def unload_project_from_console(projectFolder):
+
+| Unload the project from the system path.
+
+
+
+

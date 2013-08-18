@@ -1,0 +1,101 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: from_import_dialog
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `from_import_dialog.py </listings/ninja_ide/gui/dialogs/from_import_dialog.py.html>`_ API
+=====================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `PyQt4.QtGui.QCompleter </listings/ninja_ide/gui/dialogs/from_import_dialog.py.html#25>`_
+
+- `PyQt4.QtGui.QDialog </listings/ninja_ide/gui/dialogs/from_import_dialog.py.html#20>`_
+
+- `PyQt4.QtGui.QHBoxLayout </listings/ninja_ide/gui/dialogs/from_import_dialog.py.html#21>`_
+
+- `PyQt4.QtGui.QLabel </listings/ninja_ide/gui/dialogs/from_import_dialog.py.html#22>`_
+
+- `PyQt4.QtGui.QLineEdit </listings/ninja_ide/gui/dialogs/from_import_dialog.py.html#23>`_
+
+- `PyQt4.QtGui.QPushButton </listings/ninja_ide/gui/dialogs/from_import_dialog.py.html#26>`_
+
+- `PyQt4.QtGui.QTextCursor </listings/ninja_ide/gui/dialogs/from_import_dialog.py.html#24>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/dialogs/from_import_dialog.py.html#27>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/dialogs/from_import_dialog.py.html#28>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/dialogs/from_import_dialog.py.html#18>`_
+
+- `ninja_ide.tools.introspection </listings/ninja_ide/gui/dialogs/from_import_dialog.py.html#30>`_
+
+
+
+
+
+*Class:* `FromImportDialog(QDialog) </listings/ninja_ide/gui/dialogs/from_import_dialog.py.html#listingsninja_ideguidialogsfrom_import_dialogpy-33>`_
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class FromImportDialog(QDialog):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_btnAdd [at ln:55] </listings/ninja_ide/gui/dialogs/from_import_dialog.py.html#55>`_
+
+- `_completer [at ln:49] </listings/ninja_ide/gui/dialogs/from_import_dialog.py.html#49>`_
+
+- `_editorWidget [at ln:38] </listings/ninja_ide/gui/dialogs/from_import_dialog.py.html#38>`_
+
+- `_froms [at ln:43] </listings/ninja_ide/gui/dialogs/from_import_dialog.py.html#43>`_
+
+- `_imports [at ln:41] </listings/ninja_ide/gui/dialogs/from_import_dialog.py.html#41>`_
+
+- `_lineFrom [at ln:48] </listings/ninja_ide/gui/dialogs/from_import_dialog.py.html#48>`_
+
+- `_lineImport [at ln:53] </listings/ninja_ide/gui/dialogs/from_import_dialog.py.html#53>`_
+
+
+*Function:* `__init__(fromSection, editorWidget, parent=None) [at ln:35] </listings/ninja_ide/gui/dialogs/from_import_dialog.py.html#listingsninja_ideguidialogsfrom_import_dialogpy-35>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(fromSection, editorWidget, parent=None):
+
+
+No description.
+
+
+----
+
+*Function:* `_add_import() [at ln:63] </listings/ninja_ide/gui/dialogs/from_import_dialog.py.html#listingsninja_ideguidialogsfrom_import_dialogpy-63>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _add_import():
+
+
+No description.
+
+
+
+

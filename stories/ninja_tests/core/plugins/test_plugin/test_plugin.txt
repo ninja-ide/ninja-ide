@@ -1,0 +1,40 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: test_plugin
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `test_plugin.py </listings/ninja_tests/core/plugins/test_plugin/test_plugin.py.html>`_ API
+======================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `ninja_ide.core.plugin </listings/ninja_tests/core/plugins/test_plugin/test_plugin.py.html#3>`_
+
+
+
+
+
+*Class:* `TestPlugin(plugin.Plugin) </listings/ninja_tests/core/plugins/test_plugin/test_plugin.py.html#listingsninja_testscorepluginstest_plugintest_pluginpy-6>`_
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class TestPlugin(plugin.Plugin):
+
+
+No description.
+
+
+
+

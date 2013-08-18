@@ -1,0 +1,587 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: find_in_files
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `find_in_files.py </listings/ninja_ide/gui/misc/find_in_files.py.html>`_ API
+========================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `os </listings/ninja_ide/gui/misc/find_in_files.py.html#20>`_
+
+- `re </listings/ninja_ide/gui/misc/find_in_files.py.html#21>`_
+
+- `ninja_ide.gui.ide.IDE </listings/ninja_ide/gui/misc/find_in_files.py.html#58>`_
+
+- `PyQt4.QtGui.QAbstractItemView </listings/ninja_ide/gui/misc/find_in_files.py.html#43>`_
+
+- `PyQt4.QtGui.QCheckBox </listings/ninja_ide/gui/misc/find_in_files.py.html#51>`_
+
+- `PyQt4.QtGui.QComboBox </listings/ninja_ide/gui/misc/find_in_files.py.html#50>`_
+
+- `PyQt4.QtGui.QDialog </listings/ninja_ide/gui/misc/find_in_files.py.html#45>`_
+
+- `PyQt4.QtCore.QDir </listings/ninja_ide/gui/misc/find_in_files.py.html#28>`_
+
+- `PyQt4.QtCore.QFile </listings/ninja_ide/gui/misc/find_in_files.py.html#29>`_
+
+- `PyQt4.QtGui.QFileDialog </listings/ninja_ide/gui/misc/find_in_files.py.html#55>`_
+
+- `PyQt4.QtGui.QGridLayout </listings/ninja_ide/gui/misc/find_in_files.py.html#41>`_
+
+- `PyQt4.QtGui.QGroupBox </listings/ninja_ide/gui/misc/find_in_files.py.html#42>`_
+
+- `PyQt4.QtGui.QHBoxLayout </listings/ninja_ide/gui/misc/find_in_files.py.html#40>`_
+
+- `PyQt4.QtGui.QHeaderView </listings/ninja_ide/gui/misc/find_in_files.py.html#44>`_
+
+- `PyQt4.QtGui.QIcon </listings/ninja_ide/gui/misc/find_in_files.py.html#54>`_
+
+- `PyQt4.QtGui.QLabel </listings/ninja_ide/gui/misc/find_in_files.py.html#53>`_
+
+- `PyQt4.QtGui.QLineEdit </listings/ninja_ide/gui/misc/find_in_files.py.html#49>`_
+
+- `PyQt4.QtGui.QMessageBox </listings/ninja_ide/gui/misc/find_in_files.py.html#36>`_
+
+- `PyQt4.QtGui.QPushButton </listings/ninja_ide/gui/misc/find_in_files.py.html#52>`_
+
+- `PyQt4.QtGui.QRadioButton </listings/ninja_ide/gui/misc/find_in_files.py.html#39>`_
+
+- `PyQt4.QtCore.QRegExp </listings/ninja_ide/gui/misc/find_in_files.py.html#31>`_
+
+- `PyQt4.QtGui.QSizePolicy </listings/ninja_ide/gui/misc/find_in_files.py.html#37>`_
+
+- `PyQt4.QtGui.QSpacerItem </listings/ninja_ide/gui/misc/find_in_files.py.html#38>`_
+
+- `PyQt4.QtCore.QTextStream </listings/ninja_ide/gui/misc/find_in_files.py.html#30>`_
+
+- `PyQt4.QtCore.QThread </listings/ninja_ide/gui/misc/find_in_files.py.html#32>`_
+
+- `PyQt4.QtGui.QTreeWidget </listings/ninja_ide/gui/misc/find_in_files.py.html#47>`_
+
+- `PyQt4.QtGui.QTreeWidgetItem </listings/ninja_ide/gui/misc/find_in_files.py.html#48>`_
+
+- `PyQt4.QtGui.QVBoxLayout </listings/ninja_ide/gui/misc/find_in_files.py.html#35>`_
+
+- `PyQt4.QtGui.QWidget </listings/ninja_ide/gui/misc/find_in_files.py.html#46>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/misc/find_in_files.py.html#27>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/misc/find_in_files.py.html#33>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/misc/find_in_files.py.html#17>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/gui/misc/find_in_files.py.html#59>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/misc/find_in_files.py.html#57>`_
+
+- `__future__.unicode_literals </listings/ninja_ide/gui/misc/find_in_files.py.html#18>`_
+
+
+
+
+
+*Class:* `FindInFilesRootItem(QTreeWidgetItem) </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-160>`_
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class FindInFilesRootItem(QTreeWidgetItem):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `dir_name_root [at ln:164] </listings/ninja_ide/gui/misc/find_in_files.py.html#164>`_
+
+
+*Function:* `__init__(parent, names, dir_name_root) [at ln:162] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-162>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent, names, dir_name_root):
+
+
+No description.
+
+
+----
+
+*Class:* `FindInFilesDialog(QDialog) </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-167>`_
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class FindInFilesDialog(QDialog):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_find_thread [at ln:171] </listings/ninja_ide/gui/misc/find_in_files.py.html#171>`_
+
+- `cancel_button [at ln:201] </listings/ninja_ide/gui/misc/find_in_files.py.html#201>`_
+
+- `case_checkbox [at ln:189] </listings/ninja_ide/gui/misc/find_in_files.py.html#189>`_
+
+- `check_replace [at ln:188] </listings/ninja_ide/gui/misc/find_in_files.py.html#188>`_
+
+- `dir_combo [at ln:180] </listings/ninja_ide/gui/misc/find_in_files.py.html#180>`_
+
+- `dir_name_root [at ln:350] </listings/ninja_ide/gui/misc/find_in_files.py.html#350>`_
+
+- `filters_line_edit [at ln:185] </listings/ninja_ide/gui/misc/find_in_files.py.html#185>`_
+
+- `find_button [at ln:199] </listings/ninja_ide/gui/misc/find_in_files.py.html#199>`_
+
+- `open_button [at ln:183] </listings/ninja_ide/gui/misc/find_in_files.py.html#183>`_
+
+- `pattern_line_edit [at ln:177] </listings/ninja_ide/gui/misc/find_in_files.py.html#177>`_
+
+- `phrase_radio [at ln:193] </listings/ninja_ide/gui/misc/find_in_files.py.html#193>`_
+
+- `recursive_checkbox [at ln:191] </listings/ninja_ide/gui/misc/find_in_files.py.html#191>`_
+
+- `replace_line [at ln:186] </listings/ninja_ide/gui/misc/find_in_files.py.html#186>`_
+
+- `result_widget [at ln:203] </listings/ninja_ide/gui/misc/find_in_files.py.html#203>`_
+
+- `type_checkbox [at ln:190] </listings/ninja_ide/gui/misc/find_in_files.py.html#190>`_
+
+- `user_home [at ln:179] </listings/ninja_ide/gui/misc/find_in_files.py.html#179>`_
+
+- `words_radio [at ln:196] </listings/ninja_ide/gui/misc/find_in_files.py.html#196>`_
+
+
+*Function:* `__init__(result_widget, parent) [at ln:169] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-169>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(result_widget, parent):
+
+
+No description.
+
+
+----
+
+*Function:* `_change_radio_enabled(val) [at ln:272] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-272>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _change_radio_enabled(val):
+
+
+No description.
+
+
+----
+
+*Function:* `_find_in_files() [at ln:321] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-321>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _find_in_files():
+
+
+No description.
+
+
+----
+
+*Function:* `_find_thread_finished() [at ln:294] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-294>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _find_thread_finished():
+
+
+No description.
+
+
+----
+
+*Function:* `_found_match(result) [at ln:310] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-310>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _found_match(result):
+
+
+No description.
+
+
+----
+
+*Function:* `_kill_thread() [at ln:316] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-316>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _kill_thread():
+
+
+No description.
+
+
+----
+
+*Function:* `_replace_activated() [at ln:263] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-263>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _replace_activated():
+
+
+No description.
+
+
+----
+
+*Function:* `_select_dir() [at ln:298] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-298>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _select_dir():
+
+
+No description.
+
+
+----
+
+*Function:* `_words_radio_pressed(value) [at ln:267] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-267>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _words_radio_pressed(value):
+
+
+No description.
+
+
+----
+
+*Function:* `reject() [at ln:288] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-288>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def reject():
+
+
+No description.
+
+
+----
+
+*Function:* `show(actual_project=None, actual=None) [at ln:277] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-277>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show(actual_project=None, actual=None):
+
+
+No description.
+
+
+----
+
+*Class:* `FindInFilesWidget(QWidget) </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-355>`_
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class FindInFilesWidget(QWidget):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_clear_button [at ln:364] </listings/ninja_ide/gui/misc/find_in_files.py.html#364>`_
+
+- `_error_label [at ln:367] </listings/ninja_ide/gui/misc/find_in_files.py.html#367>`_
+
+- `_explorer_container [at ln:360] </listings/ninja_ide/gui/misc/find_in_files.py.html#360>`_
+
+- `_find_widget [at ln:366] </listings/ninja_ide/gui/misc/find_in_files.py.html#366>`_
+
+- `_main_container [at ln:359] </listings/ninja_ide/gui/misc/find_in_files.py.html#359>`_
+
+- `_open_find_button [at ln:362] </listings/ninja_ide/gui/misc/find_in_files.py.html#362>`_
+
+- `_replace_button [at ln:365] </listings/ninja_ide/gui/misc/find_in_files.py.html#365>`_
+
+- `_result_widget [at ln:361] </listings/ninja_ide/gui/misc/find_in_files.py.html#361>`_
+
+- `_stop_button [at ln:363] </listings/ninja_ide/gui/misc/find_in_files.py.html#363>`_
+
+- `lbl_replace [at ln:373] </listings/ninja_ide/gui/misc/find_in_files.py.html#373>`_
+
+- `replace_edit [at ln:375] </listings/ninja_ide/gui/misc/find_in_files.py.html#375>`_
+
+- `replace_widget [at ln:370] </listings/ninja_ide/gui/misc/find_in_files.py.html#370>`_
+
+
+*Function:* `__init__(parent) [at ln:357] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-357>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent):
+
+
+No description.
+
+
+----
+
+*Function:* `_clear_results() [at ln:438] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-438>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _clear_results():
+
+
+No description.
+
+
+----
+
+*Function:* `_find_finished() [at ln:416] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-416>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _find_finished():
+
+
+No description.
+
+
+----
+
+*Function:* `_find_started() [at ln:434] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-434>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _find_started():
+
+
+No description.
+
+
+----
+
+*Function:* `_find_stop() [at ln:431] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-431>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _find_stop():
+
+
+No description.
+
+
+----
+
+*Function:* `_go_to(item, val) [at ln:441] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-441>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _go_to(item, val):
+
+
+No description.
+
+
+----
+
+*Function:* `_replace_results() [at ln:474] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-474>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _replace_results():
+
+
+No description.
+
+
+----
+
+*Function:* `find_occurrences(word) [at ln:461] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-461>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def find_occurrences(word):
+
+
+No description.
+
+
+----
+
+*Function:* `open() [at ln:452] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-452>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def open():
+
+
+No description.
+
+
+----
+
+*Class:* `FindInFilesResult(QTreeWidget) </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-140>`_
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class FindInFilesResult(QTreeWidget):
+
+
+No description.
+
+
+*Function:* `__init__() [at ln:142] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-142>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `update_result(dir_name_root, file_name, items) [at ln:151] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-151>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_result(dir_name_root, file_name, items):
+
+
+No description.
+
+
+----
+
+*Class:* `FindInFilesThread(QThread) </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-62>`_
+----------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class FindInFilesThread(QThread):
+
+| Emit the signal
+| found\_pattern(PyQt\_PyObject)
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_cancel [at ln:137] </listings/ninja_ide/gui/misc/find_in_files.py.html#137>`_
+
+- `by_phrase [at ln:72] </listings/ninja_ide/gui/misc/find_in_files.py.html#72>`_
+
+- `filters [at ln:73] </listings/ninja_ide/gui/misc/find_in_files.py.html#73>`_
+
+- `queue [at ln:74] </listings/ninja_ide/gui/misc/find_in_files.py.html#74>`_
+
+- `recursive [at ln:70] </listings/ninja_ide/gui/misc/find_in_files.py.html#70>`_
+
+- `root_dir [at ln:76] </listings/ninja_ide/gui/misc/find_in_files.py.html#76>`_
+
+- `search_pattern [at ln:71] </listings/ninja_ide/gui/misc/find_in_files.py.html#71>`_
+
+
+*Function:* `_grep_file(file_path, file_name) [at ln:103] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-103>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _grep_file(file_path, file_name):
+
+
+No description.
+
+
+----
+
+*Function:* `cancel() [at ln:136] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-136>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def cancel():
+
+
+No description.
+
+
+----
+
+*Function:* `find_in_files(dir_name, filters, reg_exp, recursive, by_phrase) [at ln:68] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-68>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def find_in_files(dir_name, filters, reg_exp, recursive, by_phrase):
+
+
+No description.
+
+
+----
+
+*Function:* `run() [at ln:80] </listings/ninja_ide/gui/misc/find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-80>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run():
+
+
+No description.
+
+
+
+

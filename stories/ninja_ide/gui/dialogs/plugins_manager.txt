@@ -1,0 +1,800 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: plugins_manager
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `plugins_manager.py </listings/ninja_ide/gui/dialogs/plugins_manager.py.html>`_ API
+===============================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `webbrowser </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#21>`_
+
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#51>`_
+
+- `PyQt4.QtGui.QDialog </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#28>`_
+
+- `PyQt4.QtGui.QFileDialog </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#27>`_
+
+- `PyQt4.QtGui.QFormLayout </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#26>`_
+
+- `PyQt4.QtGui.QHBoxLayout </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#37>`_
+
+- `PyQt4.QtGui.QIcon </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#41>`_
+
+- `PyQt4.QtGui.QLabel </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#29>`_
+
+- `PyQt4.QtGui.QLineEdit </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#35>`_
+
+- `PyQt4.QtGui.QMessageBox </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#40>`_
+
+- `PyQt4.QtGui.QPlainTextEdit </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#34>`_
+
+- `PyQt4.QtGui.QPushButton </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#31>`_
+
+- `PyQt4.QtGui.QSizePolicy </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#39>`_
+
+- `PyQt4.QtGui.QSpacerItem </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#38>`_
+
+- `PyQt4.QtGui.QTabWidget </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#33>`_
+
+- `PyQt4.QtGui.QTableWidget </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#32>`_
+
+- `PyQt4.QtGui.QTextBrowser </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#30>`_
+
+- `PyQt4.QtCore.QThread </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#44>`_
+
+- `PyQt4.QtGui.QVBoxLayout </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#36>`_
+
+- `PyQt4.QtGui.QWidget </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#25>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#42>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#43>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#18>`_
+
+- `copy.copy </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#22>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#48>`_
+
+- `ninja_ide.core.plugin_manager </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#47>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#46>`_
+
+- `ninja_ide.tools.ui_tools </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#49>`_
+
+- `__future__.unicode_literals </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#19>`_
+
+- `distutils.version </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#23>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `HTML_STYLE [at ln:55] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#55>`_
+
+- `logger [at ln:53] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#53>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `_format_for_table(plugins) [at ln:77] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-77>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _format_for_table(plugins):
+
+
+No description.
+
+
+----
+
+*Function:* `_get_plugin(plugin_name, plugin_list) [at ln:68] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-68>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _get_plugin(plugin_name, plugin_list):
+
+
+No description.
+
+
+----
+
+
+*Class:* `InstalledWidget(QWidget) </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-366>`_
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class InstalledWidget(QWidget):
+
+| This widget show the installed plugins
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_installed [at ln:414] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#414>`_
+
+- `_parent [at ln:373] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#373>`_
+
+- `_table [at ln:376] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#376>`_
+
+
+*Function:* `__init__(parent, installed) [at ln:371] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-371>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent, installed):
+
+
+No description.
+
+
+----
+
+*Function:* `_show_item_description() [at ln:392] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-392>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _show_item_description():
+
+
+No description.
+
+
+----
+
+*Function:* `_uninstall_plugins() [at ln:408] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-408>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _uninstall_plugins():
+
+
+No description.
+
+
+----
+
+*Function:* `add_table_items(plugs) [at ln:402] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-402>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_table_items(plugs):
+
+
+No description.
+
+
+----
+
+*Function:* `remove_item(plugin_name) [at ln:398] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-398>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def remove_item(plugin_name):
+
+
+No description.
+
+
+----
+
+*Function:* `reset_table(installed) [at ln:413] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-413>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def reset_table(installed):
+
+
+No description.
+
+
+----
+
+*Class:* `DependenciesHelpDialog(QDialog) </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-585>`_
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class DependenciesHelpDialog(QDialog):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_editor [at ln:595] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#595>`_
+
+
+*Function:* `__init__(requirements_dict) [at ln:586] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-586>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(requirements_dict):
+
+
+No description.
+
+
+----
+
+*Class:* `ManualInstallWidget(QWidget) </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-421>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ManualInstallWidget(QWidget):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_btnFilePath [at ln:435] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#435>`_
+
+- `_btnInstall [at ln:445] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#445>`_
+
+- `_parent [at ln:425] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#425>`_
+
+- `_txtFilePath [at ln:434] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#434>`_
+
+- `_txtName [at ln:428] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#428>`_
+
+- `_txtVersion [at ln:429] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#429>`_
+
+
+*Function:* `__init__(parent) [at ln:423] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-423>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent):
+
+
+No description.
+
+
+----
+
+*Function:* `_load_plugin_path() [at ln:455] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-455>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _load_plugin_path():
+
+
+No description.
+
+
+----
+
+*Function:* `install_plugin() [at ln:460] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-460>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def install_plugin():
+
+
+No description.
+
+
+----
+
+*Class:* `PluginsManagerWidget(QDialog) </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-82>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class PluginsManagerWidget(QDialog):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_community_available [at ln:108] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#108>`_
+
+- `_loading [at ln:146] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#146>`_
+
+- `_locals [at ln:109] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#109>`_
+
+- `_oficial_available [at ln:107] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#107>`_
+
+- `_requirements [at ln:112] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#112>`_
+
+- `_tabs [at ln:90] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#90>`_
+
+- `_txt_data [at ln:92] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#92>`_
+
+- `_updates [at ln:110] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#110>`_
+
+- `overlay [at ln:104] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#104>`_
+
+- `plug [at ln:234] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#234>`_
+
+- `runnable [at ln:236] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#236>`_
+
+- `thread [at ln:115] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#115>`_
+
+
+*Function:* `__init__(parent) [at ln:84] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-84>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent):
+
+
+No description.
+
+
+----
+
+*Function:* `_after_download_plugin(plugin) [at ln:159] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-159>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _after_download_plugin(plugin):
+
+
+No description.
+
+
+----
+
+*Function:* `_after_manual_install_plugin(plugin) [at ln:150] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-150>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _after_manual_install_plugin(plugin):
+
+
+No description.
+
+
+----
+
+*Function:* `_after_uninstall_plugin(plugin) [at ln:169] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-169>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _after_uninstall_plugin(plugin):
+
+
+No description.
+
+
+----
+
+*Function:* `_load_plugins_data() [at ln:180] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-180>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _load_plugins_data():
+
+
+No description.
+
+
+----
+
+*Function:* `_open_link(url) [at ln:138] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-138>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _open_link(url):
+
+
+No description.
+
+
+----
+
+*Function:* `_reload_plugins() [at ln:144] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-144>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _reload_plugins():
+
+
+No description.
+
+
+----
+
+*Function:* `download_plugins(plugs) [at ln:201] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-201>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def download_plugins(plugs):
+
+| Install
+
+
+----
+
+*Function:* `install_plugins_manually(plug) [at ln:211] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-211>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def install_plugins_manually(plug):
+
+| Install plugin from local zip.
+
+
+----
+
+*Function:* `mark_as_available(plugs) [at ln:219] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-219>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def mark_as_available(plugs):
+
+| Uninstall
+
+
+----
+
+*Function:* `reset_installed_plugins() [at ln:239] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-239>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def reset_installed_plugins():
+
+
+No description.
+
+
+----
+
+*Function:* `resizeEvent(event) [at ln:244] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-244>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def resizeEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `show_plugin_info(data) [at ln:131] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-131>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show_plugin_info(data):
+
+
+No description.
+
+
+----
+
+*Function:* `update_plugin(plugs) [at ln:229] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-229>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_plugin(plugs):
+
+| Update
+
+
+----
+
+*Class:* `AvailableWidget(QWidget) </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-295>`_
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class AvailableWidget(QWidget):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_available [at ln:300] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#300>`_
+
+- `_parent [at ln:299] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#299>`_
+
+- `_table [at ln:302] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#302>`_
+
+
+*Function:* `__init__(parent, available) [at ln:297] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-297>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent, available):
+
+
+No description.
+
+
+----
+
+*Function:* `_install_external() [at ln:346] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-346>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _install_external():
+
+
+No description.
+
+
+----
+
+*Function:* `_install_plugins() [at ln:327] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-327>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _install_plugins():
+
+
+No description.
+
+
+----
+
+*Function:* `_show_item_description() [at ln:321] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-321>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _show_item_description():
+
+
+No description.
+
+
+----
+
+*Function:* `add_table_items(plugs) [at ln:359] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-359>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_table_items(plugs):
+
+
+No description.
+
+
+----
+
+*Function:* `remove_item(plugin_name) [at ln:342] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-342>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def remove_item(plugin_name):
+
+
+No description.
+
+
+----
+
+*Class:* `UpdatesWidget(QWidget) </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-249>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class UpdatesWidget(QWidget):
+
+| This widget show the availables plugins to update
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_parent [at ln:256] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#256>`_
+
+- `_table [at ln:259] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#259>`_
+
+- `_updates [at ln:257] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#257>`_
+
+
+*Function:* `__init__(parent, updates) [at ln:254] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-254>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent, updates):
+
+
+No description.
+
+
+----
+
+*Function:* `_show_item_description() [at ln:274] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-274>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _show_item_description():
+
+
+No description.
+
+
+----
+
+*Function:* `_update_plugins() [at ln:280] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-280>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _update_plugins():
+
+
+No description.
+
+
+----
+
+*Class:* `ThreadLoadPlugins(QThread) </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-472>`_
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ThreadLoadPlugins(QThread):
+
+| This thread makes the HEAVY work!
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_community_available [at ln:525] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#525>`_
+
+- `_locals [at ln:526] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#526>`_
+
+- `_manager [at ln:479] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#479>`_
+
+- `_oficial_available [at ln:524] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#524>`_
+
+- `_updates [at ln:527] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#527>`_
+
+- `plug [at ln:487] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#487>`_
+
+- `runnable [at ln:481] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#481>`_
+
+
+*Function:* `__init__(manager) [at ln:477] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-477>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(manager):
+
+
+No description.
+
+
+----
+
+*Function:* `collect_data_thread() [at ln:489] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-489>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def collect_data_thread():
+
+| Collects plugins info from NINJA-IDE webservice interface
+
+
+----
+
+*Function:* `download_plugins_thread() [at ln:529] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-529>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def download_plugins_thread():
+
+| Downloads some plugins
+
+
+----
+
+*Function:* `manual_install_plugins_thread() [at ln:545] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-545>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def manual_install_plugins_thread():
+
+| Install a plugin from the a file.
+
+
+----
+
+*Function:* `run() [at ln:485] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-485>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run():
+
+
+No description.
+
+
+----
+
+*Function:* `uninstall_plugins_thread() [at ln:562] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-562>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def uninstall_plugins_thread():
+
+
+No description.
+
+
+----
+
+*Function:* `update_plugin_thread() [at ln:570] </listings/ninja_ide/gui/dialogs/plugins_manager.py.html#listingsninja_ideguidialogsplugins_managerpy-570>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_plugin_thread():
+
+| Updates some plugins
+
+
+
+

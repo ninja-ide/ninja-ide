@@ -1,0 +1,529 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="python_syntax.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>python_syntax.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../../">/listings</a>
+        </li><li><a href="../../">/ninja_ide</a>
+        </li><li><a href="../">/gui</a>
+        </li><li><a href=".">/editor</a>
+        </li><li><a href="#">/python_syntax.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-1">  1</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-2">  2</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-3">  3</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-4">  4</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-5">  5</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-6">  6</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-7">  7</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-8">  8</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-9">  9</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-10"> 10</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-11"> 11</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-12"> 12</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-13"> 13</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-14"> 14</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-15"> 15</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-16"> 16</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-17"> 17</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-18"> 18</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-19"> 19</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-20"> 20</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-21"> 21</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-22"> 22</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-23"> 23</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-24"> 24</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-25"> 25</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-26"> 26</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-27"> 27</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-28"> 28</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-29"> 29</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-30"> 30</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-31"> 31</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-32"> 32</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-33"> 33</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-34"> 34</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-35"> 35</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-36"> 36</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-37"> 37</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-38"> 38</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-39"> 39</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-40"> 40</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-41"> 41</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-42"> 42</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-43"> 43</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-44"> 44</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-45"> 45</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-46"> 46</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-47"> 47</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-48"> 48</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-49"> 49</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-50"> 50</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-51"> 51</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-52"> 52</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-53"> 53</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-54"> 54</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-55"> 55</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-56"> 56</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-57"> 57</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-58"> 58</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-59"> 59</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-60"> 60</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-61"> 61</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-62"> 62</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-63"> 63</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-64"> 64</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-65"> 65</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-66"> 66</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-67"> 67</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-68"> 68</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-69"> 69</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-70"> 70</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-71"> 71</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-72"> 72</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-73"> 73</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-74"> 74</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-75"> 75</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-76"> 76</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-77"> 77</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-78"> 78</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-79"> 79</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-80"> 80</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-81"> 81</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-82"> 82</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-83"> 83</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-84"> 84</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-85"> 85</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-86"> 86</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-87"> 87</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-88"> 88</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-89"> 89</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-90"> 90</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-91"> 91</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-92"> 92</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-93"> 93</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-94"> 94</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-95"> 95</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-96"> 96</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-97"> 97</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-98"> 98</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-99"> 99</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-100">100</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-101">101</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-102">102</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-103">103</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-104">104</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-105">105</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-106">106</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-107">107</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-108">108</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-109">109</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-110">110</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-111">111</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-112">112</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-113">113</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-114">114</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-115">115</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-116">116</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-117">117</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-118">118</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-119">119</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-120">120</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-121">121</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-122">122</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-123">123</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-124">124</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-125">125</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-126">126</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-127">127</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-128">128</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-129">129</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-130">130</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-131">131</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-132">132</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-133">133</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-134">134</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-135">135</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-136">136</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-137">137</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-138">138</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-139">139</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-140">140</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-141">141</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-142">142</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-143">143</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-144">144</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-145">145</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-146">146</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-147">147</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-148">148</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-149">149</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-150">150</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-151">151</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-152">152</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-153">153</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-154">154</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-155">155</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-156">156</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-157">157</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-158">158</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-159">159</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-160">160</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-161">161</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-162">162</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-163">163</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-164">164</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-165">165</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-166">166</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-167">167</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-168">168</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-169">169</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-170">170</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-171">171</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-172">172</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-173">173</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-174">174</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-175">175</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-176">176</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-177">177</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-178">178</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-179">179</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-180">180</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-181">181</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-182">182</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-183">183</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-184">184</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-185">185</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-186">186</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-187">187</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-188">188</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-189">189</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-190">190</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-191">191</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-192">192</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-193">193</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-194">194</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-195">195</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-196">196</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-197">197</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-198">198</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-199">199</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-200">200</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-201">201</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-202">202</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-203">203</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-204">204</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-205">205</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-206">206</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-207">207</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-208">208</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-209">209</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-210">210</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-211">211</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-212">212</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-213">213</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-214">214</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-215">215</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-216">216</a>
+<a href="python_syntax.py.html#listingsninja_ideguieditorpython_syntaxpy-217">217</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_ideguieditorpython_syntaxpy-1"></a><span class="n">syntax</span> <span class="o">=</span> <span class="p">{</span><span class="s">'formats'</span><span class="p">:</span> <span class="p">{</span><span class="s">'builtin'</span><span class="p">:</span> <span class="s">'</span><span class="si">%(syntax_builtin)s</span><span class="s">'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-2"></a>             <span class="s">'comment'</span><span class="p">:</span> <span class="s">'</span><span class="si">%(syntax_comment)s</span><span class="s">'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-3"></a>             <span class="s">'hexnumber'</span><span class="p">:</span> <span class="s">'</span><span class="si">%(syntax_number)s</span><span class="s">'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-4"></a>             <span class="s">'keyword'</span><span class="p">:</span> <span class="s">'</span><span class="si">%(syntax_keyword)s</span><span class="s">'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-5"></a>             <span class="s">'number'</span><span class="p">:</span> <span class="s">'</span><span class="si">%(syntax_number)s</span><span class="s">'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-6"></a>             <span class="s">'proper_object'</span><span class="p">:</span> <span class="s">'</span><span class="si">%(syntax_proper_object)s</span><span class="s">'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-7"></a>             <span class="s">'operators'</span><span class="p">:</span> <span class="s">'</span><span class="si">%(syntax_operators)s</span><span class="s">'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-8"></a>             <span class="s">'pending'</span><span class="p">:</span> <span class="s">'</span><span class="si">%(syntax_pending)s</span><span class="s">'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-9"></a>             <span class="s">'braces'</span><span class="p">:</span> <span class="s">'</span><span class="si">%(syntax_braces)s</span><span class="s">'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-10"></a>             <span class="s">'definition'</span><span class="p">:</span> <span class="s">'</span><span class="si">%(syntax_definition)s</span><span class="s">'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-11"></a>             <span class="s">'highlight_word'</span><span class="p">:</span> <span class="s">'</span><span class="si">%(syntax_highlight_word)s</span><span class="s">'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-12"></a>             <span class="s">'string'</span><span class="p">:</span> <span class="s">'</span><span class="si">%(syntax_string)s</span><span class="s">'</span><span class="p">},</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-13"></a> <span class="s">'partitions'</span><span class="p">:</span> <span class="p">[(</span><span class="s">'pending'</span><span class="p">,</span> <span class="s">"#FIXME"</span><span class="p">,</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">),</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-14"></a>                <span class="p">(</span><span class="s">'pending'</span><span class="p">,</span> <span class="s">"#TODO"</span><span class="p">,</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">),</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-15"></a>                <span class="p">(</span><span class="s">'pending'</span><span class="p">,</span> <span class="s">"#WTF"</span><span class="p">,</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">),</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-16"></a>                <span class="p">(</span><span class="s">'comment'</span><span class="p">,</span> <span class="s">'#'</span><span class="p">,</span> <span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">),</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-17"></a>                <span class="p">(</span><span class="s">'string'</span><span class="p">,</span> <span class="s">"[bruBRU]?'''"</span><span class="p">,</span> <span class="s">"(?&lt;!</span><span class="se">\\\\</span><span class="s">)'''"</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-18"></a>                <span class="p">(</span><span class="s">'string'</span><span class="p">,</span> <span class="s">"[bruBRU]?'"</span><span class="p">,</span> <span class="s">"(?&lt;!</span><span class="se">\\\\</span><span class="s">)'"</span><span class="p">),</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-19"></a>                <span class="p">(</span><span class="s">'string'</span><span class="p">,</span> <span class="s">'[bruBRU]?"""'</span><span class="p">,</span> <span class="s">'(?&lt;!</span><span class="se">\\\\</span><span class="s">)"""'</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-20"></a>                <span class="p">(</span><span class="s">'string'</span><span class="p">,</span> <span class="s">'[bruBRU]?"'</span><span class="p">,</span> <span class="s">'(?&lt;!</span><span class="se">\\\\</span><span class="s">)"'</span><span class="p">)],</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-21"></a> <span class="s">'scanner'</span><span class="p">:</span> <span class="p">{</span><span class="bp">None</span><span class="p">:</span> <span class="p">[(</span><span class="s">'hexnumber'</span><span class="p">,</span> <span class="s">'(?&lt;!\w)(0x|0X)([0-9a-fA-F])+'</span><span class="p">),</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-22"></a>                    <span class="p">(</span><span class="s">'number'</span><span class="p">,</span> <span class="s">'(?&lt;!\w)</span><span class="se">\\</span><span class="s">d+(</span><span class="se">\\</span><span class="s">.</span><span class="se">\\</span><span class="s">d*)?'</span><span class="p">),</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-23"></a>                    <span class="p">(</span><span class="s">'definition'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-24"></a>                        <span class="p">[</span><span class="s">"(?&lt;=def)\ +?\w+(?=\ *?\()"</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-25"></a>                            <span class="s">"(?&lt;=class)\ +?\w+(?=\ *?\()"</span><span class="p">]</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-26"></a>                        <span class="p">),</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-27"></a>                    <span class="p">(</span><span class="s">'proper_object'</span><span class="p">,</span> <span class="p">[</span><span class="s">'self'</span><span class="p">],</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-28"></a>                     <span class="s">'(^|[^</span><span class="se">\\</span><span class="s">.</span><span class="se">\\</span><span class="s">w])??(?&lt;!\w|</span><span class="se">\\</span><span class="s">.)'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-29"></a>                     <span class="s">'[</span><span class="se">\\</span><span class="s">x08</span><span class="se">\\</span><span class="s">W]+?'</span><span class="p">),</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-30"></a>                    <span class="p">(</span><span class="s">'braces'</span><span class="p">,</span> <span class="p">[</span><span class="s">'</span><span class="se">\\</span><span class="s">('</span><span class="p">,</span> <span class="s">'</span><span class="se">\\</span><span class="s">)'</span><span class="p">,</span> <span class="s">'</span><span class="se">\\</span><span class="s">['</span><span class="p">,</span> <span class="s">'</span><span class="se">\\</span><span class="s">]'</span><span class="p">]),</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-31"></a>                    <span class="p">(</span><span class="s">'operators'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-32"></a>                     <span class="p">[</span><span class="s">'</span><span class="se">\\</span><span class="s">+'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-33"></a>                      <span class="s">'</span><span class="se">\\</span><span class="s">='</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-34"></a>                      <span class="s">'</span><span class="se">\\</span><span class="s">-'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-35"></a>                      <span class="s">'</span><span class="se">\\</span><span class="s">&lt;'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-36"></a>                      <span class="s">'</span><span class="se">\\</span><span class="s">&gt;'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-37"></a>                     <span class="p">]),</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-38"></a>                    <span class="p">(</span><span class="s">'keyword'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-39"></a>                     <span class="p">[</span><span class="s">'def'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-40"></a>                      <span class="s">'class'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-41"></a>                      <span class="s">'and'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-42"></a>                      <span class="s">'as'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-43"></a>                      <span class="s">'assert'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-44"></a>                      <span class="s">'break'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-45"></a>                      <span class="s">'class'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-46"></a>                      <span class="s">'continue'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-47"></a>                      <span class="s">'def'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-48"></a>                      <span class="s">'del'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-49"></a>                      <span class="s">'elif'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-50"></a>                      <span class="s">'else'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-51"></a>                      <span class="s">'except'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-52"></a>                      <span class="s">'exec'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-53"></a>                      <span class="s">'finally'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-54"></a>                      <span class="s">'for'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-55"></a>                      <span class="s">'from'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-56"></a>                      <span class="s">'global'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-57"></a>                      <span class="s">'if'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-58"></a>                      <span class="s">'import'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-59"></a>                      <span class="s">'in'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-60"></a>                      <span class="s">'is'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-61"></a>                      <span class="s">'lambda'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-62"></a>                      <span class="s">'not'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-63"></a>                      <span class="s">'or'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-64"></a>                      <span class="s">'pass'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-65"></a>                      <span class="s">'print'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-66"></a>                      <span class="s">'raise'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-67"></a>                      <span class="s">'return'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-68"></a>                      <span class="s">'try'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-69"></a>                      <span class="s">'while'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-70"></a>                      <span class="s">'with'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-71"></a>                      <span class="s">'yield'</span><span class="p">],</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-72"></a>                     <span class="s">'(^|[^</span><span class="se">\\</span><span class="s">.</span><span class="se">\\</span><span class="s">w])??(?&lt;!\w|</span><span class="se">\\</span><span class="s">.)'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-73"></a>                     <span class="s">'[</span><span class="se">\\</span><span class="s">x08</span><span class="se">\\</span><span class="s">W]'</span><span class="p">),</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-74"></a>                    <span class="p">(</span><span class="s">'builtin'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-75"></a>                     <span class="p">[</span><span class="s">'ArithmeticError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-76"></a>                      <span class="s">'AssertionError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-77"></a>                      <span class="s">'AttributeError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-78"></a>                      <span class="s">'BaseException'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-79"></a>                      <span class="s">'BufferError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-80"></a>                      <span class="s">'BytesWarning'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-81"></a>                      <span class="s">'DeprecationWarning'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-82"></a>                      <span class="s">'EOFError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-83"></a>                      <span class="s">'Ellipsis'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-84"></a>                      <span class="s">'EnvironmentError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-85"></a>                      <span class="s">'Exception'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-86"></a>                      <span class="s">'False'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-87"></a>                      <span class="s">'FloatingPointError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-88"></a>                      <span class="s">'FutureWarning'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-89"></a>                      <span class="s">'GeneratorExit'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-90"></a>                      <span class="s">'IOError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-91"></a>                      <span class="s">'ImportError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-92"></a>                      <span class="s">'ImportWarning'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-93"></a>                      <span class="s">'IndentationError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-94"></a>                      <span class="s">'IndexError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-95"></a>                      <span class="s">'KeyError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-96"></a>                      <span class="s">'KeyboardInterrupt'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-97"></a>                      <span class="s">'LookupError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-98"></a>                      <span class="s">'MemoryError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-99"></a>                      <span class="s">'NameError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-100"></a>                      <span class="s">'None'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-101"></a>                      <span class="s">'NotImplemented'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-102"></a>                      <span class="s">'NotImplementedError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-103"></a>                      <span class="s">'OSError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-104"></a>                      <span class="s">'OverflowError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-105"></a>                      <span class="s">'PendingDeprecationWarning'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-106"></a>                      <span class="s">'ReferenceError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-107"></a>                      <span class="s">'RuntimeError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-108"></a>                      <span class="s">'RuntimeWarning'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-109"></a>                      <span class="s">'StandardError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-110"></a>                      <span class="s">'StopIteration'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-111"></a>                      <span class="s">'SyntaxError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-112"></a>                      <span class="s">'SyntaxWarning'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-113"></a>                      <span class="s">'SystemError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-114"></a>                      <span class="s">'SystemExit'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-115"></a>                      <span class="s">'TabError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-116"></a>                      <span class="s">'True'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-117"></a>                      <span class="s">'TypeError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-118"></a>                      <span class="s">'UnboundLocalError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-119"></a>                      <span class="s">'UnicodeDecodeError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-120"></a>                      <span class="s">'UnicodeEncodeError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-121"></a>                      <span class="s">'UnicodeError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-122"></a>                      <span class="s">'UnicodeTranslateError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-123"></a>                      <span class="s">'UnicodeWarning'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-124"></a>                      <span class="s">'UserWarning'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-125"></a>                      <span class="s">'ValueError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-126"></a>                      <span class="s">'Warning'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-127"></a>                      <span class="s">'ZeroDivisionError'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-128"></a>                      <span class="s">'__import__'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-129"></a>                      <span class="s">'abs'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-130"></a>                      <span class="s">'all'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-131"></a>                      <span class="s">'any'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-132"></a>                      <span class="s">'apply'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-133"></a>                      <span class="s">'basestring'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-134"></a>                      <span class="s">'bin'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-135"></a>                      <span class="s">'bool'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-136"></a>                      <span class="s">'buffer'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-137"></a>                      <span class="s">'bytearray'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-138"></a>                      <span class="s">'bytes'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-139"></a>                      <span class="s">'callable'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-140"></a>                      <span class="s">'chr'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-141"></a>                      <span class="s">'classmethod'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-142"></a>                      <span class="s">'cmp'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-143"></a>                      <span class="s">'coerce'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-144"></a>                      <span class="s">'compile'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-145"></a>                      <span class="s">'complex'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-146"></a>                      <span class="s">'copyright'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-147"></a>                      <span class="s">'credits'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-148"></a>                      <span class="s">'delattr'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-149"></a>                      <span class="s">'dict'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-150"></a>                      <span class="s">'dir'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-151"></a>                      <span class="s">'divmod'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-152"></a>                      <span class="s">'enumerate'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-153"></a>                      <span class="s">'eval'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-154"></a>                      <span class="s">'execfile'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-155"></a>                      <span class="s">'exit'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-156"></a>                      <span class="s">'file'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-157"></a>                      <span class="s">'filter'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-158"></a>                      <span class="s">'float'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-159"></a>                      <span class="s">'format'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-160"></a>                      <span class="s">'frozenset'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-161"></a>                      <span class="s">'getattr'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-162"></a>                      <span class="s">'globals'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-163"></a>                      <span class="s">'hasattr'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-164"></a>                      <span class="s">'hash'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-165"></a>                      <span class="s">'help'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-166"></a>                      <span class="s">'hex'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-167"></a>                      <span class="s">'id'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-168"></a>                      <span class="s">'input'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-169"></a>                      <span class="s">'int'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-170"></a>                      <span class="s">'intern'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-171"></a>                      <span class="s">'isinstance'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-172"></a>                      <span class="s">'issubclass'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-173"></a>                      <span class="s">'iter'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-174"></a>                      <span class="s">'len'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-175"></a>                      <span class="s">'license'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-176"></a>                      <span class="s">'list'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-177"></a>                      <span class="s">'locals'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-178"></a>                      <span class="s">'long'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-179"></a>                      <span class="s">'map'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-180"></a>                      <span class="s">'max'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-181"></a>                      <span class="s">'memoryview'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-182"></a>                      <span class="s">'min'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-183"></a>                      <span class="s">'next'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-184"></a>                      <span class="s">'object'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-185"></a>                      <span class="s">'oct'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-186"></a>                      <span class="s">'open'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-187"></a>                      <span class="s">'ord'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-188"></a>                      <span class="s">'pow'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-189"></a>                      <span class="s">'print'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-190"></a>                      <span class="s">'property'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-191"></a>                      <span class="s">'quit'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-192"></a>                      <span class="s">'range'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-193"></a>                      <span class="s">'raw_input'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-194"></a>                      <span class="s">'reduce'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-195"></a>                      <span class="s">'reload'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-196"></a>                      <span class="s">'repr'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-197"></a>                      <span class="s">'reversed'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-198"></a>                      <span class="s">'round'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-199"></a>                      <span class="s">'set'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-200"></a>                      <span class="s">'setattr'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-201"></a>                      <span class="s">'slice'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-202"></a>                      <span class="s">'sorted'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-203"></a>                      <span class="s">'staticmethod'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-204"></a>                      <span class="s">'str'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-205"></a>                      <span class="s">'sum'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-206"></a>                      <span class="s">'super'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-207"></a>                      <span class="s">'tuple'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-208"></a>                      <span class="s">'type'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-209"></a>                      <span class="s">'unichr'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-210"></a>                      <span class="s">'unicode'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-211"></a>                      <span class="s">'vars'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-212"></a>                      <span class="s">'xrange'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-213"></a>                      <span class="s">'zip'</span><span class="p">],</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-214"></a>                     <span class="s">'(^|[^</span><span class="se">\\</span><span class="s">.</span><span class="se">\\</span><span class="s">w])??(?&lt;!\w|</span><span class="se">\\</span><span class="s">.)'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-215"></a>                     <span class="s">'[</span><span class="se">\\</span><span class="s">x08</span><span class="se">\\</span><span class="s">W]+?'</span><span class="p">),</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-216"></a>                    <span class="c">#('ident', '[A-Za-z_][A-Za-z_0-9]*?')</span>
+<a name="listingsninja_ideguieditorpython_syntaxpy-217"></a>                    <span class="p">]}}</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

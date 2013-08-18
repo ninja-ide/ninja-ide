@@ -1,0 +1,594 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="NINJA-IDE">
+    <title>NINJA-IDE | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+
+
+
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+    <li>
+    <a href="syntax_highlighter.txt" id="sourcelink">Source</a>
+    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+    <h1>NINJA-IDE</h1>
+    <div class="contents alert alert-info pull-top topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="syntax_highlighter.html#module-syntax-highlighter-py-api" id="id8"><em>Module:</em> syntax_highlighter.py API</a><ul>
+<li><a class="reference internal" href="syntax_highlighter.html#imports" id="id9"><em>Imports:</em></a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#global-functions" id="id10"><em>Global Functions:</em></a><ul>
+<li><a class="reference internal" href="syntax_highlighter.html#function-create-scheme-at-ln-484" id="id11"><em>Function:</em> _create_scheme() [at ln:484]</a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-get-user-data-block-at-ln-42" id="id12"><em>Function:</em> get_user_data(block) [at ln:42]</a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-load-syntax-syntax-at-ln-515" id="id13"><em>Function:</em> load_syntax(syntax) [at ln:515]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="syntax_highlighter.html#class-textcharformat-qtextcharformat" id="id14"><em>Class:</em> TextCharFormat(QTextCharFormat)</a><ul>
+<li><a class="reference internal" href="syntax_highlighter.html#attributes" id="id15"><em>Attributes</em></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="syntax_highlighter.html#class-partition-object" id="id16"><em>Class:</em> Partition(object)</a><ul>
+<li><a class="reference internal" href="syntax_highlighter.html#id1" id="id17"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-init-name-start-end-is-multiline-false-at-ln-118" id="id18"><em>Function:</em> __init__(name, start, end, is_multiline=False) [at ln:118]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="syntax_highlighter.html#class-scanner-object" id="id19"><em>Class:</em> Scanner(object)</a><ul>
+<li><a class="reference internal" href="syntax_highlighter.html#id2" id="id20"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-clean-highlight-at-ln-244" id="id21"><em>Function:</em> __clean_highlight() [at ln:244]</a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-init-tokens-at-ln-207" id="id22"><em>Function:</em> __init__(tokens) [at ln:207]</a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-add-token-token-at-ln-228" id="id23"><em>Function:</em> add_token(token) [at ln:228]</a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-scan-s-at-ln-254" id="id24"><em>Function:</em> scan(s) [at ln:254]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="syntax_highlighter.html#class-highlightererror-exception" id="id25"><em>Class:</em> HighlighterError(Exception)</a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#class-token-object" id="id26"><em>Class:</em> Token(object)</a><ul>
+<li><a class="reference internal" href="syntax_highlighter.html#id3" id="id27"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-init-name-pattern-prefix-str-suffix-str-at-ln-195" id="id28"><em>Function:</em> __init__(name, pattern, prefix=str, suffix=str) [at ln:195]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="syntax_highlighter.html#class-syntaxhighlighter-qsyntaxhighlighter" id="id29"><em>Class:</em> SyntaxHighlighter(QSyntaxHighlighter)</a><ul>
+<li><a class="reference internal" href="syntax_highlighter.html#id4" id="id30"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-apply-proper-style-char-format-color-at-ln-332" id="id31"><em>Function:</em> __apply_proper_style(char_format, color) [at ln:332]</a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-highlight-lint-char-format-user-data-at-ln-349" id="id32"><em>Function:</em> __highlight_lint(char_format, user_data) [at ln:349]</a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-highlight-migration-char-format-user-data-at-ln-358" id="id33"><em>Function:</em> __highlight_migration(char_format, user_data) [at ln:358]</a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-highlight-pep8-char-format-user-data-none-at-ln-340" id="id34"><em>Function:</em> __highlight_pep8(char_format, user_data=None) [at ln:340]</a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-init-parent-partition-scanner-scanner-formats-neditable-none-at-ln-271" id="id35"><em>Function:</em> __init__(parent, partition_scanner, scanner, formats, neditable=None) [at ln:271]</a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-remove-error-highlight-char-format-user-data-at-ln-367" id="id36"><em>Function:</em> __remove_error_highlight(char_format, user_data) [at ln:367]</a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-get-errors-lines-at-ln-463" id="id37"><em>Function:</em> _get_errors_lines() [at ln:463]</a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-rehighlight-lines-lines-at-ln-453" id="id38"><em>Function:</em> _rehighlight_lines(lines) [at ln:453]</a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-get-error-highlighter-block-at-ln-413" id="id39"><em>Function:</em> get_error_highlighter(block) [at ln:413]</a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-highlightblock-text-at-ln-373" id="id40"><em>Function:</em> highlightBlock(text) [at ln:373]</a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-rehighlight-lines-lines-errors-true-at-ln-474" id="id41"><em>Function:</em> rehighlight_lines(lines, errors=True) [at ln:474]</a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-set-selected-word-word-partial-false-at-ln-429" id="id42"><em>Function:</em> set_selected_word(word, partial=False) [at ln:429]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="syntax_highlighter.html#class-format-object" id="id43"><em>Class:</em> Format(object)</a><ul>
+<li><a class="reference internal" href="syntax_highlighter.html#id5" id="id44"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-init-name-color-none-bold-none-italic-none-base-format-none-background-none-at-ln-82" id="id45"><em>Function:</em> __init__(name, color=None, bold=None, italic=None, base_format=None, background=None) [at ln:82]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="syntax_highlighter.html#class-syntaxuserdata-qtextblockuserdata" id="id46"><em>Class:</em> SyntaxUserData(QTextBlockUserData)</a><ul>
+<li><a class="reference internal" href="syntax_highlighter.html#id6" id="id47"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-init-error-false-at-ln-53" id="id48"><em>Function:</em> __init__(error=False) [at ln:53]</a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-add-str-group-start-end-at-ln-65" id="id49"><em>Function:</em> add_str_group(start, end) [at ln:65]</a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-clear-data-at-ln-59" id="id50"><em>Function:</em> clear_data() [at ln:59]</a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-comment-start-at-pos-at-ln-69" id="id51"><em>Function:</em> comment_start_at(pos) [at ln:69]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="syntax_highlighter.html#class-partitionscanner-object" id="id52"><em>Class:</em> PartitionScanner(object)</a><ul>
+<li><a class="reference internal" href="syntax_highlighter.html#id7" id="id53"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-init-partitions-at-ln-134" id="id54"><em>Function:</em> __init__(partitions) [at ln:134]</a></li>
+<li><a class="reference internal" href="syntax_highlighter.html#function-scan-current-state-text-at-ln-153" id="id55"><em>Function:</em> scan(current_state, text) [at ln:153]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="module-syntax-highlighter-py-api">
+<h2><em>Module:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html">syntax_highlighter.py</a> API</h2>
+<div class="line-block">
+<div class="line">Partition-based syntax highlighter</div>
+</div>
+<div class="section" id="imports">
+<h3><a class="toc-backref" href="syntax_highlighter.html#id9"><em>Imports:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#25">re</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#27">PyQt4.QtGui.QBrush</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#27">PyQt4.QtGui.QColor</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#27">PyQt4.QtGui.QFont</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#27">PyQt4.QtGui.QSyntaxHighlighter</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#27">PyQt4.QtGui.QTextBlockUserData</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#27">PyQt4.QtGui.QTextCharFormat</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#27">PyQt4.QtGui.QTextFormat</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#22">__future__.absolute_import</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#31">ninja_ide.resources</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#32">ninja_ide.core.settings</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#23">__future__.unicode_literals</a></li>
+</ul>
+</div>
+<div class="section" id="global-functions">
+<h3><a class="toc-backref" href="syntax_highlighter.html#id10"><em>Global Functions:</em></a></h3>
+<div class="section" id="function-create-scheme-at-ln-484">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-484">_create_scheme() [at ln:484]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_create_scheme</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-user-data-block-at-ln-42">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-42">get_user_data(block) [at ln:42]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_user_data</span><span class="p">(</span><span class="n">block</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-load-syntax-syntax-at-ln-515">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-515">load_syntax(syntax) [at ln:515]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">load_syntax</span><span class="p">(</span><span class="n">syntax</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-textcharformat-qtextcharformat">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-74">TextCharFormat(QTextCharFormat)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">TextCharFormat</span><span class="p">(</span><span class="n">QTextCharFormat</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="attributes">
+<h4><a class="toc-backref" href="syntax_highlighter.html#id15"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#75">NAME [at ln:75]</a></li>
+</ul>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-partition-object">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-113">Partition(object)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">Partition</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id1">
+<h4><a class="toc-backref" href="syntax_highlighter.html#id17"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#116">__slots__ [at ln:116]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#121">end [at ln:121]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#122">is_multiline [at ln:122]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#119">name [at ln:119]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#120">start [at ln:120]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-name-start-end-is-multiline-false-at-ln-118">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-118">__init__(name, start, end, is_multiline=False) [at ln:118]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">is_multiline</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-scanner-object">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-204">Scanner(object)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">Scanner</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id2">
+<h4><a class="toc-backref" href="syntax_highlighter.html#id20"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#205">__slots__ [at ln:205]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#209">groups [at ln:209]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#242">search [at ln:242]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#208">tokens [at ln:208]</a></li>
+</ul>
+</div>
+<div class="section" id="function-clean-highlight-at-ln-244">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-244">__clean_highlight() [at ln:244]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__clean_highlight</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-init-tokens-at-ln-207">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-207">__init__(tokens) [at ln:207]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-token-token-at-ln-228">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-228">add_token(token) [at ln:228]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">add_token</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-scan-s-at-ln-254">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-254">scan(s) [at ln:254]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">scan</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-highlightererror-exception">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-109">HighlighterError(Exception)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">HighlighterError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="class-token-object">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-192">Token(object)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">Token</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id3">
+<h4><a class="toc-backref" href="syntax_highlighter.html#id27"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#193">__slots__ [at ln:193]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#196">name [at ln:196]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#199">pattern [at ln:199]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#200">prefix [at ln:200]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#201">suffix [at ln:201]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-name-pattern-prefix-str-suffix-str-at-ln-195">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-195">__init__(name, pattern, prefix=str, suffix=str) [at ln:195]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="nb">str</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-syntaxhighlighter-qsyntaxhighlighter">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-269">SyntaxHighlighter(QSyntaxHighlighter)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">SyntaxHighlighter</span><span class="p">(</span><span class="n">QSyntaxHighlighter</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id4">
+<h4><a class="toc-backref" href="syntax_highlighter.html#id30"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#287">_neditable [at ln:287]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#450">_old_search [at ln:450]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#368">error [at ln:368]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#306">formats [at ln:306]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#330">get_format [at ln:330]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#328">get_scanner [at ln:328]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#295">partition_scanner [at ln:295]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#329">scan_partitions [at ln:329]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#297">scanner [at ln:297]</a></li>
+</ul>
+</div>
+<div class="section" id="function-apply-proper-style-char-format-color-at-ln-332">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-332">__apply_proper_style(char_format, color) [at ln:332]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__apply_proper_style</span><span class="p">(</span><span class="n">char_format</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-highlight-lint-char-format-user-data-at-ln-349">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-349">__highlight_lint(char_format, user_data) [at ln:349]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__highlight_lint</span><span class="p">(</span><span class="n">char_format</span><span class="p">,</span> <span class="n">user_data</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Highlight the lines with lint errors.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-highlight-migration-char-format-user-data-at-ln-358">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-358">__highlight_migration(char_format, user_data) [at ln:358]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__highlight_migration</span><span class="p">(</span><span class="n">char_format</span><span class="p">,</span> <span class="n">user_data</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Highlight the lines with lint errors.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-highlight-pep8-char-format-user-data-none-at-ln-340">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-340">__highlight_pep8(char_format, user_data=None) [at ln:340]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__highlight_pep8</span><span class="p">(</span><span class="n">char_format</span><span class="p">,</span> <span class="n">user_data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Highlight the lines with pep8 errors.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-init-parent-partition-scanner-scanner-formats-neditable-none-at-ln-271">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-271">__init__(parent, partition_scanner, scanner, formats, neditable=None) [at ln:271]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">partition_scanner</span><span class="p">,</span> <span class="n">scanner</span><span class="p">,</span> <span class="n">formats</span><span class="p">,</span> <span class="n">neditable</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">:param parent: QDocument or QTextEdit/QPlainTextEdit instance</div>
+<div class="line">'partition_scanner:</div>
+<div class="line-block">
+<div class="line">PartitionScanner instance</div>
+</div>
+<div class="line">:param scanner:</div>
+<div class="line-block">
+<div class="line">dictionary of token scanners for each partition</div>
+<div class="line">The key is the name of the partition, the value is a Scanner</div>
+<div class="line-block">
+<div class="line">instance</div>
+</div>
+<div class="line">The default scanner has the key None</div>
+</div>
+<div class="line">:formats:</div>
+<div class="line-block">
+<div class="line">list of tuples consisting of a name and a format definition</div>
+<div class="line">The name is the name of a partition or token</div>
+</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-remove-error-highlight-char-format-user-data-at-ln-367">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-367">__remove_error_highlight(char_format, user_data) [at ln:367]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__remove_error_highlight</span><span class="p">(</span><span class="n">char_format</span><span class="p">,</span> <span class="n">user_data</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-errors-lines-at-ln-463">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-463">_get_errors_lines() [at ln:463]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_get_errors_lines</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Return the number of lines that contains errors to highlight.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-rehighlight-lines-lines-at-ln-453">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-453">_rehighlight_lines(lines) [at ln:453]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_rehighlight_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">If the document is valid, highlight the list of lines received.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-error-highlighter-block-at-ln-413">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-413">get_error_highlighter(block) [at ln:413]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_error_highlighter</span><span class="p">(</span><span class="n">block</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-highlightblock-text-at-ln-373">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-373">highlightBlock(text) [at ln:373]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">highlightBlock</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">automatically called by Qt</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-rehighlight-lines-lines-errors-true-at-ln-474">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-474">rehighlight_lines(lines, errors=True) [at ln:474]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">rehighlight_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Rehighlight the lines for errors or selected words.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-set-selected-word-word-partial-false-at-ln-429">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-429">set_selected_word(word, partial=False) [at ln:429]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">set_selected_word</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">partial</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Set the word to highlight.</div>
+</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-format-object">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-78">Format(object)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">Format</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id5">
+<h4><a class="toc-backref" href="syntax_highlighter.html#id44"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#80">__slots__ [at ln:80]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#84">name [at ln:84]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#106">tcf [at ln:106]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-name-color-none-bold-none-italic-none-base-format-none-background-none-at-ln-82">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-82">__init__(name, color=None, bold=None, italic=None, base_format=None, background=None) [at ln:82]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">bold</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">italic</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">base_format</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-syntaxuserdata-qtextblockuserdata">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-50">SyntaxUserData(QTextBlockUserData)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">SyntaxUserData</span><span class="p">(</span><span class="n">QTextBlockUserData</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Store the information of the errors, str and comments for each block.</div>
+</div>
+<div class="section" id="id6">
+<h4><a class="toc-backref" href="syntax_highlighter.html#id47"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#71">comment_start [at ln:71]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#61">error [at ln:61]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#62">str_groups [at ln:62]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-error-false-at-ln-53">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-53">__init__(error=False) [at ln:53]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-str-group-start-end-at-ln-65">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-65">add_str_group(start, end) [at ln:65]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">add_str_group</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Add a pair of values setting the beggining and end of a string.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-clear-data-at-ln-59">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-59">clear_data() [at ln:59]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">clear_data</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Clear the data stored for the current block.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-comment-start-at-pos-at-ln-69">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-69">comment_start_at(pos) [at ln:69]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">comment_start_at</span><span class="p">(</span><span class="n">pos</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Set the position in the line where the comment starts.</div>
+</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-partitionscanner-object">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-129">PartitionScanner(object)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">PartitionScanner</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id7">
+<h4><a class="toc-backref" href="syntax_highlighter.html#id53"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#136">partitions [at ln:136]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-partitions-at-ln-134">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-134">__init__(partitions) [at ln:134]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">partitions</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-scan-current-state-text-at-ln-153">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-153">scan(current_state, text) [at ln:153]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">scan</span><span class="p">(</span><span class="n">current_state</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+</div>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

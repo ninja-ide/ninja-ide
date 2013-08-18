@@ -1,0 +1,66 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: cliparser
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `cliparser.py </listings/ninja_ide/core/cliparser.py.html>`_ API
+============================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `argparse </listings/ninja_ide/core/cliparser.py.html#20>`_
+
+- `__future__.absolute_import </listings/ninja_ide/core/cliparser.py.html#18>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `epilog [at ln:32] </listings/ninja_ide/core/cliparser.py.html#32>`_
+
+- `usage [at ln:30] </listings/ninja_ide/core/cliparser.py.html#30>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `_get_parser() [at ln:37] </listings/ninja_ide/core/cliparser.py.html#listingsninja_idecorecliparserpy-37>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _get_parser():
+
+
+No description.
+
+
+----
+
+*Function:* `parse() [at ln:63] </listings/ninja_ide/core/cliparser.py.html#listingsninja_idecorecliparserpy-63>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def parse():
+
+
+No description.
+
+
+
+

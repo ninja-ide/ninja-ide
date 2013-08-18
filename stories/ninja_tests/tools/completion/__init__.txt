@@ -1,0 +1,55 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: __init__
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `__init__.py </listings/ninja_tests/tools/completion/__init__.py.html>`_ API
+========================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `re </listings/ninja_tests/tools/completion/__init__.py.html#18>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `SOURCE_ANALYZER_NATIVE [at ln:69] </listings/ninja_tests/tools/completion/__init__.py.html#69>`_
+
+- `SOURCE_COMPLETION [at ln:37] </listings/ninja_tests/tools/completion/__init__.py.html#37>`_
+
+- `SOURCE_INHERITANCE [at ln:110] </listings/ninja_tests/tools/completion/__init__.py.html#110>`_
+
+- `SOURCE_LATE_RESOLUTION [at ln:103] </listings/ninja_tests/tools/completion/__init__.py.html#103>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `get_source_data(code, word=str) [at ln:21] </listings/ninja_tests/tools/completion/__init__.py.html#listingsninja_teststoolscompletion__init__py-21>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_source_data(code, word=str):
+
+
+No description.
+
+
+
+

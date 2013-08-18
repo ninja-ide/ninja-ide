@@ -1,0 +1,148 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="plugin_util.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>plugin_util.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../">/listings</a>
+        </li><li><a href="../">/ninja_ide</a>
+        </li><li><a href=".">/core</a>
+        </li><li><a href="#">/plugin_util.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-1"> 1</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-2"> 2</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-3"> 3</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-4"> 4</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-5"> 5</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-6"> 6</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-7"> 7</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-8"> 8</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-9"> 9</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-10">10</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-11">11</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-12">12</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-13">13</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-14">14</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-15">15</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-16">16</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-17">17</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-18">18</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-19">19</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-20">20</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-21">21</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-22">22</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-23">23</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-24">24</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-25">25</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-26">26</a>
+<a href="plugin_util.py.html#listingsninja_idecoreplugin_utilpy-27">27</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_idecoreplugin_utilpy-1"></a><span class="c"># -*- coding: utf-8 -*-</span>
+<a name="listingsninja_idecoreplugin_utilpy-2"></a><span class="c">#</span>
+<a name="listingsninja_idecoreplugin_utilpy-3"></a><span class="c"># This file is part of NINJA-IDE (http://ninja-ide.org).</span>
+<a name="listingsninja_idecoreplugin_utilpy-4"></a><span class="c">#</span>
+<a name="listingsninja_idecoreplugin_utilpy-5"></a><span class="c"># NINJA-IDE is free software; you can redistribute it and/or modify</span>
+<a name="listingsninja_idecoreplugin_utilpy-6"></a><span class="c"># it under the terms of the GNU General Public License as published by</span>
+<a name="listingsninja_idecoreplugin_utilpy-7"></a><span class="c"># the Free Software Foundation; either version 3 of the License, or</span>
+<a name="listingsninja_idecoreplugin_utilpy-8"></a><span class="c"># any later version.</span>
+<a name="listingsninja_idecoreplugin_utilpy-9"></a><span class="c">#</span>
+<a name="listingsninja_idecoreplugin_utilpy-10"></a><span class="c"># NINJA-IDE is distributed in the hope that it will be useful,</span>
+<a name="listingsninja_idecoreplugin_utilpy-11"></a><span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="listingsninja_idecoreplugin_utilpy-12"></a><span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="listingsninja_idecoreplugin_utilpy-13"></a><span class="c"># GNU General Public License for more details.</span>
+<a name="listingsninja_idecoreplugin_utilpy-14"></a><span class="c">#</span>
+<a name="listingsninja_idecoreplugin_utilpy-15"></a><span class="c"># You should have received a copy of the GNU General Public License</span>
+<a name="listingsninja_idecoreplugin_utilpy-16"></a><span class="c"># along with NINJA-IDE; If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="listingsninja_idecoreplugin_utilpy-17"></a>
+<a name="listingsninja_idecoreplugin_utilpy-18"></a>
+<a name="listingsninja_idecoreplugin_utilpy-19"></a><span class="k">class</span> <span class="nc">ContextMenuScope</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<a name="listingsninja_idecoreplugin_utilpy-20"></a>    <span class="sd">"""</span>
+<a name="listingsninja_idecoreplugin_utilpy-21"></a><span class="sd">    This class is just a domain class for the plugin API</span>
+<a name="listingsninja_idecoreplugin_utilpy-22"></a><span class="sd">    it hold the info about the project explorer context menu</span>
+<a name="listingsninja_idecoreplugin_utilpy-23"></a><span class="sd">    """</span>
+<a name="listingsninja_idecoreplugin_utilpy-24"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<a name="listingsninja_idecoreplugin_utilpy-25"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="n">project</span>
+<a name="listingsninja_idecoreplugin_utilpy-26"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">folder</span> <span class="o">=</span> <span class="n">folder</span>
+<a name="listingsninja_idecoreplugin_utilpy-27"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">files</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

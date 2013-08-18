@@ -1,0 +1,224 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: translations
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `translations.py </listings/ninja_ide/translations.py.html>`_ API
+=============================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `PyQt4.QtCore </listings/ninja_ide/translations.py.html#3>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `TR_ABOUT_NINJA [at ln:56] </listings/ninja_ide/translations.py.html#56>`_
+
+- `TR_ABOUT_QT [at ln:57] </listings/ninja_ide/translations.py.html#57>`_
+
+- `TR_ACTIVATE_PROFILE [at ln:71] </listings/ninja_ide/translations.py.html#71>`_
+
+- `TR_ALL_VISIBILITY [at ln:79] </listings/ninja_ide/translations.py.html#79>`_
+
+- `TR_CLOSE_ALL_PROJECTS [at ln:73] </listings/ninja_ide/translations.py.html#73>`_
+
+- `TR_CLOSE_SPLIT [at ln:94] </listings/ninja_ide/translations.py.html#94>`_
+
+- `TR_CLOSE_TAB [at ln:20] </listings/ninja_ide/translations.py.html#20>`_
+
+- `TR_CODE_LOCATOR [at ln:66] </listings/ninja_ide/translations.py.html#66>`_
+
+- `TR_COMMENT [at ln:29] </listings/ninja_ide/translations.py.html#29>`_
+
+- `TR_CONVERT_LOWER [at ln:68] </listings/ninja_ide/translations.py.html#68>`_
+
+- `TR_CONVERT_TITLE [at ln:69] </listings/ninja_ide/translations.py.html#69>`_
+
+- `TR_CONVERT_UPPER [at ln:67] </listings/ninja_ide/translations.py.html#67>`_
+
+- `TR_COPY [at ln:61] </listings/ninja_ide/translations.py.html#61>`_
+
+- `TR_COUNT_LINES [at ln:87] </listings/ninja_ide/translations.py.html#87>`_
+
+- `TR_CUT [at ln:60] </listings/ninja_ide/translations.py.html#60>`_
+
+- `TR_DEACTIVATE_GROUP_TABS [at ln:84] </listings/ninja_ide/translations.py.html#84>`_
+
+- `TR_DEACTIVATE_PROFILE [at ln:72] </listings/ninja_ide/translations.py.html#72>`_
+
+- `TR_DEBUGGING_TRICKS [at ln:89] </listings/ninja_ide/translations.py.html#89>`_
+
+- `TR_DUPLICATE [at ln:16] </listings/ninja_ide/translations.py.html#16>`_
+
+- `TR_EDITOR_SCHEMES [at ln:51] </listings/ninja_ide/translations.py.html#51>`_
+
+- `TR_EDITOR_VISIBILITY [at ln:78] </listings/ninja_ide/translations.py.html#78>`_
+
+- `TR_EXIT [at ln:74] </listings/ninja_ide/translations.py.html#74>`_
+
+- `TR_EXPLORER_VISIBILITY [at ln:80] </listings/ninja_ide/translations.py.html#80>`_
+
+- `TR_FIND [at ln:63] </listings/ninja_ide/translations.py.html#63>`_
+
+- `TR_FIND_IN_FILES [at ln:46] </listings/ninja_ide/translations.py.html#46>`_
+
+- `TR_FIND_REPLACE [at ln:64] </listings/ninja_ide/translations.py.html#64>`_
+
+- `TR_FIND_WITH_WORD [at ln:65] </listings/ninja_ide/translations.py.html#65>`_
+
+- `TR_FOLLOW_MODE [at ln:37] </listings/ninja_ide/translations.py.html#37>`_
+
+- `TR_FULLSCREEN_VISIBILITY [at ln:82] </listings/ninja_ide/translations.py.html#82>`_
+
+- `TR_GO_TO_DEFINITION [at ln:40] </listings/ninja_ide/translations.py.html#40>`_
+
+- `TR_GO_TO_LINE [at ln:107] </listings/ninja_ide/translations.py.html#107>`_
+
+- `TR_GROUP_TABS [at ln:83] </listings/ninja_ide/translations.py.html#83>`_
+
+- `TR_HELP [at ln:41] </listings/ninja_ide/translations.py.html#41>`_
+
+- `TR_HORIZONTAL_LINE [at ln:31] </listings/ninja_ide/translations.py.html#31>`_
+
+- `TR_HOW_TO_WRITE_PLUGINS [at ln:59] </listings/ninja_ide/translations.py.html#59>`_
+
+- `TR_INDENT_LESS [at ln:34] </listings/ninja_ide/translations.py.html#34>`_
+
+- `TR_INDENT_MORE [at ln:33] </listings/ninja_ide/translations.py.html#33>`_
+
+- `TR_INSERT_IMPORT [at ln:39] </listings/ninja_ide/translations.py.html#39>`_
+
+- `TR_INSERT_PDB [at ln:91] </listings/ninja_ide/translations.py.html#91>`_
+
+- `TR_LANGUAGE_MANAGER [at ln:52] </listings/ninja_ide/translations.py.html#52>`_
+
+- `TR_MANAGE_PLUGINS [at ln:50] </listings/ninja_ide/translations.py.html#50>`_
+
+- `TR_MENU_ABOUT [at ln:14] </listings/ninja_ide/translations.py.html#14>`_
+
+- `TR_MENU_ADDINS [at ln:13] </listings/ninja_ide/translations.py.html#13>`_
+
+- `TR_MENU_EDIT [at ln:9] </listings/ninja_ide/translations.py.html#9>`_
+
+- `TR_MENU_FILE [at ln:8] </listings/ninja_ide/translations.py.html#8>`_
+
+- `TR_MENU_PROJECT [at ln:12] </listings/ninja_ide/translations.py.html#12>`_
+
+- `TR_MENU_SOURCE [at ln:11] </listings/ninja_ide/translations.py.html#11>`_
+
+- `TR_MENU_VIEW [at ln:10] </listings/ninja_ide/translations.py.html#10>`_
+
+- `TR_MOVE_DOWN [at ln:19] </listings/ninja_ide/translations.py.html#19>`_
+
+- `TR_MOVE_UP [at ln:18] </listings/ninja_ide/translations.py.html#18>`_
+
+- `TR_NEW_DOCUMENT [at ln:96] </listings/ninja_ide/translations.py.html#96>`_
+
+- `TR_NEW_FILE [at ln:22] </listings/ninja_ide/translations.py.html#22>`_
+
+- `TR_NEW_PROJECT [at ln:43] </listings/ninja_ide/translations.py.html#43>`_
+
+- `TR_NO_DESCRIPTION [at ln:98] </listings/ninja_ide/translations.py.html#98>`_
+
+- `TR_NO_RESULTS [at ln:109] </listings/ninja_ide/translations.py.html#109>`_
+
+- `TR_ONLY_ATRIBUTES [at ln:104] </listings/ninja_ide/translations.py.html#104>`_
+
+- `TR_ONLY_CLASSES [at ln:102] </listings/ninja_ide/translations.py.html#102>`_
+
+- `TR_ONLY_CLASSES_METHODS [at ln:105] </listings/ninja_ide/translations.py.html#105>`_
+
+- `TR_ONLY_CURRENT_TABS [at ln:106] </listings/ninja_ide/translations.py.html#106>`_
+
+- `TR_ONLY_FILES [at ln:101] </listings/ninja_ide/translations.py.html#101>`_
+
+- `TR_ONLY_METHODS [at ln:103] </listings/ninja_ide/translations.py.html#103>`_
+
+- `TR_ONLY_NON_PYTHON [at ln:108] </listings/ninja_ide/translations.py.html#108>`_
+
+- `TR_OPEN [at ln:23] </listings/ninja_ide/translations.py.html#23>`_
+
+- `TR_OPEN_PROJECT [at ln:44] </listings/ninja_ide/translations.py.html#44>`_
+
+- `TR_OPEN_PROJECT_PROPERTIES [at ln:75] </listings/ninja_ide/translations.py.html#75>`_
+
+- `TR_PASTE [at ln:62] </listings/ninja_ide/translations.py.html#62>`_
+
+- `TR_PLUGINS_DOCUMENTATION [at ln:55] </listings/ninja_ide/translations.py.html#55>`_
+
+- `TR_PREFERENCES [at ln:70] </listings/ninja_ide/translations.py.html#70>`_
+
+- `TR_PREVIEW_IN_BROWSER [at ln:76] </listings/ninja_ide/translations.py.html#76>`_
+
+- `TR_PRINT_FILE [at ln:42] </listings/ninja_ide/translations.py.html#42>`_
+
+- `TR_PRINT_PER_LINE [at ln:90] </listings/ninja_ide/translations.py.html#90>`_
+
+- `TR_PYTHON_DOC [at ln:58] </listings/ninja_ide/translations.py.html#58>`_
+
+- `TR_READ_ONLY [at ln:97] </listings/ninja_ide/translations.py.html#97>`_
+
+- `TR_REDO [at ln:28] </listings/ninja_ide/translations.py.html#28>`_
+
+- `TR_RELOAD_FILE [at ln:38] </listings/ninja_ide/translations.py.html#38>`_
+
+- `TR_REMOVE_LINE [at ln:17] </listings/ninja_ide/translations.py.html#17>`_
+
+- `TR_REMOVE_TRAILING_SPACES [at ln:92] </listings/ninja_ide/translations.py.html#92>`_
+
+- `TR_REPLACE_TABS_SPACES [at ln:93] </listings/ninja_ide/translations.py.html#93>`_
+
+- `TR_REPORT_BUGS [at ln:54] </listings/ninja_ide/translations.py.html#54>`_
+
+- `TR_RUN_FILE [at ln:47] </listings/ninja_ide/translations.py.html#47>`_
+
+- `TR_RUN_PROJECT [at ln:48] </listings/ninja_ide/translations.py.html#48>`_
+
+- `TR_SAVE [at ln:24] </listings/ninja_ide/translations.py.html#24>`_
+
+- `TR_SAVE_ALL [at ln:26] </listings/ninja_ide/translations.py.html#26>`_
+
+- `TR_SAVE_AS [at ln:25] </listings/ninja_ide/translations.py.html#25>`_
+
+- `TR_SAVE_PROJECT [at ln:45] </listings/ninja_ide/translations.py.html#45>`_
+
+- `TR_SHOW_START_PAGE [at ln:53] </listings/ninja_ide/translations.py.html#53>`_
+
+- `TR_SPLIT_HORIZONTALLY [at ln:35] </listings/ninja_ide/translations.py.html#35>`_
+
+- `TR_SPLIT_VERTICALLY [at ln:36] </listings/ninja_ide/translations.py.html#36>`_
+
+- `TR_STOP [at ln:49] </listings/ninja_ide/translations.py.html#49>`_
+
+- `TR_TITLE_COMMENT [at ln:32] </listings/ninja_ide/translations.py.html#32>`_
+
+- `TR_TOOLBAR_VISIBILITY [at ln:81] </listings/ninja_ide/translations.py.html#81>`_
+
+- `TR_TOOLS_VISIBILITY [at ln:77] </listings/ninja_ide/translations.py.html#77>`_
+
+- `TR_UNCOMMENT [at ln:30] </listings/ninja_ide/translations.py.html#30>`_
+
+- `TR_UNDO [at ln:27] </listings/ninja_ide/translations.py.html#27>`_
+
+- `TR_ZOOM_IN [at ln:85] </listings/ninja_ide/translations.py.html#85>`_
+
+- `TR_ZOOM_OUT [at ln:86] </listings/ninja_ide/translations.py.html#86>`_
+
+- `tr [at ln:6] </listings/ninja_ide/translations.py.html#6>`_
+
+
+
+

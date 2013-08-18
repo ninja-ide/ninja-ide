@@ -1,0 +1,1163 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="syntax_highlighter.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>syntax_highlighter.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../../">/listings</a>
+        </li><li><a href="../../">/ninja_ide</a>
+        </li><li><a href="../">/gui</a>
+        </li><li><a href=".">/editor</a>
+        </li><li><a href="#">/syntax_highlighter.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-1">  1</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-2">  2</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-3">  3</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-4">  4</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-5">  5</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-6">  6</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-7">  7</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-8">  8</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-9">  9</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-10"> 10</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-11"> 11</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-12"> 12</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-13"> 13</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-14"> 14</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-15"> 15</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-16"> 16</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-17"> 17</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-18"> 18</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-19"> 19</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-20"> 20</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-21"> 21</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-22"> 22</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-23"> 23</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-24"> 24</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-25"> 25</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-26"> 26</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-27"> 27</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-28"> 28</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-29"> 29</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-30"> 30</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-31"> 31</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-32"> 32</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-33"> 33</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-34"> 34</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-35"> 35</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-36"> 36</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-37"> 37</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-38"> 38</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-39"> 39</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-40"> 40</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-41"> 41</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-42"> 42</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-43"> 43</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-44"> 44</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-45"> 45</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-46"> 46</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-47"> 47</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-48"> 48</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-49"> 49</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-50"> 50</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-51"> 51</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-52"> 52</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-53"> 53</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-54"> 54</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-55"> 55</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-56"> 56</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-57"> 57</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-58"> 58</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-59"> 59</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-60"> 60</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-61"> 61</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-62"> 62</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-63"> 63</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-64"> 64</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-65"> 65</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-66"> 66</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-67"> 67</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-68"> 68</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-69"> 69</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-70"> 70</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-71"> 71</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-72"> 72</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-73"> 73</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-74"> 74</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-75"> 75</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-76"> 76</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-77"> 77</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-78"> 78</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-79"> 79</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-80"> 80</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-81"> 81</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-82"> 82</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-83"> 83</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-84"> 84</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-85"> 85</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-86"> 86</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-87"> 87</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-88"> 88</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-89"> 89</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-90"> 90</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-91"> 91</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-92"> 92</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-93"> 93</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-94"> 94</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-95"> 95</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-96"> 96</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-97"> 97</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-98"> 98</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-99"> 99</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-100">100</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-101">101</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-102">102</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-103">103</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-104">104</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-105">105</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-106">106</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-107">107</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-108">108</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-109">109</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-110">110</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-111">111</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-112">112</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-113">113</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-114">114</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-115">115</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-116">116</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-117">117</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-118">118</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-119">119</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-120">120</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-121">121</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-122">122</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-123">123</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-124">124</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-125">125</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-126">126</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-127">127</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-128">128</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-129">129</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-130">130</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-131">131</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-132">132</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-133">133</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-134">134</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-135">135</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-136">136</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-137">137</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-138">138</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-139">139</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-140">140</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-141">141</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-142">142</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-143">143</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-144">144</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-145">145</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-146">146</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-147">147</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-148">148</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-149">149</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-150">150</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-151">151</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-152">152</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-153">153</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-154">154</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-155">155</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-156">156</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-157">157</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-158">158</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-159">159</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-160">160</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-161">161</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-162">162</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-163">163</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-164">164</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-165">165</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-166">166</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-167">167</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-168">168</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-169">169</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-170">170</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-171">171</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-172">172</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-173">173</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-174">174</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-175">175</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-176">176</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-177">177</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-178">178</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-179">179</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-180">180</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-181">181</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-182">182</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-183">183</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-184">184</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-185">185</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-186">186</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-187">187</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-188">188</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-189">189</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-190">190</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-191">191</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-192">192</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-193">193</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-194">194</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-195">195</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-196">196</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-197">197</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-198">198</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-199">199</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-200">200</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-201">201</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-202">202</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-203">203</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-204">204</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-205">205</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-206">206</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-207">207</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-208">208</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-209">209</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-210">210</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-211">211</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-212">212</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-213">213</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-214">214</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-215">215</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-216">216</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-217">217</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-218">218</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-219">219</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-220">220</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-221">221</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-222">222</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-223">223</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-224">224</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-225">225</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-226">226</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-227">227</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-228">228</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-229">229</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-230">230</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-231">231</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-232">232</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-233">233</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-234">234</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-235">235</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-236">236</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-237">237</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-238">238</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-239">239</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-240">240</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-241">241</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-242">242</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-243">243</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-244">244</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-245">245</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-246">246</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-247">247</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-248">248</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-249">249</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-250">250</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-251">251</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-252">252</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-253">253</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-254">254</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-255">255</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-256">256</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-257">257</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-258">258</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-259">259</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-260">260</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-261">261</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-262">262</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-263">263</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-264">264</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-265">265</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-266">266</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-267">267</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-268">268</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-269">269</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-270">270</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-271">271</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-272">272</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-273">273</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-274">274</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-275">275</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-276">276</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-277">277</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-278">278</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-279">279</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-280">280</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-281">281</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-282">282</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-283">283</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-284">284</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-285">285</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-286">286</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-287">287</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-288">288</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-289">289</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-290">290</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-291">291</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-292">292</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-293">293</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-294">294</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-295">295</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-296">296</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-297">297</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-298">298</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-299">299</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-300">300</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-301">301</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-302">302</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-303">303</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-304">304</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-305">305</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-306">306</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-307">307</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-308">308</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-309">309</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-310">310</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-311">311</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-312">312</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-313">313</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-314">314</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-315">315</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-316">316</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-317">317</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-318">318</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-319">319</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-320">320</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-321">321</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-322">322</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-323">323</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-324">324</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-325">325</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-326">326</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-327">327</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-328">328</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-329">329</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-330">330</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-331">331</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-332">332</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-333">333</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-334">334</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-335">335</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-336">336</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-337">337</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-338">338</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-339">339</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-340">340</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-341">341</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-342">342</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-343">343</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-344">344</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-345">345</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-346">346</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-347">347</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-348">348</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-349">349</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-350">350</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-351">351</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-352">352</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-353">353</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-354">354</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-355">355</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-356">356</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-357">357</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-358">358</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-359">359</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-360">360</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-361">361</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-362">362</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-363">363</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-364">364</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-365">365</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-366">366</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-367">367</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-368">368</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-369">369</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-370">370</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-371">371</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-372">372</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-373">373</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-374">374</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-375">375</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-376">376</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-377">377</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-378">378</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-379">379</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-380">380</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-381">381</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-382">382</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-383">383</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-384">384</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-385">385</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-386">386</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-387">387</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-388">388</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-389">389</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-390">390</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-391">391</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-392">392</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-393">393</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-394">394</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-395">395</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-396">396</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-397">397</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-398">398</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-399">399</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-400">400</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-401">401</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-402">402</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-403">403</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-404">404</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-405">405</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-406">406</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-407">407</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-408">408</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-409">409</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-410">410</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-411">411</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-412">412</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-413">413</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-414">414</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-415">415</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-416">416</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-417">417</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-418">418</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-419">419</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-420">420</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-421">421</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-422">422</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-423">423</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-424">424</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-425">425</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-426">426</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-427">427</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-428">428</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-429">429</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-430">430</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-431">431</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-432">432</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-433">433</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-434">434</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-435">435</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-436">436</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-437">437</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-438">438</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-439">439</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-440">440</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-441">441</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-442">442</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-443">443</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-444">444</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-445">445</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-446">446</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-447">447</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-448">448</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-449">449</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-450">450</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-451">451</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-452">452</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-453">453</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-454">454</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-455">455</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-456">456</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-457">457</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-458">458</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-459">459</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-460">460</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-461">461</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-462">462</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-463">463</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-464">464</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-465">465</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-466">466</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-467">467</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-468">468</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-469">469</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-470">470</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-471">471</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-472">472</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-473">473</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-474">474</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-475">475</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-476">476</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-477">477</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-478">478</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-479">479</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-480">480</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-481">481</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-482">482</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-483">483</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-484">484</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-485">485</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-486">486</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-487">487</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-488">488</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-489">489</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-490">490</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-491">491</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-492">492</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-493">493</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-494">494</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-495">495</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-496">496</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-497">497</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-498">498</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-499">499</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-500">500</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-501">501</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-502">502</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-503">503</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-504">504</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-505">505</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-506">506</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-507">507</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-508">508</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-509">509</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-510">510</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-511">511</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-512">512</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-513">513</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-514">514</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-515">515</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-516">516</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-517">517</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-518">518</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-519">519</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-520">520</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-521">521</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-522">522</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-523">523</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-524">524</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-525">525</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-526">526</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-527">527</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-528">528</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-529">529</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-530">530</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-531">531</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-532">532</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-533">533</a>
+<a href="syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-534">534</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_ideguieditorsyntax_highlighterpy-1"></a><span class="c"># -*- coding: utf-8 -*-</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-2"></a><span class="c">#</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-3"></a><span class="c"># This file is part of NINJA-IDE (http://ninja-ide.org).</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-4"></a><span class="c">#</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-5"></a><span class="c"># NINJA-IDE is free software; you can redistribute it and/or modify</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-6"></a><span class="c"># it under the terms of the GNU General Public License as published by</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-7"></a><span class="c"># the Free Software Foundation; either version 3 of the License, or</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-8"></a><span class="c"># any later version.</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-9"></a><span class="c">#</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-10"></a><span class="c"># NINJA-IDE is distributed in the hope that it will be useful,</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-11"></a><span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-12"></a><span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-13"></a><span class="c"># GNU General Public License for more details.</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-14"></a><span class="c">#</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-15"></a><span class="c"># You should have received a copy of the GNU General Public License</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-16"></a><span class="c"># along with NINJA-IDE; If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-17"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-18"></a><span class="c"># Based on: https://bitbucket.org/henning/syntaxhighlighter</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-19"></a><span class="sd">"""</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-20"></a><span class="sd">Partition-based syntax highlighter</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-21"></a><span class="sd">"""</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-22"></a><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-23"></a><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-24"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-25"></a><span class="kn">import</span> <span class="nn">re</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-26"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-27"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="p">(</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-28"></a>    <span class="n">QSyntaxHighlighter</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-29"></a>    <span class="n">QColor</span><span class="p">,</span> <span class="n">QTextCharFormat</span><span class="p">,</span> <span class="n">QTextBlockUserData</span><span class="p">,</span> <span class="n">QFont</span><span class="p">,</span> <span class="n">QBrush</span><span class="p">,</span> <span class="n">QTextFormat</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-30"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-31"></a><span class="kn">from</span> <span class="nn">ninja_ide</span> <span class="kn">import</span> <span class="n">resources</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-32"></a><span class="kn">from</span> <span class="nn">ninja_ide.core</span> <span class="kn">import</span> <span class="n">settings</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-33"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-34"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-35"></a><span class="k">try</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-36"></a>    <span class="nb">unicode</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-37"></a><span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-38"></a>    <span class="c"># Python 3</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-39"></a>    <span class="nb">basestring</span> <span class="o">=</span> <span class="nb">unicode</span> <span class="o">=</span> <span class="nb">str</span>  <span class="c"># lint:ok</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-40"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-41"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-42"></a><span class="k">def</span> <span class="nf">get_user_data</span><span class="p">(</span><span class="n">block</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-43"></a>    <span class="n">user_data</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">userData</span><span class="p">()</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-44"></a>    <span class="k">if</span> <span class="n">user_data</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">user_data</span><span class="p">,</span> <span class="n">SyntaxUserData</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-45"></a>        <span class="n">user_data</span> <span class="o">=</span> <span class="n">SyntaxUserData</span><span class="p">()</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-46"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-47"></a>    <span class="k">return</span> <span class="n">user_data</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-48"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-49"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-50"></a><span class="k">class</span> <span class="nc">SyntaxUserData</span><span class="p">(</span><span class="n">QTextBlockUserData</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-51"></a>    <span class="sd">"""Store the information of the errors, str and comments for each block."""</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-52"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-53"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-54"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">SyntaxUserData</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-55"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="n">error</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-56"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">str_groups</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-57"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">comment_start</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-58"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-59"></a>    <span class="k">def</span> <span class="nf">clear_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-60"></a>        <span class="sd">"""Clear the data stored for the current block."""</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-61"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-62"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">str_groups</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-63"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">comment_start</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-64"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-65"></a>    <span class="k">def</span> <span class="nf">add_str_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-66"></a>        <span class="sd">"""Add a pair of values setting the beggining and end of a string."""</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-67"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">str_groups</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-68"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-69"></a>    <span class="k">def</span> <span class="nf">comment_start_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-70"></a>        <span class="sd">"""Set the position in the line where the comment starts."""</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-71"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">comment_start</span> <span class="o">=</span> <span class="n">pos</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-72"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-73"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-74"></a><span class="k">class</span> <span class="nc">TextCharFormat</span><span class="p">(</span><span class="n">QTextCharFormat</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-75"></a>    <span class="n">NAME</span> <span class="o">=</span> <span class="n">QTextFormat</span><span class="o">.</span><span class="n">UserProperty</span> <span class="o">+</span> <span class="mi">1</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-76"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-77"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-78"></a><span class="k">class</span> <span class="nc">Format</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-79"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-80"></a>    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s">"name"</span><span class="p">,</span> <span class="s">"tcf"</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-81"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-82"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">bold</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">italic</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-83"></a>        <span class="n">base_format</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-84"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-85"></a>        <span class="n">tcf</span> <span class="o">=</span> <span class="n">TextCharFormat</span><span class="p">()</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-86"></a>        <span class="k">if</span> <span class="n">base_format</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-87"></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">base_format</span><span class="p">,</span> <span class="n">Format</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-88"></a>                <span class="n">base_format</span> <span class="o">=</span> <span class="n">base_format</span><span class="o">.</span><span class="n">tcf</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-89"></a>            <span class="n">tcf</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">base_format</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-90"></a>            <span class="n">tcf</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">base_format</span><span class="o">.</span><span class="n">font</span><span class="p">())</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-91"></a>        <span class="k">if</span> <span class="n">color</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-92"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">QColor</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-93"></a>                <span class="n">color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-94"></a>            <span class="n">tcf</span><span class="o">.</span><span class="n">setForeground</span><span class="p">(</span><span class="n">QBrush</span><span class="p">(</span><span class="n">color</span><span class="p">))</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-95"></a>        <span class="k">if</span> <span class="n">bold</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-96"></a>            <span class="k">if</span> <span class="n">bold</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-97"></a>                <span class="n">tcf</span><span class="o">.</span><span class="n">setFontWeight</span><span class="p">(</span><span class="n">QFont</span><span class="o">.</span><span class="n">Bold</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-98"></a>            <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-99"></a>                <span class="n">tcf</span><span class="o">.</span><span class="n">setFontWeight</span><span class="p">(</span><span class="n">QFont</span><span class="o">.</span><span class="n">Normal</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-100"></a>        <span class="k">if</span> <span class="n">italic</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-101"></a>            <span class="n">tcf</span><span class="o">.</span><span class="n">setFontItalic</span><span class="p">(</span><span class="n">italic</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-102"></a>        <span class="k">if</span> <span class="n">background</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-103"></a>            <span class="n">color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="n">background</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-104"></a>            <span class="n">tcf</span><span class="o">.</span><span class="n">setBackground</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-105"></a>        <span class="n">tcf</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="n">TextCharFormat</span><span class="o">.</span><span class="n">NAME</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-106"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">tcf</span> <span class="o">=</span> <span class="n">tcf</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-107"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-108"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-109"></a><span class="k">class</span> <span class="nc">HighlighterError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-110"></a>    <span class="k">pass</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-111"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-112"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-113"></a><span class="k">class</span> <span class="nc">Partition</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-114"></a>    <span class="c"># every partition maps to a specific state in QSyntaxHighlighter</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-115"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-116"></a>    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s">"name"</span><span class="p">,</span> <span class="s">"start"</span><span class="p">,</span> <span class="s">"end"</span><span class="p">,</span> <span class="s">"is_multiline"</span><span class="p">,</span> <span class="s">"search_end"</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-117"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-118"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">is_multiline</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-119"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-120"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">start</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-121"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">end</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-122"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">is_multiline</span> <span class="o">=</span> <span class="n">is_multiline</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-123"></a>        <span class="k">try</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-124"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">search_end</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">S</span><span class="p">)</span><span class="o">.</span><span class="n">search</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-125"></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-126"></a>            <span class="k">raise</span> <span class="n">HighlighterError</span><span class="p">(</span><span class="s">"</span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">end</span><span class="p">))</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-127"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-128"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-129"></a><span class="k">class</span> <span class="nc">PartitionScanner</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-130"></a>    <span class="c"># The idea to partition the source into different contexts comes</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-131"></a>    <span class="c"># from Eclipse.</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-132"></a>    <span class="c"># http://wiki.eclipse.org/FAQ_What_is_a_document_partition%3F</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-133"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-134"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">partitions</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-135"></a>        <span class="n">start_groups</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-136"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">partitions</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-137"></a>        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">partitions</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-138"></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-139"></a>                <span class="n">p</span> <span class="o">=</span> <span class="n">Partition</span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-140"></a>            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-141"></a>                <span class="n">p</span> <span class="o">=</span> <span class="n">Partition</span><span class="p">(</span><span class="o">**</span><span class="n">p</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-142"></a>            <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-143"></a>                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">Partition</span><span class="p">),</span> \
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-144"></a>                    <span class="s">"Partition expected, got </span><span class="si">%r</span><span class="s">"</span> <span class="o">%</span> <span class="n">p</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-145"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">partitions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-146"></a>            <span class="n">start_groups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">"(?P&lt;g</span><span class="si">%s</span><span class="s">_</span><span class="si">%s</span><span class="s">&gt;</span><span class="si">%s</span><span class="s">)"</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">start</span><span class="p">))</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-147"></a>        <span class="n">start_pat</span> <span class="o">=</span> <span class="s">"|"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">start_groups</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-148"></a>        <span class="k">try</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-149"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">search_start</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">start_pat</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">S</span><span class="p">)</span><span class="o">.</span><span class="n">search</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-150"></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-151"></a>            <span class="k">raise</span> <span class="n">HighlighterError</span><span class="p">(</span><span class="s">"</span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">start_pat</span><span class="p">))</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-152"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-153"></a>    <span class="k">def</span> <span class="nf">scan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_state</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-154"></a>        <span class="n">last_pos</span> <span class="o">=</span> <span class="mi">0</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-155"></a>        <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-156"></a>        <span class="n">parts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">partitions</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-157"></a>        <span class="n">search_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_start</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-158"></a>        <span class="c"># loop yields (start, end, partition, new_state, is_inside)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-159"></a>        <span class="k">while</span> <span class="n">last_pos</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-160"></a>            <span class="k">if</span> <span class="n">current_state</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-161"></a>                <span class="n">found</span> <span class="o">=</span> <span class="n">search_start</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">last_pos</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-162"></a>                <span class="k">if</span> <span class="n">found</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-163"></a>                    <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">found</span><span class="o">.</span><span class="n">span</span><span class="p">()</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-164"></a>                    <span class="k">yield</span> <span class="n">last_pos</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">True</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-165"></a>                    <span class="n">current_state</span> <span class="o">=</span> <span class="n">found</span><span class="o">.</span><span class="n">lastindex</span> <span class="o">-</span> <span class="mi">1</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-166"></a>                    <span class="n">p</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="n">current_state</span><span class="p">]</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-167"></a>                    <span class="k">yield</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">current_state</span><span class="p">,</span> <span class="bp">False</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-168"></a>                    <span class="n">last_pos</span> <span class="o">=</span> <span class="n">end</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-169"></a>                <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-170"></a>                    <span class="n">current_state</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-171"></a>                    <span class="k">yield</span> <span class="n">last_pos</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">True</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-172"></a>                    <span class="k">break</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-173"></a>            <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-174"></a>                <span class="n">p</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="n">current_state</span><span class="p">]</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-175"></a>                <span class="n">found</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">search_end</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">last_pos</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-176"></a>                <span class="k">if</span> <span class="n">found</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-177"></a>                    <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">found</span><span class="o">.</span><span class="n">span</span><span class="p">()</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-178"></a>                    <span class="k">yield</span> <span class="n">last_pos</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">current_state</span><span class="p">,</span> <span class="bp">True</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-179"></a>                    <span class="k">yield</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">current_state</span><span class="p">,</span> <span class="bp">False</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-180"></a>                    <span class="n">last_pos</span> <span class="o">=</span> <span class="n">end</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-181"></a>                    <span class="n">current_state</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-182"></a>                <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-183"></a>                    <span class="k">yield</span> <span class="n">last_pos</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">current_state</span><span class="p">,</span> <span class="bp">True</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-184"></a>                    <span class="k">break</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-185"></a>        <span class="k">if</span> <span class="n">current_state</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-186"></a>            <span class="n">p</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="n">current_state</span><span class="p">]</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-187"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">p</span><span class="o">.</span><span class="n">is_multiline</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-188"></a>                <span class="n">current_state</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-189"></a>        <span class="k">yield</span> <span class="n">length</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">current_state</span><span class="p">,</span> <span class="bp">False</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-190"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-191"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-192"></a><span class="k">class</span> <span class="nc">Token</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-193"></a>    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s">"name"</span><span class="p">,</span> <span class="s">"pattern"</span><span class="p">,</span> <span class="s">"prefix"</span><span class="p">,</span> <span class="s">"suffix"</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-194"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-195"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s">""</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s">""</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-196"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-197"></a>        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-198"></a>            <span class="n">pattern</span> <span class="o">=</span> <span class="s">"|"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-199"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-200"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="n">prefix</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-201"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">suffix</span> <span class="o">=</span> <span class="n">suffix</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-202"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-203"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-204"></a><span class="k">class</span> <span class="nc">Scanner</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-205"></a>    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s">"groups"</span><span class="p">,</span> <span class="s">"tokens"</span><span class="p">,</span> <span class="s">"search"</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-206"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-207"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-208"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-209"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">groups</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-210"></a>        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-211"></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-212"></a>                <span class="n">t</span> <span class="o">=</span> <span class="n">Token</span><span class="p">(</span><span class="o">*</span><span class="n">t</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-213"></a>            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-214"></a>                <span class="n">t</span> <span class="o">=</span> <span class="n">Token</span><span class="p">(</span><span class="o">**</span><span class="n">t</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-215"></a>            <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-216"></a>                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Token</span><span class="p">),</span> <span class="s">"Token expected, got </span><span class="si">%r</span><span class="s">"</span> <span class="o">%</span> <span class="n">t</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-217"></a>            <span class="n">gdef</span> <span class="o">=</span> <span class="s">"?P&lt;</span><span class="si">%s</span><span class="s">&gt;"</span> <span class="o">%</span> <span class="n">t</span><span class="o">.</span><span class="n">name</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-218"></a>            <span class="k">if</span> <span class="n">gdef</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">pattern</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-219"></a>                <span class="n">p</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">pattern</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-220"></a>            <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-221"></a>                <span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="s">"(</span><span class="si">%s%s</span><span class="s">)"</span> <span class="o">%</span> <span class="p">(</span><span class="n">gdef</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">pattern</span><span class="p">))</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-222"></a>            <span class="n">p</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">p</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">suffix</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-223"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-224"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-225"></a>        <span class="n">pat</span> <span class="o">=</span> <span class="s">"|"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-226"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">search</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">pat</span><span class="p">)</span><span class="o">.</span><span class="n">search</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-227"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-228"></a>    <span class="k">def</span> <span class="nf">add_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-229"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">__clean_highlight</span><span class="p">()</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-230"></a>        <span class="n">tpattern</span> <span class="o">=</span> <span class="n">token</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-231"></a>        <span class="k">if</span> <span class="n">tpattern</span> <span class="o">!=</span> <span class="s">""</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-232"></a>            <span class="n">t</span> <span class="o">=</span> <span class="n">Token</span><span class="p">(</span><span class="o">*</span><span class="n">token</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-233"></a>            <span class="n">gdef</span> <span class="o">=</span> <span class="s">"?P&lt;</span><span class="si">%s</span><span class="s">&gt;"</span> <span class="o">%</span> <span class="n">t</span><span class="o">.</span><span class="n">name</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-234"></a>            <span class="k">if</span> <span class="n">gdef</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">pattern</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-235"></a>                <span class="n">p</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">pattern</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-236"></a>            <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-237"></a>                <span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="s">"(</span><span class="si">%s%s</span><span class="s">)"</span> <span class="o">%</span> <span class="p">(</span><span class="n">gdef</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">pattern</span><span class="p">))</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-238"></a>            <span class="n">p</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">p</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">suffix</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-239"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-240"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-241"></a>        <span class="n">pat</span> <span class="o">=</span> <span class="s">"|"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-242"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">search</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">pat</span><span class="p">)</span><span class="o">.</span><span class="n">search</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-243"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-244"></a>    <span class="k">def</span> <span class="nf">__clean_highlight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-245"></a>        <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-246"></a>            <span class="k">if</span> <span class="n">group</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">'(?P&lt;highlight_word&gt;'</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-247"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-248"></a>                <span class="k">break</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-249"></a>        <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-250"></a>            <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">"highlight_word"</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-251"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-252"></a>                <span class="k">break</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-253"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-254"></a>    <span class="k">def</span> <span class="nf">scan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-255"></a>        <span class="n">search</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-256"></a>        <span class="c">#length = len(s)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-257"></a>        <span class="n">last_pos</span> <span class="o">=</span> <span class="mi">0</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-258"></a>        <span class="c"># loop yields (token, start_pos, end_pos)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-259"></a>        <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-260"></a>            <span class="n">found</span> <span class="o">=</span> <span class="n">search</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">last_pos</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-261"></a>            <span class="k">if</span> <span class="n">found</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-262"></a>                <span class="n">lg</span> <span class="o">=</span> <span class="n">found</span><span class="o">.</span><span class="n">lastgroup</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-263"></a>                <span class="n">start</span><span class="p">,</span> <span class="n">last_pos</span> <span class="o">=</span> <span class="n">found</span><span class="o">.</span><span class="n">span</span><span class="p">(</span><span class="n">lg</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-264"></a>                <span class="k">yield</span> <span class="n">lg</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">last_pos</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-265"></a>            <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-266"></a>                <span class="k">break</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-267"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-268"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-269"></a><span class="k">class</span> <span class="nc">SyntaxHighlighter</span><span class="p">(</span><span class="n">QSyntaxHighlighter</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-270"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-271"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">partition_scanner</span><span class="p">,</span> <span class="n">scanner</span><span class="p">,</span> <span class="n">formats</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-272"></a>        <span class="n">neditable</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-273"></a>        <span class="sd">"""</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-274"></a><span class="sd">        :param parent: QDocument or QTextEdit/QPlainTextEdit instance</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-275"></a><span class="sd">        'partition_scanner:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-276"></a><span class="sd">            PartitionScanner instance</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-277"></a><span class="sd">        :param scanner:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-278"></a><span class="sd">            dictionary of token scanners for each partition</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-279"></a><span class="sd">            The key is the name of the partition, the value is a Scanner</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-280"></a><span class="sd">                instance</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-281"></a><span class="sd">            The default scanner has the key None</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-282"></a><span class="sd">        :formats:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-283"></a><span class="sd">            list of tuples consisting of a name and a format definition</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-284"></a><span class="sd">            The name is the name of a partition or token</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-285"></a><span class="sd">        """</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-286"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">SyntaxHighlighter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-287"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_neditable</span> <span class="o">=</span> <span class="n">neditable</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-288"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_old_search</span> <span class="o">=</span> <span class="bp">None</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-289"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-290"></a>        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">partition_scanner</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-291"></a>            <span class="n">partition_scanner</span> <span class="o">=</span> <span class="n">PartitionScanner</span><span class="p">(</span><span class="n">partition_scanner</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-292"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-293"></a>            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">partition_scanner</span><span class="p">,</span> <span class="n">PartitionScanner</span><span class="p">),</span> \
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-294"></a>                <span class="s">"PartitionScanner expected, got </span><span class="si">%r</span><span class="s">"</span> <span class="o">%</span> <span class="n">partition_scanner</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-295"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">partition_scanner</span> <span class="o">=</span> <span class="n">partition_scanner</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-296"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-297"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span> <span class="o">=</span> <span class="n">scanner</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-298"></a>        <span class="k">for</span> <span class="n">inside_part</span><span class="p">,</span> <span class="n">inside_scanner</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">scanner</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-299"></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inside_scanner</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-300"></a>                <span class="n">inside_scanner</span> <span class="o">=</span> <span class="n">Scanner</span><span class="p">(</span><span class="n">inside_scanner</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-301"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="p">[</span><span class="n">inside_part</span><span class="p">]</span> <span class="o">=</span> <span class="n">inside_scanner</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-302"></a>            <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-303"></a>                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inside_scanner</span><span class="p">,</span> <span class="n">Scanner</span><span class="p">),</span> \
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-304"></a>                    <span class="s">"Scanner expected"</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-305"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-306"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">formats</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-307"></a>        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">formats</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-308"></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-309"></a>                <span class="n">fname</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-310"></a>            <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-311"></a>                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">Format</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)),</span> \
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-312"></a>                    <span class="s">"Format expected, got </span><span class="si">%r</span><span class="s">"</span> <span class="o">%</span> <span class="n">f</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-313"></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-314"></a>                <span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span><span class="p">,)</span>  <span class="c"># only color specified</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-315"></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-316"></a>                <span class="n">f</span> <span class="o">=</span> <span class="n">Format</span><span class="p">(</span><span class="o">*</span><span class="p">((</span><span class="n">fname</span><span class="p">,)</span> <span class="o">+</span> <span class="n">f</span><span class="p">))</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-317"></a>            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-318"></a>                <span class="n">f</span> <span class="o">=</span> <span class="n">Format</span><span class="p">(</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">fname</span><span class="p">,</span> <span class="o">**</span><span class="n">f</span><span class="p">))</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-319"></a>            <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-320"></a>                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">Format</span><span class="p">),</span> <span class="s">"Format expected, got </span><span class="si">%r</span><span class="s">"</span> <span class="o">%</span> <span class="n">f</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-321"></a>            <span class="n">f</span><span class="o">.</span><span class="n">tcf</span><span class="o">.</span><span class="n">setFontFamily</span><span class="p">(</span><span class="n">parent</span><span class="o">.</span><span class="n">defaultFont</span><span class="p">()</span><span class="o">.</span><span class="n">family</span><span class="p">())</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-322"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">formats</span><span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">tcf</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-323"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-324"></a>        <span class="c"># reduce name look-ups for better speed</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-325"></a>        <span class="n">scan_inside</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-326"></a>        <span class="k">for</span> <span class="n">inside_part</span><span class="p">,</span> <span class="n">inside_scanner</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-327"></a>            <span class="n">scan_inside</span><span class="p">[</span><span class="n">inside_part</span><span class="p">]</span> <span class="o">=</span> <span class="n">inside_scanner</span><span class="o">.</span><span class="n">scan</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-328"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">get_scanner</span> <span class="o">=</span> <span class="n">scan_inside</span><span class="o">.</span><span class="n">get</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-329"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">scan_partitions</span> <span class="o">=</span> <span class="n">partition_scanner</span><span class="o">.</span><span class="n">scan</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-330"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">get_format</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formats</span><span class="o">.</span><span class="n">get</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-331"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-332"></a>    <span class="k">def</span> <span class="nf">__apply_proper_style</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">char_format</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-333"></a>        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">UNDERLINE_NOT_BACKGROUND</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-334"></a>            <span class="n">char_format</span><span class="o">.</span><span class="n">setUnderlineColor</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-335"></a>            <span class="n">char_format</span><span class="o">.</span><span class="n">setUnderlineStyle</span><span class="p">(</span><span class="n">QTextCharFormat</span><span class="o">.</span><span class="n">WaveUnderline</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-336"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-337"></a>            <span class="n">color</span><span class="o">.</span><span class="n">setAlpha</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-338"></a>            <span class="n">char_format</span><span class="o">.</span><span class="n">setBackground</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-339"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-340"></a>    <span class="k">def</span> <span class="nf">__highlight_pep8</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">char_format</span><span class="p">,</span> <span class="n">user_data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-341"></a>        <span class="sd">"""Highlight the lines with pep8 errors."""</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-342"></a>        <span class="n">user_data</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-343"></a>        <span class="n">color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-344"></a>            <span class="n">resources</span><span class="o">.</span><span class="n">CUSTOM_SCHEME</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'pep8-underline'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-345"></a>            <span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span><span class="p">[</span><span class="s">'pep8-underline'</span><span class="p">]))</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-346"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">__apply_proper_style</span><span class="p">(</span><span class="n">char_format</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-347"></a>        <span class="k">return</span> <span class="n">char_format</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-348"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-349"></a>    <span class="k">def</span> <span class="nf">__highlight_lint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">char_format</span><span class="p">,</span> <span class="n">user_data</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-350"></a>        <span class="sd">"""Highlight the lines with lint errors."""</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-351"></a>        <span class="n">user_data</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-352"></a>        <span class="n">color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-353"></a>            <span class="n">resources</span><span class="o">.</span><span class="n">CUSTOM_SCHEME</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'error-underline'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-354"></a>            <span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span><span class="p">[</span><span class="s">'error-underline'</span><span class="p">]))</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-355"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">__apply_proper_style</span><span class="p">(</span><span class="n">char_format</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-356"></a>        <span class="k">return</span> <span class="n">char_format</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-357"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-358"></a>    <span class="k">def</span> <span class="nf">__highlight_migration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">char_format</span><span class="p">,</span> <span class="n">user_data</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-359"></a>        <span class="sd">"""Highlight the lines with lint errors."""</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-360"></a>        <span class="n">user_data</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-361"></a>        <span class="n">color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-362"></a>            <span class="n">resources</span><span class="o">.</span><span class="n">CUSTOM_SCHEME</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'migration-underline'</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-363"></a>            <span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span><span class="p">[</span><span class="s">'migration-underline'</span><span class="p">]))</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-364"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">__apply_proper_style</span><span class="p">(</span><span class="n">char_format</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-365"></a>        <span class="k">return</span> <span class="n">char_format</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-366"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-367"></a>    <span class="k">def</span> <span class="nf">__remove_error_highlight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">char_format</span><span class="p">,</span> <span class="n">user_data</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-368"></a>        <span class="n">user_data</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-369"></a>        <span class="n">char_format</span><span class="o">.</span><span class="n">setUnderlineStyle</span><span class="p">(</span><span class="n">QTextCharFormat</span><span class="o">.</span><span class="n">NoUnderline</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-370"></a>        <span class="n">char_format</span><span class="o">.</span><span class="n">clearBackground</span><span class="p">()</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-371"></a>        <span class="k">return</span> <span class="n">char_format</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-372"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-373"></a>    <span class="k">def</span> <span class="nf">highlightBlock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-374"></a>        <span class="sd">"""automatically called by Qt"""</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-375"></a>        <span class="n">text</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-376"></a>        <span class="n">previous_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">previousBlockState</span><span class="p">()</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-377"></a>        <span class="n">new_state</span> <span class="o">=</span> <span class="n">previous_state</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-378"></a>        <span class="c"># User data and errors</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-379"></a>        <span class="n">block</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentBlock</span><span class="p">()</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-380"></a>        <span class="n">user_data</span> <span class="o">=</span> <span class="n">get_user_data</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-381"></a>        <span class="n">user_data</span><span class="o">.</span><span class="n">clear_data</span><span class="p">()</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-382"></a>        <span class="n">valid_error_line</span><span class="p">,</span> <span class="n">highlight_errors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_error_highlighter</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-383"></a>        <span class="c"># speed-up name-lookups</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-384"></a>        <span class="n">get_format</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_format</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-385"></a>        <span class="n">set_format</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setFormat</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-386"></a>        <span class="n">get_scanner</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_scanner</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-387"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-388"></a>        <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">partition</span><span class="p">,</span> <span class="n">new_state</span><span class="p">,</span> <span class="n">is_inside</span> <span class="ow">in</span> \
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-389"></a>          <span class="bp">self</span><span class="o">.</span><span class="n">scan_partitions</span><span class="p">(</span><span class="n">previous_state</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-390"></a>            <span class="n">f</span> <span class="o">=</span> <span class="n">get_format</span><span class="p">(</span><span class="n">partition</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-391"></a>            <span class="k">if</span> <span class="n">f</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-392"></a>                <span class="n">f</span> <span class="o">=</span> <span class="n">highlight_errors</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">user_data</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-393"></a>                <span class="n">set_format</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-394"></a>            <span class="k">elif</span> <span class="n">valid_error_line</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-395"></a>                <span class="n">f</span> <span class="o">=</span> <span class="n">TextCharFormat</span><span class="p">()</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-396"></a>                <span class="n">f</span> <span class="o">=</span> <span class="n">highlight_errors</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">user_data</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-397"></a>                <span class="n">set_format</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-398"></a>            <span class="k">if</span> <span class="n">is_inside</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-399"></a>                <span class="n">scan</span> <span class="o">=</span> <span class="n">get_scanner</span><span class="p">(</span><span class="n">partition</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-400"></a>                <span class="k">if</span> <span class="n">scan</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-401"></a>                    <span class="k">for</span> <span class="n">token</span><span class="p">,</span> <span class="n">token_pos</span><span class="p">,</span> <span class="n">token_end</span> <span class="ow">in</span> <span class="n">scan</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-402"></a>                        <span class="n">f</span> <span class="o">=</span> <span class="n">get_format</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-403"></a>                        <span class="k">if</span> <span class="n">f</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-404"></a>                            <span class="n">f</span> <span class="o">=</span> <span class="n">highlight_errors</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">user_data</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-405"></a>                            <span class="n">set_format</span><span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="n">token_pos</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-406"></a>                                <span class="n">token_end</span> <span class="o">-</span> <span class="n">token_pos</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-407"></a>            <span class="k">if</span> <span class="n">partition</span> <span class="ow">and</span> <span class="n">partition</span> <span class="o">==</span> <span class="s">"string"</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-408"></a>                <span class="n">user_data</span><span class="o">.</span><span class="n">add_str_group</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-409"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-410"></a>        <span class="n">block</span><span class="o">.</span><span class="n">setUserData</span><span class="p">(</span><span class="n">user_data</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-411"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setCurrentBlockState</span><span class="p">(</span><span class="n">new_state</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-412"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-413"></a>    <span class="k">def</span> <span class="nf">get_error_highlighter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-414"></a>        <span class="c">#block_number = block.blockNumber()</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-415"></a>        <span class="n">highlight_errors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__remove_error_highlight</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-416"></a>        <span class="n">valid_error_line</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-417"></a>        <span class="c">#if self.errors and (block_number in self.errors.errorsSummary):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-418"></a>            <span class="c">#highlight_errors = self.__highlight_lint</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-419"></a>            <span class="c">#valid_error_line = True</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-420"></a>        <span class="c">#elif self.pep8 and (block_number in self.pep8.pep8checks):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-421"></a>            <span class="c">#highlight_errors = self.__highlight_pep8</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-422"></a>            <span class="c">#valid_error_line = True</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-423"></a>        <span class="c">#elif self.migration and (</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-424"></a>             <span class="c">#block_number in self.migration.migration_data):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-425"></a>            <span class="c">#highlight_errors = self.__highlight_migration</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-426"></a>            <span class="c">#valid_error_line = True</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-427"></a>        <span class="k">return</span> <span class="n">valid_error_line</span><span class="p">,</span> <span class="n">highlight_errors</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-428"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-429"></a>    <span class="k">def</span> <span class="nf">set_selected_word</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">partial</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-430"></a>        <span class="sd">"""Set the word to highlight."""</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-431"></a>        <span class="n">hl_worthy</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-432"></a>        <span class="k">if</span> <span class="n">hl_worthy</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-433"></a>            <span class="n">suffix</span> <span class="o">=</span> <span class="s">"(?![A-Za-z_\d])"</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-434"></a>            <span class="n">prefix</span> <span class="o">=</span> <span class="s">"(?&lt;![A-Za-z_\d])"</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-435"></a>            <span class="n">word</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-436"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">partial</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-437"></a>                <span class="n">word</span> <span class="o">=</span> <span class="s">"</span><span class="si">%s%s%s</span><span class="s">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">suffix</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-438"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="p">[</span><span class="bp">None</span><span class="p">]</span><span class="o">.</span><span class="n">add_token</span><span class="p">((</span><span class="s">'highlight_word'</span><span class="p">,</span> <span class="n">word</span><span class="p">))</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-439"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-440"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span><span class="p">[</span><span class="bp">None</span><span class="p">]</span><span class="o">.</span><span class="n">add_token</span><span class="p">((</span><span class="s">'highlight_word'</span><span class="p">,</span> <span class="s">""</span><span class="p">))</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-441"></a>        <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-442"></a>        <span class="n">pat_find</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-443"></a>        <span class="n">document</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="p">()</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-444"></a>        <span class="k">for</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">document</span><span class="o">.</span><span class="n">toPlainText</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-445"></a>            <span class="k">if</span> <span class="n">hl_worthy</span> <span class="ow">and</span> <span class="n">pat_find</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-446"></a>                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lineno</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-447"></a>            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_old_search</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_old_search</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-448"></a>                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lineno</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-449"></a>        <span class="c"># Ask perrito if i don't know what the next line does:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-450"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_old_search</span> <span class="o">=</span> <span class="n">hl_worthy</span> <span class="ow">and</span> <span class="n">pat_find</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-451"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">rehighlight_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-452"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-453"></a>    <span class="k">def</span> <span class="nf">_rehighlight_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-454"></a>        <span class="sd">"""If the document is valid, highlight the list of lines received."""</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-455"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-456"></a>            <span class="k">return</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-457"></a>        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-458"></a>            <span class="n">block</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="p">()</span><span class="o">.</span><span class="n">findBlockByNumber</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-459"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="p">()</span><span class="o">.</span><span class="n">markContentsDirty</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">position</span><span class="p">(),</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-460"></a>                <span class="n">block</span><span class="o">.</span><span class="n">position</span><span class="p">()</span> <span class="o">+</span> <span class="n">block</span><span class="o">.</span><span class="n">length</span><span class="p">())</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-461"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">rehighlightBlock</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-462"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-463"></a>    <span class="k">def</span> <span class="nf">_get_errors_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-464"></a>        <span class="sd">"""Return the number of lines that contains errors to highlight."""</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-465"></a>        <span class="n">errors_lines</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-466"></a>        <span class="n">block</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="p">()</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-467"></a>        <span class="k">while</span> <span class="n">block</span><span class="o">.</span><span class="n">isValid</span><span class="p">():</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-468"></a>            <span class="n">user_data</span> <span class="o">=</span> <span class="n">get_user_data</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-469"></a>            <span class="k">if</span> <span class="n">user_data</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-470"></a>                <span class="n">errors_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">blockNumber</span><span class="p">())</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-471"></a>            <span class="n">block</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-472"></a>        <span class="k">return</span> <span class="n">errors_lines</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-473"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-474"></a>    <span class="k">def</span> <span class="nf">rehighlight_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-475"></a>        <span class="sd">"""Rehighlight the lines for errors or selected words."""</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-476"></a>        <span class="k">if</span> <span class="n">errors</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-477"></a>            <span class="n">errors_lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_errors_lines</span><span class="p">()</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-478"></a>            <span class="n">refresh_lines</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">lines</span> <span class="o">+</span> <span class="n">errors_lines</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-479"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-480"></a>            <span class="n">refresh_lines</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-481"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_rehighlight_lines</span><span class="p">(</span><span class="n">refresh_lines</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-482"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-483"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-484"></a><span class="k">def</span> <span class="nf">_create_scheme</span><span class="p">():</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-485"></a>    <span class="n">scheme</span> <span class="o">=</span> <span class="p">{</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-486"></a>      <span class="s">"syntax_comment"</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">resources</span><span class="o">.</span><span class="n">CUSTOM_SCHEME</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-487"></a>          <span class="s">"comment"</span><span class="p">,</span> <span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span><span class="p">[</span><span class="s">"comment"</span><span class="p">]),</span> <span class="n">italic</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-488"></a>      <span class="s">"syntax_string"</span><span class="p">:</span> <span class="n">resources</span><span class="o">.</span><span class="n">CUSTOM_SCHEME</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-489"></a>          <span class="s">"string"</span><span class="p">,</span> <span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span><span class="p">[</span><span class="s">"string"</span><span class="p">]),</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-490"></a>      <span class="s">"syntax_builtin"</span><span class="p">:</span> <span class="n">resources</span><span class="o">.</span><span class="n">CUSTOM_SCHEME</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-491"></a>          <span class="s">"extras"</span><span class="p">,</span> <span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span><span class="p">[</span><span class="s">"extras"</span><span class="p">]),</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-492"></a>      <span class="s">"syntax_keyword"</span><span class="p">:</span> <span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">CUSTOM_SCHEME</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-493"></a>          <span class="s">"keyword"</span><span class="p">,</span> <span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span><span class="p">[</span><span class="s">"keyword"</span><span class="p">]),</span> <span class="bp">True</span><span class="p">),</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-494"></a>      <span class="s">"syntax_definition"</span><span class="p">:</span> <span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">CUSTOM_SCHEME</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-495"></a>          <span class="s">"definition"</span><span class="p">,</span> <span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span><span class="p">[</span><span class="s">"definition"</span><span class="p">]),</span> <span class="bp">True</span><span class="p">),</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-496"></a>      <span class="s">"syntax_braces"</span><span class="p">:</span> <span class="n">resources</span><span class="o">.</span><span class="n">CUSTOM_SCHEME</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-497"></a>          <span class="s">"brace"</span><span class="p">,</span> <span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span><span class="p">[</span><span class="s">"brace"</span><span class="p">]),</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-498"></a>      <span class="s">"syntax_number"</span><span class="p">:</span> <span class="n">resources</span><span class="o">.</span><span class="n">CUSTOM_SCHEME</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-499"></a>          <span class="s">"numbers"</span><span class="p">,</span> <span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span><span class="p">[</span><span class="s">"numbers"</span><span class="p">]),</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-500"></a>      <span class="s">"syntax_proper_object"</span><span class="p">:</span> <span class="n">resources</span><span class="o">.</span><span class="n">CUSTOM_SCHEME</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-501"></a>          <span class="s">"properObject"</span><span class="p">,</span> <span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span><span class="p">[</span><span class="s">"properObject"</span><span class="p">]),</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-502"></a>      <span class="s">"syntax_operators"</span><span class="p">:</span> <span class="n">resources</span><span class="o">.</span><span class="n">CUSTOM_SCHEME</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-503"></a>          <span class="s">"operator"</span><span class="p">,</span> <span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span><span class="p">[</span><span class="s">"operator"</span><span class="p">]),</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-504"></a>      <span class="s">"syntax_highlight_word"</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">resources</span><span class="o">.</span><span class="n">CUSTOM_SCHEME</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-505"></a>          <span class="s">"selected-word"</span><span class="p">,</span> <span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span><span class="p">[</span><span class="s">"selected-word"</span><span class="p">]),</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-506"></a>          <span class="n">background</span><span class="o">=</span><span class="n">resources</span><span class="o">.</span><span class="n">CUSTOM_SCHEME</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-507"></a>          <span class="s">"selected-word-background"</span><span class="p">,</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-508"></a>          <span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span><span class="p">[</span><span class="s">"selected-word-background"</span><span class="p">])),</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-509"></a>      <span class="s">"syntax_pending"</span><span class="p">:</span> <span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span><span class="p">[</span><span class="s">"pending"</span><span class="p">],</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-510"></a>    <span class="p">}</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-511"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-512"></a>    <span class="k">return</span> <span class="n">scheme</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-513"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-514"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-515"></a><span class="k">def</span> <span class="nf">load_syntax</span><span class="p">(</span><span class="n">syntax</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-516"></a>    <span class="n">context</span> <span class="o">=</span> <span class="n">_create_scheme</span><span class="p">()</span> <span class="ow">or</span> <span class="p">{}</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-517"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-518"></a>    <span class="n">partition_scanner</span> <span class="o">=</span> <span class="n">PartitionScanner</span><span class="p">(</span><span class="n">syntax</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"partitions"</span><span class="p">,</span> <span class="p">[]))</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-519"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-520"></a>    <span class="n">scanners</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-521"></a>    <span class="k">for</span> <span class="n">part_name</span><span class="p">,</span> <span class="n">part_scanner</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">syntax</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"scanner"</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-522"></a>        <span class="n">scanners</span><span class="p">[</span><span class="n">part_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">Scanner</span><span class="p">(</span><span class="n">part_scanner</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-523"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-524"></a>    <span class="n">formats</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-525"></a>    <span class="k">for</span> <span class="n">fname</span><span class="p">,</span> <span class="n">fstyle</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">syntax</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"formats"</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-526"></a>        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fstyle</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-527"></a>            <span class="k">if</span> <span class="n">fstyle</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">"%("</span><span class="p">)</span> <span class="ow">and</span> <span class="n">fstyle</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">")s"</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-528"></a>                <span class="n">key</span> <span class="o">=</span> <span class="n">fstyle</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-529"></a>                <span class="n">fstyle</span> <span class="o">=</span> <span class="n">context</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-530"></a>            <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-531"></a>                <span class="n">fstyle</span> <span class="o">=</span> <span class="n">fstyle</span> <span class="o">%</span> <span class="n">context</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-532"></a>        <span class="n">formats</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">fname</span><span class="p">,</span> <span class="n">fstyle</span><span class="p">))</span>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-533"></a>
+<a name="listingsninja_ideguieditorsyntax_highlighterpy-534"></a>    <span class="k">return</span> <span class="n">partition_scanner</span><span class="p">,</span> <span class="n">scanners</span><span class="p">,</span> <span class="n">formats</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

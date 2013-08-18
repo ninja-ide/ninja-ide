@@ -1,0 +1,214 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: analyzer
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `analyzer.py </listings/ninja_ide/tools/completion/analyzer.py.html>`_ API
+======================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `_ast </listings/ninja_ide/tools/completion/analyzer.py.html#24>`_
+
+- `ast </listings/ninja_ide/tools/completion/analyzer.py.html#23>`_
+
+- `re </listings/ninja_ide/tools/completion/analyzer.py.html#22>`_
+
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/tools/completion/analyzer.py.html#26>`_
+
+- `ninja_ide.tools.completion.model </listings/ninja_ide/tools/completion/analyzer.py.html#27>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `MAX_THRESHOLD [at ln:32] </listings/ninja_ide/tools/completion/analyzer.py.html#32>`_
+
+- `logger [at ln:30] </listings/ninja_ide/tools/completion/analyzer.py.html#30>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `expand_attribute(attribute) [at ln:35] </listings/ninja_ide/tools/completion/analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-35>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def expand_attribute(attribute):
+
+
+No description.
+
+
+----
+
+
+*Class:* `Analyzer(object) </listings/ninja_ide/tools/completion/analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-55>`_
+------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Analyzer(object):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `__mapping [at ln:57] </listings/ninja_ide/tools/completion/analyzer.py.html#57>`_
+
+- `_fixed_line [at ln:72] </listings/ninja_ide/tools/completion/analyzer.py.html#72>`_
+
+- `content [at ln:121] </listings/ninja_ide/tools/completion/analyzer.py.html#121>`_
+
+
+*Function:* `__init__() [at ln:71] </listings/ninja_ide/tools/completion/analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-71>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `_assign_disambiguation(type_name, line_content) [at ln:130] </listings/ninja_ide/tools/completion/analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-130>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _assign_disambiguation(type_name, line_content):
+
+| Provide a specific builtin for the cases were ast doesn't work.
+
+
+----
+
+*Function:* `_get_valid_module(source, retry=int) [at ln:76] </listings/ninja_ide/tools/completion/analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-76>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _get_valid_module(source, retry=int):
+
+| Try to parse the module and fix some errors if it has some.
+
+
+----
+
+*Function:* `_parse_tuple_in_func_arg(symbol_tuple, function, lineno=int) [at ln:284] </listings/ninja_ide/tools/completion/analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-284>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _parse_tuple_in_func_arg(symbol_tuple, function, lineno=int):
+
+| Parse the tuple inside a function argument call.
+
+
+----
+
+*Function:* `_process_assign(symbol) [at ln:174] </listings/ninja_ide/tools/completion/analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-174>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _process_assign(symbol):
+
+| Process an ast.Assign object to extract the proper info.
+
+
+----
+
+*Function:* `_process_class(symbol) [at ln:213] </listings/ninja_ide/tools/completion/analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-213>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _process_class(symbol):
+
+| Process an ast.ClassDef object to extract data.
+
+
+----
+
+*Function:* `_process_function(symbol, parent=None) [at ln:235] </listings/ninja_ide/tools/completion/analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-235>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _process_function(symbol, parent=None):
+
+| Process an ast.FunctionDef object to extract data.
+
+
+----
+
+*Function:* `_process_import(symbol) [at ln:199] </listings/ninja_ide/tools/completion/analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-199>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _process_import(symbol):
+
+| Process an ast.Import and ast.ImportFrom object to extract data.
+
+
+----
+
+*Function:* `_resolve_module(module, old_module) [at ln:125] </listings/ninja_ide/tools/completion/analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-125>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _resolve_module(module, old_module):
+
+
+No description.
+
+
+----
+
+*Function:* `_search_recursive_for_types(function, symbol, parent=None) [at ln:292] </listings/ninja_ide/tools/completion/analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-292>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _search_recursive_for_types(function, symbol, parent=None):
+
+| Search for return recursively inside the function.
+
+
+----
+
+*Function:* `analyze(source, old_module=None) [at ln:98] </listings/ninja_ide/tools/completion/analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-98>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def analyze(source, old_module=None):
+
+| Analyze the source provided and create the proper structure.
+
+
+
+

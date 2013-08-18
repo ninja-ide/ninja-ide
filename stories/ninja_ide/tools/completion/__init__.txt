@@ -1,0 +1,27 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: __init__
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `__init__.py </listings/ninja_ide/tools/completion/__init__.py.html>`_ API
+======================================================================================
+
+No description.
+
+
+
+
+*Global Attributes:*
+----------------------
+- `__version__ [at ln:19] </listings/ninja_ide/tools/completion/__init__.py.html#19>`_
+
+
+
+

@@ -1,0 +1,639 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: plugin_manager
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `plugin_manager.py </listings/ninja_ide/core/plugin_manager.py.html>`_ API
+======================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `copy </listings/ninja_ide/core/plugin_manager.py.html#24>`_
+
+- `os </listings/ninja_ide/core/plugin_manager.py.html#21>`_
+
+- `shutil </listings/ninja_ide/core/plugin_manager.py.html#23>`_
+
+- `sys </listings/ninja_ide/core/plugin_manager.py.html#22>`_
+
+- `traceback </listings/ninja_ide/core/plugin_manager.py.html#26>`_
+
+- `zipfile </listings/ninja_ide/core/plugin_manager.py.html#25>`_
+
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/core/plugin_manager.py.html#37>`_
+
+- `__future__.absolute_import </listings/ninja_ide/core/plugin_manager.py.html#18>`_
+
+- `ninja_ide.tools.json_manager </listings/ninja_ide/core/plugin_manager.py.html#38>`_
+
+- `ninja_ide.resources </listings/ninja_ide/core/plugin_manager.py.html#36>`_
+
+- `__future__.unicode_literals </listings/ninja_ide/core/plugin_manager.py.html#19>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `COMMAND_FOR_PIP_INSTALL [at ln:42] </listings/ninja_ide/core/plugin_manager.py.html#42>`_
+
+- `PLUGIN_EXTENSION [at ln:115] </listings/ninja_ide/core/plugin_manager.py.html#115>`_
+
+- `REQUIREMENTS [at ln:41] </listings/ninja_ide/core/plugin_manager.py.html#41>`_
+
+- `__pluginManagerInstance [at ln:105] </listings/ninja_ide/core/plugin_manager.py.html#105>`_
+
+- `logger [at ln:40] </listings/ninja_ide/core/plugin_manager.py.html#40>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `PluginManager(*args, **kw) [at ln:108] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-108>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def PluginManager(*args, **kw):
+
+
+No description.
+
+
+----
+
+*Function:* `__get_all_plugin_descriptors() [at ln:426] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-426>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __get_all_plugin_descriptors():
+
+| Returns all the .plugin files
+
+
+----
+
+*Function:* `_availables_plugins(url) [at ln:390] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-390>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _availables_plugins(url):
+
+| Return the availables plugins from an url in NINJA-IDE web page
+
+
+----
+
+*Function:* `available_community_plugins() [at ln:409] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-409>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def available_community_plugins():
+
+| Returns a dict with COMMUNITY availables plugins in NINJA-IDE web page
+
+
+----
+
+*Function:* `available_oficial_plugins() [at ln:402] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-402>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def available_oficial_plugins():
+
+| Returns a dict with OFICIAL availables plugins in NINJA-IDE web page
+
+
+----
+
+*Function:* `download_plugin(file_) [at ln:435] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-435>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def download_plugin(file_):
+
+| Download a plugin specified by file\_
+
+
+----
+
+*Function:* `has_dependencies(plug) [at ln:482] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-482>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def has_dependencies(plug):
+
+
+No description.
+
+
+----
+
+*Function:* `local_plugins() [at ln:416] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-416>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def local_plugins():
+
+| Returns the local plugins
+
+
+----
+
+*Function:* `manual_install(file_) [at ln:461] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-461>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def manual_install(file_):
+
+| Copy zip file and install.
+
+
+----
+
+*Function:* `uninstall_plugin(plug) [at ln:530] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-530>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def uninstall_plugin(plug):
+
+| Uninstall the given plugin
+
+
+----
+
+*Function:* `update_local_plugin_descriptor(plugins) [at ln:505] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-505>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_local_plugin_descriptor(plugins):
+
+| updates the local plugin description
+| The description.json file holds the information about the plugins
+| downloaded with NINJA-IDE
+| This is a way to track the versions of the plugins
+
+
+----
+
+
+*Class:* `__PluginManager(object) </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-118>`_
+---------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class __PluginManager(object):
+
+| Plugin manager allows to load, unload, initialize plugins.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_active_plugins [at ln:143] </listings/ninja_ide/core/plugin_manager.py.html#143>`_
+
+- `_errors [at ln:136] </listings/ninja_ide/core/plugin_manager.py.html#136>`_
+
+- `_found_plugins [at ln:139] </listings/ninja_ide/core/plugin_manager.py.html#139>`_
+
+- `_plugins_by_dir [at ln:130] </listings/ninja_ide/core/plugin_manager.py.html#130>`_
+
+- `_service_locator [at ln:128] </listings/ninja_ide/core/plugin_manager.py.html#128>`_
+
+
+*Function:* `__bool__() [at ln:235] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-235>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __bool__():
+
+| Magic method to indicate that any
+| instance must pass the if conditional
+| if x:
+
+
+----
+
+*Function:* `__contains__(plugin_name) [at ln:206] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-206>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __contains__(plugin_name):
+
+| Magic method to know whether the
+| PluginManager contains
+| a plugin with a given name.
+| 
+| @param plugin\_name: plugin name.
+| 
+| @return: True or False.
+
+
+----
+
+*Function:* `__create_list(obj) [at ln:145] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-145>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __create_list(obj):
+
+
+No description.
+
+
+----
+
+*Function:* `__getitem__(plugin_name) [at ln:179] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-179>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __getitem__(plugin_name):
+
+| Magic method to get a plugin instance
+| from a given name.
+| @Note: This method has the logic below.
+| Check if the plugin is known,
+| if it is active return it,
+| otherwise, active it and return it.
+| If the plugin name does not exist
+| raise KeyError exception.
+| 
+| @param plugin\_name: plugin name.
+| 
+| @return: Plugin instance or None
+
+
+----
+
+*Function:* `__init__(plugins_dir, service_locator) [at ln:123] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-123>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(plugins_dir, service_locator):
+
+| @param plugins\_dir: Path to search plugins.
+| @param service\_loctor: ServiceLocator object.
+
+
+----
+
+*Function:* `__iter__() [at ln:218] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-218>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __iter__():
+
+| Magic method to iterate over all
+| the plugin's names.
+| 
+| @return: iterator.
+
+
+----
+
+*Function:* `__len__() [at ln:227] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-227>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __len__():
+
+| Magic method to know the plugins
+| quantity.
+| @return: length.
+
+
+----
+
+*Function:* `_add_error(plugin_name, traceback_msg) [at ln:379] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-379>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _add_error(plugin_name, traceback_msg):
+
+
+No description.
+
+
+----
+
+*Function:* `_get_dir_from_plugin_name(plugin_name) [at ln:171] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-171>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _get_dir_from_plugin_name(plugin_name):
+
+| Returns the dir of the plugin\_name
+
+
+----
+
+*Function:* `_load_module(module, klassname, metadata, dir_name) [at ln:285] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-285>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _load_module(module, klassname, metadata, dir_name):
+
+
+No description.
+
+
+----
+
+*Function:* `add_plugin_dir(plugin_dir) [at ln:151] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-151>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_plugin_dir(plugin_dir):
+
+| Add a new directory to search plugins.
+| 
+| @param plugin\_dir: absolute path.
+
+
+----
+
+*Function:* `discover() [at ln:273] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-273>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def discover():
+
+| Search all files for directory
+| and get the valid plugin's names.
+
+
+----
+
+*Function:* `errors() [at ln:382] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-382>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def errors():
+
+| Returns a comma separated values of errors
+
+
+**Decorators:**
+
+- *property*
+
+----
+
+*Function:* `get_active_plugins() [at ln:165] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-165>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_active_plugins():
+
+| Returns a list the instances
+
+
+----
+
+*Function:* `get_actives_plugins() [at ln:160] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-160>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_actives_plugins():
+
+
+No description.
+
+
+----
+
+*Function:* `get_availables_services() [at ln:373] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-373>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_availables_services():
+
+| Returns all services availables
+
+
+----
+
+*Function:* `get_plugin_name(file_name) [at ln:243] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-243>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_plugin_name(file_name):
+
+| Get the plugin's name from a file name.
+| @param file\_name: A file object name.
+| @return: A plugin name from a file.
+
+
+----
+
+*Function:* `is_plugin_active(plugin_name) [at ln:265] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-265>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def is_plugin_active(plugin_name):
+
+| Check if a plugin is or not active
+| @param plugin\_name: Plugin name to check.
+| @return: True or False
+
+
+----
+
+*Function:* `list_plugins(dir_name) [at ln:252] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-252>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def list_plugins(dir_name):
+
+| Crawl a directory and collect plugins.
+| @return: List with plugin names.
+
+
+----
+
+*Function:* `load(plugin_name, dir_name) [at ln:302] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-302>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load(plugin_name, dir_name):
+
+
+No description.
+
+
+----
+
+*Function:* `load_all() [at ln:340] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-340>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_all():
+
+
+No description.
+
+
+----
+
+*Function:* `load_all_external(plugin_path) [at ln:347] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-347>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_all_external(plugin_path):
+
+
+No description.
+
+
+----
+
+*Function:* `shutdown() [at ln:370] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-370>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def shutdown():
+
+
+No description.
+
+
+----
+
+*Function:* `unload(plugin_name) [at ln:353] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-353>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def unload(plugin_name):
+
+
+No description.
+
+
+----
+
+*Function:* `unload_all() [at ln:364] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-364>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def unload_all():
+
+
+No description.
+
+
+----
+
+*Class:* `PluginManagerException(Exception) </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-100>`_
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class PluginManagerException(Exception):
+
+
+No description.
+
+
+----
+
+*Class:* `ServiceLocator(object) </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-51>`_
+-------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ServiceLocator(object):
+
+| Hold the services and allows the interaction between NINJA-IDE and plugins
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `__services [at ln:58] </listings/ninja_ide/core/plugin_manager.py.html#58>`_
+
+
+*Function:* `__init__(services=None) [at ln:57] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-57>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(services=None):
+
+
+No description.
+
+
+----
+
+*Function:* `get_availables_services() [at ln:63] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-63>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_availables_services():
+
+
+No description.
+
+
+----
+
+*Function:* `get_service(name) [at ln:60] </listings/ninja_ide/core/plugin_manager.py.html#listingsninja_idecoreplugin_managerpy-60>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_service(name):
+
+
+No description.
+
+
+
+

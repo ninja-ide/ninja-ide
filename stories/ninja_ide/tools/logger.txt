@@ -1,0 +1,141 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: logger
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `logger.py </listings/ninja_ide/tools/logger.py.html>`_ API
+=======================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `logging </listings/ninja_ide/tools/logger.py.html#2>`_
+
+- `sys </listings/ninja_ide/tools/logger.py.html#3>`_
+
+- `ninja_ide.resources </listings/ninja_ide/tools/logger.py.html#4>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `LOG_FORMAT [at ln:8] </listings/ninja_ide/tools/logger.py.html#8>`_
+
+- `NOLOG [at ln:7] </listings/ninja_ide/tools/logger.py.html#7>`_
+
+- `NinjaLogger [at ln:73] </listings/ninja_ide/tools/logger.py.html#73>`_
+
+- `TIME_FORMAT [at ln:9] </listings/ninja_ide/tools/logger.py.html#9>`_
+
+
+----
+
+
+
+*Class:* `Logger(object) </listings/ninja_ide/tools/logger.py.html#listingsninja_idetoolsloggerpy-12>`_
+---------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Logger(object):
+
+| General logger
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_default_level [at ln:41] </listings/ninja_ide/tools/logger.py.html#41>`_
+
+- `_handler [at ln:54] </listings/ninja_ide/tools/logger.py.html#54>`_
+
+- `_loggers [at ln:18] </listings/ninja_ide/tools/logger.py.html#18>`_
+
+
+*Function:* `__call__(modname) [at ln:24] </listings/ninja_ide/tools/logger.py.html#listingsninja_idetoolsloggerpy-24>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __call__(modname):
+
+
+No description.
+
+
+----
+
+*Function:* `__init__() [at ln:17] </listings/ninja_ide/tools/logger.py.html#listingsninja_idetoolsloggerpy-17>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `add_handler(hfile, mode, log_format, time_format, stream=None) [at ln:45] </listings/ninja_ide/tools/logger.py.html#listingsninja_idetoolsloggerpy-45>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_handler(hfile, mode, log_format, time_format, stream=None):
+
+
+No description.
+
+
+----
+
+*Function:* `argparse(log_level, log_file) [at ln:56] </listings/ninja_ide/tools/logger.py.html#listingsninja_idetoolsloggerpy-56>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def argparse(log_level, log_file):
+
+
+No description.
+
+
+----
+
+*Function:* `dissable() [at ln:36] </listings/ninja_ide/tools/logger.py.html#listingsninja_idetoolsloggerpy-36>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def dissable():
+
+
+No description.
+
+
+----
+
+*Function:* `setLevel(level) [at ln:40] </listings/ninja_ide/tools/logger.py.html#listingsninja_idetoolsloggerpy-40>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setLevel(level):
+
+
+No description.
+
+
+
+

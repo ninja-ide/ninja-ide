@@ -1,0 +1,66 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: image_viewer
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `image_viewer.py </listings/ninja_ide/gui/main_panel/image_viewer.py.html>`_ API
+============================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `PyQt4.QtGui.QLabel </listings/ninja_ide/gui/main_panel/image_viewer.py.html#20>`_
+
+- `PyQt4.QtGui.QPixmap </listings/ninja_ide/gui/main_panel/image_viewer.py.html#21>`_
+
+- `PyQt4.QtGui.QScrollArea </listings/ninja_ide/gui/main_panel/image_viewer.py.html#19>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/main_panel/image_viewer.py.html#17>`_
+
+- `ninja_ide.gui.main_panel.itab_item </listings/ninja_ide/gui/main_panel/image_viewer.py.html#23>`_
+
+
+
+
+
+*Class:* `ImageViewer(QScrollArea, itab_item.ITabItem) </listings/ninja_ide/gui/main_panel/image_viewer.py.html#listingsninja_ideguimain_panelimage_viewerpy-26>`_
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ImageViewer(QScrollArea, itab_item.ITabItem):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_id [at ln:31] </listings/ninja_ide/gui/main_panel/image_viewer.py.html#31>`_
+
+- `label [at ln:33] </listings/ninja_ide/gui/main_panel/image_viewer.py.html#33>`_
+
+
+*Function:* `__init__(image) [at ln:28] </listings/ninja_ide/gui/main_panel/image_viewer.py.html#listingsninja_ideguimain_panelimage_viewerpy-28>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(image):
+
+
+No description.
+
+
+
+

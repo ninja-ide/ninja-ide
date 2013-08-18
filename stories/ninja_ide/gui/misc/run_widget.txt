@@ -1,0 +1,375 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: run_widget
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `run_widget.py </listings/ninja_ide/gui/misc/run_widget.py.html>`_ API
+==================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `re </listings/ninja_ide/gui/misc/run_widget.py.html#21>`_
+
+- `time </listings/ninja_ide/gui/misc/run_widget.py.html#20>`_
+
+- `PyQt4.QtGui.QBrush </listings/ninja_ide/gui/misc/run_widget.py.html#33>`_
+
+- `PyQt4.QtGui.QColor </listings/ninja_ide/gui/misc/run_widget.py.html#32>`_
+
+- `PyQt4.QtCore.QFile </listings/ninja_ide/gui/misc/run_widget.py.html#38>`_
+
+- `PyQt4.QtGui.QFont </listings/ninja_ide/gui/misc/run_widget.py.html#34>`_
+
+- `PyQt4.QtGui.QHBoxLayout </listings/ninja_ide/gui/misc/run_widget.py.html#27>`_
+
+- `PyQt4.QtGui.QLabel </listings/ninja_ide/gui/misc/run_widget.py.html#24>`_
+
+- `PyQt4.QtGui.QLineEdit </listings/ninja_ide/gui/misc/run_widget.py.html#25>`_
+
+- `PyQt4.QtGui.QMenu </listings/ninja_ide/gui/misc/run_widget.py.html#29>`_
+
+- `PyQt4.QtGui.QPlainTextEdit </listings/ninja_ide/gui/misc/run_widget.py.html#23>`_
+
+- `PyQt4.QtCore.QProcess </listings/ninja_ide/gui/misc/run_widget.py.html#36>`_
+
+- `PyQt4.QtCore.QProcessEnvironment </listings/ninja_ide/gui/misc/run_widget.py.html#37>`_
+
+- `PyQt4.QtGui.QTextCharFormat </listings/ninja_ide/gui/misc/run_widget.py.html#31>`_
+
+- `PyQt4.QtGui.QTextCursor </listings/ninja_ide/gui/misc/run_widget.py.html#30>`_
+
+- `PyQt4.QtGui.QVBoxLayout </listings/ninja_ide/gui/misc/run_widget.py.html#26>`_
+
+- `PyQt4.QtGui.QWidget </listings/ninja_ide/gui/misc/run_widget.py.html#28>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/misc/run_widget.py.html#35>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/misc/run_widget.py.html#39>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/misc/run_widget.py.html#17>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/gui/misc/run_widget.py.html#43>`_
+
+- `ninja_ide.gui.main_panel.main_container </listings/ninja_ide/gui/misc/run_widget.py.html#44>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/misc/run_widget.py.html#41>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/misc/run_widget.py.html#42>`_
+
+- `__future__.unicode_literals </listings/ninja_ide/gui/misc/run_widget.py.html#18>`_
+
+
+
+
+
+*Class:* `OutputWidget(QPlainTextEdit) </listings/ninja_ide/gui/misc/run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-248>`_
+-------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class OutputWidget(QPlainTextEdit):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_parent [at ln:252] </listings/ninja_ide/gui/misc/run_widget.py.html#252>`_
+
+- `actualValue [at ln:319] </listings/ninja_ide/gui/misc/run_widget.py.html#319>`_
+
+- `error_format [at ln:265] </listings/ninja_ide/gui/misc/run_widget.py.html#265>`_
+
+- `maxValue [at ln:320] </listings/ninja_ide/gui/misc/run_widget.py.html#320>`_
+
+- `patLink [at ln:257] </listings/ninja_ide/gui/misc/run_widget.py.html#257>`_
+
+- `plain_format [at ln:260] </listings/ninja_ide/gui/misc/run_widget.py.html#260>`_
+
+
+*Function:* `__init__(parent) [at ln:250] </listings/ninja_ide/gui/misc/run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-250>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent):
+
+
+No description.
+
+
+----
+
+*Function:* `_parse_traceback(text) [at ln:338] </listings/ninja_ide/gui/misc/run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-338>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _parse_traceback(text):
+
+| Parse a line of python traceback and returns
+| a tuple with (file\_name, lineno)
+
+
+----
+
+*Function:* `_refresh_error() [at ln:311] </listings/ninja_ide/gui/misc/run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-311>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _refresh_error():
+
+| Read the error buffer from the process and append the text.
+
+
+----
+
+*Function:* `_refresh_output() [at ln:301] </listings/ninja_ide/gui/misc/run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-301>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _refresh_output():
+
+| Read the output buffer from the process and append the text.
+
+
+----
+
+*Function:* `_scroll_area() [at ln:288] </listings/ninja_ide/gui/misc/run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-288>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _scroll_area():
+
+| When new text is added to the widget, move the scroll to the end.
+
+
+----
+
+*Function:* `contextMenuEvent(event) [at ln:350] </listings/ninja_ide/gui/misc/run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-350>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def contextMenuEvent(event):
+
+| Show a context menu for the Plain Text widget.
+
+
+----
+
+*Function:* `go_to_error(event) [at ln:328] </listings/ninja_ide/gui/misc/run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-328>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def go_to_error(event):
+
+| Resolve the link and take the user to the error line.
+
+
+----
+
+*Function:* `mousePressEvent(event) [at ln:293] </listings/ninja_ide/gui/misc/run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-293>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def mousePressEvent(event):
+
+| When the execution fail, allow to press the links in the traceback,
+| to go to the line when the error occur.
+
+
+----
+
+*Class:* `RunWidget(QWidget) </listings/ninja_ide/gui/misc/run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-47>`_
+--------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class RunWidget(QWidget):
+
+| Widget that show the execution output in the Tool Dock.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `PYTHONPATH [at ln:159] </listings/ninja_ide/gui/misc/run_widget.py.html#159>`_
+
+- `__preScriptExecuted [at ln:69] </listings/ninja_ide/gui/misc/run_widget.py.html#69>`_
+
+- `_postExecScriptProc [at ln:72] </listings/ninja_ide/gui/misc/run_widget.py.html#72>`_
+
+- `_preExecScriptProc [at ln:71] </listings/ninja_ide/gui/misc/run_widget.py.html#71>`_
+
+- `_proc [at ln:70] </listings/ninja_ide/gui/misc/run_widget.py.html#70>`_
+
+- `currentProcess [at ln:185] </listings/ninja_ide/gui/misc/run_widget.py.html#185>`_
+
+- `fileName [at ln:154] </listings/ninja_ide/gui/misc/run_widget.py.html#154>`_
+
+- `input [at ln:58] </listings/ninja_ide/gui/misc/run_widget.py.html#58>`_
+
+- `lblInput [at ln:59] </listings/ninja_ide/gui/misc/run_widget.py.html#59>`_
+
+- `output [at ln:56] </listings/ninja_ide/gui/misc/run_widget.py.html#56>`_
+
+- `postExec [at ln:158] </listings/ninja_ide/gui/misc/run_widget.py.html#158>`_
+
+- `preExec [at ln:157] </listings/ninja_ide/gui/misc/run_widget.py.html#157>`_
+
+- `programParams [at ln:156] </listings/ninja_ide/gui/misc/run_widget.py.html#156>`_
+
+- `pythonPath [at ln:155] </listings/ninja_ide/gui/misc/run_widget.py.html#155>`_
+
+
+*Function:* `__init__() [at ln:51] </listings/ninja_ide/gui/misc/run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-51>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `__main_execution() [at ln:163] </listings/ninja_ide/gui/misc/run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-163>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __main_execution():
+
+| Execute the project.
+
+
+----
+
+*Function:* `__post_execution() [at ln:219] </listings/ninja_ide/gui/misc/run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-219>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __post_execution():
+
+| Execute a script after executing the project.
+
+
+----
+
+*Function:* `__post_execution_message() [at ln:234] </listings/ninja_ide/gui/misc/run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-234>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __post_execution_message():
+
+| Print post execution message.
+
+
+----
+
+*Function:* `__pre_execution() [at ln:202] </listings/ninja_ide/gui/misc/run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-202>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __pre_execution():
+
+| Execute a script before executing the project.
+
+
+----
+
+*Function:* `finish_execution(exitCode, exitStatus) [at ln:120] </listings/ninja_ide/gui/misc/run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-120>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def finish_execution(exitCode, exitStatus):
+
+| Print a message and hide the input line when the execution ends.
+
+
+----
+
+*Function:* `insert_input() [at ln:140] </listings/ninja_ide/gui/misc/run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-140>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def insert_input():
+
+| Take the user input and send it to the process.
+
+
+----
+
+*Function:* `kill_process() [at ln:243] </listings/ninja_ide/gui/misc/run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-243>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def kill_process():
+
+| Kill the running process.
+
+
+----
+
+*Function:* `process_error(error) [at ln:103] </listings/ninja_ide/gui/misc/run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-103>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def process_error(error):
+
+| Listen to the error signals from the running process.
+
+
+----
+
+*Function:* `set_font(family, size) [at ln:97] </listings/ninja_ide/gui/misc/run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-97>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_font(family, size):
+
+
+No description.
+
+
+----
+
+*Function:* `start_process(fileName, pythonPath=False, PYTHONPATH=None, programParams=str, preExec=str, postExec=str) [at ln:148] </listings/ninja_ide/gui/misc/run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-148>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def start_process(fileName, pythonPath=False, PYTHONPATH=None, programParams=str, preExec=str, postExec=str):
+
+| Prepare the output widget and start the process.
+
+
+
+

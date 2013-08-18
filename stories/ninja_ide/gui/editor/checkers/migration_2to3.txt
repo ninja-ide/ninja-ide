@@ -1,0 +1,100 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: migration_2to3
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `migration_2to3.py </listings/ninja_ide/gui/editor/checkers/migration_2to3.py.html>`_ API
+=====================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `os </listings/ninja_ide/gui/editor/checkers/migration_2to3.py.html#20>`_
+
+- `subprocess </listings/ninja_ide/gui/editor/checkers/migration_2to3.py.html#21>`_
+
+- `PyQt4.QtCore.QThread </listings/ninja_ide/gui/editor/checkers/migration_2to3.py.html#23>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/editor/checkers/migration_2to3.py.html#17>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/gui/editor/checkers/migration_2to3.py.html#25>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/editor/checkers/migration_2to3.py.html#26>`_
+
+- `__future__.unicode_literals </listings/ninja_ide/gui/editor/checkers/migration_2to3.py.html#18>`_
+
+
+
+
+
+*Class:* `MigrationTo3(QThread) </listings/ninja_ide/gui/editor/checkers/migration_2to3.py.html#listingsninja_ideguieditorcheckersmigration_2to3py-29>`_
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class MigrationTo3(QThread):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_editor [at ln:33] </listings/ninja_ide/gui/editor/checkers/migration_2to3.py.html#33>`_
+
+- `_path [at ln:34] </listings/ninja_ide/gui/editor/checkers/migration_2to3.py.html#34>`_
+
+- `checker_icon [at ln:43] </listings/ninja_ide/gui/editor/checkers/migration_2to3.py.html#43>`_
+
+- `checks [at ln:35] </listings/ninja_ide/gui/editor/checkers/migration_2to3.py.html#35>`_
+
+
+*Function:* `__init__(editor) [at ln:31] </listings/ninja_ide/gui/editor/checkers/migration_2to3.py.html#listingsninja_ideguieditorcheckersmigration_2to3py-31>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(editor):
+
+
+No description.
+
+
+----
+
+*Function:* `run() [at ln:50] </listings/ninja_ide/gui/editor/checkers/migration_2to3.py.html#listingsninja_ideguieditorcheckersmigration_2to3py-50>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run():
+
+
+No description.
+
+
+----
+
+*Function:* `run_checks() [at ln:45] </listings/ninja_ide/gui/editor/checkers/migration_2to3.py.html#listingsninja_ideguieditorcheckersmigration_2to3py-45>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run_checks():
+
+
+No description.
+
+
+
+

@@ -1,0 +1,126 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: start_page
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `start_page.py </listings/ninja_ide/gui/main_panel/start_page.py.html>`_ API
+========================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `PyQt4.QtDeclarative.QDeclarativeView </listings/ninja_ide/gui/main_panel/start_page.py.html#7>`_
+
+- `PyQt4.QtCore.QSettings </listings/ninja_ide/gui/main_panel/start_page.py.html#5>`_
+
+- `PyQt4.QtGui.QVBoxLayout </listings/ninja_ide/gui/main_panel/start_page.py.html#4>`_
+
+- `PyQt4.QtGui.QWidget </listings/ninja_ide/gui/main_panel/start_page.py.html#3>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/main_panel/start_page.py.html#6>`_
+
+- `ninja_ide.gui.main_panel.itab_item </listings/ninja_ide/gui/main_panel/start_page.py.html#11>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/main_panel/start_page.py.html#9>`_
+
+- `ninja_ide.tools.ui_tools </listings/ninja_ide/gui/main_panel/start_page.py.html#10>`_
+
+
+
+
+
+*Class:* `StartPage(QWidget, itab_item.ITabItem) </listings/ninja_ide/gui/main_panel/start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-14>`_
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class StartPage(QWidget, itab_item.ITabItem):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_id [at ln:18] </listings/ninja_ide/gui/main_panel/start_page.py.html#18>`_
+
+- `root [at ln:24] </listings/ninja_ide/gui/main_panel/start_page.py.html#24>`_
+
+- `view [at ln:20] </listings/ninja_ide/gui/main_panel/start_page.py.html#20>`_
+
+
+*Function:* `__init__(parent=None) [at ln:16] </listings/ninja_ide/gui/main_panel/start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-16>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent=None):
+
+
+No description.
+
+
+----
+
+*Function:* `_on_click_on_delete(path) [at ln:41] </listings/ninja_ide/gui/main_panel/start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-41>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _on_click_on_delete(path):
+
+
+No description.
+
+
+----
+
+*Function:* `_on_click_on_favorite(path, value) [at ln:48] </listings/ninja_ide/gui/main_panel/start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-48>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _on_click_on_favorite(path, value):
+
+
+No description.
+
+
+----
+
+*Function:* `_open_project(path) [at ln:38] </listings/ninja_ide/gui/main_panel/start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-38>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _open_project(path):
+
+
+No description.
+
+
+----
+
+*Function:* `load_items() [at ln:56] </listings/ninja_ide/gui/main_panel/start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-56>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_items():
+
+
+No description.
+
+
+
+

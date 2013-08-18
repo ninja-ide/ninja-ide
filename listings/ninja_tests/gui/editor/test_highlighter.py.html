@@ -1,0 +1,323 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="test_highlighter.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>test_highlighter.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../../">/listings</a>
+        </li><li><a href="../../">/ninja_tests</a>
+        </li><li><a href="../">/gui</a>
+        </li><li><a href=".">/editor</a>
+        </li><li><a href="#">/test_highlighter.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-1">  1</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-2">  2</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-3">  3</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-4">  4</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-5">  5</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-6">  6</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-7">  7</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-8">  8</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-9">  9</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-10"> 10</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-11"> 11</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-12"> 12</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-13"> 13</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-14"> 14</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-15"> 15</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-16"> 16</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-17"> 17</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-18"> 18</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-19"> 19</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-20"> 20</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-21"> 21</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-22"> 22</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-23"> 23</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-24"> 24</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-25"> 25</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-26"> 26</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-27"> 27</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-28"> 28</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-29"> 29</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-30"> 30</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-31"> 31</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-32"> 32</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-33"> 33</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-34"> 34</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-35"> 35</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-36"> 36</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-37"> 37</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-38"> 38</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-39"> 39</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-40"> 40</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-41"> 41</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-42"> 42</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-43"> 43</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-44"> 44</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-45"> 45</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-46"> 46</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-47"> 47</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-48"> 48</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-49"> 49</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-50"> 50</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-51"> 51</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-52"> 52</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-53"> 53</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-54"> 54</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-55"> 55</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-56"> 56</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-57"> 57</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-58"> 58</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-59"> 59</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-60"> 60</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-61"> 61</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-62"> 62</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-63"> 63</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-64"> 64</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-65"> 65</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-66"> 66</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-67"> 67</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-68"> 68</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-69"> 69</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-70"> 70</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-71"> 71</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-72"> 72</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-73"> 73</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-74"> 74</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-75"> 75</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-76"> 76</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-77"> 77</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-78"> 78</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-79"> 79</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-80"> 80</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-81"> 81</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-82"> 82</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-83"> 83</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-84"> 84</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-85"> 85</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-86"> 86</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-87"> 87</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-88"> 88</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-89"> 89</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-90"> 90</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-91"> 91</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-92"> 92</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-93"> 93</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-94"> 94</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-95"> 95</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-96"> 96</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-97"> 97</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-98"> 98</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-99"> 99</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-100">100</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-101">101</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-102">102</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-103">103</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-104">104</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-105">105</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-106">106</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-107">107</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-108">108</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-109">109</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-110">110</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-111">111</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-112">112</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-113">113</a>
+<a href="test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-114">114</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_testsguieditortest_highlighterpy-1"></a><span class="c"># -*- coding: utf-8 -*-</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-2"></a><span class="c">#</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-3"></a><span class="c"># This file is part of NINJA-IDE (http://ninja-ide.org).</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-4"></a><span class="c">#</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-5"></a><span class="c"># NINJA-IDE is free software; you can redistribute it and/or modify</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-6"></a><span class="c"># it under the terms of the GNU General Public License as published by</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-7"></a><span class="c"># the Free Software Foundation; either version 3 of the License, or</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-8"></a><span class="c"># any later version.</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-9"></a><span class="c">#</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-10"></a><span class="c"># NINJA-IDE is distributed in the hope that it will be useful,</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-11"></a><span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-12"></a><span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-13"></a><span class="c"># GNU General Public License for more details.</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-14"></a><span class="c">#</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-15"></a><span class="c"># You should have received a copy of the GNU General Public License</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-16"></a><span class="c"># along with NINJA-IDE; If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-17"></a><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-18"></a><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-19"></a><span class="kn">from</span> <span class="nn">ninja_ide.gui.editor</span> <span class="kn">import</span> <span class="n">highlighter</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-20"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QFont</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-21"></a><span class="kn">import</span> <span class="nn">unittest</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-22"></a>
+<a name="listingsninja_testsguieditortest_highlighterpy-23"></a>
+<a name="listingsninja_testsguieditortest_highlighterpy-24"></a><span class="k">class</span> <span class="nc">HighlighterFormatTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-25"></a>
+<a name="listingsninja_testsguieditortest_highlighterpy-26"></a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-27"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_old_font</span> <span class="o">=</span> <span class="s">"Monospace"</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-28"></a>        <span class="n">highlighter</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">FONT_FAMILY</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_old_font</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-29"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_color</span> <span class="o">=</span> <span class="s">"#000000"</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-30"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_a_format</span> <span class="o">=</span> <span class="n">highlighter</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_color</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-31"></a>        <span class="n">b_i_string</span> <span class="o">=</span> <span class="s">"bold italic"</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-32"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_bold_italic</span> <span class="o">=</span> <span class="n">highlighter</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_color</span><span class="p">,</span> <span class="n">b_i_string</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-33"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_new_font</span> <span class="o">=</span> <span class="s">"Arial"</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-34"></a>        <span class="n">highlighter</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">FONT_FAMILY</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_font</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-35"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_new_font_format</span> <span class="o">=</span> <span class="n">highlighter</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_color</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-36"></a>
+<a name="listingsninja_testsguieditortest_highlighterpy-37"></a>    <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-38"></a>        <span class="nb">reload</span><span class="p">(</span><span class="n">highlighter</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-39"></a>
+<a name="listingsninja_testsguieditortest_highlighterpy-40"></a>    <span class="k">def</span> <span class="nf">test_format_sets_color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-41"></a>        <span class="n">color_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_a_format</span><span class="o">.</span><span class="n">foreground</span><span class="p">()</span><span class="o">.</span><span class="n">color</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-42"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_color</span><span class="p">,</span> <span class="n">color_name</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-43"></a>
+<a name="listingsninja_testsguieditortest_highlighterpy-44"></a>    <span class="k">def</span> <span class="nf">test_format_sets_bold</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-45"></a>        <span class="n">bold</span> <span class="o">=</span> <span class="n">QFont</span><span class="o">.</span><span class="n">Bold</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-46"></a>        <span class="n">f_weight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bold_italic</span><span class="o">.</span><span class="n">fontWeight</span><span class="p">()</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-47"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">bold</span><span class="p">,</span> <span class="n">f_weight</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-48"></a>        <span class="n">f_weight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_a_format</span><span class="o">.</span><span class="n">fontWeight</span><span class="p">()</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-49"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="n">bold</span><span class="p">,</span> <span class="n">f_weight</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-50"></a>
+<a name="listingsninja_testsguieditortest_highlighterpy-51"></a>    <span class="k">def</span> <span class="nf">test_format_sets_italic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-52"></a>        <span class="n">italic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bold_italic</span><span class="o">.</span><span class="n">fontItalic</span><span class="p">()</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-53"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">italic</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-54"></a>        <span class="n">italic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_a_format</span><span class="o">.</span><span class="n">fontItalic</span><span class="p">()</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-55"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">italic</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-56"></a>
+<a name="listingsninja_testsguieditortest_highlighterpy-57"></a>    <span class="k">def</span> <span class="nf">test_format_set_font</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-58"></a>        <span class="n">font</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_a_format</span><span class="o">.</span><span class="n">fontFamily</span><span class="p">()</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-59"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_old_font</span><span class="p">,</span> <span class="n">font</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-60"></a>        <span class="n">font</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_font_format</span><span class="o">.</span><span class="n">fontFamily</span><span class="p">()</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-61"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_new_font</span><span class="p">,</span> <span class="n">font</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-62"></a>
+<a name="listingsninja_testsguieditortest_highlighterpy-63"></a>
+<a name="listingsninja_testsguieditortest_highlighterpy-64"></a><span class="k">class</span> <span class="nc">HighlighterRestyleTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-65"></a>
+<a name="listingsninja_testsguieditortest_highlighterpy-66"></a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-67"></a>        <span class="n">highlighter</span><span class="o">.</span><span class="n">SDEFAULTS</span> <span class="o">=</span> <span class="p">((</span><span class="s">"style_key"</span><span class="p">,</span> <span class="s">"scheme_key"</span><span class="p">,</span> <span class="s">"default"</span><span class="p">),)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-68"></a>        <span class="n">a_scheme</span> <span class="o">=</span> <span class="p">{</span><span class="s">"scheme_key"</span><span class="p">:</span> <span class="s">"#BBBBBB"</span><span class="p">}</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-69"></a>        <span class="n">highlighter</span><span class="o">.</span><span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span> <span class="o">=</span> <span class="n">a_scheme</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-70"></a>        <span class="n">highlighter</span><span class="o">.</span><span class="n">restyle</span><span class="p">(</span><span class="n">a_scheme</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-71"></a>
+<a name="listingsninja_testsguieditortest_highlighterpy-72"></a>    <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-73"></a>        <span class="nb">reload</span><span class="p">(</span><span class="n">highlighter</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-74"></a>
+<a name="listingsninja_testsguieditortest_highlighterpy-75"></a>    <span class="k">def</span> <span class="nf">test_scheme_populates_styles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-76"></a>        <span class="n">scolor</span> <span class="o">=</span> <span class="n">highlighter</span><span class="o">.</span><span class="n">STYLES</span><span class="p">[</span><span class="s">"style_key"</span><span class="p">]</span><span class="o">.</span><span class="n">foreground</span><span class="p">()</span><span class="o">.</span><span class="n">color</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-77"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">scolor</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="s">"#bbbbbb"</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-78"></a>
+<a name="listingsninja_testsguieditortest_highlighterpy-79"></a>
+<a name="listingsninja_testsguieditortest_highlighterpy-80"></a><span class="k">class</span> <span class="nc">SyntaxUserDataTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-81"></a>
+<a name="listingsninja_testsguieditortest_highlighterpy-82"></a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-83"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">err_sud</span> <span class="o">=</span> <span class="n">highlighter</span><span class="o">.</span><span class="n">SyntaxUserData</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-84"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">noerr_sud</span> <span class="o">=</span> <span class="n">highlighter</span><span class="o">.</span><span class="n">SyntaxUserData</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-85"></a>
+<a name="listingsninja_testsguieditortest_highlighterpy-86"></a>    <span class="k">def</span> <span class="nf">test_initializes_correctly</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-87"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">err_sud</span><span class="o">.</span><span class="n">error</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-88"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">noerr_sud</span><span class="o">.</span><span class="n">error</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-89"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">err_sud</span><span class="o">.</span><span class="n">str_groups</span><span class="p">,</span> <span class="p">[])</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-90"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">noerr_sud</span><span class="o">.</span><span class="n">str_groups</span><span class="p">,</span> <span class="p">[])</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-91"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">err_sud</span><span class="o">.</span><span class="n">comment_start</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-92"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">noerr_sud</span><span class="o">.</span><span class="n">comment_start</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-93"></a>
+<a name="listingsninja_testsguieditortest_highlighterpy-94"></a>    <span class="k">def</span> <span class="nf">test_clears_correctly</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-95"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">err_sud</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-96"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">err_sud</span><span class="o">.</span><span class="n">str_groups</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-97"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">err_sud</span><span class="o">.</span><span class="n">comment_start</span> <span class="o">=</span> <span class="mi">2</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-98"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">err_sud</span><span class="o">.</span><span class="n">clear_data</span><span class="p">()</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-99"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">err_sud</span><span class="o">.</span><span class="n">error</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-100"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">err_sud</span><span class="o">.</span><span class="n">str_groups</span><span class="p">,</span> <span class="p">[])</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-101"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">err_sud</span><span class="o">.</span><span class="n">comment_start</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-102"></a>
+<a name="listingsninja_testsguieditortest_highlighterpy-103"></a>    <span class="k">def</span> <span class="nf">test_adds_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-104"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotIn</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">err_sud</span><span class="o">.</span><span class="n">str_groups</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-105"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">err_sud</span><span class="o">.</span><span class="n">add_str_group</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-106"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">err_sud</span><span class="o">.</span><span class="n">str_groups</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-107"></a>
+<a name="listingsninja_testsguieditortest_highlighterpy-108"></a>    <span class="k">def</span> <span class="nf">test_comment_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-109"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">err_sud</span><span class="o">.</span><span class="n">comment_start</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-110"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">err_sud</span><span class="o">.</span><span class="n">comment_start_at</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-111"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">err_sud</span><span class="o">.</span><span class="n">comment_start</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-112"></a>
+<a name="listingsninja_testsguieditortest_highlighterpy-113"></a><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+<a name="listingsninja_testsguieditortest_highlighterpy-114"></a>    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

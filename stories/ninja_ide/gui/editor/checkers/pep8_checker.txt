@@ -1,0 +1,115 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: pep8_checker
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `pep8_checker.py </listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html>`_ API
+=================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `PyQt4.QtGui.QStyle </listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#20>`_
+
+- `PyQt4.QtCore.QThread </listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#21>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#17>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#24>`_
+
+- `ninja_ide.dependencies.pep8mod </listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#25>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#23>`_
+
+- `__future__.unicode_literals </listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#18>`_
+
+
+
+
+
+*Class:* `Pep8Checker(QThread) </listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#listingsninja_ideguieditorcheckerspep8_checkerpy-28>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Pep8Checker(QThread):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_editor [at ln:32] </listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#32>`_
+
+- `_encoding [at ln:34] </listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#34>`_
+
+- `_path [at ln:33] </listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#33>`_
+
+- `checker_icon [at ln:37] </listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#37>`_
+
+- `checks [at ln:46] </listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#46>`_
+
+
+*Function:* `__init__(editor) [at ln:30] </listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#listingsninja_ideguieditorcheckerspep8_checkerpy-30>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(editor):
+
+
+No description.
+
+
+----
+
+*Function:* `reset() [at ln:45] </listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#listingsninja_ideguieditorcheckerspep8_checkerpy-45>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def reset():
+
+
+No description.
+
+
+----
+
+*Function:* `run() [at ln:48] </listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#listingsninja_ideguieditorcheckerspep8_checkerpy-48>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run():
+
+
+No description.
+
+
+----
+
+*Function:* `run_checks() [at ln:39] </listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#listingsninja_ideguieditorcheckerspep8_checkerpy-39>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run_checks():
+
+
+No description.
+
+
+
+

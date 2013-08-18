@@ -1,0 +1,197 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="setup.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>setup.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../../">/listings</a>
+        </li><li><a href="../../">/build_files</a>
+        </li><li><a href="../">/installer</a>
+        </li><li><a href=".">/windows</a>
+        </li><li><a href="#">/setup.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-1"> 1</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-2"> 2</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-3"> 3</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-4"> 4</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-5"> 5</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-6"> 6</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-7"> 7</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-8"> 8</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-9"> 9</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-10">10</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-11">11</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-12">12</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-13">13</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-14">14</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-15">15</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-16">16</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-17">17</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-18">18</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-19">19</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-20">20</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-21">21</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-22">22</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-23">23</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-24">24</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-25">25</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-26">26</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-27">27</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-28">28</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-29">29</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-30">30</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-31">31</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-32">32</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-33">33</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-34">34</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-35">35</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-36">36</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-37">37</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-38">38</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-39">39</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-40">40</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-41">41</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-42">42</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-43">43</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-44">44</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-45">45</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-46">46</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-47">47</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-48">48</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-49">49</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-50">50</a>
+<a href="setup.py.html#listingsbuild_filesinstallerwindowssetuppy-51">51</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsbuild_filesinstallerwindowssetuppy-1"></a><span class="c">#*********************************************</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-2"></a><span class="c">#        Auto-Generated With py2Nsis</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-3"></a><span class="c">#*********************************************</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-4"></a>
+<a name="listingsbuild_filesinstallerwindowssetuppy-5"></a><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">find_packages</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-6"></a><span class="n">packages</span> <span class="o">=</span> <span class="n">find_packages</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="p">[</span><span class="s">"tests"</span><span class="p">])</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-7"></a>
+<a name="listingsbuild_filesinstallerwindowssetuppy-8"></a><span class="kn">import</span> <span class="nn">warnings</span> 
+<a name="listingsbuild_filesinstallerwindowssetuppy-9"></a><span class="c">#ignore the sets DeprecationWarning</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-10"></a><span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s">'ignore'</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span> 
+<a name="listingsbuild_filesinstallerwindowssetuppy-11"></a><span class="kn">import</span> <span class="nn">py2exe</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-12"></a><span class="n">warnings</span><span class="o">.</span><span class="n">resetwarnings</span><span class="p">()</span> 
+<a name="listingsbuild_filesinstallerwindowssetuppy-13"></a>
+<a name="listingsbuild_filesinstallerwindowssetuppy-14"></a><span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-15"></a>        
+<a name="listingsbuild_filesinstallerwindowssetuppy-16"></a><span class="n">target</span> <span class="o">=</span> <span class="p">{</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-17"></a>    <span class="s">'script'</span> <span class="p">:</span> <span class="s">"ninja-ide.py"</span><span class="p">,</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-18"></a>    <span class="s">'version'</span> <span class="p">:</span> <span class="s">"2.1"</span><span class="p">,</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-19"></a>    <span class="s">'company_name'</span> <span class="p">:</span> <span class="s">""</span><span class="p">,</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-20"></a>    <span class="s">'copyright'</span> <span class="p">:</span> <span class="s">"GPL"</span><span class="p">,</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-21"></a>    <span class="s">'name'</span> <span class="p">:</span> <span class="s">"Ninja"</span><span class="p">,</span> 
+<a name="listingsbuild_filesinstallerwindowssetuppy-22"></a>    <span class="s">'dest_base'</span> <span class="p">:</span> <span class="s">"Ninja"</span><span class="p">,</span> 
+<a name="listingsbuild_filesinstallerwindowssetuppy-23"></a>    <span class="s">'icon_resources'</span><span class="p">:</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s">"ninja.ico"</span><span class="p">)]</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-24"></a><span class="p">}</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-25"></a>
+<a name="listingsbuild_filesinstallerwindowssetuppy-26"></a><span class="n">setup</span><span class="p">(</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-27"></a>    <span class="n">data_files</span> <span class="o">=</span> <span class="p">[],</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-28"></a>    
+<a name="listingsbuild_filesinstallerwindowssetuppy-29"></a>    <span class="n">zipfile</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-30"></a>
+<a name="listingsbuild_filesinstallerwindowssetuppy-31"></a>    <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-32"></a>        <span class="s">"py2exe"</span><span class="p">:</span> <span class="p">{</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-33"></a>            <span class="s">"compressed"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> 
+<a name="listingsbuild_filesinstallerwindowssetuppy-34"></a>              <span class="s">"optimize"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-35"></a>              <span class="s">"includes"</span><span class="p">:</span> <span class="p">[</span><span class="s">'sip'</span><span class="p">,</span> <span class="s">'PyQt4.QtNetwork'</span><span class="p">,</span> <span class="s">'win32com'</span><span class="p">],</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-36"></a>              <span class="s">"excludes"</span><span class="p">:</span> <span class="p">[</span><span class="s">'_gtkagg'</span><span class="p">,</span> <span class="s">'_tkagg'</span><span class="p">,</span> <span class="s">'bsddb'</span><span class="p">,</span> <span class="s">'curses'</span><span class="p">,</span> <span class="s">'email'</span><span class="p">,</span> <span class="s">'pywin.debugger'</span><span class="p">,</span> <span class="s">'pywin.debugger.dbgcon'</span><span class="p">,</span> <span class="s">'pywin.dialogs'</span><span class="p">,</span> <span class="s">'tcl'</span><span class="p">,</span> <span class="s">'Tkconstants'</span><span class="p">,</span> <span class="s">'Tkinter'</span><span class="p">],</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-37"></a>              <span class="s">"packages"</span><span class="p">:</span> <span class="n">packages</span><span class="p">,</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-38"></a>              <span class="s">"bundle_files"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-39"></a>              <span class="s">"dist_dir"</span><span class="p">:</span> <span class="s">"dist"</span><span class="p">,</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-40"></a>              <span class="s">"xref"</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-41"></a>              <span class="s">"skip_archive"</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-42"></a>              <span class="s">"ascii"</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-43"></a>              <span class="s">"custom_boot_script"</span><span class="p">:</span> <span class="s">''</span><span class="p">,</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-44"></a>            <span class="p">}</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-45"></a>        <span class="p">},</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-46"></a>    <span class="n">console</span> <span class="o">=</span> <span class="p">[],</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-47"></a>    <span class="n">windows</span> <span class="o">=</span> <span class="p">[</span><span class="n">target</span><span class="p">],</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-48"></a>    <span class="n">service</span> <span class="o">=</span> <span class="p">[],</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-49"></a>    <span class="n">com_server</span> <span class="o">=</span> <span class="p">[],</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-50"></a>    <span class="n">ctypes_com_server</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsbuild_filesinstallerwindowssetuppy-51"></a><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

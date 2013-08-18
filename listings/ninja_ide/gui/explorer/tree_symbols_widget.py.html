@@ -1,0 +1,679 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="tree_symbols_widget.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>tree_symbols_widget.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../../">/listings</a>
+        </li><li><a href="../../">/ninja_ide</a>
+        </li><li><a href="../">/gui</a>
+        </li><li><a href=".">/explorer</a>
+        </li><li><a href="#">/tree_symbols_widget.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-1">  1</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-2">  2</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-3">  3</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-4">  4</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-5">  5</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-6">  6</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-7">  7</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-8">  8</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-9">  9</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-10"> 10</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-11"> 11</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-12"> 12</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-13"> 13</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-14"> 14</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-15"> 15</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-16"> 16</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-17"> 17</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-18"> 18</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-19"> 19</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-20"> 20</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-21"> 21</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-22"> 22</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-23"> 23</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-24"> 24</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-25"> 25</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-26"> 26</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-27"> 27</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-28"> 28</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-29"> 29</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-30"> 30</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-31"> 31</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-32"> 32</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-33"> 33</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-34"> 34</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-35"> 35</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-36"> 36</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-37"> 37</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-38"> 38</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-39"> 39</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-40"> 40</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-41"> 41</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-42"> 42</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-43"> 43</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-44"> 44</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-45"> 45</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-46"> 46</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-47"> 47</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-48"> 48</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-49"> 49</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-50"> 50</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-51"> 51</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-52"> 52</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-53"> 53</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-54"> 54</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-55"> 55</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-56"> 56</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-57"> 57</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-58"> 58</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-59"> 59</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-60"> 60</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-61"> 61</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-62"> 62</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-63"> 63</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-64"> 64</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-65"> 65</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-66"> 66</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-67"> 67</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-68"> 68</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-69"> 69</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-70"> 70</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-71"> 71</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-72"> 72</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-73"> 73</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-74"> 74</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-75"> 75</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-76"> 76</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-77"> 77</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-78"> 78</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-79"> 79</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-80"> 80</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-81"> 81</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-82"> 82</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-83"> 83</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-84"> 84</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-85"> 85</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-86"> 86</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-87"> 87</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-88"> 88</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-89"> 89</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-90"> 90</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-91"> 91</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-92"> 92</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-93"> 93</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-94"> 94</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-95"> 95</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-96"> 96</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-97"> 97</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-98"> 98</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-99"> 99</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-100">100</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-101">101</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-102">102</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-103">103</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-104">104</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-105">105</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-106">106</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-107">107</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-108">108</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-109">109</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-110">110</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-111">111</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-112">112</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-113">113</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-114">114</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-115">115</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-116">116</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-117">117</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-118">118</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-119">119</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-120">120</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-121">121</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-122">122</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-123">123</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-124">124</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-125">125</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-126">126</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-127">127</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-128">128</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-129">129</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-130">130</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-131">131</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-132">132</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-133">133</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-134">134</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-135">135</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-136">136</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-137">137</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-138">138</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-139">139</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-140">140</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-141">141</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-142">142</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-143">143</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-144">144</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-145">145</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-146">146</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-147">147</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-148">148</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-149">149</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-150">150</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-151">151</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-152">152</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-153">153</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-154">154</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-155">155</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-156">156</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-157">157</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-158">158</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-159">159</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-160">160</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-161">161</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-162">162</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-163">163</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-164">164</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-165">165</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-166">166</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-167">167</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-168">168</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-169">169</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-170">170</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-171">171</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-172">172</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-173">173</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-174">174</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-175">175</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-176">176</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-177">177</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-178">178</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-179">179</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-180">180</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-181">181</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-182">182</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-183">183</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-184">184</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-185">185</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-186">186</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-187">187</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-188">188</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-189">189</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-190">190</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-191">191</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-192">192</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-193">193</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-194">194</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-195">195</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-196">196</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-197">197</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-198">198</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-199">199</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-200">200</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-201">201</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-202">202</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-203">203</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-204">204</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-205">205</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-206">206</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-207">207</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-208">208</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-209">209</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-210">210</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-211">211</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-212">212</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-213">213</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-214">214</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-215">215</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-216">216</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-217">217</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-218">218</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-219">219</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-220">220</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-221">221</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-222">222</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-223">223</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-224">224</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-225">225</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-226">226</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-227">227</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-228">228</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-229">229</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-230">230</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-231">231</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-232">232</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-233">233</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-234">234</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-235">235</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-236">236</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-237">237</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-238">238</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-239">239</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-240">240</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-241">241</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-242">242</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-243">243</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-244">244</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-245">245</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-246">246</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-247">247</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-248">248</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-249">249</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-250">250</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-251">251</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-252">252</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-253">253</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-254">254</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-255">255</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-256">256</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-257">257</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-258">258</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-259">259</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-260">260</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-261">261</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-262">262</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-263">263</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-264">264</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-265">265</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-266">266</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-267">267</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-268">268</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-269">269</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-270">270</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-271">271</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-272">272</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-273">273</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-274">274</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-275">275</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-276">276</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-277">277</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-278">278</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-279">279</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-280">280</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-281">281</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-282">282</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-283">283</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-284">284</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-285">285</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-286">286</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-287">287</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-288">288</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-289">289</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-290">290</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-291">291</a>
+<a href="tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-292">292</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_ideguiexplorertree_symbols_widgetpy-1"></a><span class="c"># -*- coding: utf-8 -*-</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-2"></a><span class="c">#</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-3"></a><span class="c"># This file is part of NINJA-IDE (http://ninja-ide.org).</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-4"></a><span class="c">#</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-5"></a><span class="c"># NINJA-IDE is free software; you can redistribute it and/or modify</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-6"></a><span class="c"># it under the terms of the GNU General Public License as published by</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-7"></a><span class="c"># the Free Software Foundation; either version 3 of the License, or</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-8"></a><span class="c"># any later version.</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-9"></a><span class="c">#</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-10"></a><span class="c"># NINJA-IDE is distributed in the hope that it will be useful,</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-11"></a><span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-12"></a><span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-13"></a><span class="c"># GNU General Public License for more details.</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-14"></a><span class="c">#</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-15"></a><span class="c"># You should have received a copy of the GNU General Public License</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-16"></a><span class="c"># along with NINJA-IDE; If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-17"></a><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-18"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-19"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QTreeWidget</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-20"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QTreeWidgetItem</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-21"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QIcon</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-22"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QAbstractItemView</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-23"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QHeaderView</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-24"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QCursor</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-25"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QMenu</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-26"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-27"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-28"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">SIGNAL</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-29"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-30"></a><span class="kn">from</span> <span class="nn">ninja_ide</span> <span class="kn">import</span> <span class="n">resources</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-31"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-32"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-33"></a><span class="k">class</span> <span class="nc">TreeSymbolsWidget</span><span class="p">(</span><span class="n">QTreeWidget</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-34"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-35"></a><span class="c">###############################################################################</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-36"></a><span class="c"># TreeSymbolsWidget SIGNALS</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-37"></a><span class="c">###############################################################################</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-38"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-39"></a>    <span class="sd">"""</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-40"></a><span class="sd">    goToDefinition(int)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-41"></a><span class="sd">    """</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-42"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-43"></a><span class="c">###############################################################################</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-44"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-45"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-46"></a>        <span class="n">QTreeWidget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-47"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">()</span><span class="o">.</span><span class="n">setHidden</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-48"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setSelectionMode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SingleSelection</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-49"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setAnimated</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-50"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">()</span><span class="o">.</span><span class="n">setHorizontalScrollMode</span><span class="p">(</span><span class="n">QAbstractItemView</span><span class="o">.</span><span class="n">ScrollPerPixel</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-51"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">()</span><span class="o">.</span><span class="n">setResizeMode</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">QHeaderView</span><span class="o">.</span><span class="n">ResizeToContents</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-52"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">()</span><span class="o">.</span><span class="n">setStretchLastSection</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-53"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">actualSymbols</span> <span class="o">=</span> <span class="p">(</span><span class="s">''</span><span class="p">,</span> <span class="p">{})</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-54"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">docstrings</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-55"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">collapsedItems</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-56"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-57"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"itemClicked(QTreeWidgetItem *, int)"</span><span class="p">),</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-58"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_go_to_definition</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-59"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"itemActivated(QTreeWidgetItem *, int)"</span><span class="p">),</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-60"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_go_to_definition</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-61"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setContextMenuPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">CustomContextMenu</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-62"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-63"></a>            <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"customContextMenuRequested(const QPoint &amp;)"</span><span class="p">),</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-64"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_menu_context_tree</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-65"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"itemCollapsed(QTreeWidgetItem *)"</span><span class="p">),</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-66"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_item_collapsed</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-67"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"itemExpanded(QTreeWidgetItem *)"</span><span class="p">),</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-68"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_item_expanded</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-69"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-70"></a>    <span class="k">def</span> <span class="nf">select_current_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-71"></a>        <span class="c">#TODO</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-72"></a>        <span class="c">#print line, col</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-73"></a>        <span class="k">pass</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-74"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-75"></a>    <span class="k">def</span> <span class="nf">_menu_context_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-76"></a>        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indexAt</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-77"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">index</span><span class="o">.</span><span class="n">isValid</span><span class="p">():</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-78"></a>            <span class="k">return</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-79"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-80"></a>        <span class="n">menu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-81"></a>        <span class="n">f_all</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Fold all"</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-82"></a>        <span class="n">u_all</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Unfold all"</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-83"></a>        <span class="n">menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-84"></a>        <span class="n">u_class</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Unfold classes"</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-85"></a>        <span class="n">u_class_method</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Unfold classes and methods"</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-86"></a>        <span class="n">u_class_attr</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Unfold classes and attributes"</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-87"></a>        <span class="n">menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-88"></a>        <span class="c">#save_state = menu.addAction(self.tr("Save State"))</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-89"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-90"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">f_all</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"triggered()"</span><span class="p">),</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-91"></a>            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">collapseAll</span><span class="p">())</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-92"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">u_all</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"triggered()"</span><span class="p">),</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-93"></a>            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">expandAll</span><span class="p">())</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-94"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">u_class</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"triggered()"</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unfold_class</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-95"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">u_class_method</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"triggered()"</span><span class="p">),</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-96"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_unfold_class_method</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-97"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">u_class_attr</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"triggered()"</span><span class="p">),</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-98"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_unfold_class_attribute</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-99"></a>        <span class="c">#self.connect(save_state, SIGNAL("triggered()"),</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-100"></a>            <span class="c">#self._save_symbols_state)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-101"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-102"></a>        <span class="n">menu</span><span class="o">.</span><span class="n">exec_</span><span class="p">(</span><span class="n">QCursor</span><span class="o">.</span><span class="n">pos</span><span class="p">())</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-103"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-104"></a>    <span class="k">def</span> <span class="nf">_get_classes_root</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-105"></a>        <span class="n">class_root</span> <span class="o">=</span> <span class="bp">None</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-106"></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">topLevelItemCount</span><span class="p">()):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-107"></a>            <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">topLevelItem</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-108"></a>            <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">isClass</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">item</span><span class="o">.</span><span class="n">isClickable</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-109"></a>                <span class="n">class_root</span> <span class="o">=</span> <span class="n">item</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-110"></a>                <span class="k">break</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-111"></a>        <span class="k">return</span> <span class="n">class_root</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-112"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-113"></a>    <span class="k">def</span> <span class="nf">_unfold_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-114"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">collapseAll</span><span class="p">()</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-115"></a>        <span class="n">classes_root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_classes_root</span><span class="p">()</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-116"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">classes_root</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-117"></a>            <span class="k">return</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-118"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-119"></a>        <span class="n">classes_root</span><span class="o">.</span><span class="n">setExpanded</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-120"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-121"></a>    <span class="k">def</span> <span class="nf">_unfold_class_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-122"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">expandAll</span><span class="p">()</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-123"></a>        <span class="n">classes_root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_classes_root</span><span class="p">()</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-124"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">classes_root</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-125"></a>            <span class="k">return</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-126"></a>        <span class="c">#for each class!</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-127"></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">classes_root</span><span class="o">.</span><span class="n">childCount</span><span class="p">()):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-128"></a>            <span class="n">class_item</span> <span class="o">=</span> <span class="n">classes_root</span><span class="o">.</span><span class="n">child</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-129"></a>            <span class="c">#for each attribute or functions</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-130"></a>            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">class_item</span><span class="o">.</span><span class="n">childCount</span><span class="p">()):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-131"></a>                <span class="n">item</span> <span class="o">=</span> <span class="n">class_item</span><span class="o">.</span><span class="n">child</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-132"></a>                <span class="c">#METHODS ROOT!!</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-133"></a>                <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span><span class="o">.</span><span class="n">isMethod</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">item</span><span class="o">.</span><span class="n">isClickable</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-134"></a>                    <span class="n">item</span><span class="o">.</span><span class="n">setExpanded</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-135"></a>                    <span class="k">break</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-136"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-137"></a>    <span class="k">def</span> <span class="nf">_unfold_class_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-138"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">expandAll</span><span class="p">()</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-139"></a>        <span class="n">classes_root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_classes_root</span><span class="p">()</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-140"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">classes_root</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-141"></a>            <span class="k">return</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-142"></a>        <span class="c">#for each class!</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-143"></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">classes_root</span><span class="o">.</span><span class="n">childCount</span><span class="p">()):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-144"></a>            <span class="n">class_item</span> <span class="o">=</span> <span class="n">classes_root</span><span class="o">.</span><span class="n">child</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-145"></a>            <span class="c">#for each attribute or functions</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-146"></a>            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">class_item</span><span class="o">.</span><span class="n">childCount</span><span class="p">()):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-147"></a>                <span class="n">item</span> <span class="o">=</span> <span class="n">class_item</span><span class="o">.</span><span class="n">child</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-148"></a>                <span class="c">#ATTRIBUTES ROOT!!</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-149"></a>                <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span><span class="o">.</span><span class="n">isAttribute</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">item</span><span class="o">.</span><span class="n">isClickable</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-150"></a>                    <span class="n">item</span><span class="o">.</span><span class="n">setExpanded</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-151"></a>                    <span class="k">break</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-152"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-153"></a>    <span class="k">def</span> <span class="nf">_save_symbols_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-154"></a>        <span class="c">#filename = self.actualSymbols[0]</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-155"></a>        <span class="c">#TODO: persist self.collapsedItems[filename] in QSettings</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-156"></a>        <span class="k">pass</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-157"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-158"></a>    <span class="k">def</span> <span class="nf">_get_expand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-159"></a>        <span class="sd">"""</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-160"></a><span class="sd">        Returns True or False to be used as setExpanded() with the items</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-161"></a><span class="sd">        It method is based on the click that the user made in the tree</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-162"></a><span class="sd">        """</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-163"></a>        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_unique_name</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-164"></a>        <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">actualSymbols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-165"></a>        <span class="n">collapsed_items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">collapsedItems</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="p">[])</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-166"></a>        <span class="n">can_check</span> <span class="o">=</span> <span class="p">(</span><span class="ow">not</span> <span class="n">item</span><span class="o">.</span><span class="n">isClickable</span><span class="p">)</span> <span class="ow">or</span> <span class="n">item</span><span class="o">.</span><span class="n">isClass</span> <span class="ow">or</span> <span class="n">item</span><span class="o">.</span><span class="n">isMethod</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-167"></a>        <span class="k">if</span> <span class="n">can_check</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">collapsed_items</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-168"></a>            <span class="k">return</span> <span class="bp">False</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-169"></a>        <span class="k">return</span> <span class="bp">True</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-170"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-171"></a>    <span class="nd">@staticmethod</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-172"></a>    <span class="k">def</span> <span class="nf">_get_unique_name</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-173"></a>        <span class="sd">"""</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-174"></a><span class="sd">        Returns a string used as unique name</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-175"></a><span class="sd">        """</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-176"></a>        <span class="c"># className_Attributes/className_Functions</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-177"></a>        <span class="n">parent</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-178"></a>        <span class="k">if</span> <span class="n">parent</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-179"></a>            <span class="k">return</span> <span class="s">"</span><span class="si">%s</span><span class="s">_</span><span class="si">%s</span><span class="s">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">parent</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-180"></a>        <span class="k">return</span> <span class="s">"_</span><span class="si">%s</span><span class="s">"</span> <span class="o">%</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-181"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-182"></a>    <span class="k">def</span> <span class="nf">update_symbols_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbols</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s">''</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-183"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">parent</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-184"></a>            <span class="k">if</span> <span class="n">filename</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">actualSymbols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> \
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-185"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">actualSymbols</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">symbols</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-186"></a>                    <span class="k">return</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-187"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-188"></a>            <span class="k">if</span> <span class="n">symbols</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">actualSymbols</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-189"></a>                <span class="c"># Nothing new then return</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-190"></a>                <span class="k">return</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-191"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-192"></a>            <span class="c"># we have new symbols refresh it</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-193"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-194"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">actualSymbols</span> <span class="o">=</span> <span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">symbols</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-195"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">docstrings</span> <span class="o">=</span> <span class="n">symbols</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'docstrings'</span><span class="p">,</span> <span class="p">{})</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-196"></a>            <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-197"></a>        <span class="k">if</span> <span class="s">'attributes'</span> <span class="ow">in</span> <span class="n">symbols</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-198"></a>            <span class="n">globalAttribute</span> <span class="o">=</span> <span class="n">ItemTree</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Attributes"</span><span class="p">)])</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-199"></a>            <span class="n">globalAttribute</span><span class="o">.</span><span class="n">isClickable</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-200"></a>            <span class="n">globalAttribute</span><span class="o">.</span><span class="n">isAttribute</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-201"></a>            <span class="n">globalAttribute</span><span class="o">.</span><span class="n">setExpanded</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_expand</span><span class="p">(</span><span class="n">globalAttribute</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-202"></a>            <span class="k">for</span> <span class="n">glob</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">symbols</span><span class="p">[</span><span class="s">'attributes'</span><span class="p">]):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-203"></a>                <span class="n">globItem</span> <span class="o">=</span> <span class="n">ItemTree</span><span class="p">(</span><span class="n">globalAttribute</span><span class="p">,</span> <span class="p">[</span><span class="n">glob</span><span class="p">],</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-204"></a>                    <span class="n">lineno</span><span class="o">=</span><span class="n">symbols</span><span class="p">[</span><span class="s">'attributes'</span><span class="p">][</span><span class="n">glob</span><span class="p">])</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-205"></a>                <span class="n">globItem</span><span class="o">.</span><span class="n">isAttribute</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-206"></a>                <span class="n">globItem</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">IMAGES</span><span class="p">[</span><span class="s">'attribute'</span><span class="p">]))</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-207"></a>                <span class="n">globItem</span><span class="o">.</span><span class="n">setExpanded</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_expand</span><span class="p">(</span><span class="n">globItem</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-208"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-209"></a>        <span class="k">if</span> <span class="s">'functions'</span> <span class="ow">in</span> <span class="n">symbols</span> <span class="ow">and</span> <span class="n">symbols</span><span class="p">[</span><span class="s">'functions'</span><span class="p">]:</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-210"></a>            <span class="n">functionsItem</span> <span class="o">=</span> <span class="n">ItemTree</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Functions"</span><span class="p">)])</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-211"></a>            <span class="n">functionsItem</span><span class="o">.</span><span class="n">isClickable</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-212"></a>            <span class="n">functionsItem</span><span class="o">.</span><span class="n">isMethod</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-213"></a>            <span class="n">functionsItem</span><span class="o">.</span><span class="n">setExpanded</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_expand</span><span class="p">(</span><span class="n">functionsItem</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-214"></a>            <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">symbols</span><span class="p">[</span><span class="s">'functions'</span><span class="p">]):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-215"></a>                <span class="n">item</span> <span class="o">=</span> <span class="n">ItemTree</span><span class="p">(</span><span class="n">functionsItem</span><span class="p">,</span> <span class="p">[</span><span class="n">func</span><span class="p">],</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-216"></a>                    <span class="n">lineno</span><span class="o">=</span><span class="n">symbols</span><span class="p">[</span><span class="s">'functions'</span><span class="p">][</span><span class="n">func</span><span class="p">][</span><span class="s">'lineno'</span><span class="p">])</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-217"></a>                <span class="n">tooltip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tooltip</span><span class="p">(</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-218"></a>                    <span class="n">func</span><span class="p">,</span> <span class="n">symbols</span><span class="p">[</span><span class="s">'functions'</span><span class="p">][</span><span class="n">func</span><span class="p">][</span><span class="s">'lineno'</span><span class="p">])</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-219"></a>                <span class="n">item</span><span class="o">.</span><span class="n">isMethod</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-220"></a>                <span class="n">item</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">IMAGES</span><span class="p">[</span><span class="s">'function'</span><span class="p">]))</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-221"></a>                <span class="n">item</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">tooltip</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-222"></a>                <span class="n">item</span><span class="o">.</span><span class="n">setExpanded</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_expand</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-223"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">update_symbols_tree</span><span class="p">(</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-224"></a>                    <span class="n">symbols</span><span class="p">[</span><span class="s">'functions'</span><span class="p">][</span><span class="n">func</span><span class="p">][</span><span class="s">'functions'</span><span class="p">],</span> <span class="n">parent</span><span class="o">=</span><span class="n">item</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-225"></a>        <span class="k">if</span> <span class="s">'classes'</span> <span class="ow">in</span> <span class="n">symbols</span> <span class="ow">and</span> <span class="n">symbols</span><span class="p">[</span><span class="s">'classes'</span><span class="p">]:</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-226"></a>            <span class="n">classItem</span> <span class="o">=</span> <span class="n">ItemTree</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Classes"</span><span class="p">)])</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-227"></a>            <span class="n">classItem</span><span class="o">.</span><span class="n">isClickable</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-228"></a>            <span class="n">classItem</span><span class="o">.</span><span class="n">isClass</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-229"></a>            <span class="n">classItem</span><span class="o">.</span><span class="n">setExpanded</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_expand</span><span class="p">(</span><span class="n">classItem</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-230"></a>            <span class="k">for</span> <span class="n">claz</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">symbols</span><span class="p">[</span><span class="s">'classes'</span><span class="p">]):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-231"></a>                <span class="n">line_number</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">[</span><span class="s">'classes'</span><span class="p">][</span><span class="n">claz</span><span class="p">][</span><span class="s">'lineno'</span><span class="p">]</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-232"></a>                <span class="n">item</span> <span class="o">=</span> <span class="n">ItemTree</span><span class="p">(</span><span class="n">classItem</span><span class="p">,</span> <span class="p">[</span><span class="n">claz</span><span class="p">],</span> <span class="n">lineno</span><span class="o">=</span><span class="n">line_number</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-233"></a>                <span class="n">item</span><span class="o">.</span><span class="n">isClass</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-234"></a>                <span class="n">tooltip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tooltip</span><span class="p">(</span><span class="n">claz</span><span class="p">,</span> <span class="n">line_number</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-235"></a>                <span class="n">item</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">tooltip</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-236"></a>                <span class="n">item</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">QIcon</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">IMAGES</span><span class="p">[</span><span class="s">'class'</span><span class="p">]))</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-237"></a>                <span class="n">item</span><span class="o">.</span><span class="n">setExpanded</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_expand</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-238"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">update_symbols_tree</span><span class="p">(</span><span class="n">symbols</span><span class="p">[</span><span class="s">'classes'</span><span class="p">][</span><span class="n">claz</span><span class="p">][</span><span class="s">'members'</span><span class="p">],</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-239"></a>                    <span class="n">parent</span><span class="o">=</span><span class="n">item</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-240"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-241"></a>    <span class="k">def</span> <span class="nf">_go_to_definition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-242"></a>        <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">isClickable</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-243"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">"goToDefinition(int)"</span><span class="p">),</span> <span class="n">item</span><span class="o">.</span><span class="n">lineno</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-244"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-245"></a>    <span class="k">def</span> <span class="nf">create_tooltip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">lineno</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-246"></a>        <span class="n">doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">docstrings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lineno</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-247"></a>        <span class="k">if</span> <span class="n">doc</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-248"></a>            <span class="n">doc</span> <span class="o">=</span> <span class="s">''</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-249"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-250"></a>            <span class="n">doc</span> <span class="o">=</span> <span class="s">'</span><span class="se">\n</span><span class="s">'</span> <span class="o">+</span> <span class="n">doc</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-251"></a>        <span class="n">tooltip</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="n">doc</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-252"></a>        <span class="k">return</span> <span class="n">tooltip</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-253"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-254"></a>    <span class="k">def</span> <span class="nf">_item_collapsed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-255"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">TreeSymbolsWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">collapseItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-256"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-257"></a>        <span class="n">can_check</span> <span class="o">=</span> <span class="p">(</span><span class="ow">not</span> <span class="n">item</span><span class="o">.</span><span class="n">isClickable</span><span class="p">)</span> <span class="ow">or</span> <span class="n">item</span><span class="o">.</span><span class="n">isClass</span> <span class="ow">or</span> <span class="n">item</span><span class="o">.</span><span class="n">isMethod</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-258"></a>        <span class="k">if</span> <span class="n">can_check</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-259"></a>            <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_unique_name</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-260"></a>            <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">actualSymbols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-261"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">collapsedItems</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="p">[])</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-262"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">collapsedItems</span><span class="p">[</span><span class="n">filename</span><span class="p">]:</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-263"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">collapsedItems</span><span class="p">[</span><span class="n">filename</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-264"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-265"></a>    <span class="k">def</span> <span class="nf">_item_expanded</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-266"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">TreeSymbolsWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">expandItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-267"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-268"></a>        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_unique_name</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-269"></a>        <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">actualSymbols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-270"></a>        <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">collapsedItems</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="p">[]):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-271"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">collapsedItems</span><span class="p">[</span><span class="n">filename</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-272"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">collapsedItems</span><span class="p">[</span><span class="n">filename</span><span class="p">]):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-273"></a>                <span class="c"># no more items, free space</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-274"></a>                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">collapsedItems</span><span class="p">[</span><span class="n">filename</span><span class="p">]</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-275"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-276"></a>    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-277"></a>        <span class="sd">"""</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-278"></a><span class="sd">        Reset the tree and reset attributes</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-279"></a><span class="sd">        """</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-280"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-281"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">collapsedItems</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-282"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-283"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-284"></a><span class="k">class</span> <span class="nc">ItemTree</span><span class="p">(</span><span class="n">QTreeWidgetItem</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-285"></a>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-286"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">lineno</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-287"></a>        <span class="n">QTreeWidgetItem</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-288"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">lineno</span> <span class="o">=</span> <span class="n">lineno</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-289"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">isClickable</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-290"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">isAttribute</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-291"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">isClass</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_ideguiexplorertree_symbols_widgetpy-292"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">isMethod</span> <span class="o">=</span> <span class="bp">False</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

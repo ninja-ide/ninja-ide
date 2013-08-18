@@ -1,0 +1,233 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="combo_tabs.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>combo_tabs.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../../">/listings</a>
+        </li><li><a href="../../">/ninja_ide</a>
+        </li><li><a href="../">/gui</a>
+        </li><li><a href=".">/main_panel</a>
+        </li><li><a href="#">/combo_tabs.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-1"> 1</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-2"> 2</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-3"> 3</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-4"> 4</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-5"> 5</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-6"> 6</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-7"> 7</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-8"> 8</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-9"> 9</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-10">10</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-11">11</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-12">12</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-13">13</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-14">14</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-15">15</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-16">16</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-17">17</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-18">18</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-19">19</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-20">20</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-21">21</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-22">22</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-23">23</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-24">24</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-25">25</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-26">26</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-27">27</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-28">28</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-29">29</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-30">30</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-31">31</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-32">32</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-33">33</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-34">34</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-35">35</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-36">36</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-37">37</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-38">38</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-39">39</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-40">40</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-41">41</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-42">42</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-43">43</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-44">44</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-45">45</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-46">46</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-47">47</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-48">48</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-49">49</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-50">50</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-51">51</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-52">52</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-53">53</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-54">54</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-55">55</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-56">56</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-57">57</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-58">58</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-59">59</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-60">60</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-61">61</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-62">62</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-63">63</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-64">64</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-65">65</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-66">66</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-67">67</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-68">68</a>
+<a href="combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-69">69</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_ideguimain_panelcombo_tabspy-1"></a><span class="c"># -*- coding: utf-8 -*-</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-2"></a>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-3"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QWidget</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-4"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QFrame</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-5"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QVBoxLayout</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-6"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QHBoxLayout</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-7"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QStackedLayout</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-8"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QStyle</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-9"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QLabel</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-10"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QComboBox</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-11"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QSizePolicy</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-12"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QPushButton</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-13"></a>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-14"></a><span class="kn">from</span> <span class="nn">ninja_ide</span> <span class="kn">import</span> <span class="n">translations</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-15"></a><span class="kn">from</span> <span class="nn">ninja_ide.gui.editor</span> <span class="kn">import</span> <span class="n">neditable</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-16"></a><span class="kn">from</span> <span class="nn">ninja_ide.gui.editor</span> <span class="kn">import</span> <span class="n">editor</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-17"></a>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-18"></a>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-19"></a><span class="k">class</span> <span class="nc">ComboTabs</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-20"></a>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-21"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-22"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">ComboTabs</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-23"></a>        <span class="n">vbox</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-24"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-25"></a>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-26"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">bar</span> <span class="o">=</span> <span class="n">ActionBar</span><span class="p">()</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-27"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bar</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-28"></a>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-29"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">stacked</span> <span class="o">=</span> <span class="n">QStackedLayout</span><span class="p">()</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-30"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">editable</span> <span class="o">=</span> <span class="n">neditable</span><span class="o">.</span><span class="n">NEditable</span><span class="p">(</span><span class="s">''</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-31"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">editor_widget</span> <span class="o">=</span> <span class="n">editor</span><span class="o">.</span><span class="n">create_editor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editable</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-32"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">stacked</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editor_widget</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-33"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stacked</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-34"></a>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-35"></a>    <span class="k">def</span> <span class="nf">currentWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-36"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor_widget</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-37"></a>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-38"></a>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-39"></a><span class="k">class</span> <span class="nc">ActionBar</span><span class="p">(</span><span class="n">QFrame</span><span class="p">):</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-40"></a>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-41"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-42"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">ActionBar</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-43"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">"actionbar"</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-44"></a>        <span class="n">hbox</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-45"></a>        <span class="n">hbox</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-46"></a>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-47"></a>        <span class="n">combo</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">()</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-48"></a>        <span class="n">combo</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">"combotab"</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-49"></a>        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">combo</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-50"></a>        <span class="n">combo</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="s">"main_container.py"</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-51"></a>        <span class="n">combo</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="s">"ide.py"</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-52"></a>        <span class="n">combo</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="s">"editor.py"</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-53"></a>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-54"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">lbl_checks</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s">''</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-55"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">lbl_checks</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Fixed</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Fixed</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-56"></a>        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lbl_checks</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-57"></a>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-58"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_pos_text</span> <span class="o">=</span> <span class="s">"Ln: </span><span class="si">%d</span><span class="s">, Col: </span><span class="si">%d</span><span class="s">"</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-59"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">lbl_position</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pos_text</span> <span class="o">%</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-60"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">lbl_position</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">"position"</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-61"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">lbl_position</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Fixed</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Fixed</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-62"></a>        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lbl_position</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-63"></a>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-64"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">btn_close</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-65"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">standardIcon</span><span class="p">(</span><span class="n">QStyle</span><span class="o">.</span><span class="n">SP_DialogCloseButton</span><span class="p">),</span> <span class="s">''</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-66"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">btn_close</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s">'navigation_button'</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-67"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">btn_close</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">translations</span><span class="o">.</span><span class="n">TR_CLOSE_SPLIT</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-68"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">btn_close</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Fixed</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Fixed</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelcombo_tabspy-69"></a>        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btn_close</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

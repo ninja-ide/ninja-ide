@@ -1,0 +1,337 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: minimap
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `minimap.py </listings/ninja_ide/gui/editor/minimap.py.html>`_ API
+==============================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `sys </listings/ninja_ide/gui/editor/minimap.py.html#17>`_
+
+- `PyQt4.QtGui.QBrush </listings/ninja_ide/gui/editor/minimap.py.html#27>`_
+
+- `PyQt4.QtGui.QColor </listings/ninja_ide/gui/editor/minimap.py.html#25>`_
+
+- `PyQt4.QtGui.QFontMetrics </listings/ninja_ide/gui/editor/minimap.py.html#23>`_
+
+- `PyQt4.QtGui.QFrame </listings/ninja_ide/gui/editor/minimap.py.html#19>`_
+
+- `PyQt4.QtGui.QGraphicsOpacityEffect </listings/ninja_ide/gui/editor/minimap.py.html#22>`_
+
+- `PyQt4.QtGui.QPainter </listings/ninja_ide/gui/editor/minimap.py.html#24>`_
+
+- `PyQt4.QtGui.QPen </listings/ninja_ide/gui/editor/minimap.py.html#26>`_
+
+- `PyQt4.QtGui.QPlainTextEdit </listings/ninja_ide/gui/editor/minimap.py.html#20>`_
+
+- `PyQt4.QtCore.QPropertyAnimation </listings/ninja_ide/gui/editor/minimap.py.html#30>`_
+
+- `PyQt4.QtGui.QTextOption </listings/ninja_ide/gui/editor/minimap.py.html#21>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/editor/minimap.py.html#28>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/editor/minimap.py.html#29>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/editor/minimap.py.html#32>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/editor/minimap.py.html#33>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `ACTIVATE_OPACITY [at ln:37] </listings/ninja_ide/gui/editor/minimap.py.html#37>`_
+
+
+----
+
+
+
+*Class:* `MiniMap(QPlainTextEdit) </listings/ninja_ide/gui/editor/minimap.py.html#listingsninja_ideguieditorminimappy-40>`_
+-----------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class MiniMap(QPlainTextEdit):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_parent [at ln:53] </listings/ninja_ide/gui/editor/minimap.py.html#53>`_
+
+- `highlighter [at ln:54] </listings/ninja_ide/gui/editor/minimap.py.html#54>`_
+
+- `lines_count [at ln:55] </listings/ninja_ide/gui/editor/minimap.py.html#55>`_
+
+- `slider [at ln:66] </listings/ninja_ide/gui/editor/minimap.py.html#66>`_
+
+
+*Function:* `__calculate_max() [at ln:69] </listings/ninja_ide/gui/editor/minimap.py.html#listingsninja_ideguieditorminimappy-69>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __calculate_max():
+
+
+No description.
+
+
+----
+
+*Function:* `__init__(parent) [at ln:42] </listings/ninja_ide/gui/editor/minimap.py.html#listingsninja_ideguieditorminimappy-42>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent):
+
+
+No description.
+
+
+----
+
+*Function:* `adjust_to_parent() [at ln:80] </listings/ninja_ide/gui/editor/minimap.py.html#listingsninja_ideguieditorminimappy-80>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def adjust_to_parent():
+
+
+No description.
+
+
+----
+
+*Function:* `enterEvent(event) [at ln:103] </listings/ninja_ide/gui/editor/minimap.py.html#listingsninja_ideguieditorminimappy-103>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def enterEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `leaveEvent(event) [at ln:110] </listings/ninja_ide/gui/editor/minimap.py.html#listingsninja_ideguieditorminimappy-110>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def leaveEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `mousePressEvent(event) [at ln:117] </listings/ninja_ide/gui/editor/minimap.py.html#listingsninja_ideguieditorminimappy-117>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def mousePressEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `resizeEvent(event) [at ln:122] </listings/ninja_ide/gui/editor/minimap.py.html#listingsninja_ideguieditorminimappy-122>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def resizeEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `scroll_area(pos_parent, pos_slider) [at ln:126] </listings/ninja_ide/gui/editor/minimap.py.html#listingsninja_ideguieditorminimappy-126>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def scroll_area(pos_parent, pos_slider):
+
+
+No description.
+
+
+----
+
+*Function:* `set_code(source) [at ln:76] </listings/ninja_ide/gui/editor/minimap.py.html#listingsninja_ideguieditorminimappy-76>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_code(source):
+
+
+No description.
+
+
+----
+
+*Function:* `update_visible_area() [at ln:93] </listings/ninja_ide/gui/editor/minimap.py.html#listingsninja_ideguieditorminimappy-93>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_visible_area():
+
+
+No description.
+
+
+----
+
+*Function:* `wheelEvent(event) [at ln:131] </listings/ninja_ide/gui/editor/minimap.py.html#listingsninja_ideguieditorminimappy-131>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def wheelEvent(event):
+
+
+No description.
+
+
+----
+
+*Class:* `SliderArea(QFrame) </listings/ninja_ide/gui/editor/minimap.py.html#listingsninja_ideguieditorminimappy-136>`_
+-------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class SliderArea(QFrame):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `__scroll_margins [at ln:174] </listings/ninja_ide/gui/editor/minimap.py.html#174>`_
+
+- `_parent [at ln:140] </listings/ninja_ide/gui/editor/minimap.py.html#140>`_
+
+- `pressed [at ln:186] </listings/ninja_ide/gui/editor/minimap.py.html#186>`_
+
+
+*Function:* `__init__(parent) [at ln:138] </listings/ninja_ide/gui/editor/minimap.py.html#listingsninja_ideguieditorminimappy-138>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent):
+
+
+No description.
+
+
+----
+
+*Function:* `mouseMoveEvent(event) [at ln:189] </listings/ninja_ide/gui/editor/minimap.py.html#listingsninja_ideguieditorminimappy-189>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def mouseMoveEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `mousePressEvent(event) [at ln:179] </listings/ninja_ide/gui/editor/minimap.py.html#listingsninja_ideguieditorminimappy-179>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def mousePressEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `mouseReleaseEvent(event) [at ln:184] </listings/ninja_ide/gui/editor/minimap.py.html#listingsninja_ideguieditorminimappy-184>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def mouseReleaseEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `move_slider(y) [at ln:176] </listings/ninja_ide/gui/editor/minimap.py.html#listingsninja_ideguieditorminimappy-176>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def move_slider(y):
+
+
+No description.
+
+
+----
+
+*Function:* `paintEvent(event) [at ln:156] </listings/ninja_ide/gui/editor/minimap.py.html#listingsninja_ideguieditorminimappy-156>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def paintEvent(event):
+
+| Paint over the widget to overlay its content.
+
+
+----
+
+*Function:* `update_position() [at ln:169] </listings/ninja_ide/gui/editor/minimap.py.html#listingsninja_ideguieditorminimappy-169>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_position():
+
+
+No description.
+
+
+
+

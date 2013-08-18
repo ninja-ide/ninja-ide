@@ -1,0 +1,943 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: ui_tools
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `ui_tools.py </listings/ninja_ide/tools/ui_tools.py.html>`_ API
+===========================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `collections </listings/ninja_ide/tools/ui_tools.py.html#21>`_
+
+- `math </listings/ninja_ide/tools/ui_tools.py.html#20>`_
+
+- `os </listings/ninja_ide/tools/ui_tools.py.html#19>`_
+
+- `ninja_ide.core.file_handling.file_manager.NinjaIOException </listings/ninja_ide/tools/ui_tools.py.html#67>`_
+
+- `PyQt4.QtGui.QAbstractItemView </listings/ninja_ide/tools/ui_tools.py.html#37>`_
+
+- `PyQt4.QtGui.QAction </listings/ninja_ide/tools/ui_tools.py.html#27>`_
+
+- `PyQt4.QtGui.QApplication </listings/ninja_ide/tools/ui_tools.py.html#24>`_
+
+- `PyQt4.QtGui.QBrush </listings/ninja_ide/tools/ui_tools.py.html#43>`_
+
+- `PyQt4.QtGui.QColor </listings/ninja_ide/tools/ui_tools.py.html#47>`_
+
+- `PyQt4.QtGui.QCompleter </listings/ninja_ide/tools/ui_tools.py.html#28>`_
+
+- `PyQt4.QtGui.QDialog </listings/ninja_ide/tools/ui_tools.py.html#48>`_
+
+- `PyQt4.QtCore.QDir </listings/ninja_ide/tools/ui_tools.py.html#55>`_
+
+- `PyQt4.QtCore.QEvent </listings/ninja_ide/tools/ui_tools.py.html#61>`_
+
+- `PyQt4.QtGui.QHBoxLayout </listings/ninja_ide/tools/ui_tools.py.html#52>`_
+
+- `PyQt4.QtGui.QIcon </listings/ninja_ide/tools/ui_tools.py.html#45>`_
+
+- `PyQt4.QtGui.QKeyEvent </listings/ninja_ide/tools/ui_tools.py.html#29>`_
+
+- `PyQt4.QtGui.QLabel </listings/ninja_ide/tools/ui_tools.py.html#31>`_
+
+- `PyQt4.QtGui.QLineEdit </listings/ninja_ide/tools/ui_tools.py.html#30>`_
+
+- `PyQt4.QtGui.QLinearGradient </listings/ninja_ide/tools/ui_tools.py.html#35>`_
+
+- `PyQt4.QtGui.QListWidget </listings/ninja_ide/tools/ui_tools.py.html#34>`_
+
+- `PyQt4.QtGui.QMenu </listings/ninja_ide/tools/ui_tools.py.html#26>`_
+
+- `PyQt4.QtGui.QMovie </listings/ninja_ide/tools/ui_tools.py.html#32>`_
+
+- `PyQt4.QtCore.QObject </listings/ninja_ide/tools/ui_tools.py.html#58>`_
+
+- `PyQt4.QtGui.QPainter </listings/ninja_ide/tools/ui_tools.py.html#42>`_
+
+- `PyQt4.QtGui.QPalette </listings/ninja_ide/tools/ui_tools.py.html#40>`_
+
+- `PyQt4.QtGui.QPen </listings/ninja_ide/tools/ui_tools.py.html#46>`_
+
+- `PyQt4.QtGui.QPixmap </listings/ninja_ide/tools/ui_tools.py.html#44>`_
+
+- `PyQt4.QtGui.QPrintPreviewDialog </listings/ninja_ide/tools/ui_tools.py.html#39>`_
+
+- `PyQt4.QtGui.QPrinter </listings/ninja_ide/tools/ui_tools.py.html#38>`_
+
+- `PyQt4.QtGui.QPushButton </listings/ninja_ide/tools/ui_tools.py.html#53>`_
+
+- `PyQt4.QtGui.QShortcut </listings/ninja_ide/tools/ui_tools.py.html#41>`_
+
+- `PyQt4.QtCore.QSize </listings/ninja_ide/tools/ui_tools.py.html#57>`_
+
+- `PyQt4.QtGui.QSizePolicy </listings/ninja_ide/tools/ui_tools.py.html#33>`_
+
+- `PyQt4.QtGui.QTableWidgetItem </listings/ninja_ide/tools/ui_tools.py.html#36>`_
+
+- `PyQt4.QtCore.QThread </listings/ninja_ide/tools/ui_tools.py.html#60>`_
+
+- `PyQt4.QtCore.QTimeLine </listings/ninja_ide/tools/ui_tools.py.html#62>`_
+
+- `PyQt4.QtGui.QTreeWidget </listings/ninja_ide/tools/ui_tools.py.html#49>`_
+
+- `PyQt4.QtGui.QTreeWidgetItem </listings/ninja_ide/tools/ui_tools.py.html#50>`_
+
+- `PyQt4.QtCore.QUrl </listings/ninja_ide/tools/ui_tools.py.html#56>`_
+
+- `PyQt4.QtGui.QVBoxLayout </listings/ninja_ide/tools/ui_tools.py.html#51>`_
+
+- `PyQt4.QtGui.QWidget </listings/ninja_ide/tools/ui_tools.py.html#25>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/tools/ui_tools.py.html#54>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/tools/ui_tools.py.html#59>`_
+
+- `__future__.absolute_import </listings/ninja_ide/tools/ui_tools.py.html#17>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/tools/ui_tools.py.html#66>`_
+
+- `ninja_ide.tools.json_manager </listings/ninja_ide/tools/ui_tools.py.html#68>`_
+
+- `ninja_ide.resources </listings/ninja_ide/tools/ui_tools.py.html#64>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/tools/ui_tools.py.html#65>`_
+
+- `urlparse.urlparse </listings/ninja_ide/tools/ui_tools.py.html#22>`_
+
+- `urlparse.urlunparse </listings/ninja_ide/tools/ui_tools.py.html#22>`_
+
+
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `get_qml_resource(qmlpath) [at ln:672] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-672>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_qml_resource(qmlpath):
+
+
+No description.
+
+
+----
+
+*Function:* `install_shortcuts(obj, actions, ide) [at ln:623] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-623>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def install_shortcuts(obj, actions, ide):
+
+
+No description.
+
+
+----
+
+*Function:* `load_table(table, headers, data, checkFirstColumn=True) [at ln:71] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-71>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_table(table, headers, data, checkFirstColumn=True):
+
+
+No description.
+
+
+----
+
+*Function:* `print_file(fileName, printFunction) [at ln:266] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-266>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def print_file(fileName, printFunction):
+
+| This method print a file
+| 
+| This method print a file, fileName is the default fileName,
+| and printFunction is a funcion that takes a QPrinter
+| object and print the file,
+| the print method
+| More info on:http://doc.qt.nokia.com/latest/printing.html
+
+
+----
+
+*Function:* `remove_get_selected_items(table, data) [at ln:91] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-91>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def remove_get_selected_items(table, data):
+
+
+No description.
+
+
+----
+
+
+*Class:* `ThreadProjectExplore(QThread) </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-149>`_
+-----------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ThreadProjectExplore(QThread):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_extensions [at ln:166] </listings/ninja_ide/tools/ui_tools.py.html#166>`_
+
+- `_folder_path [at ln:164] </listings/ninja_ide/tools/ui_tools.py.html#164>`_
+
+- `_item [at ln:165] </listings/ninja_ide/tools/ui_tools.py.html#165>`_
+
+- `execute [at ln:167] </listings/ninja_ide/tools/ui_tools.py.html#167>`_
+
+
+*Function:* `__init__() [at ln:151] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-151>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `_thread_open_project() [at ln:189] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-189>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _thread_open_project():
+
+
+No description.
+
+
+----
+
+*Function:* `_thread_refresh_project() [at ln:173] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-173>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _thread_refresh_project():
+
+
+No description.
+
+
+----
+
+*Function:* `open_folder(folder) [at ln:158] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-158>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def open_folder(folder):
+
+
+No description.
+
+
+----
+
+*Function:* `refresh_project(path, item, extensions) [at ln:163] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-163>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def refresh_project(path, item, extensions):
+
+
+No description.
+
+
+----
+
+*Function:* `run() [at ln:170] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-170>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run():
+
+
+No description.
+
+
+----
+
+*Class:* `ThreadExecution(QThread) </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-129>`_
+------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ThreadExecution(QThread):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `args [at ln:137] </listings/ninja_ide/tools/ui_tools.py.html#137>`_
+
+- `execute [at ln:134] </listings/ninja_ide/tools/ui_tools.py.html#134>`_
+
+- `kwargs [at ln:138] </listings/ninja_ide/tools/ui_tools.py.html#138>`_
+
+- `result [at ln:135] </listings/ninja_ide/tools/ui_tools.py.html#135>`_
+
+- `signal_return [at ln:146] </listings/ninja_ide/tools/ui_tools.py.html#146>`_
+
+- `storage_values [at ln:136] </listings/ninja_ide/tools/ui_tools.py.html#136>`_
+
+
+*Function:* `__init__(functionInit=None, args=None, kwargs=None) [at ln:131] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-131>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(functionInit=None, args=None, kwargs=None):
+
+
+No description.
+
+
+----
+
+*Function:* `run() [at ln:141] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-141>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run():
+
+
+No description.
+
+
+----
+
+*Class:* `FaderWidget(QWidget) </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-293>`_
+--------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class FaderWidget(QWidget):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `old_pixmap [at ln:298] </listings/ninja_ide/tools/ui_tools.py.html#298>`_
+
+- `pixmap_opacity [at ln:319] </listings/ninja_ide/tools/ui_tools.py.html#319>`_
+
+- `timeline [at ln:302] </listings/ninja_ide/tools/ui_tools.py.html#302>`_
+
+
+*Function:* `__init__(old_widget, new_widget) [at ln:295] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-295>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(old_widget, new_widget):
+
+
+No description.
+
+
+----
+
+*Function:* `animate(value) [at ln:318] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-318>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def animate(value):
+
+
+No description.
+
+
+----
+
+*Function:* `paintEvent(event) [at ln:311] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-311>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def paintEvent(event):
+
+
+No description.
+
+
+----
+
+*Class:* `LineEditButton(object) </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-519>`_
+----------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class LineEditButton(object):
+
+
+No description.
+
+
+*Function:* `__init__(lineEdit, operation, icon=None) [at ln:521] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-521>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(lineEdit, operation, icon=None):
+
+
+No description.
+
+
+----
+
+*Class:* `AddToProject(QDialog) </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-328>`_
+---------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class AddToProject(QDialog):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_loading_items [at ln:350] </listings/ninja_ide/tools/ui_tools.py.html#350>`_
+
+- `_root [at ln:404] </listings/ninja_ide/tools/ui_tools.py.html#404>`_
+
+- `_thread_execution [at ln:352] </listings/ninja_ide/tools/ui_tools.py.html#352>`_
+
+- `_tree [at ln:337] </listings/ninja_ide/tools/ui_tools.py.html#337>`_
+
+- `pathSelected [at ln:334] </listings/ninja_ide/tools/ui_tools.py.html#334>`_
+
+- `storage_values [at ln:373] </listings/ninja_ide/tools/ui_tools.py.html#373>`_
+
+
+*Function:* `__init__(pathProjects, parent=None) [at ln:330] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-330>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(pathProjects, parent=None):
+
+
+No description.
+
+
+----
+
+*Function:* `_callback_load_project() [at ln:375] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-375>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _callback_load_project():
+
+
+No description.
+
+
+----
+
+*Function:* `_load_folder(folderStructure, folder, parentItem) [at ln:406] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-406>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _load_folder(folderStructure, folder, parentItem):
+
+
+No description.
+
+
+----
+
+*Function:* `_load_project(folderStructure, folder) [at ln:391] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-391>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _load_project(folderStructure, folder):
+
+
+No description.
+
+
+----
+
+*Function:* `_select_path() [at ln:385] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-385>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _select_path():
+
+
+No description.
+
+
+----
+
+*Function:* `_thread_load_projects(projects) [at ln:368] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-368>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _thread_load_projects(projects):
+
+
+No description.
+
+
+----
+
+*Function:* `loading_projects(projects) [at ln:361] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-361>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def loading_projects(projects):
+
+
+No description.
+
+
+----
+
+*Class:* `Overlay(QWidget) </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-212>`_
+----------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Overlay(QWidget):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `counter [at ln:254] </listings/ninja_ide/tools/ui_tools.py.html#254>`_
+
+- `timer [at ln:253] </listings/ninja_ide/tools/ui_tools.py.html#253>`_
+
+
+*Function:* `__init__(parent=None) [at ln:214] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-214>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent=None):
+
+
+No description.
+
+
+----
+
+*Function:* `paintEvent(event) [at ln:221] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-221>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def paintEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `showEvent(event) [at ln:252] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-252>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def showEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `timerEvent(event) [at ln:256] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-256>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def timerEvent(event):
+
+
+No description.
+
+
+----
+
+*Class:* `LineEditTabCompleter(QLineEdit) </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-572>`_
+-------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class LineEditTabCompleter(QLineEdit):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `completer [at ln:576] </listings/ninja_ide/tools/ui_tools.py.html#576>`_
+
+- `completionType [at ln:578] </listings/ninja_ide/tools/ui_tools.py.html#578>`_
+
+
+*Function:* `__init__(completer, type=QCompleter.PopupCompletion) [at ln:574] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-574>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(completer, type=QCompleter.PopupCompletion):
+
+
+No description.
+
+
+----
+
+*Function:* `change_completion_type() [at ln:614] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-614>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def change_completion_type():
+
+
+No description.
+
+
+----
+
+*Function:* `contextMenuEvent(event) [at ln:597] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-597>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def contextMenuEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `event(event) [at ln:581] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-581>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def event(event):
+
+
+No description.
+
+
+----
+
+*Class:* `ProfilesLoader(QDialog) </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-426>`_
+-----------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ProfilesLoader(QDialog):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `Profile [at ln:488] </listings/ninja_ide/tools/ui_tools.py.html#488>`_
+
+- `_profiles [at ln:433] </listings/ninja_ide/tools/ui_tools.py.html#433>`_
+
+- `btnCreate [at ln:453] </listings/ninja_ide/tools/ui_tools.py.html#453>`_
+
+- `btnDelete [at ln:449] </listings/ninja_ide/tools/ui_tools.py.html#449>`_
+
+- `btnOpen [at ln:455] </listings/ninja_ide/tools/ui_tools.py.html#455>`_
+
+- `btnUpdate [at ln:451] </listings/ninja_ide/tools/ui_tools.py.html#451>`_
+
+- `contentList [at ln:448] </listings/ninja_ide/tools/ui_tools.py.html#448>`_
+
+- `create_function [at ln:435] </listings/ninja_ide/tools/ui_tools.py.html#435>`_
+
+- `ide [at ln:437] </listings/ninja_ide/tools/ui_tools.py.html#437>`_
+
+- `load_function [at ln:434] </listings/ninja_ide/tools/ui_tools.py.html#434>`_
+
+- `profileList [at ln:445] </listings/ninja_ide/tools/ui_tools.py.html#445>`_
+
+- `save_function [at ln:436] </listings/ninja_ide/tools/ui_tools.py.html#436>`_
+
+
+*Function:* `__init__(load_func, create_func, save_func, profiles, parent=None) [at ln:428] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-428>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(load_func, create_func, save_func, profiles, parent=None):
+
+
+No description.
+
+
+----
+
+*Function:* `create_profile() [at ln:486] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-486>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def create_profile():
+
+
+No description.
+
+
+----
+
+*Function:* `delete_profile() [at ln:507] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-507>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def delete_profile():
+
+
+No description.
+
+
+----
+
+*Function:* `load_profile_content() [at ln:475] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-475>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_profile_content():
+
+
+No description.
+
+
+----
+
+*Function:* `open_profile() [at ln:500] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-500>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def open_profile():
+
+
+No description.
+
+
+----
+
+*Function:* `save_profile() [at ln:491] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-491>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def save_profile():
+
+
+No description.
+
+
+----
+
+*Class:* `LineEditCount(QObject) </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-550>`_
+----------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class LineEditCount(QObject):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `counter [at ln:558] </listings/ninja_ide/tools/ui_tools.py.html#558>`_
+
+
+*Function:* `__init__(lineEdit) [at ln:552] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-552>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(lineEdit):
+
+
+No description.
+
+
+----
+
+*Function:* `update_count(index, total, hasSearch=False) [at ln:563] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-563>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_count(index, total, hasSearch=False):
+
+
+No description.
+
+
+----
+
+*Class:* `ComboBoxButton(object) </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-534>`_
+----------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ComboBoxButton(object):
+
+
+No description.
+
+
+*Function:* `__init__(combo, operation, icon=None) [at ln:536] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-536>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(combo, operation, icon=None):
+
+
+No description.
+
+
+----
+
+*Class:* `LoadingItem(QLabel) </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-103>`_
+-------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class LoadingItem(QLabel):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `movie [at ln:107] </listings/ninja_ide/tools/ui_tools.py.html#107>`_
+
+
+*Function:* `__init__() [at ln:105] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-105>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `add_item_to_tree(folder, tree, item_type=None, parent=None) [at ln:112] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-112>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_item_to_tree(folder, tree, item_type=None, parent=None):
+
+
+No description.
+
+
+----
+
+*Class:* `TabShortcuts(QShortcut) </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-679>`_
+-----------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class TabShortcuts(QShortcut):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `index [at ln:683] </listings/ninja_ide/tools/ui_tools.py.html#683>`_
+
+
+*Function:* `__init__(key, parent, index) [at ln:681] </listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-681>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(key, parent, index):
+
+
+No description.
+
+
+
+

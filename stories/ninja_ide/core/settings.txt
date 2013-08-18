@@ -1,0 +1,357 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: settings
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `settings.py </listings/ninja_ide/core/settings.py.html>`_ API
+==========================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `os </listings/ninja_ide/core/settings.py.html#18>`_
+
+- `sys </listings/ninja_ide/core/settings.py.html#19>`_
+
+- `PyQt4.QtCore.QDir </listings/ninja_ide/core/settings.py.html#22>`_
+
+- `PyQt4.QtCore.QFileInfo </listings/ninja_ide/core/settings.py.html#23>`_
+
+- `PyQt4.QtCore.QSettings </listings/ninja_ide/core/settings.py.html#21>`_
+
+- `ninja_ide.dependencies.pep8mod </listings/ninja_ide/core/settings.py.html#26>`_
+
+- `ninja_ide.resources </listings/ninja_ide/core/settings.py.html#25>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `ALLOW_WORD_WRAP [at ln:132] </listings/ninja_ide/core/settings.py.html#132>`_
+
+- `BOOKMARKS [at ln:169] </listings/ninja_ide/core/settings.py.html#169>`_
+
+- `BRACES [at ln:141] </listings/ninja_ide/core/settings.py.html#141>`_
+
+- `BREAKPOINTS [at ln:168] </listings/ninja_ide/core/settings.py.html#168>`_
+
+- `CENTER_ON_SCROLL [at ln:162] </listings/ninja_ide/core/settings.py.html#162>`_
+
+- `CHECK_FOR_DOCSTRINGS [at ln:176] </listings/ninja_ide/core/settings.py.html#176>`_
+
+- `CHECK_HIGHLIGHT_LINE [at ln:155] </listings/ninja_ide/core/settings.py.html#155>`_
+
+- `CHECK_STYLE [at ln:154] </listings/ninja_ide/core/settings.py.html#154>`_
+
+- `CODE_COMPLETION [at ln:156] </listings/ninja_ide/core/settings.py.html#156>`_
+
+- `COMPLETE_DECLARATIONS [at ln:157] </listings/ninja_ide/core/settings.py.html#157>`_
+
+- `CONFIRM_EXIT [at ln:96] </listings/ninja_ide/core/settings.py.html#96>`_
+
+- `COPY_HISTORY_BUFFER [at ln:150] </listings/ninja_ide/core/settings.py.html#150>`_
+
+- `ERRORS_HIGHLIGHT_LINE [at ln:153] </listings/ninja_ide/core/settings.py.html#153>`_
+
+- `EXECUTION_OPTIONS [at ln:103] </listings/ninja_ide/core/settings.py.html#103>`_
+
+- `EXTENSIONS [at ln:166] </listings/ninja_ide/core/settings.py.html#166>`_
+
+- `FIND_ERRORS [at ln:152] </listings/ninja_ide/core/settings.py.html#152>`_
+
+- `FONT_FAMILY [at ln:39] </listings/ninja_ide/core/settings.py.html#39>`_
+
+- `FONT_MAX_SIZE [at ln:147] </listings/ninja_ide/core/settings.py.html#147>`_
+
+- `FONT_MIN_SIZE [at ln:148] </listings/ninja_ide/core/settings.py.html#148>`_
+
+- `FONT_SIZE [at ln:40] </listings/ninja_ide/core/settings.py.html#40>`_
+
+- `HIDE_TOOLBAR [at ln:98] </listings/ninja_ide/core/settings.py.html#98>`_
+
+- `INDENT [at ln:133] </listings/ninja_ide/core/settings.py.html#133>`_
+
+- `IS_MAC_OS [at ln:35] </listings/ninja_ide/core/settings.py.html#35>`_
+
+- `IS_WINDOWS [at ln:34] </listings/ninja_ide/core/settings.py.html#34>`_
+
+- `LANGS [at ln:212] </listings/ninja_ide/core/settings.py.html#212>`_
+
+- `LANGUAGE [at ln:92] </listings/ninja_ide/core/settings.py.html#92>`_
+
+- `MARGIN_LINE [at ln:136] </listings/ninja_ide/core/settings.py.html#136>`_
+
+- `MAX_OPACITY [at ln:82] </listings/ninja_ide/core/settings.py.html#82>`_
+
+- `MAX_REMEMBER_TABS [at ln:149] </listings/ninja_ide/core/settings.py.html#149>`_
+
+- `MINIMAP_MAX_OPACITY [at ln:184] </listings/ninja_ide/core/settings.py.html#184>`_
+
+- `MINIMAP_MIN_OPACITY [at ln:185] </listings/ninja_ide/core/settings.py.html#185>`_
+
+- `MIN_OPACITY [at ln:83] </listings/ninja_ide/core/settings.py.html#83>`_
+
+- `NINJA_SKIN [at ln:124] </listings/ninja_ide/core/settings.py.html#124>`_
+
+- `NOTIFY_UPDATES [at ln:97] </listings/ninja_ide/core/settings.py.html#97>`_
+
+- `OS_KEY [at ln:37] </listings/ninja_ide/core/settings.py.html#37>`_
+
+- `PROFILES [at ln:105] </listings/ninja_ide/core/settings.py.html#105>`_
+
+- `PROJECT_TYPES [at ln:210] </listings/ninja_ide/core/settings.py.html#210>`_
+
+- `PYTHON_EXEC [at ln:101] </listings/ninja_ide/core/settings.py.html#101>`_
+
+- `PYTHON_EXEC_CONFIGURED_BY_USER [at ln:102] </listings/ninja_ide/core/settings.py.html#102>`_
+
+- `QUOTES [at ln:144] </listings/ninja_ide/core/settings.py.html#144>`_
+
+- `REMOVE_TRAILING_SPACES [at ln:138] </listings/ninja_ide/core/settings.py.html#138>`_
+
+- `SHOW_ERRORS_LIST [at ln:222] </listings/ninja_ide/core/settings.py.html#222>`_
+
+- `SHOW_MARGIN_LINE [at ln:137] </listings/ninja_ide/core/settings.py.html#137>`_
+
+- `SHOW_MIGRATION_LIST [at ln:223] </listings/ninja_ide/core/settings.py.html#223>`_
+
+- `SHOW_MIGRATION_TIPS [at ln:158] </listings/ninja_ide/core/settings.py.html#158>`_
+
+- `SHOW_MINIMAP [at ln:183] </listings/ninja_ide/core/settings.py.html#183>`_
+
+- `SHOW_PROJECT_EXPLORER [at ln:219] </listings/ninja_ide/core/settings.py.html#219>`_
+
+- `SHOW_START_PAGE [at ln:94] </listings/ninja_ide/core/settings.py.html#94>`_
+
+- `SHOW_STATUS_NOTIFICATIONS [at ln:99] </listings/ninja_ide/core/settings.py.html#99>`_
+
+- `SHOW_SYMBOLS_LIST [at ln:220] </listings/ninja_ide/core/settings.py.html#220>`_
+
+- `SHOW_TABS_AND_SPACES [at ln:139] </listings/ninja_ide/core/settings.py.html#139>`_
+
+- `SHOW_WEB_INSPECTOR [at ln:221] </listings/ninja_ide/core/settings.py.html#221>`_
+
+- `SIZE_PROPORTION [at ln:186] </listings/ninja_ide/core/settings.py.html#186>`_
+
+- `SUPPORTED_EXTENSIONS [at ln:193] </listings/ninja_ide/core/settings.py.html#193>`_
+
+- `SYMBOLS_HANDLER [at ln:226] </listings/ninja_ide/core/settings.py.html#226>`_
+
+- `SYNTAX [at ln:164] </listings/ninja_ide/core/settings.py.html#164>`_
+
+- `TOOLBAR_AREA [at ln:85] </listings/ninja_ide/core/settings.py.html#85>`_
+
+- `TOOLBAR_ITEMS [at ln:107] </listings/ninja_ide/core/settings.py.html#107>`_
+
+- `TOOLBAR_ITEMS_DEFAULT [at ln:114] </listings/ninja_ide/core/settings.py.html#114>`_
+
+- `TOOLBAR_ITEMS_PLUGINS [at ln:122] </listings/ninja_ide/core/settings.py.html#122>`_
+
+- `UI_LAYOUT [at ln:90] </listings/ninja_ide/core/settings.py.html#90>`_
+
+- `UNDERLINE_NOT_BACKGROUND [at ln:160] </listings/ninja_ide/core/settings.py.html#160>`_
+
+- `USE_PLATFORM_END_OF_LINE [at ln:135] </listings/ninja_ide/core/settings.py.html#135>`_
+
+- `USE_TABS [at ln:131] </listings/ninja_ide/core/settings.py.html#131>`_
+
+- `VALID_2TO3 [at ln:159] </listings/ninja_ide/core/settings.py.html#159>`_
+
+- `WEBINSPECTOR_SUPPORTED [at ln:229] </listings/ninja_ide/core/settings.py.html#229>`_
+
+- `WORKSPACE [at ln:236] </listings/ninja_ide/core/settings.py.html#236>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `add_toolbar_item_for_plugins(toolbar_action) [at ln:284] </listings/ninja_ide/core/settings.py.html#listingsninja_idecoresettingspy-284>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_toolbar_item_for_plugins(toolbar_action):
+
+| Add a toolbar action set from some plugin
+
+
+----
+
+*Function:* `detect_python_path() [at ln:55] </listings/ninja_ide/core/settings.py.html#listingsninja_idecoresettingspy-55>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def detect_python_path():
+
+
+No description.
+
+
+----
+
+*Function:* `get_all_project_types() [at ln:260] </listings/ninja_ide/core/settings.py.html#listingsninja_idecoresettingspy-260>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_all_project_types():
+
+| Returns the availables project types
+
+
+----
+
+*Function:* `get_project_type_handler(project_type) [at ln:252] </listings/ninja_ide/core/settings.py.html#listingsninja_idecoresettingspy-252>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_project_type_handler(project_type):
+
+| Returns the handler for the given project\_type
+
+
+----
+
+*Function:* `get_symbols_handler(file_extension) [at ln:276] </listings/ninja_ide/core/settings.py.html#listingsninja_idecoresettingspy-276>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_symbols_handler(file_extension):
+
+| Returns the symbol handler for the given file\_extension
+
+
+----
+
+*Function:* `get_toolbar_item_for_plugins() [at ln:292] </listings/ninja_ide/core/settings.py.html#listingsninja_idecoresettingspy-292>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_toolbar_item_for_plugins():
+
+| Returns the toolbar actions set by plugins
+
+
+----
+
+*Function:* `load_settings() [at ln:349] </listings/ninja_ide/core/settings.py.html#listingsninja_idecoresettingspy-349>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_settings():
+
+
+No description.
+
+
+----
+
+*Function:* `pep8mod_add_ignore(ignore_code) [at ln:316] </listings/ninja_ide/core/settings.py.html#listingsninja_idecoresettingspy-316>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def pep8mod_add_ignore(ignore_code):
+
+| Patch pep8mod.py to ignore a given check by code
+| EXAMPLE:
+|     pep8mod\_add\_ignore('W191')
+|     'W1919': 'indentation contains tabs'
+
+
+----
+
+*Function:* `pep8mod_refresh_checks() [at ln:309] </listings/ninja_ide/core/settings.py.html#listingsninja_idecoresettingspy-309>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def pep8mod_refresh_checks():
+
+| Force to reload all checks in pep8mod.py
+
+
+----
+
+*Function:* `pep8mod_remove_ignore(ignore_code) [at ln:326] </listings/ninja_ide/core/settings.py.html#listingsninja_idecoresettingspy-326>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def pep8mod_remove_ignore(ignore_code):
+
+| Patch pep8mod.py to remove the ignore of a give check
+| EXAMPLE:
+|     pep8mod\_remove\_ignore('W191')
+|     'W1919': 'indentation contains tabs'
+
+
+----
+
+*Function:* `pep8mod_update_margin_line_length(new_margin_line) [at ln:337] </listings/ninja_ide/core/settings.py.html#listingsninja_idecoresettingspy-337>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def pep8mod_update_margin_line_length(new_margin_line):
+
+| Patch pep8mod.py to update the margin line length with a new value
+
+
+----
+
+*Function:* `set_project_type_handler(project_type, project_type_handler) [at ln:244] </listings/ninja_ide/core/settings.py.html#listingsninja_idecoresettingspy-244>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_project_type_handler(project_type, project_type_handler):
+
+| Set a project type handler for the given project\_type
+
+
+----
+
+*Function:* `set_symbols_handler(file_extension, symbols_handler) [at ln:268] </listings/ninja_ide/core/settings.py.html#listingsninja_idecoresettingspy-268>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_symbols_handler(file_extension, symbols_handler):
+
+| Set a symbol handler for the given file\_extension
+
+
+----
+
+*Function:* `use_platform_specific_eol() [at ln:300] </listings/ninja_ide/core/settings.py.html#listingsninja_idecoresettingspy-300>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def use_platform_specific_eol():
+
+
+No description.
+
+
+
+

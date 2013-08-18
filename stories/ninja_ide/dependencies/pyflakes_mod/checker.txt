@@ -1,0 +1,831 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: checker
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `checker.py </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html>`_ API
+=============================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `os.path </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#5>`_
+
+- `compiler.ast </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#6>`_
+
+- `ninja_ide.dependencies.pyflakes_mod.messages </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#15>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#14>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `PYTHON_BUILTINS [at ln:18] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#18>`_
+
+- `_MAGIC_GLOBALS [at ln:144] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#144>`_
+
+
+----
+
+
+
+*Class:* `Scope(dict) </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-113>`_
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Scope(dict):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `importStarred [at ln:114] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#114>`_
+
+
+*Function:* `__init__() [at ln:120] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-120>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `__repr__() [at ln:116] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-116>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __repr__():
+
+
+No description.
+
+
+----
+
+*Class:* `ModuleScope(Scope) </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-139>`_
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ModuleScope(Scope):
+
+
+No description.
+
+
+----
+
+*Class:* `Binding(object) </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-21>`_
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Binding(object):
+
+| Represents the binding of a value to a name.
+| 
+| The checker uses this to keep track of which names have been bound and
+| which names have not. See L{Assignment} for a special type of binding that
+| is checked with stricter rules.
+| 
+| @ivar used: pair of (L{Scope}, line-number) indicating the scope and
+|             line number that this binding was last used
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `name [at ln:34] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#34>`_
+
+- `source [at ln:35] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#35>`_
+
+- `used [at ln:36] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#36>`_
+
+
+*Function:* `__init__(name, source) [at ln:33] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-33>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(name, source):
+
+
+No description.
+
+
+----
+
+*Function:* `__repr__() [at ln:41] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-41>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __repr__():
+
+
+No description.
+
+
+----
+
+*Function:* `__str__() [at ln:38] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-38>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __str__():
+
+
+No description.
+
+
+----
+
+*Class:* `Assignment(Binding) </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-73>`_
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Assignment(Binding):
+
+| Represents binding a name with an explicit assignment.
+| 
+| The checker will raise warnings for any Assignment that isn't used. Also,
+| the checker does not consider assignments in tuple/list unpacking to be
+| Assignments, rather it treats them as simple Bindings.
+
+
+----
+
+*Class:* `Checker(object) </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-147>`_
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Checker(object):
+
+| I check the cleanliness and sanity of Python code.
+| 
+| @ivar \_deferredFunctions: Tracking list used by L{deferFunction}.  Elements
+|     of the list are two-tuples.  The first element is the callable passed
+|     to L{deferFunction}.  The second element is a copy of the scope stack
+|     at the time L{deferFunction} was called.
+| 
+| @ivar \_deferredAssignments: Similar to C{\_deferredFunctions}, but for
+|     callables which are deferred assignment checks.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `ADD [at ln:283] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#283>`_
+
+- `AND [at ln:284] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#284>`_
+
+- `ASSATTR [at ln:281] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#281>`_
+
+- `ASSERT [at ln:283] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#283>`_
+
+- `ASSLIST [at ln:282] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#282>`_
+
+- `ASSTUPLE [at ln:281] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#281>`_
+
+- `AUGASSIGN [at ln:287] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#287>`_
+
+- `BACKQUOTE [at ln:287] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#287>`_
+
+- `BITAND [at ln:286] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#286>`_
+
+- `BITOR [at ln:286] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#286>`_
+
+- `BITXOR [at ln:286] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#286>`_
+
+- `BREAK [at ln:290] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#290>`_
+
+- `CALLFUNC [at ln:282] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#282>`_
+
+- `COMPARE [at ln:283] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#283>`_
+
+- `CONST [at ln:290] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#290>`_
+
+- `CONTINUE [at ln:290] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#290>`_
+
+- `DICT [at ln:284] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#284>`_
+
+- `DISCARD [at ln:282] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#282>`_
+
+- `DIV [at ln:285] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#285>`_
+
+- `ELLIPSIS [at ln:290] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#290>`_
+
+- `EXEC [at ln:285] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#285>`_
+
+- `FLOORDIV [at ln:286] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#286>`_
+
+- `GENEXPR [at ln:287] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#287>`_
+
+- `GENEXPRFOR [at ln:287] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#287>`_
+
+- `GENEXPRIF [at ln:287] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#287>`_
+
+- `GENEXPRINNER [at ln:364] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#364>`_
+
+- `GETATTR [at ln:282] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#282>`_
+
+- `IF [at ln:282] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#282>`_
+
+- `IFEXP [at ln:288] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#288>`_
+
+- `INVERT [at ln:283] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#283>`_
+
+- `KEYWORD [at ln:285] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#285>`_
+
+- `LEFTSHIFT [at ln:284] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#284>`_
+
+- `LIST [at ln:281] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#281>`_
+
+- `LISTCOMPFOR [at ln:286] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#286>`_
+
+- `LISTCOMPIF [at ln:286] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#286>`_
+
+- `MOD [at ln:283] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#283>`_
+
+- `MUL [at ln:285] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#285>`_
+
+- `NOT [at ln:283] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#283>`_
+
+- `OR [at ln:284] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#284>`_
+
+- `PASS [at ln:290] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#290>`_
+
+- `POWER [at ln:285] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#285>`_
+
+- `PRINT [at ln:281] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#281>`_
+
+- `PRINTNL [at ln:281] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#281>`_
+
+- `RAISE [at ln:284] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#284>`_
+
+- `RETURN [at ln:283] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#283>`_
+
+- `RIGHTSHIFT [at ln:285] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#285>`_
+
+- `SET [at ln:281] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#281>`_
+
+- `SLICE [at ln:282] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#282>`_
+
+- `SLICEOBJ [at ln:282] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#282>`_
+
+- `STMT [at ln:281] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#281>`_
+
+- `SUB [at ln:283] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#283>`_
+
+- `SUBSCRIPT [at ln:284] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#284>`_
+
+- `TRYEXCEPT [at ln:284] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#284>`_
+
+- `TRYFINALLY [at ln:285] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#285>`_
+
+- `TUPLE [at ln:281] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#281>`_
+
+- `UNARYADD [at ln:287] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#287>`_
+
+- `UNARYSUB [at ln:283] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#283>`_
+
+- `WHILE [at ln:285] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#285>`_
+
+- `YIELD [at ln:284] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#284>`_
+
+- `_deferredAssignments [at ln:182] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#182>`_
+
+- `_deferredFunctions [at ln:178] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#178>`_
+
+- `builtIns [at ln:162] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#162>`_
+
+- `dead_scopes [at ln:167] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#167>`_
+
+- `filename [at ln:169] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#169>`_
+
+- `futuresAllowed [at ln:173] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#173>`_
+
+- `messages [at ln:168] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#168>`_
+
+- `nodeDepth [at ln:160] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#160>`_
+
+- `parent [at ln:263] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#263>`_
+
+- `scope [at ln:215] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#215>`_
+
+- `scopeStack [at ln:172] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#172>`_
+
+- `traceTree [at ln:161] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#161>`_
+
+
+*Function:* `ASSIGN(node) [at ln:531] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-531>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def ASSIGN(node):
+
+
+No description.
+
+
+----
+
+*Function:* `ASSNAME(node) [at ln:488] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-488>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def ASSNAME(node):
+
+
+No description.
+
+
+----
+
+*Function:* `CLASS(node) [at ln:473] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-473>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def CLASS(node):
+
+| Check names used in a class definition, including its decorators, base
+| classes, and the body of its definition.  Additionally, add its name to
+| the current scope.
+
+
+----
+
+*Function:* `FOR(node) [at ln:366] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-366>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def FOR(node):
+
+| Process bindings for loop variables.
+
+
+----
+
+*Function:* `FROM(node) [at ln:542] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-542>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def FROM(node):
+
+
+No description.
+
+
+----
+
+*Function:* `FUNCTION(node) [at ln:429] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-429>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def FUNCTION(node):
+
+
+No description.
+
+
+----
+
+*Function:* `GLOBAL(node) [at ln:352] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-352>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def GLOBAL(node):
+
+| Keep track of globals declarations.
+
+
+----
+
+*Function:* `IMPORT(node) [at ln:536] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-536>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def IMPORT(node):
+
+
+No description.
+
+
+----
+
+*Function:* `LAMBDA(node) [at ln:435] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-435>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def LAMBDA(node):
+
+
+No description.
+
+
+----
+
+*Function:* `LISTCOMP(node) [at ln:359] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-359>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def LISTCOMP(node):
+
+
+No description.
+
+
+----
+
+*Function:* `NAME(node) [at ln:389] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-389>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def NAME(node):
+
+| Locate the name in locals / function / globals scopes.
+
+
+----
+
+*Function:* `WITH(node) [at ln:336] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-336>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def WITH(node):
+
+| Handle C{with} by checking the target of the statement (which can be an
+| identifier, a list or tuple of targets, an attribute, etc) for
+| undefined names and defining any it adds to the scope and by continuing
+| to process the suite within the statement.
+
+
+----
+
+*Function:* `__init__(tree, filename=str, builtins=None) [at ln:164] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-164>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(tree, filename=str, builtins=None):
+
+
+No description.
+
+
+----
+
+*Function:* `_runDeferred(deferred) [at ln:205] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-205>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _runDeferred(deferred):
+
+| Run the callables in C{deferred} using their associated scope stack.
+
+
+----
+
+*Function:* `addBinding(lineno, value, reportRedef=True) [at ln:292] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-292>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def addBinding(lineno, value, reportRedef=True):
+
+| Called when a binding is altered.
+| 
+| - \`lineno\` is the line of the statement responsible for the change
+| - \`value\` is the optional new value, a Binding instance, associated
+|   with the binding; if None, the binding is deleted if it exists.
+| - if \`reportRedef\` is True (default), rebinding while unused will be
+|   reported.
+
+
+----
+
+*Function:* `check_dead_scopes() [at ln:220] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-220>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def check_dead_scopes():
+
+| Look at scopes which have been fully examined and report names in them
+| which were imported but unused.
+
+
+----
+
+*Function:* `deferAssignment(callable) [at ln:198] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-198>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def deferAssignment(callable):
+
+| Schedule an assignment handler to be called just after deferred
+| function handlers.
+
+
+----
+
+*Function:* `deferFunction(callable) [at ln:187] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-187>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def deferFunction(callable):
+
+| Schedule a function handler to be called just before completion.
+| 
+| This is used for handling function bodies, which must be deferred
+| because code later in the file might modify the global scope. When
+| \`callable\` is called, the scope at the time this is called will be
+| restored, however it will contain any new bindings added to it.
+
+
+----
+
+*Function:* `handleChildren(tree) [at ln:258] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-258>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def handleChildren(tree):
+
+
+No description.
+
+
+----
+
+*Function:* `handleNode(node, parent) [at ln:262] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-262>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def handleNode(node, parent):
+
+
+No description.
+
+
+----
+
+*Function:* `ignore(node) [at ln:278] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-278>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def ignore(node):
+
+
+No description.
+
+
+----
+
+*Function:* `popScope() [at ln:217] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-217>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def popScope():
+
+
+No description.
+
+
+----
+
+*Function:* `pushClassScope() [at ln:252] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-252>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def pushClassScope():
+
+
+No description.
+
+
+----
+
+*Function:* `pushFunctionScope() [at ln:249] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-249>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def pushFunctionScope():
+
+
+No description.
+
+
+----
+
+*Function:* `report(messageClass, *args, **kwargs) [at ln:255] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-255>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def report(messageClass, *args, **kwargs):
+
+
+No description.
+
+
+----
+
+*Function:* `scope() [at ln:213] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-213>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def scope():
+
+
+No description.
+
+
+----
+
+*Class:* `UnBinding(Binding) </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-49>`_
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class UnBinding(Binding):
+
+| Created by the 'del' operator.
+
+
+----
+
+*Class:* `ClassScope(Scope) </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-124>`_
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ClassScope(Scope):
+
+
+No description.
+
+
+----
+
+*Class:* `ExportBinding(Binding) </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-87>`_
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ExportBinding(Binding):
+
+| A binding created by an C{\_\_all\_\_} assignment.  If the names in the list
+| can be determined statically, they will be treated as names for export and
+| additional checking applied to them.
+| 
+| The only C{\_\_all\_\_} assignment that can be recognized is one which takes
+| the value of a literal list containing literal strings.  For example::
+| 
+|     \_\_all\_\_ = ["foo", "bar"]
+| 
+| Names which are imported and not otherwise used but appear in the value of
+| C{\_\_all\_\_} will not have an unused import warning reported for them.
+
+
+*Function:* `names() [at ln:101] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-101>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def names():
+
+| Return a list of the names referenced by this binding.
+
+
+----
+
+*Class:* `Importation(Binding) </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-53>`_
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Importation(Binding):
+
+| A binding created by an import statement.
+| 
+| @ivar fullName: The complete name given to the import statement,
+|     possibly including multiple dotted components.
+| @type fullName: C{str}
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `fullName [at ln:62] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#62>`_
+
+
+*Function:* `__init__(name, source) [at ln:61] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-61>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(name, source):
+
+
+No description.
+
+
+----
+
+*Class:* `Argument(Binding) </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-67>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Argument(Binding):
+
+| Represents binding a name as an argument.
+
+
+----
+
+*Class:* `FunctionDefinition(Binding) </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-83>`_
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class FunctionDefinition(Binding):
+
+
+No description.
+
+
+----
+
+*Class:* `FunctionScope(Scope) </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-128>`_
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class FunctionScope(Scope):
+
+| I represent a name scope for a function.
+| 
+| @ivar globals: Names declared 'global' in this function.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `globals [at ln:136] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#136>`_
+
+
+*Function:* `__init__() [at ln:134] </listings/ninja_ide/dependencies/pyflakes_mod/checker.py.html#listingsninja_idedependenciespyflakes_modcheckerpy-134>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+
+

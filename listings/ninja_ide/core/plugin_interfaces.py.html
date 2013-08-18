@@ -1,0 +1,338 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="plugin_interfaces.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>plugin_interfaces.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../">/listings</a>
+        </li><li><a href="../">/ninja_ide</a>
+        </li><li><a href=".">/core</a>
+        </li><li><a href="#">/plugin_interfaces.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-1">  1</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-2">  2</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-3">  3</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-4">  4</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-5">  5</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-6">  6</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-7">  7</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-8">  8</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-9">  9</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-10"> 10</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-11"> 11</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-12"> 12</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-13"> 13</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-14"> 14</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-15"> 15</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-16"> 16</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-17"> 17</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-18"> 18</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-19"> 19</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-20"> 20</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-21"> 21</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-22"> 22</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-23"> 23</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-24"> 24</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-25"> 25</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-26"> 26</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-27"> 27</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-28"> 28</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-29"> 29</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-30"> 30</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-31"> 31</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-32"> 32</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-33"> 33</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-34"> 34</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-35"> 35</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-36"> 36</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-37"> 37</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-38"> 38</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-39"> 39</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-40"> 40</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-41"> 41</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-42"> 42</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-43"> 43</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-44"> 44</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-45"> 45</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-46"> 46</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-47"> 47</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-48"> 48</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-49"> 49</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-50"> 50</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-51"> 51</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-52"> 52</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-53"> 53</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-54"> 54</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-55"> 55</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-56"> 56</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-57"> 57</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-58"> 58</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-59"> 59</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-60"> 60</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-61"> 61</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-62"> 62</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-63"> 63</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-64"> 64</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-65"> 65</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-66"> 66</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-67"> 67</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-68"> 68</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-69"> 69</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-70"> 70</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-71"> 71</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-72"> 72</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-73"> 73</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-74"> 74</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-75"> 75</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-76"> 76</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-77"> 77</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-78"> 78</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-79"> 79</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-80"> 80</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-81"> 81</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-82"> 82</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-83"> 83</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-84"> 84</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-85"> 85</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-86"> 86</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-87"> 87</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-88"> 88</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-89"> 89</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-90"> 90</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-91"> 91</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-92"> 92</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-93"> 93</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-94"> 94</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-95"> 95</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-96"> 96</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-97"> 97</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-98"> 98</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-99"> 99</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-100">100</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-101">101</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-102">102</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-103">103</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-104">104</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-105">105</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-106">106</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-107">107</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-108">108</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-109">109</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-110">110</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-111">111</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-112">112</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-113">113</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-114">114</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-115">115</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-116">116</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-117">117</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-118">118</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-119">119</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-120">120</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-121">121</a>
+<a href="plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-122">122</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_idecoreplugin_interfacespy-1"></a><span class="c"># -*- coding: utf-8 -*-</span>
+<a name="listingsninja_idecoreplugin_interfacespy-2"></a><span class="c">#</span>
+<a name="listingsninja_idecoreplugin_interfacespy-3"></a><span class="c"># This file is part of NINJA-IDE (http://ninja-ide.org).</span>
+<a name="listingsninja_idecoreplugin_interfacespy-4"></a><span class="c">#</span>
+<a name="listingsninja_idecoreplugin_interfacespy-5"></a><span class="c"># NINJA-IDE is free software; you can redistribute it and/or modify</span>
+<a name="listingsninja_idecoreplugin_interfacespy-6"></a><span class="c"># it under the terms of the GNU General Public License as published by</span>
+<a name="listingsninja_idecoreplugin_interfacespy-7"></a><span class="c"># the Free Software Foundation; either version 3 of the License, or</span>
+<a name="listingsninja_idecoreplugin_interfacespy-8"></a><span class="c"># any later version.</span>
+<a name="listingsninja_idecoreplugin_interfacespy-9"></a><span class="c">#</span>
+<a name="listingsninja_idecoreplugin_interfacespy-10"></a><span class="c"># NINJA-IDE is distributed in the hope that it will be useful,</span>
+<a name="listingsninja_idecoreplugin_interfacespy-11"></a><span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="listingsninja_idecoreplugin_interfacespy-12"></a><span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="listingsninja_idecoreplugin_interfacespy-13"></a><span class="c"># GNU General Public License for more details.</span>
+<a name="listingsninja_idecoreplugin_interfacespy-14"></a><span class="c">#</span>
+<a name="listingsninja_idecoreplugin_interfacespy-15"></a><span class="c"># You should have received a copy of the GNU General Public License</span>
+<a name="listingsninja_idecoreplugin_interfacespy-16"></a><span class="c"># along with NINJA-IDE; If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="listingsninja_idecoreplugin_interfacespy-17"></a>
+<a name="listingsninja_idecoreplugin_interfacespy-18"></a>
+<a name="listingsninja_idecoreplugin_interfacespy-19"></a><span class="c">###############################################################################</span>
+<a name="listingsninja_idecoreplugin_interfacespy-20"></a><span class="c"># ABSTRACT CLASSES (This file contains useful interfaces for plugins)</span>
+<a name="listingsninja_idecoreplugin_interfacespy-21"></a>
+<a name="listingsninja_idecoreplugin_interfacespy-22"></a><span class="c">#We know, Python does not need interfaces, but this file is useful as</span>
+<a name="listingsninja_idecoreplugin_interfacespy-23"></a><span class="c">#documentation. Is not mandatory inherit from these interfaces but you SHOULD</span>
+<a name="listingsninja_idecoreplugin_interfacespy-24"></a><span class="c">#implement the methods inside them.</span>
+<a name="listingsninja_idecoreplugin_interfacespy-25"></a><span class="c">###############################################################################</span>
+<a name="listingsninja_idecoreplugin_interfacespy-26"></a>
+<a name="listingsninja_idecoreplugin_interfacespy-27"></a>
+<a name="listingsninja_idecoreplugin_interfacespy-28"></a><span class="k">class</span> <span class="nc">MethodNotImplemented</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<a name="listingsninja_idecoreplugin_interfacespy-29"></a>    <span class="k">pass</span>
+<a name="listingsninja_idecoreplugin_interfacespy-30"></a>
+<a name="listingsninja_idecoreplugin_interfacespy-31"></a>
+<a name="listingsninja_idecoreplugin_interfacespy-32"></a><span class="k">def</span> <span class="nf">implements</span><span class="p">(</span><span class="n">iface</span><span class="p">):</span>
+<a name="listingsninja_idecoreplugin_interfacespy-33"></a>    <span class="sd">"""</span>
+<a name="listingsninja_idecoreplugin_interfacespy-34"></a><span class="sd">    A decorator to check if interfaces are correctly implmented</span>
+<a name="listingsninja_idecoreplugin_interfacespy-35"></a><span class="sd">    #TODO: check if functions parameters are correct</span>
+<a name="listingsninja_idecoreplugin_interfacespy-36"></a><span class="sd">    """</span>
+<a name="listingsninja_idecoreplugin_interfacespy-37"></a>
+<a name="listingsninja_idecoreplugin_interfacespy-38"></a>    <span class="k">def</span> <span class="nf">implementsIA</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<a name="listingsninja_idecoreplugin_interfacespy-39"></a>        <span class="sd">"""</span>
+<a name="listingsninja_idecoreplugin_interfacespy-40"></a><span class="sd">        Find out which methods should be and are not in the implementation</span>
+<a name="listingsninja_idecoreplugin_interfacespy-41"></a><span class="sd">        of the interface, raise errors if class is not correctly implementing.</span>
+<a name="listingsninja_idecoreplugin_interfacespy-42"></a><span class="sd">        """</span>
+<a name="listingsninja_idecoreplugin_interfacespy-43"></a>        <span class="n">should_implement</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="n">iface</span><span class="p">))</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="nb">object</span><span class="p">)))</span>
+<a name="listingsninja_idecoreplugin_interfacespy-44"></a>        <span class="n">should_implement</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">should</span> <span class="k">for</span> <span class="n">should</span> <span class="ow">in</span> <span class="n">should_implement</span> <span class="k">if</span>
+<a name="listingsninja_idecoreplugin_interfacespy-45"></a>                                <span class="ow">not</span> <span class="n">should</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">"_"</span><span class="p">))</span>
+<a name="listingsninja_idecoreplugin_interfacespy-46"></a>        <span class="n">not_implemented</span> <span class="o">=</span> <span class="n">should_implement</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">dir</span><span class="p">(</span><span class="n">cls</span><span class="p">)))</span>
+<a name="listingsninja_idecoreplugin_interfacespy-47"></a>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">not_implemented</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<a name="listingsninja_idecoreplugin_interfacespy-48"></a>            <span class="k">raise</span> <span class="n">MethodNotImplemented</span><span class="p">(</span><span class="s">"Methods </span><span class="si">%s</span><span class="s"> not implemented"</span> <span class="o">%</span>
+<a name="listingsninja_idecoreplugin_interfacespy-49"></a>                                         <span class="s">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">not_implemented</span><span class="p">))</span>
+<a name="listingsninja_idecoreplugin_interfacespy-50"></a>        <span class="k">if</span> <span class="n">cls</span><span class="o">.</span><span class="n">__name__</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">():</span>
+<a name="listingsninja_idecoreplugin_interfacespy-51"></a>            <span class="c">#if decorated a class is not in globals</span>
+<a name="listingsninja_idecoreplugin_interfacespy-52"></a>            <span class="nb">globals</span><span class="p">()[</span><span class="n">cls</span><span class="o">.</span><span class="n">__name__</span><span class="p">]</span> <span class="o">=</span> <span class="n">cls</span>
+<a name="listingsninja_idecoreplugin_interfacespy-53"></a>        <span class="k">return</span> <span class="n">cls</span>
+<a name="listingsninja_idecoreplugin_interfacespy-54"></a>    <span class="k">return</span> <span class="n">implementsIA</span>
+<a name="listingsninja_idecoreplugin_interfacespy-55"></a>
+<a name="listingsninja_idecoreplugin_interfacespy-56"></a>
+<a name="listingsninja_idecoreplugin_interfacespy-57"></a><span class="k">class</span> <span class="nc">IProjectTypeHandler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<a name="listingsninja_idecoreplugin_interfacespy-58"></a>
+<a name="listingsninja_idecoreplugin_interfacespy-59"></a>    <span class="sd">"""</span>
+<a name="listingsninja_idecoreplugin_interfacespy-60"></a><span class="sd">    Interface to create a Project type handler</span>
+<a name="listingsninja_idecoreplugin_interfacespy-61"></a><span class="sd">    """</span>
+<a name="listingsninja_idecoreplugin_interfacespy-62"></a>
+<a name="listingsninja_idecoreplugin_interfacespy-63"></a>    <span class="c">#mandatory</span>
+<a name="listingsninja_idecoreplugin_interfacespy-64"></a>    <span class="k">def</span> <span class="nf">get_pages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idecoreplugin_interfacespy-65"></a>        <span class="sd">"""</span>
+<a name="listingsninja_idecoreplugin_interfacespy-66"></a><span class="sd">        Returns a collection of QWizardPage</span>
+<a name="listingsninja_idecoreplugin_interfacespy-67"></a><span class="sd">        """</span>
+<a name="listingsninja_idecoreplugin_interfacespy-68"></a>        <span class="k">pass</span>
+<a name="listingsninja_idecoreplugin_interfacespy-69"></a>
+<a name="listingsninja_idecoreplugin_interfacespy-70"></a>    <span class="c">#mandatory</span>
+<a name="listingsninja_idecoreplugin_interfacespy-71"></a>    <span class="k">def</span> <span class="nf">on_wizard_finish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wizard</span><span class="p">):</span>
+<a name="listingsninja_idecoreplugin_interfacespy-72"></a>        <span class="sd">"""</span>
+<a name="listingsninja_idecoreplugin_interfacespy-73"></a><span class="sd">        Called when the user finish the wizard</span>
+<a name="listingsninja_idecoreplugin_interfacespy-74"></a><span class="sd">        @wizard: QWizard instance</span>
+<a name="listingsninja_idecoreplugin_interfacespy-75"></a><span class="sd">        """</span>
+<a name="listingsninja_idecoreplugin_interfacespy-76"></a>        <span class="k">pass</span>
+<a name="listingsninja_idecoreplugin_interfacespy-77"></a>
+<a name="listingsninja_idecoreplugin_interfacespy-78"></a>    <span class="k">def</span> <span class="nf">get_context_menus</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idecoreplugin_interfacespy-79"></a>        <span class="sd">""""</span>
+<a name="listingsninja_idecoreplugin_interfacespy-80"></a><span class="sd">        Returns a iterable of QMenu</span>
+<a name="listingsninja_idecoreplugin_interfacespy-81"></a><span class="sd">        """</span>
+<a name="listingsninja_idecoreplugin_interfacespy-82"></a>        <span class="k">pass</span>
+<a name="listingsninja_idecoreplugin_interfacespy-83"></a>
+<a name="listingsninja_idecoreplugin_interfacespy-84"></a>
+<a name="listingsninja_idecoreplugin_interfacespy-85"></a><span class="k">class</span> <span class="nc">ISymbolsHandler</span><span class="p">:</span>
+<a name="listingsninja_idecoreplugin_interfacespy-86"></a>    <span class="sd">"""</span>
+<a name="listingsninja_idecoreplugin_interfacespy-87"></a><span class="sd">    Interface to create a symbol handler</span>
+<a name="listingsninja_idecoreplugin_interfacespy-88"></a><span class="sd">    EXAMPLE:</span>
+<a name="listingsninja_idecoreplugin_interfacespy-89"></a><span class="sd">    {</span>
+<a name="listingsninja_idecoreplugin_interfacespy-90"></a><span class="sd">     'attributes':</span>
+<a name="listingsninja_idecoreplugin_interfacespy-91"></a><span class="sd">         {name: line, name: line},</span>
+<a name="listingsninja_idecoreplugin_interfacespy-92"></a><span class="sd">     'functions':</span>
+<a name="listingsninja_idecoreplugin_interfacespy-93"></a><span class="sd">         {name: line, name: line},</span>
+<a name="listingsninja_idecoreplugin_interfacespy-94"></a><span class="sd">     'classes':</span>
+<a name="listingsninja_idecoreplugin_interfacespy-95"></a><span class="sd">         {</span>
+<a name="listingsninja_idecoreplugin_interfacespy-96"></a><span class="sd">         name: (line, {</span>
+<a name="listingsninja_idecoreplugin_interfacespy-97"></a><span class="sd">                     'attributes': {name: line},</span>
+<a name="listingsninja_idecoreplugin_interfacespy-98"></a><span class="sd">                     'function': {name: line}}</span>
+<a name="listingsninja_idecoreplugin_interfacespy-99"></a><span class="sd">             )</span>
+<a name="listingsninja_idecoreplugin_interfacespy-100"></a><span class="sd">         }</span>
+<a name="listingsninja_idecoreplugin_interfacespy-101"></a><span class="sd">     }</span>
+<a name="listingsninja_idecoreplugin_interfacespy-102"></a><span class="sd">    """</span>
+<a name="listingsninja_idecoreplugin_interfacespy-103"></a>
+<a name="listingsninja_idecoreplugin_interfacespy-104"></a>    <span class="c">#mandatory</span>
+<a name="listingsninja_idecoreplugin_interfacespy-105"></a>    <span class="k">def</span> <span class="nf">obtain_symbols</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+<a name="listingsninja_idecoreplugin_interfacespy-106"></a>        <span class="sd">"""</span>
+<a name="listingsninja_idecoreplugin_interfacespy-107"></a><span class="sd">        Returns the dict needed by the tree</span>
+<a name="listingsninja_idecoreplugin_interfacespy-108"></a><span class="sd">        @source: Source code in plain text</span>
+<a name="listingsninja_idecoreplugin_interfacespy-109"></a><span class="sd">        """</span>
+<a name="listingsninja_idecoreplugin_interfacespy-110"></a>        <span class="k">pass</span>
+<a name="listingsninja_idecoreplugin_interfacespy-111"></a>
+<a name="listingsninja_idecoreplugin_interfacespy-112"></a>
+<a name="listingsninja_idecoreplugin_interfacespy-113"></a><span class="k">class</span> <span class="nc">IPluginPreferences</span><span class="p">:</span>
+<a name="listingsninja_idecoreplugin_interfacespy-114"></a>    <span class="sd">"""</span>
+<a name="listingsninja_idecoreplugin_interfacespy-115"></a><span class="sd">    Interface for plugin preferences widget</span>
+<a name="listingsninja_idecoreplugin_interfacespy-116"></a><span class="sd">    """</span>
+<a name="listingsninja_idecoreplugin_interfacespy-117"></a>    <span class="c">#mandatory</span>
+<a name="listingsninja_idecoreplugin_interfacespy-118"></a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idecoreplugin_interfacespy-119"></a>        <span class="sd">"""</span>
+<a name="listingsninja_idecoreplugin_interfacespy-120"></a><span class="sd">        Save the plugin data as NINJA-IDE settings</span>
+<a name="listingsninja_idecoreplugin_interfacespy-121"></a><span class="sd">        """</span>
+<a name="listingsninja_idecoreplugin_interfacespy-122"></a>        <span class="k">pass</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

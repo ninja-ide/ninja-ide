@@ -1,0 +1,235 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: test_preferences
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `test_preferences.py </listings/ninja_tests/gui/dialogs/test_preferences.py.html>`_ API
+===================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `ninja_ide </listings/ninja_tests/gui/dialogs/test_preferences.py.html#22>`_
+
+- `ninja_tests.BaseTest </listings/ninja_tests/gui/dialogs/test_preferences.py.html#33>`_
+
+- `PyQt4.QtGui.QApplication </listings/ninja_tests/gui/dialogs/test_preferences.py.html#24>`_
+
+- `PyQt4.QtGui.QKeySequence </listings/ninja_tests/gui/dialogs/test_preferences.py.html#25>`_
+
+- `PyQt4.QtGui.QTreeWidgetItem </listings/ninja_tests/gui/dialogs/test_preferences.py.html#26>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_tests/gui/dialogs/test_preferences.py.html#27>`_
+
+- `__future__.absolute_import </listings/ninja_tests/gui/dialogs/test_preferences.py.html#18>`_
+
+- `ninja_tests.gui </listings/ninja_tests/gui/dialogs/test_preferences.py.html#32>`_
+
+- `ninja_ide.gui.dialogs.preferences </listings/ninja_tests/gui/dialogs/test_preferences.py.html#30>`_
+
+- `ninja_ide.resources </listings/ninja_tests/gui/dialogs/test_preferences.py.html#29>`_
+
+- `ninja_ide.gui.misc.shortcut_manager </listings/ninja_tests/gui/dialogs/test_preferences.py.html#31>`_
+
+- `__future__.unicode_literals </listings/ninja_tests/gui/dialogs/test_preferences.py.html#19>`_
+
+
+
+
+
+*Class:* `PreferencesShortcutManagerConfigurationTestCase(BaseTest) </listings/ninja_tests/gui/dialogs/test_preferences.py.html#listingsninja_testsguidialogstest_preferencespy-99>`_
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class PreferencesShortcutManagerConfigurationTestCase(BaseTest):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_app [at ln:103] </listings/ninja_tests/gui/dialogs/test_preferences.py.html#103>`_
+
+- `settings [at ln:111] </listings/ninja_tests/gui/dialogs/test_preferences.py.html#111>`_
+
+- `shortcuts_manager [at ln:120] </listings/ninja_tests/gui/dialogs/test_preferences.py.html#120>`_
+
+
+*Function:* `setUp() [at ln:109] </listings/ninja_tests/gui/dialogs/test_preferences.py.html#listingsninja_testsguidialogstest_preferencespy-109>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setUp():
+
+
+No description.
+
+
+----
+
+*Function:* `setUpClass(cls) [at ln:101] </listings/ninja_tests/gui/dialogs/test_preferences.py.html#listingsninja_testsguidialogstest_preferencespy-101>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setUpClass(cls):
+
+
+No description.
+
+
+**Decorators:**
+
+- *classmethod*
+
+----
+
+*Function:* `tearDownClass(cls) [at ln:105] </listings/ninja_tests/gui/dialogs/test_preferences.py.html#listingsninja_testsguidialogstest_preferencespy-105>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def tearDownClass(cls):
+
+
+No description.
+
+
+**Decorators:**
+
+- *classmethod*
+
+----
+
+*Function:* `test_load_default_shortcuts() [at ln:122] </listings/ninja_tests/gui/dialogs/test_preferences.py.html#listingsninja_testsguidialogstest_preferencespy-122>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_load_default_shortcuts():
+
+
+No description.
+
+
+----
+
+*Function:* `test_save_shortcuts() [at ln:134] </listings/ninja_tests/gui/dialogs/test_preferences.py.html#listingsninja_testsguidialogstest_preferencespy-134>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_save_shortcuts():
+
+
+No description.
+
+
+----
+
+*Class:* `PreferencesEditorConfigurationTestCase(BaseTest) </listings/ninja_tests/gui/dialogs/test_preferences.py.html#listingsninja_testsguidialogstest_preferencespy-36>`_
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class PreferencesEditorConfigurationTestCase(BaseTest):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_app [at ln:40] </listings/ninja_tests/gui/dialogs/test_preferences.py.html#40>`_
+
+- `editor_completion [at ln:50] </listings/ninja_tests/gui/dialogs/test_preferences.py.html#50>`_
+
+- `settings [at ln:48] </listings/ninja_tests/gui/dialogs/test_preferences.py.html#48>`_
+
+
+*Function:* `_check_values(errors, indent, checkStyle, marginLine, checkForDocstrings, showMarginLine, errorsInLine, centerOnScroll, checkStyleInline, useTabs, highlightWholeLine, removeTrailingSpaces, showTabsAndSpaces, allowWordWrap) [at ln:52] </listings/ninja_tests/gui/dialogs/test_preferences.py.html#listingsninja_testsguidialogstest_preferencespy-52>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _check_values(errors, indent, checkStyle, marginLine, checkForDocstrings, showMarginLine, errorsInLine, centerOnScroll, checkStyleInline, useTabs, highlightWholeLine, removeTrailingSpaces, showTabsAndSpaces, allowWordWrap):
+
+
+No description.
+
+
+----
+
+*Function:* `setUp() [at ln:46] </listings/ninja_tests/gui/dialogs/test_preferences.py.html#listingsninja_testsguidialogstest_preferencespy-46>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setUp():
+
+
+No description.
+
+
+----
+
+*Function:* `setUpClass(cls) [at ln:38] </listings/ninja_tests/gui/dialogs/test_preferences.py.html#listingsninja_testsguidialogstest_preferencespy-38>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setUpClass(cls):
+
+
+No description.
+
+
+**Decorators:**
+
+- *classmethod*
+
+----
+
+*Function:* `tearDownClass(cls) [at ln:42] </listings/ninja_tests/gui/dialogs/test_preferences.py.html#listingsninja_testsguidialogstest_preferencespy-42>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def tearDownClass(cls):
+
+
+No description.
+
+
+**Decorators:**
+
+- *classmethod*
+
+----
+
+*Function:* `test_save() [at ln:78] </listings/ninja_tests/gui/dialogs/test_preferences.py.html#listingsninja_testsguidialogstest_preferencespy-78>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_save():
+
+
+No description.
+
+
+
+

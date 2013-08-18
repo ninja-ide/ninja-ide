@@ -1,0 +1,121 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: plugin
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `plugin.py </listings/ninja_ide/core/plugin.py.html>`_ API
+======================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `os </listings/ninja_ide/core/plugin.py.html#20>`_
+
+- `sys </listings/ninja_ide/core/plugin.py.html#21>`_
+
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/core/plugin.py.html#25>`_
+
+- `PyQt4.QtCore.QObject </listings/ninja_ide/core/plugin.py.html#23>`_
+
+- `__future__.absolute_import </listings/ninja_ide/core/plugin.py.html#18>`_
+
+
+
+
+
+*Class:* `Plugin(QObject) </listings/ninja_ide/core/plugin.py.html#listingsninja_idecorepluginpy-28>`_
+--------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Plugin(QObject):
+
+| Base class for ALL Plugin
+| All plugins should inherit from this class
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `locator [at ln:36] </listings/ninja_ide/core/plugin.py.html#36>`_
+
+- `logger [at ln:43] </listings/ninja_ide/core/plugin.py.html#43>`_
+
+
+*Function:* `__init__(locator, metadata=None) [at ln:34] </listings/ninja_ide/core/plugin.py.html#listingsninja_idecorepluginpy-34>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(locator, metadata=None):
+
+
+No description.
+
+
+----
+
+*Function:* `finish() [at ln:56] </listings/ninja_ide/core/plugin.py.html#listingsninja_idecorepluginpy-56>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def finish():
+
+
+No description.
+
+
+----
+
+*Function:* `get_preferences_widget() [at ln:59] </listings/ninja_ide/core/plugin.py.html#listingsninja_idecorepluginpy-59>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_preferences_widget():
+
+
+No description.
+
+
+----
+
+*Function:* `initialize() [at ln:52] </listings/ninja_ide/core/plugin.py.html#listingsninja_idecorepluginpy-52>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def initialize():
+
+| The initialization of the Plugin should be here.
+
+
+----
+
+*Function:* `path() [at ln:62] </listings/ninja_ide/core/plugin.py.html#listingsninja_idecorepluginpy-62>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def path():
+
+
+No description.
+
+
+**Decorators:**
+
+- *property*
+
+
+

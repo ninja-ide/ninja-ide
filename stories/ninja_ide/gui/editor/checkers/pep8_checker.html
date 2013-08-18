@@ -1,0 +1,173 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="NINJA-IDE">
+    <title>NINJA-IDE | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../rss.xml">
+
+    
+
+
+
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+    <li>
+    <a href="pep8_checker.txt" id="sourcelink">Source</a>
+    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+    <h1>NINJA-IDE</h1>
+    <div class="contents alert alert-info pull-top topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="pep8_checker.html#module-pep8-checker-py-api" id="id1"><em>Module:</em> pep8_checker.py API</a><ul>
+<li><a class="reference internal" href="pep8_checker.html#imports" id="id2"><em>Imports:</em></a></li>
+<li><a class="reference internal" href="pep8_checker.html#class-pep8checker-qthread" id="id3"><em>Class:</em> Pep8Checker(QThread)</a><ul>
+<li><a class="reference internal" href="pep8_checker.html#attributes" id="id4"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="pep8_checker.html#function-init-editor-at-ln-30" id="id5"><em>Function:</em> __init__(editor) [at ln:30]</a></li>
+<li><a class="reference internal" href="pep8_checker.html#function-reset-at-ln-45" id="id6"><em>Function:</em> reset() [at ln:45]</a></li>
+<li><a class="reference internal" href="pep8_checker.html#function-run-at-ln-48" id="id7"><em>Function:</em> run() [at ln:48]</a></li>
+<li><a class="reference internal" href="pep8_checker.html#function-run-checks-at-ln-39" id="id8"><em>Function:</em> run_checks() [at ln:39]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="module-pep8-checker-py-api">
+<h2><em>Module:</em> <a class="reference external" href="../../../../../listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html">pep8_checker.py</a> API</h2>
+<p>No description.</p>
+<div class="section" id="imports">
+<h3><a class="toc-backref" href="pep8_checker.html#id2"><em>Imports:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../../../listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#20">PyQt4.QtGui.QStyle</a></li>
+<li><a class="reference external" href="../../../../../listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#21">PyQt4.QtCore.QThread</a></li>
+<li><a class="reference external" href="../../../../../listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#17">__future__.absolute_import</a></li>
+<li><a class="reference external" href="../../../../../listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#24">ninja_ide.core.file_handling.file_manager</a></li>
+<li><a class="reference external" href="../../../../../listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#25">ninja_ide.dependencies.pep8mod</a></li>
+<li><a class="reference external" href="../../../../../listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#23">ninja_ide.core.settings</a></li>
+<li><a class="reference external" href="../../../../../listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#18">__future__.unicode_literals</a></li>
+</ul>
+</div>
+<div class="section" id="class-pep8checker-qthread">
+<h3><em>Class:</em> <a class="reference external" href="../../../../../listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#listingsninja_ideguieditorcheckerspep8_checkerpy-28">Pep8Checker(QThread)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">Pep8Checker</span><span class="p">(</span><span class="n">QThread</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="attributes">
+<h4><a class="toc-backref" href="pep8_checker.html#id4"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../../listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#32">_editor [at ln:32]</a></li>
+<li><a class="reference external" href="../../../../../listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#34">_encoding [at ln:34]</a></li>
+<li><a class="reference external" href="../../../../../listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#33">_path [at ln:33]</a></li>
+<li><a class="reference external" href="../../../../../listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#37">checker_icon [at ln:37]</a></li>
+<li><a class="reference external" href="../../../../../listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#46">checks [at ln:46]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-editor-at-ln-30">
+<h4><em>Function:</em> <a class="reference external" href="../../../../../listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#listingsninja_ideguieditorcheckerspep8_checkerpy-30">__init__(editor) [at ln:30]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">editor</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-reset-at-ln-45">
+<h4><em>Function:</em> <a class="reference external" href="../../../../../listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#listingsninja_ideguieditorcheckerspep8_checkerpy-45">reset() [at ln:45]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">reset</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-run-at-ln-48">
+<h4><em>Function:</em> <a class="reference external" href="../../../../../listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#listingsninja_ideguieditorcheckerspep8_checkerpy-48">run() [at ln:48]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-run-checks-at-ln-39">
+<h4><em>Function:</em> <a class="reference external" href="../../../../../listings/ninja_ide/gui/editor/checkers/pep8_checker.py.html#listingsninja_ideguieditorcheckerspep8_checkerpy-39">run_checks() [at ln:39]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">run_checks</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+</div>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

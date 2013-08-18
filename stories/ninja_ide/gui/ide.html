@@ -1,0 +1,780 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="NINJA-IDE">
+    <title>NINJA-IDE | NINJA-IDE Documentation</title>
+    
+            <link href="../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
+
+    
+
+
+
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+    <li>
+    <a href="ide.txt" id="sourcelink">Source</a>
+    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+    <h1>NINJA-IDE</h1>
+    <div class="contents alert alert-info pull-top topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="ide.html#module-ide-py-api" id="id1"><em>Module:</em> ide.py API</a><ul>
+<li><a class="reference internal" href="ide.html#imports" id="id2"><em>Imports:</em></a></li>
+<li><a class="reference internal" href="ide.html#global-attributes" id="id3"><em>Global Attributes:</em></a></li>
+<li><a class="reference internal" href="ide.html#class-ide-qmainwindow" id="id4"><em>Class:</em> IDE(QMainWindow)</a><ul>
+<li><a class="reference internal" href="ide.html#attributes" id="id5"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="ide.html#function-get-profile-at-ln-469" id="id6"><em>Function:</em> __get_profile() [at ln:469]</a></li>
+<li><a class="reference internal" href="ide.html#function-init-start-server-false-at-ln-98" id="id7"><em>Function:</em> __init__(start_server=False) [at ln:98]</a></li>
+<li><a class="reference internal" href="ide.html#function-set-profile-profilename-at-ln-472" id="id8"><em>Function:</em> __set_profile(profileName) [at ln:472]</a></li>
+<li><a class="reference internal" href="ide.html#function-change-tab-index-at-ln-362" id="id9"><em>Function:</em> _change_tab_index() [at ln:362]</a></li>
+<li><a class="reference internal" href="ide.html#function-close-tray-icon-at-ln-357" id="id10"><em>Function:</em> _close_tray_icon() [at ln:357]</a></li>
+<li><a class="reference internal" href="ide.html#function-connect-signals-at-ln-264" id="id11"><em>Function:</em> _connect_signals() [at ln:264]</a></li>
+<li><a class="reference internal" href="ide.html#function-last-tab-closed-at-ln-424" id="id12"><em>Function:</em> _last_tab_closed() [at ln:424]</a></li>
+<li><a class="reference internal" href="ide.html#function-load-profile-data-key-at-ln-601" id="id13"><em>Function:</em> _load_profile_data(key) [at ln:601]</a></li>
+<li><a class="reference internal" href="ide.html#function-process-connection-at-ln-389" id="id14"><em>Function:</em> _process_connection() [at ln:389]</a></li>
+<li><a class="reference internal" href="ide.html#function-activate-profile-at-ln-590" id="id15"><em>Function:</em> activate_profile() [at ln:590]</a></li>
+<li><a class="reference internal" href="ide.html#function-change-toolbar-visibility-at-ln-409" id="id16"><em>Function:</em> change_toolbar_visibility() [at ln:409]</a></li>
+<li><a class="reference internal" href="ide.html#function-change-window-title-title-at-ln-482" id="id17"><em>Function:</em> change_window_title(title) [at ln:482]</a></li>
+<li><a class="reference internal" href="ide.html#function-closeevent-event-at-ln-621" id="id18"><em>Function:</em> closeEvent(event) [at ln:621]</a></li>
+<li><a class="reference internal" href="ide.html#function-create-profile-at-ln-561" id="id19"><em>Function:</em> create_profile() [at ln:561]</a></li>
+<li><a class="reference internal" href="ide.html#function-deactivate-profile-at-ln-597" id="id20"><em>Function:</em> deactivate_profile() [at ln:597]</a></li>
+<li><a class="reference internal" href="ide.html#function-fullscreen-mode-at-ln-402" id="id21"><em>Function:</em> fullscreen_mode() [at ln:402]</a></li>
+<li><a class="reference internal" href="ide.html#function-get-current-project-at-ln-335" id="id22"><em>Function:</em> get_current_project() [at ln:335]</a></li>
+<li><a class="reference internal" href="ide.html#function-get-editable-filename-project-none-at-ln-312" id="id23"><em>Function:</em> get_editable(filename, project=None) [at ln:312]</a></li>
+<li><a class="reference internal" href="ide.html#function-get-menu-categories-at-ln-224" id="id24"><em>Function:</em> get_menu_categories() [at ln:224]</a></li>
+<li><a class="reference internal" href="ide.html#function-get-menuitems-at-ln-220" id="id25"><em>Function:</em> get_menuitems() [at ln:220]</a></li>
+<li><a class="reference internal" href="ide.html#function-get-opened-projects-at-ln-354" id="id26"><em>Function:</em> get_opened_projects() [at ln:354]</a></li>
+<li><a class="reference internal" href="ide.html#function-get-project-path-at-ln-328" id="id27"><em>Function:</em> get_project(path) [at ln:328]</a></li>
+<li><a class="reference internal" href="ide.html#function-get-project-for-file-filename-at-ln-319" id="id28"><em>Function:</em> get_project_for_file(filename) [at ln:319]</a></li>
+<li><a class="reference internal" href="ide.html#function-get-service-cls-service-name-at-ln-215" id="id29"><em>Function:</em> get_service(cls, service_name) [at ln:215]</a></li>
+<li><a class="reference internal" href="ide.html#function-install-service-service-name-at-ln-235" id="id30"><em>Function:</em> install_service(service_name) [at ln:235]</a></li>
+<li><a class="reference internal" href="ide.html#function-load-external-plugins-paths-at-ln-416" id="id31"><em>Function:</em> load_external_plugins(paths) [at ln:416]</a></li>
+<li><a class="reference internal" href="ide.html#function-load-session-files-projects-filestab1-filestab2-projects-current-file-recent-files-none-at-ln-435" id="id32"><em>Function:</em> load_session_files_projects(filesTab1, filesTab2, projects, current_file, recent_files=None) [at ln:435]</a></li>
+<li><a class="reference internal" href="ide.html#function-load-window-geometry-at-ln-610" id="id33"><em>Function:</em> load_window_geometry() [at ln:610]</a></li>
+<li><a class="reference internal" href="ide.html#function-notify-plugin-errors-at-ln-649" id="id34"><em>Function:</em> notify_plugin_errors() [at ln:649]</a></li>
+<li><a class="reference internal" href="ide.html#function-place-me-on-name-obj-region-str-top-false-at-ln-243" id="id35"><em>Function:</em> place_me_on(name, obj, region=str, top=False) [at ln:243]</a></li>
+<li><a class="reference internal" href="ide.html#function-register-menu-category-cls-category-name-weight-at-ln-295" id="id36"><em>Function:</em> register_menu_category(cls, category_name, weight) [at ln:295]</a></li>
+<li><a class="reference internal" href="ide.html#function-register-menuitem-cls-menu-action-section-weight-at-ln-284" id="id37"><em>Function:</em> register_menuitem(cls, menu_action, section, weight) [at ln:284]</a></li>
+<li><a class="reference internal" href="ide.html#function-register-service-cls-service-name-obj-at-ln-228" id="id38"><em>Function:</em> register_service(cls, service_name, obj) [at ln:228]</a></li>
+<li><a class="reference internal" href="ide.html#function-register-shortcut-cls-shortcut-name-shortcut-action-none-at-ln-279" id="id39"><em>Function:</em> register_shortcut(cls, shortcut_name, shortcut, action=None) [at ln:279]</a></li>
+<li><a class="reference internal" href="ide.html#function-register-signals-cls-service-name-connections-at-ln-251" id="id40"><em>Function:</em> register_signals(cls, service_name, connections) [at ln:251]</a></li>
+<li><a class="reference internal" href="ide.html#function-save-profile-profilename-at-ln-577" id="id41"><em>Function:</em> save_profile(profileName) [at ln:577]</a></li>
+<li><a class="reference internal" href="ide.html#function-save-settings-at-ln-507" id="id42"><em>Function:</em> save_settings() [at ln:507]</a></li>
+<li><a class="reference internal" href="ide.html#function-select-current-widget-at-ln-342" id="id43"><em>Function:</em> select_current(widget) [at ln:342]</a></li>
+<li><a class="reference internal" href="ide.html#function-show-about-ninja-at-ln-687" id="id44"><em>Function:</em> show_about_ninja() [at ln:687]</a></li>
+<li><a class="reference internal" href="ide.html#function-show-about-qt-at-ln-683" id="id45"><em>Function:</em> show_about_qt() [at ln:683]</a></li>
+<li><a class="reference internal" href="ide.html#function-show-languages-at-ln-673" id="id46"><em>Function:</em> show_languages() [at ln:673]</a></li>
+<li><a class="reference internal" href="ide.html#function-show-manager-at-ln-664" id="id47"><em>Function:</em> show_manager() [at ln:664]</a></li>
+<li><a class="reference internal" href="ide.html#function-show-preferences-at-ln-430" id="id48"><em>Function:</em> show_preferences() [at ln:430]</a></li>
+<li><a class="reference internal" href="ide.html#function-show-python-detection-at-ln-692" id="id49"><em>Function:</em> show_python_detection() [at ln:692]</a></li>
+<li><a class="reference internal" href="ide.html#function-show-status-message-message-duration-int-at-ln-659" id="id50"><em>Function:</em> show_status_message(message, duration=int) [at ln:659]</a></li>
+<li><a class="reference internal" href="ide.html#function-show-themes-at-ln-678" id="id51"><em>Function:</em> show_themes() [at ln:678]</a></li>
+<li><a class="reference internal" href="ide.html#function-switch-focus-at-ln-370" id="id52"><em>Function:</em> switch_focus() [at ln:370]</a></li>
+<li><a class="reference internal" href="ide.html#function-unselect-current-widget-at-ln-348" id="id53"><em>Function:</em> unselect_current(widget) [at ln:348]</a></li>
+<li><a class="reference internal" href="ide.html#function-update-shortcut-cls-shortcut-name-at-ln-302" id="id54"><em>Function:</em> update_shortcut(cls, shortcut_name) [at ln:302]</a></li>
+<li><a class="reference internal" href="ide.html#function-wheelevent-event-at-ln-495" id="id55"><em>Function:</em> wheelEvent(event) [at ln:495]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="module-ide-py-api">
+<h2><em>Module:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html">ide.py</a> API</h2>
+<p>No description.</p>
+<div class="section" id="imports">
+<h3><a class="toc-backref" href="ide.html#id2"><em>Imports:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#20">collections</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#62">ninja_ide.tools.logger.NinjaLogger</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#22">PyQt4.QtGui.QApplication</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#27">PyQt4.QtGui.QFont</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#29">PyQt4.QtGui.QInputDialog</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#28">PyQt4.QtGui.QKeySequence</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#35">PyQt4.QtNetwork.QLocalServer</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#23">PyQt4.QtGui.QMainWindow</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#24">PyQt4.QtGui.QMessageBox</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#34">PyQt4.QtCore.QPointF</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#31">PyQt4.QtCore.QSettings</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#33">PyQt4.QtCore.QSizeF</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#25">PyQt4.QtGui.QToolBar</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#26">PyQt4.QtGui.QToolTip</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#30">PyQt4.QtCore.Qt</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#32">PyQt4.QtCore.SIGNAL</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#49">ninja_ide.gui.dialogs.about_ninja</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#17">__future__.absolute_import</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#44">ninja_ide.gui.actions</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#40">ninja_ide.core.file_handling.file_manager</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#43">ninja_ide.core.ipc</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#52">ninja_ide.gui.dialogs.language_manager</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#47">ninja_ide.gui.editor.neditable</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#46">ninja_ide.gui.notification</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#48">ninja_ide.gui.explorer.nproject</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#39">ninja_ide.core.plugin_manager</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#50">ninja_ide.gui.dialogs.plugins_manager</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#53">ninja_ide.gui.dialogs.preferences</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#55">ninja_ide.gui.dialogs.python_detect_dialog</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#37">ninja_ide.resources</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#42">ninja_ide.core.settings</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#51">ninja_ide.gui.dialogs.themes_manager</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#54">ninja_ide.gui.dialogs.traceback_widget</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#38">ninja_ide.translations</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#56">ninja_ide.tools.ui_tools</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#18">__future__.unicode_literals</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#45">ninja_ide.gui.updates</a></li>
+</ul>
+</div>
+<div class="section" id="global-attributes">
+<h3><a class="toc-backref" href="ide.html#id3"><em>Global Attributes:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#64">logger [at ln:64]</a></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="class-ide-qmainwindow">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-71">IDE(QMainWindow)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">IDE</span><span class="p">(</span><span class="n">QMainWindow</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">This class is like the Sauron's Ring:</div>
+<div class="line">One ring to rule them all, One ring to find them,</div>
+<div class="line">One ring to bring them all and in the darkness bind them.</div>
+<div class="line"><br></div>
+<div class="line">This Class knows all the containers, and its know by all the containers,</div>
+<div class="line">but the containers don't need to know between each other, in this way we</div>
+<div class="line">can keep a better api without the need to tie the behaviour between</div>
+<div class="line">the widgets, and let them just consume the 'actions' they need.</div>
+</div>
+<div class="section" id="attributes">
+<h4><a class="toc-backref" href="ide.html#id5"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#599">Profile [at ln:599]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#88">__IDECONNECTIONS [at ln:88]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#91">__IDEMENUS [at ln:91]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#90">__IDEMENUSCATEGORY [at ln:90]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#87">__IDESERVICES [at ln:87]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#89">__IDESHORTCUTS [at ln:89]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#208">__created [at ln:208]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#95">__instance [at ln:95]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#108">__neditables [at ln:108]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#438">__project_to_open [at ln:438]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#110">__projects [at ln:110]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#203">central [at ln:203]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#133">notification [at ln:133]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#123">opacity [at ln:123]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#145">plugin_manager [at ln:145]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#473">profile [at ln:473]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#113">s_listener [at ln:113]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#126">toolbar [at ln:126]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#152">trayIcon [at ln:152]</a></li>
+</ul>
+</div>
+<div class="section" id="function-get-profile-at-ln-469">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-469">__get_profile() [at ln:469]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__get_profile</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-init-start-server-false-at-ln-98">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-98">__init__(start_server=False) [at ln:98]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">start_server</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-set-profile-profilename-at-ln-472">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-472">__set_profile(profileName) [at ln:472]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__set_profile</span><span class="p">(</span><span class="n">profileName</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-change-tab-index-at-ln-362">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-362">_change_tab_index() [at ln:362]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_change_tab_index</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Change the tabs of the current TabWidget using alt+numbers.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-close-tray-icon-at-ln-357">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-357">_close_tray_icon() [at ln:357]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_close_tray_icon</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Close the System Tray Icon.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-connect-signals-at-ln-264">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-264">_connect_signals() [at ln:264]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_connect_signals</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Connect the signals between the different services.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-last-tab-closed-at-ln-424">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-424">_last_tab_closed() [at ln:424]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_last_tab_closed</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Called when the last tasb is closed</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-load-profile-data-key-at-ln-601">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-601">_load_profile_data(key) [at ln:601]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_load_profile_data</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Activate the selected profile, closing the current files/projects</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-process-connection-at-ln-389">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-389">_process_connection() [at ln:389]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_process_connection</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Read the ipc input from another instance of ninja.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-activate-profile-at-ln-590">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-590">activate_profile() [at ln:590]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">activate_profile</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Show the Profile Manager dialog.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-change-toolbar-visibility-at-ln-409">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-409">change_toolbar_visibility() [at ln:409]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">change_toolbar_visibility</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Switch the toolbar visibility</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-change-window-title-title-at-ln-482">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-482">change_window_title(title) [at ln:482]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">change_window_title</span><span class="p">(</span><span class="n">title</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Change the title of the Application.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-closeevent-event-at-ln-621">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-621">closeEvent(event) [at ln:621]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">closeEvent</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Saves some global settings before closing.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-create-profile-at-ln-561">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-561">create_profile() [at ln:561]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">create_profile</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Create a profile binding files and projects to a key.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-deactivate-profile-at-ln-597">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-597">deactivate_profile() [at ln:597]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">deactivate_profile</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Close the Profile Session.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-fullscreen-mode-at-ln-402">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-402">fullscreen_mode() [at ln:402]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">fullscreen_mode</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Change to fullscreen mode.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-current-project-at-ln-335">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-335">get_current_project() [at ln:335]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_current_project</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-editable-filename-project-none-at-ln-312">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-312">get_editable(filename, project=None) [at ln:312]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_editable</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-menu-categories-at-ln-224">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-224">get_menu_categories() [at ln:224]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_menu_categories</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Get the registered Categories for the Application menus.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-menuitems-at-ln-220">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-220">get_menuitems() [at ln:220]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_menuitems</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Return a dictionary with the registered menu items.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-opened-projects-at-ln-354">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-354">get_opened_projects() [at ln:354]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_opened_projects</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-project-path-at-ln-328">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-328">get_project(path) [at ln:328]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_project</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-project-for-file-filename-at-ln-319">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-319">get_project_for_file(filename) [at ln:319]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_project_for_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-service-cls-service-name-at-ln-215">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-215">get_service(cls, service_name) [at ln:215]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_service</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">service_name</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Return the instance of a registered service.</div>
+</div>
+<p><strong>Decorators:</strong></p>
+<ul class="simple">
+<li><em>classmethod</em></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="function-install-service-service-name-at-ln-235">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-235">install_service(service_name) [at ln:235]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">install_service</span><span class="p">(</span><span class="n">service_name</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Activate the registered service.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-load-external-plugins-paths-at-ln-416">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-416">load_external_plugins(paths) [at ln:416]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">load_external_plugins</span><span class="p">(</span><span class="n">paths</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Load external plugins, the ones added to ninja throw the cmd.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-load-session-files-projects-filestab1-filestab2-projects-current-file-recent-files-none-at-ln-435">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-435">load_session_files_projects(filesTab1, filesTab2, projects, current_file, recent_files=None) [at ln:435]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">load_session_files_projects</span><span class="p">(</span><span class="n">filesTab1</span><span class="p">,</span> <span class="n">filesTab2</span><span class="p">,</span> <span class="n">projects</span><span class="p">,</span> <span class="n">current_file</span><span class="p">,</span> <span class="n">recent_files</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Load the files and projects from previous session.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-load-window-geometry-at-ln-610">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-610">load_window_geometry() [at ln:610]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">load_window_geometry</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Load from QSettings the window size of de Ninja IDE</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-notify-plugin-errors-at-ln-649">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-649">notify_plugin_errors() [at ln:649]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">notify_plugin_errors</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-place-me-on-name-obj-region-str-top-false-at-ln-243">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-243">place_me_on(name, obj, region=str, top=False) [at ln:243]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">place_me_on</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Place a widget in some of the areas in the IDE.</div>
+<div class="line">@name: id to access to that widget later if needed.</div>
+<div class="line">@obj: the instance of the widget to be placed.</div>
+<div class="line">@region: the area where to put the widget [central, lateral]</div>
+<div class="line">@top: place the widget as the first item in the split.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-register-menu-category-cls-category-name-weight-at-ln-295">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-295">register_menu_category(cls, category_name, weight) [at ln:295]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">register_menu_category</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">category_name</span><span class="p">,</span> <span class="n">weight</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Register a Menu Category to be created with the proper weight.</div>
+<div class="line">@category_name: string</div>
+<div class="line">@weight: int</div>
+</div>
+<p><strong>Decorators:</strong></p>
+<ul class="simple">
+<li><em>classmethod</em></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="function-register-menuitem-cls-menu-action-section-weight-at-ln-284">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-284">register_menuitem(cls, menu_action, section, weight) [at ln:284]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">register_menuitem</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">menu_action</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">weight</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Register a QAction or QMenu in the IDE to be loaded later in the</div>
+<div class="line">menubar using the section(string) to define where is going to be</div>
+<div class="line">contained, and the weight define the order where is going to be</div>
+<div class="line">placed.</div>
+<div class="line">@menu_action: QAction or QMenu</div>
+<div class="line">@section: String (name)</div>
+<div class="line">@weight: int</div>
+</div>
+<p><strong>Decorators:</strong></p>
+<ul class="simple">
+<li><em>classmethod</em></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="function-register-service-cls-service-name-obj-at-ln-228">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-228">register_service(cls, service_name, obj) [at ln:228]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">register_service</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">service_name</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Register a service providing the service name and the instance.</div>
+</div>
+<p><strong>Decorators:</strong></p>
+<ul class="simple">
+<li><em>classmethod</em></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="function-register-shortcut-cls-shortcut-name-shortcut-action-none-at-ln-279">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-279">register_shortcut(cls, shortcut_name, shortcut, action=None) [at ln:279]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">register_shortcut</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">shortcut_name</span><span class="p">,</span> <span class="n">shortcut</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Register a shortcut and action.</div>
+</div>
+<p><strong>Decorators:</strong></p>
+<ul class="simple">
+<li><em>classmethod</em></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="function-register-signals-cls-service-name-connections-at-ln-251">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-251">register_signals(cls, service_name, connections) [at ln:251]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">register_signals</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">service_name</span><span class="p">,</span> <span class="n">connections</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Register all the signals that a particular service wants to be</div>
+<div class="line">attached of.</div>
+<div class="line">@service_name: id of the service</div>
+<div class="line">@connections: list of dictionaries for the connection with:</div>
+<div class="line-block">
+<div class="line">- 'target': 'the_other_service_name',</div>
+<div class="line">- 'signal_name': 'name of the signal in the other service',</div>
+<div class="line">- 'slot': function object in this service</div>
+</div>
+</div>
+<p><strong>Decorators:</strong></p>
+<ul class="simple">
+<li><em>classmethod</em></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="function-save-profile-profilename-at-ln-577">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-577">save_profile(profileName) [at ln:577]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">save_profile</span><span class="p">(</span><span class="n">profileName</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Save the updates from a profile.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-save-settings-at-ln-507">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-507">save_settings() [at ln:507]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">save_settings</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Save the settings before the application is closed with QSettings.</div>
+<div class="line"><br></div>
+<div class="line">Info saved: Tabs and projects opened, windows state(size and position).</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-select-current-widget-at-ln-342">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-342">select_current(widget) [at ln:342]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">select_current</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Show the widget with a 4px lightblue border line.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-show-about-ninja-at-ln-687">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-687">show_about_ninja() [at ln:687]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">show_about_ninja</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Show About NINJA-IDE Dialog.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-show-about-qt-at-ln-683">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-683">show_about_qt() [at ln:683]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">show_about_qt</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Show About Qt Dialog.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-show-languages-at-ln-673">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-673">show_languages() [at ln:673]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">show_languages</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Open the Language Manager to install/uninstall languages.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-show-manager-at-ln-664">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-664">show_manager() [at ln:664]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">show_manager</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Open the Plugins Manager to install/uninstall plugins.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-show-preferences-at-ln-430">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-430">show_preferences() [at ln:430]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">show_preferences</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Open the Preferences Dialog.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-show-python-detection-at-ln-692">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-692">show_python_detection() [at ln:692]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">show_python_detection</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Show Python detection dialog for windows.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-show-status-message-message-duration-int-at-ln-659">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-659">show_status_message(message, duration=int) [at ln:659]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">show_status_message</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="nb">int</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Show status message.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-show-themes-at-ln-678">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-678">show_themes() [at ln:678]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">show_themes</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Open the Themes Manager to install/uninstall themes.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-switch-focus-at-ln-370">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-370">switch_focus() [at ln:370]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">switch_focus</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Switch the current keyboard focus to the next widget.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-unselect-current-widget-at-ln-348">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-348">unselect_current(widget) [at ln:348]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">unselect_current</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Remove the 4px lightblue border line from the widget.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-update-shortcut-cls-shortcut-name-at-ln-302">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-302">update_shortcut(cls, shortcut_name) [at ln:302]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">update_shortcut</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">shortcut_name</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Update all the shortcuts of the application.</div>
+</div>
+<p><strong>Decorators:</strong></p>
+<ul class="simple">
+<li><em>classmethod</em></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="function-wheelevent-event-at-ln-495">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-495">wheelEvent(event) [at ln:495]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">wheelEvent</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Change the opacity of the application.</div>
+</div>
+</div>
+</div>
+</div>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

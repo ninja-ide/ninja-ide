@@ -1,0 +1,82 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: __init__
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `__init__.py </listings/ninja_tests/__init__.py.html>`_ API
+=======================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `unittest </listings/ninja_tests/__init__.py.html#18>`_
+
+
+
+
+
+*Class:* `BaseTest(unittest.TestCase) </listings/ninja_tests/__init__.py.html#listingsninja_tests__init__py-21>`_
+-------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class BaseTest(unittest.TestCase):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_original_values [at ln:25] </listings/ninja_tests/__init__.py.html#25>`_
+
+
+*Function:* `patch(obj, attr, new_value) [at ln:27] </listings/ninja_tests/__init__.py.html#listingsninja_tests__init__py-27>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def patch(obj, attr, new_value):
+
+
+No description.
+
+
+----
+
+*Function:* `setUp() [at ln:23] </listings/ninja_tests/__init__.py.html#listingsninja_tests__init__py-23>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setUp():
+
+
+No description.
+
+
+----
+
+*Function:* `tearDown() [at ln:31] </listings/ninja_tests/__init__.py.html#listingsninja_tests__init__py-31>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def tearDown():
+
+
+No description.
+
+
+
+

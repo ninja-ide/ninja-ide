@@ -1,0 +1,231 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: json_manager
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `json_manager.py </listings/ninja_ide/tools/json_manager.py.html>`_ API
+===================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `json </listings/ninja_ide/tools/json_manager.py.html#19>`_
+
+- `os </listings/ninja_ide/tools/json_manager.py.html#18>`_
+
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/tools/json_manager.py.html#24>`_
+
+- `ninja_ide.resources </listings/ninja_ide/tools/json_manager.py.html#21>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/tools/json_manager.py.html#22>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `logger [at ln:26] </listings/ninja_ide/tools/json_manager.py.html#26>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `create_ninja_project(path, project, structure) [at ln:96] </listings/ninja_ide/tools/json_manager.py.html#listingsninja_idetoolsjson_managerpy-96>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def create_ninja_project(path, project, structure):
+
+
+No description.
+
+
+----
+
+*Function:* `get_ninja_editor_skins_files(path) [at ln:135] </listings/ninja_ide/tools/json_manager.py.html#listingsninja_idetoolsjson_managerpy-135>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_ninja_editor_skins_files(path):
+
+| Return the list of json files inside the directory: path.
+
+
+----
+
+*Function:* `get_ninja_file(path, extension, only_first=False) [at ln:103] </listings/ninja_ide/tools/json_manager.py.html#listingsninja_idetoolsjson_managerpy-103>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_ninja_file(path, extension, only_first=False):
+
+| Search and return the files with extension in the folder: path.
+
+
+----
+
+*Function:* `get_ninja_json_file(path) [at ln:117] </listings/ninja_ide/tools/json_manager.py.html#listingsninja_idetoolsjson_managerpy-117>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_ninja_json_file(path):
+
+| Return the list of json files inside the directory: path.
+
+
+----
+
+*Function:* `get_ninja_plugin_file(path) [at ln:123] </listings/ninja_ide/tools/json_manager.py.html#listingsninja_idetoolsjson_managerpy-123>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_ninja_plugin_file(path):
+
+| Return the list of plugin files inside the directory: path.
+
+
+----
+
+*Function:* `get_ninja_project_file(path) [at ln:129] </listings/ninja_ide/tools/json_manager.py.html#listingsninja_idetoolsjson_managerpy-129>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_ninja_project_file(path):
+
+| Return the first nja file found inside: path.
+
+
+----
+
+*Function:* `load_editor_skins() [at ln:161] </listings/ninja_ide/tools/json_manager.py.html#listingsninja_idetoolsjson_managerpy-161>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_editor_skins():
+
+
+No description.
+
+
+----
+
+*Function:* `load_syntax() [at ln:29] </listings/ninja_ide/tools/json_manager.py.html#listingsninja_idetoolsjson_managerpy-29>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_syntax():
+
+| Load all the syntax files.
+
+
+----
+
+*Function:* `parse(descriptor) [at ln:50] </listings/ninja_ide/tools/json_manager.py.html#listingsninja_idetoolsjson_managerpy-50>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def parse(descriptor):
+
+| Read the content of a json file and return a dict.
+
+
+----
+
+*Function:* `read_json(path) [at ln:60] </listings/ninja_ide/tools/json_manager.py.html#listingsninja_idetoolsjson_managerpy-60>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def read_json(path):
+
+| Read a json file if path is a file, or search for a .nja if folder.
+
+
+----
+
+*Function:* `read_json_from_stream(stream) [at ln:86] </listings/ninja_ide/tools/json_manager.py.html#listingsninja_idetoolsjson_managerpy-86>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def read_json_from_stream(stream):
+
+
+No description.
+
+
+----
+
+*Function:* `read_ninja_plugin(path) [at ln:151] </listings/ninja_ide/tools/json_manager.py.html#listingsninja_idetoolsjson_managerpy-151>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def read_ninja_plugin(path):
+
+
+No description.
+
+
+----
+
+*Function:* `read_ninja_project(path) [at ln:141] </listings/ninja_ide/tools/json_manager.py.html#listingsninja_idetoolsjson_managerpy-141>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def read_ninja_project(path):
+
+
+No description.
+
+
+----
+
+*Function:* `save_editor_skins(filename, scheme) [at ln:176] </listings/ninja_ide/tools/json_manager.py.html#listingsninja_idetoolsjson_managerpy-176>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def save_editor_skins(filename, scheme):
+
+
+No description.
+
+
+----
+
+*Function:* `write_json(structure, filename, indent=int) [at ln:91] </listings/ninja_ide/tools/json_manager.py.html#listingsninja_idetoolsjson_managerpy-91>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def write_json(structure, filename, indent=int):
+
+
+No description.
+
+
+
+

@@ -1,0 +1,287 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: test_highlighter
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `test_highlighter.py </listings/ninja_tests/gui/editor/test_highlighter.py.html>`_ API
+==================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `unittest </listings/ninja_tests/gui/editor/test_highlighter.py.html#21>`_
+
+- `PyQt4.QtGui.QFont </listings/ninja_tests/gui/editor/test_highlighter.py.html#20>`_
+
+- `__future__.absolute_import </listings/ninja_tests/gui/editor/test_highlighter.py.html#17>`_
+
+- `ninja_ide.gui.editor.highlighter </listings/ninja_tests/gui/editor/test_highlighter.py.html#19>`_
+
+- `__future__.unicode_literals </listings/ninja_tests/gui/editor/test_highlighter.py.html#18>`_
+
+
+
+
+
+*Class:* `SyntaxUserDataTestCase(unittest.TestCase) </listings/ninja_tests/gui/editor/test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-80>`_
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class SyntaxUserDataTestCase(unittest.TestCase):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `comment_start [at ln:97] </listings/ninja_tests/gui/editor/test_highlighter.py.html#97>`_
+
+- `err_sud [at ln:83] </listings/ninja_tests/gui/editor/test_highlighter.py.html#83>`_
+
+- `error [at ln:95] </listings/ninja_tests/gui/editor/test_highlighter.py.html#95>`_
+
+- `noerr_sud [at ln:84] </listings/ninja_tests/gui/editor/test_highlighter.py.html#84>`_
+
+- `str_groups [at ln:96] </listings/ninja_tests/gui/editor/test_highlighter.py.html#96>`_
+
+
+*Function:* `setUp() [at ln:82] </listings/ninja_tests/gui/editor/test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-82>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setUp():
+
+
+No description.
+
+
+----
+
+*Function:* `test_adds_string() [at ln:103] </listings/ninja_tests/gui/editor/test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-103>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_adds_string():
+
+
+No description.
+
+
+----
+
+*Function:* `test_clears_correctly() [at ln:94] </listings/ninja_tests/gui/editor/test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-94>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_clears_correctly():
+
+
+No description.
+
+
+----
+
+*Function:* `test_comment_start() [at ln:108] </listings/ninja_tests/gui/editor/test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-108>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_comment_start():
+
+
+No description.
+
+
+----
+
+*Function:* `test_initializes_correctly() [at ln:86] </listings/ninja_tests/gui/editor/test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-86>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_initializes_correctly():
+
+
+No description.
+
+
+----
+
+*Class:* `HighlighterFormatTestCase(unittest.TestCase) </listings/ninja_tests/gui/editor/test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-24>`_
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class HighlighterFormatTestCase(unittest.TestCase):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `FONT_FAMILY [at ln:34] </listings/ninja_tests/gui/editor/test_highlighter.py.html#34>`_
+
+- `_a_format [at ln:30] </listings/ninja_tests/gui/editor/test_highlighter.py.html#30>`_
+
+- `_bold_italic [at ln:32] </listings/ninja_tests/gui/editor/test_highlighter.py.html#32>`_
+
+- `_color [at ln:29] </listings/ninja_tests/gui/editor/test_highlighter.py.html#29>`_
+
+- `_new_font [at ln:33] </listings/ninja_tests/gui/editor/test_highlighter.py.html#33>`_
+
+- `_new_font_format [at ln:35] </listings/ninja_tests/gui/editor/test_highlighter.py.html#35>`_
+
+- `_old_font [at ln:27] </listings/ninja_tests/gui/editor/test_highlighter.py.html#27>`_
+
+
+*Function:* `setUp() [at ln:26] </listings/ninja_tests/gui/editor/test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-26>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setUp():
+
+
+No description.
+
+
+----
+
+*Function:* `tearDown() [at ln:37] </listings/ninja_tests/gui/editor/test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-37>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def tearDown():
+
+
+No description.
+
+
+----
+
+*Function:* `test_format_set_font() [at ln:57] </listings/ninja_tests/gui/editor/test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-57>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_format_set_font():
+
+
+No description.
+
+
+----
+
+*Function:* `test_format_sets_bold() [at ln:44] </listings/ninja_tests/gui/editor/test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-44>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_format_sets_bold():
+
+
+No description.
+
+
+----
+
+*Function:* `test_format_sets_color() [at ln:40] </listings/ninja_tests/gui/editor/test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-40>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_format_sets_color():
+
+
+No description.
+
+
+----
+
+*Function:* `test_format_sets_italic() [at ln:51] </listings/ninja_tests/gui/editor/test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-51>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_format_sets_italic():
+
+
+No description.
+
+
+----
+
+*Class:* `HighlighterRestyleTestCase(unittest.TestCase) </listings/ninja_tests/gui/editor/test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-64>`_
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class HighlighterRestyleTestCase(unittest.TestCase):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `COLOR_SCHEME [at ln:69] </listings/ninja_tests/gui/editor/test_highlighter.py.html#69>`_
+
+- `SDEFAULTS [at ln:67] </listings/ninja_tests/gui/editor/test_highlighter.py.html#67>`_
+
+
+*Function:* `setUp() [at ln:66] </listings/ninja_tests/gui/editor/test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-66>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setUp():
+
+
+No description.
+
+
+----
+
+*Function:* `tearDown() [at ln:72] </listings/ninja_tests/gui/editor/test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-72>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def tearDown():
+
+
+No description.
+
+
+----
+
+*Function:* `test_scheme_populates_styles() [at ln:75] </listings/ninja_tests/gui/editor/test_highlighter.py.html#listingsninja_testsguieditortest_highlighterpy-75>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_scheme_populates_styles():
+
+
+No description.
+
+
+
+

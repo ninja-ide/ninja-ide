@@ -1,0 +1,126 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: darwin
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `darwin.py </listings/ninja_ide/core/file_handling/filesystem_notifications/darwin.py.html>`_ API
+=============================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/core/file_handling/filesystem_notifications/darwin.py.html#23>`_
+
+- `__future__.absolute_import </listings/ninja_ide/core/file_handling/filesystem_notifications/darwin.py.html#18>`_
+
+- `ninja_ide.core.file_handling.filesystem_notifications.base_watcher </listings/ninja_ide/core/file_handling/filesystem_notifications/darwin.py.html#27>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `ADDED [at ln:28] </listings/ninja_ide/core/file_handling/filesystem_notifications/darwin.py.html#28>`_
+
+- `DEBUG [at ln:25] </listings/ninja_ide/core/file_handling/filesystem_notifications/darwin.py.html#25>`_
+
+- `DELETED [at ln:29] </listings/ninja_ide/core/file_handling/filesystem_notifications/darwin.py.html#29>`_
+
+- `MODIFIED [at ln:32] </listings/ninja_ide/core/file_handling/filesystem_notifications/darwin.py.html#32>`_
+
+- `REMOVE [at ln:30] </listings/ninja_ide/core/file_handling/filesystem_notifications/darwin.py.html#30>`_
+
+- `RENAME [at ln:31] </listings/ninja_ide/core/file_handling/filesystem_notifications/darwin.py.html#31>`_
+
+- `logger [at ln:24] </listings/ninja_ide/core/file_handling/filesystem_notifications/darwin.py.html#24>`_
+
+
+----
+
+
+
+*Class:* `NinjaFileSystemWatcher(base_watcher.BaseWatcher) </listings/ninja_ide/core/file_handling/filesystem_notifications/darwin.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsdarwinpy-35>`_
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
+
+
+No description.
+
+
+*Function:* `__init__() [at ln:37] </listings/ninja_ide/core/file_handling/filesystem_notifications/darwin.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsdarwinpy-37>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `_emit_signal_on_change(event) [at ln:89] </listings/ninja_ide/core/file_handling/filesystem_notifications/darwin.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsdarwinpy-89>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _emit_signal_on_change(event):
+
+
+No description.
+
+
+----
+
+*Function:* `add_watch(path) [at ln:60] </listings/ninja_ide/core/file_handling/filesystem_notifications/darwin.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsdarwinpy-60>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_watch(path):
+
+
+No description.
+
+
+----
+
+*Function:* `remove_watch(path) [at ln:76] </listings/ninja_ide/core/file_handling/filesystem_notifications/darwin.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsdarwinpy-76>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def remove_watch(path):
+
+
+No description.
+
+
+----
+
+*Function:* `shutdown_notification() [at ln:48] </listings/ninja_ide/core/file_handling/filesystem_notifications/darwin.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsdarwinpy-48>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def shutdown_notification():
+
+
+No description.
+
+
+
+

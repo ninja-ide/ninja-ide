@@ -1,0 +1,40 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: setup
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `setup.py </listings/build_files/installer/windows/setup.py.html>`_ API
+===================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `py2exe </listings/build_files/installer/windows/setup.py.html#11>`_
+
+- `warnings </listings/build_files/installer/windows/setup.py.html#8>`_
+
+- `setuptools.find_packages </listings/build_files/installer/windows/setup.py.html#5>`_
+
+- `distutils.core.setup </listings/build_files/installer/windows/setup.py.html#14>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `packages [at ln:6] </listings/build_files/installer/windows/setup.py.html#6>`_
+
+- `target [at ln:16] </listings/build_files/installer/windows/setup.py.html#16>`_
+
+
+
+

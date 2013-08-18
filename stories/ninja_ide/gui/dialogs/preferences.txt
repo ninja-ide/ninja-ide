@@ -1,0 +1,63 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: preferences
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `preferences.py </listings/ninja_ide/gui/dialogs/preferences.py.html>`_ API
+=======================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `copy </listings/ninja_ide/gui/dialogs/preferences.py.html#22>`_
+
+- `getpass </listings/ninja_ide/gui/dialogs/preferences.py.html#23>`_
+
+- `os </listings/ninja_ide/gui/dialogs/preferences.py.html#21>`_
+
+- `PyQt4.QtGui.QDialog </listings/ninja_ide/gui/dialogs/preferences.py.html#35>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/dialogs/preferences.py.html#55>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/dialogs/preferences.py.html#18>`_
+
+- `__future__.unicode_literals </listings/ninja_ide/gui/dialogs/preferences.py.html#19>`_
+
+
+
+
+
+*Class:* `PreferencesWidget(QDialog) </listings/ninja_ide/gui/dialogs/preferences.py.html#listingsninja_ideguidialogspreferencespy-75>`_
+------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class PreferencesWidget(QDialog):
+
+
+No description.
+
+
+*Function:* `__init__(parent=None) [at ln:77] </listings/ninja_ide/gui/dialogs/preferences.py.html#listingsninja_ideguidialogspreferencespy-77>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent=None):
+
+
+No description.
+
+
+
+

@@ -1,0 +1,1074 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="status_bar.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>status_bar.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../">/listings</a>
+        </li><li><a href="../">/ninja_ide</a>
+        </li><li><a href=".">/gui</a>
+        </li><li><a href="#">/status_bar.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="status_bar.py.html#listingsninja_ideguistatus_barpy-1">  1</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-2">  2</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-3">  3</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-4">  4</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-5">  5</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-6">  6</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-7">  7</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-8">  8</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-9">  9</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-10"> 10</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-11"> 11</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-12"> 12</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-13"> 13</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-14"> 14</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-15"> 15</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-16"> 16</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-17"> 17</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-18"> 18</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-19"> 19</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-20"> 20</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-21"> 21</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-22"> 22</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-23"> 23</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-24"> 24</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-25"> 25</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-26"> 26</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-27"> 27</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-28"> 28</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-29"> 29</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-30"> 30</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-31"> 31</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-32"> 32</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-33"> 33</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-34"> 34</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-35"> 35</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-36"> 36</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-37"> 37</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-38"> 38</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-39"> 39</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-40"> 40</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-41"> 41</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-42"> 42</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-43"> 43</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-44"> 44</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-45"> 45</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-46"> 46</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-47"> 47</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-48"> 48</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-49"> 49</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-50"> 50</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-51"> 51</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-52"> 52</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-53"> 53</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-54"> 54</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-55"> 55</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-56"> 56</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-57"> 57</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-58"> 58</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-59"> 59</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-60"> 60</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-61"> 61</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-62"> 62</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-63"> 63</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-64"> 64</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-65"> 65</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-66"> 66</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-67"> 67</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-68"> 68</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-69"> 69</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-70"> 70</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-71"> 71</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-72"> 72</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-73"> 73</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-74"> 74</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-75"> 75</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-76"> 76</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-77"> 77</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-78"> 78</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-79"> 79</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-80"> 80</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-81"> 81</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-82"> 82</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-83"> 83</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-84"> 84</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-85"> 85</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-86"> 86</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-87"> 87</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-88"> 88</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-89"> 89</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-90"> 90</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-91"> 91</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-92"> 92</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-93"> 93</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-94"> 94</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-95"> 95</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-96"> 96</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-97"> 97</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-98"> 98</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-99"> 99</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-100">100</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-101">101</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-102">102</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-103">103</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-104">104</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-105">105</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-106">106</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-107">107</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-108">108</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-109">109</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-110">110</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-111">111</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-112">112</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-113">113</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-114">114</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-115">115</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-116">116</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-117">117</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-118">118</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-119">119</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-120">120</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-121">121</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-122">122</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-123">123</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-124">124</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-125">125</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-126">126</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-127">127</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-128">128</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-129">129</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-130">130</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-131">131</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-132">132</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-133">133</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-134">134</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-135">135</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-136">136</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-137">137</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-138">138</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-139">139</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-140">140</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-141">141</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-142">142</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-143">143</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-144">144</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-145">145</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-146">146</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-147">147</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-148">148</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-149">149</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-150">150</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-151">151</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-152">152</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-153">153</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-154">154</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-155">155</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-156">156</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-157">157</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-158">158</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-159">159</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-160">160</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-161">161</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-162">162</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-163">163</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-164">164</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-165">165</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-166">166</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-167">167</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-168">168</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-169">169</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-170">170</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-171">171</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-172">172</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-173">173</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-174">174</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-175">175</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-176">176</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-177">177</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-178">178</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-179">179</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-180">180</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-181">181</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-182">182</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-183">183</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-184">184</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-185">185</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-186">186</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-187">187</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-188">188</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-189">189</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-190">190</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-191">191</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-192">192</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-193">193</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-194">194</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-195">195</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-196">196</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-197">197</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-198">198</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-199">199</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-200">200</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-201">201</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-202">202</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-203">203</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-204">204</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-205">205</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-206">206</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-207">207</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-208">208</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-209">209</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-210">210</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-211">211</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-212">212</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-213">213</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-214">214</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-215">215</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-216">216</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-217">217</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-218">218</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-219">219</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-220">220</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-221">221</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-222">222</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-223">223</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-224">224</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-225">225</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-226">226</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-227">227</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-228">228</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-229">229</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-230">230</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-231">231</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-232">232</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-233">233</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-234">234</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-235">235</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-236">236</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-237">237</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-238">238</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-239">239</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-240">240</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-241">241</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-242">242</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-243">243</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-244">244</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-245">245</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-246">246</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-247">247</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-248">248</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-249">249</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-250">250</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-251">251</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-252">252</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-253">253</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-254">254</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-255">255</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-256">256</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-257">257</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-258">258</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-259">259</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-260">260</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-261">261</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-262">262</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-263">263</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-264">264</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-265">265</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-266">266</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-267">267</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-268">268</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-269">269</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-270">270</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-271">271</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-272">272</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-273">273</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-274">274</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-275">275</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-276">276</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-277">277</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-278">278</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-279">279</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-280">280</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-281">281</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-282">282</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-283">283</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-284">284</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-285">285</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-286">286</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-287">287</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-288">288</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-289">289</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-290">290</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-291">291</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-292">292</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-293">293</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-294">294</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-295">295</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-296">296</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-297">297</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-298">298</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-299">299</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-300">300</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-301">301</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-302">302</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-303">303</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-304">304</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-305">305</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-306">306</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-307">307</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-308">308</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-309">309</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-310">310</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-311">311</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-312">312</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-313">313</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-314">314</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-315">315</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-316">316</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-317">317</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-318">318</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-319">319</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-320">320</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-321">321</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-322">322</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-323">323</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-324">324</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-325">325</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-326">326</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-327">327</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-328">328</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-329">329</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-330">330</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-331">331</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-332">332</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-333">333</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-334">334</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-335">335</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-336">336</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-337">337</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-338">338</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-339">339</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-340">340</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-341">341</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-342">342</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-343">343</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-344">344</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-345">345</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-346">346</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-347">347</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-348">348</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-349">349</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-350">350</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-351">351</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-352">352</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-353">353</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-354">354</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-355">355</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-356">356</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-357">357</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-358">358</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-359">359</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-360">360</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-361">361</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-362">362</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-363">363</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-364">364</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-365">365</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-366">366</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-367">367</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-368">368</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-369">369</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-370">370</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-371">371</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-372">372</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-373">373</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-374">374</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-375">375</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-376">376</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-377">377</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-378">378</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-379">379</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-380">380</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-381">381</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-382">382</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-383">383</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-384">384</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-385">385</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-386">386</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-387">387</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-388">388</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-389">389</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-390">390</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-391">391</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-392">392</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-393">393</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-394">394</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-395">395</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-396">396</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-397">397</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-398">398</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-399">399</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-400">400</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-401">401</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-402">402</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-403">403</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-404">404</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-405">405</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-406">406</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-407">407</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-408">408</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-409">409</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-410">410</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-411">411</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-412">412</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-413">413</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-414">414</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-415">415</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-416">416</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-417">417</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-418">418</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-419">419</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-420">420</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-421">421</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-422">422</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-423">423</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-424">424</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-425">425</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-426">426</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-427">427</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-428">428</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-429">429</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-430">430</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-431">431</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-432">432</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-433">433</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-434">434</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-435">435</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-436">436</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-437">437</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-438">438</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-439">439</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-440">440</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-441">441</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-442">442</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-443">443</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-444">444</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-445">445</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-446">446</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-447">447</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-448">448</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-449">449</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-450">450</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-451">451</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-452">452</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-453">453</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-454">454</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-455">455</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-456">456</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-457">457</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-458">458</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-459">459</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-460">460</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-461">461</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-462">462</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-463">463</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-464">464</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-465">465</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-466">466</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-467">467</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-468">468</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-469">469</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-470">470</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-471">471</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-472">472</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-473">473</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-474">474</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-475">475</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-476">476</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-477">477</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-478">478</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-479">479</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-480">480</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-481">481</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-482">482</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-483">483</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-484">484</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-485">485</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-486">486</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-487">487</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-488">488</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-489">489</a>
+<a href="status_bar.py.html#listingsninja_ideguistatus_barpy-490">490</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_ideguistatus_barpy-1"></a><span class="c"># -*- coding: utf-8 -*-</span>
+<a name="listingsninja_ideguistatus_barpy-2"></a><span class="c">#</span>
+<a name="listingsninja_ideguistatus_barpy-3"></a><span class="c"># This file is part of NINJA-IDE (http://ninja-ide.org).</span>
+<a name="listingsninja_ideguistatus_barpy-4"></a><span class="c">#</span>
+<a name="listingsninja_ideguistatus_barpy-5"></a><span class="c"># NINJA-IDE is free software; you can redistribute it and/or modify</span>
+<a name="listingsninja_ideguistatus_barpy-6"></a><span class="c"># it under the terms of the GNU General Public License as published by</span>
+<a name="listingsninja_ideguistatus_barpy-7"></a><span class="c"># the Free Software Foundation; either version 3 of the License, or</span>
+<a name="listingsninja_ideguistatus_barpy-8"></a><span class="c"># any later version.</span>
+<a name="listingsninja_ideguistatus_barpy-9"></a><span class="c">#</span>
+<a name="listingsninja_ideguistatus_barpy-10"></a><span class="c"># NINJA-IDE is distributed in the hope that it will be useful,</span>
+<a name="listingsninja_ideguistatus_barpy-11"></a><span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="listingsninja_ideguistatus_barpy-12"></a><span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="listingsninja_ideguistatus_barpy-13"></a><span class="c"># GNU General Public License for more details.</span>
+<a name="listingsninja_ideguistatus_barpy-14"></a><span class="c">#</span>
+<a name="listingsninja_ideguistatus_barpy-15"></a><span class="c"># You should have received a copy of the GNU General Public License</span>
+<a name="listingsninja_ideguistatus_barpy-16"></a><span class="c"># along with NINJA-IDE; If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="listingsninja_ideguistatus_barpy-17"></a>
+<a name="listingsninja_ideguistatus_barpy-18"></a><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<a name="listingsninja_ideguistatus_barpy-19"></a>
+<a name="listingsninja_ideguistatus_barpy-20"></a><span class="kn">import</span> <span class="nn">re</span>
+<a name="listingsninja_ideguistatus_barpy-21"></a>
+<a name="listingsninja_ideguistatus_barpy-22"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QStatusBar</span>
+<a name="listingsninja_ideguistatus_barpy-23"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QLabel</span>
+<a name="listingsninja_ideguistatus_barpy-24"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QCompleter</span>
+<a name="listingsninja_ideguistatus_barpy-25"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QFileSystemModel</span>
+<a name="listingsninja_ideguistatus_barpy-26"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QTextDocument</span>
+<a name="listingsninja_ideguistatus_barpy-27"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QWidget</span>
+<a name="listingsninja_ideguistatus_barpy-28"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QKeySequence</span>
+<a name="listingsninja_ideguistatus_barpy-29"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QVBoxLayout</span>
+<a name="listingsninja_ideguistatus_barpy-30"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QHBoxLayout</span>
+<a name="listingsninja_ideguistatus_barpy-31"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QLineEdit</span>
+<a name="listingsninja_ideguistatus_barpy-32"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QPushButton</span>
+<a name="listingsninja_ideguistatus_barpy-33"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QTextCursor</span>
+<a name="listingsninja_ideguistatus_barpy-34"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QCheckBox</span>
+<a name="listingsninja_ideguistatus_barpy-35"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QStyle</span>
+<a name="listingsninja_ideguistatus_barpy-36"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QIcon</span>
+<a name="listingsninja_ideguistatus_barpy-37"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QShortcut</span>
+<a name="listingsninja_ideguistatus_barpy-38"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">SIGNAL</span>
+<a name="listingsninja_ideguistatus_barpy-39"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+<a name="listingsninja_ideguistatus_barpy-40"></a>
+<a name="listingsninja_ideguistatus_barpy-41"></a><span class="kn">from</span> <span class="nn">ninja_ide</span> <span class="kn">import</span> <span class="n">resources</span>
+<a name="listingsninja_ideguistatus_barpy-42"></a><span class="kn">from</span> <span class="nn">ninja_ide.core</span> <span class="kn">import</span> <span class="n">settings</span>
+<a name="listingsninja_ideguistatus_barpy-43"></a><span class="kn">from</span> <span class="nn">ninja_ide.tools</span> <span class="kn">import</span> <span class="n">locator</span>
+<a name="listingsninja_ideguistatus_barpy-44"></a><span class="kn">from</span> <span class="nn">ninja_ide.tools</span> <span class="kn">import</span> <span class="n">ui_tools</span>
+<a name="listingsninja_ideguistatus_barpy-45"></a><span class="kn">from</span> <span class="nn">ninja_ide.gui</span> <span class="kn">import</span> <span class="n">actions</span>
+<a name="listingsninja_ideguistatus_barpy-46"></a><span class="kn">from</span> <span class="nn">ninja_ide.gui.ide</span> <span class="kn">import</span> <span class="n">IDE</span>
+<a name="listingsninja_ideguistatus_barpy-47"></a><span class="kn">from</span> <span class="nn">ninja_ide.gui.main_panel</span> <span class="kn">import</span> <span class="n">main_container</span>
+<a name="listingsninja_ideguistatus_barpy-48"></a><span class="kn">from</span> <span class="nn">ninja_ide.tools.logger</span> <span class="kn">import</span> <span class="n">NinjaLogger</span>
+<a name="listingsninja_ideguistatus_barpy-49"></a>
+<a name="listingsninja_ideguistatus_barpy-50"></a><span class="n">logger</span> <span class="o">=</span> <span class="n">NinjaLogger</span><span class="p">(</span><span class="s">'ninja_ide.gui.status_bar'</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-51"></a><span class="n">DEBUG</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">debug</span>
+<a name="listingsninja_ideguistatus_barpy-52"></a>
+<a name="listingsninja_ideguistatus_barpy-53"></a>
+<a name="listingsninja_ideguistatus_barpy-54"></a><span class="k">class</span> <span class="nc">_StatusBar</span><span class="p">(</span><span class="n">QStatusBar</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-55"></a>
+<a name="listingsninja_ideguistatus_barpy-56"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-57"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">_StatusBar</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-58"></a>
+<a name="listingsninja_ideguistatus_barpy-59"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_widgetStatus</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-60"></a>        <span class="n">vbox</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_widgetStatus</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-61"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-62"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">setSpacing</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-63"></a>        <span class="c">#Search Layout</span>
+<a name="listingsninja_ideguistatus_barpy-64"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span> <span class="o">=</span> <span class="n">SearchWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-65"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-66"></a>        <span class="c">#Replace Layout</span>
+<a name="listingsninja_ideguistatus_barpy-67"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_replaceWidget</span> <span class="o">=</span> <span class="n">ReplaceWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-68"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_replaceWidget</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-69"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_replaceWidget</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-70"></a>        <span class="c">#Code Locator</span>
+<a name="listingsninja_ideguistatus_barpy-71"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_codeLocator</span> <span class="o">=</span> <span class="n">locator</span><span class="o">.</span><span class="n">CodeLocatorWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-72"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_codeLocator</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-73"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_codeLocator</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-74"></a>        <span class="c">#File system completer</span>
+<a name="listingsninja_ideguistatus_barpy-75"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_fileSystemOpener</span> <span class="o">=</span> <span class="n">FileSystemOpener</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-76"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fileSystemOpener</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-77"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_fileSystemOpener</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-78"></a>
+<a name="listingsninja_ideguistatus_barpy-79"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_widgetStatus</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-80"></a>        <span class="c"># Not Configurable Shortcuts</span>
+<a name="listingsninja_ideguistatus_barpy-81"></a>        <span class="n">shortEscStatus</span> <span class="o">=</span> <span class="n">QShortcut</span><span class="p">(</span><span class="n">QKeySequence</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Key_Escape</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-82"></a>
+<a name="listingsninja_ideguistatus_barpy-83"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"messageChanged(QString)"</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">message_end</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-84"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_replaceWidget</span><span class="o">.</span><span class="n">_btnCloseReplace</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"clicked()"</span><span class="p">),</span>
+<a name="listingsninja_ideguistatus_barpy-85"></a>            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_replaceWidget</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">))</span>
+<a name="listingsninja_ideguistatus_barpy-86"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_replaceWidget</span><span class="o">.</span><span class="n">_btnReplace</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"clicked()"</span><span class="p">),</span>
+<a name="listingsninja_ideguistatus_barpy-87"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">replace</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-88"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_replaceWidget</span><span class="o">.</span><span class="n">_btnReplaceAll</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"clicked()"</span><span class="p">),</span>
+<a name="listingsninja_ideguistatus_barpy-89"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">replace_all</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-90"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_replaceWidget</span><span class="o">.</span><span class="n">_btnReplaceSelection</span><span class="p">,</span>
+<a name="listingsninja_ideguistatus_barpy-91"></a>            <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"clicked()"</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">replace_selected</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-92"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fileSystemOpener</span><span class="o">.</span><span class="n">btnClose</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"clicked()"</span><span class="p">),</span>
+<a name="listingsninja_ideguistatus_barpy-93"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">hide_status</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-94"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fileSystemOpener</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"requestHide()"</span><span class="p">),</span>
+<a name="listingsninja_ideguistatus_barpy-95"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">hide_status</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-96"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">shortEscStatus</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"activated()"</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">hide_status</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-97"></a>
+<a name="listingsninja_ideguistatus_barpy-98"></a>        <span class="n">IDE</span><span class="o">.</span><span class="n">register_service</span><span class="p">(</span><span class="s">'status_bar'</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-99"></a>
+<a name="listingsninja_ideguistatus_barpy-100"></a>        <span class="c">#Register signals connections</span>
+<a name="listingsninja_ideguistatus_barpy-101"></a>        <span class="n">connections</span> <span class="o">=</span> <span class="p">(</span>
+<a name="listingsninja_ideguistatus_barpy-102"></a>            <span class="p">{</span><span class="s">'target'</span><span class="p">:</span> <span class="s">'main_container'</span><span class="p">,</span>
+<a name="listingsninja_ideguistatus_barpy-103"></a>            <span class="s">'signal_name'</span><span class="p">:</span> <span class="s">'currentTabChanged(QString)'</span><span class="p">,</span>
+<a name="listingsninja_ideguistatus_barpy-104"></a>            <span class="s">'slot'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_tab_changed</span><span class="p">},</span>
+<a name="listingsninja_ideguistatus_barpy-105"></a>            <span class="p">{</span><span class="s">'target'</span><span class="p">:</span> <span class="s">'main_container'</span><span class="p">,</span>
+<a name="listingsninja_ideguistatus_barpy-106"></a>            <span class="s">'signal_name'</span><span class="p">:</span> <span class="s">'updateLocator(QString)'</span><span class="p">,</span>
+<a name="listingsninja_ideguistatus_barpy-107"></a>            <span class="s">'slot'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">explore_file_code</span><span class="p">},</span>
+<a name="listingsninja_ideguistatus_barpy-108"></a>            <span class="p">{</span><span class="s">'target'</span><span class="p">:</span> <span class="s">'explorer_container'</span><span class="p">,</span>
+<a name="listingsninja_ideguistatus_barpy-109"></a>            <span class="s">'signal_name'</span><span class="p">:</span> <span class="s">'updateLocator()'</span><span class="p">,</span>
+<a name="listingsninja_ideguistatus_barpy-110"></a>            <span class="s">'slot'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">explore_code</span><span class="p">},</span>
+<a name="listingsninja_ideguistatus_barpy-111"></a>            <span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-112"></a>
+<a name="listingsninja_ideguistatus_barpy-113"></a>        <span class="n">IDE</span><span class="o">.</span><span class="n">register_signals</span><span class="p">(</span><span class="s">'status_bar'</span><span class="p">,</span> <span class="n">connections</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-114"></a>
+<a name="listingsninja_ideguistatus_barpy-115"></a>    <span class="k">def</span> <span class="nf">install</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-116"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-117"></a>        <span class="n">ide</span> <span class="o">=</span> <span class="n">IDE</span><span class="o">.</span><span class="n">get_service</span><span class="p">(</span><span class="s">'ide'</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-118"></a>        <span class="n">ide</span><span class="o">.</span><span class="n">setStatusBar</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-119"></a>
+<a name="listingsninja_ideguistatus_barpy-120"></a>        <span class="n">ui_tools</span><span class="o">.</span><span class="n">install_shortcuts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">actions</span><span class="o">.</span><span class="n">ACTIONS_STATUS</span><span class="p">,</span> <span class="n">ide</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-121"></a>
+<a name="listingsninja_ideguistatus_barpy-122"></a>    <span class="k">def</span> <span class="nf">find_next_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-123"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">find_next</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-124"></a>
+<a name="listingsninja_ideguistatus_barpy-125"></a>    <span class="k">def</span> <span class="nf">find_previous_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-126"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">find_previous</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-127"></a>
+<a name="listingsninja_ideguistatus_barpy-128"></a>    <span class="k">def</span> <span class="nf">handle_tab_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_tab</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-129"></a>        <span class="sd">"""</span>
+<a name="listingsninja_ideguistatus_barpy-130"></a><span class="sd">        Re-run search if tab changed, we use the find of search widget because</span>
+<a name="listingsninja_ideguistatus_barpy-131"></a><span class="sd">        we want the widget to be updated.</span>
+<a name="listingsninja_ideguistatus_barpy-132"></a><span class="sd">        """</span>
+<a name="listingsninja_ideguistatus_barpy-133"></a>        <span class="n">editor</span> <span class="o">=</span> <span class="n">main_container</span><span class="o">.</span><span class="n">MainContainer</span><span class="p">()</span><span class="o">.</span><span class="n">get_actual_editor</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-134"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">isVisible</span><span class="p">():</span>
+<a name="listingsninja_ideguistatus_barpy-135"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">find_matches</span><span class="p">(</span><span class="n">editor</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-136"></a>        <span class="k">if</span> <span class="n">editor</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-137"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="n">editor</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"textChanged()"</span><span class="p">),</span>
+<a name="listingsninja_ideguistatus_barpy-138"></a>                        <span class="bp">self</span><span class="o">.</span><span class="n">_notify_editor_changed</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-139"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">editor</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"textChanged()"</span><span class="p">),</span>
+<a name="listingsninja_ideguistatus_barpy-140"></a>                        <span class="bp">self</span><span class="o">.</span><span class="n">_notify_editor_changed</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-141"></a>
+<a name="listingsninja_ideguistatus_barpy-142"></a>    <span class="k">def</span> <span class="nf">_notify_editor_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-143"></a>        <span class="sd">"""</span>
+<a name="listingsninja_ideguistatus_barpy-144"></a><span class="sd">        Lets search widget know that the editor contents changed and find</span>
+<a name="listingsninja_ideguistatus_barpy-145"></a><span class="sd">        needs to be re-run</span>
+<a name="listingsninja_ideguistatus_barpy-146"></a><span class="sd">        """</span>
+<a name="listingsninja_ideguistatus_barpy-147"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">isVisible</span><span class="p">():</span>
+<a name="listingsninja_ideguistatus_barpy-148"></a>            <span class="n">editor</span> <span class="o">=</span> <span class="n">main_container</span><span class="o">.</span><span class="n">MainContainer</span><span class="p">()</span><span class="o">.</span><span class="n">get_actual_editor</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-149"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">contents_changed</span><span class="p">(</span><span class="n">editor</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-150"></a>
+<a name="listingsninja_ideguistatus_barpy-151"></a>    <span class="k">def</span> <span class="nf">explore_code</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-152"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_codeLocator</span><span class="o">.</span><span class="n">explore_code</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-153"></a>
+<a name="listingsninja_ideguistatus_barpy-154"></a>    <span class="k">def</span> <span class="nf">explore_file_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-155"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_codeLocator</span><span class="o">.</span><span class="n">explore_file_code</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-156"></a>
+<a name="listingsninja_ideguistatus_barpy-157"></a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-158"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">clearMessage</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-159"></a>        <span class="n">QStatusBar</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-160"></a>        <span class="n">editor</span> <span class="o">=</span> <span class="n">main_container</span><span class="o">.</span><span class="n">MainContainer</span><span class="p">()</span><span class="o">.</span><span class="n">get_actual_editor</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-161"></a>        <span class="k">if</span> <span class="n">editor</span> <span class="ow">and</span> <span class="n">editor</span><span class="o">.</span><span class="n">textCursor</span><span class="p">()</span><span class="o">.</span><span class="n">hasSelection</span><span class="p">():</span>
+<a name="listingsninja_ideguistatus_barpy-162"></a>            <span class="n">text</span> <span class="o">=</span> <span class="n">editor</span><span class="o">.</span><span class="n">textCursor</span><span class="p">()</span><span class="o">.</span><span class="n">selectedText</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-163"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">_line</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-164"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">find_matches</span><span class="p">(</span><span class="n">editor</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-165"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_widgetStatus</span><span class="o">.</span><span class="n">isVisible</span><span class="p">():</span>
+<a name="listingsninja_ideguistatus_barpy-166"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">_line</span><span class="o">.</span><span class="n">setFocus</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-167"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">_line</span><span class="o">.</span><span class="n">selectAll</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-168"></a>
+<a name="listingsninja_ideguistatus_barpy-169"></a>    <span class="k">def</span> <span class="nf">show_replace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-170"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">clearMessage</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-171"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-172"></a>        <span class="n">editor</span> <span class="o">=</span> <span class="n">main_container</span><span class="o">.</span><span class="n">MainContainer</span><span class="p">()</span><span class="o">.</span><span class="n">get_actual_editor</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-173"></a>        <span class="k">if</span> <span class="n">editor</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-174"></a>            <span class="k">if</span> <span class="n">editor</span><span class="o">.</span><span class="n">textCursor</span><span class="p">()</span><span class="o">.</span><span class="n">hasSelection</span><span class="p">():</span>
+<a name="listingsninja_ideguistatus_barpy-175"></a>                <span class="n">word</span> <span class="o">=</span> <span class="n">editor</span><span class="o">.</span><span class="n">textCursor</span><span class="p">()</span><span class="o">.</span><span class="n">selectedText</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-176"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">_line</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-177"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_replaceWidget</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-178"></a>
+<a name="listingsninja_ideguistatus_barpy-179"></a>    <span class="k">def</span> <span class="nf">show_with_word</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-180"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">clearMessage</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-181"></a>        <span class="n">editor</span> <span class="o">=</span> <span class="n">main_container</span><span class="o">.</span><span class="n">MainContainer</span><span class="p">()</span><span class="o">.</span><span class="n">get_actual_editor</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-182"></a>        <span class="k">if</span> <span class="n">editor</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-183"></a>            <span class="n">word</span> <span class="o">=</span> <span class="n">editor</span><span class="o">.</span><span class="n">_text_under_cursor</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-184"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">_line</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-185"></a>            <span class="n">editor</span> <span class="o">=</span> <span class="n">main_container</span><span class="o">.</span><span class="n">MainContainer</span><span class="p">()</span><span class="o">.</span><span class="n">get_actual_editor</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-186"></a>            <span class="n">editor</span><span class="o">.</span><span class="n">moveCursor</span><span class="p">(</span><span class="n">QTextCursor</span><span class="o">.</span><span class="n">WordLeft</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-187"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">find_matches</span><span class="p">(</span><span class="n">editor</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-188"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-189"></a>
+<a name="listingsninja_ideguistatus_barpy-190"></a>    <span class="k">def</span> <span class="nf">show_locator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-191"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_codeLocator</span><span class="o">.</span><span class="n">isVisible</span><span class="p">():</span>
+<a name="listingsninja_ideguistatus_barpy-192"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">clearMessage</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-193"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-194"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-195"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_codeLocator</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-196"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_codeLocator</span><span class="o">.</span><span class="n">_completer</span><span class="o">.</span><span class="n">setFocus</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-197"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_codeLocator</span><span class="o">.</span><span class="n">show_suggestions</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-198"></a>
+<a name="listingsninja_ideguistatus_barpy-199"></a>    <span class="k">def</span> <span class="nf">show_file_opener</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-200"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">clearMessage</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-201"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-202"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_fileSystemOpener</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-203"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-204"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_fileSystemOpener</span><span class="o">.</span><span class="n">pathLine</span><span class="o">.</span><span class="n">setFocus</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-205"></a>
+<a name="listingsninja_ideguistatus_barpy-206"></a>    <span class="k">def</span> <span class="nf">hide_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-207"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">_checkSensitive</span><span class="o">.</span><span class="n">setCheckState</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Unchecked</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-208"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">_checkWholeWord</span><span class="o">.</span><span class="n">setCheckState</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Unchecked</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-209"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-210"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-211"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_replaceWidget</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-212"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_codeLocator</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-213"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_fileSystemOpener</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-214"></a>        <span class="n">widget</span> <span class="o">=</span> <span class="n">main_container</span><span class="o">.</span><span class="n">MainContainer</span><span class="p">()</span><span class="o">.</span><span class="n">get_actual_widget</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-215"></a>        <span class="k">if</span> <span class="n">widget</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-216"></a>            <span class="n">widget</span><span class="o">.</span><span class="n">setFocus</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-217"></a>
+<a name="listingsninja_ideguistatus_barpy-218"></a>    <span class="k">def</span> <span class="nf">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-219"></a>        <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">_checkSensitive</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> \
+<a name="listingsninja_ideguistatus_barpy-220"></a>            <span class="k">else</span> <span class="n">QTextDocument</span><span class="o">.</span><span class="n">FindCaseSensitively</span>
+<a name="listingsninja_ideguistatus_barpy-221"></a>        <span class="n">w</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">_checkWholeWord</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> \
+<a name="listingsninja_ideguistatus_barpy-222"></a>            <span class="k">else</span> <span class="n">QTextDocument</span><span class="o">.</span><span class="n">FindWholeWords</span>
+<a name="listingsninja_ideguistatus_barpy-223"></a>        <span class="n">flags</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">+</span> <span class="n">s</span> <span class="o">+</span> <span class="n">w</span>
+<a name="listingsninja_ideguistatus_barpy-224"></a>        <span class="n">editor</span> <span class="o">=</span> <span class="n">main_container</span><span class="o">.</span><span class="n">MainContainer</span><span class="p">()</span><span class="o">.</span><span class="n">get_actual_editor</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-225"></a>        <span class="k">if</span> <span class="n">editor</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-226"></a>            <span class="n">editor</span><span class="o">.</span><span class="n">replace_match</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">_line</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span>
+<a name="listingsninja_ideguistatus_barpy-227"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_replaceWidget</span><span class="o">.</span><span class="n">_lineReplace</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="n">flags</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-228"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">editor</span><span class="o">.</span><span class="n">textCursor</span><span class="p">()</span><span class="o">.</span><span class="n">hasSelection</span><span class="p">():</span>
+<a name="listingsninja_ideguistatus_barpy-229"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-230"></a>
+<a name="listingsninja_ideguistatus_barpy-231"></a>    <span class="k">def</span> <span class="nf">replace_selected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-232"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">replace_all</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-233"></a>
+<a name="listingsninja_ideguistatus_barpy-234"></a>    <span class="k">def</span> <span class="nf">replace_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selected</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-235"></a>        <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">_checkSensitive</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> \
+<a name="listingsninja_ideguistatus_barpy-236"></a>            <span class="k">else</span> <span class="n">QTextDocument</span><span class="o">.</span><span class="n">FindCaseSensitively</span>
+<a name="listingsninja_ideguistatus_barpy-237"></a>        <span class="n">w</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">_checkWholeWord</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> \
+<a name="listingsninja_ideguistatus_barpy-238"></a>            <span class="k">else</span> <span class="n">QTextDocument</span><span class="o">.</span><span class="n">FindWholeWords</span>
+<a name="listingsninja_ideguistatus_barpy-239"></a>        <span class="n">flags</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">+</span> <span class="n">s</span> <span class="o">+</span> <span class="n">w</span>
+<a name="listingsninja_ideguistatus_barpy-240"></a>        <span class="n">editor</span> <span class="o">=</span> <span class="n">main_container</span><span class="o">.</span><span class="n">MainContainer</span><span class="p">()</span><span class="o">.</span><span class="n">get_actual_editor</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-241"></a>        <span class="k">if</span> <span class="n">editor</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-242"></a>            <span class="n">editor</span><span class="o">.</span><span class="n">replace_match</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">_line</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span>
+<a name="listingsninja_ideguistatus_barpy-243"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_replaceWidget</span><span class="o">.</span><span class="n">_lineReplace</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="n">flags</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span>
+<a name="listingsninja_ideguistatus_barpy-244"></a>                <span class="n">selected</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-245"></a>
+<a name="listingsninja_ideguistatus_barpy-246"></a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-247"></a>        <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">_checkSensitive</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> \
+<a name="listingsninja_ideguistatus_barpy-248"></a>            <span class="k">else</span> <span class="n">QTextDocument</span><span class="o">.</span><span class="n">FindCaseSensitively</span>
+<a name="listingsninja_ideguistatus_barpy-249"></a>        <span class="n">w</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">_checkWholeWord</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> \
+<a name="listingsninja_ideguistatus_barpy-250"></a>            <span class="k">else</span> <span class="n">QTextDocument</span><span class="o">.</span><span class="n">FindWholeWords</span>
+<a name="listingsninja_ideguistatus_barpy-251"></a>        <span class="n">flags</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="n">w</span>
+<a name="listingsninja_ideguistatus_barpy-252"></a>        <span class="n">editor</span> <span class="o">=</span> <span class="n">main_container</span><span class="o">.</span><span class="n">MainContainer</span><span class="p">()</span><span class="o">.</span><span class="n">get_actual_editor</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-253"></a>        <span class="k">if</span> <span class="n">editor</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-254"></a>            <span class="n">editor</span><span class="o">.</span><span class="n">find_match</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">_line</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="n">flags</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-255"></a>
+<a name="listingsninja_ideguistatus_barpy-256"></a>    <span class="k">def</span> <span class="nf">find_next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-257"></a>        <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">_checkSensitive</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> \
+<a name="listingsninja_ideguistatus_barpy-258"></a>            <span class="k">else</span> <span class="n">QTextDocument</span><span class="o">.</span><span class="n">FindCaseSensitively</span>
+<a name="listingsninja_ideguistatus_barpy-259"></a>        <span class="n">w</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">_checkWholeWord</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> \
+<a name="listingsninja_ideguistatus_barpy-260"></a>            <span class="k">else</span> <span class="n">QTextDocument</span><span class="o">.</span><span class="n">FindWholeWords</span>
+<a name="listingsninja_ideguistatus_barpy-261"></a>        <span class="n">flags</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">+</span> <span class="n">s</span> <span class="o">+</span> <span class="n">w</span>
+<a name="listingsninja_ideguistatus_barpy-262"></a>        <span class="n">editor</span> <span class="o">=</span> <span class="n">main_container</span><span class="o">.</span><span class="n">MainContainer</span><span class="p">()</span><span class="o">.</span><span class="n">get_actual_editor</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-263"></a>        <span class="k">if</span> <span class="n">editor</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-264"></a>            <span class="n">editor</span><span class="o">.</span><span class="n">find_match</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">_line</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="n">flags</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-265"></a>
+<a name="listingsninja_ideguistatus_barpy-266"></a>    <span class="k">def</span> <span class="nf">find_previous</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-267"></a>        <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">_checkSensitive</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> \
+<a name="listingsninja_ideguistatus_barpy-268"></a>            <span class="k">else</span> <span class="n">QTextDocument</span><span class="o">.</span><span class="n">FindCaseSensitively</span>
+<a name="listingsninja_ideguistatus_barpy-269"></a>        <span class="n">w</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">_checkWholeWord</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> \
+<a name="listingsninja_ideguistatus_barpy-270"></a>            <span class="k">else</span> <span class="n">QTextDocument</span><span class="o">.</span><span class="n">FindWholeWords</span>
+<a name="listingsninja_ideguistatus_barpy-271"></a>        <span class="n">flags</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">s</span> <span class="o">+</span> <span class="n">w</span>
+<a name="listingsninja_ideguistatus_barpy-272"></a>        <span class="n">editor</span> <span class="o">=</span> <span class="n">main_container</span><span class="o">.</span><span class="n">MainContainer</span><span class="p">()</span><span class="o">.</span><span class="n">get_actual_editor</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-273"></a>        <span class="k">if</span> <span class="n">editor</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-274"></a>            <span class="n">editor</span><span class="o">.</span><span class="n">find_match</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_searchWidget</span><span class="o">.</span><span class="n">_line</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="n">flags</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-275"></a>
+<a name="listingsninja_ideguistatus_barpy-276"></a>    <span class="k">def</span> <span class="nf">showMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">timeout</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-277"></a>        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">SHOW_STATUS_NOTIFICATIONS</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-278"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_widgetStatus</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-279"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_replaceWidget</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-280"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-281"></a>            <span class="n">QStatusBar</span><span class="o">.</span><span class="n">showMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-282"></a>
+<a name="listingsninja_ideguistatus_barpy-283"></a>    <span class="k">def</span> <span class="nf">message_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-284"></a>        <span class="k">if</span> <span class="n">message</span> <span class="o">==</span> <span class="s">''</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-285"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-286"></a>            <span class="n">QStatusBar</span><span class="o">.</span><span class="n">clearMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-287"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_widgetStatus</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-288"></a>
+<a name="listingsninja_ideguistatus_barpy-289"></a>
+<a name="listingsninja_ideguistatus_barpy-290"></a><span class="k">class</span> <span class="nc">SearchWidget</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-291"></a>
+<a name="listingsninja_ideguistatus_barpy-292"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-293"></a>        <span class="n">QWidget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-294"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">parent</span>
+<a name="listingsninja_ideguistatus_barpy-295"></a>        <span class="n">hSearch</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-296"></a>        <span class="n">hSearch</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-297"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_checkSensitive</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trUtf8</span><span class="p">(</span><span class="s">"Respect Case Sensitive"</span><span class="p">))</span>
+<a name="listingsninja_ideguistatus_barpy-298"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_checkWholeWord</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trUtf8</span><span class="p">(</span><span class="s">"Find Whole Words"</span><span class="p">))</span>
+<a name="listingsninja_ideguistatus_barpy-299"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_line</span> <span class="o">=</span> <span class="n">TextLine</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-300"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_line</span><span class="o">.</span><span class="n">setMinimumWidth</span><span class="p">(</span><span class="mi">250</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-301"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_btnClose</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span>
+<a name="listingsninja_ideguistatus_barpy-302"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">standardIcon</span><span class="p">(</span><span class="n">QStyle</span><span class="o">.</span><span class="n">SP_DialogCloseButton</span><span class="p">),</span> <span class="s">''</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-303"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_btnFind</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="n">QIcon</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">IMAGES</span><span class="p">[</span><span class="s">'find'</span><span class="p">]),</span> <span class="s">''</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-304"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">btnPrevious</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span>
+<a name="listingsninja_ideguistatus_barpy-305"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">standardIcon</span><span class="p">(</span><span class="n">QStyle</span><span class="o">.</span><span class="n">SP_ArrowLeft</span><span class="p">),</span> <span class="s">''</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-306"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">btnPrevious</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trUtf8</span><span class="p">(</span><span class="s">"Press </span><span class="si">%s</span><span class="s">"</span><span class="p">)</span> <span class="o">%</span>
+<a name="listingsninja_ideguistatus_barpy-307"></a>                <span class="n">resources</span><span class="o">.</span><span class="n">get_shortcut</span><span class="p">(</span><span class="s">"Find-previous"</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">(</span>
+<a name="listingsninja_ideguistatus_barpy-308"></a>                    <span class="n">QKeySequence</span><span class="o">.</span><span class="n">NativeText</span><span class="p">))</span>
+<a name="listingsninja_ideguistatus_barpy-309"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">btnNext</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span>
+<a name="listingsninja_ideguistatus_barpy-310"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">standardIcon</span><span class="p">(</span><span class="n">QStyle</span><span class="o">.</span><span class="n">SP_ArrowRight</span><span class="p">),</span> <span class="s">''</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-311"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">btnNext</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trUtf8</span><span class="p">(</span><span class="s">"Press </span><span class="si">%s</span><span class="s">"</span><span class="p">)</span> <span class="o">%</span>
+<a name="listingsninja_ideguistatus_barpy-312"></a>                <span class="n">resources</span><span class="o">.</span><span class="n">get_shortcut</span><span class="p">(</span><span class="s">"Find-next"</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">(</span>
+<a name="listingsninja_ideguistatus_barpy-313"></a>                    <span class="n">QKeySequence</span><span class="o">.</span><span class="n">NativeText</span><span class="p">))</span>
+<a name="listingsninja_ideguistatus_barpy-314"></a>        <span class="n">hSearch</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_btnClose</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-315"></a>        <span class="n">hSearch</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_line</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-316"></a>        <span class="n">hSearch</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_btnFind</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-317"></a>        <span class="n">hSearch</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btnPrevious</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-318"></a>        <span class="n">hSearch</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btnNext</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-319"></a>        <span class="n">hSearch</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_checkSensitive</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-320"></a>        <span class="n">hSearch</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_checkWholeWord</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-321"></a>
+<a name="listingsninja_ideguistatus_barpy-322"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">totalMatches</span> <span class="o">=</span> <span class="mi">0</span>
+<a name="listingsninja_ideguistatus_barpy-323"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+<a name="listingsninja_ideguistatus_barpy-324"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_line</span><span class="o">.</span><span class="n">counter</span><span class="o">.</span><span class="n">update_count</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalMatches</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-325"></a>
+<a name="listingsninja_ideguistatus_barpy-326"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_btnClose</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"clicked()"</span><span class="p">),</span>
+<a name="listingsninja_ideguistatus_barpy-327"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">hide_status</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-328"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_btnFind</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"clicked()"</span><span class="p">),</span>
+<a name="listingsninja_ideguistatus_barpy-329"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">find_next</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-330"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btnNext</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"clicked()"</span><span class="p">),</span>
+<a name="listingsninja_ideguistatus_barpy-331"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">find_next</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-332"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btnPrevious</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"clicked()"</span><span class="p">),</span>
+<a name="listingsninja_ideguistatus_barpy-333"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">find_previous</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-334"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_checkSensitive</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"stateChanged(int)"</span><span class="p">),</span>
+<a name="listingsninja_ideguistatus_barpy-335"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_checks_state_changed</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-336"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_checkWholeWord</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"stateChanged(int)"</span><span class="p">),</span>
+<a name="listingsninja_ideguistatus_barpy-337"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_checks_state_changed</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-338"></a>
+<a name="listingsninja_ideguistatus_barpy-339"></a>    <span class="k">def</span> <span class="nf">_checks_state_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-340"></a>        <span class="n">editor</span> <span class="o">=</span> <span class="n">main_container</span><span class="o">.</span><span class="n">MainContainer</span><span class="p">()</span><span class="o">.</span><span class="n">get_actual_editor</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-341"></a>        <span class="n">editor</span><span class="o">.</span><span class="n">moveCursor</span><span class="p">(</span><span class="n">QTextCursor</span><span class="o">.</span><span class="n">Start</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-342"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">find_matches</span><span class="p">(</span><span class="n">editor</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-343"></a>
+<a name="listingsninja_ideguistatus_barpy-344"></a>    <span class="k">def</span> <span class="nf">contents_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">editor</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-345"></a>        <span class="c">#TODO: Find where the cursor is when finding to position the index</span>
+<a name="listingsninja_ideguistatus_barpy-346"></a>        <span class="n">current_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_matches</span><span class="p">(</span><span class="n">editor</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-347"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalMatches</span> <span class="o">&gt;=</span> <span class="n">current_index</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-348"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">current_index</span>
+<a name="listingsninja_ideguistatus_barpy-349"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_line</span><span class="o">.</span><span class="n">counter</span><span class="o">.</span><span class="n">update_count</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalMatches</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-350"></a>
+<a name="listingsninja_ideguistatus_barpy-351"></a>    <span class="k">def</span> <span class="nf">find_next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-352"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">find_next</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-353"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalMatches</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalMatches</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-354"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+<a name="listingsninja_ideguistatus_barpy-355"></a>        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalMatches</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-356"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="mi">1</span>
+<a name="listingsninja_ideguistatus_barpy-357"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_line</span><span class="o">.</span><span class="n">counter</span><span class="o">.</span><span class="n">update_count</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalMatches</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-358"></a>
+<a name="listingsninja_ideguistatus_barpy-359"></a>    <span class="k">def</span> <span class="nf">find_previous</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-360"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">find_previous</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-361"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalMatches</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-362"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">-=</span> <span class="mi">1</span>
+<a name="listingsninja_ideguistatus_barpy-363"></a>        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalMatches</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-364"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalMatches</span>
+<a name="listingsninja_ideguistatus_barpy-365"></a>            <span class="n">editor</span> <span class="o">=</span> <span class="n">main_container</span><span class="o">.</span><span class="n">MainContainer</span><span class="p">()</span><span class="o">.</span><span class="n">get_actual_editor</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-366"></a>            <span class="n">editor</span><span class="o">.</span><span class="n">moveCursor</span><span class="p">(</span><span class="n">QTextCursor</span><span class="o">.</span><span class="n">End</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-367"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">find_previous</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-368"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_line</span><span class="o">.</span><span class="n">counter</span><span class="o">.</span><span class="n">update_count</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalMatches</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-369"></a>
+<a name="listingsninja_ideguistatus_barpy-370"></a>    <span class="k">def</span> <span class="nf">find_matches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">editor</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-371"></a>        <span class="k">if</span> <span class="n">editor</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-372"></a>            <span class="k">return</span>
+<a name="listingsninja_ideguistatus_barpy-373"></a>        <span class="n">text</span> <span class="o">=</span> <span class="n">editor</span><span class="o">.</span><span class="n">toPlainText</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-374"></a>        <span class="n">search</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_line</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-375"></a>        <span class="n">hasSearch</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">search</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<a name="listingsninja_ideguistatus_barpy-376"></a>        <span class="n">current_index</span> <span class="o">=</span> <span class="mi">0</span>
+<a name="listingsninja_ideguistatus_barpy-377"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_checkWholeWord</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+<a name="listingsninja_ideguistatus_barpy-378"></a>            <span class="n">pattern</span> <span class="o">=</span> <span class="s">r'\b</span><span class="si">%s</span><span class="s">\b'</span> <span class="o">%</span> <span class="n">search</span>
+<a name="listingsninja_ideguistatus_barpy-379"></a>            <span class="n">temp_text</span> <span class="o">=</span> <span class="s">' '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">))</span>
+<a name="listingsninja_ideguistatus_barpy-380"></a>            <span class="n">text</span> <span class="o">=</span> <span class="n">temp_text</span> <span class="k">if</span> <span class="n">temp_text</span> <span class="o">!=</span> <span class="s">''</span> <span class="k">else</span> <span class="n">text</span>
+<a name="listingsninja_ideguistatus_barpy-381"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_checkSensitive</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+<a name="listingsninja_ideguistatus_barpy-382"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">totalMatches</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">search</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-383"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-384"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">totalMatches</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">search</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+<a name="listingsninja_ideguistatus_barpy-385"></a>        <span class="k">if</span> <span class="n">hasSearch</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalMatches</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-386"></a>            <span class="n">cursor</span> <span class="o">=</span> <span class="n">editor</span><span class="o">.</span><span class="n">textCursor</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-387"></a>            <span class="n">cursor_position</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">position</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-388"></a>
+<a name="listingsninja_ideguistatus_barpy-389"></a>            <span class="n">cursor</span><span class="o">.</span><span class="n">movePosition</span><span class="p">(</span><span class="n">QTextCursor</span><span class="o">.</span><span class="n">WordLeft</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-390"></a>            <span class="n">cursor</span><span class="o">.</span><span class="n">movePosition</span><span class="p">(</span><span class="n">QTextCursor</span><span class="o">.</span><span class="n">Start</span><span class="p">,</span>
+<a name="listingsninja_ideguistatus_barpy-391"></a>                <span class="n">QTextCursor</span><span class="o">.</span><span class="n">KeepAnchor</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-392"></a>            <span class="n">current_index</span> <span class="o">=</span> <span class="n">text</span><span class="p">[:</span><span class="n">cursor_position</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">search</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-393"></a>            <span class="n">text</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">selectedText</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-394"></a>            <span class="k">if</span> <span class="n">current_index</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalMatches</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-395"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">current_index</span>
+<a name="listingsninja_ideguistatus_barpy-396"></a>            <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-397"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">search</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<a name="listingsninja_ideguistatus_barpy-398"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-399"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+<a name="listingsninja_ideguistatus_barpy-400"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">totalMatches</span> <span class="o">=</span> <span class="mi">0</span>
+<a name="listingsninja_ideguistatus_barpy-401"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_line</span><span class="o">.</span><span class="n">counter</span><span class="o">.</span><span class="n">update_count</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">totalMatches</span><span class="p">,</span>
+<a name="listingsninja_ideguistatus_barpy-402"></a>            <span class="n">hasSearch</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-403"></a>        <span class="k">if</span> <span class="n">hasSearch</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">in_place</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-404"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">find</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-405"></a>        <span class="k">return</span> <span class="n">current_index</span>
+<a name="listingsninja_ideguistatus_barpy-406"></a>
+<a name="listingsninja_ideguistatus_barpy-407"></a>
+<a name="listingsninja_ideguistatus_barpy-408"></a><span class="k">class</span> <span class="nc">ReplaceWidget</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-409"></a>
+<a name="listingsninja_ideguistatus_barpy-410"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-411"></a>        <span class="n">QWidget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-412"></a>        <span class="n">hReplace</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-413"></a>        <span class="n">hReplace</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-414"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_lineReplace</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-415"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_lineReplace</span><span class="o">.</span><span class="n">setMinimumWidth</span><span class="p">(</span><span class="mi">250</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-416"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_btnCloseReplace</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span>
+<a name="listingsninja_ideguistatus_barpy-417"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">standardIcon</span><span class="p">(</span><span class="n">QStyle</span><span class="o">.</span><span class="n">SP_DialogCloseButton</span><span class="p">),</span> <span class="s">''</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-418"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_btnReplace</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trUtf8</span><span class="p">(</span><span class="s">"Replace"</span><span class="p">))</span>
+<a name="listingsninja_ideguistatus_barpy-419"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_btnReplaceAll</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trUtf8</span><span class="p">(</span><span class="s">"Replace All"</span><span class="p">))</span>
+<a name="listingsninja_ideguistatus_barpy-420"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_btnReplaceSelection</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span>
+<a name="listingsninja_ideguistatus_barpy-421"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">trUtf8</span><span class="p">(</span><span class="s">"Replace Selection"</span><span class="p">))</span>
+<a name="listingsninja_ideguistatus_barpy-422"></a>        <span class="n">hReplace</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_btnCloseReplace</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-423"></a>        <span class="n">hReplace</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lineReplace</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-424"></a>        <span class="n">hReplace</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_btnReplace</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-425"></a>        <span class="n">hReplace</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_btnReplaceAll</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-426"></a>        <span class="n">hReplace</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_btnReplaceSelection</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-427"></a>
+<a name="listingsninja_ideguistatus_barpy-428"></a>
+<a name="listingsninja_ideguistatus_barpy-429"></a><span class="k">class</span> <span class="nc">TextLine</span><span class="p">(</span><span class="n">QLineEdit</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-430"></a>
+<a name="listingsninja_ideguistatus_barpy-431"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-432"></a>        <span class="n">QLineEdit</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-433"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">parent</span>
+<a name="listingsninja_ideguistatus_barpy-434"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="n">ui_tools</span><span class="o">.</span><span class="n">LineEditCount</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-435"></a>
+<a name="listingsninja_ideguistatus_barpy-436"></a>    <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-437"></a>        <span class="n">editor</span> <span class="o">=</span> <span class="n">main_container</span><span class="o">.</span><span class="n">MainContainer</span><span class="p">()</span><span class="o">.</span><span class="n">get_actual_editor</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-438"></a>        <span class="k">if</span> <span class="n">editor</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-439"></a>            <span class="nb">super</span><span class="p">(</span><span class="n">TextLine</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">keyPressEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-440"></a>            <span class="k">return</span>
+<a name="listingsninja_ideguistatus_barpy-441"></a>        <span class="k">if</span> <span class="n">editor</span> <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="ow">in</span> \
+<a name="listingsninja_ideguistatus_barpy-442"></a>        <span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Key_Enter</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Return</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-443"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">find_next</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-444"></a>            <span class="k">return</span>
+<a name="listingsninja_ideguistatus_barpy-445"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">TextLine</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">keyPressEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-446"></a>        <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">())</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">162</span><span class="p">)</span> <span class="ow">or</span> \
+<a name="listingsninja_ideguistatus_barpy-447"></a>        <span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Backspace</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-448"></a>            <span class="n">has_replace</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">_replaceWidget</span><span class="o">.</span><span class="n">isVisible</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-449"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">has_replace</span><span class="p">:</span>
+<a name="listingsninja_ideguistatus_barpy-450"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">find_matches</span><span class="p">(</span><span class="n">editor</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-451"></a>
+<a name="listingsninja_ideguistatus_barpy-452"></a>
+<a name="listingsninja_ideguistatus_barpy-453"></a><span class="k">class</span> <span class="nc">FileSystemOpener</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-454"></a>
+<a name="listingsninja_ideguistatus_barpy-455"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-456"></a>        <span class="n">QWidget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-457"></a>        <span class="n">hbox</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-458"></a>        <span class="n">hbox</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-459"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">btnClose</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span>
+<a name="listingsninja_ideguistatus_barpy-460"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">standardIcon</span><span class="p">(</span><span class="n">QStyle</span><span class="o">.</span><span class="n">SP_DialogCloseButton</span><span class="p">),</span> <span class="s">''</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-461"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">completer</span> <span class="o">=</span> <span class="n">QCompleter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-462"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">pathLine</span> <span class="o">=</span> <span class="n">ui_tools</span><span class="o">.</span><span class="n">LineEditTabCompleter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">completer</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-463"></a>        <span class="n">fileModel</span> <span class="o">=</span> <span class="n">QFileSystemModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">completer</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-464"></a>        <span class="n">fileModel</span><span class="o">.</span><span class="n">setRootPath</span><span class="p">(</span><span class="s">""</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-465"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">completer</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="n">fileModel</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-466"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">pathLine</span><span class="o">.</span><span class="n">setCompleter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">completer</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-467"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">btnOpen</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span>
+<a name="listingsninja_ideguistatus_barpy-468"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">standardIcon</span><span class="p">(</span><span class="n">QStyle</span><span class="o">.</span><span class="n">SP_ArrowRight</span><span class="p">),</span> <span class="s">'Open!'</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-469"></a>        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btnClose</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-470"></a>        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trUtf8</span><span class="p">(</span><span class="s">"Path:"</span><span class="p">)))</span>
+<a name="listingsninja_ideguistatus_barpy-471"></a>        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathLine</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-472"></a>        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btnOpen</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-473"></a>
+<a name="listingsninja_ideguistatus_barpy-474"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathLine</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"returnPressed()"</span><span class="p">),</span>
+<a name="listingsninja_ideguistatus_barpy-475"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_open_file</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-476"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btnOpen</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"clicked()"</span><span class="p">),</span>
+<a name="listingsninja_ideguistatus_barpy-477"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_open_file</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-478"></a>
+<a name="listingsninja_ideguistatus_barpy-479"></a>    <span class="k">def</span> <span class="nf">_open_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-480"></a>        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pathLine</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-481"></a>        <span class="n">main_container</span><span class="o">.</span><span class="n">MainContainer</span><span class="p">()</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-482"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">"requestHide()"</span><span class="p">))</span>
+<a name="listingsninja_ideguistatus_barpy-483"></a>
+<a name="listingsninja_ideguistatus_barpy-484"></a>    <span class="k">def</span> <span class="nf">showEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<a name="listingsninja_ideguistatus_barpy-485"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">FileSystemOpener</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">showEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+<a name="listingsninja_ideguistatus_barpy-486"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">pathLine</span><span class="o">.</span><span class="n">selectAll</span><span class="p">()</span>
+<a name="listingsninja_ideguistatus_barpy-487"></a>
+<a name="listingsninja_ideguistatus_barpy-488"></a>
+<a name="listingsninja_ideguistatus_barpy-489"></a><span class="c">#Register StatusBar</span>
+<a name="listingsninja_ideguistatus_barpy-490"></a><span class="n">status</span> <span class="o">=</span> <span class="n">_StatusBar</span><span class="p">()</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

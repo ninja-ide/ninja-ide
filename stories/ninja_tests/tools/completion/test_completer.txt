@@ -1,0 +1,17 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: test_completer
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `test_completer.py </listings/ninja_tests/tools/completion/test_completer.py.html>`_ API
+====================================================================================================
+
+No description.
+

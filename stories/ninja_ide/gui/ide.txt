@@ -1,0 +1,821 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: ide
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `ide.py </listings/ninja_ide/gui/ide.py.html>`_ API
+===============================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `collections </listings/ninja_ide/gui/ide.py.html#20>`_
+
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/gui/ide.py.html#62>`_
+
+- `PyQt4.QtGui.QApplication </listings/ninja_ide/gui/ide.py.html#22>`_
+
+- `PyQt4.QtGui.QFont </listings/ninja_ide/gui/ide.py.html#27>`_
+
+- `PyQt4.QtGui.QInputDialog </listings/ninja_ide/gui/ide.py.html#29>`_
+
+- `PyQt4.QtGui.QKeySequence </listings/ninja_ide/gui/ide.py.html#28>`_
+
+- `PyQt4.QtNetwork.QLocalServer </listings/ninja_ide/gui/ide.py.html#35>`_
+
+- `PyQt4.QtGui.QMainWindow </listings/ninja_ide/gui/ide.py.html#23>`_
+
+- `PyQt4.QtGui.QMessageBox </listings/ninja_ide/gui/ide.py.html#24>`_
+
+- `PyQt4.QtCore.QPointF </listings/ninja_ide/gui/ide.py.html#34>`_
+
+- `PyQt4.QtCore.QSettings </listings/ninja_ide/gui/ide.py.html#31>`_
+
+- `PyQt4.QtCore.QSizeF </listings/ninja_ide/gui/ide.py.html#33>`_
+
+- `PyQt4.QtGui.QToolBar </listings/ninja_ide/gui/ide.py.html#25>`_
+
+- `PyQt4.QtGui.QToolTip </listings/ninja_ide/gui/ide.py.html#26>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/ide.py.html#30>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/ide.py.html#32>`_
+
+- `ninja_ide.gui.dialogs.about_ninja </listings/ninja_ide/gui/ide.py.html#49>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/ide.py.html#17>`_
+
+- `ninja_ide.gui.actions </listings/ninja_ide/gui/ide.py.html#44>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/gui/ide.py.html#40>`_
+
+- `ninja_ide.core.ipc </listings/ninja_ide/gui/ide.py.html#43>`_
+
+- `ninja_ide.gui.dialogs.language_manager </listings/ninja_ide/gui/ide.py.html#52>`_
+
+- `ninja_ide.gui.editor.neditable </listings/ninja_ide/gui/ide.py.html#47>`_
+
+- `ninja_ide.gui.notification </listings/ninja_ide/gui/ide.py.html#46>`_
+
+- `ninja_ide.gui.explorer.nproject </listings/ninja_ide/gui/ide.py.html#48>`_
+
+- `ninja_ide.core.plugin_manager </listings/ninja_ide/gui/ide.py.html#39>`_
+
+- `ninja_ide.gui.dialogs.plugins_manager </listings/ninja_ide/gui/ide.py.html#50>`_
+
+- `ninja_ide.gui.dialogs.preferences </listings/ninja_ide/gui/ide.py.html#53>`_
+
+- `ninja_ide.gui.dialogs.python_detect_dialog </listings/ninja_ide/gui/ide.py.html#55>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/ide.py.html#37>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/ide.py.html#42>`_
+
+- `ninja_ide.gui.dialogs.themes_manager </listings/ninja_ide/gui/ide.py.html#51>`_
+
+- `ninja_ide.gui.dialogs.traceback_widget </listings/ninja_ide/gui/ide.py.html#54>`_
+
+- `ninja_ide.translations </listings/ninja_ide/gui/ide.py.html#38>`_
+
+- `ninja_ide.tools.ui_tools </listings/ninja_ide/gui/ide.py.html#56>`_
+
+- `__future__.unicode_literals </listings/ninja_ide/gui/ide.py.html#18>`_
+
+- `ninja_ide.gui.updates </listings/ninja_ide/gui/ide.py.html#45>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `logger [at ln:64] </listings/ninja_ide/gui/ide.py.html#64>`_
+
+
+----
+
+
+
+*Class:* `IDE(QMainWindow) </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-71>`_
+-------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class IDE(QMainWindow):
+
+| This class is like the Sauron's Ring:
+| One ring to rule them all, One ring to find them,
+| One ring to bring them all and in the darkness bind them.
+| 
+| This Class knows all the containers, and its know by all the containers,
+| but the containers don't need to know between each other, in this way we
+| can keep a better api without the need to tie the behaviour between
+| the widgets, and let them just consume the 'actions' they need.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `Profile [at ln:599] </listings/ninja_ide/gui/ide.py.html#599>`_
+
+- `__IDECONNECTIONS [at ln:88] </listings/ninja_ide/gui/ide.py.html#88>`_
+
+- `__IDEMENUS [at ln:91] </listings/ninja_ide/gui/ide.py.html#91>`_
+
+- `__IDEMENUSCATEGORY [at ln:90] </listings/ninja_ide/gui/ide.py.html#90>`_
+
+- `__IDESERVICES [at ln:87] </listings/ninja_ide/gui/ide.py.html#87>`_
+
+- `__IDESHORTCUTS [at ln:89] </listings/ninja_ide/gui/ide.py.html#89>`_
+
+- `__created [at ln:208] </listings/ninja_ide/gui/ide.py.html#208>`_
+
+- `__instance [at ln:95] </listings/ninja_ide/gui/ide.py.html#95>`_
+
+- `__neditables [at ln:108] </listings/ninja_ide/gui/ide.py.html#108>`_
+
+- `__project_to_open [at ln:438] </listings/ninja_ide/gui/ide.py.html#438>`_
+
+- `__projects [at ln:110] </listings/ninja_ide/gui/ide.py.html#110>`_
+
+- `central [at ln:203] </listings/ninja_ide/gui/ide.py.html#203>`_
+
+- `notification [at ln:133] </listings/ninja_ide/gui/ide.py.html#133>`_
+
+- `opacity [at ln:123] </listings/ninja_ide/gui/ide.py.html#123>`_
+
+- `plugin_manager [at ln:145] </listings/ninja_ide/gui/ide.py.html#145>`_
+
+- `profile [at ln:473] </listings/ninja_ide/gui/ide.py.html#473>`_
+
+- `s_listener [at ln:113] </listings/ninja_ide/gui/ide.py.html#113>`_
+
+- `toolbar [at ln:126] </listings/ninja_ide/gui/ide.py.html#126>`_
+
+- `trayIcon [at ln:152] </listings/ninja_ide/gui/ide.py.html#152>`_
+
+
+*Function:* `__get_profile() [at ln:469] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-469>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __get_profile():
+
+
+No description.
+
+
+----
+
+*Function:* `__init__(start_server=False) [at ln:98] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-98>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(start_server=False):
+
+
+No description.
+
+
+----
+
+*Function:* `__set_profile(profileName) [at ln:472] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-472>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __set_profile(profileName):
+
+
+No description.
+
+
+----
+
+*Function:* `_change_tab_index() [at ln:362] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-362>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _change_tab_index():
+
+| Change the tabs of the current TabWidget using alt+numbers.
+
+
+----
+
+*Function:* `_close_tray_icon() [at ln:357] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-357>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _close_tray_icon():
+
+| Close the System Tray Icon.
+
+
+----
+
+*Function:* `_connect_signals() [at ln:264] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-264>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _connect_signals():
+
+| Connect the signals between the different services.
+
+
+----
+
+*Function:* `_last_tab_closed() [at ln:424] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-424>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _last_tab_closed():
+
+| Called when the last tasb is closed
+
+
+----
+
+*Function:* `_load_profile_data(key) [at ln:601] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-601>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _load_profile_data(key):
+
+| Activate the selected profile, closing the current files/projects
+
+
+----
+
+*Function:* `_process_connection() [at ln:389] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-389>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _process_connection():
+
+| Read the ipc input from another instance of ninja.
+
+
+----
+
+*Function:* `activate_profile() [at ln:590] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-590>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def activate_profile():
+
+| Show the Profile Manager dialog.
+
+
+----
+
+*Function:* `change_toolbar_visibility() [at ln:409] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-409>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def change_toolbar_visibility():
+
+| Switch the toolbar visibility
+
+
+----
+
+*Function:* `change_window_title(title) [at ln:482] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-482>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def change_window_title(title):
+
+| Change the title of the Application.
+
+
+----
+
+*Function:* `closeEvent(event) [at ln:621] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-621>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def closeEvent(event):
+
+| Saves some global settings before closing.
+
+
+----
+
+*Function:* `create_profile() [at ln:561] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-561>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def create_profile():
+
+| Create a profile binding files and projects to a key.
+
+
+----
+
+*Function:* `deactivate_profile() [at ln:597] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-597>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def deactivate_profile():
+
+| Close the Profile Session.
+
+
+----
+
+*Function:* `fullscreen_mode() [at ln:402] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-402>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def fullscreen_mode():
+
+| Change to fullscreen mode.
+
+
+----
+
+*Function:* `get_current_project() [at ln:335] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-335>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_current_project():
+
+
+No description.
+
+
+----
+
+*Function:* `get_editable(filename, project=None) [at ln:312] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-312>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_editable(filename, project=None):
+
+
+No description.
+
+
+----
+
+*Function:* `get_menu_categories() [at ln:224] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-224>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_menu_categories():
+
+| Get the registered Categories for the Application menus.
+
+
+----
+
+*Function:* `get_menuitems() [at ln:220] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-220>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_menuitems():
+
+| Return a dictionary with the registered menu items.
+
+
+----
+
+*Function:* `get_opened_projects() [at ln:354] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-354>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_opened_projects():
+
+
+No description.
+
+
+----
+
+*Function:* `get_project(path) [at ln:328] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-328>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_project(path):
+
+
+No description.
+
+
+----
+
+*Function:* `get_project_for_file(filename) [at ln:319] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-319>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_project_for_file(filename):
+
+
+No description.
+
+
+----
+
+*Function:* `get_service(cls, service_name) [at ln:215] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-215>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_service(cls, service_name):
+
+| Return the instance of a registered service.
+
+
+**Decorators:**
+
+- *classmethod*
+
+----
+
+*Function:* `install_service(service_name) [at ln:235] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-235>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def install_service(service_name):
+
+| Activate the registered service.
+
+
+----
+
+*Function:* `load_external_plugins(paths) [at ln:416] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-416>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_external_plugins(paths):
+
+| Load external plugins, the ones added to ninja throw the cmd.
+
+
+----
+
+*Function:* `load_session_files_projects(filesTab1, filesTab2, projects, current_file, recent_files=None) [at ln:435] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-435>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_session_files_projects(filesTab1, filesTab2, projects, current_file, recent_files=None):
+
+| Load the files and projects from previous session.
+
+
+----
+
+*Function:* `load_window_geometry() [at ln:610] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-610>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_window_geometry():
+
+| Load from QSettings the window size of de Ninja IDE
+
+
+----
+
+*Function:* `notify_plugin_errors() [at ln:649] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-649>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def notify_plugin_errors():
+
+
+No description.
+
+
+----
+
+*Function:* `place_me_on(name, obj, region=str, top=False) [at ln:243] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-243>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def place_me_on(name, obj, region=str, top=False):
+
+| Place a widget in some of the areas in the IDE.
+| @name: id to access to that widget later if needed.
+| @obj: the instance of the widget to be placed.
+| @region: the area where to put the widget [central, lateral]
+| @top: place the widget as the first item in the split.
+
+
+----
+
+*Function:* `register_menu_category(cls, category_name, weight) [at ln:295] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-295>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def register_menu_category(cls, category_name, weight):
+
+| Register a Menu Category to be created with the proper weight.
+| @category\_name: string
+| @weight: int
+
+
+**Decorators:**
+
+- *classmethod*
+
+----
+
+*Function:* `register_menuitem(cls, menu_action, section, weight) [at ln:284] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-284>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def register_menuitem(cls, menu_action, section, weight):
+
+| Register a QAction or QMenu in the IDE to be loaded later in the
+| menubar using the section(string) to define where is going to be
+| contained, and the weight define the order where is going to be
+| placed.
+| @menu\_action: QAction or QMenu
+| @section: String (name)
+| @weight: int
+
+
+**Decorators:**
+
+- *classmethod*
+
+----
+
+*Function:* `register_service(cls, service_name, obj) [at ln:228] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-228>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def register_service(cls, service_name, obj):
+
+| Register a service providing the service name and the instance.
+
+
+**Decorators:**
+
+- *classmethod*
+
+----
+
+*Function:* `register_shortcut(cls, shortcut_name, shortcut, action=None) [at ln:279] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-279>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def register_shortcut(cls, shortcut_name, shortcut, action=None):
+
+| Register a shortcut and action.
+
+
+**Decorators:**
+
+- *classmethod*
+
+----
+
+*Function:* `register_signals(cls, service_name, connections) [at ln:251] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-251>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def register_signals(cls, service_name, connections):
+
+| Register all the signals that a particular service wants to be
+| attached of.
+| @service\_name: id of the service
+| @connections: list of dictionaries for the connection with:
+|     - 'target': 'the\_other\_service\_name',
+|     - 'signal\_name': 'name of the signal in the other service',
+|     - 'slot': function object in this service
+
+
+**Decorators:**
+
+- *classmethod*
+
+----
+
+*Function:* `save_profile(profileName) [at ln:577] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-577>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def save_profile(profileName):
+
+| Save the updates from a profile.
+
+
+----
+
+*Function:* `save_settings() [at ln:507] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-507>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def save_settings():
+
+| Save the settings before the application is closed with QSettings.
+| 
+| Info saved: Tabs and projects opened, windows state(size and position).
+
+
+----
+
+*Function:* `select_current(widget) [at ln:342] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-342>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def select_current(widget):
+
+| Show the widget with a 4px lightblue border line.
+
+
+----
+
+*Function:* `show_about_ninja() [at ln:687] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-687>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show_about_ninja():
+
+| Show About NINJA-IDE Dialog.
+
+
+----
+
+*Function:* `show_about_qt() [at ln:683] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-683>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show_about_qt():
+
+| Show About Qt Dialog.
+
+
+----
+
+*Function:* `show_languages() [at ln:673] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-673>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show_languages():
+
+| Open the Language Manager to install/uninstall languages.
+
+
+----
+
+*Function:* `show_manager() [at ln:664] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-664>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show_manager():
+
+| Open the Plugins Manager to install/uninstall plugins.
+
+
+----
+
+*Function:* `show_preferences() [at ln:430] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-430>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show_preferences():
+
+| Open the Preferences Dialog.
+
+
+----
+
+*Function:* `show_python_detection() [at ln:692] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-692>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show_python_detection():
+
+| Show Python detection dialog for windows.
+
+
+----
+
+*Function:* `show_status_message(message, duration=int) [at ln:659] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-659>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show_status_message(message, duration=int):
+
+| Show status message.
+
+
+----
+
+*Function:* `show_themes() [at ln:678] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-678>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show_themes():
+
+| Open the Themes Manager to install/uninstall themes.
+
+
+----
+
+*Function:* `switch_focus() [at ln:370] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-370>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def switch_focus():
+
+| Switch the current keyboard focus to the next widget.
+
+
+----
+
+*Function:* `unselect_current(widget) [at ln:348] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-348>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def unselect_current(widget):
+
+| Remove the 4px lightblue border line from the widget.
+
+
+----
+
+*Function:* `update_shortcut(cls, shortcut_name) [at ln:302] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-302>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_shortcut(cls, shortcut_name):
+
+| Update all the shortcuts of the application.
+
+
+**Decorators:**
+
+- *classmethod*
+
+----
+
+*Function:* `wheelEvent(event) [at ln:495] </listings/ninja_ide/gui/ide.py.html#listingsninja_ideguiidepy-495>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def wheelEvent(event):
+
+| Change the opacity of the application.
+
+
+
+

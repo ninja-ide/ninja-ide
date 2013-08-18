@@ -1,0 +1,137 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: nproject
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `nproject.py </listings/ninja_ide/gui/explorer/nproject.py.html>`_ API
+==================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `os </listings/ninja_ide/gui/explorer/nproject.py.html#5>`_
+
+- `PyQt4.QtCore.QObject </listings/ninja_ide/gui/explorer/nproject.py.html#3>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/gui/explorer/nproject.py.html#10>`_
+
+- `ninja_ide.tools.json_manager </listings/ninja_ide/gui/explorer/nproject.py.html#11>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/explorer/nproject.py.html#9>`_
+
+- `ninja_ide.translations </listings/ninja_ide/gui/explorer/nproject.py.html#7>`_
+
+
+
+
+
+*Class:* `NProject(QObject) </listings/ninja_ide/gui/explorer/nproject.py.html#listingsninja_ideguiexplorernprojectpy-14>`_
+-----------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class NProject(QObject):
+
+| Project representation.
+| SIGNALS:
+| @projectPropertiesUpdated()
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `added_to_console [at ln:47] </listings/ninja_ide/gui/explorer/nproject.py.html#47>`_
+
+- `additional_builtins [at ln:43] </listings/ninja_ide/gui/explorer/nproject.py.html#43>`_
+
+- `description [at ln:29] </listings/ninja_ide/gui/explorer/nproject.py.html#29>`_
+
+- `extensions [at ln:39] </listings/ninja_ide/gui/explorer/nproject.py.html#39>`_
+
+- `indentation [at ln:37] </listings/ninja_ide/gui/explorer/nproject.py.html#37>`_
+
+- `is_current [at ln:48] </listings/ninja_ide/gui/explorer/nproject.py.html#48>`_
+
+- `license [at ln:33] </listings/ninja_ide/gui/explorer/nproject.py.html#33>`_
+
+- `main_file [at ln:34] </listings/ninja_ide/gui/explorer/nproject.py.html#34>`_
+
+- `name [at ln:25] </listings/ninja_ide/gui/explorer/nproject.py.html#25>`_
+
+- `path [at ln:24] </listings/ninja_ide/gui/explorer/nproject.py.html#24>`_
+
+- `post_exec_script [at ln:36] </listings/ninja_ide/gui/explorer/nproject.py.html#36>`_
+
+- `pre_exec_script [at ln:35] </listings/ninja_ide/gui/explorer/nproject.py.html#35>`_
+
+- `program_params [at ln:44] </listings/ninja_ide/gui/explorer/nproject.py.html#44>`_
+
+- `project_type [at ln:28] </listings/ninja_ide/gui/explorer/nproject.py.html#28>`_
+
+- `python_exec [at ln:41] </listings/ninja_ide/gui/explorer/nproject.py.html#41>`_
+
+- `python_path [at ln:42] </listings/ninja_ide/gui/explorer/nproject.py.html#42>`_
+
+- `related_projects [at ln:46] </listings/ninja_ide/gui/explorer/nproject.py.html#46>`_
+
+- `url [at ln:32] </listings/ninja_ide/gui/explorer/nproject.py.html#32>`_
+
+- `use_tabs [at ln:38] </listings/ninja_ide/gui/explorer/nproject.py.html#38>`_
+
+- `venv [at ln:45] </listings/ninja_ide/gui/explorer/nproject.py.html#45>`_
+
+
+*Function:* `__init__(path) [at ln:20] </listings/ninja_ide/gui/explorer/nproject.py.html#listingsninja_ideguiexplorernprojectpy-20>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(path):
+
+
+No description.
+
+
+----
+
+*Function:* `full_path() [at ln:50] </listings/ninja_ide/gui/explorer/nproject.py.html#listingsninja_ideguiexplorernprojectpy-50>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def full_path():
+
+| Returns the full path of the project
+
+
+**Decorators:**
+
+- *property*
+
+----
+
+*Function:* `python_exec_command() [at ln:60] </listings/ninja_ide/gui/explorer/nproject.py.html#listingsninja_ideguiexplorernprojectpy-60>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def python_exec_command():
+
+| Returns the python exec command of the project
+
+
+**Decorators:**
+
+- *property*
+
+
+

@@ -1,0 +1,1140 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: editor
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `editor.py </listings/ninja_ide/gui/editor/editor.py.html>`_ API
+============================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `re </listings/ninja_ide/gui/editor/editor.py.html#20>`_
+
+- `sys </listings/ninja_ide/gui/editor/editor.py.html#21>`_
+
+- `token </listings/ninja_ide/gui/editor/editor.py.html#24>`_
+
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/gui/editor/editor.py.html#62>`_
+
+- `PyQt4.QtGui.QAction </listings/ninja_ide/gui/editor/editor.py.html#35>`_
+
+- `PyQt4.QtGui.QColor </listings/ninja_ide/gui/editor/editor.py.html#45>`_
+
+- `PyQt4.QtGui.QFont </listings/ninja_ide/gui/editor/editor.py.html#42>`_
+
+- `PyQt4.QtGui.QFontMetricsF </listings/ninja_ide/gui/editor/editor.py.html#33>`_
+
+- `PyQt4.QtGui.QInputDialog </listings/ninja_ide/gui/editor/editor.py.html#38>`_
+
+- `PyQt4.QtGui.QMenu </listings/ninja_ide/gui/editor/editor.py.html#43>`_
+
+- `PyQt4.QtCore.QMimeData </listings/ninja_ide/gui/editor/editor.py.html#47>`_
+
+- `PyQt4.QtGui.QPainter </listings/ninja_ide/gui/editor/editor.py.html#44>`_
+
+- `PyQt4.QtGui.QPlainTextEdit </listings/ninja_ide/gui/editor/editor.py.html#32>`_
+
+- `PyQt4.QtGui.QTextCursor </listings/ninja_ide/gui/editor/editor.py.html#39>`_
+
+- `PyQt4.QtGui.QTextDocument </listings/ninja_ide/gui/editor/editor.py.html#40>`_
+
+- `PyQt4.QtGui.QTextEdit </listings/ninja_ide/gui/editor/editor.py.html#37>`_
+
+- `PyQt4.QtGui.QTextFormat </listings/ninja_ide/gui/editor/editor.py.html#41>`_
+
+- `PyQt4.QtGui.QTextOption </listings/ninja_ide/gui/editor/editor.py.html#36>`_
+
+- `PyQt4.QtGui.QToolTip </listings/ninja_ide/gui/editor/editor.py.html#34>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/editor/editor.py.html#48>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/editor/editor.py.html#46>`_
+
+- `tokenize.TokenError </listings/ninja_ide/gui/editor/editor.py.html#23>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/editor/editor.py.html#17>`_
+
+- `ninja_ide.tools.completion.completer_widget </listings/ninja_ide/gui/editor/editor.py.html#53>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/gui/editor/editor.py.html#52>`_
+
+- `tokenize.generate_tokens </listings/ninja_ide/gui/editor/editor.py.html#23>`_
+
+- `ninja_ide.gui.editor.helpers </listings/ninja_ide/gui/editor/editor.py.html#57>`_
+
+- `ninja_ide.gui.editor.highlighter </listings/ninja_ide/gui/editor/editor.py.html#55>`_
+
+- `ninja_ide.gui.main_panel.itab_item </listings/ninja_ide/gui/editor/editor.py.html#54>`_
+
+- `ninja_ide.gui.editor.minimap </listings/ninja_ide/gui/editor/editor.py.html#58>`_
+
+- `ninja_ide.gui.editor.python_syntax </listings/ninja_ide/gui/editor/editor.py.html#60>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/editor/editor.py.html#50>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/editor/editor.py.html#51>`_
+
+- `ninja_ide.gui.editor.sidebar_widget </listings/ninja_ide/gui/editor/editor.py.html#59>`_
+
+- `ninja_ide.gui.editor.syntax_highlighter </listings/ninja_ide/gui/editor/editor.py.html#56>`_
+
+- `__future__.unicode_literals </listings/ninja_ide/gui/editor/editor.py.html#18>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `BRACE_DICT [at ln:64] </listings/ninja_ide/gui/editor/editor.py.html#64>`_
+
+- `logger [at ln:65] </listings/ninja_ide/gui/editor/editor.py.html#65>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `create_editor(neditable, syntax=None) [at ln:1224] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-1224>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def create_editor(neditable, syntax=None):
+
+
+No description.
+
+
+----
+
+
+*Class:* `Editor(QPlainTextEdit, itab_item.ITabItem) </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-74>`_
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Editor(QPlainTextEdit, itab_item.ITabItem):
+
+| modificationChanged(bool)
+| fileSaved(QPlainTextEdit)
+| locateFunction(QString, QString, bool) [functionName, filePath, isVariable]
+| openDropFile(QString)
+| addBackItemNavigation()
+| checksFound(QPlainTextEdit, PyQt\_PyObject)
+| cleanDocument(QPlainTextEdit)
+| findOcurrences(QString)
+| cursorPositionChange(int, int)    #row, col
+| migrationAnalyzed()
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `COMPLETE_DECLARATIONS [at ln:780] </listings/ninja_ide/gui/editor/editor.py.html#780>`_
+
+- `__actionFindOccurrences [at ln:166] </listings/ninja_ide/gui/editor/editor.py.html#166>`_
+
+- `__encoding [at ln:225] </listings/ninja_ide/gui/editor/editor.py.html#225>`_
+
+- `__lines_count [at ln:276] </listings/ninja_ide/gui/editor/editor.py.html#276>`_
+
+- `_braces [at ln:114] </listings/ninja_ide/gui/editor/editor.py.html#114>`_
+
+- `_current_line_color [at ln:143] </listings/ninja_ide/gui/editor/editor.py.html#143>`_
+
+- `_mini [at ln:158] </listings/ninja_ide/gui/editor/editor.py.html#158>`_
+
+- `_neditable [at ln:96] </listings/ninja_ide/gui/editor/editor.py.html#96>`_
+
+- `_patIsWord [at ln:112] </listings/ninja_ide/gui/editor/editor.py.html#112>`_
+
+- `_selected_word [at ln:111] </listings/ninja_ide/gui/editor/editor.py.html#111>`_
+
+- `_sidebarWidget [at ln:102] </listings/ninja_ide/gui/editor/editor.py.html#102>`_
+
+- `allows_less_indentation [at ln:105] </listings/ninja_ide/gui/editor/editor.py.html#105>`_
+
+- `completer [at ln:117] </listings/ninja_ide/gui/editor/editor.py.html#117>`_
+
+- `encoding [at ln:227] </listings/ninja_ide/gui/editor/editor.py.html#227>`_
+
+- `extraSelections [at ln:1085] </listings/ninja_ide/gui/editor/editor.py.html#1085>`_
+
+- `highlighter [at ln:104] </listings/ninja_ide/gui/editor/editor.py.html#104>`_
+
+- `just_saved [at ln:119] </listings/ninja_ide/gui/editor/editor.py.html#119>`_
+
+- `lang [at ln:354] </listings/ninja_ide/gui/editor/editor.py.html#354>`_
+
+- `postKeyPress [at ln:134] </listings/ninja_ide/gui/editor/editor.py.html#134>`_
+
+- `preKeyPress [at ln:121] </listings/ninja_ide/gui/editor/editor.py.html#121>`_
+
+- `selected_text [at ln:860] </listings/ninja_ide/gui/editor/editor.py.html#860>`_
+
+
+*Function:* `__auto_indent(event) [at ln:762] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-762>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __auto_indent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `__backspace(event) [at ln:655] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-655>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __backspace(event):
+
+
+No description.
+
+
+----
+
+*Function:* `__brace_completion(event) [at ln:748] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-748>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __brace_completion(event):
+
+| Indicate if this symbol is part of a given pair and needs to be
+| completed.
+
+
+----
+
+*Function:* `__complete_braces(event) [at ln:791] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-791>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __complete_braces(event):
+
+| Complete () [] and {} using a mild inteligence to see if corresponds
+| and also do some more magic such as complete in classes and functions.
+
+
+----
+
+*Function:* `__complete_quotes(event) [at ln:831] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-831>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __complete_quotes(event):
+
+| Completion for single and double quotes, which since are simmetrical
+| symbols used for different things can not be balanced as easily as
+| braces or equivalent.
+
+
+----
+
+*Function:* `__fancyMoveCursor(operation, repeat=int, moveMode=QTextCursor.MoveAnchor) [at ln:1030] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-1030>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __fancyMoveCursor(operation, repeat=int, moveMode=QTextCursor.MoveAnchor):
+
+| Move the cursor a given number of times (with or without
+| anchoring), just a helper given the less than practical way qt
+| has for such a common operation
+
+
+----
+
+*Function:* `__get_abs_position_on_text(text, position) [at ln:1018] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-1018>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __get_abs_position_on_text(text, position):
+
+| tokens give us position of char in a given line, we need
+| such position relative to the beginning of the text, also we need
+| to add the number of lines, since our split removes the newlines
+| which are counted as a character in the editor
+
+
+----
+
+*Function:* `__get_encoding() [at ln:217] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-217>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __get_encoding():
+
+| Get the current encoding of 'utf-8' otherwise.
+
+
+----
+
+*Function:* `__home_pressed(event) [at ln:668] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-668>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __home_pressed(event):
+
+
+No description.
+
+
+----
+
+*Function:* `__ignore_extended_line(event) [at ln:687] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-687>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __ignore_extended_line(event):
+
+
+No description.
+
+
+----
+
+*Function:* `__init__(neditable) [at ln:93] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-93>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(neditable):
+
+
+No description.
+
+
+----
+
+*Function:* `__insert_indentation(event) [at ln:646] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-646>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __insert_indentation(event):
+
+
+No description.
+
+
+----
+
+*Function:* `__quot_completion(event) [at ln:713] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-713>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __quot_completion(event):
+
+| Indicate if this is some sort of quote that needs to be completed
+| This is a very simple boolean table, given that quotes are a
+| simmetrical symbol, is a little more cumbersome guessing the completion
+| table.
+
+
+----
+
+*Function:* `__retreat_to_keywords(event) [at ln:201] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-201>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __retreat_to_keywords(event):
+
+| Unindent some kind of blocks if needed.
+
+
+----
+
+*Function:* `__reverse_select_text_portion_from_offset(begin, end) [at ln:699] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-699>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __reverse_select_text_portion_from_offset(begin, end):
+
+| Backwards select text, go from current+begin to current - end
+| possition, returns text
+
+
+----
+
+*Function:* `__set_encoding(encoding) [at ln:223] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-223>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __set_encoding(encoding):
+
+| Set the current encoding.
+
+
+----
+
+*Function:* `__set_selection_from_pair(begin, end) [at ln:691] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-691>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __set_selection_from_pair(begin, end):
+
+| Set the current editor cursor with a selection from a given pair of
+| positions
+
+
+----
+
+*Function:* `__tokenize_text(text) [at ln:1039] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-1039>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __tokenize_text(text):
+
+
+No description.
+
+
+----
+
+*Function:* `_file_saved(undoAvailable=False) [at ln:346] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-346>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _file_saved(undoAvailable=False):
+
+
+No description.
+
+
+----
+
+*Function:* `_find_occurrences() [at ln:443] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-443>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _find_occurrences():
+
+
+No description.
+
+
+----
+
+*Function:* `_match_braces(position, brace, forward) [at ln:1050] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-1050>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _match_braces(position, brace, forward):
+
+| Return the position to hilight of the matching brace
+
+
+----
+
+*Function:* `_show_tab_icon_notification() [at ln:279] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-279>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _show_tab_icon_notification():
+
+
+No description.
+
+
+----
+
+*Function:* `_text_under_cursor() [at ln:872] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-872>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _text_under_cursor():
+
+
+No description.
+
+
+----
+
+*Function:* `_unfold_blocks_for_jump(lineno) [at ln:450] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-450>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _unfold_blocks_for_jump(lineno):
+
+| Unfold the blocks previous to the lineno.
+
+
+----
+
+*Function:* `_update_file_metadata(val) [at ln:256] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-256>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _update_file_metadata(val):
+
+| Update the info of bookmarks, breakpoint and checkers.
+
+
+----
+
+*Function:* `_update_margin_line(font=None) [at ln:487] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-487>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _update_margin_line(font=None):
+
+
+No description.
+
+
+----
+
+*Function:* `additional_builtins() [at ln:194] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-194>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def additional_builtins():
+
+
+No description.
+
+
+**Decorators:**
+
+- *property*
+
+----
+
+*Function:* `apply_editor_style() [at ln:333] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-333>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def apply_editor_style():
+
+
+No description.
+
+
+----
+
+*Function:* `async_highlight() [at ln:1184] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-1184>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def async_highlight():
+
+
+No description.
+
+
+----
+
+*Function:* `complete_declaration() [at ln:777] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-777>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def complete_declaration():
+
+
+No description.
+
+
+----
+
+*Function:* `contextMenuEvent(event) [at ln:900] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-900>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def contextMenuEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `cursor_inside_comment() [at ln:412] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-412>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def cursor_inside_comment():
+
+
+No description.
+
+
+----
+
+*Function:* `cursor_inside_string() [at ln:401] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-401>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def cursor_inside_string():
+
+
+No description.
+
+
+----
+
+*Function:* `display_name() [at ln:177] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-177>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def display_name():
+
+
+No description.
+
+
+**Decorators:**
+
+- *property*
+
+----
+
+*Function:* `dropEvent(event) [at ln:977] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-977>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def dropEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `find_match(word, flags, findNext=False) [at ln:570] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-570>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def find_match(word, flags, findNext=False):
+
+
+No description.
+
+
+----
+
+*Function:* `focusInEvent(event) [at ln:625] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-625>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def focusInEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `focusOutEvent(event) [at ln:635] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-635>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def focusOutEvent(event):
+
+| Hide Popup on focus lost.
+
+
+----
+
+*Function:* `get_cursor_position() [at ln:505] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-505>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_cursor_position():
+
+
+No description.
+
+
+----
+
+*Function:* `get_lines_count() [at ln:395] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-395>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_lines_count():
+
+| Returns the count of lines in the editor
+
+
+----
+
+*Function:* `get_parent_project() [at ln:502] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-502>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_parent_project():
+
+
+No description.
+
+
+----
+
+*Function:* `get_selection(posStart, posEnd) [at ln:1007] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-1007>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_selection(posStart, posEnd):
+
+
+No description.
+
+
+----
+
+*Function:* `get_text() [at ln:389] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-389>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_text():
+
+| Returns all the plain text of the editor
+
+
+----
+
+*Function:* `go_to_definition(cursor=None) [at ln:986] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-986>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def go_to_definition(cursor=None):
+
+
+No description.
+
+
+----
+
+*Function:* `go_to_line(lineno) [at ln:458] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-458>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def go_to_line(lineno):
+
+| Go to an specific line
+
+
+----
+
+*Function:* `highlight_current_line() [at ln:1081] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-1081>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def highlight_current_line():
+
+
+No description.
+
+
+----
+
+*Function:* `highlight_selected_word(word_find=None) [at ln:1167] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-1167>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def highlight_selected_word(word_find=None):
+
+
+No description.
+
+
+----
+
+*Function:* `indent_less() [at ln:538] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-538>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def indent_less():
+
+
+No description.
+
+
+----
+
+*Function:* `indent_more() [at ln:514] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-514>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def indent_more():
+
+
+No description.
+
+
+----
+
+*Function:* `insert_new_line() [at ln:782] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-782>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def insert_new_line():
+
+
+No description.
+
+
+----
+
+*Function:* `jump_to_line(lineno=None) [at ln:427] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-427>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def jump_to_line(lineno=None):
+
+| Jump to a specific line number or ask to the user for the line
+
+
+----
+
+*Function:* `keyPressEvent(event) [at ln:851] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-851>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def keyPressEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `load_project_config() [at ln:181] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-181>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_project_config():
+
+
+No description.
+
+
+----
+
+*Function:* `mouseMoveEvent(event) [at ln:926] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-926>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def mouseMoveEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `mousePressEvent(event) [at ln:959] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-959>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def mousePressEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `mouseReleaseEvent(event) [at ln:972] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-972>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def mouseReleaseEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `paintEvent(event) [at ln:880] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-880>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def paintEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `project() [at ln:173] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-173>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def project():
+
+
+No description.
+
+
+**Decorators:**
+
+- *property*
+
+----
+
+*Function:* `register_syntax(lang=str, syntax=None) [at ln:353] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-353>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def register_syntax(lang=str, syntax=None):
+
+
+No description.
+
+
+----
+
+*Function:* `replace_match(wordOld, wordNew, flags, allwords=False, selection=False) [at ln:586] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-586>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def replace_match(wordOld, wordNew, flags, allwords=False, selection=False):
+
+| Find if searched text exists and replace it with new one.
+| If there is a selection just do it inside it and exit.
+
+
+----
+
+*Function:* `resizeEvent(event) [at ln:640] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-640>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def resizeEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `restyle(syntaxLang=None) [at ln:298] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-298>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def restyle(syntaxLang=None):
+
+
+No description.
+
+
+----
+
+*Function:* `set_cursor_position(pos) [at ln:508] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-508>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_cursor_position(pos):
+
+
+No description.
+
+
+----
+
+*Function:* `set_flags() [at ln:229] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-229>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_flags():
+
+| Set some configuration flags for the Editor.
+
+
+----
+
+*Function:* `set_font(family=settings.FONT_FAMILY, size=settings.FONT_SIZE) [at ln:422] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-422>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_font(family=settings.FONT_FAMILY, size=settings.FONT_SIZE):
+
+
+No description.
+
+
+----
+
+*Function:* `set_id(id_) [at ln:251] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-251>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_id(id_):
+
+
+No description.
+
+
+----
+
+*Function:* `set_tab_usage() [at ln:244] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-244>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_tab_usage():
+
+| Update tab stop width and margin line.
+
+
+----
+
+*Function:* `to_lower() [at ln:1200] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-1200>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def to_lower():
+
+
+No description.
+
+
+----
+
+*Function:* `to_title() [at ln:1212] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-1212>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def to_title():
+
+
+No description.
+
+
+----
+
+*Function:* `to_upper() [at ln:1188] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-1188>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def to_upper():
+
+
+No description.
+
+
+----
+
+*Function:* `wheelEvent(event, forward=True) [at ln:891] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-891>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def wheelEvent(event, forward=True):
+
+
+No description.
+
+
+----
+
+*Function:* `zoom_in() [at ln:469] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-469>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def zoom_in():
+
+
+No description.
+
+
+----
+
+*Function:* `zoom_out() [at ln:478] </listings/ninja_ide/gui/editor/editor.py.html#listingsninja_ideguieditoreditorpy-478>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def zoom_out():
+
+
+No description.
+
+
+
+

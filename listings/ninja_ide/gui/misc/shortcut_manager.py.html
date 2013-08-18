@@ -1,0 +1,719 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="shortcut_manager.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>shortcut_manager.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../../">/listings</a>
+        </li><li><a href="../../">/ninja_ide</a>
+        </li><li><a href="../">/gui</a>
+        </li><li><a href=".">/misc</a>
+        </li><li><a href="#">/shortcut_manager.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-1">  1</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-2">  2</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-3">  3</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-4">  4</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-5">  5</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-6">  6</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-7">  7</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-8">  8</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-9">  9</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-10"> 10</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-11"> 11</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-12"> 12</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-13"> 13</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-14"> 14</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-15"> 15</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-16"> 16</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-17"> 17</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-18"> 18</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-19"> 19</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-20"> 20</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-21"> 21</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-22"> 22</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-23"> 23</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-24"> 24</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-25"> 25</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-26"> 26</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-27"> 27</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-28"> 28</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-29"> 29</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-30"> 30</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-31"> 31</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-32"> 32</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-33"> 33</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-34"> 34</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-35"> 35</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-36"> 36</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-37"> 37</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-38"> 38</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-39"> 39</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-40"> 40</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-41"> 41</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-42"> 42</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-43"> 43</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-44"> 44</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-45"> 45</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-46"> 46</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-47"> 47</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-48"> 48</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-49"> 49</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-50"> 50</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-51"> 51</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-52"> 52</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-53"> 53</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-54"> 54</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-55"> 55</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-56"> 56</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-57"> 57</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-58"> 58</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-59"> 59</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-60"> 60</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-61"> 61</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-62"> 62</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-63"> 63</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-64"> 64</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-65"> 65</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-66"> 66</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-67"> 67</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-68"> 68</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-69"> 69</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-70"> 70</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-71"> 71</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-72"> 72</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-73"> 73</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-74"> 74</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-75"> 75</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-76"> 76</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-77"> 77</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-78"> 78</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-79"> 79</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-80"> 80</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-81"> 81</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-82"> 82</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-83"> 83</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-84"> 84</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-85"> 85</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-86"> 86</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-87"> 87</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-88"> 88</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-89"> 89</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-90"> 90</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-91"> 91</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-92"> 92</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-93"> 93</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-94"> 94</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-95"> 95</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-96"> 96</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-97"> 97</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-98"> 98</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-99"> 99</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-100">100</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-101">101</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-102">102</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-103">103</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-104">104</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-105">105</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-106">106</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-107">107</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-108">108</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-109">109</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-110">110</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-111">111</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-112">112</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-113">113</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-114">114</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-115">115</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-116">116</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-117">117</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-118">118</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-119">119</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-120">120</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-121">121</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-122">122</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-123">123</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-124">124</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-125">125</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-126">126</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-127">127</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-128">128</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-129">129</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-130">130</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-131">131</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-132">132</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-133">133</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-134">134</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-135">135</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-136">136</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-137">137</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-138">138</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-139">139</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-140">140</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-141">141</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-142">142</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-143">143</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-144">144</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-145">145</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-146">146</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-147">147</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-148">148</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-149">149</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-150">150</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-151">151</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-152">152</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-153">153</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-154">154</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-155">155</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-156">156</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-157">157</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-158">158</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-159">159</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-160">160</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-161">161</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-162">162</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-163">163</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-164">164</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-165">165</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-166">166</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-167">167</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-168">168</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-169">169</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-170">170</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-171">171</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-172">172</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-173">173</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-174">174</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-175">175</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-176">176</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-177">177</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-178">178</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-179">179</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-180">180</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-181">181</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-182">182</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-183">183</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-184">184</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-185">185</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-186">186</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-187">187</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-188">188</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-189">189</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-190">190</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-191">191</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-192">192</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-193">193</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-194">194</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-195">195</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-196">196</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-197">197</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-198">198</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-199">199</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-200">200</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-201">201</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-202">202</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-203">203</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-204">204</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-205">205</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-206">206</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-207">207</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-208">208</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-209">209</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-210">210</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-211">211</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-212">212</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-213">213</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-214">214</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-215">215</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-216">216</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-217">217</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-218">218</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-219">219</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-220">220</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-221">221</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-222">222</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-223">223</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-224">224</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-225">225</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-226">226</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-227">227</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-228">228</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-229">229</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-230">230</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-231">231</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-232">232</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-233">233</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-234">234</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-235">235</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-236">236</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-237">237</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-238">238</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-239">239</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-240">240</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-241">241</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-242">242</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-243">243</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-244">244</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-245">245</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-246">246</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-247">247</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-248">248</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-249">249</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-250">250</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-251">251</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-252">252</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-253">253</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-254">254</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-255">255</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-256">256</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-257">257</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-258">258</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-259">259</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-260">260</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-261">261</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-262">262</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-263">263</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-264">264</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-265">265</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-266">266</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-267">267</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-268">268</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-269">269</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-270">270</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-271">271</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-272">272</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-273">273</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-274">274</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-275">275</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-276">276</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-277">277</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-278">278</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-279">279</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-280">280</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-281">281</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-282">282</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-283">283</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-284">284</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-285">285</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-286">286</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-287">287</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-288">288</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-289">289</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-290">290</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-291">291</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-292">292</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-293">293</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-294">294</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-295">295</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-296">296</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-297">297</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-298">298</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-299">299</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-300">300</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-301">301</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-302">302</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-303">303</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-304">304</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-305">305</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-306">306</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-307">307</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-308">308</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-309">309</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-310">310</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-311">311</a>
+<a href="shortcut_manager.py.html#listingsninja_ideguimiscshortcut_managerpy-312">312</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_ideguimiscshortcut_managerpy-1"></a><span class="c"># -*- coding: utf-8 -*-</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-2"></a><span class="c">#</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-3"></a><span class="c"># This file is part of NINJA-IDE (http://ninja-ide.org).</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-4"></a><span class="c">#</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-5"></a><span class="c"># NINJA-IDE is free software; you can redistribute it and/or modify</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-6"></a><span class="c"># it under the terms of the GNU General Public License as published by</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-7"></a><span class="c"># the Free Software Foundation; either version 3 of the License, or</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-8"></a><span class="c"># any later version.</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-9"></a><span class="c">#</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-10"></a><span class="c"># NINJA-IDE is distributed in the hope that it will be useful,</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-11"></a><span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-12"></a><span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-13"></a><span class="c"># GNU General Public License for more details.</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-14"></a><span class="c">#</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-15"></a><span class="c"># You should have received a copy of the GNU General Public License</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-16"></a><span class="c"># along with NINJA-IDE; If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-17"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-18"></a><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-19"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-20"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QVBoxLayout</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-21"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QHBoxLayout</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-22"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QPushButton</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-23"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QTreeWidget</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-24"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QTreeWidgetItem</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-25"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QDialog</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-26"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QWidget</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-27"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QLabel</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-28"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QLineEdit</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-29"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QKeySequence</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-30"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QMessageBox</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-31"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-32"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">SIGNAL</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-33"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-34"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">QEvent</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-35"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">QSettings</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-36"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-37"></a><span class="kn">from</span> <span class="nn">ninja_ide</span> <span class="kn">import</span> <span class="n">resources</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-38"></a><span class="kn">from</span> <span class="nn">ninja_ide.gui</span> <span class="kn">import</span> <span class="n">actions</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-39"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-40"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-41"></a><span class="k">class</span> <span class="nc">TreeResult</span><span class="p">(</span><span class="n">QTreeWidget</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-42"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-43"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-44"></a>        <span class="n">QTreeWidget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-45"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setHeaderLabels</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">'Description'</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">'Shortcut'</span><span class="p">)))</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-46"></a>        <span class="c">#columns width</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-47"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setColumnWidth</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">175</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-48"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">()</span><span class="o">.</span><span class="n">setStretchLastSection</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-49"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setSortingEnabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-50"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">sortByColumn</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AscendingOrder</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-51"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-52"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-53"></a><span class="k">class</span> <span class="nc">ShortcutDialog</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-54"></a>    <span class="sd">"""</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-55"></a><span class="sd">    Dialog to set a shortcut for an action</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-56"></a><span class="sd">    this class emit the follow signals:</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-57"></a><span class="sd">        shortcutChanged(QKeySequence)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-58"></a><span class="sd">    """</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-59"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-60"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-61"></a>        <span class="n">QDialog</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-62"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">keys</span> <span class="o">=</span> <span class="mi">0</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-63"></a>        <span class="c">#Keyword modifiers!</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-64"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">keyword_modifiers</span> <span class="o">=</span> <span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Key_Control</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Meta</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Shift</span><span class="p">,</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-65"></a>            <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Alt</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Menu</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-66"></a>        <span class="c">#main layout</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-67"></a>        <span class="n">main_vbox</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-68"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">line_edit</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-69"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">line_edit</span><span class="o">.</span><span class="n">setReadOnly</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-70"></a>        <span class="c">#layout for buttons</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-71"></a>        <span class="n">buttons_layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-72"></a>        <span class="n">ok_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Accept"</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-73"></a>        <span class="n">cancel_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Cancel"</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-74"></a>        <span class="c">#add widgets</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-75"></a>        <span class="n">main_vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">line_edit</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-76"></a>        <span class="n">buttons_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">ok_button</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-77"></a>        <span class="n">buttons_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">cancel_button</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-78"></a>        <span class="n">main_vbox</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">buttons_layout</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-79"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">line_edit</span><span class="o">.</span><span class="n">installEventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-80"></a>        <span class="c">#buttons signals</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-81"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">ok_button</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"clicked()"</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_shortcut</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-82"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">cancel_button</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"clicked()"</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-83"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-84"></a>    <span class="k">def</span> <span class="nf">save_shortcut</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-85"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-86"></a>        <span class="n">shortcut</span> <span class="o">=</span> <span class="n">QKeySequence</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">line_edit</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-87"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">'shortcutChanged'</span><span class="p">),</span> <span class="n">shortcut</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-88"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-89"></a>    <span class="k">def</span> <span class="nf">set_shortcut</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txt</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-90"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">line_edit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">txt</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-91"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-92"></a>    <span class="k">def</span> <span class="nf">eventFilter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">watched</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-93"></a>        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span><span class="p">()</span> <span class="o">==</span> <span class="n">QEvent</span><span class="o">.</span><span class="n">KeyPress</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-94"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">keyPressEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-95"></a>            <span class="k">return</span> <span class="bp">True</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-96"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-97"></a>        <span class="k">return</span> <span class="bp">False</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-98"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-99"></a>    <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-100"></a>        <span class="c">#modifier can not be used as shortcut</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-101"></a>        <span class="k">if</span> <span class="n">evt</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keyword_modifiers</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-102"></a>            <span class="k">return</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-103"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-104"></a>        <span class="c">#save the key</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-105"></a>        <span class="k">if</span> <span class="n">evt</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Backtab</span> <span class="ow">and</span> <span class="n">evt</span><span class="o">.</span><span class="n">modifiers</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ShiftModifier</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-106"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">keys</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Tab</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-107"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-108"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">keys</span> <span class="o">=</span> <span class="n">evt</span><span class="o">.</span><span class="n">key</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-109"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-110"></a>        <span class="k">if</span> <span class="n">evt</span><span class="o">.</span><span class="n">modifiers</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ShiftModifier</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-111"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">keys</span> <span class="o">+=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">SHIFT</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-112"></a>        <span class="k">if</span> <span class="n">evt</span><span class="o">.</span><span class="n">modifiers</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ControlModifier</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-113"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">keys</span> <span class="o">+=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">CTRL</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-114"></a>        <span class="k">if</span> <span class="n">evt</span><span class="o">.</span><span class="n">modifiers</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AltModifier</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-115"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">keys</span> <span class="o">+=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ALT</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-116"></a>        <span class="k">if</span> <span class="n">evt</span><span class="o">.</span><span class="n">modifiers</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">MetaModifier</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-117"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">keys</span> <span class="o">+=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">META</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-118"></a>        <span class="c">#set the keys</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-119"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_shortcut</span><span class="p">(</span><span class="n">QKeySequence</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">())</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-120"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-121"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-122"></a><span class="k">class</span> <span class="nc">ShortcutConfiguration</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-123"></a>    <span class="sd">"""</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-124"></a><span class="sd">    Dialog to manage ALL shortcuts</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-125"></a><span class="sd">    """</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-126"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-127"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-128"></a>        <span class="n">QWidget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-129"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-130"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">shortcuts_text</span> <span class="o">=</span> <span class="p">{</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-131"></a>            <span class="s">"Duplicate"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Duplicate the line/selection"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-132"></a>            <span class="s">"Remove-line"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Remove the line/selection"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-133"></a>            <span class="s">"Move-up"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Move the line/selection up"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-134"></a>            <span class="s">"Move-down"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Move the line/selection down"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-135"></a>            <span class="s">"Close-tab"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Close the current tab"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-136"></a>            <span class="s">"New-file"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Create a New tab"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-137"></a>            <span class="s">"New-project"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Create a new Project"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-138"></a>            <span class="s">"Open-file"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Open a File"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-139"></a>            <span class="s">"Open-project"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Open a Project"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-140"></a>            <span class="s">"Save-file"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Save the current file"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-141"></a>            <span class="s">"Save-project"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Save the current project opened files"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-142"></a>            <span class="s">"Print-file"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Print current file"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-143"></a>            <span class="s">"Redo"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Redo"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-144"></a>            <span class="s">"Comment"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Comment line/selection"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-145"></a>            <span class="s">"Uncomment"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Uncomment line/selection"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-146"></a>            <span class="s">"Horizontal-line"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Insert Horizontal line"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-147"></a>            <span class="s">"Title-comment"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Insert comment Title"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-148"></a>            <span class="s">"Indent-less"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Indent less"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-149"></a>            <span class="s">"Hide-misc"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Hide Misc Container"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-150"></a>            <span class="s">"Hide-editor"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Hide Editor Area"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-151"></a>            <span class="s">"Hide-explorer"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Hide Explorer"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-152"></a>            <span class="s">"Run-file"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Execute current file"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-153"></a>            <span class="s">"Run-project"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Execute current project"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-154"></a>            <span class="s">"Debug"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Debug"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-155"></a>            <span class="s">"Switch-Focus"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Switch keyboard focus"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-156"></a>            <span class="s">"Stop-execution"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Stop Execution"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-157"></a>            <span class="s">"Hide-all"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Hide all (Except Editor)"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-158"></a>            <span class="s">"Full-screen"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Full Screen"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-159"></a>            <span class="s">"Find"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Find"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-160"></a>            <span class="s">"Find-replace"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Find &amp; Replace"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-161"></a>            <span class="s">"Find-with-word"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Find word under cursor"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-162"></a>            <span class="s">"Find-next"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Find Next"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-163"></a>            <span class="s">"Find-previous"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Find Previous"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-164"></a>            <span class="s">"Help"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Show Python Help"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-165"></a>            <span class="s">"Split-vertical"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Split Tabs Vertically"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-166"></a>            <span class="s">"Split-horizontal"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Split Tabs Horizontally"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-167"></a>            <span class="s">"Follow-mode"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Activate/Deactivate Follow Mode"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-168"></a>            <span class="s">"Reload-file"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Reload File"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-169"></a>            <span class="s">"Jump"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Jump to line"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-170"></a>            <span class="s">"Find-in-files"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Find in Files"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-171"></a>            <span class="s">"Import"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Import from everywhere"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-172"></a>            <span class="s">"Go-to-definition"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Go to definition"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-173"></a>            <span class="s">"Complete-Declarations"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Complete Declarations"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-174"></a>            <span class="s">"Code-locator"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Show Code Locator"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-175"></a>            <span class="s">"File-Opener"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Show File Opener"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-176"></a>            <span class="s">"Navigate-back"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Navigate Back"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-177"></a>            <span class="s">"Navigate-forward"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Navigate Forward"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-178"></a>            <span class="s">"Open-recent-closed"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Open recent closed file"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-179"></a>            <span class="s">"Change-Tab"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Change to the next Tab"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-180"></a>            <span class="s">"Change-Tab-Reverse"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Change to the previous Tab"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-181"></a>            <span class="s">"Move-Tab-to-right"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Move tab to right"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-182"></a>            <span class="s">"Move-Tab-to-left"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Move tab to left"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-183"></a>            <span class="s">"Show-Code-Nav"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Activate History Navigation"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-184"></a>            <span class="s">"Show-Bookmarks-Nav"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Activate Bookmarks Navigation"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-185"></a>            <span class="s">"Show-Breakpoints-Nav"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Activate Breakpoints Navigation"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-186"></a>            <span class="s">"Show-Paste-History"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Show copy/paste history"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-187"></a>            <span class="s">"History-Copy"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Copy into copy/paste history"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-188"></a>            <span class="s">"History-Paste"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Paste from copy/paste history"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-189"></a>            <span class="s">"change-split-focus"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-190"></a>                <span class="s">"Change the keyboard focus between the current splits"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-191"></a>            <span class="s">"Add-Bookmark-or-Breakpoint"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-192"></a>                <span class="s">"Insert Bookmark/Breakpoint"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-193"></a>            <span class="s">"move-tab-to-next-split"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-194"></a>                <span class="s">"Move the current Tab to the next split."</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-195"></a>            <span class="s">"change-tab-visibility"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-196"></a>                <span class="s">"Show/Hide the Tabs in the Editor Area."</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-197"></a>            <span class="s">"Highlight-Word"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-198"></a>                <span class="s">"Highlight occurrences for word under cursor"</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-199"></a>        <span class="p">}</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-200"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-201"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">shortcut_dialog</span> <span class="o">=</span> <span class="n">ShortcutDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-202"></a>        <span class="c">#main layout</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-203"></a>        <span class="n">main_vbox</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-204"></a>        <span class="c">#layout for buttons</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-205"></a>        <span class="n">buttons_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-206"></a>        <span class="c">#widgets</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-207"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">result_widget</span> <span class="o">=</span> <span class="n">TreeResult</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-208"></a>        <span class="n">load_defaults_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Load defaults"</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-209"></a>        <span class="c">#add widgets</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-210"></a>        <span class="n">main_vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result_widget</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-211"></a>        <span class="n">buttons_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">load_defaults_button</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-212"></a>        <span class="n">main_vbox</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">buttons_layout</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-213"></a>        <span class="n">main_vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-214"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"The Shortcut's Text in the Menus are "</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-215"></a>            <span class="s">"going to be refreshed on restart."</span><span class="p">)))</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-216"></a>        <span class="c">#load data!</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-217"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">result_widget</span><span class="o">.</span><span class="n">setColumnWidth</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-218"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_load_shortcuts</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-219"></a>        <span class="c">#signals</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-220"></a>        <span class="c">#open the set shortcut dialog</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-221"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result_widget</span><span class="p">,</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-222"></a>            <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"itemDoubleClicked(QTreeWidgetItem*, int)"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-223"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_open_shortcut_dialog</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-224"></a>        <span class="c">#load defaults shortcuts</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-225"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">load_defaults_button</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"clicked()"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-226"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_load_defaults_shortcuts</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-227"></a>        <span class="c">#one shortcut has changed</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-228"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shortcut_dialog</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">'shortcutChanged'</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-229"></a>                     <span class="bp">self</span><span class="o">.</span><span class="n">_shortcut_changed</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-230"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-231"></a>    <span class="k">def</span> <span class="nf">_shortcut_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keysequence</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-232"></a>        <span class="sd">"""</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-233"></a><span class="sd">        Validate and set a new shortcut</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-234"></a><span class="sd">        """</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-235"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__validate_shortcut</span><span class="p">(</span><span class="n">keysequence</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-236"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">result_widget</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">keysequence</span><span class="o">.</span><span class="n">toString</span><span class="p">())</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-237"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-238"></a>    <span class="k">def</span> <span class="nf">__validate_shortcut</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keysequence</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-239"></a>        <span class="sd">"""</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-240"></a><span class="sd">        Validate a shortcut</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-241"></a><span class="sd">        """</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-242"></a>        <span class="k">if</span> <span class="n">keysequence</span><span class="o">.</span><span class="n">isEmpty</span><span class="p">():</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-243"></a>            <span class="k">return</span> <span class="bp">True</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-244"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-245"></a>        <span class="n">keyname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_widget</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-246"></a>        <span class="n">keystr</span> <span class="o">=</span> <span class="n">keysequence</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-247"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-248"></a>        <span class="k">for</span> <span class="n">top_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result_widget</span><span class="o">.</span><span class="n">topLevelItemCount</span><span class="p">()):</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-249"></a>            <span class="n">top_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_widget</span><span class="o">.</span><span class="n">topLevelItem</span><span class="p">(</span><span class="n">top_index</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-250"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-251"></a>            <span class="k">if</span> <span class="n">top_item</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">!=</span> <span class="n">keyname</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-252"></a>                <span class="n">itmseq</span> <span class="o">=</span> <span class="n">top_item</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-253"></a>                <span class="k">if</span> <span class="n">keystr</span> <span class="o">==</span> <span class="n">itmseq</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-254"></a>                    <span class="n">val</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-255"></a>                            <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">'Shortcut is already in use'</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-256"></a>                            <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Do you want to remove it?"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-257"></a>                            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-258"></a>                    <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-259"></a>                        <span class="n">top_item</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">""</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-260"></a>                        <span class="k">return</span> <span class="bp">True</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-261"></a>                    <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-262"></a>                        <span class="k">return</span> <span class="bp">False</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-263"></a>                <span class="k">if</span> <span class="ow">not</span> <span class="n">itmseq</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-264"></a>                    <span class="k">continue</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-265"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-266"></a>        <span class="k">return</span> <span class="bp">True</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-267"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-268"></a>    <span class="k">def</span> <span class="nf">_open_shortcut_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-269"></a>        <span class="sd">"""</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-270"></a><span class="sd">        Open the dialog to set a shortcut</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-271"></a><span class="sd">        """</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-272"></a>        <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">childCount</span><span class="p">():</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-273"></a>            <span class="k">return</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-274"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-275"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">shortcut_dialog</span><span class="o">.</span><span class="n">set_shortcut</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-276"></a>            <span class="n">QKeySequence</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">toString</span><span class="p">())</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-277"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">shortcut_dialog</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-278"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-279"></a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-280"></a>        <span class="sd">"""</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-281"></a><span class="sd">        Save all shortcuts to settings</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-282"></a><span class="sd">        """</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-283"></a>        <span class="n">settings</span> <span class="o">=</span> <span class="n">QSettings</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">SETTINGS_PATH</span><span class="p">,</span> <span class="n">QSettings</span><span class="o">.</span><span class="n">IniFormat</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-284"></a>        <span class="n">settings</span><span class="o">.</span><span class="n">beginGroup</span><span class="p">(</span><span class="s">"shortcuts"</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-285"></a>        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result_widget</span><span class="o">.</span><span class="n">topLevelItemCount</span><span class="p">()):</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-286"></a>            <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_widget</span><span class="o">.</span><span class="n">topLevelItem</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-287"></a>            <span class="n">shortcut_keys</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-288"></a>            <span class="n">shortcut_name</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-289"></a>            <span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">shortcut_name</span><span class="p">,</span> <span class="n">shortcut_keys</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-290"></a>        <span class="n">settings</span><span class="o">.</span><span class="n">endGroup</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-291"></a>        <span class="n">actions</span><span class="o">.</span><span class="n">Actions</span><span class="p">()</span><span class="o">.</span><span class="n">update_shortcuts</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-292"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-293"></a>    <span class="k">def</span> <span class="nf">_load_shortcuts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-294"></a>        <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">resources</span><span class="o">.</span><span class="n">CUSTOM_SHORTCUTS</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-295"></a>            <span class="n">shortcut_action</span> <span class="o">=</span> <span class="n">resources</span><span class="o">.</span><span class="n">get_shortcut</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-296"></a>            <span class="c">#populate the tree widget</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-297"></a>            <span class="n">tree_data</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">shortcuts_text</span><span class="p">[</span><span class="n">action</span><span class="p">],</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-298"></a>                <span class="n">shortcut_action</span><span class="o">.</span><span class="n">toString</span><span class="p">(</span><span class="n">QKeySequence</span><span class="o">.</span><span class="n">NativeText</span><span class="p">),</span> <span class="n">action</span><span class="p">]</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-299"></a>            <span class="n">item</span> <span class="o">=</span> <span class="n">QTreeWidgetItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result_widget</span><span class="p">,</span> <span class="n">tree_data</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-300"></a>            <span class="n">item</span><span class="o">.</span><span class="n">setFlags</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsSelectable</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEnabled</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-301"></a>
+<a name="listingsninja_ideguimiscshortcut_managerpy-302"></a>    <span class="k">def</span> <span class="nf">_load_defaults_shortcuts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-303"></a>        <span class="c">#clean custom shortcuts and UI widget</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-304"></a>        <span class="n">resources</span><span class="o">.</span><span class="n">clean_custom_shortcuts</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-305"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">result_widget</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-306"></a>        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">action</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">SHORTCUTS</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-307"></a>            <span class="n">shortcut_action</span> <span class="o">=</span> <span class="n">action</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-308"></a>            <span class="c">#populate the tree widget</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-309"></a>            <span class="n">tree_data</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">shortcuts_text</span><span class="p">[</span><span class="n">name</span><span class="p">],</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-310"></a>                <span class="n">shortcut_action</span><span class="o">.</span><span class="n">toString</span><span class="p">(</span><span class="n">QKeySequence</span><span class="o">.</span><span class="n">NativeText</span><span class="p">),</span> <span class="n">name</span><span class="p">]</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-311"></a>            <span class="n">item</span> <span class="o">=</span> <span class="n">QTreeWidgetItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result_widget</span><span class="p">,</span> <span class="n">tree_data</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscshortcut_managerpy-312"></a>            <span class="n">item</span><span class="o">.</span><span class="n">setFlags</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsSelectable</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEnabled</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

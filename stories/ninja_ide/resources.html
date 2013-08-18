@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="NINJA-IDE">
+    <title>NINJA-IDE | NINJA-IDE Documentation</title>
+    
+            <link href="../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
+
+    
+
+
+
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+    <li>
+    <a href="resources.txt" id="sourcelink">Source</a>
+    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+    <h1>NINJA-IDE</h1>
+    <div class="contents alert alert-info pull-top topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="resources.html#module-resources-py-api" id="id1"><em>Module:</em> resources.py API</a><ul>
+<li><a class="reference internal" href="resources.html#imports" id="id2"><em>Imports:</em></a></li>
+<li><a class="reference internal" href="resources.html#global-attributes" id="id3"><em>Global Attributes:</em></a></li>
+<li><a class="reference internal" href="resources.html#global-functions" id="id4"><em>Global Functions:</em></a><ul>
+<li><a class="reference internal" href="resources.html#function-clean-custom-shortcuts-at-ln-336" id="id5"><em>Function:</em> clean_custom_shortcuts() [at ln:336]</a></li>
+<li><a class="reference internal" href="resources.html#function-create-home-dir-structure-at-ln-344" id="id6"><em>Function:</em> create_home_dir_structure() [at ln:344]</a></li>
+<li><a class="reference internal" href="resources.html#function-get-shortcut-shortcut-name-at-ln-326" id="id7"><em>Function:</em> get_shortcut(shortcut_name) [at ln:326]</a></li>
+<li><a class="reference internal" href="resources.html#function-load-shortcuts-at-ln-309" id="id8"><em>Function:</em> load_shortcuts() [at ln:309]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="module-resources-py-api">
+<h2><em>Module:</em> <a class="reference external" href="../../listings/ninja_ide/resources.py.html">resources.py</a> API</h2>
+<p>No description.</p>
+<div class="section" id="imports">
+<h3><a class="toc-backref" href="resources.html#id2"><em>Imports:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#23">os</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#24">sys</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#19">PyQt4.QtCore.QDir</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#18">PyQt4.QtGui.QKeySequence</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#20">PyQt4.QtCore.QSettings</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#21">PyQt4.QtCore.Qt</a></li>
+</ul>
+</div>
+<div class="section" id="global-attributes">
+<h3><a class="toc-backref" href="resources.html#id3"><em>Global Attributes:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#46">ADDINS [at ln:46]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#76">BUGS_PAGE [at ln:76]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#187">COLOR_SCHEME [at ln:187]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#225">CUSTOM_SCHEME [at ln:225]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#302">CUSTOM_SHORTCUTS [at ln:302]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#57">EDITOR_SKINS [at ln:57]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#68">GET_SYSTEM_PATH [at ln:68]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#42">HOME_NINJA_PATH [at ln:42]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#31">HOME_PATH [at ln:31]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#95">IMAGES [at ln:95]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#55">LANGS [at ln:55]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#84">LANGUAGES_URL [at ln:84]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#66">LOG_FILE_PATH [at ln:66]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#33">NINJA_EXECUTABLE [at ln:33]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#59">NINJA_THEME [at ln:59]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#61">NINJA_THEME_CLASSIC [at ln:61]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#64">NINJA_THEME_DOWNLOAD [at ln:64]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#50">PLUGINS [at ln:50]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#88">PLUGINS_COMMUNITY [at ln:88]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#52">PLUGINS_DESCRIPTOR [at ln:52]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#78">PLUGINS_DOC [at ln:78]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#86">PLUGINS_WEB [at ln:86]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#35">PRJ_PATH [at ln:35]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#70">QML_FILES [at ln:70]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#82">SCHEMES_URL [at ln:82]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#44">SETTINGS_PATH [at ln:44]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#234">SHORTCUTS [at ln:234]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#48">SYNTAX_FILES [at ln:48]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#80">UPDATES_URL [at ln:80]</a></li>
+<li><a class="reference external" href="../../listings/ninja_ide/resources.py.html#37">frozen [at ln:37]</a></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="global-functions">
+<h3><a class="toc-backref" href="resources.html#id4"><em>Global Functions:</em></a></h3>
+<div class="section" id="function-clean-custom-shortcuts-at-ln-336">
+<h4><em>Function:</em> <a class="reference external" href="../../listings/ninja_ide/resources.py.html#listingsninja_ideresourcespy-336">clean_custom_shortcuts() [at ln:336]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">clean_custom_shortcuts</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Cleans CUSTOMS_SHORTCUTS</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-create-home-dir-structure-at-ln-344">
+<h4><em>Function:</em> <a class="reference external" href="../../listings/ninja_ide/resources.py.html#listingsninja_ideresourcespy-344">create_home_dir_structure() [at ln:344]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">create_home_dir_structure</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Create the necesary directories structure for NINJA-IDE</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-shortcut-shortcut-name-at-ln-326">
+<h4><em>Function:</em> <a class="reference external" href="../../listings/ninja_ide/resources.py.html#listingsninja_ideresourcespy-326">get_shortcut(shortcut_name) [at ln:326]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_shortcut</span><span class="p">(</span><span class="n">shortcut_name</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Returns the shortcut looking into CUSTOM_SHORTCUTS and</div>
+<div class="line">SHORTCUTS</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-load-shortcuts-at-ln-309">
+<h4><em>Function:</em> <a class="reference external" href="../../listings/ninja_ide/resources.py.html#listingsninja_ideresourcespy-309">load_shortcuts() [at ln:309]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">load_shortcuts</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Loads the shortcuts from QSettings</div>
+</div>
+</div>
+</div>
+</div>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

@@ -1,0 +1,346 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="updates.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>updates.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../">/listings</a>
+        </li><li><a href="../">/ninja_ide</a>
+        </li><li><a href=".">/gui</a>
+        </li><li><a href="#">/updates.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="updates.py.html#listingsninja_ideguiupdatespy-1">  1</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-2">  2</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-3">  3</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-4">  4</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-5">  5</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-6">  6</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-7">  7</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-8">  8</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-9">  9</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-10"> 10</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-11"> 11</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-12"> 12</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-13"> 13</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-14"> 14</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-15"> 15</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-16"> 16</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-17"> 17</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-18"> 18</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-19"> 19</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-20"> 20</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-21"> 21</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-22"> 22</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-23"> 23</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-24"> 24</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-25"> 25</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-26"> 26</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-27"> 27</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-28"> 28</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-29"> 29</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-30"> 30</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-31"> 31</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-32"> 32</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-33"> 33</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-34"> 34</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-35"> 35</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-36"> 36</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-37"> 37</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-38"> 38</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-39"> 39</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-40"> 40</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-41"> 41</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-42"> 42</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-43"> 43</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-44"> 44</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-45"> 45</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-46"> 46</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-47"> 47</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-48"> 48</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-49"> 49</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-50"> 50</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-51"> 51</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-52"> 52</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-53"> 53</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-54"> 54</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-55"> 55</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-56"> 56</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-57"> 57</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-58"> 58</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-59"> 59</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-60"> 60</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-61"> 61</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-62"> 62</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-63"> 63</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-64"> 64</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-65"> 65</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-66"> 66</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-67"> 67</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-68"> 68</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-69"> 69</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-70"> 70</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-71"> 71</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-72"> 72</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-73"> 73</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-74"> 74</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-75"> 75</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-76"> 76</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-77"> 77</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-78"> 78</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-79"> 79</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-80"> 80</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-81"> 81</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-82"> 82</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-83"> 83</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-84"> 84</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-85"> 85</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-86"> 86</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-87"> 87</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-88"> 88</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-89"> 89</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-90"> 90</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-91"> 91</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-92"> 92</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-93"> 93</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-94"> 94</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-95"> 95</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-96"> 96</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-97"> 97</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-98"> 98</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-99"> 99</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-100">100</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-101">101</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-102">102</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-103">103</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-104">104</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-105">105</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-106">106</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-107">107</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-108">108</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-109">109</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-110">110</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-111">111</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-112">112</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-113">113</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-114">114</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-115">115</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-116">116</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-117">117</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-118">118</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-119">119</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-120">120</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-121">121</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-122">122</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-123">123</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-124">124</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-125">125</a>
+<a href="updates.py.html#listingsninja_ideguiupdatespy-126">126</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_ideguiupdatespy-1"></a><span class="c"># -*- coding: utf-8 -*-</span>
+<a name="listingsninja_ideguiupdatespy-2"></a><span class="c">#</span>
+<a name="listingsninja_ideguiupdatespy-3"></a><span class="c"># This file is part of NINJA-IDE (http://ninja-ide.org).</span>
+<a name="listingsninja_ideguiupdatespy-4"></a><span class="c">#</span>
+<a name="listingsninja_ideguiupdatespy-5"></a><span class="c"># NINJA-IDE is free software; you can redistribute it and/or modify</span>
+<a name="listingsninja_ideguiupdatespy-6"></a><span class="c"># it under the terms of the GNU General Public License as published by</span>
+<a name="listingsninja_ideguiupdatespy-7"></a><span class="c"># the Free Software Foundation; either version 3 of the License, or</span>
+<a name="listingsninja_ideguiupdatespy-8"></a><span class="c"># any later version.</span>
+<a name="listingsninja_ideguiupdatespy-9"></a><span class="c">#</span>
+<a name="listingsninja_ideguiupdatespy-10"></a><span class="c"># NINJA-IDE is distributed in the hope that it will be useful,</span>
+<a name="listingsninja_ideguiupdatespy-11"></a><span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="listingsninja_ideguiupdatespy-12"></a><span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="listingsninja_ideguiupdatespy-13"></a><span class="c"># GNU General Public License for more details.</span>
+<a name="listingsninja_ideguiupdatespy-14"></a><span class="c">#</span>
+<a name="listingsninja_ideguiupdatespy-15"></a><span class="c"># You should have received a copy of the GNU General Public License</span>
+<a name="listingsninja_ideguiupdatespy-16"></a><span class="c"># along with NINJA-IDE; If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="listingsninja_ideguiupdatespy-17"></a>
+<a name="listingsninja_ideguiupdatespy-18"></a><span class="kn">import</span> <span class="nn">urllib</span>
+<a name="listingsninja_ideguiupdatespy-19"></a><span class="kn">import</span> <span class="nn">webbrowser</span>
+<a name="listingsninja_ideguiupdatespy-20"></a><span class="kn">from</span> <span class="nn">distutils</span> <span class="kn">import</span> <span class="n">version</span>
+<a name="listingsninja_ideguiupdatespy-21"></a>
+<a name="listingsninja_ideguiupdatespy-22"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QSystemTrayIcon</span>
+<a name="listingsninja_ideguiupdatespy-23"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QAction</span>
+<a name="listingsninja_ideguiupdatespy-24"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QMenu</span>
+<a name="listingsninja_ideguiupdatespy-25"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QIcon</span>
+<a name="listingsninja_ideguiupdatespy-26"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QMessageBox</span>
+<a name="listingsninja_ideguiupdatespy-27"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">QThread</span>
+<a name="listingsninja_ideguiupdatespy-28"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">SIGNAL</span>
+<a name="listingsninja_ideguiupdatespy-29"></a>
+<a name="listingsninja_ideguiupdatespy-30"></a><span class="kn">import</span> <span class="nn">ninja_ide</span>
+<a name="listingsninja_ideguiupdatespy-31"></a><span class="kn">from</span> <span class="nn">ninja_ide</span> <span class="kn">import</span> <span class="n">resources</span>
+<a name="listingsninja_ideguiupdatespy-32"></a><span class="kn">from</span> <span class="nn">ninja_ide.core</span> <span class="kn">import</span> <span class="n">settings</span>
+<a name="listingsninja_ideguiupdatespy-33"></a><span class="kn">from</span> <span class="nn">ninja_ide.tools</span> <span class="kn">import</span> <span class="n">json_manager</span>
+<a name="listingsninja_ideguiupdatespy-34"></a><span class="kn">from</span> <span class="nn">ninja_ide.tools.logger</span> <span class="kn">import</span> <span class="n">NinjaLogger</span>
+<a name="listingsninja_ideguiupdatespy-35"></a>
+<a name="listingsninja_ideguiupdatespy-36"></a><span class="n">logger</span> <span class="o">=</span> <span class="n">NinjaLogger</span><span class="p">(</span><span class="s">'ninja_ide.gui.updates'</span><span class="p">)</span>
+<a name="listingsninja_ideguiupdatespy-37"></a>
+<a name="listingsninja_ideguiupdatespy-38"></a>
+<a name="listingsninja_ideguiupdatespy-39"></a><span class="k">class</span> <span class="nc">TrayIconUpdates</span><span class="p">(</span><span class="n">QSystemTrayIcon</span><span class="p">):</span>
+<a name="listingsninja_ideguiupdatespy-40"></a>    <span class="sd">"""Tray Icon to show Updates of new versions.</span>
+<a name="listingsninja_ideguiupdatespy-41"></a><span class="sd">    @ SIGNALS:</span>
+<a name="listingsninja_ideguiupdatespy-42"></a><span class="sd">    @ closeTrayIcon()</span>
+<a name="listingsninja_ideguiupdatespy-43"></a><span class="sd">    """</span>
+<a name="listingsninja_ideguiupdatespy-44"></a>
+<a name="listingsninja_ideguiupdatespy-45"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+<a name="listingsninja_ideguiupdatespy-46"></a>        <span class="n">QSystemTrayIcon</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+<a name="listingsninja_ideguiupdatespy-47"></a>        <span class="n">icon</span> <span class="o">=</span> <span class="n">QIcon</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">IMAGES</span><span class="p">[</span><span class="s">'iconUpdate'</span><span class="p">])</span>
+<a name="listingsninja_ideguiupdatespy-48"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">icon</span><span class="p">)</span>
+<a name="listingsninja_ideguiupdatespy-49"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setup_menu</span><span class="p">()</span>
+<a name="listingsninja_ideguiupdatespy-50"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">ide_version</span> <span class="o">=</span> <span class="s">'0'</span>
+<a name="listingsninja_ideguiupdatespy-51"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">download_link</span> <span class="o">=</span> <span class="s">''</span>
+<a name="listingsninja_ideguiupdatespy-52"></a>
+<a name="listingsninja_ideguiupdatespy-53"></a>        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">NOTIFY_UPDATES</span><span class="p">:</span>
+<a name="listingsninja_ideguiupdatespy-54"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">=</span> <span class="n">ThreadUpdates</span><span class="p">()</span>
+<a name="listingsninja_ideguiupdatespy-55"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="p">,</span>
+<a name="listingsninja_ideguiupdatespy-56"></a>                <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"versionReceived(QString, QString)"</span><span class="p">),</span>
+<a name="listingsninja_ideguiupdatespy-57"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_show_messages</span><span class="p">)</span>
+<a name="listingsninja_ideguiupdatespy-58"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<a name="listingsninja_ideguiupdatespy-59"></a>
+<a name="listingsninja_ideguiupdatespy-60"></a>    <span class="k">def</span> <span class="nf">setup_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show_downloads</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<a name="listingsninja_ideguiupdatespy-61"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">menu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">()</span>
+<a name="listingsninja_ideguiupdatespy-62"></a>        <span class="k">if</span> <span class="n">show_downloads</span><span class="p">:</span>
+<a name="listingsninja_ideguiupdatespy-63"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">download</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Download Version: </span><span class="si">%s</span><span class="s">!"</span><span class="p">)</span> <span class="o">%</span>
+<a name="listingsninja_ideguiupdatespy-64"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">ide_version</span><span class="p">),</span>
+<a name="listingsninja_ideguiupdatespy-65"></a>                <span class="bp">self</span><span class="p">,</span> <span class="n">triggered</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_show_download</span><span class="p">)</span>
+<a name="listingsninja_ideguiupdatespy-66"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">download</span><span class="p">)</span>
+<a name="listingsninja_ideguiupdatespy-67"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+<a name="listingsninja_ideguiupdatespy-68"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">quit_action</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Close Update Notifications"</span><span class="p">),</span>
+<a name="listingsninja_ideguiupdatespy-69"></a>            <span class="bp">self</span><span class="p">,</span> <span class="n">triggered</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_close</span><span class="p">)</span>
+<a name="listingsninja_ideguiupdatespy-70"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">quit_action</span><span class="p">)</span>
+<a name="listingsninja_ideguiupdatespy-71"></a>
+<a name="listingsninja_ideguiupdatespy-72"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setContextMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">menu</span><span class="p">)</span>
+<a name="listingsninja_ideguiupdatespy-73"></a>
+<a name="listingsninja_ideguiupdatespy-74"></a>    <span class="k">def</span> <span class="nf">_show_messages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ide_version</span><span class="p">,</span> <span class="n">download</span><span class="p">):</span>
+<a name="listingsninja_ideguiupdatespy-75"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">ide_version</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ide_version</span><span class="p">)</span>
+<a name="listingsninja_ideguiupdatespy-76"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">download_link</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">download</span><span class="p">)</span>
+<a name="listingsninja_ideguiupdatespy-77"></a>        <span class="k">try</span><span class="p">:</span>
+<a name="listingsninja_ideguiupdatespy-78"></a>            <span class="n">local_version</span> <span class="o">=</span> <span class="n">version</span><span class="o">.</span><span class="n">LooseVersion</span><span class="p">(</span><span class="n">ninja_ide</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<a name="listingsninja_ideguiupdatespy-79"></a>            <span class="n">web_version</span> <span class="o">=</span> <span class="n">version</span><span class="o">.</span><span class="n">LooseVersion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ide_version</span><span class="p">)</span>
+<a name="listingsninja_ideguiupdatespy-80"></a>            <span class="k">if</span> <span class="n">local_version</span> <span class="o">&lt;</span> <span class="n">web_version</span><span class="p">:</span>
+<a name="listingsninja_ideguiupdatespy-81"></a>                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">supportsMessages</span><span class="p">():</span>
+<a name="listingsninja_ideguiupdatespy-82"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">setup_menu</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguiupdatespy-83"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">showMessage</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"NINJA-IDE Updates"</span><span class="p">),</span>
+<a name="listingsninja_ideguiupdatespy-84"></a>                        <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"New Version of NINJA-IDE</span><span class="se">\n</span><span class="s">Available: "</span><span class="p">)</span> <span class="o">+</span>
+<a name="listingsninja_ideguiupdatespy-85"></a>                        <span class="bp">self</span><span class="o">.</span><span class="n">ide_version</span> <span class="o">+</span>
+<a name="listingsninja_ideguiupdatespy-86"></a>                        <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"</span><span class="se">\n\n</span><span class="s">Check the Update Menu in the NINJA-IDE "</span>
+<a name="listingsninja_ideguiupdatespy-87"></a>                                <span class="s">"System Tray icon to Download!"</span><span class="p">),</span>
+<a name="listingsninja_ideguiupdatespy-88"></a>                        <span class="n">QSystemTrayIcon</span><span class="o">.</span><span class="n">Information</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+<a name="listingsninja_ideguiupdatespy-89"></a>                <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguiupdatespy-90"></a>                    <span class="n">button</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">information</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">(),</span>
+<a name="listingsninja_ideguiupdatespy-91"></a>                        <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"NINJA-IDE Updates"</span><span class="p">),</span>
+<a name="listingsninja_ideguiupdatespy-92"></a>                        <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"New Version of NINJA-IDE</span><span class="se">\n</span><span class="s">Available: "</span><span class="p">)</span> <span class="o">+</span>
+<a name="listingsninja_ideguiupdatespy-93"></a>                        <span class="bp">self</span><span class="o">.</span><span class="n">ide_version</span><span class="p">)</span>
+<a name="listingsninja_ideguiupdatespy-94"></a>                    <span class="k">if</span> <span class="n">button</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Ok</span><span class="p">:</span>
+<a name="listingsninja_ideguiupdatespy-95"></a>                        <span class="bp">self</span><span class="o">.</span><span class="n">_show_download</span><span class="p">()</span>
+<a name="listingsninja_ideguiupdatespy-96"></a>            <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguiupdatespy-97"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
+<a name="listingsninja_ideguiupdatespy-98"></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">reason</span><span class="p">:</span>
+<a name="listingsninja_ideguiupdatespy-99"></a>            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">'Versions can not be compared: </span><span class="si">%r</span><span class="s">'</span><span class="p">,</span> <span class="n">reason</span><span class="p">)</span>
+<a name="listingsninja_ideguiupdatespy-100"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
+<a name="listingsninja_ideguiupdatespy-101"></a>        <span class="k">finally</span><span class="p">:</span>
+<a name="listingsninja_ideguiupdatespy-102"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+<a name="listingsninja_ideguiupdatespy-103"></a>
+<a name="listingsninja_ideguiupdatespy-104"></a>    <span class="k">def</span> <span class="nf">_close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguiupdatespy-105"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">"closeTrayIcon()"</span><span class="p">))</span>
+<a name="listingsninja_ideguiupdatespy-106"></a>
+<a name="listingsninja_ideguiupdatespy-107"></a>    <span class="k">def</span> <span class="nf">_show_download</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguiupdatespy-108"></a>        <span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">download_link</span><span class="p">)</span>
+<a name="listingsninja_ideguiupdatespy-109"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_close</span><span class="p">()</span>
+<a name="listingsninja_ideguiupdatespy-110"></a>
+<a name="listingsninja_ideguiupdatespy-111"></a>
+<a name="listingsninja_ideguiupdatespy-112"></a><span class="k">class</span> <span class="nc">ThreadUpdates</span><span class="p">(</span><span class="n">QThread</span><span class="p">):</span>
+<a name="listingsninja_ideguiupdatespy-113"></a>
+<a name="listingsninja_ideguiupdatespy-114"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguiupdatespy-115"></a>        <span class="n">QThread</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguiupdatespy-116"></a>
+<a name="listingsninja_ideguiupdatespy-117"></a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguiupdatespy-118"></a>        <span class="k">try</span><span class="p">:</span>
+<a name="listingsninja_ideguiupdatespy-119"></a>            <span class="c">#Check for IDE Updates</span>
+<a name="listingsninja_ideguiupdatespy-120"></a>            <span class="n">ninja_version</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">UPDATES_URL</span><span class="p">)</span>
+<a name="listingsninja_ideguiupdatespy-121"></a>            <span class="n">ide</span> <span class="o">=</span> <span class="n">json_manager</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">ninja_version</span><span class="p">)</span>
+<a name="listingsninja_ideguiupdatespy-122"></a>        <span class="k">except</span><span class="p">:</span>
+<a name="listingsninja_ideguiupdatespy-123"></a>            <span class="n">ide</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="listingsninja_ideguiupdatespy-124"></a>            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">'no connection available'</span><span class="p">)</span>
+<a name="listingsninja_ideguiupdatespy-125"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">"versionReceived(QString, QString)"</span><span class="p">),</span>
+<a name="listingsninja_ideguiupdatespy-126"></a>            <span class="n">ide</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'version'</span><span class="p">,</span> <span class="s">'0'</span><span class="p">),</span> <span class="n">ide</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'downloads'</span><span class="p">,</span> <span class="s">''</span><span class="p">))</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

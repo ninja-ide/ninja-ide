@@ -1,0 +1,701 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: plugin_services
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `plugin_services.py </listings/ninja_ide/core/plugin_services.py.html>`_ API
+========================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `PyQt4.QtCore.QObject </listings/ninja_ide/core/plugin_services.py.html#21>`_
+
+- `__future__.absolute_import </listings/ninja_ide/core/plugin_services.py.html#18>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/core/plugin_services.py.html#26>`_
+
+- `ninja_ide.gui.main_panel.itab_item </listings/ninja_ide/core/plugin_services.py.html#28>`_
+
+- `ninja_ide.core.plugin_util </listings/ninja_ide/core/plugin_services.py.html#27>`_
+
+- `PyQt4.QtCore.pyqtSignal </listings/ninja_ide/core/plugin_services.py.html#23>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/core/plugin_services.py.html#25>`_
+
+- `__future__.unicode_literals </listings/ninja_ide/core/plugin_services.py.html#19>`_
+
+
+
+
+
+*Class:* `ToolbarService(QObject) </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-283>`_
+-----------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ToolbarService(QObject):
+
+| Interact with the Toolbar
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_toolbar [at ln:289] </listings/ninja_ide/core/plugin_services.py.html#289>`_
+
+
+*Function:* `__init__(toolbar) [at ln:287] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-287>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(toolbar):
+
+
+No description.
+
+
+----
+
+*Function:* `add_action(action) [at ln:291] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-291>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_action(action):
+
+| Add an action to the Toolbar
+| @action: Should be an instance(or subclass) of QAction
+
+
+----
+
+*Class:* `MainService(QObject) </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-39>`_
+-------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class MainService(QObject):
+
+| Main Interact whith NINJA-IDE
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `beforeFileSaved [at ln:45] </listings/ninja_ide/core/plugin_services.py.html#45>`_
+
+- `currentTabChanged [at ln:47] </listings/ninja_ide/core/plugin_services.py.html#47>`_
+
+- `editorKeyPressEvent [at ln:44] </listings/ninja_ide/core/plugin_services.py.html#44>`_
+
+- `fileExecuted [at ln:48] </listings/ninja_ide/core/plugin_services.py.html#48>`_
+
+- `fileOpened [at ln:49] </listings/ninja_ide/core/plugin_services.py.html#49>`_
+
+- `fileSaved [at ln:46] </listings/ninja_ide/core/plugin_services.py.html#46>`_
+
+
+*Function:* `__init__() [at ln:51] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-51>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `_beforeFileSaved(fileName) [at ln:251] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-251>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _beforeFileSaved(fileName):
+
+| Signal emitted before save a file
+
+
+----
+
+*Function:* `_currentTabChanged(fileName) [at ln:264] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-264>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _currentTabChanged(fileName):
+
+| Signal emitted when the current tab changes
+
+
+----
+
+*Function:* `_fileExecuted(fileName) [at ln:270] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-270>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _fileExecuted(fileName):
+
+| Signal emitted when the file is executed
+
+
+----
+
+*Function:* `_fileOpened(fileName) [at ln:276] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-276>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _fileOpened(fileName):
+
+| Signal emitted when the file is opened
+
+
+----
+
+*Function:* `_fileSaved(fileName) [at ln:257] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-257>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _fileSaved(fileName):
+
+| Signal emitted after save a file
+
+
+----
+
+*Function:* `_keyPressEvent(qEvent) [at ln:244] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-244>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _keyPressEvent(qEvent):
+
+| Emit the signal when a key is pressed
+| @event: QEvent
+
+
+----
+
+*Function:* `add_editor(fileName=str, content=None, syntax=None) [at ln:130] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-130>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_editor(fileName=str, content=None, syntax=None):
+
+| Create a new editor
+
+
+----
+
+*Function:* `add_menu(menu, lang=str) [at ln:85] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-85>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_menu(menu, lang=str):
+
+| Add an \*extra context menu\* to the editor context menu
+
+
+----
+
+*Function:* `get_actual_tab() [at ln:237] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-237>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_actual_tab():
+
+| Returns the actual widget
+
+
+----
+
+*Function:* `get_editor() [at ln:139] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-139>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_editor():
+
+| Returns the actual editor (instance of ninja\_ide.gui.editor.Editor)
+| This method could return None
+
+
+----
+
+*Function:* `get_editor_encoding(editorWidget=None) [at ln:156] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-156>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_editor_encoding(editorWidget=None):
+
+| Returns the editor encoding
+
+
+----
+
+*Function:* `get_editor_path() [at ln:146] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-146>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_editor_path():
+
+| Returns the actual editor path
+| This method could return None if there is not an editor
+
+
+----
+
+*Function:* `get_file_syntax(editorWidget=None) [at ln:118] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-118>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_file_syntax(editorWidget=None):
+
+| Return the syntax for this file -> {}.
+
+
+----
+
+*Function:* `get_lines_count() [at ln:202] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-202>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_lines_count():
+
+| Returns the count of lines in the current editor
+
+
+----
+
+*Function:* `get_opened_documents() [at ln:91] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-91>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_opened_documents():
+
+| Returns the opened documents
+
+
+----
+
+*Function:* `get_project_owner(editorWidget=None) [at ln:100] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-100>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_project_owner(editorWidget=None):
+
+| Return the project where this file belongs, or an empty string.
+
+
+----
+
+*Function:* `get_selected_text() [at ln:177] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-177>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_selected_text():
+
+| Returns the selected text of and editor.
+| This method could return None
+
+
+----
+
+*Function:* `get_tab_manager() [at ln:74] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-74>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_tab_manager():
+
+| Returns the TabWidget (ninja\_ide.gui.main\_panel.tab\_widget.TabWidget)
+| subclass of QTabWidget
+
+
+----
+
+*Function:* `get_text() [at ln:167] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-167>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_text():
+
+| Returns the plain text of the current editor
+| or None if thre is not an editor.
+
+
+----
+
+*Function:* `insert_text(text) [at ln:187] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-187>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def insert_text(text):
+
+| Insert text in the current cursor position
+| @text: string
+
+
+----
+
+*Function:* `jump_to_line(lineno) [at ln:196] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-196>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def jump_to_line(lineno):
+
+| Jump to a specific line in the current editor
+
+
+----
+
+*Function:* `open_file(fileName=str, cursorPosition=int, positionIsLineNumber=False) [at ln:223] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-223>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def open_file(fileName=str, cursorPosition=int, positionIsLineNumber=False):
+
+| Open a single file, if the file is already open it get focus
+
+
+----
+
+*Function:* `open_files(files, mainTab=True) [at ln:217] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-217>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def open_files(files, mainTab=True):
+
+| Open many files
+
+
+----
+
+*Function:* `open_image(filename) [at ln:231] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-231>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def open_image(filename):
+
+| Open a single image
+
+
+----
+
+*Function:* `save_file() [at ln:211] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-211>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def save_file():
+
+| Save the actual file
+
+
+----
+
+*Class:* `MenuAppService(QObject) </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-300>`_
+-----------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class MenuAppService(QObject):
+
+| Interact with the Plugins Menu
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_plugins_menu [at ln:306] </listings/ninja_ide/core/plugin_services.py.html#306>`_
+
+
+*Function:* `__init__(plugins_menu) [at ln:304] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-304>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(plugins_menu):
+
+
+No description.
+
+
+----
+
+*Function:* `add_action(action) [at ln:314] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-314>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_action(action):
+
+| Add an action to the Plugin Menu of NINJA
+
+
+----
+
+*Function:* `add_menu(menu) [at ln:308] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-308>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_menu(menu):
+
+| Add an extra menu to the Plugin Menu of NINJA
+
+
+----
+
+*Class:* `ExplorerService(QObject) </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-364>`_
+------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ExplorerService(QObject):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `projectExecuted [at ln:367] </listings/ninja_ide/core/plugin_services.py.html#367>`_
+
+- `projectOpened [at ln:366] </listings/ninja_ide/core/plugin_services.py.html#366>`_
+
+
+*Function:* `__init__() [at ln:369] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-369>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `_projectExecuted(projectPath) [at ln:489] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-489>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _projectExecuted(projectPath):
+
+| Signal emitted when the project is executed
+
+
+----
+
+*Function:* `_projectOpened(projectPath) [at ln:483] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-483>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _projectOpened(projectPath):
+
+| Signal emitted when the project is opened
+
+
+----
+
+*Function:* `add_project_menu(menu, lang=str) [at ln:461] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-461>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_project_menu(menu, lang=str):
+
+| Add an extra menu to the project explorer for the files
+| with the given extension.
+| @lang: String with file extension format (py, php, json)
+
+
+----
+
+*Function:* `add_project_menu_by_scope(menu, scope=None) [at ln:470] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-470>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_project_menu_by_scope(menu, scope=None):
+
+| Add an extra menu to the project explorer to the specific scope
+| @scope: String with the menu scope (all, project, folder, file)
+
+
+----
+
+*Function:* `add_tab(tab, title) [at ln:439] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-439>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_tab(tab, title):
+
+| Add a tab with the given title
+| @tab: Should be an instance (or subclass )of QTabWidget
+| @title: Name of the tab string
+
+
+----
+
+*Function:* `get_actual_project() [at ln:447] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-447>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_actual_project():
+
+| Returns the path of the opened projects
+
+
+----
+
+*Function:* `get_current_project_item() [at ln:388] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-388>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_current_project_item():
+
+| Returns the current item of the tree projects
+| this method is a shortcut of self.get\_tree\_projects().currentItem()
+
+
+----
+
+*Function:* `get_item(path) [at ln:384] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-384>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_item(path):
+
+
+No description.
+
+
+----
+
+*Function:* `get_opened_projects() [at ln:453] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-453>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_opened_projects():
+
+| Return the opened projects in the Tree Project Explorer.
+| list of <ninja\_ide.gui.explorer.tree\_projects\_widget.ProjectTree>
+
+
+----
+
+*Function:* `get_project_item_by_name(projectName) [at ln:397] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-397>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_project_item_by_name(projectName):
+
+| Return a ProjectItem that has the name provided.
+
+
+----
+
+*Function:* `get_tree_projects() [at ln:378] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-378>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_tree_projects():
+
+| Returns the projects tree
+
+
+----
+
+*Function:* `get_tree_symbols() [at ln:406] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-406>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_tree_symbols():
+
+| Returns the symbols tree
+
+
+----
+
+*Function:* `set_project_type_handler(project_type, project_type_handler) [at ln:425] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-425>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_project_type_handler(project_type, project_type_handler):
+
+| Add a new Project Type and the handler for it
+| example:
+|     foo\_project\_handler = FooProjectHandler(...)
+|     set\_project\_type\_handler('Foo Project', foo\_project\_handler)
+| Then 'Foo Project' will appear in the New Project wizard
+|     and foo\_project\_handler instance controls the wizard
+| 
+| Note: project\_type\_handler SHOULD have a special interface see
+| ninja\_ide.core.plugin\_interfaces
+
+
+----
+
+*Function:* `set_symbols_handler(file_extension, symbols_handler) [at ln:412] </listings/ninja_ide/core/plugin_services.py.html#listingsninja_idecoreplugin_servicespy-412>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_symbols_handler(file_extension, symbols_handler):
+
+| Add a new Symbol's handler for the given file extension
+| example:
+|     cpp\_symbols\_handler = CppSymbolHandler(...)
+|     set\_symbols\_handler('cpp', cpp\_symbols\_handler)
+| Then all symbols in .cpp files will be handle by cpp\_symbols\_handler
+| 
+| Note: symbols\_handler SHOULD have a special interface see
+| ninja\_ide.core.plugin\_interfaces
+
+
+
+

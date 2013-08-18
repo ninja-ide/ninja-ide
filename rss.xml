@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"><channel><title>NINJA-IDE Documentation</title><link>http://nikola.ralsina.com.ar</link><description>This is a demo site for Nikola.</description><lastBuildDate>Sun, 18 Aug 2013 09:23:26 GMT</lastBuildDate><generator>nikola</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>NINJA-IDE</title><link>http://nikola.ralsina.com.ar/posts/documentor.html</link><description>&lt;div class="section" id="id1"&gt;
+&lt;h2&gt;&lt;a class="reference external" href="/documentor_modules.html"&gt;Modules&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Check out the Modules of the project&lt;/p&gt;
+&lt;/div&gt;
+&lt;hr class="docutils"&gt;
+&lt;div class="section" id="id2"&gt;
+&lt;h2&gt;&lt;a class="reference external" href="/documentor_classes.html"&gt;Classes&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Check out the Classes of the project&lt;/p&gt;
+&lt;/div&gt;
+&lt;hr class="docutils"&gt;
+&lt;div class="section" id="id3"&gt;
+&lt;h2&gt;&lt;a class="reference external" href="/documentor_functions.html"&gt;Functions&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Check out the functions of the project&lt;/p&gt;
+&lt;/div&gt;</description><guid>http://nikola.ralsina.com.ar/posts/documentor.html</guid><pubDate>Sun, 18 Aug 2013 00:00:00 GMT</pubDate></item></channel></rss>

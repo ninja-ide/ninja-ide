@@ -1,5 +1,0 @@
-
-SOURCES += ninja_ide/gui/translations.py 
-
-
-TRANSLATIONS = ninja.ts

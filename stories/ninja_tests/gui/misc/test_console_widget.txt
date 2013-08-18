@@ -1,0 +1,420 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: test_console_widget
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `test_console_widget.py </listings/ninja_tests/gui/misc/test_console_widget.py.html>`_ API
+======================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `ninja_ide </listings/ninja_tests/gui/misc/test_console_widget.py.html#22>`_
+
+- `ninja_tests.BaseTest </listings/ninja_tests/gui/misc/test_console_widget.py.html#31>`_
+
+- `PyQt4.QtGui.QApplication </listings/ninja_tests/gui/misc/test_console_widget.py.html#24>`_
+
+- `PyQt4.QtCore.QEvent </listings/ninja_tests/gui/misc/test_console_widget.py.html#28>`_
+
+- `PyQt4.QtGui.QKeyEvent </listings/ninja_tests/gui/misc/test_console_widget.py.html#26>`_
+
+- `PyQt4.QtGui.QTextCursor </listings/ninja_tests/gui/misc/test_console_widget.py.html#25>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_tests/gui/misc/test_console_widget.py.html#27>`_
+
+- `__future__.absolute_import </listings/ninja_tests/gui/misc/test_console_widget.py.html#18>`_
+
+- `ninja_ide.gui.misc.console_widget </listings/ninja_tests/gui/misc/test_console_widget.py.html#30>`_
+
+- `__future__.unicode_literals </listings/ninja_tests/gui/misc/test_console_widget.py.html#19>`_
+
+
+
+
+
+*Class:* `ConsoleWidgetTestCase(BaseTest) </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-46>`_
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ConsoleWidgetTestCase(BaseTest):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_app [at ln:50] </listings/ninja_tests/gui/misc/test_console_widget.py.html#50>`_
+
+- `console_widget [at ln:62] </listings/ninja_tests/gui/misc/test_console_widget.py.html#62>`_
+
+
+*Function:* `setUp() [at ln:56] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-56>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setUp():
+
+
+No description.
+
+
+----
+
+*Function:* `setUpClass(cls) [at ln:48] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-48>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setUpClass(cls):
+
+
+No description.
+
+
+**Decorators:**
+
+- *classmethod*
+
+----
+
+*Function:* `tearDownClass(cls) [at ln:52] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-52>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def tearDownClass(cls):
+
+
+No description.
+
+
+**Decorators:**
+
+- *classmethod*
+
+----
+
+*Function:* `test_backspace() [at ln:265] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-265>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_backspace():
+
+
+No description.
+
+
+----
+
+*Function:* `test_backspace_indent() [at ln:278] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-278>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_backspace_indent():
+
+
+No description.
+
+
+----
+
+*Function:* `test_backspace_remove_selection() [at ln:293] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-293>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_backspace_remove_selection():
+
+
+No description.
+
+
+----
+
+*Function:* `test_check_event_on_selection_all_selected() [at ln:170] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-170>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_check_event_on_selection_all_selected():
+
+
+No description.
+
+
+----
+
+*Function:* `test_check_event_on_selection_all_selected_no_text() [at ln:184] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-184>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_check_event_on_selection_all_selected_no_text():
+
+
+No description.
+
+
+----
+
+*Function:* `test_check_event_on_selection_last_block_selected() [at ln:198] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-198>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_check_event_on_selection_last_block_selected():
+
+
+No description.
+
+
+----
+
+*Function:* `test_clean_console() [at ln:139] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-139>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_clean_console():
+
+
+No description.
+
+
+----
+
+*Function:* `test_copy_console_content() [at ln:157] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-157>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_copy_console_content():
+
+
+No description.
+
+
+----
+
+*Function:* `test_copy_history() [at ln:148] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-148>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_copy_history():
+
+
+No description.
+
+
+----
+
+*Function:* `test_enter_pressed() [at ln:244] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-244>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_enter_pressed():
+
+
+No description.
+
+
+----
+
+*Function:* `test_home_pressed() [at ln:225] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-225>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_home_pressed():
+
+
+No description.
+
+
+----
+
+*Function:* `test_home_pressed_with_shift() [at ln:235] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-235>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_home_pressed_with_shift():
+
+
+No description.
+
+
+----
+
+*Function:* `test_left_pressed() [at ln:256] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-256>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_left_pressed():
+
+
+No description.
+
+
+----
+
+*Function:* `test_menu_cut() [at ln:64] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-64>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_menu_cut():
+
+
+No description.
+
+
+----
+
+*Function:* `test_menu_cut_with_line_selection() [at ln:89] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-89>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_menu_cut_with_line_selection():
+
+
+No description.
+
+
+----
+
+*Function:* `test_menu_cut_with_multiline_selection() [at ln:77] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-77>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_menu_cut_with_multiline_selection():
+
+
+No description.
+
+
+----
+
+*Function:* `test_menu_paste() [at ln:126] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-126>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_menu_paste():
+
+
+No description.
+
+
+----
+
+*Function:* `test_menu_paste_selection() [at ln:112] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-112>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_menu_paste_selection():
+
+
+No description.
+
+
+----
+
+*Function:* `test_navigate_history() [at ln:307] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-307>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_navigate_history():
+
+
+No description.
+
+
+----
+
+*Function:* `test_tab_pressed() [at ln:214] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-214>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_tab_pressed():
+
+
+No description.
+
+
+----
+
+*Class:* `FakeCompleterWidget(object) </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-34>`_
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class FakeCompleterWidget(object):
+
+
+No description.
+
+
+*Function:* `__init__(*arg) [at ln:36] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-36>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(*arg):
+
+
+No description.
+
+
+----
+
+*Function:* `isVisible() [at ln:42] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-42>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def isVisible():
+
+
+No description.
+
+
+----
+
+*Function:* `popup() [at ln:39] </listings/ninja_tests/gui/misc/test_console_widget.py.html#listingsninja_testsguimisctest_console_widgetpy-39>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def popup():
+
+
+No description.
+
+
+
+

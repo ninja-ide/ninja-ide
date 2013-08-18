@@ -1,0 +1,452 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: wizard_new_project
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `wizard_new_project.py </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html>`_ API
+=====================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `os </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#20>`_
+
+- `sys </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#21>`_
+
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#47>`_
+
+- `PyQt4.QtGui.QComboBox </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#27>`_
+
+- `PyQt4.QtGui.QCompleter </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#36>`_
+
+- `PyQt4.QtGui.QDirModel </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#37>`_
+
+- `PyQt4.QtGui.QFileDialog </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#34>`_
+
+- `PyQt4.QtGui.QGridLayout </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#30>`_
+
+- `PyQt4.QtGui.QHBoxLayout </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#32>`_
+
+- `PyQt4.QtGui.QLabel </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#25>`_
+
+- `PyQt4.QtGui.QLineEdit </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#28>`_
+
+- `PyQt4.QtGui.QListWidget </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#35>`_
+
+- `PyQt4.QtGui.QMessageBox </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#33>`_
+
+- `PyQt4.QtGui.QPixmap </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#38>`_
+
+- `PyQt4.QtGui.QPlainTextEdit </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#29>`_
+
+- `PyQt4.QtGui.QPushButton </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#26>`_
+
+- `PyQt4.QtGui.QVBoxLayout </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#31>`_
+
+- `PyQt4.QtGui.QWizard </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#23>`_
+
+- `PyQt4.QtGui.QWizardPage </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#24>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#39>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#40>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#18>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#45>`_
+
+- `ninja_ide.tools.json_manager </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#46>`_
+
+- `ninja_ide.core.plugin_interfaces </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#44>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#42>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#43>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `DEBUG [at ln:52] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#52>`_
+
+- `logger [at ln:50] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#50>`_
+
+
+----
+
+
+
+*Class:* `WizardNewProject(QWizard) </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-59>`_
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class WizardNewProject(QWizard):
+
+| Wizard to create a new project (of any kind), it implements the base
+| behavior. Also, it set two special projects type handler
+| (PythonProjectHandler, ImportFromSourcesProjectHandler)
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `__explorer [at ln:67] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#67>`_
+
+- `option [at ln:91] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#91>`_
+
+- `projectTypePage [at ln:79] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#79>`_
+
+
+*Function:* `__init__(parent) [at ln:65] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-65>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent):
+
+
+No description.
+
+
+----
+
+*Function:* `_load_project(path) [at ln:131] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-131>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _load_project(path):
+
+| Open Project based on path into Explorer
+
+
+----
+
+*Function:* `_load_project_with_extensions(path, extensions) [at ln:137] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-137>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _load_project_with_extensions(path, extensions):
+
+| Open Project based on path into Explorer with extensions
+
+
+----
+
+*Function:* `add_project_pages(option=str) [at ln:89] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-89>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_project_pages(option=str):
+
+
+No description.
+
+
+----
+
+*Function:* `done(result) [at ln:102] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-102>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def done(result):
+
+
+No description.
+
+
+----
+
+*Class:* `PythonProjectHandler(plugin_interfaces.IProjectTypeHandler) </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-149>`_
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class PythonProjectHandler(plugin_interfaces.IProjectTypeHandler):
+
+| Handler for Python projects
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `__explorer [at ln:154] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#154>`_
+
+
+*Function:* `__init__(explorer) [at ln:153] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-153>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(explorer):
+
+
+No description.
+
+
+----
+
+*Function:* `get_context_menus() [at ln:162] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-162>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_context_menus():
+
+| Get a special menu for new Python projects
+
+
+----
+
+*Function:* `get_pages() [at ln:156] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-156>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_pages():
+
+| Get extra pages for new Python projects
+
+
+----
+
+*Function:* `on_wizard_finish(wizard) [at ln:168] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-168>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def on_wizard_finish(wizard):
+
+| Create the ninja\_porject (.nja file), create the main \_\_init\_\_.py
+| and open the project
+
+
+----
+
+*Class:* `PageProjectType(QWizardPage) </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-247>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class PageProjectType(QWizardPage):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_wizard [at ln:253] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#253>`_
+
+- `listWidget [at ln:256] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#256>`_
+
+- `option [at ln:270] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#270>`_
+
+
+*Function:* `__init__(wizard) [at ln:249] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-249>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(wizard):
+
+
+No description.
+
+
+----
+
+*Function:* `load_pages() [at ln:273] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-273>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_pages():
+
+
+No description.
+
+
+----
+
+*Function:* `validatePage() [at ln:269] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-269>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def validatePage():
+
+
+No description.
+
+
+----
+
+*Class:* `ImportFromSourcesProjectHandler(plugin_interfaces.IProjectTypeHandler) </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-201>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ImportFromSourcesProjectHandler(plugin_interfaces.IProjectTypeHandler):
+
+| Handler for Import from existing sources project
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `__explorer [at ln:206] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#206>`_
+
+
+*Function:* `__init__(explorer) [at ln:205] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-205>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(explorer):
+
+
+No description.
+
+
+----
+
+*Function:* `get_context_menus() [at ln:214] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-214>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_context_menus():
+
+| Get a special menu for Import from sources projects
+
+
+----
+
+*Function:* `get_pages() [at ln:208] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-208>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_pages():
+
+| Get extra pages for Import from sources projects
+
+
+----
+
+*Function:* `on_wizard_finish(wizard) [at ln:220] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-220>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def on_wizard_finish(wizard):
+
+| Create the ninja\_porject (.nja file) and open the project
+
+
+----
+
+*Class:* `PageProjectProperties(QWizardPage) </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-282>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class PageProjectProperties(QWizardPage):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_dir_completer [at ln:316] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#316>`_
+
+- `btnExamine [at ln:310] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#310>`_
+
+- `cboLicense [at ln:325] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#325>`_
+
+- `lblDescription [at ln:294] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#294>`_
+
+- `lblLicense [at ln:295] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#295>`_
+
+- `lblName [at ln:292] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#292>`_
+
+- `lblPlace [at ln:293] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#293>`_
+
+- `lblVenvFolder [at ln:296] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#296>`_
+
+- `txtDescription [at ln:323] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#323>`_
+
+- `txtName [at ln:305] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#305>`_
+
+- `txtPlace [at ln:308] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#308>`_
+
+- `vbtnExamine [at ln:319] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#319>`_
+
+- `vtxtPlace [at ln:315] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#315>`_
+
+
+*Function:* `__init__() [at ln:284] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-284>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `isComplete() [at ln:353] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-353>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def isComplete():
+
+
+No description.
+
+
+----
+
+*Function:* `load_folder() [at ln:358] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-358>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_folder():
+
+
+No description.
+
+
+----
+
+*Function:* `load_folder_venv() [at ln:363] </listings/ninja_ide/gui/dialogs/wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-363>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_folder_venv():
+
+
+No description.
+
+
+
+

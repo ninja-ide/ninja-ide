@@ -1,0 +1,114 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: traceback_widget
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `traceback_widget.py </listings/ninja_ide/gui/dialogs/traceback_widget.py.html>`_ API
+=================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `PyQt4.QtGui.QDialog </listings/ninja_ide/gui/dialogs/traceback_widget.py.html#20>`_
+
+- `PyQt4.QtGui.QHBoxLayout </listings/ninja_ide/gui/dialogs/traceback_widget.py.html#23>`_
+
+- `PyQt4.QtGui.QLabel </listings/ninja_ide/gui/dialogs/traceback_widget.py.html#26>`_
+
+- `PyQt4.QtGui.QPlainTextEdit </listings/ninja_ide/gui/dialogs/traceback_widget.py.html#22>`_
+
+- `PyQt4.QtGui.QPushButton </listings/ninja_ide/gui/dialogs/traceback_widget.py.html#27>`_
+
+- `PyQt4.QtGui.QTabWidget </listings/ninja_ide/gui/dialogs/traceback_widget.py.html#21>`_
+
+- `PyQt4.QtGui.QVBoxLayout </listings/ninja_ide/gui/dialogs/traceback_widget.py.html#24>`_
+
+- `PyQt4.QtGui.QWidget </listings/ninja_ide/gui/dialogs/traceback_widget.py.html#25>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/dialogs/traceback_widget.py.html#28>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/dialogs/traceback_widget.py.html#18>`_
+
+
+
+
+
+*Class:* `TracebackWidget(QWidget) </listings/ninja_ide/gui/dialogs/traceback_widget.py.html#listingsninja_ideguidialogstraceback_widgetpy-57>`_
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class TracebackWidget(QWidget):
+
+| Represents a python traceback
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_editor [at ln:65] </listings/ninja_ide/gui/dialogs/traceback_widget.py.html#65>`_
+
+
+*Function:* `__init__(traceback_msg) [at ln:62] </listings/ninja_ide/gui/dialogs/traceback_widget.py.html#listingsninja_ideguidialogstraceback_widgetpy-62>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(traceback_msg):
+
+
+No description.
+
+
+----
+
+*Class:* `PluginErrorDialog(QDialog) </listings/ninja_ide/gui/dialogs/traceback_widget.py.html#listingsninja_ideguidialogstraceback_widgetpy-31>`_
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class PluginErrorDialog(QDialog):
+
+| Dialog with tabs each tab is a python traceback
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_tabs [at ln:42] </listings/ninja_ide/gui/dialogs/traceback_widget.py.html#42>`_
+
+
+*Function:* `__init__() [at ln:35] </listings/ninja_ide/gui/dialogs/traceback_widget.py.html#listingsninja_ideguidialogstraceback_widgetpy-35>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `add_traceback(plugin_name, traceback_msg) [at ln:52] </listings/ninja_ide/gui/dialogs/traceback_widget.py.html#listingsninja_ideguidialogstraceback_widgetpy-52>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_traceback(plugin_name, traceback_msg):
+
+
+No description.
+
+
+
+

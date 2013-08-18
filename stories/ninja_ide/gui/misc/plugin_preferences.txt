@@ -1,0 +1,100 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: plugin_preferences
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `plugin_preferences.py </listings/ninja_ide/gui/misc/plugin_preferences.py.html>`_ API
+==================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/gui/misc/plugin_preferences.py.html#26>`_
+
+- `PyQt4.QtGui.QTabWidget </listings/ninja_ide/gui/misc/plugin_preferences.py.html#21>`_
+
+- `PyQt4.QtGui.QVBoxLayout </listings/ninja_ide/gui/misc/plugin_preferences.py.html#22>`_
+
+- `PyQt4.QtGui.QWidget </listings/ninja_ide/gui/misc/plugin_preferences.py.html#20>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/misc/plugin_preferences.py.html#18>`_
+
+- `ninja_ide.core.plugin_manager </listings/ninja_ide/gui/misc/plugin_preferences.py.html#24>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `logger [at ln:28] </listings/ninja_ide/gui/misc/plugin_preferences.py.html#28>`_
+
+
+----
+
+
+
+*Class:* `PluginPreferences(QWidget) </listings/ninja_ide/gui/misc/plugin_preferences.py.html#listingsninja_ideguimiscplugin_preferencespy-31>`_
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class PluginPreferences(QWidget):
+
+| Plugins section widget in NINJA-IDE Preferences
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_tabs [at ln:39] </listings/ninja_ide/gui/misc/plugin_preferences.py.html#39>`_
+
+- `plugin_manager [at ln:37] </listings/ninja_ide/gui/misc/plugin_preferences.py.html#37>`_
+
+
+*Function:* `__init__() [at ln:35] </listings/ninja_ide/gui/misc/plugin_preferences.py.html#listingsninja_ideguimiscplugin_preferencespy-35>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `_load_widgets() [at ln:44] </listings/ninja_ide/gui/misc/plugin_preferences.py.html#listingsninja_ideguimiscplugin_preferencespy-44>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _load_widgets():
+
+
+No description.
+
+
+----
+
+*Function:* `save() [at ln:58] </listings/ninja_ide/gui/misc/plugin_preferences.py.html#listingsninja_ideguimiscplugin_preferencespy-58>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def save():
+
+
+No description.
+
+
+
+

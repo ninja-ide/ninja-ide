@@ -1,0 +1,625 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="code_completion.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>code_completion.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../../">/listings</a>
+        </li><li><a href="../../">/ninja_ide</a>
+        </li><li><a href="../">/tools</a>
+        </li><li><a href=".">/completion</a>
+        </li><li><a href="#">/code_completion.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-1">  1</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-2">  2</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-3">  3</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-4">  4</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-5">  5</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-6">  6</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-7">  7</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-8">  8</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-9">  9</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-10"> 10</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-11"> 11</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-12"> 12</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-13"> 13</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-14"> 14</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-15"> 15</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-16"> 16</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-17"> 17</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-18"> 18</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-19"> 19</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-20"> 20</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-21"> 21</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-22"> 22</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-23"> 23</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-24"> 24</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-25"> 25</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-26"> 26</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-27"> 27</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-28"> 28</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-29"> 29</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-30"> 30</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-31"> 31</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-32"> 32</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-33"> 33</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-34"> 34</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-35"> 35</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-36"> 36</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-37"> 37</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-38"> 38</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-39"> 39</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-40"> 40</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-41"> 41</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-42"> 42</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-43"> 43</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-44"> 44</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-45"> 45</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-46"> 46</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-47"> 47</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-48"> 48</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-49"> 49</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-50"> 50</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-51"> 51</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-52"> 52</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-53"> 53</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-54"> 54</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-55"> 55</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-56"> 56</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-57"> 57</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-58"> 58</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-59"> 59</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-60"> 60</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-61"> 61</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-62"> 62</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-63"> 63</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-64"> 64</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-65"> 65</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-66"> 66</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-67"> 67</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-68"> 68</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-69"> 69</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-70"> 70</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-71"> 71</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-72"> 72</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-73"> 73</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-74"> 74</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-75"> 75</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-76"> 76</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-77"> 77</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-78"> 78</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-79"> 79</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-80"> 80</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-81"> 81</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-82"> 82</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-83"> 83</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-84"> 84</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-85"> 85</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-86"> 86</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-87"> 87</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-88"> 88</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-89"> 89</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-90"> 90</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-91"> 91</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-92"> 92</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-93"> 93</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-94"> 94</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-95"> 95</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-96"> 96</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-97"> 97</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-98"> 98</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-99"> 99</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-100">100</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-101">101</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-102">102</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-103">103</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-104">104</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-105">105</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-106">106</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-107">107</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-108">108</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-109">109</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-110">110</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-111">111</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-112">112</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-113">113</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-114">114</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-115">115</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-116">116</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-117">117</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-118">118</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-119">119</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-120">120</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-121">121</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-122">122</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-123">123</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-124">124</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-125">125</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-126">126</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-127">127</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-128">128</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-129">129</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-130">130</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-131">131</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-132">132</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-133">133</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-134">134</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-135">135</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-136">136</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-137">137</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-138">138</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-139">139</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-140">140</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-141">141</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-142">142</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-143">143</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-144">144</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-145">145</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-146">146</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-147">147</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-148">148</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-149">149</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-150">150</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-151">151</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-152">152</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-153">153</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-154">154</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-155">155</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-156">156</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-157">157</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-158">158</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-159">159</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-160">160</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-161">161</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-162">162</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-163">163</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-164">164</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-165">165</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-166">166</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-167">167</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-168">168</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-169">169</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-170">170</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-171">171</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-172">172</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-173">173</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-174">174</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-175">175</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-176">176</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-177">177</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-178">178</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-179">179</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-180">180</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-181">181</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-182">182</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-183">183</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-184">184</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-185">185</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-186">186</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-187">187</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-188">188</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-189">189</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-190">190</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-191">191</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-192">192</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-193">193</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-194">194</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-195">195</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-196">196</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-197">197</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-198">198</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-199">199</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-200">200</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-201">201</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-202">202</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-203">203</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-204">204</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-205">205</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-206">206</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-207">207</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-208">208</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-209">209</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-210">210</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-211">211</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-212">212</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-213">213</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-214">214</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-215">215</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-216">216</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-217">217</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-218">218</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-219">219</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-220">220</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-221">221</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-222">222</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-223">223</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-224">224</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-225">225</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-226">226</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-227">227</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-228">228</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-229">229</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-230">230</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-231">231</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-232">232</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-233">233</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-234">234</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-235">235</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-236">236</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-237">237</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-238">238</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-239">239</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-240">240</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-241">241</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-242">242</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-243">243</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-244">244</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-245">245</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-246">246</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-247">247</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-248">248</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-249">249</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-250">250</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-251">251</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-252">252</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-253">253</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-254">254</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-255">255</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-256">256</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-257">257</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-258">258</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-259">259</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-260">260</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-261">261</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-262">262</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-263">263</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-264">264</a>
+<a href="code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-265">265</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_idetoolscompletioncode_completionpy-1"></a><span class="c"># -*- coding: utf-8 -*-</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-2"></a><span class="c">#</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-3"></a><span class="c"># This file is part of NINJA-IDE (http://ninja-ide.org).</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-4"></a><span class="c">#</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-5"></a><span class="c"># NINJA-IDE is free software; you can redistribute it and/or modify</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-6"></a><span class="c"># it under the terms of the GNU General Public License as published by</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-7"></a><span class="c"># the Free Software Foundation; either version 3 of the License, or</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-8"></a><span class="c"># any later version.</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-9"></a><span class="c">#</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-10"></a><span class="c"># NINJA-IDE is distributed in the hope that it will be useful,</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-11"></a><span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-12"></a><span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-13"></a><span class="c"># GNU General Public License for more details.</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-14"></a><span class="c">#</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-15"></a><span class="c"># You should have received a copy of the GNU General Public License</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-16"></a><span class="c"># along with NINJA-IDE; If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-17"></a>
+<a name="listingsninja_idetoolscompletioncode_completionpy-18"></a><span class="c"># DISCLAIMER ABOUT READING THIS CODE:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-19"></a><span class="c"># We are not responsible for any kind of mental or emotional</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-20"></a><span class="c"># damage that may arise from reading this code.</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-21"></a>
+<a name="listingsninja_idetoolscompletioncode_completionpy-22"></a><span class="kn">import</span> <span class="nn">re</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-23"></a><span class="kn">import</span> <span class="nn">token</span> <span class="kn">as</span> <span class="nn">tkn</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-24"></a><span class="kn">from</span> <span class="nn">tokenize</span> <span class="kn">import</span> <span class="n">generate_tokens</span><span class="p">,</span> <span class="n">TokenError</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-25"></a><span class="k">try</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-26"></a>    <span class="kn">from</span> <span class="nn">StringIO</span> <span class="kn">import</span> <span class="n">StringIO</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-27"></a><span class="k">except</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-28"></a>    <span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>  <span class="c"># lint:ok</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-29"></a>
+<a name="listingsninja_idetoolscompletioncode_completionpy-30"></a><span class="kn">from</span> <span class="nn">ninja_ide.core</span> <span class="kn">import</span> <span class="n">settings</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-31"></a><span class="kn">from</span> <span class="nn">ninja_ide.gui.editor</span> <span class="kn">import</span> <span class="n">helpers</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-32"></a><span class="kn">from</span> <span class="nn">ninja_ide.tools.completion</span> <span class="kn">import</span> <span class="n">model</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-33"></a><span class="kn">from</span> <span class="nn">ninja_ide.tools.completion</span> <span class="kn">import</span> <span class="n">analyzer</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-34"></a><span class="kn">from</span> <span class="nn">ninja_ide.tools.completion</span> <span class="kn">import</span> <span class="n">completer</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-35"></a><span class="kn">from</span> <span class="nn">ninja_ide.tools.completion</span> <span class="kn">import</span> <span class="n">completion_daemon</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-36"></a>
+<a name="listingsninja_idetoolscompletioncode_completionpy-37"></a>
+<a name="listingsninja_idetoolscompletioncode_completionpy-38"></a><span class="c">#Because my python doesn't have it, and is not in the web docs either</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-39"></a><span class="c">#but trust me, it exists!</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-40"></a><span class="n">_TOKEN_NL</span> <span class="o">=</span> <span class="mi">54</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-41"></a>
+<a name="listingsninja_idetoolscompletioncode_completionpy-42"></a>
+<a name="listingsninja_idetoolscompletioncode_completionpy-43"></a><span class="k">class</span> <span class="nc">CodeCompletion</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-44"></a>
+<a name="listingsninja_idetoolscompletioncode_completionpy-45"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-46"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">analyzer</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">Analyzer</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-47"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cdaemon</span> <span class="o">=</span> <span class="n">completion_daemon</span><span class="o">.</span><span class="n">CompletionDaemon</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-48"></a>        <span class="c"># Set modules reference to model</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-49"></a>        <span class="n">model</span><span class="o">.</span><span class="n">MODULES</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cdaemon</span><span class="o">.</span><span class="n">modules</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-50"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">module_id</span> <span class="o">=</span> <span class="bp">None</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-51"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">patIndent</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">'^\s+'</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-52"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">patClass</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">"class (\w+?)\("</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-53"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">patFunction</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">"(\w+?)\("</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-54"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">patWords</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">'\W+'</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-55"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_valid_op</span> <span class="o">=</span> <span class="p">(</span><span class="s">')'</span><span class="p">,</span> <span class="s">'}'</span><span class="p">,</span> <span class="s">']'</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-56"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_op</span> <span class="o">=</span> <span class="p">(</span><span class="s">'('</span><span class="p">,</span> <span class="s">'{'</span><span class="p">,</span> <span class="s">'['</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-57"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_words</span> <span class="o">=</span> <span class="p">(</span><span class="s">'if'</span><span class="p">,</span> <span class="s">'elif'</span><span class="p">,</span> <span class="s">'for'</span><span class="p">,</span> <span class="s">'while'</span><span class="p">,</span> <span class="s">'in'</span><span class="p">,</span> <span class="s">'return'</span><span class="p">,</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-58"></a>            <span class="s">'and'</span><span class="p">,</span> <span class="s">'or'</span><span class="p">,</span> <span class="s">'del'</span><span class="p">,</span> <span class="s">'except'</span><span class="p">,</span> <span class="s">'from'</span><span class="p">,</span> <span class="s">'import'</span><span class="p">,</span> <span class="s">'is'</span><span class="p">,</span> <span class="s">'print'</span><span class="p">,</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-59"></a>            <span class="s">'super'</span><span class="p">,</span> <span class="s">'yield'</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-60"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">keywords</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">SYNTAX</span><span class="p">[</span><span class="s">'python'</span><span class="p">][</span><span class="s">'keywords'</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-61"></a>
+<a name="listingsninja_idetoolscompletioncode_completionpy-62"></a>    <span class="k">def</span> <span class="nf">unload_module</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-63"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cdaemon</span><span class="o">.</span><span class="n">unload_module</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module_id</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-64"></a>
+<a name="listingsninja_idetoolscompletioncode_completionpy-65"></a>    <span class="k">def</span> <span class="nf">analyze_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">INDENT</span><span class="p">,</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-66"></a>        <span class="n">useTabs</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">USE_TABS</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-67"></a>        <span class="k">if</span> <span class="n">source</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-68"></a>            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-69"></a>                <span class="n">source</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-70"></a>        <span class="n">split_last_lines</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-71"></a>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">split_last_lines</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> \
+<a name="listingsninja_idetoolscompletioncode_completionpy-72"></a>           <span class="n">split_last_lines</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">':'</span><span class="p">)</span> <span class="ow">and</span> <span class="n">split_last_lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">''</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-73"></a>            <span class="n">indent</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_indentation</span><span class="p">(</span><span class="n">split_last_lines</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">indent</span><span class="p">,</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-74"></a>                <span class="n">useTabs</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-75"></a>            <span class="n">source</span> <span class="o">+=</span> <span class="s">'</span><span class="si">%s</span><span class="s">pass;'</span> <span class="o">%</span> <span class="n">indent</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-76"></a>
+<a name="listingsninja_idetoolscompletioncode_completionpy-77"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">module_id</span> <span class="o">=</span> <span class="n">path</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-78"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">cdaemon</span><span class="o">.</span><span class="n">daemon</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-79"></a>            <span class="n">completion_daemon</span><span class="o">.</span><span class="n">shutdown_daemon</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-80"></a>            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">cdaemon</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-81"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">cdaemon</span> <span class="o">=</span> <span class="n">completion_daemon</span><span class="o">.</span><span class="n">CompletionDaemon</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-82"></a>            <span class="c"># Set modules reference to model</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-83"></a>            <span class="n">model</span><span class="o">.</span><span class="n">MODULES</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cdaemon</span><span class="o">.</span><span class="n">modules</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-84"></a>        <span class="n">module</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cdaemon</span><span class="o">.</span><span class="n">get_module</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module_id</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-85"></a>        <span class="n">module</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyzer</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-86"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cdaemon</span><span class="o">.</span><span class="n">inspect_module</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module_id</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-87"></a>
+<a name="listingsninja_idetoolscompletioncode_completionpy-88"></a>    <span class="k">def</span> <span class="nf">_tokenize_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-89"></a>        <span class="c"># TODO Optimization, only iterate until the previous line of a class??</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-90"></a>        <span class="n">token_code</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-91"></a>        <span class="k">try</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-92"></a>            <span class="k">for</span> <span class="n">tkn_type</span><span class="p">,</span> <span class="n">tkn_str</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> \
+<a name="listingsninja_idetoolscompletioncode_completionpy-93"></a>                <span class="ow">in</span> <span class="n">generate_tokens</span><span class="p">(</span><span class="n">StringIO</span><span class="p">(</span><span class="n">code</span><span class="p">)</span><span class="o">.</span><span class="n">readline</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-94"></a>                <span class="n">token_code</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">tkn_type</span><span class="p">,</span> <span class="n">tkn_str</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-95"></a>        <span class="k">except</span> <span class="n">TokenError</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-96"></a>            <span class="c">#This is an expected situation, where i don't want to do anything</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-97"></a>            <span class="c">#possible an unbalanced brace like: func(os.p| (| = cursor-end)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-98"></a>            <span class="k">pass</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-99"></a>        <span class="k">except</span> <span class="ne">IndentationError</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-100"></a>            <span class="k">return</span> <span class="p">[]</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-101"></a>        <span class="k">while</span> <span class="n">token_code</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="n">tkn</span><span class="o">.</span><span class="n">ENDMARKER</span><span class="p">,</span> <span class="n">tkn</span><span class="o">.</span><span class="n">DEDENT</span><span class="p">,</span> <span class="n">tkn</span><span class="o">.</span><span class="n">NEWLINE</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-102"></a>            <span class="n">token_code</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-103"></a>        <span class="k">return</span> <span class="n">token_code</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-104"></a>
+<a name="listingsninja_idetoolscompletioncode_completionpy-105"></a>    <span class="k">def</span> <span class="nf">_search_for_scope</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token_code</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-106"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">token_code</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">token_code</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">' '</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-107"></a>            <span class="k">return</span> <span class="bp">None</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-108"></a>        <span class="n">scopes</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-109"></a>        <span class="n">indent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">patIndent</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">token_code</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-110"></a>        <span class="k">if</span> <span class="n">indent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-111"></a>            <span class="n">indent</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">indent</span><span class="o">.</span><span class="n">group</span><span class="p">())</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-112"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-113"></a>            <span class="n">indent</span> <span class="o">=</span> <span class="mi">0</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-114"></a>        <span class="n">previous_line</span> <span class="o">=</span> <span class="p">(</span><span class="s">''</span><span class="p">,</span> <span class="s">''</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-115"></a>        <span class="n">keep_exploring</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-116"></a>        <span class="n">iterate</span> <span class="o">=</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">token_code</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-117"></a>        <span class="n">line</span> <span class="o">=</span> <span class="n">iterate</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-118"></a>        <span class="k">while</span> <span class="n">keep_exploring</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-119"></a>            <span class="n">is_indented</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">' '</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-120"></a>            <span class="n">is_definition</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="s">'def'</span><span class="p">,</span> <span class="s">'class'</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-121"></a>            <span class="c">#Skip lines that are not def or class</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-122"></a>            <span class="k">if</span> <span class="n">is_indented</span> <span class="ow">and</span> <span class="n">is_definition</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-123"></a>                <span class="n">new_indent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">patIndent</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-124"></a>                <span class="k">if</span> <span class="n">new_indent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-125"></a>                    <span class="n">new_indent</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_indent</span><span class="o">.</span><span class="n">group</span><span class="p">())</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-126"></a>                <span class="c">#We only care about the function where we are</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-127"></a>                <span class="k">if</span> <span class="n">new_indent</span> <span class="o">&lt;</span> <span class="n">indent</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-128"></a>                    <span class="n">indent</span> <span class="o">=</span> <span class="n">new_indent</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-129"></a>                    <span class="c">#We need the "previous_line" because we are exploring</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-130"></a>                    <span class="c">#the tokens backwards, and when we reach to def or class</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-131"></a>                    <span class="c">#the actual name was in the line before.</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-132"></a>                    <span class="n">scopes</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">previous_line</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-133"></a>            <span class="k">elif</span> <span class="ow">not</span> <span class="n">is_indented</span> <span class="ow">and</span> <span class="n">is_definition</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-134"></a>                <span class="n">scopes</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">previous_line</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-135"></a>                <span class="n">keep_exploring</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-136"></a>            <span class="n">previous_line</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-137"></a>            <span class="k">try</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-138"></a>                <span class="n">line</span> <span class="o">=</span> <span class="n">iterate</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-139"></a>            <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-140"></a>                <span class="n">keep_exploring</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-141"></a>        <span class="k">return</span> <span class="n">scopes</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-142"></a>
+<a name="listingsninja_idetoolscompletioncode_completionpy-143"></a>    <span class="k">def</span> <span class="nf">_search_for_completion_segment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token_code</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-144"></a>        <span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-145"></a>        <span class="n">keep_iter</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-146"></a>        <span class="n">iterate</span> <span class="o">=</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">token_code</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-147"></a>        <span class="k">while</span> <span class="n">keep_iter</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-148"></a>            <span class="k">try</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-149"></a>                <span class="n">value</span> <span class="o">=</span> <span class="n">iterate</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-150"></a>                <span class="k">if</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="n">tkn</span><span class="o">.</span><span class="n">NEWLINE</span><span class="p">,</span> <span class="n">tkn</span><span class="o">.</span><span class="n">INDENT</span><span class="p">,</span> <span class="n">tkn</span><span class="o">.</span><span class="n">DEDENT</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-151"></a>                    <span class="n">keep_iter</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-152"></a>                <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-153"></a>            <span class="k">except</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-154"></a>                <span class="n">keep_iter</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-155"></a>        <span class="n">segment</span> <span class="o">=</span> <span class="s">''</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-156"></a>        <span class="n">brace_stack</span> <span class="o">=</span> <span class="mi">0</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-157"></a>        <span class="n">first_element</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-158"></a>        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-159"></a>            <span class="n">token_str</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-160"></a>            <span class="k">if</span> <span class="n">token_str</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_words</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">first_element</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-161"></a>                <span class="k">break</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-162"></a>            <span class="k">elif</span> <span class="n">token_str</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_valid_op</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-163"></a>                <span class="k">if</span> <span class="n">brace_stack</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-164"></a>                    <span class="n">segment</span> <span class="o">=</span> <span class="n">token_str</span> <span class="o">+</span> <span class="n">segment</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-165"></a>                <span class="n">brace_stack</span> <span class="o">+=</span> <span class="mi">1</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-166"></a>            <span class="k">elif</span> <span class="n">token_str</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_op</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-167"></a>                <span class="n">brace_stack</span> <span class="o">-=</span> <span class="mi">1</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-168"></a>                <span class="k">if</span> <span class="n">brace_stack</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-169"></a>                    <span class="n">segment</span> <span class="o">=</span> <span class="n">token_str</span> <span class="o">+</span> <span class="n">segment</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-170"></a>                    <span class="k">continue</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-171"></a>            <span class="n">first_element</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-172"></a>            <span class="k">if</span> <span class="n">brace_stack</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-173"></a>                <span class="k">continue</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-174"></a>
+<a name="listingsninja_idetoolscompletioncode_completionpy-175"></a>            <span class="n">op</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-176"></a>            <span class="k">if</span> <span class="p">(</span><span class="n">op</span> <span class="o">==</span> <span class="n">tkn</span><span class="o">.</span><span class="n">NAME</span><span class="p">)</span> <span class="ow">or</span> <span class="n">token_str</span> <span class="o">==</span> <span class="s">'.'</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-177"></a>                <span class="n">segment</span> <span class="o">=</span> <span class="n">token_str</span> <span class="o">+</span> <span class="n">segment</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-178"></a>            <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="n">tkn</span><span class="o">.</span><span class="n">OP</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-179"></a>                <span class="k">break</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-180"></a>        <span class="k">return</span> <span class="n">segment</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-181"></a>
+<a name="listingsninja_idetoolscompletioncode_completionpy-182"></a>    <span class="k">def</span> <span class="nf">get_prefix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-183"></a>        <span class="sd">"""Return the prefix of the word under the cursor and a boolean</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-184"></a><span class="sd">        saying if it is a valid completion area."""</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-185"></a>        <span class="n">token_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tokenize_text</span><span class="p">(</span><span class="n">code</span><span class="p">[:</span><span class="n">offset</span><span class="p">])</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-186"></a>        <span class="n">var_segment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_search_for_completion_segment</span><span class="p">(</span><span class="n">token_code</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-187"></a>        <span class="n">words_final</span> <span class="o">=</span> <span class="n">var_segment</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s">'.'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-188"></a>        <span class="n">final_word</span> <span class="o">=</span> <span class="s">''</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-189"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">var_segment</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">'.'</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">words_final</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-190"></a>            <span class="n">final_word</span> <span class="o">=</span> <span class="n">words_final</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-191"></a>        <span class="k">elif</span> <span class="p">(</span><span class="n">var_segment</span> <span class="o">!=</span> <span class="s">""</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">words_final</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-192"></a>            <span class="n">final_word</span> <span class="o">=</span> <span class="n">words_final</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-193"></a>        <span class="k">return</span> <span class="n">final_word</span><span class="p">,</span> <span class="p">(</span><span class="n">var_segment</span> <span class="o">!=</span> <span class="s">""</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-194"></a>
+<a name="listingsninja_idetoolscompletioncode_completionpy-195"></a>    <span class="k">def</span> <span class="nf">get_completion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-196"></a>        <span class="n">token_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tokenize_text</span><span class="p">(</span><span class="n">code</span><span class="p">[:</span><span class="n">offset</span><span class="p">])</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-197"></a>        <span class="n">scopes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_search_for_scope</span><span class="p">(</span><span class="n">token_code</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-198"></a>        <span class="c"># Find section to attempt for code completion (var_segment)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-199"></a>        <span class="n">var_segment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_search_for_completion_segment</span><span class="p">(</span><span class="n">token_code</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-200"></a>        <span class="n">words</span> <span class="o">=</span> <span class="n">var_segment</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'.'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-201"></a>        <span class="n">words_final</span> <span class="o">=</span> <span class="n">var_segment</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s">'.'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-202"></a>        <span class="c"># Main_attribute is the stem off of which to search for completions</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-203"></a>        <span class="c"># i.e. in exec(ninja_ide.gui. ..., "ninja_ide.gui.main_panel"</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-204"></a>        <span class="c"># would be main_attribute.</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-205"></a>        <span class="n">main_attribute</span> <span class="o">=</span> <span class="n">words</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'('</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-206"></a>        <span class="n">attr_name</span> <span class="o">=</span> <span class="n">main_attribute</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-207"></a>        <span class="n">word</span> <span class="o">=</span> <span class="s">''</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-208"></a>        <span class="n">final_word</span> <span class="o">=</span> <span class="s">''</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-209"></a>        <span class="k">if</span> <span class="n">var_segment</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s">"."</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-210"></a>            <span class="n">word</span> <span class="o">=</span> <span class="n">words</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-211"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">var_segment</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">'.'</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">words_final</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-212"></a>            <span class="n">final_word</span> <span class="o">=</span> <span class="n">words_final</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-213"></a>            <span class="n">word</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s">'.'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-214"></a>            <span class="k">if</span> <span class="n">final_word</span> <span class="o">==</span> <span class="n">word</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-215"></a>                <span class="n">word</span> <span class="o">=</span> <span class="s">''</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-216"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cdaemon</span><span class="o">.</span><span class="n">lock</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-217"></a>        <span class="n">module</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cdaemon</span><span class="o">.</span><span class="n">get_module</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module_id</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-218"></a>        <span class="k">if</span> <span class="n">module</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-219"></a>            <span class="n">imports</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">get_imports</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-220"></a>            <span class="n">result</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">scopes</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-221"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-222"></a>            <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s">'found'</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">'type'</span><span class="p">:</span> <span class="bp">None</span><span class="p">}</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-223"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cdaemon</span><span class="o">.</span><span class="n">lock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-224"></a>        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s">'found'</span><span class="p">]</span> <span class="ow">and</span> <span class="n">result</span><span class="p">[</span><span class="s">'type'</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-225"></a>            <span class="n">prefix</span> <span class="o">=</span> <span class="n">attr_name</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-226"></a>            <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s">'type'</span><span class="p">]</span> <span class="o">!=</span> <span class="n">attr_name</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-227"></a>                <span class="n">prefix</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s">'type'</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-228"></a>                <span class="n">word</span> <span class="o">=</span> <span class="n">final_word</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-229"></a>            <span class="n">to_complete</span> <span class="o">=</span> <span class="s">"</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">word</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-230"></a>            <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'main_attr_replace'</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-231"></a>                <span class="n">to_complete</span> <span class="o">=</span> <span class="n">var_segment</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="s">'type'</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-232"></a>            <span class="n">imports</span> <span class="o">=</span> <span class="p">[</span><span class="n">imp</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'.'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">imp</span> <span class="ow">in</span> <span class="n">imports</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-233"></a>            <span class="n">data</span> <span class="o">=</span> <span class="n">completer</span><span class="o">.</span><span class="n">get_all_completions</span><span class="p">(</span><span class="n">to_complete</span><span class="p">,</span> <span class="n">imports</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-234"></a>            <span class="c"># Move system attributes beginning in '__' (built_in_attribs)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-235"></a>            <span class="c"># to the end of the list.</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-236"></a>            <span class="n">built_in_attribs</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'attributes'</span><span class="p">,</span> <span class="p">[])</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-237"></a>                <span class="k">if</span> <span class="n">d</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">'__'</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-238"></a>            <span class="k">if</span> <span class="n">built_in_attribs</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-239"></a>                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">built_in_attribs</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-240"></a>                    <span class="n">data</span><span class="p">[</span><span class="s">'attributes'</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-241"></a>                <span class="n">data</span><span class="p">[</span><span class="s">'attributes'</span><span class="p">]</span> <span class="o">+=</span> <span class="n">built_in_attribs</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-242"></a>            <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-243"></a>                <span class="k">return</span> <span class="n">data</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-244"></a>            <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-245"></a>                <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s">'found'</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">'type'</span><span class="p">:</span> <span class="bp">None</span><span class="p">}</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-246"></a>
+<a name="listingsninja_idetoolscompletioncode_completionpy-247"></a>        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s">'type'</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s">'type'</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-248"></a>            <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">'attributes'</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s">'type'</span><span class="p">][</span><span class="s">'attributes'</span><span class="p">],</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-249"></a>                <span class="s">'functions'</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s">'type'</span><span class="p">][</span><span class="s">'functions'</span><span class="p">]}</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-250"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-251"></a>            <span class="n">clazzes</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">patClass</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">code</span><span class="p">)))</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-252"></a>            <span class="n">funcs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">patFunction</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">code</span><span class="p">)))</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-253"></a>            <span class="n">attrs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">patWords</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">code</span><span class="p">)))</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-254"></a>            <span class="k">if</span> <span class="n">final_word</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-255"></a>                <span class="n">attrs</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">final_word</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-256"></a>            <span class="k">if</span> <span class="n">attr_name</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-257"></a>                <span class="n">attrs</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-258"></a>            <span class="n">filter_attrs</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">funcs</span><span class="p">)</span> <span class="ow">and</span> \
+<a name="listingsninja_idetoolscompletioncode_completionpy-259"></a>                <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keywords</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-260"></a>            <span class="n">attrs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="n">filter_attrs</span><span class="p">,</span> <span class="n">attrs</span><span class="p">))</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-261"></a>            <span class="n">funcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">funcs</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">clazzes</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-262"></a>            <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">'attributes'</span><span class="p">:</span> <span class="n">attrs</span><span class="p">,</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-263"></a>                <span class="s">'functions'</span><span class="p">:</span> <span class="n">funcs</span><span class="p">,</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-264"></a>                <span class="s">'classes'</span><span class="p">:</span> <span class="n">clazzes</span><span class="p">}</span>
+<a name="listingsninja_idetoolscompletioncode_completionpy-265"></a>        <span class="k">return</span> <span class="n">data</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

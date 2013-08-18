@@ -1,0 +1,845 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="NINJA-IDE">
+    <title>NINJA-IDE | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+
+
+
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+    <li>
+    <a href="tree_projects_widget.txt" id="sourcelink">Source</a>
+    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+    <h1>NINJA-IDE</h1>
+    <div class="contents alert alert-info pull-top topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="tree_projects_widget.html#module-tree-projects-widget-py-api" id="id4"><em>Module:</em> tree_projects_widget.py API</a><ul>
+<li><a class="reference internal" href="tree_projects_widget.html#imports" id="id5"><em>Imports:</em></a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#global-attributes" id="id6"><em>Global Attributes:</em></a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#class-projectitem-qtreewidgetitem" id="id7"><em>Class:</em> ProjectItem(QTreeWidgetItem)</a><ul>
+<li><a class="reference internal" href="tree_projects_widget.html#attributes" id="id8"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-init-parent-name-path-isfolder-false-at-ln-761" id="id9"><em>Function:</em> __init__(parent, name, path, isFolder=False) [at ln:761]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-lt-otheritem-at-ln-784" id="id10"><em>Function:</em> __lt__(otherItem) [at ln:784]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-get-full-path-at-ln-775" id="id11"><em>Function:</em> get_full_path() [at ln:775]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-isproject-at-ln-767" id="id12"><em>Function:</em> isProject() [at ln:767]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-lang-at-ln-772" id="id13"><em>Function:</em> lang() [at ln:772]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-set-item-icon-icon-at-ln-781" id="id14"><em>Function:</em> set_item_icon(icon) [at ln:781]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="tree_projects_widget.html#class-projecttree-qtreewidgetitem" id="id15"><em>Class:</em> ProjectTree(QTreeWidgetItem)</a><ul>
+<li><a class="reference internal" href="tree_projects_widget.html#id1" id="id16"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-init-parent-project-at-ln-795" id="id17"><em>Function:</em> __init__(parent, project) [at ln:795]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-get-full-path-at-ln-820" id="id18"><em>Function:</em> get_full_path() [at ln:820]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-isproject-at-ln-810" id="id19"><em>Function:</em> isProject() [at ln:810]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-lang-at-ln-815" id="id20"><em>Function:</em> lang() [at ln:815]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-update-paths-at-ln-806" id="id21"><em>Function:</em> update_paths() [at ln:806]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="tree_projects_widget.html#class-foldingcontextmenu-qmenu" id="id22"><em>Class:</em> FoldingContextMenu(QMenu)</a><ul>
+<li><a class="reference internal" href="tree_projects_widget.html#id2" id="id23"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-init-tree-at-ln-832" id="id24"><em>Function:</em> __init__(tree) [at ln:832]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-fold-all-projects-at-ln-871" id="id25"><em>Function:</em> _fold_all_projects() [at ln:871]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-fold-unfold-project-expand-at-ln-858" id="id26"><em>Function:</em> _fold_unfold_project(expand) [at ln:858]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-recursive-fold-unfold-item-expand-at-ln-851" id="id27"><em>Function:</em> _recursive_fold_unfold(item, expand) [at ln:851]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-unfold-all-projects-at-ln-877" id="id28"><em>Function:</em> _unfold_all_projects() [at ln:877]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="tree_projects_widget.html#class-treeprojectswidget-qtreewidget" id="id29"><em>Class:</em> TreeProjectsWidget(QTreeWidget)</a><ul>
+<li><a class="reference internal" href="tree_projects_widget.html#id3" id="id30"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-init-state-index-function-at-ln-88" id="id31"><em>Function:</em> __init__(state_index=function()) [at ln:88]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-add-context-menu-for-files-menu-item-at-ln-270" id="id32"><em>Function:</em> _add_context_menu_for_files(menu, item) [at ln:270]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-add-context-menu-for-folders-menu-item-at-ln-246" id="id33"><em>Function:</em> _add_context_menu_for_folders(menu, item) [at ln:246]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-add-context-menu-for-root-menu-item-at-ln-205" id="id34"><em>Function:</em> _add_context_menu_for_root(menu, item) [at ln:205]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-add-new-file-at-ln-430" id="id35"><em>Function:</em> _add_new_file() [at ln:430]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-add-new-folder-at-ln-475" id="id36"><em>Function:</em> _add_new_folder() [at ln:475]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-add-project-to-console-at-ln-301" id="id37"><em>Function:</em> _add_project_to_console() [at ln:301]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-callback-refresh-project-value-at-ln-390" id="id38"><em>Function:</em> _callback_refresh_project(value) [at ln:390]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-clean-threads-at-ln-379" id="id39"><em>Function:</em> _clean_threads() [at ln:379]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-close-open-projects-at-ln-735" id="id40"><em>Function:</em> _close_open_projects() [at ln:735]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-close-project-at-ln-400" id="id41"><em>Function:</em> _close_project() [at ln:400]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-copy-file-at-ln-552" id="id42"><em>Function:</em> _copy_file() [at ln:552]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-create-init-at-ln-417" id="id43"><em>Function:</em> _create_init() [at ln:417]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-delete-file-at-ln-494" id="id44"><em>Function:</em> _delete_file() [at ln:494]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-delete-folder-at-ln-509" id="id45"><em>Function:</em> _delete_folder() [at ln:509]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-edit-ui-file-at-ln-613" id="id46"><em>Function:</em> _edit_ui_file() [at ln:613]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-get-file-icon-filename-at-ln-690" id="id47"><em>Function:</em> _get_file_icon(fileName) [at ln:690]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-get-project-root-item-none-at-ln-320" id="id48"><em>Function:</em> _get_project_root(item=None) [at ln:320]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-item-collapsed-tree-item-at-ln-128" id="id49"><em>Function:</em> _item_collapsed(tree_item) [at ln:128]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-item-expanded-tree-item-at-ln-136" id="id50"><em>Function:</em> _item_expanded(tree_item) [at ln:136]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-load-folder-folderstructure-folder-parentitem-at-ln-664" id="id51"><em>Function:</em> _load_folder(folderStructure, folder, parentItem) [at ln:664]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-menu-context-tree-point-at-ln-168" id="id52"><em>Function:</em> _menu_context_tree(point) [at ln:168]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-move-file-at-ln-581" id="id53"><em>Function:</em> _move_file() [at ln:581]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-open-file-item-column-at-ln-313" id="id54"><em>Function:</em> _open_file(item, column) [at ln:313]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-refresh-project-item-none-at-ln-361" id="id55"><em>Function:</em> _refresh_project(item=None) [at ln:361]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-refresh-project-by-path-event-folder-at-ln-345" id="id56"><em>Function:</em> _refresh_project_by_path(event, folder) [at ln:345]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-remove-project-from-console-at-ln-307" id="id57"><em>Function:</em> _remove_project_from_console() [at ln:307]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-rename-file-at-ln-520" id="id58"><em>Function:</em> _rename_file() [at ln:520]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-set-current-project-path-at-ln-729" id="id59"><em>Function:</em> _set_current_project(path) [at ln:729]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-timeout-at-ln-338" id="id60"><em>Function:</em> _timeout() [at ln:338]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-add-existing-file-path-at-ln-457" id="id61"><em>Function:</em> add_existing_file(path) [at ln:457]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-add-extra-menu-menu-lang-str-at-ln-146" id="id62"><em>Function:</em> add_extra_menu(menu, lang=str) [at ln:146]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-add-extra-menu-by-scope-menu-scope-at-ln-156" id="id63"><em>Function:</em> add_extra_menu_by_scope(menu, scope) [at ln:156]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-get-item-for-path-path-at-ln-694" id="id64"><em>Function:</em> get_item_for_path(path) [at ln:694]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-get-open-projects-at-ln-722" id="id65"><em>Function:</em> get_open_projects() [at ln:722]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-get-project-by-name-projectname-at-ln-702" id="id66"><em>Function:</em> get_project_by_name(projectName) [at ln:702]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-get-selected-project-lang-at-ln-718" id="id67"><em>Function:</em> get_selected_project_lang() [at ln:718]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-get-selected-project-path-at-ln-709" id="id68"><em>Function:</em> get_selected_project_path() [at ln:709]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-get-selected-project-type-at-ln-714" id="id69"><em>Function:</em> get_selected_project_type() [at ln:714]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-is-open-path-at-ln-725" id="id70"><em>Function:</em> is_open(path) [at ln:725]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-keypressevent-event-at-ln-743" id="id71"><em>Function:</em> keyPressEvent(event) [at ln:743]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-load-project-folderstructure-folder-at-ln-638" id="id72"><em>Function:</em> load_project(folderStructure, folder) [at ln:638]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-loading-project-folder-reload-item-none-at-ln-623" id="id73"><em>Function:</em> loading_project(folder, reload_item=None) [at ln:623]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-open-project-properties-at-ln-333" id="id74"><em>Function:</em> open_project_properties() [at ln:333]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-remove-loading-icon-folder-at-ln-632" id="id75"><em>Function:</em> remove_loading_icon(folder) [at ln:632]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-set-default-project-item-at-ln-327" id="id76"><em>Function:</em> set_default_project(item) [at ln:327]</a></li>
+<li><a class="reference internal" href="tree_projects_widget.html#function-shutdown-at-ln-143" id="id77"><em>Function:</em> shutdown() [at ln:143]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="module-tree-projects-widget-py-api">
+<h2><em>Module:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html">tree_projects_widget.py</a> API</h2>
+<p>No description.</p>
+<div class="section" id="imports">
+<h3><a class="toc-backref" href="tree_projects_widget.html#id5"><em>Imports:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#21">os</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#50">ninja_ide.core.file_handling.filesystem_notifications.base_watcher.ADDED</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#50">ninja_ide.core.file_handling.filesystem_notifications.base_watcher.DELETED</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#53">ninja_ide.gui.ide.IDE</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#48">ninja_ide.core.file_handling.filesystem_notifications.NinjaFileSystemWatcher</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#23">ninja_ide.tools.logger.NinjaLogger</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#29">PyQt4.QtGui.QAbstractItemView</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#34">PyQt4.QtGui.QBrush</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#33">PyQt4.QtGui.QColor</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#38">PyQt4.QtGui.QCursor</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#43">PyQt4.QtGui.QDesktopServices</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#30">PyQt4.QtGui.QHeaderView</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#36">PyQt4.QtGui.QIcon</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#31">PyQt4.QtGui.QInputDialog</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#35">PyQt4.QtGui.QMenu</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#32">PyQt4.QtGui.QMessageBox</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#37">PyQt4.QtGui.QStyle</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#40">PyQt4.QtCore.QTimer</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#27">PyQt4.QtGui.QTreeWidget</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#28">PyQt4.QtGui.QTreeWidgetItem</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#42">PyQt4.QtCore.QUrl</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#39">PyQt4.QtCore.Qt</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#50">ninja_ide.core.file_handling.filesystem_notifications.base_watcher.REMOVE</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#50">ninja_ide.core.file_handling.filesystem_notifications.base_watcher.RENAME</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#41">PyQt4.QtCore.SIGNAL</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#18">__future__.absolute_import</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#55">ninja_ide.tools.completion.completion_daemon</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#47">ninja_ide.core.file_handling.file_manager</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#54">ninja_ide.gui.dialogs.project_properties_widget</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#45">ninja_ide.resources</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#46">ninja_ide.core.settings</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#52">ninja_ide.tools.ui_tools</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#19">__future__.unicode_literals</a></li>
+</ul>
+</div>
+<div class="section" id="global-attributes">
+<h3><a class="toc-backref" href="tree_projects_widget.html#id6"><em>Global Attributes:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#25">DEBUG [at ln:25]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#24">logger [at ln:24]</a></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="class-projectitem-qtreewidgetitem">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-759">ProjectItem(QTreeWidgetItem)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">ProjectItem</span><span class="p">(</span><span class="n">QTreeWidgetItem</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="attributes">
+<h4><a class="toc-backref" href="tree_projects_widget.html#id8"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#765">isFolder [at ln:765]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#764">path [at ln:764]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-parent-name-path-isfolder-false-at-ln-761">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-761">__init__(parent, name, path, isFolder=False) [at ln:761]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">isFolder</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-lt-otheritem-at-ln-784">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-784">__lt__(otherItem) [at ln:784]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__lt__</span><span class="p">(</span><span class="n">otherItem</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-full-path-at-ln-775">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-775">get_full_path() [at ln:775]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_full_path</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Returns the full path of the file</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-isproject-at-ln-767">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-767">isProject() [at ln:767]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">isProject</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+<p><strong>Decorators:</strong></p>
+<ul class="simple">
+<li><em>property</em></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="function-lang-at-ln-772">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-772">lang() [at ln:772]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">lang</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-set-item-icon-icon-at-ln-781">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-781">set_item_icon(icon) [at ln:781]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">set_item_icon</span><span class="p">(</span><span class="n">icon</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-projecttree-qtreewidgetitem">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-793">ProjectTree(QTreeWidgetItem)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">ProjectTree</span><span class="p">(</span><span class="n">QTreeWidgetItem</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id1">
+<h4><a class="toc-backref" href="tree_projects_widget.html#id16"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#797">_parent [at ln:797]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#798">_project [at ln:798]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#801">isFolder [at ln:801]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#800">path [at ln:800]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-parent-project-at-ln-795">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-795">__init__(parent, project) [at ln:795]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-full-path-at-ln-820">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-820">get_full_path() [at ln:820]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_full_path</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Returns the full path of the project</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-isproject-at-ln-810">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-810">isProject() [at ln:810]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">isProject</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+<p><strong>Decorators:</strong></p>
+<ul class="simple">
+<li><em>property</em></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="function-lang-at-ln-815">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-815">lang() [at ln:815]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">lang</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-update-paths-at-ln-806">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-806">update_paths() [at ln:806]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">update_paths</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-foldingcontextmenu-qmenu">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-827">FoldingContextMenu(QMenu)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">FoldingContextMenu</span><span class="p">(</span><span class="n">QMenu</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">This class represents a menu for Folding/Unfolding task</div>
+</div>
+<div class="section" id="id2">
+<h4><a class="toc-backref" href="tree_projects_widget.html#id23"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#835">_tree [at ln:835]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-tree-at-ln-832">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-832">__init__(tree) [at ln:832]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">tree</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-fold-all-projects-at-ln-871">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-871">_fold_all_projects() [at ln:871]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_fold_all_projects</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Fold all projects</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-fold-unfold-project-expand-at-ln-858">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-858">_fold_unfold_project(expand) [at ln:858]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_fold_unfold_project</span><span class="p">(</span><span class="n">expand</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Fold the current project</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-recursive-fold-unfold-item-expand-at-ln-851">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-851">_recursive_fold_unfold(item, expand) [at ln:851]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_recursive_fold_unfold</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">expand</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-unfold-all-projects-at-ln-877">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-877">_unfold_all_projects() [at ln:877]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_unfold_all_projects</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Unfold all project</div>
+</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-treeprojectswidget-qtreewidget">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-58">TreeProjectsWidget(QTreeWidget)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">TreeProjectsWidget</span><span class="p">(</span><span class="n">QTreeWidget</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">runProject()</div>
+<div class="line">closeProject(QString)</div>
+<div class="line">closeFilesFromProjectClosed(QString)</div>
+<div class="line">addProjectToConsole(QString)</div>
+<div class="line">removeProjectFromConsole(QString)</div>
+<div class="line">projectPropertiesUpdated(QTreeWidgetItem)</div>
+</div>
+<div class="section" id="id3">
+<h4><a class="toc-backref" href="tree_projects_widget.html#id30"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#740">__enableCloseNotification [at ln:740]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#331">_actualProject [at ln:331]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#101">_fileWatcher [at ln:101]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#126">_folding_menu [at ln:126]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#98">_loading_items [at ln:98]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#741">_projects [at ln:741]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#340">_refresh_projects_queue [at ln:340]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#99">_thread_execution [at ln:99]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#341">_timer_running [at ln:341]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#76">extra_menus [at ln:76]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#78">extra_menus_by_scope [at ln:78]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#80">images [at ln:80]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#647">isFolder [at ln:647]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#124">mute_signals [at ln:124]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#125">state_index [at ln:125]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-state-index-function-at-ln-88">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-88">__init__(state_index=function()) [at ln:88]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">state_index</span><span class="o">=</span><span class="n">function</span><span class="p">()):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-context-menu-for-files-menu-item-at-ln-270">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-270">_add_context_menu_for_files(menu, item) [at ln:270]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_add_context_menu_for_files</span><span class="p">(</span><span class="n">menu</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-context-menu-for-folders-menu-item-at-ln-246">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-246">_add_context_menu_for_folders(menu, item) [at ln:246]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_add_context_menu_for_folders</span><span class="p">(</span><span class="n">menu</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-context-menu-for-root-menu-item-at-ln-205">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-205">_add_context_menu_for_root(menu, item) [at ln:205]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_add_context_menu_for_root</span><span class="p">(</span><span class="n">menu</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-new-file-at-ln-430">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-430">_add_new_file() [at ln:430]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_add_new_file</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-new-folder-at-ln-475">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-475">_add_new_folder() [at ln:475]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_add_new_folder</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-project-to-console-at-ln-301">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-301">_add_project_to_console() [at ln:301]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_add_project_to_console</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-callback-refresh-project-value-at-ln-390">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-390">_callback_refresh_project(value) [at ln:390]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_callback_refresh_project</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-clean-threads-at-ln-379">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-379">_clean_threads() [at ln:379]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_clean_threads</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-close-open-projects-at-ln-735">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-735">_close_open_projects() [at ln:735]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_close_open_projects</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-close-project-at-ln-400">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-400">_close_project() [at ln:400]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_close_project</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-copy-file-at-ln-552">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-552">_copy_file() [at ln:552]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_copy_file</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-create-init-at-ln-417">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-417">_create_init() [at ln:417]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_create_init</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-delete-file-at-ln-494">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-494">_delete_file() [at ln:494]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_delete_file</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-delete-folder-at-ln-509">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-509">_delete_folder() [at ln:509]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_delete_folder</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-edit-ui-file-at-ln-613">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-613">_edit_ui_file() [at ln:613]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_edit_ui_file</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-file-icon-filename-at-ln-690">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-690">_get_file_icon(fileName) [at ln:690]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_get_file_icon</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-project-root-item-none-at-ln-320">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-320">_get_project_root(item=None) [at ln:320]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_get_project_root</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-item-collapsed-tree-item-at-ln-128">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-128">_item_collapsed(tree_item) [at ln:128]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_item_collapsed</span><span class="p">(</span><span class="n">tree_item</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Store status of item when collapsed</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-item-expanded-tree-item-at-ln-136">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-136">_item_expanded(tree_item) [at ln:136]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_item_expanded</span><span class="p">(</span><span class="n">tree_item</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Store status of item when expanded</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-load-folder-folderstructure-folder-parentitem-at-ln-664">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-664">_load_folder(folderStructure, folder, parentItem) [at ln:664]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_load_folder</span><span class="p">(</span><span class="n">folderStructure</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">parentItem</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Load the Tree Project structure recursively.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-menu-context-tree-point-at-ln-168">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-168">_menu_context_tree(point) [at ln:168]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_menu_context_tree</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-move-file-at-ln-581">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-581">_move_file() [at ln:581]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_move_file</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-open-file-item-column-at-ln-313">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-313">_open_file(item, column) [at ln:313]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_open_file</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-refresh-project-item-none-at-ln-361">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-361">_refresh_project(item=None) [at ln:361]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_refresh_project</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-refresh-project-by-path-event-folder-at-ln-345">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-345">_refresh_project_by_path(event, folder) [at ln:345]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_refresh_project_by_path</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">folder</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-remove-project-from-console-at-ln-307">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-307">_remove_project_from_console() [at ln:307]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_remove_project_from_console</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-rename-file-at-ln-520">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-520">_rename_file() [at ln:520]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_rename_file</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-set-current-project-path-at-ln-729">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-729">_set_current_project(path) [at ln:729]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_set_current_project</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-timeout-at-ln-338">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-338">_timeout() [at ln:338]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_timeout</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-existing-file-path-at-ln-457">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-457">add_existing_file(path) [at ln:457]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">add_existing_file</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-extra-menu-menu-lang-str-at-ln-146">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-146">add_extra_menu(menu, lang=str) [at ln:146]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">add_extra_menu</span><span class="p">(</span><span class="n">menu</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="nb">str</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Add an extra menu for the given language</div>
+<div class="line">@lang: string with the form 'py', 'php', 'json', etc</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-extra-menu-by-scope-menu-scope-at-ln-156">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-156">add_extra_menu_by_scope(menu, scope) [at ln:156]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">add_extra_menu_by_scope</span><span class="p">(</span><span class="n">menu</span><span class="p">,</span> <span class="n">scope</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Add an extra menu for the given language</div>
+<div class="line">@scope: string with the menu scope (all, project, folder, item)</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-item-for-path-path-at-ln-694">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-694">get_item_for_path(path) [at ln:694]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_item_for_path</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-open-projects-at-ln-722">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-722">get_open_projects() [at ln:722]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_open_projects</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-project-by-name-projectname-at-ln-702">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-702">get_project_by_name(projectName) [at ln:702]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_project_by_name</span><span class="p">(</span><span class="n">projectName</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Return the name of the project item based on the project name.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-selected-project-lang-at-ln-718">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-718">get_selected_project_lang() [at ln:718]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_selected_project_lang</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-selected-project-path-at-ln-709">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-709">get_selected_project_path() [at ln:709]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_selected_project_path</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-selected-project-type-at-ln-714">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-714">get_selected_project_type() [at ln:714]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_selected_project_type</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-is-open-path-at-ln-725">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-725">is_open(path) [at ln:725]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">is_open</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-keypressevent-event-at-ln-743">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-743">keyPressEvent(event) [at ln:743]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-load-project-folderstructure-folder-at-ln-638">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-638">load_project(folderStructure, folder) [at ln:638]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">load_project</span><span class="p">(</span><span class="n">folderStructure</span><span class="p">,</span> <span class="n">folder</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-loading-project-folder-reload-item-none-at-ln-623">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-623">loading_project(folder, reload_item=None) [at ln:623]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">loading_project</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">reload_item</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-open-project-properties-at-ln-333">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-333">open_project_properties() [at ln:333]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">open_project_properties</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-remove-loading-icon-folder-at-ln-632">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-632">remove_loading_icon(folder) [at ln:632]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">remove_loading_icon</span><span class="p">(</span><span class="n">folder</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-set-default-project-item-at-ln-327">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-327">set_default_project(item) [at ln:327]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">set_default_project</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-shutdown-at-ln-143">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-143">shutdown() [at ln:143]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">shutdown</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+</div>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

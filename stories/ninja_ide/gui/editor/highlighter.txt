@@ -1,0 +1,549 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: highlighter
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `highlighter.py </listings/ninja_ide/gui/editor/highlighter.py.html>`_ API
+======================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `re </listings/ninja_ide/gui/editor/highlighter.py.html#22>`_
+
+- `PyQt4.QtGui.QColor </listings/ninja_ide/gui/editor/highlighter.py.html#24>`_
+
+- `PyQt4.QtGui.QFont </listings/ninja_ide/gui/editor/highlighter.py.html#26>`_
+
+- `PyQt4.QtCore.QRegExp </listings/ninja_ide/gui/editor/highlighter.py.html#29>`_
+
+- `PyQt4.QtGui.QSyntaxHighlighter </listings/ninja_ide/gui/editor/highlighter.py.html#27>`_
+
+- `PyQt4.QtGui.QTextCharFormat </listings/ninja_ide/gui/editor/highlighter.py.html#25>`_
+
+- `PyQt4.QtCore.QThread </listings/ninja_ide/gui/editor/highlighter.py.html#28>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/editor/highlighter.py.html#30>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/editor/highlighter.py.html#19>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/editor/highlighter.py.html#32>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/editor/highlighter.py.html#33>`_
+
+- `ninja_ide.gui.editor.syntax_highlighter </listings/ninja_ide/gui/editor/highlighter.py.html#34>`_
+
+- `__future__.unicode_literals </listings/ninja_ide/gui/editor/highlighter.py.html#20>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `SDEFAULTS [at ln:55] </listings/ninja_ide/gui/editor/highlighter.py.html#55>`_
+
+- `STYLES [at ln:54] </listings/ninja_ide/gui/editor/highlighter.py.html#54>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `format(color, style=str) [at ln:37] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-37>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def format(color, style=str):
+
+| Return a QTextCharFormat with the given attributes.
+
+
+----
+
+*Function:* `restyle(scheme) [at ln:71] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-71>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def restyle(scheme):
+
+| Reset the style for each highlighting item when the scheme change.
+
+
+----
+
+
+*Class:* `Highlighter(QSyntaxHighlighter) </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-83>`_
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Highlighter(QSyntaxHighlighter):
+
+| Syntax Highlighter for NINJA-IDE.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_old_search [at ln:229] </listings/ninja_ide/gui/editor/highlighter.py.html#229>`_
+
+- `_styles [at ln:99] </listings/ninja_ide/gui/editor/highlighter.py.html#99>`_
+
+- `braces [at ln:87] </listings/ninja_ide/gui/editor/highlighter.py.html#87>`_
+
+- `error [at ln:256] </listings/ninja_ide/gui/editor/highlighter.py.html#256>`_
+
+- `errors [at ln:93] </listings/ninja_ide/gui/editor/highlighter.py.html#93>`_
+
+- `highlight_function [at ln:305] </listings/ninja_ide/gui/editor/highlighter.py.html#305>`_
+
+- `migration [at ln:95] </listings/ninja_ide/gui/editor/highlighter.py.html#95>`_
+
+- `pep8 [at ln:94] </listings/ninja_ide/gui/editor/highlighter.py.html#94>`_
+
+- `rules [at ln:199] </listings/ninja_ide/gui/editor/highlighter.py.html#199>`_
+
+- `selected_word_lines [at ln:97] </listings/ninja_ide/gui/editor/highlighter.py.html#97>`_
+
+- `selected_word_pattern [at ln:201] </listings/ninja_ide/gui/editor/highlighter.py.html#201>`_
+
+- `thread_highlight [at ln:288] </listings/ninja_ide/gui/editor/highlighter.py.html#288>`_
+
+- `tri_double [at ln:187] </listings/ninja_ide/gui/editor/highlighter.py.html#187>`_
+
+- `tri_single [at ln:186] </listings/ninja_ide/gui/editor/highlighter.py.html#186>`_
+
+- `visible_limits [at ln:98] </listings/ninja_ide/gui/editor/highlighter.py.html#98>`_
+
+
+*Function:* `__highlight_lint(char_format, user_data) [at ln:243] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-243>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __highlight_lint(char_format, user_data):
+
+| Highlight the lines with lint errors.
+
+
+----
+
+*Function:* `__highlight_migration(char_format, user_data) [at ln:254] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-254>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __highlight_migration(char_format, user_data):
+
+| Highlight the lines with lint errors.
+
+
+----
+
+*Function:* `__highlight_pep8(char_format, user_data) [at ln:232] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-232>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __highlight_pep8(char_format, user_data):
+
+| Highlight the lines with pep8 errors.
+
+
+----
+
+*Function:* `__init__(document, lang=None, scheme=None, errors=None, pep8=None, migration=None) [at ln:89] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-89>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(document, lang=None, scheme=None, errors=None, pep8=None, migration=None):
+
+
+No description.
+
+
+----
+
+*Function:* `_execute_threaded_highlight(styles=None) [at ln:294] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-294>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _execute_threaded_highlight(styles=None):
+
+| Function called with the info collected when the thread ends.
+
+
+----
+
+*Function:* `_get_errors_lines() [at ln:453] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-453>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _get_errors_lines():
+
+| Return the number of lines that contains errors to highlight.
+
+
+----
+
+*Function:* `_rehighlight_lines(lines) [at ln:445] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-445>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _rehighlight_lines(lines):
+
+| If the document is valid, highlight the list of lines received.
+
+
+----
+
+*Function:* `apply_highlight(lang, scheme=None, syntax=None) [at ln:107] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-107>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def apply_highlight(lang, scheme=None, syntax=None):
+
+| Set the rules that will decide what to highlight and how.
+
+
+----
+
+*Function:* `async_highlight() [at ln:282] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-282>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def async_highlight():
+
+| Execute a thread to collect the info of the things to highlight.
+| 
+| The thread will collect the data from where to where to highlight,
+| and which kind of highlight to use for those sections, and return
+| that info to the main thread after it process all the file.
+
+
+----
+
+*Function:* `comment_multiline(text, delimiter_end, delimiter_start, style) [at ln:526] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-526>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def comment_multiline(text, delimiter_end, delimiter_start, style):
+
+| Process the beggining and end of a multiline comment.
+
+
+----
+
+*Function:* `highlightBlock(text) [at ln:265] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-265>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def highlightBlock(text):
+
+| Apply syntax highlighting to the given block of text.
+
+
+----
+
+*Function:* `match_multiline(text, delimiter, in_state, style, hls=list, highlight_errors=object, user_data=None) [at ln:474] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-474>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def match_multiline(text, delimiter, in_state, style, hls=list, highlight_errors=object, user_data=None):
+
+| Do highlighting of multi-line strings. \`\`delimiter\`\` should be a
+| \`\`QRegExp\`\` for triple-single-quotes or triple-double-quotes, and
+| \`\`in\_state\`\` should be a unique integer to represent the corresponding
+| state changes when inside those strings. Returns True if we're still
+| inside a multi-line string when this function is finished.
+
+
+----
+
+*Function:* `open_highlight(text) [at ln:274] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-274>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def open_highlight(text):
+
+| Only highlight the lines inside the accepted range.
+
+
+----
+
+*Function:* `realtime_highlight(text) [at ln:360] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-360>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def realtime_highlight(text):
+
+| Highlight each line while it is being edited.
+| 
+| This function apply the proper highlight to the line being edited
+| by the user, this is a really fast process for each line once you
+| already have the document highlighted, but slow to do it the first
+| time to highlight all the lines together.
+
+
+----
+
+*Function:* `rehighlight_lines(lines, errors=True) [at ln:464] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-464>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def rehighlight_lines(lines, errors=True):
+
+| Rehighlight the lines for errors or selected words.
+
+
+----
+
+*Function:* `sanitize(word) [at ln:103] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-103>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def sanitize(word):
+
+| Sanitize the string to avoid problems with the regex.
+
+
+----
+
+*Function:* `set_open_visible_area(is_line, position) [at ln:269] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-269>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_open_visible_area(is_line, position):
+
+| Set the range of lines that should be highlighted on open.
+
+
+----
+
+*Function:* `set_selected_word(word, partial=True) [at ln:205] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-205>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_selected_word(word, partial=True):
+
+| Set the word to highlight.
+
+
+----
+
+*Function:* `threaded_highlight(text) [at ln:308] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-308>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def threaded_highlight(text):
+
+| Highlight each line using the info collected by the thread.
+| 
+| This function doesn't need to execute the regular expressions to see
+| where the highlighting starts and end for each rule, it just take
+| the start and end point, and the proper highlighting style from the
+| info returned from the thread and applied that to the document.
+
+
+----
+
+*Class:* `HighlightParserThread(QThread) </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-546>`_
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class HighlightParserThread(QThread):
+
+| Thread that collect the highlighting info to the current file.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_highlighter [at ln:551] </listings/ninja_ide/gui/editor/highlighter.py.html#551>`_
+
+
+*Function:* `__init__(highlighter) [at ln:549] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-549>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(highlighter):
+
+
+No description.
+
+
+----
+
+*Function:* `run() [at ln:553] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-553>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run():
+
+| Execute this rules in another thread to avoid blocking the ui.
+
+
+----
+
+*Class:* `EmpyHighlighter(QSyntaxHighlighter) </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-587>`_
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class EmpyHighlighter(QSyntaxHighlighter):
+
+| Dummy highlighter to be used when the current file is not recognized.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `highlight_function [at ln:592] </listings/ninja_ide/gui/editor/highlighter.py.html#592>`_
+
+
+*Function:* `__init__(document) [at ln:590] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-590>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(document):
+
+
+No description.
+
+
+----
+
+*Function:* `apply_highlight(*args, **kwargs) [at ln:594] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-594>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def apply_highlight(*args, **kwargs):
+
+
+No description.
+
+
+----
+
+*Function:* `async_highlight(*args, **kwargs) [at ln:609] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-609>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def async_highlight(*args, **kwargs):
+
+
+No description.
+
+
+----
+
+*Function:* `highlightBlock(text) [at ln:612] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-612>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def highlightBlock(text):
+
+
+No description.
+
+
+----
+
+*Function:* `open_highlight(*args, **kwargs) [at ln:606] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-606>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def open_highlight(*args, **kwargs):
+
+
+No description.
+
+
+----
+
+*Function:* `realtime_highlight(*args, **kwargs) [at ln:600] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-600>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def realtime_highlight(*args, **kwargs):
+
+
+No description.
+
+
+----
+
+*Function:* `rehighlight_lines(lines, errors=True) [at ln:615] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-615>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def rehighlight_lines(lines, errors=True):
+
+
+No description.
+
+
+----
+
+*Function:* `set_open_visible_area(*args, **kwargs) [at ln:603] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-603>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_open_visible_area(*args, **kwargs):
+
+
+No description.
+
+
+----
+
+*Function:* `set_selected_word(*args, **kwargs) [at ln:597] </listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-597>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_selected_word(*args, **kwargs):
+
+
+No description.
+
+
+
+

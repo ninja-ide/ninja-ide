@@ -1,0 +1,1371 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="NINJA-IDE">
+    <title>NINJA-IDE | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+
+
+
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+    <li>
+    <a href="main_container.txt" id="sourcelink">Source</a>
+    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+    <h1>NINJA-IDE</h1>
+    <div class="contents alert alert-info pull-top topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="main_container.html#module-main-container-py-api" id="id1"><em>Module:</em> main_container.py API</a><ul>
+<li><a class="reference internal" href="main_container.html#imports" id="id2"><em>Imports:</em></a></li>
+<li><a class="reference internal" href="main_container.html#global-attributes" id="id3"><em>Global Attributes:</em></a></li>
+<li><a class="reference internal" href="main_container.html#class-maincontainer-qwidget" id="id4"><em>Class:</em> _MainContainer(QWidget)</a><ul>
+<li><a class="reference internal" href="main_container.html#attributes" id="id5"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="main_container.html#function-init-parent-none-at-ln-88" id="id6"><em>Function:</em> __init__(parent=None) [at ln:88]</a></li>
+<li><a class="reference internal" href="main_container.html#function-navigate-with-keyboard-val-at-ln-259" id="id7"><em>Function:</em> __navigate_with_keyboard(val) [at ln:259]</a></li>
+<li><a class="reference internal" href="main_container.html#function-open-file-filename-str-cursorposition-int-tabindex-none-positionislinenumber-false-at-ln-866" id="id8"><em>Function:</em> __open_file(fileName=str, cursorPosition=int, tabIndex=None, positionIsLineNumber=False) [at ln:866]</a></li>
+<li><a class="reference internal" href="main_container.html#function-current-tab-changed-index-at-ln-595" id="id9"><em>Function:</em> _current_tab_changed(index) [at ln:595]</a></li>
+<li><a class="reference internal" href="main_container.html#function-cursor-position-changed-row-col-at-ln-752" id="id10"><em>Function:</em> _cursor_position_changed(row, col) [at ln:752]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-keypressevent-event-at-ln-772" id="id11"><em>Function:</em> _editor_keyPressEvent(event) [at ln:772]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-locate-function-function-filepath-isvariable-at-ln-775" id="id12"><em>Function:</em> _editor_locate_function(function, filePath, isVariable) [at ln:775]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-tab-was-modified-val-true-at-ln-779" id="id13"><em>Function:</em> _editor_tab_was_modified(val=True) [at ln:779]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-tab-was-saved-editorwidget-none-at-ln-782" id="id14"><em>Function:</em> _editor_tab_was_saved(editorWidget=None) [at ln:782]</a></li>
+<li><a class="reference internal" href="main_container.html#function-find-occurrences-word-at-ln-755" id="id15"><em>Function:</em> _find_occurrences(word) [at ln:755]</a></li>
+<li><a class="reference internal" href="main_container.html#function-get-save-folder-filename-at-ln-1043" id="id16"><em>Function:</em> _get_save_folder(fileName) [at ln:1043]</a></li>
+<li><a class="reference internal" href="main_container.html#function-hide-icon-tab-indicator-editorwidget-at-ln-766" id="id17"><em>Function:</em> _hide_icon_tab_indicator(editorWidget) [at ln:766]</a></li>
+<li><a class="reference internal" href="main_container.html#function-main-without-tabs-at-ln-591" id="id18"><em>Function:</em> _main_without_tabs() [at ln:591]</a></li>
+<li><a class="reference internal" href="main_container.html#function-move-tab-forward-true-widget-none-at-ln-908" id="id19"><em>Function:</em> _move_tab(forward=True, widget=None) [at ln:908]</a></li>
+<li><a class="reference internal" href="main_container.html#function-navigate-bookmarks-val-at-ln-326" id="id20"><em>Function:</em> _navigate_bookmarks(val) [at ln:326]</a></li>
+<li><a class="reference internal" href="main_container.html#function-navigate-breakpoints-val-at-ln-286" id="id21"><em>Function:</em> _navigate_breakpoints(val) [at ln:286]</a></li>
+<li><a class="reference internal" href="main_container.html#function-navigate-code-jumps-val-at-ln-268" id="id22"><em>Function:</em> _navigate_code_jumps(val) [at ln:268]</a></li>
+<li><a class="reference internal" href="main_container.html#function-recent-files-changed-files-at-ln-547" id="id23"><em>Function:</em> _recent_files_changed(files) [at ln:547]</a></li>
+<li><a class="reference internal" href="main_container.html#function-show-tab-indicator-editorwidget-icon-at-ln-758" id="id24"><em>Function:</em> _show_tab_indicator(editorWidget, icon) [at ln:758]</a></li>
+<li><a class="reference internal" href="main_container.html#function-specify-syntax-widget-syntaxlang-at-ln-1158" id="id25"><em>Function:</em> _specify_syntax(widget, syntaxLang) [at ln:1158]</a></li>
+<li><a class="reference internal" href="main_container.html#function-split-this-tab-tab-index-orientationhorizontal-at-ln-610" id="id26"><em>Function:</em> _split_this_tab(tab, index, orientationHorizontal) [at ln:610]</a></li>
+<li><a class="reference internal" href="main_container.html#function-add-back-item-navigation-at-ln-230" id="id27"><em>Function:</em> add_back_item_navigation() [at ln:230]</a></li>
+<li><a class="reference internal" href="main_container.html#function-add-bookmark-breakpoint-at-ln-248" id="id28"><em>Function:</em> add_bookmark_breakpoint() [at ln:248]</a></li>
+<li><a class="reference internal" href="main_container.html#function-add-editor-filename-str-tabindex-none-at-ln-659" id="id29"><em>Function:</em> add_editor(fileName=str, tabIndex=None) [at ln:659]</a></li>
+<li><a class="reference internal" href="main_container.html#function-add-tab-widget-tabname-tabindex-none-at-ln-815" id="id30"><em>Function:</em> add_tab(widget, tabName, tabIndex=None) [at ln:815]</a></li>
+<li><a class="reference internal" href="main_container.html#function-apply-editor-theme-family-size-at-ln-1162" id="id31"><em>Function:</em> apply_editor_theme(family, size) [at ln:1162]</a></li>
+<li><a class="reference internal" href="main_container.html#function-call-editors-function-call-function-arguments-at-ln-1093" id="id32"><em>Function:</em> call_editors_function(call_function, *arguments) [at ln:1093]</a></li>
+<li><a class="reference internal" href="main_container.html#function-change-open-tab-id-idname-newid-at-ln-930" id="id33"><em>Function:</em> change_open_tab_id(idname, newId) [at ln:930]</a></li>
+<li><a class="reference internal" href="main_container.html#function-change-split-focus-at-ln-1201" id="id34"><em>Function:</em> change_split_focus() [at ln:1201]</a></li>
+<li><a class="reference internal" href="main_container.html#function-change-tab-at-ln-1190" id="id35"><em>Function:</em> change_tab() [at ln:1190]</a></li>
+<li><a class="reference internal" href="main_container.html#function-change-tab-reverse-at-ln-1194" id="id36"><em>Function:</em> change_tab_reverse() [at ln:1194]</a></li>
+<li><a class="reference internal" href="main_container.html#function-change-tabs-visibility-at-ln-619" id="id37"><em>Function:</em> change_tabs_visibility() [at ln:619]</a></li>
+<li><a class="reference internal" href="main_container.html#function-change-visibility-at-ln-179" id="id38"><em>Function:</em> change_visibility() [at ln:179]</a></li>
+<li><a class="reference internal" href="main_container.html#function-check-for-unsaved-tabs-at-ln-1146" id="id39"><em>Function:</em> check_for_unsaved_tabs() [at ln:1146]</a></li>
+<li><a class="reference internal" href="main_container.html#function-close-deleted-file-idname-at-ln-939" id="id40"><em>Function:</em> close_deleted_file(idname) [at ln:939]</a></li>
+<li><a class="reference internal" href="main_container.html#function-close-files-from-project-project-at-ln-195" id="id41"><em>Function:</em> close_files_from_project(project) [at ln:195]</a></li>
+<li><a class="reference internal" href="main_container.html#function-close-python-doc-at-ln-1178" id="id42"><em>Function:</em> close_python_doc() [at ln:1178]</a></li>
+<li><a class="reference internal" href="main_container.html#function-close-split-at-ln-1239" id="id43"><em>Function:</em> close_split() [at ln:1239]</a></li>
+<li><a class="reference internal" href="main_container.html#function-close-tab-at-ln-1186" id="id44"><em>Function:</em> close_tab() [at ln:1186]</a></li>
+<li><a class="reference internal" href="main_container.html#function-copy-history-at-ln-213" id="id45"><em>Function:</em> copy_history() [at ln:213]</a></li>
+<li><a class="reference internal" href="main_container.html#function-count-file-code-lines-at-ln-366" id="id46"><em>Function:</em> count_file_code_lines() [at ln:366]</a></li>
+<li><a class="reference internal" href="main_container.html#function-deactivate-tabs-groups-at-ln-584" id="id47"><em>Function:</em> deactivate_tabs_groups() [at ln:584]</a></li>
+<li><a class="reference internal" href="main_container.html#function-dragenterevent-event-at-ln-550" id="id48"><em>Function:</em> dragEnterEvent(event) [at ln:550]</a></li>
+<li><a class="reference internal" href="main_container.html#function-dropevent-event-at-ln-556" id="id49"><em>Function:</em> dropEvent(event) [at ln:556]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-comment-at-ln-457" id="id50"><em>Function:</em> editor_comment() [at ln:457]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-complete-declaration-at-ln-523" id="id51"><em>Function:</em> editor_complete_declaration() [at ln:523]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-copy-at-ln-388" id="id52"><em>Function:</em> editor_copy() [at ln:388]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-cut-at-ln-383" id="id53"><em>Function:</em> editor_cut() [at ln:383]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-duplicate-at-ln-511" id="id54"><em>Function:</em> editor_duplicate() [at ln:511]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-go-to-definition-at-ln-413" id="id55"><em>Function:</em> editor_go_to_definition() [at ln:413]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-go-to-line-line-at-ln-529" id="id56"><em>Function:</em> editor_go_to_line(line) [at ln:529]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-highlight-word-at-ln-517" id="id57"><em>Function:</em> editor_highlight_word() [at ln:517]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-indent-less-at-ln-433" id="id58"><em>Function:</em> editor_indent_less() [at ln:433]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-indent-more-at-ln-439" id="id59"><em>Function:</em> editor_indent_more() [at ln:439]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-insert-debugging-prints-at-ln-445" id="id60"><em>Function:</em> editor_insert_debugging_prints() [at ln:445]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-insert-horizontal-line-at-ln-469" id="id61"><em>Function:</em> editor_insert_horizontal_line() [at ln:469]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-insert-pdb-at-ln-451" id="id62"><em>Function:</em> editor_insert_pdb() [at ln:451]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-insert-title-comment-at-ln-475" id="id63"><em>Function:</em> editor_insert_title_comment() [at ln:475]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-jump-to-line-lineno-none-at-ln-1130" id="id64"><em>Function:</em> editor_jump_to_line(lineno=None) [at ln:1130]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-lower-at-ln-403" id="id65"><em>Function:</em> editor_lower() [at ln:403]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-move-down-at-ln-499" id="id66"><em>Function:</em> editor_move_down() [at ln:499]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-move-up-at-ln-493" id="id67"><em>Function:</em> editor_move_up() [at ln:493]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-paste-at-ln-393" id="id68"><em>Function:</em> editor_paste() [at ln:393]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-redo-at-ln-422" id="id69"><em>Function:</em> editor_redo() [at ln:422]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-remove-line-at-ln-505" id="id70"><em>Function:</em> editor_remove_line() [at ln:505]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-remove-trailing-spaces-at-ln-481" id="id71"><em>Function:</em> editor_remove_trailing_spaces() [at ln:481]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-replace-tabs-with-spaces-at-ln-487" id="id72"><em>Function:</em> editor_replace_tabs_with_spaces() [at ln:487]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-title-at-ln-408" id="id73"><em>Function:</em> editor_title() [at ln:408]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-uncomment-at-ln-463" id="id74"><em>Function:</em> editor_uncomment() [at ln:463]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-undo-at-ln-428" id="id75"><em>Function:</em> editor_undo() [at ln:428]</a></li>
+<li><a class="reference internal" href="main_container.html#function-editor-upper-at-ln-398" id="id76"><em>Function:</em> editor_upper() [at ln:398]</a></li>
+<li><a class="reference internal" href="main_container.html#function-get-current-editor-at-ln-789" id="id77"><em>Function:</em> get_current_editor() [at ln:789]</a></li>
+<li><a class="reference internal" href="main_container.html#function-get-current-widget-at-ln-786" id="id78"><em>Function:</em> get_current_widget() [at ln:786]</a></li>
+<li><a class="reference internal" href="main_container.html#function-get-opened-documents-at-ln-1138" id="id79"><em>Function:</em> get_opened_documents() [at ln:1138]</a></li>
+<li><a class="reference internal" href="main_container.html#function-get-unsaved-files-at-ln-1149" id="id80"><em>Function:</em> get_unsaved_files() [at ln:1149]</a></li>
+<li><a class="reference internal" href="main_container.html#function-get-widget-for-id-filename-at-ln-923" id="id81"><em>Function:</em> get_widget_for_id(filename) [at ln:923]</a></li>
+<li><a class="reference internal" href="main_container.html#function-group-tabs-together-at-ln-565" id="id82"><em>Function:</em> group_tabs_together() [at ln:565]</a></li>
+<li><a class="reference internal" href="main_container.html#function-import-from-everywhere-at-ln-223" id="id83"><em>Function:</em> import_from_everywhere() [at ln:223]</a></li>
+<li><a class="reference internal" href="main_container.html#function-install-at-ln-174" id="id84"><em>Function:</em> install() [at ln:174]</a></li>
+<li><a class="reference internal" href="main_container.html#function-is-open-filename-at-ln-892" id="id85"><em>Function:</em> is_open(filename) [at ln:892]</a></li>
+<li><a class="reference internal" href="main_container.html#function-locate-function-function-filepath-isvariable-at-ln-186" id="id86"><em>Function:</em> locate_function(function, filePath, isVariable) [at ln:186]</a></li>
+<li><a class="reference internal" href="main_container.html#function-move-tab-left-at-ln-905" id="id87"><em>Function:</em> move_tab_left() [at ln:905]</a></li>
+<li><a class="reference internal" href="main_container.html#function-move-tab-right-at-ln-902" id="id88"><em>Function:</em> move_tab_right() [at ln:902]</a></li>
+<li><a class="reference internal" href="main_container.html#function-move-to-open-filename-at-ln-895" id="id89"><em>Function:</em> move_to_open(filename) [at ln:895]</a></li>
+<li><a class="reference internal" href="main_container.html#function-navigate-back-at-ln-1242" id="id90"><em>Function:</em> navigate_back() [at ln:1242]</a></li>
+<li><a class="reference internal" href="main_container.html#function-navigate-code-history-val-op-at-ln-264" id="id91"><em>Function:</em> navigate_code_history(val, op) [at ln:264]</a></li>
+<li><a class="reference internal" href="main_container.html#function-navigate-forward-at-ln-1245" id="id92"><em>Function:</em> navigate_forward() [at ln:1245]</a></li>
+<li><a class="reference internal" href="main_container.html#function-open-file-filename-str-cursorposition-int-tabindex-none-positionislinenumber-false-notstart-true-at-ln-831" id="id93"><em>Function:</em> open_file(filename=str, cursorPosition=int, tabIndex=None, positionIsLineNumber=False, notStart=True) [at ln:831]</a></li>
+<li><a class="reference internal" href="main_container.html#function-open-files-files-at-ln-1141" id="id94"><em>Function:</em> open_files(files) [at ln:1141]</a></li>
+<li><a class="reference internal" href="main_container.html#function-open-image-filename-at-ln-818" id="id95"><em>Function:</em> open_image(fileName) [at ln:818]</a></li>
+<li><a class="reference internal" href="main_container.html#function-open-project-path-at-ln-1175" id="id96"><em>Function:</em> open_project(path) [at ln:1175]</a></li>
+<li><a class="reference internal" href="main_container.html#function-paste-history-at-ln-204" id="id97"><em>Function:</em> paste_history() [at ln:204]</a></li>
+<li><a class="reference internal" href="main_container.html#function-preview-in-browser-at-ln-238" id="id98"><em>Function:</em> preview_in_browser() [at ln:238]</a></li>
+<li><a class="reference internal" href="main_container.html#function-print-file-at-ln-1215" id="id99"><em>Function:</em> print_file() [at ln:1215]</a></li>
+<li><a class="reference internal" href="main_container.html#function-reload-file-editorwidget-none-at-ln-799" id="id100"><em>Function:</em> reload_file(editorWidget=None) [at ln:799]</a></li>
+<li><a class="reference internal" href="main_container.html#function-reset-editor-flags-at-ln-1152" id="id101"><em>Function:</em> reset_editor_flags() [at ln:1152]</a></li>
+<li><a class="reference internal" href="main_container.html#function-reset-lint-warnings-value-at-ln-732" id="id102"><em>Function:</em> reset_lint_warnings(value) [at ln:732]</a></li>
+<li><a class="reference internal" href="main_container.html#function-reset-pep8-warnings-value-at-ln-712" id="id103"><em>Function:</em> reset_pep8_warnings(value) [at ln:712]</a></li>
+<li><a class="reference internal" href="main_container.html#function-save-all-at-ln-1074" id="id104"><em>Function:</em> save_all() [at ln:1074]</a></li>
+<li><a class="reference internal" href="main_container.html#function-save-file-editorwidget-none-at-ln-950" id="id105"><em>Function:</em> save_file(editorWidget=None) [at ln:950]</a></li>
+<li><a class="reference internal" href="main_container.html#function-save-file-as-at-ln-989" id="id106"><em>Function:</em> save_file_as() [at ln:989]</a></li>
+<li><a class="reference internal" href="main_container.html#function-save-project-projectfolder-at-ln-1054" id="id107"><em>Function:</em> save_project(projectFolder) [at ln:1054]</a></li>
+<li><a class="reference internal" href="main_container.html#function-setfocus-at-ln-560" id="id108"><em>Function:</em> setFocus() [at ln:560]</a></li>
+<li><a class="reference internal" href="main_container.html#function-shortcut-index-index-at-ln-1212" id="id109"><em>Function:</em> shortcut_index(index) [at ln:1212]</a></li>
+<li><a class="reference internal" href="main_container.html#function-show-navigation-buttons-at-ln-1198" id="id110"><em>Function:</em> show_navigation_buttons() [at ln:1198]</a></li>
+<li><a class="reference internal" href="main_container.html#function-show-plugins-doc-at-ln-1126" id="id111"><em>Function:</em> show_plugins_doc() [at ln:1126]</a></li>
+<li><a class="reference internal" href="main_container.html#function-show-python-doc-at-ln-1114" id="id112"><em>Function:</em> show_python_doc() [at ln:1114]</a></li>
+<li><a class="reference internal" href="main_container.html#function-show-report-bugs-at-ln-1123" id="id113"><em>Function:</em> show_report_bugs() [at ln:1123]</a></li>
+<li><a class="reference internal" href="main_container.html#function-show-split-orientation-at-ln-625" id="id114"><em>Function:</em> show_split(orientation) [at ln:625]</a></li>
+<li><a class="reference internal" href="main_container.html#function-show-start-page-at-ln-1103" id="id115"><em>Function:</em> show_start_page() [at ln:1103]</a></li>
+<li><a class="reference internal" href="main_container.html#function-split-assistance-at-ln-1235" id="id116"><em>Function:</em> split_assistance() [at ln:1235]</a></li>
+<li><a class="reference internal" href="main_container.html#function-split-tab-orientation-at-ln-601" id="id117"><em>Function:</em> split_tab(orientation) [at ln:601]</a></li>
+<li><a class="reference internal" href="main_container.html#function-split-tabh-at-ln-1229" id="id118"><em>Function:</em> split_tabh() [at ln:1229]</a></li>
+<li><a class="reference internal" href="main_container.html#function-split-tabv-at-ln-1232" id="id119"><em>Function:</em> split_tabv() [at ln:1232]</a></li>
+<li><a class="reference internal" href="main_container.html#function-update-editor-margin-line-at-ln-1169" id="id120"><em>Function:</em> update_editor_margin_line() [at ln:1169]</a></li>
+<li><a class="reference internal" href="main_container.html#function-update-editor-project-at-ln-702" id="id121"><em>Function:</em> update_editor_project() [at ln:702]</a></li>
+<li><a class="reference internal" href="main_container.html#function-zoom-in-editor-at-ln-535" id="id122"><em>Function:</em> zoom_in_editor() [at ln:535]</a></li>
+<li><a class="reference internal" href="main_container.html#function-zoom-out-editor-at-ln-541" id="id123"><em>Function:</em> zoom_out_editor() [at ln:541]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="module-main-container-py-api">
+<h2><em>Module:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html">main_container.py</a> API</h2>
+<p>No description.</p>
+<div class="section" id="imports">
+<h3><a class="toc-backref" href="main_container.html#id2"><em>Imports:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#20">os</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#21">re</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#19">sys</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#22">webbrowser</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#40">ninja_ide.gui.ide.IDE</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#56">ninja_ide.tools.logger.NinjaLogger</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#33">PyQt4.QtCore.QDir</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#28">PyQt4.QtGui.QFileDialog</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#29">PyQt4.QtGui.QIcon</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#27">PyQt4.QtGui.QMessageBox</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#30">PyQt4.QtGui.QScrollBar</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#26">PyQt4.QtGui.QStackedLayout</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#25">PyQt4.QtGui.QWidget</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#32">PyQt4.QtCore.Qt</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#31">PyQt4.QtCore.SIGNAL</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#17">__future__.absolute_import</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#45">ninja_ide.gui.main_panel.actions</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#46">ninja_ide.gui.main_panel.browser_widget</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#49">ninja_ide.gui.main_panel.combo_tabs</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#39">ninja_ide.gui.dynamic_splitter</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#43">ninja_ide.gui.editor.editor</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#36">ninja_ide.core.file_handling.file_manager</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#51">ninja_ide.gui.dialogs.from_import_dialog</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#44">ninja_ide.gui.editor.helpers</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#48">ninja_ide.gui.main_panel.image_viewer</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#52">ninja_ide.tools.locator</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#35">ninja_ide.resources</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#53">ninja_ide.tools.runner</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#37">ninja_ide.core.settings</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#50">ninja_ide.gui.main_panel.helpers.split_orientation</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#47">ninja_ide.gui.main_panel.start_page</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#42">ninja_ide.gui.main_panel.tab_group</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#41">ninja_ide.gui.main_panel.tab_widget</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#38">ninja_ide.gui.translations</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#54">ninja_ide.tools.ui_tools</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#24">PyQt4.uic</a></li>
+</ul>
+</div>
+<div class="section" id="global-attributes">
+<h3><a class="toc-backref" href="main_container.html#id3"><em>Global Attributes:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#58">logger [at ln:58]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#1250">main [at ln:1250]</a></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="class-maincontainer-qwidget">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-61">_MainContainer(QWidget)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">_MainContainer</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">beforeFileSaved(QString)</div>
+<div class="line">fileSaved(QString)</div>
+<div class="line">currentTabChanged(QString)</div>
+<div class="line">locateFunction(QString, QString, bool) [functionName, filePath, isVariable]</div>
+<div class="line">openProject(QString)</div>
+<div class="line">openPreferences()</div>
+<div class="line">dontOpenStartPage()</div>
+<div class="line">navigateCode(bool, int)</div>
+<div class="line">addBackItemNavigation()</div>
+<div class="line">updateLocator(QString)</div>
+<div class="line">updateFileMetadata()</div>
+<div class="line">findOcurrences(QString)</div>
+<div class="line">cursorPositionChange(int, int)    #row, col</div>
+<div class="line">fileOpened(QString)</div>
+<div class="line">newFileOpened(QString)</div>
+<div class="line">recentTabsModified(QStringList)</div>
+<div class="line">migrationAnalyzed()</div>
+<div class="line">allTabClosed()</div>
+</div>
+<div class="section" id="attributes">
+<h4><a class="toc-backref" href="main_container.html#id5"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#114">__bookmarksFile [at ln:114]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#115">__bookmarksPos [at ln:115]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#116">__breakpointsFile [at ln:116]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#117">__breakpointsPos [at ln:117]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#112">__codeBack [at ln:112]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#113">__codeForward [at ln:113]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#118">__operations [at ln:118]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#111">_locator [at ln:111]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#90">_parent [at ln:90]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#107">current_split [at ln:107]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#109">docPage [at ln:109]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#94">scrollBar [at ln:94]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#101">splitter [at ln:101]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#91">stack [at ln:91]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#102">tabs [at ln:102]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-parent-none-at-ln-88">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-88">__init__(parent=None) [at ln:88]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-navigate-with-keyboard-val-at-ln-259">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-259">__navigate_with_keyboard(val) [at ln:259]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__navigate_with_keyboard</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Navigate between the positions in the jump history stack.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-open-file-filename-str-cursorposition-int-tabindex-none-positionislinenumber-false-at-ln-866">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-866">__open_file(fileName=str, cursorPosition=int, tabIndex=None, positionIsLineNumber=False) [at ln:866]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__open_file</span><span class="p">(</span><span class="n">fileName</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">cursorPosition</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">tabIndex</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">positionIsLineNumber</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-current-tab-changed-index-at-ln-595">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-595">_current_tab_changed(index) [at ln:595]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_current_tab_changed</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Notify the new ID of the current tab.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-cursor-position-changed-row-col-at-ln-752">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-752">_cursor_position_changed(row, col) [at ln:752]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_cursor_position_changed</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-keypressevent-event-at-ln-772">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-772">_editor_keyPressEvent(event) [at ln:772]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_editor_keyPressEvent</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-locate-function-function-filepath-isvariable-at-ln-775">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-775">_editor_locate_function(function, filePath, isVariable) [at ln:775]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_editor_locate_function</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">isVariable</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-tab-was-modified-val-true-at-ln-779">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-779">_editor_tab_was_modified(val=True) [at ln:779]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_editor_tab_was_modified</span><span class="p">(</span><span class="n">val</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-tab-was-saved-editorwidget-none-at-ln-782">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-782">_editor_tab_was_saved(editorWidget=None) [at ln:782]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_editor_tab_was_saved</span><span class="p">(</span><span class="n">editorWidget</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-find-occurrences-word-at-ln-755">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-755">_find_occurrences(word) [at ln:755]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_find_occurrences</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-save-folder-filename-at-ln-1043">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1043">_get_save_folder(fileName) [at ln:1043]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_get_save_folder</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-hide-icon-tab-indicator-editorwidget-at-ln-766">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-766">_hide_icon_tab_indicator(editorWidget) [at ln:766]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_hide_icon_tab_indicator</span><span class="p">(</span><span class="n">editorWidget</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-main-without-tabs-at-ln-591">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-591">_main_without_tabs() [at ln:591]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_main_without_tabs</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Notify that there are no more tabs opened.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-move-tab-forward-true-widget-none-at-ln-908">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-908">_move_tab(forward=True, widget=None) [at ln:908]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_move_tab</span><span class="p">(</span><span class="n">forward</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-navigate-bookmarks-val-at-ln-326">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-326">_navigate_bookmarks(val) [at ln:326]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_navigate_bookmarks</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Navigate between the bookmarks.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-navigate-breakpoints-val-at-ln-286">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-286">_navigate_breakpoints(val) [at ln:286]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_navigate_breakpoints</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Navigate between the breakpoints.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-navigate-code-jumps-val-at-ln-268">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-268">_navigate_code_jumps(val) [at ln:268]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_navigate_code_jumps</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Navigate between the jump points.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-recent-files-changed-files-at-ln-547">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-547">_recent_files_changed(files) [at ln:547]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_recent_files_changed</span><span class="p">(</span><span class="n">files</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-show-tab-indicator-editorwidget-icon-at-ln-758">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-758">_show_tab_indicator(editorWidget, icon) [at ln:758]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_show_tab_indicator</span><span class="p">(</span><span class="n">editorWidget</span><span class="p">,</span> <span class="n">icon</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-specify-syntax-widget-syntaxlang-at-ln-1158">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1158">_specify_syntax(widget, syntaxLang) [at ln:1158]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_specify_syntax</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">syntaxLang</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-split-this-tab-tab-index-orientationhorizontal-at-ln-610">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-610">_split_this_tab(tab, index, orientationHorizontal) [at ln:610]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_split_this_tab</span><span class="p">(</span><span class="n">tab</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">orientationHorizontal</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-back-item-navigation-at-ln-230">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-230">add_back_item_navigation() [at ln:230]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">add_back_item_navigation</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Add an item to the back stack and reset the forward stack.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-bookmark-breakpoint-at-ln-248">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-248">add_bookmark_breakpoint() [at ln:248]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">add_bookmark_breakpoint</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Add a bookmark or breakpoint to the current file in the editor.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-editor-filename-str-tabindex-none-at-ln-659">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-659">add_editor(fileName=str, tabIndex=None) [at ln:659]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">add_editor</span><span class="p">(</span><span class="n">fileName</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">tabIndex</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-tab-widget-tabname-tabindex-none-at-ln-815">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-815">add_tab(widget, tabName, tabIndex=None) [at ln:815]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">add_tab</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">tabName</span><span class="p">,</span> <span class="n">tabIndex</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-apply-editor-theme-family-size-at-ln-1162">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1162">apply_editor_theme(family, size) [at ln:1162]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">apply_editor_theme</span><span class="p">(</span><span class="n">family</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-call-editors-function-call-function-arguments-at-ln-1093">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1093">call_editors_function(call_function, *arguments) [at ln:1093]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">call_editors_function</span><span class="p">(</span><span class="n">call_function</span><span class="p">,</span> <span class="o">*</span><span class="n">arguments</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-change-open-tab-id-idname-newid-at-ln-930">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-930">change_open_tab_id(idname, newId) [at ln:930]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">change_open_tab_id</span><span class="p">(</span><span class="n">idname</span><span class="p">,</span> <span class="n">newId</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Search for the Tab with idname, and set the newId to that Tab.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-change-split-focus-at-ln-1201">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1201">change_split_focus() [at ln:1201]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">change_split_focus</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-change-tab-at-ln-1190">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1190">change_tab() [at ln:1190]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">change_tab</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Change the tab in the current TabWidget.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-change-tab-reverse-at-ln-1194">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1194">change_tab_reverse() [at ln:1194]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">change_tab_reverse</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Change the tab in the current TabWidget backwards.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-change-tabs-visibility-at-ln-619">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-619">change_tabs_visibility() [at ln:619]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">change_tabs_visibility</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-change-visibility-at-ln-179">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-179">change_visibility() [at ln:179]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">change_visibility</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Show/Hide the Main Container area.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-check-for-unsaved-tabs-at-ln-1146">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1146">check_for_unsaved_tabs() [at ln:1146]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">check_for_unsaved_tabs</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-close-deleted-file-idname-at-ln-939">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-939">close_deleted_file(idname) [at ln:939]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">close_deleted_file</span><span class="p">(</span><span class="n">idname</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Search for the Tab with id, and ask the user if should be closed.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-close-files-from-project-project-at-ln-195">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-195">close_files_from_project(project) [at ln:195]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">close_files_from_project</span><span class="p">(</span><span class="n">project</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Close the files related to this project.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-close-python-doc-at-ln-1178">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1178">close_python_doc() [at ln:1178]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">close_python_doc</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-close-split-at-ln-1239">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1239">close_split() [at ln:1239]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">close_split</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-close-tab-at-ln-1186">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1186">close_tab() [at ln:1186]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">close_tab</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Close the current tab in the current TabWidget.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-copy-history-at-ln-213">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-213">copy_history() [at ln:213]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">copy_history</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Copy the selected text into the copy/paste history.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-count-file-code-lines-at-ln-366">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-366">count_file_code_lines() [at ln:366]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">count_file_code_lines</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Count the lines of code in the current file.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-deactivate-tabs-groups-at-ln-584">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-584">deactivate_tabs_groups() [at ln:584]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">deactivate_tabs_groups</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Deactivate tab grouping based in the project they belong.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-dragenterevent-event-at-ln-550">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-550">dragEnterEvent(event) [at ln:550]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">dragEnterEvent</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-dropevent-event-at-ln-556">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-556">dropEvent(event) [at ln:556]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">dropEvent</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-comment-at-ln-457">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-457">editor_comment() [at ln:457]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_comment</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Mark the current line or selection as a comment.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-complete-declaration-at-ln-523">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-523">editor_complete_declaration() [at ln:523]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_complete_declaration</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Do the opposite action that Complete Declaration expect.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-copy-at-ln-388">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-388">editor_copy() [at ln:388]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_copy</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-cut-at-ln-383">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-383">editor_cut() [at ln:383]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_cut</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-duplicate-at-ln-511">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-511">editor_duplicate() [at ln:511]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_duplicate</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Duplicate the current line or selection.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-go-to-definition-at-ln-413">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-413">editor_go_to_definition() [at ln:413]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_go_to_definition</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Search the definition of the method or variable under the cursor.</div>
+<div class="line"><br></div>
+<div class="line">If more than one method or variable is found with the same name,</div>
+<div class="line">shows a table with the results and let the user decide where to go.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-go-to-line-line-at-ln-529">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-529">editor_go_to_line(line) [at ln:529]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_go_to_line</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Jump to the specified line in the current editor.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-highlight-word-at-ln-517">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-517">editor_highlight_word() [at ln:517]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_highlight_word</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Highlight the occurrences of the current word in the editor.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-indent-less-at-ln-433">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-433">editor_indent_less() [at ln:433]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_indent_less</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Indent 1 position to the left for the current line or selection.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-indent-more-at-ln-439">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-439">editor_indent_more() [at ln:439]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_indent_more</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Indent 1 position to the right for the current line or selection.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-insert-debugging-prints-at-ln-445">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-445">editor_insert_debugging_prints() [at ln:445]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_insert_debugging_prints</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Insert a print statement in each selected line.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-insert-horizontal-line-at-ln-469">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-469">editor_insert_horizontal_line() [at ln:469]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_insert_horizontal_line</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Insert an horizontal lines of comment symbols.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-insert-pdb-at-ln-451">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-451">editor_insert_pdb() [at ln:451]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_insert_pdb</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Insert a pdb.set_trace() statement in tjhe current line.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-insert-title-comment-at-ln-475">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-475">editor_insert_title_comment() [at ln:475]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_insert_title_comment</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Insert a Title surrounded by comment symbols.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-jump-to-line-lineno-none-at-ln-1130">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1130">editor_jump_to_line(lineno=None) [at ln:1130]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_jump_to_line</span><span class="p">(</span><span class="n">lineno</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Jump to line *lineno* if it is not None</div>
+<div class="line">otherwise ask to the user the line number to jump</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-lower-at-ln-403">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-403">editor_lower() [at ln:403]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_lower</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-move-down-at-ln-499">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-499">editor_move_down() [at ln:499]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_move_down</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Move the current line or selection one position down.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-move-up-at-ln-493">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-493">editor_move_up() [at ln:493]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_move_up</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Move the current line or selection one position up.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-paste-at-ln-393">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-393">editor_paste() [at ln:393]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_paste</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-redo-at-ln-422">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-422">editor_redo() [at ln:422]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_redo</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Execute the redo action in the current editor.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-remove-line-at-ln-505">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-505">editor_remove_line() [at ln:505]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_remove_line</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Remove the current line or selection.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-remove-trailing-spaces-at-ln-481">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-481">editor_remove_trailing_spaces() [at ln:481]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_remove_trailing_spaces</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Remove the trailing spaces in the current editor.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-replace-tabs-with-spaces-at-ln-487">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-487">editor_replace_tabs_with_spaces() [at ln:487]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_replace_tabs_with_spaces</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Replace the Tabs with Spaces in the current editor.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-title-at-ln-408">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-408">editor_title() [at ln:408]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_title</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-uncomment-at-ln-463">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-463">editor_uncomment() [at ln:463]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_uncomment</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Uncomment the current line or selection.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-undo-at-ln-428">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-428">editor_undo() [at ln:428]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_undo</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-editor-upper-at-ln-398">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-398">editor_upper() [at ln:398]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">editor_upper</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-current-editor-at-ln-789">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-789">get_current_editor() [at ln:789]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_current_editor</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Return the Actual Editor or None</div>
+<div class="line"><br></div>
+<div class="line">Return an instance of Editor if the Current Tab contains</div>
+<div class="line">an Editor or None if it is not an instance of Editor</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-current-widget-at-ln-786">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-786">get_current_widget() [at ln:786]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_current_widget</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-opened-documents-at-ln-1138">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1138">get_opened_documents() [at ln:1138]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_opened_documents</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-unsaved-files-at-ln-1149">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1149">get_unsaved_files() [at ln:1149]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_unsaved_files</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-widget-for-id-filename-at-ln-923">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-923">get_widget_for_id(filename) [at ln:923]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_widget_for_id</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-group-tabs-together-at-ln-565">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-565">group_tabs_together() [at ln:565]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">group_tabs_together</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Group files that belongs to the same project together.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-import-from-everywhere-at-ln-223">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-223">import_from_everywhere() [at ln:223]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">import_from_everywhere</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Add an item to the back stack and reset the forward stack.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-install-at-ln-174">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-174">install() [at ln:174]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">install</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-is-open-filename-at-ln-892">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-892">is_open(filename) [at ln:892]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">is_open</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-locate-function-function-filepath-isvariable-at-ln-186">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-186">locate_function(function, filePath, isVariable) [at ln:186]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">locate_function</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">isVariable</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Move the cursor to the proper position in the navigate stack.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-move-tab-left-at-ln-905">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-905">move_tab_left() [at ln:905]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">move_tab_left</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-move-tab-right-at-ln-902">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-902">move_tab_right() [at ln:902]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">move_tab_right</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-move-to-open-filename-at-ln-895">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-895">move_to_open(filename) [at ln:895]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">move_to_open</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-navigate-back-at-ln-1242">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1242">navigate_back() [at ln:1242]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">navigate_back</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-navigate-code-history-val-op-at-ln-264">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-264">navigate_code_history(val, op) [at ln:264]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">navigate_code_history</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">op</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Navigate the code history.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-navigate-forward-at-ln-1245">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1245">navigate_forward() [at ln:1245]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">navigate_forward</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-open-file-filename-str-cursorposition-int-tabindex-none-positionislinenumber-false-notstart-true-at-ln-831">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-831">open_file(filename=str, cursorPosition=int, tabIndex=None, positionIsLineNumber=False, notStart=True) [at ln:831]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">open_file</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">cursorPosition</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">tabIndex</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">positionIsLineNumber</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">notStart</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-open-files-files-at-ln-1141">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1141">open_files(files) [at ln:1141]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">open_files</span><span class="p">(</span><span class="n">files</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-open-image-filename-at-ln-818">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-818">open_image(fileName) [at ln:818]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">open_image</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-open-project-path-at-ln-1175">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1175">open_project(path) [at ln:1175]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">open_project</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-paste-history-at-ln-204">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-204">paste_history() [at ln:204]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">paste_history</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Paste the text from the copy/paste history.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-preview-in-browser-at-ln-238">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-238">preview_in_browser() [at ln:238]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">preview_in_browser</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Load the current html file in the default browser.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-print-file-at-ln-1215">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1215">print_file() [at ln:1215]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">print_file</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Call the print of ui_tool</div>
+<div class="line"><br></div>
+<div class="line">Call print of ui_tool depending on the focus of the application</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-reload-file-editorwidget-none-at-ln-799">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-799">reload_file(editorWidget=None) [at ln:799]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">reload_file</span><span class="p">(</span><span class="n">editorWidget</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-reset-editor-flags-at-ln-1152">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1152">reset_editor_flags() [at ln:1152]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">reset_editor_flags</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-reset-lint-warnings-value-at-ln-732">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-732">reset_lint_warnings(value) [at ln:732]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">reset_lint_warnings</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-reset-pep8-warnings-value-at-ln-712">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-712">reset_pep8_warnings(value) [at ln:712]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">reset_pep8_warnings</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-save-all-at-ln-1074">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1074">save_all() [at ln:1074]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">save_all</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-save-file-editorwidget-none-at-ln-950">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-950">save_file(editorWidget=None) [at ln:950]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">save_file</span><span class="p">(</span><span class="n">editorWidget</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-save-file-as-at-ln-989">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-989">save_file_as() [at ln:989]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">save_file_as</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-save-project-projectfolder-at-ln-1054">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1054">save_project(projectFolder) [at ln:1054]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">save_project</span><span class="p">(</span><span class="n">projectFolder</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-setfocus-at-ln-560">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-560">setFocus() [at ln:560]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">setFocus</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-shortcut-index-index-at-ln-1212">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1212">shortcut_index(index) [at ln:1212]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">shortcut_index</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-show-navigation-buttons-at-ln-1198">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1198">show_navigation_buttons() [at ln:1198]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">show_navigation_buttons</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-show-plugins-doc-at-ln-1126">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1126">show_plugins_doc() [at ln:1126]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">show_plugins_doc</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-show-python-doc-at-ln-1114">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1114">show_python_doc() [at ln:1114]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">show_python_doc</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-show-report-bugs-at-ln-1123">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1123">show_report_bugs() [at ln:1123]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">show_report_bugs</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-show-split-orientation-at-ln-625">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-625">show_split(orientation) [at ln:625]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">show_split</span><span class="p">(</span><span class="n">orientation</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-show-start-page-at-ln-1103">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1103">show_start_page() [at ln:1103]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">show_start_page</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-split-assistance-at-ln-1235">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1235">split_assistance() [at ln:1235]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">split_assistance</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-split-tab-orientation-at-ln-601">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-601">split_tab(orientation) [at ln:601]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">split_tab</span><span class="p">(</span><span class="n">orientation</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-split-tabh-at-ln-1229">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1229">split_tabh() [at ln:1229]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">split_tabh</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-split-tabv-at-ln-1232">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1232">split_tabv() [at ln:1232]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">split_tabv</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-update-editor-margin-line-at-ln-1169">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-1169">update_editor_margin_line() [at ln:1169]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">update_editor_margin_line</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-update-editor-project-at-ln-702">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-702">update_editor_project() [at ln:702]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">update_editor_project</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-zoom-in-editor-at-ln-535">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-535">zoom_in_editor() [at ln:535]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">zoom_in_editor</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Increase the font size in the current editor.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-zoom-out-editor-at-ln-541">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/main_panel/main_container.py.html#listingsninja_ideguimain_panelmain_containerpy-541">zoom_out_editor() [at ln:541]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">zoom_out_editor</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Decrease the font size in the current editor.</div>
+</div>
+</div>
+</div>
+</div>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

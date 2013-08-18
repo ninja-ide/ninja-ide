@@ -1,0 +1,293 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: windows
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `windows.py </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html>`_ API
+===============================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `os </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#25>`_
+
+- `pywintypes </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#24>`_
+
+- `win32con </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#21>`_
+
+- `win32event </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#23>`_
+
+- `win32file </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#22>`_
+
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#28>`_
+
+- `threading.Thread </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#20>`_
+
+- `__future__.absolute_import </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#18>`_
+
+- `ninja_ide.core.file_handling.filesystem_notifications.base_watcher </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#32>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#26>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `ACTIONS [at ln:39] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#39>`_
+
+- `ADDED [at ln:33] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#33>`_
+
+- `DEBUG [at ln:30] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#30>`_
+
+- `DELETED [at ln:34] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#34>`_
+
+- `FILE_LIST_DIRECTORY [at ln:48] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#48>`_
+
+- `MODIFIED [at ln:37] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#37>`_
+
+- `REMOVE [at ln:35] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#35>`_
+
+- `RENAME [at ln:36] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#36>`_
+
+- `logger [at ln:29] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#29>`_
+
+- `watchmask [at ln:50] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#50>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `listdir(path) [at ln:55] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#listingsninja_idecorefile_handlingfilesystem_notificationswindowspy-55>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def listdir(path):
+
+
+No description.
+
+
+----
+
+
+*Class:* `NinjaFileSystemWatcher(base_watcher.BaseWatcher) </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#listingsninja_idecorefile_handlingfilesystem_notificationswindowspy-227>`_
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `watching_paths [at ln:232] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#232>`_
+
+
+*Function:* `__init__() [at ln:229] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#listingsninja_idecorefile_handlingfilesystem_notificationswindowspy-229>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `add_watch(path) [at ln:234] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#listingsninja_idecorefile_handlingfilesystem_notificationswindowspy-234>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_watch(path):
+
+
+No description.
+
+
+----
+
+*Function:* `remove_watch(path) [at ln:241] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#listingsninja_idecorefile_handlingfilesystem_notificationswindowspy-241>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def remove_watch(path):
+
+
+No description.
+
+
+----
+
+*Function:* `shutdown_notification() [at ln:248] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#listingsninja_idecorefile_handlingfilesystem_notificationswindowspy-248>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def shutdown_notification():
+
+
+No description.
+
+
+----
+
+*Class:* `ThreadedFSWatcher(Thread) </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#listingsninja_idecorefile_handlingfilesystem_notificationswindowspy-159>`_
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ThreadedFSWatcher(Thread):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_callback [at ln:163] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#163>`_
+
+- `_overlapped [at ln:166] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#166>`_
+
+- `_wait_stop [at ln:165] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#165>`_
+
+- `_watch_path [at ln:162] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#162>`_
+
+- `_windows_sucks_flag [at ln:171] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#171>`_
+
+- `hEvent [at ln:167] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#167>`_
+
+
+*Function:* `__init__(path, callback) [at ln:161] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#listingsninja_idecorefile_handlingfilesystem_notificationswindowspy-161>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(path, callback):
+
+
+No description.
+
+
+----
+
+*Function:* `run() [at ln:174] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#listingsninja_idecorefile_handlingfilesystem_notificationswindowspy-174>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run():
+
+
+No description.
+
+
+----
+
+*Function:* `stop() [at ln:170] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#listingsninja_idecorefile_handlingfilesystem_notificationswindowspy-170>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def stop():
+
+
+No description.
+
+
+----
+
+*Class:* `FileEventCallback(object) </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#listingsninja_idecorefile_handlingfilesystem_notificationswindowspy-67>`_
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class FileEventCallback(object):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_path_last_time [at ln:73] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#73>`_
+
+- `callback [at ln:72] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#72>`_
+
+- `cookie [at ln:74] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#74>`_
+
+- `snapshots [at ln:69] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#69>`_
+
+
+*Function:* `__call__(paths) [at ln:79] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#listingsninja_idecorefile_handlingfilesystem_notificationswindowspy-79>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __call__(paths):
+
+
+No description.
+
+
+----
+
+*Function:* `__init__(callback, paths) [at ln:68] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#listingsninja_idecorefile_handlingfilesystem_notificationswindowspy-68>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(callback, paths):
+
+
+No description.
+
+
+----
+
+*Function:* `pulentastack(path) [at ln:76] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#listingsninja_idecorefile_handlingfilesystem_notificationswindowspy-76>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def pulentastack(path):
+
+
+No description.
+
+
+----
+
+*Function:* `snapshot(path) [at ln:133] </listings/ninja_ide/core/file_handling/filesystem_notifications/windows.py.html#listingsninja_idecorefile_handlingfilesystem_notificationswindowspy-133>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def snapshot(path):
+
+
+No description.
+
+
+
+

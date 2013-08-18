@@ -1,0 +1,109 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: test_locator
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `test_locator.py </listings/ninja_tests/tools/test_locator.py.html>`_ API
+=====================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `ninja_ide </listings/ninja_tests/tools/test_locator.py.html#24>`_
+
+- `sys </listings/ninja_tests/tools/test_locator.py.html#21>`_
+
+- `ninja_tests.BaseTest </listings/ninja_tests/tools/test_locator.py.html#29>`_
+
+- `PyQt4.QtGui.QApplication </listings/ninja_tests/tools/test_locator.py.html#26>`_
+
+- `__future__.absolute_import </listings/ninja_tests/tools/test_locator.py.html#18>`_
+
+- `ninja_ide.tools.locator </listings/ninja_tests/tools/test_locator.py.html#28>`_
+
+- `__future__.unicode_literals </listings/ninja_tests/tools/test_locator.py.html#19>`_
+
+
+
+
+
+*Class:* `LocatorTestCase(BaseTest) </listings/ninja_tests/tools/test_locator.py.html#listingsninja_teststoolstest_locatorpy-32>`_
+------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class LocatorTestCase(BaseTest):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `app [at ln:36] </listings/ninja_tests/tools/test_locator.py.html#36>`_
+
+- `locator [at ln:37] </listings/ninja_tests/tools/test_locator.py.html#37>`_
+
+
+*Function:* `setUp() [at ln:34] </listings/ninja_tests/tools/test_locator.py.html#listingsninja_teststoolstest_locatorpy-34>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setUp():
+
+
+No description.
+
+
+----
+
+*Function:* `test_get_classes_from_project() [at ln:45] </listings/ninja_tests/tools/test_locator.py.html#listingsninja_teststoolstest_locatorpy-45>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_get_classes_from_project():
+
+
+No description.
+
+
+----
+
+*Function:* `test_load_results() [at ln:42] </listings/ninja_tests/tools/test_locator.py.html#listingsninja_teststoolstest_locatorpy-42>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_load_results():
+
+
+No description.
+
+
+----
+
+*Function:* `test_navigate_to() [at ln:39] </listings/ninja_tests/tools/test_locator.py.html#listingsninja_teststoolstest_locatorpy-39>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_navigate_to():
+
+
+No description.
+
+
+
+

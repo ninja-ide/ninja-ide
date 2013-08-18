@@ -1,0 +1,823 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="completion_daemon.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>completion_daemon.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../../">/listings</a>
+        </li><li><a href="../../">/ninja_ide</a>
+        </li><li><a href="../">/tools</a>
+        </li><li><a href=".">/completion</a>
+        </li><li><a href="#">/completion_daemon.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-1">  1</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-2">  2</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-3">  3</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-4">  4</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-5">  5</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-6">  6</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-7">  7</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-8">  8</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-9">  9</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-10"> 10</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-11"> 11</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-12"> 12</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-13"> 13</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-14"> 14</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-15"> 15</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-16"> 16</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-17"> 17</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-18"> 18</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-19"> 19</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-20"> 20</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-21"> 21</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-22"> 22</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-23"> 23</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-24"> 24</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-25"> 25</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-26"> 26</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-27"> 27</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-28"> 28</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-29"> 29</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-30"> 30</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-31"> 31</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-32"> 32</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-33"> 33</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-34"> 34</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-35"> 35</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-36"> 36</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-37"> 37</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-38"> 38</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-39"> 39</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-40"> 40</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-41"> 41</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-42"> 42</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-43"> 43</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-44"> 44</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-45"> 45</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-46"> 46</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-47"> 47</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-48"> 48</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-49"> 49</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-50"> 50</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-51"> 51</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-52"> 52</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-53"> 53</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-54"> 54</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-55"> 55</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-56"> 56</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-57"> 57</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-58"> 58</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-59"> 59</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-60"> 60</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-61"> 61</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-62"> 62</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-63"> 63</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-64"> 64</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-65"> 65</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-66"> 66</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-67"> 67</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-68"> 68</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-69"> 69</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-70"> 70</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-71"> 71</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-72"> 72</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-73"> 73</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-74"> 74</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-75"> 75</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-76"> 76</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-77"> 77</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-78"> 78</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-79"> 79</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-80"> 80</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-81"> 81</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-82"> 82</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-83"> 83</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-84"> 84</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-85"> 85</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-86"> 86</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-87"> 87</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-88"> 88</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-89"> 89</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-90"> 90</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-91"> 91</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-92"> 92</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-93"> 93</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-94"> 94</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-95"> 95</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-96"> 96</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-97"> 97</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-98"> 98</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-99"> 99</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-100">100</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-101">101</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-102">102</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-103">103</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-104">104</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-105">105</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-106">106</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-107">107</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-108">108</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-109">109</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-110">110</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-111">111</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-112">112</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-113">113</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-114">114</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-115">115</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-116">116</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-117">117</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-118">118</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-119">119</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-120">120</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-121">121</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-122">122</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-123">123</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-124">124</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-125">125</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-126">126</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-127">127</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-128">128</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-129">129</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-130">130</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-131">131</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-132">132</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-133">133</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-134">134</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-135">135</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-136">136</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-137">137</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-138">138</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-139">139</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-140">140</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-141">141</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-142">142</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-143">143</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-144">144</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-145">145</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-146">146</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-147">147</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-148">148</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-149">149</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-150">150</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-151">151</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-152">152</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-153">153</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-154">154</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-155">155</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-156">156</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-157">157</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-158">158</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-159">159</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-160">160</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-161">161</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-162">162</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-163">163</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-164">164</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-165">165</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-166">166</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-167">167</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-168">168</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-169">169</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-170">170</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-171">171</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-172">172</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-173">173</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-174">174</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-175">175</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-176">176</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-177">177</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-178">178</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-179">179</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-180">180</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-181">181</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-182">182</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-183">183</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-184">184</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-185">185</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-186">186</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-187">187</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-188">188</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-189">189</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-190">190</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-191">191</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-192">192</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-193">193</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-194">194</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-195">195</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-196">196</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-197">197</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-198">198</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-199">199</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-200">200</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-201">201</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-202">202</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-203">203</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-204">204</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-205">205</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-206">206</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-207">207</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-208">208</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-209">209</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-210">210</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-211">211</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-212">212</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-213">213</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-214">214</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-215">215</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-216">216</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-217">217</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-218">218</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-219">219</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-220">220</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-221">221</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-222">222</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-223">223</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-224">224</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-225">225</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-226">226</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-227">227</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-228">228</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-229">229</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-230">230</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-231">231</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-232">232</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-233">233</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-234">234</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-235">235</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-236">236</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-237">237</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-238">238</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-239">239</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-240">240</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-241">241</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-242">242</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-243">243</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-244">244</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-245">245</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-246">246</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-247">247</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-248">248</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-249">249</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-250">250</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-251">251</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-252">252</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-253">253</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-254">254</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-255">255</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-256">256</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-257">257</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-258">258</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-259">259</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-260">260</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-261">261</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-262">262</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-263">263</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-264">264</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-265">265</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-266">266</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-267">267</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-268">268</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-269">269</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-270">270</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-271">271</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-272">272</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-273">273</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-274">274</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-275">275</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-276">276</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-277">277</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-278">278</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-279">279</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-280">280</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-281">281</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-282">282</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-283">283</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-284">284</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-285">285</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-286">286</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-287">287</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-288">288</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-289">289</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-290">290</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-291">291</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-292">292</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-293">293</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-294">294</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-295">295</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-296">296</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-297">297</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-298">298</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-299">299</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-300">300</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-301">301</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-302">302</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-303">303</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-304">304</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-305">305</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-306">306</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-307">307</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-308">308</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-309">309</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-310">310</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-311">311</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-312">312</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-313">313</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-314">314</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-315">315</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-316">316</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-317">317</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-318">318</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-319">319</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-320">320</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-321">321</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-322">322</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-323">323</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-324">324</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-325">325</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-326">326</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-327">327</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-328">328</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-329">329</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-330">330</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-331">331</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-332">332</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-333">333</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-334">334</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-335">335</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-336">336</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-337">337</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-338">338</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-339">339</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-340">340</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-341">341</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-342">342</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-343">343</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-344">344</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-345">345</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-346">346</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-347">347</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-348">348</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-349">349</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-350">350</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-351">351</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-352">352</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-353">353</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-354">354</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-355">355</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-356">356</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-357">357</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-358">358</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-359">359</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-360">360</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-361">361</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-362">362</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-363">363</a>
+<a href="completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-364">364</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_idetoolscompletioncompletion_daemonpy-1"></a><span class="c"># -*- coding: utf-8 -*-</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-2"></a><span class="c">#</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-3"></a><span class="c"># This file is part of NINJA-IDE (http://ninja-ide.org).</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-4"></a><span class="c">#</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-5"></a><span class="c"># NINJA-IDE is free software; you can redistribute it and/or modify</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-6"></a><span class="c"># it under the terms of the GNU General Public License as published by</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-7"></a><span class="c"># the Free Software Foundation; either version 3 of the License, or</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-8"></a><span class="c"># any later version.</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-9"></a><span class="c">#</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-10"></a><span class="c"># NINJA-IDE is distributed in the hope that it will be useful,</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-11"></a><span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-12"></a><span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-13"></a><span class="c"># GNU General Public License for more details.</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-14"></a><span class="c">#</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-15"></a><span class="c"># You should have received a copy of the GNU General Public License</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-16"></a><span class="c"># along with NINJA-IDE; If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-17"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-18"></a><span class="kn">import</span> <span class="nn">os</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-19"></a><span class="kn">import</span> <span class="nn">time</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-20"></a><span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span><span class="p">,</span> <span class="n">Lock</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-21"></a><span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Process</span><span class="p">,</span> <span class="n">Queue</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-22"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-23"></a><span class="kn">from</span> <span class="nn">ninja_ide.tools.completion</span> <span class="kn">import</span> <span class="n">model</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-24"></a><span class="kn">from</span> <span class="nn">ninja_ide.tools.completion</span> <span class="kn">import</span> <span class="n">completer</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-25"></a><span class="kn">from</span> <span class="nn">ninja_ide.tools.completion</span> <span class="kn">import</span> <span class="n">analyzer</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-26"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-27"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-28"></a><span class="k">try</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-29"></a>    <span class="nb">unicode</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-30"></a><span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-31"></a>    <span class="c"># Python 3</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-32"></a>    <span class="nb">basestring</span> <span class="o">=</span> <span class="nb">unicode</span> <span class="o">=</span> <span class="nb">str</span>  <span class="c"># lint:ok</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-33"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-34"></a><span class="n">__completion_daemon_instance</span> <span class="o">=</span> <span class="bp">None</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-35"></a><span class="n">WAITING_BEFORE_START</span> <span class="o">=</span> <span class="mi">5</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-36"></a><span class="n">PROJECTS</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-37"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-38"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-39"></a><span class="k">def</span> <span class="nf">CompletionDaemon</span><span class="p">():</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-40"></a>    <span class="k">global</span> <span class="n">__completion_daemon_instance</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-41"></a>    <span class="k">if</span> <span class="n">__completion_daemon_instance</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-42"></a>        <span class="n">__completion_daemon_instance</span> <span class="o">=</span> <span class="n">__CompletionDaemon</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-43"></a>        <span class="n">__completion_daemon_instance</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-44"></a>    <span class="k">return</span> <span class="n">__completion_daemon_instance</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-45"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-46"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-47"></a><span class="k">class</span> <span class="nc">__CompletionDaemon</span><span class="p">(</span><span class="n">Thread</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-48"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-49"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-50"></a>        <span class="n">Thread</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-51"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">analyzer</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">Analyzer</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-52"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">modules</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-53"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">projects_modules</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-54"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_relations</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-55"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">reference_counter</span> <span class="o">=</span> <span class="mi">0</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-56"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">keep_alive</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-57"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-58"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">queue_receive</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-59"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">queue_send</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-60"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="n">_DaemonProcess</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">queue_send</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue_receive</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-61"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">daemon</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-62"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-63"></a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-64"></a>        <span class="k">global</span> <span class="n">WAITING_BEFORE_START</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-65"></a>        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">WAITING_BEFORE_START</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-66"></a>        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_alive</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-67"></a>            <span class="n">path_id</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">resolve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue_receive</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-68"></a>            <span class="k">if</span> <span class="n">path_id</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-69"></a>                <span class="k">continue</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-70"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-71"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">path_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">module</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-72"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-73"></a>            <span class="k">if</span> <span class="n">resolve</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-74"></a>                <span class="n">resolution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_with_other_modules</span><span class="p">(</span><span class="n">resolve</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-75"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_relations</span><span class="p">[</span><span class="n">path_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-76"></a>                <span class="k">for</span> <span class="n">package</span> <span class="ow">in</span> <span class="n">resolution</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-77"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">_relations</span><span class="p">[</span><span class="n">path_id</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">resolution</span><span class="p">[</span><span class="n">package</span><span class="p">])</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-78"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">queue_send</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">path_id</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="n">resolution</span><span class="p">))</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-79"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-80"></a>    <span class="k">def</span> <span class="nf">_resolve_with_other_modules</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">packages</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-81"></a>        <span class="n">resolution</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-82"></a>        <span class="k">for</span> <span class="n">package</span> <span class="ow">in</span> <span class="n">packages</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-83"></a>            <span class="k">if</span> <span class="n">package</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">'('</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-84"></a>                <span class="n">package</span> <span class="o">=</span> <span class="n">package</span><span class="p">[:</span><span class="n">package</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">'('</span><span class="p">)]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-85"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_modules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">package</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-86"></a>                <span class="n">folder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_modules</span><span class="p">[</span><span class="n">package</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-87"></a>                <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="s">'__init__.py'</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-88"></a>                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyze_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-89"></a>                    <span class="n">resolution</span><span class="p">[</span><span class="n">package</span><span class="p">]</span> <span class="o">=</span> <span class="n">filename</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-90"></a>            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_modules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">package</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s">'.'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">False</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-91"></a>                <span class="n">name</span> <span class="o">=</span> <span class="n">package</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s">'.'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-92"></a>                <span class="n">folder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_modules</span><span class="p">[</span><span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-93"></a>                <span class="n">filename</span> <span class="o">=</span> <span class="s">"</span><span class="si">%s</span><span class="s">.py"</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-94"></a>                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-95"></a>                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyze_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-96"></a>                        <span class="n">resolution</span><span class="p">[</span><span class="n">package</span><span class="p">]</span> <span class="o">=</span> <span class="n">filename</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-97"></a>            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_modules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">package</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s">'.'</span><span class="p">,</span> <span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">False</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-98"></a>                <span class="n">name</span> <span class="o">=</span> <span class="n">package</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s">'.'</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-99"></a>                <span class="n">folder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_modules</span><span class="p">[</span><span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-100"></a>                <span class="n">filename</span> <span class="o">=</span> <span class="s">"</span><span class="si">%s</span><span class="s">.py"</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-101"></a>                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-102"></a>                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyze_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-103"></a>                        <span class="n">resolution</span><span class="p">[</span><span class="n">package</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s">'.'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">filename</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-104"></a>        <span class="k">return</span> <span class="n">resolution</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-105"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-106"></a>    <span class="k">def</span> <span class="nf">_analyze_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-107"></a>        <span class="k">try</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-108"></a>            <span class="k">if</span> <span class="n">filename</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-109"></a>                <span class="n">source</span> <span class="o">=</span> <span class="s">''</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-110"></a>                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-111"></a>                    <span class="n">source</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-112"></a>                <span class="n">module</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyzer</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-113"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">inspect_module</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-114"></a>                <span class="k">return</span> <span class="bp">True</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-115"></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">reason</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-116"></a>            <span class="k">print</span><span class="p">(</span><span class="n">reason</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-117"></a>        <span class="k">return</span> <span class="bp">False</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-118"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-119"></a>    <span class="k">def</span> <span class="nf">unload_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_id</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-120"></a>        <span class="n">relations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_relations</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">path_id</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-121"></a>        <span class="k">if</span> <span class="n">relations</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-122"></a>            <span class="n">relations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path_id</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-123"></a>            <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">relations</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-124"></a>                <span class="n">valid</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-125"></a>                <span class="k">for</span> <span class="n">rel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_relations</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-126"></a>                    <span class="n">other_modules</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_relations</span><span class="p">[</span><span class="n">rel</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-127"></a>                    <span class="k">if</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">other_modules</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-128"></a>                        <span class="n">valid</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-129"></a>                <span class="k">if</span> <span class="ow">not</span> <span class="n">valid</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-130"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-131"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-132"></a>    <span class="k">def</span> <span class="nf">process_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-133"></a>        <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">PROJECTS</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-134"></a>            <span class="k">if</span> <span class="n">PROJECTS</span><span class="p">[</span><span class="n">project</span><span class="p">]:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-135"></a>                <span class="k">continue</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-136"></a>            <span class="n">project</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-137"></a>            <span class="n">package</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-138"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">projects_modules</span><span class="p">[</span><span class="n">package</span><span class="p">]</span> <span class="o">=</span> <span class="n">project</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-139"></a>            <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">followlinks</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-140"></a>                <span class="k">if</span> <span class="s">'__init__.py'</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-141"></a>                    <span class="n">package</span> <span class="o">=</span> <span class="n">root</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">project</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-142"></a>                        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">,</span> <span class="s">'.'</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-143"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">projects_modules</span><span class="p">[</span><span class="n">package</span><span class="p">]</span> <span class="o">=</span> <span class="n">root</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-144"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-145"></a>    <span class="k">def</span> <span class="nf">inspect_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_id</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-146"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-147"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">path_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">module</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-148"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-149"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">queue_send</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">path_id</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">recursive</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-150"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-151"></a>    <span class="k">def</span> <span class="nf">get_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_id</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-152"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path_id</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-153"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-154"></a>    <span class="k">def</span> <span class="nf">_shutdown_process</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-155"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">queue_send</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-156"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">daemon</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-157"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">queue_receive</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-158"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-159"></a>    <span class="k">def</span> <span class="nf">force_stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-160"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">keep_alive</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-161"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_shutdown_process</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-162"></a>        <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">PROJECTS</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-163"></a>            <span class="n">PROJECTS</span><span class="p">[</span><span class="n">project</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-164"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-165"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-166"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-167"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-168"></a><span class="k">class</span> <span class="nc">_DaemonProcess</span><span class="p">(</span><span class="n">Process</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-169"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-170"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queue_receive</span><span class="p">,</span> <span class="n">queue_send</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-171"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">_DaemonProcess</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-172"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">queue_receive</span> <span class="o">=</span> <span class="n">queue_receive</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-173"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">queue_send</span> <span class="o">=</span> <span class="n">queue_send</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-174"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">iteration</span> <span class="o">=</span> <span class="mi">0</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-175"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">packages</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-176"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-177"></a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-178"></a>        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-179"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">iteration</span> <span class="o">=</span> <span class="mi">0</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-180"></a>            <span class="n">path_id</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">recursive</span><span class="p">,</span> <span class="n">resolution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue_receive</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-181"></a>            <span class="k">if</span> <span class="n">path_id</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">module</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-182"></a>                <span class="k">break</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-183"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-184"></a>            <span class="k">try</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-185"></a>                <span class="k">if</span> <span class="n">resolution</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-186"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">packages</span> <span class="o">=</span> <span class="n">resolution</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-187"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">iteration</span> <span class="o">=</span> <span class="mi">2</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-188"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-189"></a>                <span class="k">elif</span> <span class="n">module</span><span class="o">.</span><span class="n">need_resolution</span><span class="p">():</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-190"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-191"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">iteration</span> <span class="o">=</span> <span class="mi">1</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-192"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-193"></a>                <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-194"></a>                    <span class="k">continue</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-195"></a>                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">packages</span> <span class="ow">and</span> <span class="n">recursive</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-196"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">queue_send</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">path_id</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="p">))</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-197"></a>                <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-198"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">queue_send</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">path_id</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="p">[]))</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-199"></a>            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">reason</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-200"></a>                <span class="c"># Try to not die whatever happend</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-201"></a>                <span class="n">message</span> <span class="o">=</span> <span class="s">'Daemon Fail with: </span><span class="si">%r</span><span class="s">'</span><span class="p">,</span> <span class="n">reason</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-202"></a>                <span class="k">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-203"></a>                <span class="k">raise</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-204"></a>            <span class="k">finally</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-205"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">packages</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-206"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-207"></a>    <span class="k">def</span> <span class="nf">_resolve_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-208"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_attributes</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-209"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_functions</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-210"></a>        <span class="k">for</span> <span class="n">cla</span> <span class="ow">in</span> <span class="n">module</span><span class="o">.</span><span class="n">classes</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-211"></a>            <span class="n">clazz</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">classes</span><span class="p">[</span><span class="n">cla</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-212"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_inheritance</span><span class="p">(</span><span class="n">clazz</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-213"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_attributes</span><span class="p">(</span><span class="n">clazz</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-214"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_functions</span><span class="p">(</span><span class="n">clazz</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-215"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-216"></a>    <span class="k">def</span> <span class="nf">_resolve_inheritance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clazz</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-217"></a>        <span class="k">for</span> <span class="n">base</span> <span class="ow">in</span> <span class="n">clazz</span><span class="o">.</span><span class="n">bases</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-218"></a>            <span class="n">name</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'.'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-219"></a>            <span class="n">main_attr</span> <span class="o">=</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-220"></a>            <span class="n">child_attrs</span> <span class="o">=</span> <span class="s">''</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-221"></a>            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-222"></a>                <span class="n">child_attrs</span> <span class="o">=</span> <span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-223"></a>            <span class="n">result</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">main_attr</span><span class="p">,</span> <span class="n">child_attrs</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-224"></a>            <span class="n">data</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">late_resolution</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-225"></a>            <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'found'</span><span class="p">,</span> <span class="bp">True</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-226"></a>                <span class="n">data_type</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">imports</span><span class="p">[</span><span class="n">main_attr</span><span class="p">]</span><span class="o">.</span><span class="n">get_data_type</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-227"></a>                <span class="k">if</span> <span class="n">child_attrs</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-228"></a>                    <span class="n">child_attrs</span> <span class="o">=</span> <span class="s">'.</span><span class="si">%s</span><span class="s">'</span> <span class="o">%</span> <span class="n">child_attrs</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-229"></a>                <span class="n">name</span> <span class="o">=</span> <span class="s">'</span><span class="si">%s%s</span><span class="s">().'</span> <span class="o">%</span> <span class="p">(</span><span class="n">data_type</span><span class="p">,</span> <span class="n">child_attrs</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-230"></a>                <span class="n">imports</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">get_imports</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-231"></a>                <span class="n">imports</span> <span class="o">=</span> <span class="p">[</span><span class="n">imp</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'.'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">imp</span> <span class="ow">in</span> <span class="n">imports</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-232"></a>                <span class="n">data</span> <span class="o">=</span> <span class="n">completer</span><span class="o">.</span><span class="n">get_all_completions</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">imports</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-233"></a>                <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-234"></a>            <span class="k">elif</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'object'</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">is</span> <span class="n">model</span><span class="o">.</span><span class="n">Clazz</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-235"></a>                <span class="n">data</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s">'object'</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-236"></a>            <span class="n">clazz</span><span class="o">.</span><span class="n">bases</span><span class="p">[</span><span class="n">base</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-237"></a>        <span class="n">clazz</span><span class="o">.</span><span class="n">update_with_parent_data</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-238"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-239"></a>    <span class="k">def</span> <span class="nf">_resolve_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structure</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-240"></a>        <span class="k">if</span> <span class="n">structure</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">is</span> <span class="n">model</span><span class="o">.</span><span class="n">Assign</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-241"></a>            <span class="k">return</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-242"></a>        <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">structure</span><span class="o">.</span><span class="n">functions</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-243"></a>            <span class="n">function</span> <span class="o">=</span> <span class="n">structure</span><span class="o">.</span><span class="n">functions</span><span class="p">[</span><span class="n">func</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-244"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_attributes</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-245"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_functions</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-246"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_returns</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-247"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-248"></a>    <span class="k">def</span> <span class="nf">_resolve_returns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structure</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-249"></a>        <span class="k">if</span> <span class="n">structure</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">is</span> <span class="n">model</span><span class="o">.</span><span class="n">Assign</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-250"></a>            <span class="k">return</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-251"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_types</span><span class="p">(</span><span class="n">structure</span><span class="o">.</span><span class="n">return_type</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">structure</span><span class="p">,</span> <span class="s">'return'</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-252"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-253"></a>    <span class="k">def</span> <span class="nf">_resolve_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structure</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-254"></a>        <span class="k">if</span> <span class="n">structure</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">is</span> <span class="n">model</span><span class="o">.</span><span class="n">Assign</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-255"></a>            <span class="k">return</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-256"></a>        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">structure</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-257"></a>            <span class="n">assign</span> <span class="o">=</span> <span class="n">structure</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-258"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_types</span><span class="p">(</span><span class="n">assign</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">assign</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-259"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-260"></a>    <span class="k">def</span> <span class="nf">_resolve_types</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">structure</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">split_by</span><span class="o">=</span><span class="s">'='</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-261"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">iteration</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-262"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_with_imports</span><span class="p">(</span><span class="n">types</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">split_by</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-263"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_with_local_names</span><span class="p">(</span><span class="n">types</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">split_by</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-264"></a>        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">iteration</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-265"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_with_local_vars</span><span class="p">(</span><span class="n">types</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">split_by</span><span class="p">,</span> <span class="n">structure</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-266"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-267"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_with_linked_modules</span><span class="p">(</span><span class="n">types</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">structure</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-268"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-269"></a>    <span class="k">def</span> <span class="nf">_resolve_with_linked_modules</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">structure</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-270"></a>        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">types</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-271"></a>            <span class="n">name</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">data_type</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-272"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-273"></a>                <span class="k">continue</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-274"></a>            <span class="k">for</span> <span class="n">package</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-275"></a>                <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">package</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-276"></a>                    <span class="n">to_resolve</span> <span class="o">=</span> <span class="n">name</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">package</span><span class="p">):]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-277"></a>                    <span class="k">if</span> <span class="n">to_resolve</span> <span class="ow">and</span> <span class="n">to_resolve</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">'.'</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-278"></a>                        <span class="n">to_resolve</span> <span class="o">=</span> <span class="n">to_resolve</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-279"></a>                    <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="p">[</span><span class="n">package</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-280"></a>                    <span class="n">linked</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">LinkedModule</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">to_resolve</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-281"></a>                    <span class="n">data</span><span class="o">.</span><span class="n">data_type</span> <span class="o">=</span> <span class="n">linked</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-282"></a>                    <span class="k">break</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-283"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-284"></a>    <span class="k">def</span> <span class="nf">_resolve_with_imports</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">splitby</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-285"></a>        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">types</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-286"></a>            <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">data_type</span> <span class="o">!=</span> <span class="n">model</span><span class="o">.</span><span class="n">late_resolution</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-287"></a>                <span class="k">continue</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-288"></a>            <span class="n">line</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">line_content</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-289"></a>            <span class="n">value</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">splitby</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'.'</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-290"></a>            <span class="n">name</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-291"></a>            <span class="n">extra</span> <span class="o">=</span> <span class="s">''</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-292"></a>            <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">'('</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-293"></a>                <span class="n">extra</span> <span class="o">=</span> <span class="n">name</span><span class="p">[</span><span class="n">name</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">'('</span><span class="p">):]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-294"></a>                <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="p">[:</span><span class="n">name</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">'('</span><span class="p">)]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-295"></a>            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">module</span><span class="o">.</span><span class="n">imports</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-296"></a>                <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">imports</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">data_type</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-297"></a>                <span class="n">package</span> <span class="o">=</span> <span class="s">'.'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-298"></a>                <span class="n">resolve</span> <span class="o">=</span> <span class="s">"</span><span class="si">%s%s</span><span class="s">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">package</span><span class="p">,</span> <span class="n">extra</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-299"></a>                <span class="n">data</span><span class="o">.</span><span class="n">data_type</span> <span class="o">=</span> <span class="n">resolve</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-300"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">package</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-301"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-302"></a>    <span class="k">def</span> <span class="nf">_resolve_with_local_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">splitby</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-303"></a>        <span class="c">#TODO: resolve with functions returns</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-304"></a>        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">types</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-305"></a>            <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">data_type</span> <span class="o">!=</span> <span class="n">model</span><span class="o">.</span><span class="n">late_resolution</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-306"></a>                <span class="k">continue</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-307"></a>            <span class="n">line</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">line_content</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-308"></a>            <span class="n">value</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">splitby</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'('</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-309"></a>            <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">module</span><span class="o">.</span><span class="n">classes</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-310"></a>                <span class="n">clazz</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">classes</span><span class="p">[</span><span class="n">value</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-311"></a>                <span class="n">data</span><span class="o">.</span><span class="n">data_type</span> <span class="o">=</span> <span class="n">clazz</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-312"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-313"></a>    <span class="k">def</span> <span class="nf">_resolve_with_local_vars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">splitby</span><span class="p">,</span> <span class="n">structure</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-314"></a>        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">types</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-315"></a>            <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">data_type</span> <span class="o">!=</span> <span class="n">model</span><span class="o">.</span><span class="n">late_resolution</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-316"></a>                <span class="k">continue</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-317"></a>            <span class="n">line</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">line_content</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-318"></a>            <span class="n">value</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">splitby</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'('</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-319"></a>            <span class="n">sym</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'.'</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-320"></a>            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sym</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-321"></a>                <span class="n">main_attr</span> <span class="o">=</span> <span class="n">sym</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-322"></a>                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sym</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-323"></a>                    <span class="n">child_attr</span> <span class="o">=</span> <span class="s">'.'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sym</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-324"></a>                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">sym</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-325"></a>                    <span class="n">child_attr</span> <span class="o">=</span> <span class="n">sym</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-326"></a>                <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-327"></a>                    <span class="n">child_attr</span> <span class="o">=</span> <span class="s">''</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-328"></a>                <span class="n">scope</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-329"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_get_scope</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">scope</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-330"></a>                <span class="k">if</span> <span class="n">structure</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">is</span> <span class="n">model</span><span class="o">.</span><span class="n">Assign</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-331"></a>                    <span class="n">scope</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-332"></a>                <span class="n">scope</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-333"></a>                <span class="n">result</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">get_type</span><span class="p">(</span><span class="n">main_attr</span><span class="p">,</span> <span class="n">child_attr</span><span class="p">,</span> <span class="n">scope</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-334"></a>                <span class="n">data_type</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">late_resolution</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-335"></a>                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s">'type'</span><span class="p">],</span> <span class="nb">basestring</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-336"></a>                    <span class="k">if</span> <span class="n">child_attr</span> <span class="ow">and</span> \
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-337"></a>                       <span class="n">structure</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">model</span><span class="o">.</span><span class="n">Function</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-338"></a>                        <span class="n">data_type</span> <span class="o">=</span> <span class="s">"</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s">'type'</span><span class="p">],</span> <span class="n">child_attr</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-339"></a>                    <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-340"></a>                        <span class="n">data_type</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s">'type'</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-341"></a>                <span class="k">elif</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'object'</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-342"></a>                    <span class="n">data_type</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s">'object'</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-343"></a>                <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-344"></a>                    <span class="n">data</span><span class="o">.</span><span class="n">data_type</span> <span class="o">=</span> <span class="n">data_type</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-345"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-346"></a>    <span class="k">def</span> <span class="nf">_get_scope</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structure</span><span class="p">,</span> <span class="n">scope</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-347"></a>        <span class="k">if</span> <span class="n">structure</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-348"></a>            <span class="n">scope</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">structure</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-349"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_get_scope</span><span class="p">(</span><span class="n">structure</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="n">scope</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-350"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-351"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-352"></a><span class="k">def</span> <span class="nf">shutdown_daemon</span><span class="p">():</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-353"></a>    <span class="n">daemon</span> <span class="o">=</span> <span class="n">CompletionDaemon</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-354"></a>    <span class="n">daemon</span><span class="o">.</span><span class="n">force_stop</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-355"></a>    <span class="k">global</span> <span class="n">__completion_daemon_instance</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-356"></a>    <span class="n">__completion_daemon_instance</span> <span class="o">=</span> <span class="bp">None</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-357"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-358"></a>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-359"></a><span class="k">def</span> <span class="nf">add_project_folder</span><span class="p">(</span><span class="n">project_path</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-360"></a>    <span class="k">global</span> <span class="n">PROJECTS</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-361"></a>    <span class="k">if</span> <span class="n">project_path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">PROJECTS</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-362"></a>        <span class="n">PROJECTS</span><span class="p">[</span><span class="n">project_path</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-363"></a>        <span class="n">daemon</span> <span class="o">=</span> <span class="n">CompletionDaemon</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletioncompletion_daemonpy-364"></a>        <span class="n">daemon</span><span class="o">.</span><span class="n">process_path</span><span class="p">()</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

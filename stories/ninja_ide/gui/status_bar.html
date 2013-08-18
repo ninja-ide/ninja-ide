@@ -1,0 +1,565 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="NINJA-IDE">
+    <title>NINJA-IDE | NINJA-IDE Documentation</title>
+    
+            <link href="../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
+
+    
+
+
+
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+    <li>
+    <a href="status_bar.txt" id="sourcelink">Source</a>
+    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+    <h1>NINJA-IDE</h1>
+    <div class="contents alert alert-info pull-top topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="status_bar.html#module-status-bar-py-api" id="id5"><em>Module:</em> status_bar.py API</a><ul>
+<li><a class="reference internal" href="status_bar.html#imports" id="id6"><em>Imports:</em></a></li>
+<li><a class="reference internal" href="status_bar.html#global-attributes" id="id7"><em>Global Attributes:</em></a></li>
+<li><a class="reference internal" href="status_bar.html#class-replacewidget-qwidget" id="id8"><em>Class:</em> ReplaceWidget(QWidget)</a><ul>
+<li><a class="reference internal" href="status_bar.html#attributes" id="id9"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="status_bar.html#function-init-parent-at-ln-410" id="id10"><em>Function:</em> __init__(parent) [at ln:410]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="status_bar.html#class-filesystemopener-qwidget" id="id11"><em>Class:</em> FileSystemOpener(QWidget)</a><ul>
+<li><a class="reference internal" href="status_bar.html#id1" id="id12"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="status_bar.html#function-init-at-ln-455" id="id13"><em>Function:</em> __init__() [at ln:455]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-open-file-at-ln-479" id="id14"><em>Function:</em> _open_file() [at ln:479]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-showevent-event-at-ln-484" id="id15"><em>Function:</em> showEvent(event) [at ln:484]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="status_bar.html#class-statusbar-qstatusbar" id="id16"><em>Class:</em> _StatusBar(QStatusBar)</a><ul>
+<li><a class="reference internal" href="status_bar.html#id2" id="id17"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="status_bar.html#function-init-at-ln-56" id="id18"><em>Function:</em> __init__() [at ln:56]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-notify-editor-changed-at-ln-142" id="id19"><em>Function:</em> _notify_editor_changed() [at ln:142]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-explore-code-at-ln-151" id="id20"><em>Function:</em> explore_code() [at ln:151]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-explore-file-code-path-at-ln-154" id="id21"><em>Function:</em> explore_file_code(path) [at ln:154]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-find-at-ln-246" id="id22"><em>Function:</em> find() [at ln:246]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-find-next-at-ln-256" id="id23"><em>Function:</em> find_next() [at ln:256]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-find-next-result-at-ln-122" id="id24"><em>Function:</em> find_next_result() [at ln:122]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-find-previous-at-ln-266" id="id25"><em>Function:</em> find_previous() [at ln:266]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-find-previous-result-at-ln-125" id="id26"><em>Function:</em> find_previous_result() [at ln:125]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-handle-tab-changed-new-tab-at-ln-128" id="id27"><em>Function:</em> handle_tab_changed(new_tab) [at ln:128]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-hide-status-at-ln-206" id="id28"><em>Function:</em> hide_status() [at ln:206]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-install-at-ln-115" id="id29"><em>Function:</em> install() [at ln:115]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-message-end-message-at-ln-283" id="id30"><em>Function:</em> message_end(message) [at ln:283]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-replace-at-ln-218" id="id31"><em>Function:</em> replace() [at ln:218]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-replace-all-selected-false-at-ln-234" id="id32"><em>Function:</em> replace_all(selected=False) [at ln:234]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-replace-selected-at-ln-231" id="id33"><em>Function:</em> replace_selected() [at ln:231]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-show-at-ln-157" id="id34"><em>Function:</em> show() [at ln:157]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-showmessage-message-timeout-at-ln-276" id="id35"><em>Function:</em> showMessage(message, timeout) [at ln:276]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-show-file-opener-at-ln-199" id="id36"><em>Function:</em> show_file_opener() [at ln:199]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-show-locator-at-ln-190" id="id37"><em>Function:</em> show_locator() [at ln:190]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-show-replace-at-ln-169" id="id38"><em>Function:</em> show_replace() [at ln:169]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-show-with-word-at-ln-179" id="id39"><em>Function:</em> show_with_word() [at ln:179]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="status_bar.html#class-textline-qlineedit" id="id40"><em>Class:</em> TextLine(QLineEdit)</a><ul>
+<li><a class="reference internal" href="status_bar.html#id3" id="id41"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="status_bar.html#function-init-parent-at-ln-431" id="id42"><em>Function:</em> __init__(parent) [at ln:431]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-keypressevent-event-at-ln-436" id="id43"><em>Function:</em> keyPressEvent(event) [at ln:436]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="status_bar.html#class-searchwidget-qwidget" id="id44"><em>Class:</em> SearchWidget(QWidget)</a><ul>
+<li><a class="reference internal" href="status_bar.html#id4" id="id45"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="status_bar.html#function-init-parent-at-ln-292" id="id46"><em>Function:</em> __init__(parent) [at ln:292]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-checks-state-changed-at-ln-339" id="id47"><em>Function:</em> _checks_state_changed() [at ln:339]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-contents-changed-editor-at-ln-344" id="id48"><em>Function:</em> contents_changed(editor) [at ln:344]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-find-matches-editor-in-place-false-at-ln-370" id="id49"><em>Function:</em> find_matches(editor, in_place=False) [at ln:370]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-find-next-at-ln-351" id="id50"><em>Function:</em> find_next() [at ln:351]</a></li>
+<li><a class="reference internal" href="status_bar.html#function-find-previous-at-ln-359" id="id51"><em>Function:</em> find_previous() [at ln:359]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="module-status-bar-py-api">
+<h2><em>Module:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html">status_bar.py</a> API</h2>
+<p>No description.</p>
+<div class="section" id="imports">
+<h3><a class="toc-backref" href="status_bar.html#id6"><em>Imports:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#20">re</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#46">ninja_ide.gui.ide.IDE</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#48">ninja_ide.tools.logger.NinjaLogger</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#34">PyQt4.QtGui.QCheckBox</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#24">PyQt4.QtGui.QCompleter</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#25">PyQt4.QtGui.QFileSystemModel</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#30">PyQt4.QtGui.QHBoxLayout</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#36">PyQt4.QtGui.QIcon</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#28">PyQt4.QtGui.QKeySequence</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#23">PyQt4.QtGui.QLabel</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#31">PyQt4.QtGui.QLineEdit</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#32">PyQt4.QtGui.QPushButton</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#37">PyQt4.QtGui.QShortcut</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#22">PyQt4.QtGui.QStatusBar</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#35">PyQt4.QtGui.QStyle</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#33">PyQt4.QtGui.QTextCursor</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#26">PyQt4.QtGui.QTextDocument</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#29">PyQt4.QtGui.QVBoxLayout</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#27">PyQt4.QtGui.QWidget</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#39">PyQt4.QtCore.Qt</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#38">PyQt4.QtCore.SIGNAL</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#18">__future__.absolute_import</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#45">ninja_ide.gui.actions</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#43">ninja_ide.tools.locator</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#47">ninja_ide.gui.main_panel.main_container</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#41">ninja_ide.resources</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#42">ninja_ide.core.settings</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#44">ninja_ide.tools.ui_tools</a></li>
+</ul>
+</div>
+<div class="section" id="global-attributes">
+<h3><a class="toc-backref" href="status_bar.html#id7"><em>Global Attributes:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#51">DEBUG [at ln:51]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#50">logger [at ln:50]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#490">status [at ln:490]</a></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="class-replacewidget-qwidget">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-408">ReplaceWidget(QWidget)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">ReplaceWidget</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="attributes">
+<h4><a class="toc-backref" href="status_bar.html#id9"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#416">_btnCloseReplace [at ln:416]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#418">_btnReplace [at ln:418]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#419">_btnReplaceAll [at ln:419]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#420">_btnReplaceSelection [at ln:420]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#414">_lineReplace [at ln:414]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-parent-at-ln-410">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-410">__init__(parent) [at ln:410]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-filesystemopener-qwidget">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-453">FileSystemOpener(QWidget)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">FileSystemOpener</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id1">
+<h4><a class="toc-backref" href="status_bar.html#id12"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#459">btnClose [at ln:459]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#467">btnOpen [at ln:467]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#461">completer [at ln:461]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#462">pathLine [at ln:462]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-at-ln-455">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-455">__init__() [at ln:455]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-open-file-at-ln-479">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-479">_open_file() [at ln:479]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_open_file</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-showevent-event-at-ln-484">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-484">showEvent(event) [at ln:484]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">showEvent</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-statusbar-qstatusbar">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-54">_StatusBar(QStatusBar)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">_StatusBar</span><span class="p">(</span><span class="n">QStatusBar</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id2">
+<h4><a class="toc-backref" href="status_bar.html#id17"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#71">_codeLocator [at ln:71]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#75">_fileSystemOpener [at ln:75]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#67">_replaceWidget [at ln:67]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#64">_searchWidget [at ln:64]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#59">_widgetStatus [at ln:59]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-at-ln-56">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-56">__init__() [at ln:56]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-notify-editor-changed-at-ln-142">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-142">_notify_editor_changed() [at ln:142]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_notify_editor_changed</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Lets search widget know that the editor contents changed and find</div>
+<div class="line">needs to be re-run</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-explore-code-at-ln-151">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-151">explore_code() [at ln:151]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">explore_code</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-explore-file-code-path-at-ln-154">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-154">explore_file_code(path) [at ln:154]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">explore_file_code</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-find-at-ln-246">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-246">find() [at ln:246]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">find</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-find-next-at-ln-256">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-256">find_next() [at ln:256]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">find_next</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-find-next-result-at-ln-122">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-122">find_next_result() [at ln:122]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">find_next_result</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-find-previous-at-ln-266">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-266">find_previous() [at ln:266]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">find_previous</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-find-previous-result-at-ln-125">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-125">find_previous_result() [at ln:125]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">find_previous_result</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-handle-tab-changed-new-tab-at-ln-128">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-128">handle_tab_changed(new_tab) [at ln:128]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">handle_tab_changed</span><span class="p">(</span><span class="n">new_tab</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Re-run search if tab changed, we use the find of search widget because</div>
+<div class="line">we want the widget to be updated.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-hide-status-at-ln-206">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-206">hide_status() [at ln:206]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">hide_status</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-install-at-ln-115">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-115">install() [at ln:115]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">install</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-message-end-message-at-ln-283">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-283">message_end(message) [at ln:283]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">message_end</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-replace-at-ln-218">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-218">replace() [at ln:218]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">replace</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-replace-all-selected-false-at-ln-234">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-234">replace_all(selected=False) [at ln:234]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">replace_all</span><span class="p">(</span><span class="n">selected</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-replace-selected-at-ln-231">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-231">replace_selected() [at ln:231]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">replace_selected</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-show-at-ln-157">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-157">show() [at ln:157]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">show</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-showmessage-message-timeout-at-ln-276">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-276">showMessage(message, timeout) [at ln:276]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">showMessage</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">timeout</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-show-file-opener-at-ln-199">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-199">show_file_opener() [at ln:199]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">show_file_opener</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-show-locator-at-ln-190">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-190">show_locator() [at ln:190]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">show_locator</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-show-replace-at-ln-169">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-169">show_replace() [at ln:169]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">show_replace</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-show-with-word-at-ln-179">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-179">show_with_word() [at ln:179]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">show_with_word</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-textline-qlineedit">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-429">TextLine(QLineEdit)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">TextLine</span><span class="p">(</span><span class="n">QLineEdit</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id3">
+<h4><a class="toc-backref" href="status_bar.html#id41"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#433">_parent [at ln:433]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#434">counter [at ln:434]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-parent-at-ln-431">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-431">__init__(parent) [at ln:431]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-keypressevent-event-at-ln-436">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-436">keyPressEvent(event) [at ln:436]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-searchwidget-qwidget">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-290">SearchWidget(QWidget)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">SearchWidget</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id4">
+<h4><a class="toc-backref" href="status_bar.html#id45"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#301">_btnClose [at ln:301]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#303">_btnFind [at ln:303]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#297">_checkSensitive [at ln:297]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#298">_checkWholeWord [at ln:298]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#299">_line [at ln:299]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#294">_parent [at ln:294]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#309">btnNext [at ln:309]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#304">btnPrevious [at ln:304]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#323">index [at ln:323]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#322">totalMatches [at ln:322]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-parent-at-ln-292">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-292">__init__(parent) [at ln:292]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-checks-state-changed-at-ln-339">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-339">_checks_state_changed() [at ln:339]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_checks_state_changed</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-contents-changed-editor-at-ln-344">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-344">contents_changed(editor) [at ln:344]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">contents_changed</span><span class="p">(</span><span class="n">editor</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-find-matches-editor-in-place-false-at-ln-370">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-370">find_matches(editor, in_place=False) [at ln:370]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">find_matches</span><span class="p">(</span><span class="n">editor</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-find-next-at-ln-351">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-351">find_next() [at ln:351]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">find_next</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-find-previous-at-ln-359">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-359">find_previous() [at ln:359]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">find_previous</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+</div>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

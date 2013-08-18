@@ -1,0 +1,24 @@
+
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: documentor
+
+`Modules </documentor_modules.html>`_
+=========================================
+Check out the Modules of the project
+
+----
+
+`Classes </documentor_classes.html>`_
+=========================================
+Check out the Classes of the project
+
+----
+
+`Functions </documentor_functions.html>`_
+=============================================
+Check out the functions of the project
+

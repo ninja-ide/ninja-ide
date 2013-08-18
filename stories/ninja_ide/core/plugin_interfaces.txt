@@ -1,0 +1,158 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: plugin_interfaces
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `plugin_interfaces.py </listings/ninja_ide/core/plugin_interfaces.py.html>`_ API
+============================================================================================
+
+No description.
+
+
+
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `implements(iface) [at ln:32] </listings/ninja_ide/core/plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-32>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def implements(iface):
+
+| A decorator to check if interfaces are correctly implmented
+| #TODO: check if functions parameters are correct
+
+
+----
+
+
+*Class:* `IProjectTypeHandler(object) </listings/ninja_ide/core/plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-57>`_
+------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class IProjectTypeHandler(object):
+
+| Interface to create a Project type handler
+
+
+*Function:* `get_context_menus() [at ln:78] </listings/ninja_ide/core/plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-78>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_context_menus():
+
+| "
+| Returns a iterable of QMenu
+
+
+----
+
+*Function:* `get_pages() [at ln:64] </listings/ninja_ide/core/plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-64>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_pages():
+
+| Returns a collection of QWizardPage
+
+
+----
+
+*Function:* `on_wizard_finish(wizard) [at ln:71] </listings/ninja_ide/core/plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-71>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def on_wizard_finish(wizard):
+
+| Called when the user finish the wizard
+| @wizard: QWizard instance
+
+
+----
+
+*Class:* `IPluginPreferences() </listings/ninja_ide/core/plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-113>`_
+------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class IPluginPreferences():
+
+| Interface for plugin preferences widget
+
+
+*Function:* `save() [at ln:118] </listings/ninja_ide/core/plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-118>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def save():
+
+| Save the plugin data as NINJA-IDE settings
+
+
+----
+
+*Class:* `ISymbolsHandler() </listings/ninja_ide/core/plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-85>`_
+--------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ISymbolsHandler():
+
+| Interface to create a symbol handler
+| EXAMPLE:
+| {
+|  'attributes':
+|      {name: line, name: line},
+|  'functions':
+|      {name: line, name: line},
+|  'classes':
+|      {
+|      name: (line, {
+|                  'attributes': {name: line},
+|                  'function': {name: line}}
+|          )
+|      }
+|  }
+
+
+*Function:* `obtain_symbols(source) [at ln:105] </listings/ninja_ide/core/plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-105>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def obtain_symbols(source):
+
+| Returns the dict needed by the tree
+| @source: Source code in plain text
+
+
+----
+
+*Class:* `MethodNotImplemented(Exception) </listings/ninja_ide/core/plugin_interfaces.py.html#listingsninja_idecoreplugin_interfacespy-28>`_
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class MethodNotImplemented(Exception):
+
+
+No description.
+
+
+
+

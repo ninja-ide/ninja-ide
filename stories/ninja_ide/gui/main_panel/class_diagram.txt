@@ -1,0 +1,475 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: class_diagram
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `class_diagram.py </listings/ninja_ide/gui/main_panel/class_diagram.py.html>`_ API
+==============================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `PyQt4.QtGui.QColor </listings/ninja_ide/gui/main_panel/class_diagram.py.html#24>`_
+
+- `PyQt4.QtGui.QGraphicsItem </listings/ninja_ide/gui/main_panel/class_diagram.py.html#20>`_
+
+- `PyQt4.QtGui.QGraphicsScene </listings/ninja_ide/gui/main_panel/class_diagram.py.html#28>`_
+
+- `PyQt4.QtGui.QGraphicsTextItem </listings/ninja_ide/gui/main_panel/class_diagram.py.html#22>`_
+
+- `PyQt4.QtGui.QGraphicsView </listings/ninja_ide/gui/main_panel/class_diagram.py.html#27>`_
+
+- `PyQt4.QtGui.QPen </listings/ninja_ide/gui/main_panel/class_diagram.py.html#25>`_
+
+- `PyQt4.QtGui.QRadialGradient </listings/ninja_ide/gui/main_panel/class_diagram.py.html#21>`_
+
+- `PyQt4.QtCore.QRectF </listings/ninja_ide/gui/main_panel/class_diagram.py.html#19>`_
+
+- `PyQt4.QtGui.QStyle </listings/ninja_ide/gui/main_panel/class_diagram.py.html#23>`_
+
+- `PyQt4.QtGui.QVBoxLayout </listings/ninja_ide/gui/main_panel/class_diagram.py.html#29>`_
+
+- `PyQt4.QtGui.QWidget </listings/ninja_ide/gui/main_panel/class_diagram.py.html#26>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/main_panel/class_diagram.py.html#18>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/gui/main_panel/class_diagram.py.html#33>`_
+
+- `ninja_ide.tools.introspection </listings/ninja_ide/gui/main_panel/class_diagram.py.html#32>`_
+
+- `ninja_ide.gui.main_panel.itab_item </listings/ninja_ide/gui/main_panel/class_diagram.py.html#31>`_
+
+
+
+
+
+*Class:* `ClassModel(QGraphicsItem) </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-110>`_
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ClassModel(QGraphicsItem):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `attributesItem [at ln:121] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#121>`_
+
+- `backgroundColor [at ln:167] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#167>`_
+
+- `className [at ln:115] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#115>`_
+
+- `defaultClassName [at ln:127] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#127>`_
+
+- `defaultClassNameHeight [at ln:126] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#126>`_
+
+- `functionsItem [at ln:116] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#116>`_
+
+- `maxWidth [at ln:125] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#125>`_
+
+- `methodList [at ln:170] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#170>`_
+
+- `myEdge [at ln:193] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#193>`_
+
+
+*Function:* `__calc_max_width() [at ln:156] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-156>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __calc_max_width():
+
+
+No description.
+
+
+----
+
+*Function:* `__get_title_height() [at ln:144] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-144>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __get_title_height():
+
+
+No description.
+
+
+----
+
+*Function:* `__init__(parent=None, graphicView=None, graphicScene=None) [at ln:112] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-112>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent=None, graphicView=None, graphicScene=None):
+
+
+No description.
+
+
+----
+
+*Function:* `_get_width() [at ln:140] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-140>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _get_width():
+
+
+No description.
+
+
+----
+
+*Function:* `add_edge(edge) [at ln:192] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-192>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_edge(edge):
+
+
+No description.
+
+
+----
+
+*Function:* `boundingRect() [at ln:189] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-189>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def boundingRect():
+
+
+No description.
+
+
+----
+
+*Function:* `get_height() [at ln:150] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-150>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_height():
+
+
+No description.
+
+
+----
+
+*Function:* `paint(painter, option, widget) [at ln:177] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-177>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def paint(painter, option, widget):
+
+
+No description.
+
+
+----
+
+*Function:* `set_attributes_list(attributesList) [at ln:133] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-133>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_attributes_list(attributesList):
+
+
+No description.
+
+
+----
+
+*Function:* `set_bg_color(qColor) [at ln:166] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-166>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_bg_color(qColor):
+
+
+No description.
+
+
+----
+
+*Function:* `set_class_name(className) [at ln:137] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-137>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_class_name(className):
+
+
+No description.
+
+
+----
+
+*Function:* `set_default_data() [at ln:124] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-124>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_default_data():
+
+
+No description.
+
+
+----
+
+*Function:* `set_functions_list(functionsList) [at ln:129] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-129>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_functions_list(functionsList):
+
+
+No description.
+
+
+----
+
+*Function:* `set_method_list(itemList) [at ln:169] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-169>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_method_list(itemList):
+
+
+No description.
+
+
+----
+
+*Function:* `update_positions() [at ln:172] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-172>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_positions():
+
+
+No description.
+
+
+----
+
+*Class:* `ClassDiagram(QWidget, itab_item.ITabItem) </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-36>`_
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ClassDiagram(QWidget, itab_item.ITabItem):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `actions [at ln:41] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#41>`_
+
+- `graphicView [at ln:42] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#42>`_
+
+- `hightestY [at ln:60] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#60>`_
+
+- `mX [at ln:58] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#58>`_
+
+- `mY [at ln:59] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#59>`_
+
+- `scene [at ln:43] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#43>`_
+
+
+*Function:* `__init__(actions, parent=None) [at ln:38] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-38>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(actions, parent=None):
+
+
+No description.
+
+
+----
+
+*Function:* `create_class(path) [at ln:68] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-68>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def create_class(path):
+
+
+No description.
+
+
+----
+
+*Function:* `fill_clases(classComponent, classContent) [at ln:86] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-86>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def fill_clases(classComponent, classContent):
+
+
+No description.
+
+
+----
+
+*Function:* `keyPressEvent(event) [at ln:99] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-99>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def keyPressEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `scale_view(scaleFactor) [at ln:92] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-92>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def scale_view(scaleFactor):
+
+
+No description.
+
+
+----
+
+*Class:* `FunctionsContainerModel(QGraphicsItem) </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-197>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class FunctionsContainerModel(QGraphicsItem):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `funtionsList [at ln:210] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#210>`_
+
+- `funtionsListItems [at ln:211] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#211>`_
+
+- `maxHeight [at ln:222] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#222>`_
+
+- `maxWidth [at ln:202] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#202>`_
+
+- `parent [at ln:201] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#201>`_
+
+
+*Function:* `__init__(parent=None) [at ln:199] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-199>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent=None):
+
+
+No description.
+
+
+----
+
+*Function:* `boundingRect() [at ln:233] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-233>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def boundingRect():
+
+
+No description.
+
+
+----
+
+*Function:* `get_height() [at ln:224] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-224>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_height():
+
+
+No description.
+
+
+----
+
+*Function:* `get_width() [at ln:227] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-227>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_width():
+
+
+No description.
+
+
+----
+
+*Function:* `paint(painter, option, widget) [at ln:205] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-205>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def paint(painter, option, widget):
+
+
+No description.
+
+
+----
+
+*Function:* `set_functions_list(functionsList, prefix=str, sufix=str) [at ln:209] </listings/ninja_ide/gui/main_panel/class_diagram.py.html#listingsninja_ideguimain_panelclass_diagrampy-209>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_functions_list(functionsList, prefix=str, sufix=str):
+
+
+No description.
+
+
+
+

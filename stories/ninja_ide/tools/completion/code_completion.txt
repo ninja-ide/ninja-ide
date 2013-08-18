@@ -1,0 +1,194 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: code_completion
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `code_completion.py </listings/ninja_ide/tools/completion/code_completion.py.html>`_ API
+====================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `re </listings/ninja_ide/tools/completion/code_completion.py.html#22>`_
+
+- `token </listings/ninja_ide/tools/completion/code_completion.py.html#23>`_
+
+- `tokenize.TokenError </listings/ninja_ide/tools/completion/code_completion.py.html#24>`_
+
+- `ninja_ide.tools.completion.analyzer </listings/ninja_ide/tools/completion/code_completion.py.html#33>`_
+
+- `ninja_ide.tools.completion.completer </listings/ninja_ide/tools/completion/code_completion.py.html#34>`_
+
+- `ninja_ide.tools.completion.completion_daemon </listings/ninja_ide/tools/completion/code_completion.py.html#35>`_
+
+- `tokenize.generate_tokens </listings/ninja_ide/tools/completion/code_completion.py.html#24>`_
+
+- `ninja_ide.gui.editor.helpers </listings/ninja_ide/tools/completion/code_completion.py.html#31>`_
+
+- `ninja_ide.tools.completion.model </listings/ninja_ide/tools/completion/code_completion.py.html#32>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/tools/completion/code_completion.py.html#30>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `_TOKEN_NL [at ln:40] </listings/ninja_ide/tools/completion/code_completion.py.html#40>`_
+
+
+----
+
+
+
+*Class:* `CodeCompletion(object) </listings/ninja_ide/tools/completion/code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-43>`_
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class CodeCompletion(object):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `MODULES [at ln:49] </listings/ninja_ide/tools/completion/code_completion.py.html#49>`_
+
+- `_invalid_op [at ln:56] </listings/ninja_ide/tools/completion/code_completion.py.html#56>`_
+
+- `_invalid_words [at ln:57] </listings/ninja_ide/tools/completion/code_completion.py.html#57>`_
+
+- `_valid_op [at ln:55] </listings/ninja_ide/tools/completion/code_completion.py.html#55>`_
+
+- `analyzer [at ln:46] </listings/ninja_ide/tools/completion/code_completion.py.html#46>`_
+
+- `cdaemon [at ln:47] </listings/ninja_ide/tools/completion/code_completion.py.html#47>`_
+
+- `keywords [at ln:60] </listings/ninja_ide/tools/completion/code_completion.py.html#60>`_
+
+- `module_id [at ln:77] </listings/ninja_ide/tools/completion/code_completion.py.html#77>`_
+
+- `patClass [at ln:52] </listings/ninja_ide/tools/completion/code_completion.py.html#52>`_
+
+- `patFunction [at ln:53] </listings/ninja_ide/tools/completion/code_completion.py.html#53>`_
+
+- `patIndent [at ln:51] </listings/ninja_ide/tools/completion/code_completion.py.html#51>`_
+
+- `patWords [at ln:54] </listings/ninja_ide/tools/completion/code_completion.py.html#54>`_
+
+
+*Function:* `__init__() [at ln:45] </listings/ninja_ide/tools/completion/code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-45>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `_search_for_completion_segment(token_code) [at ln:143] </listings/ninja_ide/tools/completion/code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-143>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _search_for_completion_segment(token_code):
+
+
+No description.
+
+
+----
+
+*Function:* `_search_for_scope(token_code) [at ln:105] </listings/ninja_ide/tools/completion/code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-105>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _search_for_scope(token_code):
+
+
+No description.
+
+
+----
+
+*Function:* `_tokenize_text(code) [at ln:88] </listings/ninja_ide/tools/completion/code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-88>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _tokenize_text(code):
+
+
+No description.
+
+
+----
+
+*Function:* `analyze_file(path, source=None, indent=settings.INDENT, useTabs=settings.USE_TABS) [at ln:65] </listings/ninja_ide/tools/completion/code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-65>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def analyze_file(path, source=None, indent=settings.INDENT, useTabs=settings.USE_TABS):
+
+
+No description.
+
+
+----
+
+*Function:* `get_completion(code, offset) [at ln:195] </listings/ninja_ide/tools/completion/code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-195>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_completion(code, offset):
+
+
+No description.
+
+
+----
+
+*Function:* `get_prefix(code, offset) [at ln:182] </listings/ninja_ide/tools/completion/code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-182>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_prefix(code, offset):
+
+| Return the prefix of the word under the cursor and a boolean
+| saying if it is a valid completion area.
+
+
+----
+
+*Function:* `unload_module() [at ln:62] </listings/ninja_ide/tools/completion/code_completion.py.html#listingsninja_idetoolscompletioncode_completionpy-62>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def unload_module():
+
+
+No description.
+
+
+
+

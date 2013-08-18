@@ -1,0 +1,161 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: test_ninja_project
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `test_ninja_project.py </listings/ninja_tests/tools/jsonmanager/test_ninja_project.py.html>`_ API
+=============================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `json </listings/ninja_tests/tools/jsonmanager/test_ninja_project.py.html#19>`_
+
+- `os </listings/ninja_tests/tools/jsonmanager/test_ninja_project.py.html#18>`_
+
+- `shutil </listings/ninja_tests/tools/jsonmanager/test_ninja_project.py.html#20>`_
+
+- `tempfile </listings/ninja_tests/tools/jsonmanager/test_ninja_project.py.html#22>`_
+
+- `unittest </listings/ninja_tests/tools/jsonmanager/test_ninja_project.py.html#21>`_
+
+- `ninja_ide.tools.json_manager.create_ninja_project </listings/ninja_tests/tools/jsonmanager/test_ninja_project.py.html#26>`_
+
+- `ninja_ide.tools.json_manager.read_ninja_plugin </listings/ninja_tests/tools/jsonmanager/test_ninja_project.py.html#24>`_
+
+- `ninja_ide.tools.json_manager.read_ninja_project </listings/ninja_tests/tools/jsonmanager/test_ninja_project.py.html#25>`_
+
+
+
+
+
+*Class:* `TestNinjaProject(unittest.TestCase) </listings/ninja_tests/tools/jsonmanager/test_ninja_project.py.html#listingsninja_teststoolsjsonmanagertest_ninja_projectpy-29>`_
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class TestNinjaProject(unittest.TestCase):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `tmpdir [at ln:32] </listings/ninja_tests/tools/jsonmanager/test_ninja_project.py.html#32>`_
+
+
+*Function:* `setUp() [at ln:31] </listings/ninja_tests/tools/jsonmanager/test_ninja_project.py.html#listingsninja_teststoolsjsonmanagertest_ninja_projectpy-31>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setUp():
+
+
+No description.
+
+
+----
+
+*Function:* `tearDown() [at ln:34] </listings/ninja_tests/tools/jsonmanager/test_ninja_project.py.html#listingsninja_teststoolsjsonmanagertest_ninja_projectpy-34>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def tearDown():
+
+
+No description.
+
+
+----
+
+*Function:* `test_create_ninja_project() [at ln:37] </listings/ninja_tests/tools/jsonmanager/test_ninja_project.py.html#listingsninja_teststoolsjsonmanagertest_ninja_projectpy-37>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_create_ninja_project():
+
+
+No description.
+
+
+----
+
+*Function:* `test_create_ninja_project_with_lot_of_spaces_in_name() [at ln:51] </listings/ninja_tests/tools/jsonmanager/test_ninja_project.py.html#listingsninja_teststoolsjsonmanagertest_ninja_projectpy-51>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_create_ninja_project_with_lot_of_spaces_in_name():
+
+
+No description.
+
+
+----
+
+*Function:* `test_read_ninja_bad_file_plugin() [at ln:100] </listings/ninja_tests/tools/jsonmanager/test_ninja_project.py.html#listingsninja_teststoolsjsonmanagertest_ninja_projectpy-100>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_read_ninja_bad_file_plugin():
+
+
+No description.
+
+
+----
+
+*Function:* `test_read_ninja_bad_file_project() [at ln:79] </listings/ninja_tests/tools/jsonmanager/test_ninja_project.py.html#listingsninja_teststoolsjsonmanagertest_ninja_projectpy-79>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_read_ninja_bad_file_project():
+
+
+No description.
+
+
+----
+
+*Function:* `test_read_ninja_plugin() [at ln:89] </listings/ninja_tests/tools/jsonmanager/test_ninja_project.py.html#listingsninja_teststoolsjsonmanagertest_ninja_projectpy-89>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_read_ninja_plugin():
+
+
+No description.
+
+
+----
+
+*Function:* `test_read_ninja_project() [at ln:65] </listings/ninja_tests/tools/jsonmanager/test_ninja_project.py.html#listingsninja_teststoolsjsonmanagertest_ninja_projectpy-65>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_read_ninja_project():
+
+
+No description.
+
+
+
+

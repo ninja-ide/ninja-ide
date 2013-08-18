@@ -1,0 +1,473 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: messages
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `messages.py </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html>`_ API
+===============================================================================================
+
+No description.
+
+
+
+
+
+
+*Class:* `BuiltinOverlap(Message) </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-112>`_
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class BuiltinOverlap(Message):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `message [at ln:114] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#114>`_
+
+- `message_args [at ln:118] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#118>`_
+
+
+*Function:* `__init__(filename, lineno, names) [at ln:116] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-116>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(filename, lineno, names):
+
+
+No description.
+
+
+----
+
+*Class:* `Message(object) </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-4>`_
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Message(object):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `filename [at ln:9] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#9>`_
+
+- `lineno [at ln:10] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#10>`_
+
+- `message [at ln:5] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#5>`_
+
+- `message_args [at ln:6] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#6>`_
+
+
+*Function:* `__init__(filename, lineno) [at ln:8] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-8>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(filename, lineno):
+
+
+No description.
+
+
+----
+
+*Function:* `__str__() [at ln:12] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-12>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __str__():
+
+
+No description.
+
+
+----
+
+*Class:* `ImportStarUsed(Message) </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-41>`_
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ImportStarUsed(Message):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `message [at ln:42] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#42>`_
+
+- `message_args [at ln:46] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#46>`_
+
+
+*Function:* `__init__(filename, lineno, modname) [at ln:44] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-44>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(filename, lineno, modname):
+
+
+No description.
+
+
+----
+
+*Class:* `RedefinedWhileUnused(Message) </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-25>`_
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class RedefinedWhileUnused(Message):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `message [at ln:26] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#26>`_
+
+- `message_args [at ln:30] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#30>`_
+
+
+*Function:* `__init__(filename, lineno, name, orig_lineno) [at ln:28] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-28>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(filename, lineno, name, orig_lineno):
+
+
+No description.
+
+
+----
+
+*Class:* `UnusedImport(Message) </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-17>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class UnusedImport(Message):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `message [at ln:18] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#18>`_
+
+- `message_args [at ln:22] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#22>`_
+
+
+*Function:* `__init__(filename, lineno, name) [at ln:20] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-20>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(filename, lineno, name):
+
+
+No description.
+
+
+----
+
+*Class:* `UndefinedLocal(Message) </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-65>`_
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class UndefinedLocal(Message):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `message [at ln:67] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#67>`_
+
+- `message_args [at ln:72] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#72>`_
+
+
+*Function:* `__init__(filename, lineno, name, orig_lineno) [at ln:70] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-70>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(filename, lineno, name, orig_lineno):
+
+
+No description.
+
+
+----
+
+*Class:* `UndefinedName(Message) </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-49>`_
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class UndefinedName(Message):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `message [at ln:50] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#50>`_
+
+- `message_args [at ln:54] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#54>`_
+
+
+*Function:* `__init__(filename, lineno, name) [at ln:52] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-52>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(filename, lineno, name):
+
+
+No description.
+
+
+----
+
+*Class:* `UndefinedExport(Message) </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-57>`_
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class UndefinedExport(Message):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `message [at ln:58] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#58>`_
+
+- `message_args [at ln:62] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#62>`_
+
+
+*Function:* `__init__(filename, lineno, name) [at ln:60] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-60>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(filename, lineno, name):
+
+
+No description.
+
+
+----
+
+*Class:* `ImportShadowedByLoopVar(Message) </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-33>`_
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ImportShadowedByLoopVar(Message):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `message [at ln:34] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#34>`_
+
+- `message_args [at ln:38] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#38>`_
+
+
+*Function:* `__init__(filename, lineno, name, orig_lineno) [at ln:36] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-36>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(filename, lineno, name, orig_lineno):
+
+
+No description.
+
+
+----
+
+*Class:* `DuplicateArgument(Message) </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-75>`_
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class DuplicateArgument(Message):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `message [at ln:76] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#76>`_
+
+- `message_args [at ln:80] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#80>`_
+
+
+*Function:* `__init__(filename, lineno, name) [at ln:78] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-78>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(filename, lineno, name):
+
+
+No description.
+
+
+----
+
+*Class:* `DocstringMissing(Message) </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-121>`_
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class DocstringMissing(Message):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `message [at ln:123] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#123>`_
+
+- `message_args [at ln:127] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#127>`_
+
+
+*Function:* `__init__(filename, lineno, names) [at ln:125] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-125>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(filename, lineno, names):
+
+
+No description.
+
+
+----
+
+*Class:* `UnusedVariable(Message) </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-99>`_
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class UnusedVariable(Message):
+
+| Indicates that a variable has been explicity assigned to but not actually
+| used.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `message [at ln:105] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#105>`_
+
+- `message_args [at ln:109] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#109>`_
+
+
+*Function:* `__init__(filename, lineno, names) [at ln:107] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-107>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(filename, lineno, names):
+
+
+No description.
+
+
+----
+
+*Class:* `RedefinedFunction(Message) </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-83>`_
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class RedefinedFunction(Message):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `message [at ln:84] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#84>`_
+
+- `message_args [at ln:88] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#88>`_
+
+
+*Function:* `__init__(filename, lineno, name, orig_lineno) [at ln:86] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-86>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(filename, lineno, name, orig_lineno):
+
+
+No description.
+
+
+----
+
+*Class:* `LateFutureImport(Message) </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-91>`_
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class LateFutureImport(Message):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `message [at ln:92] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#92>`_
+
+- `message_args [at ln:96] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#96>`_
+
+
+*Function:* `__init__(filename, lineno, names) [at ln:94] </listings/ninja_ide/dependencies/pyflakes_mod/messages.py.html#listingsninja_idedependenciespyflakes_modmessagespy-94>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(filename, lineno, names):
+
+
+No description.
+
+
+
+

@@ -1,0 +1,171 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: errors_lists
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `errors_lists.py </listings/ninja_ide/gui/explorer/errors_lists.py.html>`_ API
+==========================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `ninja_ide.gui.ide.IDE </listings/ninja_ide/gui/explorer/errors_lists.py.html#32>`_
+
+- `PyQt4.QtGui.QHBoxLayout </listings/ninja_ide/gui/explorer/errors_lists.py.html#23>`_
+
+- `PyQt4.QtGui.QLabel </listings/ninja_ide/gui/explorer/errors_lists.py.html#22>`_
+
+- `PyQt4.QtGui.QListWidget </listings/ninja_ide/gui/explorer/errors_lists.py.html#20>`_
+
+- `PyQt4.QtGui.QListWidgetItem </listings/ninja_ide/gui/explorer/errors_lists.py.html#21>`_
+
+- `PyQt4.QtGui.QPushButton </listings/ninja_ide/gui/explorer/errors_lists.py.html#25>`_
+
+- `PyQt4.QtGui.QSizePolicy </listings/ninja_ide/gui/explorer/errors_lists.py.html#27>`_
+
+- `PyQt4.QtGui.QSpacerItem </listings/ninja_ide/gui/explorer/errors_lists.py.html#26>`_
+
+- `PyQt4.QtGui.QVBoxLayout </listings/ninja_ide/gui/explorer/errors_lists.py.html#24>`_
+
+- `PyQt4.QtGui.QWidget </listings/ninja_ide/gui/explorer/errors_lists.py.html#19>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/explorer/errors_lists.py.html#28>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/explorer/errors_lists.py.html#29>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/explorer/errors_lists.py.html#17>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/explorer/errors_lists.py.html#31>`_
+
+
+
+
+
+*Class:* `ErrorsWidget(QWidget) </listings/ninja_ide/gui/explorer/errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-35>`_
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ErrorsWidget(QWidget):
+
+| pep8Activated(bool)
+| lintActivated(bool)
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `CHECK_STYLE [at ln:99] </listings/ninja_ide/gui/explorer/errors_lists.py.html#99>`_
+
+- `FIND_ERRORS [at ln:90] </listings/ninja_ide/gui/explorer/errors_lists.py.html#90>`_
+
+- `_outRefresh [at ln:146] </listings/ninja_ide/gui/explorer/errors_lists.py.html#146>`_
+
+- `errorsLabel [at ln:61] </listings/ninja_ide/gui/explorer/errors_lists.py.html#61>`_
+
+- `listErrors [at ln:52] </listings/ninja_ide/gui/explorer/errors_lists.py.html#52>`_
+
+- `listPep8 [at ln:54] </listings/ninja_ide/gui/explorer/errors_lists.py.html#54>`_
+
+- `pep8 [at ln:48] </listings/ninja_ide/gui/explorer/errors_lists.py.html#48>`_
+
+- `pep8Label [at ln:72] </listings/ninja_ide/gui/explorer/errors_lists.py.html#72>`_
+
+
+*Function:* `__init__() [at ln:46] </listings/ninja_ide/gui/explorer/errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-46>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `_turn_on_off_lint() [at ln:88] </listings/ninja_ide/gui/explorer/errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-88>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _turn_on_off_lint():
+
+| Change the status of the lint checker state.
+
+
+----
+
+*Function:* `_turn_on_off_pep8() [at ln:97] </listings/ninja_ide/gui/explorer/errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-97>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _turn_on_off_pep8():
+
+| Change the status of the lint checker state.
+
+
+----
+
+*Function:* `clear() [at ln:148] </listings/ninja_ide/gui/explorer/errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-148>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def clear():
+
+| Clear the widget
+
+
+----
+
+*Function:* `errors_selected() [at ln:106] </listings/ninja_ide/gui/explorer/errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-106>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def errors_selected():
+
+
+No description.
+
+
+----
+
+*Function:* `pep8_selected() [at ln:115] </listings/ninja_ide/gui/explorer/errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-115>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def pep8_selected():
+
+
+No description.
+
+
+----
+
+*Function:* `refresh_lists(errors, pep8) [at ln:124] </listings/ninja_ide/gui/explorer/errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-124>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def refresh_lists(errors, pep8):
+
+
+No description.
+
+
+
+

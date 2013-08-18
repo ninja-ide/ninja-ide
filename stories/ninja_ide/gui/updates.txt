@@ -1,0 +1,187 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: updates
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `updates.py </listings/ninja_ide/gui/updates.py.html>`_ API
+=======================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `ninja_ide </listings/ninja_ide/gui/updates.py.html#30>`_
+
+- `urllib </listings/ninja_ide/gui/updates.py.html#18>`_
+
+- `webbrowser </listings/ninja_ide/gui/updates.py.html#19>`_
+
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/gui/updates.py.html#34>`_
+
+- `PyQt4.QtGui.QAction </listings/ninja_ide/gui/updates.py.html#23>`_
+
+- `PyQt4.QtGui.QIcon </listings/ninja_ide/gui/updates.py.html#25>`_
+
+- `PyQt4.QtGui.QMenu </listings/ninja_ide/gui/updates.py.html#24>`_
+
+- `PyQt4.QtGui.QMessageBox </listings/ninja_ide/gui/updates.py.html#26>`_
+
+- `PyQt4.QtGui.QSystemTrayIcon </listings/ninja_ide/gui/updates.py.html#22>`_
+
+- `PyQt4.QtCore.QThread </listings/ninja_ide/gui/updates.py.html#27>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/updates.py.html#28>`_
+
+- `ninja_ide.tools.json_manager </listings/ninja_ide/gui/updates.py.html#33>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/updates.py.html#31>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/updates.py.html#32>`_
+
+- `distutils.version </listings/ninja_ide/gui/updates.py.html#20>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `logger [at ln:36] </listings/ninja_ide/gui/updates.py.html#36>`_
+
+
+----
+
+
+
+*Class:* `ThreadUpdates(QThread) </listings/ninja_ide/gui/updates.py.html#listingsninja_ideguiupdatespy-112>`_
+----------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ThreadUpdates(QThread):
+
+
+No description.
+
+
+*Function:* `__init__() [at ln:114] </listings/ninja_ide/gui/updates.py.html#listingsninja_ideguiupdatespy-114>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `run() [at ln:117] </listings/ninja_ide/gui/updates.py.html#listingsninja_ideguiupdatespy-117>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run():
+
+
+No description.
+
+
+----
+
+*Class:* `TrayIconUpdates(QSystemTrayIcon) </listings/ninja_ide/gui/updates.py.html#listingsninja_ideguiupdatespy-39>`_
+-------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class TrayIconUpdates(QSystemTrayIcon):
+
+| Tray Icon to show Updates of new versions.
+| @ SIGNALS:
+| @ closeTrayIcon()
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `download_link [at ln:76] </listings/ninja_ide/gui/updates.py.html#76>`_
+
+- `ide_version [at ln:75] </listings/ninja_ide/gui/updates.py.html#75>`_
+
+- `menu [at ln:61] </listings/ninja_ide/gui/updates.py.html#61>`_
+
+- `quit_action [at ln:68] </listings/ninja_ide/gui/updates.py.html#68>`_
+
+
+*Function:* `__init__(parent) [at ln:45] </listings/ninja_ide/gui/updates.py.html#listingsninja_ideguiupdatespy-45>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent):
+
+
+No description.
+
+
+----
+
+*Function:* `_close() [at ln:104] </listings/ninja_ide/gui/updates.py.html#listingsninja_ideguiupdatespy-104>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _close():
+
+
+No description.
+
+
+----
+
+*Function:* `_show_download() [at ln:107] </listings/ninja_ide/gui/updates.py.html#listingsninja_ideguiupdatespy-107>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _show_download():
+
+
+No description.
+
+
+----
+
+*Function:* `_show_messages(ide_version, download) [at ln:74] </listings/ninja_ide/gui/updates.py.html#listingsninja_ideguiupdatespy-74>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _show_messages(ide_version, download):
+
+
+No description.
+
+
+----
+
+*Function:* `setup_menu(show_downloads=False) [at ln:60] </listings/ninja_ide/gui/updates.py.html#listingsninja_ideguiupdatespy-60>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setup_menu(show_downloads=False):
+
+
+No description.
+
+
+
+

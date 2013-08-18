@@ -1,0 +1,497 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="NINJA-IDE">
+    <title>NINJA-IDE | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+
+
+
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+    <li>
+    <a href="file_manager.txt" id="sourcelink">Source</a>
+    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+    <h1>NINJA-IDE</h1>
+    <div class="contents alert alert-info pull-top topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="file_manager.html#module-file-manager-py-api" id="id1"><em>Module:</em> file_manager.py API</a><ul>
+<li><a class="reference internal" href="file_manager.html#imports" id="id2"><em>Imports:</em></a></li>
+<li><a class="reference internal" href="file_manager.html#global-attributes" id="id3"><em>Global Attributes:</em></a></li>
+<li><a class="reference internal" href="file_manager.html#global-functions" id="id4"><em>Global Functions:</em></a><ul>
+<li><a class="reference internal" href="file_manager.html#function-search-coding-line-txt-at-ln-130" id="id5"><em>Function:</em> _search_coding_line(txt) [at ln:130]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-belongs-to-folder-path-filename-at-ln-301" id="id6"><em>Function:</em> belongs_to_folder(path, fileName) [at ln:301]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-check-for-external-modification-filename-old-mtime-at-ln-318" id="id7"><em>Function:</em> check_for_external_modification(fileName, old_mtime) [at ln:318]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-convert-to-relative-basepath-filename-at-ln-287" id="id8"><em>Function:</em> convert_to_relative(basePath, fileName) [at ln:287]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-create-folder-foldername-add-init-file-true-at-ln-102" id="id9"><em>Function:</em> create_folder(folderName, add_init_file=True) [at ln:102]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-create-init-file-foldername-at-ln-63" id="id10"><em>Function:</em> create_init_file(folderName) [at ln:63]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-create-init-file-complete-foldername-at-ln-75" id="id11"><em>Function:</em> create_init_file_complete(folderName) [at ln:75]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-create-path-args-at-ln-296" id="id12"><em>Function:</em> create_path(*args) [at ln:296]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-create-tree-folders-foldername-at-ln-111" id="id13"><em>Function:</em> create_tree_folders(folderName) [at ln:111]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-delete-file-path-filename-none-at-ln-242" id="id14"><em>Function:</em> delete_file(path, fileName=None) [at ln:242]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-delete-folder-path-filename-none-at-ln-253" id="id15"><em>Function:</em> delete_folder(path, fileName=None) [at ln:253]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-file-exists-path-filename-str-at-ln-123" id="id16"><em>Function:</em> file_exists(path, fileName=str) [at ln:123]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-folder-exists-foldername-at-ln-118" id="id17"><em>Function:</em> folder_exists(folderName) [at ln:118]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-get-basename-filename-at-ln-170" id="id18"><em>Function:</em> get_basename(fileName) [at ln:170]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-get-file-encoding-content-at-ln-139" id="id19"><em>Function:</em> get_file_encoding(content) [at ln:139]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-get-file-extension-filename-at-ln-271" id="id20"><em>Function:</em> get_file_extension(fileName) [at ln:271]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-get-file-name-filename-at-ln-276" id="id21"><em>Function:</em> get_file_name(fileName) [at ln:276]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-get-files-from-folder-folder-ext-at-ln-327" id="id22"><em>Function:</em> get_files_from_folder(folder, ext) [at ln:327]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-get-folder-filename-at-ln-177" id="id23"><em>Function:</em> get_folder(fileName) [at ln:177]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-get-last-modification-filename-at-ln-308" id="id24"><em>Function:</em> get_last_modification(fileName) [at ln:308]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-get-module-name-filename-at-ln-281" id="id25"><em>Function:</em> get_module_name(fileName) [at ln:281]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-has-write-permission-filename-at-ln-313" id="id26"><em>Function:</em> has_write_permission(fileName) [at ln:313]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-is-supported-extension-filename-extensions-none-at-ln-337" id="id27"><em>Function:</em> is_supported_extension(filename, extensions=None) [at ln:337]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-open-project-path-at-ln-214" id="id28"><em>Function:</em> open_project(path) [at ln:214]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-open-project-with-extensions-path-extensions-at-ln-227" id="id29"><em>Function:</em> open_project_with_extensions(path, extensions) [at ln:227]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-read-file-content-filename-at-ln-158" id="id30"><em>Function:</em> read_file_content(fileName) [at ln:158]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-rename-file-old-new-at-ln-261" id="id31"><em>Function:</em> rename_file(old, new) [at ln:261]</a></li>
+<li><a class="reference internal" href="file_manager.html#function-store-file-content-filename-content-addextension-true-newfile-false-at-ln-182" id="id32"><em>Function:</em> store_file_content(fileName, content, addExtension=True, newFile=False) [at ln:182]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="file_manager.html#class-ninjafileexistsexception-exception" id="id33"><em>Class:</em> NinjaFileExistsException(Exception)</a><ul>
+<li><a class="reference internal" href="file_manager.html#attributes" id="id34"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="file_manager.html#function-init-filename-str-at-ln-58" id="id35"><em>Function:</em> __init__(filename=str) [at ln:58]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="file_manager.html#class-ninjanofilenameexception-exception" id="id36"><em>Class:</em> NinjaNoFileNameException(Exception)</a></li>
+<li><a class="reference internal" href="file_manager.html#class-ninjaioexception-exception" id="id37"><em>Class:</em> NinjaIOException(Exception)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="module-file-manager-py-api">
+<h2><em>Module:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html">file_manager.py</a> API</h2>
+<p>No description.</p>
+<div class="section" id="imports">
+<h3><a class="toc-backref" href="file_manager.html#id2"><em>Imports:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#20">os</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#21">re</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#23">shutil</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#19">sys</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#22">threading</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#25">PyQt4.QtCore</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#27">ninja_ide.core.settings</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#17">__future__.unicode_literals</a></li>
+</ul>
+</div>
+<div class="section" id="global-attributes">
+<h3><a class="toc-backref" href="file_manager.html#id3"><em>Global Attributes:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#36">file_store_content_lock [at ln:36]</a></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="global-functions">
+<h3><a class="toc-backref" href="file_manager.html#id4"><em>Global Functions:</em></a></h3>
+<div class="section" id="function-search-coding-line-txt-at-ln-130">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-130">_search_coding_line(txt) [at ln:130]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_search_coding_line</span><span class="p">(</span><span class="n">txt</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Search a pattern like this: # -*- coding: utf-8 -*-.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-belongs-to-folder-path-filename-at-ln-301">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-301">belongs_to_folder(path, fileName) [at ln:301]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">belongs_to_folder</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">fileName</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Determine if fileName is located under path structure.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-check-for-external-modification-filename-old-mtime-at-ln-318">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-318">check_for_external_modification(fileName, old_mtime) [at ln:318]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">check_for_external_modification</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="n">old_mtime</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Check if the file was modified outside ninja.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-convert-to-relative-basepath-filename-at-ln-287">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-287">convert_to_relative(basePath, fileName) [at ln:287]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">convert_to_relative</span><span class="p">(</span><span class="n">basePath</span><span class="p">,</span> <span class="n">fileName</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Convert a absolut path to relative based on its start with basePath.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-create-folder-foldername-add-init-file-true-at-ln-102">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-102">create_folder(folderName, add_init_file=True) [at ln:102]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">create_folder</span><span class="p">(</span><span class="n">folderName</span><span class="p">,</span> <span class="n">add_init_file</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Create a new Folder inside the one received as a param.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-create-init-file-foldername-at-ln-63">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-63">create_init_file(folderName) [at ln:63]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">create_init_file</span><span class="p">(</span><span class="n">folderName</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Create a __init__.py file in the folder received.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-create-init-file-complete-foldername-at-ln-75">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-75">create_init_file_complete(folderName) [at ln:75]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">create_init_file_complete</span><span class="p">(</span><span class="n">folderName</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Create a __init__.py file in the folder received.</div>
+<div class="line"><br></div>
+<div class="line">This __init__.py will contain the information of the files inside</div>
+<div class="line">this folder.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-create-path-args-at-ln-296">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-296">create_path(*args) [at ln:296]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">create_path</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Join the paths provided in order to create an absolut path.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-create-tree-folders-foldername-at-ln-111">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-111">create_tree_folders(folderName) [at ln:111]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">create_tree_folders</span><span class="p">(</span><span class="n">folderName</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Create a group of folders, one inside the other.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-delete-file-path-filename-none-at-ln-242">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-242">delete_file(path, fileName=None) [at ln:242]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">delete_file</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">fileName</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Delete the proper file.</div>
+<div class="line"><br></div>
+<div class="line">If fileName is None, path and fileName are joined to create the</div>
+<div class="line">complete path, otherwise path is used to delete the file.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-delete-folder-path-filename-none-at-ln-253">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-253">delete_folder(path, fileName=None) [at ln:253]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">delete_folder</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">fileName</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Delete the proper folder.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-file-exists-path-filename-str-at-ln-123">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-123">file_exists(path, fileName=str) [at ln:123]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">file_exists</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">fileName</span><span class="o">=</span><span class="nb">str</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Check if a file already exists.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-folder-exists-foldername-at-ln-118">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-118">folder_exists(folderName) [at ln:118]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">folder_exists</span><span class="p">(</span><span class="n">folderName</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Check if a folder already exists.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-basename-filename-at-ln-170">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-170">get_basename(fileName) [at ln:170]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_basename</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Get the name of a file or folder specified in a path.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-file-encoding-content-at-ln-139">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-139">get_file_encoding(content) [at ln:139]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_file_encoding</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Try to get the encoding of the file using the PEP 0263 rules</div>
+<div class="line">search the first or the second line of the file</div>
+<div class="line">Returns the encoding or the default UTF-8</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-file-extension-filename-at-ln-271">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-271">get_file_extension(fileName) [at ln:271]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_file_extension</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Get the file extension in the form of: 'py'</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-file-name-filename-at-ln-276">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-276">get_file_name(fileName) [at ln:276]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_file_name</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Get the file name, without the extension.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-files-from-folder-folder-ext-at-ln-327">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-327">get_files_from_folder(folder, ext) [at ln:327]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_files_from_folder</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">ext</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Get the files in folder with the specified extension.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-folder-filename-at-ln-177">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-177">get_folder(fileName) [at ln:177]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_folder</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Get the name of the folder containing the file or folder received.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-last-modification-filename-at-ln-308">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-308">get_last_modification(fileName) [at ln:308]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_last_modification</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Get the last time the file was modified.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-module-name-filename-at-ln-281">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-281">get_module_name(fileName) [at ln:281]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_module_name</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Get the name of the file without the extension.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-has-write-permission-filename-at-ln-313">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-313">has_write_permission(fileName) [at ln:313]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">has_write_permission</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Check if the file has writing permissions.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-is-supported-extension-filename-extensions-none-at-ln-337">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-337">is_supported_extension(filename, extensions=None) [at ln:337]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">is_supported_extension</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">extensions</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-open-project-path-at-ln-214">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-214">open_project(path) [at ln:214]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">open_project</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Return a dict structure containing the info inside a folder.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-open-project-with-extensions-path-extensions-at-ln-227">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-227">open_project_with_extensions(path, extensions) [at ln:227]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">open_project_with_extensions</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">extensions</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Return a dict structure containing the info inside a folder.</div>
+<div class="line"><br></div>
+<div class="line">This function uses the extensions specified by each project.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-read-file-content-filename-at-ln-158">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-158">read_file_content(fileName) [at ln:158]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">read_file_content</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Read a file content, this function is used to load Editor content.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-rename-file-old-new-at-ln-261">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-261">rename_file(old, new) [at ln:261]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">rename_file</span><span class="p">(</span><span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Rename a file, changing its name from 'old' to 'new'.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-store-file-content-filename-content-addextension-true-newfile-false-at-ln-182">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-182">store_file_content(fileName, content, addExtension=True, newFile=False) [at ln:182]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">store_file_content</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">addExtension</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">newFile</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Save content on disk with the given file name.</div>
+</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-ninjafileexistsexception-exception">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-53">NinjaFileExistsException(Exception)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">NinjaFileExistsException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Try to override existing file without confirmation exception.</div>
+</div>
+<div class="section" id="attributes">
+<h4><a class="toc-backref" href="file_manager.html#id34"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#60">filename [at ln:60]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-filename-str-at-ln-58">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-58">__init__(filename=str) [at ln:58]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="nb">str</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-ninjanofilenameexception-exception">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-46">NinjaNoFileNameException(Exception)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">NinjaNoFileNameException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Tried to write a file but I lack a file name</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-ninjaioexception-exception">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-39">NinjaIOException(Exception)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">NinjaIOException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">IO operation's exception</div>
+</div>
+</div>
+</div>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

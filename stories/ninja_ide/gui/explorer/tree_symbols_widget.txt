@@ -1,0 +1,313 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: tree_symbols_widget
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `tree_symbols_widget.py </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html>`_ API
+========================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `PyQt4.QtGui.QAbstractItemView </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#22>`_
+
+- `PyQt4.QtGui.QCursor </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#24>`_
+
+- `PyQt4.QtGui.QHeaderView </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#23>`_
+
+- `PyQt4.QtGui.QIcon </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#21>`_
+
+- `PyQt4.QtGui.QMenu </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#25>`_
+
+- `PyQt4.QtGui.QTreeWidget </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#19>`_
+
+- `PyQt4.QtGui.QTreeWidgetItem </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#20>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#27>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#28>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#17>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#30>`_
+
+
+
+
+
+*Class:* `ItemTree(QTreeWidgetItem) </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-284>`_
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ItemTree(QTreeWidgetItem):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `isAttribute [at ln:290] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#290>`_
+
+- `isClass [at ln:291] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#291>`_
+
+- `isClickable [at ln:289] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#289>`_
+
+- `isMethod [at ln:292] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#292>`_
+
+- `lineno [at ln:288] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#288>`_
+
+
+*Function:* `__init__(parent, name, lineno=None) [at ln:286] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-286>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent, name, lineno=None):
+
+
+No description.
+
+
+----
+
+*Class:* `TreeSymbolsWidget(QTreeWidget) </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-33>`_
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class TreeSymbolsWidget(QTreeWidget):
+
+| goToDefinition(int)
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `actualSymbols [at ln:53] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#53>`_
+
+- `collapsedItems [at ln:281] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#281>`_
+
+- `docstrings [at ln:54] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#54>`_
+
+
+*Function:* `__init__() [at ln:45] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-45>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `_get_classes_root() [at ln:104] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-104>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _get_classes_root():
+
+
+No description.
+
+
+----
+
+*Function:* `_get_expand(item) [at ln:158] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-158>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _get_expand(item):
+
+| Returns True or False to be used as setExpanded() with the items
+| It method is based on the click that the user made in the tree
+
+
+----
+
+*Function:* `_get_unique_name(item) [at ln:171] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-171>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _get_unique_name(item):
+
+| Returns a string used as unique name
+
+
+**Decorators:**
+
+- *staticmethod*
+
+----
+
+*Function:* `_go_to_definition(item) [at ln:241] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-241>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _go_to_definition(item):
+
+
+No description.
+
+
+----
+
+*Function:* `_item_collapsed(item) [at ln:254] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-254>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _item_collapsed(item):
+
+
+No description.
+
+
+----
+
+*Function:* `_item_expanded(item) [at ln:265] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-265>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _item_expanded(item):
+
+
+No description.
+
+
+----
+
+*Function:* `_menu_context_tree(point) [at ln:75] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-75>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _menu_context_tree(point):
+
+
+No description.
+
+
+----
+
+*Function:* `_save_symbols_state() [at ln:153] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-153>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _save_symbols_state():
+
+
+No description.
+
+
+----
+
+*Function:* `_unfold_class() [at ln:113] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-113>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _unfold_class():
+
+
+No description.
+
+
+----
+
+*Function:* `_unfold_class_attribute() [at ln:137] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-137>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _unfold_class_attribute():
+
+
+No description.
+
+
+----
+
+*Function:* `_unfold_class_method() [at ln:121] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-121>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _unfold_class_method():
+
+
+No description.
+
+
+----
+
+*Function:* `clean() [at ln:276] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-276>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def clean():
+
+| Reset the tree and reset attributes
+
+
+----
+
+*Function:* `create_tooltip(name, lineno) [at ln:245] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-245>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def create_tooltip(name, lineno):
+
+
+No description.
+
+
+----
+
+*Function:* `select_current_item(line, col) [at ln:70] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-70>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def select_current_item(line, col):
+
+
+No description.
+
+
+----
+
+*Function:* `update_symbols_tree(symbols, filename=str, parent=None) [at ln:182] </listings/ninja_ide/gui/explorer/tree_symbols_widget.py.html#listingsninja_ideguiexplorertree_symbols_widgetpy-182>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_symbols_tree(symbols, filename=str, parent=None):
+
+
+No description.
+
+
+
+

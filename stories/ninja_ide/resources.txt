@@ -1,0 +1,153 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: resources
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `resources.py </listings/ninja_ide/resources.py.html>`_ API
+=======================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `os </listings/ninja_ide/resources.py.html#23>`_
+
+- `sys </listings/ninja_ide/resources.py.html#24>`_
+
+- `PyQt4.QtCore.QDir </listings/ninja_ide/resources.py.html#19>`_
+
+- `PyQt4.QtGui.QKeySequence </listings/ninja_ide/resources.py.html#18>`_
+
+- `PyQt4.QtCore.QSettings </listings/ninja_ide/resources.py.html#20>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/resources.py.html#21>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `ADDINS [at ln:46] </listings/ninja_ide/resources.py.html#46>`_
+
+- `BUGS_PAGE [at ln:76] </listings/ninja_ide/resources.py.html#76>`_
+
+- `COLOR_SCHEME [at ln:187] </listings/ninja_ide/resources.py.html#187>`_
+
+- `CUSTOM_SCHEME [at ln:225] </listings/ninja_ide/resources.py.html#225>`_
+
+- `CUSTOM_SHORTCUTS [at ln:302] </listings/ninja_ide/resources.py.html#302>`_
+
+- `EDITOR_SKINS [at ln:57] </listings/ninja_ide/resources.py.html#57>`_
+
+- `GET_SYSTEM_PATH [at ln:68] </listings/ninja_ide/resources.py.html#68>`_
+
+- `HOME_NINJA_PATH [at ln:42] </listings/ninja_ide/resources.py.html#42>`_
+
+- `HOME_PATH [at ln:31] </listings/ninja_ide/resources.py.html#31>`_
+
+- `IMAGES [at ln:95] </listings/ninja_ide/resources.py.html#95>`_
+
+- `LANGS [at ln:55] </listings/ninja_ide/resources.py.html#55>`_
+
+- `LANGUAGES_URL [at ln:84] </listings/ninja_ide/resources.py.html#84>`_
+
+- `LOG_FILE_PATH [at ln:66] </listings/ninja_ide/resources.py.html#66>`_
+
+- `NINJA_EXECUTABLE [at ln:33] </listings/ninja_ide/resources.py.html#33>`_
+
+- `NINJA_THEME [at ln:59] </listings/ninja_ide/resources.py.html#59>`_
+
+- `NINJA_THEME_CLASSIC [at ln:61] </listings/ninja_ide/resources.py.html#61>`_
+
+- `NINJA_THEME_DOWNLOAD [at ln:64] </listings/ninja_ide/resources.py.html#64>`_
+
+- `PLUGINS [at ln:50] </listings/ninja_ide/resources.py.html#50>`_
+
+- `PLUGINS_COMMUNITY [at ln:88] </listings/ninja_ide/resources.py.html#88>`_
+
+- `PLUGINS_DESCRIPTOR [at ln:52] </listings/ninja_ide/resources.py.html#52>`_
+
+- `PLUGINS_DOC [at ln:78] </listings/ninja_ide/resources.py.html#78>`_
+
+- `PLUGINS_WEB [at ln:86] </listings/ninja_ide/resources.py.html#86>`_
+
+- `PRJ_PATH [at ln:35] </listings/ninja_ide/resources.py.html#35>`_
+
+- `QML_FILES [at ln:70] </listings/ninja_ide/resources.py.html#70>`_
+
+- `SCHEMES_URL [at ln:82] </listings/ninja_ide/resources.py.html#82>`_
+
+- `SETTINGS_PATH [at ln:44] </listings/ninja_ide/resources.py.html#44>`_
+
+- `SHORTCUTS [at ln:234] </listings/ninja_ide/resources.py.html#234>`_
+
+- `SYNTAX_FILES [at ln:48] </listings/ninja_ide/resources.py.html#48>`_
+
+- `UPDATES_URL [at ln:80] </listings/ninja_ide/resources.py.html#80>`_
+
+- `frozen [at ln:37] </listings/ninja_ide/resources.py.html#37>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `clean_custom_shortcuts() [at ln:336] </listings/ninja_ide/resources.py.html#listingsninja_ideresourcespy-336>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def clean_custom_shortcuts():
+
+| Cleans CUSTOMS\_SHORTCUTS
+
+
+----
+
+*Function:* `create_home_dir_structure() [at ln:344] </listings/ninja_ide/resources.py.html#listingsninja_ideresourcespy-344>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def create_home_dir_structure():
+
+| Create the necesary directories structure for NINJA-IDE
+
+
+----
+
+*Function:* `get_shortcut(shortcut_name) [at ln:326] </listings/ninja_ide/resources.py.html#listingsninja_ideresourcespy-326>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_shortcut(shortcut_name):
+
+| Returns the shortcut looking into CUSTOM\_SHORTCUTS and
+| SHORTCUTS
+
+
+----
+
+*Function:* `load_shortcuts() [at ln:309] </listings/ninja_ide/resources.py.html#listingsninja_ideresourcespy-309>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_shortcuts():
+
+| Loads the shortcuts from QSettings
+
+
+
+

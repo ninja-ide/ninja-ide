@@ -1,0 +1,727 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="NINJA-IDE">
+    <title>NINJA-IDE | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+
+
+
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+    <li>
+    <a href="test_code_completion.txt" id="sourcelink">Source</a>
+    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+    <h1>NINJA-IDE</h1>
+    <div class="contents alert alert-info pull-top topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="test_code_completion.html#module-test-code-completion-py-api" id="id1"><em>Module:</em> test_code_completion.py API</a><ul>
+<li><a class="reference internal" href="test_code_completion.html#imports" id="id2"><em>Imports:</em></a></li>
+<li><a class="reference internal" href="test_code_completion.html#class-codecompletiontestcase-unittest-testcase" id="id3"><em>Class:</em> CodeCompletionTestCase(unittest.TestCase)</a><ul>
+<li><a class="reference internal" href="test_code_completion.html#attributes" id="id4"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-setup-at-ln-28" id="id5"><em>Function:</em> setUp() [at ln:28]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-teardown-at-ln-32" id="id6"><em>Function:</em> tearDown() [at ln:32]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-bool-completion-at-ln-488" id="id7"><em>Function:</em> test_builtin_bool_completion() [at ln:488]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-bool-completion-in-class-attr-at-ln-241" id="id8"><em>Function:</em> test_builtin_bool_completion_in_class_attr() [at ln:241]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-bool-completion-in-class-attr-diff-func-at-ln-357" id="id9"><em>Function:</em> test_builtin_bool_completion_in_class_attr_diff_func() [at ln:357]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-bool-completion-in-class-not-attr-at-ln-134" id="id10"><em>Function:</em> test_builtin_bool_completion_in_class_not_attr() [at ln:134]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-dict-completion-at-ln-440" id="id11"><em>Function:</em> test_builtin_dict_completion() [at ln:440]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-dict-completion-in-class-attr-at-ln-217" id="id12"><em>Function:</em> test_builtin_dict_completion_in_class_attr() [at ln:217]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-dict-completion-in-class-attr-diff-func-at-ln-288" id="id13"><em>Function:</em> test_builtin_dict_completion_in_class_attr_diff_func() [at ln:288]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-dict-completion-in-class-not-attr-at-ln-86" id="id14"><em>Function:</em> test_builtin_dict_completion_in_class_not_attr() [at ln:86]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-float-completion-at-ln-464" id="id15"><em>Function:</em> test_builtin_float_completion() [at ln:464]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-float-completion-in-class-attr-at-ln-193" id="id16"><em>Function:</em> test_builtin_float_completion_in_class_attr() [at ln:193]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-float-completion-in-class-attr-diff-func-at-ln-315" id="id17"><em>Function:</em> test_builtin_float_completion_in_class_attr_diff_func() [at ln:315]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-float-completion-in-class-not-attr-at-ln-110" id="id18"><em>Function:</em> test_builtin_float_completion_in_class_not_attr() [at ln:110]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-int-completion-at-ln-452" id="id19"><em>Function:</em> test_builtin_int_completion() [at ln:452]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-int-completion-in-class-attr-at-ln-181" id="id20"><em>Function:</em> test_builtin_int_completion_in_class_attr() [at ln:181]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-int-completion-in-class-attr-diff-func-at-ln-301" id="id21"><em>Function:</em> test_builtin_int_completion_in_class_attr_diff_func() [at ln:301]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-int-completion-in-class-not-attr-at-ln-98" id="id22"><em>Function:</em> test_builtin_int_completion_in_class_not_attr() [at ln:98]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-list-completion-at-ln-428" id="id23"><em>Function:</em> test_builtin_list_completion() [at ln:428]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-list-completion-in-class-attr-at-ln-205" id="id24"><em>Function:</em> test_builtin_list_completion_in_class_attr() [at ln:205]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-list-completion-in-class-attr-diff-func-at-ln-329" id="id25"><em>Function:</em> test_builtin_list_completion_in_class_attr_diff_func() [at ln:329]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-list-completion-in-class-not-attr-at-ln-75" id="id26"><em>Function:</em> test_builtin_list_completion_in_class_not_attr() [at ln:75]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-str-completion-at-ln-500" id="id27"><em>Function:</em> test_builtin_str_completion() [at ln:500]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-str-completion-in-class-attr-at-ln-253" id="id28"><em>Function:</em> test_builtin_str_completion_in_class_attr() [at ln:253]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-str-completion-in-class-attr-diff-func-at-ln-371" id="id29"><em>Function:</em> test_builtin_str_completion_in_class_attr_diff_func() [at ln:371]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-str-completion-in-class-not-attr-at-ln-146" id="id30"><em>Function:</em> test_builtin_str_completion_in_class_not_attr() [at ln:146]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-tuple-completion-at-ln-476" id="id31"><em>Function:</em> test_builtin_tuple_completion() [at ln:476]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-tuple-completion-in-class-attr-at-ln-229" id="id32"><em>Function:</em> test_builtin_tuple_completion_in_class_attr() [at ln:229]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-tuple-completion-in-class-attr-diff-func-at-ln-343" id="id33"><em>Function:</em> test_builtin_tuple_completion_in_class_attr_diff_func() [at ln:343]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-tuple-completion-in-class-not-attr-at-ln-122" id="id34"><em>Function:</em> test_builtin_tuple_completion_in_class_not_attr() [at ln:122]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-unicode-completion-at-ln-512" id="id35"><em>Function:</em> test_builtin_unicode_completion() [at ln:512]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-unicode-completion-in-class-attr-at-ln-265" id="id36"><em>Function:</em> test_builtin_unicode_completion_in_class_attr() [at ln:265]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-unicode-completion-in-class-attr-diff-func-at-ln-385" id="id37"><em>Function:</em> test_builtin_unicode_completion_in_class_attr_diff_func() [at ln:385]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-builtin-unicode-completion-in-class-not-attr-at-ln-158" id="id38"><em>Function:</em> test_builtin_unicode_completion_in_class_not_attr() [at ln:158]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-completion-segment1-at-ln-539" id="id39"><em>Function:</em> test_completion_segment1() [at ln:539]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-completion-segment10-at-ln-606" id="id40"><em>Function:</em> test_completion_segment10() [at ln:606]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-completion-segment11-at-ln-615" id="id41"><em>Function:</em> test_completion_segment11() [at ln:615]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-completion-segment12-at-ln-624" id="id42"><em>Function:</em> test_completion_segment12() [at ln:624]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-completion-segment13-at-ln-632" id="id43"><em>Function:</em> test_completion_segment13() [at ln:632]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-completion-segment14-at-ln-640" id="id44"><em>Function:</em> test_completion_segment14() [at ln:640]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-completion-segment15-at-ln-649" id="id45"><em>Function:</em> test_completion_segment15() [at ln:649]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-completion-segment16-at-ln-658" id="id46"><em>Function:</em> test_completion_segment16() [at ln:658]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-completion-segment2-at-ln-546" id="id47"><em>Function:</em> test_completion_segment2() [at ln:546]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-completion-segment3-at-ln-553" id="id48"><em>Function:</em> test_completion_segment3() [at ln:553]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-completion-segment4-at-ln-560" id="id49"><em>Function:</em> test_completion_segment4() [at ln:560]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-completion-segment5-at-ln-567" id="id50"><em>Function:</em> test_completion_segment5() [at ln:567]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-completion-segment6-at-ln-574" id="id51"><em>Function:</em> test_completion_segment6() [at ln:574]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-completion-segment7-at-ln-581" id="id52"><em>Function:</em> test_completion_segment7() [at ln:581]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-completion-segment8-at-ln-588" id="id53"><em>Function:</em> test_completion_segment8() [at ln:588]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-completion-segment9-at-ln-597" id="id54"><em>Function:</em> test_completion_segment9() [at ln:597]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-global-attr-in-class-at-ln-55" id="id55"><em>Function:</em> test_global_attr_in_class() [at ln:55]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-global-attr-not-recognized-in-class-at-ln-66" id="id56"><em>Function:</em> test_global_attr_not_recognized_in_class() [at ln:66]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-import-attribute-at-ln-39" id="id57"><em>Function:</em> test_import_attribute() [at ln:39]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-import-double-attribute-at-ln-47" id="id58"><em>Function:</em> test_import_double_attribute() [at ln:47]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-invalid-var-at-ln-525" id="id59"><em>Function:</em> test_invalid_var() [at ln:525]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-invalid-var-in-class-function-at-ln-171" id="id60"><em>Function:</em> test_invalid_var_in_class_function() [at ln:171]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-invalid-var-in-class-function-attr-at-ln-278" id="id61"><em>Function:</em> test_invalid_var_in_class_function_attr() [at ln:278]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-module-import-attribute-at-ln-400" id="id62"><em>Function:</em> test_module_import_attribute() [at ln:400]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-module-import-double-attribute-at-ln-408" id="id63"><em>Function:</em> test_module_import_double_attribute() [at ln:408]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-search-for-scope-at-ln-699" id="id64"><em>Function:</em> test_search_for_scope() [at ln:699]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-search-for-scope1-at-ln-671" id="id65"><em>Function:</em> test_search_for_scope1() [at ln:671]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-search-for-scope2-at-ln-680" id="id66"><em>Function:</em> test_search_for_scope2() [at ln:680]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-search-for-scope3-at-ln-689" id="id67"><em>Function:</em> test_search_for_scope3() [at ln:689]</a></li>
+<li><a class="reference internal" href="test_code_completion.html#function-test-valid-class-attr-at-ln-416" id="id68"><em>Function:</em> test_valid_class_attr() [at ln:416]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="module-test-code-completion-py-api">
+<h2><em>Module:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html">test_code_completion.py</a> API</h2>
+<p>No description.</p>
+<div class="section" id="imports">
+<h3><a class="toc-backref" href="test_code_completion.html#id2"><em>Imports:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#19">unittest</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#23">ninja_tests.tools.completion.SOURCE_COMPLETION</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#17">__future__.absolute_import</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#21">ninja_ide.tools.completion.code_completion</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#22">ninja_ide.tools.completion.completion_daemon</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#23">ninja_tests.tools.completion.get_source_data</a></li>
+</ul>
+</div>
+<div class="section" id="class-codecompletiontestcase-unittest-testcase">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-26">CodeCompletionTestCase(unittest.TestCase)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">CodeCompletionTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="attributes">
+<h4><a class="toc-backref" href="test_code_completion.html#id4"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#29">SYNTAX [at ln:29]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#30">cc [at ln:30]</a></li>
+</ul>
+</div>
+<div class="section" id="function-setup-at-ln-28">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-28">setUp() [at ln:28]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">setUp</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-teardown-at-ln-32">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-32">tearDown() [at ln:32]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">tearDown</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-bool-completion-at-ln-488">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-488">test_builtin_bool_completion() [at ln:488]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_bool_completion</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-bool-completion-in-class-attr-at-ln-241">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-241">test_builtin_bool_completion_in_class_attr() [at ln:241]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_bool_completion_in_class_attr</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-bool-completion-in-class-attr-diff-func-at-ln-357">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-357">test_builtin_bool_completion_in_class_attr_diff_func() [at ln:357]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_bool_completion_in_class_attr_diff_func</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-bool-completion-in-class-not-attr-at-ln-134">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-134">test_builtin_bool_completion_in_class_not_attr() [at ln:134]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_bool_completion_in_class_not_attr</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-dict-completion-at-ln-440">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-440">test_builtin_dict_completion() [at ln:440]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_dict_completion</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-dict-completion-in-class-attr-at-ln-217">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-217">test_builtin_dict_completion_in_class_attr() [at ln:217]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_dict_completion_in_class_attr</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-dict-completion-in-class-attr-diff-func-at-ln-288">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-288">test_builtin_dict_completion_in_class_attr_diff_func() [at ln:288]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_dict_completion_in_class_attr_diff_func</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Test the completion of some attribute from another function.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-dict-completion-in-class-not-attr-at-ln-86">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-86">test_builtin_dict_completion_in_class_not_attr() [at ln:86]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_dict_completion_in_class_not_attr</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-float-completion-at-ln-464">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-464">test_builtin_float_completion() [at ln:464]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_float_completion</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-float-completion-in-class-attr-at-ln-193">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-193">test_builtin_float_completion_in_class_attr() [at ln:193]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_float_completion_in_class_attr</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-float-completion-in-class-attr-diff-func-at-ln-315">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-315">test_builtin_float_completion_in_class_attr_diff_func() [at ln:315]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_float_completion_in_class_attr_diff_func</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-float-completion-in-class-not-attr-at-ln-110">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-110">test_builtin_float_completion_in_class_not_attr() [at ln:110]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_float_completion_in_class_not_attr</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-int-completion-at-ln-452">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-452">test_builtin_int_completion() [at ln:452]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_int_completion</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-int-completion-in-class-attr-at-ln-181">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-181">test_builtin_int_completion_in_class_attr() [at ln:181]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_int_completion_in_class_attr</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-int-completion-in-class-attr-diff-func-at-ln-301">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-301">test_builtin_int_completion_in_class_attr_diff_func() [at ln:301]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_int_completion_in_class_attr_diff_func</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-int-completion-in-class-not-attr-at-ln-98">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-98">test_builtin_int_completion_in_class_not_attr() [at ln:98]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_int_completion_in_class_not_attr</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-list-completion-at-ln-428">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-428">test_builtin_list_completion() [at ln:428]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_list_completion</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-list-completion-in-class-attr-at-ln-205">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-205">test_builtin_list_completion_in_class_attr() [at ln:205]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_list_completion_in_class_attr</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-list-completion-in-class-attr-diff-func-at-ln-329">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-329">test_builtin_list_completion_in_class_attr_diff_func() [at ln:329]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_list_completion_in_class_attr_diff_func</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-list-completion-in-class-not-attr-at-ln-75">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-75">test_builtin_list_completion_in_class_not_attr() [at ln:75]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_list_completion_in_class_not_attr</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-str-completion-at-ln-500">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-500">test_builtin_str_completion() [at ln:500]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_str_completion</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-str-completion-in-class-attr-at-ln-253">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-253">test_builtin_str_completion_in_class_attr() [at ln:253]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_str_completion_in_class_attr</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-str-completion-in-class-attr-diff-func-at-ln-371">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-371">test_builtin_str_completion_in_class_attr_diff_func() [at ln:371]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_str_completion_in_class_attr_diff_func</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-str-completion-in-class-not-attr-at-ln-146">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-146">test_builtin_str_completion_in_class_not_attr() [at ln:146]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_str_completion_in_class_not_attr</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-tuple-completion-at-ln-476">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-476">test_builtin_tuple_completion() [at ln:476]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_tuple_completion</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-tuple-completion-in-class-attr-at-ln-229">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-229">test_builtin_tuple_completion_in_class_attr() [at ln:229]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_tuple_completion_in_class_attr</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-tuple-completion-in-class-attr-diff-func-at-ln-343">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-343">test_builtin_tuple_completion_in_class_attr_diff_func() [at ln:343]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_tuple_completion_in_class_attr_diff_func</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-tuple-completion-in-class-not-attr-at-ln-122">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-122">test_builtin_tuple_completion_in_class_not_attr() [at ln:122]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_tuple_completion_in_class_not_attr</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-unicode-completion-at-ln-512">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-512">test_builtin_unicode_completion() [at ln:512]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_unicode_completion</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+<p><strong>Decorators:</strong></p>
+<ul class="simple">
+<li><em>unittest.skip()</em></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-unicode-completion-in-class-attr-at-ln-265">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-265">test_builtin_unicode_completion_in_class_attr() [at ln:265]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_unicode_completion_in_class_attr</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+<p><strong>Decorators:</strong></p>
+<ul class="simple">
+<li><em>unittest.skip()</em></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-unicode-completion-in-class-attr-diff-func-at-ln-385">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-385">test_builtin_unicode_completion_in_class_attr_diff_func() [at ln:385]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_unicode_completion_in_class_attr_diff_func</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+<p><strong>Decorators:</strong></p>
+<ul class="simple">
+<li><em>unittest.skip()</em></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-builtin-unicode-completion-in-class-not-attr-at-ln-158">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-158">test_builtin_unicode_completion_in_class_not_attr() [at ln:158]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_builtin_unicode_completion_in_class_not_attr</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+<p><strong>Decorators:</strong></p>
+<ul class="simple">
+<li><em>unittest.skip()</em></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-completion-segment1-at-ln-539">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-539">test_completion_segment1() [at ln:539]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_completion_segment1</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-completion-segment10-at-ln-606">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-606">test_completion_segment10() [at ln:606]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_completion_segment10</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-completion-segment11-at-ln-615">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-615">test_completion_segment11() [at ln:615]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_completion_segment11</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-completion-segment12-at-ln-624">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-624">test_completion_segment12() [at ln:624]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_completion_segment12</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-completion-segment13-at-ln-632">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-632">test_completion_segment13() [at ln:632]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_completion_segment13</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-completion-segment14-at-ln-640">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-640">test_completion_segment14() [at ln:640]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_completion_segment14</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-completion-segment15-at-ln-649">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-649">test_completion_segment15() [at ln:649]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_completion_segment15</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-completion-segment16-at-ln-658">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-658">test_completion_segment16() [at ln:658]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_completion_segment16</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-completion-segment2-at-ln-546">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-546">test_completion_segment2() [at ln:546]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_completion_segment2</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-completion-segment3-at-ln-553">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-553">test_completion_segment3() [at ln:553]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_completion_segment3</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-completion-segment4-at-ln-560">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-560">test_completion_segment4() [at ln:560]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_completion_segment4</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-completion-segment5-at-ln-567">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-567">test_completion_segment5() [at ln:567]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_completion_segment5</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-completion-segment6-at-ln-574">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-574">test_completion_segment6() [at ln:574]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_completion_segment6</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-completion-segment7-at-ln-581">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-581">test_completion_segment7() [at ln:581]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_completion_segment7</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-completion-segment8-at-ln-588">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-588">test_completion_segment8() [at ln:588]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_completion_segment8</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-completion-segment9-at-ln-597">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-597">test_completion_segment9() [at ln:597]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_completion_segment9</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-global-attr-in-class-at-ln-55">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-55">test_global_attr_in_class() [at ln:55]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_global_attr_in_class</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-global-attr-not-recognized-in-class-at-ln-66">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-66">test_global_attr_not_recognized_in_class() [at ln:66]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_global_attr_not_recognized_in_class</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-import-attribute-at-ln-39">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-39">test_import_attribute() [at ln:39]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_import_attribute</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-import-double-attribute-at-ln-47">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-47">test_import_double_attribute() [at ln:47]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_import_double_attribute</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-invalid-var-at-ln-525">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-525">test_invalid_var() [at ln:525]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_invalid_var</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-invalid-var-in-class-function-at-ln-171">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-171">test_invalid_var_in_class_function() [at ln:171]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_invalid_var_in_class_function</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-invalid-var-in-class-function-attr-at-ln-278">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-278">test_invalid_var_in_class_function_attr() [at ln:278]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_invalid_var_in_class_function_attr</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-module-import-attribute-at-ln-400">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-400">test_module_import_attribute() [at ln:400]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_module_import_attribute</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-module-import-double-attribute-at-ln-408">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-408">test_module_import_double_attribute() [at ln:408]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_module_import_double_attribute</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-search-for-scope-at-ln-699">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-699">test_search_for_scope() [at ln:699]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_search_for_scope</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-search-for-scope1-at-ln-671">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-671">test_search_for_scope1() [at ln:671]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_search_for_scope1</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-search-for-scope2-at-ln-680">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-680">test_search_for_scope2() [at ln:680]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_search_for_scope2</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-search-for-scope3-at-ln-689">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-689">test_search_for_scope3() [at ln:689]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_search_for_scope3</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-test-valid-class-attr-at-ln-416">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_tests/tools/completion/test_code_completion.py.html#listingsninja_teststoolscompletiontest_code_completionpy-416">test_valid_class_attr() [at ln:416]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">test_valid_class_attr</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+</div>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

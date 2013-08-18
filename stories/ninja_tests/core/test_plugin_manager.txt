@@ -1,0 +1,112 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: test_plugin_manager
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `test_plugin_manager.py </listings/ninja_tests/core/test_plugin_manager.py.html>`_ API
+==================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `os </listings/ninja_tests/core/test_plugin_manager.py.html#19>`_
+
+- `unittest </listings/ninja_tests/core/test_plugin_manager.py.html#18>`_
+
+- `ninja_ide.core.plugin_manager.PluginManager </listings/ninja_tests/core/test_plugin_manager.py.html#20>`_
+
+- `__future__.absolute_import </listings/ninja_tests/core/test_plugin_manager.py.html#17>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `CURRENT_DIR [at ln:23] </listings/ninja_tests/core/test_plugin_manager.py.html#23>`_
+
+- `PLUGIN_NOT_VALID_NAME [at ln:24] </listings/ninja_tests/core/test_plugin_manager.py.html#24>`_
+
+- `PLUGIN_VALID_NAME [at ln:25] </listings/ninja_tests/core/test_plugin_manager.py.html#25>`_
+
+
+----
+
+
+
+*Class:* `PluginManagerTestCase(unittest.TestCase) </listings/ninja_tests/core/test_plugin_manager.py.html#listingsninja_testscoretest_plugin_managerpy-28>`_
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class PluginManagerTestCase(unittest.TestCase):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `pm [at ln:32] </listings/ninja_tests/core/test_plugin_manager.py.html#32>`_
+
+
+*Function:* `setUp() [at ln:29] </listings/ninja_tests/core/test_plugin_manager.py.html#listingsninja_testscoretest_plugin_managerpy-29>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setUp():
+
+
+No description.
+
+
+----
+
+*Function:* `test_discover() [at ln:34] </listings/ninja_tests/core/test_plugin_manager.py.html#listingsninja_testscoretest_plugin_managerpy-34>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_discover():
+
+
+No description.
+
+
+----
+
+*Function:* `test_magic_method_contains() [at ln:39] </listings/ninja_tests/core/test_plugin_manager.py.html#listingsninja_testscoretest_plugin_managerpy-39>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_magic_method_contains():
+
+
+No description.
+
+
+----
+
+*Function:* `test_magic_method_getitem() [at ln:45] </listings/ninja_tests/core/test_plugin_manager.py.html#listingsninja_testscoretest_plugin_managerpy-45>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_magic_method_getitem():
+
+
+No description.
+
+
+
+

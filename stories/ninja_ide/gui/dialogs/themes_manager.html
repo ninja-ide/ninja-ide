@@ -1,0 +1,266 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="NINJA-IDE">
+    <title>NINJA-IDE | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+
+
+
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+    <li>
+    <a href="themes_manager.txt" id="sourcelink">Source</a>
+    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+    <h1>NINJA-IDE</h1>
+    <div class="contents alert alert-info pull-top topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="themes_manager.html#module-themes-manager-py-api" id="id2"><em>Module:</em> themes_manager.py API</a><ul>
+<li><a class="reference internal" href="themes_manager.html#imports" id="id3"><em>Imports:</em></a></li>
+<li><a class="reference internal" href="themes_manager.html#class-themesmanagerwidget-qdialog" id="id4"><em>Class:</em> ThemesManagerWidget(QDialog)</a><ul>
+<li><a class="reference internal" href="themes_manager.html#attributes" id="id5"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="themes_manager.html#function-init-parent-at-ln-48" id="id6"><em>Function:</em> __init__(parent) [at ln:48]</a></li>
+<li><a class="reference internal" href="themes_manager.html#function-download-scheme-thread-at-ln-122" id="id7"><em>Function:</em> _download_scheme_thread() [at ln:122]</a></li>
+<li><a class="reference internal" href="themes_manager.html#function-reload-themes-at-ln-78" id="id8"><em>Function:</em> _reload_themes() [at ln:78]</a></li>
+<li><a class="reference internal" href="themes_manager.html#function-download-url-folder-at-ln-126" id="id9"><em>Function:</em> download(url, folder) [at ln:126]</a></li>
+<li><a class="reference internal" href="themes_manager.html#function-download-scheme-scheme-at-ln-93" id="id10"><em>Function:</em> download_scheme(scheme) [at ln:93]</a></li>
+<li><a class="reference internal" href="themes_manager.html#function-execute-thread-at-ln-103" id="id11"><em>Function:</em> execute_thread() [at ln:103]</a></li>
+<li><a class="reference internal" href="themes_manager.html#function-get-local-schemes-at-ln-115" id="id12"><em>Function:</em> get_local_schemes() [at ln:115]</a></li>
+<li><a class="reference internal" href="themes_manager.html#function-load-skins-data-at-ln-84" id="id13"><em>Function:</em> load_skins_data() [at ln:84]</a></li>
+<li><a class="reference internal" href="themes_manager.html#function-resizeevent-event-at-ln-99" id="id14"><em>Function:</em> resizeEvent(event) [at ln:99]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="themes_manager.html#class-schemewidget-qwidget" id="id15"><em>Class:</em> SchemeWidget(QWidget)</a><ul>
+<li><a class="reference internal" href="themes_manager.html#id1" id="id16"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="themes_manager.html#function-init-parent-schemes-at-ln-139" id="id17"><em>Function:</em> __init__(parent, schemes) [at ln:139]</a></li>
+<li><a class="reference internal" href="themes_manager.html#function-download-scheme-at-ln-156" id="id18"><em>Function:</em> _download_scheme() [at ln:156]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="module-themes-manager-py-api">
+<h2><em>Module:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html">themes_manager.py</a> API</h2>
+<p>No description.</p>
+<div class="section" id="imports">
+<h3><a class="toc-backref" href="themes_manager.html#id3"><em>Imports:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#18">os</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#36">PyQt4.QtGui.QDialog</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#30">PyQt4.QtGui.QHBoxLayout</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#35">PyQt4.QtGui.QPushButton</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#32">PyQt4.QtGui.QSizePolicy</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#31">PyQt4.QtGui.QSpacerItem</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#33">PyQt4.QtGui.QTabWidget</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#34">PyQt4.QtGui.QTableWidget</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#29">PyQt4.QtGui.QVBoxLayout</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#28">PyQt4.QtGui.QWidget</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#37">PyQt4.QtCore.Qt</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#38">PyQt4.QtCore.SIGNAL</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#41">ninja_ide.core.file_handling.file_manager</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#43">ninja_ide.tools.json_manager</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#40">ninja_ide.resources</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#42">ninja_ide.tools.ui_tools</a></li>
+</ul>
+</div>
+<div class="section" id="class-themesmanagerwidget-qdialog">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-46">ThemesManagerWidget(QDialog)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">ThemesManagerWidget</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="attributes">
+<h4><a class="toc-backref" href="themes_manager.html#id5"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#80">_loading [at ln:80]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#67">_schemes [at ln:67]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#54">_tabs [at ln:54]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#73">_thread [at ln:73]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#95">downloadItems [at ln:95]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#96">execute [at ln:96]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#64">overlay [at ln:64]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-parent-at-ln-48">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-48">__init__(parent) [at ln:48]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-download-scheme-thread-at-ln-122">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-122">_download_scheme_thread() [at ln:122]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_download_scheme_thread</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-reload-themes-at-ln-78">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-78">_reload_themes() [at ln:78]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_reload_themes</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-download-url-folder-at-ln-126">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-126">download(url, folder) [at ln:126]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">folder</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-download-scheme-scheme-at-ln-93">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-93">download_scheme(scheme) [at ln:93]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">download_scheme</span><span class="p">(</span><span class="n">scheme</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-execute-thread-at-ln-103">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-103">execute_thread() [at ln:103]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">execute_thread</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-local-schemes-at-ln-115">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-115">get_local_schemes() [at ln:115]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_local_schemes</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-load-skins-data-at-ln-84">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-84">load_skins_data() [at ln:84]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">load_skins_data</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-resizeevent-event-at-ln-99">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-99">resizeEvent(event) [at ln:99]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">resizeEvent</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-schemewidget-qwidget">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-137">SchemeWidget(QWidget)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">SchemeWidget</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id1">
+<h4><a class="toc-backref" href="themes_manager.html#id16"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#141">_parent [at ln:141]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#142">_schemes [at ln:142]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#144">_table [at ln:144]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-parent-schemes-at-ln-139">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-139">__init__(parent, schemes) [at ln:139]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">schemes</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-download-scheme-at-ln-156">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/dialogs/themes_manager.py.html#listingsninja_ideguidialogsthemes_managerpy-156">_download_scheme() [at ln:156]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_download_scheme</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+</div>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

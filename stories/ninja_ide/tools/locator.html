@@ -1,0 +1,868 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="NINJA-IDE">
+    <title>NINJA-IDE | NINJA-IDE Documentation</title>
+    
+            <link href="../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
+
+    
+
+
+
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+    <li>
+    <a href="locator.txt" id="sourcelink">Source</a>
+    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+    <h1>NINJA-IDE</h1>
+    <div class="contents alert alert-info pull-top topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="locator.html#module-locator-py-api" id="id7"><em>Module:</em> locator.py API</a><ul>
+<li><a class="reference internal" href="locator.html#imports" id="id8"><em>Imports:</em></a></li>
+<li><a class="reference internal" href="locator.html#global-attributes" id="id9"><em>Global Attributes:</em></a></li>
+<li><a class="reference internal" href="locator.html#class-popupcompleter-qframe" id="id10"><em>Class:</em> PopupCompleter(QFrame)</a><ul>
+<li><a class="reference internal" href="locator.html#attributes" id="id11"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="locator.html#function-init-at-ln-740" id="id12"><em>Function:</em> __init__() [at ln:740]</a></li>
+<li><a class="reference internal" href="locator.html#function-create-help-item-image-text-at-ln-830" id="id13"><em>Function:</em> _create_help_item(image, text) [at ln:830]</a></li>
+<li><a class="reference internal" href="locator.html#function-repaint-items-current-previous-at-ln-751" id="id14"><em>Function:</em> _repaint_items(current, previous) [at ln:751]</a></li>
+<li><a class="reference internal" href="locator.html#function-add-help-at-ln-799" id="id15"><em>Function:</em> add_help() [at ln:799]</a></li>
+<li><a class="reference internal" href="locator.html#function-add-no-found-at-ln-793" id="id16"><em>Function:</em> add_no_found() [at ln:793]</a></li>
+<li><a class="reference internal" href="locator.html#function-clear-at-ln-770" id="id17"><em>Function:</em> clear() [at ln:770]</a></li>
+<li><a class="reference internal" href="locator.html#function-fetch-more-model-at-ln-787" id="id18"><em>Function:</em> fetch_more(model) [at ln:787]</a></li>
+<li><a class="reference internal" href="locator.html#function-refresh-model-has-text-true-at-ln-774" id="id19"><em>Function:</em> refresh(model, has_text=True) [at ln:774]</a></li>
+<li><a class="reference internal" href="locator.html#function-reload-model-at-ln-761" id="id20"><em>Function:</em> reload(model) [at ln:761]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="locator.html#class-locatethread-qthread" id="id21"><em>Class:</em> LocateThread(QThread)</a><ul>
+<li><a class="reference internal" href="locator.html#id1" id="id22"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="locator.html#function-init-at-ln-157" id="id23"><em>Function:</em> __init__() [at ln:157]</a></li>
+<li><a class="reference internal" href="locator.html#function-locate-code-in-project-queue-folders-nproject-at-ln-219" id="id24"><em>Function:</em> __locate_code_in_project(queue_folders, nproject) [at ln:219]</a></li>
+<li><a class="reference internal" href="locator.html#function-parse-attributes-symbols-results-file-path-at-ln-379" id="id25"><em>Function:</em> __parse_attributes(symbols, results, file_path) [at ln:379]</a></li>
+<li><a class="reference internal" href="locator.html#function-parse-class-symbols-results-file-path-at-ln-354" id="id26"><em>Function:</em> __parse_class(symbols, results, file_path) [at ln:354]</a></li>
+<li><a class="reference internal" href="locator.html#function-parse-functions-symbols-results-file-path-at-ln-386" id="id27"><em>Function:</em> __parse_functions(symbols, results, file_path) [at ln:386]</a></li>
+<li><a class="reference internal" href="locator.html#function-parse-symbols-symbols-results-file-path-at-ln-346" id="id28"><em>Function:</em> __parse_symbols(symbols, results, file_path) [at ln:346]</a></li>
+<li><a class="reference internal" href="locator.html#function-grep-file-locate-file-path-file-name-at-ln-318" id="id29"><em>Function:</em> _grep_file_locate(file_path, file_name) [at ln:318]</a></li>
+<li><a class="reference internal" href="locator.html#function-cancel-at-ln-407" id="id30"><em>Function:</em> cancel() [at ln:407]</a></li>
+<li><a class="reference internal" href="locator.html#function-convert-map-to-array-at-ln-312" id="id31"><em>Function:</em> convert_map_to_array() [at ln:312]</a></li>
+<li><a class="reference internal" href="locator.html#function-find-search-filepath-isvariable-at-ln-167" id="id32"><em>Function:</em> find(search, filePath, isVariable) [at ln:167]</a></li>
+<li><a class="reference internal" href="locator.html#function-find-code-location-at-ln-176" id="id33"><em>Function:</em> find_code_location() [at ln:176]</a></li>
+<li><a class="reference internal" href="locator.html#function-find-file-code-location-path-at-ln-185" id="id34"><em>Function:</em> find_file_code_location(path) [at ln:185]</a></li>
+<li><a class="reference internal" href="locator.html#function-get-locations-at-ln-292" id="id35"><em>Function:</em> get_locations() [at ln:292]</a></li>
+<li><a class="reference internal" href="locator.html#function-get-symbols-for-class-file-path-clazzname-at-ln-395" id="id36"><em>Function:</em> get_symbols_for_class(file_path, clazzName) [at ln:395]</a></li>
+<li><a class="reference internal" href="locator.html#function-get-this-file-locations-path-at-ln-298" id="id37"><em>Function:</em> get_this_file_locations(path) [at ln:298]</a></li>
+<li><a class="reference internal" href="locator.html#function-go-to-definition-at-ln-257" id="id38"><em>Function:</em> go_to_definition() [at ln:257]</a></li>
+<li><a class="reference internal" href="locator.html#function-locate-code-at-ln-199" id="id39"><em>Function:</em> locate_code() [at ln:199]</a></li>
+<li><a class="reference internal" href="locator.html#function-locate-file-code-at-ln-248" id="id40"><em>Function:</em> locate_file_code() [at ln:248]</a></li>
+<li><a class="reference internal" href="locator.html#function-run-at-ln-193" id="id41"><em>Function:</em> run() [at ln:193]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="locator.html#class-locator-qobject" id="id42"><em>Class:</em> Locator(QObject)</a><ul>
+<li><a class="reference internal" href="locator.html#id2" id="id43"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="locator.html#function-init-at-ln-84" id="id44"><em>Function:</em> __init__() [at ln:84]</a></li>
+<li><a class="reference internal" href="locator.html#function-cleanup-at-ln-91" id="id45"><em>Function:</em> _cleanup() [at ln:91]</a></li>
+<li><a class="reference internal" href="locator.html#function-load-results-at-ln-97" id="id46"><em>Function:</em> _load_results() [at ln:97]</a></li>
+<li><a class="reference internal" href="locator.html#function-get-classes-from-project-projectpath-at-ln-114" id="id47"><em>Function:</em> get_classes_from_project(projectPath) [at ln:114]</a></li>
+<li><a class="reference internal" href="locator.html#function-navigate-to-function-filepath-isvariable-at-ln-94" id="id48"><em>Function:</em> navigate_to(function, filePath, isVariable) [at ln:94]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="locator.html#class-locateitem-qlistwidgetitem" id="id49"><em>Class:</em> LocateItem(QListWidgetItem)</a><ul>
+<li><a class="reference internal" href="locator.html#id3" id="id50"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="locator.html#function-init-data-at-ln-466" id="id51"><em>Function:</em> __init__(data) [at ln:466]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="locator.html#class-locatecompleter-qlineedit" id="id52"><em>Class:</em> LocateCompleter(QLineEdit)</a><ul>
+<li><a class="reference internal" href="locator.html#id4" id="id53"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="locator.html#function-init-parent-at-ln-508" id="id54"><em>Function:</em> __init__(parent) [at ln:508]</a></li>
+<li><a class="reference internal" href="locator.html#function-advanced-filter-filteroptions-at-ln-620" id="id55"><em>Function:</em> _advanced_filter(filterOptions) [at ln:620]</a></li>
+<li><a class="reference internal" href="locator.html#function-advanced-filter-by-file-filteroptions-at-ln-677" id="id56"><em>Function:</em> _advanced_filter_by_file(filterOptions) [at ln:677]</a></li>
+<li><a class="reference internal" href="locator.html#function-create-list-widget-items-locations-at-ln-540" id="id57"><em>Function:</em> _create_list_widget_items(locations) [at ln:540]</a></li>
+<li><a class="reference internal" href="locator.html#function-go-to-location-item-at-ln-719" id="id58"><em>Function:</em> _go_to_location(item) [at ln:719]</a></li>
+<li><a class="reference internal" href="locator.html#function-open-item-data-at-ln-729" id="id59"><em>Function:</em> _open_item(data) [at ln:729]</a></li>
+<li><a class="reference internal" href="locator.html#function-refresh-filter-at-ln-686" id="id60"><em>Function:</em> _refresh_filter() [at ln:686]</a></li>
+<li><a class="reference internal" href="locator.html#function-complete-at-ln-533" id="id61"><em>Function:</em> complete() [at ln:533]</a></li>
+<li><a class="reference internal" href="locator.html#function-filter-at-ln-551" id="id62"><em>Function:</em> filter() [at ln:551]</a></li>
+<li><a class="reference internal" href="locator.html#function-focusoutevent-event-at-ln-724" id="id63"><em>Function:</em> focusOutEvent(event) [at ln:724]</a></li>
+<li><a class="reference internal" href="locator.html#function-keypressevent-event-at-ln-690" id="id64"><em>Function:</em> keyPressEvent(event) [at ln:690]</a></li>
+<li><a class="reference internal" href="locator.html#function-set-prefix-prefix-at-ln-528" id="id65"><em>Function:</em> set_prefix(prefix) [at ln:528]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="locator.html#class-codelocatorwidget-qwidget" id="id66"><em>Class:</em> CodeLocatorWidget(QWidget)</a><ul>
+<li><a class="reference internal" href="locator.html#id5" id="id67"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="locator.html#function-init-parent-at-ln-415" id="id68"><em>Function:</em> __init__(parent) [at ln:415]</a></li>
+<li><a class="reference internal" href="locator.html#function-cleanup-at-ln-437" id="id69"><em>Function:</em> _cleanup() [at ln:437]</a></li>
+<li><a class="reference internal" href="locator.html#function-explore-code-at-ln-440" id="id70"><em>Function:</em> explore_code() [at ln:440]</a></li>
+<li><a class="reference internal" href="locator.html#function-explore-file-code-path-at-ln-443" id="id71"><em>Function:</em> explore_file_code(path) [at ln:443]</a></li>
+<li><a class="reference internal" href="locator.html#function-setvisible-val-at-ln-449" id="id72"><em>Function:</em> setVisible(val) [at ln:449]</a></li>
+<li><a class="reference internal" href="locator.html#function-show-suggestions-at-ln-446" id="id73"><em>Function:</em> show_suggestions() [at ln:446]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="locator.html#class-resultitem-object" id="id74"><em>Class:</em> ResultItem(object)</a><ul>
+<li><a class="reference internal" href="locator.html#function-getitem-index-at-ln-151" id="id75"><em>Function:</em> __getitem__(index) [at ln:151]</a></li>
+<li><a class="reference internal" href="locator.html#function-init-type-str-name-str-path-str-lineno-int-at-ln-128" id="id76"><em>Function:</em> __init__(type=str, name=str, path=str, lineno=int) [at ln:128]</a></li>
+<li><a class="reference internal" href="locator.html#function-iter-at-ln-147" id="id77"><em>Function:</em> __iter__() [at ln:147]</a></li>
+<li><a class="reference internal" href="locator.html#function-len-at-ln-144" id="id78"><em>Function:</em> __len__() [at ln:144]</a></li>
+<li><a class="reference internal" href="locator.html#function-str-at-ln-141" id="id79"><em>Function:</em> __str__() [at ln:141]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="locator.html#class-locatewidget-qlabel" id="id80"><em>Class:</em> LocateWidget(QLabel)</a><ul>
+<li><a class="reference internal" href="locator.html#id6" id="id81"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="locator.html#function-init-data-at-ln-475" id="id82"><em>Function:</em> __init__(data) [at ln:475]</a></li>
+<li><a class="reference internal" href="locator.html#function-set-not-selected-at-ln-496" id="id83"><em>Function:</em> set_not_selected() [at ln:496]</a></li>
+<li><a class="reference internal" href="locator.html#function-set-selected-at-ln-487" id="id84"><em>Function:</em> set_selected() [at ln:487]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="module-locator-py-api">
+<h2><em>Module:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html">locator.py</a> API</h2>
+<p>No description.</p>
+<div class="section" id="imports">
+<h3><a class="toc-backref" href="locator.html#id8"><em>Imports:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#20">re</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#50">ninja_ide.gui.ide.IDE</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#54">ninja_ide.tools.logger.NinjaLogger</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#28">PyQt4.QtGui.QBrush</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#43">PyQt4.QtCore.QDir</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#44">PyQt4.QtCore.QFile</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#30">PyQt4.QtGui.QFrame</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#37">PyQt4.QtGui.QHBoxLayout</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#31">PyQt4.QtGui.QIcon</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#27">PyQt4.QtGui.QLabel</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#35">PyQt4.QtGui.QLineEdit</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#33">PyQt4.QtGui.QListWidget</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#32">PyQt4.QtGui.QListWidgetItem</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#26">PyQt4.QtGui.QMessageBox</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#39">PyQt4.QtCore.QObject</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#38">PyQt4.QtGui.QPushButton</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#40">PyQt4.QtCore.QSize</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#34">PyQt4.QtGui.QStyle</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#45">PyQt4.QtCore.QTextStream</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#41">PyQt4.QtCore.QThread</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#29">PyQt4.QtGui.QVBoxLayout</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#36">PyQt4.QtGui.QWidget</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#42">PyQt4.QtCore.Qt</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#46">PyQt4.QtCore.SIGNAL</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#17">__future__.absolute_import</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#51">ninja_ide.core.file_handling.file_manager</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#48">ninja_ide.resources</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#52">ninja_ide.core.settings</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#49">ninja_ide.translations</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#18">__future__.unicode_literals</a></li>
+</ul>
+</div>
+<div class="section" id="global-attributes">
+<h3><a class="toc-backref" href="locator.html#id9"><em>Global Attributes:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#70">FILTERS [at ln:70]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#57">logger [at ln:57]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#59">mapping_locations [at ln:59]</a></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="class-popupcompleter-qframe">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-738">PopupCompleter(QFrame)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">PopupCompleter</span><span class="p">(</span><span class="n">QFrame</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="attributes">
+<h4><a class="toc-backref" href="locator.html#id11"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#745">listWidget [at ln:745]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-at-ln-740">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-740">__init__() [at ln:740]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-create-help-item-image-text-at-ln-830">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-830">_create_help_item(image, text) [at ln:830]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_create_help_item</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-repaint-items-current-previous-at-ln-751">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-751">_repaint_items(current, previous) [at ln:751]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_repaint_items</span><span class="p">(</span><span class="n">current</span><span class="p">,</span> <span class="n">previous</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-help-at-ln-799">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-799">add_help() [at ln:799]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">add_help</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-no-found-at-ln-793">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-793">add_no_found() [at ln:793]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">add_no_found</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Load no results found message</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-clear-at-ln-770">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-770">clear() [at ln:770]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">clear</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Remove all the items of the list (deleted), and reload the help.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-fetch-more-model-at-ln-787">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-787">fetch_more(model) [at ln:787]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">fetch_more</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Add more items to the list on user scroll.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-refresh-model-has-text-true-at-ln-774">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-774">refresh(model, has_text=True) [at ln:774]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">refresh</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">has_text</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Refresh the list when the user search for some word.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-reload-model-at-ln-761">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-761">reload(model) [at ln:761]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Reload the data of the Popup Completer, and restart the state.</div>
+</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-locatethread-qthread">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-155">LocateThread(QThread)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">LocateThread</span><span class="p">(</span><span class="n">QThread</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id1">
+<h4><a class="toc-backref" href="locator.html#id22"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#408">_cancel [at ln:408]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#170">_filePath [at ln:170]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#186">_file_path [at ln:186]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#290">_isVariable [at ln:290]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#289">_search [at ln:289]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#258">dirty [at ln:258]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#169">execute [at ln:169]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#410">locations [at ln:410]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#409">results [at ln:409]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-at-ln-157">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-157">__init__() [at ln:157]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-locate-code-in-project-queue-folders-nproject-at-ln-219">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-219">__locate_code_in_project(queue_folders, nproject) [at ln:219]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__locate_code_in_project</span><span class="p">(</span><span class="n">queue_folders</span><span class="p">,</span> <span class="n">nproject</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-parse-attributes-symbols-results-file-path-at-ln-379">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-379">__parse_attributes(symbols, results, file_path) [at ln:379]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__parse_attributes</span><span class="p">(</span><span class="n">symbols</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-parse-class-symbols-results-file-path-at-ln-354">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-354">__parse_class(symbols, results, file_path) [at ln:354]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__parse_class</span><span class="p">(</span><span class="n">symbols</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-parse-functions-symbols-results-file-path-at-ln-386">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-386">__parse_functions(symbols, results, file_path) [at ln:386]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__parse_functions</span><span class="p">(</span><span class="n">symbols</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-parse-symbols-symbols-results-file-path-at-ln-346">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-346">__parse_symbols(symbols, results, file_path) [at ln:346]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__parse_symbols</span><span class="p">(</span><span class="n">symbols</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-grep-file-locate-file-path-file-name-at-ln-318">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-318">_grep_file_locate(file_path, file_name) [at ln:318]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_grep_file_locate</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">file_name</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-cancel-at-ln-407">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-407">cancel() [at ln:407]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">cancel</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-convert-map-to-array-at-ln-312">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-312">convert_map_to_array() [at ln:312]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">convert_map_to_array</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-find-search-filepath-isvariable-at-ln-167">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-167">find(search, filePath, isVariable) [at ln:167]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="n">search</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">isVariable</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-find-code-location-at-ln-176">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-176">find_code_location() [at ln:176]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">find_code_location</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-find-file-code-location-path-at-ln-185">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-185">find_file_code_location(path) [at ln:185]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">find_file_code_location</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-locations-at-ln-292">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-292">get_locations() [at ln:292]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_locations</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-symbols-for-class-file-path-clazzname-at-ln-395">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-395">get_symbols_for_class(file_path, clazzName) [at ln:395]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_symbols_for_class</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">clazzName</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-this-file-locations-path-at-ln-298">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-298">get_this_file_locations(path) [at ln:298]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_this_file_locations</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-go-to-definition-at-ln-257">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-257">go_to_definition() [at ln:257]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">go_to_definition</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-locate-code-at-ln-199">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-199">locate_code() [at ln:199]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">locate_code</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-locate-file-code-at-ln-248">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-248">locate_file_code() [at ln:248]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">locate_file_code</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-run-at-ln-193">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-193">run() [at ln:193]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-locator-qobject">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-81">Locator(QObject)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">Locator</span><span class="p">(</span><span class="n">QObject</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">This class is used Go To Definition feature.</div>
+</div>
+<div class="section" id="id2">
+<h4><a class="toc-backref" href="locator.html#id43"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#86">_thread [at ln:86]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-at-ln-84">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-84">__init__() [at ln:84]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-cleanup-at-ln-91">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-91">_cleanup() [at ln:91]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_cleanup</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-load-results-at-ln-97">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-97">_load_results() [at ln:97]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_load_results</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-classes-from-project-projectpath-at-ln-114">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-114">get_classes_from_project(projectPath) [at ln:114]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_classes_from_project</span><span class="p">(</span><span class="n">projectPath</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-navigate-to-function-filepath-isvariable-at-ln-94">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-94">navigate_to(function, filePath, isVariable) [at ln:94]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">navigate_to</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">isVariable</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-locateitem-qlistwidgetitem">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-456">LocateItem(QListWidgetItem)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">LocateItem</span><span class="p">(</span><span class="n">QListWidgetItem</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Create QListWidgetItem that contains the proper icon and file data.</div>
+</div>
+<div class="section" id="id3">
+<h4><a class="toc-backref" href="locator.html#id50"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#468">_data [at ln:468]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#460">icons [at ln:460]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-data-at-ln-466">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-466">__init__(data) [at ln:466]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-locatecompleter-qlineedit">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-506">LocateCompleter(QLineEdit)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">LocateCompleter</span><span class="p">(</span><span class="n">QLineEdit</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id4">
+<h4><a class="toc-backref" href="locator.html#id53"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#530">__prefix [at ln:530]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#519">_filterData [at ln:519]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#552">_line_jump [at ln:552]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#510">_parent [at ln:510]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#514">advancePrefix [at ln:514]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#513">filterPrefix [at ln:513]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#512">frame [at ln:512]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#553">items_in_page [at ln:553]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#518">page_items_step [at ln:518]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#682">tempLocations [at ln:682]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-parent-at-ln-508">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-508">__init__(parent) [at ln:508]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-advanced-filter-filteroptions-at-ln-620">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-620">_advanced_filter(filterOptions) [at ln:620]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_advanced_filter</span><span class="p">(</span><span class="n">filterOptions</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-advanced-filter-by-file-filteroptions-at-ln-677">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-677">_advanced_filter_by_file(filterOptions) [at ln:677]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_advanced_filter_by_file</span><span class="p">(</span><span class="n">filterOptions</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-create-list-widget-items-locations-at-ln-540">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-540">_create_list_widget_items(locations) [at ln:540]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_create_list_widget_items</span><span class="p">(</span><span class="n">locations</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Create a list of items (using pages for results to speed up).</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-go-to-location-item-at-ln-719">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-719">_go_to_location(item) [at ln:719]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_go_to_location</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-open-item-data-at-ln-729">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-729">_open_item(data) [at ln:729]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_open_item</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Open the item received.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-refresh-filter-at-ln-686">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-686">_refresh_filter() [at ln:686]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_refresh_filter</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-complete-at-ln-533">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-533">complete() [at ln:533]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">complete</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-filter-at-ln-551">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-551">filter() [at ln:551]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">filter</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-focusoutevent-event-at-ln-724">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-724">focusOutEvent(event) [at ln:724]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">focusOutEvent</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Hide Popup on focus lost.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-keypressevent-event-at-ln-690">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-690">keyPressEvent(event) [at ln:690]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-set-prefix-prefix-at-ln-528">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-528">set_prefix(prefix) [at ln:528]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">set_prefix</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Set the prefix for the completer.</div>
+</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-codelocatorwidget-qwidget">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-413">CodeLocatorWidget(QWidget)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">CodeLocatorWidget</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id5">
+<h4><a class="toc-backref" href="locator.html#id67"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#424">_btnClose [at ln:424]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#426">_btnGo [at ln:426]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#428">_completer [at ln:428]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#419">_thread [at ln:419]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#420">execute [at ln:420]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#418">statusBar [at ln:418]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-parent-at-ln-415">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-415">__init__(parent) [at ln:415]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-cleanup-at-ln-437">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-437">_cleanup() [at ln:437]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_cleanup</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-explore-code-at-ln-440">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-440">explore_code() [at ln:440]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">explore_code</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-explore-file-code-path-at-ln-443">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-443">explore_file_code(path) [at ln:443]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">explore_file_code</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-setvisible-val-at-ln-449">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-449">setVisible(val) [at ln:449]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">setVisible</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-show-suggestions-at-ln-446">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-446">show_suggestions() [at ln:446]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">show_suggestions</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-resultitem-object">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-125">ResultItem(object)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">ResultItem</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">The Representation of each item found with the locator.</div>
+</div>
+<div class="section" id="function-getitem-index-at-ln-151">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-151">__getitem__(index) [at ln:151]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-init-type-str-name-str-path-str-lineno-int-at-ln-128">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-128">__init__(type=str, name=str, path=str, lineno=int) [at ln:128]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">lineno</span><span class="o">=</span><span class="nb">int</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-iter-at-ln-147">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-147">__iter__() [at ln:147]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__iter__</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-len-at-ln-144">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-144">__len__() [at ln:144]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__len__</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-str-at-ln-141">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-141">__str__() [at ln:141]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__str__</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-locatewidget-qlabel">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-471">LocateWidget(QLabel)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">LocateWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Create a styled QLabel that will show the info.</div>
+</div>
+<div class="section" id="id6">
+<h4><a class="toc-backref" href="locator.html#id81"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#477">name [at ln:477]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#478">path [at ln:478]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-data-at-ln-475">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-475">__init__(data) [at ln:475]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-set-not-selected-at-ln-496">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-496">set_not_selected() [at ln:496]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">set_not_selected</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-set-selected-at-ln-487">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-487">set_selected() [at ln:487]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">set_selected</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+</div>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

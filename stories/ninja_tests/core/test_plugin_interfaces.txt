@@ -1,0 +1,157 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: test_plugin_interfaces
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `test_plugin_interfaces.py </listings/ninja_tests/core/test_plugin_interfaces.py.html>`_ API
+========================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `unittest </listings/ninja_tests/core/test_plugin_interfaces.py.html#18>`_
+
+- `ninja_ide.core.plugin_interfaces.MethodNotImplemented </listings/ninja_tests/core/test_plugin_interfaces.py.html#21>`_
+
+- `__future__.absolute_import </listings/ninja_tests/core/test_plugin_interfaces.py.html#17>`_
+
+- `ninja_ide.core.plugin_interfaces.implements </listings/ninja_tests/core/test_plugin_interfaces.py.html#20>`_
+
+
+
+
+
+*Class:* `C(object) </listings/ninja_tests/core/test_plugin_interfaces.py.html#listingsninja_testscoretest_plugin_interfacespy-39>`_
+--------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class C(object):
+
+
+No description.
+
+
+*Function:* `one() [at ln:40] </listings/ninja_tests/core/test_plugin_interfaces.py.html#listingsninja_testscoretest_plugin_interfacespy-40>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def one():
+
+
+No description.
+
+
+----
+
+*Function:* `two() [at ln:43] </listings/ninja_tests/core/test_plugin_interfaces.py.html#listingsninja_testscoretest_plugin_interfacespy-43>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def two():
+
+
+No description.
+
+
+----
+
+*Class:* `B(object) </listings/ninja_tests/core/test_plugin_interfaces.py.html#listingsninja_testscoretest_plugin_interfacespy-35>`_
+--------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class B(object):
+
+
+No description.
+
+
+----
+
+*Class:* `A(object) </listings/ninja_tests/core/test_plugin_interfaces.py.html#listingsninja_testscoretest_plugin_interfacespy-24>`_
+--------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class A(object):
+
+
+No description.
+
+
+*Function:* `_a_private_method() [at ln:25] </listings/ninja_tests/core/test_plugin_interfaces.py.html#listingsninja_testscoretest_plugin_interfacespy-25>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _a_private_method():
+
+
+No description.
+
+
+----
+
+*Function:* `one() [at ln:28] </listings/ninja_tests/core/test_plugin_interfaces.py.html#listingsninja_testscoretest_plugin_interfacespy-28>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def one():
+
+
+No description.
+
+
+----
+
+*Function:* `two() [at ln:31] </listings/ninja_tests/core/test_plugin_interfaces.py.html#listingsninja_testscoretest_plugin_interfacespy-31>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def two():
+
+
+No description.
+
+
+----
+
+*Class:* `PluginInterfacesTestCase(unittest.TestCase) </listings/ninja_tests/core/test_plugin_interfaces.py.html#listingsninja_testscoretest_plugin_interfacespy-47>`_
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class PluginInterfacesTestCase(unittest.TestCase):
+
+
+No description.
+
+
+*Function:* `test_implements_decorator() [at ln:49] </listings/ninja_tests/core/test_plugin_interfaces.py.html#listingsninja_testscoretest_plugin_interfacespy-49>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_implements_decorator():
+
+
+No description.
+
+
+
+

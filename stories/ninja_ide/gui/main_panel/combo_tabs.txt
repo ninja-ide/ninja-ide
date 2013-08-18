@@ -1,0 +1,134 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: combo_tabs
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `combo_tabs.py </listings/ninja_ide/gui/main_panel/combo_tabs.py.html>`_ API
+========================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `PyQt4.QtGui.QComboBox </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#10>`_
+
+- `PyQt4.QtGui.QFrame </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#4>`_
+
+- `PyQt4.QtGui.QHBoxLayout </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#6>`_
+
+- `PyQt4.QtGui.QLabel </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#9>`_
+
+- `PyQt4.QtGui.QPushButton </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#12>`_
+
+- `PyQt4.QtGui.QSizePolicy </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#11>`_
+
+- `PyQt4.QtGui.QStackedLayout </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#7>`_
+
+- `PyQt4.QtGui.QStyle </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#8>`_
+
+- `PyQt4.QtGui.QVBoxLayout </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#5>`_
+
+- `PyQt4.QtGui.QWidget </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#3>`_
+
+- `ninja_ide.gui.editor.editor </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#16>`_
+
+- `ninja_ide.gui.editor.neditable </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#15>`_
+
+- `ninja_ide.translations </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#14>`_
+
+
+
+
+
+*Class:* `ActionBar(QFrame) </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-39>`_
+-------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ActionBar(QFrame):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_pos_text [at ln:58] </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#58>`_
+
+- `btn_close [at ln:64] </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#64>`_
+
+- `lbl_checks [at ln:54] </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#54>`_
+
+- `lbl_position [at ln:59] </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#59>`_
+
+
+*Function:* `__init__() [at ln:41] </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-41>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Class:* `ComboTabs(QWidget) </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-19>`_
+--------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ComboTabs(QWidget):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `bar [at ln:26] </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#26>`_
+
+- `editable [at ln:30] </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#30>`_
+
+- `editor_widget [at ln:31] </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#31>`_
+
+- `stacked [at ln:29] </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#29>`_
+
+
+*Function:* `__init__() [at ln:21] </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-21>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `currentWidget() [at ln:35] </listings/ninja_ide/gui/main_panel/combo_tabs.py.html#listingsninja_ideguimain_panelcombo_tabspy-35>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def currentWidget():
+
+
+No description.
+
+
+
+

@@ -1,0 +1,310 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: linux
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `linux.py </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html>`_ API
+===========================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `os </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#20>`_
+
+- `pyinotify.ExcludeFilter </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#23>`_
+
+- `pyinotify.IN_CREATE </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#23>`_
+
+- `pyinotify.IN_DELETE </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#23>`_
+
+- `pyinotify.IN_DELETE_SELF </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#23>`_
+
+- `pyinotify.IN_MODIFY </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#23>`_
+
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#26>`_
+
+- `pyinotify.Notifier </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#23>`_
+
+- `pyinotify.ProcessEvent </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#23>`_
+
+- `PyQt4.QtCore.QThread </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#22>`_
+
+- `pyinotify.WatchManager </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#23>`_
+
+- `__future__.absolute_import </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#18>`_
+
+- `ninja_ide.core.file_handling.filesystem_notifications.base_watcher </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#30>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `ADDED [at ln:31] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#31>`_
+
+- `DEBUG [at ln:28] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#28>`_
+
+- `DELETED [at ln:32] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#32>`_
+
+- `MODIFIED [at ln:35] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#35>`_
+
+- `REMOVE [at ln:33] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#33>`_
+
+- `RENAME [at ln:34] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#34>`_
+
+- `logger [at ln:27] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#27>`_
+
+- `mask [at ln:40] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#40>`_
+
+
+----
+
+
+
+*Class:* `QNotifier(QThread) </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-71>`_
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class QNotifier(QThread):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_processor [at ln:74] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#74>`_
+
+- `event_queue [at ln:73] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#73>`_
+
+- `keep_running [at ln:78] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#78>`_
+
+- `notifier [at ln:75] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#75>`_
+
+
+*Function:* `__init__(wm, processor) [at ln:72] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-72>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(wm, processor):
+
+
+No description.
+
+
+----
+
+*Function:* `run() [at ln:81] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-81>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run():
+
+
+No description.
+
+
+----
+
+*Class:* `NinjaProcessEvent(ProcessEvent) </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-43>`_
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class NinjaProcessEvent(ProcessEvent):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_process_callback [at ln:46] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#46>`_
+
+
+*Function:* `__init__(process_callback) [at ln:45] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-45>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(process_callback):
+
+
+No description.
+
+
+----
+
+*Function:* `process_IN_CREATE(event) [at ln:49] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-49>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def process_IN_CREATE(event):
+
+
+No description.
+
+
+----
+
+*Function:* `process_IN_DELETE(event) [at ln:52] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-52>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def process_IN_DELETE(event):
+
+
+No description.
+
+
+----
+
+*Function:* `process_IN_DELETE_SELF(event) [at ln:55] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-55>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def process_IN_DELETE_SELF(event):
+
+
+No description.
+
+
+----
+
+*Function:* `process_IN_MODIFY(event) [at ln:58] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-58>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def process_IN_MODIFY(event):
+
+
+No description.
+
+
+----
+
+*Function:* `process_IN_MOVED_FROM(event) [at ln:64] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-64>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def process_IN_MOVED_FROM(event):
+
+
+No description.
+
+
+----
+
+*Function:* `process_IN_MOVED_TO(event) [at ln:61] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-61>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def process_IN_MOVED_TO(event):
+
+
+No description.
+
+
+----
+
+*Function:* `process_IN_MOVE_SELF(event) [at ln:67] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-67>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def process_IN_MOVE_SELF(event):
+
+
+No description.
+
+
+----
+
+*Class:* `NinjaFileSystemWatcher(base_watcher.BaseWatcher) </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-106>`_
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_ignore_hidden [at ln:111] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#111>`_
+
+- `watching_paths [at ln:109] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#109>`_
+
+
+*Function:* `__init__() [at ln:108] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-108>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `add_watch(path) [at ln:113] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-113>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_watch(path):
+
+
+No description.
+
+
+----
+
+*Function:* `remove_watch(path) [at ln:128] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-128>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def remove_watch(path):
+
+
+No description.
+
+
+----
+
+*Function:* `shutdown_notification() [at ln:134] </listings/ninja_ide/core/file_handling/filesystem_notifications/linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-134>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def shutdown_notification():
+
+
+No description.
+
+
+
+

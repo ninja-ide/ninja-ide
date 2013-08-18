@@ -1,0 +1,23 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: __init__
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `__init__.py </listings/ninja_tests/core/plugins/test_plugin/__init__.py.html>`_ API
+================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `test_plugin.TestPlugin </listings/ninja_tests/core/plugins/test_plugin/__init__.py.html#1>`_
+

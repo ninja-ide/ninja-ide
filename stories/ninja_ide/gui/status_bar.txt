@@ -1,0 +1,656 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: status_bar
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `status_bar.py </listings/ninja_ide/gui/status_bar.py.html>`_ API
+=============================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `re </listings/ninja_ide/gui/status_bar.py.html#20>`_
+
+- `ninja_ide.gui.ide.IDE </listings/ninja_ide/gui/status_bar.py.html#46>`_
+
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/gui/status_bar.py.html#48>`_
+
+- `PyQt4.QtGui.QCheckBox </listings/ninja_ide/gui/status_bar.py.html#34>`_
+
+- `PyQt4.QtGui.QCompleter </listings/ninja_ide/gui/status_bar.py.html#24>`_
+
+- `PyQt4.QtGui.QFileSystemModel </listings/ninja_ide/gui/status_bar.py.html#25>`_
+
+- `PyQt4.QtGui.QHBoxLayout </listings/ninja_ide/gui/status_bar.py.html#30>`_
+
+- `PyQt4.QtGui.QIcon </listings/ninja_ide/gui/status_bar.py.html#36>`_
+
+- `PyQt4.QtGui.QKeySequence </listings/ninja_ide/gui/status_bar.py.html#28>`_
+
+- `PyQt4.QtGui.QLabel </listings/ninja_ide/gui/status_bar.py.html#23>`_
+
+- `PyQt4.QtGui.QLineEdit </listings/ninja_ide/gui/status_bar.py.html#31>`_
+
+- `PyQt4.QtGui.QPushButton </listings/ninja_ide/gui/status_bar.py.html#32>`_
+
+- `PyQt4.QtGui.QShortcut </listings/ninja_ide/gui/status_bar.py.html#37>`_
+
+- `PyQt4.QtGui.QStatusBar </listings/ninja_ide/gui/status_bar.py.html#22>`_
+
+- `PyQt4.QtGui.QStyle </listings/ninja_ide/gui/status_bar.py.html#35>`_
+
+- `PyQt4.QtGui.QTextCursor </listings/ninja_ide/gui/status_bar.py.html#33>`_
+
+- `PyQt4.QtGui.QTextDocument </listings/ninja_ide/gui/status_bar.py.html#26>`_
+
+- `PyQt4.QtGui.QVBoxLayout </listings/ninja_ide/gui/status_bar.py.html#29>`_
+
+- `PyQt4.QtGui.QWidget </listings/ninja_ide/gui/status_bar.py.html#27>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/status_bar.py.html#39>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/status_bar.py.html#38>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/status_bar.py.html#18>`_
+
+- `ninja_ide.gui.actions </listings/ninja_ide/gui/status_bar.py.html#45>`_
+
+- `ninja_ide.tools.locator </listings/ninja_ide/gui/status_bar.py.html#43>`_
+
+- `ninja_ide.gui.main_panel.main_container </listings/ninja_ide/gui/status_bar.py.html#47>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/status_bar.py.html#41>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/status_bar.py.html#42>`_
+
+- `ninja_ide.tools.ui_tools </listings/ninja_ide/gui/status_bar.py.html#44>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `DEBUG [at ln:51] </listings/ninja_ide/gui/status_bar.py.html#51>`_
+
+- `logger [at ln:50] </listings/ninja_ide/gui/status_bar.py.html#50>`_
+
+- `status [at ln:490] </listings/ninja_ide/gui/status_bar.py.html#490>`_
+
+
+----
+
+
+
+*Class:* `ReplaceWidget(QWidget) </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-408>`_
+----------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ReplaceWidget(QWidget):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_btnCloseReplace [at ln:416] </listings/ninja_ide/gui/status_bar.py.html#416>`_
+
+- `_btnReplace [at ln:418] </listings/ninja_ide/gui/status_bar.py.html#418>`_
+
+- `_btnReplaceAll [at ln:419] </listings/ninja_ide/gui/status_bar.py.html#419>`_
+
+- `_btnReplaceSelection [at ln:420] </listings/ninja_ide/gui/status_bar.py.html#420>`_
+
+- `_lineReplace [at ln:414] </listings/ninja_ide/gui/status_bar.py.html#414>`_
+
+
+*Function:* `__init__(parent) [at ln:410] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-410>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent):
+
+
+No description.
+
+
+----
+
+*Class:* `FileSystemOpener(QWidget) </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-453>`_
+-------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class FileSystemOpener(QWidget):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `btnClose [at ln:459] </listings/ninja_ide/gui/status_bar.py.html#459>`_
+
+- `btnOpen [at ln:467] </listings/ninja_ide/gui/status_bar.py.html#467>`_
+
+- `completer [at ln:461] </listings/ninja_ide/gui/status_bar.py.html#461>`_
+
+- `pathLine [at ln:462] </listings/ninja_ide/gui/status_bar.py.html#462>`_
+
+
+*Function:* `__init__() [at ln:455] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-455>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `_open_file() [at ln:479] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-479>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _open_file():
+
+
+No description.
+
+
+----
+
+*Function:* `showEvent(event) [at ln:484] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-484>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def showEvent(event):
+
+
+No description.
+
+
+----
+
+*Class:* `_StatusBar(QStatusBar) </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-54>`_
+---------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class _StatusBar(QStatusBar):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_codeLocator [at ln:71] </listings/ninja_ide/gui/status_bar.py.html#71>`_
+
+- `_fileSystemOpener [at ln:75] </listings/ninja_ide/gui/status_bar.py.html#75>`_
+
+- `_replaceWidget [at ln:67] </listings/ninja_ide/gui/status_bar.py.html#67>`_
+
+- `_searchWidget [at ln:64] </listings/ninja_ide/gui/status_bar.py.html#64>`_
+
+- `_widgetStatus [at ln:59] </listings/ninja_ide/gui/status_bar.py.html#59>`_
+
+
+*Function:* `__init__() [at ln:56] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-56>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `_notify_editor_changed() [at ln:142] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-142>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _notify_editor_changed():
+
+| Lets search widget know that the editor contents changed and find
+| needs to be re-run
+
+
+----
+
+*Function:* `explore_code() [at ln:151] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-151>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def explore_code():
+
+
+No description.
+
+
+----
+
+*Function:* `explore_file_code(path) [at ln:154] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-154>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def explore_file_code(path):
+
+
+No description.
+
+
+----
+
+*Function:* `find() [at ln:246] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-246>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def find():
+
+
+No description.
+
+
+----
+
+*Function:* `find_next() [at ln:256] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-256>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def find_next():
+
+
+No description.
+
+
+----
+
+*Function:* `find_next_result() [at ln:122] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-122>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def find_next_result():
+
+
+No description.
+
+
+----
+
+*Function:* `find_previous() [at ln:266] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-266>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def find_previous():
+
+
+No description.
+
+
+----
+
+*Function:* `find_previous_result() [at ln:125] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-125>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def find_previous_result():
+
+
+No description.
+
+
+----
+
+*Function:* `handle_tab_changed(new_tab) [at ln:128] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-128>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def handle_tab_changed(new_tab):
+
+| Re-run search if tab changed, we use the find of search widget because
+| we want the widget to be updated.
+
+
+----
+
+*Function:* `hide_status() [at ln:206] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-206>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def hide_status():
+
+
+No description.
+
+
+----
+
+*Function:* `install() [at ln:115] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-115>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def install():
+
+
+No description.
+
+
+----
+
+*Function:* `message_end(message) [at ln:283] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-283>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def message_end(message):
+
+
+No description.
+
+
+----
+
+*Function:* `replace() [at ln:218] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-218>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def replace():
+
+
+No description.
+
+
+----
+
+*Function:* `replace_all(selected=False) [at ln:234] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-234>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def replace_all(selected=False):
+
+
+No description.
+
+
+----
+
+*Function:* `replace_selected() [at ln:231] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-231>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def replace_selected():
+
+
+No description.
+
+
+----
+
+*Function:* `show() [at ln:157] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-157>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show():
+
+
+No description.
+
+
+----
+
+*Function:* `showMessage(message, timeout) [at ln:276] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-276>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def showMessage(message, timeout):
+
+
+No description.
+
+
+----
+
+*Function:* `show_file_opener() [at ln:199] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-199>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show_file_opener():
+
+
+No description.
+
+
+----
+
+*Function:* `show_locator() [at ln:190] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-190>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show_locator():
+
+
+No description.
+
+
+----
+
+*Function:* `show_replace() [at ln:169] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-169>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show_replace():
+
+
+No description.
+
+
+----
+
+*Function:* `show_with_word() [at ln:179] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-179>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show_with_word():
+
+
+No description.
+
+
+----
+
+*Class:* `TextLine(QLineEdit) </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-429>`_
+-------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class TextLine(QLineEdit):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_parent [at ln:433] </listings/ninja_ide/gui/status_bar.py.html#433>`_
+
+- `counter [at ln:434] </listings/ninja_ide/gui/status_bar.py.html#434>`_
+
+
+*Function:* `__init__(parent) [at ln:431] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-431>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent):
+
+
+No description.
+
+
+----
+
+*Function:* `keyPressEvent(event) [at ln:436] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-436>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def keyPressEvent(event):
+
+
+No description.
+
+
+----
+
+*Class:* `SearchWidget(QWidget) </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-290>`_
+---------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class SearchWidget(QWidget):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_btnClose [at ln:301] </listings/ninja_ide/gui/status_bar.py.html#301>`_
+
+- `_btnFind [at ln:303] </listings/ninja_ide/gui/status_bar.py.html#303>`_
+
+- `_checkSensitive [at ln:297] </listings/ninja_ide/gui/status_bar.py.html#297>`_
+
+- `_checkWholeWord [at ln:298] </listings/ninja_ide/gui/status_bar.py.html#298>`_
+
+- `_line [at ln:299] </listings/ninja_ide/gui/status_bar.py.html#299>`_
+
+- `_parent [at ln:294] </listings/ninja_ide/gui/status_bar.py.html#294>`_
+
+- `btnNext [at ln:309] </listings/ninja_ide/gui/status_bar.py.html#309>`_
+
+- `btnPrevious [at ln:304] </listings/ninja_ide/gui/status_bar.py.html#304>`_
+
+- `index [at ln:323] </listings/ninja_ide/gui/status_bar.py.html#323>`_
+
+- `totalMatches [at ln:322] </listings/ninja_ide/gui/status_bar.py.html#322>`_
+
+
+*Function:* `__init__(parent) [at ln:292] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-292>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent):
+
+
+No description.
+
+
+----
+
+*Function:* `_checks_state_changed() [at ln:339] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-339>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _checks_state_changed():
+
+
+No description.
+
+
+----
+
+*Function:* `contents_changed(editor) [at ln:344] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-344>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def contents_changed(editor):
+
+
+No description.
+
+
+----
+
+*Function:* `find_matches(editor, in_place=False) [at ln:370] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-370>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def find_matches(editor, in_place=False):
+
+
+No description.
+
+
+----
+
+*Function:* `find_next() [at ln:351] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-351>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def find_next():
+
+
+No description.
+
+
+----
+
+*Function:* `find_previous() [at ln:359] </listings/ninja_ide/gui/status_bar.py.html#listingsninja_ideguistatus_barpy-359>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def find_previous():
+
+
+No description.
+
+
+
+

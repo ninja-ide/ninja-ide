@@ -1,0 +1,1089 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: pep8mod
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `pep8mod.py </listings/ninja_ide/dependencies/pep8mod.py.html>`_ API
+================================================================================
+| Check Python source code formatting, according to PEP 8:
+| http://www.python.org/dev/peps/pep-0008/
+| 
+| For usage and a list of options, try this:
+| $ python pep8.py -h
+| 
+| This program and its regression test suite live here:
+| http://github.com/jcrocholl/pep8
+| 
+| Groups of errors and warnings:
+| E errors
+| W warnings
+| 100 indentation
+| 200 whitespace
+| 300 blank lines
+| 400 imports
+| 500 line length
+| 600 deprecation
+| 700 statements
+| 900 syntax error
+| 
+| You can add checks to this program by writing plugins. Each plugin is
+| a simple function that is called for each line of source code, either
+| physical or logical.
+| 
+| Physical line:
+| - Raw line of text from the input file.
+| 
+| Logical line:
+| - Multi-line statements converted to a single line.
+| - Stripped left and right.
+| - Contents of strings replaced with 'xxx' of same length.
+| - Comments removed.
+| 
+| The check function requests physical or logical lines by the name of
+| the first argument:
+| 
+| def maximum\_line\_length(physical\_line)
+| def extraneous\_whitespace(logical\_line)
+| def blank\_lines(logical\_line, blank\_lines, indent\_level, line\_number)
+| 
+| The last example above demonstrates how check plugins can request
+| additional information with extra arguments. All attributes of the
+| Checker object are available. Some examples:
+| 
+| lines: a list of the raw lines from the input file
+| tokens: the tokens that contribute to this logical line
+| line\_number: line number in the input file
+| blank\_lines: blank lines before this one
+| indent\_char: first indentation character in this file (' ' or '\t')
+| indent\_level: indentation (with tabs expanded to multiples of 8)
+| previous\_indent\_level: indentation on previous line
+| previous\_logical: previous logical line
+| 
+| The docstring of each check function shall be the relevant part of
+| text from PEP 8. It is printed if the user enables --show-pep8.
+| Several docstrings contain examples directly from the PEP 8 document.
+| 
+| Okay: spam(ham[1], {eggs: 2})
+| E201: spam( ham[1], {eggs: 2})
+| 
+| These examples are verified automatically when pep8.py is run with the
+| --doctest option. You can add examples for your own check functions.
+| The format is simple: "Okay" or error/warning code followed by colon
+| and space, the rest of the line is example source code. If you put 'r'
+| before the docstring, you can use \n for newline, \t for tab and \s
+| for space.
+
+
+*Imports:*
+------------
+- `inspect </listings/ninja_ide/dependencies/pep8mod.py.html#102>`_
+
+- `keyword </listings/ninja_ide/dependencies/pep8mod.py.html#103>`_
+
+- `os </listings/ninja_ide/dependencies/pep8mod.py.html#99>`_
+
+- `re </listings/ninja_ide/dependencies/pep8mod.py.html#101>`_
+
+- `sys </listings/ninja_ide/dependencies/pep8mod.py.html#100>`_
+
+- `tokenize </listings/ninja_ide/dependencies/pep8mod.py.html#104>`_
+
+- `ninja_ide.resources </listings/ninja_ide/dependencies/pep8mod.py.html#106>`_
+
+- `__future__.unicode_literals </listings/ninja_ide/dependencies/pep8mod.py.html#95>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `BENCHMARK_KEYS [at ln:134] </listings/ninja_ide/dependencies/pep8mod.py.html#134>`_
+
+- `BINARY_OPERATORS [at ln:125] </listings/ninja_ide/dependencies/pep8mod.py.html#125>`_
+
+- `COMMENT_WITH_NL [at ln:155] </listings/ninja_ide/dependencies/pep8mod.py.html#155>`_
+
+- `COMPARE_SINGLETON_REGEX [at ln:144] </listings/ninja_ide/dependencies/pep8mod.py.html#144>`_
+
+- `COMPARE_TYPE_REGEX [at ln:145] </listings/ninja_ide/dependencies/pep8mod.py.html#145>`_
+
+- `DEFAULT_EXCLUDE [at ln:108] </listings/ninja_ide/dependencies/pep8mod.py.html#108>`_
+
+- `DEFAULT_IGNORE [at ln:109] </listings/ninja_ide/dependencies/pep8mod.py.html#109>`_
+
+- `DOCSTRING_REGEX [at ln:141] </listings/ninja_ide/dependencies/pep8mod.py.html#141>`_
+
+- `ERRORCODE_REGEX [at ln:140] </listings/ninja_ide/dependencies/pep8mod.py.html#140>`_
+
+- `EXTRANEOUS_WHITESPACE_REGEX [at ln:142] </listings/ninja_ide/dependencies/pep8mod.py.html#142>`_
+
+- `HUNK_REGEX [at ln:151] </listings/ninja_ide/dependencies/pep8mod.py.html#151>`_
+
+- `INDENT_REGEX [at ln:136] </listings/ninja_ide/dependencies/pep8mod.py.html#136>`_
+
+- `KEYWORDS [at ln:124] </listings/ninja_ide/dependencies/pep8mod.py.html#124>`_
+
+- `KEYWORD_REGEX [at ln:147] </listings/ninja_ide/dependencies/pep8mod.py.html#147>`_
+
+- `LAMBDA_REGEX [at ln:150] </listings/ninja_ide/dependencies/pep8mod.py.html#150>`_
+
+- `MAX_LINE_LENGTH [at ln:116] </listings/ninja_ide/dependencies/pep8mod.py.html#116>`_
+
+- `OPERATORS [at ln:130] </listings/ninja_ide/dependencies/pep8mod.py.html#130>`_
+
+- `OPERATOR_REGEX [at ln:149] </listings/ninja_ide/dependencies/pep8mod.py.html#149>`_
+
+- `RAISE_COMMA_REGEX [at ln:137] </listings/ninja_ide/dependencies/pep8mod.py.html#137>`_
+
+- `REPORT_FORMAT [at ln:117] </listings/ninja_ide/dependencies/pep8mod.py.html#117>`_
+
+- `RERAISE_COMMA_REGEX [at ln:138] </listings/ninja_ide/dependencies/pep8mod.py.html#138>`_
+
+- `SELFTEST_REGEX [at ln:139] </listings/ninja_ide/dependencies/pep8mod.py.html#139>`_
+
+- `SINGLETONS [at ln:123] </listings/ninja_ide/dependencies/pep8mod.py.html#123>`_
+
+- `SKIP_TOKENS [at ln:132] </listings/ninja_ide/dependencies/pep8mod.py.html#132>`_
+
+- `UNARY_OPERATORS [at ln:129] </listings/ninja_ide/dependencies/pep8mod.py.html#129>`_
+
+- `WHITESPACE [at ln:131] </listings/ninja_ide/dependencies/pep8mod.py.html#131>`_
+
+- `WHITESPACE_AFTER_COMMA_REGEX [at ln:143] </listings/ninja_ide/dependencies/pep8mod.py.html#143>`_
+
+- `__version__ [at ln:97] </listings/ninja_ide/dependencies/pep8mod.py.html#97>`_
+
+- `ignore [at ln:170] </listings/ninja_ide/dependencies/pep8mod.py.html#170>`_
+
+- `ignore_continuation_indentation [at ln:174] </listings/ninja_ide/dependencies/pep8mod.py.html#174>`_
+
+- `logical_checks [at ln:1133] </listings/ninja_ide/dependencies/pep8mod.py.html#1133>`_
+
+- `max_line_length [at ln:173] </listings/ninja_ide/dependencies/pep8mod.py.html#173>`_
+
+- `messages [at ln:168] </listings/ninja_ide/dependencies/pep8mod.py.html#168>`_
+
+- `options [at ln:163] </listings/ninja_ide/dependencies/pep8mod.py.html#163>`_
+
+- `physical_checks [at ln:1132] </listings/ninja_ide/dependencies/pep8mod.py.html#1132>`_
+
+- `quiet [at ln:172] </listings/ninja_ide/dependencies/pep8mod.py.html#172>`_
+
+- `repeat [at ln:166] </listings/ninja_ide/dependencies/pep8mod.py.html#166>`_
+
+- `select [at ln:169] </listings/ninja_ide/dependencies/pep8mod.py.html#169>`_
+
+- `show_pep8 [at ln:167] </listings/ninja_ide/dependencies/pep8mod.py.html#167>`_
+
+- `show_source [at ln:165] </listings/ninja_ide/dependencies/pep8mod.py.html#165>`_
+
+- `verbose [at ln:171] </listings/ninja_ide/dependencies/pep8mod.py.html#171>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `blank_lines(logical_line, blank_lines, indent_level, line_number, previous_logical, previous_indent_level) [at ln:298] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-298>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def blank_lines(logical_line, blank_lines, indent_level, line_number, previous_logical, previous_indent_level):
+
+| Separate top-level function and class definitions with two blank lines.
+| 
+| Method definitions inside a class are separated by a single blank line.
+| 
+| Extra blank lines may be used (sparingly) to separate groups of related
+| functions.  Blank lines may be omitted between a bunch of related
+| one-liners (e.g. a set of dummy implementations).
+| 
+| Use blank lines in functions, sparingly, to indicate logical sections.
+| 
+| Okay: def a():\n    pass\n\n\ndef b():\n    pass
+| Okay: def a():\n    pass\n\n\n# Foo\n# Bar\n\ndef b():\n    pass
+| 
+| E301: class Foo:\n    b = 0\n    def bar():\n        pass
+| E302: def a():\n    pass\n\ndef b(n):\n    pass
+| E303: def a():\n    pass\n\n\n\ndef b(n):\n    pass
+| E303: def a():\n\n\n\n    pass
+| E304: @decorator\n\ndef a():\n    pass
+
+
+----
+
+*Function:* `comparison_to_singleton(logical_line) [at ln:919] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-919>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def comparison_to_singleton(logical_line):
+
+| Comparisons to singletons like None should always be done
+| with "is" or "is not", never the equality operators.
+| 
+| Okay: if arg is not None:
+| E711: if arg != None:
+| E712: if arg == True:
+| 
+| Also, beware of writing if x when you really mean if x is not None --
+| e.g. when testing whether a variable or argument that defaults to None was
+| set to some other value.  The other value might have a type (such as a
+| container) that could be false in a boolean context!
+
+
+----
+
+*Function:* `comparison_type(logical_line) [at ln:949] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-949>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def comparison_type(logical_line):
+
+| Object type comparisons should always use isinstance() instead of
+| comparing types directly.
+| 
+| Okay: if isinstance(obj, int):
+| E721: if type(obj) is type(1):
+| 
+| When checking if an object is a string, keep in mind that it might be a
+| unicode string too! In Python 2.3, str and unicode have a common base
+| class, basestring, so you can do:
+| 
+| Okay: if isinstance(obj, basestring):
+| Okay: if type(a1) is type(b1):
+
+
+----
+
+*Function:* `compound_statements(logical_line) [at ln:845] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-845>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def compound_statements(logical_line):
+
+| Compound statements (multiple statements on the same line) are
+| generally discouraged.
+| 
+| While sometimes it's okay to put an if/for/while with a small body
+| on the same line, never do this for multi-clause statements. Also
+| avoid folding such long lines!
+| 
+| Okay: if foo == 'blah':\n    do\_blah\_thing()
+| Okay: do\_one()
+| Okay: do\_two()
+| Okay: do\_three()
+| 
+| E701: if foo == 'blah': do\_blah\_thing()
+| E701: for x in lst: total += x
+| E701: while t < 10: t = delay()
+| E701: if foo == 'blah': do\_blah\_thing()
+| E701: else: do\_non\_blah\_thing()
+| E701: try: something()
+| E701: finally: cleanup()
+| E701: if foo == 'blah': one(); two(); three()
+| 
+| E702: do\_one(); do\_two(); do\_three()
+
+
+----
+
+*Function:* `continuation_line_indentation(logical_line, tokens, indent_level, verbose) [at ln:445] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-445>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def continuation_line_indentation(logical_line, tokens, indent_level, verbose):
+
+| Continuation lines should align wrapped elements either vertically using
+| Python's implicit line joining inside parentheses, brackets and braces, or
+| using a hanging indent.
+| 
+| When using a hanging indent the following considerations should be applied:
+| 
+| - there should be no arguments on the first line, and
+| 
+| - further indentation should be used to clearly distinguish itself as a
+|   continuation line.
+| 
+| Okay: a = (\n)
+| E123: a = (\n    )
+| 
+| Okay: a = (\n    42)
+| E121: a = (\n   42)
+| E122: a = (\n42)
+| E123: a = (\n    42\n    )
+| E124: a = (24,\n     42\n)
+| E125: if (a or\n    b):\n    pass
+| E126: a = (\n        42)
+| E127: a = (24,\n      42)
+| E128: a = (24,\n    42)
+
+
+----
+
+*Function:* `expand_indent(line) [at ln:1042] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1042>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def expand_indent(line):
+
+| Return the amount of indentation.
+| Tabs are expanded to the next multiple of 8.
+| 
+| >>> expand\_indent('    ')
+| 4
+| >>> expand\_indent('\t')
+| 8
+| >>> expand\_indent('    \t')
+| 8
+| >>> expand\_indent('       \t')
+| 8
+| >>> expand\_indent('        \t')
+| 16
+
+
+----
+
+*Function:* `explicit_line_join(logical_line, tokens) [at ln:884] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-884>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def explicit_line_join(logical_line, tokens):
+
+| Avoid explicit line join between brackets.
+| 
+| The preferred way of wrapping long lines is by using Python's implied line
+| continuation inside parentheses, brackets and braces.  Long lines can be
+| broken over multiple lines by wrapping expressions in parentheses.  These
+| should be used in preference to using a backslash for line continuation.
+| 
+| E502: aaa = [123, \\n       123]
+| E502: aaa = ("bbb " \\n       "ccc")
+| 
+| Okay: aaa = [123,\n       123]
+| Okay: aaa = ("bbb "\n       "ccc")
+| Okay: aaa = "bbb " \\n    "ccc"
+
+
+----
+
+*Function:* `extraneous_whitespace(logical_line) [at ln:336] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-336>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def extraneous_whitespace(logical_line):
+
+| Avoid extraneous whitespace in the following situations:
+| 
+| - Immediately inside parentheses, brackets or braces.
+| 
+| - Immediately before a comma, semicolon, or colon.
+| 
+| Okay: spam(ham[1], {eggs: 2})
+| E201: spam( ham[1], {eggs: 2})
+| E201: spam(ham[ 1], {eggs: 2})
+| E201: spam(ham[1], { eggs: 2})
+| E202: spam(ham[1], {eggs: 2} )
+| E202: spam(ham[1 ], {eggs: 2})
+| E202: spam(ham[1], {eggs: 2 })
+| 
+| E203: if x == 4: print x, y; x, y = y , x
+| E203: if x == 4: print x, y ; x, y = y, x
+| E203: if x == 4 : print x, y; x, y = y, x
+
+
+----
+
+*Function:* `find_checks(argument_name) [at ln:1097] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1097>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def find_checks(argument_name):
+
+| Find all globally visible functions where the first argument name
+| starts with argument\_name.
+
+
+----
+
+*Function:* `ignore_code(code) [at ln:1118] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1118>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def ignore_code(code):
+
+| Check if options.ignore contains a prefix of the error code.
+| If options.select contains a prefix of the error code, do not ignore it.
+
+
+----
+
+*Function:* `imports_on_separate_lines(logical_line) [at ln:825] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-825>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def imports_on_separate_lines(logical_line):
+
+| Imports should usually be on separate lines.
+| 
+| Okay: import os\nimport sys
+| E401: import sys, os
+| 
+| Okay: from subprocess import Popen, PIPE
+| Okay: from myclas import MyClass
+| Okay: from foo.bar.yourclass import YourClass
+| Okay: import myclass
+| Okay: import foo.bar.yourclass
+
+
+----
+
+*Function:* `indentation(logical_line, previous_logical, indent_char, indent_level, previous_indent_level) [at ln:418] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-418>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def indentation(logical_line, previous_logical, indent_char, indent_level, previous_indent_level):
+
+| Use 4 spaces per indentation level.
+| 
+| For really old code that you don't want to mess up, you can continue to
+| use 8-space tabs.
+| 
+| Okay: a = 1
+| Okay: if a == 0:\n    a = 1
+| E111:   a = 1
+| 
+| Okay: for item in items:\n    pass
+| E112: for item in items:\npass
+| 
+| Okay: a = 1\nb = 2
+| E113: a = 1\n    b = 2
+
+
+----
+
+*Function:* `maximum_line_length(physical_line, max_line_length) [at ln:266] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-266>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def maximum_line_length(physical_line, max_line_length):
+
+| Limit all lines to a maximum of 79 characters.
+| 
+| There are still many devices around that are limited to 80 character
+| lines; plus, limiting windows to 80 characters makes it possible to have
+| several windows side-by-side.  The default wrapping on such devices looks
+| ugly.  Therefore, please limit all lines to a maximum of 79 characters.
+| For flowing long blocks of text (docstrings or comments), limiting the
+| length to 72 characters is recommended.
+| 
+| Reports error E501.
+
+
+----
+
+*Function:* `missing_newline(physical_line) [at ln:256] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-256>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def missing_newline(physical_line):
+
+| JCR: The last line should have a newline.
+| 
+| Reports warning W292.
+
+
+----
+
+*Function:* `missing_whitespace(logical_line) [at ln:393] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-393>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def missing_whitespace(logical_line):
+
+| JCR: Each comma, semicolon or colon should be followed by whitespace.
+| 
+| Okay: [a, b]
+| Okay: (3,)
+| Okay: a[1:4]
+| Okay: a[:4]
+| Okay: a[1:]
+| Okay: a[1:4:2]
+| E231: ['a','b']
+| E231: foo(bar,baz)
+
+
+----
+
+*Function:* `missing_whitespace_around_operator(logical_line, tokens) [at ln:661] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-661>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def missing_whitespace_around_operator(logical_line, tokens):
+
+| - Always surround these binary operators with a single space on
+|   either side: assignment (=), augmented assignment (+=, -= etc.),
+|   comparisons (==, <, >, !=, <>, <=, >=, in, not in, is, is not),
+|   Booleans (and, or, not).
+| 
+| - Use spaces around arithmetic operators.
+| 
+| Okay: i = i + 1
+| Okay: submitted += 1
+| Okay: x = x \* 2 - 1
+| Okay: hypot2 = x \* x + y \* y
+| Okay: c = (a + b) \* (a - b)
+| Okay: foo(bar, key='word', \*args, \*\*kwargs)
+| Okay: baz(\*\*kwargs)
+| Okay: negative = -1
+| Okay: spam(-1)
+| Okay: alpha[:-i]
+| Okay: if not -5 < x < +5:\n    pass
+| Okay: lambda \*args, \*\*kw: (args, kw)
+| 
+| E225: i=i+1
+| E225: submitted +=1
+| E225: x = x\*2 - 1
+| E225: hypot2 = x\*x + y\*y
+| E225: c = (a+b) \* (a-b)
+| E225: c = alpha -4
+| E225: z = x \*\*y
+
+
+----
+
+*Function:* `mute_string(text) [at ln:1071] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1071>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def mute_string(text):
+
+| Replace contents with 'xxx' to prevent syntax matching.
+| 
+| >>> mute\_string('"abc"')
+| '"xxx"'
+| >>> mute\_string("'''abc'''")
+| "'''xxx'''"
+| >>> mute\_string("r'abc'")
+| "r'xxx'"
+
+
+----
+
+*Function:* `python_3000_backticks(logical_line) [at ln:1017] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1017>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def python_3000_backticks(logical_line):
+
+| Backticks are removed in Python 3000.
+| Use repr() instead.
+| 
+| Okay: val = repr(1 + 2)
+| W604: val = \`1 + 2\`
+
+
+----
+
+*Function:* `python_3000_has_key(logical_line) [at ln:972] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-972>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def python_3000_has_key(logical_line):
+
+| The {}.has\_key() method will be removed in the future version of
+| Python. Use the 'in' operation instead.
+| 
+| Okay: if "alph" in d:\n    print d["alph"]
+| W601: assert d.has\_key('alph')
+
+
+----
+
+*Function:* `python_3000_not_equal(logical_line) [at ln:1003] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1003>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def python_3000_not_equal(logical_line):
+
+| != can also be written <>, but this is an obsolete usage kept for
+| backwards compatibility only. New code should always use !=.
+| The older syntax is removed in Python 3000.
+| 
+| Okay: if a != 'no':
+| W603: if a <> 'no':
+
+
+----
+
+*Function:* `python_3000_raise_comma(logical_line) [at ln:985] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-985>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def python_3000_raise_comma(logical_line):
+
+| When raising an exception, use "raise ValueError('message')"
+| instead of the older form "raise ValueError, 'message'".
+| 
+| The paren-using form is preferred because when the exception arguments
+| are long or include string formatting, you don't need to use line
+| continuation characters thanks to the containing parentheses.  The older
+| form will be removed in Python 3000.
+| 
+| Okay: raise DummyError("Message")
+| W602: raise DummyError, "Message"
+
+
+----
+
+*Function:* `refresh_checks() [at ln:1136] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1136>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def refresh_checks():
+
+
+No description.
+
+
+----
+
+*Function:* `run_check(fileName, source) [at ln:1330] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1330>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run_check(fileName, source):
+
+| Parse options and run checks on Python source.
+
+
+----
+
+*Function:* `tabs_obsolete(physical_line) [at ln:202] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-202>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def tabs_obsolete(physical_line):
+
+| For new projects, spaces-only are strongly recommended over tabs.  Most
+| editors have features that make this easy to do.
+| 
+| Okay: if True:\n    return
+| W191: if True:\n\treturn
+
+
+----
+
+*Function:* `tabs_or_spaces(physical_line, indent_char) [at ln:182] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-182>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def tabs_or_spaces(physical_line, indent_char):
+
+| Never mix tabs and spaces.
+| 
+| The most popular way of indenting Python is with spaces only.  The
+| second-most popular way is with tabs only.  Code indented with a mixture
+| of tabs and spaces should be converted to using spaces exclusively.  When
+| invoking the Python command line interpreter with the -t option, it issues
+| warnings about code that illegally mixes tabs and spaces.  When using -tt
+| these warnings become errors.  These options are highly recommended!
+| 
+| Okay: if a == 0:\n        a = 1\n        b = 1
+| E101: if a == 0:\n        a = 1\n\tb = 1
+
+
+----
+
+*Function:* `trailing_blank_lines(physical_line, lines, line_number) [at ln:245] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-245>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def trailing_blank_lines(physical_line, lines, line_number):
+
+| JCR: Trailing blank lines are superfluous.
+| 
+| Okay: spam(1)
+| W391: spam(1)\n
+
+
+----
+
+*Function:* `trailing_whitespace(physical_line) [at ln:215] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-215>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def trailing_whitespace(physical_line):
+
+| JCR: Trailing whitespace is superfluous.
+| FBM: Except when it occurs as part of a blank line (i.e. the line is
+|      nothing but whitespace). According to Python docs[1] a line with only
+|      whitespace is considered a blank line, and is to be ignored. However,
+|      matching a blank line to its indentation level avoids mistakenly
+|      terminating a multi-line statement (e.g. class declaration) when
+|      pasting code into the standard Python interpreter.
+| 
+|      [1] http://docs.python.org/reference/lexical\_analysis.html#blank-lines
+| 
+| The warning returned varies on whether the line itself is blank, for easier
+| filtering for those who want to indent their blank lines.
+| 
+| Okay: spam(1)
+| W291: spam(1)\s
+| W293: class Foo(object):\n    \n    bang = 12
+
+
+----
+
+*Function:* `whitespace_around_comma(logical_line) [at ln:738] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-738>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def whitespace_around_comma(logical_line):
+
+| Avoid extraneous whitespace in the following situations:
+| 
+| - More than one space around an assignment (or other) operator to
+|   align it with another.
+| 
+| Note: these checks are disabled by default
+| 
+| Okay: a = (1, 2)
+| E241: a = (1,  2)
+| E242: a = (1,\t2)
+
+
+----
+
+*Function:* `whitespace_around_keywords(logical_line) [at ln:369] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-369>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def whitespace_around_keywords(logical_line):
+
+| Avoid extraneous whitespace around keywords.
+| 
+| Okay: True and False
+| E271: True and  False
+| E272: True  and False
+| E273: True and\tFalse
+| E274: True\tand False
+
+
+----
+
+*Function:* `whitespace_around_named_parameter_equals(logical_line, tokens) [at ln:760] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-760>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def whitespace_around_named_parameter_equals(logical_line, tokens):
+
+| Don't use spaces around the '=' sign when used to indicate a
+| keyword argument or a default parameter value.
+| 
+| Okay: def complex(real, imag=0.0):
+| Okay: return magic(r=real, i=imag)
+| Okay: boolean(a == b)
+| Okay: boolean(a != b)
+| Okay: boolean(a <= b)
+| Okay: boolean(a >= b)
+| 
+| E251: def complex(real, imag = 0.0):
+| E251: return magic(r = real, i = imag)
+
+
+----
+
+*Function:* `whitespace_around_operator(logical_line) [at ln:634] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-634>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def whitespace_around_operator(logical_line):
+
+| Avoid extraneous whitespace in the following situations:
+| 
+| - More than one space around an assignment (or other) operator to
+|   align it with another.
+| 
+| Okay: a = 12 + 3
+| E221: a = 4  + 5
+| E222: a = 4 +  5
+| E223: a = 4\t+ 5
+| E224: a = 4 +\t5
+
+
+----
+
+*Function:* `whitespace_before_inline_comment(logical_line, tokens) [at ln:797] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-797>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def whitespace_before_inline_comment(logical_line, tokens):
+
+| Separate inline comments by at least two spaces.
+| 
+| An inline comment is a comment on the same line as a statement.  Inline
+| comments should be separated by at least two spaces from the statement.
+| They should start with a # and a single space.
+| 
+| Okay: x = x + 1  # Increment x
+| Okay: x = x + 1    # Increment x
+| E261: x = x + 1 # Increment x
+| E262: x = x + 1  #Increment x
+| E262: x = x + 1  #  Increment x
+
+
+----
+
+*Function:* `whitespace_before_parameters(logical_line, tokens) [at ln:598] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-598>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def whitespace_before_parameters(logical_line, tokens):
+
+| Avoid extraneous whitespace in the following situations:
+| 
+| - Immediately before the open parenthesis that starts the argument
+|   list of a function call.
+| 
+| - Immediately before the open parenthesis that starts an indexing or
+|   slicing.
+| 
+| Okay: spam(1)
+| E211: spam (1)
+| 
+| Okay: dict['key'] = list[index]
+| E211: dict ['key'] = list[index]
+| E211: dict['key'] = list [index]
+
+
+----
+
+
+*Class:* `Options() </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-159>`_
+---------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Options():
+
+
+No description.
+
+
+----
+
+*Class:* `Checker(object) </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1142>`_
+----------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Checker(object):
+
+| Load a Python source file, tokenize it, check coding style.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `__doc__ [at ln:1266] </listings/ninja_ide/dependencies/pep8mod.py.html#1266>`_
+
+- `_logical_checks [at ln:1149] </listings/ninja_ide/dependencies/pep8mod.py.html#1149>`_
+
+- `_physical_checks [at ln:1148] </listings/ninja_ide/dependencies/pep8mod.py.html#1148>`_
+
+- `blank_lines [at ln:1278] </listings/ninja_ide/dependencies/pep8mod.py.html#1278>`_
+
+- `filename [at ln:1152] </listings/ninja_ide/dependencies/pep8mod.py.html#1152>`_
+
+- `indent_char [at ln:1274] </listings/ninja_ide/dependencies/pep8mod.py.html#1274>`_
+
+- `indent_level [at ln:1275] </listings/ninja_ide/dependencies/pep8mod.py.html#1275>`_
+
+- `line_number [at ln:1272] </listings/ninja_ide/dependencies/pep8mod.py.html#1272>`_
+
+- `line_offset [at ln:1273] </listings/ninja_ide/dependencies/pep8mod.py.html#1273>`_
+
+- `lines [at ln:1153] </listings/ninja_ide/dependencies/pep8mod.py.html#1153>`_
+
+- `logical_line [at ln:1228] </listings/ninja_ide/dependencies/pep8mod.py.html#1228>`_
+
+- `mapping [at ln:1201] </listings/ninja_ide/dependencies/pep8mod.py.html#1201>`_
+
+- `max_line_length [at ln:1150] </listings/ninja_ide/dependencies/pep8mod.py.html#1150>`_
+
+- `physical_line [at ln:1188] </listings/ninja_ide/dependencies/pep8mod.py.html#1188>`_
+
+- `previous_indent_level [at ln:1238] </listings/ninja_ide/dependencies/pep8mod.py.html#1238>`_
+
+- `previous_logical [at ln:1276] </listings/ninja_ide/dependencies/pep8mod.py.html#1276>`_
+
+- `results [at ln:1154] </listings/ninja_ide/dependencies/pep8mod.py.html#1154>`_
+
+- `tokens [at ln:1277] </listings/ninja_ide/dependencies/pep8mod.py.html#1277>`_
+
+- `verbose [at ln:1151] </listings/ninja_ide/dependencies/pep8mod.py.html#1151>`_
+
+
+*Function:* `__init__(filename, lines=None) [at ln:1147] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1147>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(filename, lines=None):
+
+
+No description.
+
+
+----
+
+*Function:* `build_tokens_line() [at ln:1197] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1197>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def build_tokens_line():
+
+| Build a logical line from tokens.
+
+
+----
+
+*Function:* `check_all(expected=None, line_offset=int) [at ln:1268] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1268>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def check_all(expected=None, line_offset=int):
+
+| Run all checks on the input file.
+
+
+----
+
+*Function:* `check_logical() [at ln:1231] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1231>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def check_logical():
+
+| Build a line from tokens and run all logical checks on it.
+
+
+----
+
+*Function:* `check_physical(line) [at ln:1184] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1184>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def check_physical(line):
+
+| Run all physical checks on a raw input line.
+
+
+----
+
+*Function:* `generate_tokens() [at ln:1253] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1253>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def generate_tokens():
+
+
+No description.
+
+
+----
+
+*Function:* `readline() [at ln:1156] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1156>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def readline():
+
+| Get the next line from the input buffer.
+
+
+----
+
+*Function:* `readline_check_physical() [at ln:1165] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1165>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def readline_check_physical():
+
+| Check and return the next physical line. This method can be
+| used to feed tokenize.generate\_tokens.
+
+
+----
+
+*Function:* `report_error(line_number, offset, text, check) [at ln:1314] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1314>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def report_error(line_number, offset, text, check):
+
+| Report an error, according to options.
+
+
+----
+
+*Function:* `run_check(check, argument_names) [at ln:1175] </listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1175>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run_check(check, argument_names):
+
+| Run a check plugin.
+
+
+
+

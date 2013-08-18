@@ -1,0 +1,110 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: introspection
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `introspection.py </listings/ninja_ide/tools/introspection.py.html>`_ API
+=====================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `_ast </listings/ninja_ide/tools/introspection.py.html#17>`_
+
+- `ast </listings/ninja_ide/tools/introspection.py.html#18>`_
+
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/tools/introspection.py.html#22>`_
+
+- `ninja_ide.tools.completion.analyzer </listings/ninja_ide/tools/introspection.py.html#20>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `_map_type [at ln:29] </listings/ninja_ide/tools/introspection.py.html#29>`_
+
+- `logger_imports [at ln:24] </listings/ninja_ide/tools/introspection.py.html#24>`_
+
+- `logger_symbols [at ln:26] </listings/ninja_ide/tools/introspection.py.html#26>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `_parse_assign(symbol) [at ln:39] </listings/ninja_ide/tools/introspection.py.html#listingsninja_idetoolsintrospectionpy-39>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _parse_assign(symbol):
+
+
+No description.
+
+
+----
+
+*Function:* `_parse_class(symbol, with_docstrings) [at ln:50] </listings/ninja_ide/tools/introspection.py.html#listingsninja_idetoolsintrospectionpy-50>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _parse_class(symbol, with_docstrings):
+
+
+No description.
+
+
+----
+
+*Function:* `_parse_function(symbol, with_docstrings) [at ln:88] </listings/ninja_ide/tools/introspection.py.html#listingsninja_idetoolsintrospectionpy-88>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _parse_function(symbol, with_docstrings):
+
+
+No description.
+
+
+----
+
+*Function:* `obtain_imports(source=str, body=None) [at ln:192] </listings/ninja_ide/tools/introspection.py.html#listingsninja_idetoolsintrospectionpy-192>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def obtain_imports(source=str, body=None):
+
+
+No description.
+
+
+----
+
+*Function:* `obtain_symbols(source, with_docstrings=False, filename=str) [at ln:149] </listings/ninja_ide/tools/introspection.py.html#listingsninja_idetoolsintrospectionpy-149>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def obtain_symbols(source, with_docstrings=False, filename=str):
+
+| Parse a module source code to obtain: Classes, Functions and Assigns.
+
+
+
+

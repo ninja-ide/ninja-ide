@@ -1,0 +1,82 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: utils
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `utils.py </listings/ninja_ide/tools/utils.py.html>`_ API
+=====================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `PyQt4.QtCore.QObject </listings/ninja_ide/tools/utils.py.html#2>`_
+
+
+
+
+
+*Class:* `SignalFlowControl(QObject) </listings/ninja_ide/tools/utils.py.html#listingsninja_idetoolsutilspy-5>`_
+------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class SignalFlowControl(QObject):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `__stop [at ln:10] </listings/ninja_ide/tools/utils.py.html#10>`_
+
+
+*Function:* `__init__() [at ln:6] </listings/ninja_ide/tools/utils.py.html#listingsninja_idetoolsutilspy-6>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `stop() [at ln:9] </listings/ninja_ide/tools/utils.py.html#listingsninja_idetoolsutilspy-9>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def stop():
+
+
+No description.
+
+
+----
+
+*Function:* `stopped() [at ln:12] </listings/ninja_ide/tools/utils.py.html#listingsninja_idetoolsutilspy-12>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def stopped():
+
+
+No description.
+
+
+
+

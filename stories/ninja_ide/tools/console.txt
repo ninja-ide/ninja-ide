@@ -1,0 +1,249 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: console
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `console.py </listings/ninja_ide/tools/console.py.html>`_ API
+=========================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `sys </listings/ninja_ide/tools/console.py.html#19>`_
+
+- `code.InteractiveConsole </listings/ninja_ide/tools/console.py.html#20>`_
+
+- `__future__.absolute_import </listings/ninja_ide/tools/console.py.html#17>`_
+
+
+
+
+
+*Class:* `Console(InteractiveConsole) </listings/ninja_ide/tools/console.py.html#listingsninja_idetoolsconsolepy-66>`_
+------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Console(InteractiveConsole):
+
+| Work as a Python Console.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_cache [at ln:74] </listings/ninja_ide/tools/console.py.html#74>`_
+
+- `output [at ln:92] </listings/ninja_ide/tools/console.py.html#92>`_
+
+- `stderr [at ln:85] </listings/ninja_ide/tools/console.py.html#85>`_
+
+- `stdout [at ln:84] </listings/ninja_ide/tools/console.py.html#84>`_
+
+
+*Function:* `__init__() [at ln:69] </listings/ninja_ide/tools/console.py.html#listingsninja_idetoolsconsolepy-69>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `get_output() [at ln:77] </listings/ninja_ide/tools/console.py.html#listingsninja_idetoolsconsolepy-77>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_output():
+
+| Replace out and error channels with cache.
+
+
+----
+
+*Function:* `get_type(var) [at ln:95] </listings/ninja_ide/tools/console.py.html#listingsninja_idetoolsconsolepy-95>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_type(var):
+
+| Get the type of a variable.
+
+
+----
+
+*Function:* `push(line) [at ln:87] </listings/ninja_ide/tools/console.py.html#listingsninja_idetoolsconsolepy-87>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def push(line):
+
+| Insert a command into the console.
+
+
+----
+
+*Function:* `return_output() [at ln:82] </listings/ninja_ide/tools/console.py.html#listingsninja_idetoolsconsolepy-82>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def return_output():
+
+| Reassign the proper values to output and error channel.
+
+
+----
+
+*Class:* `Cache(object) </listings/ninja_ide/tools/console.py.html#listingsninja_idetoolsconsolepy-23>`_
+----------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Cache(object):
+
+| Replace stdout and stderr behavior in order to collect outputs.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `out [at ln:31] </listings/ninja_ide/tools/console.py.html#31>`_
+
+
+*Function:* `__init__() [at ln:26] </listings/ninja_ide/tools/console.py.html#listingsninja_idetoolsconsolepy-26>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `flush() [at ln:37] </listings/ninja_ide/tools/console.py.html#listingsninja_idetoolsconsolepy-37>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def flush():
+
+| Join together all the outputs and return it to be displayed.
+
+
+----
+
+*Function:* `reset() [at ln:29] </listings/ninja_ide/tools/console.py.html#listingsninja_idetoolsconsolepy-29>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def reset():
+
+| Clean the cache.
+
+
+----
+
+*Function:* `write(line) [at ln:33] </listings/ninja_ide/tools/console.py.html#listingsninja_idetoolsconsolepy-33>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def write(line):
+
+| Collect the output into cache to be accesed later.
+
+
+----
+
+*Class:* `ExitWrapper(object) </listings/ninja_ide/tools/console.py.html#listingsninja_idetoolsconsolepy-45>`_
+----------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ExitWrapper(object):
+
+| Wrap the built-in function exit in the interpreter.
+
+
+*Function:* `__call__(code=None) [at ln:48] </listings/ninja_ide/tools/console.py.html#listingsninja_idetoolsconsolepy-48>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __call__(code=None):
+
+
+No description.
+
+
+----
+
+*Function:* `__repr__() [at ln:51] </listings/ninja_ide/tools/console.py.html#listingsninja_idetoolsconsolepy-51>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __repr__():
+
+
+No description.
+
+
+----
+
+*Class:* `HelpWrapper(object) </listings/ninja_ide/tools/console.py.html#listingsninja_idetoolsconsolepy-55>`_
+----------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class HelpWrapper(object):
+
+| Wrap the built-in function help in the interpreter.
+
+
+*Function:* `__call__(*args, **kwds) [at ln:58] </listings/ninja_ide/tools/console.py.html#listingsninja_idetoolsconsolepy-58>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __call__(*args, **kwds):
+
+
+No description.
+
+
+----
+
+*Function:* `__repr__() [at ln:62] </listings/ninja_ide/tools/console.py.html#listingsninja_idetoolsconsolepy-62>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __repr__():
+
+
+No description.
+
+
+
+

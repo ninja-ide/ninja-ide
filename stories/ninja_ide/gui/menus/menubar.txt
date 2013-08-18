@@ -1,0 +1,209 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: menubar
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `menubar.py </listings/ninja_ide/gui/menus/menubar.py.html>`_ API
+=============================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `ninja_ide.gui.ide.IDE </listings/ninja_ide/gui/menus/menubar.py.html#9>`_
+
+- `PyQt4.QtGui.QAction </listings/ninja_ide/gui/menus/menubar.py.html#3>`_
+
+- `PyQt4.QtGui.QMenu </listings/ninja_ide/gui/menus/menubar.py.html#4>`_
+
+- `PyQt4.QtCore.QObject </listings/ninja_ide/gui/menus/menubar.py.html#5>`_
+
+- `collections.defaultdict </listings/ninja_ide/gui/menus/menubar.py.html#6>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/menus/menubar.py.html#8>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `SEC01 [at ln:12] </listings/ninja_ide/gui/menus/menubar.py.html#12>`_
+
+- `SEC02 [at ln:13] </listings/ninja_ide/gui/menus/menubar.py.html#13>`_
+
+- `SEC03 [at ln:14] </listings/ninja_ide/gui/menus/menubar.py.html#14>`_
+
+- `SEC04 [at ln:15] </listings/ninja_ide/gui/menus/menubar.py.html#15>`_
+
+- `SEC05 [at ln:16] </listings/ninja_ide/gui/menus/menubar.py.html#16>`_
+
+- `SEC06 [at ln:17] </listings/ninja_ide/gui/menus/menubar.py.html#17>`_
+
+- `SEC07 [at ln:18] </listings/ninja_ide/gui/menus/menubar.py.html#18>`_
+
+- `SEC08 [at ln:19] </listings/ninja_ide/gui/menus/menubar.py.html#19>`_
+
+- `SEC09 [at ln:20] </listings/ninja_ide/gui/menus/menubar.py.html#20>`_
+
+- `SEC10 [at ln:21] </listings/ninja_ide/gui/menus/menubar.py.html#21>`_
+
+- `menu [at ln:164] </listings/ninja_ide/gui/menus/menubar.py.html#164>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `menu_add_section(menu, section_parts) [at ln:28] </listings/ninja_ide/gui/menus/menubar.py.html#listingsninja_ideguimenusmenubarpy-28>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def menu_add_section(menu, section_parts):
+
+
+No description.
+
+
+----
+
+
+*Class:* `_MenuBar(QObject) </listings/ninja_ide/gui/menus/menubar.py.html#listingsninja_ideguimenusmenubarpy-47>`_
+---------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class _MenuBar(QObject):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_children [at ln:52] </listings/ninja_ide/gui/menus/menubar.py.html#52>`_
+
+- `_menu_refs [at ln:54] </listings/ninja_ide/gui/menus/menubar.py.html#54>`_
+
+- `_roots [at ln:51] </listings/ninja_ide/gui/menus/menubar.py.html#51>`_
+
+- `_submenu [at ln:53] </listings/ninja_ide/gui/menus/menubar.py.html#53>`_
+
+- `_toolbar_index [at ln:55] </listings/ninja_ide/gui/menus/menubar.py.html#55>`_
+
+- `menubar [at ln:111] </listings/ninja_ide/gui/menus/menubar.py.html#111>`_
+
+
+*Function:* `__init__() [at ln:49] </listings/ninja_ide/gui/menus/menubar.py.html#listingsninja_ideguimenusmenubarpy-49>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `add_child(root_name, sub_name, child, weight, namespace=str) [at ln:82] </listings/ninja_ide/gui/menus/menubar.py.html#listingsninja_ideguimenusmenubarpy-82>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_child(root_name, sub_name, child, weight, namespace=str):
+
+
+No description.
+
+
+----
+
+*Function:* `add_root(root_name, root_weight=None) [at ln:66] </listings/ninja_ide/gui/menus/menubar.py.html#listingsninja_ideguimenusmenubarpy-66>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_root(root_name, root_weight=None):
+
+| Add a root menu with desired weight or at end of list
+
+
+----
+
+*Function:* `add_toolbar_item(toolbar_item) [at ln:105] </listings/ninja_ide/gui/menus/menubar.py.html#listingsninja_ideguimenusmenubarpy-105>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_toolbar_item(toolbar_item):
+
+
+No description.
+
+
+----
+
+*Function:* `get_children_of(parent, sub_name=None, namespace=None) [at ln:92] </listings/ninja_ide/gui/menus/menubar.py.html#listingsninja_ideguimenusmenubarpy-92>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_children_of(parent, sub_name=None, namespace=None):
+
+
+No description.
+
+
+----
+
+*Function:* `get_root() [at ln:76] </listings/ninja_ide/gui/menus/menubar.py.html#listingsninja_ideguimenusmenubarpy-76>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_root():
+
+
+No description.
+
+
+----
+
+*Function:* `load_menu(ide) [at ln:109] </listings/ninja_ide/gui/menus/menubar.py.html#listingsninja_ideguimenusmenubarpy-109>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_menu(ide):
+
+
+No description.
+
+
+----
+
+*Function:* `load_toolbar(ide) [at ln:155] </listings/ninja_ide/gui/menus/menubar.py.html#listingsninja_ideguimenusmenubarpy-155>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_toolbar(ide):
+
+
+No description.
+
+
+
+

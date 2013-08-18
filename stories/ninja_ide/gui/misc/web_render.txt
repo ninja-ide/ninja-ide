@@ -1,0 +1,92 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: web_render
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `web_render.py </listings/ninja_ide/gui/misc/web_render.py.html>`_ API
+==================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `PyQt4.QtCore.QUrl </listings/ninja_ide/gui/misc/web_render.py.html#22>`_
+
+- `PyQt4.QtGui.QVBoxLayout </listings/ninja_ide/gui/misc/web_render.py.html#20>`_
+
+- `PyQt4.QtWebKit.QWebSettings </listings/ninja_ide/gui/misc/web_render.py.html#23>`_
+
+- `PyQt4.QtWebKit.QWebView </listings/ninja_ide/gui/misc/web_render.py.html#21>`_
+
+- `PyQt4.QtGui.QWidget </listings/ninja_ide/gui/misc/web_render.py.html#19>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/misc/web_render.py.html#17>`_
+
+
+
+
+
+*Class:* `WebRender(QWidget) </listings/ninja_ide/gui/misc/web_render.py.html#listingsninja_ideguimiscweb_renderpy-26>`_
+--------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class WebRender(QWidget):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `webFrame [at ln:33] </listings/ninja_ide/gui/misc/web_render.py.html#33>`_
+
+
+*Function:* `__init__() [at ln:28] </listings/ninja_ide/gui/misc/web_render.py.html#listingsninja_ideguimiscweb_renderpy-28>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `render_from_html(html, url=None) [at ln:41] </listings/ninja_ide/gui/misc/web_render.py.html#listingsninja_ideguimiscweb_renderpy-41>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def render_from_html(html, url=None):
+
+
+No description.
+
+
+----
+
+*Function:* `render_page(url) [at ln:38] </listings/ninja_ide/gui/misc/web_render.py.html#listingsninja_ideguimiscweb_renderpy-38>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def render_page(url):
+
+
+No description.
+
+
+
+

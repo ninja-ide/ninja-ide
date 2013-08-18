@@ -1,0 +1,1034 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: locator
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `locator.py </listings/ninja_ide/tools/locator.py.html>`_ API
+=========================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `re </listings/ninja_ide/tools/locator.py.html#20>`_
+
+- `ninja_ide.gui.ide.IDE </listings/ninja_ide/tools/locator.py.html#50>`_
+
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/tools/locator.py.html#54>`_
+
+- `PyQt4.QtGui.QBrush </listings/ninja_ide/tools/locator.py.html#28>`_
+
+- `PyQt4.QtCore.QDir </listings/ninja_ide/tools/locator.py.html#43>`_
+
+- `PyQt4.QtCore.QFile </listings/ninja_ide/tools/locator.py.html#44>`_
+
+- `PyQt4.QtGui.QFrame </listings/ninja_ide/tools/locator.py.html#30>`_
+
+- `PyQt4.QtGui.QHBoxLayout </listings/ninja_ide/tools/locator.py.html#37>`_
+
+- `PyQt4.QtGui.QIcon </listings/ninja_ide/tools/locator.py.html#31>`_
+
+- `PyQt4.QtGui.QLabel </listings/ninja_ide/tools/locator.py.html#27>`_
+
+- `PyQt4.QtGui.QLineEdit </listings/ninja_ide/tools/locator.py.html#35>`_
+
+- `PyQt4.QtGui.QListWidget </listings/ninja_ide/tools/locator.py.html#33>`_
+
+- `PyQt4.QtGui.QListWidgetItem </listings/ninja_ide/tools/locator.py.html#32>`_
+
+- `PyQt4.QtGui.QMessageBox </listings/ninja_ide/tools/locator.py.html#26>`_
+
+- `PyQt4.QtCore.QObject </listings/ninja_ide/tools/locator.py.html#39>`_
+
+- `PyQt4.QtGui.QPushButton </listings/ninja_ide/tools/locator.py.html#38>`_
+
+- `PyQt4.QtCore.QSize </listings/ninja_ide/tools/locator.py.html#40>`_
+
+- `PyQt4.QtGui.QStyle </listings/ninja_ide/tools/locator.py.html#34>`_
+
+- `PyQt4.QtCore.QTextStream </listings/ninja_ide/tools/locator.py.html#45>`_
+
+- `PyQt4.QtCore.QThread </listings/ninja_ide/tools/locator.py.html#41>`_
+
+- `PyQt4.QtGui.QVBoxLayout </listings/ninja_ide/tools/locator.py.html#29>`_
+
+- `PyQt4.QtGui.QWidget </listings/ninja_ide/tools/locator.py.html#36>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/tools/locator.py.html#42>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/tools/locator.py.html#46>`_
+
+- `__future__.absolute_import </listings/ninja_ide/tools/locator.py.html#17>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/tools/locator.py.html#51>`_
+
+- `ninja_ide.resources </listings/ninja_ide/tools/locator.py.html#48>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/tools/locator.py.html#52>`_
+
+- `ninja_ide.translations </listings/ninja_ide/tools/locator.py.html#49>`_
+
+- `__future__.unicode_literals </listings/ninja_ide/tools/locator.py.html#18>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `FILTERS [at ln:70] </listings/ninja_ide/tools/locator.py.html#70>`_
+
+- `logger [at ln:57] </listings/ninja_ide/tools/locator.py.html#57>`_
+
+- `mapping_locations [at ln:59] </listings/ninja_ide/tools/locator.py.html#59>`_
+
+
+----
+
+
+
+*Class:* `PopupCompleter(QFrame) </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-738>`_
+--------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class PopupCompleter(QFrame):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `listWidget [at ln:745] </listings/ninja_ide/tools/locator.py.html#745>`_
+
+
+*Function:* `__init__() [at ln:740] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-740>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `_create_help_item(image, text) [at ln:830] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-830>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _create_help_item(image, text):
+
+
+No description.
+
+
+----
+
+*Function:* `_repaint_items(current, previous) [at ln:751] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-751>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _repaint_items(current, previous):
+
+
+No description.
+
+
+----
+
+*Function:* `add_help() [at ln:799] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-799>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_help():
+
+
+No description.
+
+
+----
+
+*Function:* `add_no_found() [at ln:793] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-793>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_no_found():
+
+| Load no results found message
+
+
+----
+
+*Function:* `clear() [at ln:770] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-770>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def clear():
+
+| Remove all the items of the list (deleted), and reload the help.
+
+
+----
+
+*Function:* `fetch_more(model) [at ln:787] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-787>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def fetch_more(model):
+
+| Add more items to the list on user scroll.
+
+
+----
+
+*Function:* `refresh(model, has_text=True) [at ln:774] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-774>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def refresh(model, has_text=True):
+
+| Refresh the list when the user search for some word.
+
+
+----
+
+*Function:* `reload(model) [at ln:761] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-761>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def reload(model):
+
+| Reload the data of the Popup Completer, and restart the state.
+
+
+----
+
+*Class:* `LocateThread(QThread) </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-155>`_
+-------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class LocateThread(QThread):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_cancel [at ln:408] </listings/ninja_ide/tools/locator.py.html#408>`_
+
+- `_filePath [at ln:170] </listings/ninja_ide/tools/locator.py.html#170>`_
+
+- `_file_path [at ln:186] </listings/ninja_ide/tools/locator.py.html#186>`_
+
+- `_isVariable [at ln:290] </listings/ninja_ide/tools/locator.py.html#290>`_
+
+- `_search [at ln:289] </listings/ninja_ide/tools/locator.py.html#289>`_
+
+- `dirty [at ln:258] </listings/ninja_ide/tools/locator.py.html#258>`_
+
+- `execute [at ln:169] </listings/ninja_ide/tools/locator.py.html#169>`_
+
+- `locations [at ln:410] </listings/ninja_ide/tools/locator.py.html#410>`_
+
+- `results [at ln:409] </listings/ninja_ide/tools/locator.py.html#409>`_
+
+
+*Function:* `__init__() [at ln:157] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-157>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `__locate_code_in_project(queue_folders, nproject) [at ln:219] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-219>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __locate_code_in_project(queue_folders, nproject):
+
+
+No description.
+
+
+----
+
+*Function:* `__parse_attributes(symbols, results, file_path) [at ln:379] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-379>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __parse_attributes(symbols, results, file_path):
+
+
+No description.
+
+
+----
+
+*Function:* `__parse_class(symbols, results, file_path) [at ln:354] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-354>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __parse_class(symbols, results, file_path):
+
+
+No description.
+
+
+----
+
+*Function:* `__parse_functions(symbols, results, file_path) [at ln:386] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-386>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __parse_functions(symbols, results, file_path):
+
+
+No description.
+
+
+----
+
+*Function:* `__parse_symbols(symbols, results, file_path) [at ln:346] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-346>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __parse_symbols(symbols, results, file_path):
+
+
+No description.
+
+
+----
+
+*Function:* `_grep_file_locate(file_path, file_name) [at ln:318] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-318>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _grep_file_locate(file_path, file_name):
+
+
+No description.
+
+
+----
+
+*Function:* `cancel() [at ln:407] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-407>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def cancel():
+
+
+No description.
+
+
+----
+
+*Function:* `convert_map_to_array() [at ln:312] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-312>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def convert_map_to_array():
+
+
+No description.
+
+
+----
+
+*Function:* `find(search, filePath, isVariable) [at ln:167] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-167>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def find(search, filePath, isVariable):
+
+
+No description.
+
+
+----
+
+*Function:* `find_code_location() [at ln:176] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-176>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def find_code_location():
+
+
+No description.
+
+
+----
+
+*Function:* `find_file_code_location(path) [at ln:185] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-185>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def find_file_code_location(path):
+
+
+No description.
+
+
+----
+
+*Function:* `get_locations() [at ln:292] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-292>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_locations():
+
+
+No description.
+
+
+----
+
+*Function:* `get_symbols_for_class(file_path, clazzName) [at ln:395] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-395>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_symbols_for_class(file_path, clazzName):
+
+
+No description.
+
+
+----
+
+*Function:* `get_this_file_locations(path) [at ln:298] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-298>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_this_file_locations(path):
+
+
+No description.
+
+
+----
+
+*Function:* `go_to_definition() [at ln:257] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-257>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def go_to_definition():
+
+
+No description.
+
+
+----
+
+*Function:* `locate_code() [at ln:199] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-199>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def locate_code():
+
+
+No description.
+
+
+----
+
+*Function:* `locate_file_code() [at ln:248] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-248>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def locate_file_code():
+
+
+No description.
+
+
+----
+
+*Function:* `run() [at ln:193] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-193>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run():
+
+
+No description.
+
+
+----
+
+*Class:* `Locator(QObject) </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-81>`_
+-------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Locator(QObject):
+
+| This class is used Go To Definition feature.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_thread [at ln:86] </listings/ninja_ide/tools/locator.py.html#86>`_
+
+
+*Function:* `__init__() [at ln:84] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-84>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `_cleanup() [at ln:91] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-91>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _cleanup():
+
+
+No description.
+
+
+----
+
+*Function:* `_load_results() [at ln:97] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-97>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _load_results():
+
+
+No description.
+
+
+----
+
+*Function:* `get_classes_from_project(projectPath) [at ln:114] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-114>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_classes_from_project(projectPath):
+
+
+No description.
+
+
+----
+
+*Function:* `navigate_to(function, filePath, isVariable) [at ln:94] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-94>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def navigate_to(function, filePath, isVariable):
+
+
+No description.
+
+
+----
+
+*Class:* `LocateItem(QListWidgetItem) </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-456>`_
+-------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class LocateItem(QListWidgetItem):
+
+| Create QListWidgetItem that contains the proper icon and file data.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_data [at ln:468] </listings/ninja_ide/tools/locator.py.html#468>`_
+
+- `icons [at ln:460] </listings/ninja_ide/tools/locator.py.html#460>`_
+
+
+*Function:* `__init__(data) [at ln:466] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-466>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(data):
+
+
+No description.
+
+
+----
+
+*Class:* `LocateCompleter(QLineEdit) </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-506>`_
+------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class LocateCompleter(QLineEdit):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `__prefix [at ln:530] </listings/ninja_ide/tools/locator.py.html#530>`_
+
+- `_filterData [at ln:519] </listings/ninja_ide/tools/locator.py.html#519>`_
+
+- `_line_jump [at ln:552] </listings/ninja_ide/tools/locator.py.html#552>`_
+
+- `_parent [at ln:510] </listings/ninja_ide/tools/locator.py.html#510>`_
+
+- `advancePrefix [at ln:514] </listings/ninja_ide/tools/locator.py.html#514>`_
+
+- `filterPrefix [at ln:513] </listings/ninja_ide/tools/locator.py.html#513>`_
+
+- `frame [at ln:512] </listings/ninja_ide/tools/locator.py.html#512>`_
+
+- `items_in_page [at ln:553] </listings/ninja_ide/tools/locator.py.html#553>`_
+
+- `page_items_step [at ln:518] </listings/ninja_ide/tools/locator.py.html#518>`_
+
+- `tempLocations [at ln:682] </listings/ninja_ide/tools/locator.py.html#682>`_
+
+
+*Function:* `__init__(parent) [at ln:508] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-508>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent):
+
+
+No description.
+
+
+----
+
+*Function:* `_advanced_filter(filterOptions) [at ln:620] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-620>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _advanced_filter(filterOptions):
+
+
+No description.
+
+
+----
+
+*Function:* `_advanced_filter_by_file(filterOptions) [at ln:677] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-677>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _advanced_filter_by_file(filterOptions):
+
+
+No description.
+
+
+----
+
+*Function:* `_create_list_widget_items(locations) [at ln:540] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-540>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _create_list_widget_items(locations):
+
+| Create a list of items (using pages for results to speed up).
+
+
+----
+
+*Function:* `_go_to_location(item) [at ln:719] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-719>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _go_to_location(item):
+
+
+No description.
+
+
+----
+
+*Function:* `_open_item(data) [at ln:729] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-729>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _open_item(data):
+
+| Open the item received.
+
+
+----
+
+*Function:* `_refresh_filter() [at ln:686] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-686>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _refresh_filter():
+
+
+No description.
+
+
+----
+
+*Function:* `complete() [at ln:533] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-533>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def complete():
+
+
+No description.
+
+
+----
+
+*Function:* `filter() [at ln:551] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-551>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def filter():
+
+
+No description.
+
+
+----
+
+*Function:* `focusOutEvent(event) [at ln:724] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-724>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def focusOutEvent(event):
+
+| Hide Popup on focus lost.
+
+
+----
+
+*Function:* `keyPressEvent(event) [at ln:690] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-690>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def keyPressEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `set_prefix(prefix) [at ln:528] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-528>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_prefix(prefix):
+
+| Set the prefix for the completer.
+
+
+----
+
+*Class:* `CodeLocatorWidget(QWidget) </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-413>`_
+------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class CodeLocatorWidget(QWidget):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_btnClose [at ln:424] </listings/ninja_ide/tools/locator.py.html#424>`_
+
+- `_btnGo [at ln:426] </listings/ninja_ide/tools/locator.py.html#426>`_
+
+- `_completer [at ln:428] </listings/ninja_ide/tools/locator.py.html#428>`_
+
+- `_thread [at ln:419] </listings/ninja_ide/tools/locator.py.html#419>`_
+
+- `execute [at ln:420] </listings/ninja_ide/tools/locator.py.html#420>`_
+
+- `statusBar [at ln:418] </listings/ninja_ide/tools/locator.py.html#418>`_
+
+
+*Function:* `__init__(parent) [at ln:415] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-415>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent):
+
+
+No description.
+
+
+----
+
+*Function:* `_cleanup() [at ln:437] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-437>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _cleanup():
+
+
+No description.
+
+
+----
+
+*Function:* `explore_code() [at ln:440] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-440>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def explore_code():
+
+
+No description.
+
+
+----
+
+*Function:* `explore_file_code(path) [at ln:443] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-443>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def explore_file_code(path):
+
+
+No description.
+
+
+----
+
+*Function:* `setVisible(val) [at ln:449] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-449>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setVisible(val):
+
+
+No description.
+
+
+----
+
+*Function:* `show_suggestions() [at ln:446] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-446>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show_suggestions():
+
+
+No description.
+
+
+----
+
+*Class:* `ResultItem(object) </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-125>`_
+----------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ResultItem(object):
+
+| The Representation of each item found with the locator.
+
+
+*Function:* `__getitem__(index) [at ln:151] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-151>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __getitem__(index):
+
+
+No description.
+
+
+----
+
+*Function:* `__init__(type=str, name=str, path=str, lineno=int) [at ln:128] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-128>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(type=str, name=str, path=str, lineno=int):
+
+
+No description.
+
+
+----
+
+*Function:* `__iter__() [at ln:147] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-147>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __iter__():
+
+
+No description.
+
+
+----
+
+*Function:* `__len__() [at ln:144] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-144>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __len__():
+
+
+No description.
+
+
+----
+
+*Function:* `__str__() [at ln:141] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-141>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __str__():
+
+
+No description.
+
+
+----
+
+*Class:* `LocateWidget(QLabel) </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-471>`_
+------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class LocateWidget(QLabel):
+
+| Create a styled QLabel that will show the info.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `name [at ln:477] </listings/ninja_ide/tools/locator.py.html#477>`_
+
+- `path [at ln:478] </listings/ninja_ide/tools/locator.py.html#478>`_
+
+
+*Function:* `__init__(data) [at ln:475] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-475>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(data):
+
+
+No description.
+
+
+----
+
+*Function:* `set_not_selected() [at ln:496] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-496>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_not_selected():
+
+
+No description.
+
+
+----
+
+*Function:* `set_selected() [at ln:487] </listings/ninja_ide/tools/locator.py.html#listingsninja_idetoolslocatorpy-487>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_selected():
+
+
+No description.
+
+
+
+

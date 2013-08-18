@@ -1,0 +1,290 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="pyflakes.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>pyflakes.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../../../">/listings</a>
+        </li><li><a href="../../../">/ninja_ide</a>
+        </li><li><a href="../../">/dependencies</a>
+        </li><li><a href="../">/pyflakes_mod</a>
+        </li><li><a href=".">/scripts</a>
+        </li><li><a href="#">/pyflakes.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-1"> 1</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-2"> 2</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-3"> 3</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-4"> 4</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-5"> 5</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-6"> 6</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-7"> 7</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-8"> 8</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-9"> 9</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-10">10</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-11">11</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-12">12</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-13">13</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-14">14</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-15">15</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-16">16</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-17">17</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-18">18</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-19">19</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-20">20</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-21">21</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-22">22</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-23">23</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-24">24</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-25">25</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-26">26</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-27">27</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-28">28</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-29">29</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-30">30</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-31">31</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-32">32</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-33">33</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-34">34</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-35">35</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-36">36</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-37">37</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-38">38</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-39">39</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-40">40</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-41">41</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-42">42</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-43">43</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-44">44</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-45">45</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-46">46</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-47">47</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-48">48</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-49">49</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-50">50</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-51">51</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-52">52</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-53">53</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-54">54</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-55">55</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-56">56</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-57">57</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-58">58</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-59">59</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-60">60</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-61">61</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-62">62</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-63">63</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-64">64</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-65">65</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-66">66</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-67">67</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-68">68</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-69">69</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-70">70</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-71">71</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-72">72</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-73">73</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-74">74</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-75">75</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-76">76</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-77">77</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-78">78</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-79">79</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-80">80</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-81">81</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-82">82</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-83">83</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-84">84</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-85">85</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-86">86</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-87">87</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-88">88</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-89">89</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-90">90</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-91">91</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-92">92</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-93">93</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-94">94</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-95">95</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-96">96</a>
+<a href="pyflakes.py.html#listingsninja_idedependenciespyflakes_modscriptspyflakespy-97">97</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-1"></a><span class="sd">"""</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-2"></a><span class="sd">Implementation of the command-line I{pyflakes} tool.</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-3"></a><span class="sd">"""</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-4"></a>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-5"></a><span class="kn">import</span> <span class="nn">sys</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-6"></a><span class="kn">import</span> <span class="nn">compiler</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-7"></a><span class="kn">import</span> <span class="nn">os</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-8"></a>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-9"></a><span class="n">checker</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="s">'ninja_ide.dependencies.pyflakes.checker'</span><span class="p">)</span><span class="o">.</span><span class="n">checker</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-10"></a>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-11"></a>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-12"></a><span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="n">codeString</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-13"></a>    <span class="sd">"""</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-14"></a><span class="sd">    Check the Python source given by C{codeString} for flakes.</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-15"></a>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-16"></a><span class="sd">    @param codeString: The Python source to check.</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-17"></a><span class="sd">    @type codeString: C{str}</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-18"></a>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-19"></a><span class="sd">    @param filename: The name of the file the source came from, used to report</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-20"></a><span class="sd">        errors.</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-21"></a><span class="sd">    @type filename: C{str}</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-22"></a>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-23"></a><span class="sd">    @return: The number of warnings emitted.</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-24"></a><span class="sd">    @rtype: C{int}</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-25"></a><span class="sd">    """</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-26"></a>    <span class="c"># Since compiler.parse does not reliably report syntax errors, use the</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-27"></a>    <span class="c"># built in compiler first to detect those.</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-28"></a>    <span class="k">try</span><span class="p">:</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-29"></a>        <span class="k">try</span><span class="p">:</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-30"></a>            <span class="nb">compile</span><span class="p">(</span><span class="n">codeString</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="s">"exec"</span><span class="p">)</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-31"></a>        <span class="k">except</span> <span class="ne">MemoryError</span><span class="p">:</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-32"></a>            <span class="c"># Python 2.4 will raise MemoryError if the source can't be</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-33"></a>            <span class="c"># decoded.</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-34"></a>            <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-35"></a>                <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-36"></a>            <span class="k">raise</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-37"></a>    <span class="k">except</span> <span class="p">(</span><span class="ne">SyntaxError</span><span class="p">,</span> <span class="ne">IndentationError</span><span class="p">)</span> <span class="k">as</span> <span class="n">value</span><span class="p">:</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-38"></a>        <span class="n">msg</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-39"></a>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-40"></a>        <span class="p">(</span><span class="n">lineno</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">lineno</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">text</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-41"></a>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-42"></a>        <span class="c"># If there's an encoding problem with the file, the text is None.</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-43"></a>        <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-44"></a>            <span class="c"># Avoid using msg, since for the only known case, it contains a</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-45"></a>            <span class="c"># bogus message that claims the encoding the file declared was</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-46"></a>            <span class="c"># unknown.</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-47"></a>            <span class="k">pass</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-48"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-49"></a>            <span class="n">line</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-50"></a>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-51"></a>            <span class="k">if</span> <span class="n">offset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-52"></a>                <span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">-</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-53"></a>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-54"></a>            <span class="k">if</span> <span class="n">offset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-55"></a>                <span class="k">pass</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-56"></a>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-57"></a>        <span class="k">return</span> <span class="mi">1</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-58"></a>    <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-59"></a>        <span class="c"># Okay, it's syntactically valid.  Now parse it into an ast and check</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-60"></a>        <span class="c"># it.</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-61"></a>        <span class="n">tree</span> <span class="o">=</span> <span class="n">compiler</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">codeString</span><span class="p">)</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-62"></a>        <span class="n">w</span> <span class="o">=</span> <span class="n">checker</span><span class="o">.</span><span class="n">Checker</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-63"></a>        <span class="n">w</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">cmp</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">lineno</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">lineno</span><span class="p">))</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-64"></a>        <span class="k">for</span> <span class="n">warning</span> <span class="ow">in</span> <span class="n">w</span><span class="o">.</span><span class="n">messages</span><span class="p">:</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-65"></a>            <span class="k">print</span><span class="p">(</span><span class="n">warning</span><span class="p">)</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-66"></a>        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">messages</span><span class="p">)</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-67"></a>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-68"></a>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-69"></a><span class="k">def</span> <span class="nf">checkPath</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-70"></a>    <span class="sd">"""</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-71"></a><span class="sd">    Check the given path, printing out any warnings detected.</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-72"></a>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-73"></a><span class="sd">    @return: the number of warnings printed</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-74"></a><span class="sd">    """</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-75"></a>    <span class="k">try</span><span class="p">:</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-76"></a>        <span class="k">return</span> <span class="n">check</span><span class="p">(</span><span class="nb">file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">'U'</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span> <span class="o">+</span> <span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-77"></a>    <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">msg</span><span class="p">:</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-78"></a>        <span class="k">return</span> <span class="mi">1</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-79"></a>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-80"></a>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-81"></a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-82"></a>    <span class="n">warnings</span> <span class="o">=</span> <span class="mi">0</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-83"></a>    <span class="n">args</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-84"></a>    <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-85"></a>        <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-86"></a>            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-87"></a>                <span class="k">for</span> <span class="n">dirpath</span><span class="p">,</span> <span class="n">dirnames</span><span class="p">,</span> <span class="n">filenames</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-88"></a>                    <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-89"></a>                        <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">'.py'</span><span class="p">):</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-90"></a>                            <span class="n">warnings</span> <span class="o">+=</span> <span class="n">checkPath</span><span class="p">(</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-91"></a>                                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-92"></a>            <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-93"></a>                <span class="n">warnings</span> <span class="o">+=</span> <span class="n">checkPath</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-94"></a>    <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-95"></a>        <span class="n">warnings</span> <span class="o">+=</span> <span class="n">check</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="s">'&lt;stdin&gt;'</span><span class="p">)</span>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-96"></a>
+<a name="listingsninja_idedependenciespyflakes_modscriptspyflakespy-97"></a>    <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="n">warnings</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

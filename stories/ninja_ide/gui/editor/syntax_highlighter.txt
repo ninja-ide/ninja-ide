@@ -1,0 +1,600 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: syntax_highlighter
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `syntax_highlighter.py </listings/ninja_ide/gui/editor/syntax_highlighter.py.html>`_ API
+====================================================================================================
+| Partition-based syntax highlighter
+
+
+*Imports:*
+------------
+- `re </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#25>`_
+
+- `PyQt4.QtGui.QBrush </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#27>`_
+
+- `PyQt4.QtGui.QColor </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#27>`_
+
+- `PyQt4.QtGui.QFont </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#27>`_
+
+- `PyQt4.QtGui.QSyntaxHighlighter </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#27>`_
+
+- `PyQt4.QtGui.QTextBlockUserData </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#27>`_
+
+- `PyQt4.QtGui.QTextCharFormat </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#27>`_
+
+- `PyQt4.QtGui.QTextFormat </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#27>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#22>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#31>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#32>`_
+
+- `__future__.unicode_literals </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#23>`_
+
+
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `_create_scheme() [at ln:484] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-484>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _create_scheme():
+
+
+No description.
+
+
+----
+
+*Function:* `get_user_data(block) [at ln:42] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-42>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_user_data(block):
+
+
+No description.
+
+
+----
+
+*Function:* `load_syntax(syntax) [at ln:515] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-515>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_syntax(syntax):
+
+
+No description.
+
+
+----
+
+
+*Class:* `TextCharFormat(QTextCharFormat) </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-74>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class TextCharFormat(QTextCharFormat):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `NAME [at ln:75] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#75>`_
+
+
+----
+
+*Class:* `Partition(object) </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-113>`_
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Partition(object):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `__slots__ [at ln:116] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#116>`_
+
+- `end [at ln:121] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#121>`_
+
+- `is_multiline [at ln:122] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#122>`_
+
+- `name [at ln:119] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#119>`_
+
+- `start [at ln:120] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#120>`_
+
+
+*Function:* `__init__(name, start, end, is_multiline=False) [at ln:118] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-118>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(name, start, end, is_multiline=False):
+
+
+No description.
+
+
+----
+
+*Class:* `Scanner(object) </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-204>`_
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Scanner(object):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `__slots__ [at ln:205] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#205>`_
+
+- `groups [at ln:209] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#209>`_
+
+- `search [at ln:242] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#242>`_
+
+- `tokens [at ln:208] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#208>`_
+
+
+*Function:* `__clean_highlight() [at ln:244] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-244>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __clean_highlight():
+
+
+No description.
+
+
+----
+
+*Function:* `__init__(tokens) [at ln:207] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-207>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(tokens):
+
+
+No description.
+
+
+----
+
+*Function:* `add_token(token) [at ln:228] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-228>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_token(token):
+
+
+No description.
+
+
+----
+
+*Function:* `scan(s) [at ln:254] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-254>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def scan(s):
+
+
+No description.
+
+
+----
+
+*Class:* `HighlighterError(Exception) </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-109>`_
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class HighlighterError(Exception):
+
+
+No description.
+
+
+----
+
+*Class:* `Token(object) </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-192>`_
+------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Token(object):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `__slots__ [at ln:193] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#193>`_
+
+- `name [at ln:196] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#196>`_
+
+- `pattern [at ln:199] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#199>`_
+
+- `prefix [at ln:200] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#200>`_
+
+- `suffix [at ln:201] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#201>`_
+
+
+*Function:* `__init__(name, pattern, prefix=str, suffix=str) [at ln:195] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-195>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(name, pattern, prefix=str, suffix=str):
+
+
+No description.
+
+
+----
+
+*Class:* `SyntaxHighlighter(QSyntaxHighlighter) </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-269>`_
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class SyntaxHighlighter(QSyntaxHighlighter):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_neditable [at ln:287] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#287>`_
+
+- `_old_search [at ln:450] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#450>`_
+
+- `error [at ln:368] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#368>`_
+
+- `formats [at ln:306] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#306>`_
+
+- `get_format [at ln:330] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#330>`_
+
+- `get_scanner [at ln:328] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#328>`_
+
+- `partition_scanner [at ln:295] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#295>`_
+
+- `scan_partitions [at ln:329] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#329>`_
+
+- `scanner [at ln:297] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#297>`_
+
+
+*Function:* `__apply_proper_style(char_format, color) [at ln:332] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-332>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __apply_proper_style(char_format, color):
+
+
+No description.
+
+
+----
+
+*Function:* `__highlight_lint(char_format, user_data) [at ln:349] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-349>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __highlight_lint(char_format, user_data):
+
+| Highlight the lines with lint errors.
+
+
+----
+
+*Function:* `__highlight_migration(char_format, user_data) [at ln:358] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-358>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __highlight_migration(char_format, user_data):
+
+| Highlight the lines with lint errors.
+
+
+----
+
+*Function:* `__highlight_pep8(char_format, user_data=None) [at ln:340] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-340>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __highlight_pep8(char_format, user_data=None):
+
+| Highlight the lines with pep8 errors.
+
+
+----
+
+*Function:* `__init__(parent, partition_scanner, scanner, formats, neditable=None) [at ln:271] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-271>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent, partition_scanner, scanner, formats, neditable=None):
+
+| :param parent: QDocument or QTextEdit/QPlainTextEdit instance
+| 'partition\_scanner:
+|     PartitionScanner instance
+| :param scanner:
+|     dictionary of token scanners for each partition
+|     The key is the name of the partition, the value is a Scanner
+|         instance
+|     The default scanner has the key None
+| :formats:
+|     list of tuples consisting of a name and a format definition
+|     The name is the name of a partition or token
+
+
+----
+
+*Function:* `__remove_error_highlight(char_format, user_data) [at ln:367] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-367>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __remove_error_highlight(char_format, user_data):
+
+
+No description.
+
+
+----
+
+*Function:* `_get_errors_lines() [at ln:463] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-463>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _get_errors_lines():
+
+| Return the number of lines that contains errors to highlight.
+
+
+----
+
+*Function:* `_rehighlight_lines(lines) [at ln:453] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-453>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _rehighlight_lines(lines):
+
+| If the document is valid, highlight the list of lines received.
+
+
+----
+
+*Function:* `get_error_highlighter(block) [at ln:413] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-413>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_error_highlighter(block):
+
+
+No description.
+
+
+----
+
+*Function:* `highlightBlock(text) [at ln:373] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-373>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def highlightBlock(text):
+
+| automatically called by Qt
+
+
+----
+
+*Function:* `rehighlight_lines(lines, errors=True) [at ln:474] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-474>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def rehighlight_lines(lines, errors=True):
+
+| Rehighlight the lines for errors or selected words.
+
+
+----
+
+*Function:* `set_selected_word(word, partial=False) [at ln:429] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-429>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_selected_word(word, partial=False):
+
+| Set the word to highlight.
+
+
+----
+
+*Class:* `Format(object) </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-78>`_
+------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Format(object):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `__slots__ [at ln:80] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#80>`_
+
+- `name [at ln:84] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#84>`_
+
+- `tcf [at ln:106] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#106>`_
+
+
+*Function:* `__init__(name, color=None, bold=None, italic=None, base_format=None, background=None) [at ln:82] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-82>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(name, color=None, bold=None, italic=None, base_format=None, background=None):
+
+
+No description.
+
+
+----
+
+*Class:* `SyntaxUserData(QTextBlockUserData) </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-50>`_
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class SyntaxUserData(QTextBlockUserData):
+
+| Store the information of the errors, str and comments for each block.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `comment_start [at ln:71] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#71>`_
+
+- `error [at ln:61] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#61>`_
+
+- `str_groups [at ln:62] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#62>`_
+
+
+*Function:* `__init__(error=False) [at ln:53] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-53>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(error=False):
+
+
+No description.
+
+
+----
+
+*Function:* `add_str_group(start, end) [at ln:65] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-65>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_str_group(start, end):
+
+| Add a pair of values setting the beggining and end of a string.
+
+
+----
+
+*Function:* `clear_data() [at ln:59] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-59>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def clear_data():
+
+| Clear the data stored for the current block.
+
+
+----
+
+*Function:* `comment_start_at(pos) [at ln:69] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-69>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def comment_start_at(pos):
+
+| Set the position in the line where the comment starts.
+
+
+----
+
+*Class:* `PartitionScanner(object) </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-129>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class PartitionScanner(object):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `partitions [at ln:136] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#136>`_
+
+
+*Function:* `__init__(partitions) [at ln:134] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-134>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(partitions):
+
+
+No description.
+
+
+----
+
+*Function:* `scan(current_state, text) [at ln:153] </listings/ninja_ide/gui/editor/syntax_highlighter.py.html#listingsninja_ideguieditorsyntax_highlighterpy-153>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def scan(current_state, text):
+
+
+No description.
+
+
+
+

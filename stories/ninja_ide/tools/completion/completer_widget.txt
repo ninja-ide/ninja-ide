@@ -1,0 +1,399 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: completer_widget
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `completer_widget.py </listings/ninja_ide/tools/completion/completer_widget.py.html>`_ API
+======================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `PyQt4.QtGui.QApplication </listings/ninja_ide/tools/completion/completer_widget.py.html#19>`_
+
+- `PyQt4.QtGui.QCompleter </listings/ninja_ide/tools/completion/completer_widget.py.html#22>`_
+
+- `PyQt4.QtGui.QFrame </listings/ninja_ide/tools/completion/completer_widget.py.html#21>`_
+
+- `PyQt4.QtGui.QIcon </listings/ninja_ide/tools/completion/completer_widget.py.html#25>`_
+
+- `PyQt4.QtGui.QListWidget </listings/ninja_ide/tools/completion/completer_widget.py.html#28>`_
+
+- `PyQt4.QtGui.QListWidgetItem </listings/ninja_ide/tools/completion/completer_widget.py.html#24>`_
+
+- `PyQt4.QtGui.QStackedLayout </listings/ninja_ide/tools/completion/completer_widget.py.html#23>`_
+
+- `PyQt4.QtGui.QTextCursor </listings/ninja_ide/tools/completion/completer_widget.py.html#20>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/tools/completion/completer_widget.py.html#26>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/tools/completion/completer_widget.py.html#27>`_
+
+- `ninja_ide.tools.completion.code_completion </listings/ninja_ide/tools/completion/completer_widget.py.html#32>`_
+
+- `ninja_ide.resources </listings/ninja_ide/tools/completion/completer_widget.py.html#30>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/tools/completion/completer_widget.py.html#31>`_
+
+- `__future__.unicode_literals </listings/ninja_ide/tools/completion/completer_widget.py.html#17>`_
+
+
+
+
+
+*Class:* `CompleterWidget(QCompleter) </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-251>`_
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class CompleterWidget(QCompleter):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_editor [at ln:255] </listings/ninja_ide/tools/completion/completer_widget.py.html#255>`_
+
+- `cc [at ln:261] </listings/ninja_ide/tools/completion/completer_widget.py.html#261>`_
+
+- `completion_results [at ln:315] </listings/ninja_ide/tools/completion/completer_widget.py.html#315>`_
+
+
+*Function:* `__init__(editor) [at ln:253] </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-253>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(editor):
+
+
+No description.
+
+
+----
+
+*Function:* `complete(cr, results) [at ln:272] </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-272>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def complete(cr, results):
+
+
+No description.
+
+
+----
+
+*Function:* `fill_completer() [at ln:308] </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-308>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def fill_completer():
+
+
+No description.
+
+
+----
+
+*Function:* `insert_completion(insert) [at ln:267] </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-267>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def insert_completion(insert):
+
+
+No description.
+
+
+----
+
+*Function:* `is_visible() [at ln:284] </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-284>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def is_visible():
+
+
+No description.
+
+
+----
+
+*Function:* `process_post_key_event(event) [at ln:297] </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-297>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def process_post_key_event(event):
+
+
+No description.
+
+
+----
+
+*Function:* `process_pre_key_event(event) [at ln:287] </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-287>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def process_pre_key_event(event):
+
+
+No description.
+
+
+----
+
+*Class:* `CodeCompletionWidget(QFrame) </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-35>`_
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class CodeCompletionWidget(QFrame):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_block [at ln:42] </listings/ninja_ide/tools/completion/completer_widget.py.html#42>`_
+
+- `_completion_results [at ln:202] </listings/ninja_ide/tools/completion/completer_widget.py.html#202>`_
+
+- `_editor [at ln:40] </listings/ninja_ide/tools/completion/completer_widget.py.html#40>`_
+
+- `_icons [at ln:51] </listings/ninja_ide/tools/completion/completer_widget.py.html#51>`_
+
+- `_key_operations [at ln:61] </listings/ninja_ide/tools/completion/completer_widget.py.html#61>`_
+
+- `_list_index [at ln:49] </listings/ninja_ide/tools/completion/completer_widget.py.html#49>`_
+
+- `_prefix [at ln:213] </listings/ninja_ide/tools/completion/completer_widget.py.html#213>`_
+
+- `_revision [at ln:41] </listings/ninja_ide/tools/completion/completer_widget.py.html#41>`_
+
+- `cc [at ln:56] </listings/ninja_ide/tools/completion/completer_widget.py.html#56>`_
+
+- `completion_list [at ln:46] </listings/ninja_ide/tools/completion/completer_widget.py.html#46>`_
+
+- `desktop [at ln:78] </listings/ninja_ide/tools/completion/completer_widget.py.html#78>`_
+
+- `source [at ln:60] </listings/ninja_ide/tools/completion/completer_widget.py.html#60>`_
+
+- `stack_layout [at ln:43] </listings/ninja_ide/tools/completion/completer_widget.py.html#43>`_
+
+
+*Function:* `__init__(editor) [at ln:37] </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-37>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(editor):
+
+
+No description.
+
+
+----
+
+*Function:* `_get_geometry() [at ln:125] </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-125>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _get_geometry():
+
+
+No description.
+
+
+----
+
+*Function:* `_invalid_completion_position() [at ln:182] </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-182>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _invalid_completion_position():
+
+
+No description.
+
+
+----
+
+*Function:* `_select_next_row(move=int) [at ln:87] </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-87>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _select_next_row(move=int):
+
+
+No description.
+
+
+----
+
+*Function:* `_select_previous_row(move=int) [at ln:95] </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-95>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _select_previous_row(move=int):
+
+
+No description.
+
+
+----
+
+*Function:* `add_list_items(proposals) [at ln:154] </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-154>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_list_items(proposals):
+
+
+No description.
+
+
+----
+
+*Function:* `complete(results) [at ln:146] </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-146>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def complete(results):
+
+
+No description.
+
+
+----
+
+*Function:* `fill_completer(force_completion=False) [at ln:193] </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-193>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def fill_completer(force_completion=False):
+
+
+No description.
+
+
+----
+
+*Function:* `hide_completer() [at ln:212] </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-212>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def hide_completer():
+
+
+No description.
+
+
+----
+
+*Function:* `insert_completion(insert, type_=function()) [at ln:115] </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-115>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def insert_completion(insert, type_=function()):
+
+
+No description.
+
+
+----
+
+*Function:* `pre_key_insert_completion() [at ln:216] </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-216>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def pre_key_insert_completion():
+
+
+No description.
+
+
+----
+
+*Function:* `process_post_key_event(event) [at ln:235] </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-235>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def process_post_key_event(event):
+
+
+No description.
+
+
+----
+
+*Function:* `process_pre_key_event(event) [at ln:226] </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-226>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def process_pre_key_event(event):
+
+
+No description.
+
+
+----
+
+*Function:* `set_completion_prefix(prefix, valid=True) [at ln:162] </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-162>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_completion_prefix(prefix, valid=True):
+
+
+No description.
+
+
+----
+
+*Function:* `update_metadata(cursor) [at ln:104] </listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-104>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_metadata(cursor):
+
+
+No description.
+
+
+
+

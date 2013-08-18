@@ -1,0 +1,269 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="start_page.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>start_page.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../../">/listings</a>
+        </li><li><a href="../../">/ninja_ide</a>
+        </li><li><a href="../">/gui</a>
+        </li><li><a href=".">/main_panel</a>
+        </li><li><a href="#">/start_page.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-1"> 1</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-2"> 2</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-3"> 3</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-4"> 4</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-5"> 5</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-6"> 6</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-7"> 7</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-8"> 8</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-9"> 9</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-10">10</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-11">11</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-12">12</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-13">13</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-14">14</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-15">15</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-16">16</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-17">17</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-18">18</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-19">19</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-20">20</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-21">21</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-22">22</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-23">23</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-24">24</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-25">25</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-26">26</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-27">27</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-28">28</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-29">29</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-30">30</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-31">31</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-32">32</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-33">33</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-34">34</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-35">35</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-36">36</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-37">37</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-38">38</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-39">39</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-40">40</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-41">41</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-42">42</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-43">43</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-44">44</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-45">45</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-46">46</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-47">47</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-48">48</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-49">49</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-50">50</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-51">51</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-52">52</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-53">53</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-54">54</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-55">55</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-56">56</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-57">57</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-58">58</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-59">59</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-60">60</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-61">61</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-62">62</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-63">63</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-64">64</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-65">65</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-66">66</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-67">67</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-68">68</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-69">69</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-70">70</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-71">71</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-72">72</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-73">73</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-74">74</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-75">75</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-76">76</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-77">77</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-78">78</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-79">79</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-80">80</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-81">81</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-82">82</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-83">83</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-84">84</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-85">85</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-86">86</a>
+<a href="start_page.py.html#listingsninja_ideguimain_panelstart_pagepy-87">87</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_ideguimain_panelstart_pagepy-1"></a><span class="c"># -*- coding: utf-8 -*-</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-2"></a>
+<a name="listingsninja_ideguimain_panelstart_pagepy-3"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QWidget</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-4"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QVBoxLayout</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-5"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">QSettings</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-6"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">SIGNAL</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-7"></a><span class="kn">from</span> <span class="nn">PyQt4.QtDeclarative</span> <span class="kn">import</span> <span class="n">QDeclarativeView</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-8"></a>
+<a name="listingsninja_ideguimain_panelstart_pagepy-9"></a><span class="kn">from</span> <span class="nn">ninja_ide</span> <span class="kn">import</span> <span class="n">resources</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-10"></a><span class="kn">from</span> <span class="nn">ninja_ide.tools</span> <span class="kn">import</span> <span class="n">ui_tools</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-11"></a><span class="kn">from</span> <span class="nn">ninja_ide.gui.main_panel</span> <span class="kn">import</span> <span class="n">itab_item</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-12"></a>
+<a name="listingsninja_ideguimain_panelstart_pagepy-13"></a>
+<a name="listingsninja_ideguimain_panelstart_pagepy-14"></a><span class="k">class</span> <span class="nc">StartPage</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="n">itab_item</span><span class="o">.</span><span class="n">ITabItem</span><span class="p">):</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-15"></a>
+<a name="listingsninja_ideguimain_panelstart_pagepy-16"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-17"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">StartPage</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-18"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="s">"Start Page"</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-19"></a>        <span class="n">vbox</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-20"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">view</span> <span class="o">=</span> <span class="n">QDeclarativeView</span><span class="p">()</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-21"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">setMinimumWidth</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-22"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">setResizeMode</span><span class="p">(</span><span class="n">QDeclarativeView</span><span class="o">.</span><span class="n">SizeRootObjectToView</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-23"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">setSource</span><span class="p">(</span><span class="n">ui_tools</span><span class="o">.</span><span class="n">get_qml_resource</span><span class="p">(</span><span class="s">"StartPage.qml"</span><span class="p">))</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-24"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">rootObject</span><span class="p">()</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-25"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-26"></a>
+<a name="listingsninja_ideguimain_panelstart_pagepy-27"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">load_items</span><span class="p">()</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-28"></a>
+<a name="listingsninja_ideguimain_panelstart_pagepy-29"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"openProject(QString)"</span><span class="p">),</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-30"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_open_project</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-31"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"removeProject(QString)"</span><span class="p">),</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-32"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_on_click_on_delete</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-33"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"markAsFavorite(QString, bool)"</span><span class="p">),</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-34"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_on_click_on_favorite</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-35"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"openPreferences()"</span><span class="p">),</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-36"></a>            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">"openPreferences()"</span><span class="p">)))</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-37"></a>
+<a name="listingsninja_ideguimain_panelstart_pagepy-38"></a>    <span class="k">def</span> <span class="nf">_open_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-39"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">"openProject(QString)"</span><span class="p">),</span> <span class="n">path</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-40"></a>
+<a name="listingsninja_ideguimain_panelstart_pagepy-41"></a>    <span class="k">def</span> <span class="nf">_on_click_on_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-42"></a>        <span class="n">settings</span> <span class="o">=</span> <span class="n">QSettings</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">SETTINGS_PATH</span><span class="p">,</span> <span class="n">QSettings</span><span class="o">.</span><span class="n">IniFormat</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-43"></a>        <span class="n">recent_projects</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s">"recentProjects"</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-44"></a>        <span class="k">if</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">recent_projects</span><span class="p">:</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-45"></a>            <span class="k">del</span> <span class="n">recent_projects</span><span class="p">[</span><span class="n">path</span><span class="p">]</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-46"></a>            <span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s">"recentProjects"</span><span class="p">,</span> <span class="n">recent_projects</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-47"></a>
+<a name="listingsninja_ideguimain_panelstart_pagepy-48"></a>    <span class="k">def</span> <span class="nf">_on_click_on_favorite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-49"></a>        <span class="n">settings</span> <span class="o">=</span> <span class="n">QSettings</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">SETTINGS_PATH</span><span class="p">,</span> <span class="n">QSettings</span><span class="o">.</span><span class="n">IniFormat</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-50"></a>        <span class="n">recent_projects</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s">"recentProjects"</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-51"></a>        <span class="n">properties</span> <span class="o">=</span> <span class="n">recent_projects</span><span class="p">[</span><span class="n">path</span><span class="p">]</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-52"></a>        <span class="n">properties</span><span class="p">[</span><span class="s">"isFavorite"</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-53"></a>        <span class="n">recent_projects</span><span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">properties</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-54"></a>        <span class="n">settings</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="s">"recentProjects"</span><span class="p">,</span> <span class="n">recent_projects</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-55"></a>
+<a name="listingsninja_ideguimain_panelstart_pagepy-56"></a>    <span class="k">def</span> <span class="nf">load_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-57"></a>        <span class="n">settings</span> <span class="o">=</span> <span class="n">QSettings</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">SETTINGS_PATH</span><span class="p">,</span> <span class="n">QSettings</span><span class="o">.</span><span class="n">IniFormat</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-58"></a>        <span class="n">listByFavorites</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-59"></a>        <span class="n">listNoneFavorites</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-60"></a>        <span class="n">recent_projects_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="s">'recentProjects'</span><span class="p">,</span> <span class="p">{}))</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-61"></a>        <span class="c">#Filter for favorites</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-62"></a>        <span class="k">for</span> <span class="n">recent_project_path</span><span class="p">,</span> <span class="n">content</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">recent_projects_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-63"></a>            <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">content</span><span class="p">)[</span><span class="s">"isFavorite"</span><span class="p">]):</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-64"></a>                <span class="n">listByFavorites</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">recent_project_path</span><span class="p">,</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-65"></a>                    <span class="n">content</span><span class="p">[</span><span class="s">"lastopen"</span><span class="p">]))</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-66"></a>            <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-67"></a>                <span class="n">listNoneFavorites</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">recent_project_path</span><span class="p">,</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-68"></a>                    <span class="n">content</span><span class="p">[</span><span class="s">"lastopen"</span><span class="p">]))</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-69"></a>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">listByFavorites</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-70"></a>            <span class="c"># sort by date favorites</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-71"></a>            <span class="n">listByFavorites</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">listByFavorites</span><span class="p">,</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-72"></a>                <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">date</span><span class="p">:</span> <span class="n">listByFavorites</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-73"></a>
+<a name="listingsninja_ideguimain_panelstart_pagepy-74"></a>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">listNoneFavorites</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-75"></a>            <span class="c">#sort by date last used</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-76"></a>            <span class="n">listNoneFavorites</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">listNoneFavorites</span><span class="p">,</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-77"></a>                <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">date</span><span class="p">:</span> <span class="n">listNoneFavorites</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-78"></a>
+<a name="listingsninja_ideguimain_panelstart_pagepy-79"></a>        <span class="k">for</span> <span class="n">recent_project_path</span> <span class="ow">in</span> <span class="n">listByFavorites</span><span class="p">:</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-80"></a>            <span class="n">path</span> <span class="o">=</span> <span class="n">recent_project_path</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-81"></a>            <span class="n">name</span> <span class="o">=</span> <span class="n">recent_projects_dict</span><span class="p">[</span><span class="n">path</span><span class="p">][</span><span class="s">'name'</span><span class="p">]</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-82"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">add_project</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-83"></a>
+<a name="listingsninja_ideguimain_panelstart_pagepy-84"></a>        <span class="k">for</span> <span class="n">recent_project_path</span> <span class="ow">in</span> <span class="n">listNoneFavorites</span><span class="p">:</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-85"></a>            <span class="n">path</span> <span class="o">=</span> <span class="n">recent_project_path</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-86"></a>            <span class="n">name</span> <span class="o">=</span> <span class="n">recent_projects_dict</span><span class="p">[</span><span class="n">path</span><span class="p">][</span><span class="s">'name'</span><span class="p">]</span>
+<a name="listingsninja_ideguimain_panelstart_pagepy-87"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">add_project</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

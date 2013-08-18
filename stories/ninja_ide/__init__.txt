@@ -1,0 +1,66 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: __init__
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `__init__.py </listings/ninja_ide/__init__.py.html>`_ API
+=====================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `sip </listings/ninja_ide/__init__.py.html#48>`_
+
+- `__future__.absolute_import </listings/ninja_ide/__init__.py.html#18>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `API_NAMES [at ln:49] </listings/ninja_ide/__init__.py.html#49>`_
+
+- `API_VERSION [at ln:51] </listings/ninja_ide/__init__.py.html#51>`_
+
+- `__author__ [at ln:25] </listings/ninja_ide/__init__.py.html#25>`_
+
+- `__license__ [at ln:30] </listings/ninja_ide/__init__.py.html#30>`_
+
+- `__mail__ [at ln:26] </listings/ninja_ide/__init__.py.html#26>`_
+
+- `__prj__ [at ln:24] </listings/ninja_ide/__init__.py.html#24>`_
+
+- `__source__ [at ln:28] </listings/ninja_ide/__init__.py.html#28>`_
+
+- `__url__ [at ln:27] </listings/ninja_ide/__init__.py.html#27>`_
+
+- `__version__ [at ln:29] </listings/ninja_ide/__init__.py.html#29>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `setup_and_run() [at ln:61] </listings/ninja_ide/__init__.py.html#listingsninja_ide__init__py-61>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setup_and_run():
+
+| Load the Core module and trigger the execution.
+
+
+
+

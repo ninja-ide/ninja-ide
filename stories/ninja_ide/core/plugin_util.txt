@@ -1,0 +1,55 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: plugin_util
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `plugin_util.py </listings/ninja_ide/core/plugin_util.py.html>`_ API
+================================================================================
+
+No description.
+
+
+
+
+
+
+*Class:* `ContextMenuScope(object) </listings/ninja_ide/core/plugin_util.py.html#listingsninja_idecoreplugin_utilpy-19>`_
+---------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ContextMenuScope(object):
+
+| This class is just a domain class for the plugin API
+| it hold the info about the project explorer context menu
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `file [at ln:27] </listings/ninja_ide/core/plugin_util.py.html#27>`_
+
+- `folder [at ln:26] </listings/ninja_ide/core/plugin_util.py.html#26>`_
+
+- `project [at ln:25] </listings/ninja_ide/core/plugin_util.py.html#25>`_
+
+
+*Function:* `__init__(project=False, folder=False, files=False) [at ln:24] </listings/ninja_ide/core/plugin_util.py.html#listingsninja_idecoreplugin_utilpy-24>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(project=False, folder=False, files=False):
+
+
+No description.
+
+
+
+

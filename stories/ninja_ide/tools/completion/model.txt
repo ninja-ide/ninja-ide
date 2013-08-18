@@ -1,0 +1,660 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: model
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `model.py </listings/ninja_ide/tools/completion/model.py.html>`_ API
+================================================================================
+
+No description.
+
+
+
+
+*Global Attributes:*
+----------------------
+- `MODULES [at ln:25] </listings/ninja_ide/tools/completion/model.py.html#25>`_
+
+- `late_resolution [at ln:26] </listings/ninja_ide/tools/completion/model.py.html#26>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `filter_data_type(data_types) [at ln:29] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-29>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def filter_data_type(data_types):
+
+
+No description.
+
+
+----
+
+*Function:* `remove_function_arguments(line) [at ln:47] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-47>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def remove_function_arguments(line):
+
+
+No description.
+
+
+----
+
+
+*Class:* `LinkedModule(object) </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-424>`_
+-----------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class LinkedModule(object):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `name [at ln:427] </listings/ninja_ide/tools/completion/model.py.html#427>`_
+
+- `resolve_attrs [at ln:428] </listings/ninja_ide/tools/completion/model.py.html#428>`_
+
+
+*Function:* `__init__(path, attrs) [at ln:426] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-426>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(path, attrs):
+
+
+No description.
+
+
+----
+
+*Function:* `get_type(resolve=str) [at ln:430] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-430>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_type(resolve=str):
+
+
+No description.
+
+
+----
+
+*Class:* `Structure(object) </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-84>`_
+-------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Structure(object):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `attributes [at ln:87] </listings/ninja_ide/tools/completion/model.py.html#87>`_
+
+- `functions [at ln:88] </listings/ninja_ide/tools/completion/model.py.html#88>`_
+
+- `parent [at ln:92] </listings/ninja_ide/tools/completion/model.py.html#92>`_
+
+
+*Function:* `__init__() [at ln:86] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-86>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `_get_scope_structure(structure, scope) [at ln:151] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-151>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _get_scope_structure(structure, scope):
+
+
+No description.
+
+
+----
+
+*Function:* `_resolve_attribute(type_data, attrs) [at ln:159] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-159>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _resolve_attribute(type_data, attrs):
+
+
+No description.
+
+
+----
+
+*Function:* `add_attributes(attributes) [at ln:95] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-95>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_attributes(attributes):
+
+
+No description.
+
+
+----
+
+*Function:* `add_function(function) [at ln:91] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-91>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_function(function):
+
+
+No description.
+
+
+----
+
+*Function:* `get_attribute_type(name) [at ln:140] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-140>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_attribute_type(name):
+
+| Return a tuple with:(Found, Type)
+
+
+----
+
+*Function:* `recursive_search_type(structure, attrs, scope) [at ln:163] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-163>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def recursive_search_type(structure, attrs, scope):
+
+
+No description.
+
+
+----
+
+*Function:* `update_attributes(attributes) [at ln:106] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-106>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_attributes(attributes):
+
+
+No description.
+
+
+----
+
+*Function:* `update_functions(functions) [at ln:118] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-118>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_functions(functions):
+
+
+No description.
+
+
+----
+
+*Class:* `Module(Structure) </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-173>`_
+--------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Module(Structure):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `classes [at ln:178] </listings/ninja_ide/tools/completion/model.py.html#178>`_
+
+- `imports [at ln:177] </listings/ninja_ide/tools/completion/model.py.html#177>`_
+
+- `parent [at ln:187] </listings/ninja_ide/tools/completion/model.py.html#187>`_
+
+
+*Function:* `__init__() [at ln:175] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-175>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `_check_attr_func_resolution(structure) [at ln:298] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-298>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _check_attr_func_resolution(structure):
+
+
+No description.
+
+
+----
+
+*Function:* `_search_type(structure, attrs) [at ln:259] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-259>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _search_type(structure, attrs):
+
+
+No description.
+
+
+----
+
+*Function:* `add_class(clazz) [at ln:186] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-186>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_class(clazz):
+
+
+No description.
+
+
+----
+
+*Function:* `add_imports(imports) [at ln:180] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-180>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_imports(imports):
+
+
+No description.
+
+
+----
+
+*Function:* `get_imports() [at ln:280] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-280>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_imports():
+
+
+No description.
+
+
+----
+
+*Function:* `get_type(main_attr, child_attrs=str, scope=None) [at ln:197] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-197>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_type(main_attr, child_attrs=str, scope=None):
+
+
+No description.
+
+
+----
+
+*Function:* `need_resolution() [at ln:286] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-286>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def need_resolution():
+
+
+No description.
+
+
+----
+
+*Function:* `update_classes(classes) [at ln:190] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-190>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_classes(classes):
+
+
+No description.
+
+
+----
+
+*Class:* `Function(Structure) </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-379>`_
+----------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Function(Structure):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `args [at ln:384] </listings/ninja_ide/tools/completion/model.py.html#384>`_
+
+- `decorators [at ln:385] </listings/ninja_ide/tools/completion/model.py.html#385>`_
+
+- `name [at ln:383] </listings/ninja_ide/tools/completion/model.py.html#383>`_
+
+- `return_type [at ln:386] </listings/ninja_ide/tools/completion/model.py.html#386>`_
+
+
+*Function:* `__init__(name) [at ln:381] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-381>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(name):
+
+
+No description.
+
+
+----
+
+*Function:* `add_return(lineno, data_type, line_content, oper) [at ln:388] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-388>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_return(lineno, data_type, line_content, oper):
+
+
+No description.
+
+
+----
+
+*Function:* `get_data_type() [at ln:393] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-393>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_data_type():
+
+
+No description.
+
+
+----
+
+*Class:* `Clazz(Structure) </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-317>`_
+-------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Clazz(Structure):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_update_bases [at ln:323] </listings/ninja_ide/tools/completion/model.py.html#323>`_
+
+- `bases [at ln:322] </listings/ninja_ide/tools/completion/model.py.html#322>`_
+
+- `name [at ln:321] </listings/ninja_ide/tools/completion/model.py.html#321>`_
+
+
+*Function:* `__init__(name) [at ln:319] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-319>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(name):
+
+
+No description.
+
+
+----
+
+*Function:* `add_parent(parent) [at ln:326] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-326>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_parent(parent):
+
+
+No description.
+
+
+----
+
+*Function:* `get_completion_items() [at ln:340] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-340>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_completion_items():
+
+
+No description.
+
+
+----
+
+*Function:* `update_bases() [at ln:332] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-332>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_bases():
+
+
+No description.
+
+
+----
+
+*Function:* `update_with_parent_data() [at ln:349] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-349>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_with_parent_data():
+
+
+No description.
+
+
+----
+
+*Class:* `Assign(object) </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-403>`_
+-----------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Assign(object):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `data [at ln:407] </listings/ninja_ide/tools/completion/model.py.html#407>`_
+
+- `name [at ln:406] </listings/ninja_ide/tools/completion/model.py.html#406>`_
+
+- `parent [at ln:408] </listings/ninja_ide/tools/completion/model.py.html#408>`_
+
+
+*Function:* `__init__(name) [at ln:405] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-405>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(name):
+
+
+No description.
+
+
+----
+
+*Function:* `add_data(lineno, data_type, line_content, oper) [at ln:410] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-410>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_data(lineno, data_type, line_content, oper):
+
+
+No description.
+
+
+----
+
+*Function:* `get_data_type() [at ln:415] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-415>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_data_type():
+
+
+No description.
+
+
+----
+
+*Class:* `_TypeData(object) </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-58>`_
+-------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class _TypeData(object):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `can_resolve [at ln:72] </listings/ninja_ide/tools/completion/model.py.html#72>`_
+
+- `data_type [at ln:62] </listings/ninja_ide/tools/completion/model.py.html#62>`_
+
+- `from_import [at ln:67] </listings/ninja_ide/tools/completion/model.py.html#67>`_
+
+- `line_content [at ln:63] </listings/ninja_ide/tools/completion/model.py.html#63>`_
+
+- `lineno [at ln:61] </listings/ninja_ide/tools/completion/model.py.html#61>`_
+
+- `operation [at ln:66] </listings/ninja_ide/tools/completion/model.py.html#66>`_
+
+
+*Function:* `__eq__(other) [at ln:77] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-77>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __eq__(other):
+
+
+No description.
+
+
+----
+
+*Function:* `__init__(lineno, data_type, line_content, oper) [at ln:60] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-60>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(lineno, data_type, line_content, oper):
+
+
+No description.
+
+
+----
+
+*Function:* `__repr__() [at ln:80] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-80>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __repr__():
+
+
+No description.
+
+
+----
+
+*Function:* `get_data_type() [at ln:74] </listings/ninja_ide/tools/completion/model.py.html#listingsninja_idetoolscompletionmodelpy-74>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_data_type():
+
+
+No description.
+
+
+
+

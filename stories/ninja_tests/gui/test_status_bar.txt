@@ -1,0 +1,93 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: test_status_bar
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `test_status_bar.py </listings/ninja_tests/gui/test_status_bar.py.html>`_ API
+=========================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `ninja_ide </listings/ninja_tests/gui/test_status_bar.py.html#24>`_
+
+- `sys </listings/ninja_tests/gui/test_status_bar.py.html#21>`_
+
+- `ninja_tests.BaseTest </listings/ninja_tests/gui/test_status_bar.py.html#30>`_
+
+- `PyQt4.QtGui.QApplication </listings/ninja_tests/gui/test_status_bar.py.html#26>`_
+
+- `__future__.absolute_import </listings/ninja_tests/gui/test_status_bar.py.html#18>`_
+
+- `ninja_tests.gui </listings/ninja_tests/gui/test_status_bar.py.html#31>`_
+
+- `ninja_ide.gui.main_panel.main_container </listings/ninja_tests/gui/test_status_bar.py.html#29>`_
+
+- `ninja_ide.gui.status_bar </listings/ninja_tests/gui/test_status_bar.py.html#28>`_
+
+- `__future__.unicode_literals </listings/ninja_tests/gui/test_status_bar.py.html#19>`_
+
+
+
+
+
+*Class:* `StatusBarTestCase(BaseTest) </listings/ninja_tests/gui/test_status_bar.py.html#listingsninja_testsguitest_status_barpy-34>`_
+----------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class StatusBarTestCase(BaseTest):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_parent [at ln:42] </listings/ninja_tests/gui/test_status_bar.py.html#42>`_
+
+- `app [at ln:38] </listings/ninja_tests/gui/test_status_bar.py.html#38>`_
+
+- `main [at ln:41] </listings/ninja_tests/gui/test_status_bar.py.html#41>`_
+
+- `parent [at ln:39] </listings/ninja_tests/gui/test_status_bar.py.html#39>`_
+
+- `status [at ln:43] </listings/ninja_tests/gui/test_status_bar.py.html#43>`_
+
+
+*Function:* `setUp() [at ln:36] </listings/ninja_tests/gui/test_status_bar.py.html#listingsninja_testsguitest_status_barpy-36>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setUp():
+
+
+No description.
+
+
+----
+
+*Function:* `test_show() [at ln:45] </listings/ninja_tests/gui/test_status_bar.py.html#listingsninja_testsguitest_status_barpy-45>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_show():
+
+
+No description.
+
+
+
+

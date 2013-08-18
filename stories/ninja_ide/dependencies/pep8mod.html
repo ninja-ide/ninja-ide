@@ -1,0 +1,1077 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="NINJA-IDE">
+    <title>NINJA-IDE | NINJA-IDE Documentation</title>
+    
+            <link href="../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
+
+    
+
+
+
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+    <li>
+    <a href="pep8mod.txt" id="sourcelink">Source</a>
+    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+    <h1>NINJA-IDE</h1>
+    <div class="contents alert alert-info pull-top topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="pep8mod.html#module-pep8mod-py-api" id="id1"><em>Module:</em> pep8mod.py API</a><ul>
+<li><a class="reference internal" href="pep8mod.html#imports" id="id2"><em>Imports:</em></a></li>
+<li><a class="reference internal" href="pep8mod.html#global-attributes" id="id3"><em>Global Attributes:</em></a></li>
+<li><a class="reference internal" href="pep8mod.html#global-functions" id="id4"><em>Global Functions:</em></a><ul>
+<li><a class="reference internal" href="pep8mod.html#function-blank-lines-logical-line-blank-lines-indent-level-line-number-previous-logical-previous-indent-level-at-ln-298" id="id5"><em>Function:</em> blank_lines(logical_line, blank_lines, indent_level, line_number, previous_logical, previous_indent_level) [at ln:298]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-comparison-to-singleton-logical-line-at-ln-919" id="id6"><em>Function:</em> comparison_to_singleton(logical_line) [at ln:919]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-comparison-type-logical-line-at-ln-949" id="id7"><em>Function:</em> comparison_type(logical_line) [at ln:949]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-compound-statements-logical-line-at-ln-845" id="id8"><em>Function:</em> compound_statements(logical_line) [at ln:845]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-continuation-line-indentation-logical-line-tokens-indent-level-verbose-at-ln-445" id="id9"><em>Function:</em> continuation_line_indentation(logical_line, tokens, indent_level, verbose) [at ln:445]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-expand-indent-line-at-ln-1042" id="id10"><em>Function:</em> expand_indent(line) [at ln:1042]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-explicit-line-join-logical-line-tokens-at-ln-884" id="id11"><em>Function:</em> explicit_line_join(logical_line, tokens) [at ln:884]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-extraneous-whitespace-logical-line-at-ln-336" id="id12"><em>Function:</em> extraneous_whitespace(logical_line) [at ln:336]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-find-checks-argument-name-at-ln-1097" id="id13"><em>Function:</em> find_checks(argument_name) [at ln:1097]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-ignore-code-code-at-ln-1118" id="id14"><em>Function:</em> ignore_code(code) [at ln:1118]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-imports-on-separate-lines-logical-line-at-ln-825" id="id15"><em>Function:</em> imports_on_separate_lines(logical_line) [at ln:825]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-indentation-logical-line-previous-logical-indent-char-indent-level-previous-indent-level-at-ln-418" id="id16"><em>Function:</em> indentation(logical_line, previous_logical, indent_char, indent_level, previous_indent_level) [at ln:418]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-maximum-line-length-physical-line-max-line-length-at-ln-266" id="id17"><em>Function:</em> maximum_line_length(physical_line, max_line_length) [at ln:266]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-missing-newline-physical-line-at-ln-256" id="id18"><em>Function:</em> missing_newline(physical_line) [at ln:256]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-missing-whitespace-logical-line-at-ln-393" id="id19"><em>Function:</em> missing_whitespace(logical_line) [at ln:393]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-missing-whitespace-around-operator-logical-line-tokens-at-ln-661" id="id20"><em>Function:</em> missing_whitespace_around_operator(logical_line, tokens) [at ln:661]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-mute-string-text-at-ln-1071" id="id21"><em>Function:</em> mute_string(text) [at ln:1071]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-python-3000-backticks-logical-line-at-ln-1017" id="id22"><em>Function:</em> python_3000_backticks(logical_line) [at ln:1017]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-python-3000-has-key-logical-line-at-ln-972" id="id23"><em>Function:</em> python_3000_has_key(logical_line) [at ln:972]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-python-3000-not-equal-logical-line-at-ln-1003" id="id24"><em>Function:</em> python_3000_not_equal(logical_line) [at ln:1003]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-python-3000-raise-comma-logical-line-at-ln-985" id="id25"><em>Function:</em> python_3000_raise_comma(logical_line) [at ln:985]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-refresh-checks-at-ln-1136" id="id26"><em>Function:</em> refresh_checks() [at ln:1136]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-run-check-filename-source-at-ln-1330" id="id27"><em>Function:</em> run_check(fileName, source) [at ln:1330]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-tabs-obsolete-physical-line-at-ln-202" id="id28"><em>Function:</em> tabs_obsolete(physical_line) [at ln:202]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-tabs-or-spaces-physical-line-indent-char-at-ln-182" id="id29"><em>Function:</em> tabs_or_spaces(physical_line, indent_char) [at ln:182]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-trailing-blank-lines-physical-line-lines-line-number-at-ln-245" id="id30"><em>Function:</em> trailing_blank_lines(physical_line, lines, line_number) [at ln:245]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-trailing-whitespace-physical-line-at-ln-215" id="id31"><em>Function:</em> trailing_whitespace(physical_line) [at ln:215]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-whitespace-around-comma-logical-line-at-ln-738" id="id32"><em>Function:</em> whitespace_around_comma(logical_line) [at ln:738]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-whitespace-around-keywords-logical-line-at-ln-369" id="id33"><em>Function:</em> whitespace_around_keywords(logical_line) [at ln:369]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-whitespace-around-named-parameter-equals-logical-line-tokens-at-ln-760" id="id34"><em>Function:</em> whitespace_around_named_parameter_equals(logical_line, tokens) [at ln:760]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-whitespace-around-operator-logical-line-at-ln-634" id="id35"><em>Function:</em> whitespace_around_operator(logical_line) [at ln:634]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-whitespace-before-inline-comment-logical-line-tokens-at-ln-797" id="id36"><em>Function:</em> whitespace_before_inline_comment(logical_line, tokens) [at ln:797]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-whitespace-before-parameters-logical-line-tokens-at-ln-598" id="id37"><em>Function:</em> whitespace_before_parameters(logical_line, tokens) [at ln:598]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="pep8mod.html#class-options" id="id38"><em>Class:</em> Options()</a></li>
+<li><a class="reference internal" href="pep8mod.html#class-checker-object" id="id39"><em>Class:</em> Checker(object)</a><ul>
+<li><a class="reference internal" href="pep8mod.html#attributes" id="id40"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="pep8mod.html#function-init-filename-lines-none-at-ln-1147" id="id41"><em>Function:</em> __init__(filename, lines=None) [at ln:1147]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-build-tokens-line-at-ln-1197" id="id42"><em>Function:</em> build_tokens_line() [at ln:1197]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-check-all-expected-none-line-offset-int-at-ln-1268" id="id43"><em>Function:</em> check_all(expected=None, line_offset=int) [at ln:1268]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-check-logical-at-ln-1231" id="id44"><em>Function:</em> check_logical() [at ln:1231]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-check-physical-line-at-ln-1184" id="id45"><em>Function:</em> check_physical(line) [at ln:1184]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-generate-tokens-at-ln-1253" id="id46"><em>Function:</em> generate_tokens() [at ln:1253]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-readline-at-ln-1156" id="id47"><em>Function:</em> readline() [at ln:1156]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-readline-check-physical-at-ln-1165" id="id48"><em>Function:</em> readline_check_physical() [at ln:1165]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-report-error-line-number-offset-text-check-at-ln-1314" id="id49"><em>Function:</em> report_error(line_number, offset, text, check) [at ln:1314]</a></li>
+<li><a class="reference internal" href="pep8mod.html#function-run-check-check-argument-names-at-ln-1175" id="id50"><em>Function:</em> run_check(check, argument_names) [at ln:1175]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="module-pep8mod-py-api">
+<h2><em>Module:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html">pep8mod.py</a> API</h2>
+<div class="line-block">
+<div class="line">Check Python source code formatting, according to PEP 8:</div>
+<div class="line"><a class="reference external" href="http://www.python.org/dev/peps/pep-0008/">http://www.python.org/dev/peps/pep-0008/</a></div>
+<div class="line"><br></div>
+<div class="line">For usage and a list of options, try this:</div>
+<div class="line">$ python pep8.py -h</div>
+<div class="line"><br></div>
+<div class="line">This program and its regression test suite live here:</div>
+<div class="line"><a class="reference external" href="http://github.com/jcrocholl/pep8">http://github.com/jcrocholl/pep8</a></div>
+<div class="line"><br></div>
+<div class="line">Groups of errors and warnings:</div>
+<div class="line">E errors</div>
+<div class="line">W warnings</div>
+<div class="line">100 indentation</div>
+<div class="line">200 whitespace</div>
+<div class="line">300 blank lines</div>
+<div class="line">400 imports</div>
+<div class="line">500 line length</div>
+<div class="line">600 deprecation</div>
+<div class="line">700 statements</div>
+<div class="line">900 syntax error</div>
+<div class="line"><br></div>
+<div class="line">You can add checks to this program by writing plugins. Each plugin is</div>
+<div class="line">a simple function that is called for each line of source code, either</div>
+<div class="line">physical or logical.</div>
+<div class="line"><br></div>
+<div class="line">Physical line:</div>
+<div class="line">- Raw line of text from the input file.</div>
+<div class="line"><br></div>
+<div class="line">Logical line:</div>
+<div class="line">- Multi-line statements converted to a single line.</div>
+<div class="line">- Stripped left and right.</div>
+<div class="line">- Contents of strings replaced with 'xxx' of same length.</div>
+<div class="line">- Comments removed.</div>
+<div class="line"><br></div>
+<div class="line">The check function requests physical or logical lines by the name of</div>
+<div class="line">the first argument:</div>
+<div class="line"><br></div>
+<div class="line">def maximum_line_length(physical_line)</div>
+<div class="line">def extraneous_whitespace(logical_line)</div>
+<div class="line">def blank_lines(logical_line, blank_lines, indent_level, line_number)</div>
+<div class="line"><br></div>
+<div class="line">The last example above demonstrates how check plugins can request</div>
+<div class="line">additional information with extra arguments. All attributes of the</div>
+<div class="line">Checker object are available. Some examples:</div>
+<div class="line"><br></div>
+<div class="line">lines: a list of the raw lines from the input file</div>
+<div class="line">tokens: the tokens that contribute to this logical line</div>
+<div class="line">line_number: line number in the input file</div>
+<div class="line">blank_lines: blank lines before this one</div>
+<div class="line">indent_char: first indentation character in this file (' ' or 't')</div>
+<div class="line">indent_level: indentation (with tabs expanded to multiples of 8)</div>
+<div class="line">previous_indent_level: indentation on previous line</div>
+<div class="line">previous_logical: previous logical line</div>
+<div class="line"><br></div>
+<div class="line">The docstring of each check function shall be the relevant part of</div>
+<div class="line">text from PEP 8. It is printed if the user enables --show-pep8.</div>
+<div class="line">Several docstrings contain examples directly from the PEP 8 document.</div>
+<div class="line"><br></div>
+<div class="line">Okay: spam(ham[1], {eggs: 2})</div>
+<div class="line">E201: spam( ham[1], {eggs: 2})</div>
+<div class="line"><br></div>
+<div class="line">These examples are verified automatically when pep8.py is run with the</div>
+<div class="line">--doctest option. You can add examples for your own check functions.</div>
+<div class="line">The format is simple: "Okay" or error/warning code followed by colon</div>
+<div class="line">and space, the rest of the line is example source code. If you put 'r'</div>
+<div class="line">before the docstring, you can use n for newline, t for tab and s</div>
+<div class="line">for space.</div>
+</div>
+<div class="section" id="imports">
+<h3><a class="toc-backref" href="pep8mod.html#id2"><em>Imports:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#102">inspect</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#103">keyword</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#99">os</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#101">re</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#100">sys</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#104">tokenize</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#106">ninja_ide.resources</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#95">__future__.unicode_literals</a></li>
+</ul>
+</div>
+<div class="section" id="global-attributes">
+<h3><a class="toc-backref" href="pep8mod.html#id3"><em>Global Attributes:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#134">BENCHMARK_KEYS [at ln:134]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#125">BINARY_OPERATORS [at ln:125]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#155">COMMENT_WITH_NL [at ln:155]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#144">COMPARE_SINGLETON_REGEX [at ln:144]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#145">COMPARE_TYPE_REGEX [at ln:145]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#108">DEFAULT_EXCLUDE [at ln:108]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#109">DEFAULT_IGNORE [at ln:109]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#141">DOCSTRING_REGEX [at ln:141]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#140">ERRORCODE_REGEX [at ln:140]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#142">EXTRANEOUS_WHITESPACE_REGEX [at ln:142]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#151">HUNK_REGEX [at ln:151]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#136">INDENT_REGEX [at ln:136]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#124">KEYWORDS [at ln:124]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#147">KEYWORD_REGEX [at ln:147]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#150">LAMBDA_REGEX [at ln:150]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#116">MAX_LINE_LENGTH [at ln:116]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#130">OPERATORS [at ln:130]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#149">OPERATOR_REGEX [at ln:149]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#137">RAISE_COMMA_REGEX [at ln:137]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#117">REPORT_FORMAT [at ln:117]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#138">RERAISE_COMMA_REGEX [at ln:138]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#139">SELFTEST_REGEX [at ln:139]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#123">SINGLETONS [at ln:123]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#132">SKIP_TOKENS [at ln:132]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#129">UNARY_OPERATORS [at ln:129]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#131">WHITESPACE [at ln:131]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#143">WHITESPACE_AFTER_COMMA_REGEX [at ln:143]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#97">__version__ [at ln:97]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#170">ignore [at ln:170]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#174">ignore_continuation_indentation [at ln:174]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#1133">logical_checks [at ln:1133]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#173">max_line_length [at ln:173]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#168">messages [at ln:168]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#163">options [at ln:163]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#1132">physical_checks [at ln:1132]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#172">quiet [at ln:172]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#166">repeat [at ln:166]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#169">select [at ln:169]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#167">show_pep8 [at ln:167]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#165">show_source [at ln:165]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#171">verbose [at ln:171]</a></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="global-functions">
+<h3><a class="toc-backref" href="pep8mod.html#id4"><em>Global Functions:</em></a></h3>
+<div class="section" id="function-blank-lines-logical-line-blank-lines-indent-level-line-number-previous-logical-previous-indent-level-at-ln-298">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-298">blank_lines(logical_line, blank_lines, indent_level, line_number, previous_logical, previous_indent_level) [at ln:298]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">blank_lines</span><span class="p">(</span><span class="n">logical_line</span><span class="p">,</span> <span class="n">blank_lines</span><span class="p">,</span> <span class="n">indent_level</span><span class="p">,</span> <span class="n">line_number</span><span class="p">,</span> <span class="n">previous_logical</span><span class="p">,</span> <span class="n">previous_indent_level</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Separate top-level function and class definitions with two blank lines.</div>
+<div class="line"><br></div>
+<div class="line">Method definitions inside a class are separated by a single blank line.</div>
+<div class="line"><br></div>
+<div class="line">Extra blank lines may be used (sparingly) to separate groups of related</div>
+<div class="line">functions.  Blank lines may be omitted between a bunch of related</div>
+<div class="line">one-liners (e.g. a set of dummy implementations).</div>
+<div class="line"><br></div>
+<div class="line">Use blank lines in functions, sparingly, to indicate logical sections.</div>
+<div class="line"><br></div>
+<div class="line">Okay: def a():n    passnnndef b():n    pass</div>
+<div class="line">Okay: def a():n    passnnn# Foon# Barnndef b():n    pass</div>
+<div class="line"><br></div>
+<div class="line">E301: class Foo:n    b = 0n    def bar():n        pass</div>
+<div class="line">E302: def a():n    passnndef b(n):n    pass</div>
+<div class="line">E303: def a():n    passnnnndef b(n):n    pass</div>
+<div class="line">E303: def a():nnnn    pass</div>
+<div class="line">E304: @decoratornndef a():n    pass</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-comparison-to-singleton-logical-line-at-ln-919">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-919">comparison_to_singleton(logical_line) [at ln:919]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">comparison_to_singleton</span><span class="p">(</span><span class="n">logical_line</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Comparisons to singletons like None should always be done</div>
+<div class="line">with "is" or "is not", never the equality operators.</div>
+<div class="line"><br></div>
+<div class="line">Okay: if arg is not None:</div>
+<div class="line">E711: if arg != None:</div>
+<div class="line">E712: if arg == True:</div>
+<div class="line"><br></div>
+<div class="line">Also, beware of writing if x when you really mean if x is not None --</div>
+<div class="line">e.g. when testing whether a variable or argument that defaults to None was</div>
+<div class="line">set to some other value.  The other value might have a type (such as a</div>
+<div class="line">container) that could be false in a boolean context!</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-comparison-type-logical-line-at-ln-949">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-949">comparison_type(logical_line) [at ln:949]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">comparison_type</span><span class="p">(</span><span class="n">logical_line</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Object type comparisons should always use isinstance() instead of</div>
+<div class="line">comparing types directly.</div>
+<div class="line"><br></div>
+<div class="line">Okay: if isinstance(obj, int):</div>
+<div class="line">E721: if type(obj) is type(1):</div>
+<div class="line"><br></div>
+<div class="line">When checking if an object is a string, keep in mind that it might be a</div>
+<div class="line">unicode string too! In Python 2.3, str and unicode have a common base</div>
+<div class="line">class, basestring, so you can do:</div>
+<div class="line"><br></div>
+<div class="line">Okay: if isinstance(obj, basestring):</div>
+<div class="line">Okay: if type(a1) is type(b1):</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-compound-statements-logical-line-at-ln-845">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-845">compound_statements(logical_line) [at ln:845]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">compound_statements</span><span class="p">(</span><span class="n">logical_line</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Compound statements (multiple statements on the same line) are</div>
+<div class="line">generally discouraged.</div>
+<div class="line"><br></div>
+<div class="line">While sometimes it's okay to put an if/for/while with a small body</div>
+<div class="line">on the same line, never do this for multi-clause statements. Also</div>
+<div class="line">avoid folding such long lines!</div>
+<div class="line"><br></div>
+<div class="line">Okay: if foo == 'blah':n    do_blah_thing()</div>
+<div class="line">Okay: do_one()</div>
+<div class="line">Okay: do_two()</div>
+<div class="line">Okay: do_three()</div>
+<div class="line"><br></div>
+<div class="line">E701: if foo == 'blah': do_blah_thing()</div>
+<div class="line">E701: for x in lst: total += x</div>
+<div class="line">E701: while t &lt; 10: t = delay()</div>
+<div class="line">E701: if foo == 'blah': do_blah_thing()</div>
+<div class="line">E701: else: do_non_blah_thing()</div>
+<div class="line">E701: try: something()</div>
+<div class="line">E701: finally: cleanup()</div>
+<div class="line">E701: if foo == 'blah': one(); two(); three()</div>
+<div class="line"><br></div>
+<div class="line">E702: do_one(); do_two(); do_three()</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-continuation-line-indentation-logical-line-tokens-indent-level-verbose-at-ln-445">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-445">continuation_line_indentation(logical_line, tokens, indent_level, verbose) [at ln:445]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">continuation_line_indentation</span><span class="p">(</span><span class="n">logical_line</span><span class="p">,</span> <span class="n">tokens</span><span class="p">,</span> <span class="n">indent_level</span><span class="p">,</span> <span class="n">verbose</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Continuation lines should align wrapped elements either vertically using</div>
+<div class="line">Python's implicit line joining inside parentheses, brackets and braces, or</div>
+<div class="line">using a hanging indent.</div>
+<div class="line"><br></div>
+<div class="line">When using a hanging indent the following considerations should be applied:</div>
+<div class="line"><br></div>
+<div class="line">- there should be no arguments on the first line, and</div>
+<div class="line"><br></div>
+<div class="line">- further indentation should be used to clearly distinguish itself as a</div>
+<div class="line-block">
+<div class="line">continuation line.</div>
+<div class="line"><br></div>
+</div>
+<div class="line">Okay: a = (n)</div>
+<div class="line">E123: a = (n    )</div>
+<div class="line"><br></div>
+<div class="line">Okay: a = (n    42)</div>
+<div class="line">E121: a = (n   42)</div>
+<div class="line">E122: a = (n42)</div>
+<div class="line">E123: a = (n    42n    )</div>
+<div class="line">E124: a = (24,n     42n)</div>
+<div class="line">E125: if (a orn    b):n    pass</div>
+<div class="line">E126: a = (n        42)</div>
+<div class="line">E127: a = (24,n      42)</div>
+<div class="line">E128: a = (24,n    42)</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-expand-indent-line-at-ln-1042">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1042">expand_indent(line) [at ln:1042]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">expand_indent</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Return the amount of indentation.</div>
+<div class="line">Tabs are expanded to the next multiple of 8.</div>
+<div class="line"><br></div>
+<div class="line">&gt;&gt;&gt; expand_indent('    ')</div>
+<div class="line">4</div>
+<div class="line">&gt;&gt;&gt; expand_indent('t')</div>
+<div class="line">8</div>
+<div class="line">&gt;&gt;&gt; expand_indent('    t')</div>
+<div class="line">8</div>
+<div class="line">&gt;&gt;&gt; expand_indent('       t')</div>
+<div class="line">8</div>
+<div class="line">&gt;&gt;&gt; expand_indent('        t')</div>
+<div class="line">16</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-explicit-line-join-logical-line-tokens-at-ln-884">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-884">explicit_line_join(logical_line, tokens) [at ln:884]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">explicit_line_join</span><span class="p">(</span><span class="n">logical_line</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Avoid explicit line join between brackets.</div>
+<div class="line"><br></div>
+<div class="line">The preferred way of wrapping long lines is by using Python's implied line</div>
+<div class="line">continuation inside parentheses, brackets and braces.  Long lines can be</div>
+<div class="line">broken over multiple lines by wrapping expressions in parentheses.  These</div>
+<div class="line">should be used in preference to using a backslash for line continuation.</div>
+<div class="line"><br></div>
+<div class="line">E502: aaa = [123, \n       123]</div>
+<div class="line">E502: aaa = ("bbb " \n       "ccc")</div>
+<div class="line"><br></div>
+<div class="line">Okay: aaa = [123,n       123]</div>
+<div class="line">Okay: aaa = ("bbb "n       "ccc")</div>
+<div class="line">Okay: aaa = "bbb " \n    "ccc"</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-extraneous-whitespace-logical-line-at-ln-336">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-336">extraneous_whitespace(logical_line) [at ln:336]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">extraneous_whitespace</span><span class="p">(</span><span class="n">logical_line</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Avoid extraneous whitespace in the following situations:</div>
+<div class="line"><br></div>
+<div class="line">- Immediately inside parentheses, brackets or braces.</div>
+<div class="line"><br></div>
+<div class="line">- Immediately before a comma, semicolon, or colon.</div>
+<div class="line"><br></div>
+<div class="line">Okay: spam(ham[1], {eggs: 2})</div>
+<div class="line">E201: spam( ham[1], {eggs: 2})</div>
+<div class="line">E201: spam(ham[ 1], {eggs: 2})</div>
+<div class="line">E201: spam(ham[1], { eggs: 2})</div>
+<div class="line">E202: spam(ham[1], {eggs: 2} )</div>
+<div class="line">E202: spam(ham[1 ], {eggs: 2})</div>
+<div class="line">E202: spam(ham[1], {eggs: 2 })</div>
+<div class="line"><br></div>
+<div class="line">E203: if x == 4: print x, y; x, y = y , x</div>
+<div class="line">E203: if x == 4: print x, y ; x, y = y, x</div>
+<div class="line">E203: if x == 4 : print x, y; x, y = y, x</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-find-checks-argument-name-at-ln-1097">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1097">find_checks(argument_name) [at ln:1097]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">find_checks</span><span class="p">(</span><span class="n">argument_name</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Find all globally visible functions where the first argument name</div>
+<div class="line">starts with argument_name.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-ignore-code-code-at-ln-1118">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1118">ignore_code(code) [at ln:1118]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">ignore_code</span><span class="p">(</span><span class="n">code</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Check if options.ignore contains a prefix of the error code.</div>
+<div class="line">If options.select contains a prefix of the error code, do not ignore it.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-imports-on-separate-lines-logical-line-at-ln-825">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-825">imports_on_separate_lines(logical_line) [at ln:825]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">imports_on_separate_lines</span><span class="p">(</span><span class="n">logical_line</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Imports should usually be on separate lines.</div>
+<div class="line"><br></div>
+<div class="line">Okay: import osnimport sys</div>
+<div class="line">E401: import sys, os</div>
+<div class="line"><br></div>
+<div class="line">Okay: from subprocess import Popen, PIPE</div>
+<div class="line">Okay: from myclas import MyClass</div>
+<div class="line">Okay: from foo.bar.yourclass import YourClass</div>
+<div class="line">Okay: import myclass</div>
+<div class="line">Okay: import foo.bar.yourclass</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-indentation-logical-line-previous-logical-indent-char-indent-level-previous-indent-level-at-ln-418">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-418">indentation(logical_line, previous_logical, indent_char, indent_level, previous_indent_level) [at ln:418]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">indentation</span><span class="p">(</span><span class="n">logical_line</span><span class="p">,</span> <span class="n">previous_logical</span><span class="p">,</span> <span class="n">indent_char</span><span class="p">,</span> <span class="n">indent_level</span><span class="p">,</span> <span class="n">previous_indent_level</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Use 4 spaces per indentation level.</div>
+<div class="line"><br></div>
+<div class="line">For really old code that you don't want to mess up, you can continue to</div>
+<div class="line">use 8-space tabs.</div>
+<div class="line"><br></div>
+<div class="line">Okay: a = 1</div>
+<div class="line">Okay: if a == 0:n    a = 1</div>
+<div class="line">E111:   a = 1</div>
+<div class="line"><br></div>
+<div class="line">Okay: for item in items:n    pass</div>
+<div class="line">E112: for item in items:npass</div>
+<div class="line"><br></div>
+<div class="line">Okay: a = 1nb = 2</div>
+<div class="line">E113: a = 1n    b = 2</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-maximum-line-length-physical-line-max-line-length-at-ln-266">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-266">maximum_line_length(physical_line, max_line_length) [at ln:266]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">maximum_line_length</span><span class="p">(</span><span class="n">physical_line</span><span class="p">,</span> <span class="n">max_line_length</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Limit all lines to a maximum of 79 characters.</div>
+<div class="line"><br></div>
+<div class="line">There are still many devices around that are limited to 80 character</div>
+<div class="line">lines; plus, limiting windows to 80 characters makes it possible to have</div>
+<div class="line">several windows side-by-side.  The default wrapping on such devices looks</div>
+<div class="line">ugly.  Therefore, please limit all lines to a maximum of 79 characters.</div>
+<div class="line">For flowing long blocks of text (docstrings or comments), limiting the</div>
+<div class="line">length to 72 characters is recommended.</div>
+<div class="line"><br></div>
+<div class="line">Reports error E501.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-missing-newline-physical-line-at-ln-256">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-256">missing_newline(physical_line) [at ln:256]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">missing_newline</span><span class="p">(</span><span class="n">physical_line</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">JCR: The last line should have a newline.</div>
+<div class="line"><br></div>
+<div class="line">Reports warning W292.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-missing-whitespace-logical-line-at-ln-393">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-393">missing_whitespace(logical_line) [at ln:393]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">missing_whitespace</span><span class="p">(</span><span class="n">logical_line</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">JCR: Each comma, semicolon or colon should be followed by whitespace.</div>
+<div class="line"><br></div>
+<div class="line">Okay: [a, b]</div>
+<div class="line">Okay: (3,)</div>
+<div class="line">Okay: a[1:4]</div>
+<div class="line">Okay: a[:4]</div>
+<div class="line">Okay: a[1:]</div>
+<div class="line">Okay: a[1:4:2]</div>
+<div class="line">E231: ['a','b']</div>
+<div class="line">E231: foo(bar,baz)</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-missing-whitespace-around-operator-logical-line-tokens-at-ln-661">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-661">missing_whitespace_around_operator(logical_line, tokens) [at ln:661]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">missing_whitespace_around_operator</span><span class="p">(</span><span class="n">logical_line</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">- Always surround these binary operators with a single space on</div>
+<div class="line-block">
+<div class="line">either side: assignment (=), augmented assignment (+=, -= etc.),</div>
+<div class="line">comparisons (==, &lt;, &gt;, !=, &lt;&gt;, &lt;=, &gt;=, in, not in, is, is not),</div>
+<div class="line">Booleans (and, or, not).</div>
+<div class="line"><br></div>
+</div>
+<div class="line">- Use spaces around arithmetic operators.</div>
+<div class="line"><br></div>
+<div class="line">Okay: i = i + 1</div>
+<div class="line">Okay: submitted += 1</div>
+<div class="line">Okay: x = x * 2 - 1</div>
+<div class="line">Okay: hypot2 = x * x + y * y</div>
+<div class="line">Okay: c = (a + b) * (a - b)</div>
+<div class="line">Okay: foo(bar, key='word', *args, **kwargs)</div>
+<div class="line">Okay: baz(**kwargs)</div>
+<div class="line">Okay: negative = -1</div>
+<div class="line">Okay: spam(-1)</div>
+<div class="line">Okay: alpha[:-i]</div>
+<div class="line">Okay: if not -5 &lt; x &lt; +5:n    pass</div>
+<div class="line">Okay: lambda *args, **kw: (args, kw)</div>
+<div class="line"><br></div>
+<div class="line">E225: i=i+1</div>
+<div class="line">E225: submitted +=1</div>
+<div class="line">E225: x = x*2 - 1</div>
+<div class="line">E225: hypot2 = x*x + y*y</div>
+<div class="line">E225: c = (a+b) * (a-b)</div>
+<div class="line">E225: c = alpha -4</div>
+<div class="line">E225: z = x **y</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-mute-string-text-at-ln-1071">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1071">mute_string(text) [at ln:1071]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">mute_string</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Replace contents with 'xxx' to prevent syntax matching.</div>
+<div class="line"><br></div>
+<div class="line">&gt;&gt;&gt; mute_string('"abc"')</div>
+<div class="line">'"xxx"'</div>
+<div class="line">&gt;&gt;&gt; mute_string("'''abc'''")</div>
+<div class="line">"'''xxx'''"</div>
+<div class="line">&gt;&gt;&gt; mute_string("r'abc'")</div>
+<div class="line">"r'xxx'"</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-python-3000-backticks-logical-line-at-ln-1017">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1017">python_3000_backticks(logical_line) [at ln:1017]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">python_3000_backticks</span><span class="p">(</span><span class="n">logical_line</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Backticks are removed in Python 3000.</div>
+<div class="line">Use repr() instead.</div>
+<div class="line"><br></div>
+<div class="line">Okay: val = repr(1 + 2)</div>
+<div class="line">W604: val = `1 + 2`</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-python-3000-has-key-logical-line-at-ln-972">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-972">python_3000_has_key(logical_line) [at ln:972]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">python_3000_has_key</span><span class="p">(</span><span class="n">logical_line</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">The {}.has_key() method will be removed in the future version of</div>
+<div class="line">Python. Use the 'in' operation instead.</div>
+<div class="line"><br></div>
+<div class="line">Okay: if "alph" in d:n    print d["alph"]</div>
+<div class="line">W601: assert d.has_key('alph')</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-python-3000-not-equal-logical-line-at-ln-1003">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1003">python_3000_not_equal(logical_line) [at ln:1003]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">python_3000_not_equal</span><span class="p">(</span><span class="n">logical_line</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">!= can also be written &lt;&gt;, but this is an obsolete usage kept for</div>
+<div class="line">backwards compatibility only. New code should always use !=.</div>
+<div class="line">The older syntax is removed in Python 3000.</div>
+<div class="line"><br></div>
+<div class="line">Okay: if a != 'no':</div>
+<div class="line">W603: if a &lt;&gt; 'no':</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-python-3000-raise-comma-logical-line-at-ln-985">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-985">python_3000_raise_comma(logical_line) [at ln:985]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">python_3000_raise_comma</span><span class="p">(</span><span class="n">logical_line</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">When raising an exception, use "raise ValueError('message')"</div>
+<div class="line">instead of the older form "raise ValueError, 'message'".</div>
+<div class="line"><br></div>
+<div class="line">The paren-using form is preferred because when the exception arguments</div>
+<div class="line">are long or include string formatting, you don't need to use line</div>
+<div class="line">continuation characters thanks to the containing parentheses.  The older</div>
+<div class="line">form will be removed in Python 3000.</div>
+<div class="line"><br></div>
+<div class="line">Okay: raise DummyError("Message")</div>
+<div class="line">W602: raise DummyError, "Message"</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-refresh-checks-at-ln-1136">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1136">refresh_checks() [at ln:1136]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">refresh_checks</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-run-check-filename-source-at-ln-1330">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1330">run_check(fileName, source) [at ln:1330]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">run_check</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Parse options and run checks on Python source.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-tabs-obsolete-physical-line-at-ln-202">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-202">tabs_obsolete(physical_line) [at ln:202]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">tabs_obsolete</span><span class="p">(</span><span class="n">physical_line</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">For new projects, spaces-only are strongly recommended over tabs.  Most</div>
+<div class="line">editors have features that make this easy to do.</div>
+<div class="line"><br></div>
+<div class="line">Okay: if True:n    return</div>
+<div class="line">W191: if True:ntreturn</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-tabs-or-spaces-physical-line-indent-char-at-ln-182">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-182">tabs_or_spaces(physical_line, indent_char) [at ln:182]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">tabs_or_spaces</span><span class="p">(</span><span class="n">physical_line</span><span class="p">,</span> <span class="n">indent_char</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Never mix tabs and spaces.</div>
+<div class="line"><br></div>
+<div class="line">The most popular way of indenting Python is with spaces only.  The</div>
+<div class="line">second-most popular way is with tabs only.  Code indented with a mixture</div>
+<div class="line">of tabs and spaces should be converted to using spaces exclusively.  When</div>
+<div class="line">invoking the Python command line interpreter with the -t option, it issues</div>
+<div class="line">warnings about code that illegally mixes tabs and spaces.  When using -tt</div>
+<div class="line">these warnings become errors.  These options are highly recommended!</div>
+<div class="line"><br></div>
+<div class="line">Okay: if a == 0:n        a = 1n        b = 1</div>
+<div class="line">E101: if a == 0:n        a = 1ntb = 1</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-trailing-blank-lines-physical-line-lines-line-number-at-ln-245">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-245">trailing_blank_lines(physical_line, lines, line_number) [at ln:245]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">trailing_blank_lines</span><span class="p">(</span><span class="n">physical_line</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">line_number</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">JCR: Trailing blank lines are superfluous.</div>
+<div class="line"><br></div>
+<div class="line">Okay: spam(1)</div>
+<div class="line">W391: spam(1)n</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-trailing-whitespace-physical-line-at-ln-215">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-215">trailing_whitespace(physical_line) [at ln:215]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">trailing_whitespace</span><span class="p">(</span><span class="n">physical_line</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">JCR: Trailing whitespace is superfluous.</div>
+<div class="line">FBM: Except when it occurs as part of a blank line (i.e. the line is</div>
+<div class="line-block">
+<div class="line">nothing but whitespace). According to Python docs[1] a line with only</div>
+<div class="line">whitespace is considered a blank line, and is to be ignored. However,</div>
+<div class="line">matching a blank line to its indentation level avoids mistakenly</div>
+<div class="line">terminating a multi-line statement (e.g. class declaration) when</div>
+<div class="line">pasting code into the standard Python interpreter.</div>
+<div class="line"><br></div>
+<div class="line">[1] <a class="reference external" href="http://docs.python.org/reference/lexical_analysis.html#blank-lines">http://docs.python.org/reference/lexical_analysis.html#blank-lines</a></div>
+<div class="line"><br></div>
+</div>
+<div class="line">The warning returned varies on whether the line itself is blank, for easier</div>
+<div class="line">filtering for those who want to indent their blank lines.</div>
+<div class="line"><br></div>
+<div class="line">Okay: spam(1)</div>
+<div class="line">W291: spam(1)s</div>
+<div class="line">W293: class Foo(object):n    n    bang = 12</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-whitespace-around-comma-logical-line-at-ln-738">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-738">whitespace_around_comma(logical_line) [at ln:738]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">whitespace_around_comma</span><span class="p">(</span><span class="n">logical_line</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Avoid extraneous whitespace in the following situations:</div>
+<div class="line"><br></div>
+<div class="line">- More than one space around an assignment (or other) operator to</div>
+<div class="line-block">
+<div class="line">align it with another.</div>
+<div class="line"><br></div>
+</div>
+<div class="line">Note: these checks are disabled by default</div>
+<div class="line"><br></div>
+<div class="line">Okay: a = (1, 2)</div>
+<div class="line">E241: a = (1,  2)</div>
+<div class="line">E242: a = (1,t2)</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-whitespace-around-keywords-logical-line-at-ln-369">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-369">whitespace_around_keywords(logical_line) [at ln:369]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">whitespace_around_keywords</span><span class="p">(</span><span class="n">logical_line</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Avoid extraneous whitespace around keywords.</div>
+<div class="line"><br></div>
+<div class="line">Okay: True and False</div>
+<div class="line">E271: True and  False</div>
+<div class="line">E272: True  and False</div>
+<div class="line">E273: True andtFalse</div>
+<div class="line">E274: Truetand False</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-whitespace-around-named-parameter-equals-logical-line-tokens-at-ln-760">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-760">whitespace_around_named_parameter_equals(logical_line, tokens) [at ln:760]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">whitespace_around_named_parameter_equals</span><span class="p">(</span><span class="n">logical_line</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Don't use spaces around the '=' sign when used to indicate a</div>
+<div class="line">keyword argument or a default parameter value.</div>
+<div class="line"><br></div>
+<div class="line">Okay: def complex(real, imag=0.0):</div>
+<div class="line">Okay: return magic(r=real, i=imag)</div>
+<div class="line">Okay: boolean(a == b)</div>
+<div class="line">Okay: boolean(a != b)</div>
+<div class="line">Okay: boolean(a &lt;= b)</div>
+<div class="line">Okay: boolean(a &gt;= b)</div>
+<div class="line"><br></div>
+<div class="line">E251: def complex(real, imag = 0.0):</div>
+<div class="line">E251: return magic(r = real, i = imag)</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-whitespace-around-operator-logical-line-at-ln-634">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-634">whitespace_around_operator(logical_line) [at ln:634]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">whitespace_around_operator</span><span class="p">(</span><span class="n">logical_line</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Avoid extraneous whitespace in the following situations:</div>
+<div class="line"><br></div>
+<div class="line">- More than one space around an assignment (or other) operator to</div>
+<div class="line-block">
+<div class="line">align it with another.</div>
+<div class="line"><br></div>
+</div>
+<div class="line">Okay: a = 12 + 3</div>
+<div class="line">E221: a = 4  + 5</div>
+<div class="line">E222: a = 4 +  5</div>
+<div class="line">E223: a = 4t+ 5</div>
+<div class="line">E224: a = 4 +t5</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-whitespace-before-inline-comment-logical-line-tokens-at-ln-797">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-797">whitespace_before_inline_comment(logical_line, tokens) [at ln:797]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">whitespace_before_inline_comment</span><span class="p">(</span><span class="n">logical_line</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Separate inline comments by at least two spaces.</div>
+<div class="line"><br></div>
+<div class="line">An inline comment is a comment on the same line as a statement.  Inline</div>
+<div class="line">comments should be separated by at least two spaces from the statement.</div>
+<div class="line">They should start with a # and a single space.</div>
+<div class="line"><br></div>
+<div class="line">Okay: x = x + 1  # Increment x</div>
+<div class="line">Okay: x = x + 1    # Increment x</div>
+<div class="line">E261: x = x + 1 # Increment x</div>
+<div class="line">E262: x = x + 1  #Increment x</div>
+<div class="line">E262: x = x + 1  #  Increment x</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-whitespace-before-parameters-logical-line-tokens-at-ln-598">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-598">whitespace_before_parameters(logical_line, tokens) [at ln:598]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">whitespace_before_parameters</span><span class="p">(</span><span class="n">logical_line</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Avoid extraneous whitespace in the following situations:</div>
+<div class="line"><br></div>
+<div class="line">- Immediately before the open parenthesis that starts the argument</div>
+<div class="line-block">
+<div class="line">list of a function call.</div>
+<div class="line"><br></div>
+</div>
+<div class="line">- Immediately before the open parenthesis that starts an indexing or</div>
+<div class="line-block">
+<div class="line">slicing.</div>
+<div class="line"><br></div>
+</div>
+<div class="line">Okay: spam(1)</div>
+<div class="line">E211: spam (1)</div>
+<div class="line"><br></div>
+<div class="line">Okay: dict['key'] = list[index]</div>
+<div class="line">E211: dict ['key'] = list[index]</div>
+<div class="line">E211: dict['key'] = list [index]</div>
+</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-options">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-159">Options()</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">Options</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="class-checker-object">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1142">Checker(object)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">Checker</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Load a Python source file, tokenize it, check coding style.</div>
+</div>
+<div class="section" id="attributes">
+<h4><a class="toc-backref" href="pep8mod.html#id40"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#1266">__doc__ [at ln:1266]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#1149">_logical_checks [at ln:1149]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#1148">_physical_checks [at ln:1148]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#1278">blank_lines [at ln:1278]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#1152">filename [at ln:1152]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#1274">indent_char [at ln:1274]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#1275">indent_level [at ln:1275]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#1272">line_number [at ln:1272]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#1273">line_offset [at ln:1273]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#1153">lines [at ln:1153]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#1228">logical_line [at ln:1228]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#1201">mapping [at ln:1201]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#1150">max_line_length [at ln:1150]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#1188">physical_line [at ln:1188]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#1238">previous_indent_level [at ln:1238]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#1276">previous_logical [at ln:1276]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#1154">results [at ln:1154]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#1277">tokens [at ln:1277]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#1151">verbose [at ln:1151]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-filename-lines-none-at-ln-1147">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1147">__init__(filename, lines=None) [at ln:1147]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">lines</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-build-tokens-line-at-ln-1197">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1197">build_tokens_line() [at ln:1197]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">build_tokens_line</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Build a logical line from tokens.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-check-all-expected-none-line-offset-int-at-ln-1268">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1268">check_all(expected=None, line_offset=int) [at ln:1268]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">check_all</span><span class="p">(</span><span class="n">expected</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">line_offset</span><span class="o">=</span><span class="nb">int</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Run all checks on the input file.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-check-logical-at-ln-1231">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1231">check_logical() [at ln:1231]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">check_logical</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Build a line from tokens and run all logical checks on it.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-check-physical-line-at-ln-1184">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1184">check_physical(line) [at ln:1184]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">check_physical</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Run all physical checks on a raw input line.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-generate-tokens-at-ln-1253">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1253">generate_tokens() [at ln:1253]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">generate_tokens</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-readline-at-ln-1156">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1156">readline() [at ln:1156]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">readline</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Get the next line from the input buffer.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-readline-check-physical-at-ln-1165">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1165">readline_check_physical() [at ln:1165]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">readline_check_physical</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Check and return the next physical line. This method can be</div>
+<div class="line">used to feed tokenize.generate_tokens.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-report-error-line-number-offset-text-check-at-ln-1314">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1314">report_error(line_number, offset, text, check) [at ln:1314]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">report_error</span><span class="p">(</span><span class="n">line_number</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">check</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Report an error, according to options.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-run-check-check-argument-names-at-ln-1175">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/dependencies/pep8mod.py.html#listingsninja_idedependenciespep8modpy-1175">run_check(check, argument_names) [at ln:1175]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">run_check</span><span class="p">(</span><span class="n">check</span><span class="p">,</span> <span class="n">argument_names</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Run a check plugin.</div>
+</div>
+</div>
+</div>
+</div>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

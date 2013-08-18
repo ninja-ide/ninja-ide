@@ -1,0 +1,99 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: python_detect_dialog
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `python_detect_dialog.py </listings/ninja_ide/gui/dialogs/python_detect_dialog.py.html>`_ API
+=========================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `PyQt4.QtGui.QDialog </listings/ninja_ide/gui/dialogs/python_detect_dialog.py.html#3>`_
+
+- `PyQt4.QtGui.QHBoxLayout </listings/ninja_ide/gui/dialogs/python_detect_dialog.py.html#5>`_
+
+- `PyQt4.QtGui.QLabel </listings/ninja_ide/gui/dialogs/python_detect_dialog.py.html#6>`_
+
+- `PyQt4.QtGui.QListWidget </listings/ninja_ide/gui/dialogs/python_detect_dialog.py.html#7>`_
+
+- `PyQt4.QtGui.QPushButton </listings/ninja_ide/gui/dialogs/python_detect_dialog.py.html#8>`_
+
+- `PyQt4.QtCore.QSettings </listings/ninja_ide/gui/dialogs/python_detect_dialog.py.html#11>`_
+
+- `PyQt4.QtCore.QSize </listings/ninja_ide/gui/dialogs/python_detect_dialog.py.html#13>`_
+
+- `PyQt4.QtGui.QSizePolicy </listings/ninja_ide/gui/dialogs/python_detect_dialog.py.html#10>`_
+
+- `PyQt4.QtGui.QSpacerItem </listings/ninja_ide/gui/dialogs/python_detect_dialog.py.html#9>`_
+
+- `PyQt4.QtGui.QVBoxLayout </listings/ninja_ide/gui/dialogs/python_detect_dialog.py.html#4>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/dialogs/python_detect_dialog.py.html#12>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/dialogs/python_detect_dialog.py.html#14>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/dialogs/python_detect_dialog.py.html#16>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/dialogs/python_detect_dialog.py.html#17>`_
+
+
+
+
+
+*Class:* `PythonDetectDialog(QDialog) </listings/ninja_ide/gui/dialogs/python_detect_dialog.py.html#listingsninja_ideguidialogspython_detect_dialogpy-20>`_
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class PythonDetectDialog(QDialog):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `PYTHON_PATH [at ln:57] </listings/ninja_ide/gui/dialogs/python_detect_dialog.py.html#57>`_
+
+- `PYTHON_PATH_CONFIGURED_BY_USER [at ln:58] </listings/ninja_ide/gui/dialogs/python_detect_dialog.py.html#58>`_
+
+- `listPaths [at ln:34] </listings/ninja_ide/gui/dialogs/python_detect_dialog.py.html#34>`_
+
+
+*Function:* `__init__(suggested, parent=None) [at ln:22] </listings/ninja_ide/gui/dialogs/python_detect_dialog.py.html#listingsninja_ideguidialogspython_detect_dialogpy-22>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(suggested, parent=None):
+
+
+No description.
+
+
+----
+
+*Function:* `_set_python_path() [at ln:53] </listings/ninja_ide/gui/dialogs/python_detect_dialog.py.html#listingsninja_ideguidialogspython_detect_dialogpy-53>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _set_python_path():
+
+
+No description.
+
+
+
+

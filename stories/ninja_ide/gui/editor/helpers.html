@@ -1,0 +1,413 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="NINJA-IDE">
+    <title>NINJA-IDE | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+
+
+
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+    <li>
+    <a href="helpers.txt" id="sourcelink">Source</a>
+    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+    <h1>NINJA-IDE</h1>
+    <div class="contents alert alert-info pull-top topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="helpers.html#module-helpers-py-api" id="id1"><em>Module:</em> helpers.py API</a><ul>
+<li><a class="reference internal" href="helpers.html#imports" id="id2"><em>Imports:</em></a></li>
+<li><a class="reference internal" href="helpers.html#global-attributes" id="id3"><em>Global Attributes:</em></a></li>
+<li><a class="reference internal" href="helpers.html#global-functions" id="id4"><em>Global Functions:</em></a><ul>
+<li><a class="reference internal" href="helpers.html#function-add-line-increment-lines-blockmodified-diference-at-ln-72" id="id5"><em>Function:</em> add_line_increment(lines, blockModified, diference) [at ln:72]</a></li>
+<li><a class="reference internal" href="helpers.html#function-add-line-increment-for-dict-data-blockmodified-diference-at-ln-81" id="id6"><em>Function:</em> add_line_increment_for_dict(data, blockModified, diference) [at ln:81]</a></li>
+<li><a class="reference internal" href="helpers.html#function-check-for-assistance-completion-editorwidget-line-at-ln-551" id="id7"><em>Function:</em> check_for_assistance_completion(editorWidget, line) [at ln:551]</a></li>
+<li><a class="reference internal" href="helpers.html#function-clean-line-editorwidget-at-ln-108" id="id8"><em>Function:</em> clean_line(editorWidget) [at ln:108]</a></li>
+<li><a class="reference internal" href="helpers.html#function-comment-editorwidget-at-ln-486" id="id9"><em>Function:</em> comment(editorWidget) [at ln:486]</a></li>
+<li><a class="reference internal" href="helpers.html#function-comment-multiple-lines-cursor-block-start-block-end-comment-wildcard-at-ln-531" id="id10"><em>Function:</em> comment_multiple_lines(cursor, block_start, block_end, comment_wildcard) [at ln:531]</a></li>
+<li><a class="reference internal" href="helpers.html#function-comment-single-line-cursor-block-start-block-end-comment-wildcard-at-ln-511" id="id11"><em>Function:</em> comment_single_line(cursor, block_start, block_end, comment_wildcard) [at ln:511]</a></li>
+<li><a class="reference internal" href="helpers.html#function-delete-lines-selected-cursor-block-actual-at-ln-479" id="id12"><em>Function:</em> delete_lines_selected(cursor, block_actual) [at ln:479]</a></li>
+<li><a class="reference internal" href="helpers.html#function-duplicate-editorwidget-at-ln-389" id="id13"><em>Function:</em> duplicate(editorWidget) [at ln:389]</a></li>
+<li><a class="reference internal" href="helpers.html#function-get-first-keyword-line-at-ln-94" id="id14"><em>Function:</em> get_first_keyword(line) [at ln:94]</a></li>
+<li><a class="reference internal" href="helpers.html#function-get-indentation-line-indent-settings-indent-usetabs-settings-use-tabs-at-ln-49" id="id15"><em>Function:</em> get_indentation(line, indent=settings.INDENT, useTabs=settings.USE_TABS) [at ln:49]</a></li>
+<li><a class="reference internal" href="helpers.html#function-get-leading-spaces-line-at-ln-41" id="id16"><em>Function:</em> get_leading_spaces(line) [at ln:41]</a></li>
+<li><a class="reference internal" href="helpers.html#function-get-start-end-selection-editorwidget-cursor-at-ln-113" id="id17"><em>Function:</em> get_start_end_selection(editorWidget, cursor) [at ln:113]</a></li>
+<li><a class="reference internal" href="helpers.html#function-insert-coding-line-editorwidget-at-ln-170" id="id18"><em>Function:</em> insert_coding_line(editorWidget) [at ln:170]</a></li>
+<li><a class="reference internal" href="helpers.html#function-insert-debugging-prints-editorwidget-at-ln-210" id="id19"><em>Function:</em> insert_debugging_prints(editorWidget) [at ln:210]</a></li>
+<li><a class="reference internal" href="helpers.html#function-insert-horizontal-line-editorwidget-at-ln-138" id="id20"><em>Function:</em> insert_horizontal_line(editorWidget) [at ln:138]</a></li>
+<li><a class="reference internal" href="helpers.html#function-insert-pdb-editorwidget-at-ln-236" id="id21"><em>Function:</em> insert_pdb(editorWidget) [at ln:236]</a></li>
+<li><a class="reference internal" href="helpers.html#function-insert-title-comment-editorwidget-at-ln-149" id="id22"><em>Function:</em> insert_title_comment(editorWidget) [at ln:149]</a></li>
+<li><a class="reference internal" href="helpers.html#function-lint-ignore-line-editorwidget-at-ln-184" id="id23"><em>Function:</em> lint_ignore_line(editorWidget) [at ln:184]</a></li>
+<li><a class="reference internal" href="helpers.html#function-lint-ignore-selection-editorwidget-at-ln-191" id="id24"><em>Function:</em> lint_ignore_selection(editorWidget) [at ln:191]</a></li>
+<li><a class="reference internal" href="helpers.html#function-move-down-editorwidget-at-ln-300" id="id25"><em>Function:</em> move_down(editorWidget) [at ln:300]</a></li>
+<li><a class="reference internal" href="helpers.html#function-move-up-editorwidget-at-ln-243" id="id26"><em>Function:</em> move_up(editorWidget) [at ln:243]</a></li>
+<li><a class="reference internal" href="helpers.html#function-remove-line-editorwidget-at-ln-354" id="id27"><em>Function:</em> remove_line(editorWidget) [at ln:354]</a></li>
+<li><a class="reference internal" href="helpers.html#function-remove-symbols-word-at-ln-104" id="id28"><em>Function:</em> remove_symbols(word) [at ln:104]</a></li>
+<li><a class="reference internal" href="helpers.html#function-remove-trailing-spaces-editorwidget-at-ln-123" id="id29"><em>Function:</em> remove_trailing_spaces(editorWidget) [at ln:123]</a></li>
+<li><a class="reference internal" href="helpers.html#function-replace-tabs-with-spaces-editorwidget-at-ln-178" id="id30"><em>Function:</em> replace_tabs_with_spaces(editorWidget) [at ln:178]</a></li>
+<li><a class="reference internal" href="helpers.html#function-uncomment-editorwidget-at-ln-415" id="id31"><em>Function:</em> uncomment(editorWidget) [at ln:415]</a></li>
+<li><a class="reference internal" href="helpers.html#function-uncomment-multiple-lines-cursor-block-start-block-end-comment-wildcard-at-ln-460" id="id32"><em>Function:</em> uncomment_multiple_lines(cursor, block_start, block_end, comment_wildcard) [at ln:460]</a></li>
+<li><a class="reference internal" href="helpers.html#function-uncomment-single-line-cursor-block-start-block-end-comment-wildcard-at-ln-439" id="id33"><em>Function:</em> uncomment_single_line(cursor, block_start, block_end, comment_wildcard) [at ln:439]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="module-helpers-py-api">
+<h2><em>Module:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html">helpers.py</a> API</h2>
+<p>No description.</p>
+<div class="section" id="imports">
+<h3><a class="toc-backref" href="helpers.html#id2"><em>Imports:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#19">re</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#22">PyQt4.QtGui.QInputDialog</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#21">PyQt4.QtGui.QTextCursor</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#17">__future__.absolute_import</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#25">ninja_ide.core.file_handling.file_manager</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#26">ninja_ide.tools.introspection</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#24">ninja_ide.core.settings</a></li>
+</ul>
+</div>
+<div class="section" id="global-attributes">
+<h3><a class="toc-backref" href="helpers.html#id3"><em>Global Attributes:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#36">CODING_LINE [at ln:36]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#34">closeBraces [at ln:34]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#33">endCharsForIndent [at ln:33]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#32">patClass [at ln:32]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#29">patIndent [at ln:29]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#31">patIsLocalFunction [at ln:31]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#30">patSymbol [at ln:30]</a></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="global-functions">
+<h3><a class="toc-backref" href="helpers.html#id4"><em>Global Functions:</em></a></h3>
+<div class="section" id="function-add-line-increment-lines-blockmodified-diference-at-ln-72">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-72">add_line_increment(lines, blockModified, diference) [at ln:72]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">add_line_increment</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">blockModified</span><span class="p">,</span> <span class="n">diference</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Increment the line number of the list content when needed.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-line-increment-for-dict-data-blockmodified-diference-at-ln-81">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-81">add_line_increment_for_dict(data, blockModified, diference) [at ln:81]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">add_line_increment_for_dict</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">blockModified</span><span class="p">,</span> <span class="n">diference</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Increment the line number of the dict content when needed.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-check-for-assistance-completion-editorwidget-line-at-ln-551">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-551">check_for_assistance_completion(editorWidget, line) [at ln:551]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">check_for_assistance_completion</span><span class="p">(</span><span class="n">editorWidget</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-clean-line-editorwidget-at-ln-108">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-108">clean_line(editorWidget) [at ln:108]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">clean_line</span><span class="p">(</span><span class="n">editorWidget</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-comment-editorwidget-at-ln-486">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-486">comment(editorWidget) [at ln:486]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">comment</span><span class="p">(</span><span class="n">editorWidget</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">This method comment one or more lines of code</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-comment-multiple-lines-cursor-block-start-block-end-comment-wildcard-at-ln-531">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-531">comment_multiple_lines(cursor, block_start, block_end, comment_wildcard) [at ln:531]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">comment_multiple_lines</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">block_start</span><span class="p">,</span> <span class="n">block_end</span><span class="p">,</span> <span class="n">comment_wildcard</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Comment one or more lines with multiple comment symbol</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-comment-single-line-cursor-block-start-block-end-comment-wildcard-at-ln-511">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-511">comment_single_line(cursor, block_start, block_end, comment_wildcard) [at ln:511]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">comment_single_line</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">block_start</span><span class="p">,</span> <span class="n">block_end</span><span class="p">,</span> <span class="n">comment_wildcard</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Comment one or more lines with single comment symbol</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-delete-lines-selected-cursor-block-actual-at-ln-479">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-479">delete_lines_selected(cursor, block_actual) [at ln:479]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">delete_lines_selected</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">block_actual</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-duplicate-editorwidget-at-ln-389">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-389">duplicate(editorWidget) [at ln:389]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">duplicate</span><span class="p">(</span><span class="n">editorWidget</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-first-keyword-line-at-ln-94">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-94">get_first_keyword(line) [at ln:94]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_first_keyword</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-indentation-line-indent-settings-indent-usetabs-settings-use-tabs-at-ln-49">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-49">get_indentation(line, indent=settings.INDENT, useTabs=settings.USE_TABS) [at ln:49]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_indentation</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">INDENT</span><span class="p">,</span> <span class="n">useTabs</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">USE_TABS</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-leading-spaces-line-at-ln-41">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-41">get_leading_spaces(line) [at ln:41]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_leading_spaces</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-start-end-selection-editorwidget-cursor-at-ln-113">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-113">get_start_end_selection(editorWidget, cursor) [at ln:113]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_start_end_selection</span><span class="p">(</span><span class="n">editorWidget</span><span class="p">,</span> <span class="n">cursor</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-insert-coding-line-editorwidget-at-ln-170">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-170">insert_coding_line(editorWidget) [at ln:170]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">insert_coding_line</span><span class="p">(</span><span class="n">editorWidget</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-insert-debugging-prints-editorwidget-at-ln-210">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-210">insert_debugging_prints(editorWidget) [at ln:210]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">insert_debugging_prints</span><span class="p">(</span><span class="n">editorWidget</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-insert-horizontal-line-editorwidget-at-ln-138">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-138">insert_horizontal_line(editorWidget) [at ln:138]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">insert_horizontal_line</span><span class="p">(</span><span class="n">editorWidget</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-insert-pdb-editorwidget-at-ln-236">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-236">insert_pdb(editorWidget) [at ln:236]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">insert_pdb</span><span class="p">(</span><span class="n">editorWidget</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Insert a pdb statement into the current line to debug code.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-insert-title-comment-editorwidget-at-ln-149">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-149">insert_title_comment(editorWidget) [at ln:149]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">insert_title_comment</span><span class="p">(</span><span class="n">editorWidget</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-lint-ignore-line-editorwidget-at-ln-184">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-184">lint_ignore_line(editorWidget) [at ln:184]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">lint_ignore_line</span><span class="p">(</span><span class="n">editorWidget</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-lint-ignore-selection-editorwidget-at-ln-191">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-191">lint_ignore_selection(editorWidget) [at ln:191]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">lint_ignore_selection</span><span class="p">(</span><span class="n">editorWidget</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-move-down-editorwidget-at-ln-300">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-300">move_down(editorWidget) [at ln:300]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">move_down</span><span class="p">(</span><span class="n">editorWidget</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-move-up-editorwidget-at-ln-243">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-243">move_up(editorWidget) [at ln:243]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">move_up</span><span class="p">(</span><span class="n">editorWidget</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-remove-line-editorwidget-at-ln-354">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-354">remove_line(editorWidget) [at ln:354]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">remove_line</span><span class="p">(</span><span class="n">editorWidget</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-remove-symbols-word-at-ln-104">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-104">remove_symbols(word) [at ln:104]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">remove_symbols</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-remove-trailing-spaces-editorwidget-at-ln-123">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-123">remove_trailing_spaces(editorWidget) [at ln:123]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">remove_trailing_spaces</span><span class="p">(</span><span class="n">editorWidget</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-replace-tabs-with-spaces-editorwidget-at-ln-178">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-178">replace_tabs_with_spaces(editorWidget) [at ln:178]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">replace_tabs_with_spaces</span><span class="p">(</span><span class="n">editorWidget</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-uncomment-editorwidget-at-ln-415">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-415">uncomment(editorWidget) [at ln:415]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">uncomment</span><span class="p">(</span><span class="n">editorWidget</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-uncomment-multiple-lines-cursor-block-start-block-end-comment-wildcard-at-ln-460">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-460">uncomment_multiple_lines(cursor, block_start, block_end, comment_wildcard) [at ln:460]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">uncomment_multiple_lines</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">block_start</span><span class="p">,</span> <span class="n">block_end</span><span class="p">,</span> <span class="n">comment_wildcard</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Uncomment one or more lines when multiple lines symbols is supported</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-uncomment-single-line-cursor-block-start-block-end-comment-wildcard-at-ln-439">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-439">uncomment_single_line(cursor, block_start, block_end, comment_wildcard) [at ln:439]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">uncomment_single_line</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">block_start</span><span class="p">,</span> <span class="n">block_end</span><span class="p">,</span> <span class="n">comment_wildcard</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Uncoment one or more lines when one line symbol is supported</div>
+</div>
+</div>
+</div>
+</div>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

@@ -1,0 +1,34 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: actions
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `actions.py </listings/ninja_ide/gui/explorer/actions.py.html>`_ API
+================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `PyQt4.QtGui.QStyle </listings/ninja_ide/gui/explorer/actions.py.html#3>`_
+
+- `ninja_ide.translations </listings/ninja_ide/gui/explorer/actions.py.html#5>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `ACTIONS [at ln:13] </listings/ninja_ide/gui/explorer/actions.py.html#13>`_
+
+
+
+

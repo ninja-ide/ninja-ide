@@ -1,0 +1,66 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: dynamic_splitter
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `dynamic_splitter.py </listings/ninja_ide/gui/dynamic_splitter.py.html>`_ API
+=========================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `PyQt4.QtGui.QSplitter </listings/ninja_ide/gui/dynamic_splitter.py.html#18>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/dynamic_splitter.py.html#19>`_
+
+
+
+
+
+*Class:* `DynamicSplitter(QSplitter) </listings/ninja_ide/gui/dynamic_splitter.py.html#listingsninja_ideguidynamic_splitterpy-22>`_
+-------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class DynamicSplitter(QSplitter):
+
+
+No description.
+
+
+*Function:* `__init__(orientation=Qt.Horizontal) [at ln:24] </listings/ninja_ide/gui/dynamic_splitter.py.html#listingsninja_ideguidynamic_splitterpy-24>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(orientation=Qt.Horizontal):
+
+
+No description.
+
+
+----
+
+*Function:* `add_widget(widget, top=False) [at ln:27] </listings/ninja_ide/gui/dynamic_splitter.py.html#listingsninja_ideguidynamic_splitterpy-27>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_widget(widget, top=False):
+
+
+No description.
+
+
+
+

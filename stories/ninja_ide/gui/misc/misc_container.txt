@@ -1,0 +1,406 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: misc_container
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `misc_container.py </listings/ninja_ide/gui/misc/misc_container.py.html>`_ API
+==========================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `ninja_ide.gui.ide.IDE </listings/ninja_ide/gui/misc/misc_container.py.html#38>`_
+
+- `PyQt4.QtGui.QHBoxLayout </listings/ninja_ide/gui/misc/misc_container.py.html#25>`_
+
+- `PyQt4.QtGui.QIcon </listings/ninja_ide/gui/misc/misc_container.py.html#22>`_
+
+- `PyQt4.QtGui.QKeySequence </listings/ninja_ide/gui/misc/misc_container.py.html#30>`_
+
+- `PyQt4.QtGui.QPushButton </listings/ninja_ide/gui/misc/misc_container.py.html#21>`_
+
+- `PyQt4.QtGui.QShortcut </listings/ninja_ide/gui/misc/misc_container.py.html#29>`_
+
+- `PyQt4.QtGui.QSizePolicy </listings/ninja_ide/gui/misc/misc_container.py.html#28>`_
+
+- `PyQt4.QtGui.QSpacerItem </listings/ninja_ide/gui/misc/misc_container.py.html#27>`_
+
+- `PyQt4.QtGui.QStackedWidget </listings/ninja_ide/gui/misc/misc_container.py.html#24>`_
+
+- `PyQt4.QtGui.QStyle </listings/ninja_ide/gui/misc/misc_container.py.html#23>`_
+
+- `PyQt4.QtGui.QToolBar </listings/ninja_ide/gui/misc/misc_container.py.html#20>`_
+
+- `PyQt4.QtGui.QVBoxLayout </listings/ninja_ide/gui/misc/misc_container.py.html#26>`_
+
+- `PyQt4.QtWebKit.QWebPage </listings/ninja_ide/gui/misc/misc_container.py.html#33>`_
+
+- `PyQt4.QtGui.QWidget </listings/ninja_ide/gui/misc/misc_container.py.html#19>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/misc/misc_container.py.html#31>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/misc/misc_container.py.html#32>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/misc/misc_container.py.html#17>`_
+
+- `ninja_ide.gui.misc.actions </listings/ninja_ide/gui/misc/misc_container.py.html#39>`_
+
+- `ninja_ide.gui.misc.console_widget </listings/ninja_ide/gui/misc/misc_container.py.html#40>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/gui/misc/misc_container.py.html#37>`_
+
+- `ninja_ide.gui.misc.find_in_files </listings/ninja_ide/gui/misc/misc_container.py.html#43>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/misc/misc_container.py.html#35>`_
+
+- `ninja_ide.gui.misc.results </listings/ninja_ide/gui/misc/misc_container.py.html#44>`_
+
+- `ninja_ide.gui.misc.run_widget </listings/ninja_ide/gui/misc/misc_container.py.html#41>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/misc/misc_container.py.html#36>`_
+
+- `ninja_ide.tools.ui_tools </listings/ninja_ide/gui/misc/misc_container.py.html#45>`_
+
+- `ninja_ide.gui.misc.web_render </listings/ninja_ide/gui/misc/misc_container.py.html#42>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `ToolsDock [at ln:286] </listings/ninja_ide/gui/misc/misc_container.py.html#286>`_
+
+
+----
+
+
+
+*Class:* `StackedWidget(QStackedWidget) </listings/ninja_ide/gui/misc/misc_container.py.html#listingsninja_ideguimiscmisc_containerpy-273>`_
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class StackedWidget(QStackedWidget):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `fader_widget [at ln:279] </listings/ninja_ide/gui/misc/misc_container.py.html#279>`_
+
+
+*Function:* `__init__() [at ln:275] </listings/ninja_ide/gui/misc/misc_container.py.html#listingsninja_ideguimiscmisc_containerpy-275>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `setCurrentIndex(index) [at ln:278] </listings/ninja_ide/gui/misc/misc_container.py.html#listingsninja_ideguimiscmisc_containerpy-278>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setCurrentIndex(index):
+
+
+No description.
+
+
+----
+
+*Function:* `show_display(index) [at ln:283] </listings/ninja_ide/gui/misc/misc_container.py.html#listingsninja_ideguimiscmisc_containerpy-283>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show_display(index):
+
+
+No description.
+
+
+----
+
+*Class:* `_ToolsDock(QWidget) </listings/ninja_ide/gui/misc/misc_container.py.html#listingsninja_ideguimiscmisc_containerpy-48>`_
+-----------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class _ToolsDock(QWidget):
+
+| Former Miscellaneous, contains all the widgets in the bottom area.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `__toolbar [at ln:82] </listings/ninja_ide/gui/misc/misc_container.py.html#82>`_
+
+- `_btnConsole [at ln:107] </listings/ninja_ide/gui/misc/misc_container.py.html#107>`_
+
+- `_btnFind [at ln:113] </listings/ninja_ide/gui/misc/misc_container.py.html#113>`_
+
+- `_btnRun [at ln:109] </listings/ninja_ide/gui/misc/misc_container.py.html#109>`_
+
+- `_btnWeb [at ln:111] </listings/ninja_ide/gui/misc/misc_container.py.html#111>`_
+
+- `_console [at ln:90] </listings/ninja_ide/gui/misc/misc_container.py.html#90>`_
+
+- `_findInFilesWidget [at ln:99] </listings/ninja_ide/gui/misc/misc_container.py.html#99>`_
+
+- `_results [at ln:104] </listings/ninja_ide/gui/misc/misc_container.py.html#104>`_
+
+- `_runWidget [at ln:93] </listings/ninja_ide/gui/misc/misc_container.py.html#93>`_
+
+- `_web [at ln:96] </listings/ninja_ide/gui/misc/misc_container.py.html#96>`_
+
+- `stack [at ln:87] </listings/ninja_ide/gui/misc/misc_container.py.html#87>`_
+
+
+*Function:* `__init__(parent=None) [at ln:51] </listings/ninja_ide/gui/misc/misc_container.py.html#listingsninja_ideguimiscmisc_containerpy-51>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent=None):
+
+
+No description.
+
+
+----
+
+*Function:* `_item_changed(val) [at ln:166] </listings/ninja_ide/gui/misc/misc_container.py.html#listingsninja_ideguimiscmisc_containerpy-166>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _item_changed(val):
+
+
+No description.
+
+
+----
+
+*Function:* `add_project_to_console(projectFolder) [at ln:155] </listings/ninja_ide/gui/misc/misc_container.py.html#listingsninja_ideguimiscmisc_containerpy-155>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_project_to_console(projectFolder):
+
+| Add the namespace of the project received into the ninja-console.
+
+
+----
+
+*Function:* `add_to_stack(widget, icon_path, description) [at ln:257] </listings/ninja_ide/gui/misc/misc_container.py.html#listingsninja_ideguimiscmisc_containerpy-257>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_to_stack(widget, icon_path, description):
+
+| Add a widget to the container and an button(with icon))to the toolbar
+| to show the widget
+
+
+----
+
+*Function:* `change_visibility() [at ln:149] </listings/ninja_ide/gui/misc/misc_container.py.html#listingsninja_ideguimiscmisc_containerpy-149>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def change_visibility():
+
+
+No description.
+
+
+----
+
+*Function:* `execute_file() [at ln:185] </listings/ninja_ide/gui/misc/misc_container.py.html#listingsninja_ideguimiscmisc_containerpy-185>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def execute_file():
+
+| Execute the current file.
+
+
+----
+
+*Function:* `execute_project() [at ln:202] </listings/ninja_ide/gui/misc/misc_container.py.html#listingsninja_ideguimiscmisc_containerpy-202>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def execute_project():
+
+| Execute the project marked as Main Project.
+
+
+----
+
+*Function:* `gain_focus() [at ln:163] </listings/ninja_ide/gui/misc/misc_container.py.html#listingsninja_ideguimiscmisc_containerpy-163>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def gain_focus():
+
+
+No description.
+
+
+----
+
+*Function:* `install() [at ln:143] </listings/ninja_ide/gui/misc/misc_container.py.html#listingsninja_ideguimiscmisc_containerpy-143>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def install():
+
+
+No description.
+
+
+----
+
+*Function:* `kill_application() [at ln:241] </listings/ninja_ide/gui/misc/misc_container.py.html#listingsninja_ideguimiscmisc_containerpy-241>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def kill_application():
+
+
+No description.
+
+
+----
+
+*Function:* `load_toolbar(toolbar) [at ln:181] </listings/ninja_ide/gui/misc/misc_container.py.html#listingsninja_ideguimiscmisc_containerpy-181>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_toolbar(toolbar):
+
+
+No description.
+
+
+----
+
+*Function:* `remove_project_from_console(projectFolder) [at ln:159] </listings/ninja_ide/gui/misc/misc_container.py.html#listingsninja_ideguimiscmisc_containerpy-159>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def remove_project_from_console(projectFolder):
+
+| Remove the namespace of the project received from the console.
+
+
+----
+
+*Function:* `render_web_page(url) [at ln:244] </listings/ninja_ide/gui/misc/misc_container.py.html#listingsninja_ideguimiscmisc_containerpy-244>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def render_web_page(url):
+
+
+No description.
+
+
+----
+
+*Function:* `run_application(fileName, pythonPath=False, PYTHONPATH=None, programParams=str, preExec=str, postExec=str) [at ln:227] </listings/ninja_ide/gui/misc/misc_container.py.html#listingsninja_ideguimiscmisc_containerpy-227>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run_application(fileName, pythonPath=False, PYTHONPATH=None, programParams=str, preExec=str, postExec=str):
+
+
+No description.
+
+
+----
+
+*Function:* `setup_ui() [at ln:77] </listings/ninja_ide/gui/misc/misc_container.py.html#listingsninja_ideguimiscmisc_containerpy-77>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setup_ui():
+
+
+No description.
+
+
+----
+
+*Function:* `show_find_in_files_widget() [at ln:171] </listings/ninja_ide/gui/misc/misc_container.py.html#listingsninja_ideguimiscmisc_containerpy-171>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show_find_in_files_widget():
+
+
+No description.
+
+
+----
+
+*Function:* `show_find_occurrences(word) [at ln:176] </listings/ninja_ide/gui/misc/misc_container.py.html#listingsninja_ideguimiscmisc_containerpy-176>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show_find_occurrences(word):
+
+
+No description.
+
+
+----
+
+*Function:* `show_results(items) [at ln:235] </listings/ninja_ide/gui/misc/misc_container.py.html#listingsninja_ideguimiscmisc_containerpy-235>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show_results(items):
+
+
+No description.
+
+
+
+

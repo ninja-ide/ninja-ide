@@ -1,0 +1,765 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: explorer_container
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `explorer_container.py </listings/ninja_ide/gui/explorer/explorer_container.py.html>`_ API
+======================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `os </listings/ninja_ide/gui/explorer/explorer_container.py.html#20>`_
+
+- `ninja_ide.gui.ide.IDE </listings/ninja_ide/gui/explorer/explorer_container.py.html#37>`_
+
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/gui/explorer/explorer_container.py.html#52>`_
+
+- `PyQt4.QtCore.QDateTime </listings/ninja_ide/gui/explorer/explorer_container.py.html#32>`_
+
+- `PyQt4.QtGui.QFileDialog </listings/ninja_ide/gui/explorer/explorer_container.py.html#25>`_
+
+- `PyQt4.QtGui.QIcon </listings/ninja_ide/gui/explorer/explorer_container.py.html#28>`_
+
+- `PyQt4.QtGui.QInputDialog </listings/ninja_ide/gui/explorer/explorer_container.py.html#29>`_
+
+- `PyQt4.QtGui.QMessageBox </listings/ninja_ide/gui/explorer/explorer_container.py.html#27>`_
+
+- `PyQt4.QtGui.QPushButton </listings/ninja_ide/gui/explorer/explorer_container.py.html#23>`_
+
+- `PyQt4.QtCore.QSettings </listings/ninja_ide/gui/explorer/explorer_container.py.html#31>`_
+
+- `PyQt4.QtGui.QTabWidget </listings/ninja_ide/gui/explorer/explorer_container.py.html#24>`_
+
+- `PyQt4.QtGui.QVBoxLayout </listings/ninja_ide/gui/explorer/explorer_container.py.html#26>`_
+
+- `PyQt4.QtGui.QWidget </listings/ninja_ide/gui/explorer/explorer_container.py.html#22>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/explorer/explorer_container.py.html#30>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/explorer/explorer_container.py.html#17>`_
+
+- `ninja_ide.gui.explorer.actions </listings/ninja_ide/gui/explorer/explorer_container.py.html#38>`_
+
+- `ninja_ide.gui.explorer.errors_lists </listings/ninja_ide/gui/explorer/explorer_container.py.html#41>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/gui/explorer/explorer_container.py.html#36>`_
+
+- `ninja_ide.gui.explorer.migration_lists </listings/ninja_ide/gui/explorer/explorer_container.py.html#42>`_
+
+- `ninja_ide.gui.explorer.nproject </listings/ninja_ide/gui/explorer/explorer_container.py.html#43>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/explorer/explorer_container.py.html#34>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/explorer/explorer_container.py.html#35>`_
+
+- `ninja_ide.gui.explorer.tree_projects_widget </listings/ninja_ide/gui/explorer/explorer_container.py.html#39>`_
+
+- `ninja_ide.gui.explorer.tree_symbols_widget </listings/ninja_ide/gui/explorer/explorer_container.py.html#40>`_
+
+- `ninja_ide.tools.ui_tools </listings/ninja_ide/gui/explorer/explorer_container.py.html#45>`_
+
+- `__future__.unicode_literals </listings/ninja_ide/gui/explorer/explorer_container.py.html#18>`_
+
+- `ninja_ide.gui.dialogs.wizard_new_project </listings/ninja_ide/gui/explorer/explorer_container.py.html#44>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `explorer [at ln:570] </listings/ninja_ide/gui/explorer/explorer_container.py.html#570>`_
+
+- `logger [at ln:54] </listings/ninja_ide/gui/explorer/explorer_container.py.html#54>`_
+
+
+----
+
+
+
+*Class:* `_ExplorerContainer(QTabWidget) </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-57>`_
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class _ExplorerContainer(QTabWidget):
+
+| updateLocator()
+| goToDefinition(int)
+| projectOpened(QString)
+| projectClosed(QString)
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_inspector [at ln:124] </listings/ninja_ide/gui/explorer/explorer_container.py.html#124>`_
+
+- `_listErrors [at ln:127] </listings/ninja_ide/gui/explorer/explorer_container.py.html#127>`_
+
+- `_listMigration [at ln:130] </listings/ninja_ide/gui/explorer/explorer_container.py.html#130>`_
+
+- `_thread_execution [at ln:75] </listings/ninja_ide/gui/explorer/explorer_container.py.html#75>`_
+
+- `_treeSymbols [at ln:121] </listings/ninja_ide/gui/explorer/explorer_container.py.html#121>`_
+
+- `tree_projects [at ln:118] </listings/ninja_ide/gui/explorer/explorer_container.py.html#118>`_
+
+
+*Function:* `__init__(parent=None) [at ln:72] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-72>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent=None):
+
+
+No description.
+
+
+----
+
+*Function:* `_add_file_to_project(path) [at ln:145] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-145>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _add_file_to_project(path):
+
+| Add the file for 'path' in the project the user choose here.
+
+
+----
+
+*Function:* `_add_project_to_console() [at ln:276] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-276>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _add_project_to_console():
+
+
+No description.
+
+
+----
+
+*Function:* `_callback_open_project(value) [at ln:444] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-444>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _callback_open_project(value):
+
+
+No description.
+
+
+----
+
+*Function:* `_dock_inspector() [at ln:346] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-346>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _dock_inspector():
+
+
+No description.
+
+
+----
+
+*Function:* `_execute_project() [at ln:271] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-271>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _execute_project():
+
+
+No description.
+
+
+----
+
+*Function:* `_remove_project_from_console() [at ln:281] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-281>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _remove_project_from_console():
+
+
+No description.
+
+
+----
+
+*Function:* `_unmute_tree_signals_clean_threads() [at ln:431] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-431>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _unmute_tree_signals_clean_threads():
+
+
+No description.
+
+
+----
+
+*Function:* `addTab(tab, title) [at ln:232] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-232>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def addTab(tab, title):
+
+
+No description.
+
+
+----
+
+*Function:* `add_existing_file(path) [at ln:463] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-463>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_existing_file(path):
+
+
+No description.
+
+
+----
+
+*Function:* `add_tab(widget, name, icon) [at ln:356] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-356>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_tab(widget, name, icon):
+
+
+No description.
+
+
+----
+
+*Function:* `add_tab_errors() [at ln:312] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-312>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_tab_errors():
+
+
+No description.
+
+
+----
+
+*Function:* `add_tab_inspector() [at ln:301] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-301>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_tab_inspector():
+
+
+No description.
+
+
+----
+
+*Function:* `add_tab_migration() [at ln:235] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-235>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_tab_migration():
+
+
+No description.
+
+
+----
+
+*Function:* `add_tab_projects() [at ln:240] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-240>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_tab_projects():
+
+
+No description.
+
+
+----
+
+*Function:* `add_tab_symbols() [at ln:286] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-286>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_tab_symbols():
+
+
+No description.
+
+
+----
+
+*Function:* `change_visibility() [at ln:139] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-139>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def change_visibility():
+
+
+No description.
+
+
+----
+
+*Function:* `cleanup_tabs() [at ln:543] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-543>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def cleanup_tabs():
+
+| Cleans depending on what objects are visible
+
+
+----
+
+*Function:* `close_opened_projects() [at ln:495] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-495>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def close_opened_projects():
+
+
+No description.
+
+
+----
+
+*Function:* `create_new_project() [at ln:455] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-455>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def create_new_project():
+
+
+No description.
+
+
+----
+
+*Function:* `find_most_old_open() [at ln:525] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-525>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def find_most_old_open():
+
+
+No description.
+
+
+----
+
+*Function:* `get_actual_project() [at ln:467] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-467>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_actual_project():
+
+
+No description.
+
+
+----
+
+*Function:* `get_opened_projects() [at ln:479] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-479>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_opened_projects():
+
+
+No description.
+
+
+----
+
+*Function:* `get_project_given_filename(filename) [at ln:472] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-472>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_project_given_filename(filename):
+
+
+No description.
+
+
+----
+
+*Function:* `get_project_name(path) [at ln:537] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-537>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_project_name(path):
+
+
+No description.
+
+
+----
+
+*Function:* `install() [at ln:114] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-114>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def install():
+
+
+No description.
+
+
+----
+
+*Function:* `open_project_folder(folderName=str, notIDEStart=True) [at ln:387] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-387>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def open_project_folder(folderName=str, notIDEStart=True):
+
+| Open a Project and load the symbols in the Code Locator.
+
+
+----
+
+*Function:* `open_project_properties() [at ln:491] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-491>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def open_project_properties():
+
+
+No description.
+
+
+----
+
+*Function:* `open_session_projects(projects, notIDEStart=True) [at ln:484] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-484>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def open_session_projects(projects, notIDEStart=True):
+
+
+No description.
+
+
+----
+
+*Function:* `refresh_inspector() [at ln:377] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-377>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def refresh_inspector():
+
+
+No description.
+
+
+----
+
+*Function:* `remove_tab_errors() [at ln:326] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-326>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def remove_tab_errors():
+
+
+No description.
+
+
+----
+
+*Function:* `remove_tab_inspector() [at ln:341] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-341>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def remove_tab_inspector():
+
+
+No description.
+
+
+----
+
+*Function:* `remove_tab_migration() [at ln:321] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-321>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def remove_tab_migration():
+
+
+No description.
+
+
+----
+
+*Function:* `remove_tab_projects() [at ln:331] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-331>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def remove_tab_projects():
+
+
+No description.
+
+
+----
+
+*Function:* `remove_tab_symbols() [at ln:336] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-336>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def remove_tab_symbols():
+
+
+No description.
+
+
+----
+
+*Function:* `rotate_tab_position() [at ln:359] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-359>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def rotate_tab_position():
+
+
+No description.
+
+
+----
+
+*Function:* `save_project() [at ln:187] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-187>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def save_project():
+
+| Save all the opened files that belongs to the actual project.
+
+
+----
+
+*Function:* `save_recent_projects(folder) [at ln:499] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-499>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def save_recent_projects(folder):
+
+
+No description.
+
+
+----
+
+*Function:* `set_inspection_page(page) [at ln:382] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-382>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_inspection_page(page):
+
+
+No description.
+
+
+----
+
+*Function:* `shortcut_index(index) [at ln:555] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-555>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def shortcut_index(index):
+
+
+No description.
+
+
+----
+
+*Function:* `show_project_tree() [at ln:365] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-365>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show_project_tree():
+
+
+No description.
+
+
+----
+
+*Function:* `show_symbols_tree() [at ln:369] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-369>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show_symbols_tree():
+
+
+No description.
+
+
+----
+
+*Function:* `show_web_inspector() [at ln:373] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-373>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show_web_inspector():
+
+
+No description.
+
+
+----
+
+*Function:* `update_current_symbol(line, col) [at ln:296] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-296>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_current_symbol(line, col):
+
+| Select the proper item in the symbols list.
+
+
+----
+
+*Function:* `update_errors(errors, pep8) [at ln:198] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-198>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_errors(errors, pep8):
+
+
+No description.
+
+
+----
+
+*Function:* `update_explorer() [at ln:206] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-206>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_explorer():
+
+| Update the symbols in the Symbol Explorer when a file is saved.
+
+
+----
+
+*Function:* `update_migration(migration) [at ln:202] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-202>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_migration(migration):
+
+
+No description.
+
+
+----
+
+*Function:* `update_symbols(symbols, fileName) [at ln:194] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-194>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_symbols(symbols, fileName):
+
+
+No description.
+
+
+----
+
+*Class:* `WebInspector(QWidget) </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-559>`_
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class WebInspector(QWidget):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_webInspector [at ln:564] </listings/ninja_ide/gui/explorer/explorer_container.py.html#564>`_
+
+- `btnDock [at ln:566] </listings/ninja_ide/gui/explorer/explorer_container.py.html#566>`_
+
+
+*Function:* `__init__(parent) [at ln:561] </listings/ninja_ide/gui/explorer/explorer_container.py.html#listingsninja_ideguiexplorerexplorer_containerpy-561>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent):
+
+
+No description.
+
+
+
+

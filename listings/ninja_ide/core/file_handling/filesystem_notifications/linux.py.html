@@ -1,0 +1,374 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="linux.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>linux.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../../../">/listings</a>
+        </li><li><a href="../../../">/ninja_ide</a>
+        </li><li><a href="../../">/core</a>
+        </li><li><a href="../">/file_handling</a>
+        </li><li><a href=".">/filesystem_notifications</a>
+        </li><li><a href="#">/linux.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-1">  1</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-2">  2</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-3">  3</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-4">  4</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-5">  5</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-6">  6</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-7">  7</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-8">  8</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-9">  9</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-10"> 10</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-11"> 11</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-12"> 12</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-13"> 13</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-14"> 14</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-15"> 15</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-16"> 16</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-17"> 17</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-18"> 18</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-19"> 19</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-20"> 20</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-21"> 21</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-22"> 22</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-23"> 23</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-24"> 24</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-25"> 25</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-26"> 26</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-27"> 27</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-28"> 28</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-29"> 29</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-30"> 30</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-31"> 31</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-32"> 32</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-33"> 33</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-34"> 34</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-35"> 35</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-36"> 36</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-37"> 37</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-38"> 38</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-39"> 39</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-40"> 40</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-41"> 41</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-42"> 42</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-43"> 43</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-44"> 44</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-45"> 45</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-46"> 46</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-47"> 47</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-48"> 48</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-49"> 49</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-50"> 50</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-51"> 51</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-52"> 52</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-53"> 53</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-54"> 54</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-55"> 55</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-56"> 56</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-57"> 57</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-58"> 58</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-59"> 59</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-60"> 60</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-61"> 61</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-62"> 62</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-63"> 63</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-64"> 64</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-65"> 65</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-66"> 66</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-67"> 67</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-68"> 68</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-69"> 69</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-70"> 70</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-71"> 71</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-72"> 72</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-73"> 73</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-74"> 74</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-75"> 75</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-76"> 76</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-77"> 77</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-78"> 78</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-79"> 79</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-80"> 80</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-81"> 81</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-82"> 82</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-83"> 83</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-84"> 84</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-85"> 85</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-86"> 86</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-87"> 87</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-88"> 88</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-89"> 89</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-90"> 90</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-91"> 91</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-92"> 92</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-93"> 93</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-94"> 94</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-95"> 95</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-96"> 96</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-97"> 97</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-98"> 98</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-99"> 99</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-100">100</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-101">101</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-102">102</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-103">103</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-104">104</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-105">105</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-106">106</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-107">107</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-108">108</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-109">109</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-110">110</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-111">111</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-112">112</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-113">113</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-114">114</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-115">115</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-116">116</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-117">117</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-118">118</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-119">119</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-120">120</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-121">121</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-122">122</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-123">123</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-124">124</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-125">125</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-126">126</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-127">127</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-128">128</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-129">129</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-130">130</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-131">131</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-132">132</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-133">133</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-134">134</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-135">135</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-136">136</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-137">137</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-138">138</a>
+<a href="linux.py.html#listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-139">139</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-1"></a><span class="c"># -*- coding: utf-8 -*-</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-2"></a><span class="c">#</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-3"></a><span class="c"># This file is part of NINJA-IDE (http://ninja-ide.org).</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-4"></a><span class="c">#</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-5"></a><span class="c"># NINJA-IDE is free software; you can redistribute it and/or modify</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-6"></a><span class="c"># it under the terms of the GNU General Public License as published by</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-7"></a><span class="c"># the Free Software Foundation; either version 3 of the License, or</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-8"></a><span class="c"># any later version.</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-9"></a><span class="c">#</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-10"></a><span class="c"># NINJA-IDE is distributed in the hope that it will be useful,</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-11"></a><span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-12"></a><span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-13"></a><span class="c"># GNU General Public License for more details.</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-14"></a><span class="c">#</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-15"></a><span class="c"># You should have received a copy of the GNU General Public License</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-16"></a><span class="c"># along with NINJA-IDE; If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-17"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-18"></a><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-19"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-20"></a><span class="kn">import</span> <span class="nn">os</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-21"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-22"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">QThread</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-23"></a><span class="kn">from</span> <span class="nn">pyinotify</span> <span class="kn">import</span> <span class="n">ProcessEvent</span><span class="p">,</span> <span class="n">IN_CREATE</span><span class="p">,</span> <span class="n">IN_DELETE</span><span class="p">,</span> <span class="n">IN_DELETE_SELF</span><span class="p">,</span> \
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-24"></a>                        <span class="n">IN_MODIFY</span><span class="p">,</span> <span class="n">WatchManager</span><span class="p">,</span> <span class="n">Notifier</span><span class="p">,</span> <span class="n">ExcludeFilter</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-25"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-26"></a><span class="kn">from</span> <span class="nn">ninja_ide.tools.logger</span> <span class="kn">import</span> <span class="n">NinjaLogger</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-27"></a><span class="n">logger</span> <span class="o">=</span> <span class="n">NinjaLogger</span><span class="p">(</span><span class="s">'ninja_ide.core.file_handling.filesystem_notifications.linux'</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-28"></a><span class="n">DEBUG</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">debug</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-29"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-30"></a><span class="kn">from</span> <span class="nn">ninja_ide.core.file_handling.filesystem_notifications</span> <span class="kn">import</span> <span class="n">base_watcher</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-31"></a><span class="n">ADDED</span> <span class="o">=</span> <span class="n">base_watcher</span><span class="o">.</span><span class="n">ADDED</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-32"></a><span class="n">DELETED</span> <span class="o">=</span> <span class="n">base_watcher</span><span class="o">.</span><span class="n">DELETED</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-33"></a><span class="n">REMOVE</span> <span class="o">=</span> <span class="n">base_watcher</span><span class="o">.</span><span class="n">REMOVE</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-34"></a><span class="n">RENAME</span> <span class="o">=</span> <span class="n">base_watcher</span><span class="o">.</span><span class="n">RENAME</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-35"></a><span class="n">MODIFIED</span> <span class="o">=</span> <span class="n">base_watcher</span><span class="o">.</span><span class="n">MODIFIED</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-36"></a><span class="c">#FIXME: For some reaseon the code below raises an import error with name ADDED</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-37"></a><span class="c">#from ninja_ide.core.file_handling.filesystem_notifications.base_watcher import ADDED, \</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-38"></a><span class="c">#                                            DELETED, REMOVE, RENAME, MODIFIED</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-39"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-40"></a><span class="n">mask</span> <span class="o">=</span> <span class="n">IN_CREATE</span> <span class="o">|</span> <span class="n">IN_DELETE</span> <span class="o">|</span> <span class="n">IN_DELETE_SELF</span> <span class="o">|</span> <span class="n">IN_MODIFY</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-41"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-42"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-43"></a><span class="k">class</span> <span class="nc">NinjaProcessEvent</span><span class="p">(</span><span class="n">ProcessEvent</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-44"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-45"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">process_callback</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-46"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_process_callback</span> <span class="o">=</span> <span class="n">process_callback</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-47"></a>        <span class="n">ProcessEvent</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-48"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-49"></a>    <span class="k">def</span> <span class="nf">process_IN_CREATE</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-50"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_process_callback</span><span class="p">((</span><span class="n">ADDED</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">pathname</span><span class="p">))</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-51"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-52"></a>    <span class="k">def</span> <span class="nf">process_IN_DELETE</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-53"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_process_callback</span><span class="p">((</span><span class="n">DELETED</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">pathname</span><span class="p">))</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-54"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-55"></a>    <span class="k">def</span> <span class="nf">process_IN_DELETE_SELF</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-56"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_process_callback</span><span class="p">((</span><span class="n">DELETED</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">pathname</span><span class="p">))</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-57"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-58"></a>    <span class="k">def</span> <span class="nf">process_IN_MODIFY</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-59"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_process_callback</span><span class="p">((</span><span class="n">MODIFIED</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">pathname</span><span class="p">))</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-60"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-61"></a>    <span class="k">def</span> <span class="nf">process_IN_MOVED_TO</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-62"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_process_callback</span><span class="p">((</span><span class="n">REMOVE</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">pathname</span><span class="p">))</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-63"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-64"></a>    <span class="k">def</span> <span class="nf">process_IN_MOVED_FROM</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-65"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_process_callback</span><span class="p">((</span><span class="n">REMOVE</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">pathname</span><span class="p">))</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-66"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-67"></a>    <span class="k">def</span> <span class="nf">process_IN_MOVE_SELF</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-68"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_process_callback</span><span class="p">((</span><span class="n">RENAME</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">pathname</span><span class="p">))</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-69"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-70"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-71"></a><span class="k">class</span> <span class="nc">QNotifier</span><span class="p">(</span><span class="n">QThread</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-72"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wm</span><span class="p">,</span> <span class="n">processor</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-73"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">event_queue</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-74"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_processor</span> <span class="o">=</span> <span class="n">processor</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-75"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">notifier</span> <span class="o">=</span> <span class="n">Notifier</span><span class="p">(</span><span class="n">wm</span><span class="p">,</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-76"></a>                            <span class="n">NinjaProcessEvent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_queue</span><span class="o">.</span><span class="n">append</span><span class="p">))</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-77"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">notifier</span><span class="o">.</span><span class="n">coalesce_events</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-78"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">keep_running</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-79"></a>        <span class="n">QThread</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-80"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-81"></a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-82"></a>        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_running</span><span class="p">:</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-83"></a>            <span class="k">try</span><span class="p">:</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-84"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">notifier</span><span class="o">.</span><span class="n">process_events</span><span class="p">()</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-85"></a>            <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-86"></a>                <span class="k">pass</span>  <span class="c"># OSError: [Errno 2] No such file or directory happens</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-87"></a>            <span class="n">e_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-88"></a>            <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_queue</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-89"></a>                <span class="n">e_type</span><span class="p">,</span> <span class="n">e_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_queue</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-90"></a>                <span class="n">e_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">e_path</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e_type</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-91"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-92"></a>            <span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">e_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-93"></a>            <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-94"></a>                <span class="n">key</span> <span class="o">=</span> <span class="n">keys</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-95"></a>                <span class="n">event</span> <span class="o">=</span> <span class="n">e_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-96"></a>                <span class="k">if</span> <span class="p">(</span><span class="n">ADDED</span> <span class="ow">in</span> <span class="n">event</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">DELETED</span> <span class="ow">in</span> <span class="n">event</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-97"></a>                    <span class="n">event</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">event</span> <span class="k">if</span> <span class="n">e</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ADDED</span><span class="p">,</span> <span class="n">DELETED</span><span class="p">)]</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-98"></a>                <span class="k">for</span> <span class="n">each_event</span> <span class="ow">in</span> <span class="n">event</span><span class="p">:</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-99"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">_processor</span><span class="p">(</span><span class="n">each_event</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-100"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">notifier</span><span class="o">.</span><span class="n">check_events</span><span class="p">():</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-101"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">notifier</span><span class="o">.</span><span class="n">read_events</span><span class="p">()</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-102"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-103"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">notifier</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-104"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-105"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-106"></a><span class="k">class</span> <span class="nc">NinjaFileSystemWatcher</span><span class="p">(</span><span class="n">base_watcher</span><span class="o">.</span><span class="n">BaseWatcher</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-107"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-108"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-109"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">watching_paths</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-110"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">NinjaFileSystemWatcher</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-111"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_ignore_hidden</span> <span class="o">=</span> <span class="p">(</span><span class="s">'.git'</span><span class="p">,</span> <span class="s">'.hg'</span><span class="p">,</span> <span class="s">'.svn'</span><span class="p">,</span> <span class="s">'.bzr'</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-112"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-113"></a>    <span class="k">def</span> <span class="nf">add_watch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-114"></a>        <span class="k">if</span> <span class="n">path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">watching_paths</span><span class="p">:</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-115"></a>            <span class="k">try</span><span class="p">:</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-116"></a>                <span class="n">wm</span> <span class="o">=</span> <span class="n">WatchManager</span><span class="p">()</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-117"></a>                <span class="n">notifier</span> <span class="o">=</span> <span class="n">QNotifier</span><span class="p">(</span><span class="n">wm</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_emit_signal_on_change</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-118"></a>                <span class="n">notifier</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-119"></a>                <span class="n">exclude</span> <span class="o">=</span> <span class="n">ExcludeFilter</span><span class="p">([</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">folder</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-120"></a>                    <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ignore_hidden</span><span class="p">])</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-121"></a>                <span class="n">wm</span><span class="o">.</span><span class="n">add_watch</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">rec</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">auto_add</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-122"></a>                    <span class="n">exclude_filter</span><span class="o">=</span><span class="n">exclude</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-123"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">watching_paths</span><span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">notifier</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-124"></a>            <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">IOError</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-125"></a>                <span class="k">pass</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-126"></a>                <span class="c">#Shit happens, most likely temp file</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-127"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-128"></a>    <span class="k">def</span> <span class="nf">remove_watch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-129"></a>        <span class="k">if</span> <span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">watching_paths</span><span class="p">:</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-130"></a>            <span class="n">notifier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">watching_paths</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-131"></a>            <span class="n">notifier</span><span class="o">.</span><span class="n">keep_running</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-132"></a>            <span class="n">notifier</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-133"></a>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-134"></a>    <span class="k">def</span> <span class="nf">shutdown_notification</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-135"></a>        <span class="n">base_watcher</span><span class="o">.</span><span class="n">BaseWatcher</span><span class="o">.</span><span class="n">shutdown_notification</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-136"></a>        <span class="k">for</span> <span class="n">each_path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">watching_paths</span><span class="p">:</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-137"></a>            <span class="n">notifier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">watching_paths</span><span class="p">[</span><span class="n">each_path</span><span class="p">]</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-138"></a>            <span class="n">notifier</span><span class="o">.</span><span class="n">keep_running</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_idecorefile_handlingfilesystem_notificationslinuxpy-139"></a>            <span class="n">notifier</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

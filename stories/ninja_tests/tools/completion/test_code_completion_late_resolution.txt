@@ -1,0 +1,605 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: test_code_completion_late_resolution
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `test_code_completion_late_resolution.py </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html>`_ API
+================================================================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `_ast </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#19>`_
+
+- `time </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#20>`_
+
+- `unittest </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#21>`_
+
+- `ninja_tests.tools.completion.SOURCE_INHERITANCE </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#27>`_
+
+- `ninja_tests.tools.completion.SOURCE_LATE_RESOLUTION </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#27>`_
+
+- `__future__.absolute_import </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#17>`_
+
+- `ninja_ide.tools.completion.analyzer </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#23>`_
+
+- `ninja_ide.tools.completion.code_completion </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#25>`_
+
+- `ninja_ide.tools.completion.completion_daemon </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#26>`_
+
+- `ninja_tests.tools.completion.get_source_data </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#27>`_
+
+- `ninja_ide.tools.completion.model </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#24>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `WAITING_BEFORE_START [at ln:35] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#35>`_
+
+
+----
+
+
+
+*Class:* `InheritanceLateResolutionTestCase(unittest.TestCase) </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-499>`_
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class InheritanceLateResolutionTestCase(unittest.TestCase):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `SYNTAX [at ln:502] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#502>`_
+
+- `analyzer [at ln:504] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#504>`_
+
+- `cc [at ln:503] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#503>`_
+
+
+*Function:* `setUp() [at ln:501] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-501>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setUp():
+
+
+No description.
+
+
+----
+
+*Function:* `tearDown() [at ln:506] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-506>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def tearDown():
+
+
+No description.
+
+
+----
+
+*Function:* `test_multiple_import_inheritance() [at ln:556] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-556>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_multiple_import_inheritance():
+
+
+No description.
+
+
+----
+
+*Function:* `test_multiple_mix_inheritance() [at ln:573] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-573>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_multiple_mix_inheritance():
+
+
+No description.
+
+
+----
+
+*Function:* `test_multiple_mix_inheritance_inside_class() [at ln:598] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-598>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_multiple_mix_inheritance_inside_class():
+
+
+No description.
+
+
+----
+
+*Function:* `test_simple_import_inheritance() [at ln:525] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-525>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_simple_import_inheritance():
+
+
+No description.
+
+
+----
+
+*Function:* `test_simple_import_inheritance_2() [at ln:540] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-540>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_simple_import_inheritance_2():
+
+
+No description.
+
+
+----
+
+*Function:* `test_simple_local_inheritance() [at ln:509] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-509>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_simple_local_inheritance():
+
+
+No description.
+
+
+----
+
+*Class:* `AnalyzerLateResolutionTestCase(unittest.TestCase) </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-38>`_
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class AnalyzerLateResolutionTestCase(unittest.TestCase):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `SYNTAX [at ln:41] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#41>`_
+
+- `analyzer [at ln:43] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#43>`_
+
+- `cc [at ln:42] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#42>`_
+
+
+*Function:* `setUp() [at ln:40] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-40>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setUp():
+
+
+No description.
+
+
+----
+
+*Function:* `tearDown() [at ln:45] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-45>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def tearDown():
+
+
+No description.
+
+
+----
+
+*Function:* `test_late_resolution_own_class_1() [at ln:266] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-266>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_late_resolution_own_class_1():
+
+
+No description.
+
+
+----
+
+*Function:* `test_late_resolution_own_class_2() [at ln:286] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-286>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_late_resolution_own_class_2():
+
+
+No description.
+
+
+----
+
+*Function:* `test_late_resolution_return_1() [at ln:308] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-308>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_late_resolution_return_1():
+
+
+No description.
+
+
+----
+
+*Function:* `test_late_resolution_return_10() [at ln:458] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-458>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_late_resolution_return_10():
+
+
+No description.
+
+
+----
+
+*Function:* `test_late_resolution_return_2() [at ln:323] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-323>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_late_resolution_return_2():
+
+
+No description.
+
+
+----
+
+*Function:* `test_late_resolution_return_3() [at ln:337] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-337>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_late_resolution_return_3():
+
+
+No description.
+
+
+----
+
+*Function:* `test_late_resolution_return_4() [at ln:358] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-358>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_late_resolution_return_4():
+
+
+No description.
+
+
+----
+
+*Function:* `test_late_resolution_return_5() [at ln:378] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-378>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_late_resolution_return_5():
+
+
+No description.
+
+
+**Decorators:**
+
+- *unittest.skip()*
+
+----
+
+*Function:* `test_late_resolution_return_6() [at ln:401] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-401>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_late_resolution_return_6():
+
+
+No description.
+
+
+----
+
+*Function:* `test_late_resolution_return_7() [at ln:421] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-421>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_late_resolution_return_7():
+
+
+No description.
+
+
+----
+
+*Function:* `test_late_resolution_return_8() [at ln:434] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-434>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_late_resolution_return_8():
+
+
+No description.
+
+
+----
+
+*Function:* `test_late_resolution_return_9() [at ln:446] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-446>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_late_resolution_return_9():
+
+
+No description.
+
+
+----
+
+*Function:* `test_simple_import_late_resolution() [at ln:74] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-74>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_simple_import_late_resolution():
+
+
+No description.
+
+
+----
+
+*Function:* `test_simple_import_late_resolution_chained_attr() [at ln:96] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-96>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_simple_import_late_resolution_chained_attr():
+
+
+No description.
+
+
+----
+
+*Function:* `test_simple_import_late_resolution_chained_attr_2() [at ln:106] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-106>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_simple_import_late_resolution_chained_attr_2():
+
+
+No description.
+
+
+----
+
+*Function:* `test_simple_import_late_resolution_chained_attr_3() [at ln:116] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-116>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_simple_import_late_resolution_chained_attr_3():
+
+
+No description.
+
+
+----
+
+*Function:* `test_simple_import_late_resolution_chained_func_1() [at ln:139] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-139>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_simple_import_late_resolution_chained_func_1():
+
+
+No description.
+
+
+----
+
+*Function:* `test_simple_import_late_resolution_chained_func_2() [at ln:154] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-154>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_simple_import_late_resolution_chained_func_2():
+
+
+No description.
+
+
+----
+
+*Function:* `test_simple_import_late_resolution_chained_func_3() [at ln:169] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-169>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_simple_import_late_resolution_chained_func_3():
+
+
+No description.
+
+
+----
+
+*Function:* `test_simple_import_late_resolution_chained_func_4() [at ln:184] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-184>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_simple_import_late_resolution_chained_func_4():
+
+
+No description.
+
+
+----
+
+*Function:* `test_simple_import_late_resolution_chained_func_5() [at ln:200] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-200>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_simple_import_late_resolution_chained_func_5():
+
+
+No description.
+
+
+----
+
+*Function:* `test_simple_import_late_resolution_chained_func_6() [at ln:215] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-215>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_simple_import_late_resolution_chained_func_6():
+
+
+No description.
+
+
+----
+
+*Function:* `test_simple_import_late_resolution_chained_func_7() [at ln:230] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-230>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_simple_import_late_resolution_chained_func_7():
+
+
+No description.
+
+
+----
+
+*Function:* `test_simple_import_late_resolution_func() [at ln:84] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-84>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_simple_import_late_resolution_func():
+
+
+No description.
+
+
+----
+
+*Function:* `test_simple_import_late_resolution_local_symbols() [at ln:246] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-246>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_simple_import_late_resolution_local_symbols():
+
+
+No description.
+
+
+----
+
+*Function:* `test_simple_import_late_resolution_not_outside_func() [at ln:127] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-127>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_simple_import_late_resolution_not_outside_func():
+
+
+No description.
+
+
+----
+
+*Function:* `test_var_attribute_assign() [at ln:52] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-52>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_var_attribute_assign():
+
+
+No description.
+
+
+----
+
+*Function:* `test_weird_case_1() [at ln:471] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-471>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_weird_case_1():
+
+
+No description.
+
+
+----
+
+*Function:* `test_weird_case_2() [at ln:484] </listings/ninja_tests/tools/completion/test_code_completion_late_resolution.py.html#listingsninja_teststoolscompletiontest_code_completion_late_resolutionpy-484>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_weird_case_2():
+
+
+No description.
+
+
+
+

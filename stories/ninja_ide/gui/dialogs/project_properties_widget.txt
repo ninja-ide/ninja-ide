@@ -1,0 +1,384 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: project_properties_widget
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `project_properties_widget.py </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html>`_ API
+===================================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `os </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#20>`_
+
+- `sys </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#21>`_
+
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#53>`_
+
+- `PyQt4.QtGui.QCheckBox </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#42>`_
+
+- `PyQt4.QtGui.QComboBox </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#35>`_
+
+- `PyQt4.QtGui.QCompleter </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#32>`_
+
+- `PyQt4.QtGui.QDialog </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#28>`_
+
+- `PyQt4.QtGui.QDirModel </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#33>`_
+
+- `PyQt4.QtGui.QFileDialog </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#39>`_
+
+- `PyQt4.QtGui.QGridLayout </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#29>`_
+
+- `PyQt4.QtGui.QHBoxLayout </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#37>`_
+
+- `PyQt4.QtGui.QIcon </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#38>`_
+
+- `PyQt4.QtGui.QLabel </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#31>`_
+
+- `PyQt4.QtGui.QLineEdit </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#30>`_
+
+- `PyQt4.QtGui.QMessageBox </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#40>`_
+
+- `PyQt4.QtGui.QPlainTextEdit </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#34>`_
+
+- `PyQt4.QtGui.QPushButton </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#36>`_
+
+- `PyQt4.QtGui.QSizePolicy </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#24>`_
+
+- `PyQt4.QtGui.QSpacerItem </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#25>`_
+
+- `PyQt4.QtGui.QSpinBox </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#41>`_
+
+- `PyQt4.QtGui.QTabWidget </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#26>`_
+
+- `PyQt4.QtGui.QVBoxLayout </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#27>`_
+
+- `PyQt4.QtGui.QWidget </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#23>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#44>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#43>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#18>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#47>`_
+
+- `ninja_ide.tools.json_manager </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#49>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#46>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#48>`_
+
+- `ninja_ide.tools.ui_tools </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#50>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `DEBUG [at ln:55] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#55>`_
+
+- `logger [at ln:54] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#54>`_
+
+
+----
+
+
+
+*Class:* `ProjectProperties(QDialog) </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#listingsninja_ideguidialogsproject_properties_widgetpy-58>`_
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ProjectProperties(QDialog):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `PYTHONPATH [at ln:102] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#102>`_
+
+- `_item [at ln:62] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#62>`_
+
+- `additional_builtins [at ln:103] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#103>`_
+
+- `btnCancel [at ln:77] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#77>`_
+
+- `btnSave [at ln:76] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#76>`_
+
+- `description [at ln:95] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#95>`_
+
+- `extensions [at ln:111] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#111>`_
+
+- `indentation [at ln:112] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#112>`_
+
+- `license [at ln:96] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#96>`_
+
+- `mainFile [at ln:97] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#97>`_
+
+- `name [at ln:94] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#94>`_
+
+- `postExecScript [at ln:107] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#107>`_
+
+- `preExecScript [at ln:106] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#106>`_
+
+- `programParams [at ln:108] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#108>`_
+
+- `projectData [at ln:66] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#66>`_
+
+- `projectExecution [at ln:67] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#67>`_
+
+- `projectMetadata [at ln:68] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#68>`_
+
+- `projectType [at ln:99] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#99>`_
+
+- `pythonPath [at ln:101] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#101>`_
+
+- `related_projects [at ln:116] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#116>`_
+
+- `tab_widget [at ln:65] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#65>`_
+
+- `url [at ln:98] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#98>`_
+
+- `useTabs [at ln:113] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#113>`_
+
+- `venv [at ln:109] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#109>`_
+
+
+*Function:* `__init__(item, parent=None) [at ln:60] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#listingsninja_ideguidialogsproject_properties_widgetpy-60>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(item, parent=None):
+
+
+No description.
+
+
+----
+
+*Function:* `save_properties() [at ln:87] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#listingsninja_ideguidialogsproject_properties_widgetpy-87>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def save_properties():
+
+
+No description.
+
+
+----
+
+*Class:* `ProjectMetadata(QWidget) </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#listingsninja_ideguidialogsproject_properties_widgetpy-364>`_
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ProjectMetadata(QWidget):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_parent [at ln:368] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#368>`_
+
+- `txt_projects [at ln:374] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#374>`_
+
+
+*Function:* `__init__(parent) [at ln:366] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#listingsninja_ideguidialogsproject_properties_widgetpy-366>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent):
+
+
+No description.
+
+
+----
+
+*Class:* `ProjectData(QWidget) </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#listingsninja_ideguidialogsproject_properties_widgetpy-149>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ProjectData(QWidget):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_parent [at ln:153] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#153>`_
+
+- `cboLicense [at ln:184] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#184>`_
+
+- `checkUseTabs [at ln:212] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#212>`_
+
+- `description [at ln:176] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#176>`_
+
+- `name [at ln:156] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#156>`_
+
+- `spinIndentation [at ln:208] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#208>`_
+
+- `txtExtensions [at ln:202] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#202>`_
+
+- `txtPath [at ln:164] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#164>`_
+
+- `txtType [at ln:169] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#169>`_
+
+- `url [at ln:180] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#180>`_
+
+
+*Function:* `__init__(parent) [at ln:151] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#listingsninja_ideguidialogsproject_properties_widgetpy-151>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent):
+
+
+No description.
+
+
+----
+
+*Class:* `ProjectExecution(QWidget) </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#listingsninja_ideguidialogsproject_properties_widgetpy-217>`_
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ProjectExecution(QWidget):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `PYTHONPATH [at ln:247] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#247>`_
+
+- `_dir_completer [at ln:297] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#297>`_
+
+- `_parent [at ln:221] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#221>`_
+
+- `additional_builtins [at ln:254] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#254>`_
+
+- `btnBrowse [at ln:230] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#230>`_
+
+- `btnPostExec [at ln:276] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#276>`_
+
+- `btnPreExec [at ln:267] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#267>`_
+
+- `btnPythonPath [at ln:240] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#240>`_
+
+- `btnVenvPath [at ln:300] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#300>`_
+
+- `path [at ln:225] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#225>`_
+
+- `txtParams [at ln:286] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#286>`_
+
+- `txtPostExec [at ln:271] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#271>`_
+
+- `txtPreExec [at ln:262] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#262>`_
+
+- `txtPythonPath [at ln:238] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#238>`_
+
+- `txtVenvPath [at ln:293] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#293>`_
+
+
+*Function:* `__init__(parent) [at ln:219] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#listingsninja_ideguidialogsproject_properties_widgetpy-219>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent):
+
+
+No description.
+
+
+----
+
+*Function:* `_load_python_path() [at ln:315] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#listingsninja_ideguidialogsproject_properties_widgetpy-315>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _load_python_path():
+
+
+No description.
+
+
+----
+
+*Function:* `_load_python_venv() [at ln:320] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#listingsninja_ideguidialogsproject_properties_widgetpy-320>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _load_python_venv():
+
+
+No description.
+
+
+----
+
+*Function:* `select_file() [at ln:336] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#listingsninja_ideguidialogsproject_properties_widgetpy-336>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def select_file():
+
+
+No description.
+
+
+----
+
+*Function:* `select_post_exec_script() [at ln:354] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#listingsninja_ideguidialogsproject_properties_widgetpy-354>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def select_post_exec_script():
+
+
+No description.
+
+
+----
+
+*Function:* `select_pre_exec_script() [at ln:345] </listings/ninja_ide/gui/dialogs/project_properties_widget.py.html#listingsninja_ideguidialogsproject_properties_widgetpy-345>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def select_pre_exec_script():
+
+
+No description.
+
+
+
+

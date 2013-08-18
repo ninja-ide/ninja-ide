@@ -1,0 +1,23 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: get_system_path
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `get_system_path.py </listings/ninja_ide/tools/get_system_path.py.html>`_ API
+=========================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `sys </listings/ninja_ide/tools/get_system_path.py.html#20>`_
+

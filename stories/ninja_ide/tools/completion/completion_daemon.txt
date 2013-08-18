@@ -1,0 +1,451 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: completion_daemon
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `completion_daemon.py </listings/ninja_ide/tools/completion/completion_daemon.py.html>`_ API
+========================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `os </listings/ninja_ide/tools/completion/completion_daemon.py.html#18>`_
+
+- `time </listings/ninja_ide/tools/completion/completion_daemon.py.html#19>`_
+
+- `threading.Lock </listings/ninja_ide/tools/completion/completion_daemon.py.html#20>`_
+
+- `multiprocessing.Process </listings/ninja_ide/tools/completion/completion_daemon.py.html#21>`_
+
+- `multiprocessing.Queue </listings/ninja_ide/tools/completion/completion_daemon.py.html#21>`_
+
+- `threading.Thread </listings/ninja_ide/tools/completion/completion_daemon.py.html#20>`_
+
+- `ninja_ide.tools.completion.analyzer </listings/ninja_ide/tools/completion/completion_daemon.py.html#25>`_
+
+- `ninja_ide.tools.completion.completer </listings/ninja_ide/tools/completion/completion_daemon.py.html#24>`_
+
+- `ninja_ide.tools.completion.model </listings/ninja_ide/tools/completion/completion_daemon.py.html#23>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `PROJECTS [at ln:36] </listings/ninja_ide/tools/completion/completion_daemon.py.html#36>`_
+
+- `WAITING_BEFORE_START [at ln:35] </listings/ninja_ide/tools/completion/completion_daemon.py.html#35>`_
+
+- `__completion_daemon_instance [at ln:34] </listings/ninja_ide/tools/completion/completion_daemon.py.html#34>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `CompletionDaemon() [at ln:39] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-39>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def CompletionDaemon():
+
+
+No description.
+
+
+----
+
+*Function:* `add_project_folder(project_path) [at ln:359] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-359>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_project_folder(project_path):
+
+
+No description.
+
+
+----
+
+*Function:* `shutdown_daemon() [at ln:352] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-352>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def shutdown_daemon():
+
+
+No description.
+
+
+----
+
+
+*Class:* `__CompletionDaemon(Thread) </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-47>`_
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class __CompletionDaemon(Thread):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_relations [at ln:54] </listings/ninja_ide/tools/completion/completion_daemon.py.html#54>`_
+
+- `analyzer [at ln:51] </listings/ninja_ide/tools/completion/completion_daemon.py.html#51>`_
+
+- `daemon [at ln:60] </listings/ninja_ide/tools/completion/completion_daemon.py.html#60>`_
+
+- `keep_alive [at ln:160] </listings/ninja_ide/tools/completion/completion_daemon.py.html#160>`_
+
+- `lock [at ln:57] </listings/ninja_ide/tools/completion/completion_daemon.py.html#57>`_
+
+- `modules [at ln:52] </listings/ninja_ide/tools/completion/completion_daemon.py.html#52>`_
+
+- `projects_modules [at ln:53] </listings/ninja_ide/tools/completion/completion_daemon.py.html#53>`_
+
+- `queue_receive [at ln:58] </listings/ninja_ide/tools/completion/completion_daemon.py.html#58>`_
+
+- `queue_send [at ln:59] </listings/ninja_ide/tools/completion/completion_daemon.py.html#59>`_
+
+- `reference_counter [at ln:55] </listings/ninja_ide/tools/completion/completion_daemon.py.html#55>`_
+
+
+*Function:* `__init__() [at ln:49] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-49>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `_analyze_file(filename) [at ln:106] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-106>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _analyze_file(filename):
+
+
+No description.
+
+
+----
+
+*Function:* `_resolve_with_other_modules(packages) [at ln:80] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-80>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _resolve_with_other_modules(packages):
+
+
+No description.
+
+
+----
+
+*Function:* `_shutdown_process() [at ln:154] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-154>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _shutdown_process():
+
+
+No description.
+
+
+----
+
+*Function:* `force_stop() [at ln:159] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-159>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def force_stop():
+
+
+No description.
+
+
+----
+
+*Function:* `get_module(path_id) [at ln:151] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-151>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_module(path_id):
+
+
+No description.
+
+
+----
+
+*Function:* `inspect_module(path_id, module, recursive=True) [at ln:145] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-145>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def inspect_module(path_id, module, recursive=True):
+
+
+No description.
+
+
+----
+
+*Function:* `process_path() [at ln:132] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-132>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def process_path():
+
+
+No description.
+
+
+----
+
+*Function:* `run() [at ln:63] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-63>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run():
+
+
+No description.
+
+
+----
+
+*Function:* `unload_module(path_id) [at ln:119] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-119>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def unload_module(path_id):
+
+
+No description.
+
+
+----
+
+*Class:* `_DaemonProcess(Process) </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-168>`_
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class _DaemonProcess(Process):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `iteration [at ln:174] </listings/ninja_ide/tools/completion/completion_daemon.py.html#174>`_
+
+- `packages [at ln:175] </listings/ninja_ide/tools/completion/completion_daemon.py.html#175>`_
+
+- `queue_receive [at ln:172] </listings/ninja_ide/tools/completion/completion_daemon.py.html#172>`_
+
+- `queue_send [at ln:173] </listings/ninja_ide/tools/completion/completion_daemon.py.html#173>`_
+
+
+*Function:* `__init__(queue_receive, queue_send) [at ln:170] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-170>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(queue_receive, queue_send):
+
+
+No description.
+
+
+----
+
+*Function:* `_get_scope(structure, scope) [at ln:346] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-346>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _get_scope(structure, scope):
+
+
+No description.
+
+
+----
+
+*Function:* `_resolve_attributes(structure, module) [at ln:253] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-253>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _resolve_attributes(structure, module):
+
+
+No description.
+
+
+----
+
+*Function:* `_resolve_functions(structure, module) [at ln:239] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-239>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _resolve_functions(structure, module):
+
+
+No description.
+
+
+----
+
+*Function:* `_resolve_inheritance(clazz, module) [at ln:216] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-216>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _resolve_inheritance(clazz, module):
+
+
+No description.
+
+
+----
+
+*Function:* `_resolve_module(module) [at ln:207] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-207>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _resolve_module(module):
+
+
+No description.
+
+
+----
+
+*Function:* `_resolve_returns(structure, module) [at ln:248] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-248>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _resolve_returns(structure, module):
+
+
+No description.
+
+
+----
+
+*Function:* `_resolve_types(types, module, structure=None, split_by=str) [at ln:260] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-260>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _resolve_types(types, module, structure=None, split_by=str):
+
+
+No description.
+
+
+----
+
+*Function:* `_resolve_with_imports(types, module, splitby) [at ln:284] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-284>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _resolve_with_imports(types, module, splitby):
+
+
+No description.
+
+
+----
+
+*Function:* `_resolve_with_linked_modules(types, module, structure) [at ln:269] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-269>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _resolve_with_linked_modules(types, module, structure):
+
+
+No description.
+
+
+----
+
+*Function:* `_resolve_with_local_names(types, module, splitby) [at ln:302] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-302>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _resolve_with_local_names(types, module, splitby):
+
+
+No description.
+
+
+----
+
+*Function:* `_resolve_with_local_vars(types, module, splitby, structure=None) [at ln:313] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-313>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _resolve_with_local_vars(types, module, splitby, structure=None):
+
+
+No description.
+
+
+----
+
+*Function:* `run() [at ln:177] </listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-177>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run():
+
+
+No description.
+
+
+
+

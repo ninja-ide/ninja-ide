@@ -1,0 +1,53 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: core
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `core.py </listings/ninja_ide/core/core.py.html>`_ API
+==================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `signal </listings/ninja_ide/core/core.py.html#21>`_
+
+- `sys </listings/ninja_ide/core/core.py.html#20>`_
+
+- `PyQt4.QtGui.QApplication </listings/ninja_ide/core/core.py.html#23>`_
+
+- `__future__.absolute_import </listings/ninja_ide/core/core.py.html#18>`_
+
+- `ninja_ide.core.cliparser </listings/ninja_ide/core/core.py.html#27>`_
+
+- `ninja_ide.resources </listings/ninja_ide/core/core.py.html#25>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/core/core.py.html#26>`_
+
+
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `run_ninja() [at ln:30] </listings/ninja_ide/core/core.py.html#listingsninja_idecorecorepy-30>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run_ninja():
+
+| First obtain the execution args and create the resources folder.
+
+
+
+

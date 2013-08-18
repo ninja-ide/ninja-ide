@@ -1,0 +1,108 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: completer
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `completer.py </listings/ninja_ide/tools/completion/completer.py.html>`_ API
+========================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `sys </listings/ninja_ide/tools/completion/completer.py.html#21>`_
+
+- `types </listings/ninja_ide/tools/completion/completer.py.html#22>`_
+
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/tools/completion/completer.py.html#28>`_
+
+- `__future__.absolute_import </listings/ninja_ide/tools/completion/completer.py.html#19>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `_HELPOUT [at ln:32] </listings/ninja_ide/tools/completion/completer.py.html#32>`_
+
+- `_STDOUT [at ln:33] </listings/ninja_ide/tools/completion/completer.py.html#33>`_
+
+- `logger [at ln:30] </listings/ninja_ide/tools/completion/completer.py.html#30>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `_find_constructor(class_ob) [at ln:157] </listings/ninja_ide/tools/completion/completer.py.html#listingsninja_idetoolscompletioncompleterpy-157>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _find_constructor(class_ob):
+
+
+No description.
+
+
+----
+
+*Function:* `_import_modules(imports, dglobals) [at ln:103] </listings/ninja_ide/tools/completion/completer.py.html#listingsninja_idetoolscompletioncompleterpy-103>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _import_modules(imports, dglobals):
+
+| If given, execute import statements
+
+
+----
+
+*Function:* `_load_symbol(s, dglobals, dlocals) [at ln:77] </listings/ninja_ide/tools/completion/completer.py.html#listingsninja_idetoolscompletioncompleterpy-77>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _load_symbol(s, dglobals, dlocals):
+
+
+No description.
+
+
+----
+
+*Function:* `get_all_completions(s, imports=None) [at ln:115] </listings/ninja_ide/tools/completion/completer.py.html#listingsninja_idetoolscompletioncompleterpy-115>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_all_completions(s, imports=None):
+
+| Return contextual completion of s (string of >= zero chars)
+
+
+----
+
+*Function:* `get_completions_per_type(object_dir) [at ln:36] </listings/ninja_ide/tools/completion/completer.py.html#listingsninja_idetoolscompletioncompleterpy-36>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_completions_per_type(object_dir):
+
+| Return info about function parameters
+
+
+
+

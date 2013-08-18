@@ -1,0 +1,556 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="NINJA-IDE">
+    <title>NINJA-IDE | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+
+
+
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+    <li>
+    <a href="highlighter.txt" id="sourcelink">Source</a>
+    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+    <h1>NINJA-IDE</h1>
+    <div class="contents alert alert-info pull-top topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="highlighter.html#module-highlighter-py-api" id="id3"><em>Module:</em> highlighter.py API</a><ul>
+<li><a class="reference internal" href="highlighter.html#imports" id="id4"><em>Imports:</em></a></li>
+<li><a class="reference internal" href="highlighter.html#global-attributes" id="id5"><em>Global Attributes:</em></a></li>
+<li><a class="reference internal" href="highlighter.html#global-functions" id="id6"><em>Global Functions:</em></a><ul>
+<li><a class="reference internal" href="highlighter.html#function-format-color-style-str-at-ln-37" id="id7"><em>Function:</em> format(color, style=str) [at ln:37]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-restyle-scheme-at-ln-71" id="id8"><em>Function:</em> restyle(scheme) [at ln:71]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="highlighter.html#class-highlighter-qsyntaxhighlighter" id="id9"><em>Class:</em> Highlighter(QSyntaxHighlighter)</a><ul>
+<li><a class="reference internal" href="highlighter.html#attributes" id="id10"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="highlighter.html#function-highlight-lint-char-format-user-data-at-ln-243" id="id11"><em>Function:</em> __highlight_lint(char_format, user_data) [at ln:243]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-highlight-migration-char-format-user-data-at-ln-254" id="id12"><em>Function:</em> __highlight_migration(char_format, user_data) [at ln:254]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-highlight-pep8-char-format-user-data-at-ln-232" id="id13"><em>Function:</em> __highlight_pep8(char_format, user_data) [at ln:232]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-init-document-lang-none-scheme-none-errors-none-pep8-none-migration-none-at-ln-89" id="id14"><em>Function:</em> __init__(document, lang=None, scheme=None, errors=None, pep8=None, migration=None) [at ln:89]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-execute-threaded-highlight-styles-none-at-ln-294" id="id15"><em>Function:</em> _execute_threaded_highlight(styles=None) [at ln:294]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-get-errors-lines-at-ln-453" id="id16"><em>Function:</em> _get_errors_lines() [at ln:453]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-rehighlight-lines-lines-at-ln-445" id="id17"><em>Function:</em> _rehighlight_lines(lines) [at ln:445]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-apply-highlight-lang-scheme-none-syntax-none-at-ln-107" id="id18"><em>Function:</em> apply_highlight(lang, scheme=None, syntax=None) [at ln:107]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-async-highlight-at-ln-282" id="id19"><em>Function:</em> async_highlight() [at ln:282]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-comment-multiline-text-delimiter-end-delimiter-start-style-at-ln-526" id="id20"><em>Function:</em> comment_multiline(text, delimiter_end, delimiter_start, style) [at ln:526]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-highlightblock-text-at-ln-265" id="id21"><em>Function:</em> highlightBlock(text) [at ln:265]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-match-multiline-text-delimiter-in-state-style-hls-list-highlight-errors-object-user-data-none-at-ln-474" id="id22"><em>Function:</em> match_multiline(text, delimiter, in_state, style, hls=list, highlight_errors=object, user_data=None) [at ln:474]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-open-highlight-text-at-ln-274" id="id23"><em>Function:</em> open_highlight(text) [at ln:274]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-realtime-highlight-text-at-ln-360" id="id24"><em>Function:</em> realtime_highlight(text) [at ln:360]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-rehighlight-lines-lines-errors-true-at-ln-464" id="id25"><em>Function:</em> rehighlight_lines(lines, errors=True) [at ln:464]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-sanitize-word-at-ln-103" id="id26"><em>Function:</em> sanitize(word) [at ln:103]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-set-open-visible-area-is-line-position-at-ln-269" id="id27"><em>Function:</em> set_open_visible_area(is_line, position) [at ln:269]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-set-selected-word-word-partial-true-at-ln-205" id="id28"><em>Function:</em> set_selected_word(word, partial=True) [at ln:205]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-threaded-highlight-text-at-ln-308" id="id29"><em>Function:</em> threaded_highlight(text) [at ln:308]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="highlighter.html#class-highlightparserthread-qthread" id="id30"><em>Class:</em> HighlightParserThread(QThread)</a><ul>
+<li><a class="reference internal" href="highlighter.html#id1" id="id31"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="highlighter.html#function-init-highlighter-at-ln-549" id="id32"><em>Function:</em> __init__(highlighter) [at ln:549]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-run-at-ln-553" id="id33"><em>Function:</em> run() [at ln:553]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="highlighter.html#class-empyhighlighter-qsyntaxhighlighter" id="id34"><em>Class:</em> EmpyHighlighter(QSyntaxHighlighter)</a><ul>
+<li><a class="reference internal" href="highlighter.html#id2" id="id35"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="highlighter.html#function-init-document-at-ln-590" id="id36"><em>Function:</em> __init__(document) [at ln:590]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-apply-highlight-args-kwargs-at-ln-594" id="id37"><em>Function:</em> apply_highlight(*args, **kwargs) [at ln:594]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-async-highlight-args-kwargs-at-ln-609" id="id38"><em>Function:</em> async_highlight(*args, **kwargs) [at ln:609]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-highlightblock-text-at-ln-612" id="id39"><em>Function:</em> highlightBlock(text) [at ln:612]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-open-highlight-args-kwargs-at-ln-606" id="id40"><em>Function:</em> open_highlight(*args, **kwargs) [at ln:606]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-realtime-highlight-args-kwargs-at-ln-600" id="id41"><em>Function:</em> realtime_highlight(*args, **kwargs) [at ln:600]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-rehighlight-lines-lines-errors-true-at-ln-615" id="id42"><em>Function:</em> rehighlight_lines(lines, errors=True) [at ln:615]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-set-open-visible-area-args-kwargs-at-ln-603" id="id43"><em>Function:</em> set_open_visible_area(*args, **kwargs) [at ln:603]</a></li>
+<li><a class="reference internal" href="highlighter.html#function-set-selected-word-args-kwargs-at-ln-597" id="id44"><em>Function:</em> set_selected_word(*args, **kwargs) [at ln:597]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="module-highlighter-py-api">
+<h2><em>Module:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html">highlighter.py</a> API</h2>
+<p>No description.</p>
+<div class="section" id="imports">
+<h3><a class="toc-backref" href="highlighter.html#id4"><em>Imports:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#22">re</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#24">PyQt4.QtGui.QColor</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#26">PyQt4.QtGui.QFont</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#29">PyQt4.QtCore.QRegExp</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#27">PyQt4.QtGui.QSyntaxHighlighter</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#25">PyQt4.QtGui.QTextCharFormat</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#28">PyQt4.QtCore.QThread</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#30">PyQt4.QtCore.SIGNAL</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#19">__future__.absolute_import</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#32">ninja_ide.resources</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#33">ninja_ide.core.settings</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#34">ninja_ide.gui.editor.syntax_highlighter</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#20">__future__.unicode_literals</a></li>
+</ul>
+</div>
+<div class="section" id="global-attributes">
+<h3><a class="toc-backref" href="highlighter.html#id5"><em>Global Attributes:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#55">SDEFAULTS [at ln:55]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#54">STYLES [at ln:54]</a></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="global-functions">
+<h3><a class="toc-backref" href="highlighter.html#id6"><em>Global Functions:</em></a></h3>
+<div class="section" id="function-format-color-style-str-at-ln-37">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-37">format(color, style=str) [at ln:37]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="nb">str</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Return a QTextCharFormat with the given attributes.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-restyle-scheme-at-ln-71">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-71">restyle(scheme) [at ln:71]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">restyle</span><span class="p">(</span><span class="n">scheme</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Reset the style for each highlighting item when the scheme change.</div>
+</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-highlighter-qsyntaxhighlighter">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-83">Highlighter(QSyntaxHighlighter)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">Highlighter</span><span class="p">(</span><span class="n">QSyntaxHighlighter</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Syntax Highlighter for NINJA-IDE.</div>
+</div>
+<div class="section" id="attributes">
+<h4><a class="toc-backref" href="highlighter.html#id10"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#229">_old_search [at ln:229]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#99">_styles [at ln:99]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#87">braces [at ln:87]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#256">error [at ln:256]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#93">errors [at ln:93]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#305">highlight_function [at ln:305]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#95">migration [at ln:95]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#94">pep8 [at ln:94]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#199">rules [at ln:199]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#97">selected_word_lines [at ln:97]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#201">selected_word_pattern [at ln:201]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#288">thread_highlight [at ln:288]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#187">tri_double [at ln:187]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#186">tri_single [at ln:186]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#98">visible_limits [at ln:98]</a></li>
+</ul>
+</div>
+<div class="section" id="function-highlight-lint-char-format-user-data-at-ln-243">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-243">__highlight_lint(char_format, user_data) [at ln:243]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__highlight_lint</span><span class="p">(</span><span class="n">char_format</span><span class="p">,</span> <span class="n">user_data</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Highlight the lines with lint errors.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-highlight-migration-char-format-user-data-at-ln-254">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-254">__highlight_migration(char_format, user_data) [at ln:254]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__highlight_migration</span><span class="p">(</span><span class="n">char_format</span><span class="p">,</span> <span class="n">user_data</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Highlight the lines with lint errors.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-highlight-pep8-char-format-user-data-at-ln-232">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-232">__highlight_pep8(char_format, user_data) [at ln:232]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__highlight_pep8</span><span class="p">(</span><span class="n">char_format</span><span class="p">,</span> <span class="n">user_data</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Highlight the lines with pep8 errors.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-init-document-lang-none-scheme-none-errors-none-pep8-none-migration-none-at-ln-89">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-89">__init__(document, lang=None, scheme=None, errors=None, pep8=None, migration=None) [at ln:89]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">scheme</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">pep8</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">migration</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-execute-threaded-highlight-styles-none-at-ln-294">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-294">_execute_threaded_highlight(styles=None) [at ln:294]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_execute_threaded_highlight</span><span class="p">(</span><span class="n">styles</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Function called with the info collected when the thread ends.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-errors-lines-at-ln-453">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-453">_get_errors_lines() [at ln:453]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_get_errors_lines</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Return the number of lines that contains errors to highlight.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-rehighlight-lines-lines-at-ln-445">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-445">_rehighlight_lines(lines) [at ln:445]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_rehighlight_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">If the document is valid, highlight the list of lines received.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-apply-highlight-lang-scheme-none-syntax-none-at-ln-107">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-107">apply_highlight(lang, scheme=None, syntax=None) [at ln:107]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">apply_highlight</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">scheme</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">syntax</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Set the rules that will decide what to highlight and how.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-async-highlight-at-ln-282">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-282">async_highlight() [at ln:282]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">async_highlight</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Execute a thread to collect the info of the things to highlight.</div>
+<div class="line"><br></div>
+<div class="line">The thread will collect the data from where to where to highlight,</div>
+<div class="line">and which kind of highlight to use for those sections, and return</div>
+<div class="line">that info to the main thread after it process all the file.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-comment-multiline-text-delimiter-end-delimiter-start-style-at-ln-526">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-526">comment_multiline(text, delimiter_end, delimiter_start, style) [at ln:526]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">comment_multiline</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">delimiter_end</span><span class="p">,</span> <span class="n">delimiter_start</span><span class="p">,</span> <span class="n">style</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Process the beggining and end of a multiline comment.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-highlightblock-text-at-ln-265">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-265">highlightBlock(text) [at ln:265]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">highlightBlock</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Apply syntax highlighting to the given block of text.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-match-multiline-text-delimiter-in-state-style-hls-list-highlight-errors-object-user-data-none-at-ln-474">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-474">match_multiline(text, delimiter, in_state, style, hls=list, highlight_errors=object, user_data=None) [at ln:474]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">match_multiline</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">delimiter</span><span class="p">,</span> <span class="n">in_state</span><span class="p">,</span> <span class="n">style</span><span class="p">,</span> <span class="n">hls</span><span class="o">=</span><span class="nb">list</span><span class="p">,</span> <span class="n">highlight_errors</span><span class="o">=</span><span class="nb">object</span><span class="p">,</span> <span class="n">user_data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Do highlighting of multi-line strings. ``delimiter`` should be a</div>
+<div class="line">``QRegExp`` for triple-single-quotes or triple-double-quotes, and</div>
+<div class="line">``in_state`` should be a unique integer to represent the corresponding</div>
+<div class="line">state changes when inside those strings. Returns True if we're still</div>
+<div class="line">inside a multi-line string when this function is finished.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-open-highlight-text-at-ln-274">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-274">open_highlight(text) [at ln:274]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">open_highlight</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Only highlight the lines inside the accepted range.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-realtime-highlight-text-at-ln-360">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-360">realtime_highlight(text) [at ln:360]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">realtime_highlight</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Highlight each line while it is being edited.</div>
+<div class="line"><br></div>
+<div class="line">This function apply the proper highlight to the line being edited</div>
+<div class="line">by the user, this is a really fast process for each line once you</div>
+<div class="line">already have the document highlighted, but slow to do it the first</div>
+<div class="line">time to highlight all the lines together.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-rehighlight-lines-lines-errors-true-at-ln-464">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-464">rehighlight_lines(lines, errors=True) [at ln:464]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">rehighlight_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Rehighlight the lines for errors or selected words.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-sanitize-word-at-ln-103">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-103">sanitize(word) [at ln:103]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">sanitize</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Sanitize the string to avoid problems with the regex.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-set-open-visible-area-is-line-position-at-ln-269">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-269">set_open_visible_area(is_line, position) [at ln:269]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">set_open_visible_area</span><span class="p">(</span><span class="n">is_line</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Set the range of lines that should be highlighted on open.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-set-selected-word-word-partial-true-at-ln-205">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-205">set_selected_word(word, partial=True) [at ln:205]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">set_selected_word</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">partial</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Set the word to highlight.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-threaded-highlight-text-at-ln-308">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-308">threaded_highlight(text) [at ln:308]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">threaded_highlight</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Highlight each line using the info collected by the thread.</div>
+<div class="line"><br></div>
+<div class="line">This function doesn't need to execute the regular expressions to see</div>
+<div class="line">where the highlighting starts and end for each rule, it just take</div>
+<div class="line">the start and end point, and the proper highlighting style from the</div>
+<div class="line">info returned from the thread and applied that to the document.</div>
+</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-highlightparserthread-qthread">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-546">HighlightParserThread(QThread)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">HighlightParserThread</span><span class="p">(</span><span class="n">QThread</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Thread that collect the highlighting info to the current file.</div>
+</div>
+<div class="section" id="id1">
+<h4><a class="toc-backref" href="highlighter.html#id31"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#551">_highlighter [at ln:551]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-highlighter-at-ln-549">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-549">__init__(highlighter) [at ln:549]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">highlighter</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-run-at-ln-553">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-553">run() [at ln:553]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Execute this rules in another thread to avoid blocking the ui.</div>
+</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-empyhighlighter-qsyntaxhighlighter">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-587">EmpyHighlighter(QSyntaxHighlighter)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">EmpyHighlighter</span><span class="p">(</span><span class="n">QSyntaxHighlighter</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Dummy highlighter to be used when the current file is not recognized.</div>
+</div>
+<div class="section" id="id2">
+<h4><a class="toc-backref" href="highlighter.html#id35"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#592">highlight_function [at ln:592]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-document-at-ln-590">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-590">__init__(document) [at ln:590]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">document</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-apply-highlight-args-kwargs-at-ln-594">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-594">apply_highlight(*args, **kwargs) [at ln:594]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">apply_highlight</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-async-highlight-args-kwargs-at-ln-609">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-609">async_highlight(*args, **kwargs) [at ln:609]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">async_highlight</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-highlightblock-text-at-ln-612">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-612">highlightBlock(text) [at ln:612]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">highlightBlock</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-open-highlight-args-kwargs-at-ln-606">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-606">open_highlight(*args, **kwargs) [at ln:606]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">open_highlight</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-realtime-highlight-args-kwargs-at-ln-600">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-600">realtime_highlight(*args, **kwargs) [at ln:600]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">realtime_highlight</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-rehighlight-lines-lines-errors-true-at-ln-615">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-615">rehighlight_lines(lines, errors=True) [at ln:615]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">rehighlight_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-set-open-visible-area-args-kwargs-at-ln-603">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-603">set_open_visible_area(*args, **kwargs) [at ln:603]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">set_open_visible_area</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-set-selected-word-args-kwargs-at-ln-597">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/highlighter.py.html#listingsninja_ideguieditorhighlighterpy-597">set_selected_word(*args, **kwargs) [at ln:597]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">set_selected_word</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+</div>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

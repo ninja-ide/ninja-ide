@@ -1,0 +1,825 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="wizard_new_project.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>wizard_new_project.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../../">/listings</a>
+        </li><li><a href="../../">/ninja_ide</a>
+        </li><li><a href="../">/gui</a>
+        </li><li><a href=".">/dialogs</a>
+        </li><li><a href="#">/wizard_new_project.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-1">  1</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-2">  2</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-3">  3</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-4">  4</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-5">  5</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-6">  6</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-7">  7</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-8">  8</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-9">  9</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-10"> 10</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-11"> 11</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-12"> 12</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-13"> 13</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-14"> 14</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-15"> 15</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-16"> 16</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-17"> 17</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-18"> 18</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-19"> 19</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-20"> 20</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-21"> 21</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-22"> 22</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-23"> 23</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-24"> 24</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-25"> 25</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-26"> 26</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-27"> 27</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-28"> 28</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-29"> 29</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-30"> 30</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-31"> 31</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-32"> 32</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-33"> 33</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-34"> 34</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-35"> 35</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-36"> 36</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-37"> 37</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-38"> 38</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-39"> 39</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-40"> 40</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-41"> 41</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-42"> 42</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-43"> 43</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-44"> 44</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-45"> 45</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-46"> 46</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-47"> 47</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-48"> 48</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-49"> 49</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-50"> 50</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-51"> 51</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-52"> 52</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-53"> 53</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-54"> 54</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-55"> 55</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-56"> 56</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-57"> 57</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-58"> 58</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-59"> 59</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-60"> 60</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-61"> 61</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-62"> 62</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-63"> 63</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-64"> 64</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-65"> 65</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-66"> 66</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-67"> 67</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-68"> 68</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-69"> 69</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-70"> 70</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-71"> 71</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-72"> 72</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-73"> 73</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-74"> 74</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-75"> 75</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-76"> 76</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-77"> 77</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-78"> 78</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-79"> 79</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-80"> 80</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-81"> 81</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-82"> 82</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-83"> 83</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-84"> 84</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-85"> 85</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-86"> 86</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-87"> 87</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-88"> 88</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-89"> 89</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-90"> 90</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-91"> 91</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-92"> 92</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-93"> 93</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-94"> 94</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-95"> 95</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-96"> 96</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-97"> 97</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-98"> 98</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-99"> 99</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-100">100</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-101">101</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-102">102</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-103">103</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-104">104</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-105">105</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-106">106</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-107">107</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-108">108</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-109">109</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-110">110</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-111">111</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-112">112</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-113">113</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-114">114</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-115">115</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-116">116</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-117">117</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-118">118</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-119">119</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-120">120</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-121">121</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-122">122</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-123">123</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-124">124</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-125">125</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-126">126</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-127">127</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-128">128</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-129">129</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-130">130</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-131">131</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-132">132</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-133">133</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-134">134</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-135">135</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-136">136</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-137">137</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-138">138</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-139">139</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-140">140</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-141">141</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-142">142</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-143">143</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-144">144</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-145">145</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-146">146</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-147">147</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-148">148</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-149">149</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-150">150</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-151">151</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-152">152</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-153">153</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-154">154</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-155">155</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-156">156</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-157">157</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-158">158</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-159">159</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-160">160</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-161">161</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-162">162</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-163">163</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-164">164</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-165">165</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-166">166</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-167">167</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-168">168</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-169">169</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-170">170</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-171">171</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-172">172</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-173">173</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-174">174</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-175">175</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-176">176</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-177">177</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-178">178</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-179">179</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-180">180</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-181">181</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-182">182</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-183">183</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-184">184</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-185">185</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-186">186</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-187">187</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-188">188</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-189">189</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-190">190</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-191">191</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-192">192</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-193">193</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-194">194</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-195">195</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-196">196</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-197">197</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-198">198</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-199">199</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-200">200</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-201">201</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-202">202</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-203">203</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-204">204</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-205">205</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-206">206</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-207">207</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-208">208</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-209">209</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-210">210</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-211">211</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-212">212</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-213">213</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-214">214</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-215">215</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-216">216</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-217">217</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-218">218</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-219">219</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-220">220</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-221">221</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-222">222</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-223">223</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-224">224</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-225">225</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-226">226</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-227">227</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-228">228</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-229">229</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-230">230</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-231">231</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-232">232</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-233">233</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-234">234</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-235">235</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-236">236</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-237">237</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-238">238</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-239">239</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-240">240</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-241">241</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-242">242</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-243">243</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-244">244</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-245">245</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-246">246</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-247">247</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-248">248</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-249">249</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-250">250</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-251">251</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-252">252</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-253">253</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-254">254</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-255">255</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-256">256</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-257">257</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-258">258</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-259">259</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-260">260</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-261">261</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-262">262</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-263">263</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-264">264</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-265">265</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-266">266</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-267">267</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-268">268</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-269">269</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-270">270</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-271">271</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-272">272</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-273">273</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-274">274</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-275">275</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-276">276</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-277">277</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-278">278</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-279">279</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-280">280</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-281">281</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-282">282</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-283">283</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-284">284</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-285">285</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-286">286</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-287">287</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-288">288</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-289">289</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-290">290</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-291">291</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-292">292</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-293">293</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-294">294</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-295">295</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-296">296</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-297">297</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-298">298</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-299">299</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-300">300</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-301">301</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-302">302</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-303">303</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-304">304</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-305">305</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-306">306</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-307">307</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-308">308</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-309">309</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-310">310</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-311">311</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-312">312</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-313">313</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-314">314</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-315">315</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-316">316</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-317">317</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-318">318</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-319">319</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-320">320</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-321">321</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-322">322</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-323">323</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-324">324</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-325">325</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-326">326</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-327">327</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-328">328</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-329">329</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-330">330</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-331">331</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-332">332</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-333">333</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-334">334</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-335">335</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-336">336</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-337">337</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-338">338</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-339">339</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-340">340</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-341">341</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-342">342</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-343">343</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-344">344</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-345">345</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-346">346</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-347">347</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-348">348</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-349">349</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-350">350</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-351">351</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-352">352</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-353">353</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-354">354</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-355">355</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-356">356</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-357">357</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-358">358</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-359">359</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-360">360</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-361">361</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-362">362</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-363">363</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-364">364</a>
+<a href="wizard_new_project.py.html#listingsninja_ideguidialogswizard_new_projectpy-365">365</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_ideguidialogswizard_new_projectpy-1"></a><span class="c"># -*- coding: utf-8 -*-</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-2"></a><span class="c">#</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-3"></a><span class="c"># This file is part of NINJA-IDE (http://ninja-ide.org).</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-4"></a><span class="c">#</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-5"></a><span class="c"># NINJA-IDE is free software; you can redistribute it and/or modify</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-6"></a><span class="c"># it under the terms of the GNU General Public License as published by</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-7"></a><span class="c"># the Free Software Foundation; either version 3 of the License, or</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-8"></a><span class="c"># any later version.</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-9"></a><span class="c">#</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-10"></a><span class="c"># NINJA-IDE is distributed in the hope that it will be useful,</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-11"></a><span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-12"></a><span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-13"></a><span class="c"># GNU General Public License for more details.</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-14"></a><span class="c">#</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-15"></a><span class="c"># You should have received a copy of the GNU General Public License</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-16"></a><span class="c"># along with NINJA-IDE; If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-17"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-18"></a><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-19"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-20"></a><span class="kn">import</span> <span class="nn">os</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-21"></a><span class="kn">import</span> <span class="nn">sys</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-22"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-23"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QWizard</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-24"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QWizardPage</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-25"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QLabel</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-26"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QPushButton</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-27"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QComboBox</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-28"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QLineEdit</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-29"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QPlainTextEdit</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-30"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QGridLayout</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-31"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QVBoxLayout</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-32"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QHBoxLayout</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-33"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QMessageBox</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-34"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QFileDialog</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-35"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QListWidget</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-36"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QCompleter</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-37"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QDirModel</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-38"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QPixmap</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-39"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-40"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">SIGNAL</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-41"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-42"></a><span class="kn">from</span> <span class="nn">ninja_ide</span> <span class="kn">import</span> <span class="n">resources</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-43"></a><span class="kn">from</span> <span class="nn">ninja_ide.core</span> <span class="kn">import</span> <span class="n">settings</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-44"></a><span class="kn">from</span> <span class="nn">ninja_ide.core</span> <span class="kn">import</span> <span class="n">plugin_interfaces</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-45"></a><span class="kn">from</span> <span class="nn">ninja_ide.core.file_handling</span> <span class="kn">import</span> <span class="n">file_manager</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-46"></a><span class="kn">from</span> <span class="nn">ninja_ide.tools</span> <span class="kn">import</span> <span class="n">json_manager</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-47"></a><span class="kn">from</span> <span class="nn">ninja_ide.tools.logger</span> <span class="kn">import</span> <span class="n">NinjaLogger</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-48"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-49"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-50"></a><span class="n">logger</span> <span class="o">=</span> <span class="n">NinjaLogger</span><span class="p">(</span><span class="s">'ninja_ide.gui.dialogs.wizard_new_project'</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-51"></a><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">"loaded"</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-52"></a><span class="n">DEBUG</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">debug</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-53"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-54"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-55"></a><span class="c">###############################################################################</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-56"></a><span class="c"># Wizard handler and Python Project handler</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-57"></a><span class="c">###############################################################################</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-58"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-59"></a><span class="k">class</span> <span class="nc">WizardNewProject</span><span class="p">(</span><span class="n">QWizard</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-60"></a>    <span class="sd">"""</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-61"></a><span class="sd">    Wizard to create a new project (of any kind), it implements the base</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-62"></a><span class="sd">    behavior. Also, it set two special projects type handler</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-63"></a><span class="sd">    (PythonProjectHandler, ImportFromSourcesProjectHandler)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-64"></a><span class="sd">    """</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-65"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-66"></a>        <span class="n">QWizard</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-67"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">__explorer</span> <span class="o">=</span> <span class="n">parent</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-68"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"NINJA - New Project Wizard"</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-69"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setPixmap</span><span class="p">(</span><span class="n">QWizard</span><span class="o">.</span><span class="n">LogoPixmap</span><span class="p">,</span> <span class="n">QPixmap</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">IMAGES</span><span class="p">[</span><span class="s">'icon'</span><span class="p">]))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-70"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-71"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">option</span> <span class="o">=</span> <span class="s">'Python'</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-72"></a>        <span class="c">#Add a project type handler for Python</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-73"></a>        <span class="n">settings</span><span class="o">.</span><span class="n">set_project_type_handler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">option</span><span class="p">,</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-74"></a>            <span class="n">PythonProjectHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__explorer</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-75"></a>        <span class="c">#Add a project type handler for Import from existing sources</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-76"></a>        <span class="n">settings</span><span class="o">.</span><span class="n">set_project_type_handler</span><span class="p">(</span><span class="s">'Import from sources'</span><span class="p">,</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-77"></a>            <span class="n">ImportFromSourcesProjectHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__explorer</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-78"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-79"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">projectTypePage</span> <span class="o">=</span> <span class="n">PageProjectType</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-80"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">addPage</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">projectTypePage</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-81"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">addPage</span><span class="p">(</span><span class="n">PageProjectProperties</span><span class="p">())</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-82"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-83"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setButtonLayout</span><span class="p">([</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-84"></a>            <span class="n">QWizard</span><span class="o">.</span><span class="n">BackButton</span><span class="p">,</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-85"></a>            <span class="n">QWizard</span><span class="o">.</span><span class="n">Stretch</span><span class="p">,</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-86"></a>            <span class="n">QWizard</span><span class="o">.</span><span class="n">NextButton</span><span class="p">,</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-87"></a>            <span class="n">QWizard</span><span class="o">.</span><span class="n">FinishButton</span><span class="p">])</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-88"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-89"></a>    <span class="k">def</span> <span class="nf">add_project_pages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option</span><span class="o">=</span><span class="s">'Python'</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-90"></a>        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">"Add project pages"</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-91"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">option</span> <span class="o">=</span> <span class="n">option</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-92"></a>        <span class="n">pages</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">get_project_type_handler</span><span class="p">(</span><span class="n">option</span><span class="p">)</span><span class="o">.</span><span class="n">get_pages</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-93"></a>        <span class="n">listIds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pageIds</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-94"></a>        <span class="n">listIds</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">listIds</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-95"></a>        <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">pages</span><span class="p">:</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-96"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">addPage</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-97"></a>        <span class="c">#this page is always needed by a project!</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-98"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">addPage</span><span class="p">(</span><span class="n">PageProjectProperties</span><span class="p">())</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-99"></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">listIds</span><span class="p">:</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-100"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">removePage</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-101"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-102"></a>    <span class="k">def</span> <span class="nf">done</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-103"></a>        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">"Done"</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-104"></a>        <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-105"></a>            <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentPage</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-106"></a>            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">page</span><span class="p">)</span> <span class="o">==</span> <span class="n">PageProjectProperties</span><span class="p">:</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-107"></a>                <span class="n">venv</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">vtxtPlace</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-108"></a>                <span class="k">if</span> <span class="n">venv</span><span class="p">:</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-109"></a>                    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">'win32'</span><span class="p">:</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-110"></a>                        <span class="n">venv</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">venv</span><span class="p">,</span> <span class="s">'Scripts'</span><span class="p">,</span> <span class="s">'python.exe'</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-111"></a>                    <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-112"></a>                        <span class="n">venv</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">venv</span><span class="p">,</span> <span class="s">'bin'</span><span class="p">,</span> <span class="s">'python'</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-113"></a>                    <span class="c">#check if venv folder exists</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-114"></a>                    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">venv</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-115"></a>                        <span class="n">btnPressed</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-116"></a>                            <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Virtualenv Folder"</span><span class="p">),</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-117"></a>                            <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Folder don't exists or this is not a "</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-118"></a>                                <span class="s">"valid Folder.</span><span class="se">\n</span><span class="s"> If you want to set "</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-119"></a>                                <span class="s">"or modify, go to project properties"</span><span class="p">),</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-120"></a>                            <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Back"</span><span class="p">),</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-121"></a>                            <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Continue"</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-122"></a>                        <span class="k">if</span> <span class="n">btnPressed</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">NoButton</span><span class="p">:</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-123"></a>                            <span class="k">return</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-124"></a>                        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-125"></a>                            <span class="bp">self</span><span class="o">.</span><span class="n">currentPage</span><span class="p">()</span><span class="o">.</span><span class="n">vtxtPlace</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">""</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-126"></a>                <span class="n">page</span><span class="o">.</span><span class="n">vtxtPlace</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">venv</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-127"></a>            <span class="n">settings</span><span class="o">.</span><span class="n">get_project_type_handler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">option</span><span class="p">)</span>\
+<a name="listingsninja_ideguidialogswizard_new_projectpy-128"></a>                <span class="o">.</span><span class="n">on_wizard_finish</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-129"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">WizardNewProject</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">done</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-130"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-131"></a>    <span class="k">def</span> <span class="nf">_load_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-132"></a>        <span class="sd">"""</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-133"></a><span class="sd">        Open Project based on path into Explorer</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-134"></a><span class="sd">        """</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-135"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">__explorer</span><span class="o">.</span><span class="n">open_project_folder</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-136"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-137"></a>    <span class="k">def</span> <span class="nf">_load_project_with_extensions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">extensions</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-138"></a>        <span class="sd">"""Open Project based on path into Explorer with extensions"""</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-139"></a><span class="c">#        self._main._properties._treeProjects.load_project(</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-140"></a><span class="c">#            self._main.open_project_with_extensions(path), path)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-141"></a>        <span class="k">pass</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-142"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-143"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-144"></a><span class="c">###############################################################################</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-145"></a><span class="c"># Python Project Handler</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-146"></a><span class="c">###############################################################################</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-147"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-148"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-149"></a><span class="k">class</span> <span class="nc">PythonProjectHandler</span><span class="p">(</span><span class="n">plugin_interfaces</span><span class="o">.</span><span class="n">IProjectTypeHandler</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-150"></a>    <span class="sd">"""</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-151"></a><span class="sd">    Handler for Python projects</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-152"></a><span class="sd">    """</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-153"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">explorer</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-154"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">__explorer</span> <span class="o">=</span> <span class="n">explorer</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-155"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-156"></a>    <span class="k">def</span> <span class="nf">get_pages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-157"></a>        <span class="sd">"""</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-158"></a><span class="sd">        Get extra pages for new Python projects</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-159"></a><span class="sd">        """</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-160"></a>        <span class="k">return</span> <span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-161"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-162"></a>    <span class="k">def</span> <span class="nf">get_context_menus</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-163"></a>        <span class="sd">"""</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-164"></a><span class="sd">        Get a special menu for new Python projects</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-165"></a><span class="sd">        """</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-166"></a>        <span class="k">return</span> <span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-167"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-168"></a>    <span class="k">def</span> <span class="nf">on_wizard_finish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wizard</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-169"></a>        <span class="sd">"""</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-170"></a><span class="sd">        Create the ninja_porject (.nja file), create the main __init__.py</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-171"></a><span class="sd">        and open the project</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-172"></a><span class="sd">        """</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-173"></a>        <span class="n">ids</span> <span class="o">=</span> <span class="n">wizard</span><span class="o">.</span><span class="n">pageIds</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-174"></a>        <span class="n">page</span> <span class="o">=</span> <span class="n">wizard</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="n">ids</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-175"></a>        <span class="n">name</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">txtName</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-176"></a>        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">txtPlace</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span> <span class="n">name</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-177"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">:</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-178"></a>            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Incorrect Location"</span><span class="p">),</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-179"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"The project couldn</span><span class="se">\'</span><span class="s">t be create"</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-180"></a>            <span class="k">return</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-181"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-182"></a>            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-183"></a>        <span class="n">project</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-184"></a>        <span class="n">project</span><span class="p">[</span><span class="s">'name'</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-185"></a>        <span class="n">project</span><span class="p">[</span><span class="s">'description'</span><span class="p">]</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">txtDescription</span><span class="o">.</span><span class="n">toPlainText</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-186"></a>        <span class="n">project</span><span class="p">[</span><span class="s">'license'</span><span class="p">]</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">cboLicense</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-187"></a>        <span class="n">project</span><span class="p">[</span><span class="s">'venv'</span><span class="p">]</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">vtxtPlace</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-188"></a>        <span class="n">json_manager</span><span class="o">.</span><span class="n">create_ninja_project</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">project</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-189"></a>        <span class="k">try</span><span class="p">:</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-190"></a>            <span class="n">file_manager</span><span class="o">.</span><span class="n">create_init_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-191"></a>        <span class="k">except</span><span class="p">:</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-192"></a>            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">"The __init__ file already exists - Import Sources."</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-193"></a>        <span class="n">wizard</span><span class="o">.</span><span class="n">_load_project</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-194"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-195"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-196"></a><span class="c">###############################################################################</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-197"></a><span class="c"># Import project from existing sources</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-198"></a><span class="c">###############################################################################</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-199"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-200"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-201"></a><span class="k">class</span> <span class="nc">ImportFromSourcesProjectHandler</span><span class="p">(</span><span class="n">plugin_interfaces</span><span class="o">.</span><span class="n">IProjectTypeHandler</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-202"></a>    <span class="sd">"""</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-203"></a><span class="sd">    Handler for Import from existing sources project</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-204"></a><span class="sd">    """</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-205"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">explorer</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-206"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">__explorer</span> <span class="o">=</span> <span class="n">explorer</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-207"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-208"></a>    <span class="k">def</span> <span class="nf">get_pages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-209"></a>        <span class="sd">"""</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-210"></a><span class="sd">        Get extra pages for Import from sources projects</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-211"></a><span class="sd">        """</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-212"></a>        <span class="k">return</span> <span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-213"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-214"></a>    <span class="k">def</span> <span class="nf">get_context_menus</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-215"></a>        <span class="sd">"""</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-216"></a><span class="sd">        Get a special menu for Import from sources projects</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-217"></a><span class="sd">        """</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-218"></a>        <span class="k">return</span> <span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-219"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-220"></a>    <span class="k">def</span> <span class="nf">on_wizard_finish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wizard</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-221"></a>        <span class="sd">"""</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-222"></a><span class="sd">        Create the ninja_porject (.nja file) and open the project</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-223"></a><span class="sd">        """</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-224"></a>        <span class="n">ids</span> <span class="o">=</span> <span class="n">wizard</span><span class="o">.</span><span class="n">pageIds</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-225"></a>        <span class="n">page</span> <span class="o">=</span> <span class="n">wizard</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="n">ids</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-226"></a>        <span class="n">name</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">txtName</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-227"></a>        <span class="n">path</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">txtPlace</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-228"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">:</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-229"></a>            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Incorrect Location"</span><span class="p">),</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-230"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"The project couldn</span><span class="se">\'</span><span class="s">t be create"</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-231"></a>            <span class="k">return</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-232"></a>        <span class="n">project</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-233"></a>        <span class="n">project</span><span class="p">[</span><span class="s">'name'</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-234"></a>        <span class="n">project</span><span class="p">[</span><span class="s">'description'</span><span class="p">]</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">txtDescription</span><span class="o">.</span><span class="n">toPlainText</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-235"></a>        <span class="n">project</span><span class="p">[</span><span class="s">'license'</span><span class="p">]</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">cboLicense</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-236"></a>        <span class="n">project</span><span class="p">[</span><span class="s">'venv'</span><span class="p">]</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">vtxtPlace</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-237"></a>        <span class="n">project</span><span class="p">[</span><span class="s">'project-type'</span><span class="p">]</span> <span class="o">=</span> <span class="n">wizard</span><span class="o">.</span><span class="n">option</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-238"></a>        <span class="n">json_manager</span><span class="o">.</span><span class="n">create_ninja_project</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">project</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-239"></a>        <span class="n">wizard</span><span class="o">.</span><span class="n">_load_project</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-240"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-241"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-242"></a><span class="c">###############################################################################</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-243"></a><span class="c"># WIZARD FIRST PAGE</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-244"></a><span class="c">###############################################################################</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-245"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-246"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-247"></a><span class="k">class</span> <span class="nc">PageProjectType</span><span class="p">(</span><span class="n">QWizardPage</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-248"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-249"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wizard</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-250"></a>        <span class="n">QWizardPage</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-251"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setTitle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Project Type"</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-252"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setSubTitle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Choose the Project Type"</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-253"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_wizard</span> <span class="o">=</span> <span class="n">wizard</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-254"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-255"></a>        <span class="n">vbox</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-256"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">listWidget</span> <span class="o">=</span> <span class="n">QListWidget</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-257"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">listWidget</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-258"></a>        <span class="n">types</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">get_all_project_types</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-259"></a>        <span class="n">types</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-260"></a>        <span class="n">index</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">'Python'</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-261"></a>        <span class="n">types</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-262"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="n">types</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-263"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">setCurrentRow</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-264"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-265"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">listWidget</span><span class="p">,</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-266"></a>            <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"itemClicked(QListWidgetItem *)"</span><span class="p">),</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-267"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">load_pages</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-268"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-269"></a>    <span class="k">def</span> <span class="nf">validatePage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-270"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_wizard</span><span class="o">.</span><span class="n">option</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-271"></a>        <span class="k">return</span> <span class="bp">True</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-272"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-273"></a>    <span class="k">def</span> <span class="nf">load_pages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-274"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">wizard</span><span class="p">()</span><span class="o">.</span><span class="n">add_project_pages</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">listWidget</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-275"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-276"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-277"></a><span class="c">###############################################################################</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-278"></a><span class="c"># WIZARD LAST PAGE</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-279"></a><span class="c">###############################################################################</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-280"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-281"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-282"></a><span class="k">class</span> <span class="nc">PageProjectProperties</span><span class="p">(</span><span class="n">QWizardPage</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-283"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-284"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-285"></a>        <span class="n">QWizardPage</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-286"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setTitle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"New Project Data"</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-287"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setSubTitle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-288"></a>            <span class="s">"Complete the following fields to create the Project Structure"</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-289"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-290"></a>        <span class="n">gbox</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-291"></a>        <span class="c">#Names of the fields to complete</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-292"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">lblName</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"New Project Name (*):"</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-293"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">lblPlace</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Create in (*):"</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-294"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">lblDescription</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Project Description:"</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-295"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">lblLicense</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Project License:"</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-296"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">lblVenvFolder</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Virtualenv Folder:"</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-297"></a>        <span class="n">gbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lblName</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignRight</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-298"></a>        <span class="n">gbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lblPlace</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignRight</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-299"></a>        <span class="n">gbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lblDescription</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignTop</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-300"></a>        <span class="n">gbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lblLicense</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignRight</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-301"></a>        <span class="n">gbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lblVenvFolder</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignRight</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-302"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-303"></a>        <span class="c">#Fields on de right of the grid</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-304"></a>        <span class="c">#Name</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-305"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">txtName</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-306"></a>        <span class="c">#Location</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-307"></a>        <span class="n">hPlace</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-308"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">txtPlace</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-309"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">txtPlace</span><span class="o">.</span><span class="n">setReadOnly</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-310"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">btnExamine</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Browse..."</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-311"></a>        <span class="n">hPlace</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">txtPlace</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-312"></a>        <span class="n">hPlace</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btnExamine</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-313"></a>        <span class="c">#Virtualenv</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-314"></a>        <span class="n">vPlace</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-315"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">vtxtPlace</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-316"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_dir_completer</span> <span class="o">=</span> <span class="n">QCompleter</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-317"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_dir_completer</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="n">QDirModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dir_completer</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-318"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">vtxtPlace</span><span class="o">.</span><span class="n">setCompleter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dir_completer</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-319"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">vbtnExamine</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Browse..."</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-320"></a>        <span class="n">vPlace</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vtxtPlace</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-321"></a>        <span class="n">vPlace</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vbtnExamine</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-322"></a>        <span class="c">#Project Description</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-323"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">txtDescription</span> <span class="o">=</span> <span class="n">QPlainTextEdit</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-324"></a>        <span class="c">#Project License</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-325"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cboLicense</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-326"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cboLicense</span><span class="o">.</span><span class="n">setFixedWidth</span><span class="p">(</span><span class="mi">250</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-327"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cboLicense</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="s">'Apache License 2.0'</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-328"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cboLicense</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="s">'Artistic License/GPL'</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-329"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cboLicense</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="s">'Eclipse Public License 1.0'</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-330"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cboLicense</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="s">'GNU General Public License v2'</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-331"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cboLicense</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="s">'GNU General Public License v3'</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-332"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cboLicense</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="s">'GNU Lesser General Public License'</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-333"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cboLicense</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="s">'MIT License'</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-334"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cboLicense</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="s">'Mozilla Public License 1.1'</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-335"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cboLicense</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="s">'Mozilla Public License 2.0'</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-336"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cboLicense</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="s">'New BSD License'</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-337"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cboLicense</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="s">'Other Open Source'</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-338"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cboLicense</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="s">'Other'</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-339"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cboLicense</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-340"></a>        <span class="c">#Add to Grid</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-341"></a>        <span class="n">gbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">txtName</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-342"></a>        <span class="n">gbox</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">hPlace</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-343"></a>        <span class="n">gbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">txtDescription</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-344"></a>        <span class="n">gbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cboLicense</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-345"></a>        <span class="n">gbox</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">vPlace</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-346"></a>        <span class="c">#Signal</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-347"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btnExamine</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">'clicked()'</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_folder</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-348"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vbtnExamine</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">'clicked()'</span><span class="p">),</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-349"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">load_folder_venv</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-350"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">txtName</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">'textChanged(const QString&amp;)'</span><span class="p">),</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-351"></a>            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">"completeChanged()"</span><span class="p">)))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-352"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-353"></a>    <span class="k">def</span> <span class="nf">isComplete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-354"></a>        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">txtName</span><span class="o">.</span><span class="n">text</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-355"></a>        <span class="n">place</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">txtPlace</span><span class="o">.</span><span class="n">text</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-356"></a>        <span class="k">return</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">place</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-357"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-358"></a>    <span class="k">def</span> <span class="nf">load_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-359"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">txtPlace</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">getExistingDirectory</span><span class="p">(</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-360"></a>            <span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"New Project Folder"</span><span class="p">)))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-361"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">"completeChanged()"</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-362"></a>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-363"></a>    <span class="k">def</span> <span class="nf">load_folder_venv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-364"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">vtxtPlace</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">getExistingDirectory</span><span class="p">(</span>
+<a name="listingsninja_ideguidialogswizard_new_projectpy-365"></a>            <span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Select Virtualenv Folder"</span><span class="p">)))</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

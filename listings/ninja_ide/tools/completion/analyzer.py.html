@@ -1,0 +1,731 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="analyzer.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>analyzer.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../../">/listings</a>
+        </li><li><a href="../../">/ninja_ide</a>
+        </li><li><a href="../">/tools</a>
+        </li><li><a href=".">/completion</a>
+        </li><li><a href="#">/analyzer.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-1">  1</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-2">  2</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-3">  3</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-4">  4</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-5">  5</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-6">  6</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-7">  7</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-8">  8</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-9">  9</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-10"> 10</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-11"> 11</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-12"> 12</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-13"> 13</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-14"> 14</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-15"> 15</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-16"> 16</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-17"> 17</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-18"> 18</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-19"> 19</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-20"> 20</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-21"> 21</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-22"> 22</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-23"> 23</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-24"> 24</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-25"> 25</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-26"> 26</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-27"> 27</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-28"> 28</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-29"> 29</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-30"> 30</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-31"> 31</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-32"> 32</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-33"> 33</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-34"> 34</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-35"> 35</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-36"> 36</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-37"> 37</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-38"> 38</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-39"> 39</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-40"> 40</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-41"> 41</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-42"> 42</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-43"> 43</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-44"> 44</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-45"> 45</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-46"> 46</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-47"> 47</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-48"> 48</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-49"> 49</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-50"> 50</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-51"> 51</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-52"> 52</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-53"> 53</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-54"> 54</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-55"> 55</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-56"> 56</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-57"> 57</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-58"> 58</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-59"> 59</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-60"> 60</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-61"> 61</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-62"> 62</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-63"> 63</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-64"> 64</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-65"> 65</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-66"> 66</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-67"> 67</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-68"> 68</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-69"> 69</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-70"> 70</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-71"> 71</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-72"> 72</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-73"> 73</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-74"> 74</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-75"> 75</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-76"> 76</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-77"> 77</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-78"> 78</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-79"> 79</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-80"> 80</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-81"> 81</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-82"> 82</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-83"> 83</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-84"> 84</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-85"> 85</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-86"> 86</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-87"> 87</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-88"> 88</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-89"> 89</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-90"> 90</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-91"> 91</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-92"> 92</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-93"> 93</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-94"> 94</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-95"> 95</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-96"> 96</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-97"> 97</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-98"> 98</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-99"> 99</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-100">100</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-101">101</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-102">102</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-103">103</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-104">104</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-105">105</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-106">106</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-107">107</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-108">108</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-109">109</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-110">110</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-111">111</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-112">112</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-113">113</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-114">114</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-115">115</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-116">116</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-117">117</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-118">118</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-119">119</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-120">120</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-121">121</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-122">122</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-123">123</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-124">124</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-125">125</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-126">126</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-127">127</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-128">128</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-129">129</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-130">130</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-131">131</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-132">132</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-133">133</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-134">134</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-135">135</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-136">136</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-137">137</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-138">138</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-139">139</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-140">140</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-141">141</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-142">142</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-143">143</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-144">144</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-145">145</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-146">146</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-147">147</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-148">148</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-149">149</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-150">150</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-151">151</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-152">152</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-153">153</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-154">154</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-155">155</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-156">156</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-157">157</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-158">158</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-159">159</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-160">160</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-161">161</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-162">162</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-163">163</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-164">164</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-165">165</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-166">166</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-167">167</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-168">168</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-169">169</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-170">170</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-171">171</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-172">172</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-173">173</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-174">174</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-175">175</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-176">176</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-177">177</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-178">178</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-179">179</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-180">180</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-181">181</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-182">182</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-183">183</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-184">184</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-185">185</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-186">186</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-187">187</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-188">188</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-189">189</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-190">190</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-191">191</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-192">192</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-193">193</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-194">194</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-195">195</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-196">196</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-197">197</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-198">198</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-199">199</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-200">200</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-201">201</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-202">202</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-203">203</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-204">204</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-205">205</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-206">206</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-207">207</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-208">208</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-209">209</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-210">210</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-211">211</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-212">212</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-213">213</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-214">214</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-215">215</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-216">216</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-217">217</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-218">218</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-219">219</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-220">220</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-221">221</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-222">222</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-223">223</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-224">224</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-225">225</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-226">226</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-227">227</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-228">228</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-229">229</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-230">230</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-231">231</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-232">232</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-233">233</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-234">234</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-235">235</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-236">236</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-237">237</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-238">238</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-239">239</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-240">240</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-241">241</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-242">242</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-243">243</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-244">244</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-245">245</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-246">246</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-247">247</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-248">248</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-249">249</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-250">250</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-251">251</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-252">252</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-253">253</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-254">254</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-255">255</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-256">256</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-257">257</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-258">258</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-259">259</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-260">260</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-261">261</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-262">262</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-263">263</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-264">264</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-265">265</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-266">266</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-267">267</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-268">268</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-269">269</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-270">270</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-271">271</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-272">272</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-273">273</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-274">274</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-275">275</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-276">276</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-277">277</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-278">278</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-279">279</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-280">280</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-281">281</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-282">282</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-283">283</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-284">284</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-285">285</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-286">286</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-287">287</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-288">288</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-289">289</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-290">290</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-291">291</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-292">292</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-293">293</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-294">294</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-295">295</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-296">296</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-297">297</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-298">298</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-299">299</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-300">300</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-301">301</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-302">302</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-303">303</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-304">304</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-305">305</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-306">306</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-307">307</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-308">308</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-309">309</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-310">310</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-311">311</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-312">312</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-313">313</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-314">314</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-315">315</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-316">316</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-317">317</a>
+<a href="analyzer.py.html#listingsninja_idetoolscompletionanalyzerpy-318">318</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_idetoolscompletionanalyzerpy-1"></a><span class="c"># -*- coding: utf-8 -*-</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-2"></a><span class="c">#</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-3"></a><span class="c"># This file is part of NINJA-IDE (http://ninja-ide.org).</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-4"></a><span class="c">#</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-5"></a><span class="c"># NINJA-IDE is free software; you can redistribute it and/or modify</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-6"></a><span class="c"># it under the terms of the GNU General Public License as published by</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-7"></a><span class="c"># the Free Software Foundation; either version 3 of the License, or</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-8"></a><span class="c"># any later version.</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-9"></a><span class="c">#</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-10"></a><span class="c"># NINJA-IDE is distributed in the hope that it will be useful,</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-11"></a><span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-12"></a><span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-13"></a><span class="c"># GNU General Public License for more details.</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-14"></a><span class="c">#</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-15"></a><span class="c"># You should have received a copy of the GNU General Public License</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-16"></a><span class="c"># along with NINJA-IDE; If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-17"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-18"></a><span class="c"># DISCLAIMER ABOUT READING THIS CODE:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-19"></a><span class="c"># We are not responsible for any kind of mental or emotional</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-20"></a><span class="c"># damage that may arise from reading this code.</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-21"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-22"></a><span class="kn">import</span> <span class="nn">re</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-23"></a><span class="kn">import</span> <span class="nn">ast</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-24"></a><span class="kn">import</span> <span class="nn">_ast</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-25"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-26"></a><span class="kn">from</span> <span class="nn">ninja_ide.tools.logger</span> <span class="kn">import</span> <span class="n">NinjaLogger</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-27"></a><span class="kn">from</span> <span class="nn">ninja_ide.tools.completion</span> <span class="kn">import</span> <span class="n">model</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-28"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-29"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-30"></a><span class="n">logger</span> <span class="o">=</span> <span class="n">NinjaLogger</span><span class="p">(</span><span class="s">'ninja_ide.tools.completion.analyzer'</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-31"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-32"></a><span class="n">MAX_THRESHOLD</span> <span class="o">=</span> <span class="mi">3</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-33"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-34"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-35"></a><span class="k">def</span> <span class="nf">expand_attribute</span><span class="p">(</span><span class="n">attribute</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-36"></a>    <span class="n">parent_name</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-37"></a>    <span class="k">while</span> <span class="n">attribute</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">is</span> <span class="n">ast</span><span class="o">.</span><span class="n">Attribute</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-38"></a>        <span class="n">parent_name</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attribute</span><span class="o">.</span><span class="n">attr</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-39"></a>        <span class="n">attribute</span> <span class="o">=</span> <span class="n">attribute</span><span class="o">.</span><span class="n">value</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-40"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s">'.'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">parent_name</span><span class="p">))</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-41"></a>    <span class="n">attribute_id</span> <span class="o">=</span> <span class="s">''</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-42"></a>    <span class="k">if</span> <span class="n">attribute</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">is</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-43"></a>        <span class="n">attribute_id</span> <span class="o">=</span> <span class="n">attribute</span><span class="o">.</span><span class="n">id</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-44"></a>    <span class="k">elif</span> <span class="n">attribute</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">is</span> <span class="n">ast</span><span class="o">.</span><span class="n">Call</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-45"></a>        <span class="k">if</span> <span class="n">attribute</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">is</span> <span class="n">ast</span><span class="o">.</span><span class="n">Attribute</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-46"></a>            <span class="n">attribute_id</span> <span class="o">=</span> <span class="s">'</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">()'</span> <span class="o">%</span> <span class="p">(</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-47"></a>                <span class="n">expand_attribute</span><span class="p">(</span><span class="n">attribute</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-48"></a>                <span class="n">attribute</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">attr</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-49"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-50"></a>            <span class="n">attribute_id</span> <span class="o">=</span> <span class="s">'</span><span class="si">%s</span><span class="s">()'</span> <span class="o">%</span> <span class="n">attribute</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">id</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-51"></a>    <span class="n">name</span> <span class="o">=</span> <span class="n">attribute_id</span> <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s">''</span> <span class="k">else</span> <span class="p">(</span><span class="s">"</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">attribute_id</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-52"></a>    <span class="k">return</span> <span class="n">name</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-53"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-54"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-55"></a><span class="k">class</span> <span class="nc">Analyzer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-56"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-57"></a>    <span class="n">__mapping</span> <span class="o">=</span> <span class="p">{</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-58"></a>        <span class="n">_ast</span><span class="o">.</span><span class="n">Tuple</span><span class="p">:</span> <span class="s">'__builtin__.tuple'</span><span class="p">,</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-59"></a>        <span class="n">_ast</span><span class="o">.</span><span class="n">List</span><span class="p">:</span> <span class="s">'__builtin__.list'</span><span class="p">,</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-60"></a>        <span class="n">_ast</span><span class="o">.</span><span class="n">ListComp</span><span class="p">:</span> <span class="s">'__builtin__.list'</span><span class="p">,</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-61"></a>        <span class="n">_ast</span><span class="o">.</span><span class="n">Str</span><span class="p">:</span> <span class="s">'__builtin__.str'</span><span class="p">,</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-62"></a>        <span class="n">_ast</span><span class="o">.</span><span class="n">Dict</span><span class="p">:</span> <span class="s">'__builtin__.dict'</span><span class="p">,</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-63"></a>        <span class="n">_ast</span><span class="o">.</span><span class="n">Num</span><span class="p">:</span> <span class="s">'__builtin__.int'</span><span class="p">,</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-64"></a>        <span class="s">'_ast.Float'</span><span class="p">:</span> <span class="s">'__builtin__.float'</span><span class="p">,</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-65"></a>        <span class="s">'_ast.Bool'</span><span class="p">:</span> <span class="s">'__builtin__.bool'</span><span class="p">,</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-66"></a>        <span class="n">_ast</span><span class="o">.</span><span class="n">Call</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">late_resolution</span><span class="p">,</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-67"></a>        <span class="n">_ast</span><span class="o">.</span><span class="n">Name</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">late_resolution</span><span class="p">,</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-68"></a>        <span class="n">_ast</span><span class="o">.</span><span class="n">Attribute</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">late_resolution</span><span class="p">,</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-69"></a>    <span class="p">}</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-70"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-71"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-72"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_fixed_line</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-73"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="bp">None</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-74"></a><span class="c">#        self._functions = {}</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-75"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-76"></a>    <span class="k">def</span> <span class="nf">_get_valid_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-77"></a>        <span class="sd">"""Try to parse the module and fix some errors if it has some."""</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-78"></a>        <span class="n">astModule</span> <span class="o">=</span> <span class="bp">None</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-79"></a>        <span class="k">try</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-80"></a>            <span class="n">astModule</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-81"></a>        <span class="k">except</span> <span class="ne">SyntaxError</span> <span class="k">as</span> <span class="n">reason</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-82"></a>            <span class="n">line</span> <span class="o">=</span> <span class="n">reason</span><span class="o">.</span><span class="n">lineno</span> <span class="o">-</span> <span class="mi">1</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-83"></a>            <span class="k">if</span> <span class="n">line</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fixed_line</span> <span class="ow">and</span> <span class="n">reason</span><span class="o">.</span><span class="n">text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-84"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_fixed_line</span> <span class="o">=</span> <span class="n">line</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-85"></a>                <span class="n">new_line</span> <span class="o">=</span> <span class="s">''</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-86"></a>                <span class="c">#This is failing sometimes, it should remaing commented</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-87"></a>                <span class="c">#until we find the proper fix.</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-88"></a>                <span class="n">indent</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">'^\s+'</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">reason</span><span class="o">.</span><span class="n">text</span><span class="p">))</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-89"></a>                <span class="k">if</span> <span class="n">indent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-90"></a>                    <span class="n">new_line</span> <span class="o">=</span> <span class="n">indent</span><span class="o">.</span><span class="n">group</span><span class="p">()</span> <span class="o">+</span> <span class="s">'pass'</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-91"></a>                <span class="n">split_source</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-92"></a>                <span class="n">split_source</span><span class="p">[</span><span class="n">line</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_line</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-93"></a>                <span class="n">source</span> <span class="o">=</span> <span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">split_source</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-94"></a>                <span class="k">if</span> <span class="n">retry</span> <span class="o">&lt;</span> <span class="n">MAX_THRESHOLD</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-95"></a>                    <span class="n">astModule</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_valid_module</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">retry</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-96"></a>        <span class="k">return</span> <span class="n">astModule</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-97"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-98"></a>    <span class="k">def</span> <span class="nf">analyze</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">old_module</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-99"></a>        <span class="sd">"""Analyze the source provided and create the proper structure."""</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-100"></a>        <span class="n">astModule</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_valid_module</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-101"></a>        <span class="k">if</span> <span class="n">astModule</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-102"></a>            <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">Module</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-103"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-104"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-105"></a>        <span class="n">module</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Module</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-106"></a>        <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">astModule</span><span class="o">.</span><span class="n">body</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-107"></a>            <span class="k">if</span> <span class="n">symbol</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">is</span> <span class="n">ast</span><span class="o">.</span><span class="n">Assign</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-108"></a>                <span class="n">assigns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_assign</span><span class="p">(</span><span class="n">symbol</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-109"></a>                <span class="n">module</span><span class="o">.</span><span class="n">add_attributes</span><span class="p">(</span><span class="n">assigns</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-110"></a>            <span class="k">elif</span> <span class="n">symbol</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">Import</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">ImportFrom</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-111"></a>                <span class="n">module</span><span class="o">.</span><span class="n">add_imports</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_process_import</span><span class="p">(</span><span class="n">symbol</span><span class="p">))</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-112"></a>            <span class="k">elif</span> <span class="n">symbol</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">is</span> <span class="n">ast</span><span class="o">.</span><span class="n">ClassDef</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-113"></a>                <span class="n">module</span><span class="o">.</span><span class="n">add_class</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_process_class</span><span class="p">(</span><span class="n">symbol</span><span class="p">))</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-114"></a>            <span class="k">elif</span> <span class="n">symbol</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">is</span> <span class="n">ast</span><span class="o">.</span><span class="n">FunctionDef</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-115"></a>                <span class="n">module</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_process_function</span><span class="p">(</span><span class="n">symbol</span><span class="p">))</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-116"></a><span class="c">#            elif symbol.__class__ is ast.Expr:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-117"></a><span class="c">#                self._process_expression(symbol.value)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-118"></a>        <span class="k">if</span> <span class="n">old_module</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-119"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_module</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">old_module</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-120"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-121"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="bp">None</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-122"></a><span class="c">#        self._functions = {}</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-123"></a>        <span class="k">return</span> <span class="n">module</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-124"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-125"></a>    <span class="k">def</span> <span class="nf">_resolve_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">old_module</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-126"></a>        <span class="n">module</span><span class="o">.</span><span class="n">update_classes</span><span class="p">(</span><span class="n">old_module</span><span class="o">.</span><span class="n">classes</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-127"></a>        <span class="n">module</span><span class="o">.</span><span class="n">update_functions</span><span class="p">(</span><span class="n">old_module</span><span class="o">.</span><span class="n">functions</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-128"></a>        <span class="n">module</span><span class="o">.</span><span class="n">update_attributes</span><span class="p">(</span><span class="n">old_module</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-129"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-130"></a>    <span class="k">def</span> <span class="nf">_assign_disambiguation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_name</span><span class="p">,</span> <span class="n">line_content</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-131"></a>        <span class="sd">"""Provide a specific builtin for the cases were ast doesn't work."""</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-132"></a>        <span class="n">line</span> <span class="o">=</span> <span class="n">line_content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'='</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-133"></a>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-134"></a>            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">'_assign_disambiguation, line not valid: </span><span class="si">%r</span><span class="s">'</span> <span class="o">%</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-135"></a>                <span class="n">line_content</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-136"></a>            <span class="k">return</span> <span class="n">type_name</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-137"></a>        <span class="n">value</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-138"></a>        <span class="c"># TODO: We have to analyze when the assign is: x,y = 1, 2</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-139"></a>        <span class="k">if</span> <span class="n">type_name</span> <span class="ow">is</span> <span class="n">_ast</span><span class="o">.</span><span class="n">Num</span> <span class="ow">and</span> <span class="s">'.'</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-140"></a>            <span class="n">type_name</span> <span class="o">=</span> <span class="s">'_ast.Float'</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-141"></a>        <span class="k">elif</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">(</span><span class="s">'True'</span><span class="p">,</span> <span class="s">'False'</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-142"></a>            <span class="n">type_name</span> <span class="o">=</span> <span class="s">'_ast.Bool'</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-143"></a>        <span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="s">'None'</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-144"></a>            <span class="n">type_name</span> <span class="o">=</span> <span class="bp">None</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-145"></a>        <span class="k">return</span> <span class="n">type_name</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-146"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-147"></a><span class="c">#    def _process_expression(self, expr):</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-148"></a><span class="c">#        """Process expression, not assignment."""</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-149"></a><span class="c">#        if expr.__class__ is not ast.Call:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-150"></a><span class="c">#            return</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-151"></a><span class="c">#        args = expr.args</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-152"></a><span class="c">#        keywords = expr.keywords</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-153"></a><span class="c">#        ar = []</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-154"></a><span class="c">#        kw = {}</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-155"></a><span class="c">#        for arg in args:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-156"></a><span class="c">#            type_value = arg.__class__</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-157"></a><span class="c">#            arg_name = ''</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-158"></a><span class="c">#            if type_value is ast.Call:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-159"></a><span class="c">#                arg_name = expand_attribute(arg.func)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-160"></a><span class="c">#            elif type_value is ast.Attribute:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-161"></a><span class="c">#                arg_name = expand_attribute(arg.attr)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-162"></a><span class="c">#            data_type = self.__mapping.get(type_value, model.late_resolution)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-163"></a><span class="c">#            ar.append((arg_name, data_type))</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-164"></a><span class="c">#        for key in keywords:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-165"></a><span class="c">#            type_value = key.value.__class__</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-166"></a><span class="c">#            data_type = self.__mapping.get(type_value, model.late_resolution)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-167"></a><span class="c">#            kw[key.arg] = data_type</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-168"></a><span class="c">#        if expr.func.__class__ is ast.Attribute:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-169"></a><span class="c">#            name = expand_attribute(expr.func)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-170"></a><span class="c">#        else:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-171"></a><span class="c">#            name = expr.func.id</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-172"></a><span class="c">#        self._functions[name] = (ar, kw)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-173"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-174"></a>    <span class="k">def</span> <span class="nf">_process_assign</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-175"></a>        <span class="sd">"""Process an ast.Assign object to extract the proper info."""</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-176"></a>        <span class="n">assigns</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-177"></a>        <span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-178"></a>        <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">symbol</span><span class="o">.</span><span class="n">targets</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-179"></a>            <span class="n">type_value</span> <span class="o">=</span> <span class="n">symbol</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">__class__</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-180"></a>            <span class="n">line_content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="n">symbol</span><span class="o">.</span><span class="n">lineno</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-181"></a>            <span class="k">if</span> <span class="n">type_value</span> <span class="ow">in</span> <span class="p">(</span><span class="n">_ast</span><span class="o">.</span><span class="n">Num</span><span class="p">,</span> <span class="n">_ast</span><span class="o">.</span><span class="n">Name</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-182"></a>                <span class="n">type_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_assign_disambiguation</span><span class="p">(</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-183"></a>                    <span class="n">type_value</span><span class="p">,</span> <span class="n">line_content</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-184"></a>                <span class="k">if</span> <span class="n">type_value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-185"></a>                    <span class="k">continue</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-186"></a>            <span class="n">data_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">type_value</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">late_resolution</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-187"></a>            <span class="k">if</span> <span class="n">var</span><span class="o">.</span><span class="n">__class__</span> <span class="o">==</span> <span class="n">ast</span><span class="o">.</span><span class="n">Attribute</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-188"></a>                <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">attr</span><span class="p">,</span> <span class="n">symbol</span><span class="o">.</span><span class="n">lineno</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span> <span class="n">line_content</span><span class="p">,</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-189"></a>                    <span class="n">type_value</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-190"></a>                <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-191"></a>            <span class="k">elif</span> <span class="n">var</span><span class="o">.</span><span class="n">__class__</span> <span class="o">==</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-192"></a>                <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">var</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">symbol</span><span class="o">.</span><span class="n">lineno</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span> <span class="n">line_content</span><span class="p">,</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-193"></a>                    <span class="n">type_value</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-194"></a>                <span class="n">assigns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-195"></a><span class="c">#            if type_value is ast.Call:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-196"></a><span class="c">#                self._process_expression(symbol.value)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-197"></a>        <span class="k">return</span> <span class="p">(</span><span class="n">assigns</span><span class="p">,</span> <span class="n">attributes</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-198"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-199"></a>    <span class="k">def</span> <span class="nf">_process_import</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-200"></a>        <span class="sd">"""Process an ast.Import and ast.ImportFrom object to extract data."""</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-201"></a>        <span class="n">imports</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-202"></a>        <span class="k">for</span> <span class="n">imp</span> <span class="ow">in</span> <span class="n">symbol</span><span class="o">.</span><span class="n">names</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-203"></a>            <span class="k">if</span> <span class="n">symbol</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">is</span> <span class="n">ast</span><span class="o">.</span><span class="n">ImportFrom</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-204"></a>                <span class="n">module_name</span> <span class="o">=</span> <span class="s">"</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">symbol</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="n">imp</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-205"></a>            <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-206"></a>                <span class="n">module_name</span> <span class="o">=</span> <span class="n">imp</span><span class="o">.</span><span class="n">name</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-207"></a>            <span class="n">name</span> <span class="o">=</span> <span class="n">imp</span><span class="o">.</span><span class="n">asname</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-208"></a>            <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-209"></a>                <span class="n">name</span> <span class="o">=</span> <span class="n">imp</span><span class="o">.</span><span class="n">name</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-210"></a>            <span class="n">imports</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="n">module_name</span><span class="p">))</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-211"></a>        <span class="k">return</span> <span class="n">imports</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-212"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-213"></a>    <span class="k">def</span> <span class="nf">_process_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-214"></a>        <span class="sd">"""Process an ast.ClassDef object to extract data."""</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-215"></a>        <span class="n">clazz</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Clazz</span><span class="p">(</span><span class="n">symbol</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-216"></a>        <span class="k">for</span> <span class="n">base</span> <span class="ow">in</span> <span class="n">symbol</span><span class="o">.</span><span class="n">bases</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-217"></a>            <span class="k">if</span> <span class="n">base</span> <span class="o">==</span> <span class="s">'object'</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-218"></a>                <span class="k">continue</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-219"></a>            <span class="n">name</span> <span class="o">=</span> <span class="n">expand_attribute</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-220"></a>            <span class="n">clazz</span><span class="o">.</span><span class="n">add_parent</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-221"></a>        <span class="c">#TODO: Decotator</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-222"></a><span class="c">#        for decorator in symbol.decorator_list:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-223"></a><span class="c">#            clazz.decorators.append(decorator.id)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-224"></a>        <span class="c"># PARSE FUNCTIONS AND ATTRIBUTES</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-225"></a>        <span class="k">for</span> <span class="n">sym</span> <span class="ow">in</span> <span class="n">symbol</span><span class="o">.</span><span class="n">body</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-226"></a>            <span class="k">if</span> <span class="n">sym</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">is</span> <span class="n">ast</span><span class="o">.</span><span class="n">Assign</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-227"></a>                <span class="n">assigns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_assign</span><span class="p">(</span><span class="n">sym</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-228"></a>                <span class="n">clazz</span><span class="o">.</span><span class="n">add_attributes</span><span class="p">(</span><span class="n">assigns</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-229"></a>            <span class="k">elif</span> <span class="n">sym</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">is</span> <span class="n">ast</span><span class="o">.</span><span class="n">FunctionDef</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-230"></a>                <span class="n">clazz</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_process_function</span><span class="p">(</span><span class="n">sym</span><span class="p">,</span> <span class="n">clazz</span><span class="p">))</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-231"></a>        <span class="n">clazz</span><span class="o">.</span><span class="n">update_bases</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-232"></a>        <span class="n">clazz</span><span class="o">.</span><span class="n">update_with_parent_data</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-233"></a>        <span class="k">return</span> <span class="n">clazz</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-234"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-235"></a>    <span class="k">def</span> <span class="nf">_process_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-236"></a>        <span class="sd">"""Process an ast.FunctionDef object to extract data."""</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-237"></a>        <span class="n">function</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">symbol</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-238"></a>        <span class="c">#TODO: Decorators</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-239"></a>        <span class="c">#We are not going to collect data from decorators yet.</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-240"></a><span class="c">#        for decorator in symbol.decorator_list:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-241"></a>            <span class="c">#Decorators can be: Name, Call, Attributes</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-242"></a><span class="c">#            function.decorators.append(decorator.id)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-243"></a>        <span class="k">if</span> <span class="n">symbol</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">vararg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-244"></a>            <span class="n">assign</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Assign</span><span class="p">(</span><span class="n">symbol</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">vararg</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-245"></a>            <span class="n">assign</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><span class="n">symbol</span><span class="o">.</span><span class="n">lineno</span><span class="p">,</span> <span class="s">'__builtin__.list'</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-246"></a>            <span class="n">function</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="n">assign</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">assign</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-247"></a>        <span class="k">if</span> <span class="n">symbol</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">kwarg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-248"></a>            <span class="n">assign</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Assign</span><span class="p">(</span><span class="n">symbol</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">kwarg</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-249"></a>            <span class="n">assign</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><span class="n">symbol</span><span class="o">.</span><span class="n">lineno</span><span class="p">,</span> <span class="s">'__builtin__.dict'</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-250"></a>            <span class="n">function</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="n">assign</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">assign</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-251"></a>        <span class="c">#We store the arguments to compare with default backwards</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-252"></a>        <span class="n">defaults</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-253"></a>        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">symbol</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">defaults</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-254"></a>            <span class="c">#TODO: In some cases we can have something like: a=os.path</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-255"></a>            <span class="n">type_value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">__class__</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-256"></a>            <span class="n">data_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">type_value</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-257"></a>            <span class="n">defaults</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">data_type</span><span class="p">,</span> <span class="n">type_value</span><span class="p">))</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-258"></a>        <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">symbol</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">args</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-259"></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Tuple</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-260"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_parse_tuple_in_func_arg</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">symbol</span><span class="o">.</span><span class="n">lineno</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-261"></a>                <span class="k">continue</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-262"></a>            <span class="k">elif</span> <span class="n">arg</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="s">'self'</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-263"></a>                <span class="k">continue</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-264"></a>            <span class="n">assign</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Assign</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-265"></a>            <span class="n">data_type</span> <span class="o">=</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">late_resolution</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-266"></a>            <span class="k">if</span> <span class="n">defaults</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-267"></a>                <span class="n">data_type</span> <span class="o">=</span> <span class="n">defaults</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-268"></a>            <span class="n">assign</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><span class="n">symbol</span><span class="o">.</span><span class="n">lineno</span><span class="p">,</span> <span class="n">data_type</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">None</span><span class="p">,</span> <span class="n">data_type</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-269"></a>            <span class="n">function</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="n">assign</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">assign</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-270"></a>        <span class="k">for</span> <span class="n">sym</span> <span class="ow">in</span> <span class="n">symbol</span><span class="o">.</span><span class="n">body</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-271"></a>            <span class="k">if</span> <span class="n">sym</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">is</span> <span class="n">ast</span><span class="o">.</span><span class="n">Assign</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-272"></a>                <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_assign</span><span class="p">(</span><span class="n">sym</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-273"></a>                <span class="n">function</span><span class="o">.</span><span class="n">add_attributes</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-274"></a>                <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-275"></a>                    <span class="n">parent</span><span class="o">.</span><span class="n">add_attributes</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-276"></a>            <span class="k">elif</span> <span class="n">sym</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">is</span> <span class="n">ast</span><span class="o">.</span><span class="n">FunctionDef</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-277"></a>                <span class="n">function</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_process_function</span><span class="p">(</span><span class="n">sym</span><span class="p">))</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-278"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-279"></a>            <span class="k">if</span> <span class="n">sym</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">ast</span><span class="o">.</span><span class="n">Assign</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-280"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_search_recursive_for_types</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">sym</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-281"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-282"></a>        <span class="k">return</span> <span class="n">function</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-283"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-284"></a>    <span class="k">def</span> <span class="nf">_parse_tuple_in_func_arg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol_tuple</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">lineno</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-285"></a>        <span class="sd">"""Parse the tuple inside a function argument call."""</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-286"></a>        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">symbol_tuple</span><span class="o">.</span><span class="n">elts</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-287"></a>            <span class="n">assign</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Assign</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-288"></a>            <span class="n">data_type</span> <span class="o">=</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">late_resolution</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-289"></a>            <span class="n">assign</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><span class="n">lineno</span><span class="p">,</span> <span class="n">data_type</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">None</span><span class="p">,</span> <span class="n">data_type</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-290"></a>            <span class="n">function</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="n">assign</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">assign</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-291"></a>
+<a name="listingsninja_idetoolscompletionanalyzerpy-292"></a>    <span class="k">def</span> <span class="nf">_search_recursive_for_types</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-293"></a>        <span class="sd">"""Search for return recursively inside the function."""</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-294"></a>        <span class="k">if</span> <span class="n">symbol</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">is</span> <span class="n">ast</span><span class="o">.</span><span class="n">Assign</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-295"></a>            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_assign</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-296"></a>            <span class="n">function</span><span class="o">.</span><span class="n">add_attributes</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-297"></a>            <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-298"></a>                <span class="n">parent</span><span class="o">.</span><span class="n">add_attributes</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-299"></a>        <span class="k">elif</span> <span class="n">symbol</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">is</span> <span class="n">ast</span><span class="o">.</span><span class="n">Return</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-300"></a>            <span class="n">type_value</span> <span class="o">=</span> <span class="n">symbol</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">__class__</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-301"></a>            <span class="n">lineno</span> <span class="o">=</span> <span class="n">symbol</span><span class="o">.</span><span class="n">lineno</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-302"></a>            <span class="n">data_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">type_value</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-303"></a>            <span class="n">line_content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content</span><span class="p">[</span><span class="n">lineno</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-304"></a>            <span class="k">if</span> <span class="n">data_type</span> <span class="o">!=</span> <span class="n">model</span><span class="o">.</span><span class="n">late_resolution</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-305"></a>                <span class="n">type_value</span> <span class="o">=</span> <span class="bp">None</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-306"></a>            <span class="n">function</span><span class="o">.</span><span class="n">add_return</span><span class="p">(</span><span class="n">lineno</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span> <span class="n">line_content</span><span class="p">,</span> <span class="n">type_value</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-307"></a>        <span class="k">elif</span> <span class="n">symbol</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ast</span><span class="o">.</span><span class="n">If</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">For</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">TryExcept</span><span class="p">):</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-308"></a>            <span class="k">for</span> <span class="n">sym</span> <span class="ow">in</span> <span class="n">symbol</span><span class="o">.</span><span class="n">body</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-309"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_search_recursive_for_types</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">sym</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-310"></a>            <span class="k">for</span> <span class="n">else_item</span> <span class="ow">in</span> <span class="n">symbol</span><span class="o">.</span><span class="n">orelse</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-311"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_search_recursive_for_types</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">else_item</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-312"></a>        <span class="k">elif</span> <span class="n">symbol</span><span class="o">.</span><span class="n">__class__</span> <span class="ow">is</span> <span class="n">ast</span><span class="o">.</span><span class="n">TryFinally</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-313"></a>            <span class="k">for</span> <span class="n">sym</span> <span class="ow">in</span> <span class="n">symbol</span><span class="o">.</span><span class="n">body</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-314"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_search_recursive_for_types</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">sym</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-315"></a>            <span class="k">for</span> <span class="n">else_item</span> <span class="ow">in</span> <span class="n">symbol</span><span class="o">.</span><span class="n">finalbody</span><span class="p">:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-316"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_search_recursive_for_types</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">else_item</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-317"></a><span class="c">#        elif symbol.__class__ is ast.Expr:</span>
+<a name="listingsninja_idetoolscompletionanalyzerpy-318"></a><span class="c">#            self._process_expression(symbol.value)</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

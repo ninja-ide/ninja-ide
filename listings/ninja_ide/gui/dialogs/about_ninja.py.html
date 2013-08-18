@@ -1,0 +1,263 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="about_ninja.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>about_ninja.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../../">/listings</a>
+        </li><li><a href="../../">/ninja_ide</a>
+        </li><li><a href="../">/gui</a>
+        </li><li><a href=".">/dialogs</a>
+        </li><li><a href="#">/about_ninja.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-1"> 1</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-2"> 2</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-3"> 3</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-4"> 4</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-5"> 5</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-6"> 6</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-7"> 7</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-8"> 8</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-9"> 9</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-10">10</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-11">11</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-12">12</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-13">13</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-14">14</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-15">15</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-16">16</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-17">17</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-18">18</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-19">19</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-20">20</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-21">21</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-22">22</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-23">23</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-24">24</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-25">25</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-26">26</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-27">27</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-28">28</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-29">29</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-30">30</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-31">31</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-32">32</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-33">33</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-34">34</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-35">35</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-36">36</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-37">37</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-38">38</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-39">39</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-40">40</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-41">41</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-42">42</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-43">43</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-44">44</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-45">45</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-46">46</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-47">47</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-48">48</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-49">49</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-50">50</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-51">51</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-52">52</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-53">53</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-54">54</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-55">55</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-56">56</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-57">57</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-58">58</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-59">59</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-60">60</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-61">61</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-62">62</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-63">63</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-64">64</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-65">65</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-66">66</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-67">67</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-68">68</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-69">69</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-70">70</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-71">71</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-72">72</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-73">73</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-74">74</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-75">75</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-76">76</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-77">77</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-78">78</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-79">79</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-80">80</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-81">81</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-82">82</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-83">83</a>
+<a href="about_ninja.py.html#listingsninja_ideguidialogsabout_ninjapy-84">84</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_ideguidialogsabout_ninjapy-1"></a><span class="c"># -*- coding: utf-8 -*-</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-2"></a><span class="c">#</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-3"></a><span class="c"># This file is part of NINJA-IDE (http://ninja-ide.org).</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-4"></a><span class="c">#</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-5"></a><span class="c"># NINJA-IDE is free software; you can redistribute it and/or modify</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-6"></a><span class="c"># it under the terms of the GNU General Public License as published by</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-7"></a><span class="c"># the Free Software Foundation; either version 3 of the License, or</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-8"></a><span class="c"># any later version.</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-9"></a><span class="c">#</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-10"></a><span class="c"># NINJA-IDE is distributed in the hope that it will be useful,</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-11"></a><span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-12"></a><span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-13"></a><span class="c"># GNU General Public License for more details.</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-14"></a><span class="c">#</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-15"></a><span class="c"># You should have received a copy of the GNU General Public License</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-16"></a><span class="c"># along with NINJA-IDE; If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-17"></a>
+<a name="listingsninja_ideguidialogsabout_ninjapy-18"></a><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-19"></a>
+<a name="listingsninja_ideguidialogsabout_ninjapy-20"></a><span class="kn">import</span> <span class="nn">webbrowser</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-21"></a>
+<a name="listingsninja_ideguidialogsabout_ninjapy-22"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QDialog</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-23"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QVBoxLayout</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-24"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QHBoxLayout</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-25"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QLabel</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-26"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QPixmap</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-27"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-28"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">QSize</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-29"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">SIGNAL</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-30"></a>
+<a name="listingsninja_ideguidialogsabout_ninjapy-31"></a><span class="kn">import</span> <span class="nn">ninja_ide</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-32"></a><span class="kn">from</span> <span class="nn">ninja_ide</span> <span class="kn">import</span> <span class="n">resources</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-33"></a>
+<a name="listingsninja_ideguidialogsabout_ninjapy-34"></a>
+<a name="listingsninja_ideguidialogsabout_ninjapy-35"></a><span class="k">class</span> <span class="nc">AboutNinja</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-36"></a>
+<a name="listingsninja_ideguidialogsabout_ninjapy-37"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-38"></a>        <span class="n">QDialog</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Dialog</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-39"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"About NINJA-IDE"</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-40"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setMaximumSize</span><span class="p">(</span><span class="n">QSize</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-41"></a>
+<a name="listingsninja_ideguidialogsabout_ninjapy-42"></a>        <span class="n">vbox</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-43"></a>
+<a name="listingsninja_ideguidialogsabout_ninjapy-44"></a>        <span class="c">#Create an icon for the Dialog</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-45"></a>        <span class="n">pixmap</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">IMAGES</span><span class="p">[</span><span class="s">'icon'</span><span class="p">])</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-46"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">lblIcon</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-47"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">lblIcon</span><span class="o">.</span><span class="n">setPixmap</span><span class="p">(</span><span class="n">pixmap</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-48"></a>
+<a name="listingsninja_ideguidialogsabout_ninjapy-49"></a>        <span class="n">hbox</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-50"></a>        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lblIcon</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-51"></a>
+<a name="listingsninja_ideguidialogsabout_ninjapy-52"></a>        <span class="n">lblTitle</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-53"></a>                <span class="s">'&lt;h1&gt;NINJA-IDE&lt;/h1&gt;</span><span class="se">\n</span><span class="s">&lt;i&gt;Ninja-IDE Is Not Just Another IDE&lt;i&gt;'</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-54"></a>        <span class="n">lblTitle</span><span class="o">.</span><span class="n">setTextFormat</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">RichText</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-55"></a>        <span class="n">lblTitle</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignLeft</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-56"></a>        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lblTitle</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-57"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">hbox</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-58"></a>        <span class="c">#Add description</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-59"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-60"></a><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"""NINJA-IDE (from: "Ninja Is Not Just Another IDE"), is a</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-61"></a><span class="s">cross-platform integrated development environment specially designed</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-62"></a><span class="s">to build Python Applications.</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-63"></a><span class="s">NINJA-IDE provides tools to simplify the Python-software development</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-64"></a><span class="s">and handles all kinds of situations thanks to its rich extensibility."""</span><span class="p">)))</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-65"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Version: </span><span class="si">%s</span><span class="s">"</span><span class="p">)</span> <span class="o">%</span> <span class="n">ninja_ide</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-66"></a>        <span class="n">link_ninja</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-67"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">'Website: &lt;a href="</span><span class="si">%s</span><span class="s">"&gt;&lt;span style=" '</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-68"></a>                <span class="s">'text-decoration: underline; color:#ff9e21;"&gt;'</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-69"></a>                <span class="s">'</span><span class="si">%s</span><span class="s">&lt;/span&gt;&lt;/a&gt;'</span><span class="p">)</span> <span class="o">%</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-70"></a>                <span class="p">(</span><span class="n">ninja_ide</span><span class="o">.</span><span class="n">__url__</span><span class="p">,</span> <span class="n">ninja_ide</span><span class="o">.</span><span class="n">__url__</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-71"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">link_ninja</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-72"></a>        <span class="n">link_source</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-73"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">'Source Code: &lt;a href="</span><span class="si">%s</span><span class="s">"&gt;&lt;span style=" '</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-74"></a>            <span class="s">'text-decoration: underline; color:#ff9e21;"&gt;</span><span class="si">%s</span><span class="s">&lt;/span&gt;&lt;/a&gt;'</span><span class="p">)</span> <span class="o">%</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-75"></a>                <span class="p">(</span><span class="n">ninja_ide</span><span class="o">.</span><span class="n">__source__</span><span class="p">,</span> <span class="n">ninja_ide</span><span class="o">.</span><span class="n">__source__</span><span class="p">))</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-76"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">link_source</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-77"></a>
+<a name="listingsninja_ideguidialogsabout_ninjapy-78"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">link_ninja</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"linkActivated(QString)"</span><span class="p">),</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-79"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">link_activated</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-80"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">link_source</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"linkActivated(QString)"</span><span class="p">),</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-81"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">link_activated</span><span class="p">)</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-82"></a>
+<a name="listingsninja_ideguidialogsabout_ninjapy-83"></a>    <span class="k">def</span> <span class="nf">link_activated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link</span><span class="p">):</span>
+<a name="listingsninja_ideguidialogsabout_ninjapy-84"></a>        <span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">link</span><span class="p">))</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

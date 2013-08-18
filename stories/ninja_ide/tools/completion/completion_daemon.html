@@ -1,0 +1,414 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="NINJA-IDE">
+    <title>NINJA-IDE | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+
+
+
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+    <li>
+    <a href="completion_daemon.txt" id="sourcelink">Source</a>
+    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+    <h1>NINJA-IDE</h1>
+    <div class="contents alert alert-info pull-top topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="completion_daemon.html#module-completion-daemon-py-api" id="id2"><em>Module:</em> completion_daemon.py API</a><ul>
+<li><a class="reference internal" href="completion_daemon.html#imports" id="id3"><em>Imports:</em></a></li>
+<li><a class="reference internal" href="completion_daemon.html#global-attributes" id="id4"><em>Global Attributes:</em></a></li>
+<li><a class="reference internal" href="completion_daemon.html#global-functions" id="id5"><em>Global Functions:</em></a><ul>
+<li><a class="reference internal" href="completion_daemon.html#function-completiondaemon-at-ln-39" id="id6"><em>Function:</em> CompletionDaemon() [at ln:39]</a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-add-project-folder-project-path-at-ln-359" id="id7"><em>Function:</em> add_project_folder(project_path) [at ln:359]</a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-shutdown-daemon-at-ln-352" id="id8"><em>Function:</em> shutdown_daemon() [at ln:352]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="completion_daemon.html#class-completiondaemon-thread" id="id9"><em>Class:</em> __CompletionDaemon(Thread)</a><ul>
+<li><a class="reference internal" href="completion_daemon.html#attributes" id="id10"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-init-at-ln-49" id="id11"><em>Function:</em> __init__() [at ln:49]</a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-analyze-file-filename-at-ln-106" id="id12"><em>Function:</em> _analyze_file(filename) [at ln:106]</a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-resolve-with-other-modules-packages-at-ln-80" id="id13"><em>Function:</em> _resolve_with_other_modules(packages) [at ln:80]</a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-shutdown-process-at-ln-154" id="id14"><em>Function:</em> _shutdown_process() [at ln:154]</a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-force-stop-at-ln-159" id="id15"><em>Function:</em> force_stop() [at ln:159]</a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-get-module-path-id-at-ln-151" id="id16"><em>Function:</em> get_module(path_id) [at ln:151]</a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-inspect-module-path-id-module-recursive-true-at-ln-145" id="id17"><em>Function:</em> inspect_module(path_id, module, recursive=True) [at ln:145]</a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-process-path-at-ln-132" id="id18"><em>Function:</em> process_path() [at ln:132]</a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-run-at-ln-63" id="id19"><em>Function:</em> run() [at ln:63]</a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-unload-module-path-id-at-ln-119" id="id20"><em>Function:</em> unload_module(path_id) [at ln:119]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="completion_daemon.html#class-daemonprocess-process" id="id21"><em>Class:</em> _DaemonProcess(Process)</a><ul>
+<li><a class="reference internal" href="completion_daemon.html#id1" id="id22"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-init-queue-receive-queue-send-at-ln-170" id="id23"><em>Function:</em> __init__(queue_receive, queue_send) [at ln:170]</a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-get-scope-structure-scope-at-ln-346" id="id24"><em>Function:</em> _get_scope(structure, scope) [at ln:346]</a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-resolve-attributes-structure-module-at-ln-253" id="id25"><em>Function:</em> _resolve_attributes(structure, module) [at ln:253]</a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-resolve-functions-structure-module-at-ln-239" id="id26"><em>Function:</em> _resolve_functions(structure, module) [at ln:239]</a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-resolve-inheritance-clazz-module-at-ln-216" id="id27"><em>Function:</em> _resolve_inheritance(clazz, module) [at ln:216]</a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-resolve-module-module-at-ln-207" id="id28"><em>Function:</em> _resolve_module(module) [at ln:207]</a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-resolve-returns-structure-module-at-ln-248" id="id29"><em>Function:</em> _resolve_returns(structure, module) [at ln:248]</a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-resolve-types-types-module-structure-none-split-by-str-at-ln-260" id="id30"><em>Function:</em> _resolve_types(types, module, structure=None, split_by=str) [at ln:260]</a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-resolve-with-imports-types-module-splitby-at-ln-284" id="id31"><em>Function:</em> _resolve_with_imports(types, module, splitby) [at ln:284]</a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-resolve-with-linked-modules-types-module-structure-at-ln-269" id="id32"><em>Function:</em> _resolve_with_linked_modules(types, module, structure) [at ln:269]</a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-resolve-with-local-names-types-module-splitby-at-ln-302" id="id33"><em>Function:</em> _resolve_with_local_names(types, module, splitby) [at ln:302]</a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-resolve-with-local-vars-types-module-splitby-structure-none-at-ln-313" id="id34"><em>Function:</em> _resolve_with_local_vars(types, module, splitby, structure=None) [at ln:313]</a></li>
+<li><a class="reference internal" href="completion_daemon.html#function-run-at-ln-177" id="id35"><em>Function:</em> run() [at ln:177]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="module-completion-daemon-py-api">
+<h2><em>Module:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html">completion_daemon.py</a> API</h2>
+<p>No description.</p>
+<div class="section" id="imports">
+<h3><a class="toc-backref" href="completion_daemon.html#id3"><em>Imports:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#18">os</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#19">time</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#20">threading.Lock</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#21">multiprocessing.Process</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#21">multiprocessing.Queue</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#20">threading.Thread</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#25">ninja_ide.tools.completion.analyzer</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#24">ninja_ide.tools.completion.completer</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#23">ninja_ide.tools.completion.model</a></li>
+</ul>
+</div>
+<div class="section" id="global-attributes">
+<h3><a class="toc-backref" href="completion_daemon.html#id4"><em>Global Attributes:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#36">PROJECTS [at ln:36]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#35">WAITING_BEFORE_START [at ln:35]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#34">__completion_daemon_instance [at ln:34]</a></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="global-functions">
+<h3><a class="toc-backref" href="completion_daemon.html#id5"><em>Global Functions:</em></a></h3>
+<div class="section" id="function-completiondaemon-at-ln-39">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-39">CompletionDaemon() [at ln:39]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">CompletionDaemon</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-project-folder-project-path-at-ln-359">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-359">add_project_folder(project_path) [at ln:359]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">add_project_folder</span><span class="p">(</span><span class="n">project_path</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-shutdown-daemon-at-ln-352">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-352">shutdown_daemon() [at ln:352]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">shutdown_daemon</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-completiondaemon-thread">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-47">__CompletionDaemon(Thread)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">__CompletionDaemon</span><span class="p">(</span><span class="n">Thread</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="attributes">
+<h4><a class="toc-backref" href="completion_daemon.html#id10"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#54">_relations [at ln:54]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#51">analyzer [at ln:51]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#60">daemon [at ln:60]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#160">keep_alive [at ln:160]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#57">lock [at ln:57]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#52">modules [at ln:52]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#53">projects_modules [at ln:53]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#58">queue_receive [at ln:58]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#59">queue_send [at ln:59]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#55">reference_counter [at ln:55]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-at-ln-49">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-49">__init__() [at ln:49]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-analyze-file-filename-at-ln-106">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-106">_analyze_file(filename) [at ln:106]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_analyze_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-resolve-with-other-modules-packages-at-ln-80">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-80">_resolve_with_other_modules(packages) [at ln:80]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_resolve_with_other_modules</span><span class="p">(</span><span class="n">packages</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-shutdown-process-at-ln-154">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-154">_shutdown_process() [at ln:154]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_shutdown_process</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-force-stop-at-ln-159">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-159">force_stop() [at ln:159]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">force_stop</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-module-path-id-at-ln-151">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-151">get_module(path_id) [at ln:151]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_module</span><span class="p">(</span><span class="n">path_id</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-inspect-module-path-id-module-recursive-true-at-ln-145">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-145">inspect_module(path_id, module, recursive=True) [at ln:145]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">inspect_module</span><span class="p">(</span><span class="n">path_id</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-process-path-at-ln-132">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-132">process_path() [at ln:132]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">process_path</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-run-at-ln-63">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-63">run() [at ln:63]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-unload-module-path-id-at-ln-119">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-119">unload_module(path_id) [at ln:119]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">unload_module</span><span class="p">(</span><span class="n">path_id</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-daemonprocess-process">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-168">_DaemonProcess(Process)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">_DaemonProcess</span><span class="p">(</span><span class="n">Process</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id1">
+<h4><a class="toc-backref" href="completion_daemon.html#id22"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#174">iteration [at ln:174]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#175">packages [at ln:175]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#172">queue_receive [at ln:172]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#173">queue_send [at ln:173]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-queue-receive-queue-send-at-ln-170">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-170">__init__(queue_receive, queue_send) [at ln:170]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">queue_receive</span><span class="p">,</span> <span class="n">queue_send</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-scope-structure-scope-at-ln-346">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-346">_get_scope(structure, scope) [at ln:346]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_get_scope</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">scope</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-resolve-attributes-structure-module-at-ln-253">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-253">_resolve_attributes(structure, module) [at ln:253]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_resolve_attributes</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-resolve-functions-structure-module-at-ln-239">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-239">_resolve_functions(structure, module) [at ln:239]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_resolve_functions</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-resolve-inheritance-clazz-module-at-ln-216">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-216">_resolve_inheritance(clazz, module) [at ln:216]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_resolve_inheritance</span><span class="p">(</span><span class="n">clazz</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-resolve-module-module-at-ln-207">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-207">_resolve_module(module) [at ln:207]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_resolve_module</span><span class="p">(</span><span class="n">module</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-resolve-returns-structure-module-at-ln-248">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-248">_resolve_returns(structure, module) [at ln:248]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_resolve_returns</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-resolve-types-types-module-structure-none-split-by-str-at-ln-260">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-260">_resolve_types(types, module, structure=None, split_by=str) [at ln:260]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_resolve_types</span><span class="p">(</span><span class="n">types</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">structure</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">split_by</span><span class="o">=</span><span class="nb">str</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-resolve-with-imports-types-module-splitby-at-ln-284">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-284">_resolve_with_imports(types, module, splitby) [at ln:284]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_resolve_with_imports</span><span class="p">(</span><span class="n">types</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">splitby</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-resolve-with-linked-modules-types-module-structure-at-ln-269">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-269">_resolve_with_linked_modules(types, module, structure) [at ln:269]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_resolve_with_linked_modules</span><span class="p">(</span><span class="n">types</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">structure</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-resolve-with-local-names-types-module-splitby-at-ln-302">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-302">_resolve_with_local_names(types, module, splitby) [at ln:302]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_resolve_with_local_names</span><span class="p">(</span><span class="n">types</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">splitby</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-resolve-with-local-vars-types-module-splitby-structure-none-at-ln-313">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-313">_resolve_with_local_vars(types, module, splitby, structure=None) [at ln:313]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_resolve_with_local_vars</span><span class="p">(</span><span class="n">types</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="n">splitby</span><span class="p">,</span> <span class="n">structure</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-run-at-ln-177">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completion_daemon.py.html#listingsninja_idetoolscompletioncompletion_daemonpy-177">run() [at ln:177]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+</div>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

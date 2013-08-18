@@ -1,0 +1,240 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="logger.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>logger.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../">/listings</a>
+        </li><li><a href="../">/ninja_ide</a>
+        </li><li><a href=".">/tools</a>
+        </li><li><a href="#">/logger.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="logger.py.html#listingsninja_idetoolsloggerpy-1"> 1</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-2"> 2</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-3"> 3</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-4"> 4</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-5"> 5</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-6"> 6</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-7"> 7</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-8"> 8</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-9"> 9</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-10">10</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-11">11</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-12">12</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-13">13</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-14">14</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-15">15</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-16">16</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-17">17</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-18">18</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-19">19</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-20">20</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-21">21</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-22">22</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-23">23</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-24">24</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-25">25</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-26">26</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-27">27</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-28">28</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-29">29</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-30">30</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-31">31</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-32">32</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-33">33</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-34">34</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-35">35</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-36">36</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-37">37</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-38">38</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-39">39</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-40">40</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-41">41</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-42">42</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-43">43</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-44">44</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-45">45</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-46">46</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-47">47</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-48">48</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-49">49</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-50">50</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-51">51</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-52">52</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-53">53</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-54">54</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-55">55</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-56">56</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-57">57</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-58">58</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-59">59</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-60">60</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-61">61</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-62">62</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-63">63</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-64">64</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-65">65</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-66">66</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-67">67</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-68">68</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-69">69</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-70">70</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-71">71</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-72">72</a>
+<a href="logger.py.html#listingsninja_idetoolsloggerpy-73">73</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_idetoolsloggerpy-1"></a><span class="c"># -*- coding: utf-8 *-*</span>
+<a name="listingsninja_idetoolsloggerpy-2"></a><span class="kn">import</span> <span class="nn">logging</span>
+<a name="listingsninja_idetoolsloggerpy-3"></a><span class="kn">import</span> <span class="nn">sys</span>
+<a name="listingsninja_idetoolsloggerpy-4"></a><span class="kn">from</span> <span class="nn">ninja_ide</span> <span class="kn">import</span> <span class="n">resources</span>
+<a name="listingsninja_idetoolsloggerpy-5"></a>
+<a name="listingsninja_idetoolsloggerpy-6"></a>
+<a name="listingsninja_idetoolsloggerpy-7"></a><span class="n">NOLOG</span> <span class="o">=</span> <span class="mi">100</span>
+<a name="listingsninja_idetoolsloggerpy-8"></a><span class="n">LOG_FORMAT</span> <span class="o">=</span> <span class="s">"</span><span class="si">%(asctime)s</span><span class="s"> </span><span class="si">%(name)s</span><span class="s">:</span><span class="si">%(lineno)-4d</span><span class="s"> </span><span class="si">%(levelname)-8s</span><span class="s"> </span><span class="si">%(message)s</span><span class="s">"</span>
+<a name="listingsninja_idetoolsloggerpy-9"></a><span class="n">TIME_FORMAT</span> <span class="o">=</span> <span class="s">'%Y-%m-</span><span class="si">%d</span><span class="s"> %H:%M:%S'</span>
+<a name="listingsninja_idetoolsloggerpy-10"></a>
+<a name="listingsninja_idetoolsloggerpy-11"></a>
+<a name="listingsninja_idetoolsloggerpy-12"></a><span class="k">class</span> <span class="nc">Logger</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<a name="listingsninja_idetoolsloggerpy-13"></a>    <span class="sd">"""</span>
+<a name="listingsninja_idetoolsloggerpy-14"></a><span class="sd">        General logger</span>
+<a name="listingsninja_idetoolsloggerpy-15"></a><span class="sd">    """</span>
+<a name="listingsninja_idetoolsloggerpy-16"></a>
+<a name="listingsninja_idetoolsloggerpy-17"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idetoolsloggerpy-18"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_loggers</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="listingsninja_idetoolsloggerpy-19"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_default_level</span> <span class="o">=</span> <span class="n">NOLOG</span>
+<a name="listingsninja_idetoolsloggerpy-20"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span> <span class="o">=</span> <span class="bp">None</span>
+<a name="listingsninja_idetoolsloggerpy-21"></a>        <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">()</span>
+<a name="listingsninja_idetoolsloggerpy-22"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">Logger</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+<a name="listingsninja_idetoolsloggerpy-23"></a>
+<a name="listingsninja_idetoolsloggerpy-24"></a>    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modname</span><span class="p">):</span>
+<a name="listingsninja_idetoolsloggerpy-25"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span><span class="p">:</span>
+<a name="listingsninja_idetoolsloggerpy-26"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">add_handler</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">LOG_FILE_PATH</span><span class="p">,</span> <span class="s">'w'</span><span class="p">,</span> <span class="n">LOG_FORMAT</span><span class="p">,</span>
+<a name="listingsninja_idetoolsloggerpy-27"></a>                                <span class="n">TIME_FORMAT</span><span class="p">)</span>
+<a name="listingsninja_idetoolsloggerpy-28"></a>        <span class="k">if</span> <span class="n">modname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loggers</span><span class="p">:</span>
+<a name="listingsninja_idetoolsloggerpy-29"></a>            <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">modname</span><span class="p">)</span>
+<a name="listingsninja_idetoolsloggerpy-30"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_loggers</span><span class="p">[</span><span class="n">modname</span><span class="p">]</span> <span class="o">=</span> <span class="n">logger</span>
+<a name="listingsninja_idetoolsloggerpy-31"></a>            <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_default_level</span><span class="p">)</span>
+<a name="listingsninja_idetoolsloggerpy-32"></a>            <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_handler</span><span class="p">)</span>
+<a name="listingsninja_idetoolsloggerpy-33"></a>
+<a name="listingsninja_idetoolsloggerpy-34"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loggers</span><span class="p">[</span><span class="n">modname</span><span class="p">]</span>
+<a name="listingsninja_idetoolsloggerpy-35"></a>
+<a name="listingsninja_idetoolsloggerpy-36"></a>    <span class="k">def</span> <span class="nf">dissable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_idetoolsloggerpy-37"></a>        <span class="k">for</span> <span class="n">each_log</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_loggers</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+<a name="listingsninja_idetoolsloggerpy-38"></a>            <span class="n">each_log</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">NOLOG</span><span class="p">)</span>
+<a name="listingsninja_idetoolsloggerpy-39"></a>
+<a name="listingsninja_idetoolsloggerpy-40"></a>    <span class="k">def</span> <span class="nf">setLevel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+<a name="listingsninja_idetoolsloggerpy-41"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_default_level</span> <span class="o">=</span> <span class="n">level</span>
+<a name="listingsninja_idetoolsloggerpy-42"></a>        <span class="k">for</span> <span class="n">each_log</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_loggers</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+<a name="listingsninja_idetoolsloggerpy-43"></a>            <span class="n">each_log</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+<a name="listingsninja_idetoolsloggerpy-44"></a>
+<a name="listingsninja_idetoolsloggerpy-45"></a>    <span class="k">def</span> <span class="nf">add_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hfile</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">log_format</span><span class="p">,</span> <span class="n">time_format</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<a name="listingsninja_idetoolsloggerpy-46"></a>        <span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="n">log_format</span><span class="p">,</span> <span class="n">time_format</span><span class="p">)</span>
+<a name="listingsninja_idetoolsloggerpy-47"></a>        <span class="k">if</span> <span class="n">stream</span><span class="p">:</span>
+<a name="listingsninja_idetoolsloggerpy-48"></a>            <span class="n">handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">hfile</span><span class="p">)</span>
+<a name="listingsninja_idetoolsloggerpy-49"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_idetoolsloggerpy-50"></a>            <span class="n">handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="n">hfile</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+<a name="listingsninja_idetoolsloggerpy-51"></a>        <span class="n">handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+<a name="listingsninja_idetoolsloggerpy-52"></a>        <span class="k">for</span> <span class="n">each_log</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_loggers</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+<a name="listingsninja_idetoolsloggerpy-53"></a>            <span class="n">each_log</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+<a name="listingsninja_idetoolsloggerpy-54"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_handler</span> <span class="o">=</span> <span class="n">handler</span>
+<a name="listingsninja_idetoolsloggerpy-55"></a>
+<a name="listingsninja_idetoolsloggerpy-56"></a>    <span class="k">def</span> <span class="nf">argparse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_level</span><span class="p">,</span> <span class="n">log_file</span><span class="p">):</span>
+<a name="listingsninja_idetoolsloggerpy-57"></a>        <span class="k">if</span> <span class="n">log_level</span><span class="p">:</span>
+<a name="listingsninja_idetoolsloggerpy-58"></a>            <span class="k">if</span> <span class="n">log_level</span> <span class="ow">in</span> <span class="p">(</span><span class="s">'DEBUG'</span><span class="p">,</span> <span class="s">'INFO'</span><span class="p">,</span> <span class="s">'WARNING'</span><span class="p">,</span> <span class="s">'ERROR'</span><span class="p">,</span> <span class="s">'CRITICAL'</span><span class="p">):</span>
+<a name="listingsninja_idetoolsloggerpy-59"></a>                <span class="n">log_level</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">logging</span><span class="p">,</span> <span class="n">log_level</span><span class="p">)</span>
+<a name="listingsninja_idetoolsloggerpy-60"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
+<a name="listingsninja_idetoolsloggerpy-61"></a>        <span class="k">if</span> <span class="n">log_file</span><span class="p">:</span>
+<a name="listingsninja_idetoolsloggerpy-62"></a>            <span class="k">if</span> <span class="n">log_file</span> <span class="o">==</span> <span class="s">"STDOUT"</span><span class="p">:</span>
+<a name="listingsninja_idetoolsloggerpy-63"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">add_handler</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">LOG_FORMAT</span><span class="p">,</span> <span class="n">TIME_FORMAT</span><span class="p">,</span>
+<a name="listingsninja_idetoolsloggerpy-64"></a>                                    <span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_idetoolsloggerpy-65"></a>            <span class="k">if</span> <span class="n">log_file</span> <span class="o">==</span> <span class="s">"STDERR"</span><span class="p">:</span>
+<a name="listingsninja_idetoolsloggerpy-66"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">add_handler</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">LOG_FORMAT</span><span class="p">,</span> <span class="n">TIME_FORMAT</span><span class="p">,</span>
+<a name="listingsninja_idetoolsloggerpy-67"></a>                                    <span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_idetoolsloggerpy-68"></a>            <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_idetoolsloggerpy-69"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">add_handler</span><span class="p">(</span><span class="n">log_file</span><span class="p">,</span> <span class="s">'w'</span><span class="p">,</span> <span class="n">LOG_FORMAT</span><span class="p">,</span>
+<a name="listingsninja_idetoolsloggerpy-70"></a>                                <span class="n">TIME_FORMAT</span><span class="p">)</span>
+<a name="listingsninja_idetoolsloggerpy-71"></a>
+<a name="listingsninja_idetoolsloggerpy-72"></a>
+<a name="listingsninja_idetoolsloggerpy-73"></a><span class="n">NinjaLogger</span> <span class="o">=</span> <span class="n">Logger</span><span class="p">()</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

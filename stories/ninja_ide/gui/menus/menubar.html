@@ -1,0 +1,244 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="NINJA-IDE">
+    <title>NINJA-IDE | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+
+
+
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+    <li>
+    <a href="menubar.txt" id="sourcelink">Source</a>
+    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+    <h1>NINJA-IDE</h1>
+    <div class="contents alert alert-info pull-top topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="menubar.html#module-menubar-py-api" id="id1"><em>Module:</em> menubar.py API</a><ul>
+<li><a class="reference internal" href="menubar.html#imports" id="id2"><em>Imports:</em></a></li>
+<li><a class="reference internal" href="menubar.html#global-attributes" id="id3"><em>Global Attributes:</em></a></li>
+<li><a class="reference internal" href="menubar.html#global-functions" id="id4"><em>Global Functions:</em></a><ul>
+<li><a class="reference internal" href="menubar.html#function-menu-add-section-menu-section-parts-at-ln-28" id="id5"><em>Function:</em> menu_add_section(menu, section_parts) [at ln:28]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="menubar.html#class-menubar-qobject" id="id6"><em>Class:</em> _MenuBar(QObject)</a><ul>
+<li><a class="reference internal" href="menubar.html#attributes" id="id7"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="menubar.html#function-init-at-ln-49" id="id8"><em>Function:</em> __init__() [at ln:49]</a></li>
+<li><a class="reference internal" href="menubar.html#function-add-child-root-name-sub-name-child-weight-namespace-str-at-ln-82" id="id9"><em>Function:</em> add_child(root_name, sub_name, child, weight, namespace=str) [at ln:82]</a></li>
+<li><a class="reference internal" href="menubar.html#function-add-root-root-name-root-weight-none-at-ln-66" id="id10"><em>Function:</em> add_root(root_name, root_weight=None) [at ln:66]</a></li>
+<li><a class="reference internal" href="menubar.html#function-add-toolbar-item-toolbar-item-at-ln-105" id="id11"><em>Function:</em> add_toolbar_item(toolbar_item) [at ln:105]</a></li>
+<li><a class="reference internal" href="menubar.html#function-get-children-of-parent-sub-name-none-namespace-none-at-ln-92" id="id12"><em>Function:</em> get_children_of(parent, sub_name=None, namespace=None) [at ln:92]</a></li>
+<li><a class="reference internal" href="menubar.html#function-get-root-at-ln-76" id="id13"><em>Function:</em> get_root() [at ln:76]</a></li>
+<li><a class="reference internal" href="menubar.html#function-load-menu-ide-at-ln-109" id="id14"><em>Function:</em> load_menu(ide) [at ln:109]</a></li>
+<li><a class="reference internal" href="menubar.html#function-load-toolbar-ide-at-ln-155" id="id15"><em>Function:</em> load_toolbar(ide) [at ln:155]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="module-menubar-py-api">
+<h2><em>Module:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html">menubar.py</a> API</h2>
+<p>No description.</p>
+<div class="section" id="imports">
+<h3><a class="toc-backref" href="menubar.html#id2"><em>Imports:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#9">ninja_ide.gui.ide.IDE</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#3">PyQt4.QtGui.QAction</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#4">PyQt4.QtGui.QMenu</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#5">PyQt4.QtCore.QObject</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#6">collections.defaultdict</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#8">ninja_ide.core.settings</a></li>
+</ul>
+</div>
+<div class="section" id="global-attributes">
+<h3><a class="toc-backref" href="menubar.html#id3"><em>Global Attributes:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#12">SEC01 [at ln:12]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#13">SEC02 [at ln:13]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#14">SEC03 [at ln:14]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#15">SEC04 [at ln:15]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#16">SEC05 [at ln:16]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#17">SEC06 [at ln:17]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#18">SEC07 [at ln:18]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#19">SEC08 [at ln:19]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#20">SEC09 [at ln:20]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#21">SEC10 [at ln:21]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#164">menu [at ln:164]</a></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="global-functions">
+<h3><a class="toc-backref" href="menubar.html#id4"><em>Global Functions:</em></a></h3>
+<div class="section" id="function-menu-add-section-menu-section-parts-at-ln-28">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#listingsninja_ideguimenusmenubarpy-28">menu_add_section(menu, section_parts) [at ln:28]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">menu_add_section</span><span class="p">(</span><span class="n">menu</span><span class="p">,</span> <span class="n">section_parts</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-menubar-qobject">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#listingsninja_ideguimenusmenubarpy-47">_MenuBar(QObject)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">_MenuBar</span><span class="p">(</span><span class="n">QObject</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="attributes">
+<h4><a class="toc-backref" href="menubar.html#id7"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#52">_children [at ln:52]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#54">_menu_refs [at ln:54]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#51">_roots [at ln:51]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#53">_submenu [at ln:53]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#55">_toolbar_index [at ln:55]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#111">menubar [at ln:111]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-at-ln-49">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#listingsninja_ideguimenusmenubarpy-49">__init__() [at ln:49]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-child-root-name-sub-name-child-weight-namespace-str-at-ln-82">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#listingsninja_ideguimenusmenubarpy-82">add_child(root_name, sub_name, child, weight, namespace=str) [at ln:82]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">add_child</span><span class="p">(</span><span class="n">root_name</span><span class="p">,</span> <span class="n">sub_name</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="nb">str</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-root-root-name-root-weight-none-at-ln-66">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#listingsninja_ideguimenusmenubarpy-66">add_root(root_name, root_weight=None) [at ln:66]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">add_root</span><span class="p">(</span><span class="n">root_name</span><span class="p">,</span> <span class="n">root_weight</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Add a root menu with desired weight or at end of list</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-toolbar-item-toolbar-item-at-ln-105">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#listingsninja_ideguimenusmenubarpy-105">add_toolbar_item(toolbar_item) [at ln:105]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">add_toolbar_item</span><span class="p">(</span><span class="n">toolbar_item</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-children-of-parent-sub-name-none-namespace-none-at-ln-92">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#listingsninja_ideguimenusmenubarpy-92">get_children_of(parent, sub_name=None, namespace=None) [at ln:92]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_children_of</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">sub_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-root-at-ln-76">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#listingsninja_ideguimenusmenubarpy-76">get_root() [at ln:76]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_root</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-load-menu-ide-at-ln-109">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#listingsninja_ideguimenusmenubarpy-109">load_menu(ide) [at ln:109]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">load_menu</span><span class="p">(</span><span class="n">ide</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-load-toolbar-ide-at-ln-155">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/menus/menubar.py.html#listingsninja_ideguimenusmenubarpy-155">load_toolbar(ide) [at ln:155]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">load_toolbar</span><span class="p">(</span><span class="n">ide</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+</div>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

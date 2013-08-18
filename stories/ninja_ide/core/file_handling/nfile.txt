@@ -1,0 +1,276 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: nfile
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `nfile.py </listings/ninja_ide/core/file_handling/nfile.py.html>`_ API
+==================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `os </listings/ninja_ide/core/file_handling/nfile.py.html#18>`_
+
+- `shutil </listings/ninja_ide/core/file_handling/nfile.py.html#19>`_
+
+- `file_manager.NinjaIOException </listings/ninja_ide/core/file_handling/nfile.py.html#26>`_
+
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/core/file_handling/nfile.py.html#29>`_
+
+- `file_manager.NinjaNoFileNameException </listings/ninja_ide/core/file_handling/nfile.py.html#26>`_
+
+- `PyQt4.QtCore.QFile </listings/ninja_ide/core/file_handling/nfile.py.html#20>`_
+
+- `PyQt4.QtCore.QIODevice </listings/ninja_ide/core/file_handling/nfile.py.html#20>`_
+
+- `PyQt4.QtCore.QObject </listings/ninja_ide/core/file_handling/nfile.py.html#20>`_
+
+- `PyQt4.QtCore.QTextStream </listings/ninja_ide/core/file_handling/nfile.py.html#20>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/core/file_handling/nfile.py.html#20>`_
+
+- `ninja_ide.tools.utils.SignalFlowControl </listings/ninja_ide/core/file_handling/nfile.py.html#25>`_
+
+- `file_manager.get_basename </listings/ninja_ide/core/file_handling/nfile.py.html#26>`_
+
+- `file_manager.get_file_encoding </listings/ninja_ide/core/file_handling/nfile.py.html#26>`_
+
+- `file_manager.get_file_extension </listings/ninja_ide/core/file_handling/nfile.py.html#26>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/core/file_handling/nfile.py.html#24>`_
+
+- `ninja_ide.translations </listings/ninja_ide/core/file_handling/nfile.py.html#22>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `DEBUG [at ln:31] </listings/ninja_ide/core/file_handling/nfile.py.html#31>`_
+
+- `logger [at ln:30] </listings/ninja_ide/core/file_handling/nfile.py.html#30>`_
+
+
+----
+
+
+
+*Class:* `NFile(QObject) </listings/ninja_ide/core/file_handling/nfile.py.html#listingsninja_idecorefile_handlingnfilepy-46>`_
+--------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class NFile(QObject):
+
+|     
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `__created [at ln:54] </listings/ninja_ide/core/file_handling/nfile.py.html#54>`_
+
+- `_created [at ln:148] </listings/ninja_ide/core/file_handling/nfile.py.html#148>`_
+
+- `_file_path [at ln:188] </listings/ninja_ide/core/file_handling/nfile.py.html#188>`_
+
+
+*Function:* `__init__(path=None) [at ln:50] </listings/ninja_ide/core/file_handling/nfile.py.html#listingsninja_idecorefile_handlingnfilepy-50>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(path=None):
+
+|         
+
+
+----
+
+*Function:* `_exists() [at ln:94] </listings/ninja_ide/core/file_handling/nfile.py.html#listingsninja_idecorefile_handlingnfilepy-94>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _exists():
+
+| Check if we have been created with a path and if such path exists
+| In case there is no path, we are most likely a new file.
+
+
+----
+
+*Function:* `close() [at ln:211] </listings/ninja_ide/core/file_handling/nfile.py.html#listingsninja_idecorefile_handlingnfilepy-211>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def close():
+
+| Lets let people know we are going down so they can act upon
+| As you can see close does nothing but let everyone know that we are
+| not saved yet
+
+
+----
+
+*Function:* `copy(new_path) [at ln:191] </listings/ninja_ide/core/file_handling/nfile.py.html#listingsninja_idecorefile_handlingnfilepy-191>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def copy(new_path):
+
+| Copy the file to a new path
+
+
+----
+
+*Function:* `delete(force=False) [at ln:197] </listings/ninja_ide/core/file_handling/nfile.py.html#listingsninja_idecorefile_handlingnfilepy-197>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def delete(force=False):
+
+| This deletes the object and closes the file.
+
+
+----
+
+*Function:* `display_name() [at ln:69] </listings/ninja_ide/core/file_handling/nfile.py.html#listingsninja_idecorefile_handlingnfilepy-69>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def display_name():
+
+| Returns a pretty name to be displayed by tabs
+
+
+**Decorators:**
+
+- *property*
+
+----
+
+*Function:* `file_ext() [at ln:77] </listings/ninja_ide/core/file_handling/nfile.py.html#listingsninja_idecorefile_handlingnfilepy-77>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def file_ext():
+
+| "Returns extension of nfile
+
+
+**Decorators:**
+
+- *property*
+
+----
+
+*Function:* `file_name() [at ln:59] </listings/ninja_ide/core/file_handling/nfile.py.html#listingsninja_idecorefile_handlingnfilepy-59>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def file_name():
+
+| "Returns filename of nfile
+
+
+**Decorators:**
+
+- *property*
+
+----
+
+*Function:* `file_path() [at ln:84] </listings/ninja_ide/core/file_handling/nfile.py.html#listingsninja_idecorefile_handlingnfilepy-84>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def file_path():
+
+| "Returns file path of nfile
+
+
+**Decorators:**
+
+- *property*
+
+----
+
+*Function:* `has_write_permission() [at ln:89] </listings/ninja_ide/core/file_handling/nfile.py.html#listingsninja_idecorefile_handlingnfilepy-89>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def has_write_permission():
+
+
+No description.
+
+
+----
+
+*Function:* `move(new_path) [at ln:166] </listings/ninja_ide/core/file_handling/nfile.py.html#listingsninja_idecorefile_handlingnfilepy-166>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def move(new_path):
+
+| Phisically move the file
+
+
+----
+
+*Function:* `read(path=None) [at ln:150] </listings/ninja_ide/core/file_handling/nfile.py.html#listingsninja_idecorefile_handlingnfilepy-150>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def read(path=None):
+
+| Read the file or fail
+
+
+----
+
+*Function:* `reset_state() [at ln:144] </listings/ninja_ide/core/file_handling/nfile.py.html#listingsninja_idecorefile_handlingnfilepy-144>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def reset_state():
+
+| #FIXE: to have a ref to changed I need to have the doc here
+
+
+----
+
+*Function:* `save(content, path=None, copy=False) [at ln:104] </listings/ninja_ide/core/file_handling/nfile.py.html#listingsninja_idecorefile_handlingnfilepy-104>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def save(content, path=None, copy=False):
+
+| Write a temprorary file with .tnj extension and copy it over the
+| original one.
+| .nsf = Ninja Swap File
+| #FIXME: Where to locate addExtension, does not fit here
+
+
+
+

@@ -1,0 +1,277 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: base_watcher
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `base_watcher.py </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html>`_ API
+=========================================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `os </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#17>`_
+
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#21>`_
+
+- `PyQt4.QtCore.QObject </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#18>`_
+
+- `PyQt4.QtCore.QThread </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#19>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#19>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `ADDED [at ln:25] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#25>`_
+
+- `DEBUG [at ln:23] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#23>`_
+
+- `DELETED [at ln:27] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#27>`_
+
+- `MODIFIED [at ln:26] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#26>`_
+
+- `REMOVE [at ln:29] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#29>`_
+
+- `RENAME [at ln:28] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#28>`_
+
+- `logger [at ln:22] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#22>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `do_stat(file_path) [at ln:32] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsbase_watcherpy-32>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def do_stat(file_path):
+
+
+No description.
+
+
+----
+
+
+*Class:* `SingleFileWatcher(QThread) </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsbase_watcherpy-41>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class SingleFileWatcher(QThread):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_do_run [at ln:49] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#49>`_
+
+- `_emit_call [at ln:45] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#45>`_
+
+- `_watches [at ln:43] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#43>`_
+
+
+*Function:* `__init__(callback) [at ln:42] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsbase_watcherpy-42>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(callback):
+
+
+No description.
+
+
+----
+
+*Function:* `add_watch(file_to_watch) [at ln:51] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsbase_watcherpy-51>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_watch(file_to_watch):
+
+
+No description.
+
+
+----
+
+*Function:* `del_watch(file_to_unwatch) [at ln:62] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsbase_watcherpy-62>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def del_watch(file_to_unwatch):
+
+
+No description.
+
+
+----
+
+*Function:* `is_empty() [at ln:59] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsbase_watcherpy-59>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def is_empty():
+
+
+No description.
+
+
+----
+
+*Function:* `run() [at ln:77] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsbase_watcherpy-77>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run():
+
+
+No description.
+
+
+----
+
+*Function:* `stop_running() [at ln:48] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsbase_watcherpy-48>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def stop_running():
+
+
+No description.
+
+
+----
+
+*Function:* `tick() [at ln:66] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsbase_watcherpy-66>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def tick():
+
+
+No description.
+
+
+----
+
+*Class:* `BaseWatcher(QObject) </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsbase_watcherpy-84>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class BaseWatcher(QObject):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_single_file_watcher [at ln:115] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#115>`_
+
+- `allow_kill [at ln:95] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#95>`_
+
+
+*Function:* `__init__() [at ln:92] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsbase_watcherpy-92>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `_emit_signal_on_change(event, path) [at ln:122] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsbase_watcherpy-122>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _emit_signal_on_change(event, path):
+
+
+No description.
+
+
+----
+
+*Function:* `add_file_watch(file_path) [at ln:97] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsbase_watcherpy-97>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_file_watch(file_path):
+
+
+No description.
+
+
+----
+
+*Function:* `on_destroy() [at ln:113] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsbase_watcherpy-113>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def on_destroy():
+
+
+No description.
+
+
+----
+
+*Function:* `remove_file_watch(file_path) [at ln:106] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsbase_watcherpy-106>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def remove_file_watch(file_path):
+
+
+No description.
+
+
+----
+
+*Function:* `shutdown_notification() [at ln:117] </listings/ninja_ide/core/file_handling/filesystem_notifications/base_watcher.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsbase_watcherpy-117>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def shutdown_notification():
+
+
+No description.
+
+
+
+

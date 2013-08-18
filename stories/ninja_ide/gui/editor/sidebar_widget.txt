@@ -1,0 +1,331 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: sidebar_widget
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `sidebar_widget.py </listings/ninja_ide/gui/editor/sidebar_widget.py.html>`_ API
+============================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `math </listings/ninja_ide/gui/editor/sidebar_widget.py.html#19>`_
+
+- `re </listings/ninja_ide/gui/editor/sidebar_widget.py.html#20>`_
+
+- `PyQt4.QtGui.QBrush </listings/ninja_ide/gui/editor/sidebar_widget.py.html#23>`_
+
+- `PyQt4.QtGui.QColor </listings/ninja_ide/gui/editor/sidebar_widget.py.html#26>`_
+
+- `PyQt4.QtGui.QFontMetrics </listings/ninja_ide/gui/editor/sidebar_widget.py.html#28>`_
+
+- `PyQt4.QtGui.QLinearGradient </listings/ninja_ide/gui/editor/sidebar_widget.py.html#24>`_
+
+- `PyQt4.QtGui.QPainter </listings/ninja_ide/gui/editor/sidebar_widget.py.html#29>`_
+
+- `PyQt4.QtGui.QPixmap </listings/ninja_ide/gui/editor/sidebar_widget.py.html#25>`_
+
+- `PyQt4.QtCore.QPointF </listings/ninja_ide/gui/editor/sidebar_widget.py.html#31>`_
+
+- `PyQt4.QtGui.QPolygonF </listings/ninja_ide/gui/editor/sidebar_widget.py.html#27>`_
+
+- `PyQt4.QtGui.QWidget </listings/ninja_ide/gui/editor/sidebar_widget.py.html#22>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/editor/sidebar_widget.py.html#30>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/editor/sidebar_widget.py.html#17>`_
+
+- `ninja_ide.gui.editor.helpers </listings/ninja_ide/gui/editor/sidebar_widget.py.html#35>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/editor/sidebar_widget.py.html#33>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/editor/sidebar_widget.py.html#34>`_
+
+
+
+
+
+*Class:* `SidebarWidget(QWidget) </listings/ninja_ide/gui/editor/sidebar_widget.py.html#listingsninja_ideguieditorsidebar_widgetpy-42>`_
+------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class SidebarWidget(QWidget):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_endDocstringBlocks [at ln:373] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#373>`_
+
+- `_neditable [at ln:47] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#47>`_
+
+- `bookmarks [at ln:61] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#61>`_
+
+- `breakpoints [at ln:60] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#60>`_
+
+- `downArrowIcon [at ln:51] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#51>`_
+
+- `edit [at ln:46] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#46>`_
+
+- `foldArea [at ln:49] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#49>`_
+
+- `foldedBlocks [at ln:59] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#59>`_
+
+- `highest_line [at ln:277] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#277>`_
+
+- `pat [at ln:52] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#52>`_
+
+- `patComment [at ln:57] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#57>`_
+
+- `patNotPython [at ln:56] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#56>`_
+
+- `rightArrowIcon [at ln:50] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#50>`_
+
+
+*Function:* `__init__(editor, neditable) [at ln:44] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#listingsninja_ideguieditorsidebar_widgetpy-44>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(editor, neditable):
+
+
+No description.
+
+
+----
+
+*Function:* `_find_fold_closing(block) [at ln:146] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#listingsninja_ideguieditorsidebar_widgetpy-146>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _find_fold_closing(block):
+
+
+No description.
+
+
+----
+
+*Function:* `_find_fold_closing_brace(block) [at ln:191] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#listingsninja_ideguieditorsidebar_widgetpy-191>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _find_fold_closing_brace(block):
+
+
+No description.
+
+
+----
+
+*Function:* `_find_fold_closing_docstring(block) [at ln:183] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#listingsninja_ideguieditorsidebar_widgetpy-183>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _find_fold_closing_docstring(block):
+
+
+No description.
+
+
+----
+
+*Function:* `_find_fold_closing_label(block) [at ln:172] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#listingsninja_ideguieditorsidebar_widgetpy-172>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _find_fold_closing_label(block):
+
+
+No description.
+
+
+----
+
+*Function:* `_fold(lineNumber) [at ln:107] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#listingsninja_ideguieditorsidebar_widgetpy-107>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _fold(lineNumber):
+
+
+No description.
+
+
+----
+
+*Function:* `_is_folded(line) [at ln:140] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#listingsninja_ideguieditorsidebar_widgetpy-140>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _is_folded(line):
+
+
+No description.
+
+
+----
+
+*Function:* `_save_breakpoints_bookmarks() [at ln:426] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#listingsninja_ideguieditorsidebar_widgetpy-426>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _save_breakpoints_bookmarks():
+
+
+No description.
+
+
+----
+
+*Function:* `_unfold(lineNumber) [at ln:121] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#listingsninja_ideguieditorsidebar_widgetpy-121>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _unfold(lineNumber):
+
+
+No description.
+
+
+----
+
+*Function:* `calculate_docstring_block_fold() [at ln:372] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#listingsninja_ideguieditorsidebar_widgetpy-372>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def calculate_docstring_block_fold():
+
+
+No description.
+
+
+----
+
+*Function:* `code_folding_event(lineNumber) [at ln:98] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#listingsninja_ideguieditorsidebar_widgetpy-98>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def code_folding_event(lineNumber):
+
+
+No description.
+
+
+----
+
+*Function:* `mousePressEvent(event) [at ln:387] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#listingsninja_ideguieditorsidebar_widgetpy-387>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def mousePressEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `paintEvent(event) [at ln:204] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#listingsninja_ideguieditorsidebar_widgetpy-204>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def paintEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `set_bookmark(lineno) [at ln:444] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#listingsninja_ideguieditorsidebar_widgetpy-444>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_bookmark(lineno):
+
+
+No description.
+
+
+----
+
+*Function:* `set_breakpoint(lineno) [at ln:436] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#listingsninja_ideguieditorsidebar_widgetpy-436>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_breakpoint(lineno):
+
+
+No description.
+
+
+----
+
+*Function:* `update(*args) [at ln:78] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#listingsninja_ideguieditorsidebar_widgetpy-78>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update(*args):
+
+
+No description.
+
+
+----
+
+*Function:* `update_area() [at ln:68] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#listingsninja_ideguieditorsidebar_widgetpy-68>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_area():
+
+
+No description.
+
+
+----
+
+*Function:* `update_sidebar_marks(blockNumber, diference) [at ln:81] </listings/ninja_ide/gui/editor/sidebar_widget.py.html#listingsninja_ideguieditorsidebar_widgetpy-81>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_sidebar_marks(blockNumber, diference):
+
+
+No description.
+
+
+
+

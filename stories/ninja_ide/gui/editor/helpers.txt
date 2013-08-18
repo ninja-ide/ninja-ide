@@ -1,0 +1,429 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: helpers
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `helpers.py </listings/ninja_ide/gui/editor/helpers.py.html>`_ API
+==============================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `re </listings/ninja_ide/gui/editor/helpers.py.html#19>`_
+
+- `PyQt4.QtGui.QInputDialog </listings/ninja_ide/gui/editor/helpers.py.html#22>`_
+
+- `PyQt4.QtGui.QTextCursor </listings/ninja_ide/gui/editor/helpers.py.html#21>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/editor/helpers.py.html#17>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/gui/editor/helpers.py.html#25>`_
+
+- `ninja_ide.tools.introspection </listings/ninja_ide/gui/editor/helpers.py.html#26>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/editor/helpers.py.html#24>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `CODING_LINE [at ln:36] </listings/ninja_ide/gui/editor/helpers.py.html#36>`_
+
+- `closeBraces [at ln:34] </listings/ninja_ide/gui/editor/helpers.py.html#34>`_
+
+- `endCharsForIndent [at ln:33] </listings/ninja_ide/gui/editor/helpers.py.html#33>`_
+
+- `patClass [at ln:32] </listings/ninja_ide/gui/editor/helpers.py.html#32>`_
+
+- `patIndent [at ln:29] </listings/ninja_ide/gui/editor/helpers.py.html#29>`_
+
+- `patIsLocalFunction [at ln:31] </listings/ninja_ide/gui/editor/helpers.py.html#31>`_
+
+- `patSymbol [at ln:30] </listings/ninja_ide/gui/editor/helpers.py.html#30>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `add_line_increment(lines, blockModified, diference) [at ln:72] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-72>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_line_increment(lines, blockModified, diference):
+
+| Increment the line number of the list content when needed.
+
+
+----
+
+*Function:* `add_line_increment_for_dict(data, blockModified, diference) [at ln:81] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-81>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_line_increment_for_dict(data, blockModified, diference):
+
+| Increment the line number of the dict content when needed.
+
+
+----
+
+*Function:* `check_for_assistance_completion(editorWidget, line) [at ln:551] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-551>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def check_for_assistance_completion(editorWidget, line):
+
+
+No description.
+
+
+----
+
+*Function:* `clean_line(editorWidget) [at ln:108] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-108>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def clean_line(editorWidget):
+
+
+No description.
+
+
+----
+
+*Function:* `comment(editorWidget) [at ln:486] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-486>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def comment(editorWidget):
+
+| This method comment one or more lines of code 
+
+
+----
+
+*Function:* `comment_multiple_lines(cursor, block_start, block_end, comment_wildcard) [at ln:531] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-531>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def comment_multiple_lines(cursor, block_start, block_end, comment_wildcard):
+
+| Comment one or more lines with multiple comment symbol
+
+
+----
+
+*Function:* `comment_single_line(cursor, block_start, block_end, comment_wildcard) [at ln:511] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-511>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def comment_single_line(cursor, block_start, block_end, comment_wildcard):
+
+| Comment one or more lines with single comment symbol
+
+
+----
+
+*Function:* `delete_lines_selected(cursor, block_actual) [at ln:479] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-479>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def delete_lines_selected(cursor, block_actual):
+
+
+No description.
+
+
+----
+
+*Function:* `duplicate(editorWidget) [at ln:389] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-389>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def duplicate(editorWidget):
+
+
+No description.
+
+
+----
+
+*Function:* `get_first_keyword(line) [at ln:94] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-94>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_first_keyword(line):
+
+
+No description.
+
+
+----
+
+*Function:* `get_indentation(line, indent=settings.INDENT, useTabs=settings.USE_TABS) [at ln:49] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-49>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_indentation(line, indent=settings.INDENT, useTabs=settings.USE_TABS):
+
+
+No description.
+
+
+----
+
+*Function:* `get_leading_spaces(line) [at ln:41] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-41>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_leading_spaces(line):
+
+
+No description.
+
+
+----
+
+*Function:* `get_start_end_selection(editorWidget, cursor) [at ln:113] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-113>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_start_end_selection(editorWidget, cursor):
+
+
+No description.
+
+
+----
+
+*Function:* `insert_coding_line(editorWidget) [at ln:170] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-170>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def insert_coding_line(editorWidget):
+
+
+No description.
+
+
+----
+
+*Function:* `insert_debugging_prints(editorWidget) [at ln:210] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-210>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def insert_debugging_prints(editorWidget):
+
+
+No description.
+
+
+----
+
+*Function:* `insert_horizontal_line(editorWidget) [at ln:138] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-138>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def insert_horizontal_line(editorWidget):
+
+
+No description.
+
+
+----
+
+*Function:* `insert_pdb(editorWidget) [at ln:236] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-236>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def insert_pdb(editorWidget):
+
+| Insert a pdb statement into the current line to debug code.
+
+
+----
+
+*Function:* `insert_title_comment(editorWidget) [at ln:149] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-149>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def insert_title_comment(editorWidget):
+
+
+No description.
+
+
+----
+
+*Function:* `lint_ignore_line(editorWidget) [at ln:184] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-184>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def lint_ignore_line(editorWidget):
+
+
+No description.
+
+
+----
+
+*Function:* `lint_ignore_selection(editorWidget) [at ln:191] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-191>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def lint_ignore_selection(editorWidget):
+
+
+No description.
+
+
+----
+
+*Function:* `move_down(editorWidget) [at ln:300] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-300>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def move_down(editorWidget):
+
+
+No description.
+
+
+----
+
+*Function:* `move_up(editorWidget) [at ln:243] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-243>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def move_up(editorWidget):
+
+
+No description.
+
+
+----
+
+*Function:* `remove_line(editorWidget) [at ln:354] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-354>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def remove_line(editorWidget):
+
+
+No description.
+
+
+----
+
+*Function:* `remove_symbols(word) [at ln:104] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-104>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def remove_symbols(word):
+
+
+No description.
+
+
+----
+
+*Function:* `remove_trailing_spaces(editorWidget) [at ln:123] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-123>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def remove_trailing_spaces(editorWidget):
+
+
+No description.
+
+
+----
+
+*Function:* `replace_tabs_with_spaces(editorWidget) [at ln:178] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-178>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def replace_tabs_with_spaces(editorWidget):
+
+
+No description.
+
+
+----
+
+*Function:* `uncomment(editorWidget) [at ln:415] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-415>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def uncomment(editorWidget):
+
+
+No description.
+
+
+----
+
+*Function:* `uncomment_multiple_lines(cursor, block_start, block_end, comment_wildcard) [at ln:460] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-460>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def uncomment_multiple_lines(cursor, block_start, block_end, comment_wildcard):
+
+| Uncomment one or more lines when multiple lines symbols is supported
+
+
+----
+
+*Function:* `uncomment_single_line(cursor, block_start, block_end, comment_wildcard) [at ln:439] </listings/ninja_ide/gui/editor/helpers.py.html#listingsninja_ideguieditorhelperspy-439>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def uncomment_single_line(cursor, block_start, block_end, comment_wildcard):
+
+| Uncoment one or more lines when one line symbol is supported
+
+
+
+

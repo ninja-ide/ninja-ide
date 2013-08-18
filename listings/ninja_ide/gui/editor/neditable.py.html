@@ -1,0 +1,313 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="neditable.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>neditable.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../../">/listings</a>
+        </li><li><a href="../../">/ninja_ide</a>
+        </li><li><a href="../">/gui</a>
+        </li><li><a href=".">/editor</a>
+        </li><li><a href="#">/neditable.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="neditable.py.html#listingsninja_ideguieditorneditablepy-1">  1</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-2">  2</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-3">  3</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-4">  4</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-5">  5</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-6">  6</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-7">  7</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-8">  8</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-9">  9</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-10"> 10</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-11"> 11</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-12"> 12</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-13"> 13</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-14"> 14</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-15"> 15</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-16"> 16</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-17"> 17</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-18"> 18</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-19"> 19</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-20"> 20</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-21"> 21</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-22"> 22</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-23"> 23</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-24"> 24</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-25"> 25</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-26"> 26</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-27"> 27</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-28"> 28</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-29"> 29</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-30"> 30</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-31"> 31</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-32"> 32</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-33"> 33</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-34"> 34</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-35"> 35</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-36"> 36</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-37"> 37</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-38"> 38</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-39"> 39</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-40"> 40</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-41"> 41</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-42"> 42</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-43"> 43</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-44"> 44</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-45"> 45</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-46"> 46</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-47"> 47</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-48"> 48</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-49"> 49</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-50"> 50</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-51"> 51</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-52"> 52</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-53"> 53</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-54"> 54</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-55"> 55</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-56"> 56</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-57"> 57</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-58"> 58</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-59"> 59</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-60"> 60</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-61"> 61</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-62"> 62</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-63"> 63</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-64"> 64</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-65"> 65</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-66"> 66</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-67"> 67</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-68"> 68</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-69"> 69</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-70"> 70</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-71"> 71</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-72"> 72</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-73"> 73</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-74"> 74</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-75"> 75</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-76"> 76</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-77"> 77</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-78"> 78</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-79"> 79</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-80"> 80</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-81"> 81</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-82"> 82</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-83"> 83</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-84"> 84</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-85"> 85</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-86"> 86</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-87"> 87</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-88"> 88</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-89"> 89</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-90"> 90</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-91"> 91</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-92"> 92</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-93"> 93</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-94"> 94</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-95"> 95</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-96"> 96</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-97"> 97</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-98"> 98</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-99"> 99</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-100">100</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-101">101</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-102">102</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-103">103</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-104">104</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-105">105</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-106">106</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-107">107</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-108">108</a>
+<a href="neditable.py.html#listingsninja_ideguieditorneditablepy-109">109</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_ideguieditorneditablepy-1"></a><span class="c"># -*- coding: utf-8 -*-</span>
+<a name="listingsninja_ideguieditorneditablepy-2"></a>
+<a name="listingsninja_ideguieditorneditablepy-3"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">QObject</span>
+<a name="listingsninja_ideguieditorneditablepy-4"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">SIGNAL</span>
+<a name="listingsninja_ideguieditorneditablepy-5"></a>
+<a name="listingsninja_ideguieditorneditablepy-6"></a><span class="kn">from</span> <span class="nn">ninja_ide.core.file_handling</span> <span class="kn">import</span> <span class="n">nfile</span>
+<a name="listingsninja_ideguieditorneditablepy-7"></a><span class="kn">from</span> <span class="nn">ninja_ide.core.file_handling</span> <span class="kn">import</span> <span class="n">file_manager</span>
+<a name="listingsninja_ideguieditorneditablepy-8"></a><span class="kn">from</span> <span class="nn">ninja_ide.gui.editor</span> <span class="kn">import</span> <span class="n">checkers</span>
+<a name="listingsninja_ideguieditorneditablepy-9"></a><span class="kn">from</span> <span class="nn">ninja_ide.gui.editor</span> <span class="kn">import</span> <span class="n">helpers</span>
+<a name="listingsninja_ideguieditorneditablepy-10"></a>
+<a name="listingsninja_ideguieditorneditablepy-11"></a>
+<a name="listingsninja_ideguieditorneditablepy-12"></a><span class="k">class</span> <span class="nc">NEditable</span><span class="p">(</span><span class="n">QObject</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorneditablepy-13"></a>    <span class="sd">"""</span>
+<a name="listingsninja_ideguieditorneditablepy-14"></a><span class="sd">    SIGNALS:</span>
+<a name="listingsninja_ideguieditorneditablepy-15"></a><span class="sd">    @checkersUpdated()</span>
+<a name="listingsninja_ideguieditorneditablepy-16"></a><span class="sd">    """</span>
+<a name="listingsninja_ideguieditorneditablepy-17"></a>
+<a name="listingsninja_ideguieditorneditablepy-18"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorneditablepy-19"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">NEditable</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+<a name="listingsninja_ideguieditorneditablepy-20"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">__id</span> <span class="o">=</span> <span class="s">''</span>
+<a name="listingsninja_ideguieditorneditablepy-21"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">__editor</span> <span class="o">=</span> <span class="bp">None</span>
+<a name="listingsninja_ideguieditorneditablepy-22"></a>        <span class="c">#Create NFile</span>
+<a name="listingsninja_ideguieditorneditablepy-23"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_nfile</span> <span class="o">=</span> <span class="bp">None</span>
+<a name="listingsninja_ideguieditorneditablepy-24"></a>        <span class="k">if</span> <span class="n">filepath</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorneditablepy-25"></a>            <span class="c">#temp file</span>
+<a name="listingsninja_ideguieditorneditablepy-26"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">__id</span> <span class="o">=</span> <span class="s">'temp'</span>
+<a name="listingsninja_ideguieditorneditablepy-27"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorneditablepy-28"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">__id</span> <span class="o">=</span> <span class="n">filepath</span>
+<a name="listingsninja_ideguieditorneditablepy-29"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_nfile</span> <span class="o">=</span> <span class="n">nfile</span><span class="o">.</span><span class="n">NFile</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorneditablepy-30"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">text_modified</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_ideguieditorneditablepy-31"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_has_checkers</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_ideguieditorneditablepy-32"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_lang</span> <span class="o">=</span> <span class="s">'python'</span>
+<a name="listingsninja_ideguieditorneditablepy-33"></a>
+<a name="listingsninja_ideguieditorneditablepy-34"></a>        <span class="c">#Project:</span>
+<a name="listingsninja_ideguieditorneditablepy-35"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="n">project</span>
+<a name="listingsninja_ideguieditorneditablepy-36"></a>
+<a name="listingsninja_ideguieditorneditablepy-37"></a>        <span class="c">#Checkers:</span>
+<a name="listingsninja_ideguieditorneditablepy-38"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">registered_checkers</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_ideguieditorneditablepy-39"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_checkers_executed</span> <span class="o">=</span> <span class="mi">0</span>
+<a name="listingsninja_ideguieditorneditablepy-40"></a>
+<a name="listingsninja_ideguieditorneditablepy-41"></a>    <span class="k">def</span> <span class="nf">set_editor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">editor</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorneditablepy-42"></a>        <span class="sd">"""Set the Editor (UI component) associated with this object."""</span>
+<a name="listingsninja_ideguieditorneditablepy-43"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">__editor</span> <span class="o">=</span> <span class="n">editor</span>
+<a name="listingsninja_ideguieditorneditablepy-44"></a>        <span class="n">content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nfile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<a name="listingsninja_ideguieditorneditablepy-45"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">__editor</span><span class="o">.</span><span class="n">setPlainText</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorneditablepy-46"></a>        <span class="n">encoding</span> <span class="o">=</span> <span class="n">file_manager</span><span class="o">.</span><span class="n">get_file_encoding</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorneditablepy-47"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">__editor</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="n">encoding</span>
+<a name="listingsninja_ideguieditorneditablepy-48"></a>
+<a name="listingsninja_ideguieditorneditablepy-49"></a>        <span class="c">#New file then try to add a coding line</span>
+<a name="listingsninja_ideguieditorneditablepy-50"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorneditablepy-51"></a>            <span class="n">helpers</span><span class="o">.</span><span class="n">insert_coding_line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__editor</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorneditablepy-52"></a>        <span class="c"># If we have an editor, let's include the checkers:</span>
+<a name="listingsninja_ideguieditorneditablepy-53"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">include_checkers</span><span class="p">()</span>
+<a name="listingsninja_ideguieditorneditablepy-54"></a>
+<a name="listingsninja_ideguieditorneditablepy-55"></a>    <span class="k">def</span> <span class="nf">save_content</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorneditablepy-56"></a>        <span class="sd">"""Save the content of the UI to a file."""</span>
+<a name="listingsninja_ideguieditorneditablepy-57"></a>        <span class="n">content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__editor</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+<a name="listingsninja_ideguieditorneditablepy-58"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_nfile</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorneditablepy-59"></a>
+<a name="listingsninja_ideguieditorneditablepy-60"></a>    <span class="k">def</span> <span class="nf">update_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorneditablepy-61"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="n">project</span>
+<a name="listingsninja_ideguieditorneditablepy-62"></a>
+<a name="listingsninja_ideguieditorneditablepy-63"></a>    <span class="nd">@property</span>
+<a name="listingsninja_ideguieditorneditablepy-64"></a>    <span class="k">def</span> <span class="nf">ID</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorneditablepy-65"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__id</span>
+<a name="listingsninja_ideguieditorneditablepy-66"></a>
+<a name="listingsninja_ideguieditorneditablepy-67"></a>    <span class="nd">@property</span>
+<a name="listingsninja_ideguieditorneditablepy-68"></a>    <span class="k">def</span> <span class="nf">display_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorneditablepy-69"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nfile</span><span class="o">.</span><span class="n">display_name</span>
+<a name="listingsninja_ideguieditorneditablepy-70"></a>
+<a name="listingsninja_ideguieditorneditablepy-71"></a>    <span class="nd">@property</span>
+<a name="listingsninja_ideguieditorneditablepy-72"></a>    <span class="k">def</span> <span class="nf">has_checkers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorneditablepy-73"></a>        <span class="sd">"""Return True if checkers where installaed, False otherwise"""</span>
+<a name="listingsninja_ideguieditorneditablepy-74"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_checkers</span>
+<a name="listingsninja_ideguieditorneditablepy-75"></a>
+<a name="listingsninja_ideguieditorneditablepy-76"></a>    <span class="k">def</span> <span class="nf">include_checkers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="s">'python'</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorneditablepy-77"></a>        <span class="sd">"""Initialize the Checkers, should be refreshed on checkers change."""</span>
+<a name="listingsninja_ideguieditorneditablepy-78"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_lang</span> <span class="o">=</span> <span class="n">lang</span>
+<a name="listingsninja_ideguieditorneditablepy-79"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">registered_checkers</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">checkers</span><span class="o">.</span><span class="n">get_checkers_for</span><span class="p">(</span><span class="n">lang</span><span class="p">),</span>
+<a name="listingsninja_ideguieditorneditablepy-80"></a>            <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<a name="listingsninja_ideguieditorneditablepy-81"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_has_checkers</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">registered_checkers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<a name="listingsninja_ideguieditorneditablepy-82"></a>        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">registered_checkers</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorneditablepy-83"></a>            <span class="n">Checker</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">priority</span> <span class="o">=</span> <span class="n">values</span>
+<a name="listingsninja_ideguieditorneditablepy-84"></a>            <span class="n">check</span> <span class="o">=</span> <span class="n">Checker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__editor</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorneditablepy-85"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">registered_checkers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">check</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">priority</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorneditablepy-86"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">check</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"finished()"</span><span class="p">),</span>
+<a name="listingsninja_ideguieditorneditablepy-87"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">show_checkers_notifications</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorneditablepy-88"></a>
+<a name="listingsninja_ideguieditorneditablepy-89"></a>    <span class="k">def</span> <span class="nf">update_checkers_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blockNumber</span><span class="p">,</span> <span class="n">diference</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorneditablepy-90"></a>        <span class="sd">"""Update the lines in the checkers when the editor change."""</span>
+<a name="listingsninja_ideguieditorneditablepy-91"></a>        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">registered_checkers</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorneditablepy-92"></a>            <span class="n">checker</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">priority</span> <span class="o">=</span> <span class="n">values</span>
+<a name="listingsninja_ideguieditorneditablepy-93"></a>            <span class="k">if</span> <span class="n">checker</span><span class="o">.</span><span class="n">checks</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorneditablepy-94"></a>                <span class="n">checker</span><span class="o">.</span><span class="n">checks</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">add_line_increment_for_dict</span><span class="p">(</span>
+<a name="listingsninja_ideguieditorneditablepy-95"></a>                    <span class="n">checker</span><span class="o">.</span><span class="n">checks</span><span class="p">,</span> <span class="n">blockNumber</span><span class="p">,</span> <span class="n">diference</span><span class="p">)</span>
+<a name="listingsninja_ideguieditorneditablepy-96"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">"checkersUpdated()"</span><span class="p">))</span>
+<a name="listingsninja_ideguieditorneditablepy-97"></a>
+<a name="listingsninja_ideguieditorneditablepy-98"></a>    <span class="k">def</span> <span class="nf">run_checkers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorneditablepy-99"></a>        <span class="k">for</span> <span class="n">items</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">registered_checkers</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorneditablepy-100"></a>            <span class="n">checker</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<a name="listingsninja_ideguieditorneditablepy-101"></a>            <span class="n">checker</span><span class="o">.</span><span class="n">run_checks</span><span class="p">()</span>
+<a name="listingsninja_ideguieditorneditablepy-102"></a>
+<a name="listingsninja_ideguieditorneditablepy-103"></a>    <span class="k">def</span> <span class="nf">show_checkers_notifications</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorneditablepy-104"></a>        <span class="sd">"""Show the notifications obtained for the proper checker."""</span>
+<a name="listingsninja_ideguieditorneditablepy-105"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_checkers_executed</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">registered_checkers</span><span class="p">):</span>
+<a name="listingsninja_ideguieditorneditablepy-106"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_checkers_executed</span> <span class="o">=</span> <span class="mi">0</span>
+<a name="listingsninja_ideguieditorneditablepy-107"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">"checkersUpdated()"</span><span class="p">))</span>
+<a name="listingsninja_ideguieditorneditablepy-108"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguieditorneditablepy-109"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_checkers_executed</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

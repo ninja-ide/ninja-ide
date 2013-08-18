@@ -1,0 +1,369 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="NINJA-IDE">
+    <title>NINJA-IDE | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+
+
+
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+    <li>
+    <a href="completer_widget.txt" id="sourcelink">Source</a>
+    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+    <h1>NINJA-IDE</h1>
+    <div class="contents alert alert-info pull-top topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="completer_widget.html#module-completer-widget-py-api" id="id2"><em>Module:</em> completer_widget.py API</a><ul>
+<li><a class="reference internal" href="completer_widget.html#imports" id="id3"><em>Imports:</em></a></li>
+<li><a class="reference internal" href="completer_widget.html#class-completerwidget-qcompleter" id="id4"><em>Class:</em> CompleterWidget(QCompleter)</a><ul>
+<li><a class="reference internal" href="completer_widget.html#attributes" id="id5"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="completer_widget.html#function-init-editor-at-ln-253" id="id6"><em>Function:</em> __init__(editor) [at ln:253]</a></li>
+<li><a class="reference internal" href="completer_widget.html#function-complete-cr-results-at-ln-272" id="id7"><em>Function:</em> complete(cr, results) [at ln:272]</a></li>
+<li><a class="reference internal" href="completer_widget.html#function-fill-completer-at-ln-308" id="id8"><em>Function:</em> fill_completer() [at ln:308]</a></li>
+<li><a class="reference internal" href="completer_widget.html#function-insert-completion-insert-at-ln-267" id="id9"><em>Function:</em> insert_completion(insert) [at ln:267]</a></li>
+<li><a class="reference internal" href="completer_widget.html#function-is-visible-at-ln-284" id="id10"><em>Function:</em> is_visible() [at ln:284]</a></li>
+<li><a class="reference internal" href="completer_widget.html#function-process-post-key-event-event-at-ln-297" id="id11"><em>Function:</em> process_post_key_event(event) [at ln:297]</a></li>
+<li><a class="reference internal" href="completer_widget.html#function-process-pre-key-event-event-at-ln-287" id="id12"><em>Function:</em> process_pre_key_event(event) [at ln:287]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="completer_widget.html#class-codecompletionwidget-qframe" id="id13"><em>Class:</em> CodeCompletionWidget(QFrame)</a><ul>
+<li><a class="reference internal" href="completer_widget.html#id1" id="id14"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="completer_widget.html#function-init-editor-at-ln-37" id="id15"><em>Function:</em> __init__(editor) [at ln:37]</a></li>
+<li><a class="reference internal" href="completer_widget.html#function-get-geometry-at-ln-125" id="id16"><em>Function:</em> _get_geometry() [at ln:125]</a></li>
+<li><a class="reference internal" href="completer_widget.html#function-invalid-completion-position-at-ln-182" id="id17"><em>Function:</em> _invalid_completion_position() [at ln:182]</a></li>
+<li><a class="reference internal" href="completer_widget.html#function-select-next-row-move-int-at-ln-87" id="id18"><em>Function:</em> _select_next_row(move=int) [at ln:87]</a></li>
+<li><a class="reference internal" href="completer_widget.html#function-select-previous-row-move-int-at-ln-95" id="id19"><em>Function:</em> _select_previous_row(move=int) [at ln:95]</a></li>
+<li><a class="reference internal" href="completer_widget.html#function-add-list-items-proposals-at-ln-154" id="id20"><em>Function:</em> add_list_items(proposals) [at ln:154]</a></li>
+<li><a class="reference internal" href="completer_widget.html#function-complete-results-at-ln-146" id="id21"><em>Function:</em> complete(results) [at ln:146]</a></li>
+<li><a class="reference internal" href="completer_widget.html#function-fill-completer-force-completion-false-at-ln-193" id="id22"><em>Function:</em> fill_completer(force_completion=False) [at ln:193]</a></li>
+<li><a class="reference internal" href="completer_widget.html#function-hide-completer-at-ln-212" id="id23"><em>Function:</em> hide_completer() [at ln:212]</a></li>
+<li><a class="reference internal" href="completer_widget.html#function-insert-completion-insert-type-function-at-ln-115" id="id24"><em>Function:</em> insert_completion(insert, type_=function()) [at ln:115]</a></li>
+<li><a class="reference internal" href="completer_widget.html#function-pre-key-insert-completion-at-ln-216" id="id25"><em>Function:</em> pre_key_insert_completion() [at ln:216]</a></li>
+<li><a class="reference internal" href="completer_widget.html#function-process-post-key-event-event-at-ln-235" id="id26"><em>Function:</em> process_post_key_event(event) [at ln:235]</a></li>
+<li><a class="reference internal" href="completer_widget.html#function-process-pre-key-event-event-at-ln-226" id="id27"><em>Function:</em> process_pre_key_event(event) [at ln:226]</a></li>
+<li><a class="reference internal" href="completer_widget.html#function-set-completion-prefix-prefix-valid-true-at-ln-162" id="id28"><em>Function:</em> set_completion_prefix(prefix, valid=True) [at ln:162]</a></li>
+<li><a class="reference internal" href="completer_widget.html#function-update-metadata-cursor-at-ln-104" id="id29"><em>Function:</em> update_metadata(cursor) [at ln:104]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="module-completer-widget-py-api">
+<h2><em>Module:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html">completer_widget.py</a> API</h2>
+<p>No description.</p>
+<div class="section" id="imports">
+<h3><a class="toc-backref" href="completer_widget.html#id3"><em>Imports:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#19">PyQt4.QtGui.QApplication</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#22">PyQt4.QtGui.QCompleter</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#21">PyQt4.QtGui.QFrame</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#25">PyQt4.QtGui.QIcon</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#28">PyQt4.QtGui.QListWidget</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#24">PyQt4.QtGui.QListWidgetItem</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#23">PyQt4.QtGui.QStackedLayout</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#20">PyQt4.QtGui.QTextCursor</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#26">PyQt4.QtCore.Qt</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#27">PyQt4.QtCore.SIGNAL</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#32">ninja_ide.tools.completion.code_completion</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#30">ninja_ide.resources</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#31">ninja_ide.core.settings</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#17">__future__.unicode_literals</a></li>
+</ul>
+</div>
+<div class="section" id="class-completerwidget-qcompleter">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-251">CompleterWidget(QCompleter)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">CompleterWidget</span><span class="p">(</span><span class="n">QCompleter</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="attributes">
+<h4><a class="toc-backref" href="completer_widget.html#id5"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#255">_editor [at ln:255]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#261">cc [at ln:261]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#315">completion_results [at ln:315]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-editor-at-ln-253">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-253">__init__(editor) [at ln:253]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">editor</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-complete-cr-results-at-ln-272">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-272">complete(cr, results) [at ln:272]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">complete</span><span class="p">(</span><span class="n">cr</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-fill-completer-at-ln-308">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-308">fill_completer() [at ln:308]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">fill_completer</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-insert-completion-insert-at-ln-267">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-267">insert_completion(insert) [at ln:267]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">insert_completion</span><span class="p">(</span><span class="n">insert</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-is-visible-at-ln-284">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-284">is_visible() [at ln:284]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">is_visible</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-process-post-key-event-event-at-ln-297">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-297">process_post_key_event(event) [at ln:297]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">process_post_key_event</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-process-pre-key-event-event-at-ln-287">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-287">process_pre_key_event(event) [at ln:287]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">process_pre_key_event</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-codecompletionwidget-qframe">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-35">CodeCompletionWidget(QFrame)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">CodeCompletionWidget</span><span class="p">(</span><span class="n">QFrame</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id1">
+<h4><a class="toc-backref" href="completer_widget.html#id14"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#42">_block [at ln:42]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#202">_completion_results [at ln:202]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#40">_editor [at ln:40]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#51">_icons [at ln:51]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#61">_key_operations [at ln:61]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#49">_list_index [at ln:49]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#213">_prefix [at ln:213]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#41">_revision [at ln:41]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#56">cc [at ln:56]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#46">completion_list [at ln:46]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#78">desktop [at ln:78]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#60">source [at ln:60]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#43">stack_layout [at ln:43]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-editor-at-ln-37">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-37">__init__(editor) [at ln:37]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">editor</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-get-geometry-at-ln-125">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-125">_get_geometry() [at ln:125]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_get_geometry</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-invalid-completion-position-at-ln-182">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-182">_invalid_completion_position() [at ln:182]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_invalid_completion_position</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-select-next-row-move-int-at-ln-87">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-87">_select_next_row(move=int) [at ln:87]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_select_next_row</span><span class="p">(</span><span class="n">move</span><span class="o">=</span><span class="nb">int</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-select-previous-row-move-int-at-ln-95">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-95">_select_previous_row(move=int) [at ln:95]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_select_previous_row</span><span class="p">(</span><span class="n">move</span><span class="o">=</span><span class="nb">int</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-list-items-proposals-at-ln-154">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-154">add_list_items(proposals) [at ln:154]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">add_list_items</span><span class="p">(</span><span class="n">proposals</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-complete-results-at-ln-146">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-146">complete(results) [at ln:146]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">complete</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-fill-completer-force-completion-false-at-ln-193">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-193">fill_completer(force_completion=False) [at ln:193]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">fill_completer</span><span class="p">(</span><span class="n">force_completion</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-hide-completer-at-ln-212">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-212">hide_completer() [at ln:212]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">hide_completer</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-insert-completion-insert-type-function-at-ln-115">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-115">insert_completion(insert, type_=function()) [at ln:115]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">insert_completion</span><span class="p">(</span><span class="n">insert</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="n">function</span><span class="p">()):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-pre-key-insert-completion-at-ln-216">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-216">pre_key_insert_completion() [at ln:216]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">pre_key_insert_completion</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-process-post-key-event-event-at-ln-235">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-235">process_post_key_event(event) [at ln:235]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">process_post_key_event</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-process-pre-key-event-event-at-ln-226">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-226">process_pre_key_event(event) [at ln:226]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">process_pre_key_event</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-set-completion-prefix-prefix-valid-true-at-ln-162">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-162">set_completion_prefix(prefix, valid=True) [at ln:162]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">set_completion_prefix</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">valid</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-update-metadata-cursor-at-ln-104">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/tools/completion/completer_widget.py.html#listingsninja_idetoolscompletioncompleter_widgetpy-104">update_metadata(cursor) [at ln:104]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">update_metadata</span><span class="p">(</span><span class="n">cursor</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+</div>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

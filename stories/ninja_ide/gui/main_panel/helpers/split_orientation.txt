@@ -1,0 +1,64 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: split_orientation
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `split_orientation.py </listings/ninja_ide/gui/main_panel/helpers/split_orientation.py.html>`_ API
+==============================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `PyQt4.QtDeclarative.QDeclarativeView </listings/ninja_ide/gui/main_panel/helpers/split_orientation.py.html#7>`_
+
+- `PyQt4.QtGui.QDialog </listings/ninja_ide/gui/main_panel/helpers/split_orientation.py.html#4>`_
+
+- `PyQt4.QtGui.QVBoxLayout </listings/ninja_ide/gui/main_panel/helpers/split_orientation.py.html#5>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/main_panel/helpers/split_orientation.py.html#6>`_
+
+- `ninja_ide.tools.ui_tools </listings/ninja_ide/gui/main_panel/helpers/split_orientation.py.html#9>`_
+
+
+
+
+
+*Class:* `SplitOrientation(QDialog) </listings/ninja_ide/gui/main_panel/helpers/split_orientation.py.html#listingsninja_ideguimain_panelhelperssplit_orientationpy-12>`_
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class SplitOrientation(QDialog):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_root [at ln:26] </listings/ninja_ide/gui/main_panel/helpers/split_orientation.py.html#26>`_
+
+
+*Function:* `__init__(parent=None) [at ln:14] </listings/ninja_ide/gui/main_panel/helpers/split_orientation.py.html#listingsninja_ideguimain_panelhelperssplit_orientationpy-14>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent=None):
+
+
+No description.
+
+
+
+

@@ -1,0 +1,267 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="NINJA-IDE">
+    <title>NINJA-IDE | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+
+
+
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+    <li>
+    <a href="neditable.txt" id="sourcelink">Source</a>
+    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+    <h1>NINJA-IDE</h1>
+    <div class="contents alert alert-info pull-top topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="neditable.html#module-neditable-py-api" id="id1"><em>Module:</em> neditable.py API</a><ul>
+<li><a class="reference internal" href="neditable.html#imports" id="id2"><em>Imports:</em></a></li>
+<li><a class="reference internal" href="neditable.html#class-neditable-qobject" id="id3"><em>Class:</em> NEditable(QObject)</a><ul>
+<li><a class="reference internal" href="neditable.html#attributes" id="id4"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="neditable.html#function-id-at-ln-63" id="id5"><em>Function:</em> ID() [at ln:63]</a></li>
+<li><a class="reference internal" href="neditable.html#function-init-filepath-none-project-none-at-ln-18" id="id6"><em>Function:</em> __init__(filepath=None, project=None) [at ln:18]</a></li>
+<li><a class="reference internal" href="neditable.html#function-display-name-at-ln-67" id="id7"><em>Function:</em> display_name() [at ln:67]</a></li>
+<li><a class="reference internal" href="neditable.html#function-has-checkers-at-ln-71" id="id8"><em>Function:</em> has_checkers() [at ln:71]</a></li>
+<li><a class="reference internal" href="neditable.html#function-include-checkers-lang-str-at-ln-76" id="id9"><em>Function:</em> include_checkers(lang=str) [at ln:76]</a></li>
+<li><a class="reference internal" href="neditable.html#function-run-checkers-content-path-none-encoding-none-at-ln-98" id="id10"><em>Function:</em> run_checkers(content, path=None, encoding=None) [at ln:98]</a></li>
+<li><a class="reference internal" href="neditable.html#function-save-content-at-ln-55" id="id11"><em>Function:</em> save_content() [at ln:55]</a></li>
+<li><a class="reference internal" href="neditable.html#function-set-editor-editor-at-ln-41" id="id12"><em>Function:</em> set_editor(editor) [at ln:41]</a></li>
+<li><a class="reference internal" href="neditable.html#function-show-checkers-notifications-at-ln-103" id="id13"><em>Function:</em> show_checkers_notifications() [at ln:103]</a></li>
+<li><a class="reference internal" href="neditable.html#function-update-checkers-metadata-blocknumber-diference-at-ln-89" id="id14"><em>Function:</em> update_checkers_metadata(blockNumber, diference) [at ln:89]</a></li>
+<li><a class="reference internal" href="neditable.html#function-update-project-project-at-ln-60" id="id15"><em>Function:</em> update_project(project) [at ln:60]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="module-neditable-py-api">
+<h2><em>Module:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html">neditable.py</a> API</h2>
+<p>No description.</p>
+<div class="section" id="imports">
+<h3><a class="toc-backref" href="neditable.html#id2"><em>Imports:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#3">PyQt4.QtCore.QObject</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#4">PyQt4.QtCore.SIGNAL</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#8">ninja_ide.gui.editor.checkers</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#7">ninja_ide.core.file_handling.file_manager</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#9">ninja_ide.gui.editor.helpers</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#6">ninja_ide.core.file_handling.nfile</a></li>
+</ul>
+</div>
+<div class="section" id="class-neditable-qobject">
+<h3><em>Class:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-12">NEditable(QObject)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">NEditable</span><span class="p">(</span><span class="n">QObject</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">SIGNALS:</div>
+<div class="line">@checkersUpdated()</div>
+</div>
+<div class="section" id="attributes">
+<h4><a class="toc-backref" href="neditable.html#id4"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#43">__editor [at ln:43]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#20">__id [at ln:20]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#39">_checkers_executed [at ln:39]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#81">_has_checkers [at ln:81]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#78">_lang [at ln:78]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#23">_nfile [at ln:23]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#47">encoding [at ln:47]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#61">project [at ln:61]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#79">registered_checkers [at ln:79]</a></li>
+<li><a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#30">text_modified [at ln:30]</a></li>
+</ul>
+</div>
+<div class="section" id="function-id-at-ln-63">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-63">ID() [at ln:63]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">ID</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+<p><strong>Decorators:</strong></p>
+<ul class="simple">
+<li><em>property</em></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="function-init-filepath-none-project-none-at-ln-18">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-18">__init__(filepath=None, project=None) [at ln:18]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">filepath</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-display-name-at-ln-67">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-67">display_name() [at ln:67]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">display_name</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+<p><strong>Decorators:</strong></p>
+<ul class="simple">
+<li><em>property</em></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="function-has-checkers-at-ln-71">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-71">has_checkers() [at ln:71]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">has_checkers</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Return True if checkers where installaed, False otherwise</div>
+</div>
+<p><strong>Decorators:</strong></p>
+<ul class="simple">
+<li><em>property</em></li>
+</ul>
+</div>
+<hr class="docutils">
+<div class="section" id="function-include-checkers-lang-str-at-ln-76">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-76">include_checkers(lang=str) [at ln:76]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">include_checkers</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="nb">str</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Initialize the Checkers, should be refreshed on checkers change.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-run-checkers-content-path-none-encoding-none-at-ln-98">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-98">run_checkers(content, path=None, encoding=None) [at ln:98]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">run_checkers</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-save-content-at-ln-55">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-55">save_content() [at ln:55]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">save_content</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Save the content of the UI to a file.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-set-editor-editor-at-ln-41">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-41">set_editor(editor) [at ln:41]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">set_editor</span><span class="p">(</span><span class="n">editor</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Set the Editor (UI component) associated with this object.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-show-checkers-notifications-at-ln-103">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-103">show_checkers_notifications() [at ln:103]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">show_checkers_notifications</span><span class="p">():</span>
+</pre>
+<div class="line-block">
+<div class="line">Show the notifications obtained for the proper checker.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-update-checkers-metadata-blocknumber-diference-at-ln-89">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-89">update_checkers_metadata(blockNumber, diference) [at ln:89]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">update_checkers_metadata</span><span class="p">(</span><span class="n">blockNumber</span><span class="p">,</span> <span class="n">diference</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">Update the lines in the checkers when the editor change.</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-update-project-project-at-ln-60">
+<h4><em>Function:</em> <a class="reference external" href="../../../../listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-60">update_project(project) [at ln:60]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">update_project</span><span class="p">(</span><span class="n">project</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+</div>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

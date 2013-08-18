@@ -1,0 +1,66 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: debugger
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `debugger.py </listings/ninja_ide/tools/debugger.py.html>`_ API
+===========================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `bdb </listings/ninja_ide/tools/debugger.py.html#19>`_
+
+- `__future__.absolute_import </listings/ninja_ide/tools/debugger.py.html#17>`_
+
+
+
+
+
+*Class:* `Debugger(bdb.Bdb) </listings/ninja_ide/tools/debugger.py.html#listingsninja_idetoolsdebuggerpy-22>`_
+----------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Debugger(bdb.Bdb):
+
+
+No description.
+
+
+*Function:* `__init__(breakpoints) [at ln:24] </listings/ninja_ide/tools/debugger.py.html#listingsninja_idetoolsdebuggerpy-24>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(breakpoints):
+
+
+No description.
+
+
+----
+
+*Function:* `run(code) [at ln:31] </listings/ninja_ide/tools/debugger.py.html#listingsninja_idetoolsdebuggerpy-31>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run(code):
+
+
+No description.
+
+
+
+

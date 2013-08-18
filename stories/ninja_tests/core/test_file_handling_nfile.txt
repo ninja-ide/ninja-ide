@@ -1,0 +1,309 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: test_file_handling_nfile
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `test_file_handling_nfile.py </listings/ninja_tests/core/test_file_handling_nfile.py.html>`_ API
+============================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `os </listings/ninja_tests/core/test_file_handling_nfile.py.html#22>`_
+
+- `tempfile </listings/ninja_tests/core/test_file_handling_nfile.py.html#23>`_
+
+- `unittest </listings/ninja_tests/core/test_file_handling_nfile.py.html#21>`_
+
+- `ninja_ide.core.file_handling.nfile.NFile </listings/ninja_tests/core/test_file_handling_nfile.py.html#25>`_
+
+- `ninja_ide.core.file_handling.file_manager.NinjaIOException </listings/ninja_tests/core/test_file_handling_nfile.py.html#26>`_
+
+- `ninja_ide.core.file_handling.file_manager.NinjaNoFileNameException </listings/ninja_tests/core/test_file_handling_nfile.py.html#26>`_
+
+- `__future__.absolute_import </listings/ninja_tests/core/test_file_handling_nfile.py.html#18>`_
+
+- `__future__.unicode_literals </listings/ninja_tests/core/test_file_handling_nfile.py.html#19>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `CURRENT_DIR [at ln:29] </listings/ninja_tests/core/test_file_handling_nfile.py.html#29>`_
+
+
+----
+
+
+
+*Class:* `NfileTestCase(unittest.TestCase) </listings/ninja_tests/core/test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-32>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class NfileTestCase(unittest.TestCase):
+
+| Test Nfile API works
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_existing_file [at ln:39] </listings/ninja_tests/core/test_file_handling_nfile.py.html#39>`_
+
+- `_non_existing_file [at ln:40] </listings/ninja_tests/core/test_file_handling_nfile.py.html#40>`_
+
+- `_trash_files [at ln:41] </listings/ninja_tests/core/test_file_handling_nfile.py.html#41>`_
+
+
+*Function:* `get_temp_file_name() [at ln:51] </listings/ninja_tests/core/test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-51>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_temp_file_name():
+
+| tempfile seems to lack a proper way to obtain disposable filenames
+
+
+----
+
+*Function:* `setUp() [at ln:35] </listings/ninja_tests/core/test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-35>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setUp():
+
+|         
+
+
+----
+
+*Function:* `tearDown() [at ln:43] </listings/ninja_tests/core/test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-43>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def tearDown():
+
+|         
+
+
+----
+
+*Function:* `test_actual_content_is_saved() [at ln:84] </listings/ninja_tests/core/test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-84>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_actual_content_is_saved():
+
+
+No description.
+
+
+----
+
+*Function:* `test_copy_flag_prevets_filepath_change() [at ln:128] </listings/ninja_tests/core/test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-128>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_copy_flag_prevets_filepath_change():
+
+
+No description.
+
+
+----
+
+*Function:* `test_copy_flag_saves_to_path_only() [at ln:140] </listings/ninja_tests/core/test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-140>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_copy_flag_saves_to_path_only():
+
+
+No description.
+
+
+----
+
+*Function:* `test_creates_if_doesnt_exist() [at ln:77] </listings/ninja_tests/core/test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-77>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_creates_if_doesnt_exist():
+
+
+No description.
+
+
+----
+
+*Function:* `test_file_is_moved() [at ln:170] </listings/ninja_tests/core/test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-170>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_file_is_moved():
+
+
+No description.
+
+
+----
+
+*Function:* `test_file_is_read_properly() [at ln:152] </listings/ninja_tests/core/test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-152>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_file_is_read_properly():
+
+
+No description.
+
+
+----
+
+*Function:* `test_file_read_blows_on_nonexistent_file() [at ln:165] </listings/ninja_tests/core/test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-165>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_file_read_blows_on_nonexistent_file():
+
+
+No description.
+
+
+----
+
+*Function:* `test_file_read_blows_when_nonexistent_path() [at ln:161] </listings/ninja_tests/core/test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-161>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_file_read_blows_when_nonexistent_path():
+
+
+No description.
+
+
+----
+
+*Function:* `test_filepath_changes_even_if_inexistent() [at ln:197] </listings/ninja_tests/core/test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-197>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_filepath_changes_even_if_inexistent():
+
+
+No description.
+
+
+----
+
+*Function:* `test_knows_if_desnt_exists() [at ln:64] </listings/ninja_tests/core/test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-64>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_knows_if_desnt_exists():
+
+| If the file does not exists, can NFile tell?
+
+
+----
+
+*Function:* `test_knows_if_exists() [at ln:59] </listings/ninja_tests/core/test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-59>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_knows_if_exists():
+
+| If the file exists, can NFile tell?
+
+
+----
+
+*Function:* `test_move_changes_filepath() [at ln:185] </listings/ninja_tests/core/test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-185>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_move_changes_filepath():
+
+
+No description.
+
+
+----
+
+*Function:* `test_path_is_set_as_new_filepath() [at ln:116] </listings/ninja_tests/core/test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-116>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_path_is_set_as_new_filepath():
+
+
+No description.
+
+
+----
+
+*Function:* `test_path_overrides_filepath() [at ln:102] </listings/ninja_tests/core/test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-102>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_path_overrides_filepath():
+
+
+No description.
+
+
+----
+
+*Function:* `test_save_no_filename_raises() [at ln:70] </listings/ninja_tests/core/test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-70>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_save_no_filename_raises():
+
+| If there is no filename associated to the nfile we
+| should get error
+
+
+----
+
+*Function:* `test_saves_to_filepath() [at ln:94] </listings/ninja_tests/core/test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-94>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def test_saves_to_filepath():
+
+
+No description.
+
+
+
+

@@ -1,0 +1,270 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: __init__
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `__init__.py </listings/ninja_tests/gui/__init__.py.html>`_ API
+===========================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `ninja_ide </listings/ninja_tests/gui/__init__.py.html#22>`_
+
+- `PyQt4.QtGui.QPlainTextEdit </listings/ninja_tests/gui/__init__.py.html#24>`_
+
+- `__future__.absolute_import </listings/ninja_tests/gui/__init__.py.html#18>`_
+
+- `__future__.unicode_literals </listings/ninja_tests/gui/__init__.py.html#19>`_
+
+
+
+
+
+*Class:* `FakeQSettings(object) </listings/ninja_tests/gui/__init__.py.html#listingsninja_testsgui__init__py-50>`_
+--------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class FakeQSettings(object):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `names [at ln:53] </listings/ninja_tests/gui/__init__.py.html#53>`_
+
+- `values [at ln:54] </listings/ninja_tests/gui/__init__.py.html#54>`_
+
+
+*Function:* `__init__() [at ln:52] </listings/ninja_tests/gui/__init__.py.html#listingsninja_testsgui__init__py-52>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `beginGroup(name) [at ln:56] </listings/ninja_tests/gui/__init__.py.html#listingsninja_testsgui__init__py-56>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def beginGroup(name):
+
+
+No description.
+
+
+----
+
+*Function:* `endGroup() [at ln:59] </listings/ninja_tests/gui/__init__.py.html#listingsninja_testsgui__init__py-59>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def endGroup():
+
+
+No description.
+
+
+----
+
+*Function:* `setValue(key, val) [at ln:62] </listings/ninja_tests/gui/__init__.py.html#listingsninja_testsgui__init__py-62>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def setValue(key, val):
+
+
+No description.
+
+
+----
+
+*Function:* `value(key, default_val=None) [at ln:65] </listings/ninja_tests/gui/__init__.py.html#listingsninja_testsgui__init__py-65>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def value(key, default_val=None):
+
+
+No description.
+
+
+----
+
+*Class:* `FakeParent(object) </listings/ninja_tests/gui/__init__.py.html#listingsninja_testsgui__init__py-33>`_
+-----------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class FakeParent(object):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `explorer [at ln:36] </listings/ninja_tests/gui/__init__.py.html#36>`_
+
+
+*Function:* `__init__() [at ln:35] </listings/ninja_tests/gui/__init__.py.html#listingsninja_testsgui__init__py-35>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Class:* `FakeExplorer(object) </listings/ninja_tests/gui/__init__.py.html#listingsninja_testsgui__init__py-27>`_
+-------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class FakeExplorer(object):
+
+
+No description.
+
+
+*Function:* `get_project_given_filename(filename) [at ln:29] </listings/ninja_tests/gui/__init__.py.html#listingsninja_testsgui__init__py-29>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_project_given_filename(filename):
+
+
+No description.
+
+
+----
+
+*Class:* `FakeEditor(QPlainTextEdit) </listings/ninja_tests/gui/__init__.py.html#listingsninja_testsgui__init__py-39>`_
+-------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class FakeEditor(QPlainTextEdit):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_id [at ln:44] </listings/ninja_tests/gui/__init__.py.html#44>`_
+
+- `syntax [at ln:47] </listings/ninja_tests/gui/__init__.py.html#47>`_
+
+
+*Function:* `__init__(*args, **kwargs) [at ln:41] </listings/ninja_tests/gui/__init__.py.html#listingsninja_testsgui__init__py-41>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(*args, **kwargs):
+
+
+No description.
+
+
+----
+
+*Function:* `register_syntax(syntax) [at ln:46] </listings/ninja_tests/gui/__init__.py.html#listingsninja_testsgui__init__py-46>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def register_syntax(syntax):
+
+
+No description.
+
+
+----
+
+*Class:* `FakeActions(object) </listings/ninja_tests/gui/__init__.py.html#listingsninja_testsgui__init__py-69>`_
+------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class FakeActions(object):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `func_name [at ln:79] </listings/ninja_tests/gui/__init__.py.html#79>`_
+
+- `reset_editor_flags_executed [at ln:76] </listings/ninja_tests/gui/__init__.py.html#76>`_
+
+
+*Function:* `__init__() [at ln:71] </listings/ninja_tests/gui/__init__.py.html#listingsninja_testsgui__init__py-71>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `call_editors_function(func_name) [at ln:78] </listings/ninja_tests/gui/__init__.py.html#listingsninja_testsgui__init__py-78>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def call_editors_function(func_name):
+
+
+No description.
+
+
+----
+
+*Function:* `reset_editor_flags() [at ln:75] </listings/ninja_tests/gui/__init__.py.html#listingsninja_testsgui__init__py-75>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def reset_editor_flags():
+
+
+No description.
+
+
+
+

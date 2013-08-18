@@ -1,0 +1,248 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: language_manager
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `language_manager.py </listings/ninja_ide/gui/dialogs/language_manager.py.html>`_ API
+=================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `os </listings/ninja_ide/gui/dialogs/language_manager.py.html#18>`_
+
+- `PyQt4.QtGui.QDialog </listings/ninja_ide/gui/dialogs/language_manager.py.html#36>`_
+
+- `PyQt4.QtGui.QHBoxLayout </listings/ninja_ide/gui/dialogs/language_manager.py.html#30>`_
+
+- `PyQt4.QtGui.QPushButton </listings/ninja_ide/gui/dialogs/language_manager.py.html#35>`_
+
+- `PyQt4.QtGui.QSizePolicy </listings/ninja_ide/gui/dialogs/language_manager.py.html#32>`_
+
+- `PyQt4.QtGui.QSpacerItem </listings/ninja_ide/gui/dialogs/language_manager.py.html#31>`_
+
+- `PyQt4.QtGui.QTabWidget </listings/ninja_ide/gui/dialogs/language_manager.py.html#33>`_
+
+- `PyQt4.QtGui.QTableWidget </listings/ninja_ide/gui/dialogs/language_manager.py.html#34>`_
+
+- `PyQt4.QtGui.QVBoxLayout </listings/ninja_ide/gui/dialogs/language_manager.py.html#29>`_
+
+- `PyQt4.QtGui.QWidget </listings/ninja_ide/gui/dialogs/language_manager.py.html#28>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/dialogs/language_manager.py.html#37>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/dialogs/language_manager.py.html#38>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/gui/dialogs/language_manager.py.html#41>`_
+
+- `ninja_ide.tools.json_manager </listings/ninja_ide/gui/dialogs/language_manager.py.html#43>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/dialogs/language_manager.py.html#40>`_
+
+- `ninja_ide.tools.ui_tools </listings/ninja_ide/gui/dialogs/language_manager.py.html#42>`_
+
+
+
+
+
+*Class:* `LanguagesManagerWidget(QDialog) </listings/ninja_ide/gui/dialogs/language_manager.py.html#listingsninja_ideguidialogslanguage_managerpy-46>`_
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class LanguagesManagerWidget(QDialog):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_languages [at ln:67] </listings/ninja_ide/gui/dialogs/language_manager.py.html#67>`_
+
+- `_loading [at ln:81] </listings/ninja_ide/gui/dialogs/language_manager.py.html#81>`_
+
+- `_tabs [at ln:54] </listings/ninja_ide/gui/dialogs/language_manager.py.html#54>`_
+
+- `_thread [at ln:73] </listings/ninja_ide/gui/dialogs/language_manager.py.html#73>`_
+
+- `downloadItems [at ln:97] </listings/ninja_ide/gui/dialogs/language_manager.py.html#97>`_
+
+- `execute [at ln:98] </listings/ninja_ide/gui/dialogs/language_manager.py.html#98>`_
+
+- `overlay [at ln:64] </listings/ninja_ide/gui/dialogs/language_manager.py.html#64>`_
+
+
+*Function:* `__init__(parent) [at ln:48] </listings/ninja_ide/gui/dialogs/language_manager.py.html#listingsninja_ideguidialogslanguage_managerpy-48>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent):
+
+
+No description.
+
+
+----
+
+*Function:* `_download_language_thread() [at ln:125] </listings/ninja_ide/gui/dialogs/language_manager.py.html#listingsninja_ideguidialogslanguage_managerpy-125>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _download_language_thread():
+
+
+No description.
+
+
+----
+
+*Function:* `_reload_languages() [at ln:79] </listings/ninja_ide/gui/dialogs/language_manager.py.html#listingsninja_ideguidialogslanguage_managerpy-79>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _reload_languages():
+
+
+No description.
+
+
+----
+
+*Function:* `download(url, folder) [at ln:129] </listings/ninja_ide/gui/dialogs/language_manager.py.html#listingsninja_ideguidialogslanguage_managerpy-129>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def download(url, folder):
+
+
+No description.
+
+
+----
+
+*Function:* `download_language(language) [at ln:95] </listings/ninja_ide/gui/dialogs/language_manager.py.html#listingsninja_ideguidialogslanguage_managerpy-95>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def download_language(language):
+
+
+No description.
+
+
+----
+
+*Function:* `execute_thread() [at ln:105] </listings/ninja_ide/gui/dialogs/language_manager.py.html#listingsninja_ideguidialogslanguage_managerpy-105>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def execute_thread():
+
+
+No description.
+
+
+----
+
+*Function:* `get_local_languages() [at ln:117] </listings/ninja_ide/gui/dialogs/language_manager.py.html#listingsninja_ideguidialogslanguage_managerpy-117>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_local_languages():
+
+
+No description.
+
+
+----
+
+*Function:* `load_languages_data() [at ln:85] </listings/ninja_ide/gui/dialogs/language_manager.py.html#listingsninja_ideguidialogslanguage_managerpy-85>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_languages_data():
+
+
+No description.
+
+
+----
+
+*Function:* `resizeEvent(event) [at ln:101] </listings/ninja_ide/gui/dialogs/language_manager.py.html#listingsninja_ideguidialogslanguage_managerpy-101>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def resizeEvent(event):
+
+
+No description.
+
+
+----
+
+*Class:* `LanguageWidget(QWidget) </listings/ninja_ide/gui/dialogs/language_manager.py.html#listingsninja_ideguidialogslanguage_managerpy-140>`_
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class LanguageWidget(QWidget):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_languages [at ln:145] </listings/ninja_ide/gui/dialogs/language_manager.py.html#145>`_
+
+- `_parent [at ln:144] </listings/ninja_ide/gui/dialogs/language_manager.py.html#144>`_
+
+- `_table [at ln:147] </listings/ninja_ide/gui/dialogs/language_manager.py.html#147>`_
+
+
+*Function:* `__init__(parent, languages) [at ln:142] </listings/ninja_ide/gui/dialogs/language_manager.py.html#listingsninja_ideguidialogslanguage_managerpy-142>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent, languages):
+
+
+No description.
+
+
+----
+
+*Function:* `_download_language() [at ln:160] </listings/ninja_ide/gui/dialogs/language_manager.py.html#listingsninja_ideguidialogslanguage_managerpy-160>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _download_language():
+
+
+No description.
+
+
+
+

@@ -1,0 +1,87 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: runner
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `runner.py </listings/ninja_ide/tools/runner.py.html>`_ API
+=======================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `code </listings/ninja_ide/tools/runner.py.html#17>`_
+
+- `subprocess </listings/ninja_ide/tools/runner.py.html#18>`_
+
+- `PyQt4.QtNetwork.QHostAddress </listings/ninja_ide/tools/runner.py.html#20>`_
+
+- `PyQt4.QtNetwork.QTcpServer </listings/ninja_ide/tools/runner.py.html#21>`_
+
+
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `isAvailable(port) [at ln:33] </listings/ninja_ide/tools/runner.py.html#listingsninja_idetoolsrunnerpy-33>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def isAvailable(port):
+
+
+No description.
+
+
+----
+
+*Function:* `run_code(codes) [at ln:24] </listings/ninja_ide/tools/runner.py.html#listingsninja_idetoolsrunnerpy-24>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run_code(codes):
+
+
+No description.
+
+
+----
+
+*Function:* `run_code_from_file(fileName) [at ln:29] </listings/ninja_ide/tools/runner.py.html#listingsninja_idetoolsrunnerpy-29>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run_code_from_file(fileName):
+
+
+No description.
+
+
+----
+
+*Function:* `start_pydoc() [at ln:40] </listings/ninja_ide/tools/runner.py.html#listingsninja_idetoolsrunnerpy-40>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def start_pydoc():
+
+
+No description.
+
+
+
+

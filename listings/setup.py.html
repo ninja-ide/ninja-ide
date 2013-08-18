@@ -1,0 +1,362 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="setup.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>setup.py | NINJA-IDE Documentation</title>
+    
+            <link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../documentor_modules.html">Modules</a>
+            </li><li><a href="../documentor_classes.html">Classes</a>
+            </li><li><a href="../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href=".">/listings</a>
+        </li><li><a href="#">/setup.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="setup.py.html#listingssetuppy-1">  1</a>
+<a href="setup.py.html#listingssetuppy-2">  2</a>
+<a href="setup.py.html#listingssetuppy-3">  3</a>
+<a href="setup.py.html#listingssetuppy-4">  4</a>
+<a href="setup.py.html#listingssetuppy-5">  5</a>
+<a href="setup.py.html#listingssetuppy-6">  6</a>
+<a href="setup.py.html#listingssetuppy-7">  7</a>
+<a href="setup.py.html#listingssetuppy-8">  8</a>
+<a href="setup.py.html#listingssetuppy-9">  9</a>
+<a href="setup.py.html#listingssetuppy-10"> 10</a>
+<a href="setup.py.html#listingssetuppy-11"> 11</a>
+<a href="setup.py.html#listingssetuppy-12"> 12</a>
+<a href="setup.py.html#listingssetuppy-13"> 13</a>
+<a href="setup.py.html#listingssetuppy-14"> 14</a>
+<a href="setup.py.html#listingssetuppy-15"> 15</a>
+<a href="setup.py.html#listingssetuppy-16"> 16</a>
+<a href="setup.py.html#listingssetuppy-17"> 17</a>
+<a href="setup.py.html#listingssetuppy-18"> 18</a>
+<a href="setup.py.html#listingssetuppy-19"> 19</a>
+<a href="setup.py.html#listingssetuppy-20"> 20</a>
+<a href="setup.py.html#listingssetuppy-21"> 21</a>
+<a href="setup.py.html#listingssetuppy-22"> 22</a>
+<a href="setup.py.html#listingssetuppy-23"> 23</a>
+<a href="setup.py.html#listingssetuppy-24"> 24</a>
+<a href="setup.py.html#listingssetuppy-25"> 25</a>
+<a href="setup.py.html#listingssetuppy-26"> 26</a>
+<a href="setup.py.html#listingssetuppy-27"> 27</a>
+<a href="setup.py.html#listingssetuppy-28"> 28</a>
+<a href="setup.py.html#listingssetuppy-29"> 29</a>
+<a href="setup.py.html#listingssetuppy-30"> 30</a>
+<a href="setup.py.html#listingssetuppy-31"> 31</a>
+<a href="setup.py.html#listingssetuppy-32"> 32</a>
+<a href="setup.py.html#listingssetuppy-33"> 33</a>
+<a href="setup.py.html#listingssetuppy-34"> 34</a>
+<a href="setup.py.html#listingssetuppy-35"> 35</a>
+<a href="setup.py.html#listingssetuppy-36"> 36</a>
+<a href="setup.py.html#listingssetuppy-37"> 37</a>
+<a href="setup.py.html#listingssetuppy-38"> 38</a>
+<a href="setup.py.html#listingssetuppy-39"> 39</a>
+<a href="setup.py.html#listingssetuppy-40"> 40</a>
+<a href="setup.py.html#listingssetuppy-41"> 41</a>
+<a href="setup.py.html#listingssetuppy-42"> 42</a>
+<a href="setup.py.html#listingssetuppy-43"> 43</a>
+<a href="setup.py.html#listingssetuppy-44"> 44</a>
+<a href="setup.py.html#listingssetuppy-45"> 45</a>
+<a href="setup.py.html#listingssetuppy-46"> 46</a>
+<a href="setup.py.html#listingssetuppy-47"> 47</a>
+<a href="setup.py.html#listingssetuppy-48"> 48</a>
+<a href="setup.py.html#listingssetuppy-49"> 49</a>
+<a href="setup.py.html#listingssetuppy-50"> 50</a>
+<a href="setup.py.html#listingssetuppy-51"> 51</a>
+<a href="setup.py.html#listingssetuppy-52"> 52</a>
+<a href="setup.py.html#listingssetuppy-53"> 53</a>
+<a href="setup.py.html#listingssetuppy-54"> 54</a>
+<a href="setup.py.html#listingssetuppy-55"> 55</a>
+<a href="setup.py.html#listingssetuppy-56"> 56</a>
+<a href="setup.py.html#listingssetuppy-57"> 57</a>
+<a href="setup.py.html#listingssetuppy-58"> 58</a>
+<a href="setup.py.html#listingssetuppy-59"> 59</a>
+<a href="setup.py.html#listingssetuppy-60"> 60</a>
+<a href="setup.py.html#listingssetuppy-61"> 61</a>
+<a href="setup.py.html#listingssetuppy-62"> 62</a>
+<a href="setup.py.html#listingssetuppy-63"> 63</a>
+<a href="setup.py.html#listingssetuppy-64"> 64</a>
+<a href="setup.py.html#listingssetuppy-65"> 65</a>
+<a href="setup.py.html#listingssetuppy-66"> 66</a>
+<a href="setup.py.html#listingssetuppy-67"> 67</a>
+<a href="setup.py.html#listingssetuppy-68"> 68</a>
+<a href="setup.py.html#listingssetuppy-69"> 69</a>
+<a href="setup.py.html#listingssetuppy-70"> 70</a>
+<a href="setup.py.html#listingssetuppy-71"> 71</a>
+<a href="setup.py.html#listingssetuppy-72"> 72</a>
+<a href="setup.py.html#listingssetuppy-73"> 73</a>
+<a href="setup.py.html#listingssetuppy-74"> 74</a>
+<a href="setup.py.html#listingssetuppy-75"> 75</a>
+<a href="setup.py.html#listingssetuppy-76"> 76</a>
+<a href="setup.py.html#listingssetuppy-77"> 77</a>
+<a href="setup.py.html#listingssetuppy-78"> 78</a>
+<a href="setup.py.html#listingssetuppy-79"> 79</a>
+<a href="setup.py.html#listingssetuppy-80"> 80</a>
+<a href="setup.py.html#listingssetuppy-81"> 81</a>
+<a href="setup.py.html#listingssetuppy-82"> 82</a>
+<a href="setup.py.html#listingssetuppy-83"> 83</a>
+<a href="setup.py.html#listingssetuppy-84"> 84</a>
+<a href="setup.py.html#listingssetuppy-85"> 85</a>
+<a href="setup.py.html#listingssetuppy-86"> 86</a>
+<a href="setup.py.html#listingssetuppy-87"> 87</a>
+<a href="setup.py.html#listingssetuppy-88"> 88</a>
+<a href="setup.py.html#listingssetuppy-89"> 89</a>
+<a href="setup.py.html#listingssetuppy-90"> 90</a>
+<a href="setup.py.html#listingssetuppy-91"> 91</a>
+<a href="setup.py.html#listingssetuppy-92"> 92</a>
+<a href="setup.py.html#listingssetuppy-93"> 93</a>
+<a href="setup.py.html#listingssetuppy-94"> 94</a>
+<a href="setup.py.html#listingssetuppy-95"> 95</a>
+<a href="setup.py.html#listingssetuppy-96"> 96</a>
+<a href="setup.py.html#listingssetuppy-97"> 97</a>
+<a href="setup.py.html#listingssetuppy-98"> 98</a>
+<a href="setup.py.html#listingssetuppy-99"> 99</a>
+<a href="setup.py.html#listingssetuppy-100">100</a>
+<a href="setup.py.html#listingssetuppy-101">101</a>
+<a href="setup.py.html#listingssetuppy-102">102</a>
+<a href="setup.py.html#listingssetuppy-103">103</a>
+<a href="setup.py.html#listingssetuppy-104">104</a>
+<a href="setup.py.html#listingssetuppy-105">105</a>
+<a href="setup.py.html#listingssetuppy-106">106</a>
+<a href="setup.py.html#listingssetuppy-107">107</a>
+<a href="setup.py.html#listingssetuppy-108">108</a>
+<a href="setup.py.html#listingssetuppy-109">109</a>
+<a href="setup.py.html#listingssetuppy-110">110</a>
+<a href="setup.py.html#listingssetuppy-111">111</a>
+<a href="setup.py.html#listingssetuppy-112">112</a>
+<a href="setup.py.html#listingssetuppy-113">113</a>
+<a href="setup.py.html#listingssetuppy-114">114</a>
+<a href="setup.py.html#listingssetuppy-115">115</a>
+<a href="setup.py.html#listingssetuppy-116">116</a>
+<a href="setup.py.html#listingssetuppy-117">117</a>
+<a href="setup.py.html#listingssetuppy-118">118</a>
+<a href="setup.py.html#listingssetuppy-119">119</a>
+<a href="setup.py.html#listingssetuppy-120">120</a>
+<a href="setup.py.html#listingssetuppy-121">121</a>
+<a href="setup.py.html#listingssetuppy-122">122</a>
+<a href="setup.py.html#listingssetuppy-123">123</a>
+<a href="setup.py.html#listingssetuppy-124">124</a>
+<a href="setup.py.html#listingssetuppy-125">125</a>
+<a href="setup.py.html#listingssetuppy-126">126</a>
+<a href="setup.py.html#listingssetuppy-127">127</a>
+<a href="setup.py.html#listingssetuppy-128">128</a>
+<a href="setup.py.html#listingssetuppy-129">129</a>
+<a href="setup.py.html#listingssetuppy-130">130</a>
+<a href="setup.py.html#listingssetuppy-131">131</a>
+<a href="setup.py.html#listingssetuppy-132">132</a>
+<a href="setup.py.html#listingssetuppy-133">133</a>
+<a href="setup.py.html#listingssetuppy-134">134</a>
+<a href="setup.py.html#listingssetuppy-135">135</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingssetuppy-1"></a><span class="c">#!/usr/bin/env python</span>
+<a name="listingssetuppy-2"></a><span class="c">#-*-coding:utf-8-*-</span>
+<a name="listingssetuppy-3"></a>
+<a name="listingssetuppy-4"></a><span class="c"># This program is free software: you can redistribute it and/or modify</span>
+<a name="listingssetuppy-5"></a><span class="c"># it under the terms of the GNU Lesser General Public License as</span>
+<a name="listingssetuppy-6"></a><span class="c"># published by the Free Software Foundation, either version 3 of the</span>
+<a name="listingssetuppy-7"></a><span class="c"># License, or (at your option) any later version.</span>
+<a name="listingssetuppy-8"></a>
+<a name="listingssetuppy-9"></a><span class="c"># This program is distributed in the hope that it will be useful,</span>
+<a name="listingssetuppy-10"></a><span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="listingssetuppy-11"></a><span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="listingssetuppy-12"></a><span class="c"># GNU Affero General Public License for more details.</span>
+<a name="listingssetuppy-13"></a>
+<a name="listingssetuppy-14"></a><span class="c"># You should have received a copy of the GNU Affero General Public License</span>
+<a name="listingssetuppy-15"></a><span class="c"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="listingssetuppy-16"></a>
+<a name="listingssetuppy-17"></a>
+<a name="listingssetuppy-18"></a><span class="c">###############################################################################</span>
+<a name="listingssetuppy-19"></a><span class="c"># DOCS</span>
+<a name="listingssetuppy-20"></a><span class="c">###############################################################################</span>
+<a name="listingssetuppy-21"></a>
+<a name="listingssetuppy-22"></a><span class="sd">"""Setup for Ninja-ide (http://www.ninja-ide.org)</span>
+<a name="listingssetuppy-23"></a>
+<a name="listingssetuppy-24"></a><span class="sd">NINJA-IDE is a cross-platform integrated development environment (IDE).</span>
+<a name="listingssetuppy-25"></a><span class="sd">NINJA-IDE runs on Linux/X11, Mac OS X and Windows desktop operating systems,</span>
+<a name="listingssetuppy-26"></a><span class="sd">and allows developers to create applications for several purposes using all the</span>
+<a name="listingssetuppy-27"></a><span class="sd">tools and utilities of NINJA-IDE, making the task of writing software easier</span>
+<a name="listingssetuppy-28"></a><span class="sd">and more enjoyable.</span>
+<a name="listingssetuppy-29"></a><span class="sd">"""</span>
+<a name="listingssetuppy-30"></a>
+<a name="listingssetuppy-31"></a>
+<a name="listingssetuppy-32"></a><span class="c">###############################################################################</span>
+<a name="listingssetuppy-33"></a><span class="c"># IMPORTS</span>
+<a name="listingssetuppy-34"></a><span class="c">###############################################################################</span>
+<a name="listingssetuppy-35"></a>
+<a name="listingssetuppy-36"></a><span class="kn">import</span> <span class="nn">sys</span>
+<a name="listingssetuppy-37"></a>
+<a name="listingssetuppy-38"></a><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">find_packages</span>
+<a name="listingssetuppy-39"></a>
+<a name="listingssetuppy-40"></a><span class="kn">import</span> <span class="nn">ninja_ide</span>
+<a name="listingssetuppy-41"></a>
+<a name="listingssetuppy-42"></a><span class="c">###############################################################################</span>
+<a name="listingssetuppy-43"></a><span class="c"># VALIDATE THE NEEDED MODULES</span>
+<a name="listingssetuppy-44"></a><span class="c">###############################################################################</span>
+<a name="listingssetuppy-45"></a>
+<a name="listingssetuppy-46"></a><span class="c"># This modules can't be easy installed</span>
+<a name="listingssetuppy-47"></a><span class="c"># Syntax: [(module, url of the tutorial)...]</span>
+<a name="listingssetuppy-48"></a><span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">'win32'</span><span class="p">:</span>
+<a name="listingssetuppy-49"></a>    <span class="n">NEEDED_MODULES</span> <span class="o">=</span> <span class="p">[(</span><span class="s">"PyQt4"</span><span class="p">,</span>
+<a name="listingssetuppy-50"></a>        <span class="s">"http://www.riverbankcomputing.co.uk/software/pyqt/intro"</span><span class="p">),</span>
+<a name="listingssetuppy-51"></a>        <span class="p">(</span><span class="s">'win32con'</span><span class="p">,</span> <span class="s">"http://sourceforge.net/projects/pywin32/files/pywin32/"</span><span class="p">)]</span>
+<a name="listingssetuppy-52"></a><span class="k">else</span><span class="p">:</span>
+<a name="listingssetuppy-53"></a>    <span class="n">NEEDED_MODULES</span> <span class="o">=</span> <span class="p">[(</span><span class="s">"PyQt4"</span><span class="p">,</span>
+<a name="listingssetuppy-54"></a>        <span class="s">"http://www.riverbankcomputing.co.uk/software/pyqt/intro"</span><span class="p">),</span> <span class="p">]</span>
+<a name="listingssetuppy-55"></a>
+<a name="listingssetuppy-56"></a>
+<a name="listingssetuppy-57"></a><span class="k">for</span> <span class="n">mn</span><span class="p">,</span> <span class="n">urlm</span> <span class="ow">in</span> <span class="n">NEEDED_MODULES</span><span class="p">:</span>
+<a name="listingssetuppy-58"></a>    <span class="k">try</span><span class="p">:</span>
+<a name="listingssetuppy-59"></a>        <span class="nb">__import__</span><span class="p">(</span><span class="n">mn</span><span class="p">)</span>
+<a name="listingssetuppy-60"></a>    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+<a name="listingssetuppy-61"></a>        <span class="k">print</span><span class="p">(</span><span class="s">"Module '</span><span class="si">%s</span><span class="s">' not found. For more details: '</span><span class="si">%s</span><span class="s">'.</span><span class="se">\n</span><span class="s">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">mn</span><span class="p">,</span> <span class="n">urlm</span><span class="p">))</span>
+<a name="listingssetuppy-62"></a>        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<a name="listingssetuppy-63"></a>
+<a name="listingssetuppy-64"></a>
+<a name="listingssetuppy-65"></a><span class="n">dependencies</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingssetuppy-66"></a><span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">'darwin'</span><span class="p">:</span>
+<a name="listingssetuppy-67"></a>    <span class="n">dependencies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">"macfsevents"</span><span class="p">)</span>
+<a name="listingssetuppy-68"></a><span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">'linux2'</span><span class="p">:</span>
+<a name="listingssetuppy-69"></a>    <span class="n">dependencies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">"pyinotify"</span><span class="p">)</span>
+<a name="listingssetuppy-70"></a>
+<a name="listingssetuppy-71"></a>
+<a name="listingssetuppy-72"></a><span class="c">###############################################################################</span>
+<a name="listingssetuppy-73"></a><span class="c"># PRE-SETUP</span>
+<a name="listingssetuppy-74"></a><span class="c">###############################################################################</span>
+<a name="listingssetuppy-75"></a>
+<a name="listingssetuppy-76"></a><span class="c"># Common</span>
+<a name="listingssetuppy-77"></a><span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+<a name="listingssetuppy-78"></a>    <span class="s">"name"</span><span class="p">:</span> <span class="n">ninja_ide</span><span class="o">.</span><span class="n">__prj__</span><span class="p">,</span>
+<a name="listingssetuppy-79"></a>    <span class="s">"version"</span><span class="p">:</span> <span class="n">ninja_ide</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span>
+<a name="listingssetuppy-80"></a>    <span class="s">"description"</span><span class="p">:</span> <span class="n">ninja_ide</span><span class="o">.</span><span class="n">__doc__</span><span class="p">,</span>
+<a name="listingssetuppy-81"></a>    <span class="s">"author"</span><span class="p">:</span> <span class="n">ninja_ide</span><span class="o">.</span><span class="n">__author__</span><span class="p">,</span>
+<a name="listingssetuppy-82"></a>    <span class="s">"author_email"</span><span class="p">:</span> <span class="n">ninja_ide</span><span class="o">.</span><span class="n">__mail__</span><span class="p">,</span>
+<a name="listingssetuppy-83"></a>    <span class="s">"url"</span><span class="p">:</span> <span class="n">ninja_ide</span><span class="o">.</span><span class="n">__url__</span><span class="p">,</span>
+<a name="listingssetuppy-84"></a>    <span class="s">"license"</span><span class="p">:</span> <span class="n">ninja_ide</span><span class="o">.</span><span class="n">__license__</span><span class="p">,</span>
+<a name="listingssetuppy-85"></a>    <span class="s">"keywords"</span><span class="p">:</span> <span class="s">"ide python ninja development"</span><span class="p">,</span>
+<a name="listingssetuppy-86"></a>    <span class="s">"classifiers"</span><span class="p">:</span> <span class="p">[</span><span class="s">"Development Status :: Development Status :: 4 - Beta"</span><span class="p">,</span>
+<a name="listingssetuppy-87"></a>               <span class="s">"Topic :: Utilities"</span><span class="p">,</span>
+<a name="listingssetuppy-88"></a>               <span class="s">"License :: OSI Approved :: GNU General Public License (GPL)"</span><span class="p">,</span>
+<a name="listingssetuppy-89"></a>               <span class="s">"Natural Language :: English"</span><span class="p">,</span>
+<a name="listingssetuppy-90"></a>               <span class="s">"Operating System :: OS Independent"</span><span class="p">,</span>
+<a name="listingssetuppy-91"></a>               <span class="s">"Programming Language :: Python :: 2"</span><span class="p">],</span>
+<a name="listingssetuppy-92"></a>
+<a name="listingssetuppy-93"></a>    <span class="c"># Ninja need:</span>
+<a name="listingssetuppy-94"></a>    <span class="s">"install_requires"</span><span class="p">:</span> <span class="n">dependencies</span><span class="p">,</span>
+<a name="listingssetuppy-95"></a>
+<a name="listingssetuppy-96"></a>    <span class="c"># include all resources</span>
+<a name="listingssetuppy-97"></a>    <span class="s">"include_package_data"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+<a name="listingssetuppy-98"></a>    <span class="s">"package_data"</span><span class="p">:</span> <span class="p">{</span><span class="s">''</span><span class="p">:</span> <span class="p">[</span><span class="s">'*.png'</span><span class="p">,</span> <span class="s">'*.gif'</span><span class="p">,</span> <span class="s">'*.jpg'</span><span class="p">,</span> <span class="s">'*.json'</span><span class="p">,</span> <span class="s">'*.qss'</span><span class="p">,</span>
+<a name="listingssetuppy-99"></a>        <span class="s">'*.js'</span><span class="p">,</span> <span class="s">'*.html'</span><span class="p">,</span> <span class="s">'*.css'</span><span class="p">,</span> <span class="s">'*.qm'</span><span class="p">,</span> <span class="s">'*.qml'</span><span class="p">]},</span>
+<a name="listingssetuppy-100"></a>
+<a name="listingssetuppy-101"></a>    <span class="c"># include ninja pkg and setup the run script</span>
+<a name="listingssetuppy-102"></a>    <span class="s">"packages"</span><span class="p">:</span> <span class="n">find_packages</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span>
+<a name="listingssetuppy-103"></a>        <span class="s">'ninja_ide/addins'</span><span class="p">,</span>
+<a name="listingssetuppy-104"></a>        <span class="s">'ninja_ide/addins/lang'</span><span class="p">,</span>
+<a name="listingssetuppy-105"></a>        <span class="s">'ninja_ide/addins/qml'</span><span class="p">,</span>
+<a name="listingssetuppy-106"></a>        <span class="s">'ninja_ide/addins/qml/img'</span><span class="p">,</span>
+<a name="listingssetuppy-107"></a>        <span class="s">'ninja_ide/addins/syntax'</span><span class="p">,</span>
+<a name="listingssetuppy-108"></a>        <span class="s">'ninja_ide/addins/theme'</span><span class="p">,</span>
+<a name="listingssetuppy-109"></a>        <span class="s">'ninja_ide/img'</span><span class="p">],</span>
+<a name="listingssetuppy-110"></a>
+<a name="listingssetuppy-111"></a>    <span class="c">#auto create scripts</span>
+<a name="listingssetuppy-112"></a>    <span class="s">"entry_points"</span><span class="p">:</span> <span class="p">{</span>
+<a name="listingssetuppy-113"></a>        <span class="s">'console_scripts'</span><span class="p">:</span> <span class="p">[</span>
+<a name="listingssetuppy-114"></a>            <span class="s">'ninja-ide = ninja_ide:setup_and_run'</span><span class="p">,</span>
+<a name="listingssetuppy-115"></a>        <span class="p">],</span>
+<a name="listingssetuppy-116"></a>        <span class="s">'gui_scripts'</span><span class="p">:</span> <span class="p">[</span>
+<a name="listingssetuppy-117"></a>            <span class="s">'ninja-ide = ninja_ide:setup_and_run'</span><span class="p">,</span>
+<a name="listingssetuppy-118"></a>        <span class="p">]</span>
+<a name="listingssetuppy-119"></a>    <span class="p">}</span>
+<a name="listingssetuppy-120"></a><span class="p">}</span>
+<a name="listingssetuppy-121"></a>
+<a name="listingssetuppy-122"></a>
+<a name="listingssetuppy-123"></a><span class="c">###############################################################################</span>
+<a name="listingssetuppy-124"></a><span class="c"># SETUP</span>
+<a name="listingssetuppy-125"></a><span class="c">###############################################################################</span>
+<a name="listingssetuppy-126"></a>
+<a name="listingssetuppy-127"></a><span class="n">setup</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
+<a name="listingssetuppy-128"></a>
+<a name="listingssetuppy-129"></a>
+<a name="listingssetuppy-130"></a><span class="c">###############################################################################</span>
+<a name="listingssetuppy-131"></a><span class="c"># MAIN</span>
+<a name="listingssetuppy-132"></a><span class="c">###############################################################################</span>
+<a name="listingssetuppy-133"></a>
+<a name="listingssetuppy-134"></a><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+<a name="listingssetuppy-135"></a>    <span class="k">print</span><span class="p">(</span><span class="n">__doc__</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

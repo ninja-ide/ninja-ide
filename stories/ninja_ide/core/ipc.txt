@@ -1,0 +1,68 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: ipc
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `ipc.py </listings/ninja_ide/core/ipc.py.html>`_ API
+================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `os </listings/ninja_ide/core/ipc.py.html#20>`_
+
+- `PyQt4.QtNetwork.QLocalSocket </listings/ninja_ide/core/ipc.py.html#22>`_
+
+- `__future__.absolute_import </listings/ninja_ide/core/ipc.py.html#18>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `file_delimiter [at ln:25] </listings/ninja_ide/core/ipc.py.html#25>`_
+
+- `project_delimiter [at ln:26] </listings/ninja_ide/core/ipc.py.html#26>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `is_running() [at ln:29] </listings/ninja_ide/core/ipc.py.html#listingsninja_idecoreipcpy-29>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def is_running():
+
+
+No description.
+
+
+----
+
+*Function:* `send_data(socket, filenames, projects_path, linenos) [at ln:41] </listings/ninja_ide/core/ipc.py.html#listingsninja_idecoreipcpy-41>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def send_data(socket, filenames, projects_path, linenos):
+
+
+No description.
+
+
+
+

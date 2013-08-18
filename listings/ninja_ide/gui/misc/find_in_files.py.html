@@ -1,0 +1,1097 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="find_in_files.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>find_in_files.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../../">/listings</a>
+        </li><li><a href="../../">/ninja_ide</a>
+        </li><li><a href="../">/gui</a>
+        </li><li><a href=".">/misc</a>
+        </li><li><a href="#">/find_in_files.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-1">  1</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-2">  2</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-3">  3</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-4">  4</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-5">  5</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-6">  6</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-7">  7</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-8">  8</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-9">  9</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-10"> 10</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-11"> 11</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-12"> 12</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-13"> 13</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-14"> 14</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-15"> 15</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-16"> 16</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-17"> 17</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-18"> 18</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-19"> 19</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-20"> 20</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-21"> 21</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-22"> 22</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-23"> 23</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-24"> 24</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-25"> 25</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-26"> 26</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-27"> 27</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-28"> 28</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-29"> 29</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-30"> 30</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-31"> 31</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-32"> 32</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-33"> 33</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-34"> 34</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-35"> 35</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-36"> 36</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-37"> 37</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-38"> 38</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-39"> 39</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-40"> 40</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-41"> 41</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-42"> 42</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-43"> 43</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-44"> 44</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-45"> 45</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-46"> 46</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-47"> 47</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-48"> 48</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-49"> 49</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-50"> 50</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-51"> 51</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-52"> 52</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-53"> 53</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-54"> 54</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-55"> 55</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-56"> 56</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-57"> 57</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-58"> 58</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-59"> 59</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-60"> 60</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-61"> 61</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-62"> 62</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-63"> 63</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-64"> 64</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-65"> 65</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-66"> 66</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-67"> 67</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-68"> 68</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-69"> 69</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-70"> 70</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-71"> 71</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-72"> 72</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-73"> 73</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-74"> 74</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-75"> 75</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-76"> 76</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-77"> 77</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-78"> 78</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-79"> 79</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-80"> 80</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-81"> 81</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-82"> 82</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-83"> 83</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-84"> 84</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-85"> 85</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-86"> 86</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-87"> 87</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-88"> 88</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-89"> 89</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-90"> 90</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-91"> 91</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-92"> 92</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-93"> 93</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-94"> 94</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-95"> 95</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-96"> 96</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-97"> 97</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-98"> 98</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-99"> 99</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-100">100</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-101">101</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-102">102</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-103">103</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-104">104</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-105">105</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-106">106</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-107">107</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-108">108</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-109">109</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-110">110</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-111">111</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-112">112</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-113">113</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-114">114</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-115">115</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-116">116</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-117">117</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-118">118</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-119">119</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-120">120</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-121">121</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-122">122</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-123">123</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-124">124</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-125">125</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-126">126</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-127">127</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-128">128</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-129">129</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-130">130</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-131">131</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-132">132</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-133">133</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-134">134</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-135">135</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-136">136</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-137">137</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-138">138</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-139">139</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-140">140</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-141">141</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-142">142</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-143">143</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-144">144</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-145">145</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-146">146</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-147">147</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-148">148</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-149">149</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-150">150</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-151">151</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-152">152</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-153">153</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-154">154</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-155">155</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-156">156</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-157">157</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-158">158</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-159">159</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-160">160</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-161">161</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-162">162</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-163">163</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-164">164</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-165">165</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-166">166</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-167">167</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-168">168</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-169">169</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-170">170</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-171">171</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-172">172</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-173">173</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-174">174</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-175">175</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-176">176</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-177">177</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-178">178</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-179">179</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-180">180</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-181">181</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-182">182</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-183">183</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-184">184</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-185">185</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-186">186</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-187">187</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-188">188</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-189">189</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-190">190</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-191">191</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-192">192</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-193">193</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-194">194</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-195">195</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-196">196</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-197">197</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-198">198</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-199">199</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-200">200</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-201">201</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-202">202</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-203">203</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-204">204</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-205">205</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-206">206</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-207">207</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-208">208</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-209">209</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-210">210</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-211">211</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-212">212</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-213">213</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-214">214</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-215">215</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-216">216</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-217">217</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-218">218</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-219">219</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-220">220</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-221">221</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-222">222</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-223">223</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-224">224</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-225">225</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-226">226</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-227">227</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-228">228</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-229">229</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-230">230</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-231">231</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-232">232</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-233">233</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-234">234</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-235">235</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-236">236</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-237">237</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-238">238</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-239">239</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-240">240</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-241">241</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-242">242</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-243">243</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-244">244</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-245">245</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-246">246</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-247">247</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-248">248</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-249">249</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-250">250</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-251">251</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-252">252</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-253">253</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-254">254</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-255">255</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-256">256</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-257">257</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-258">258</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-259">259</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-260">260</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-261">261</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-262">262</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-263">263</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-264">264</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-265">265</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-266">266</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-267">267</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-268">268</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-269">269</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-270">270</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-271">271</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-272">272</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-273">273</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-274">274</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-275">275</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-276">276</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-277">277</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-278">278</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-279">279</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-280">280</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-281">281</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-282">282</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-283">283</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-284">284</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-285">285</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-286">286</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-287">287</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-288">288</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-289">289</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-290">290</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-291">291</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-292">292</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-293">293</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-294">294</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-295">295</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-296">296</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-297">297</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-298">298</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-299">299</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-300">300</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-301">301</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-302">302</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-303">303</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-304">304</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-305">305</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-306">306</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-307">307</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-308">308</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-309">309</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-310">310</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-311">311</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-312">312</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-313">313</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-314">314</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-315">315</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-316">316</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-317">317</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-318">318</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-319">319</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-320">320</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-321">321</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-322">322</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-323">323</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-324">324</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-325">325</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-326">326</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-327">327</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-328">328</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-329">329</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-330">330</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-331">331</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-332">332</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-333">333</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-334">334</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-335">335</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-336">336</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-337">337</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-338">338</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-339">339</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-340">340</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-341">341</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-342">342</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-343">343</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-344">344</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-345">345</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-346">346</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-347">347</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-348">348</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-349">349</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-350">350</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-351">351</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-352">352</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-353">353</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-354">354</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-355">355</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-356">356</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-357">357</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-358">358</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-359">359</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-360">360</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-361">361</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-362">362</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-363">363</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-364">364</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-365">365</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-366">366</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-367">367</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-368">368</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-369">369</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-370">370</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-371">371</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-372">372</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-373">373</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-374">374</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-375">375</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-376">376</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-377">377</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-378">378</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-379">379</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-380">380</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-381">381</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-382">382</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-383">383</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-384">384</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-385">385</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-386">386</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-387">387</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-388">388</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-389">389</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-390">390</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-391">391</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-392">392</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-393">393</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-394">394</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-395">395</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-396">396</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-397">397</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-398">398</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-399">399</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-400">400</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-401">401</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-402">402</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-403">403</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-404">404</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-405">405</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-406">406</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-407">407</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-408">408</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-409">409</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-410">410</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-411">411</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-412">412</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-413">413</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-414">414</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-415">415</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-416">416</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-417">417</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-418">418</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-419">419</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-420">420</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-421">421</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-422">422</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-423">423</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-424">424</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-425">425</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-426">426</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-427">427</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-428">428</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-429">429</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-430">430</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-431">431</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-432">432</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-433">433</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-434">434</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-435">435</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-436">436</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-437">437</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-438">438</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-439">439</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-440">440</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-441">441</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-442">442</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-443">443</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-444">444</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-445">445</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-446">446</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-447">447</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-448">448</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-449">449</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-450">450</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-451">451</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-452">452</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-453">453</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-454">454</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-455">455</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-456">456</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-457">457</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-458">458</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-459">459</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-460">460</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-461">461</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-462">462</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-463">463</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-464">464</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-465">465</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-466">466</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-467">467</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-468">468</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-469">469</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-470">470</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-471">471</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-472">472</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-473">473</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-474">474</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-475">475</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-476">476</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-477">477</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-478">478</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-479">479</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-480">480</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-481">481</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-482">482</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-483">483</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-484">484</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-485">485</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-486">486</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-487">487</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-488">488</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-489">489</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-490">490</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-491">491</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-492">492</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-493">493</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-494">494</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-495">495</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-496">496</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-497">497</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-498">498</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-499">499</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-500">500</a>
+<a href="find_in_files.py.html#listingsninja_ideguimiscfind_in_filespy-501">501</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_ideguimiscfind_in_filespy-1"></a><span class="c"># -*- coding: utf-8 -*-</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-2"></a><span class="c">#</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-3"></a><span class="c"># This file is part of NINJA-IDE (http://ninja-ide.org).</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-4"></a><span class="c">#</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-5"></a><span class="c"># NINJA-IDE is free software; you can redistribute it and/or modify</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-6"></a><span class="c"># it under the terms of the GNU General Public License as published by</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-7"></a><span class="c"># the Free Software Foundation; either version 3 of the License, or</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-8"></a><span class="c"># any later version.</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-9"></a><span class="c">#</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-10"></a><span class="c"># NINJA-IDE is distributed in the hope that it will be useful,</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-11"></a><span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-12"></a><span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-13"></a><span class="c"># GNU General Public License for more details.</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-14"></a><span class="c">#</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-15"></a><span class="c"># You should have received a copy of the GNU General Public License</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-16"></a><span class="c"># along with NINJA-IDE; If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-17"></a><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-18"></a><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-19"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-20"></a><span class="kn">import</span> <span class="nn">os</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-21"></a><span class="kn">import</span> <span class="nn">re</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-22"></a><span class="k">try</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-23"></a>    <span class="kn">import</span> <span class="nn">Queue</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-24"></a><span class="k">except</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-25"></a>    <span class="kn">import</span> <span class="nn">queue</span> <span class="kn">as</span> <span class="nn">Queue</span>  <span class="c"># lint:ok</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-26"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-27"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-28"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">QDir</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-29"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">QFile</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-30"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">QTextStream</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-31"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">QRegExp</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-32"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">QThread</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-33"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">SIGNAL</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-34"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-35"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QVBoxLayout</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-36"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QMessageBox</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-37"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QSizePolicy</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-38"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QSpacerItem</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-39"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QRadioButton</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-40"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QHBoxLayout</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-41"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QGridLayout</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-42"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QGroupBox</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-43"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QAbstractItemView</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-44"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QHeaderView</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-45"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QDialog</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-46"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QWidget</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-47"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QTreeWidget</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-48"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QTreeWidgetItem</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-49"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QLineEdit</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-50"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QComboBox</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-51"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QCheckBox</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-52"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QPushButton</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-53"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QLabel</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-54"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QIcon</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-55"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QFileDialog</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-56"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-57"></a><span class="kn">from</span> <span class="nn">ninja_ide</span> <span class="kn">import</span> <span class="n">resources</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-58"></a><span class="kn">from</span> <span class="nn">ninja_ide.gui.ide</span> <span class="kn">import</span> <span class="n">IDE</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-59"></a><span class="kn">from</span> <span class="nn">ninja_ide.core.file_handling</span> <span class="kn">import</span> <span class="n">file_manager</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-60"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-61"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-62"></a><span class="k">class</span> <span class="nc">FindInFilesThread</span><span class="p">(</span><span class="n">QThread</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-63"></a>    <span class="sd">'''</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-64"></a><span class="sd">    Emit the signal</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-65"></a><span class="sd">    found_pattern(PyQt_PyObject)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-66"></a><span class="sd">    '''</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-67"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-68"></a>    <span class="k">def</span> <span class="nf">find_in_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dir_name</span><span class="p">,</span> <span class="n">filters</span><span class="p">,</span> <span class="n">reg_exp</span><span class="p">,</span> <span class="n">recursive</span><span class="p">,</span> <span class="n">by_phrase</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-69"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_cancel</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-70"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">recursive</span> <span class="o">=</span> <span class="n">recursive</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-71"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">search_pattern</span> <span class="o">=</span> <span class="n">reg_exp</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-72"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">by_phrase</span> <span class="o">=</span> <span class="n">by_phrase</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-73"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">filters</span> <span class="o">=</span> <span class="n">filters</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-74"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-75"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">dir_name</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-76"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">=</span> <span class="n">dir_name</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-77"></a>        <span class="c">#Start!</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-78"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-79"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-80"></a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-81"></a>        <span class="n">file_filter</span> <span class="o">=</span> <span class="n">QDir</span><span class="o">.</span><span class="n">Files</span> <span class="o">|</span> <span class="n">QDir</span><span class="o">.</span><span class="n">NoDotAndDotDot</span> <span class="o">|</span> <span class="n">QDir</span><span class="o">.</span><span class="n">Readable</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-82"></a>        <span class="n">dir_filter</span> <span class="o">=</span> <span class="n">QDir</span><span class="o">.</span><span class="n">Dirs</span> <span class="o">|</span> <span class="n">QDir</span><span class="o">.</span><span class="n">NoDotAndDotDot</span> <span class="o">|</span> <span class="n">QDir</span><span class="o">.</span><span class="n">Readable</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-83"></a>        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cancel</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-84"></a>            <span class="n">current_dir</span> <span class="o">=</span> <span class="n">QDir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-85"></a>            <span class="c">#Skip not readable dirs!</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-86"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">current_dir</span><span class="o">.</span><span class="n">isReadable</span><span class="p">():</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-87"></a>                <span class="k">continue</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-88"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-89"></a>            <span class="c">#Collect all sub dirs!</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-90"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">recursive</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-91"></a>                <span class="n">current_sub_dirs</span> <span class="o">=</span> <span class="n">current_dir</span><span class="o">.</span><span class="n">entryInfoList</span><span class="p">(</span><span class="n">dir_filter</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-92"></a>                <span class="k">for</span> <span class="n">one_dir</span> <span class="ow">in</span> <span class="n">current_sub_dirs</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-93"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">one_dir</span><span class="o">.</span><span class="n">absoluteFilePath</span><span class="p">())</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-94"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-95"></a>            <span class="c">#all files in sub_dir first apply the filters</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-96"></a>            <span class="n">current_files</span> <span class="o">=</span> <span class="n">current_dir</span><span class="o">.</span><span class="n">entryInfoList</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-97"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="p">,</span> <span class="n">file_filter</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-98"></a>            <span class="c">#process all files in current dir!</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-99"></a>            <span class="k">for</span> <span class="n">one_file</span> <span class="ow">in</span> <span class="n">current_files</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-100"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_grep_file</span><span class="p">(</span><span class="n">one_file</span><span class="o">.</span><span class="n">absoluteFilePath</span><span class="p">(),</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-101"></a>                    <span class="n">one_file</span><span class="o">.</span><span class="n">fileName</span><span class="p">())</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-102"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-103"></a>    <span class="k">def</span> <span class="nf">_grep_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">file_name</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-104"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">by_phrase</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-105"></a>            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-106"></a>                <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-107"></a>            <span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-108"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">search_pattern</span><span class="o">.</span><span class="n">pattern</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'|'</span><span class="p">)]</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-109"></a>            <span class="n">words</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-110"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-111"></a>            <span class="k">def</span> <span class="nf">check_whole_words</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">word</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-112"></a>                <span class="k">return</span> <span class="n">result</span> <span class="ow">and</span> <span class="n">content</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-113"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="nb">reduce</span><span class="p">(</span><span class="n">check_whole_words</span><span class="p">,</span> <span class="n">words</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-114"></a>                <span class="k">return</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-115"></a>        <span class="n">file_object</span> <span class="o">=</span> <span class="n">QFile</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-116"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">file_object</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">QFile</span><span class="o">.</span><span class="n">ReadOnly</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-117"></a>            <span class="k">return</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-118"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-119"></a>        <span class="n">stream</span> <span class="o">=</span> <span class="n">QTextStream</span><span class="p">(</span><span class="n">file_object</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-120"></a>        <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-121"></a>        <span class="n">line_index</span> <span class="o">=</span> <span class="mi">0</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-122"></a>        <span class="n">line</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">readLine</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-123"></a>        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cancel</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="n">stream</span><span class="o">.</span><span class="n">atEnd</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">line</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-124"></a>            <span class="n">column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_pattern</span><span class="o">.</span><span class="n">indexIn</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-125"></a>            <span class="k">if</span> <span class="n">column</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-126"></a>                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">line_index</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-127"></a>            <span class="c">#take the next line!</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-128"></a>            <span class="n">line</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">readLine</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-129"></a>            <span class="n">line_index</span> <span class="o">+=</span> <span class="mi">1</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-130"></a>        <span class="c">#emit a signal!</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-131"></a>        <span class="n">relative_file_name</span> <span class="o">=</span> <span class="n">file_manager</span><span class="o">.</span><span class="n">convert_to_relative</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-132"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span><span class="p">,</span> <span class="n">file_path</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-133"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">"found_pattern(PyQt_PyObject)"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-134"></a>            <span class="p">(</span><span class="n">relative_file_name</span><span class="p">,</span> <span class="n">lines</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-135"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-136"></a>    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-137"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_cancel</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-138"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-139"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-140"></a><span class="k">class</span> <span class="nc">FindInFilesResult</span><span class="p">(</span><span class="n">QTreeWidget</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-141"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-142"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-143"></a>        <span class="n">QTreeWidget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-144"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setHeaderLabels</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">'File'</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">'Line'</span><span class="p">)))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-145"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">()</span><span class="o">.</span><span class="n">setHorizontalScrollMode</span><span class="p">(</span><span class="n">QAbstractItemView</span><span class="o">.</span><span class="n">ScrollPerPixel</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-146"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">()</span><span class="o">.</span><span class="n">setResizeMode</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">QHeaderView</span><span class="o">.</span><span class="n">ResizeToContents</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-147"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">()</span><span class="o">.</span><span class="n">setResizeMode</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">QHeaderView</span><span class="o">.</span><span class="n">ResizeToContents</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-148"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">()</span><span class="o">.</span><span class="n">setStretchLastSection</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-149"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">sortByColumn</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AscendingOrder</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-150"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-151"></a>    <span class="k">def</span> <span class="nf">update_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dir_name_root</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-152"></a>        <span class="k">if</span> <span class="n">items</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-153"></a>            <span class="n">root_item</span> <span class="o">=</span> <span class="n">FindInFilesRootItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s">''</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-154"></a>                <span class="n">dir_name_root</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-155"></a>            <span class="n">root_item</span><span class="o">.</span><span class="n">setExpanded</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-156"></a>            <span class="k">for</span> <span class="n">line</span><span class="p">,</span> <span class="n">content</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-157"></a>                <span class="n">QTreeWidgetItem</span><span class="p">(</span><span class="n">root_item</span><span class="p">,</span> <span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">line</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-158"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-159"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-160"></a><span class="k">class</span> <span class="nc">FindInFilesRootItem</span><span class="p">(</span><span class="n">QTreeWidgetItem</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-161"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-162"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">dir_name_root</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-163"></a>        <span class="n">QTreeWidgetItem</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-164"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">dir_name_root</span> <span class="o">=</span> <span class="n">dir_name_root</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-165"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-166"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-167"></a><span class="k">class</span> <span class="nc">FindInFilesDialog</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-168"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-169"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result_widget</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-170"></a>        <span class="n">QDialog</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-171"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_find_thread</span> <span class="o">=</span> <span class="n">FindInFilesThread</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-172"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s">"Find in files"</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-173"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-174"></a>        <span class="c">#MAIN LAYOUT</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-175"></a>        <span class="n">main_vbox</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-176"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-177"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">pattern_line_edit</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-178"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">dir_name_root</span> <span class="o">=</span> <span class="bp">None</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-179"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">user_home</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">'~'</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-180"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">dir_combo</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-181"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">dir_combo</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user_home</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-182"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">dir_combo</span><span class="o">.</span><span class="n">setEditable</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-183"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">open_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="n">QIcon</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">IMAGES</span><span class="p">[</span><span class="s">'find'</span><span class="p">]),</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-184"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Open"</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-185"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">filters_line_edit</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="s">"*.py"</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-186"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">replace_line</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-187"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">replace_line</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-188"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">check_replace</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Replace: "</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-189"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">case_checkbox</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"C&amp;ase sensitive"</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-190"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">type_checkbox</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"R&amp;egular Expression"</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-191"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">recursive_checkbox</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Rec&amp;ursive"</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-192"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">recursive_checkbox</span><span class="o">.</span><span class="n">setCheckState</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Checked</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-193"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">phrase_radio</span> <span class="o">=</span> <span class="n">QRadioButton</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-194"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Search by Phrase (Exact Match)."</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-195"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">phrase_radio</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-196"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">words_radio</span> <span class="o">=</span> <span class="n">QRadioButton</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-197"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Search for all the words "</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-198"></a>                    <span class="s">"(anywhere in the document, not together)."</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-199"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">find_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Find!"</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-200"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">find_button</span><span class="o">.</span><span class="n">setMaximumWidth</span><span class="p">(</span><span class="mi">150</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-201"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cancel_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Cancel"</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-202"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cancel_button</span><span class="o">.</span><span class="n">setMaximumWidth</span><span class="p">(</span><span class="mi">150</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-203"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">result_widget</span> <span class="o">=</span> <span class="n">result_widget</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-204"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-205"></a>        <span class="n">hbox</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-206"></a>        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">find_button</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-207"></a>        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cancel_button</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-208"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-209"></a>        <span class="c">#main section</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-210"></a>        <span class="n">find_group_box</span> <span class="o">=</span> <span class="n">QGroupBox</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Main"</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-211"></a>        <span class="n">grid</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-212"></a>        <span class="n">grid</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Text: "</span><span class="p">)),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-213"></a>        <span class="n">grid</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pattern_line_edit</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-214"></a>        <span class="n">grid</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Directory: "</span><span class="p">)),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-215"></a>        <span class="n">grid</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir_combo</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-216"></a>        <span class="n">grid</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_button</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-217"></a>        <span class="n">grid</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Filter: "</span><span class="p">)),</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-218"></a>        <span class="n">grid</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filters_line_edit</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-219"></a>        <span class="n">grid</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">check_replace</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-220"></a>        <span class="n">grid</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">replace_line</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-221"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-222"></a>        <span class="n">find_group_box</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-223"></a>        <span class="c">#add main section to MAIN LAYOUT</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-224"></a>        <span class="n">main_vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">find_group_box</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-225"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-226"></a>        <span class="c">#options sections</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-227"></a>        <span class="n">options_group_box</span> <span class="o">=</span> <span class="n">QGroupBox</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Options"</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-228"></a>        <span class="n">gridOptions</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-229"></a>        <span class="n">gridOptions</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">case_checkbox</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-230"></a>        <span class="n">gridOptions</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type_checkbox</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-231"></a>        <span class="n">gridOptions</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">recursive_checkbox</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-232"></a>        <span class="n">gridOptions</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phrase_radio</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-233"></a>        <span class="n">gridOptions</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">words_radio</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-234"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-235"></a>        <span class="n">options_group_box</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">gridOptions</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-236"></a>        <span class="c">#add options sections to MAIN LAYOUT</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-237"></a>        <span class="n">main_vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">options_group_box</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-238"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-239"></a>        <span class="c">#add buttons to MAIN LAYOUT</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-240"></a>        <span class="n">main_vbox</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">hbox</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-241"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-242"></a>        <span class="c">#Focus</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-243"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">pattern_line_edit</span><span class="o">.</span><span class="n">setFocus</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-244"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">open_button</span><span class="o">.</span><span class="n">setFocusPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">NoFocus</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-245"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-246"></a>        <span class="c">#signal</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-247"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_button</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"clicked()"</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select_dir</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-248"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">find_button</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"clicked()"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-249"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_find_in_files</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-250"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cancel_button</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"clicked()"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-251"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_kill_thread</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-252"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_find_thread</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"found_pattern(PyQt_PyObject)"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-253"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_found_match</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-254"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_find_thread</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"finished()"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-255"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_find_thread_finished</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-256"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type_checkbox</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"stateChanged(int)"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-257"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_change_radio_enabled</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-258"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">check_replace</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"stateChanged(int)"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-259"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_replace_activated</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-260"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">words_radio</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"clicked(bool)"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-261"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_words_radio_pressed</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-262"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-263"></a>    <span class="k">def</span> <span class="nf">_replace_activated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-264"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">replace_line</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">check_replace</span><span class="o">.</span><span class="n">isChecked</span><span class="p">())</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-265"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">phrase_radio</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-266"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-267"></a>    <span class="k">def</span> <span class="nf">_words_radio_pressed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-268"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">replace_line</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="ow">not</span> <span class="n">value</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-269"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">check_replace</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="ow">not</span> <span class="n">value</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-270"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">words_radio</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-271"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-272"></a>    <span class="k">def</span> <span class="nf">_change_radio_enabled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-273"></a>        <span class="n">enabled</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_checkbox</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-274"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">phrase_radio</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">enabled</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-275"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">words_radio</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">enabled</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-276"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-277"></a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">actual_project</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">actual</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-278"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">dir_combo</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-279"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">dir_name_root</span> <span class="o">=</span> <span class="n">actual_project</span> <span class="k">if</span> \
+<a name="listingsninja_ideguimiscfind_in_filespy-280"></a>            <span class="n">actual_project</span> <span class="k">else</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">user_home</span><span class="p">]</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-281"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">dir_combo</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir_name_root</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-282"></a>        <span class="k">if</span> <span class="n">actual</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-283"></a>            <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir_combo</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span><span class="n">actual</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-284"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">dir_combo</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-285"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">FindInFilesDialog</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-286"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">pattern_line_edit</span><span class="o">.</span><span class="n">setFocus</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-287"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-288"></a>    <span class="k">def</span> <span class="nf">reject</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-289"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_kill_thread</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-290"></a>        <span class="c"># Crazy hack to avoid circular imports</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-291"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">result_widget</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-292"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">FindInFilesDialog</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">reject</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-293"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-294"></a>    <span class="k">def</span> <span class="nf">_find_thread_finished</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-295"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">"finished()"</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-296"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_find_thread</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-297"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-298"></a>    <span class="k">def</span> <span class="nf">_select_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-299"></a>        <span class="n">dir_name</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="o">.</span><span class="n">getExistingDirectory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-300"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Open Directory"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-301"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">dir_combo</span><span class="o">.</span><span class="n">currentText</span><span class="p">(),</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-302"></a>            <span class="n">QFileDialog</span><span class="o">.</span><span class="n">ShowDirsOnly</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-303"></a>        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir_combo</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span><span class="n">dir_name</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-304"></a>        <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-305"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">dir_combo</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-306"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-307"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">dir_combo</span><span class="o">.</span><span class="n">insertItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dir_name</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-308"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">dir_combo</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-309"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-310"></a>    <span class="k">def</span> <span class="nf">_found_match</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-311"></a>        <span class="n">file_name</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-312"></a>        <span class="n">items</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-313"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">result_widget</span><span class="o">.</span><span class="n">update_result</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-314"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">dir_combo</span><span class="o">.</span><span class="n">currentText</span><span class="p">(),</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">items</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-315"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-316"></a>    <span class="k">def</span> <span class="nf">_kill_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-317"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_thread</span><span class="o">.</span><span class="n">isRunning</span><span class="p">():</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-318"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_find_thread</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-319"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-320"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-321"></a>    <span class="k">def</span> <span class="nf">_find_in_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-322"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">"findStarted()"</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-323"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_kill_thread</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-324"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">result_widget</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-325"></a>        <span class="n">pattern</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pattern_line_edit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-326"></a>        <span class="n">dir_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir_combo</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-327"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-328"></a>        <span class="n">filters</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">"[,;]"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filters_line_edit</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-329"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-330"></a>        <span class="c"># Version of PyQt API 1</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-331"></a>        <span class="c"># filters = self.filters_line_edit.text().split(QRegExp("[,;]"),</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-332"></a>        <span class="c">#     QString.SkipEmptyParts)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-333"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-334"></a>        <span class="c">#remove the spaces in the words Ex. (" *.foo"--&gt; "*.foo")</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-335"></a>        <span class="n">filters</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">filters</span><span class="p">]</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-336"></a>        <span class="n">case_sensitive</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">case_checkbox</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-337"></a>        <span class="n">type_</span> <span class="o">=</span> <span class="n">QRegExp</span><span class="o">.</span><span class="n">RegExp</span> <span class="k">if</span> \
+<a name="listingsninja_ideguimiscfind_in_filespy-338"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">type_checkbox</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> <span class="k">else</span> <span class="n">QRegExp</span><span class="o">.</span><span class="n">FixedString</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-339"></a>        <span class="n">recursive</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">recursive_checkbox</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-340"></a>        <span class="n">by_phrase</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-341"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">phrase_radio</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_checkbox</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-342"></a>            <span class="n">regExp</span> <span class="o">=</span> <span class="n">QRegExp</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="p">,</span> <span class="n">type_</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-343"></a>        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">words_radio</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-344"></a>            <span class="n">by_phrase</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-345"></a>            <span class="n">type_</span> <span class="o">=</span> <span class="n">QRegExp</span><span class="o">.</span><span class="n">RegExp</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-346"></a>            <span class="n">pattern</span> <span class="o">=</span> <span class="s">'|'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-347"></a>                <span class="p">[</span><span class="n">word</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">pattern</span><span class="o">.</span><span class="n">split</span><span class="p">()])</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-348"></a>            <span class="n">regExp</span> <span class="o">=</span> <span class="n">QRegExp</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="p">,</span> <span class="n">type_</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-349"></a>        <span class="c">#save a reference to the root directory where we find</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-350"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">dir_name_root</span> <span class="o">=</span> <span class="n">dir_name</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-351"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_find_thread</span><span class="o">.</span><span class="n">find_in_files</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">filters</span><span class="p">,</span> <span class="n">regExp</span><span class="p">,</span> <span class="n">recursive</span><span class="p">,</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-352"></a>            <span class="n">by_phrase</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-353"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-354"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-355"></a><span class="k">class</span> <span class="nc">FindInFilesWidget</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-356"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-357"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-358"></a>        <span class="n">QWidget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-359"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_main_container</span> <span class="o">=</span> <span class="n">IDE</span><span class="o">.</span><span class="n">get_service</span><span class="p">(</span><span class="s">'main_container'</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-360"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_explorer_container</span> <span class="o">=</span> <span class="n">IDE</span><span class="o">.</span><span class="n">get_service</span><span class="p">(</span><span class="s">'explorer'</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-361"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_result_widget</span> <span class="o">=</span> <span class="n">FindInFilesResult</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-362"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_open_find_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Find!"</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-363"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Stop"</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-364"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_clear_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Clear!"</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-365"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_replace_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Replace"</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-366"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_find_widget</span> <span class="o">=</span> <span class="n">FindInFilesDialog</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_result_widget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-367"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_error_label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"No Results"</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-368"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_error_label</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-369"></a>        <span class="c">#Replace Area</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-370"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">replace_widget</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-371"></a>        <span class="n">hbox_replace</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">replace_widget</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-372"></a>        <span class="n">hbox_replace</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-373"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">lbl_replace</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Replace results with:"</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-374"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">lbl_replace</span><span class="o">.</span><span class="n">setTextFormat</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">PlainText</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-375"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">replace_edit</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-376"></a>        <span class="n">hbox_replace</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lbl_replace</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-377"></a>        <span class="n">hbox_replace</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">replace_edit</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-378"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">replace_widget</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-379"></a>        <span class="c">#Main Layout</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-380"></a>        <span class="n">main_hbox</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-381"></a>        <span class="c">#Result Layout</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-382"></a>        <span class="n">tree_vbox</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-383"></a>        <span class="n">tree_vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_result_widget</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-384"></a>        <span class="n">tree_vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_error_label</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-385"></a>        <span class="n">tree_vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">replace_widget</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-386"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-387"></a>        <span class="n">main_hbox</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">tree_vbox</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-388"></a>        <span class="c">#Buttons Layout</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-389"></a>        <span class="n">vbox</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-390"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_open_find_button</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-391"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stop_button</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-392"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_clear_button</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-393"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addSpacerItem</span><span class="p">(</span><span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-394"></a>            <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Fixed</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-395"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_replace_button</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-396"></a>        <span class="n">main_hbox</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">vbox</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-397"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-398"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_open_find_button</span><span class="o">.</span><span class="n">setFocus</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-399"></a>        <span class="c">#signals</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-400"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_open_find_button</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"clicked()"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-401"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-402"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stop_button</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"clicked()"</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_stop</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-403"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_clear_button</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"clicked()"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-404"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_clear_results</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-405"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_result_widget</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-406"></a>            <span class="s">"itemActivated(QTreeWidgetItem *, int)"</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_go_to</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-407"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_result_widget</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-408"></a>            <span class="s">"itemClicked(QTreeWidgetItem *, int)"</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_go_to</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-409"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_find_widget</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"finished()"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-410"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_find_finished</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-411"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_find_widget</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"findStarted()"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-412"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_find_started</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-413"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_replace_button</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"clicked()"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-414"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_replace_results</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-415"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-416"></a>    <span class="k">def</span> <span class="nf">_find_finished</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-417"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_button</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-418"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_open_find_button</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-419"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_error_label</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-420"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result_widget</span><span class="o">.</span><span class="n">topLevelItemCount</span><span class="p">():</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-421"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_error_label</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-422"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_widget</span><span class="o">.</span><span class="n">check_replace</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-423"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">replace_widget</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-424"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_replace_button</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-425"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">replace_edit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_find_widget</span><span class="o">.</span><span class="n">replace_line</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-426"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-427"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_replace_button</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-428"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">replace_widget</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-429"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_result_widget</span><span class="o">.</span><span class="n">setFocus</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-430"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-431"></a>    <span class="k">def</span> <span class="nf">_find_stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-432"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_find_widget</span><span class="o">.</span><span class="n">_kill_thread</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-433"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-434"></a>    <span class="k">def</span> <span class="nf">_find_started</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-435"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_open_find_button</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-436"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_button</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-437"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-438"></a>    <span class="k">def</span> <span class="nf">_clear_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-439"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_result_widget</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-440"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-441"></a>    <span class="k">def</span> <span class="nf">_go_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-442"></a>        <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-443"></a>            <span class="n">parent</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-444"></a>            <span class="n">file_name</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-445"></a>            <span class="n">lineno</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-446"></a>            <span class="n">root_dir_name</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">dir_name_root</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-447"></a>            <span class="n">file_path</span> <span class="o">=</span> <span class="n">file_manager</span><span class="o">.</span><span class="n">create_path</span><span class="p">(</span><span class="n">root_dir_name</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-448"></a>            <span class="c">#open the file and jump_to_line</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-449"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_main_container</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-450"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_main_container</span><span class="o">.</span><span class="n">editor_jump_to_line</span><span class="p">(</span><span class="n">lineno</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">lineno</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-451"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-452"></a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-453"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_widget</span><span class="o">.</span><span class="n">isVisible</span><span class="p">():</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-454"></a>            <span class="n">ide</span> <span class="o">=</span> <span class="n">IDE</span><span class="o">.</span><span class="n">get_service</span><span class="p">(</span><span class="s">'ide'</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-455"></a>            <span class="n">actual_projects_obj</span> <span class="o">=</span> <span class="n">ide</span><span class="o">.</span><span class="n">get_opened_projects</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-456"></a>            <span class="n">actual_projects</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">path</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">actual_projects_obj</span><span class="p">]</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-457"></a>            <span class="n">actual</span> <span class="o">=</span> <span class="n">ide</span><span class="o">.</span><span class="n">get_current_project</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-458"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_find_widget</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">actual_project</span><span class="o">=</span><span class="n">actual_projects</span><span class="p">,</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-459"></a>                <span class="n">actual</span><span class="o">=</span><span class="n">actual</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-460"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-461"></a>    <span class="k">def</span> <span class="nf">find_occurrences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-462"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_find_widget</span><span class="o">.</span><span class="n">pattern_line_edit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-463"></a>        <span class="n">ide</span> <span class="o">=</span> <span class="n">IDE</span><span class="o">.</span><span class="n">get_service</span><span class="p">(</span><span class="s">'ide'</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-464"></a>        <span class="n">main_container</span> <span class="o">=</span> <span class="n">IDE</span><span class="o">.</span><span class="n">get_service</span><span class="p">(</span><span class="s">'main_container'</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-465"></a>        <span class="n">editorWidget</span> <span class="o">=</span> <span class="n">main_container</span><span class="o">.</span><span class="n">get_current_editor</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-466"></a>        <span class="n">nproject</span> <span class="o">=</span> <span class="n">ide</span><span class="o">.</span><span class="n">get_project_for_file</span><span class="p">(</span><span class="n">editorWidget</span><span class="o">.</span><span class="n">ID</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-467"></a>        <span class="k">if</span> <span class="n">nproject</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-468"></a>            <span class="n">nproject</span> <span class="o">=</span> <span class="n">ide</span><span class="o">.</span><span class="n">get_current_project</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-469"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_find_widget</span><span class="o">.</span><span class="n">dir_combo</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-470"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_find_widget</span><span class="o">.</span><span class="n">dir_combo</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">nproject</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-471"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_find_widget</span><span class="o">.</span><span class="n">case_checkbox</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-472"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_find_widget</span><span class="o">.</span><span class="n">_find_in_files</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-473"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-474"></a>    <span class="k">def</span> <span class="nf">_replace_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-475"></a>        <span class="n">result</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">question</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Replace Files Contents"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-476"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Are you sure you want to replace the content in "</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-477"></a>                    <span class="s">"this files?</span><span class="se">\n</span><span class="s">(The change is not reversible)"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-478"></a>            <span class="n">buttons</span><span class="o">=</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span> <span class="o">|</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-479"></a>        <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-480"></a>            <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_result_widget</span><span class="o">.</span><span class="n">topLevelItemCount</span><span class="p">()):</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-481"></a>                <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result_widget</span><span class="o">.</span><span class="n">topLevelItem</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-482"></a>                <span class="n">root_dir_name</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">dir_name_root</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-483"></a>                <span class="n">file_name</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-484"></a>                <span class="n">file_path</span> <span class="o">=</span> <span class="n">file_manager</span><span class="o">.</span><span class="n">create_path</span><span class="p">(</span><span class="n">root_dir_name</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-485"></a>                <span class="k">try</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-486"></a>                    <span class="n">content</span> <span class="o">=</span> <span class="n">file_manager</span><span class="o">.</span><span class="n">read_file_content</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-487"></a>                    <span class="n">pattern</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_widget</span><span class="o">.</span><span class="n">pattern_line_edit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-488"></a>                    <span class="n">flags</span> <span class="o">=</span> <span class="mi">0</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-489"></a>                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_widget</span><span class="o">.</span><span class="n">case_checkbox</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-490"></a>                        <span class="n">flags</span> <span class="o">|=</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-491"></a>                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_widget</span><span class="o">.</span><span class="n">type_checkbox</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-492"></a>                        <span class="n">pattern</span> <span class="o">=</span> <span class="s">r'\b</span><span class="si">%s</span><span class="s">\b'</span> <span class="o">%</span> <span class="n">pattern</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-493"></a>
+<a name="listingsninja_ideguimiscfind_in_filespy-494"></a>                    <span class="n">new_content</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-495"></a>                        <span class="bp">self</span><span class="o">.</span><span class="n">_find_widget</span><span class="o">.</span><span class="n">replace_line</span><span class="o">.</span><span class="n">text</span><span class="p">(),</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-496"></a>                        <span class="n">content</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">flags</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-497"></a>                    <span class="n">file_manager</span><span class="o">.</span><span class="n">store_file_content</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-498"></a>                        <span class="n">new_content</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-499"></a>                <span class="k">except</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-500"></a>                    <span class="k">print</span><span class="p">(</span><span class="s">'File: </span><span class="si">%s</span><span class="s"> content, could not be replaced'</span> <span class="o">%</span>
+<a name="listingsninja_ideguimiscfind_in_filespy-501"></a>                          <span class="n">file_path</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

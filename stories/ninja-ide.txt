@@ -1,0 +1,25 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: ninja-ide
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `ninja-ide.py </listings/ninja-ide.py.html>`_ API
+=============================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `ninja_ide </listings/ninja-ide.py.html#26>`_
+
+- `__future__.absolute_import </listings/ninja-ide.py.html#24>`_
+

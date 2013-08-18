@@ -1,0 +1,27 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: python_syntax
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `python_syntax.py </listings/ninja_ide/gui/editor/python_syntax.py.html>`_ API
+==========================================================================================
+
+No description.
+
+
+
+
+*Global Attributes:*
+----------------------
+- `syntax [at ln:1] </listings/ninja_ide/gui/editor/python_syntax.py.html#1>`_
+
+
+
+

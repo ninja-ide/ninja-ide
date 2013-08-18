@@ -1,0 +1,823 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="run_widget.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>run_widget.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../../">/listings</a>
+        </li><li><a href="../../">/ninja_ide</a>
+        </li><li><a href="../">/gui</a>
+        </li><li><a href=".">/misc</a>
+        </li><li><a href="#">/run_widget.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-1">  1</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-2">  2</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-3">  3</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-4">  4</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-5">  5</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-6">  6</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-7">  7</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-8">  8</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-9">  9</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-10"> 10</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-11"> 11</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-12"> 12</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-13"> 13</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-14"> 14</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-15"> 15</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-16"> 16</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-17"> 17</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-18"> 18</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-19"> 19</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-20"> 20</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-21"> 21</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-22"> 22</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-23"> 23</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-24"> 24</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-25"> 25</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-26"> 26</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-27"> 27</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-28"> 28</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-29"> 29</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-30"> 30</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-31"> 31</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-32"> 32</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-33"> 33</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-34"> 34</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-35"> 35</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-36"> 36</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-37"> 37</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-38"> 38</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-39"> 39</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-40"> 40</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-41"> 41</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-42"> 42</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-43"> 43</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-44"> 44</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-45"> 45</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-46"> 46</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-47"> 47</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-48"> 48</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-49"> 49</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-50"> 50</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-51"> 51</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-52"> 52</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-53"> 53</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-54"> 54</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-55"> 55</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-56"> 56</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-57"> 57</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-58"> 58</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-59"> 59</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-60"> 60</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-61"> 61</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-62"> 62</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-63"> 63</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-64"> 64</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-65"> 65</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-66"> 66</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-67"> 67</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-68"> 68</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-69"> 69</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-70"> 70</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-71"> 71</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-72"> 72</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-73"> 73</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-74"> 74</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-75"> 75</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-76"> 76</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-77"> 77</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-78"> 78</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-79"> 79</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-80"> 80</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-81"> 81</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-82"> 82</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-83"> 83</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-84"> 84</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-85"> 85</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-86"> 86</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-87"> 87</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-88"> 88</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-89"> 89</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-90"> 90</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-91"> 91</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-92"> 92</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-93"> 93</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-94"> 94</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-95"> 95</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-96"> 96</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-97"> 97</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-98"> 98</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-99"> 99</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-100">100</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-101">101</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-102">102</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-103">103</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-104">104</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-105">105</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-106">106</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-107">107</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-108">108</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-109">109</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-110">110</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-111">111</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-112">112</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-113">113</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-114">114</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-115">115</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-116">116</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-117">117</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-118">118</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-119">119</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-120">120</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-121">121</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-122">122</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-123">123</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-124">124</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-125">125</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-126">126</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-127">127</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-128">128</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-129">129</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-130">130</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-131">131</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-132">132</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-133">133</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-134">134</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-135">135</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-136">136</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-137">137</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-138">138</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-139">139</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-140">140</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-141">141</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-142">142</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-143">143</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-144">144</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-145">145</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-146">146</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-147">147</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-148">148</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-149">149</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-150">150</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-151">151</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-152">152</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-153">153</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-154">154</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-155">155</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-156">156</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-157">157</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-158">158</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-159">159</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-160">160</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-161">161</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-162">162</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-163">163</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-164">164</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-165">165</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-166">166</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-167">167</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-168">168</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-169">169</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-170">170</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-171">171</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-172">172</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-173">173</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-174">174</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-175">175</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-176">176</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-177">177</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-178">178</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-179">179</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-180">180</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-181">181</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-182">182</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-183">183</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-184">184</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-185">185</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-186">186</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-187">187</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-188">188</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-189">189</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-190">190</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-191">191</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-192">192</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-193">193</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-194">194</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-195">195</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-196">196</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-197">197</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-198">198</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-199">199</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-200">200</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-201">201</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-202">202</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-203">203</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-204">204</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-205">205</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-206">206</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-207">207</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-208">208</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-209">209</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-210">210</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-211">211</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-212">212</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-213">213</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-214">214</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-215">215</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-216">216</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-217">217</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-218">218</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-219">219</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-220">220</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-221">221</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-222">222</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-223">223</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-224">224</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-225">225</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-226">226</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-227">227</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-228">228</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-229">229</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-230">230</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-231">231</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-232">232</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-233">233</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-234">234</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-235">235</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-236">236</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-237">237</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-238">238</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-239">239</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-240">240</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-241">241</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-242">242</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-243">243</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-244">244</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-245">245</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-246">246</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-247">247</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-248">248</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-249">249</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-250">250</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-251">251</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-252">252</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-253">253</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-254">254</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-255">255</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-256">256</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-257">257</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-258">258</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-259">259</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-260">260</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-261">261</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-262">262</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-263">263</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-264">264</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-265">265</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-266">266</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-267">267</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-268">268</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-269">269</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-270">270</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-271">271</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-272">272</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-273">273</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-274">274</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-275">275</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-276">276</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-277">277</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-278">278</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-279">279</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-280">280</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-281">281</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-282">282</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-283">283</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-284">284</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-285">285</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-286">286</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-287">287</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-288">288</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-289">289</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-290">290</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-291">291</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-292">292</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-293">293</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-294">294</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-295">295</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-296">296</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-297">297</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-298">298</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-299">299</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-300">300</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-301">301</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-302">302</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-303">303</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-304">304</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-305">305</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-306">306</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-307">307</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-308">308</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-309">309</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-310">310</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-311">311</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-312">312</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-313">313</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-314">314</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-315">315</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-316">316</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-317">317</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-318">318</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-319">319</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-320">320</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-321">321</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-322">322</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-323">323</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-324">324</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-325">325</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-326">326</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-327">327</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-328">328</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-329">329</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-330">330</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-331">331</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-332">332</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-333">333</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-334">334</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-335">335</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-336">336</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-337">337</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-338">338</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-339">339</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-340">340</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-341">341</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-342">342</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-343">343</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-344">344</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-345">345</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-346">346</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-347">347</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-348">348</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-349">349</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-350">350</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-351">351</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-352">352</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-353">353</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-354">354</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-355">355</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-356">356</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-357">357</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-358">358</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-359">359</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-360">360</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-361">361</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-362">362</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-363">363</a>
+<a href="run_widget.py.html#listingsninja_ideguimiscrun_widgetpy-364">364</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_ideguimiscrun_widgetpy-1"></a><span class="c"># -*- coding: utf-8 -*-</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-2"></a><span class="c">#</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-3"></a><span class="c"># This file is part of NINJA-IDE (http://ninja-ide.org).</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-4"></a><span class="c">#</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-5"></a><span class="c"># NINJA-IDE is free software; you can redistribute it and/or modify</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-6"></a><span class="c"># it under the terms of the GNU General Public License as published by</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-7"></a><span class="c"># the Free Software Foundation; either version 3 of the License, or</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-8"></a><span class="c"># any later version.</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-9"></a><span class="c">#</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-10"></a><span class="c"># NINJA-IDE is distributed in the hope that it will be useful,</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-11"></a><span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-12"></a><span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-13"></a><span class="c"># GNU General Public License for more details.</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-14"></a><span class="c">#</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-15"></a><span class="c"># You should have received a copy of the GNU General Public License</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-16"></a><span class="c"># along with NINJA-IDE; If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-17"></a><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-18"></a><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-19"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-20"></a><span class="kn">import</span> <span class="nn">time</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-21"></a><span class="kn">import</span> <span class="nn">re</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-22"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-23"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QPlainTextEdit</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-24"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QLabel</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-25"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QLineEdit</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-26"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QVBoxLayout</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-27"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QHBoxLayout</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-28"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QWidget</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-29"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QMenu</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-30"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QTextCursor</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-31"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QTextCharFormat</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-32"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QColor</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-33"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QBrush</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-34"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QFont</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-35"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-36"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">QProcess</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-37"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">QProcessEnvironment</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-38"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">QFile</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-39"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">SIGNAL</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-40"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-41"></a><span class="kn">from</span> <span class="nn">ninja_ide</span> <span class="kn">import</span> <span class="n">resources</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-42"></a><span class="kn">from</span> <span class="nn">ninja_ide.core</span> <span class="kn">import</span> <span class="n">settings</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-43"></a><span class="kn">from</span> <span class="nn">ninja_ide.core.file_handling</span> <span class="kn">import</span> <span class="n">file_manager</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-44"></a><span class="kn">from</span> <span class="nn">ninja_ide.gui.main_panel</span> <span class="kn">import</span> <span class="n">main_container</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-45"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-46"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-47"></a><span class="k">class</span> <span class="nc">RunWidget</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-48"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-49"></a>    <span class="sd">"""Widget that show the execution output in the Tool Dock."""</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-50"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-51"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-52"></a>        <span class="n">QWidget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-53"></a>        <span class="n">vbox</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-54"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">setSpacing</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-55"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-56"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">OutputWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-57"></a>        <span class="n">hbox</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-58"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-59"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">lblInput</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Input:"</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-60"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-61"></a>        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lblInput</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-62"></a>        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-63"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">hbox</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-64"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-65"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">FONT_FAMILY</span><span class="p">,</span> <span class="n">settings</span><span class="o">.</span><span class="n">FONT_SIZE</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-66"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-67"></a>        <span class="c">#process</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-68"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">currentProcess</span> <span class="o">=</span> <span class="bp">None</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-69"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">__preScriptExecuted</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-70"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_proc</span> <span class="o">=</span> <span class="n">QProcess</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-71"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_preExecScriptProc</span> <span class="o">=</span> <span class="n">QProcess</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-72"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_postExecScriptProc</span> <span class="o">=</span> <span class="n">QProcess</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-73"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_proc</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"readyReadStandardOutput()"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-74"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">_refresh_output</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-75"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_proc</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"readyReadStandardError()"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-76"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">_refresh_error</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-77"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_proc</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"finished(int, QProcess::ExitStatus)"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-78"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">finish_execution</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-79"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_proc</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"error(QProcess::ProcessError)"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-80"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">process_error</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-81"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"returnPressed()"</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">insert_input</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-82"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_preExecScriptProc</span><span class="p">,</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-83"></a>            <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"finished(int, QProcess::ExitStatus)"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-84"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">__main_execution</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-85"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_preExecScriptProc</span><span class="p">,</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-86"></a>            <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"readyReadStandardOutput()"</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">_refresh_output</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-87"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_preExecScriptProc</span><span class="p">,</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-88"></a>            <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"readyReadStandardError()"</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">_refresh_error</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-89"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_postExecScriptProc</span><span class="p">,</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-90"></a>            <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"finished(int, QProcess::ExitStatus)"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-91"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">__post_execution_message</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-92"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_postExecScriptProc</span><span class="p">,</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-93"></a>            <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"readyReadStandardOutput()"</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">_refresh_output</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-94"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_postExecScriptProc</span><span class="p">,</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-95"></a>            <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"readyReadStandardError()"</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">_refresh_error</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-96"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-97"></a>    <span class="k">def</span> <span class="nf">set_font</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">family</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-98"></a>        <span class="n">font</span> <span class="o">=</span> <span class="n">QFont</span><span class="p">(</span><span class="n">family</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-99"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">document</span><span class="p">()</span><span class="o">.</span><span class="n">setDefaultFont</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-100"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">plain_format</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-101"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">error_format</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-102"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-103"></a>    <span class="k">def</span> <span class="nf">process_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-104"></a>        <span class="sd">"""Listen to the error signals from the running process."""</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-105"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">lblInput</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-106"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-107"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_proc</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-108"></a>        <span class="n">format_</span> <span class="o">=</span> <span class="n">QTextCharFormat</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-109"></a>        <span class="n">format_</span><span class="o">.</span><span class="n">setAnchor</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-110"></a>        <span class="n">format_</span><span class="o">.</span><span class="n">setForeground</span><span class="p">(</span><span class="n">QBrush</span><span class="p">(</span><span class="n">QColor</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">CUSTOM_SCHEME</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-111"></a>            <span class="s">"error-underline"</span><span class="p">,</span> <span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span><span class="p">[</span><span class="s">"error-underline"</span><span class="p">]))))</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-112"></a>        <span class="k">if</span> <span class="n">error</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-113"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">textCursor</span><span class="p">()</span><span class="o">.</span><span class="n">insertText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">'Failed to start'</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-114"></a>                <span class="n">format_</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-115"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-116"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">textCursor</span><span class="p">()</span><span class="o">.</span><span class="n">insertText</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-117"></a>                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">'Error during execution, QProcess error: </span><span class="si">%d</span><span class="s">'</span><span class="p">)</span> <span class="o">%</span> <span class="n">error</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-118"></a>                <span class="n">format_</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-119"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-120"></a>    <span class="k">def</span> <span class="nf">finish_execution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exitCode</span><span class="p">,</span> <span class="n">exitStatus</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-121"></a>        <span class="sd">"""Print a message and hide the input line when the execution ends."""</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-122"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">lblInput</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-123"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-124"></a>        <span class="n">format_</span> <span class="o">=</span> <span class="n">QTextCharFormat</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-125"></a>        <span class="n">format_</span><span class="o">.</span><span class="n">setAnchor</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-126"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">textCursor</span><span class="p">()</span><span class="o">.</span><span class="n">insertText</span><span class="p">(</span><span class="s">'</span><span class="se">\n\n</span><span class="s">'</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-127"></a>        <span class="k">if</span> <span class="n">exitStatus</span> <span class="o">==</span> <span class="n">QProcess</span><span class="o">.</span><span class="n">NormalExit</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-128"></a>            <span class="n">format_</span><span class="o">.</span><span class="n">setForeground</span><span class="p">(</span><span class="n">QBrush</span><span class="p">(</span><span class="n">QColor</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">CUSTOM_SCHEME</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-129"></a>            <span class="s">"keyword"</span><span class="p">,</span> <span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span><span class="p">[</span><span class="s">"keyword"</span><span class="p">]))))</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-130"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">textCursor</span><span class="p">()</span><span class="o">.</span><span class="n">insertText</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-131"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Execution Successful!"</span><span class="p">),</span> <span class="n">format_</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-132"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-133"></a>            <span class="n">format_</span><span class="o">.</span><span class="n">setForeground</span><span class="p">(</span><span class="n">QBrush</span><span class="p">(</span><span class="n">QColor</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">CUSTOM_SCHEME</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-134"></a>            <span class="s">"error-underline"</span><span class="p">,</span> <span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span><span class="p">[</span><span class="s">"error-underline"</span><span class="p">]))))</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-135"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">textCursor</span><span class="p">()</span><span class="o">.</span><span class="n">insertText</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-136"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Execution Interrupted"</span><span class="p">),</span> <span class="n">format_</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-137"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">textCursor</span><span class="p">()</span><span class="o">.</span><span class="n">insertText</span><span class="p">(</span><span class="s">'</span><span class="se">\n\n</span><span class="s">'</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-138"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">__post_execution</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-139"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-140"></a>    <span class="k">def</span> <span class="nf">insert_input</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-141"></a>        <span class="sd">"""Take the user input and send it to the process."""</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-142"></a>        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="o">+</span> <span class="s">'</span><span class="se">\n</span><span class="s">'</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-143"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_proc</span><span class="o">.</span><span class="n">writeData</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-144"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">textCursor</span><span class="p">()</span><span class="o">.</span><span class="n">insertText</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">plain_format</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-145"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">""</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-146"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">set_font</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">FONT_FAMILY</span><span class="p">,</span> <span class="n">settings</span><span class="o">.</span><span class="n">FONT_SIZE</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-147"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-148"></a>    <span class="k">def</span> <span class="nf">start_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fileName</span><span class="p">,</span> <span class="n">pythonPath</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">PYTHONPATH</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-149"></a>        <span class="n">programParams</span><span class="o">=</span><span class="s">''</span><span class="p">,</span> <span class="n">preExec</span><span class="o">=</span><span class="s">''</span><span class="p">,</span> <span class="n">postExec</span><span class="o">=</span><span class="s">''</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-150"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-151"></a>        <span class="sd">"""Prepare the output widget and start the process."""</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-152"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">lblInput</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-153"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-154"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">fileName</span> <span class="o">=</span> <span class="n">fileName</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-155"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">pythonPath</span> <span class="o">=</span> <span class="n">pythonPath</span>  <span class="c"># FIXME, this is python interpreter</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-156"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">programParams</span> <span class="o">=</span> <span class="n">programParams</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-157"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">preExec</span> <span class="o">=</span> <span class="n">preExec</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-158"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">postExec</span> <span class="o">=</span> <span class="n">postExec</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-159"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">PYTHONPATH</span> <span class="o">=</span> <span class="n">PYTHONPATH</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-160"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-161"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">__pre_execution</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-162"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-163"></a>    <span class="k">def</span> <span class="nf">__main_execution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-164"></a>        <span class="sd">"""Execute the project."""</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-165"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">setCurrentCharFormat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">plain_format</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-166"></a>        <span class="n">message</span> <span class="o">=</span> <span class="s">''</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-167"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__preScriptExecuted</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-168"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">__preScriptExecuted</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-169"></a>            <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-170"></a>                <span class="s">"Pre Execution Script Successfully executed.</span><span class="se">\n\n</span><span class="s">"</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-171"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">setPlainText</span><span class="p">(</span><span class="n">message</span> <span class="o">+</span> <span class="s">'Running: </span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">)</span><span class="se">\n\n</span><span class="s">'</span> <span class="o">%</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-172"></a>            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fileName</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">ctime</span><span class="p">()))</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-173"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">moveCursor</span><span class="p">(</span><span class="n">QTextCursor</span><span class="o">.</span><span class="n">Down</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-174"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">moveCursor</span><span class="p">(</span><span class="n">QTextCursor</span><span class="o">.</span><span class="n">Down</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-175"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">moveCursor</span><span class="p">(</span><span class="n">QTextCursor</span><span class="o">.</span><span class="n">Down</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-176"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-177"></a>        <span class="c">#runner.run_code_from_file(fileName)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-178"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">pythonPath</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-179"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">pythonPath</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">PYTHON_PATH</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-180"></a>        <span class="c">#change the working directory to the fileName dir</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-181"></a>        <span class="n">file_directory</span> <span class="o">=</span> <span class="n">file_manager</span><span class="o">.</span><span class="n">get_folder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fileName</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-182"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_proc</span><span class="o">.</span><span class="n">setWorkingDirectory</span><span class="p">(</span><span class="n">file_directory</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-183"></a>        <span class="c">#force python to unbuffer stdin and stdout</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-184"></a>        <span class="n">options</span> <span class="o">=</span> <span class="p">[</span><span class="s">'-u'</span><span class="p">]</span> <span class="o">+</span> <span class="n">settings</span><span class="o">.</span><span class="n">EXECUTION_OPTIONS</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-185"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">currentProcess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_proc</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-186"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-187"></a>        <span class="n">env</span> <span class="o">=</span> <span class="n">QProcessEnvironment</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-188"></a>        <span class="n">system_environemnt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_proc</span><span class="o">.</span><span class="n">systemEnvironment</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-189"></a>        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">system_environemnt</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-190"></a>            <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'='</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-191"></a>            <span class="n">env</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-192"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYTHONPATH</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-193"></a>            <span class="n">envpaths</span> <span class="o">=</span> <span class="p">[</span><span class="n">path</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">PYTHONPATH</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()]</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-194"></a>            <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">envpaths</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-195"></a>                <span class="n">env</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="s">'PYTHONPATH'</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-196"></a>        <span class="n">env</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="s">'PYTHONIOENCODING'</span><span class="p">,</span> <span class="s">'utf-8'</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-197"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_proc</span><span class="o">.</span><span class="n">setProcessEnvironment</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-198"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-199"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_proc</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pythonPath</span><span class="p">,</span> <span class="n">options</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">fileName</span><span class="p">]</span> <span class="o">+</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-200"></a>            <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">programParams</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">','</span><span class="p">)</span> <span class="k">if</span> <span class="n">p</span><span class="p">])</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-201"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-202"></a>    <span class="k">def</span> <span class="nf">__pre_execution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-203"></a>        <span class="sd">"""Execute a script before executing the project."""</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-204"></a>        <span class="n">filePreExec</span> <span class="o">=</span> <span class="n">QFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preExec</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-205"></a>        <span class="k">if</span> <span class="n">filePreExec</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> \
+<a name="listingsninja_ideguimiscrun_widgetpy-206"></a>          <span class="nb">bool</span><span class="p">(</span><span class="n">QFile</span><span class="o">.</span><span class="n">ExeUser</span> <span class="o">&amp;</span> <span class="n">filePreExec</span><span class="o">.</span><span class="n">permissions</span><span class="p">()):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-207"></a>            <span class="n">ext</span> <span class="o">=</span> <span class="n">file_manager</span><span class="o">.</span><span class="n">get_file_extension</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preExec</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-208"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">pythonPath</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-209"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">pythonPath</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">PYTHON_PATH</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-210"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">currentProcess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_preExecScriptProc</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-211"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">__preScriptExecuted</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-212"></a>            <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s">'py'</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-213"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_preExecScriptProc</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pythonPath</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">preExec</span><span class="p">])</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-214"></a>            <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-215"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_preExecScriptProc</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preExec</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-216"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-217"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">__main_execution</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-218"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-219"></a>    <span class="k">def</span> <span class="nf">__post_execution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-220"></a>        <span class="sd">"""Execute a script after executing the project."""</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-221"></a>        <span class="n">filePostExec</span> <span class="o">=</span> <span class="n">QFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">postExec</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-222"></a>        <span class="k">if</span> <span class="n">filePostExec</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> \
+<a name="listingsninja_ideguimiscrun_widgetpy-223"></a>          <span class="nb">bool</span><span class="p">(</span><span class="n">QFile</span><span class="o">.</span><span class="n">ExeUser</span> <span class="o">&amp;</span> <span class="n">filePostExec</span><span class="o">.</span><span class="n">permissions</span><span class="p">()):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-224"></a>            <span class="n">ext</span> <span class="o">=</span> <span class="n">file_manager</span><span class="o">.</span><span class="n">get_file_extension</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">postExec</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-225"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">pythonPath</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-226"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">pythonPath</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">PYTHON_PATH</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-227"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">currentProcess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_postExecScriptProc</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-228"></a>            <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s">'py'</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-229"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_postExecScriptProc</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pythonPath</span><span class="p">,</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-230"></a>                    <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">postExec</span><span class="p">])</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-231"></a>            <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-232"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">_postExecScriptProc</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">postExec</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-233"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-234"></a>    <span class="k">def</span> <span class="nf">__post_execution_message</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-235"></a>        <span class="sd">"""Print post execution message."""</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-236"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">textCursor</span><span class="p">()</span><span class="o">.</span><span class="n">insertText</span><span class="p">(</span><span class="s">'</span><span class="se">\n\n</span><span class="s">'</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-237"></a>        <span class="n">format_</span> <span class="o">=</span> <span class="n">QTextCharFormat</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-238"></a>        <span class="n">format_</span><span class="o">.</span><span class="n">setAnchor</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-239"></a>        <span class="n">format_</span><span class="o">.</span><span class="n">setForeground</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">green</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-240"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">textCursor</span><span class="p">()</span><span class="o">.</span><span class="n">insertText</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-241"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Post Execution Script Successfully executed."</span><span class="p">),</span> <span class="n">format_</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-242"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-243"></a>    <span class="k">def</span> <span class="nf">kill_process</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-244"></a>        <span class="sd">"""Kill the running process."""</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-245"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_proc</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-246"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-247"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-248"></a><span class="k">class</span> <span class="nc">OutputWidget</span><span class="p">(</span><span class="n">QPlainTextEdit</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-249"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-250"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-251"></a>        <span class="n">QPlainTextEdit</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-252"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">parent</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-253"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setReadOnly</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-254"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">maxValue</span> <span class="o">=</span> <span class="mi">0</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-255"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">actualValue</span> <span class="o">=</span> <span class="mi">0</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-256"></a>        <span class="c">#traceback pattern</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-257"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">patLink</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r'(\s)*File "(.*?)", line \d.+'</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-258"></a>        <span class="c">#formats</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-259"></a>        <span class="n">font</span> <span class="o">=</span> <span class="n">QFont</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">FONT_FAMILY</span><span class="p">,</span> <span class="n">settings</span><span class="o">.</span><span class="n">FONT_SIZE</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-260"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">plain_format</span> <span class="o">=</span> <span class="n">QTextCharFormat</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-261"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">plain_format</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-262"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">plain_format</span><span class="o">.</span><span class="n">setForeground</span><span class="p">(</span><span class="n">QBrush</span><span class="p">(</span><span class="n">QColor</span><span class="p">(</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-263"></a>            <span class="n">resources</span><span class="o">.</span><span class="n">CUSTOM_SCHEME</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"editor-text"</span><span class="p">,</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-264"></a>            <span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span><span class="p">[</span><span class="s">"editor-text"</span><span class="p">]))))</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-265"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">error_format</span> <span class="o">=</span> <span class="n">QTextCharFormat</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-266"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">error_format</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-267"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">error_format</span><span class="o">.</span><span class="n">setAnchor</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-268"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">error_format</span><span class="o">.</span><span class="n">setFontUnderline</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-269"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">error_format</span><span class="o">.</span><span class="n">setUnderlineStyle</span><span class="p">(</span><span class="n">QTextCharFormat</span><span class="o">.</span><span class="n">SingleUnderline</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-270"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">error_format</span><span class="o">.</span><span class="n">setUnderlineColor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">red</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-271"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">error_format</span><span class="o">.</span><span class="n">setForeground</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">blue</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-272"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">error_format</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Click to show the source"</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-273"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-274"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"blockCountChanged(int)"</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scroll_area</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-275"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-276"></a>        <span class="n">css</span> <span class="o">=</span> <span class="s">'QPlainTextEdit {color: </span><span class="si">%s</span><span class="s">; background-color: </span><span class="si">%s</span><span class="s">;'</span> \
+<a name="listingsninja_ideguimiscrun_widgetpy-277"></a>            <span class="s">'selection-color: </span><span class="si">%s</span><span class="s">; selection-background-color: </span><span class="si">%s</span><span class="s">;}'</span> \
+<a name="listingsninja_ideguimiscrun_widgetpy-278"></a>            <span class="o">%</span> <span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">CUSTOM_SCHEME</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'editor-text'</span><span class="p">,</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-279"></a>            <span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span><span class="p">[</span><span class="s">'editor-text'</span><span class="p">]),</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-280"></a>            <span class="n">resources</span><span class="o">.</span><span class="n">CUSTOM_SCHEME</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'editor-background'</span><span class="p">,</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-281"></a>                <span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span><span class="p">[</span><span class="s">'editor-background'</span><span class="p">]),</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-282"></a>            <span class="n">resources</span><span class="o">.</span><span class="n">CUSTOM_SCHEME</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'editor-selection-color'</span><span class="p">,</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-283"></a>                <span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span><span class="p">[</span><span class="s">'editor-selection-color'</span><span class="p">]),</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-284"></a>            <span class="n">resources</span><span class="o">.</span><span class="n">CUSTOM_SCHEME</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'editor-selection-background'</span><span class="p">,</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-285"></a>                <span class="n">resources</span><span class="o">.</span><span class="n">COLOR_SCHEME</span><span class="p">[</span><span class="s">'editor-selection-background'</span><span class="p">]))</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-286"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">css</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-287"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-288"></a>    <span class="k">def</span> <span class="nf">_scroll_area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-289"></a>        <span class="sd">"""When new text is added to the widget, move the scroll to the end."""</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-290"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">actualValue</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxValue</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-291"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">moveCursor</span><span class="p">(</span><span class="n">QTextCursor</span><span class="o">.</span><span class="n">End</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-292"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-293"></a>    <span class="k">def</span> <span class="nf">mousePressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-294"></a>        <span class="sd">"""</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-295"></a><span class="sd">        When the execution fail, allow to press the links in the traceback,</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-296"></a><span class="sd">        to go to the line when the error occur.</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-297"></a><span class="sd">        """</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-298"></a>        <span class="n">QPlainTextEdit</span><span class="o">.</span><span class="n">mousePressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-299"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">go_to_error</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-300"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-301"></a>    <span class="k">def</span> <span class="nf">_refresh_output</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-302"></a>        <span class="sd">"""Read the output buffer from the process and append the text."""</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-303"></a>        <span class="c">#we should decode the bytes!</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-304"></a>        <span class="n">currentProcess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">currentProcess</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-305"></a>        <span class="n">text</span> <span class="o">=</span> <span class="n">currentProcess</span><span class="o">.</span><span class="n">readAllStandardOutput</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">'utf8'</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-306"></a>        <span class="n">verticalScroll</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">verticalScrollBar</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-307"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">actualValue</span> <span class="o">=</span> <span class="n">verticalScroll</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-308"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">maxValue</span> <span class="o">=</span> <span class="n">verticalScroll</span><span class="o">.</span><span class="n">maximum</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-309"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">textCursor</span><span class="p">()</span><span class="o">.</span><span class="n">insertText</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">plain_format</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-310"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-311"></a>    <span class="k">def</span> <span class="nf">_refresh_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-312"></a>        <span class="sd">"""Read the error buffer from the process and append the text."""</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-313"></a>        <span class="c">#we should decode the bytes!</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-314"></a>        <span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">textCursor</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-315"></a>        <span class="n">currentProcess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">currentProcess</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-316"></a>        <span class="n">text</span> <span class="o">=</span> <span class="n">currentProcess</span><span class="o">.</span><span class="n">readAllStandardError</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">'utf8'</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-317"></a>        <span class="n">text_lines</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-318"></a>        <span class="n">verticalScroll</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">verticalScrollBar</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-319"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">actualValue</span> <span class="o">=</span> <span class="n">verticalScroll</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-320"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">maxValue</span> <span class="o">=</span> <span class="n">verticalScroll</span><span class="o">.</span><span class="n">maximum</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-321"></a>        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">text_lines</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-322"></a>            <span class="n">cursor</span><span class="o">.</span><span class="n">insertBlock</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-323"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">patLink</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-324"></a>                <span class="n">cursor</span><span class="o">.</span><span class="n">insertText</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_format</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-325"></a>            <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-326"></a>                <span class="n">cursor</span><span class="o">.</span><span class="n">insertText</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">plain_format</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-327"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-328"></a>    <span class="k">def</span> <span class="nf">go_to_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-329"></a>        <span class="sd">"""Resolve the link and take the user to the error line."""</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-330"></a>        <span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursorForPosition</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">pos</span><span class="p">())</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-331"></a>        <span class="n">text</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">block</span><span class="p">()</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-332"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">patLink</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-333"></a>            <span class="n">file_path</span><span class="p">,</span> <span class="n">lineno</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_traceback</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-334"></a>            <span class="n">main</span> <span class="o">=</span> <span class="n">main_container</span><span class="o">.</span><span class="n">MainContainer</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-335"></a>            <span class="n">main</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-336"></a>            <span class="n">main</span><span class="o">.</span><span class="n">editor_jump_to_line</span><span class="p">(</span><span class="n">lineno</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">lineno</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-337"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-338"></a>    <span class="k">def</span> <span class="nf">_parse_traceback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-339"></a>        <span class="sd">"""</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-340"></a><span class="sd">        Parse a line of python traceback and returns</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-341"></a><span class="sd">        a tuple with (file_name, lineno)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-342"></a><span class="sd">        """</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-343"></a>        <span class="n">file_word_index</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">'File'</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-344"></a>        <span class="n">comma_min_index</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">','</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-345"></a>        <span class="n">comma_max_index</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s">','</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-346"></a>        <span class="n">file_name</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="n">file_word_index</span> <span class="o">+</span> <span class="mi">6</span><span class="p">:</span><span class="n">comma_min_index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-347"></a>        <span class="n">lineno</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="n">comma_min_index</span> <span class="o">+</span> <span class="mi">7</span><span class="p">:</span><span class="n">comma_max_index</span><span class="p">]</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-348"></a>        <span class="k">return</span> <span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">lineno</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-349"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-350"></a>    <span class="k">def</span> <span class="nf">contextMenuEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-351"></a>        <span class="sd">"""Show a context menu for the Plain Text widget."""</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-352"></a>        <span class="n">popup_menu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">createStandardContextMenu</span><span class="p">()</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-353"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-354"></a>        <span class="n">menuOutput</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Output"</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-355"></a>        <span class="n">cleanAction</span> <span class="o">=</span> <span class="n">menuOutput</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Clean"</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-356"></a>        <span class="n">popup_menu</span><span class="o">.</span><span class="n">insertSeparator</span><span class="p">(</span><span class="n">popup_menu</span><span class="o">.</span><span class="n">actions</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-357"></a>        <span class="n">popup_menu</span><span class="o">.</span><span class="n">insertMenu</span><span class="p">(</span><span class="n">popup_menu</span><span class="o">.</span><span class="n">actions</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">menuOutput</span><span class="p">)</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-358"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-359"></a>        <span class="c"># This is a hack because if we leave the widget text empty</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-360"></a>        <span class="c"># it throw a violent segmentation fault in start_process</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-361"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">cleanAction</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"triggered()"</span><span class="p">),</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-362"></a>            <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">setPlainText</span><span class="p">(</span><span class="s">'</span><span class="se">\n\n</span><span class="s">'</span><span class="p">))</span>
+<a name="listingsninja_ideguimiscrun_widgetpy-363"></a>
+<a name="listingsninja_ideguimiscrun_widgetpy-364"></a>        <span class="n">popup_menu</span><span class="o">.</span><span class="n">exec_</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">globalPos</span><span class="p">())</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

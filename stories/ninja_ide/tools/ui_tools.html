@@ -1,0 +1,787 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="NINJA-IDE">
+    <title>NINJA-IDE | NINJA-IDE Documentation</title>
+    
+            <link href="../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
+
+    
+
+
+
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+    <li>
+    <a href="ui_tools.txt" id="sourcelink">Source</a>
+    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+    <h1>NINJA-IDE</h1>
+    <div class="contents alert alert-info pull-top topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="ui_tools.html#module-ui-tools-py-api" id="id10"><em>Module:</em> ui_tools.py API</a><ul>
+<li><a class="reference internal" href="ui_tools.html#imports" id="id11"><em>Imports:</em></a></li>
+<li><a class="reference internal" href="ui_tools.html#global-functions" id="id12"><em>Global Functions:</em></a><ul>
+<li><a class="reference internal" href="ui_tools.html#function-get-qml-resource-qmlpath-at-ln-672" id="id13"><em>Function:</em> get_qml_resource(qmlpath) [at ln:672]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-install-shortcuts-obj-actions-ide-at-ln-623" id="id14"><em>Function:</em> install_shortcuts(obj, actions, ide) [at ln:623]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-load-table-table-headers-data-checkfirstcolumn-true-at-ln-71" id="id15"><em>Function:</em> load_table(table, headers, data, checkFirstColumn=True) [at ln:71]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-print-file-filename-printfunction-at-ln-266" id="id16"><em>Function:</em> print_file(fileName, printFunction) [at ln:266]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-remove-get-selected-items-table-data-at-ln-91" id="id17"><em>Function:</em> remove_get_selected_items(table, data) [at ln:91]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="ui_tools.html#class-threadprojectexplore-qthread" id="id18"><em>Class:</em> ThreadProjectExplore(QThread)</a><ul>
+<li><a class="reference internal" href="ui_tools.html#attributes" id="id19"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="ui_tools.html#function-init-at-ln-151" id="id20"><em>Function:</em> __init__() [at ln:151]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-thread-open-project-at-ln-189" id="id21"><em>Function:</em> _thread_open_project() [at ln:189]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-thread-refresh-project-at-ln-173" id="id22"><em>Function:</em> _thread_refresh_project() [at ln:173]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-open-folder-folder-at-ln-158" id="id23"><em>Function:</em> open_folder(folder) [at ln:158]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-refresh-project-path-item-extensions-at-ln-163" id="id24"><em>Function:</em> refresh_project(path, item, extensions) [at ln:163]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-run-at-ln-170" id="id25"><em>Function:</em> run() [at ln:170]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="ui_tools.html#class-threadexecution-qthread" id="id26"><em>Class:</em> ThreadExecution(QThread)</a><ul>
+<li><a class="reference internal" href="ui_tools.html#id1" id="id27"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="ui_tools.html#function-init-functioninit-none-args-none-kwargs-none-at-ln-131" id="id28"><em>Function:</em> __init__(functionInit=None, args=None, kwargs=None) [at ln:131]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-run-at-ln-141" id="id29"><em>Function:</em> run() [at ln:141]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="ui_tools.html#class-faderwidget-qwidget" id="id30"><em>Class:</em> FaderWidget(QWidget)</a><ul>
+<li><a class="reference internal" href="ui_tools.html#id2" id="id31"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="ui_tools.html#function-init-old-widget-new-widget-at-ln-295" id="id32"><em>Function:</em> __init__(old_widget, new_widget) [at ln:295]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-animate-value-at-ln-318" id="id33"><em>Function:</em> animate(value) [at ln:318]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-paintevent-event-at-ln-311" id="id34"><em>Function:</em> paintEvent(event) [at ln:311]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="ui_tools.html#class-lineeditbutton-object" id="id35"><em>Class:</em> LineEditButton(object)</a><ul>
+<li><a class="reference internal" href="ui_tools.html#function-init-lineedit-operation-icon-none-at-ln-521" id="id36"><em>Function:</em> __init__(lineEdit, operation, icon=None) [at ln:521]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="ui_tools.html#class-addtoproject-qdialog" id="id37"><em>Class:</em> AddToProject(QDialog)</a><ul>
+<li><a class="reference internal" href="ui_tools.html#id3" id="id38"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="ui_tools.html#function-init-pathprojects-parent-none-at-ln-330" id="id39"><em>Function:</em> __init__(pathProjects, parent=None) [at ln:330]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-callback-load-project-at-ln-375" id="id40"><em>Function:</em> _callback_load_project() [at ln:375]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-load-folder-folderstructure-folder-parentitem-at-ln-406" id="id41"><em>Function:</em> _load_folder(folderStructure, folder, parentItem) [at ln:406]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-load-project-folderstructure-folder-at-ln-391" id="id42"><em>Function:</em> _load_project(folderStructure, folder) [at ln:391]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-select-path-at-ln-385" id="id43"><em>Function:</em> _select_path() [at ln:385]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-thread-load-projects-projects-at-ln-368" id="id44"><em>Function:</em> _thread_load_projects(projects) [at ln:368]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-loading-projects-projects-at-ln-361" id="id45"><em>Function:</em> loading_projects(projects) [at ln:361]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="ui_tools.html#class-overlay-qwidget" id="id46"><em>Class:</em> Overlay(QWidget)</a><ul>
+<li><a class="reference internal" href="ui_tools.html#id4" id="id47"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="ui_tools.html#function-init-parent-none-at-ln-214" id="id48"><em>Function:</em> __init__(parent=None) [at ln:214]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-paintevent-event-at-ln-221" id="id49"><em>Function:</em> paintEvent(event) [at ln:221]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-showevent-event-at-ln-252" id="id50"><em>Function:</em> showEvent(event) [at ln:252]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-timerevent-event-at-ln-256" id="id51"><em>Function:</em> timerEvent(event) [at ln:256]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="ui_tools.html#class-lineedittabcompleter-qlineedit" id="id52"><em>Class:</em> LineEditTabCompleter(QLineEdit)</a><ul>
+<li><a class="reference internal" href="ui_tools.html#id5" id="id53"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="ui_tools.html#function-init-completer-type-qcompleter-popupcompletion-at-ln-574" id="id54"><em>Function:</em> __init__(completer, type=QCompleter.PopupCompletion) [at ln:574]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-change-completion-type-at-ln-614" id="id55"><em>Function:</em> change_completion_type() [at ln:614]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-contextmenuevent-event-at-ln-597" id="id56"><em>Function:</em> contextMenuEvent(event) [at ln:597]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-event-event-at-ln-581" id="id57"><em>Function:</em> event(event) [at ln:581]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="ui_tools.html#class-profilesloader-qdialog" id="id58"><em>Class:</em> ProfilesLoader(QDialog)</a><ul>
+<li><a class="reference internal" href="ui_tools.html#id6" id="id59"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="ui_tools.html#function-init-load-func-create-func-save-func-profiles-parent-none-at-ln-428" id="id60"><em>Function:</em> __init__(load_func, create_func, save_func, profiles, parent=None) [at ln:428]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-create-profile-at-ln-486" id="id61"><em>Function:</em> create_profile() [at ln:486]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-delete-profile-at-ln-507" id="id62"><em>Function:</em> delete_profile() [at ln:507]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-load-profile-content-at-ln-475" id="id63"><em>Function:</em> load_profile_content() [at ln:475]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-open-profile-at-ln-500" id="id64"><em>Function:</em> open_profile() [at ln:500]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-save-profile-at-ln-491" id="id65"><em>Function:</em> save_profile() [at ln:491]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="ui_tools.html#class-lineeditcount-qobject" id="id66"><em>Class:</em> LineEditCount(QObject)</a><ul>
+<li><a class="reference internal" href="ui_tools.html#id7" id="id67"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="ui_tools.html#function-init-lineedit-at-ln-552" id="id68"><em>Function:</em> __init__(lineEdit) [at ln:552]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-update-count-index-total-hassearch-false-at-ln-563" id="id69"><em>Function:</em> update_count(index, total, hasSearch=False) [at ln:563]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="ui_tools.html#class-comboboxbutton-object" id="id70"><em>Class:</em> ComboBoxButton(object)</a><ul>
+<li><a class="reference internal" href="ui_tools.html#function-init-combo-operation-icon-none-at-ln-536" id="id71"><em>Function:</em> __init__(combo, operation, icon=None) [at ln:536]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="ui_tools.html#class-loadingitem-qlabel" id="id72"><em>Class:</em> LoadingItem(QLabel)</a><ul>
+<li><a class="reference internal" href="ui_tools.html#id8" id="id73"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="ui_tools.html#function-init-at-ln-105" id="id74"><em>Function:</em> __init__() [at ln:105]</a></li>
+<li><a class="reference internal" href="ui_tools.html#function-add-item-to-tree-folder-tree-item-type-none-parent-none-at-ln-112" id="id75"><em>Function:</em> add_item_to_tree(folder, tree, item_type=None, parent=None) [at ln:112]</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="ui_tools.html#class-tabshortcuts-qshortcut" id="id76"><em>Class:</em> TabShortcuts(QShortcut)</a><ul>
+<li><a class="reference internal" href="ui_tools.html#id9" id="id77"><em>Attributes</em></a></li>
+<li><a class="reference internal" href="ui_tools.html#function-init-key-parent-index-at-ln-681" id="id78"><em>Function:</em> __init__(key, parent, index) [at ln:681]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="module-ui-tools-py-api">
+<h2><em>Module:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html">ui_tools.py</a> API</h2>
+<p>No description.</p>
+<div class="section" id="imports">
+<h3><a class="toc-backref" href="ui_tools.html#id11"><em>Imports:</em></a></h3>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#21">collections</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#20">math</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#19">os</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#67">ninja_ide.core.file_handling.file_manager.NinjaIOException</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#37">PyQt4.QtGui.QAbstractItemView</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#27">PyQt4.QtGui.QAction</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#24">PyQt4.QtGui.QApplication</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#43">PyQt4.QtGui.QBrush</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#47">PyQt4.QtGui.QColor</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#28">PyQt4.QtGui.QCompleter</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#48">PyQt4.QtGui.QDialog</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#55">PyQt4.QtCore.QDir</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#61">PyQt4.QtCore.QEvent</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#52">PyQt4.QtGui.QHBoxLayout</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#45">PyQt4.QtGui.QIcon</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#29">PyQt4.QtGui.QKeyEvent</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#31">PyQt4.QtGui.QLabel</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#30">PyQt4.QtGui.QLineEdit</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#35">PyQt4.QtGui.QLinearGradient</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#34">PyQt4.QtGui.QListWidget</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#26">PyQt4.QtGui.QMenu</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#32">PyQt4.QtGui.QMovie</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#58">PyQt4.QtCore.QObject</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#42">PyQt4.QtGui.QPainter</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#40">PyQt4.QtGui.QPalette</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#46">PyQt4.QtGui.QPen</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#44">PyQt4.QtGui.QPixmap</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#39">PyQt4.QtGui.QPrintPreviewDialog</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#38">PyQt4.QtGui.QPrinter</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#53">PyQt4.QtGui.QPushButton</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#41">PyQt4.QtGui.QShortcut</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#57">PyQt4.QtCore.QSize</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#33">PyQt4.QtGui.QSizePolicy</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#36">PyQt4.QtGui.QTableWidgetItem</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#60">PyQt4.QtCore.QThread</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#62">PyQt4.QtCore.QTimeLine</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#49">PyQt4.QtGui.QTreeWidget</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#50">PyQt4.QtGui.QTreeWidgetItem</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#56">PyQt4.QtCore.QUrl</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#51">PyQt4.QtGui.QVBoxLayout</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#25">PyQt4.QtGui.QWidget</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#54">PyQt4.QtCore.Qt</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#59">PyQt4.QtCore.SIGNAL</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#17">__future__.absolute_import</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#66">ninja_ide.core.file_handling.file_manager</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#68">ninja_ide.tools.json_manager</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#64">ninja_ide.resources</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#65">ninja_ide.core.settings</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#22">urlparse.urlparse</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#22">urlparse.urlunparse</a></li>
+</ul>
+</div>
+<div class="section" id="global-functions">
+<h3><a class="toc-backref" href="ui_tools.html#id12"><em>Global Functions:</em></a></h3>
+<div class="section" id="function-get-qml-resource-qmlpath-at-ln-672">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-672">get_qml_resource(qmlpath) [at ln:672]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">get_qml_resource</span><span class="p">(</span><span class="n">qmlpath</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-install-shortcuts-obj-actions-ide-at-ln-623">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-623">install_shortcuts(obj, actions, ide) [at ln:623]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">install_shortcuts</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">actions</span><span class="p">,</span> <span class="n">ide</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-load-table-table-headers-data-checkfirstcolumn-true-at-ln-71">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-71">load_table(table, headers, data, checkFirstColumn=True) [at ln:71]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">load_table</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">checkFirstColumn</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-print-file-filename-printfunction-at-ln-266">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-266">print_file(fileName, printFunction) [at ln:266]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">print_file</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="n">printFunction</span><span class="p">):</span>
+</pre>
+<div class="line-block">
+<div class="line">This method print a file</div>
+<div class="line"><br></div>
+<div class="line">This method print a file, fileName is the default fileName,</div>
+<div class="line">and printFunction is a funcion that takes a QPrinter</div>
+<div class="line">object and print the file,</div>
+<div class="line">the print method</div>
+<div class="line">More info on:http://doc.qt.nokia.com/latest/printing.html</div>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="function-remove-get-selected-items-table-data-at-ln-91">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-91">remove_get_selected_items(table, data) [at ln:91]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">remove_get_selected_items</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-threadprojectexplore-qthread">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-149">ThreadProjectExplore(QThread)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">ThreadProjectExplore</span><span class="p">(</span><span class="n">QThread</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="attributes">
+<h4><a class="toc-backref" href="ui_tools.html#id19"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#166">_extensions [at ln:166]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#164">_folder_path [at ln:164]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#165">_item [at ln:165]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#167">execute [at ln:167]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-at-ln-151">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-151">__init__() [at ln:151]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-thread-open-project-at-ln-189">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-189">_thread_open_project() [at ln:189]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_thread_open_project</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-thread-refresh-project-at-ln-173">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-173">_thread_refresh_project() [at ln:173]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_thread_refresh_project</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-open-folder-folder-at-ln-158">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-158">open_folder(folder) [at ln:158]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">open_folder</span><span class="p">(</span><span class="n">folder</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-refresh-project-path-item-extensions-at-ln-163">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-163">refresh_project(path, item, extensions) [at ln:163]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">refresh_project</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">extensions</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-run-at-ln-170">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-170">run() [at ln:170]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-threadexecution-qthread">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-129">ThreadExecution(QThread)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">ThreadExecution</span><span class="p">(</span><span class="n">QThread</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id1">
+<h4><a class="toc-backref" href="ui_tools.html#id27"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#137">args [at ln:137]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#134">execute [at ln:134]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#138">kwargs [at ln:138]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#135">result [at ln:135]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#146">signal_return [at ln:146]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#136">storage_values [at ln:136]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-functioninit-none-args-none-kwargs-none-at-ln-131">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-131">__init__(functionInit=None, args=None, kwargs=None) [at ln:131]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">functionInit</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-run-at-ln-141">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-141">run() [at ln:141]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-faderwidget-qwidget">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-293">FaderWidget(QWidget)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">FaderWidget</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id2">
+<h4><a class="toc-backref" href="ui_tools.html#id31"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#298">old_pixmap [at ln:298]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#319">pixmap_opacity [at ln:319]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#302">timeline [at ln:302]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-old-widget-new-widget-at-ln-295">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-295">__init__(old_widget, new_widget) [at ln:295]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">old_widget</span><span class="p">,</span> <span class="n">new_widget</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-animate-value-at-ln-318">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-318">animate(value) [at ln:318]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">animate</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-paintevent-event-at-ln-311">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-311">paintEvent(event) [at ln:311]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-lineeditbutton-object">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-519">LineEditButton(object)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">LineEditButton</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="function-init-lineedit-operation-icon-none-at-ln-521">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-521">__init__(lineEdit, operation, icon=None) [at ln:521]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">lineEdit</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">icon</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-addtoproject-qdialog">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-328">AddToProject(QDialog)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">AddToProject</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id3">
+<h4><a class="toc-backref" href="ui_tools.html#id38"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#350">_loading_items [at ln:350]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#404">_root [at ln:404]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#352">_thread_execution [at ln:352]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#337">_tree [at ln:337]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#334">pathSelected [at ln:334]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#373">storage_values [at ln:373]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-pathprojects-parent-none-at-ln-330">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-330">__init__(pathProjects, parent=None) [at ln:330]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">pathProjects</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-callback-load-project-at-ln-375">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-375">_callback_load_project() [at ln:375]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_callback_load_project</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-load-folder-folderstructure-folder-parentitem-at-ln-406">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-406">_load_folder(folderStructure, folder, parentItem) [at ln:406]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_load_folder</span><span class="p">(</span><span class="n">folderStructure</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">parentItem</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-load-project-folderstructure-folder-at-ln-391">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-391">_load_project(folderStructure, folder) [at ln:391]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_load_project</span><span class="p">(</span><span class="n">folderStructure</span><span class="p">,</span> <span class="n">folder</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-select-path-at-ln-385">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-385">_select_path() [at ln:385]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_select_path</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-thread-load-projects-projects-at-ln-368">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-368">_thread_load_projects(projects) [at ln:368]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">_thread_load_projects</span><span class="p">(</span><span class="n">projects</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-loading-projects-projects-at-ln-361">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-361">loading_projects(projects) [at ln:361]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">loading_projects</span><span class="p">(</span><span class="n">projects</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-overlay-qwidget">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-212">Overlay(QWidget)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">Overlay</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id4">
+<h4><a class="toc-backref" href="ui_tools.html#id47"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#254">counter [at ln:254]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#253">timer [at ln:253]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-parent-none-at-ln-214">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-214">__init__(parent=None) [at ln:214]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-paintevent-event-at-ln-221">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-221">paintEvent(event) [at ln:221]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">paintEvent</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-showevent-event-at-ln-252">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-252">showEvent(event) [at ln:252]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">showEvent</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-timerevent-event-at-ln-256">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-256">timerEvent(event) [at ln:256]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">timerEvent</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-lineedittabcompleter-qlineedit">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-572">LineEditTabCompleter(QLineEdit)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">LineEditTabCompleter</span><span class="p">(</span><span class="n">QLineEdit</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id5">
+<h4><a class="toc-backref" href="ui_tools.html#id53"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#576">completer [at ln:576]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#578">completionType [at ln:578]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-completer-type-qcompleter-popupcompletion-at-ln-574">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-574">__init__(completer, type=QCompleter.PopupCompletion) [at ln:574]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">completer</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">QCompleter</span><span class="o">.</span><span class="n">PopupCompletion</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-change-completion-type-at-ln-614">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-614">change_completion_type() [at ln:614]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">change_completion_type</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-contextmenuevent-event-at-ln-597">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-597">contextMenuEvent(event) [at ln:597]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">contextMenuEvent</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-event-event-at-ln-581">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-581">event(event) [at ln:581]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">event</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-profilesloader-qdialog">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-426">ProfilesLoader(QDialog)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">ProfilesLoader</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id6">
+<h4><a class="toc-backref" href="ui_tools.html#id59"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#488">Profile [at ln:488]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#433">_profiles [at ln:433]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#453">btnCreate [at ln:453]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#449">btnDelete [at ln:449]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#455">btnOpen [at ln:455]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#451">btnUpdate [at ln:451]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#448">contentList [at ln:448]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#435">create_function [at ln:435]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#437">ide [at ln:437]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#434">load_function [at ln:434]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#445">profileList [at ln:445]</a></li>
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#436">save_function [at ln:436]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-load-func-create-func-save-func-profiles-parent-none-at-ln-428">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-428">__init__(load_func, create_func, save_func, profiles, parent=None) [at ln:428]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">load_func</span><span class="p">,</span> <span class="n">create_func</span><span class="p">,</span> <span class="n">save_func</span><span class="p">,</span> <span class="n">profiles</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-create-profile-at-ln-486">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-486">create_profile() [at ln:486]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">create_profile</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-delete-profile-at-ln-507">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-507">delete_profile() [at ln:507]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">delete_profile</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-load-profile-content-at-ln-475">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-475">load_profile_content() [at ln:475]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">load_profile_content</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-open-profile-at-ln-500">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-500">open_profile() [at ln:500]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">open_profile</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-save-profile-at-ln-491">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-491">save_profile() [at ln:491]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">save_profile</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-lineeditcount-qobject">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-550">LineEditCount(QObject)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">LineEditCount</span><span class="p">(</span><span class="n">QObject</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id7">
+<h4><a class="toc-backref" href="ui_tools.html#id67"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#558">counter [at ln:558]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-lineedit-at-ln-552">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-552">__init__(lineEdit) [at ln:552]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">lineEdit</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-update-count-index-total-hassearch-false-at-ln-563">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-563">update_count(index, total, hasSearch=False) [at ln:563]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">update_count</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">total</span><span class="p">,</span> <span class="n">hasSearch</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-comboboxbutton-object">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-534">ComboBoxButton(object)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">ComboBoxButton</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="function-init-combo-operation-icon-none-at-ln-536">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-536">__init__(combo, operation, icon=None) [at ln:536]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">combo</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">icon</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-loadingitem-qlabel">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-103">LoadingItem(QLabel)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">LoadingItem</span><span class="p">(</span><span class="n">QLabel</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id8">
+<h4><a class="toc-backref" href="ui_tools.html#id73"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#107">movie [at ln:107]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-at-ln-105">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-105">__init__() [at ln:105]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">():</span>
+</pre>
+<p>No description.</p>
+</div>
+<hr class="docutils">
+<div class="section" id="function-add-item-to-tree-folder-tree-item-type-none-parent-none-at-ln-112">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-112">add_item_to_tree(folder, tree, item_type=None, parent=None) [at ln:112]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">add_item_to_tree</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">item_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+<hr class="docutils">
+<div class="section" id="class-tabshortcuts-qshortcut">
+<h3><em>Class:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-679">TabShortcuts(QShortcut)</a></h3>
+<pre class="code python literal-block">
+<span class="k">class</span> <span class="nc">TabShortcuts</span><span class="p">(</span><span class="n">QShortcut</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+<div class="section" id="id9">
+<h4><a class="toc-backref" href="ui_tools.html#id77"><em>Attributes</em></a></h4>
+<ul class="simple">
+<li><a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#683">index [at ln:683]</a></li>
+</ul>
+</div>
+<div class="section" id="function-init-key-parent-index-at-ln-681">
+<h4><em>Function:</em> <a class="reference external" href="../../../listings/ninja_ide/tools/ui_tools.py.html#listingsninja_idetoolsui_toolspy-681">__init__(key, parent, index) [at ln:681]</a></h4>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+</pre>
+<p>No description.</p>
+</div>
+</div>
+</div>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

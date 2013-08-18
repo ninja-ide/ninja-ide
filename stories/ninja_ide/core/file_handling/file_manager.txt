@@ -1,0 +1,450 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: file_manager
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `file_manager.py </listings/ninja_ide/core/file_handling/file_manager.py.html>`_ API
+================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `os </listings/ninja_ide/core/file_handling/file_manager.py.html#20>`_
+
+- `re </listings/ninja_ide/core/file_handling/file_manager.py.html#21>`_
+
+- `shutil </listings/ninja_ide/core/file_handling/file_manager.py.html#23>`_
+
+- `sys </listings/ninja_ide/core/file_handling/file_manager.py.html#19>`_
+
+- `threading </listings/ninja_ide/core/file_handling/file_manager.py.html#22>`_
+
+- `PyQt4.QtCore </listings/ninja_ide/core/file_handling/file_manager.py.html#25>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/core/file_handling/file_manager.py.html#27>`_
+
+- `__future__.unicode_literals </listings/ninja_ide/core/file_handling/file_manager.py.html#17>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `file_store_content_lock [at ln:36] </listings/ninja_ide/core/file_handling/file_manager.py.html#36>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `_search_coding_line(txt) [at ln:130] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-130>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _search_coding_line(txt):
+
+| Search a pattern like this: # -\*- coding: utf-8 -\*-.
+
+
+----
+
+*Function:* `belongs_to_folder(path, fileName) [at ln:301] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-301>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def belongs_to_folder(path, fileName):
+
+| Determine if fileName is located under path structure.
+
+
+----
+
+*Function:* `check_for_external_modification(fileName, old_mtime) [at ln:318] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-318>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def check_for_external_modification(fileName, old_mtime):
+
+| Check if the file was modified outside ninja.
+
+
+----
+
+*Function:* `convert_to_relative(basePath, fileName) [at ln:287] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-287>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def convert_to_relative(basePath, fileName):
+
+| Convert a absolut path to relative based on its start with basePath.
+
+
+----
+
+*Function:* `create_folder(folderName, add_init_file=True) [at ln:102] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-102>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def create_folder(folderName, add_init_file=True):
+
+| Create a new Folder inside the one received as a param.
+
+
+----
+
+*Function:* `create_init_file(folderName) [at ln:63] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-63>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def create_init_file(folderName):
+
+| Create a \_\_init\_\_.py file in the folder received.
+
+
+----
+
+*Function:* `create_init_file_complete(folderName) [at ln:75] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-75>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def create_init_file_complete(folderName):
+
+| Create a \_\_init\_\_.py file in the folder received.
+| 
+| This \_\_init\_\_.py will contain the information of the files inside
+| this folder.
+
+
+----
+
+*Function:* `create_path(*args) [at ln:296] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-296>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def create_path(*args):
+
+| Join the paths provided in order to create an absolut path.
+
+
+----
+
+*Function:* `create_tree_folders(folderName) [at ln:111] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-111>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def create_tree_folders(folderName):
+
+| Create a group of folders, one inside the other.
+
+
+----
+
+*Function:* `delete_file(path, fileName=None) [at ln:242] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-242>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def delete_file(path, fileName=None):
+
+| Delete the proper file.
+| 
+| If fileName is None, path and fileName are joined to create the
+| complete path, otherwise path is used to delete the file.
+
+
+----
+
+*Function:* `delete_folder(path, fileName=None) [at ln:253] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-253>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def delete_folder(path, fileName=None):
+
+| Delete the proper folder.
+
+
+----
+
+*Function:* `file_exists(path, fileName=str) [at ln:123] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-123>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def file_exists(path, fileName=str):
+
+| Check if a file already exists.
+
+
+----
+
+*Function:* `folder_exists(folderName) [at ln:118] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-118>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def folder_exists(folderName):
+
+| Check if a folder already exists.
+
+
+----
+
+*Function:* `get_basename(fileName) [at ln:170] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-170>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_basename(fileName):
+
+| Get the name of a file or folder specified in a path.
+
+
+----
+
+*Function:* `get_file_encoding(content) [at ln:139] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-139>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_file_encoding(content):
+
+| Try to get the encoding of the file using the PEP 0263 rules
+| search the first or the second line of the file
+| Returns the encoding or the default UTF-8
+
+
+----
+
+*Function:* `get_file_extension(fileName) [at ln:271] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-271>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_file_extension(fileName):
+
+| Get the file extension in the form of: 'py'
+
+
+----
+
+*Function:* `get_file_name(fileName) [at ln:276] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-276>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_file_name(fileName):
+
+| Get the file name, without the extension.
+
+
+----
+
+*Function:* `get_files_from_folder(folder, ext) [at ln:327] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-327>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_files_from_folder(folder, ext):
+
+| Get the files in folder with the specified extension.
+
+
+----
+
+*Function:* `get_folder(fileName) [at ln:177] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-177>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_folder(fileName):
+
+| Get the name of the folder containing the file or folder received.
+
+
+----
+
+*Function:* `get_last_modification(fileName) [at ln:308] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-308>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_last_modification(fileName):
+
+| Get the last time the file was modified.
+
+
+----
+
+*Function:* `get_module_name(fileName) [at ln:281] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-281>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_module_name(fileName):
+
+| Get the name of the file without the extension.
+
+
+----
+
+*Function:* `has_write_permission(fileName) [at ln:313] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-313>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def has_write_permission(fileName):
+
+| Check if the file has writing permissions.
+
+
+----
+
+*Function:* `is_supported_extension(filename, extensions=None) [at ln:337] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-337>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def is_supported_extension(filename, extensions=None):
+
+
+No description.
+
+
+----
+
+*Function:* `open_project(path) [at ln:214] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-214>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def open_project(path):
+
+| Return a dict structure containing the info inside a folder.
+
+
+----
+
+*Function:* `open_project_with_extensions(path, extensions) [at ln:227] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-227>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def open_project_with_extensions(path, extensions):
+
+| Return a dict structure containing the info inside a folder.
+| 
+| This function uses the extensions specified by each project.
+
+
+----
+
+*Function:* `read_file_content(fileName) [at ln:158] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-158>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def read_file_content(fileName):
+
+| Read a file content, this function is used to load Editor content.
+
+
+----
+
+*Function:* `rename_file(old, new) [at ln:261] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-261>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def rename_file(old, new):
+
+| Rename a file, changing its name from 'old' to 'new'.
+
+
+----
+
+*Function:* `store_file_content(fileName, content, addExtension=True, newFile=False) [at ln:182] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-182>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def store_file_content(fileName, content, addExtension=True, newFile=False):
+
+| Save content on disk with the given file name.
+
+
+----
+
+
+*Class:* `NinjaFileExistsException(Exception) </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-53>`_
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class NinjaFileExistsException(Exception):
+
+| Try to override existing file without confirmation exception.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `filename [at ln:60] </listings/ninja_ide/core/file_handling/file_manager.py.html#60>`_
+
+
+*Function:* `__init__(filename=str) [at ln:58] </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-58>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(filename=str):
+
+
+No description.
+
+
+----
+
+*Class:* `NinjaNoFileNameException(Exception) </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-46>`_
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class NinjaNoFileNameException(Exception):
+
+| Tried to write a file but I lack a file name
+
+
+----
+
+*Class:* `NinjaIOException(Exception) </listings/ninja_ide/core/file_handling/file_manager.py.html#listingsninja_idecorefile_handlingfile_managerpy-39>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class NinjaIOException(Exception):
+
+| IO operation's exception
+
+
+
+

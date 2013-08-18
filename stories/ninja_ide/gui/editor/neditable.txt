@@ -1,0 +1,220 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: neditable
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `neditable.py </listings/ninja_ide/gui/editor/neditable.py.html>`_ API
+==================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `PyQt4.QtCore.QObject </listings/ninja_ide/gui/editor/neditable.py.html#3>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/editor/neditable.py.html#4>`_
+
+- `ninja_ide.gui.editor.checkers </listings/ninja_ide/gui/editor/neditable.py.html#8>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/gui/editor/neditable.py.html#7>`_
+
+- `ninja_ide.gui.editor.helpers </listings/ninja_ide/gui/editor/neditable.py.html#9>`_
+
+- `ninja_ide.core.file_handling.nfile </listings/ninja_ide/gui/editor/neditable.py.html#6>`_
+
+
+
+
+
+*Class:* `NEditable(QObject) </listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-12>`_
+----------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class NEditable(QObject):
+
+| SIGNALS:
+| @checkersUpdated()
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `__editor [at ln:43] </listings/ninja_ide/gui/editor/neditable.py.html#43>`_
+
+- `__id [at ln:20] </listings/ninja_ide/gui/editor/neditable.py.html#20>`_
+
+- `_checkers_executed [at ln:39] </listings/ninja_ide/gui/editor/neditable.py.html#39>`_
+
+- `_has_checkers [at ln:81] </listings/ninja_ide/gui/editor/neditable.py.html#81>`_
+
+- `_lang [at ln:78] </listings/ninja_ide/gui/editor/neditable.py.html#78>`_
+
+- `_nfile [at ln:23] </listings/ninja_ide/gui/editor/neditable.py.html#23>`_
+
+- `encoding [at ln:47] </listings/ninja_ide/gui/editor/neditable.py.html#47>`_
+
+- `project [at ln:61] </listings/ninja_ide/gui/editor/neditable.py.html#61>`_
+
+- `registered_checkers [at ln:79] </listings/ninja_ide/gui/editor/neditable.py.html#79>`_
+
+- `text_modified [at ln:30] </listings/ninja_ide/gui/editor/neditable.py.html#30>`_
+
+
+*Function:* `ID() [at ln:63] </listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-63>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def ID():
+
+
+No description.
+
+
+**Decorators:**
+
+- *property*
+
+----
+
+*Function:* `__init__(filepath=None, project=None) [at ln:18] </listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-18>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(filepath=None, project=None):
+
+
+No description.
+
+
+----
+
+*Function:* `display_name() [at ln:67] </listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-67>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def display_name():
+
+
+No description.
+
+
+**Decorators:**
+
+- *property*
+
+----
+
+*Function:* `has_checkers() [at ln:71] </listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-71>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def has_checkers():
+
+| Return True if checkers where installaed, False otherwise
+
+
+**Decorators:**
+
+- *property*
+
+----
+
+*Function:* `include_checkers(lang=str) [at ln:76] </listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-76>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def include_checkers(lang=str):
+
+| Initialize the Checkers, should be refreshed on checkers change.
+
+
+----
+
+*Function:* `run_checkers(content, path=None, encoding=None) [at ln:98] </listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-98>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run_checkers(content, path=None, encoding=None):
+
+
+No description.
+
+
+----
+
+*Function:* `save_content() [at ln:55] </listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-55>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def save_content():
+
+| Save the content of the UI to a file.
+
+
+----
+
+*Function:* `set_editor(editor) [at ln:41] </listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-41>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_editor(editor):
+
+| Set the Editor (UI component) associated with this object.
+
+
+----
+
+*Function:* `show_checkers_notifications() [at ln:103] </listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-103>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def show_checkers_notifications():
+
+| Show the notifications obtained for the proper checker.
+
+
+----
+
+*Function:* `update_checkers_metadata(blockNumber, diference) [at ln:89] </listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-89>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_checkers_metadata(blockNumber, diference):
+
+| Update the lines in the checkers when the editor change.
+
+
+----
+
+*Function:* `update_project(project) [at ln:60] </listings/ninja_ide/gui/editor/neditable.py.html#listingsninja_ideguieditorneditablepy-60>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_project(project):
+
+
+No description.
+
+
+
+

@@ -1,0 +1,264 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: nfilesystem
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `nfilesystem.py </listings/ninja_ide/core/file_handling/nfilesystem.py.html>`_ API
+==============================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `os </listings/ninja_ide/core/file_handling/nfilesystem.py.html#18>`_
+
+- `ninja.core.file_handling.nfile.NFile </listings/ninja_ide/core/file_handling/nfilesystem.py.html#20>`_
+
+- `PyQt4.QtCore.QObject </listings/ninja_ide/core/file_handling/nfilesystem.py.html#19>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/core/file_handling/nfilesystem.py.html#19>`_
+
+
+
+
+
+*Class:* `NVirtualFolder(QObject) </listings/ninja_ide/core/file_handling/nfilesystem.py.html#listingsninja_idecorefile_handlingnfilesystempy-23>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class NVirtualFolder(QObject):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `__nodes [at ln:26] </listings/ninja_ide/core/file_handling/nfilesystem.py.html#26>`_
+
+- `__path [at ln:25] </listings/ninja_ide/core/file_handling/nfilesystem.py.html#25>`_
+
+
+*Function:* `__delete_child(signal_handler, child_path) [at ln:62] </listings/ninja_ide/core/file_handling/nfilesystem.py.html#listingsninja_idecorefile_handlingnfilesystempy-62>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __delete_child(signal_handler, child_path):
+
+
+No description.
+
+
+----
+
+*Function:* `__init__(path, *args, **kwargs) [at ln:24] </listings/ninja_ide/core/file_handling/nfilesystem.py.html#listingsninja_idecorefile_handlingnfilesystempy-24>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(path, *args, **kwargs):
+
+
+No description.
+
+
+----
+
+*Function:* `__move_child(signal_handler, old_path, new_path) [at ln:65] </listings/ninja_ide/core/file_handling/nfilesystem.py.html#listingsninja_idecorefile_handlingnfilesystempy-65>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __move_child(signal_handler, old_path, new_path):
+
+
+No description.
+
+
+----
+
+*Function:* `__overwrite(signal_handler, old_path, new_path) [at ln:69] </listings/ninja_ide/core/file_handling/nfilesystem.py.html#listingsninja_idecorefile_handlingnfilesystempy-69>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __overwrite(signal_handler, old_path, new_path):
+
+
+No description.
+
+
+----
+
+*Function:* `__save_child(temp_path, final_path) [at ln:58] </listings/ninja_ide/core/file_handling/nfilesystem.py.html#listingsninja_idecorefile_handlingnfilesystempy-58>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __save_child(temp_path, final_path):
+
+
+No description.
+
+
+----
+
+*Function:* `_exists() [at ln:37] </listings/ninja_ide/core/file_handling/nfilesystem.py.html#listingsninja_idecorefile_handlingnfilesystempy-37>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _exists():
+
+
+No description.
+
+
+----
+
+*Function:* `add_node(node) [at ln:45] </listings/ninja_ide/core/file_handling/nfilesystem.py.html#listingsninja_idecorefile_handlingnfilesystempy-45>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_node(node):
+
+
+No description.
+
+
+----
+
+*Function:* `create() [at ln:40] </listings/ninja_ide/core/file_handling/nfilesystem.py.html#listingsninja_idecorefile_handlingnfilesystempy-40>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def create():
+
+
+No description.
+
+
+----
+
+*Function:* `list() [at ln:29] </listings/ninja_ide/core/file_handling/nfilesystem.py.html#listingsninja_idecorefile_handlingnfilesystempy-29>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def list():
+
+
+No description.
+
+
+----
+
+*Function:* `list_all() [at ln:33] </listings/ninja_ide/core/file_handling/nfilesystem.py.html#listingsninja_idecorefile_handlingnfilesystempy-33>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def list_all():
+
+
+No description.
+
+
+----
+
+*Class:* `NVirtualFileSystem(QObject) </listings/ninja_ide/core/file_handling/nfilesystem.py.html#listingsninja_idecorefile_handlingnfilesystempy-73>`_
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class NVirtualFileSystem(QObject):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `__tree [at ln:75] </listings/ninja_ide/core/file_handling/nfilesystem.py.html#75>`_
+
+- `__watchables [at ln:76] </listings/ninja_ide/core/file_handling/nfilesystem.py.html#76>`_
+
+
+*Function:* `__init__(*args, **kwargs) [at ln:74] </listings/ninja_ide/core/file_handling/nfilesystem.py.html#listingsninja_idecorefile_handlingnfilesystempy-74>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(*args, **kwargs):
+
+
+No description.
+
+
+----
+
+*Function:* `_append_into_watchable(path, fopen) [at ln:97] </listings/ninja_ide/core/file_handling/nfilesystem.py.html#listingsninja_idecorefile_handlingnfilesystempy-97>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _append_into_watchable(path, fopen):
+
+
+No description.
+
+
+----
+
+*Function:* `create_folder(path) [at ln:92] </listings/ninja_ide/core/file_handling/nfilesystem.py.html#listingsninja_idecorefile_handlingnfilesystempy-92>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def create_folder(path):
+
+
+No description.
+
+
+----
+
+*Function:* `list(path=None) [at ln:105] </listings/ninja_ide/core/file_handling/nfilesystem.py.html#listingsninja_idecorefile_handlingnfilesystempy-105>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def list(path=None):
+
+
+No description.
+
+
+----
+
+*Function:* `open(path, folder=False) [at ln:79] </listings/ninja_ide/core/file_handling/nfilesystem.py.html#listingsninja_idecorefile_handlingnfilesystempy-79>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def open(path, folder=False):
+
+
+No description.
+
+
+
+

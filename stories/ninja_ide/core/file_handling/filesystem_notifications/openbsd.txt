@@ -1,0 +1,112 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: openbsd
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `openbsd.py </listings/ninja_ide/core/file_handling/filesystem_notifications/openbsd.py.html>`_ API
+===============================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/core/file_handling/filesystem_notifications/openbsd.py.html#3>`_
+
+- `ninja_ide.core.file_handling.filesystem_notifications.base_watcher </listings/ninja_ide/core/file_handling/filesystem_notifications/openbsd.py.html#2>`_
+
+
+
+
+
+*Class:* `NinjaFileSystemWatcher(base_watcher.BaseWatcher) </listings/ninja_ide/core/file_handling/filesystem_notifications/openbsd.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsopenbsdpy-6>`_
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_ignore_hidden [at ln:11] </listings/ninja_ide/core/file_handling/filesystem_notifications/openbsd.py.html#11>`_
+
+- `watching_paths [at ln:9] </listings/ninja_ide/core/file_handling/filesystem_notifications/openbsd.py.html#9>`_
+
+
+*Function:* `__init__() [at ln:8] </listings/ninja_ide/core/file_handling/filesystem_notifications/openbsd.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsopenbsdpy-8>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__():
+
+
+No description.
+
+
+----
+
+*Function:* `_emit_signal_on_change(event, path) [at ln:22] </listings/ninja_ide/core/file_handling/filesystem_notifications/openbsd.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsopenbsdpy-22>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _emit_signal_on_change(event, path):
+
+
+No description.
+
+
+----
+
+*Function:* `add_watch(path) [at ln:13] </listings/ninja_ide/core/file_handling/filesystem_notifications/openbsd.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsopenbsdpy-13>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_watch(path):
+
+
+No description.
+
+
+----
+
+*Function:* `remove_watch(path) [at ln:16] </listings/ninja_ide/core/file_handling/filesystem_notifications/openbsd.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsopenbsdpy-16>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def remove_watch(path):
+
+
+No description.
+
+
+----
+
+*Function:* `shutdown_notification() [at ln:19] </listings/ninja_ide/core/file_handling/filesystem_notifications/openbsd.py.html#listingsninja_idecorefile_handlingfilesystem_notificationsopenbsdpy-19>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def shutdown_notification():
+
+
+No description.
+
+
+
+

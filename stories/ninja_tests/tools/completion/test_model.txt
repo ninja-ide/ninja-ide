@@ -1,0 +1,17 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: test_model
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `test_model.py </listings/ninja_tests/tools/completion/test_model.py.html>`_ API
+============================================================================================
+
+No description.
+

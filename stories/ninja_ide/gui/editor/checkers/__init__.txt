@@ -1,0 +1,111 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: __init__
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `__init__.py </listings/ninja_ide/gui/editor/checkers/__init__.py.html>`_ API
+=========================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `ninja_ide.gui.editor.checkers.errors_checker </listings/ninja_ide/gui/editor/checkers/__init__.py.html#5>`_
+
+- `ninja_ide.gui.editor.checkers.migration_2to3 </listings/ninja_ide/gui/editor/checkers/__init__.py.html#5>`_
+
+- `ninja_ide.gui.editor.checkers.pep8_checker </listings/ninja_ide/gui/editor/checkers/__init__.py.html#5>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/editor/checkers/__init__.py.html#3>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/editor/checkers/__init__.py.html#4>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `NOTIFICATIONS_CHECKERS [at ln:12] </listings/ninja_ide/gui/editor/checkers/__init__.py.html#12>`_
+
+
+----
+
+
+*Global Functions:*
+---------------------
+
+*Function:* `get_checkers_for(lang=str) [at ln:27] </listings/ninja_ide/gui/editor/checkers/__init__.py.html#listingsninja_ideguieditorcheckers__init__py-27>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_checkers_for(lang=str):
+
+| Get a registered checker for some language.
+
+
+----
+
+*Function:* `register_checker(lang=str, checker=None, color=None, priority=int) [at ln:15] </listings/ninja_ide/gui/editor/checkers/__init__.py.html#listingsninja_ideguieditorcheckers__init__py-15>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def register_checker(lang=str, checker=None, color=None, priority=int):
+
+| Register a Checker (Like PEP8, Lint, etc) for some language.
+| @lang: language that the checker apply.
+| @checker: Class to be instantiated.
+| @color: the color that this checker will use.
+| @priority: the priority of this checker (1=LOW, >1 = HIGH...)
+
+
+----
+
+*Function:* `remove_error_checker() [at ln:58] </listings/ninja_ide/gui/editor/checkers/__init__.py.html#listingsninja_ideguieditorcheckers__init__py-58>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def remove_error_checker():
+
+
+No description.
+
+
+----
+
+*Function:* `remove_migration_checker() [at ln:69] </listings/ninja_ide/gui/editor/checkers/__init__.py.html#listingsninja_ideguieditorcheckers__init__py-69>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def remove_migration_checker():
+
+
+No description.
+
+
+----
+
+*Function:* `remove_pep8_checker() [at ln:47] </listings/ninja_ide/gui/editor/checkers/__init__.py.html#listingsninja_ideguieditorcheckers__init__py-47>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def remove_pep8_checker():
+
+
+No description.
+
+
+
+

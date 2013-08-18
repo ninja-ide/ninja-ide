@@ -1,0 +1,96 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: notification
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `notification.py </listings/ninja_ide/gui/notification.py.html>`_ API
+=================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `PyQt4.QtDeclarative.QDeclarativeView </listings/ninja_ide/gui/notification.py.html#7>`_
+
+- `PyQt4.QtGui.QFrame </listings/ninja_ide/gui/notification.py.html#3>`_
+
+- `PyQt4.QtGui.QVBoxLayout </listings/ninja_ide/gui/notification.py.html#4>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/notification.py.html#5>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/notification.py.html#6>`_
+
+- `ninja_ide.tools.ui_tools </listings/ninja_ide/gui/notification.py.html#9>`_
+
+
+
+
+
+*Class:* `Notification(QFrame) </listings/ninja_ide/gui/notification.py.html#listingsninja_ideguinotificationpy-12>`_
+-----------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class Notification(QFrame):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_duration [at ln:45] </listings/ninja_ide/gui/notification.py.html#45>`_
+
+- `_parent [at ln:16] </listings/ninja_ide/gui/notification.py.html#16>`_
+
+- `_root [at ln:28] </listings/ninja_ide/gui/notification.py.html#28>`_
+
+
+*Function:* `__init__(parent=None) [at ln:14] </listings/ninja_ide/gui/notification.py.html#listingsninja_ideguinotificationpy-14>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent=None):
+
+
+No description.
+
+
+----
+
+*Function:* `set_message(text=str, duration=int) [at ln:43] </listings/ninja_ide/gui/notification.py.html#listingsninja_ideguinotificationpy-43>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_message(text=str, duration=int):
+
+
+No description.
+
+
+----
+
+*Function:* `showEvent(event) [at ln:34] </listings/ninja_ide/gui/notification.py.html#listingsninja_ideguinotificationpy-34>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def showEvent(event):
+
+
+No description.
+
+
+
+

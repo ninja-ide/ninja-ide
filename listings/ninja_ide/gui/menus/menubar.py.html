@@ -1,0 +1,423 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="menubar.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>menubar.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../../">/listings</a>
+        </li><li><a href="../../">/ninja_ide</a>
+        </li><li><a href="../">/gui</a>
+        </li><li><a href=".">/menus</a>
+        </li><li><a href="#">/menubar.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-1">  1</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-2">  2</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-3">  3</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-4">  4</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-5">  5</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-6">  6</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-7">  7</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-8">  8</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-9">  9</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-10"> 10</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-11"> 11</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-12"> 12</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-13"> 13</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-14"> 14</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-15"> 15</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-16"> 16</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-17"> 17</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-18"> 18</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-19"> 19</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-20"> 20</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-21"> 21</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-22"> 22</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-23"> 23</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-24"> 24</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-25"> 25</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-26"> 26</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-27"> 27</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-28"> 28</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-29"> 29</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-30"> 30</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-31"> 31</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-32"> 32</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-33"> 33</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-34"> 34</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-35"> 35</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-36"> 36</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-37"> 37</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-38"> 38</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-39"> 39</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-40"> 40</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-41"> 41</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-42"> 42</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-43"> 43</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-44"> 44</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-45"> 45</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-46"> 46</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-47"> 47</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-48"> 48</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-49"> 49</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-50"> 50</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-51"> 51</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-52"> 52</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-53"> 53</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-54"> 54</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-55"> 55</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-56"> 56</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-57"> 57</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-58"> 58</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-59"> 59</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-60"> 60</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-61"> 61</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-62"> 62</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-63"> 63</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-64"> 64</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-65"> 65</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-66"> 66</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-67"> 67</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-68"> 68</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-69"> 69</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-70"> 70</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-71"> 71</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-72"> 72</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-73"> 73</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-74"> 74</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-75"> 75</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-76"> 76</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-77"> 77</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-78"> 78</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-79"> 79</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-80"> 80</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-81"> 81</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-82"> 82</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-83"> 83</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-84"> 84</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-85"> 85</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-86"> 86</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-87"> 87</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-88"> 88</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-89"> 89</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-90"> 90</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-91"> 91</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-92"> 92</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-93"> 93</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-94"> 94</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-95"> 95</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-96"> 96</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-97"> 97</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-98"> 98</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-99"> 99</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-100">100</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-101">101</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-102">102</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-103">103</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-104">104</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-105">105</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-106">106</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-107">107</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-108">108</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-109">109</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-110">110</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-111">111</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-112">112</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-113">113</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-114">114</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-115">115</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-116">116</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-117">117</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-118">118</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-119">119</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-120">120</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-121">121</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-122">122</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-123">123</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-124">124</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-125">125</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-126">126</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-127">127</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-128">128</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-129">129</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-130">130</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-131">131</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-132">132</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-133">133</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-134">134</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-135">135</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-136">136</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-137">137</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-138">138</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-139">139</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-140">140</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-141">141</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-142">142</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-143">143</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-144">144</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-145">145</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-146">146</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-147">147</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-148">148</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-149">149</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-150">150</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-151">151</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-152">152</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-153">153</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-154">154</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-155">155</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-156">156</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-157">157</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-158">158</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-159">159</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-160">160</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-161">161</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-162">162</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-163">163</a>
+<a href="menubar.py.html#listingsninja_ideguimenusmenubarpy-164">164</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_ideguimenusmenubarpy-1"></a><span class="c"># -*- coding: utf-8 -*-</span>
+<a name="listingsninja_ideguimenusmenubarpy-2"></a>
+<a name="listingsninja_ideguimenusmenubarpy-3"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QAction</span>
+<a name="listingsninja_ideguimenusmenubarpy-4"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QMenu</span>
+<a name="listingsninja_ideguimenusmenubarpy-5"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">QObject</span>
+<a name="listingsninja_ideguimenusmenubarpy-6"></a><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<a name="listingsninja_ideguimenusmenubarpy-7"></a>
+<a name="listingsninja_ideguimenusmenubarpy-8"></a><span class="kn">from</span> <span class="nn">ninja_ide.core</span> <span class="kn">import</span> <span class="n">settings</span>
+<a name="listingsninja_ideguimenusmenubarpy-9"></a><span class="kn">from</span> <span class="nn">ninja_ide.gui.ide</span> <span class="kn">import</span> <span class="n">IDE</span>
+<a name="listingsninja_ideguimenusmenubarpy-10"></a>
+<a name="listingsninja_ideguimenusmenubarpy-11"></a>
+<a name="listingsninja_ideguimenusmenubarpy-12"></a><span class="n">SEC01</span> <span class="o">=</span> <span class="mi">100</span>
+<a name="listingsninja_ideguimenusmenubarpy-13"></a><span class="n">SEC02</span> <span class="o">=</span> <span class="mi">200</span>
+<a name="listingsninja_ideguimenusmenubarpy-14"></a><span class="n">SEC03</span> <span class="o">=</span> <span class="mi">300</span>
+<a name="listingsninja_ideguimenusmenubarpy-15"></a><span class="n">SEC04</span> <span class="o">=</span> <span class="mi">400</span>
+<a name="listingsninja_ideguimenusmenubarpy-16"></a><span class="n">SEC05</span> <span class="o">=</span> <span class="mi">500</span>
+<a name="listingsninja_ideguimenusmenubarpy-17"></a><span class="n">SEC06</span> <span class="o">=</span> <span class="mi">600</span>
+<a name="listingsninja_ideguimenusmenubarpy-18"></a><span class="n">SEC07</span> <span class="o">=</span> <span class="mi">700</span>
+<a name="listingsninja_ideguimenusmenubarpy-19"></a><span class="n">SEC08</span> <span class="o">=</span> <span class="mi">800</span>
+<a name="listingsninja_ideguimenusmenubarpy-20"></a><span class="n">SEC09</span> <span class="o">=</span> <span class="mi">900</span>
+<a name="listingsninja_ideguimenusmenubarpy-21"></a><span class="n">SEC10</span> <span class="o">=</span> <span class="mi">1000</span>
+<a name="listingsninja_ideguimenusmenubarpy-22"></a>
+<a name="listingsninja_ideguimenusmenubarpy-23"></a>
+<a name="listingsninja_ideguimenusmenubarpy-24"></a><span class="c">#WE WILL PROBABLY NEED TO SAVE THE WEIGHT WITH THE ACTIONS SO WE CAN</span>
+<a name="listingsninja_ideguimenusmenubarpy-25"></a><span class="c">#DETERMINE TO LOCATE A PLUGIN LOADED AFTER INITIALIZATION AT THE PROPER PLACE</span>
+<a name="listingsninja_ideguimenusmenubarpy-26"></a>
+<a name="listingsninja_ideguimenusmenubarpy-27"></a>
+<a name="listingsninja_ideguimenusmenubarpy-28"></a><span class="k">def</span> <span class="nf">menu_add_section</span><span class="p">(</span><span class="n">menu</span><span class="p">,</span> <span class="n">section_parts</span><span class="p">):</span>
+<a name="listingsninja_ideguimenusmenubarpy-29"></a>    <span class="n">menus</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_ideguimenusmenubarpy-30"></a>    <span class="k">for</span> <span class="n">each_part</span> <span class="ow">in</span> <span class="n">section_parts</span><span class="p">:</span>
+<a name="listingsninja_ideguimenusmenubarpy-31"></a>        <span class="n">action</span><span class="p">,</span> <span class="n">weight</span> <span class="o">=</span> <span class="n">each_part</span>
+<a name="listingsninja_ideguimenusmenubarpy-32"></a>        <span class="n">add</span> <span class="o">=</span> <span class="bp">None</span>
+<a name="listingsninja_ideguimenusmenubarpy-33"></a>        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">QAction</span><span class="p">):</span>
+<a name="listingsninja_ideguimenusmenubarpy-34"></a>            <span class="n">add</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span>
+<a name="listingsninja_ideguimenusmenubarpy-35"></a>        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">QMenu</span><span class="p">):</span>
+<a name="listingsninja_ideguimenusmenubarpy-36"></a>            <span class="n">add</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addMenu</span>
+<a name="listingsninja_ideguimenusmenubarpy-37"></a>            <span class="n">menus</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+<a name="listingsninja_ideguimenusmenubarpy-38"></a>        <span class="k">if</span> <span class="n">add</span><span class="p">:</span>
+<a name="listingsninja_ideguimenusmenubarpy-39"></a>            <span class="n">add</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+<a name="listingsninja_ideguimenusmenubarpy-40"></a>
+<a name="listingsninja_ideguimenusmenubarpy-41"></a>    <span class="c">#FIXME: This appends a separator at the end of each menu</span>
+<a name="listingsninja_ideguimenusmenubarpy-42"></a>    <span class="c">#FIXME: add separator between sections</span>
+<a name="listingsninja_ideguimenusmenubarpy-43"></a>    <span class="n">menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+<a name="listingsninja_ideguimenusmenubarpy-44"></a>    <span class="k">return</span> <span class="n">menus</span>
+<a name="listingsninja_ideguimenusmenubarpy-45"></a>
+<a name="listingsninja_ideguimenusmenubarpy-46"></a>
+<a name="listingsninja_ideguimenusmenubarpy-47"></a><span class="k">class</span> <span class="nc">_MenuBar</span><span class="p">(</span><span class="n">QObject</span><span class="p">):</span>
+<a name="listingsninja_ideguimenusmenubarpy-48"></a>
+<a name="listingsninja_ideguimenusmenubarpy-49"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimenusmenubarpy-50"></a>        <span class="nb">super</span><span class="p">(</span><span class="n">_MenuBar</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+<a name="listingsninja_ideguimenusmenubarpy-51"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_roots</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="listingsninja_ideguimenusmenubarpy-52"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_children</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="listingsninja_ideguimenusmenubarpy-53"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_submenu</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="listingsninja_ideguimenusmenubarpy-54"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_menu_refs</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="listingsninja_ideguimenusmenubarpy-55"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_toolbar_index</span> <span class="o">=</span> <span class="p">{}</span>
+<a name="listingsninja_ideguimenusmenubarpy-56"></a>
+<a name="listingsninja_ideguimenusmenubarpy-57"></a>        <span class="n">IDE</span><span class="o">.</span><span class="n">register_service</span><span class="p">(</span><span class="s">'menu_bar'</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguimenusmenubarpy-58"></a>
+<a name="listingsninja_ideguimenusmenubarpy-59"></a>        <span class="c">#TODO: Create recent file service</span>
+<a name="listingsninja_ideguimenusmenubarpy-60"></a>        <span class="c">#menu_file_connections = (</span>
+<a name="listingsninja_ideguimenusmenubarpy-61"></a>            <span class="c">#{'target': 'main_container',</span>
+<a name="listingsninja_ideguimenusmenubarpy-62"></a>            <span class="c">#'signal_name': 'recentTabsModified(QStringList)',</span>
+<a name="listingsninja_ideguimenusmenubarpy-63"></a>            <span class="c">#'slot': self._menuFile.update_recent_files},</span>
+<a name="listingsninja_ideguimenusmenubarpy-64"></a>        <span class="c">#)</span>
+<a name="listingsninja_ideguimenusmenubarpy-65"></a>
+<a name="listingsninja_ideguimenusmenubarpy-66"></a>    <span class="k">def</span> <span class="nf">add_root</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root_name</span><span class="p">,</span> <span class="n">root_weight</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<a name="listingsninja_ideguimenusmenubarpy-67"></a>        <span class="sd">"""</span>
+<a name="listingsninja_ideguimenusmenubarpy-68"></a><span class="sd">        Add a root menu with desired weight or at end of list</span>
+<a name="listingsninja_ideguimenusmenubarpy-69"></a><span class="sd">        """</span>
+<a name="listingsninja_ideguimenusmenubarpy-70"></a>        <span class="c">#If self._roots is empty this is going to explode</span>
+<a name="listingsninja_ideguimenusmenubarpy-71"></a>        <span class="k">if</span> <span class="n">root_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_roots</span><span class="p">:</span>
+<a name="listingsninja_ideguimenusmenubarpy-72"></a>            <span class="k">if</span> <span class="n">root_weight</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<a name="listingsninja_ideguimenusmenubarpy-73"></a>                <span class="n">root_weight</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_roots</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+<a name="listingsninja_ideguimenusmenubarpy-74"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_roots</span><span class="p">[</span><span class="n">root_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">root_weight</span>
+<a name="listingsninja_ideguimenusmenubarpy-75"></a>
+<a name="listingsninja_ideguimenusmenubarpy-76"></a>    <span class="k">def</span> <span class="nf">get_root</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguimenusmenubarpy-77"></a>        <span class="c">#Get the list of menu categories from ide: IDE.get_menu_categories</span>
+<a name="listingsninja_ideguimenusmenubarpy-78"></a>        <span class="n">iter_items</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_roots</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+<a name="listingsninja_ideguimenusmenubarpy-79"></a>        <span class="n">iter_items</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<a name="listingsninja_ideguimenusmenubarpy-80"></a>        <span class="k">return</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">iter_items</span><span class="p">]</span>
+<a name="listingsninja_ideguimenusmenubarpy-81"></a>
+<a name="listingsninja_ideguimenusmenubarpy-82"></a>    <span class="k">def</span> <span class="nf">add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root_name</span><span class="p">,</span> <span class="n">sub_name</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span>
+<a name="listingsninja_ideguimenusmenubarpy-83"></a>                    <span class="n">namespace</span><span class="o">=</span><span class="s">"ninjaide"</span><span class="p">):</span>
+<a name="listingsninja_ideguimenusmenubarpy-84"></a>        <span class="n">child_path</span> <span class="o">=</span> <span class="p">(</span><span class="n">root_name</span><span class="p">,</span> <span class="n">sub_name</span><span class="p">,</span> <span class="n">namespace</span><span class="p">,</span> <span class="n">child</span><span class="p">)</span>
+<a name="listingsninja_ideguimenusmenubarpy-85"></a>        <span class="n">oname</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">objectName</span><span class="p">()</span>
+<a name="listingsninja_ideguimenusmenubarpy-86"></a>        <span class="k">if</span> <span class="n">oname</span><span class="p">:</span>
+<a name="listingsninja_ideguimenusmenubarpy-87"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_toolbar_index</span><span class="p">[</span><span class="n">oname</span><span class="p">]</span> <span class="o">=</span> <span class="n">child</span>
+<a name="listingsninja_ideguimenusmenubarpy-88"></a>        <span class="k">if</span> <span class="n">child_path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="p">:</span>
+<a name="listingsninja_ideguimenusmenubarpy-89"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">add_root</span><span class="p">(</span><span class="n">root_name</span><span class="p">)</span>
+<a name="listingsninja_ideguimenusmenubarpy-90"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="p">[</span><span class="n">child_path</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+<a name="listingsninja_ideguimenusmenubarpy-91"></a>
+<a name="listingsninja_ideguimenusmenubarpy-92"></a>    <span class="k">def</span> <span class="nf">get_children_of</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">sub_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<a name="listingsninja_ideguimenusmenubarpy-93"></a>        <span class="n">children</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[])</span>
+<a name="listingsninja_ideguimenusmenubarpy-94"></a>        <span class="k">for</span> <span class="n">each_child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="p">:</span>
+<a name="listingsninja_ideguimenusmenubarpy-95"></a>            <span class="n">child_parent</span><span class="p">,</span> <span class="n">sub_parent</span><span class="p">,</span> <span class="n">child_namespace</span><span class="p">,</span> <span class="n">child_name</span> <span class="o">=</span> <span class="n">each_child</span>
+<a name="listingsninja_ideguimenusmenubarpy-96"></a>            <span class="k">if</span> <span class="p">(</span><span class="n">parent</span> <span class="o">==</span> <span class="n">child_parent</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">sub_parent</span> <span class="o">==</span> <span class="n">sub_name</span><span class="p">)</span> \
+<a name="listingsninja_ideguimenusmenubarpy-97"></a>                    <span class="ow">and</span> <span class="p">((</span><span class="n">namespace</span> <span class="o">==</span> <span class="n">child_namespace</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">namespace</span><span class="p">)):</span>
+<a name="listingsninja_ideguimenusmenubarpy-98"></a>                <span class="n">child</span><span class="p">,</span> <span class="n">weight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="p">[</span><span class="n">each_child</span><span class="p">]</span>
+<a name="listingsninja_ideguimenusmenubarpy-99"></a>                <span class="c">#Group by namespace and weight</span>
+<a name="listingsninja_ideguimenusmenubarpy-100"></a>                <span class="n">weight_index</span> <span class="o">=</span> <span class="s">"</span><span class="si">%d</span><span class="s">_</span><span class="si">%s</span><span class="s">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">weight</span> <span class="o">/</span> <span class="mi">100</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span>
+<a name="listingsninja_ideguimenusmenubarpy-101"></a>                <span class="n">children</span><span class="p">[</span><span class="n">weight_index</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">child</span><span class="p">,</span> <span class="n">weight</span><span class="p">))</span>
+<a name="listingsninja_ideguimenusmenubarpy-102"></a>
+<a name="listingsninja_ideguimenusmenubarpy-103"></a>        <span class="k">return</span> <span class="n">children</span>
+<a name="listingsninja_ideguimenusmenubarpy-104"></a>
+<a name="listingsninja_ideguimenusmenubarpy-105"></a>    <span class="k">def</span> <span class="nf">add_toolbar_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">toolbar_item</span><span class="p">):</span>
+<a name="listingsninja_ideguimenusmenubarpy-106"></a>        <span class="n">section</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">weight</span> <span class="o">=</span> <span class="n">toolbar_item</span>
+<a name="listingsninja_ideguimenusmenubarpy-107"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_toolbar_sections</span><span class="p">[</span><span class="n">section</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+<a name="listingsninja_ideguimenusmenubarpy-108"></a>
+<a name="listingsninja_ideguimenusmenubarpy-109"></a>    <span class="k">def</span> <span class="nf">load_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ide</span><span class="p">):</span>
+<a name="listingsninja_ideguimenusmenubarpy-110"></a>        <span class="c">#menuBar is the actual QMenuBar object from IDE which is a QMainWindow</span>
+<a name="listingsninja_ideguimenusmenubarpy-111"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">menubar</span> <span class="o">=</span> <span class="n">ide</span><span class="o">.</span><span class="n">menuBar</span><span class="p">()</span>
+<a name="listingsninja_ideguimenusmenubarpy-112"></a>        <span class="c"># Create Root</span>
+<a name="listingsninja_ideguimenusmenubarpy-113"></a>        <span class="n">categories</span> <span class="o">=</span> <span class="n">ide</span><span class="o">.</span><span class="n">get_menu_categories</span><span class="p">()</span>
+<a name="listingsninja_ideguimenusmenubarpy-114"></a>        <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="n">categories</span><span class="p">:</span>
+<a name="listingsninja_ideguimenusmenubarpy-115"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">add_root</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">categories</span><span class="p">[</span><span class="n">category</span><span class="p">])</span>
+<a name="listingsninja_ideguimenusmenubarpy-116"></a>
+<a name="listingsninja_ideguimenusmenubarpy-117"></a>        <span class="c"># EACH ITEM menu should be obtained from ide.get_menuitems()</span>
+<a name="listingsninja_ideguimenusmenubarpy-118"></a>        <span class="c"># which is going to return a dict with:</span>
+<a name="listingsninja_ideguimenusmenubarpy-119"></a>        <span class="c"># key: QAction or QMenu</span>
+<a name="listingsninja_ideguimenusmenubarpy-120"></a>        <span class="c"># value: (category[string], weight[int])</span>
+<a name="listingsninja_ideguimenusmenubarpy-121"></a>        <span class="c"># QAction/QMenu, and ask something like "instanceof" for those</span>
+<a name="listingsninja_ideguimenusmenubarpy-122"></a>        <span class="c"># objects to see if we should execute an addMenu or addAction to</span>
+<a name="listingsninja_ideguimenusmenubarpy-123"></a>        <span class="c"># the MenuBar.</span>
+<a name="listingsninja_ideguimenusmenubarpy-124"></a>        <span class="n">menuitems</span> <span class="o">=</span> <span class="n">ide</span><span class="o">.</span><span class="n">get_menuitems</span><span class="p">()</span>
+<a name="listingsninja_ideguimenusmenubarpy-125"></a>        <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">menuitems</span><span class="p">:</span>
+<a name="listingsninja_ideguimenusmenubarpy-126"></a>            <span class="n">category</span><span class="p">,</span> <span class="n">weight</span> <span class="o">=</span> <span class="n">menuitems</span><span class="p">[</span><span class="n">action</span><span class="p">]</span>
+<a name="listingsninja_ideguimenusmenubarpy-127"></a>            <span class="n">category</span><span class="p">,</span> <span class="n">subcategory</span> <span class="o">=</span> <span class="n">category</span>
+<a name="listingsninja_ideguimenusmenubarpy-128"></a>            <span class="c">#FIXME: Need cateogory and sub, which should be none</span>
+<a name="listingsninja_ideguimenusmenubarpy-129"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">subcategory</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+<a name="listingsninja_ideguimenusmenubarpy-130"></a>
+<a name="listingsninja_ideguimenusmenubarpy-131"></a>        <span class="c">#FIXME: This should add to the given methods and they to the actual adding on menu upon add</span>
+<a name="listingsninja_ideguimenusmenubarpy-132"></a>        <span class="c">#FIXME: To support this we should have a way to add these in order after menu creation</span>
+<a name="listingsninja_ideguimenusmenubarpy-133"></a>        <span class="k">for</span> <span class="n">each_menu</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_root</span><span class="p">():</span>
+<a name="listingsninja_ideguimenusmenubarpy-134"></a>            <span class="n">menu_object</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menubar</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="n">each_menu</span><span class="p">)</span>
+<a name="listingsninja_ideguimenusmenubarpy-135"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_menu_refs</span><span class="p">[</span><span class="n">each_menu</span><span class="p">]</span> <span class="o">=</span> <span class="n">menu_object</span>
+<a name="listingsninja_ideguimenusmenubarpy-136"></a>            <span class="n">all_children</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_children_of</span><span class="p">(</span><span class="n">each_menu</span><span class="p">)</span>
+<a name="listingsninja_ideguimenusmenubarpy-137"></a>            <span class="k">for</span> <span class="n">each_child_grp_key</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">all_children</span><span class="p">):</span>
+<a name="listingsninja_ideguimenusmenubarpy-138"></a>                <span class="n">each_child_grp</span> <span class="o">=</span> <span class="n">all_children</span><span class="p">[</span><span class="n">each_child_grp_key</span><span class="p">]</span>
+<a name="listingsninja_ideguimenusmenubarpy-139"></a>                <span class="n">menus</span> <span class="o">=</span> <span class="n">menu_add_section</span><span class="p">(</span><span class="n">menu_object</span><span class="p">,</span>
+<a name="listingsninja_ideguimenusmenubarpy-140"></a>                        <span class="nb">sorted</span><span class="p">(</span><span class="n">each_child_grp</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+<a name="listingsninja_ideguimenusmenubarpy-141"></a>                <span class="c">#FIXME: Prettify the following</span>
+<a name="listingsninja_ideguimenusmenubarpy-142"></a>                <span class="k">for</span> <span class="n">menu</span> <span class="ow">in</span> <span class="n">menus</span><span class="p">:</span>
+<a name="listingsninja_ideguimenusmenubarpy-143"></a>                    <span class="bp">self</span><span class="o">.</span><span class="n">_submenu</span><span class="p">[(</span><span class="n">each_menu</span><span class="p">,</span> <span class="n">menu</span><span class="o">.</span><span class="n">title</span><span class="p">())]</span> <span class="o">=</span> <span class="n">menu</span>
+<a name="listingsninja_ideguimenusmenubarpy-144"></a>
+<a name="listingsninja_ideguimenusmenubarpy-145"></a>        <span class="k">for</span> <span class="n">each_parent</span><span class="p">,</span> <span class="n">each_submenu</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_submenu</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+<a name="listingsninja_ideguimenusmenubarpy-146"></a>            <span class="n">menu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_submenu</span><span class="p">[(</span><span class="n">each_parent</span><span class="p">,</span> <span class="n">each_submenu</span><span class="p">)]</span>
+<a name="listingsninja_ideguimenusmenubarpy-147"></a>            <span class="n">all_children</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_children_of</span><span class="p">(</span><span class="n">each_parent</span><span class="p">,</span> <span class="n">each_submenu</span><span class="p">)</span>
+<a name="listingsninja_ideguimenusmenubarpy-148"></a>            <span class="k">for</span> <span class="n">each_child_grp_key</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">all_children</span><span class="p">):</span>
+<a name="listingsninja_ideguimenusmenubarpy-149"></a>                <span class="n">each_child_grp</span> <span class="o">=</span> <span class="n">all_children</span><span class="p">[</span><span class="n">each_child_grp_key</span><span class="p">]</span>
+<a name="listingsninja_ideguimenusmenubarpy-150"></a>                <span class="n">menu_add_section</span><span class="p">(</span><span class="n">menu</span><span class="p">,</span>
+<a name="listingsninja_ideguimenusmenubarpy-151"></a>                        <span class="nb">sorted</span><span class="p">(</span><span class="n">each_child_grp</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+<a name="listingsninja_ideguimenusmenubarpy-152"></a>
+<a name="listingsninja_ideguimenusmenubarpy-153"></a>                    <span class="c">#ADD A LATER CALLBACK</span>
+<a name="listingsninja_ideguimenusmenubarpy-154"></a>
+<a name="listingsninja_ideguimenusmenubarpy-155"></a>    <span class="k">def</span> <span class="nf">load_toolbar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ide</span><span class="p">):</span>
+<a name="listingsninja_ideguimenusmenubarpy-156"></a>        <span class="c">#FIXME: Do the same as above to add items to toolbar</span>
+<a name="listingsninja_ideguimenusmenubarpy-157"></a>        <span class="n">toolbar</span> <span class="o">=</span> <span class="n">ide</span><span class="o">.</span><span class="n">get_service</span><span class="p">(</span><span class="s">"toolbar"</span><span class="p">)</span>
+<a name="listingsninja_ideguimenusmenubarpy-158"></a>        <span class="n">toolbar</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<a name="listingsninja_ideguimenusmenubarpy-159"></a>        <span class="k">for</span> <span class="n">toolbar_action</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">TOOLBAR_ITEMS</span><span class="p">:</span>
+<a name="listingsninja_ideguimenusmenubarpy-160"></a>            <span class="n">tool_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_toolbar_index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">toolbar_action</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<a name="listingsninja_ideguimenusmenubarpy-161"></a>            <span class="k">if</span> <span class="n">tool_item</span><span class="p">:</span>
+<a name="listingsninja_ideguimenusmenubarpy-162"></a>                <span class="n">toolbar</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">tool_item</span><span class="p">)</span>
+<a name="listingsninja_ideguimenusmenubarpy-163"></a>
+<a name="listingsninja_ideguimenusmenubarpy-164"></a><span class="n">menu</span> <span class="o">=</span> <span class="n">_MenuBar</span><span class="p">()</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

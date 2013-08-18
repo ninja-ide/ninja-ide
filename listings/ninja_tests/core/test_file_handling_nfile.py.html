@@ -1,0 +1,504 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="test_file_handling_nfile.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>test_file_handling_nfile.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../">/listings</a>
+        </li><li><a href="../">/ninja_tests</a>
+        </li><li><a href=".">/core</a>
+        </li><li><a href="#">/test_file_handling_nfile.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-1">  1</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-2">  2</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-3">  3</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-4">  4</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-5">  5</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-6">  6</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-7">  7</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-8">  8</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-9">  9</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-10"> 10</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-11"> 11</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-12"> 12</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-13"> 13</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-14"> 14</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-15"> 15</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-16"> 16</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-17"> 17</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-18"> 18</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-19"> 19</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-20"> 20</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-21"> 21</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-22"> 22</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-23"> 23</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-24"> 24</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-25"> 25</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-26"> 26</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-27"> 27</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-28"> 28</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-29"> 29</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-30"> 30</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-31"> 31</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-32"> 32</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-33"> 33</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-34"> 34</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-35"> 35</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-36"> 36</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-37"> 37</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-38"> 38</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-39"> 39</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-40"> 40</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-41"> 41</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-42"> 42</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-43"> 43</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-44"> 44</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-45"> 45</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-46"> 46</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-47"> 47</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-48"> 48</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-49"> 49</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-50"> 50</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-51"> 51</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-52"> 52</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-53"> 53</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-54"> 54</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-55"> 55</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-56"> 56</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-57"> 57</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-58"> 58</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-59"> 59</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-60"> 60</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-61"> 61</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-62"> 62</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-63"> 63</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-64"> 64</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-65"> 65</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-66"> 66</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-67"> 67</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-68"> 68</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-69"> 69</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-70"> 70</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-71"> 71</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-72"> 72</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-73"> 73</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-74"> 74</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-75"> 75</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-76"> 76</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-77"> 77</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-78"> 78</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-79"> 79</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-80"> 80</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-81"> 81</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-82"> 82</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-83"> 83</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-84"> 84</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-85"> 85</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-86"> 86</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-87"> 87</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-88"> 88</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-89"> 89</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-90"> 90</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-91"> 91</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-92"> 92</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-93"> 93</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-94"> 94</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-95"> 95</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-96"> 96</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-97"> 97</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-98"> 98</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-99"> 99</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-100">100</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-101">101</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-102">102</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-103">103</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-104">104</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-105">105</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-106">106</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-107">107</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-108">108</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-109">109</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-110">110</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-111">111</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-112">112</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-113">113</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-114">114</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-115">115</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-116">116</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-117">117</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-118">118</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-119">119</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-120">120</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-121">121</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-122">122</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-123">123</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-124">124</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-125">125</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-126">126</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-127">127</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-128">128</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-129">129</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-130">130</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-131">131</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-132">132</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-133">133</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-134">134</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-135">135</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-136">136</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-137">137</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-138">138</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-139">139</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-140">140</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-141">141</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-142">142</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-143">143</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-144">144</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-145">145</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-146">146</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-147">147</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-148">148</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-149">149</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-150">150</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-151">151</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-152">152</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-153">153</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-154">154</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-155">155</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-156">156</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-157">157</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-158">158</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-159">159</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-160">160</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-161">161</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-162">162</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-163">163</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-164">164</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-165">165</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-166">166</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-167">167</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-168">168</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-169">169</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-170">170</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-171">171</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-172">172</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-173">173</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-174">174</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-175">175</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-176">176</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-177">177</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-178">178</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-179">179</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-180">180</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-181">181</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-182">182</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-183">183</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-184">184</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-185">185</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-186">186</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-187">187</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-188">188</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-189">189</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-190">190</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-191">191</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-192">192</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-193">193</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-194">194</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-195">195</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-196">196</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-197">197</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-198">198</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-199">199</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-200">200</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-201">201</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-202">202</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-203">203</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-204">204</a>
+<a href="test_file_handling_nfile.py.html#listingsninja_testscoretest_file_handling_nfilepy-205">205</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_testscoretest_file_handling_nfilepy-1"></a><span class="c"># -*- coding: utf-8 -*-</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-2"></a><span class="c">#</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-3"></a><span class="c"># This file is part of NINJA-IDE (http://ninja-ide.org).</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-4"></a><span class="c">#</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-5"></a><span class="c"># NINJA-IDE is free software; you can redistribute it and/or modify</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-6"></a><span class="c"># it under the terms of the GNU General Public License as published by</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-7"></a><span class="c"># the Free Software Foundation; either version 3 of the License, or</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-8"></a><span class="c"># any later version.</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-9"></a><span class="c">#</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-10"></a><span class="c"># NINJA-IDE is distributed in the hope that it will be useful,</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-11"></a><span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-12"></a><span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-13"></a><span class="c"># GNU General Public License for more details.</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-14"></a><span class="c">#</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-15"></a><span class="c"># You should have received a copy of the GNU General Public License</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-16"></a><span class="c"># along with NINJA-IDE; If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-17"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-18"></a><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-19"></a><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-20"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-21"></a><span class="kn">import</span> <span class="nn">unittest</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-22"></a><span class="kn">import</span> <span class="nn">os</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-23"></a><span class="kn">import</span> <span class="nn">tempfile</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-24"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-25"></a><span class="kn">from</span> <span class="nn">ninja_ide.core.file_handling.nfile</span> <span class="kn">import</span> <span class="n">NFile</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-26"></a><span class="kn">from</span> <span class="nn">ninja_ide.core.file_handling.file_manager</span> <span class="kn">import</span> \
+<a name="listingsninja_testscoretest_file_handling_nfilepy-27"></a>            <span class="n">NinjaNoFileNameException</span><span class="p">,</span> <span class="n">NinjaIOException</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-28"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-29"></a><span class="n">CURRENT_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-30"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-31"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-32"></a><span class="k">class</span> <span class="nc">NfileTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-33"></a>    <span class="sd">"""Test Nfile API works"""</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-34"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-35"></a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-36"></a>        <span class="sd">"""</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-37"></a><span class="sd">        """</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-38"></a>        <span class="k">global</span> <span class="n">CURRENT_DIR</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-39"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_existing_file</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-40"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_non_existing_file</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-41"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_trash_files</span> <span class="o">=</span> <span class="p">[]</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-42"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-43"></a>    <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-44"></a>        <span class="sd">"""</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-45"></a><span class="sd">        """</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-46"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_existing_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-47"></a>        <span class="k">for</span> <span class="n">each_file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trash_files</span><span class="p">:</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-48"></a>            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">each_file</span><span class="p">):</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-49"></a>                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">each_file</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-50"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-51"></a>    <span class="k">def</span> <span class="nf">get_temp_file_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-52"></a>        <span class="sd">"""tempfile seems to lack a proper way to obtain disposable filenames"""</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-53"></a>        <span class="n">a_temp_file</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-54"></a>        <span class="n">temp_file</span> <span class="o">=</span> <span class="n">a_temp_file</span><span class="o">.</span><span class="n">name</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-55"></a>        <span class="n">a_temp_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-56"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_trash_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp_file</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-57"></a>        <span class="k">return</span> <span class="n">temp_file</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-58"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-59"></a>    <span class="k">def</span> <span class="nf">test_knows_if_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-60"></a>        <span class="sd">"""If the file exists, can NFile tell?"""</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-61"></a>        <span class="n">existing_nfile</span> <span class="o">=</span> <span class="n">NFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_existing_file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-62"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">existing_nfile</span><span class="o">.</span><span class="n">_exists</span><span class="p">())</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-63"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-64"></a>    <span class="k">def</span> <span class="nf">test_knows_if_desnt_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-65"></a>        <span class="sd">"""If the file does not exists, can NFile tell?"""</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-66"></a>        <span class="n">existing_nfile</span> <span class="o">=</span> <span class="n">NFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_non_existing_file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-67"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_non_existing_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-68"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">existing_nfile</span><span class="o">.</span><span class="n">_exists</span><span class="p">())</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-69"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-70"></a>    <span class="k">def</span> <span class="nf">test_save_no_filename_raises</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-71"></a>        <span class="sd">"""If there is no filename associated to the nfile we</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-72"></a><span class="sd">        should get error"""</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-73"></a>        <span class="n">no_filename_file</span> <span class="o">=</span> <span class="n">NFile</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-74"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="n">NinjaNoFileNameException</span><span class="p">,</span> <span class="n">no_filename_file</span><span class="o">.</span><span class="n">save</span><span class="p">,</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-75"></a>                            <span class="p">(</span><span class="s">"dumb content"</span><span class="p">,))</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-76"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-77"></a>    <span class="k">def</span> <span class="nf">test_creates_if_doesnt_exist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-78"></a>        <span class="n">temp_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_temp_file_name</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-79"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">temp_name</span><span class="p">))</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-80"></a>        <span class="n">a_nfile</span> <span class="o">=</span> <span class="n">NFile</span><span class="p">(</span><span class="n">temp_name</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-81"></a>        <span class="n">a_nfile</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">"empty content"</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-82"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">temp_name</span><span class="p">))</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-83"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-84"></a>    <span class="k">def</span> <span class="nf">test_actual_content_is_saved</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-85"></a>        <span class="n">file_content</span> <span class="o">=</span> <span class="s">"empty content"</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-86"></a>        <span class="n">temp_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_temp_file_name</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-87"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">temp_name</span><span class="p">))</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-88"></a>        <span class="n">a_nfile</span> <span class="o">=</span> <span class="n">NFile</span><span class="p">(</span><span class="n">temp_name</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-89"></a>        <span class="n">a_nfile</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">file_content</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-90"></a>        <span class="n">a_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">temp_name</span><span class="p">,</span> <span class="s">"r"</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-91"></a>        <span class="n">a_file_content</span> <span class="o">=</span> <span class="n">a_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-92"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">a_file_content</span><span class="p">,</span> <span class="n">file_content</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-93"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-94"></a>    <span class="k">def</span> <span class="nf">test_saves_to_filepath</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-95"></a>        <span class="n">temp_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_temp_file_name</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-96"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">temp_name</span><span class="p">))</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-97"></a>        <span class="n">a_nfile</span> <span class="o">=</span> <span class="n">NFile</span><span class="p">(</span><span class="n">temp_name</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-98"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">a_nfile</span><span class="o">.</span><span class="n">_file_path</span><span class="p">))</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-99"></a>        <span class="n">a_nfile</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">"empty content"</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-100"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">a_nfile</span><span class="o">.</span><span class="n">_file_path</span><span class="p">))</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-101"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-102"></a>    <span class="k">def</span> <span class="nf">test_path_overrides_filepath</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-103"></a>        <span class="n">temp_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_temp_file_name</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-104"></a>        <span class="n">temp_name_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_temp_file_name</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-105"></a>        <span class="c">#Since we cant assure the two paths are differents we do this</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-106"></a>        <span class="n">temp_name_path</span> <span class="o">=</span> <span class="s">u"</span><span class="si">%s</span><span class="s">_really_unique"</span> <span class="o">%</span> <span class="n">temp_name_path</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-107"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_trash_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp_name_path</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-108"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="n">temp_name</span><span class="p">,</span> <span class="n">temp_name_path</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-109"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">temp_name</span><span class="p">))</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-110"></a>        <span class="n">a_nfile</span> <span class="o">=</span> <span class="n">NFile</span><span class="p">(</span><span class="n">temp_name</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-111"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">a_nfile</span><span class="o">.</span><span class="n">_file_path</span><span class="p">))</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-112"></a>        <span class="n">a_nfile</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">"empty content"</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">temp_name_path</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-113"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">temp_name</span><span class="p">))</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-114"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">temp_name_path</span><span class="p">))</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-115"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-116"></a>    <span class="k">def</span> <span class="nf">test_path_is_set_as_new_filepath</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-117"></a>        <span class="n">temp_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_temp_file_name</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-118"></a>        <span class="n">temp_name_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_temp_file_name</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-119"></a>        <span class="c">#Since we cant assure the two paths are differents we do this</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-120"></a>        <span class="n">temp_name_path</span> <span class="o">=</span> <span class="s">u"</span><span class="si">%s</span><span class="s">_really_unique"</span> <span class="o">%</span> <span class="n">temp_name_path</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-121"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_trash_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp_name_path</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-122"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="n">temp_name</span><span class="p">,</span> <span class="n">temp_name_path</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-123"></a>        <span class="n">a_nfile</span> <span class="o">=</span> <span class="n">NFile</span><span class="p">(</span><span class="n">temp_name</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-124"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="n">temp_name_path</span><span class="p">,</span> <span class="n">a_nfile</span><span class="o">.</span><span class="n">_file_path</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-125"></a>        <span class="n">a_nfile</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">"empty content"</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">temp_name_path</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-126"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">temp_name_path</span><span class="p">,</span> <span class="n">a_nfile</span><span class="o">.</span><span class="n">_file_path</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-127"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-128"></a>    <span class="k">def</span> <span class="nf">test_copy_flag_prevets_filepath_change</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-129"></a>        <span class="n">temp_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_temp_file_name</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-130"></a>        <span class="n">temp_name_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_temp_file_name</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-131"></a>        <span class="c">#Since we cant assure the two paths are differents we do this</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-132"></a>        <span class="n">temp_name_path</span> <span class="o">=</span> <span class="s">u"</span><span class="si">%s</span><span class="s">_really_unique"</span> <span class="o">%</span> <span class="n">temp_name_path</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-133"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_trash_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp_name_path</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-134"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="n">temp_name</span><span class="p">,</span> <span class="n">temp_name_path</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-135"></a>        <span class="n">a_nfile</span> <span class="o">=</span> <span class="n">NFile</span><span class="p">(</span><span class="n">temp_name</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-136"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="n">temp_name_path</span><span class="p">,</span> <span class="n">a_nfile</span><span class="o">.</span><span class="n">_file_path</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-137"></a>        <span class="n">a_nfile</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">"empty content"</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">temp_name_path</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-138"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="n">temp_name_path</span><span class="p">,</span> <span class="n">a_nfile</span><span class="o">.</span><span class="n">_file_path</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-139"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-140"></a>    <span class="k">def</span> <span class="nf">test_copy_flag_saves_to_path_only</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-141"></a>        <span class="n">temp_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_temp_file_name</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-142"></a>        <span class="n">temp_name_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_temp_file_name</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-143"></a>        <span class="c">#Since we cant assure the two paths are differents we do this</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-144"></a>        <span class="n">temp_name_path</span> <span class="o">=</span> <span class="s">u"</span><span class="si">%s</span><span class="s">_really_unique"</span> <span class="o">%</span> <span class="n">temp_name_path</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-145"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_trash_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp_name_path</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-146"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="n">temp_name</span><span class="p">,</span> <span class="n">temp_name_path</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-147"></a>        <span class="n">a_nfile</span> <span class="o">=</span> <span class="n">NFile</span><span class="p">(</span><span class="n">temp_name</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-148"></a>        <span class="n">a_nfile</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">"empty content"</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">temp_name_path</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-149"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">temp_name</span><span class="p">))</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-150"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">temp_name_path</span><span class="p">))</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-151"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-152"></a>    <span class="k">def</span> <span class="nf">test_file_is_read_properly</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-153"></a>        <span class="n">to_load_file</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-154"></a>        <span class="n">load_text</span> <span class="o">=</span> <span class="s">"Something to load"</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-155"></a>        <span class="n">to_load_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">load_text</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-156"></a>        <span class="n">to_load_file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c"># FIXME: buffer errors could break this</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-157"></a>        <span class="n">a_nfile</span> <span class="o">=</span> <span class="n">NFile</span><span class="p">(</span><span class="n">to_load_file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-158"></a>        <span class="n">content</span> <span class="o">=</span> <span class="n">a_nfile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-159"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">load_text</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-160"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-161"></a>    <span class="k">def</span> <span class="nf">test_file_read_blows_when_nonexistent_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-162"></a>        <span class="n">a_nfile</span> <span class="o">=</span> <span class="n">NFile</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-163"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="n">NinjaNoFileNameException</span><span class="p">,</span> <span class="n">a_nfile</span><span class="o">.</span><span class="n">read</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-164"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-165"></a>    <span class="k">def</span> <span class="nf">test_file_read_blows_on_nonexistent_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-166"></a>        <span class="n">temp_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_temp_file_name</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-167"></a>        <span class="n">a_nfile</span> <span class="o">=</span> <span class="n">NFile</span><span class="p">(</span><span class="n">temp_name</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-168"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="n">NinjaIOException</span><span class="p">,</span> <span class="n">a_nfile</span><span class="o">.</span><span class="n">read</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-169"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-170"></a>    <span class="k">def</span> <span class="nf">test_file_is_moved</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-171"></a>        <span class="n">temp_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_temp_file_name</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-172"></a>        <span class="n">new_temp_name</span> <span class="o">=</span> <span class="s">u"</span><span class="si">%s</span><span class="s">_new"</span> <span class="o">%</span> <span class="n">temp_name</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-173"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_trash_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_temp_name</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-174"></a>        <span class="n">test_content</span> <span class="o">=</span> <span class="s">"zero"</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-175"></a>        <span class="n">temp_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">temp_name</span><span class="p">,</span> <span class="s">"w"</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-176"></a>        <span class="n">temp_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">test_content</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-177"></a>        <span class="n">temp_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-178"></a>        <span class="n">a_nfile</span> <span class="o">=</span> <span class="n">NFile</span><span class="p">(</span><span class="n">temp_name</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-179"></a>        <span class="n">a_nfile</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">new_temp_name</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-180"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">new_temp_name</span><span class="p">))</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-181"></a>        <span class="n">read_test_content</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">new_temp_name</span><span class="p">,</span> <span class="s">"r"</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-182"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">read_test_content</span><span class="p">,</span> <span class="n">test_content</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-183"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">temp_name</span><span class="p">))</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-184"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-185"></a>    <span class="k">def</span> <span class="nf">test_move_changes_filepath</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-186"></a>        <span class="n">temp_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_temp_file_name</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-187"></a>        <span class="n">new_temp_name</span> <span class="o">=</span> <span class="s">u"</span><span class="si">%s</span><span class="s">_new"</span> <span class="o">%</span> <span class="n">temp_name</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-188"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_trash_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_temp_name</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-189"></a>        <span class="n">test_content</span> <span class="o">=</span> <span class="s">"zero"</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-190"></a>        <span class="n">temp_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">temp_name</span><span class="p">,</span> <span class="s">"w"</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-191"></a>        <span class="n">temp_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">test_content</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-192"></a>        <span class="n">temp_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-193"></a>        <span class="n">a_nfile</span> <span class="o">=</span> <span class="n">NFile</span><span class="p">(</span><span class="n">temp_name</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-194"></a>        <span class="n">a_nfile</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">new_temp_name</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-195"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">a_nfile</span><span class="o">.</span><span class="n">_file_path</span><span class="p">,</span> <span class="n">new_temp_name</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-196"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-197"></a>    <span class="k">def</span> <span class="nf">test_filepath_changes_even_if_inexistent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-198"></a>        <span class="n">temp_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_temp_file_name</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-199"></a>        <span class="n">a_nfile</span> <span class="o">=</span> <span class="n">NFile</span><span class="p">()</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-200"></a>        <span class="n">a_nfile</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">temp_name</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-201"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">a_nfile</span><span class="o">.</span><span class="n">_file_path</span><span class="p">,</span> <span class="n">temp_name</span><span class="p">)</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-202"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-203"></a>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-204"></a><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+<a name="listingsninja_testscoretest_file_handling_nfilepy-205"></a>    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>

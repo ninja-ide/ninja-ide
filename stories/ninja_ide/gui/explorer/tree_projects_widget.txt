@@ -1,0 +1,1021 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: tree_projects_widget
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `tree_projects_widget.py </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html>`_ API
+==========================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `os </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#21>`_
+
+- `ninja_ide.core.file_handling.filesystem_notifications.base_watcher.ADDED </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#50>`_
+
+- `ninja_ide.core.file_handling.filesystem_notifications.base_watcher.DELETED </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#50>`_
+
+- `ninja_ide.gui.ide.IDE </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#53>`_
+
+- `ninja_ide.core.file_handling.filesystem_notifications.NinjaFileSystemWatcher </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#48>`_
+
+- `ninja_ide.tools.logger.NinjaLogger </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#23>`_
+
+- `PyQt4.QtGui.QAbstractItemView </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#29>`_
+
+- `PyQt4.QtGui.QBrush </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#34>`_
+
+- `PyQt4.QtGui.QColor </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#33>`_
+
+- `PyQt4.QtGui.QCursor </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#38>`_
+
+- `PyQt4.QtGui.QDesktopServices </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#43>`_
+
+- `PyQt4.QtGui.QHeaderView </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#30>`_
+
+- `PyQt4.QtGui.QIcon </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#36>`_
+
+- `PyQt4.QtGui.QInputDialog </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#31>`_
+
+- `PyQt4.QtGui.QMenu </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#35>`_
+
+- `PyQt4.QtGui.QMessageBox </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#32>`_
+
+- `PyQt4.QtGui.QStyle </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#37>`_
+
+- `PyQt4.QtCore.QTimer </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#40>`_
+
+- `PyQt4.QtGui.QTreeWidget </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#27>`_
+
+- `PyQt4.QtGui.QTreeWidgetItem </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#28>`_
+
+- `PyQt4.QtCore.QUrl </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#42>`_
+
+- `PyQt4.QtCore.Qt </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#39>`_
+
+- `ninja_ide.core.file_handling.filesystem_notifications.base_watcher.REMOVE </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#50>`_
+
+- `ninja_ide.core.file_handling.filesystem_notifications.base_watcher.RENAME </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#50>`_
+
+- `PyQt4.QtCore.SIGNAL </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#41>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#18>`_
+
+- `ninja_ide.tools.completion.completion_daemon </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#55>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#47>`_
+
+- `ninja_ide.gui.dialogs.project_properties_widget </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#54>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#45>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#46>`_
+
+- `ninja_ide.tools.ui_tools </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#52>`_
+
+- `__future__.unicode_literals </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#19>`_
+
+
+
+*Global Attributes:*
+----------------------
+- `DEBUG [at ln:25] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#25>`_
+
+- `logger [at ln:24] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#24>`_
+
+
+----
+
+
+
+*Class:* `ProjectItem(QTreeWidgetItem) </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-759>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ProjectItem(QTreeWidgetItem):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `isFolder [at ln:765] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#765>`_
+
+- `path [at ln:764] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#764>`_
+
+
+*Function:* `__init__(parent, name, path, isFolder=False) [at ln:761] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-761>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent, name, path, isFolder=False):
+
+
+No description.
+
+
+----
+
+*Function:* `__lt__(otherItem) [at ln:784] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-784>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __lt__(otherItem):
+
+
+No description.
+
+
+----
+
+*Function:* `get_full_path() [at ln:775] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-775>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_full_path():
+
+| Returns the full path of the file
+
+
+----
+
+*Function:* `isProject() [at ln:767] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-767>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def isProject():
+
+
+No description.
+
+
+**Decorators:**
+
+- *property*
+
+----
+
+*Function:* `lang() [at ln:772] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-772>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def lang():
+
+
+No description.
+
+
+----
+
+*Function:* `set_item_icon(icon) [at ln:781] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-781>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_item_icon(icon):
+
+
+No description.
+
+
+----
+
+*Class:* `ProjectTree(QTreeWidgetItem) </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-793>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ProjectTree(QTreeWidgetItem):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_parent [at ln:797] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#797>`_
+
+- `_project [at ln:798] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#798>`_
+
+- `isFolder [at ln:801] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#801>`_
+
+- `path [at ln:800] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#800>`_
+
+
+*Function:* `__init__(parent, project) [at ln:795] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-795>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(parent, project):
+
+
+No description.
+
+
+----
+
+*Function:* `get_full_path() [at ln:820] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-820>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_full_path():
+
+| Returns the full path of the project
+
+
+----
+
+*Function:* `isProject() [at ln:810] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-810>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def isProject():
+
+
+No description.
+
+
+**Decorators:**
+
+- *property*
+
+----
+
+*Function:* `lang() [at ln:815] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-815>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def lang():
+
+
+No description.
+
+
+----
+
+*Function:* `update_paths() [at ln:806] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-806>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def update_paths():
+
+
+No description.
+
+
+----
+
+*Class:* `FoldingContextMenu(QMenu) </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-827>`_
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class FoldingContextMenu(QMenu):
+
+| This class represents a menu for Folding/Unfolding task
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_tree [at ln:835] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#835>`_
+
+
+*Function:* `__init__(tree) [at ln:832] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-832>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(tree):
+
+
+No description.
+
+
+----
+
+*Function:* `_fold_all_projects() [at ln:871] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-871>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _fold_all_projects():
+
+| Fold all projects
+
+
+----
+
+*Function:* `_fold_unfold_project(expand) [at ln:858] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-858>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _fold_unfold_project(expand):
+
+| Fold the current project
+
+
+----
+
+*Function:* `_recursive_fold_unfold(item, expand) [at ln:851] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-851>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _recursive_fold_unfold(item, expand):
+
+
+No description.
+
+
+----
+
+*Function:* `_unfold_all_projects() [at ln:877] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-877>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _unfold_all_projects():
+
+| Unfold all project
+
+
+----
+
+*Class:* `TreeProjectsWidget(QTreeWidget) </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-58>`_
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class TreeProjectsWidget(QTreeWidget):
+
+| runProject()
+| closeProject(QString)
+| closeFilesFromProjectClosed(QString)
+| addProjectToConsole(QString)
+| removeProjectFromConsole(QString)
+| projectPropertiesUpdated(QTreeWidgetItem)
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `__enableCloseNotification [at ln:740] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#740>`_
+
+- `_actualProject [at ln:331] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#331>`_
+
+- `_fileWatcher [at ln:101] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#101>`_
+
+- `_folding_menu [at ln:126] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#126>`_
+
+- `_loading_items [at ln:98] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#98>`_
+
+- `_projects [at ln:741] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#741>`_
+
+- `_refresh_projects_queue [at ln:340] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#340>`_
+
+- `_thread_execution [at ln:99] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#99>`_
+
+- `_timer_running [at ln:341] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#341>`_
+
+- `extra_menus [at ln:76] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#76>`_
+
+- `extra_menus_by_scope [at ln:78] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#78>`_
+
+- `images [at ln:80] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#80>`_
+
+- `isFolder [at ln:647] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#647>`_
+
+- `mute_signals [at ln:124] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#124>`_
+
+- `state_index [at ln:125] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#125>`_
+
+
+*Function:* `__init__(state_index=function()) [at ln:88] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-88>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(state_index=function()):
+
+
+No description.
+
+
+----
+
+*Function:* `_add_context_menu_for_files(menu, item) [at ln:270] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-270>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _add_context_menu_for_files(menu, item):
+
+
+No description.
+
+
+----
+
+*Function:* `_add_context_menu_for_folders(menu, item) [at ln:246] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-246>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _add_context_menu_for_folders(menu, item):
+
+
+No description.
+
+
+----
+
+*Function:* `_add_context_menu_for_root(menu, item) [at ln:205] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-205>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _add_context_menu_for_root(menu, item):
+
+
+No description.
+
+
+----
+
+*Function:* `_add_new_file() [at ln:430] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-430>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _add_new_file():
+
+
+No description.
+
+
+----
+
+*Function:* `_add_new_folder() [at ln:475] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-475>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _add_new_folder():
+
+
+No description.
+
+
+----
+
+*Function:* `_add_project_to_console() [at ln:301] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-301>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _add_project_to_console():
+
+
+No description.
+
+
+----
+
+*Function:* `_callback_refresh_project(value) [at ln:390] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-390>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _callback_refresh_project(value):
+
+
+No description.
+
+
+----
+
+*Function:* `_clean_threads() [at ln:379] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-379>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _clean_threads():
+
+
+No description.
+
+
+----
+
+*Function:* `_close_open_projects() [at ln:735] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-735>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _close_open_projects():
+
+
+No description.
+
+
+----
+
+*Function:* `_close_project() [at ln:400] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-400>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _close_project():
+
+
+No description.
+
+
+----
+
+*Function:* `_copy_file() [at ln:552] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-552>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _copy_file():
+
+
+No description.
+
+
+----
+
+*Function:* `_create_init() [at ln:417] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-417>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _create_init():
+
+
+No description.
+
+
+----
+
+*Function:* `_delete_file() [at ln:494] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-494>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _delete_file():
+
+
+No description.
+
+
+----
+
+*Function:* `_delete_folder() [at ln:509] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-509>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _delete_folder():
+
+
+No description.
+
+
+----
+
+*Function:* `_edit_ui_file() [at ln:613] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-613>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _edit_ui_file():
+
+
+No description.
+
+
+----
+
+*Function:* `_get_file_icon(fileName) [at ln:690] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-690>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _get_file_icon(fileName):
+
+
+No description.
+
+
+----
+
+*Function:* `_get_project_root(item=None) [at ln:320] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-320>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _get_project_root(item=None):
+
+
+No description.
+
+
+----
+
+*Function:* `_item_collapsed(tree_item) [at ln:128] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-128>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _item_collapsed(tree_item):
+
+| Store status of item when collapsed
+
+
+----
+
+*Function:* `_item_expanded(tree_item) [at ln:136] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-136>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _item_expanded(tree_item):
+
+| Store status of item when expanded
+
+
+----
+
+*Function:* `_load_folder(folderStructure, folder, parentItem) [at ln:664] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-664>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _load_folder(folderStructure, folder, parentItem):
+
+| Load the Tree Project structure recursively.
+
+
+----
+
+*Function:* `_menu_context_tree(point) [at ln:168] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-168>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _menu_context_tree(point):
+
+
+No description.
+
+
+----
+
+*Function:* `_move_file() [at ln:581] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-581>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _move_file():
+
+
+No description.
+
+
+----
+
+*Function:* `_open_file(item, column) [at ln:313] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-313>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _open_file(item, column):
+
+
+No description.
+
+
+----
+
+*Function:* `_refresh_project(item=None) [at ln:361] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-361>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _refresh_project(item=None):
+
+
+No description.
+
+
+----
+
+*Function:* `_refresh_project_by_path(event, folder) [at ln:345] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-345>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _refresh_project_by_path(event, folder):
+
+
+No description.
+
+
+----
+
+*Function:* `_remove_project_from_console() [at ln:307] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-307>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _remove_project_from_console():
+
+
+No description.
+
+
+----
+
+*Function:* `_rename_file() [at ln:520] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-520>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _rename_file():
+
+
+No description.
+
+
+----
+
+*Function:* `_set_current_project(path) [at ln:729] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-729>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _set_current_project(path):
+
+
+No description.
+
+
+----
+
+*Function:* `_timeout() [at ln:338] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-338>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _timeout():
+
+
+No description.
+
+
+----
+
+*Function:* `add_existing_file(path) [at ln:457] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-457>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_existing_file(path):
+
+
+No description.
+
+
+----
+
+*Function:* `add_extra_menu(menu, lang=str) [at ln:146] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-146>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_extra_menu(menu, lang=str):
+
+| Add an extra menu for the given language
+| @lang: string with the form 'py', 'php', 'json', etc
+
+
+----
+
+*Function:* `add_extra_menu_by_scope(menu, scope) [at ln:156] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-156>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def add_extra_menu_by_scope(menu, scope):
+
+| Add an extra menu for the given language
+| @scope: string with the menu scope (all, project, folder, item)
+
+
+----
+
+*Function:* `get_item_for_path(path) [at ln:694] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-694>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_item_for_path(path):
+
+
+No description.
+
+
+----
+
+*Function:* `get_open_projects() [at ln:722] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-722>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_open_projects():
+
+
+No description.
+
+
+----
+
+*Function:* `get_project_by_name(projectName) [at ln:702] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-702>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_project_by_name(projectName):
+
+| Return the name of the project item based on the project name.
+
+
+----
+
+*Function:* `get_selected_project_lang() [at ln:718] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-718>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_selected_project_lang():
+
+
+No description.
+
+
+----
+
+*Function:* `get_selected_project_path() [at ln:709] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-709>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_selected_project_path():
+
+
+No description.
+
+
+----
+
+*Function:* `get_selected_project_type() [at ln:714] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-714>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def get_selected_project_type():
+
+
+No description.
+
+
+----
+
+*Function:* `is_open(path) [at ln:725] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-725>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def is_open(path):
+
+
+No description.
+
+
+----
+
+*Function:* `keyPressEvent(event) [at ln:743] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-743>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def keyPressEvent(event):
+
+
+No description.
+
+
+----
+
+*Function:* `load_project(folderStructure, folder) [at ln:638] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-638>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def load_project(folderStructure, folder):
+
+
+No description.
+
+
+----
+
+*Function:* `loading_project(folder, reload_item=None) [at ln:623] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-623>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def loading_project(folder, reload_item=None):
+
+
+No description.
+
+
+----
+
+*Function:* `open_project_properties() [at ln:333] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-333>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def open_project_properties():
+
+
+No description.
+
+
+----
+
+*Function:* `remove_loading_icon(folder) [at ln:632] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-632>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def remove_loading_icon(folder):
+
+
+No description.
+
+
+----
+
+*Function:* `set_default_project(item) [at ln:327] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-327>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def set_default_project(item):
+
+
+No description.
+
+
+----
+
+*Function:* `shutdown() [at ln:143] </listings/ninja_ide/gui/explorer/tree_projects_widget.py.html#listingsninja_ideguiexplorertree_projects_widgetpy-143>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def shutdown():
+
+
+No description.
+
+
+
+

@@ -1,0 +1,136 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: errors_checker
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `errors_checker.py </listings/ninja_ide/gui/editor/checkers/errors_checker.py.html>`_ API
+=====================================================================================================
+
+No description.
+
+
+
+*Imports:*
+------------
+- `re </listings/ninja_ide/gui/editor/checkers/errors_checker.py.html#20>`_
+
+- `PyQt4.QtGui.QIcon </listings/ninja_ide/gui/editor/checkers/errors_checker.py.html#26>`_
+
+- `PyQt4.QtCore.QThread </listings/ninja_ide/gui/editor/checkers/errors_checker.py.html#27>`_
+
+- `__future__.absolute_import </listings/ninja_ide/gui/editor/checkers/errors_checker.py.html#17>`_
+
+- `ninja_ide.core.file_handling.file_manager </listings/ninja_ide/gui/editor/checkers/errors_checker.py.html#31>`_
+
+- `ninja_ide.resources </listings/ninja_ide/gui/editor/checkers/errors_checker.py.html#29>`_
+
+- `ninja_ide.core.settings </listings/ninja_ide/gui/editor/checkers/errors_checker.py.html#30>`_
+
+- `__future__.unicode_literals </listings/ninja_ide/gui/editor/checkers/errors_checker.py.html#18>`_
+
+
+
+
+
+*Class:* `ErrorsChecker(QThread) </listings/ninja_ide/gui/editor/checkers/errors_checker.py.html#listingsninja_ideguieditorcheckerserrors_checkerpy-38>`_
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code:: python
+
+       class ErrorsChecker(QThread):
+
+
+No description.
+
+
+*Attributes*
+~~~~~~~~~~~~~~
+- `_editor [at ln:46] </listings/ninja_ide/gui/editor/checkers/errors_checker.py.html#46>`_
+
+- `_encoding [at ln:48] </listings/ninja_ide/gui/editor/checkers/errors_checker.py.html#48>`_
+
+- `_path [at ln:47] </listings/ninja_ide/gui/editor/checkers/errors_checker.py.html#47>`_
+
+- `checker_icon [at ln:51] </listings/ninja_ide/gui/editor/checkers/errors_checker.py.html#51>`_
+
+- `checks [at ln:61] </listings/ninja_ide/gui/editor/checkers/errors_checker.py.html#61>`_
+
+- `pat_disable_lint [at ln:40] </listings/ninja_ide/gui/editor/checkers/errors_checker.py.html#40>`_
+
+- `pat_enable_lint [at ln:41] </listings/ninja_ide/gui/editor/checkers/errors_checker.py.html#41>`_
+
+- `pat_ignore_lint [at ln:42] </listings/ninja_ide/gui/editor/checkers/errors_checker.py.html#42>`_
+
+
+*Function:* `__init__(editor) [at ln:44] </listings/ninja_ide/gui/editor/checkers/errors_checker.py.html#listingsninja_ideguieditorcheckerserrors_checkerpy-44>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def __init__(editor):
+
+
+No description.
+
+
+----
+
+*Function:* `_get_ignore_range() [at ln:105] </listings/ninja_ide/gui/editor/checkers/errors_checker.py.html#listingsninja_ideguieditorcheckerserrors_checkerpy-105>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def _get_ignore_range():
+
+
+No description.
+
+
+----
+
+*Function:* `reset() [at ln:60] </listings/ninja_ide/gui/editor/checkers/errors_checker.py.html#listingsninja_ideguieditorcheckerserrors_checkerpy-60>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def reset():
+
+
+No description.
+
+
+----
+
+*Function:* `run() [at ln:63] </listings/ninja_ide/gui/editor/checkers/errors_checker.py.html#listingsninja_ideguieditorcheckerserrors_checkerpy-63>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run():
+
+
+No description.
+
+
+----
+
+*Function:* `run_checks() [at ln:53] </listings/ninja_ide/gui/editor/checkers/errors_checker.py.html#listingsninja_ideguieditorcheckerserrors_checkerpy-53>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+       def run_checks():
+
+
+No description.
+
+
+
+

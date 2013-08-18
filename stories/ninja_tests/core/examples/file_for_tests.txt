@@ -1,0 +1,17 @@
+.. link:
+.. description:
+.. tags:
+.. date: 2013/08/18 00:00:00
+.. title: NINJA-IDE
+.. slug: file_for_tests
+
+.. class:: alert alert-info pull-top
+
+.. contents::
+
+
+*Module:* `file_for_tests.py </listings/ninja_tests/core/examples/file_for_tests.py.html>`_ API
+=================================================================================================
+
+No description.
+

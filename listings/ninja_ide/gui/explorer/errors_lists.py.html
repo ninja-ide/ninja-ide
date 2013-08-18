@@ -1,0 +1,401 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta charset="utf-8">
+    <meta name="description" content="errors_lists.py">
+    <meta name="author" content="NINJA-IDE">
+    <title>errors_lists.py | NINJA-IDE Documentation</title>
+    
+            <link href="../../../../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+            <link href="../../../../assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="../../../../assets/css/theme.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../rss.xml">
+
+    
+    
+    
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+
+            <a class="brand" href="../../../../">
+            NINJA-IDE Documentation
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    
+            <li><a href="../../../../documentor_modules.html">Modules</a>
+            </li><li><a href="../../../../documentor_classes.html">Classes</a>
+            </li><li><a href="../../../../documentor_functions.html">Functions</a>
+
+                </li></ul>
+                <ul class="nav pull-right">
+                
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+    <div class="span2"></div>
+    <div class="span8">
+    
+<ul class="breadcrumb">
+        <li><a href="../../../">/listings</a>
+        </li><li><a href="../../">/ninja_ide</a>
+        </li><li><a href="../">/gui</a>
+        </li><li><a href=".">/explorer</a>
+        </li><li><a href="#">/errors_lists.py.html</a>
+</li></ul>
+<ul class="unstyled">
+</ul>
+    <table class="codetable"><tr><td class="linenos"><div class="linenodiv"><pre><a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-1">  1</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-2">  2</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-3">  3</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-4">  4</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-5">  5</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-6">  6</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-7">  7</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-8">  8</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-9">  9</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-10"> 10</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-11"> 11</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-12"> 12</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-13"> 13</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-14"> 14</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-15"> 15</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-16"> 16</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-17"> 17</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-18"> 18</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-19"> 19</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-20"> 20</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-21"> 21</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-22"> 22</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-23"> 23</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-24"> 24</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-25"> 25</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-26"> 26</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-27"> 27</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-28"> 28</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-29"> 29</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-30"> 30</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-31"> 31</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-32"> 32</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-33"> 33</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-34"> 34</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-35"> 35</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-36"> 36</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-37"> 37</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-38"> 38</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-39"> 39</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-40"> 40</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-41"> 41</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-42"> 42</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-43"> 43</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-44"> 44</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-45"> 45</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-46"> 46</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-47"> 47</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-48"> 48</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-49"> 49</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-50"> 50</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-51"> 51</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-52"> 52</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-53"> 53</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-54"> 54</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-55"> 55</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-56"> 56</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-57"> 57</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-58"> 58</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-59"> 59</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-60"> 60</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-61"> 61</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-62"> 62</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-63"> 63</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-64"> 64</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-65"> 65</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-66"> 66</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-67"> 67</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-68"> 68</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-69"> 69</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-70"> 70</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-71"> 71</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-72"> 72</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-73"> 73</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-74"> 74</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-75"> 75</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-76"> 76</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-77"> 77</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-78"> 78</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-79"> 79</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-80"> 80</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-81"> 81</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-82"> 82</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-83"> 83</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-84"> 84</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-85"> 85</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-86"> 86</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-87"> 87</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-88"> 88</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-89"> 89</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-90"> 90</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-91"> 91</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-92"> 92</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-93"> 93</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-94"> 94</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-95"> 95</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-96"> 96</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-97"> 97</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-98"> 98</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-99"> 99</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-100">100</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-101">101</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-102">102</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-103">103</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-104">104</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-105">105</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-106">106</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-107">107</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-108">108</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-109">109</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-110">110</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-111">111</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-112">112</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-113">113</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-114">114</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-115">115</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-116">116</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-117">117</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-118">118</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-119">119</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-120">120</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-121">121</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-122">122</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-123">123</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-124">124</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-125">125</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-126">126</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-127">127</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-128">128</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-129">129</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-130">130</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-131">131</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-132">132</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-133">133</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-134">134</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-135">135</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-136">136</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-137">137</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-138">138</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-139">139</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-140">140</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-141">141</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-142">142</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-143">143</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-144">144</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-145">145</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-146">146</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-147">147</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-148">148</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-149">149</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-150">150</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-151">151</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-152">152</a>
+<a href="errors_lists.py.html#listingsninja_ideguiexplorererrors_listspy-153">153</a></pre></div></td><td class="code"><div class="code"><pre><a name="listingsninja_ideguiexplorererrors_listspy-1"></a><span class="c"># -*- coding: utf-8 -*-</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-2"></a><span class="c">#</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-3"></a><span class="c"># This file is part of NINJA-IDE (http://ninja-ide.org).</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-4"></a><span class="c">#</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-5"></a><span class="c"># NINJA-IDE is free software; you can redistribute it and/or modify</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-6"></a><span class="c"># it under the terms of the GNU General Public License as published by</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-7"></a><span class="c"># the Free Software Foundation; either version 3 of the License, or</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-8"></a><span class="c"># any later version.</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-9"></a><span class="c">#</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-10"></a><span class="c"># NINJA-IDE is distributed in the hope that it will be useful,</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-11"></a><span class="c"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-12"></a><span class="c"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-13"></a><span class="c"># GNU General Public License for more details.</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-14"></a><span class="c">#</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-15"></a><span class="c"># You should have received a copy of the GNU General Public License</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-16"></a><span class="c"># along with NINJA-IDE; If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-17"></a><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-18"></a>
+<a name="listingsninja_ideguiexplorererrors_listspy-19"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QWidget</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-20"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QListWidget</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-21"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QListWidgetItem</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-22"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QLabel</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-23"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QHBoxLayout</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-24"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QVBoxLayout</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-25"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QPushButton</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-26"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QSpacerItem</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-27"></a><span class="kn">from</span> <span class="nn">PyQt4.QtGui</span> <span class="kn">import</span> <span class="n">QSizePolicy</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-28"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-29"></a><span class="kn">from</span> <span class="nn">PyQt4.QtCore</span> <span class="kn">import</span> <span class="n">SIGNAL</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-30"></a>
+<a name="listingsninja_ideguiexplorererrors_listspy-31"></a><span class="kn">from</span> <span class="nn">ninja_ide.core</span> <span class="kn">import</span> <span class="n">settings</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-32"></a><span class="kn">from</span> <span class="nn">ninja_ide.gui.ide</span> <span class="kn">import</span> <span class="n">IDE</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-33"></a>
+<a name="listingsninja_ideguiexplorererrors_listspy-34"></a>
+<a name="listingsninja_ideguiexplorererrors_listspy-35"></a><span class="k">class</span> <span class="nc">ErrorsWidget</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-36"></a>
+<a name="listingsninja_ideguiexplorererrors_listspy-37"></a><span class="c">###############################################################################</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-38"></a><span class="c"># ERRORS WIDGET SIGNALS</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-39"></a><span class="c">###############################################################################</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-40"></a>    <span class="sd">"""</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-41"></a><span class="sd">    pep8Activated(bool)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-42"></a><span class="sd">    lintActivated(bool)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-43"></a><span class="sd">    """</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-44"></a><span class="c">###############################################################################</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-45"></a>
+<a name="listingsninja_ideguiexplorererrors_listspy-46"></a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-47"></a>        <span class="n">QWidget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-48"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">pep8</span> <span class="o">=</span> <span class="bp">None</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-49"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_outRefresh</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-50"></a>
+<a name="listingsninja_ideguiexplorererrors_listspy-51"></a>        <span class="n">vbox</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-52"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">listErrors</span> <span class="o">=</span> <span class="n">QListWidget</span><span class="p">()</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-53"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">listErrors</span><span class="o">.</span><span class="n">setSortingEnabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-54"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">listPep8</span> <span class="o">=</span> <span class="n">QListWidget</span><span class="p">()</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-55"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">listPep8</span><span class="o">.</span><span class="n">setSortingEnabled</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-56"></a>        <span class="n">hbox_lint</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-57"></a>        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">FIND_ERRORS</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-58"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">btn_lint_activate</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Lint: ON"</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-59"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-60"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">btn_lint_activate</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Lint: OFF"</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-61"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">errorsLabel</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Static Errors: </span><span class="si">%s</span><span class="s">"</span><span class="p">)</span> <span class="o">%</span> <span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-62"></a>        <span class="n">hbox_lint</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">errorsLabel</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-63"></a>        <span class="n">hbox_lint</span><span class="o">.</span><span class="n">addSpacerItem</span><span class="p">(</span><span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-64"></a>        <span class="n">hbox_lint</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btn_lint_activate</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-65"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">hbox_lint</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-66"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">listErrors</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-67"></a>        <span class="n">hbox_pep8</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-68"></a>        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">CHECK_STYLE</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-69"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">btn_pep8_activate</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"PEP8: ON"</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-70"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-71"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">btn_pep8_activate</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"PEP8: OFF"</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-72"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">pep8Label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"PEP8 Errors: </span><span class="si">%s</span><span class="s">"</span><span class="p">)</span> <span class="o">%</span> <span class="mi">0</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-73"></a>        <span class="n">hbox_pep8</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pep8Label</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-74"></a>        <span class="n">hbox_pep8</span><span class="o">.</span><span class="n">addSpacerItem</span><span class="p">(</span><span class="n">QSpacerItem</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-75"></a>        <span class="n">hbox_pep8</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btn_pep8_activate</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-76"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">hbox_pep8</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-77"></a>        <span class="n">vbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">listPep8</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-78"></a>
+<a name="listingsninja_ideguiexplorererrors_listspy-79"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">listErrors</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"itemSelectionChanged()"</span><span class="p">),</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-80"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">errors_selected</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-81"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">listPep8</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"itemSelectionChanged()"</span><span class="p">),</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-82"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">pep8_selected</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-83"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btn_lint_activate</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"clicked()"</span><span class="p">),</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-84"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_turn_on_off_lint</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-85"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">btn_pep8_activate</span><span class="p">,</span> <span class="n">SIGNAL</span><span class="p">(</span><span class="s">"clicked()"</span><span class="p">),</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-86"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_turn_on_off_pep8</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-87"></a>
+<a name="listingsninja_ideguiexplorererrors_listspy-88"></a>    <span class="k">def</span> <span class="nf">_turn_on_off_lint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-89"></a>        <span class="sd">"""Change the status of the lint checker state."""</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-90"></a>        <span class="n">settings</span><span class="o">.</span><span class="n">FIND_ERRORS</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">settings</span><span class="o">.</span><span class="n">FIND_ERRORS</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-91"></a>        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">FIND_ERRORS</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-92"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">btn_lint_activate</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Lint: ON"</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-93"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-94"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">btn_lint_activate</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Lint: OFF"</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-95"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">"lintActivated(bool)"</span><span class="p">),</span> <span class="n">settings</span><span class="o">.</span><span class="n">FIND_ERRORS</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-96"></a>
+<a name="listingsninja_ideguiexplorererrors_listspy-97"></a>    <span class="k">def</span> <span class="nf">_turn_on_off_pep8</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-98"></a>        <span class="sd">"""Change the status of the lint checker state."""</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-99"></a>        <span class="n">settings</span><span class="o">.</span><span class="n">CHECK_STYLE</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">settings</span><span class="o">.</span><span class="n">CHECK_STYLE</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-100"></a>        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">CHECK_STYLE</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-101"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">btn_pep8_activate</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"PEP8: ON"</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-102"></a>        <span class="k">else</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-103"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">btn_pep8_activate</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"PEP8: OFF"</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-104"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">SIGNAL</span><span class="p">(</span><span class="s">"pep8Activated(bool)"</span><span class="p">),</span> <span class="n">settings</span><span class="o">.</span><span class="n">CHECK_STYLE</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-105"></a>
+<a name="listingsninja_ideguiexplorererrors_listspy-106"></a>    <span class="k">def</span> <span class="nf">errors_selected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-107"></a>        <span class="n">main_container</span> <span class="o">=</span> <span class="n">IDE</span><span class="o">.</span><span class="n">get_service</span><span class="p">(</span><span class="s">'main_container'</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-108"></a>        <span class="k">if</span> <span class="n">main_container</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-109"></a>            <span class="n">editorWidget</span> <span class="o">=</span> <span class="n">main_container</span><span class="o">.</span><span class="n">get_actual_editor</span><span class="p">()</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-110"></a>            <span class="k">if</span> <span class="n">editorWidget</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_outRefresh</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-111"></a>                <span class="n">lineno</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">listErrors</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">UserRole</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-112"></a>                <span class="n">editorWidget</span><span class="o">.</span><span class="n">jump_to_line</span><span class="p">(</span><span class="n">lineno</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-113"></a>                <span class="n">editorWidget</span><span class="o">.</span><span class="n">setFocus</span><span class="p">()</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-114"></a>
+<a name="listingsninja_ideguiexplorererrors_listspy-115"></a>    <span class="k">def</span> <span class="nf">pep8_selected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-116"></a>        <span class="n">main_container</span> <span class="o">=</span> <span class="n">IDE</span><span class="o">.</span><span class="n">get_service</span><span class="p">(</span><span class="s">'main_container'</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-117"></a>        <span class="k">if</span> <span class="n">main_container</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-118"></a>            <span class="n">editorWidget</span> <span class="o">=</span> <span class="n">main_container</span><span class="o">.</span><span class="n">get_actual_editor</span><span class="p">()</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-119"></a>            <span class="k">if</span> <span class="n">editorWidget</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_outRefresh</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-120"></a>                <span class="n">lineno</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">listPep8</span><span class="o">.</span><span class="n">currentItem</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">UserRole</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-121"></a>                <span class="n">editorWidget</span><span class="o">.</span><span class="n">jump_to_line</span><span class="p">(</span><span class="n">lineno</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-122"></a>                <span class="n">editorWidget</span><span class="o">.</span><span class="n">setFocus</span><span class="p">()</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-123"></a>
+<a name="listingsninja_ideguiexplorererrors_listspy-124"></a>    <span class="k">def</span> <span class="nf">refresh_lists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">errors</span><span class="p">,</span> <span class="n">pep8</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-125"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_outRefresh</span> <span class="o">=</span> <span class="bp">False</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-126"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">listErrors</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-127"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">listPep8</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-128"></a>        <span class="k">for</span> <span class="n">lineno</span> <span class="ow">in</span> <span class="n">errors</span><span class="o">.</span><span class="n">errorsSummary</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-129"></a>            <span class="n">linenostr</span> <span class="o">=</span> <span class="s">'L</span><span class="si">%s</span><span class="se">\t</span><span class="s">'</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">lineno</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-130"></a>            <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">errors</span><span class="o">.</span><span class="n">errorsSummary</span><span class="p">[</span><span class="n">lineno</span><span class="p">]:</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-131"></a>                <span class="n">item</span> <span class="o">=</span> <span class="n">QListWidgetItem</span><span class="p">(</span><span class="n">linenostr</span> <span class="o">+</span> <span class="n">data</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-132"></a>                <span class="n">item</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">linenostr</span> <span class="o">+</span> <span class="n">data</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-133"></a>                <span class="n">item</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">UserRole</span><span class="p">,</span> <span class="n">lineno</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-134"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">listErrors</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-135"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">errorsLabel</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"Static Errors: </span><span class="si">%s</span><span class="s">"</span><span class="p">)</span> <span class="o">%</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-136"></a>            <span class="nb">len</span><span class="p">(</span><span class="n">errors</span><span class="o">.</span><span class="n">errorsSummary</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-137"></a>        <span class="k">for</span> <span class="n">lineno</span> <span class="ow">in</span> <span class="n">pep8</span><span class="o">.</span><span class="n">pep8checks</span><span class="p">:</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-138"></a>            <span class="n">linenostr</span> <span class="o">=</span> <span class="s">'L</span><span class="si">%s</span><span class="se">\t</span><span class="s">'</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">lineno</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-139"></a>            <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">pep8</span><span class="o">.</span><span class="n">pep8checks</span><span class="p">[</span><span class="n">lineno</span><span class="p">]:</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-140"></a>                <span class="n">item</span> <span class="o">=</span> <span class="n">QListWidgetItem</span><span class="p">(</span><span class="n">linenostr</span> <span class="o">+</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-141"></a>                <span class="n">item</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">linenostr</span> <span class="o">+</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-142"></a>                <span class="n">item</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">UserRole</span><span class="p">,</span> <span class="n">lineno</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-143"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">listPep8</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-144"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">pep8Label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="s">"PEP8 Errors: </span><span class="si">%s</span><span class="s">"</span><span class="p">)</span> <span class="o">%</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-145"></a>            <span class="nb">len</span><span class="p">(</span><span class="n">pep8</span><span class="o">.</span><span class="n">pep8checks</span><span class="p">))</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-146"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_outRefresh</span> <span class="o">=</span> <span class="bp">True</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-147"></a>
+<a name="listingsninja_ideguiexplorererrors_listspy-148"></a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-149"></a>        <span class="sd">"""</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-150"></a><span class="sd">        Clear the widget</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-151"></a><span class="sd">        """</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-152"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">listErrors</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<a name="listingsninja_ideguiexplorererrors_listspy-153"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">listPep8</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+</pre></div>
+</td></tr></table>
+
+    </div>
+    </div>
+    <!--End of body content-->
+</div>
+<div class="footerbox">
+    Contents © 2013         <a href="mailto:None">NINJA-IDE</a> - Powered by         <a href="http://nikola.ralsina.com.ar">Nikola</a> and <a href="https://github.com/diegosarmentero/documentor">Documentor</a>
+</div>
+
+
+
+            <script src="../../../../assets/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+            <script src="../../../../assets/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../../../assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script>
+    
+</body>
+</html>
