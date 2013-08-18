@@ -37,7 +37,7 @@ You can clone this repo and simply execute:
     
 Piece of cake, uh?
     
-## Cloning and Running
+## Source Code API Documentation
 
 http://ninja-ide.github.io/ninja-ide
 
