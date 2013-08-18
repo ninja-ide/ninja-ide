@@ -34,8 +34,12 @@ You can clone this repo and simply execute:
     git clone git://github.com/ninja-ide/ninja-ide.git
     cd ninja-ide
     python ninja-ide.py
-
+    
 Piece of cake, uh?
+    
+## Cloning and Running
+
+http://ninja-ide.github.io/ninja-ide
 
 ## License
 
