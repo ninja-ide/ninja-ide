@@ -68,19 +68,19 @@ class _MainContainer(QWidget):
     fileSaved(QString)
     currentTabChanged(QString)
     locateFunction(QString, QString, bool) [functionName, filePath, isVariable]
-    openProject(QString)
+    --------openProject(QString)
     openPreferences()
-    dontOpenStartPage()
-    navigateCode(bool, int)
-    addBackItemNavigation()
-    updateLocator(QString)
-    updateFileMetadata()
+    ---------dontOpenStartPage()
+    -------navigateCode(bool, int)
+    ----------addBackItemNavigation()
+    ----------updateLocator(QString)
+    ---------updateFileMetadata()
     findOcurrences(QString)
-    cursorPositionChange(int, int)    #row, col
+    --------cursorPositionChange(int, int)    #row, col
     fileOpened(QString)
     newFileOpened(QString)
-    recentTabsModified(QStringList)
-    migrationAnalyzed()
+    --------recentTabsModified(QStringList)
+    ---------migrationAnalyzed()
     allTabClosed()
     """
 ###############################################################################
@@ -104,7 +104,7 @@ class _MainContainer(QWidget):
         self.splitter.addWidget(self.tabs)
         self.stack.addWidget(self.splitter)
 
-        self.current_split = None
+        self.current_split = self.tabs
         #documentation browser
         self.docPage = None
         #Code Navigation
@@ -122,8 +122,8 @@ class _MainContainer(QWidget):
 
         self.connect(self, SIGNAL("locateFunction(QString, QString, bool)"),
             self.locate_function)
-        self.connect(self.tabs, SIGNAL("currentChanged(int)"),
-            self._current_tab_changed)
+        #self.connect(self.tabs, SIGNAL("currentChanged(int)"),
+            #self._current_tab_changed)
         self.connect(self.tabs, SIGNAL("splitTab(QTabWidget, int, bool)"),
             self._split_this_tab)
         self.connect(self.tabs, SIGNAL("reopenTab(QString)"),

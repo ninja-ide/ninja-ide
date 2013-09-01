@@ -75,6 +75,9 @@ class NFile(QObject):
         return display_name
 
     @property
+    def is_new_file(self):
+        return self.__created
+
     def file_ext(self):
         """"Returns extension of nfile"""
         if self._file_path is None:

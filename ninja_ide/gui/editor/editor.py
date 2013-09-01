@@ -98,6 +98,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #Config Editor
         self.set_flags()
         self.__lines_count = None
+        self.lang = 'python'
 
         self._sidebarWidget = sidebar_widget.SidebarWidget(self, neditable)
 
@@ -168,8 +169,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.connect(self.__actionFindOccurrences, SIGNAL("triggered()"),
             self._find_occurrences)
 
-        self.set_current_selected()
-
     @property
     def project(self):
         self._neditable.project
@@ -177,6 +176,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     @property
     def display_name(self):
         self._neditable.display_name
+
+    @property
+    def new_document(self):
+        self._neditable.new_document
 
     def load_project_config(self):
         if self._neditable.project is not None:
@@ -351,40 +354,40 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.document().setModified(self.textModified)
 
     def register_syntax(self, lang='', syntax=None):
-        self.lang = settings.EXTENSIONS.get(lang, 'python')
-        if self.lang == 'python':
-            parts_scanner, code_scanner, formats = \
-                syntax_highlighter.load_syntax(python_syntax.syntax)
-            self.highlighter = syntax_highlighter.SyntaxHighlighter(
-                self.document(),
-                parts_scanner, code_scanner, formats, self._neditable)
-            if self._mini:
-                self._mini.highlighter = syntax_highlighter.SyntaxHighlighter(
-                    self._mini.document(), parts_scanner,
-                    code_scanner, formats)
-        elif lang in settings.EXTENSIONS:
-            self.highlighter = highlighter.Highlighter(self.document(),
-                self.lang, resources.CUSTOM_SCHEME, self.errors, self.pep8,
-                self.migration)
-            if self._mini:
-                self._mini.highlighter = highlighter.Highlighter(
-                    self._mini.document(),
-                    self.lang, resources.CUSTOM_SCHEME)
-        elif syntax is not None:
-            self.highlighter = highlighter.Highlighter(self.document(),
-                None, resources.CUSTOM_SCHEME)
-            self.highlighter.apply_highlight(lang, resources.CUSTOM_SCHEME,
-                syntax)
-            if self._mini:
-                self._mini.highlighter = highlighter.Highlighter(
-                    self.document(), None, resources.CUSTOM_SCHEME)
-                self._mini.highlighter.apply_highlight(lang,
-                    resources.CUSTOM_SCHEME, syntax)
-        else:
-            self.highlighter = highlighter.EmpyHighlighter(self.document())
-            if self._mini:
-                self._mini.highlighter = highlighter.EmpyHighlighter(
-                    self.document())
+        #self.lang = settings.EXTENSIONS.get(lang, 'python')
+        #if self.lang == 'python':
+        parts_scanner, code_scanner, formats = \
+            syntax_highlighter.load_syntax(python_syntax.syntax)
+        self.highlighter = syntax_highlighter.SyntaxHighlighter(
+            self.document(),
+            parts_scanner, code_scanner, formats, self._neditable)
+        if self._mini:
+            self._mini.highlighter = syntax_highlighter.SyntaxHighlighter(
+                self._mini.document(), parts_scanner,
+                code_scanner, formats)
+        #elif lang in settings.EXTENSIONS:
+            #self.highlighter = highlighter.Highlighter(self.document(),
+                #self.lang, resources.CUSTOM_SCHEME, self.errors, self.pep8,
+                #self.migration)
+            #if self._mini:
+                #self._mini.highlighter = highlighter.Highlighter(
+                    #self._mini.document(),
+                    #self.lang, resources.CUSTOM_SCHEME)
+        #elif syntax is not None:
+            #self.highlighter = highlighter.Highlighter(self.document(),
+                #None, resources.CUSTOM_SCHEME)
+            #self.highlighter.apply_highlight(lang, resources.CUSTOM_SCHEME,
+                #syntax)
+            #if self._mini:
+                #self._mini.highlighter = highlighter.Highlighter(
+                    #self.document(), None, resources.CUSTOM_SCHEME)
+                #self._mini.highlighter.apply_highlight(lang,
+                    #resources.CUSTOM_SCHEME, syntax)
+        #else:
+            #self.highlighter = highlighter.EmpyHighlighter(self.document())
+            #if self._mini:
+                #self._mini.highlighter = highlighter.EmpyHighlighter(
+                    #self.document())
 
     def get_text(self):
         """
@@ -1228,11 +1231,11 @@ def create_editor(neditable, syntax=None):
         editor.register_syntax(syntax)
     else:
         #try to set a syntax based on the file extension
-        ext = file_manager.get_file_extension(neditable.ID)
-        if ext not in settings.EXTENSIONS and neditable.ID == '':
+        #ext = file_manager.get_file_extension(neditable.ID)
+        #if ext not in settings.EXTENSIONS and neditable.ID == '':
             #by default use python syntax
-            editor.register_syntax('py')
-        else:
-            editor.register_syntax(ext)
+        editor.register_syntax('py')
+        #else:
+            #editor.register_syntax(ext)
 
     return editor
