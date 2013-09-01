@@ -67,6 +67,10 @@ class NFile(QObject):
                 display_name += translations.TR_READ_ONLY
         return display_name
 
+    @property
+    def is_new_file(self):
+        return self.__created
+
     def has_write_permission(self):
         if not self._exists():
             return True

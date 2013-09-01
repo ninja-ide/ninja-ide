@@ -17,20 +17,12 @@ class NEditable(QObject):
 
     def __init__(self, filepath=None, project=None):
         super(NEditable, self).__init__()
-        self.__id = ''
         self.__editor = None
         #Create NFile
-        self._nfile = None
-        if filepath is None:
-            #temp file
-            self.__id = 'temp'
-        else:
-            self.__id = filepath
-            self._nfile = nfile.NFile(filepath)
+        self._nfile = nfile.NFile(filepath)
         self.text_modified = False
         self.new_document = True
         self._has_checkers = False
-        self._lang = 'python'
 
         #Project:
         self.project = project
@@ -42,10 +34,12 @@ class NEditable(QObject):
     def set_editor(self, editor):
         """Set the Editor (UI component) associated with this object."""
         self.__editor = editor
-        content = self._nfile.read()
-        self.__editor.setPlainText(content)
-        encoding = file_manager.get_file_encoding(content)
-        self.__editor.encoding = encoding
+        content = ''
+        if not self._nfile.is_new_file:
+            content = self._nfile.read()
+            self.__editor.setPlainText(content)
+            encoding = file_manager.get_file_encoding(content)
+            self.__editor.encoding = encoding
 
         #New file then try to add a coding line
         if not content:
@@ -63,11 +57,15 @@ class NEditable(QObject):
 
     @property
     def ID(self):
-        return self.__id
+        return self._nfile
 
     @property
     def display_name(self):
         return self._nfile.display_name
+
+    @property
+    def new_document(self):
+        return self._nfile.is_new_file
 
     @property
     def has_checkers(self):
@@ -76,7 +74,6 @@ class NEditable(QObject):
 
     def include_checkers(self, lang='python'):
         """Initialize the Checkers, should be refreshed on checkers change."""
-        self._lang = lang
         self.registered_checkers = sorted(checkers.get_checkers_for(lang),
             key=lambda x: x[2])
         self._has_checkers = len(self.registered_checkers) > 0

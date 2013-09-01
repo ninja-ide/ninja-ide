@@ -208,7 +208,7 @@ class _ExplorerContainer(QTabWidget):
         main_container = IDE.get_service('main_container')
         if not main_container:
             return
-        editorWidget = main_container.get_actual_editor()
+        editorWidget = main_container.get_current_editor()
         if editorWidget:
             ext = file_manager.get_file_extension(editorWidget.ID)
             #obtain a symbols handler for this file extension

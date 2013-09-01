@@ -53,17 +53,17 @@ class TabWidget(QTabWidget):
     """
     tabCloseRequested(int)
     dropTab(QTabWidget)
-    saveActualEditor()
+    ----------saveActualEditor()
     allTabsClosed()
-    changeActualTab(QTabWidget)
-    splitTab(QTabWidget, int, bool)
-    reopenTab(QString)
+    --------changeActualTab(QTabWidget)
+    --------splitTab(QTabWidget, int, bool)
+    ---------reopenTab(QString)
     runFile()
     addToProject(QString)
     syntaxChanged(QWidget, QString)
     reloadFile(QWidget)
-    navigateCode(bool, int)
-    recentTabsModified(QStringList)
+    -------navigateCode(bool, int)
+    --------recentTabsModified(QStringList)
     """
 ###############################################################################
 
@@ -110,10 +110,10 @@ class TabWidget(QTabWidget):
 
     def add_tab(self, widget, title, index=None):
         try:
-            if index is not None:
-                inserted_index = self.insertTab(index, widget, title)
-            else:
+            if index is None:
                 inserted_index = self.addTab(widget, title)
+            else:
+                inserted_index = self.insertTab(index, widget, title)
             self.setCurrentIndex(inserted_index)
             self.expand_tab_name(title)
             widget.setFocus()
