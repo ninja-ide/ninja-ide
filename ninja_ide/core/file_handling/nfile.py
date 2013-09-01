@@ -24,7 +24,7 @@ from ninja_ide import translations
 from ninja_ide.core import settings
 from ninja_ide.tools.utils import SignalFlowControl
 from file_manager import NinjaIOException, NinjaNoFileNameException, \
-get_file_encoding, get_basename
+get_file_encoding, get_basename, get_file_extension
 
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.core.file_handling.nfile')
@@ -57,19 +57,37 @@ class NFile(QObject):
             self.__created = True
 
     @property
-    def display_name(self):
-        display_name = None
+    def file_name(self):
+        """"Returns filename of nfile"""
+        file_name = None
         if self._file_path is None:
-            display_name = translations.TR_NEW_DOCUMENT
+            file_name = translations.TR_NEW_DOCUMENT
         else:
-            display_name = get_basename(self._file_path)
-            if not self.has_write_permission():
-                display_name += translations.TR_READ_ONLY
+            file_name = get_basename(self._file_path)
+        return file_name
+
+    @property
+    def display_name(self):
+        """Returns a pretty name to be displayed by tabs"""
+        display_name = self.file_name
+        if not self._file_path is None and not self.has_write_permission():
+            display_name += translations.TR_READ_ONLY
         return display_name
 
     @property
     def is_new_file(self):
         return self.__created
+
+    def file_ext(self):
+        """"Returns extension of nfile"""
+        if self._file_path is None:
+            return ''
+        return get_file_extension(self._file_path)
+
+    @property
+    def file_path(self):
+        """"Returns file path of nfile"""
+        return self._file_path
 
     def has_write_permission(self):
         if not self._exists():

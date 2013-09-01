@@ -53,6 +53,7 @@ class NVirtualFolder(QObject):
         self.connect(SIGNAL("willOverWrite(PyQt_PyObject, QString, QString)"),
                                                             self.__overwrite)
         self.__nodes.append(node)
+        return self.__nodes
 
     def __save_child(self, temp_path, final_path):
         if not self._exists():
@@ -62,6 +63,7 @@ class NVirtualFolder(QObject):
         pass
 
     def __move_child(self, signal_handler, old_path, new_path):
+        #EMIT so fs knows what to do here, move tree path basically
         pass
 
     def __overwrite(self, signal_handler, old_path, new_path):
@@ -75,22 +77,16 @@ class NVirtualFileSystem(QObject):
         super(NVirtualFileSystem, self).__init__(*args, **kwargs)
 
     def open(self, path, folder=False):
+        #TODO: Give me a pathless file and handle that
         if os.path.isfile(path):
-            if path in self._tree:
-                fopen = self.__tree.get(path)
-            else:
-                fopen = self.__tree.setdefault(path, NFile(path))
-                self._append_into_watchable(path, fopen)
-
+            fopen = self.__tree.setdefault(path, NFile(path))
         elif os.path.isdir(path):
             fopen = self.__tree.setdefault(path, NVirtualFolder(path))
-            self._append_into_watchable(path, fopen)
         elif folder:
             fopen = self.__tree.setdefault(path, self.create_folder(path))
-            self._append_into_watchable(path, fopen)
         else:
             fopen = self.__tree.setdefault(path, NFile(path))
-            self._append_into_watchable(path, fopen)
+        self._append_into_watchable(path, fopen)
         return fopen
 
     def create_folder(self, path):
@@ -100,13 +96,15 @@ class NVirtualFileSystem(QObject):
 
     def _append_into_watchable(self, path, fopen):
         #Lets take the path that looks the most like ours
-        for each_watchable in sorted(self.__watchables.keys(), reverse=True):
+        if path in self.__watchables:
+            return self.__watchables[path]
+        for each_watchable in sorted(self.__watchables, reverse=True):
             if path.startswith(each_watchable):
                 return self.__watchables[each_watchable].add_node(fopen)
 
     def list(self, path=None):
         if path is None:
-            for each_key in self.__watchables.keys():
+            for each_key in self.__watchables:
                 yield each_key
         else:
             folder = self.__tree.get(path, None)

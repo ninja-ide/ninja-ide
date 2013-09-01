@@ -351,6 +351,9 @@ class IDE(QMainWindow):
         self.style().unpolish(widget)
         self.style().polish(widget)
 
+    def get_opened_projects(self):
+        return self.__projects
+
     def _close_tray_icon(self):
         """Close the System Tray Icon."""
         self.trayIcon.hide()
@@ -513,7 +516,7 @@ class IDE(QMainWindow):
             current_file = editor_widget.ID
         if qsettings.value('preferences/general/loadFiles', True, type=bool):
             openedFiles = self.mainContainer.get_opened_documents()
-            projects_obj = self.explorer.get_opened_projects()
+            projects_obj = self.get_opened_projects()
             projects = [p.path for p in projects_obj]
             qsettings.setValue('openFiles/projects',
                 projects)
@@ -573,10 +576,10 @@ class IDE(QMainWindow):
 
     def save_profile(self, profileName):
         """Save the updates from a profile."""
-        explorer = IDE.get_service('explorer_container')
+        ide = IDE.get_service('ide')
         main_container = IDE.get_service('main_container')
-        if explorer and main_container:
-            projects_obj = explorer.get_opened_projects()
+        if main_container:
+            projects_obj = ide.get_opened_projects()
             projects = [p.path for p in projects_obj]
             files = main_container.get_opened_documents()
             files = files[0] + files[1]

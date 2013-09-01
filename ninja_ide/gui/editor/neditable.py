@@ -21,7 +21,6 @@ class NEditable(QObject):
         #Create NFile
         self._nfile = nfile.NFile(filepath)
         self.text_modified = False
-        self.new_document = True
         self._has_checkers = False
 
         #Project:
