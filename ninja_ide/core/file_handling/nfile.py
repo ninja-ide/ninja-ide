@@ -104,16 +104,33 @@ class NFile(QObject):
             file_exists = True
         return file_exists
 
-    def save(self, content, path=None, copy=False):
+    def attach_to_path(self, new_path):
+        if os.path.exists(new_path):
+            signal_handler = SignalFlowControl()
+            self.emit("willAttachToExistingFile(PyQT_PyObject, QString)",
+                    signal_handler, new_path)
+            if signal_handler.stopped():
+                    return
+        self._file_path = new_path
+        self.emit("gotAPath(PyQT_PyObject)", self)
+        return self._file_path
+
+    def save(self, content, path=None):
         """
         Write a temprorary file with .tnj extension and copy it over the
         original one.
         .nsf = Ninja Swap File
         #FIXME: Where to locate addExtension, does not fit here
         """
-        save_path = path and path or self._file_path
-        if not copy:
-            self._file_path = save_path
+        if path and self._file_path:
+            created_file = NFile(path).save(content)
+            self.emit(SIGNAL("savedAsNewFile(PyQT_PyObject, QString, QString)"),
+                        created_file, self._file_path, path)
+            return created_file
+        elif path and not self._file_path:
+            self.attach_to_path(path)
+
+        save_path = self._file_path
 
         if not save_path:
             raise NinjaNoFileNameException("I am asked to write a "
@@ -141,8 +158,8 @@ class NFile(QObject):
         self.emit(SIGNAL("willSave(QString, QString)"), swap_save_path,
                                                         save_path)
         shutil.move(swap_save_path, save_path)
-        if not (path and copy):
-            self.reset_state()
+        self.reset_state()
+        return self
 
     def reset_state(self):
         """
@@ -182,7 +199,7 @@ class NFile(QObject):
             if os.path.exists(new_path):
                 signal_handler = SignalFlowControl()
                 self.emit(
-                    SIGNAL("willOverWrite(Qt_PyQtObject, QString, QString)"),
+                    SIGNAL("willOverWrite(PyQT_PyObject, QString, QString)"),
                                     signal_handler, self._file_path, new_path)
                 if signal_handler.stopped():
                     return
