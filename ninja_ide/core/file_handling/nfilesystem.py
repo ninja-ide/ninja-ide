@@ -16,7 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 from PyQt4.QtCore import QObject, SIGNAL
-from ninja.core.file_handling.nfile import NFile
+from ninja_ide.core.file_handling.nfile import NFile
 
 
 class NVirtualFileSystem(QObject):
@@ -28,6 +28,9 @@ class NVirtualFileSystem(QObject):
         self.__reverse_project_map = {}
         super(NVirtualFileSystem, self).__init__(*args, **kwargs)
 
+    def list_projects(self):
+        return self.__projects.keys()
+
     def open_project(self, project):
         project_path = project.path
         if project_path not in self.__projects:
@@ -36,7 +39,7 @@ class NVirtualFileSystem(QObject):
 
     def __check_files_for(self, project_path):
         project = self.__projects[project_path]
-        for each_file_path in self._tree.keys():
+        for each_file_path in self.__tree.keys():
             if each_file_path.startswith(each_file_path):
                 nfile = self._tree[each_file_path]
                 self.__reverse_project_map[nfile] = project
@@ -59,7 +62,7 @@ class NVirtualFileSystem(QObject):
                 return project
 
     def get_file(self, nfile_path=None):
-        if nfile_path not in self.tree:
+        if nfile_path not in self.__tree:
             nfile = NFile(nfile_path)
             self.__add_file(nfile)
         elif nfile_path in self.__tree:

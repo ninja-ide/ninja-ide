@@ -113,7 +113,7 @@ class NfileTestCase(unittest.TestCase):
         self.assertFalse(os.path.exists(temp_name))
         self.assertTrue(os.path.exists(temp_name_path))
 
-    def test_path_is_set_as_new_filepath(self):
+    def test_path_is_set_as_new_nfile_filepath(self):
         temp_name = self.get_temp_file_name()
         temp_name_path = self.get_temp_file_name()
         #Since we cant assure the two paths are differents we do this
@@ -122,20 +122,9 @@ class NfileTestCase(unittest.TestCase):
         self.assertNotEqual(temp_name, temp_name_path)
         a_nfile = NFile(temp_name)
         self.assertNotEqual(temp_name_path, a_nfile._file_path)
-        a_nfile.save("empty content", path=temp_name_path)
-        self.assertEqual(temp_name_path, a_nfile._file_path)
-
-    def test_copy_flag_prevets_filepath_change(self):
-        temp_name = self.get_temp_file_name()
-        temp_name_path = self.get_temp_file_name()
-        #Since we cant assure the two paths are differents we do this
-        temp_name_path = u"%s_really_unique" % temp_name_path
-        self._trash_files.append(temp_name_path)
-        self.assertNotEqual(temp_name, temp_name_path)
-        a_nfile = NFile(temp_name)
-        self.assertNotEqual(temp_name_path, a_nfile._file_path)
-        a_nfile.save("empty content", path=temp_name_path, copy=True)
-        self.assertNotEqual(temp_name_path, a_nfile._file_path)
+        new_nfile = a_nfile.save("empty content", path=temp_name_path)
+        self.assertEqual(temp_name_path, new_nfile._file_path)
+        self.assertEqual(temp_name, a_nfile._file_path)
 
     def test_copy_flag_saves_to_path_only(self):
         temp_name = self.get_temp_file_name()
