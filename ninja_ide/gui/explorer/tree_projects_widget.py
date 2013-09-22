@@ -55,6 +55,9 @@ from ninja_ide.gui.dialogs import project_properties_widget
 from ninja_ide.tools.completion import completion_daemon
 
 
+class TreeProjectContainerWidget(QVBoxLayout):
+    pass
+
 class TreeProjectsWidget(QTreeWidget):
 
 ###############################################################################

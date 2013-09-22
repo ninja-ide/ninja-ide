@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from PyQt4.QtCore import QObject
+from PyQt4.QtCore import QObject, QDir
 
 import os
 
@@ -46,6 +46,8 @@ class NProject(QObject):
         self.related_projects = project.get('relatedProjects', [])
         self.added_to_console = False
         self.is_current = False
+        #Model is a QFileSystemModel to be set on runtime
+        self.__model = None
 
     @property
     def full_path(self):
@@ -65,3 +67,17 @@ class NProject(QObject):
         if self.venv is '':
             return self.venv
         return self.python_exec
+
+    @property
+    def model(self):
+        return self.__model
+
+    @model.setter
+    def model(self, model):
+        self.__model = model
+        self.__model.setFilter(QDir.AllDirs | QDir.NoDotAndDotDot | QDir.AllEntries)
+        self.__model.setNameFilters(self.extensions)
+
+    @model.deleter
+    def model(self):
+        del(self.__model)
