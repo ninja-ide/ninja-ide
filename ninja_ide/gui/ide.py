@@ -38,6 +38,7 @@ from ninja_ide import resources
 from ninja_ide import translations
 from ninja_ide.core import plugin_manager
 from ninja_ide.core.file_handling import file_manager
+from ninja_ide.core.file_handling import nfilesystem
 #from ninja_ide.core import plugin_services
 from ninja_ide.core import settings
 from ninja_ide.core import ipc
@@ -106,8 +107,8 @@ class IDE(QMainWindow):
 
         #Editables
         self.__neditables = {}
-        #Projects
-        self.__projects = {}
+        #Filesystem
+        self.filesystem = nfilesystem.NVirtualFileSystem()
 
         #Start server if needed
         self.s_listener = None
@@ -309,34 +310,35 @@ class IDE(QMainWindow):
         if action:
             action.setShortcut(short(shortcut_name))
 
-    def get_editable(self, filename, project=None):
-        editable = self.__neditables.get(filename)
+    def get_or_create_editable(self, filename):
+        nfile = self.filesystem.get_file(nfile_path=filename)
+        editable = self.__neditables.get(nfile)
         if editable is None:
-            editable = neditable.NEditable(filename)
-            self.__neditables[editable.ID] = editable
+            editable = neditable.NEditable(nfile)
+            self.__neditables[nfile] = editable
         return editable
 
     def get_project_for_file(self, filename):
         project = None
         if filename:
-            for path in self.__projects:
-                if file_manager.belongs_to_folder(path, filename):
-                    project = self.__projects.get(path)
-                    break
+            project = self.filesystem.get_project_for_file(filename)
         return project
 
-    def get_project(self, path):
-        project = self.__projects.get(path)
-        if project is None:
-            project = nproject.NProject(path)
-            self.__projects[path] = project
-        return project
+    def create_project(self, path):
+        nproj = nproject.NProject(path)
+        self.filesystem.open_project(nproj)
+        return nproj
+
+    def get_projects(self):
+        return self.filesystem.get_projects()
 
     def get_current_project(self):
         current_project = None
-        for project in self.__projects:
-            if self.__projects[project].is_current:
-                current_project = self.__projects[project]
+        projects = self.filesystem.get_projects()
+        for project in projects:
+            if projects[project].is_current:
+                current_project = projects[project]
+                break
         return current_project
 
     def select_current(self, widget):
