@@ -45,6 +45,16 @@ How to continue:
 
 class NFile(QObject):
     """
+    SIGNALS:
+    @neverSavedFileClosing(QString)
+    @fileClosing(QString)
+    @willDelete(PyQt_PyObject, PyQt_PyObject)
+    @willOverWrite(PyQt_PyObject, QString, QString)
+    @willMove(Qt_PyQtObject, QString, QString)
+    @willSave(QString, QString)
+    @savedAsNewFile(PyQt_PyObject, QString, QString)
+    @gotAPath(PyQt_PyObject)
+    @willAttachToExistingFile(PyQt_PyObject, QString)
     """
 
     def __init__(self, path=None):
@@ -107,12 +117,13 @@ class NFile(QObject):
     def attach_to_path(self, new_path):
         if os.path.exists(new_path):
             signal_handler = SignalFlowControl()
-            self.emit("willAttachToExistingFile(PyQT_PyObject, QString)",
+            self.emit(
+                    SIGNAL("willAttachToExistingFile(PyQt_PyObject, QString)"),
                     signal_handler, new_path)
             if signal_handler.stopped():
                     return
         self._file_path = new_path
-        self.emit("gotAPath(PyQT_PyObject)", self)
+        self.emit(SIGNAL("gotAPath(PyQt_PyObject)"), self)
         return self._file_path
 
     def save(self, content, path=None):
@@ -124,7 +135,7 @@ class NFile(QObject):
         """
         if path and self._file_path:
             created_file = NFile(path).save(content)
-            self.emit(SIGNAL("savedAsNewFile(PyQT_PyObject, QString, QString)"),
+            self.emit(SIGNAL("savedAsNewFile(PyQt_PyObject, QString, QString)"),
                         created_file, self._file_path, path)
             return created_file
         elif path and not self._file_path:
@@ -165,7 +176,7 @@ class NFile(QObject):
         """
         #FIXE: to have a ref to changed I need to have the doc here
         """
-        self._created = False
+        self.__created = False
 
     def read(self, path=None):
         """
@@ -199,7 +210,7 @@ class NFile(QObject):
             if os.path.exists(new_path):
                 signal_handler = SignalFlowControl()
                 self.emit(
-                    SIGNAL("willOverWrite(PyQT_PyObject, QString, QString)"),
+                    SIGNAL("willOverWrite(PyQt_PyObject, QString, QString)"),
                                     signal_handler, self._file_path, new_path)
                 if signal_handler.stopped():
                     return
@@ -220,7 +231,7 @@ class NFile(QObject):
         """
         #if created but exists this file migth to someone else
         self.close()
-        if ((not self._created) or force) and self._exists():
+        if ((not self.__created) or force) and self._exists():
             DEBUG("Deleting our own NFile %s" % self._file_path)
             signal_handler = SignalFlowControl()
             self.emit(SIGNAL("willDelete(PyQt_PyObject, PyQt_PyObject)"),
@@ -235,7 +246,7 @@ class NFile(QObject):
         not saved yet
         """
         DEBUG("About to close NFile")
-        if self._created:
+        if self.__created:
             self.emit(SIGNAL("neverSavedFileClosing(QString)"),
                         self._file_path)
         else:

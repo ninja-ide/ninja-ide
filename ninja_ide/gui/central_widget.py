@@ -22,7 +22,6 @@ from PyQt4.QtGui import QKeySequence
 from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QComboBox
-from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QSettings
@@ -71,13 +70,7 @@ class CentralWidget(QWidget):
 
         #Add to Main Layout
         hbox.addWidget(self._splitterBase)
-        connects = (
-            {"target": "main_container",
-            "signal_name": "cursorPositionChange(int, int)",
-            "slot": self.update_column_number},
-        )
         IDE.register_service('central_container', self)
-        IDE.register_signals("central_container", connects)
 
     def install(self):
         ide = IDE.get_service('ide')
@@ -85,9 +78,6 @@ class CentralWidget(QWidget):
 
     def show_copypaste_history_popup(self):
         self.lateralPanel.combo.showPopup()
-
-    def update_column_number(self, row, col):
-        self.lateralPanel.update_line_col(row, col)
 
     def add_to_region(self, name, obj, region, top=False):
         self._add_functions.get(region, lambda x: None)(obj, top)
@@ -134,8 +124,8 @@ class CentralWidget(QWidget):
         #Avoid recalculate the panel sizes if they are already loaded
         if self._splitterBase.count() == 2:
             return
-        if not event.spontaneous():
-            self.change_region1_visibility()
+        #if not event.spontaneous():
+            #self.change_region1_visibility()
         if bin(settings.UI_LAYOUT)[-1] == '1':
             self.splitter_base_rotate()
         if bin(settings.UI_LAYOUT >> 1)[-1] == '1':
@@ -154,8 +144,8 @@ class CentralWidget(QWidget):
         #Set the sizes to splitters
         self._splitterInside.setSizes(self._splitterInsideSizes)
         self._splitterBase.setSizes(self._splitterBaseSizes)
-        self.tool.setVisible(
-            qsettings.value("window/show_region1", False, type=bool))
+        #self.tool.setVisible(
+            #qsettings.value("window/show_region1", False, type=bool))
 
     #def splitter_base_rotate(self):
         #w1, w2 = self._splitterBase.widget(0), self._splitterBase.widget(1)
@@ -207,9 +197,6 @@ class LateralPanel(QWidget):
         self.vbox.setContentsMargins(0, 0, 0, 0)
         hbox = QHBoxLayout()
         hbox.setContentsMargins(0, 0, 0, 0)
-        self.labelText = "Ln: %s, Col: %s"
-        self.labelCursorPosition = QLabel(self.trUtf8(self.labelText % (0, 0)))
-        hbox.addWidget(self.labelCursorPosition)
         self.combo = QComboBox()
         ui_tools.ComboBoxButton(self.combo, self.combo.clear,
             self.style().standardPixmap(self.style().SP_TrashIcon))
@@ -227,10 +214,6 @@ class LateralPanel(QWidget):
     def add_component(self, widget):
         self.vbox.insertWidget(0, widget)
         self.has_component = True
-
-    def update_line_col(self, line, col):
-        self.labelCursorPosition.setText(self.trUtf8(
-            self.labelText % (line, col)))
 
     def add_new_copy(self, copy):
         self.combo.insertItem(0, copy)

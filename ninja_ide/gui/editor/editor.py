@@ -51,6 +51,7 @@ from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools.completion import completer_widget
+from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.main_panel import itab_item
 from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import syntax_highlighter
@@ -117,7 +118,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #Completer
         self.completer = completer_widget.CodeCompletionWidget(self)
         #Flag to dont bug the user when answer *the modification dialog*
-        self.just_saved = False
+        #self.just_saved = False
         #Dict functions for KeyPress
         self.preKeyPress = {
             Qt.Key_Tab: self.__insert_indentation,
@@ -170,36 +171,29 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self._find_occurrences)
 
     @property
-    def project(self):
-        self._neditable.project
-
-    @property
     def display_name(self):
         self._neditable.display_name
 
     @property
-    def new_document(self):
-        self._neditable.new_document
+    def nfile(self):
+        return self._neditable.nfile
 
     def load_project_config(self):
-        if self._neditable.project is not None:
-            self.indent = self._neditable.project.indentation
-            self.useTabs = self._neditable.project.use_tabs
+        ninjaide = IDE.get_service('ide')
+        project = ninjaide.get_project_for_file(self._neditable.file_path)
+        if project is not None:
+            self.indent = project.indentation
+            self.useTabs = project.use_tabs
             #Set tab usage
             if self.useTabs:
                 self.set_tab_usage()
-            self.connect(self._neditable.project,
-                SIGNAL("projectPropertiesUpdated()"), self.load_project_config)
+            self.connect(project, SIGNAL("projectPropertiesUpdated()"),
+                self.load_project_config)
+            self.additional_builtins = project.additional_builtins
         else:
             self.indent = settings.INDENT
             self.useTabs = settings.USE_TABS
-
-    @property
-    def additional_builtins(self):
-        builtins = None
-        if self._neditable.project:
-            builtins = self._neditable.project.additional_builtins
-        return builtins
+            self.additional_builtins = None
 
     def __retreat_to_keywords(self, event):
         """Unindent some kind of blocks if needed."""
@@ -349,9 +343,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def _file_saved(self, undoAvailable=False):
         if not undoAvailable:
             self.emit(SIGNAL("fileSaved(QPlainTextEdit)"), self)
-            self.newDocument = False
             self.textModified = False
-            self.document().setModified(self.textModified)
+            self.document().setModified(False)
 
     def register_syntax(self, lang='', syntax=None):
         #self.lang = settings.EXTENSIONS.get(lang, 'python')
