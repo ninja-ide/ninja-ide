@@ -29,7 +29,7 @@ class NVirtualFileSystem(QObject):
         super(NVirtualFileSystem, self).__init__(*args, **kwargs)
 
     def list_projects(self):
-        return self.__projects.keys()
+        return list(self.__projects.keys())
 
     def open_project(self, project):
         project_path = project.path
@@ -39,10 +39,9 @@ class NVirtualFileSystem(QObject):
 
     def __check_files_for(self, project_path):
         project = self.__projects[project_path]
-        for each_file_path in self.__tree.keys():
-            if each_file_path.startswith(each_file_path):
-                nfile = self._tree[each_file_path]
-                self.__reverse_project_map[nfile] = project
+        for each_file_path in list(self.__tree.keys()):
+            nfile = self.__tree[each_file_path]
+            self.__reverse_project_map[nfile] = project
 
     def __closed_file(self, nfile_path):
         if nfile_path in self.__tree:
@@ -54,7 +53,7 @@ class NVirtualFileSystem(QObject):
 
     def __add_file(self, nfile):
         self.connect(nfile, SIGNAL("fileClosing(QString)"), self.__closed_file)
-        existing_paths = sorted(self.projects.keys(), reverse=True)
+        existing_paths = sorted(list(self.__projects.keys()), reverse=True)
         for each_path in existing_paths:
             if nfile.path.statswith(each_path):
                 project = self.__projects[each_path]
@@ -77,3 +76,10 @@ class NVirtualFileSystem(QObject):
     def __file_copied(self, nfile, old_path, new_path):
         self.__add_file(nfile)
 
+    def get_projects(self):
+        return self.__projects
+
+    def get_project_for_file(self, filename):
+        nfile = self.get_file(filename)
+        project = self.__reverse_project_map.get(nfile, None)
+        return project

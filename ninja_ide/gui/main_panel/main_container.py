@@ -658,8 +658,7 @@ class _MainContainer(QWidget):
 
     def add_editor(self, fileName="", tabIndex=None):
         ninjaide = IDE.get_service('ide')
-        project = ninjaide.get_project_for_file(fileName)
-        editable = ninjaide.get_editable(fileName, project)
+        editable = ninjaide.get_or_create_editable(fileName)
         editorWidget = editor.create_editor(editable)
         tab_name = editable.display_name
 
