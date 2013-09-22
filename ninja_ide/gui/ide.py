@@ -37,7 +37,6 @@ from PyQt4.QtNetwork import QLocalServer
 from ninja_ide import resources
 from ninja_ide import translations
 from ninja_ide.core import plugin_manager
-from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core.file_handling import nfilesystem
 #from ninja_ide.core import plugin_services
 from ninja_ide.core import settings
@@ -198,6 +197,9 @@ class IDE(QMainWindow):
             {'target': 'explorer_container',
             'signal_name': 'changeWindowTitle(QString)',
             'slot': self.change_window_title},
+            {'target': 'explorer_container',
+            'signal_name': 'projectClosed(QString)',
+            'slot': self.close_project},
             )
         self.register_signals('ide', connections)
         # Central Widget MUST always exists
@@ -328,6 +330,9 @@ class IDE(QMainWindow):
         nproj = nproject.NProject(path)
         self.filesystem.open_project(nproj)
         return nproj
+
+    def close_project(self, project_path):
+        self.filesystem.close_project(project_path)
 
     def get_projects(self):
         return self.filesystem.get_projects()
@@ -488,11 +493,6 @@ class IDE(QMainWindow):
         else:
             self.setWindowTitle('NINJA-IDE (PROFILE: %s) - %s' % (
                 self.profile, title))
-        currentEditor = self.mainContainer.get_actual_editor()
-        if currentEditor is not None:
-            line = currentEditor.textCursor().blockNumber() + 1
-            col = currentEditor.textCursor().columnNumber()
-            self.central.lateralPanel.update_line_col(line, col)
 
     def wheelEvent(self, event):
         """Change the opacity of the application."""
