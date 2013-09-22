@@ -37,6 +37,14 @@ class NVirtualFileSystem(QObject):
             self.__projects[project_path] = project
             self.__check_files_for(project_path)
 
+    def close_project(self, project_path):
+        if project_path in self.__projects:
+            project_root = self.__projects[project_path]
+            for nfile in self.__tree:
+                if self.__reverse_project_map[nfile] == project_root:
+                    nfile.close()
+            del self.__projects[project_path]
+
     def __check_files_for(self, project_path):
         project = self.__projects[project_path]
         for each_file_path in list(self.__tree.keys()):
@@ -69,7 +77,7 @@ class NVirtualFileSystem(QObject):
         else:
             nfile = NFile()
             self.connect(nfile,
-                    SIGNAL("savedAsNewFile(PyQT_PyObject, QString, QString)"),
+                    SIGNAL("savedAsNewFile(PyQt_PyObject, QString, QString)"),
                     self.__file_copied)
         return nfile
 

@@ -42,7 +42,7 @@ import ninja_ide.gui.central_widget
 import ninja_ide.gui.main_panel.main_container
 #import ninja_ide.gui.misc.misc_container
 import ninja_ide.gui.menus.menubar
-from ninja_ide.tools.completion import completion_daemon
+#from ninja_ide.tools.completion import completion_daemon
 
 from ninja_ide.gui import ide
 #lint:enable

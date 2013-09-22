@@ -12,9 +12,11 @@ class NEditable(QObject):
     """
     SIGNALS:
     @checkersUpdated()
+    @neverSavedFileClosing(QString)
+    @fileClosing(QString)
     """
 
-    def __init__(self, nfile=None):
+    def __init__(self, nfile):
         super(NEditable, self).__init__()
         self.__editor = None
         #Create NFile
@@ -25,6 +27,14 @@ class NEditable(QObject):
         #Checkers:
         self.registered_checkers = []
         self._checkers_executed = 0
+
+        # Connect signals
+        if self._nfile:
+            self.connect(self._nfile, SIGNAL("neverSavedFileClosing(QString)"),
+                lambda path: self.emit(
+                    SIGNAL("neverSavedFileClosing(QString)"), path))
+            self.connect(self._nfile, SIGNAL("fileClosing(QString)"),
+                lambda path: self.emit(SIGNAL("fileClosing(QString)"), path))
 
     def set_editor(self, editor):
         """Set the Editor (UI component) associated with this object."""
@@ -42,14 +52,9 @@ class NEditable(QObject):
         # If we have an editor, let's include the checkers:
         self.include_checkers()
 
-    def save_content(self):
-        """Save the content of the UI to a file."""
-        content = self.__editor.get_text()
-        self._nfile.save(content)
-
     @property
-    def ID(self):
-        return self._nfile
+    def file_path(self):
+        return self._nfile.file_path
 
     @property
     def document(self):
@@ -69,6 +74,19 @@ class NEditable(QObject):
     def has_checkers(self):
         """Return True if checkers where installaed, False otherwise"""
         return self._has_checkers
+
+    @property
+    def editor(self):
+        return self.__editor
+
+    @property
+    def nfile(self):
+        return self._nfile
+
+    def save_content(self):
+        """Save the content of the UI to a file."""
+        content = self.__editor.get_text()
+        self._nfile.save(content)
 
     def include_checkers(self, lang='python'):
         """Initialize the Checkers, should be refreshed on checkers change."""
