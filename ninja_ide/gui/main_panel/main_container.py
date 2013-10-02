@@ -175,7 +175,7 @@ class _MainContainer(QWidget):
         """Move the cursor to the proper position in the navigate stack."""
         editorWidget = self.get_current_editor()
         if editorWidget:
-            self.__codeBack.append((editorWidget.ID,
+            self.__codeBack.append((editorWidget.nfile.file_path,
                 editorWidget.textCursor().position()))
             self.__codeForward = []
         self._locator.navigate_to(function, filePath, isVariable)
@@ -200,7 +200,7 @@ class _MainContainer(QWidget):
                 central.add_copy(copy)
 
     def import_from_everywhere(self):
-        """Add an item to the back stack and reset the forward stack."""
+        """Insert an import line from any place in the editor."""
         editorWidget = self.get_current_editor()
         if editorWidget:
             dialog = from_import_dialog.FromImportDialog(editorWidget, self)

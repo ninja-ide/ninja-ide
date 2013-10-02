@@ -32,7 +32,7 @@ from ninja_ide.tools import introspection
 
 class FromImportDialog(QDialog):
 
-    def __init__(self, fromSection, editorWidget, parent=None):
+    def __init__(self, editorWidget, parent=None):
         QDialog.__init__(self, parent, Qt.Dialog)
         self.setWindowTitle('from ... import ...')
         self._editorWidget = editorWidget
@@ -63,11 +63,11 @@ class FromImportDialog(QDialog):
     def _add_import(self):
         fromItem = self._lineFrom.text()
         importItem = self._lineImport.text()
-        if self._froms:
+        if fromItem in self._froms:
             lineno = 0
-            for imp in self._imports:
-                lineno = self._imports[imp]['lineno']
-                if self._imports[imp]['module'] == fromItem:
+            for imp in self._imports['fromImports']:
+                lineno = self._imports['fromImports'][imp]['lineno'] - 1
+                if self._imports['fromImports'][imp]['module'] == fromItem:
                     break
             block = self._editorWidget.document().findBlockByLineNumber(lineno)
             cursor = self._editorWidget.textCursor()
