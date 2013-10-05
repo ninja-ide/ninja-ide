@@ -150,27 +150,25 @@ class CodeNavigator(QWidget):
             QIcon(resources.IMAGES['nav-code-left']), '')
         self.btnPrevious.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.btnPrevious.setObjectName('navigation_button')
-        self.btnPrevious.setToolTip(
-            self.tr("Right click to change navigation options"))
+        self.btnPrevious.setToolTip(translations.TR_TOOLTIP_NAV_BUTTONS)
         self.btnNext = QPushButton(
             QIcon(resources.IMAGES['nav-code-right']), '')
         self.btnNext.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.btnNext.setObjectName('navigation_button')
-        self.btnNext.setToolTip(
-            self.tr("Right click to change navigation options"))
+        self.btnNext.setToolTip(translations.TR_TOOLTIP_NAV_BUTTONS)
         hbox.addWidget(self.btnPrevious)
         hbox.addWidget(self.btnNext)
 
         self.menuNavigate = QMenu(self.tr("Navigate"))
         self.codeAction = self.menuNavigate.addAction(
-            self.tr("Code Jumps"))
+            translations.TR_NAV_CODE_JUMP)
         self.codeAction.setCheckable(True)
         self.codeAction.setChecked(True)
         self.bookmarksAction = self.menuNavigate.addAction(
-            self.tr("Bookmarks"))
+            translations.TR_NAV_BOOKMARKS)
         self.bookmarksAction.setCheckable(True)
         self.breakpointsAction = self.menuNavigate.addAction(
-            self.tr("Breakpoints"))
+            translations.TR_NAV_BREAKPOINTS)
         self.breakpointsAction.setCheckable(True)
 
         # 0 = Code Jumps
