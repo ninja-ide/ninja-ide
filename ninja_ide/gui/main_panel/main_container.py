@@ -95,7 +95,7 @@ class _MainContainer(QWidget):
         self.splitter.addWidget(self.combo_area)
         self.stack.addWidget(self.splitter)
 
-        self.current_split = self.combo_area
+        self.current_widget = self.combo_area
         #documentation browser
         self.docPage = None
         #Code Navigation
@@ -175,7 +175,7 @@ class _MainContainer(QWidget):
         """Move the cursor to the proper position in the navigate stack."""
         editorWidget = self.get_current_editor()
         if editorWidget:
-            self.__codeBack.append((editorWidget.ID,
+            self.__codeBack.append((editorWidget.nfile.file_path,
                 editorWidget.textCursor().position()))
             self.__codeForward = []
         self._locator.navigate_to(function, filePath, isVariable)
@@ -200,7 +200,7 @@ class _MainContainer(QWidget):
                 central.add_copy(copy)
 
     def import_from_everywhere(self):
-        """Add an item to the back stack and reset the forward stack."""
+        """Insert an import line from any place in the editor."""
         editorWidget = self.get_current_editor()
         if editorWidget:
             dialog = from_import_dialog.FromImportDialog(editorWidget, self)
@@ -210,7 +210,7 @@ class _MainContainer(QWidget):
         """Add an item to the back stack and reset the forward stack."""
         editorWidget = self.get_current_editor()
         if editorWidget:
-            self.__codeBack.append((editorWidget.ID,
+            self.__codeBack.append((editorWidget.nfile.file_path,
                 editorWidget.textCursor().position()))
             self.__codeForward = []
 
@@ -218,11 +218,14 @@ class _MainContainer(QWidget):
         """Load the current html file in the default browser."""
         editorWidget = self.get_current_editor()
         if editorWidget:
-            if not editorWidget.ID:
+            if not editorWidget.nfile.file_path:
                 self.save_file()
-            ext = file_manager.get_file_extension(editorWidget.ID)
+            ext = file_manager.get_file_extension(editorWidget.nfile.file_path)
             if ext == 'html':
                 webbrowser.open(editorWidget.ID)
+            else:
+                #TODO: show dialog
+                pass
 
     def add_bookmark_breakpoint(self):
         """Add a bookmark or breakpoint to the current file in the editor."""
@@ -771,14 +774,14 @@ class _MainContainer(QWidget):
         #self.emit(SIGNAL("updateLocator(QString)"), editorWidget.ID)
 
     def get_current_widget(self):
-        return self.current_split.currentWidget()
+        return self.current_widget.currentWidget()
 
     def get_current_editor(self):
         """Return the Actual Editor or None
 
         Return an instance of Editor if the Current Tab contains
         an Editor or None if it is not an instance of Editor"""
-        widget = self.current_split.currentWidget()
+        widget = self.current_widget.currentWidget()
         if isinstance(widget, editor.Editor):
             return widget
         return None
