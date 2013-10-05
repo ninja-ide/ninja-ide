@@ -92,6 +92,11 @@ TR_INSERT_PDB = tr("NINJA-IDE", "Insert pdb.set_trace()")
 TR_REMOVE_TRAILING_SPACES = tr("NINJA-IDE", "&Remove Trailing Spaces")
 TR_REPLACE_TABS_SPACES = tr("NINJA-IDE", "Replace Tabs With &Spaces")
 TR_CLOSE_SPLIT = tr("NINJA-IDE", "Close Split")
+TR_TOOLTIP_NAV_BUTTONS = tr("NINJA-IDE",
+    "Right click to change navigation options")
+TR_NAV_CODE_JUMP = tr("NINJA-IDE", "Code Jumps")
+TR_NAV_BOOKMARKS = tr("NINJA-IDE", "Bookmarks")
+TR_NAV_BREAKPOINTS = tr("NINJA-IDE", "Breakpoints")
 
 TR_NEW_DOCUMENT = tr("NINJA-IDE", "New Document")
 TR_READ_ONLY = tr("NINJA-IDE", " (Read-Only)")

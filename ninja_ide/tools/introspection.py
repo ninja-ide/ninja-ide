@@ -200,13 +200,14 @@ def obtain_imports(source='', body=None):
     imports = {}
     #From Imports{} = {name: {module: fromPart, asname: nameAlias}}
     fromImports = {}
-    for sym in body:
-        if type(sym) is ast.Import:
-            for item in sym.names:
-                imports[item.name] = {'asname': item.asname,
-                    'lineno': sym.lineno}
-        if type(sym) is ast.ImportFrom:
-            for item in sym.names:
-                fromImports[item.name] = {'module': sym.module,
-                    'asname': item.asname, 'lineno': sym.lineno}
+    if body is not None:
+        for sym in body:
+            if type(sym) is ast.Import:
+                for item in sym.names:
+                    imports[item.name] = {'asname': item.asname,
+                        'lineno': sym.lineno}
+            if type(sym) is ast.ImportFrom:
+                for item in sym.names:
+                    fromImports[item.name] = {'module': sym.module,
+                        'asname': item.asname, 'lineno': sym.lineno}
     return {'imports': imports, 'fromImports': fromImports}

@@ -388,17 +388,35 @@ QComboBox:item:selected {
 }
 
 QComboBox#combotab {
-    border: 2px solid lightblue;
+    border-left-width: 1px;
+    border-left-color: darkgray;
+    border-left-style: solid;
+    border-right-width: 0px;
+    border-top-width: 0px;
+    border-bottom-width: 0px;
     background-color: transparent;
-    border-radius: 3px;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em;
+    color: #FFA500;
+}
+
+QComboBox#combo_symbols {
+    border-left-width: 1px;
+    border-left-color: darkgray;
+    border-left-style: solid;
+    border-right-width: 1px;
+    border-right-color: darkgray;
+    border-right-style: solid;
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    background-color: transparent;
     padding: 1px 18px 1px 3px;
     min-width: 6em;
 }
 
 QComboBox#combotab:hover {
-    border: 2px solid #3fdedc;
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-        stop: 0 #363636, stop: 1.0 #727272);
+        stop: 0 #808080, stop: 1.0 #474747);
 }
 
 QComboBox#combotab::drop-down {
@@ -408,11 +426,23 @@ QComboBox#combotab::drop-down {
     border-left-width: 1px;
 }
 
+QComboBox#combo_symbols:hover {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+        stop: 0 #808080, stop: 1.0 #474747);
+}
+
+QComboBox#combo_symbols::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 5px;
+    border-left-width: 1px;
+}
+
 QFrame#actionbar {
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-        stop: 0 #202020, stop: 1.0 #404040);
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+        stop: 0 #727272, stop: 1.0 #363636);
     color: gray;
-    border: 2px solid darkgray;
+    border: 0px solid darkgray;
     border-radius: 5px;
 }
 
