@@ -32,9 +32,9 @@ from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QDir
 
 from ninja_ide import resources
+from ninja_ide import translations
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
-from ninja_ide.gui import translations
 from ninja_ide.gui import dynamic_splitter
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.main_panel import tab_group
@@ -64,7 +64,7 @@ class _MainContainer(QWidget):
     """
     beforeFileSaved(QString)
     fileSaved(QString)
-    currentTabChanged(QString)
+    currentEditorChanged(QString)
     locateFunction(QString, QString, bool) [functionName, filePath, isVariable]
     --------openProject(QString)
     openPreferences()
@@ -89,13 +89,8 @@ class _MainContainer(QWidget):
         self.stack = QStackedLayout(self)
 
         self.splitter = dynamic_splitter.DynamicSplitter()
-        self.combo_area = combo_editor.ComboEditor(original=True)
-        #self.tabs = tab_widget.TabWidget(self)
         self.setAcceptDrops(True)
-        self.splitter.addWidget(self.combo_area)
-        self.stack.addWidget(self.splitter)
 
-        self.current_widget = self.combo_area
         #documentation browser
         self.docPage = None
         #Code Navigation
@@ -162,6 +157,13 @@ class _MainContainer(QWidget):
     def install(self):
         ide = IDE.get_service('ide')
         ide.place_me_on("main_container", self, "central", top=True)
+
+        self.combo_area = combo_editor.ComboEditor(original=True)
+        self.splitter.addWidget(self.combo_area)
+        self.stack.addWidget(self.splitter)
+
+        self.current_widget = self.combo_area
+
         ui_tools.install_shortcuts(self, actions.ACTIONS, ide)
 
     def change_visibility(self):
@@ -223,9 +225,6 @@ class _MainContainer(QWidget):
             ext = file_manager.get_file_extension(editorWidget.nfile.file_path)
             if ext == 'html':
                 webbrowser.open(editorWidget.ID)
-            else:
-                #TODO: show dialog
-                pass
 
     def add_bookmark_breakpoint(self):
         """Add a bookmark or breakpoint to the current file in the editor."""
@@ -579,11 +578,11 @@ class _MainContainer(QWidget):
         """Notify that there are no more tabs opened."""
         self.emit(SIGNAL("allTabsClosed()"))
 
-    def _current_tab_changed(self, index):
+    def current_tab_changed(self, filename):
         """Notify the new ID of the current tab."""
-        widget = self.combo_area.widget(index)
-        if widget:
-            self.emit(SIGNAL("currentTabChanged(QString)"), widget.ID)
+        if filename is None:
+            filename = translations.TR_NEW_DOCUMENT
+        self.emit(SIGNAL("currentEditorChanged(QString)"), filename)
 
     def split_tab(self, orientation):
         pass
@@ -640,7 +639,7 @@ class _MainContainer(QWidget):
             #self.split_visible = True
             #self.splitter.setSizes([1, 1])
             #self.actualTab = self.tabsecondary
-            #self.emit(SIGNAL("currentTabChanged(QString)"), widget.ID)
+            #self.emit(SIGNAL("currentEditorChanged(QString)"), widget.ID)
         #self.splitter.setOrientation(orientation)
 
     def add_editor(self, fileName=None, tabIndex=None):
@@ -873,7 +872,7 @@ class _MainContainer(QWidget):
                         editorWidget.go_to_line(cursorPosition)
                     else:
                         editorWidget.set_cursor_position(cursorPosition)
-            self.emit(SIGNAL("currentTabChanged(QString)"), fileName)
+            self.emit(SIGNAL("currentEditorChanged(QString)"), fileName)
         except file_manager.NinjaIOException as reason:
             QMessageBox.information(self,
                 self.tr("The file couldn't be open"), str(reason))
@@ -890,7 +889,7 @@ class _MainContainer(QWidget):
         #if self.tabs.is_open(filename) != -1:
             #self.tabs.move_to_open(filename)
         #self.tabs.currentWidget().setFocus()
-        #self.emit(SIGNAL("currentTabChanged(QString)"), filename)
+        #self.emit(SIGNAL("currentEditorChanged(QString)"), filename)
 
     def move_tab_right(self):
         self._move_tab()
@@ -1012,7 +1011,7 @@ class _MainContainer(QWidget):
             #editorWidget.ID = fileName
             self.emit(SIGNAL("fileSaved(QString)"),
                 (self.tr("File Saved: %s") % fileName))
-            self.emit(SIGNAL("currentTabChanged(QString)"), fileName)
+            self.emit(SIGNAL("currentEditorChanged(QString)"), fileName)
             editorWidget._file_saved()
             #self.add_standalone_watcher(fileName)
             #self._file_watcher.allow_kill = True
