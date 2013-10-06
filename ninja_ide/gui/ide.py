@@ -186,7 +186,7 @@ class IDE(QMainWindow):
             'signal_name': 'fileSaved(QString)',
             'slot': self.show_status_message},
             {'target': 'main_container',
-            'signal_name': 'currentTabChanged(QString)',
+            'signal_name': 'currentEditorChanged(QString)',
             'slot': self.change_window_title},
             {'target': 'main_container',
             'signal_name': 'openPreferences()',
