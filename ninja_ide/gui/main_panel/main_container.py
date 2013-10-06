@@ -578,7 +578,7 @@ class _MainContainer(QWidget):
         """Notify that there are no more tabs opened."""
         self.emit(SIGNAL("allTabsClosed()"))
 
-    def current_tab_changed(self, filename):
+    def current_editor_changed(self, filename):
         """Notify the new ID of the current tab."""
         if filename is None:
             filename = translations.TR_NEW_DOCUMENT

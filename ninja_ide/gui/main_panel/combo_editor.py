@@ -61,7 +61,7 @@ class ComboEditor(QWidget):
         self.stacked.setCurrentWidget(neditable.editor)
         self._update_cursor_position(ignore_sender=True)
         neditable.editor.setFocus()
-        self._main_container.current_tab_changed(neditable.nfile.file_path)
+        self._main_container.current_editor_changed(neditable.nfile.file_path)
 
     def widget(self, index):
         return self.stacked.widget(index)
