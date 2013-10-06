@@ -36,7 +36,7 @@ from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.explorer import actions
-from ninja_ide.gui.explorer import tree_projects_widget
+#from ninja_ide.gui.explorer import tree_projects_widget
 from ninja_ide.gui.explorer import tree_symbols_widget
 from ninja_ide.gui.explorer import errors_lists
 from ninja_ide.gui.explorer import migration_lists
@@ -73,6 +73,7 @@ class _ExplorerContainer(QTabWidget):
         super(_ExplorerContainer, self).__init__(parent)
         self.setTabPosition(QTabWidget.East)
         self._thread_execution = {}
+        self.__tabs = []
 
         IDE.register_service('explorer_container', self)
 
@@ -92,9 +93,7 @@ class _ExplorerContainer(QTabWidget):
             {'target': 'main_container',
             'signal_name': 'addToProject(QString)',
             'slot': self._add_file_to_project},
-            {'target': 'main_container',
-            'signal_name': 'openProject(QString)',
-            'slot': self.open_project_folder},
+
             {'target': 'main_container',
             'signal_name': 'currentTabChanged(QString)',
             'slot': self.update_migration},
@@ -116,8 +115,6 @@ class _ExplorerContainer(QTabWidget):
         ide.place_me_on("explorer_container", self, "lateral")
         #Searching the Preferences
         self.tree_projects = None
-        if settings.SHOW_PROJECT_EXPLORER:
-            self.add_tab_projects()
         self._treeSymbols = None
         if settings.SHOW_SYMBOLS_LIST:
             self.add_tab_symbols()
@@ -135,6 +132,9 @@ class _ExplorerContainer(QTabWidget):
             central_container = IDE.get_service("central_container")
             central_container.change_explorer_visibility(force_hide=True)
         ui_tools.install_shortcuts(self, actions.ACTIONS, ide)
+        for each_tab in self.__tabs:
+            if hasattr(each_tab, "install"):
+                each_tab.install()
 
     def change_visibility(self):
         if self.isVisible():
@@ -231,42 +231,43 @@ class _ExplorerContainer(QTabWidget):
 
     def addTab(self, tab, title):
         QTabWidget.addTab(self, tab, title)
+        self.__tabs.append(tab)
 
     def add_tab_migration(self):
         if not self._listMigration:
             self._listMigration = migration_lists.MigrationWidget()
             self.addTab(self._listMigration, self.tr("Migration 2to3"))
 
-    def add_tab_projects(self):
-        if not self.tree_projects:
-            self.tree_projects = tree_projects_widget.TreeProjectsWidget()
-            self.addTab(self.tree_projects, self.tr('Projects'))
-            self.connect(self.tree_projects, SIGNAL("runProject()"),
-                self._execute_project)
+    #def add_tab_projects(self):
+        #if not self.tree_projects:
+            #self.tree_projects = tree_projects_widget.ProjectTreeColumn()
+            #self.addTab(self.tree_projects, self.tr('Projects'))
+            #self.connect(self.tree_projects, SIGNAL("runProject()"),
+                #self._execute_project)
 
-            ide = IDE.get_service('ide')
-            self.connect(ide, SIGNAL("goingDown()"),
-                self.tree_projects.shutdown)
-            self.connect(self.tree_projects,
-                SIGNAL("addProjectToConsole(QString)"),
-                self._add_project_to_console)
-            self.connect(self.tree_projects,
-                SIGNAL("removeProjectFromConsole(QString)"),
-                self._remove_project_from_console)
+            #ide = IDE.get_service('ide')
+            #self.connect(ide, SIGNAL("goingDown()"),
+                #self.tree_projects.shutdown)
+            #self.connect(self.tree_projects,
+                #SIGNAL("addProjectToConsole(QString)"),
+                #self._add_project_to_console)
+            #self.connect(self.tree_projects,
+                #SIGNAL("removeProjectFromConsole(QString)"),
+                #self._remove_project_from_console)
 
-            def close_project_signal():
-                self.emit(SIGNAL("updateLocator()"))
+            #def close_project_signal():
+                #self.emit(SIGNAL("updateLocator()"))
 
-            def close_files_related_to_closed_project(project):
-                if project:
-                    self.emit(SIGNAL("projectClosed(QString)"), project)
-            self.connect(self.tree_projects, SIGNAL("closeProject(QString)"),
-                close_project_signal)
-            self.connect(self.tree_projects, SIGNAL("refreshProject()"),
-                close_project_signal)
-            self.connect(self.tree_projects,
-                SIGNAL("closeFilesFromProjectClosed(QString)"),
-                close_files_related_to_closed_project)
+            #def close_files_related_to_closed_project(project):
+                #if project:
+                    #self.emit(SIGNAL("projectClosed(QString)"), project)
+            #self.connect(self.tree_projects, SIGNAL("closeProject(QString)"),
+                #close_project_signal)
+            #self.connect(self.tree_projects, SIGNAL("refreshProject()"),
+                #close_project_signal)
+            #self.connect(self.tree_projects,
+                #SIGNAL("closeFilesFromProjectClosed(QString)"),
+                #close_files_related_to_closed_project)
 
     def _execute_project(self):
         tools_dock = IDE.get_service('tools_dock')
@@ -386,28 +387,29 @@ class _ExplorerContainer(QTabWidget):
 
     def open_project_folder(self, folderName='', notIDEStart=True):
         """Open a Project and load the symbols in the Code Locator."""
-        if not self.tree_projects and notIDEStart:
-            QMessageBox.information(self, self.tr("Projects Disabled"),
-                self.tr("Project support has been disabled from Preferences"))
-            return
+        #if not self.tree_projects and notIDEStart:
+            #QMessageBox.information(self, self.tr("Projects Disabled"),
+                #self.tr("Project support has been disabled from Preferences"))
+            #return
         if not folderName:
             if settings.WORKSPACE:
                 directory = settings.WORKSPACE
             else:
                 directory = os.path.expanduser("~")
-                current_project = self.get_actual_project()
-                main_container = IDE.get_service('main_container')
-                if main_container:
-                    editorWidget = main_container.get_actual_editor()
-                    if current_project is not None:
-                        directory = current_project
-                    elif editorWidget is not None and editorWidget.ID:
-                        directory = file_manager.get_folder(editorWidget.ID)
+                #current_project = self.get_actual_project()
+                #main_container = IDE.get_service('main_container')
+                #if main_container:
+                    #editorWidget = main_container.get_actual_editor()
+                    #if current_project is not None:
+                        #directory = current_project
+                    #elif editorWidget is not None and editorWidget.ID:
+                        #directory = file_manager.get_folder(editorWidget.ID)
             folderName = QFileDialog.getExistingDirectory(self,
                 self.tr("Open Project Directory"), directory)
         try:
             if not folderName:
                 return
+            #FIXME: Here we open project with fs
             if not self.tree_projects.is_open(folderName):
                 self.tree_projects.mute_signals = True
                 self.tree_projects.loading_project(folderName)

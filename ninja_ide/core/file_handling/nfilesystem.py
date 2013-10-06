@@ -15,7 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt4.QtCore import QObject, QFileSystemModel, SIGNAL
+from PyQt4.QtCore import QObject, SIGNAL
+from PyQt4.QtGui import QFileSystemModel
 from ninja_ide.core.file_handling.nfile import NFile
 
 
@@ -33,13 +34,14 @@ class NVirtualFileSystem(QObject):
 
     def open_project(self, project):
         project_path = project.path
-        qfsm = None # Should end up having a QFileSystemModel
+        qfsm = None  # Should end up having a QFileSystemModel
         if project_path not in self.__projects:
             qfsm = QFileSystemModel(project_path)
             project.model = qfsm
             qfsm.setRootPath(project_path)
             self.__projects[project_path] = project
             self.__check_files_for(project_path)
+            self.emit(SIGNAL("projectOpened(PyQt_PyObject)"), project)
         else:
             qfsm = self.__projects[project_path]
         return qfsm

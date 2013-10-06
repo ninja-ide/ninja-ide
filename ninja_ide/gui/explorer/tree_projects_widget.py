@@ -24,10 +24,14 @@ from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.gui.explorer.tree_projects_widget')
 DEBUG = logger.debug
 
-from PyQt4.QtGui import QTreeWidget
+from PyQt4.QtGui import QTreeView
+from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QScrollArea
+from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QTreeWidgetItem
 from PyQt4.QtGui import QAbstractItemView
 from PyQt4.QtGui import QHeaderView
+from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QInputDialog
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QColor
@@ -54,11 +58,56 @@ from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs import project_properties_widget
 from ninja_ide.tools.completion import completion_daemon
 
+logger = NinjaLogger('ninja_ide.gui.explorer.three_projects_widget')
 
-class TreeProjectContainerWidget(QVBoxLayout):
-    pass
 
-class TreeProjectsWidget(QTreeWidget):
+class ProjectTreeColumn(QWidget):
+    def __init__(self, *args, **kwargs):
+        super(ProjectTreeColumn, self).__init__(*args, **kwargs)
+        self.setLayout(QVBoxLayout())
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setEnabled(True)
+        scroll.setWidget(self)
+        self.__scrollable = scroll
+        self.projects = []
+
+        connections = (
+            {'target': 'main_container',
+            'signal_name': 'openProject(QString)',
+            'slot': self.open_project_folder},
+                )
+        IDE.register_signals('tree_projects_widget', connections)
+
+    def install(self):
+        ninjaide = IDE.get_service("ide")
+        self.connect(ninjaide.filesystem,
+                    SIGNAL("projectOpened(PyQt_PyObject)"),
+                    self.add_project)
+
+    def open_project_folder(self):
+        if settings.WORKSPACE:
+            directory = settings.WORKSPACE
+        else:
+            directory = os.path.expanduser("~")
+
+        folderName = QFileDialog.getExistingDirectory(self,
+                self.tr("Open Project Directory"), directory)
+        logger.debug("Choosing Foldername")
+        if folderName:
+            logger.debug("Opening %s" % folderName)
+            ninjaide = IDE.get_service("ide")
+            ninjaide.filesystem.open_project(folderName)
+
+    def add_project(self, project):
+        if project not in self.projects:
+            self.projects.append(project)
+            ptree = TreeProjectsWidget()
+            ptree.setModel(project.model)
+            self.layout.addWidget()
+
+
+class TreeProjectsWidget(QTreeView):
 
 ###############################################################################
 # TreeProjectsWidget SIGNALS
@@ -89,10 +138,10 @@ class TreeProjectsWidget(QTreeWidget):
         'ui': resources.IMAGES['designer']}
 
     def __init__(self, state_index=list()):
-        QTreeWidget.__init__(self)
+        super(TreeProjectsWidget, self).__init__()
 
         self.header().setHidden(True)
-        self.setSelectionMode(QTreeWidget.SingleSelection)
+        self.setSelectionMode(QTreeView.SingleSelection)
         self.setAnimated(True)
 
         self._actualProject = None
@@ -882,3 +931,8 @@ class FoldingContextMenu(QMenu):
         Unfold all project
         """
         self._tree.expandAll()
+
+
+PTColumn = ProjectTreeColumn()
+ec = IDE.get_service("explorer_container")
+ec.addTab(PTColumn, PTColumn.tr('Projects'))
