@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+from PyQt4.QtGui import QApplication
+#from PyQt4.QtGui import QStandardItemModel
+#from PyQt4.QtGui import QAbstractItemView
+from PyQt4.QtGui import QClipboard
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QCursor
 from PyQt4.QtGui import QMenu
@@ -18,6 +22,7 @@ from PyQt4.QtCore import Qt
 
 from ninja_ide import translations
 from ninja_ide import resources
+from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
 
 
@@ -33,6 +38,10 @@ class ComboEditor(QWidget):
         self.bar = ActionBar()
         self.connect(self.bar, SIGNAL("changeCurrent(PyQt_PyObject)"),
             self.set_current)
+        self.connect(self.bar, SIGNAL("runFile(QString)"),
+            self._run_file)
+        self.connect(self.bar, SIGNAL("addToProject(QString)"),
+            self._add_to_project)
         vbox.addWidget(self.bar)
 
         self.stacked = QStackedLayout()
@@ -55,13 +64,27 @@ class ComboEditor(QWidget):
 
             # Connect file system signals only in the original
             if self.__original:
-                pass
+                self.connect(neditable, SIGNAL("fileClosing(PyQt_PyObject)"),
+                    self.close_file)
+
+    def close_file(self, neditable):
+        index = self.bar.close_file(neditable)
+        layoutItem = self.stacked.takeAt(index)
+        layoutItem.widget().deleteLater()
+
+    def _run_file(self, path):
+        self._main_container.run_file(path)
+
+    def _add_to_project(self, path):
+        self._main_container._add_to_project(path)
 
     def set_current(self, neditable):
-        self.stacked.setCurrentWidget(neditable.editor)
-        self._update_cursor_position(ignore_sender=True)
-        neditable.editor.setFocus()
-        self._main_container.current_editor_changed(neditable.nfile.file_path)
+        if neditable:
+            self.stacked.setCurrentWidget(neditable.editor)
+            self._update_cursor_position(ignore_sender=True)
+            neditable.editor.setFocus()
+            self._main_container.current_editor_changed(
+                neditable.nfile.file_path)
 
     def widget(self, index):
         return self.stacked.widget(index)
@@ -84,6 +107,7 @@ class ActionBar(QFrame):
     """
     SIGNALS:
     @changeCurrent(PyQt_PyObject)
+    @runFile(QString)
     """
 
     def __init__(self):
@@ -93,6 +117,8 @@ class ActionBar(QFrame):
         hbox.setContentsMargins(1, 1, 1, 1)
         hbox.setSpacing(1)
 
+        self.__lastOpened = []
+
         self.lbl_checks = QLabel('')
         self.lbl_checks.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.lbl_checks.setFixedWidth(48)
@@ -100,10 +126,18 @@ class ActionBar(QFrame):
         hbox.addWidget(self.lbl_checks)
 
         self.combo = QComboBox()
+        #model = QStandardItemModel()
+        #self.combo.setModel(model)
+        #self.combo.view().setDragDropMode(QAbstractItemView.InternalMove)
         self.combo.setMaximumWidth(300)
         self.combo.setObjectName("combotab")
         self.connect(self.combo, SIGNAL("currentIndexChanged(int)"),
             self.current_changed)
+        self.combo.setToolTip(translations.TR_COMBO_FILE_TOOLTIP)
+        self.combo.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.connect(self.combo, SIGNAL(
+            "customContextMenuRequested(const QPoint &)"),
+            self._context_menu_requested)
         hbox.addWidget(self.combo)
 
         self.symbols_combo = QComboBox()
@@ -126,18 +160,135 @@ class ActionBar(QFrame):
         self.btn_close.setObjectName('navigation_button')
         self.btn_close.setToolTip(translations.TR_CLOSE_SPLIT)
         self.btn_close.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.connect(self.btn_close, SIGNAL("clicked()"),
+            self._about_to_close_file)
         hbox.addWidget(self.btn_close)
 
     def add_item(self, text, data):
+        """Add a new item to the combo and add the neditable data."""
         self.combo.addItem(QIcon(resources.IMAGES['bug']), text, data)
         self.combo.setCurrentIndex(self.combo.count() - 1)
 
     def current_changed(self, index):
+        """Change the current item in the combo."""
         data = self.combo.itemData(index)
         self.emit(SIGNAL("changeCurrent(PyQt_PyObject)"), data)
 
     def update_line_col(self, line, col):
+        """Update the line and column position."""
         self.lbl_position.setText(self._pos_text % (line, col))
+
+    def _context_menu_requested(self, point):
+        """Display context menu for the combo file."""
+        if self.combo.count() == 0:
+            # If there is not an Editor opened, don't show the menu
+            return
+        menu = QMenu()
+        actionAdd = menu.addAction(translations.TR_ADD_TO_PROJECT)
+        actionRun = menu.addAction(translations.TR_RUN_FILE)
+        menuSyntax = menu.addMenu(translations.TR_CHANGE_SYNTAX)
+        self._create_menu_syntax(menuSyntax)
+        menu.addSeparator()
+        actionClose = menu.addAction(translations.TR_CLOSE_FILE)
+        actionCloseAll = menu.addAction(translations.TR_CLOSE_ALL_FILES)
+        actionCloseAllNotThis = menu.addAction(
+            translations.TR_CLOSE_OTHER_FILES)
+        menu.addSeparator()
+        actionSplitH = menu.addAction(translations.TR_SPLIT_VERTICALLY)
+        actionSplitV = menu.addAction(translations.TR_SPLIT_HORIZONTALLY)
+        menu.addSeparator()
+        actionCopyPath = menu.addAction(
+            translations.TR_COPY_FILE_PATH_TO_CLIPBOARD)
+        #actionReopen = menu.addAction(translations.TR_REOPEN_FILE)
+        #if len(self.__lastOpened) == 0:
+            #actionReopen.setEnabled(False)
+        #Connect actions
+        self.connect(actionSplitH, SIGNAL("triggered()"),
+            lambda: self._split_this_tab(True))
+        self.connect(actionSplitV, SIGNAL("triggered()"),
+            lambda: self._split_this_tab(False))
+        self.connect(actionRun, SIGNAL("triggered()"),
+            self._run_this_file)
+        self.connect(actionAdd, SIGNAL("triggered()"),
+            self._add_to_project)
+        self.connect(actionClose, SIGNAL("triggered()"),
+            self._about_to_close_file)
+        self.connect(actionCloseAllNotThis, SIGNAL("triggered()"),
+            self._close_all_files_except_this)
+        self.connect(actionCloseAll, SIGNAL("triggered()"),
+            self._close_all_files)
+        self.connect(actionCopyPath, SIGNAL("triggered()"),
+            self._copy_file_location)
+        #self.connect(actionReopen, SIGNAL("triggered()"),
+            #self._reopen_last_tab)
+        menu.exec_(QCursor.pos())
+
+    def _create_menu_syntax(self, menuSyntax):
+        """Create Menu with the list of syntax supported."""
+        syntax = list(settings.SYNTAX.keys())
+        syntax.sort()
+        for syn in syntax:
+            menuSyntax.addAction(syn)
+            self.connect(menuSyntax, SIGNAL("triggered(QAction*)"),
+                self._reapply_syntax)
+
+    def _reapply_syntax(self, syntaxAction):
+        #TODO
+        if [self.currentIndex(), syntaxAction] != self._resyntax:
+            self._resyntax = [self.currentIndex(), syntaxAction]
+            self.emit(SIGNAL("syntaxChanged(QWidget, QString)"),
+                self.currentWidget(), syntaxAction.text())
+
+    def _about_to_close_file(self, index=None):
+        """Close the NFile object."""
+        if index is None:
+            index = self.combo.currentIndex()
+        neditable = self.combo.itemData(index)
+        neditable.nfile.close()
+
+    def close_file(self, neditable):
+        """Receive the confirmation to close the file."""
+        index = self.combo.findData(neditable)
+        self.combo.removeItem(index)
+        return index
+
+    def _run_this_file(self):
+        """Execute the current file."""
+        neditable = self.combo.itemData(self.combo.currentIndex())
+        self.emit(SIGNAL("runFile(QString)"), neditable.nfile.file_path)
+
+    def _add_to_project(self):
+        """Emit a signal to let someone handle the inclusion of the file
+        inside a project."""
+        neditable = self.combo.itemData(self.combo.currentIndex())
+        self.emit(SIGNAL("addToProject(QString)"), neditable.nfile.file_path)
+
+    #def _reopen_last_tab(self):
+        #self.emit(SIGNAL("reopenTab(QString)"), self.__lastOpened.pop())
+        #self.emit(SIGNAL("recentTabsModified(QStringList)"), self.__lastOpened)
+
+    def _split_this_tab(self, orientation):
+        self.emit(SIGNAL("splitTab(QTabWidget, int, bool)"),
+            self, self.currentIndex(), orientation)
+
+    def _copy_file_location(self):
+        """Copy the path of the current opened file to the clipboard."""
+        neditable = self.combo.itemData(self.combo.currentIndex())
+        QApplication.clipboard().setText(neditable.nfile.file_path,
+            QClipboard.Clipboard)
+
+    def _close_all_files(self):
+        """Close all the files opened."""
+        for i in range(self.combo.count()):
+            self._about_to_close_file(0)
+
+    def _close_all_files_except_this(self):
+        """Close all the files except the current one."""
+        neditable = self.combo.itemData(self.combo.currentIndex())
+        for i in reversed(list(range(self.combo.count()))):
+            ne = self.combo.itemData(i)
+            if ne is not neditable:
+                self._about_to_close_file(i)
 
 
 class CodeNavigator(QWidget):

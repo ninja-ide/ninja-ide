@@ -31,10 +31,19 @@ class NEditable(QObject):
         # Connect signals
         if self._nfile:
             self.connect(self._nfile, SIGNAL("neverSavedFileClosing(QString)"),
-                lambda path: self.emit(
-                    SIGNAL("neverSavedFileClosing(QString)"), path))
+                self._about_to_close_never_saved)
             self.connect(self._nfile, SIGNAL("fileClosing(QString)"),
-                lambda path: self.emit(SIGNAL("fileClosing(QString)"), path))
+                lambda: self.emit(SIGNAL("fileClosing(PyQt_PyObject)"),
+                    self))
+
+    def _about_to_close_never_saved(self, path):
+        modified = False
+        if self.__editor:
+            modified = self.__editor.is_modified
+        if modified:
+            self.emit(SIGNAL("neverSavedFileClosing(PyQt_PyObject)"), self)
+        else:
+            self.emit(SIGNAL("fileClosing(PyQt_PyObject)"), self)
 
     def set_editor(self, editor):
         """Set the Editor (UI component) associated with this object."""

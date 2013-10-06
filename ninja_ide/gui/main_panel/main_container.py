@@ -108,10 +108,6 @@ class _MainContainer(QWidget):
 
         self.connect(self, SIGNAL("locateFunction(QString, QString, bool)"),
             self.locate_function)
-        #self.connect(self.tabs, SIGNAL("currentChanged(int)"),
-            #self._current_tab_changed)
-        #self.connect(self.tabs, SIGNAL("splitTab(QTabWidget, int, bool)"),
-            #self._split_this_tab)
         #self.connect(self.tabs, SIGNAL("reopenTab(QString)"),
             #self.open_file)
         #self.connect(self.tabs, SIGNAL("syntaxChanged(QWidget, QString)"),
@@ -181,6 +177,12 @@ class _MainContainer(QWidget):
                 editorWidget.textCursor().position()))
             self.__codeForward = []
         self._locator.navigate_to(function, filePath, isVariable)
+
+    def run_file(self, path):
+        self.emit(SIGNAL("runFile(QString)"), path)
+
+    def _add_to_project(self, path):
+        self.emit(SIGNAL("addToProject(QString)"), path)
 
     def paste_history(self):
         """Paste the text from the copy/paste history."""
@@ -545,35 +547,6 @@ class _MainContainer(QWidget):
         if widget:
             widget.setFocus()
 
-    def group_tabs_together(self):
-        """Group files that belongs to the same project together."""
-        pass
-        #TODO
-        #ninjaide = IDE.get_service('ide')
-        #projects = ninjaide.get_opened_projects()
-        #for project in projects:
-            #project_name = projects[project].name
-            #project_path = projects[project].path
-            #tabGroup = tab_group.TabGroup(project_path, project_name, self)
-            #self.connect(tabGroup, SIGNAL("expandAll()"),
-                #self.deactivate_tabs_groups)
-            #for index in reversed(list(range(self.tabs.count()))):
-                #widget = self.tabs.widget(index)
-                #if (isinstance(widget, editor.Editor) and
-                    #widget.project == projects[project]):
-                    #tabGroup.add_widget(widget)
-                    #self.tabs.removeTab(index)
-            #if tabGroup.tabs:
-                #self.tabs.add_tab(tabGroup, project_name)
-
-    def deactivate_tabs_groups(self):
-        """Deactivate tab grouping based in the project they belong."""
-        #TODO
-        #for index in reversed(list(range(self.tabs.count()))):
-            #widget = self.tabs.widget(index)
-            #if isinstance(widget, tab_group.TabGroup):
-                #widget.expand()
-
     def _main_without_tabs(self):
         """Notify that there are no more tabs opened."""
         self.emit(SIGNAL("allTabsClosed()"))
@@ -583,24 +556,6 @@ class _MainContainer(QWidget):
         if filename is None:
             filename = translations.TR_NEW_DOCUMENT
         self.emit(SIGNAL("currentEditorChanged(QString)"), filename)
-
-    def split_tab(self, orientation):
-        pass
-        #FIXME: check how we handle this
-        #"""Split the main container."""
-        #if orientationHorizontal:
-            #self.show_split(Qt.Vertical)
-        #else:
-            #self.show_split(Qt.Horizontal)
-
-    def _split_this_tab(self, tab, index, orientationHorizontal):
-        pass
-        #FIXME: check how we handle this
-        #tab.setCurrentIndex(index)
-        #if orientationHorizontal:
-            #self.show_split(Qt.Horizontal)
-        #else:
-            #self.show_split(Qt.Vertical)
 
     def change_tabs_visibility(self):
         if self._tabMain.tabBar().isVisible():
@@ -1228,12 +1183,6 @@ class _MainContainer(QWidget):
                     editorWidget.ID)
                 fileName = fileName[:fileName.rfind('.')] + '.pdf'
             ui_tools.print_file(fileName, editorWidget.print_)
-
-    def split_tabh(self):
-        self.split_tab(True)
-
-    def split_tabv(self):
-        self.split_tab(False)
 
     def split_assistance(self):
         dialog = split_orientation.SplitOrientation(self)
