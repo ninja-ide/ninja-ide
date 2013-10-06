@@ -18,6 +18,7 @@ from PyQt4.QtCore import Qt
 
 from ninja_ide import translations
 from ninja_ide import resources
+from ninja_ide.gui.ide import IDE
 
 
 class ComboEditor(QWidget):
@@ -36,6 +37,8 @@ class ComboEditor(QWidget):
 
         self.stacked = QStackedLayout()
         vbox.addLayout(self.stacked)
+
+        self._main_container = IDE.get_service('main_container')
 
     def currentWidget(self):
         return self.stacked.currentWidget()
@@ -58,6 +61,7 @@ class ComboEditor(QWidget):
         self.stacked.setCurrentWidget(neditable.editor)
         self._update_cursor_position(ignore_sender=True)
         neditable.editor.setFocus()
+        self._main_container.current_editor_changed(neditable.nfile.file_path)
 
     def widget(self, index):
         return self.stacked.widget(index)
