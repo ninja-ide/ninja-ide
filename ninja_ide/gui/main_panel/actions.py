@@ -73,12 +73,12 @@ ACTIONS = (
     "connect": "editor_move_down"
     },
     {
-    "shortcut": "Close-tab",
+    "shortcut": "Close-file",
     "action": {'text': translations.TR_CLOSE_FILE,
                'image': QStyle.SP_DialogCloseButton,
                'section': (translations.TR_MENU_FILE, None),
                'weight': 910},
-    "connect": "close_tab"
+    "connect": "close_file"
     },
     {
     "shortcut": "New-file",
