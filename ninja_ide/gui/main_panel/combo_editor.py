@@ -67,6 +67,9 @@ class ComboEditor(QWidget):
                 self.connect(neditable, SIGNAL("fileClosing(PyQt_PyObject)"),
                     self.close_file)
 
+    def show_combo_file(self):
+        self.bar.combo.showPopup()
+
     def close_file(self, neditable):
         index = self.bar.close_file(neditable)
         layoutItem = self.stacked.takeAt(index)
@@ -116,8 +119,6 @@ class ActionBar(QFrame):
         hbox = QHBoxLayout(self)
         hbox.setContentsMargins(1, 1, 1, 1)
         hbox.setSpacing(1)
-
-        self.__lastOpened = []
 
         self.lbl_checks = QLabel('')
         self.lbl_checks.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)

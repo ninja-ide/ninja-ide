@@ -448,7 +448,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def _unfold_blocks_for_jump(self, lineno):
         """Unfold the blocks previous to the lineno."""
-        for line in self._sidebarWidget._foldedBlocks:
+        for line in self._sidebarWidget.foldedBlocks:
             if lineno >= line:
                 self._sidebarWidget.code_folding_event(line + 1)
             else:
