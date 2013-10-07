@@ -297,7 +297,8 @@ SHORTCUTS = {
     "Indent-more": QKeySequence(Qt.Key_Tab),
     "cut": QKeySequence(Qt.CTRL + Qt.Key_X),
     "copy": QKeySequence(Qt.CTRL + Qt.Key_C),
-    "paste": QKeySequence(Qt.CTRL + Qt.Key_V)}
+    "paste": QKeySequence(Qt.CTRL + Qt.Key_V),
+    "expand-file-combo": QKeySequence(Qt.CTRL + Qt.Key_U)}
 
 CUSTOM_SHORTCUTS = {}
 

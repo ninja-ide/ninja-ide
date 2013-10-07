@@ -169,6 +169,9 @@ class _MainContainer(QWidget):
         else:
             self.show()
 
+    def expand_file_combo(self):
+        self.current_widget.show_combo_file()
+
     def locate_function(self, function, filePath, isVariable):
         """Move the cursor to the proper position in the navigate stack."""
         editorWidget = self.get_current_editor()
@@ -230,16 +233,14 @@ class _MainContainer(QWidget):
 
     def add_bookmark_breakpoint(self):
         """Add a bookmark or breakpoint to the current file in the editor."""
-        pass
-        #TODO
-        #editorWidget = self.get_current_editor()
-        #if editorWidget and editorWidget.hasFocus():
-            #if self.tabs.navigator.operation == 1:
-                #editorWidget._sidebarWidget.set_bookmark(
-                    #editorWidget.textCursor().blockNumber())
-            #elif self.tabs.navigator.operation == 2:
-                #editorWidget._sidebarWidget.set_breakpoint(
-                    #editorWidget.textCursor().blockNumber())
+        editorWidget = self.get_current_editor()
+        if editorWidget and editorWidget.hasFocus():
+            if self.current_widget.bar.code_navigator.operation == 1:
+                editorWidget._sidebarWidget.set_bookmark(
+                    editorWidget.textCursor().blockNumber())
+            elif self.current_widget.bar.code_navigator.operation == 2:
+                editorWidget._sidebarWidget.set_breakpoint(
+                    editorWidget.textCursor().blockNumber())
 
     def __navigate_with_keyboard(self, val):
         """Navigate between the positions in the jump history stack."""
