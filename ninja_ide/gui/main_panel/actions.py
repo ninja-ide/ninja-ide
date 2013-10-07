@@ -25,6 +25,10 @@ ACTIONS = (
     "connect": "change_tab"
     },
     {
+    "shortcut": "expand-file-combo",
+    "connect": "expand_file_combo"
+    },
+    {
     "shortcut": "Move-Tab-to-right",
     "connect": "move_tab_right"
     },
