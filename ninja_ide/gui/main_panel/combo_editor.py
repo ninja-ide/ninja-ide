@@ -65,12 +65,15 @@ class ComboEditor(QWidget):
             # Connect file system signals only in the original
             if self.__original:
                 self.connect(neditable, SIGNAL("fileClosing(PyQt_PyObject)"),
-                    self.close_file)
+                    self._close_file)
 
     def show_combo_file(self):
         self.bar.combo.showPopup()
 
-    def close_file(self, neditable):
+    def close_current_file(self):
+        self.bar.about_to_close_file()
+
+    def _close_file(self, neditable):
         index = self.bar.close_file(neditable)
         layoutItem = self.stacked.takeAt(index)
         layoutItem.widget().deleteLater()
@@ -162,7 +165,7 @@ class ActionBar(QFrame):
         self.btn_close.setToolTip(translations.TR_CLOSE_SPLIT)
         self.btn_close.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.connect(self.btn_close, SIGNAL("clicked()"),
-            self._about_to_close_file)
+            self.about_to_close_file)
         hbox.addWidget(self.btn_close)
 
     def add_item(self, text, data):
@@ -213,7 +216,7 @@ class ActionBar(QFrame):
         self.connect(actionAdd, SIGNAL("triggered()"),
             self._add_to_project)
         self.connect(actionClose, SIGNAL("triggered()"),
-            self._about_to_close_file)
+            self.about_to_close_file)
         self.connect(actionCloseAllNotThis, SIGNAL("triggered()"),
             self._close_all_files_except_this)
         self.connect(actionCloseAll, SIGNAL("triggered()"),
@@ -240,7 +243,7 @@ class ActionBar(QFrame):
             self.emit(SIGNAL("syntaxChanged(QWidget, QString)"),
                 self.currentWidget(), syntaxAction.text())
 
-    def _about_to_close_file(self, index=None):
+    def about_to_close_file(self, index=None):
         """Close the NFile object."""
         if index is None:
             index = self.combo.currentIndex()
@@ -281,7 +284,7 @@ class ActionBar(QFrame):
     def _close_all_files(self):
         """Close all the files opened."""
         for i in range(self.combo.count()):
-            self._about_to_close_file(0)
+            self.about_to_close_file(0)
 
     def _close_all_files_except_this(self):
         """Close all the files except the current one."""
@@ -289,7 +292,7 @@ class ActionBar(QFrame):
         for i in reversed(list(range(self.combo.count()))):
             ne = self.combo.itemData(i)
             if ne is not neditable:
-                self._about_to_close_file(i)
+                self.about_to_close_file(i)
 
 
 class CodeNavigator(QWidget):
