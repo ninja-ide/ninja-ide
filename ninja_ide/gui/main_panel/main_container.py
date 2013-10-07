@@ -1137,10 +1137,9 @@ class _MainContainer(QWidget):
             ##assign None to the browser
             #self.docPage = None
 
-    def close_tab(self):
+    def close_file(self):
         """Close the current tab in the current TabWidget."""
-        pass
-        #self.tabs.close_tab()
+        self.current_widget.close_current_file()
 
     def change_tab(self):
         """Change the tab in the current TabWidget."""

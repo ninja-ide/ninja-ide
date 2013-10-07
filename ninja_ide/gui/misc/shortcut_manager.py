@@ -132,7 +132,7 @@ class ShortcutConfiguration(QWidget):
             "Remove-line": self.tr("Remove the line/selection"),
             "Move-up": self.tr("Move the line/selection up"),
             "Move-down": self.tr("Move the line/selection down"),
-            "Close-tab": self.tr("Close the current tab"),
+            "Close-file": self.tr("Close the current tab"),
             "New-file": self.tr("Create a New tab"),
             "New-project": self.tr("Create a new Project"),
             "Open-file": self.tr("Open a File"),
