@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from PyQt4.QtGui import QApplication
+from PyQt4.QtGui import QMessageBox
 #from PyQt4.QtGui import QStandardItemModel
 #from PyQt4.QtGui import QAbstractItemView
 from PyQt4.QtGui import QClipboard
@@ -49,6 +50,15 @@ class ComboEditor(QWidget):
 
         self._main_container = IDE.get_service('main_container')
 
+        self.connect(self.bar.code_navigator.btnPrevious, SIGNAL("clicked()"),
+            lambda: self._navigate_code(False))
+        self.connect(self.bar.code_navigator.btnNext, SIGNAL("clicked()"),
+            lambda: self._navigate_code(True))
+
+    def _navigate_code(self, val):
+        op = self.bar.code_navigator.operation
+        self._main_container.navigate_code_history(val, op)
+
     def currentWidget(self):
         return self.stacked.currentWidget()
 
@@ -63,9 +73,12 @@ class ComboEditor(QWidget):
                 self._update_cursor_position)
 
             # Connect file system signals only in the original
+            self.connect(neditable, SIGNAL("fileClosing(PyQt_PyObject)"),
+                self._close_file)
             if self.__original:
-                self.connect(neditable, SIGNAL("fileClosing(PyQt_PyObject)"),
-                    self._close_file)
+                self.connect(neditable,
+                    SIGNAL("neverSavedFileClosing(PyQt_PyObject)"),
+                    self._ask_for_save)
 
     def show_combo_file(self):
         self.bar.combo.showPopup()
@@ -76,7 +89,23 @@ class ComboEditor(QWidget):
     def _close_file(self, neditable):
         index = self.bar.close_file(neditable)
         layoutItem = self.stacked.takeAt(index)
+        neditable.editor.completer.cc.unload_module()
         layoutItem.widget().deleteLater()
+
+    def _ask_for_save(self, neditable):
+        val = QMessageBox.No
+        fileName = neditable.file_path
+        val = QMessageBox.question(
+            self, (self.tr('The file %s was not saved') %
+                fileName),
+                self.tr("Do you want to save before closing?"),
+                QMessageBox.Yes | QMessageBox.No |
+                QMessageBox.Cancel)
+        if val == QMessageBox.No:
+            neditable.nfile.close(force_close=True)
+        elif val == QMessageBox.Yes:
+            self._main_container.save_file(neditable.editor)
+            neditable.nfile.close()
 
     def _run_file(self, path):
         self._main_container.run_file(path)
@@ -90,7 +119,7 @@ class ComboEditor(QWidget):
             self._update_cursor_position(ignore_sender=True)
             neditable.editor.setFocus()
             self._main_container.current_editor_changed(
-                neditable.nfile.file_path)
+                neditable.file_path)
 
     def widget(self, index):
         return self.stacked.widget(index)
@@ -225,6 +254,7 @@ class ActionBar(QFrame):
             self._copy_file_location)
         #self.connect(actionReopen, SIGNAL("triggered()"),
             #self._reopen_last_tab)
+
         menu.exec_(QCursor.pos())
 
     def _create_menu_syntax(self, menuSyntax):
@@ -259,13 +289,13 @@ class ActionBar(QFrame):
     def _run_this_file(self):
         """Execute the current file."""
         neditable = self.combo.itemData(self.combo.currentIndex())
-        self.emit(SIGNAL("runFile(QString)"), neditable.nfile.file_path)
+        self.emit(SIGNAL("runFile(QString)"), neditable.file_path)
 
     def _add_to_project(self):
         """Emit a signal to let someone handle the inclusion of the file
         inside a project."""
         neditable = self.combo.itemData(self.combo.currentIndex())
-        self.emit(SIGNAL("addToProject(QString)"), neditable.nfile.file_path)
+        self.emit(SIGNAL("addToProject(QString)"), neditable.file_path)
 
     #def _reopen_last_tab(self):
         #self.emit(SIGNAL("reopenTab(QString)"), self.__lastOpened.pop())
@@ -278,7 +308,7 @@ class ActionBar(QFrame):
     def _copy_file_location(self):
         """Copy the path of the current opened file to the clipboard."""
         neditable = self.combo.itemData(self.combo.currentIndex())
-        QApplication.clipboard().setText(neditable.nfile.file_path,
+        QApplication.clipboard().setText(neditable.file_path,
             QClipboard.Clipboard)
 
     def _close_all_files(self):

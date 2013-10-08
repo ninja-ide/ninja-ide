@@ -179,6 +179,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         return self._neditable.nfile
 
     @property
+    def file_path(self):
+        return self._neditable.file_path
+
+    @property
     def is_modified(self):
         return self.document().isModified()
 
