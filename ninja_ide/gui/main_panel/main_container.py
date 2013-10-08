@@ -112,17 +112,9 @@ class _MainContainer(QWidget):
             #self.open_file)
         #self.connect(self.tabs, SIGNAL("syntaxChanged(QWidget, QString)"),
             #self._specify_syntax)
-        #self.connect(self.tabs, SIGNAL("allTabsClosed()"),
-            #self._main_without_tabs)
         ##reload file
         #self.connect(self.tabs, SIGNAL("reloadFile(QWidget)"),
             #self.reload_file)
-        ##for Save on Close operation
-        #self.connect(self.tabs, SIGNAL("saveActualEditor()"),
-            #self.save_file)
-        ##Navigate Code
-        #self.connect(self.tabs, SIGNAL("navigateCode(bool, int)"),
-            #self.navigate_code_history)
         ## Refresh recent tabs
         #self.connect(self.tabs, SIGNAL("recentTabsModified(QStringList)"),
             #self._recent_files_changed)
@@ -176,7 +168,7 @@ class _MainContainer(QWidget):
         """Move the cursor to the proper position in the navigate stack."""
         editorWidget = self.get_current_editor()
         if editorWidget:
-            self.__codeBack.append((editorWidget.nfile.file_path,
+            self.__codeBack.append((editorWidget.file_path,
                 editorWidget.textCursor().position()))
             self.__codeForward = []
         self._locator.navigate_to(function, filePath, isVariable)
@@ -217,7 +209,7 @@ class _MainContainer(QWidget):
         """Add an item to the back stack and reset the forward stack."""
         editorWidget = self.get_current_editor()
         if editorWidget:
-            self.__codeBack.append((editorWidget.nfile.file_path,
+            self.__codeBack.append((editorWidget.file_path,
                 editorWidget.textCursor().position()))
             self.__codeForward = []
 
@@ -225,9 +217,9 @@ class _MainContainer(QWidget):
         """Load the current html file in the default browser."""
         editorWidget = self.get_current_editor()
         if editorWidget:
-            if not editorWidget.nfile.file_path:
+            if not editorWidget.file_path:
                 self.save_file()
-            ext = file_manager.get_file_extension(editorWidget.nfile.file_path)
+            ext = file_manager.get_file_extension(editorWidget.file_path)
             if ext == 'html':
                 webbrowser.open(editorWidget.ID)
 
@@ -244,7 +236,7 @@ class _MainContainer(QWidget):
 
     def __navigate_with_keyboard(self, val):
         """Navigate between the positions in the jump history stack."""
-        op = self.actualTab._tabs.operation
+        op = self.current_widget.bar.code_navigator.operation
         self.navigate_code_history(val, op)
 
     def navigate_code_history(self, val, op):
@@ -258,13 +250,13 @@ class _MainContainer(QWidget):
             node = self.__codeBack.pop()
             editorWidget = self.get_current_editor()
             if editorWidget:
-                self.__codeForward.append((editorWidget.ID,
+                self.__codeForward.append((editorWidget.file_path,
                     editorWidget.textCursor().position()))
         elif val and self.__codeForward:
             node = self.__codeForward.pop()
             editorWidget = self.get_current_editor()
             if editorWidget:
-                self.__codeBack.append((editorWidget.ID,
+                self.__codeBack.append((editorWidget.file_path,
                     editorWidget.textCursor().position()))
         if node:
             self.open_file(node[0], node[1])
@@ -530,7 +522,7 @@ class _MainContainer(QWidget):
         if editorWidget:
             editorWidget.zoom_out()
 
-    def _recent_files_changed(self, files):
+    def recent_files_changed(self, files):
         self.emit(SIGNAL("recentTabsModified(QStringList)"), files)
 
     def dragEnterEvent(self, event):

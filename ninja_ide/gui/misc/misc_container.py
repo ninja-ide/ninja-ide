@@ -191,9 +191,9 @@ class _ToolsDock(QWidget):
         if editorWidget:
             #emit a signal for plugin!
             self.emit(SIGNAL("fileExecuted(QString)"),
-                editorWidget.nfile.file_path)
+                editorWidget.file_path)
             main_container.save_file(editorWidget)
-            ext = file_manager.get_file_extension(editorWidget.nfile.file_path)
+            ext = file_manager.get_file_extension(editorWidget.file_path)
             #TODO: Remove the IF statment with polymorphism using Handler
             if ext == 'py':
                 self.run_application(editorWidget.ID)

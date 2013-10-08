@@ -239,14 +239,14 @@ class NFile(QObject):
             if not signal_handler.stopped():
                 os.remove(self._file_path)
 
-    def close(self):
+    def close(self, force_close=False):
         """
         Lets let people know we are going down so they can act upon
         As you can see close does nothing but let everyone know that we are
         not saved yet
         """
         DEBUG("About to close NFile")
-        if self.__created:
+        if self.__created and not force_close:
             self.emit(SIGNAL("neverSavedFileClosing(QString)"),
                         self._file_path)
         else:

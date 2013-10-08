@@ -12,8 +12,8 @@ class NEditable(QObject):
     """
     SIGNALS:
     @checkersUpdated()
-    @neverSavedFileClosing(QString)
-    @fileClosing(QString)
+    @neverSavedFileClosing(PyQt_PyObject)
+    @fileClosing(PyQt_PyObject)
     """
 
     def __init__(self, nfile):
