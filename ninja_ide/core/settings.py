@@ -123,6 +123,8 @@ TOOLBAR_ITEMS_PLUGINS = []
 
 NINJA_SKIN = 'Default'
 
+LAST_OPENED_FILES = []
+
 
 ###############################################################################
 # EDITOR

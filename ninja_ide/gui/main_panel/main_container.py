@@ -77,7 +77,7 @@ class _MainContainer(QWidget):
     --------cursorPositionChange(int, int)    #row, col
     fileOpened(QString)
     newFileOpened(QString)
-    --------recentTabsModified(QStringList)
+    recentTabsModified()
     ---------migrationAnalyzed()
     allTabClosed()
     """
@@ -522,8 +522,8 @@ class _MainContainer(QWidget):
         if editorWidget:
             editorWidget.zoom_out()
 
-    def recent_files_changed(self, files):
-        self.emit(SIGNAL("recentTabsModified(QStringList)"), files)
+    def recent_files_changed(self):
+        self.emit(SIGNAL("recentTabsModified()"))
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
