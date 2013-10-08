@@ -37,12 +37,6 @@ class ComboEditor(QWidget):
         vbox.setSpacing(0)
 
         self.bar = ActionBar()
-        self.connect(self.bar, SIGNAL("changeCurrent(PyQt_PyObject)"),
-            self.set_current)
-        self.connect(self.bar, SIGNAL("runFile(QString)"),
-            self._run_file)
-        self.connect(self.bar, SIGNAL("addToProject(QString)"),
-            self._add_to_project)
         vbox.addWidget(self.bar)
 
         self.stacked = QStackedLayout()
@@ -50,6 +44,16 @@ class ComboEditor(QWidget):
 
         self._main_container = IDE.get_service('main_container')
 
+        self.connect(self.bar, SIGNAL("changeCurrent(PyQt_PyObject)"),
+            self.set_current)
+        self.connect(self.bar, SIGNAL("runFile(QString)"),
+            self._run_file)
+        self.connect(self.bar, SIGNAL("addToProject(QString)"),
+            self._add_to_project)
+        self.connect(self.bar, SIGNAL("reopenTab(QString)"),
+            lambda path: self._main_container.open_file(path))
+        self.connect(self.bar, SIGNAL("recentTabsModified()"),
+            lambda: self._main_container.recent_files_changed())
         self.connect(self.bar.code_navigator.btnPrevious, SIGNAL("clicked()"),
             lambda: self._navigate_code(False))
         self.connect(self.bar.code_navigator.btnNext, SIGNAL("clicked()"),
@@ -90,7 +94,15 @@ class ComboEditor(QWidget):
         index = self.bar.close_file(neditable)
         layoutItem = self.stacked.takeAt(index)
         neditable.editor.completer.cc.unload_module()
+        self._add_to_last_opened(neditable.file_path)
         layoutItem.widget().deleteLater()
+
+    def _add_to_last_opened(self, path):
+        if path not in settings.LAST_OPENED_FILES:
+            settings.LAST_OPENED_FILES.append(path)
+            if len(settings.LAST_OPENED_FILES) > settings.MAX_REMEMBER_TABS:
+                self.__lastOpened = self.__lastOpened[1:]
+            self.emit(SIGNAL("recentTabsModified()"))
 
     def _ask_for_save(self, neditable):
         val = QMessageBox.No
@@ -143,6 +155,8 @@ class ActionBar(QFrame):
     SIGNALS:
     @changeCurrent(PyQt_PyObject)
     @runFile(QString)
+    @reopenTab(QString)
+    @recentTabsModified()
     """
 
     def __init__(self):
@@ -232,9 +246,9 @@ class ActionBar(QFrame):
         menu.addSeparator()
         actionCopyPath = menu.addAction(
             translations.TR_COPY_FILE_PATH_TO_CLIPBOARD)
-        #actionReopen = menu.addAction(translations.TR_REOPEN_FILE)
-        #if len(self.__lastOpened) == 0:
-            #actionReopen.setEnabled(False)
+        actionReopen = menu.addAction(translations.TR_REOPEN_FILE)
+        if len(settings.LAST_OPENED_FILES) == 0:
+            actionReopen.setEnabled(False)
         #Connect actions
         self.connect(actionSplitH, SIGNAL("triggered()"),
             lambda: self._split_this_tab(True))
@@ -252,8 +266,8 @@ class ActionBar(QFrame):
             self._close_all_files)
         self.connect(actionCopyPath, SIGNAL("triggered()"),
             self._copy_file_location)
-        #self.connect(actionReopen, SIGNAL("triggered()"),
-            #self._reopen_last_tab)
+        self.connect(actionReopen, SIGNAL("triggered()"),
+            self._reopen_last_tab)
 
         menu.exec_(QCursor.pos())
 
@@ -297,9 +311,10 @@ class ActionBar(QFrame):
         neditable = self.combo.itemData(self.combo.currentIndex())
         self.emit(SIGNAL("addToProject(QString)"), neditable.file_path)
 
-    #def _reopen_last_tab(self):
-        #self.emit(SIGNAL("reopenTab(QString)"), self.__lastOpened.pop())
-        #self.emit(SIGNAL("recentTabsModified(QStringList)"), self.__lastOpened)
+    def _reopen_last_tab(self):
+        self.emit(SIGNAL("reopenTab(QString)"),
+            settings.LAST_OPENED_FILES.pop())
+        self.emit(SIGNAL("recentTabsModified()"))
 
     def _split_this_tab(self, orientation):
         self.emit(SIGNAL("splitTab(QTabWidget, int, bool)"),
