@@ -17,6 +17,7 @@
 
 from __future__ import absolute_import
 
+
 ###############################################################################
 # METADATA
 ###############################################################################
@@ -26,7 +27,7 @@ __author__ = "The NINJA-IDE Team"
 __mail__ = "ninja-ide at googlegroups dot com"
 __url__ = "http://www.ninja-ide.org"
 __source__ = "https://github.com/ninja-ide/ninja-ide"
-__version__ = "2.5-dev"
+__version__ = "3.0-dev"
 __license__ = "GPL3"
 
 ###############################################################################
