@@ -317,6 +317,7 @@ class ActionBar(QFrame):
         self.emit(SIGNAL("recentTabsModified()"))
 
     def _split_this_tab(self, orientation):
+        #TODO
         self.emit(SIGNAL("splitTab(QTabWidget, int, bool)"),
             self, self.currentIndex(), orientation)
 

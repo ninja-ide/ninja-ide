@@ -26,10 +26,7 @@ from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QStackedLayout
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QFileDialog
-from PyQt4.QtGui import QIcon
 from PyQt4.QtCore import SIGNAL
-#from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QDir
 
 from ninja_ide import resources
 from ninja_ide import translations
@@ -37,7 +34,6 @@ from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
 from ninja_ide.gui import dynamic_splitter
 from ninja_ide.gui.ide import IDE
-from ninja_ide.gui.main_panel import tab_group
 from ninja_ide.gui.editor import editor
 from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.main_panel import actions
@@ -69,12 +65,9 @@ class _MainContainer(QWidget):
     --------openProject(QString)
     openPreferences()
     ---------dontOpenStartPage()
-    -------navigateCode(bool, int)
-    ----------addBackItemNavigation()
     ----------updateLocator(QString)
     ---------updateFileMetadata()
     findOcurrences(QString)
-    --------cursorPositionChange(int, int)    #row, col
     fileOpened(QString)
     newFileOpened(QString)
     recentTabsModified()
@@ -108,16 +101,6 @@ class _MainContainer(QWidget):
 
         self.connect(self, SIGNAL("locateFunction(QString, QString, bool)"),
             self.locate_function)
-        #self.connect(self.tabs, SIGNAL("reopenTab(QString)"),
-            #self.open_file)
-        #self.connect(self.tabs, SIGNAL("syntaxChanged(QWidget, QString)"),
-            #self._specify_syntax)
-        ##reload file
-        #self.connect(self.tabs, SIGNAL("reloadFile(QWidget)"),
-            #self.reload_file)
-        ## Refresh recent tabs
-        #self.connect(self.tabs, SIGNAL("recentTabsModified(QStringList)"),
-            #self._recent_files_changed)
 
         IDE.register_service('main_container', self)
 
@@ -536,59 +519,18 @@ class _MainContainer(QWidget):
         self.open_file(file_path)
 
     def setFocus(self):
-        widget = self.get_actual_widget()
+        widget = self.get_current_widget()
         if widget:
             widget.setFocus()
 
-    def _main_without_tabs(self):
-        """Notify that there are no more tabs opened."""
-        self.emit(SIGNAL("allTabsClosed()"))
-
     def current_editor_changed(self, filename):
-        """Notify the new ID of the current tab."""
+        """Notify the new filename of the current editor."""
         if filename is None:
             filename = translations.TR_NEW_DOCUMENT
         self.emit(SIGNAL("currentEditorChanged(QString)"), filename)
 
-    def change_tabs_visibility(self):
-        if self._tabMain.tabBar().isVisible():
-            self._tabMain.tabBar().hide()
-        else:
-            self._tabMain.tabBar().show()
-
     def show_split(self, orientation):
         pass
-        #FIXME: check how we handle this
-        #closingFollowMode = self._followMode
-        #if self._followMode:
-            #self._exit_follow_mode()
-        #if self.tabsecondary.isVisible() and \
-        #orientation == self.orientation():
-            #self.tabsecondary.hide()
-            #self.split_visible = False
-            #for i in range(self.tabsecondary.count()):
-                #widget = self.tabsecondary.widget(0)
-                #name = self.tabsecondary.tabText(0)
-                #self._tabMain.add_tab(widget, name)
-                #if name in self.tabsecondary.titles:
-                    #self.tabsecondary.titles.remove(name)
-                #if type(widget) is editor.Editor and widget.textModified:
-                    #self._tabMain.tab_was_modified(True)
-            #self.actualTab = self._tabMain
-        #elif not self.tabsecondary.isVisible() and not closingFollowMode:
-            #widget = self.get_actual_widget()
-            #name = self._tabMain.tabText(self._tabMain.currentIndex())
-            #self.tabsecondary.add_tab(widget, name)
-            #if name in self._tabMain.titles:
-                #self._tabMain.titles.remove(name)
-            #if type(widget) is editor.Editor and widget.textModified:
-                #self.tabsecondary.tab_was_modified(True)
-            #self.tabsecondary.show()
-            #self.split_visible = True
-            #self.splitter.setSizes([1, 1])
-            #self.actualTab = self.tabsecondary
-            #self.emit(SIGNAL("currentEditorChanged(QString)"), widget.ID)
-        #self.splitter.setOrientation(orientation)
 
     def add_editor(self, fileName=None, tabIndex=None):
         ninjaide = IDE.get_service('ide')
@@ -620,9 +562,6 @@ class _MainContainer(QWidget):
             self._find_occurrences)
         self.connect(editorWidget, SIGNAL("migrationAnalyzed()"),
             lambda: self.emit(SIGNAL("migrationAnalyzed()")))
-        #Cursor position changed
-        self.connect(editorWidget, SIGNAL("cursorPositionChange(int, int)"),
-            self._cursor_position_changed)
         #keyPressEventSignal for plugins
         self.connect(editorWidget, SIGNAL("keyPressEvent(QEvent)"),
             self._editor_keyPressEvent)
@@ -631,16 +570,6 @@ class _MainContainer(QWidget):
         self.emit(SIGNAL("fileOpened(QString)"), fileName)
 
         return editorWidget
-
-    def update_editor_project(self):
-        pass
-        #FIXME: check how we handle this
-        #for i in range(self._tabMain.count()):
-            #widget = self._tabMain.widget(i)
-            #if type(widget) is editor.Editor:
-                #project = self._parent.explorer.get_project_given_filename(
-                    #widget.ID)
-                #widget.set_project(project)
 
     def reset_pep8_warnings(self, value):
         pass
@@ -681,9 +610,6 @@ class _MainContainer(QWidget):
                     #widget.errors.check_errors()
                 #else:
                     #widget.hide_lint_errors()
-
-    def _cursor_position_changed(self, row, col):
-        self.emit(SIGNAL("cursorPositionChange(int, int)"), row, col)
 
     def _find_occurrences(self, word):
         self.emit(SIGNAL("findOcurrences(QString)"), word)
@@ -736,10 +662,9 @@ class _MainContainer(QWidget):
     def reload_file(self, editorWidget=None):
         if editorWidget is None:
             editorWidget = self.get_current_editor()
-        #if editorWidget is not None and editorWidget.ID:
-            #fileName = editorWidget.ID
+        #if editorWidget is not None and editorWidget.file_path:
+            #fileName = editorWidget.file_path
             #old_cursor_position = editorWidget.textCursor().position()
-            #old_widget_index = self.tabs.indexOf(editorWidget)
             #self.tabs.removeTab(old_widget_index)
             ##open the file in the same tab as before
             #self.open_file(fileName, tabIndex=old_widget_index)
@@ -838,28 +763,6 @@ class _MainContainer(QWidget):
             #self.tabs.move_to_open(filename)
         #self.tabs.currentWidget().setFocus()
         #self.emit(SIGNAL("currentEditorChanged(QString)"), filename)
-
-    def move_tab_right(self):
-        self._move_tab()
-
-    def move_tab_left(self):
-        self._move_tab(forward=False)
-
-    def _move_tab(self, forward=True, widget=None):
-        pass
-        #if widget is None:
-            #widget = self.tabs.currentWidget()
-        #if widget is not None:
-            #old_widget_index = self.tabs.indexOf(widget)
-            #if forward and old_widget_index < self.tabs.count() - 1:
-                #new_widget_index = old_widget_index + 1
-            #elif old_widget_index > 0 and not forward:
-                #new_widget_index = old_widget_index - 1
-            #else:
-                #return
-            #tabName = self.tabs.tabText(old_widget_index)
-            #self.tabs.insertTab(new_widget_index, widget, tabName)
-            #self.tabs.setCurrentIndex(new_widget_index)
 
     def get_widget_for_id(self, filename):
         pass
