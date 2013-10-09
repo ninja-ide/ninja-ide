@@ -1,5 +1,5 @@
 
-SOURCES += ninja_ide/gui/translations.py 
+SOURCES += ninja_ide/translations.py 
 
 
 TRANSLATIONS = ninja.ts
