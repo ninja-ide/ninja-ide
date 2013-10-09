@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="img">
+    <file alias="chevron">img/chevron-down.png</file>
+  </qresource>
+</RCC>
