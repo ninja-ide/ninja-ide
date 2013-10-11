@@ -818,6 +818,7 @@ class _MainContainer(QWidget):
 
     def open_file(self, filename='', cursorPosition=-1,
                   tabIndex=None, positionIsLineNumber=False, notStart=True):
+        logger.debug("will try to open %s" % filename)
         if not filename:
             if settings.WORKSPACE:
                 directory = settings.WORKSPACE

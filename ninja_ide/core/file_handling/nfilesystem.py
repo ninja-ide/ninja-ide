@@ -15,9 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt4.QtCore import QObject, SIGNAL
+import os
+from PyQt4.QtCore import QObject, QDir, SIGNAL
 from PyQt4.QtGui import QFileSystemModel
 from ninja_ide.core.file_handling.nfile import NFile
+from ninja_ide.tools.logger import NinjaLogger
+logger = NinjaLogger('ninja_ide.core.file_handling.nfilesystem')
 
 
 class NVirtualFileSystem(QObject):
@@ -36,9 +39,15 @@ class NVirtualFileSystem(QObject):
         project_path = project.path
         qfsm = None  # Should end up having a QFileSystemModel
         if project_path not in self.__projects:
-            qfsm = QFileSystemModel(project_path)
+            qfsm = QFileSystemModel()
             project.model = qfsm
             qfsm.setRootPath(project_path)
+            qfsm.setFilter(QDir.AllDirs | QDir.Files | QDir.NoDotAndDotDot)
+            # If set to true items that dont match are displayed disabled
+            qfsm.setNameFilterDisables(False)
+            pext = ["*{0}".format(x) for x in project.extensions]
+            logger.debug(pext)
+            qfsm.setNameFilters(pext)
             self.__projects[project_path] = project
             self.__check_files_for(project_path)
             self.emit(SIGNAL("projectOpened(PyQt_PyObject)"), project)
@@ -80,6 +89,8 @@ class NVirtualFileSystem(QObject):
                 return project
 
     def get_file(self, nfile_path=None):
+        if os.path.isdir(nfile_path):
+            return None
         if nfile_path not in self.__tree:
             nfile = NFile(nfile_path)
             self.__add_file(nfile)
