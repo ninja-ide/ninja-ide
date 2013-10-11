@@ -83,7 +83,7 @@ class NVirtualFileSystem(QObject):
         self.connect(nfile, SIGNAL("fileClosing(QString)"), self.__closed_file)
         existing_paths = sorted(list(self.__projects.keys()), reverse=True)
         for each_path in existing_paths:
-            if nfile.path.statswith(each_path):
+            if nfile.file_path.startswith(each_path):
                 project = self.__projects[each_path]
                 self.__reverse_project_map[nfile] = project
                 return project

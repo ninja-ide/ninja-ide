@@ -695,6 +695,7 @@ class _MainContainer(QWidget):
                   tabIndex=None, positionIsLineNumber=False, notStart=True):
         logger.debug("will try to open %s" % filename)
         if not filename:
+            logger.debug("has nofilename")
             if settings.WORKSPACE:
                 directory = settings.WORKSPACE
             else:
@@ -713,17 +714,21 @@ class _MainContainer(QWidget):
             fileNames = list(QFileDialog.getOpenFileNames(self,
                 self.tr("Open File"), directory, extensions))
         else:
+            logger.debug("has filename")
             fileNames = [filename]
         if not fileNames:
             return
 
         for filename in fileNames:
             if file_manager.get_file_extension(filename) in ('jpg', 'png'):
+                logger.debug("will open as image")
                 self.open_image(filename)
             elif file_manager.get_file_extension(filename).endswith('ui'):
+                logger.debug("will load in ui editor")
                 self.w = uic.loadUi(filename)
                 self.w.show()
             else:
+                logger.debug("will try to open")
                 self.__open_file(filename, cursorPosition,
                     tabIndex, positionIsLineNumber)
 
@@ -750,8 +755,6 @@ class _MainContainer(QWidget):
         except file_manager.NinjaIOException as reason:
             QMessageBox.information(self,
                 self.tr("The file couldn't be open"), str(reason))
-        except Exception as reason:
-            logger.error('open_file: %s', reason)
 
     def is_open(self, filename):
         pass
