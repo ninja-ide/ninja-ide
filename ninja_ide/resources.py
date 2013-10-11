@@ -236,7 +236,7 @@ SHORTCUTS = {
     "Remove-line": QKeySequence(Qt.CTRL + Qt.Key_E),  # Eliminate
     "Move-up": QKeySequence(Qt.ALT + Qt.Key_Up),
     "Move-down": QKeySequence(Qt.ALT + Qt.Key_Down),
-    "Close-tab": QKeySequence(Qt.CTRL + Qt.Key_W),
+    "Close-file": QKeySequence(Qt.CTRL + Qt.Key_W),
     "New-file": QKeySequence(Qt.CTRL + Qt.Key_N),
     "New-project": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_N),
     "Open-file": QKeySequence(Qt.CTRL + Qt.Key_O),
@@ -297,7 +297,8 @@ SHORTCUTS = {
     "Indent-more": QKeySequence(Qt.Key_Tab),
     "cut": QKeySequence(Qt.CTRL + Qt.Key_X),
     "copy": QKeySequence(Qt.CTRL + Qt.Key_C),
-    "paste": QKeySequence(Qt.CTRL + Qt.Key_V)}
+    "paste": QKeySequence(Qt.CTRL + Qt.Key_V),
+    "expand-file-combo": QKeySequence(Qt.CTRL + Qt.Key_U)}
 
 CUSTOM_SHORTCUTS = {}
 

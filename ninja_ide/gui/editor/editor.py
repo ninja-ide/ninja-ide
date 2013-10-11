@@ -178,6 +178,14 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def nfile(self):
         return self._neditable.nfile
 
+    @property
+    def file_path(self):
+        return self._neditable.file_path
+
+    @property
+    def is_modified(self):
+        return self.document().isModified()
+
     def load_project_config(self):
         ninjaide = IDE.get_service('ide')
         project = ninjaide.get_project_for_file(self._neditable.file_path)
@@ -343,7 +351,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     def _file_saved(self, undoAvailable=False):
         if not undoAvailable:
             self.emit(SIGNAL("fileSaved(QPlainTextEdit)"), self)
-            self.textModified = False
             self.document().setModified(False)
 
     def register_syntax(self, lang='', syntax=None):
@@ -445,7 +452,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
     def _unfold_blocks_for_jump(self, lineno):
         """Unfold the blocks previous to the lineno."""
-        for line in self._sidebarWidget._foldedBlocks:
+        for line in self._sidebarWidget.foldedBlocks:
             if lineno >= line:
                 self._sidebarWidget.code_folding_event(line + 1)
             else:

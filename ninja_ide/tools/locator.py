@@ -817,7 +817,7 @@ class PopupCompleter(QFrame):
                     translations.TR_ONLY_CLASSES_METHODS)
         self.listWidget.addItem(thisFileItem)
         tabsItem = self._create_help_item(resources.IMAGES['locate-tab'],
-                translations.TR_ONLY_CURRENT_TABS)
+                translations.TR_ONLY_CURRENT_EDITORS)
         self.listWidget.addItem(tabsItem)
         lineItem = self._create_help_item(resources.IMAGES['locate-line'],
                 translations.TR_GO_TO_LINE)

@@ -25,12 +25,8 @@ ACTIONS = (
     "connect": "change_tab"
     },
     {
-    "shortcut": "Move-Tab-to-right",
-    "connect": "move_tab_right"
-    },
-    {
-    "shortcut": "Move-Tab-to-left",
-    "connect": "move_tab_left"
+    "shortcut": "expand-file-combo",
+    "connect": "expand_file_combo"
     },
     {
     "shortcut": "Change-Tab-Reverse",
@@ -69,12 +65,12 @@ ACTIONS = (
     "connect": "editor_move_down"
     },
     {
-    "shortcut": "Close-tab",
-    "action": {'text': translations.TR_CLOSE_TAB,
+    "shortcut": "Close-file",
+    "action": {'text': translations.TR_CLOSE_FILE,
                'image': QStyle.SP_DialogCloseButton,
                'section': (translations.TR_MENU_FILE, None),
                'weight': 910},
-    "connect": "close_tab"
+    "connect": "close_file"
     },
     {
     "shortcut": "New-file",
@@ -187,22 +183,6 @@ ACTIONS = (
                'section': (translations.TR_MENU_SOURCE, None),
                'weight': 110},
     "connect": "editor_indent_less"
-    },
-    {
-    "shortcut": "Split-horizontal",
-    "action": {'text': translations.TR_SPLIT_HORIZONTALLY,
-               'image': 'splitH',
-               'section': (translations.TR_MENU_VIEW, None),
-               'weight': 200},
-    "connect": "split_tabh"
-    },
-    {
-    "shortcut": "Split-vertical",
-    "action": {'text': translations.TR_SPLIT_VERTICALLY,
-               'image': 'splitV',
-               'section': (translations.TR_MENU_VIEW, None),
-               'weight': 210},
-    "connect": "split_tabv"
     },
     {
     "shortcut": "Close-Split",
@@ -355,18 +335,6 @@ ACTIONS = (
                'section': (translations.TR_MENU_VIEW, None),
                'weight': 110},
     "connect": "change_visibility"
-    },
-    {
-    "action": {'text': translations.TR_GROUP_TABS,
-               'section': (translations.TR_MENU_VIEW, None),
-               'weight': 300},
-    "connect": "group_tabs_together"
-    },
-    {
-    "action": {'text': translations.TR_DEACTIVATE_GROUP_TABS,
-               'section': (translations.TR_MENU_VIEW, None),
-               'weight': 310},
-    "connect": "deactivate_tabs_groups"
     },
     {
     "action": {'text': translations.TR_ZOOM_IN,

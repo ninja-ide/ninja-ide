@@ -164,4 +164,15 @@ Rectangle {
             }
         }
     }
+
+    Text {
+        text: "Esc to exit"
+        anchors {
+            right: parent.right
+            top: parent.top
+            margins: 5
+        }
+        color: "white"
+        font.pointSize: 7
+    }
 }

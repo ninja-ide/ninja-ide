@@ -17,8 +17,8 @@ class SplitOrientation(QDialog):
         self.setModal(True)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setStyleSheet("background:transparent;")
-        self.setFixedHeight(180)
-        self.setFixedWidth(315)
+        self.setFixedHeight(150)
+        self.setFixedWidth(310)
         # Create the QML user interface.
         view = QDeclarativeView()
         view.setResizeMode(QDeclarativeView.SizeRootObjectToView)

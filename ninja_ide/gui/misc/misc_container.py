@@ -62,7 +62,7 @@ class _ToolsDock(QWidget):
             'signal_name': "findOcurrences(QString)",
             'slot': self.show_find_occurrences},
             {'target': 'main_container',
-            'signal_name': "runFile()",
+            'signal_name': "runFile(QString)",
             'slot': self.execute_file},
             {'target': 'explorer_container',
             'signal_name': "removeProjectFromConsole(QString)",
@@ -187,12 +187,13 @@ class _ToolsDock(QWidget):
         main_container = IDE.get_service('main_container')
         if not main_container:
             return
-        editorWidget = main_container.get_actual_editor()
+        editorWidget = main_container.get_current_editor()
         if editorWidget:
             #emit a signal for plugin!
-            self.emit(SIGNAL("fileExecuted(QString)"), editorWidget.ID)
+            self.emit(SIGNAL("fileExecuted(QString)"),
+                editorWidget.file_path)
             main_container.save_file(editorWidget)
-            ext = file_manager.get_file_extension(editorWidget.ID)
+            ext = file_manager.get_file_extension(editorWidget.file_path)
             #TODO: Remove the IF statment with polymorphism using Handler
             if ext == 'py':
                 self.run_application(editorWidget.ID)

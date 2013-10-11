@@ -91,9 +91,9 @@ class SidebarWidget(QWidget):
             if not self._neditable.new_document:
                 settings.BOOKMARKS[self._neditable.file_path] = \
                     self._sidebarWidget._bookmarks
-        if self._foldedBlocks and self._neditable.file_path:
-            self._foldedBlocks = self._add_line_increment(
-                self._foldedBlocks, blockNumber - 1, diference)
+        if self.foldedBlocks and self._neditable.file_path:
+            self.foldedBlocks = self._add_line_increment(
+                self.foldedBlocks, blockNumber - 1, diference)
 
     def code_folding_event(self, lineNumber):
         if self._is_folded(lineNumber):

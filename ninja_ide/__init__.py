@@ -17,6 +17,7 @@
 
 from __future__ import absolute_import
 
+
 ###############################################################################
 # METADATA
 ###############################################################################
@@ -26,7 +27,7 @@ __author__ = "The NINJA-IDE Team"
 __mail__ = "ninja-ide at googlegroups dot com"
 __url__ = "http://www.ninja-ide.org"
 __source__ = "https://github.com/ninja-ide/ninja-ide"
-__version__ = "2.5-dev"
+__version__ = "3.0-dev"
 __license__ = "GPL3"
 
 ###############################################################################
@@ -63,6 +64,7 @@ def setup_and_run():
     # import only on run
     # Dont import always this, setup.py will fail
     from ninja_ide import core
+    from ninja_ide import ninja_resources  # lint:ok
     from multiprocessing import freeze_support
 
     # Used to support multiprocessing on windows packages

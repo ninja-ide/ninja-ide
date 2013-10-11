@@ -100,7 +100,7 @@ class _StatusBar(QStatusBar):
         #Register signals connections
         connections = (
             {'target': 'main_container',
-            'signal_name': 'currentTabChanged(QString)',
+            'signal_name': 'currentEditorChanged(QString)',
             'slot': self.handle_tab_changed},
             {'target': 'main_container',
             'signal_name': 'updateLocator(QString)',
