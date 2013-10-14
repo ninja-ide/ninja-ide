@@ -195,7 +195,7 @@ class TreeProjectsWidget(QTreeView):
         self.collapsed.connect(self._item_collapsed)
         self.mute_signals = False
         self.state_index = list()
-        #self._folding_menu = FoldingContextMenu(self)
+        self._folding_menu = FoldingContextMenu(self)
 
     def _item_collapsed(self, tree_item):
         """Store status of item when collapsed"""
@@ -211,8 +211,6 @@ class TreeProjectsWidget(QTreeView):
             path = self.model().filePath(tree_item)
             if path not in self.state_index:
                 self.state_index.append(path)
-
-
 
     def add_extra_menu(self, menu, lang='all'):
         '''
@@ -382,7 +380,6 @@ class TreeProjectsWidget(QTreeView):
             item.addedToConsole = False
 
     def _open_file(self, model_index):
-        #FIXME: Should open a file
         path = self.model().filePath(model_index)
         main_container = IDE.get_service('main_container')
         logger.debug("tried to get main container")
@@ -407,47 +404,6 @@ class TreeProjectsWidget(QTreeView):
         item = self._get_project_root()
         proj = project_properties_widget.ProjectProperties(item, self)
         proj.show()
-
-    def _timeout(self):
-        projects = set(self._refresh_projects_queue)
-        self._refresh_projects_queue = []
-        self._timer_running = False
-        for prefresh in projects:
-            self._refresh_project(prefresh)
-
-    def _refresh_project_by_path(self, event, folder):
-        if event not in (DELETED, ADDED, REMOVE, RENAME):
-            return
-        oprojects = self.get_open_projects()
-        for each_project in oprojects:
-            p_path = each_project.path
-            if file_manager.belongs_to_folder(p_path, folder) and \
-               file_manager.is_supported_extension(folder,
-                   each_project.extensions) and folder[:1] != '.':
-                self._refresh_projects_queue.append(each_project)
-                break
-        if not self._timer_running:
-            self._timeout()
-            QTimer.singleShot(3000, self._timeout)
-            self._timer_running = True
-
-    def _refresh_project(self, item=None):
-        if item is None:
-            item = self.currentItem()
-        parentItem = self._get_project_root(item)
-        if parentItem is None:
-            return
-        if item.parent() is None:
-            path = item.path
-        else:
-            path = file_manager.create_path(item.path, item.text(0))
-
-        thread = ui_tools.ThreadProjectExplore()
-        self._thread_execution[path] = thread
-        self.connect(thread, SIGNAL("folderDataRefreshed(PyQt_PyObject)"),
-            self._callback_refresh_project)
-        self.connect(thread, SIGNAL("finished()"), self._clean_threads)
-        thread.refresh_project(path, item, parentItem.extensions)
 
     def _clean_threads(self):
         paths_to_delete = []
@@ -812,21 +768,6 @@ class TreeProjectsWidget(QTreeView):
             self._close_project()
         self.__enableCloseNotification = True
         self._projects = {}
-
-    #def keyPressEvent(self, event):
-        #item = self.currentItem()
-        #if event.key() in (Qt.Key_Return, Qt.Key_Enter):
-            #self._open_file(item, 0)
-        #elif event.key() in (Qt.Key_Space, Qt.Key_Slash) and item.isFolder:
-            #expand = not item.isExpanded()
-            #item.setExpanded(expand)
-        #elif event.key() == Qt.Key_Left and not item.isExpanded():
-            #parent = item.parent()
-            #if parent:
-                #parent.setExpanded(False)
-                #self.setCurrentItem(parent)
-                #return
-        #super(TreeProjectsWidget, self).keyPressEvent(event)
 
 
 class ProjectItem(QTreeWidgetItem):
