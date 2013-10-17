@@ -24,10 +24,14 @@ from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.gui.explorer.tree_projects_widget')
 DEBUG = logger.debug
 
-from PyQt4.QtGui import QTreeWidget
+from PyQt4.QtGui import QTreeView
+from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QScrollArea
+from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QTreeWidgetItem
 from PyQt4.QtGui import QAbstractItemView
 from PyQt4.QtGui import QHeaderView
+from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QInputDialog
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QColor
@@ -52,10 +56,69 @@ from ninja_ide.core.file_handling.filesystem_notifications.base_watcher import (
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs import project_properties_widget
+from ninja_ide.gui.explorer import actions
+from ninja_ide.gui.explorer.nproject import NProject
 from ninja_ide.tools.completion import completion_daemon
 
 
-class TreeProjectsWidget(QTreeWidget):
+def scrollable_wrapper(widget):
+    scrollable = QScrollArea()
+    scrollable.setWidget(widget)
+    scrollable.setWidgetResizable(True)
+    scrollable.setEnabled(True)
+    return scrollable
+
+
+class ProjectTreeColumn(QScrollArea):
+    def __init__(self, *args, **kwargs):
+        super(ProjectTreeColumn, self).__init__(*args, **kwargs)
+        self._widget = QWidget()
+        self._widget.setLayout(QVBoxLayout())
+        self.setWidget(self._widget)
+        self.setWidgetResizable(True)
+        self.setEnabled(True)
+        self.projects = []
+
+        #connections = (
+            #{'target': 'main_container',
+            #'signal_name': 'openProject(QString)',
+            #'slot': self.open_project_folder},
+                #)
+        #IDE.register_signals('tree_projects_widget', connections)
+
+    def install(self):
+        ide = IDE.get_service('ide')
+        ui_tools.install_shortcuts(self, actions.PROJECTS_TREE_ACTIONS, ide)
+
+    def open_project_folder(self):
+        if settings.WORKSPACE:
+            directory = settings.WORKSPACE
+        else:
+            directory = os.path.expanduser("~")
+
+        folderName = QFileDialog.getExistingDirectory(self,
+                self.tr("Open Project Directory"), directory)
+        logger.debug("Choosing Foldername")
+        if folderName:
+            logger.debug("Opening %s" % folderName)
+            ninjaide = IDE.get_service("ide")
+            project = NProject(folderName)
+            qfsm = ninjaide.filesystem.open_project(project)
+            if qfsm:
+                self.add_project(project)
+
+    def add_project(self, project):
+        if project not in self.projects:
+            self.projects.append(project)
+            ptree = TreeProjectsWidget()
+            pmodel = project.model
+            ptree.setModel(pmodel)
+            pindex = pmodel.index(pmodel.rootPath())
+            ptree.setRootIndex(pindex)
+            self._widget.layout().addWidget(scrollable_wrapper(ptree))
+
+
+class TreeProjectsWidget(QTreeView):
 
 ###############################################################################
 # TreeProjectsWidget SIGNALS
@@ -85,12 +148,31 @@ class TreeProjectsWidget(QTreeWidget):
         'css': resources.IMAGES['tree-css'],
         'ui': resources.IMAGES['designer']}
 
-    def __init__(self, state_index=list()):
-        QTreeWidget.__init__(self)
-
-        self.header().setHidden(True)
-        self.setSelectionMode(QTreeWidget.SingleSelection)
+    def __format_tree(self):
+        """If not called after setting model, all the column format
+        options are reset to default when the model is set"""
+        self.setSelectionMode(QTreeView.SingleSelection)
         self.setAnimated(True)
+
+        t_header = self.header()
+        t_header.setHidden(True)
+        t_header.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
+        t_header.setResizeMode(0, QHeaderView.ResizeToContents)
+        t_header.setStretchLastSection(False)
+
+        self.hideColumn(1)  # Size
+        self.hideColumn(2)  # Type
+        self.hideColumn(3)  # Modification date
+
+    def setModel(self, model):
+        super(TreeProjectsWidget, self).setModel(model)
+        self.__format_tree()
+        #Activated is said to do the right thing on every system
+        self.connect(self, SIGNAL("activated(const QModelIndex &)"),
+                    self._open_file)
+
+    def __init__(self, state_index=list()):
+        super(TreeProjectsWidget, self).__init__()
 
         self._actualProject = None
         #self._projects -> key: [Item, folderStructure]
@@ -102,25 +184,15 @@ class TreeProjectsWidget(QTreeWidget):
         self._refresh_projects_queue = []
         self._timer_running = False
 
-        self.header().setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.header().setResizeMode(0, QHeaderView.ResizeToContents)
-        self.header().setStretchLastSection(False)
+        self.__format_tree()
 
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.connect(self, SIGNAL(
             "customContextMenuRequested(const QPoint &)"),
             self._menu_context_tree)
 
-        signal_name = "itemClicked(QTreeWidgetItem *, int)"
-        # For windows double click instead of single click
-        if settings.IS_WINDOWS:
-            signal_name = "itemDoubleClicked(QTreeWidgetItem *, int)"
-
-        self.connect(self, SIGNAL(signal_name), self._open_file)
-        self.connect(self._fileWatcher, SIGNAL("fileChanged(int, QString)"),
-            self._refresh_project_by_path)
-        self.itemExpanded.connect(self._item_expanded)
-        self.itemCollapsed.connect(self._item_collapsed)
+        self.expanded.connect(self._item_expanded)
+        self.collapsed.connect(self._item_collapsed)
         self.mute_signals = False
         self.state_index = list()
         self._folding_menu = FoldingContextMenu(self)
@@ -128,7 +200,7 @@ class TreeProjectsWidget(QTreeWidget):
     def _item_collapsed(self, tree_item):
         """Store status of item when collapsed"""
         if not self.mute_signals:
-            path = tree_item.get_full_path()
+            path = self.model().filePath(tree_item)
             if path in self.state_index:
                 path_index = self.state_index.index(path)
                 self.state_index.pop(path_index)
@@ -136,12 +208,9 @@ class TreeProjectsWidget(QTreeWidget):
     def _item_expanded(self, tree_item):
         """Store status of item when expanded"""
         if not self.mute_signals:
-            path = tree_item.get_full_path()
+            path = self.model().filePath(tree_item)
             if path not in self.state_index:
                 self.state_index.append(path)
-
-    def shutdown(self):
-        self._fileWatcher.shutdown_notification()
 
     def add_extra_menu(self, menu, lang='all'):
         '''
@@ -310,12 +379,13 @@ class TreeProjectsWidget(QTreeWidget):
             self.emit(SIGNAL("removeProjectFromConsole(QString)"), item.path)
             item.addedToConsole = False
 
-    def _open_file(self, item, column):
-        if item.childCount() == 0 and not item.isFolder:
-            fileName = os.path.join(item.path, item.text(column))
-            main_container = IDE.get_service('main_container')
-            if main_container:
-                main_container.open_file(fileName)
+    def _open_file(self, model_index):
+        path = self.model().filePath(model_index)
+        main_container = IDE.get_service('main_container')
+        logger.debug("tried to get main container")
+        if main_container:
+            logger.debug("will call open file")
+            main_container.open_file(path)
 
     def _get_project_root(self, item=None):
         if item is None:
@@ -334,47 +404,6 @@ class TreeProjectsWidget(QTreeWidget):
         item = self._get_project_root()
         proj = project_properties_widget.ProjectProperties(item, self)
         proj.show()
-
-    def _timeout(self):
-        projects = set(self._refresh_projects_queue)
-        self._refresh_projects_queue = []
-        self._timer_running = False
-        for prefresh in projects:
-            self._refresh_project(prefresh)
-
-    def _refresh_project_by_path(self, event, folder):
-        if event not in (DELETED, ADDED, REMOVE, RENAME):
-            return
-        oprojects = self.get_open_projects()
-        for each_project in oprojects:
-            p_path = each_project.path
-            if file_manager.belongs_to_folder(p_path, folder) and \
-               file_manager.is_supported_extension(folder,
-                   each_project.extensions) and folder[:1] != '.':
-                self._refresh_projects_queue.append(each_project)
-                break
-        if not self._timer_running:
-            self._timeout()
-            QTimer.singleShot(3000, self._timeout)
-            self._timer_running = True
-
-    def _refresh_project(self, item=None):
-        if item is None:
-            item = self.currentItem()
-        parentItem = self._get_project_root(item)
-        if parentItem is None:
-            return
-        if item.parent() is None:
-            path = item.path
-        else:
-            path = file_manager.create_path(item.path, item.text(0))
-
-        thread = ui_tools.ThreadProjectExplore()
-        self._thread_execution[path] = thread
-        self.connect(thread, SIGNAL("folderDataRefreshed(PyQt_PyObject)"),
-            self._callback_refresh_project)
-        self.connect(thread, SIGNAL("finished()"), self._clean_threads)
-        thread.refresh_project(path, item, parentItem.extensions)
 
     def _clean_threads(self):
         paths_to_delete = []
@@ -740,21 +769,6 @@ class TreeProjectsWidget(QTreeWidget):
         self.__enableCloseNotification = True
         self._projects = {}
 
-    def keyPressEvent(self, event):
-        item = self.currentItem()
-        if event.key() in (Qt.Key_Return, Qt.Key_Enter):
-            self._open_file(item, 0)
-        elif event.key() in (Qt.Key_Space, Qt.Key_Slash) and item.isFolder:
-            expand = not item.isExpanded()
-            item.setExpanded(expand)
-        elif event.key() == Qt.Key_Left and not item.isExpanded():
-            parent = item.parent()
-            if parent:
-                parent.setExpanded(False)
-                self.setCurrentItem(parent)
-                return
-        super(TreeProjectsWidget, self).keyPressEvent(event)
-
 
 class ProjectItem(QTreeWidgetItem):
 
@@ -879,3 +893,8 @@ class FoldingContextMenu(QMenu):
         Unfold all project
         """
         self._tree.expandAll()
+
+
+PTColumn = ProjectTreeColumn()
+ec = IDE.get_service("explorer_container")
+ec.addTab(PTColumn, PTColumn.tr('Projects'))

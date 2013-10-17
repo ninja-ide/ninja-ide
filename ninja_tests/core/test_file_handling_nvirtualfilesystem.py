@@ -21,7 +21,7 @@ from PyQt4.QtCore import QObject
 
 import unittest
 import os
-import tempfile
+#import tempfile
 
 #from ninja_ide.core.file_handling.nfile import NFile
 
@@ -78,6 +78,9 @@ class NVirtualFileSystemTestCase(unittest.TestCase):
         nfile = nvfs._NVirtualFileSystem__tree[project_path]
         self.assertEqual(project,
                         nvfs._NVirtualFileSystem__reverse_project_map[nfile])
+
+    def test_close_file_is_handled(self):
+        pass
 
 if __name__ == '__main__':
     unittest.main()

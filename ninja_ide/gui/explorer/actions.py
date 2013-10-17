@@ -10,6 +10,17 @@ from ninja_ide import translations
 #"connect": "function_name"
 #}
 
+PROJECTS_TREE_ACTIONS = (
+    {
+    "shortcut": "Open-project",
+    "action": {'text': translations.TR_OPEN_PROJECT,
+               'image': 'openProj',
+               'section': (translations.TR_MENU_FILE, None),
+               'weight': 410},
+    "connect": "open_project_folder"
+    },
+)
+
 ACTIONS = (
     {
     "shortcut": "New-project",
@@ -18,14 +29,6 @@ ACTIONS = (
                'section': (translations.TR_MENU_FILE, None),
                'weight': 110},
     "connect": "create_new_project"
-    },
-    {
-    "shortcut": "Open-project",
-    "action": {'text': translations.TR_OPEN_PROJECT,
-               'image': 'openProj',
-               'section': (translations.TR_MENU_FILE, None),
-               'weight': 410},
-    "connect": "open_project_folder"
     },
     {
     "shortcut": "Save-project",

@@ -38,7 +38,8 @@ from ninja_ide.tools import json_manager
 #lint:disable
 import ninja_ide.gui.central_widget
 #import ninja_ide.gui.status_bar
-#import ninja_ide.gui.explorer.explorer_container
+import ninja_ide.gui.explorer.explorer_container
+from ninja_ide.gui.explorer import tree_projects_widget
 import ninja_ide.gui.main_panel.main_container
 #import ninja_ide.gui.misc.misc_container
 import ninja_ide.gui.menus.menubar
