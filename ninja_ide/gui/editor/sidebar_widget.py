@@ -231,8 +231,7 @@ class SidebarWidget(QWidget):
             # Set the Painter Pen depending on special lines
             painter.setPen(QColor(foreground))
             error = False
-            checkers = sorted(self._neditable.registered_checkers,
-                key=lambda x: x[2], reverse=True)
+            checkers = self._neditable.sorted_checkers
             for items in checkers:
                 checker, color, _ = items
                 if (line_count - 1) in checker.checks:

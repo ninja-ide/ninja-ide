@@ -179,6 +179,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         return self._neditable.nfile
 
     @property
+    def neditable(self):
+        return self._neditable
+
+    @property
     def file_path(self):
         return self._neditable.file_path
 
@@ -930,12 +934,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         position = event.pos()
         cursor = self.cursorForPosition(position)
         block = cursor.block()
-        checkers = sorted(self._neditable.registered_checkers,
-            key=lambda x: x[2], reverse=True)
+        checkers = self._neditable.sorted_checkers
         for items in checkers:
             checker, color, _ = items
             if block.blockNumber() in checker.checks:
-                message = '\n'.join(checker.checks[block.blockNumber()])
+                message = checker.checks[block.blockNumber()][0]
                 QToolTip.showText(self.mapToGlobal(position), message, self)
         if event.modifiers() == Qt.ControlModifier:
             cursor.select(QTextCursor.WordUnderCursor)
@@ -1095,12 +1098,11 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 "current-line-opacity",
                 resources.COLOR_SCHEME["current-line-opacity"]))
 
-            checkers = sorted(self._neditable.registered_checkers,
-                key=lambda x: x[2], reverse=True)
+            checkers = self._neditable.sorted_checkers
             for items in checkers:
                 checker, color, _ = items
                 if block.blockNumber() in checker.checks:
-                    lineColor = color
+                    lineColor = QColor(color)
                     lineColor.setAlpha(resources.CUSTOM_SCHEME.get(
                         "checker-background-opacity",
                         resources.COLOR_SCHEME["checker-background-opacity"]))

@@ -38,7 +38,7 @@ class Pep8Checker(QThread):
 
     def run_checks(self):
         if not self.isRunning():
-            self._path = self._editor.ID
+            self._path = self._editor.file_path
             self._encoding = self._editor.encoding
             self.start()
 

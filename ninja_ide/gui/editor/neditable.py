@@ -92,10 +92,16 @@ class NEditable(QObject):
     def nfile(self):
         return self._nfile
 
+    @property
+    def sorted_checkers(self):
+        return sorted(self.registered_checkers,
+                      key=lambda x: x[2], reverse=True)
+
     def save_content(self):
         """Save the content of the UI to a file."""
         content = self.__editor.get_text()
         self._nfile.save(content)
+        self.run_checkers(content)
 
     def include_checkers(self, lang='python'):
         """Initialize the Checkers, should be refreshed on checkers change."""
