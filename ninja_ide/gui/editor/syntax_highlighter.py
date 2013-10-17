@@ -27,6 +27,7 @@ import re
 from PyQt4.QtGui import (
     QSyntaxHighlighter,
     QColor, QTextCharFormat, QTextBlockUserData, QFont, QBrush, QTextFormat)
+from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -287,6 +288,10 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         self._neditable = neditable
         self._old_search = None
 
+        if self._neditable:
+            self.connect(self._neditable, SIGNAL("checkersUpdated()"),
+                self._rehighlight_checkers)
+
         if isinstance(partition_scanner, (list, tuple)):
             partition_scanner = PartitionScanner(partition_scanner)
         else:
@@ -337,34 +342,14 @@ class SyntaxHighlighter(QSyntaxHighlighter):
             color.setAlpha(60)
             char_format.setBackground(color)
 
-    def __highlight_pep8(self, char_format, user_data=None):
-        """Highlight the lines with pep8 errors."""
-        user_data.error = True
-        color = QColor(
-            resources.CUSTOM_SCHEME.get('pep8-underline',
-            resources.COLOR_SCHEME['pep8-underline']))
-        self.__apply_proper_style(char_format, color)
-        return char_format
-
-    def __highlight_lint(self, char_format, user_data):
+    def __highlight_checker(self, char_format, user_data, color_name):
         """Highlight the lines with lint errors."""
         user_data.error = True
-        color = QColor(
-            resources.CUSTOM_SCHEME.get('error-underline',
-            resources.COLOR_SCHEME['error-underline']))
+        color = QColor(color_name)
         self.__apply_proper_style(char_format, color)
         return char_format
 
-    def __highlight_migration(self, char_format, user_data):
-        """Highlight the lines with lint errors."""
-        user_data.error = True
-        color = QColor(
-            resources.CUSTOM_SCHEME.get('migration-underline',
-            resources.COLOR_SCHEME['migration-underline']))
-        self.__apply_proper_style(char_format, color)
-        return char_format
-
-    def __remove_error_highlight(self, char_format, user_data):
+    def __remove_error_highlight(self, char_format, user_data, color_name=None):
         user_data.error = False
         char_format.setUnderlineStyle(QTextCharFormat.NoUnderline)
         char_format.clearBackground()
@@ -379,7 +364,8 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         block = self.currentBlock()
         user_data = get_user_data(block)
         user_data.clear_data()
-        valid_error_line, highlight_errors = self.get_error_highlighter(block)
+        valid_error_line, highlight_errors, color = self.get_error_highlighter(
+            block)
         # speed-up name-lookups
         get_format = self.get_format
         set_format = self.setFormat
@@ -389,11 +375,11 @@ class SyntaxHighlighter(QSyntaxHighlighter):
           self.scan_partitions(previous_state, text):
             f = get_format(partition, None)
             if f:
-                f = highlight_errors(f, user_data)
+                f = highlight_errors(f, user_data, color)
                 set_format(start, end - start, f)
             elif valid_error_line:
                 f = TextCharFormat()
-                f = highlight_errors(f, user_data)
+                f = highlight_errors(f, user_data, color)
                 set_format(start, end - start, f)
             if is_inside:
                 scan = get_scanner(partition)
@@ -401,7 +387,7 @@ class SyntaxHighlighter(QSyntaxHighlighter):
                     for token, token_pos, token_end in scan(text[start:end]):
                         f = get_format(token)
                         if f:
-                            f = highlight_errors(f, user_data)
+                            f = highlight_errors(f, user_data, color)
                             set_format(start + token_pos,
                                 token_end - token_pos, f)
             if partition and partition == "string":
@@ -411,20 +397,19 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         self.setCurrentBlockState(new_state)
 
     def get_error_highlighter(self, block):
-        #block_number = block.blockNumber()
+        block_number = block.blockNumber()
         highlight_errors = self.__remove_error_highlight
+        color = None
         valid_error_line = False
-        #if self.errors and (block_number in self.errors.errorsSummary):
-            #highlight_errors = self.__highlight_lint
-            #valid_error_line = True
-        #elif self.pep8 and (block_number in self.pep8.pep8checks):
-            #highlight_errors = self.__highlight_pep8
-            #valid_error_line = True
-        #elif self.migration and (
-             #block_number in self.migration.migration_data):
-            #highlight_errors = self.__highlight_migration
-            #valid_error_line = True
-        return valid_error_line, highlight_errors
+        if self._neditable:
+            checkers = self._neditable.sorted_checkers
+            for items in checkers:
+                checker, color, _ = items
+                if block_number in checker.checks:
+                    highlight_errors = self.__highlight_checker
+                    valid_error_line = True
+                    break
+        return valid_error_line, highlight_errors, color
 
     def set_selected_word(self, word, partial=False):
         """Set the word to highlight."""
@@ -470,6 +455,14 @@ class SyntaxHighlighter(QSyntaxHighlighter):
                 errors_lines.append(block.blockNumber())
             block = block.next()
         return errors_lines
+
+    def _rehighlight_checkers(self):
+        checkers = self._neditable.registered_checkers
+        lines = []
+        for item in checkers:
+            checker, _, _ = item
+            lines += list(checker.checks.keys())
+        self.rehighlight_lines(lines, errors=True)
 
     def rehighlight_lines(self, lines, errors=True):
         """Rehighlight the lines for errors or selected words."""
