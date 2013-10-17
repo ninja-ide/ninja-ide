@@ -311,8 +311,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
                 syntax_highlighter.load_syntax(python_syntax.syntax)
             self.highlighter = syntax_highlighter.SyntaxHighlighter(
                 self.document(),
-                parts_scanner, code_scanner, formats,
-                errors=self.errors, pep8=self.pep8, migration=self.migration)
+                parts_scanner, code_scanner, formats, self._neditable)
             if self._mini:
                 self._mini.highlighter = syntax_highlighter.SyntaxHighlighter(
                     self._mini.document(), parts_scanner,
@@ -368,7 +367,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if self._mini:
             self._mini.highlighter = syntax_highlighter.SyntaxHighlighter(
                 self._mini.document(), parts_scanner,
-                code_scanner, formats)
+                code_scanner, formats, self._neditable)
         #elif lang in settings.EXTENSIONS:
             #self.highlighter = highlighter.Highlighter(self.document(),
                 #self.lang, resources.CUSTOM_SCHEME, self.errors, self.pep8,
