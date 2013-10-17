@@ -44,7 +44,7 @@ class MigrationTo3(QThread):
 
     def run_checks(self):
         if not self.isRunning() and settings.VALID_2TO3:
-            self._path = self._editor.ID
+            self._path = self._editor.file_path
             self.start()
 
     def run(self):

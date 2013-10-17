@@ -530,6 +530,7 @@ class _MainContainer(QWidget):
         self.emit(SIGNAL("currentEditorChanged(QString)"), filename)
 
     def show_split(self, orientation):
+        #TODO
         pass
 
     def add_editor(self, fileName=None, tabIndex=None):
@@ -582,28 +583,12 @@ class _MainContainer(QWidget):
                     #widget.pep8.check_style()
                 #else:
                     #widget.hide_pep8_errors()
-        #for i in range(self.tabsecondary.count()):
-            #widget = self.tabsecondary.widget(i)
-            #if type(widget) is editor.Editor:
-                #if value:
-                    #widget.syncDocErrorsSignal = True
-                    #widget.pep8.check_style()
-                #else:
-                    #widget.hide_pep8_errors()
 
     def reset_lint_warnings(self, value):
         pass
         #FIXME: check how we handle this
         #for i in range(self._tabMain.count()):
             #widget = self._tabMain.widget(i)
-            #if type(widget) is editor.Editor:
-                #if value:
-                    #widget.syncDocErrorsSignal = True
-                    #widget.errors.check_errors()
-                #else:
-                    #widget.hide_lint_errors()
-        #for i in range(self.tabsecondary.count()):
-            #widget = self.tabsecondary.widget(i)
             #if type(widget) is editor.Editor:
                 #if value:
                     #widget.syncDocErrorsSignal = True
@@ -802,21 +787,21 @@ class _MainContainer(QWidget):
             return False
         try:
             #editorWidget.just_saved = True
-            nfile = editorWidget.nfile
-            if nfile.is_new_file or not nfile.has_write_permission():
+            if (editorWidget.nfile.is_new_file or
+                not editorWidget.nfile.has_write_permission()):
                 return self.save_file_as()
 
-            self.emit(SIGNAL("beforeFileSaved(QString)"), nfile.file_path)
+            self.emit(SIGNAL("beforeFileSaved(QString)"),
+                editorWidget.file_path)
             if settings.REMOVE_TRAILING_SPACES:
                 helpers.remove_trailing_spaces(editorWidget)
-            content = editorWidget.get_text()
-            nfile.save(content)
+            editorWidget.neditable.save_content()
             #file_manager.store_file_content(
                 #fileName, content, addExtension=False)
-            encoding = file_manager.get_file_encoding(content)
+            encoding = file_manager.get_file_encoding(editorWidget.get_text())
             editorWidget.encoding = encoding
             self.emit(SIGNAL("fileSaved(QString)"),
-                (self.tr("File Saved: %s") % nfile.file_path))
+                (self.tr("File Saved: %s") % editorWidget.file_path))
             editorWidget._file_saved()
             return True
         except Exception as reason:
