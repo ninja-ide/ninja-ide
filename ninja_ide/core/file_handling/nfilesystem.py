@@ -15,8 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt4.QtCore import QObject, SIGNAL
+import os
+from PyQt4.QtCore import QObject, QDir, SIGNAL
+from PyQt4.QtGui import QFileSystemModel
 from ninja_ide.core.file_handling.nfile import NFile
+from ninja_ide.tools.logger import NinjaLogger
+logger = NinjaLogger('ninja_ide.core.file_handling.nfilesystem')
 
 
 class NVirtualFileSystem(QObject):
@@ -33,9 +37,23 @@ class NVirtualFileSystem(QObject):
 
     def open_project(self, project):
         project_path = project.path
+        qfsm = None  # Should end up having a QFileSystemModel
         if project_path not in self.__projects:
+            qfsm = QFileSystemModel()
+            project.model = qfsm
+            qfsm.setRootPath(project_path)
+            qfsm.setFilter(QDir.AllDirs | QDir.Files | QDir.NoDotAndDotDot)
+            # If set to true items that dont match are displayed disabled
+            qfsm.setNameFilterDisables(False)
+            pext = ["*{0}".format(x) for x in project.extensions]
+            logger.debug(pext)
+            qfsm.setNameFilters(pext)
             self.__projects[project_path] = project
             self.__check_files_for(project_path)
+            self.emit(SIGNAL("projectOpened(PyQt_PyObject)"), project)
+        else:
+            qfsm = self.__projects[project_path]
+        return qfsm
 
     def close_project(self, project_path):
         if project_path in self.__projects:
@@ -43,6 +61,8 @@ class NVirtualFileSystem(QObject):
             for nfile in self.__tree:
                 if self.__reverse_project_map[nfile] == project_root:
                     nfile.close()
+            #This might not be needed just being extra cautious
+            del self.__projects[project_path].model
             del self.__projects[project_path]
 
     def __check_files_for(self, project_path):
@@ -63,12 +83,14 @@ class NVirtualFileSystem(QObject):
         self.connect(nfile, SIGNAL("fileClosing(QString)"), self.__closed_file)
         existing_paths = sorted(list(self.__projects.keys()), reverse=True)
         for each_path in existing_paths:
-            if nfile.path.statswith(each_path):
+            if nfile.file_path.startswith(each_path):
                 project = self.__projects[each_path]
                 self.__reverse_project_map[nfile] = project
                 return project
 
     def get_file(self, nfile_path=None):
+        if os.path.isdir(nfile_path):
+            return None
         if nfile_path not in self.__tree:
             nfile = NFile(nfile_path)
             self.__add_file(nfile)
