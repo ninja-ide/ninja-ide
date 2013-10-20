@@ -153,8 +153,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.highlight_current_line)
         self.connect(self, SIGNAL("blockCountChanged(int)"),
             self._update_file_metadata)
-        #self.connect(self._neditable, SIGNAL("checkersUpdated()"),
-            #self._show_tab_icon_notification)
 
         self._mini = None
         if settings.SHOW_MINIMAP:
