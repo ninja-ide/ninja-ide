@@ -43,7 +43,6 @@ from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QThread
 
-from ninja_ide import resources
 from ninja_ide.core import plugin_manager
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import ui_tools
@@ -432,7 +431,7 @@ class ManualInstallWidget(QWidget):
         vbox.addLayout(form)
         hPath = QHBoxLayout()
         self._txtFilePath = QLineEdit()
-        self._btnFilePath = QPushButton(QIcon(resources.IMAGES['open']), '')
+        self._btnFilePath = QPushButton(QIcon(":img/open"), '')
         hPath.addWidget(QLabel(self.tr("Plugin File:")))
         hPath.addWidget(self._txtFilePath)
         hPath.addWidget(self._btnFilePath)

@@ -87,8 +87,9 @@ class IDE(QMainWindow):
     __IDESERVICES = {}
     __IDECONNECTIONS = {}
     __IDESHORTCUTS = {}
-    __IDEMENUSCATEGORY = {}
+    __IDEBARCATEGORIES = {}
     __IDEMENUS = {}
+    __IDETOOLBAR = {}
     # CONNECTIONS structure:
     # ({'target': service_name, 'signal_name': string, 'slot': function_obj},)
     # On modify add: {connected: True}
@@ -168,13 +169,13 @@ class IDE(QMainWindow):
         self.connect(short, SIGNAL("activated()"), self._change_tab_index)
 
         # Register menu categories
-        IDE.register_menu_category(translations.TR_MENU_FILE, 100)
-        IDE.register_menu_category(translations.TR_MENU_EDIT, 110)
-        IDE.register_menu_category(translations.TR_MENU_VIEW, 120)
-        IDE.register_menu_category(translations.TR_MENU_SOURCE, 130)
-        IDE.register_menu_category(translations.TR_MENU_PROJECT, 140)
-        IDE.register_menu_category(translations.TR_MENU_ADDINS, 150)
-        IDE.register_menu_category(translations.TR_MENU_ABOUT, 160)
+        IDE.register_bar_category(translations.TR_MENU_FILE, 100)
+        IDE.register_bar_category(translations.TR_MENU_EDIT, 110)
+        IDE.register_bar_category(translations.TR_MENU_VIEW, 120)
+        IDE.register_bar_category(translations.TR_MENU_SOURCE, 130)
+        IDE.register_bar_category(translations.TR_MENU_PROJECT, 140)
+        IDE.register_bar_category(translations.TR_MENU_ADDINS, 150)
+        IDE.register_bar_category(translations.TR_MENU_ABOUT, 160)
         # Register General Menu Items
         ui_tools.install_shortcuts(self, actions.ACTIONS_GENERAL, self)
 
@@ -224,9 +225,13 @@ class IDE(QMainWindow):
         """Return a dictionary with the registered menu items."""
         return self.__IDEMENUS
 
-    def get_menu_categories(self):
+    def get_bar_categories(self):
         """Get the registered Categories for the Application menus."""
-        return self.__IDEMENUSCATEGORY
+        return self.__IDEBARCATEGORIES
+
+    def get_toolbaritems(self):
+        """Return a dictionary with the registered menu items."""
+        return self.__IDETOOLBAR
 
     @classmethod
     def register_service(cls, service_name, obj):
@@ -296,11 +301,22 @@ class IDE(QMainWindow):
         cls.__IDEMENUS[menu_action] = (section, weight)
 
     @classmethod
-    def register_menu_category(cls, category_name, weight):
+    def register_toolbar(cls, action, section, weight):
+        """Register a QAction in the IDE to be loaded later in the
+        toolbar using the section(string) to define where is going to be
+        contained, and the weight define the order where is going to be
+        placed.
+        @action: QAction
+        @section: String (name)
+        @weight: int"""
+        cls.__IDETOOLBAR[action] = (section, weight)
+
+    @classmethod
+    def register_bar_category(cls, category_name, weight):
         """Register a Menu Category to be created with the proper weight.
         @category_name: string
         @weight: int"""
-        cls.__IDEMENUSCATEGORY[category_name] = weight
+        cls.__IDEBARCATEGORIES[category_name] = weight
 
     @classmethod
     def update_shortcut(cls, shortcut_name):

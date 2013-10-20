@@ -110,7 +110,7 @@ class _MenuBar(QObject):
         #menuBar is the actual QMenuBar object from IDE which is a QMainWindow
         self.menubar = ide.menuBar()
         # Create Root
-        categories = ide.get_menu_categories()
+        categories = ide.get_bar_categories()
         for category in categories:
             self.add_root(category, categories[category])
 
@@ -153,12 +153,22 @@ class _MenuBar(QObject):
                     #ADD A LATER CALLBACK
 
     def load_toolbar(self, ide):
-        #FIXME: Do the same as above to add items to toolbar
         toolbar = ide.get_service("toolbar")
         toolbar.clear()
-        for toolbar_action in settings.TOOLBAR_ITEMS:
-            tool_item = self._toolbar_index.get(toolbar_action, None)
-            if tool_item:
-                toolbar.addAction(tool_item)
+        toolbar_items = ide.get_toolbaritems()
+        categories = list(ide.get_bar_categories().items())
+        categories = sorted(categories, key=lambda x: x[1])
+        for category, _ in categories:
+            items_in_category = sorted(
+                [(key, toolbar_items[key][0], toolbar_items[key][1])
+                 for key in toolbar_items
+                 if toolbar_items[key][0][0] == category],
+                key=lambda x: x[2])
+            for item in items_in_category:
+                action = item[0]
+                if action.objectName() in settings.TOOLBAR_ITEMS:
+                    toolbar.addAction(action)
+            toolbar.addSeparator()
+
 
 menu = _MenuBar()

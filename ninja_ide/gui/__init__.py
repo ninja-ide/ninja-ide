@@ -54,7 +54,7 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     QCoreApplication.setOrganizationName('NINJA-IDE')
     QCoreApplication.setOrganizationDomain('NINJA-IDE')
     QCoreApplication.setApplicationName('NINJA-IDE')
-    app.setWindowIcon(QIcon(resources.IMAGES['icon']))
+    app.setWindowIcon(QIcon(":img/icon"))
 
     # Check if there is another session of ninja-ide opened
     # and in that case send the filenames and projects to that session
@@ -69,7 +69,7 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
         running[1].close()
 
     # Create and display the splash screen
-    splash_pix = QPixmap(resources.IMAGES['splash'])
+    splash_pix = QPixmap(":img/splash")
     splash = QSplashScreen(splash_pix, Qt.WindowStaysOnTopHint)
     splash.setMask(splash_pix.mask())
     splash.show()

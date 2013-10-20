@@ -457,11 +457,11 @@ class LocateItem(QListWidgetItem):
 
     """Create QListWidgetItem that contains the proper icon and file data."""
 
-    icons = {FILTERS['functions']: resources.IMAGES['function'],
-        FILTERS['files']: resources.IMAGES['tree-python'],
-        FILTERS['classes']: resources.IMAGES['class'],
-        FILTERS['non-python']: resources.IMAGES['tree-code'],
-        FILTERS['attribs']: resources.IMAGES['attribute']}
+    icons = {FILTERS['functions']: ":img/function",
+        FILTERS['files']: ":img/tree-python",
+        FILTERS['classes']: ":img/class",
+        FILTERS['non-python']: ":img/tree-code",
+        FILTERS['attribs']: ":img/attribute"}
 
     def __init__(self, data):
         QListWidgetItem.__init__(self, QIcon(self.icons[data.type]), "\n")
@@ -792,38 +792,38 @@ class PopupCompleter(QFrame):
 
     def add_no_found(self):
         """Load no results found message"""
-        noFoundItem = self._create_help_item(resources.IMAGES['delete'],
+        noFoundItem = self._create_help_item(":img/delete",
                 translations.TR_NO_RESULTS)
         self.listWidget.addItem(noFoundItem)
 
     def add_help(self):
         #Load help
-        fileItem = self._create_help_item(resources.IMAGES['locate-file'],
+        fileItem = self._create_help_item(":img/locate-file",
                          translations.TR_ONLY_FILES)
         self.listWidget.addItem(fileItem)
-        classItem = self._create_help_item(resources.IMAGES['locate-class'],
+        classItem = self._create_help_item(":img/locate-class",
                         translations.TR_ONLY_CLASSES)
         self.listWidget.addItem(classItem)
         methodItem = self._create_help_item(
-                        resources.IMAGES['locate-function'],
+                        ":img/locate-function",
                         translations.TR_ONLY_METHODS)
         self.listWidget.addItem(methodItem)
         attributeItem = self._create_help_item(
-                            resources.IMAGES['locate-attributes'],
+                            ":img/locate-attributes",
                             translations.TR_ONLY_ATRIBUTES)
         self.listWidget.addItem(attributeItem)
         thisFileItem = self._create_help_item(
-                    resources.IMAGES['locate-on-this-file'],
+                    ":img/locate-on-this-file",
                     translations.TR_ONLY_CLASSES_METHODS)
         self.listWidget.addItem(thisFileItem)
-        tabsItem = self._create_help_item(resources.IMAGES['locate-tab'],
+        tabsItem = self._create_help_item(":img/locate-tab",
                 translations.TR_ONLY_CURRENT_EDITORS)
         self.listWidget.addItem(tabsItem)
-        lineItem = self._create_help_item(resources.IMAGES['locate-line'],
+        lineItem = self._create_help_item(":img/locate-line",
                 translations.TR_GO_TO_LINE)
         self.listWidget.addItem(lineItem)
         nonPythonItem = self._create_help_item(
-                resources.IMAGES['locate-nonpython'],
+                ":img/locate-nonpython",
                 translations.TR_ONLY_NON_PYTHON)
         self.listWidget.addItem(nonPythonItem)
 

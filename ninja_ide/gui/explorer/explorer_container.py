@@ -94,15 +94,15 @@ class _ExplorerContainer(QTabWidget):
             'signal_name': 'addToProject(QString)',
             'slot': self._add_file_to_project},
 
-            {'target': 'main_container',
-            'signal_name': 'currentEditorChanged(QString)',
-            'slot': self.update_migration},
-            {'target': 'main_container',
-            'signal_name': 'updateFileMetadata(QString)',
-            'slot': self.update_migration},
-            {'target': 'main_container',
-            'signal_name': 'migrationAnalyzed()',
-            'slot': self.update_migration},
+            #{'target': 'main_container',
+            #'signal_name': 'currentEditorChanged(QString)',
+            #'slot': self.update_migration},
+            #{'target': 'main_container',
+            #'signal_name': 'updateFileMetadata(QString)',
+            #'slot': self.update_migration},
+            #{'target': 'main_container',
+            #'signal_name': 'migrationAnalyzed()',
+            #'slot': self.update_migration},
             {'target': 'central_container',
             'signal_name': 'splitterBaseRotated()',
             'slot': self.rotate_tab_position},
@@ -191,17 +191,17 @@ class _ExplorerContainer(QTabWidget):
         if path and main_container:
             main_container.save_project(path)
 
-    def update_symbols(self, symbols, fileName):
-        if self._treeSymbols:
-            self._treeSymbols.update_symbols_tree(symbols, filename=fileName)
+    #def update_symbols(self, symbols, fileName):
+        #if self._treeSymbols:
+            #self._treeSymbols.update_symbols_tree(symbols, filename=fileName)
 
-    def update_errors(self, errors, pep8):
-        if self._listErrors:
-            self._listErrors.refresh_lists(errors, pep8)
+    #def update_errors(self, errors, pep8):
+        #if self._listErrors:
+            #self._listErrors.refresh_lists(errors, pep8)
 
-    def update_migration(self, migration):
-        if self._listMigration:
-            self._listMigration.refresh_lists(migration)
+    #def update_migration(self, migration):
+        #if self._listMigration:
+            #self._listMigration.refresh_lists(migration)
 
     def update_explorer(self):
         """Update the symbols in the Symbol Explorer when a file is saved."""
@@ -226,8 +226,8 @@ class _ExplorerContainer(QTabWidget):
 
             #TODO: Should we change the code below similar to the code above?
             exts = settings.SYNTAX.get('python')['extension']
-            if ext in exts or editorWidget.newDocument:
-                self.update_errors(editorWidget.errors, editorWidget.pep8)
+            #if ext in exts or editorWidget.neditable.new_document:
+                #self.update_errors(editorWidget.errors, editorWidget.pep8)
 
     def addTab(self, tab, title):
         QTabWidget.addTab(self, tab, title)

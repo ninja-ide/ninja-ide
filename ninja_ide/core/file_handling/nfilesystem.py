@@ -89,6 +89,8 @@ class NVirtualFileSystem(QObject):
                 return project
 
     def get_file(self, nfile_path=None):
+        if nfile_path is None:
+            return NFile(nfile_path)
         if os.path.isdir(nfile_path):
             return None
         if nfile_path not in self.__tree:

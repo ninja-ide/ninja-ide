@@ -54,6 +54,7 @@ class NEditable(QObject):
             self.__editor.setPlainText(content)
             encoding = file_manager.get_file_encoding(content)
             self.__editor.encoding = encoding
+            self.run_checkers(content)
 
         #New file then try to add a coding line
         if not content:

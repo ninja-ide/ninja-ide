@@ -54,7 +54,6 @@ from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QFileDialog
 
-from ninja_ide import resources
 from ninja_ide.gui.ide import IDE
 from ninja_ide.core.file_handling import file_manager
 
@@ -180,7 +179,7 @@ class FindInFilesDialog(QDialog):
         self.dir_combo = QComboBox()
         self.dir_combo.addItem(self.user_home)
         self.dir_combo.setEditable(True)
-        self.open_button = QPushButton(QIcon(resources.IMAGES['find']),
+        self.open_button = QPushButton(QIcon(":img/find"),
             self.tr("Open"))
         self.filters_line_edit = QLineEdit("*.py")
         self.replace_line = QLineEdit()

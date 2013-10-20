@@ -39,7 +39,6 @@ from PyQt4.QtGui import QPixmap
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
-from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core import plugin_interfaces
 from ninja_ide.core.file_handling import file_manager
@@ -66,7 +65,7 @@ class WizardNewProject(QWizard):
         QWizard.__init__(self, parent)
         self.__explorer = parent
         self.setWindowTitle(self.tr("NINJA - New Project Wizard"))
-        self.setPixmap(QWizard.LogoPixmap, QPixmap(resources.IMAGES['icon']))
+        self.setPixmap(QWizard.LogoPixmap, QPixmap(":img/icon"))
 
         self.option = 'Python'
         #Add a project type handler for Python

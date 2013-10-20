@@ -29,7 +29,6 @@ from PyQt4.QtCore import QSize
 from PyQt4.QtCore import SIGNAL
 
 import ninja_ide
-from ninja_ide import resources
 
 
 class AboutNinja(QDialog):
@@ -42,7 +41,7 @@ class AboutNinja(QDialog):
         vbox = QVBoxLayout(self)
 
         #Create an icon for the Dialog
-        pixmap = QPixmap(resources.IMAGES['icon'])
+        pixmap = QPixmap(":img/icon")
         self.lblIcon = QLabel()
         self.lblIcon.setPixmap(pixmap)
 

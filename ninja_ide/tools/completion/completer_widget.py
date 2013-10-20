@@ -27,7 +27,6 @@ from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtGui import QListWidget
 
-from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.tools.completion import code_completion
 
@@ -48,10 +47,10 @@ class CodeCompletionWidget(QFrame):
         self.completion_list.setAlternatingRowColors(True)
         self._list_index = self.stack_layout.addWidget(self.completion_list)
 
-        self._icons = {'a': resources.IMAGES['attribute'],
-            'f': resources.IMAGES['function'],
-            'c': resources.IMAGES['class'],
-            'm': resources.IMAGES['module']}
+        self._icons = {'a': ":img/attribute",
+            'f': ":img/function",
+            'c': ":img/class",
+            'm': ":img/module"}
 
         self.cc = code_completion.CodeCompletion()
         self._completion_results = {}
@@ -156,7 +155,7 @@ class CodeCompletionWidget(QFrame):
         for p in proposals:
             self.completion_list.addItem(
                 QListWidgetItem(
-                QIcon(self._icons.get(p[0], resources.IMAGES['attribute'])),
+                QIcon(self._icons.get(p[0], ":img/attribute")),
                 p[1], type=ord(p[0])))
 
     def set_completion_prefix(self, prefix, valid=True):

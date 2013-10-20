@@ -300,7 +300,7 @@ class SearchWidget(QWidget):
         self._line.setMinimumWidth(250)
         self._btnClose = QPushButton(
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
-        self._btnFind = QPushButton(QIcon(resources.IMAGES['find']), '')
+        self._btnFind = QPushButton(QIcon(":img/find"), '')
         self.btnPrevious = QPushButton(
             self.style().standardIcon(QStyle.SP_ArrowLeft), '')
         self.btnPrevious.setToolTip(self.trUtf8("Press %s") %
