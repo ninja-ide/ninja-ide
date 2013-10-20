@@ -26,7 +26,6 @@ except ImportError:
 from PyQt4.QtGui import QIcon
 from PyQt4.QtCore import QThread
 
-from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 try:
@@ -48,7 +47,7 @@ class ErrorsChecker(QThread):
         self._encoding = ''
         self.checks = {}
 
-        self.checker_icon = QIcon(resources.IMAGES['bug'])
+        self.checker_icon = QIcon(":img/bug")
 
     def run_checks(self):
         if not self.isRunning():

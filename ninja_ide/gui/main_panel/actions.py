@@ -193,14 +193,6 @@ ACTIONS = (
     "connect": "split_assistance"
     },
     {
-    "shortcut": "Follow-mode",
-    "action": {'text': translations.TR_FOLLOW_MODE,
-               'image': 'follow',
-               'section': (translations.TR_MENU_VIEW, None),
-               'weight': 220},
-    "connect": "show_follow_mode"
-    },
-    {
     "shortcut": "Reload-file",
     "action": {'text': translations.TR_RELOAD_FILE,
                'image': 'reload-file',

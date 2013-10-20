@@ -211,15 +211,15 @@ class ActionBar(QFrame):
             self.about_to_close_file)
         hbox.addWidget(self.btn_close)
 
-    def add_item(self, text, data):
+    def add_item(self, text, neditable):
         """Add a new item to the combo and add the neditable data."""
-        self.combo.addItem(QIcon(resources.IMAGES['bug']), text, data)
+        self.combo.addItem(QIcon(":img/bug"), text, neditable)
         self.combo.setCurrentIndex(self.combo.count() - 1)
 
     def current_changed(self, index):
         """Change the current item in the combo."""
-        data = self.combo.itemData(index)
-        self.emit(SIGNAL("changeCurrent(PyQt_PyObject)"), data)
+        neditable = self.combo.itemData(index)
+        self.emit(SIGNAL("changeCurrent(PyQt_PyObject)"), neditable)
 
     def update_line_col(self, line, col):
         """Update the line and column position."""
@@ -352,12 +352,12 @@ class CodeNavigator(QWidget):
         hbox.setContentsMargins(1, 1, 5, 1)
         hbox.setSpacing(0)
         self.btnPrevious = QPushButton(
-            QIcon(resources.IMAGES['nav-code-left']), '')
+            QIcon(":img/nav-code-left"), '')
         self.btnPrevious.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.btnPrevious.setObjectName('navigation_button')
         self.btnPrevious.setToolTip(translations.TR_TOOLTIP_NAV_BUTTONS)
         self.btnNext = QPushButton(
-            QIcon(resources.IMAGES['nav-code-right']), '')
+            QIcon(":img/nav-code-right"), '')
         self.btnNext.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.btnNext.setObjectName('navigation_button')
         self.btnNext.setToolTip(translations.TR_TOOLTIP_NAV_BUTTONS)

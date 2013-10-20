@@ -44,7 +44,7 @@ class TrayIconUpdates(QSystemTrayIcon):
 
     def __init__(self, parent):
         QSystemTrayIcon.__init__(self, parent)
-        icon = QIcon(resources.IMAGES['iconUpdate'])
+        icon = QIcon(":img/iconUpdate")
         self.setIcon(icon)
         self.setup_menu()
         self.ide_version = '0'

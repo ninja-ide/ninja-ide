@@ -46,7 +46,6 @@ from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QUrl
 from PyQt4.QtGui import QDesktopServices
 
-from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core.file_handling.filesystem_notifications import (
@@ -141,12 +140,12 @@ class TreeProjectsWidget(QTreeView):
     extra_menus_by_scope = {'project': [], 'folder': [], 'file': []}
 
     images = {
-        'py': resources.IMAGES['tree-python'],
-        'jpg': resources.IMAGES['tree-image'],
-        'png': resources.IMAGES['tree-image'],
-        'html': resources.IMAGES['tree-html'],
-        'css': resources.IMAGES['tree-css'],
-        'ui': resources.IMAGES['designer']}
+        'py': ":img/tree-python",
+        'jpg': ":img/tree-image",
+        'png': ":img/tree-image",
+        'html': ":img/tree-html",
+        'css': ":img/tree-css",
+        'ui': ":img/designer"}
 
     def __format_tree(self):
         """If not called after setting model, all the column format
@@ -274,7 +273,7 @@ class TreeProjectsWidget(QTreeView):
     def _add_context_menu_for_root(self, menu, item):
         menu.addSeparator()
         actionRunProject = menu.addAction(QIcon(
-            resources.IMAGES['play']), self.tr("Run Project"))
+            ":img/play"), self.tr("Run Project"))
         self.connect(actionRunProject, SIGNAL("triggered()"),
             SIGNAL("runProject()"))
         actionMainProject = menu.addAction(self.tr("Set as Main Project"))
@@ -290,7 +289,7 @@ class TreeProjectsWidget(QTreeView):
                 self.tr("Add this Project to the Python Console"))
             self.connect(actionAdd2Console, SIGNAL("triggered()"),
                 self._add_project_to_console)
-        actionProperties = menu.addAction(QIcon(resources.IMAGES['pref']),
+        actionProperties = menu.addAction(QIcon(":img/pref"),
             self.tr("Project Properties"))
         self.connect(actionProperties, SIGNAL("triggered()"),
             self.open_project_properties)
@@ -313,12 +312,12 @@ class TreeProjectsWidget(QTreeView):
                 menu.addMenu(m)
 
     def _add_context_menu_for_folders(self, menu, item):
-        action_add_file = menu.addAction(QIcon(resources.IMAGES['new']),
+        action_add_file = menu.addAction(QIcon(":img/new"),
                     self.tr("Add New File"))
         self.connect(action_add_file, SIGNAL("triggered()"),
             self._add_new_file)
         action_add_folder = menu.addAction(QIcon(
-            resources.IMAGES['openProj']), self.tr("Add New Folder"))
+            ":img/openProj"), self.tr("Add New Folder"))
         self.connect(action_add_folder, SIGNAL("triggered()"),
             self._add_new_folder)
         action_create_init = menu.addAction(
@@ -517,7 +516,7 @@ class TreeProjectsWidget(QTreeView):
             name = file_manager.get_basename(folderName)
             subitem = ProjectItem(item, name, pathForFolder)
             subitem.setToolTip(0, name)
-            subitem.setIcon(0, QIcon(resources.IMAGES['tree-folder']))
+            subitem.setIcon(0, QIcon(":img/tree-folder"))
             self._refresh_project(item)
 
     def _delete_file(self):
@@ -675,7 +674,7 @@ class TreeProjectsWidget(QTreeView):
         item = ProjectTree(self, project)
         item.isFolder = True
         item.setToolTip(0, folder)
-        item.setIcon(0, QIcon(resources.IMAGES['tree-app']))
+        item.setIcon(0, QIcon(":img/tree-app"))
         self._projects[folder] = item
         if folderStructure[folder][1] is not None:
             folderStructure[folder][1].sort()
@@ -709,7 +708,7 @@ class TreeProjectsWidget(QTreeView):
                     continue
                 subfolder = ProjectItem(parentItem, _folder, folder, True)
                 subfolder.setToolTip(0, _folder)
-                subfolder.setIcon(0, QIcon(resources.IMAGES['tree-folder']))
+                subfolder.setIcon(0, QIcon(":img/tree-folder"))
                 subFolderPath = os.path.join(folder, _folder)
                 if subFolderPath in self.state_index:
                     subfolder.setExpanded(True)
@@ -718,7 +717,7 @@ class TreeProjectsWidget(QTreeView):
 
     def _get_file_icon(self, fileName):
         return QIcon(self.images.get(file_manager.get_file_extension(fileName),
-            resources.IMAGES['tree-generic']))
+            ":img/tree-generic"))
 
     def get_item_for_path(self, path):
         items = self.findItems(file_manager.get_basename(path),

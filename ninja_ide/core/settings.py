@@ -105,10 +105,15 @@ EXECUTION_OPTIONS = ""
 PROFILES = {}
 
 TOOLBAR_ITEMS = [
-    "new-file", "new-project", "open-file", "open-project", "save-file",
-    "separator", "splitv", "splith", "follow-mode", "separator",
-    "cut", "copy", "paste", "separator",
-    "run-project", "run-file", "stop", "separator",
+    "_MainContainer.add_editor",
+    "_ExplorerContainer.create_new_project",
+    "_MainContainer.open_file",
+    "ProjectTreeColumn.open_project_folder",
+    "_MainContainer.save_file",
+    "_MainContainer.editor_cut",
+    "_MainContainer.editor_copy",
+    "_MainContainer.editor_paste",
+    #"run-project", "run-file", "stop", "separator",
     ]
 
 TOOLBAR_ITEMS_DEFAULT = [
@@ -437,10 +442,11 @@ def load_settings():
         if len(profile_list) > 1:
             projects = [item for item in list(profile_list[1])]
         PROFILES[key] = [files, projects]
-    toolbar_items = [item for item in list(qsettings.value(
-        'preferences/interface/toolbar', []))]
-    if toolbar_items:
-        TOOLBAR_ITEMS = toolbar_items
+    #TODO
+    #toolbar_items = [item for item in list(qsettings.value(
+        #'preferences/interface/toolbar', []))]
+    #if toolbar_items:
+        #TOOLBAR_ITEMS = toolbar_items
     #EXECUTION OPTIONS
     EXECUTION_OPTIONS = qsettings.value(
         'preferences/execution/executionOptions',

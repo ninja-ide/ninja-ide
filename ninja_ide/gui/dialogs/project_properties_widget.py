@@ -43,7 +43,6 @@ from PyQt4.QtGui import QCheckBox
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 
-from ninja_ide import resources
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
 from ninja_ide.tools import json_manager
@@ -237,7 +236,7 @@ class ProjectExecution(QWidget):
         # PYTHONPATH
         self.txtPythonPath = QLineEdit()
         self.txtPythonPath.setText(self._parent._item.pythonPath)
-        self.btnPythonPath = QPushButton(QIcon(resources.IMAGES['open']), '')
+        self.btnPythonPath = QPushButton(QIcon(":img/open"), '')
         grid.addWidget(QLabel(self.tr("Python Custom Interpreter:")), 1, 0)
         grid.addWidget(self.txtPythonPath, 1, 1)
         grid.addWidget(self.btnPythonPath, 1, 2)
@@ -264,7 +263,7 @@ class ProjectExecution(QWidget):
             self.style().standardPixmap(self.style().SP_TrashIcon))
         self.txtPreExec.setReadOnly(True)
         self.txtPreExec.setText(self._parent._item.preExecScript)
-        self.btnPreExec = QPushButton(QIcon(resources.IMAGES['open']), '')
+        self.btnPreExec = QPushButton(QIcon(":img/open"), '')
         grid.addWidget(QLabel(self.tr("Pre-exec Script:")), 4, 0)
         grid.addWidget(self.txtPreExec, 4, 1)
         grid.addWidget(self.btnPreExec, 4, 2)
@@ -273,7 +272,7 @@ class ProjectExecution(QWidget):
             self.style().standardPixmap(self.style().SP_TrashIcon))
         self.txtPostExec.setReadOnly(True)
         self.txtPostExec.setText(self._parent._item.postExecScript)
-        self.btnPostExec = QPushButton(QIcon(resources.IMAGES['open']), '')
+        self.btnPostExec = QPushButton(QIcon(":img/open"), '')
         grid.addWidget(QLabel(self.tr("Post-exec Script:")), 5, 0)
         grid.addWidget(self.txtPostExec, 5, 1)
         grid.addWidget(self.btnPostExec, 5, 2)
@@ -297,7 +296,7 @@ class ProjectExecution(QWidget):
         self._dir_completer = QCompleter()
         self._dir_completer.setModel(QDirModel(self._dir_completer))
         self.txtVenvPath.setCompleter(self._dir_completer)
-        self.btnVenvPath = QPushButton(QIcon(resources.IMAGES['open']), '')
+        self.btnVenvPath = QPushButton(QIcon(":img/open"), '')
         grid.addWidget(QLabel(self.tr("Virtualenv Folder:")), 9, 0)
         grid.addWidget(self.txtVenvPath, 9, 1)
         grid.addWidget(self.btnVenvPath, 9, 2)

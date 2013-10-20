@@ -32,7 +32,6 @@ from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtWebKit import QWebPage
 
-from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.ide import IDE
@@ -104,13 +103,13 @@ class _ToolsDock(QWidget):
         self._results = results.Results(self)
         self.stack.addWidget(self._results)
 
-        self._btnConsole = QPushButton(QIcon(resources.IMAGES['console']), '')
+        self._btnConsole = QPushButton(QIcon(":img/console"), '')
         self._btnConsole.setToolTip(self.tr("Console"))
-        self._btnRun = QPushButton(QIcon(resources.IMAGES['play']), '')
+        self._btnRun = QPushButton(QIcon(":img/play"), '')
         self._btnRun.setToolTip(self.tr("Output"))
-        self._btnWeb = QPushButton(QIcon(resources.IMAGES['web']), '')
+        self._btnWeb = QPushButton(QIcon(":img/web"), '')
         self._btnWeb.setToolTip(self.tr("Web Preview"))
-        self._btnFind = QPushButton(QIcon(resources.IMAGES['find']), '')
+        self._btnFind = QPushButton(QIcon(":img/find"), '')
         self._btnFind.setToolTip(self.tr("Find in Files"))
         #Toolbar
         hbox.addWidget(self.__toolbar)

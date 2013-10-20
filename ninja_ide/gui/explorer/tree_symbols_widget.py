@@ -27,8 +27,6 @@ from PyQt4.QtGui import QMenu
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
-from ninja_ide import resources
-
 
 class TreeSymbolsWidget(QTreeWidget):
 
@@ -203,7 +201,7 @@ class TreeSymbolsWidget(QTreeWidget):
                 globItem = ItemTree(globalAttribute, [glob],
                     lineno=symbols['attributes'][glob])
                 globItem.isAttribute = True
-                globItem.setIcon(0, QIcon(resources.IMAGES['attribute']))
+                globItem.setIcon(0, QIcon(":img/attribute"))
                 globItem.setExpanded(self._get_expand(globItem))
 
         if 'functions' in symbols and symbols['functions']:
@@ -217,7 +215,7 @@ class TreeSymbolsWidget(QTreeWidget):
                 tooltip = self.create_tooltip(
                     func, symbols['functions'][func]['lineno'])
                 item.isMethod = True
-                item.setIcon(0, QIcon(resources.IMAGES['function']))
+                item.setIcon(0, QIcon(":img/function"))
                 item.setToolTip(0, tooltip)
                 item.setExpanded(self._get_expand(item))
                 self.update_symbols_tree(
@@ -233,7 +231,7 @@ class TreeSymbolsWidget(QTreeWidget):
                 item.isClass = True
                 tooltip = self.create_tooltip(claz, line_number)
                 item.setToolTip(0, tooltip)
-                item.setIcon(0, QIcon(resources.IMAGES['class']))
+                item.setIcon(0, QIcon(":img/class"))
                 item.setExpanded(self._get_expand(item))
                 self.update_symbols_tree(symbols['classes'][claz]['members'],
                     parent=item)

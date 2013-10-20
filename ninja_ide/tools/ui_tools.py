@@ -104,10 +104,10 @@ class LoadingItem(QLabel):
 
     def __init__(self):
         super(LoadingItem, self).__init__()
-        self.movie = QMovie(resources.IMAGES['loading'])
-        self.setMovie(self.movie)
-        self.movie.setScaledSize(QSize(16, 16))
-        self.movie.start()
+        #self.movie = QMovie(resources.IMAGES['loading'])
+        #self.setMovie(self.movie)
+        #self.movie.setScaledSize(QSize(16, 16))
+        #self.movie.start()
 
     def add_item_to_tree(self, folder, tree, item_type=None, parent=None):
         if item_type is None:
@@ -396,7 +396,7 @@ class AddToProject(QDialog):
         item = QTreeWidgetItem(self._tree)
         item.setText(0, name)
         item.setToolTip(0, folder)
-        item.setIcon(0, QIcon(resources.IMAGES['tree-folder']))
+        item.setIcon(0, QIcon(":img/tree-folder"))
         if folderStructure[folder][1] is not None:
             folderStructure[folder][1].sort()
         self._load_folder(folderStructure, folder, item)
@@ -414,7 +414,7 @@ class AddToProject(QDialog):
             subfolder = QTreeWidgetItem(parentItem)
             subfolder.setText(0, _file)
             subfolder.setToolTip(0, os.path.join(folder, _file))
-            subfolder.setIcon(0, QIcon(resources.IMAGES['tree-folder']))
+            subfolder.setIcon(0, QIcon(":img/tree-folder"))
             self._load_folder(folderStructure,
                 os.path.join(folder, _file), subfolder)
 
@@ -654,7 +654,7 @@ def install_shortcuts(obj, actions, ide):
                     icon = ide.style().standardIcon(image_name)
                     item_ui.setIcon(icon)
                 elif isinstance(image_name, str):
-                    icon = QIcon(resources.IMAGES[image_name])
+                    icon = QIcon(":img/" + image_name)
                     item_ui.setIcon(icon)
             if short_key and not is_menu:
                 item_ui.setShortcut(short(short_key))
@@ -664,6 +664,8 @@ def install_shortcuts(obj, actions, ide):
                 ide.connect(item_ui, SIGNAL("triggered()"), func)
             if section and weight:
                 ide.register_menuitem(item_ui, section, weight)
+                if image_name and not is_menu:
+                    ide.register_toolbar(item_ui, section, weight)
 
         if short_key and shortcut:
             ide.register_shortcut(short_key, shortcut, item_ui)
