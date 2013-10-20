@@ -27,6 +27,14 @@ from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
 
 
+try:
+    # For Python2
+    str = unicode  # lint:ok
+except NameError:
+    # We are in Python3
+    pass
+
+
 class ComboEditor(QWidget):
 
     def __init__(self, original=False):
@@ -75,6 +83,8 @@ class ComboEditor(QWidget):
             # Editor Signals
             self.connect(neditable.editor, SIGNAL("cursorPositionChanged()"),
                 self._update_cursor_position)
+            self.connect(neditable, SIGNAL("checkersUpdated(PyQt_PyObject)"),
+                self._show_notification_icon)
 
             # Connect file system signals only in the original
             self.connect(neditable, SIGNAL("fileClosing(PyQt_PyObject)"),
@@ -149,6 +159,19 @@ class ComboEditor(QWidget):
             col = editor.textCursor().columnNumber()
             self.bar.update_line_col(line, col)
 
+    def _show_notification_icon(self, neditable):
+        checkers = neditable.sorted_checkers
+        icon = QIcon()
+        for items in checkers:
+            checker, color, _ = items
+            if checker.checks:
+                if isinstance(checker.checker_icon, int):
+                    icon = self.style().standardIcon(checker.checker_icon)
+                elif isinstance(checker.checker_icon, str):
+                    icon = QIcon(checker.checker_icon)
+                break
+        self.bar.update_item_icon(neditable, icon)
+
 
 class ActionBar(QFrame):
     """
@@ -213,8 +236,12 @@ class ActionBar(QFrame):
 
     def add_item(self, text, neditable):
         """Add a new item to the combo and add the neditable data."""
-        self.combo.addItem(QIcon(":img/bug"), text, neditable)
+        self.combo.addItem(text, neditable)
         self.combo.setCurrentIndex(self.combo.count() - 1)
+
+    def update_item_icon(self, neditable, icon):
+        index = self.combo.findData(neditable)
+        self.combo.setItemIcon(index, icon)
 
     def current_changed(self, index):
         """Change the current item in the combo."""

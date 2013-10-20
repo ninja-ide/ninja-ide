@@ -95,7 +95,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         QPlainTextEdit.__init__(self)
         itab_item.ITabItem.__init__(self)
         self._neditable = neditable
-        self._neditable.set_editor(self)
         #Config Editor
         self.set_flags()
         self.__lines_count = None
@@ -154,8 +153,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.highlight_current_line)
         self.connect(self, SIGNAL("blockCountChanged(int)"),
             self._update_file_metadata)
-        self.connect(self._neditable, SIGNAL("checkersUpdated()"),
-            self._show_tab_icon_notification)
 
         self._mini = None
         if settings.SHOW_MINIMAP:
@@ -169,6 +166,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.tr("Find Usages"), self)
         self.connect(self.__actionFindOccurrences, SIGNAL("triggered()"),
             self._find_occurrences)
+
+        # Set the editor after initialization
+        self._neditable.set_editor(self)
 
     @property
     def display_name(self):

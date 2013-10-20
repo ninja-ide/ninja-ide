@@ -23,7 +23,6 @@ try:
 except ImportError:
     print('Errors checker not working in Python3')
 
-from PyQt4.QtGui import QIcon
 from PyQt4.QtCore import QThread
 
 from ninja_ide.core import settings
@@ -47,7 +46,7 @@ class ErrorsChecker(QThread):
         self._encoding = ''
         self.checks = {}
 
-        self.checker_icon = QIcon(":img/bug")
+        self.checker_icon = ":img/bug"
 
     def run_checks(self):
         if not self.isRunning():
