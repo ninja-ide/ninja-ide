@@ -34,10 +34,10 @@ if settings.FIND_ERRORS:
     register_checker(checker=errors_checker.ErrorsChecker,
         color=resources.CUSTOM_SCHEME.get('error-underline',
         resources.COLOR_SCHEME['error-underline']), priority=10)
-#if settings.SHOW_MIGRATION_TIPS:
-    #register_checker(checker=migration_2to3.MigrationTo3,
-        #color=resources.CUSTOM_SCHEME.get('migration-underline',
-        #resources.COLOR_SCHEME['migration-underline']))
+if settings.SHOW_MIGRATION_TIPS:
+    register_checker(checker=migration_2to3.MigrationTo3,
+        color=resources.CUSTOM_SCHEME.get('migration-underline',
+        resources.COLOR_SCHEME['migration-underline']))
 if settings.CHECK_STYLE:
     register_checker(checker=pep8_checker.Pep8Checker,
         color=resources.CUSTOM_SCHEME.get('pep8-underline',
