@@ -11,7 +11,7 @@ from ninja_ide.gui.editor import helpers
 class NEditable(QObject):
     """
     SIGNALS:
-    @checkersUpdated()
+    @checkersUpdated(PyQt_PyObject)
     @neverSavedFileClosing(PyQt_PyObject)
     @fileClosing(PyQt_PyObject)
     """
@@ -54,13 +54,13 @@ class NEditable(QObject):
             self.__editor.setPlainText(content)
             encoding = file_manager.get_file_encoding(content)
             self.__editor.encoding = encoding
-            self.run_checkers(content)
 
         #New file then try to add a coding line
         if not content:
             helpers.insert_coding_line(self.__editor)
         # If we have an editor, let's include the checkers:
         self.include_checkers()
+        self.run_checkers(content)
 
     @property
     def file_path(self):
@@ -123,7 +123,7 @@ class NEditable(QObject):
             if checker.checks:
                 checker.checks = helpers.add_line_increment_for_dict(
                     checker.checks, blockNumber, diference)
-        self.emit(SIGNAL("checkersUpdated()"))
+        self.emit(SIGNAL("checkersUpdated(PyQt_PyObject)"), self)
 
     def run_checkers(self, content, path=None, encoding=None):
         for items in self.registered_checkers:
@@ -132,8 +132,7 @@ class NEditable(QObject):
 
     def show_checkers_notifications(self):
         """Show the notifications obtained for the proper checker."""
+        self._checkers_executed += 1
         if self._checkers_executed == len(self.registered_checkers):
             self._checkers_executed = 0
-            self.emit(SIGNAL("checkersUpdated()"))
-        else:
-            self._checkers_executed += 1
+            self.emit(SIGNAL("checkersUpdated(PyQt_PyObject)"), self)

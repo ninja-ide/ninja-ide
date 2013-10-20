@@ -289,7 +289,8 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         self._old_search = None
 
         if self._neditable:
-            self.connect(self._neditable, SIGNAL("checkersUpdated()"),
+            self.connect(self._neditable,
+                SIGNAL("checkersUpdated(PyQt_PyObject)"),
                 self._rehighlight_checkers)
 
         if isinstance(partition_scanner, (list, tuple)):
