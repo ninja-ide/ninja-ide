@@ -819,15 +819,14 @@ class _MainContainer(QWidget):
         editorWidget = self.get_current_editor()
         if not editorWidget:
             return False
-        nfile = editorWidget.nfile
         try:
             #editorWidget.just_saved = True
             filters = '(*.py);;(*.*)'
-            if nfile.file_path:
-                ext = file_manager.get_file_extension(nfile.file_path)
+            if editorWidget.file_path:
+                ext = file_manager.get_file_extension(editorWidget.file_path)
                 if ext != 'py':
                     filters = '(*.%s);;(*.py);;(*.*)' % ext
-            save_folder = self._get_save_folder(nfile.file_path)
+            save_folder = self._get_save_folder(editorWidget.file_path)
             fileName = QFileDialog.getSaveFileName(
                 self._parent, self.tr("Save File"), save_folder, filters)
             if not fileName:
@@ -836,8 +835,8 @@ class _MainContainer(QWidget):
             if settings.REMOVE_TRAILING_SPACES:
                 helpers.remove_trailing_spaces(editorWidget)
             #newFile = file_manager.get_file_extension(fileName) == ''
-            nfile.save(editorWidget.get_text(), path=fileName)
-            print editorWidget.nfile._file_path
+            editorWidget.neditable.save_content(editorWidget.get_text(),
+                path=fileName)
             #fileName = file_manager.store_file_content(
                 #fileName, editorWidget.get_text(),
                 #addExtension=True, newFile=newFile)

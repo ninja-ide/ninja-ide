@@ -14,6 +14,7 @@ class NEditable(QObject):
     @checkersUpdated(PyQt_PyObject)
     @neverSavedFileClosing(PyQt_PyObject)
     @fileClosing(PyQt_PyObject)
+    @fileSaved(PyQt_PyObject)
     """
 
     def __init__(self, nfile):
@@ -48,19 +49,19 @@ class NEditable(QObject):
     def set_editor(self, editor):
         """Set the Editor (UI component) associated with this object."""
         self.__editor = editor
+        # If we have an editor, let's include the checkers:
+        self.include_checkers()
         content = ''
         if not self._nfile.is_new_file:
             content = self._nfile.read()
             self.__editor.setPlainText(content)
             encoding = file_manager.get_file_encoding(content)
             self.__editor.encoding = encoding
+            self.run_checkers(content)
 
         #New file then try to add a coding line
         if not content:
             helpers.insert_coding_line(self.__editor)
-        # If we have an editor, let's include the checkers:
-        self.include_checkers()
-        self.run_checkers(content)
 
     @property
     def file_path(self):
@@ -98,11 +99,12 @@ class NEditable(QObject):
         return sorted(self.registered_checkers,
                       key=lambda x: x[2], reverse=True)
 
-    def save_content(self):
+    def save_content(self, path=None):
         """Save the content of the UI to a file."""
         content = self.__editor.get_text()
-        self._nfile.save(content)
+        self._nfile.save(content, path)
         self.run_checkers(content)
+        self.emit(SIGNAL("fileSaved(PyQt_PyObject)"), self)
 
     def include_checkers(self, lang='python'):
         """Initialize the Checkers, should be refreshed on checkers change."""
