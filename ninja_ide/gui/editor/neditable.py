@@ -48,19 +48,19 @@ class NEditable(QObject):
     def set_editor(self, editor):
         """Set the Editor (UI component) associated with this object."""
         self.__editor = editor
+        # If we have an editor, let's include the checkers:
+        self.include_checkers()
         content = ''
         if not self._nfile.is_new_file:
             content = self._nfile.read()
             self.__editor.setPlainText(content)
             encoding = file_manager.get_file_encoding(content)
             self.__editor.encoding = encoding
+            self.run_checkers(content)
 
         #New file then try to add a coding line
         if not content:
             helpers.insert_coding_line(self.__editor)
-        # If we have an editor, let's include the checkers:
-        self.include_checkers()
-        self.run_checkers(content)
 
     @property
     def file_path(self):
