@@ -99,7 +99,7 @@ class IDE(QMainWindow):
     def __init__(self, start_server=False):
         QMainWindow.__init__(self)
         self.setWindowTitle('NINJA-IDE {Ninja-IDE Is Not Just Another IDE}')
-        self.setMinimumSize(700, 500)
+        self.setMinimumSize(750, 500)
         QToolTip.setFont(QFont(settings.FONT_FAMILY, 10))
         #Load the size and the position of the main window
         self.load_window_geometry()

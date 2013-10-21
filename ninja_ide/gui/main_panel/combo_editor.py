@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import bisect
 
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QMessageBox
@@ -40,6 +41,7 @@ class ComboEditor(QWidget):
     def __init__(self, original=False):
         super(ComboEditor, self).__init__()
         self.__original = original
+        self._symbols_index = []
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
@@ -58,6 +60,8 @@ class ComboEditor(QWidget):
             self._run_file)
         self.connect(self.bar, SIGNAL("addToProject(QString)"),
             self._add_to_project)
+        self.connect(self.bar, SIGNAL("goToSymbol(int)"),
+            self._go_to_symbol)
         self.connect(self.bar, SIGNAL("reopenTab(QString)"),
             lambda path: self._main_container.open_file(path))
         self.connect(self.bar, SIGNAL("recentTabsModified()"),
@@ -83,8 +87,12 @@ class ComboEditor(QWidget):
             # Editor Signals
             self.connect(neditable.editor, SIGNAL("cursorPositionChanged()"),
                 self._update_cursor_position)
+            self.connect(neditable.editor, SIGNAL("currentLineChanged(int)"),
+                self._set_current_symbol)
             self.connect(neditable, SIGNAL("checkersUpdated(PyQt_PyObject)"),
                 self._show_notification_icon)
+            self.connect(neditable, SIGNAL("fileSaved(PyQt_PyObject)"),
+                self._update_symbols)
 
             # Connect file system signals only in the original
             self.connect(neditable, SIGNAL("fileClosing(PyQt_PyObject)"),
@@ -93,6 +101,9 @@ class ComboEditor(QWidget):
                 self.connect(neditable,
                     SIGNAL("neverSavedFileClosing(PyQt_PyObject)"),
                     self._ask_for_save)
+
+            # Load Symbols
+            self._load_symbols(neditable)
 
     def show_combo_file(self):
         self.bar.combo.showPopup()
@@ -159,6 +170,38 @@ class ComboEditor(QWidget):
             col = editor.textCursor().columnNumber()
             self.bar.update_line_col(line, col)
 
+    def _set_current_symbol(self, line, ignore_sender=False):
+        obj = self.sender()
+        editor = self.stacked.currentWidget()
+        # Check if it's current to avoid signals from other splits.
+        if ignore_sender or editor == obj:
+            index = bisect.bisect(self._symbols_index, line)
+            if self._symbols_index[index] > line:
+                index -= 1
+            self.bar.set_current_symbol(index)
+
+    def _go_to_symbol(self, index):
+        line = self._symbols_index[index]
+        editor = self.stacked.currentWidget()
+        editor.go_to_line(line)
+
+    def _update_symbols(self, neditable):
+        editor = self.stacked.currentWidget()
+        # Check if it's current to avoid signals from other splits.
+        if editor == neditable.editor:
+            self._load_symbols(neditable)
+
+    def _load_symbols(self, neditable):
+        symbols_handler = settings.get_symbols_handler('py')
+        source = neditable.editor.toPlainText()
+        source = source.encode(neditable.editor.encoding)
+        symbols = symbols_handler.get_symbols_simplified(source)
+        self._symbols_index = sorted(symbols.keys())
+        symbols = sorted(list(symbols.items()), key=lambda x: x[0])
+        self.bar.add_symbols(symbols)
+        line = neditable.editor.textCursor().blockNumber()
+        self._set_current_symbol(line, True)
+
     def _show_notification_icon(self, neditable):
         checkers = neditable.sorted_checkers
         icon = QIcon()
@@ -212,8 +255,8 @@ class ActionBar(QFrame):
 
         self.symbols_combo = QComboBox()
         self.symbols_combo.setObjectName("combo_symbols")
-        self.connect(self.symbols_combo, SIGNAL("currentIndexChanged(int)"),
-            self.current_changed)
+        self.connect(self.symbols_combo, SIGNAL("activated(int)"),
+            self.current_symbol_changed)
         hbox.addWidget(self.symbols_combo)
 
         self.code_navigator = CodeNavigator()
@@ -239,6 +282,21 @@ class ActionBar(QFrame):
         self.combo.addItem(text, neditable)
         self.combo.setCurrentIndex(self.combo.count() - 1)
 
+    def add_symbols(self, symbols):
+        """Add the symbols to the symbols's combo."""
+        self.symbols_combo.clear()
+        for symbol in symbols:
+            data = symbol[1]
+            if data[1] == 'f':
+                icon = QIcon(":img/function")
+            else:
+                icon = QIcon(":img/class")
+            self.symbols_combo.addItem(icon, data[0])
+        self.combo.setCurrentIndex(self.combo.count() - 1)
+
+    def set_current_symbol(self, index):
+        self.symbols_combo.setCurrentIndex(index)
+
     def update_item_icon(self, neditable, icon):
         index = self.combo.findData(neditable)
         self.combo.setItemIcon(index, icon)
@@ -247,6 +305,10 @@ class ActionBar(QFrame):
         """Change the current item in the combo."""
         neditable = self.combo.itemData(index)
         self.emit(SIGNAL("changeCurrent(PyQt_PyObject)"), neditable)
+
+    def current_symbol_changed(self, index):
+        """Change the current symbol in the combo."""
+        self.emit(SIGNAL("goToSymbol(int)"), index)
 
     def update_line_col(self, line, col):
         """Update the line and column position."""

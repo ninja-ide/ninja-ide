@@ -88,6 +88,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
     findOcurrences(QString)
     cursorPositionChange(int, int)    #row, col
     migrationAnalyzed()
+    currentLineChanged(int)
     """
 ###############################################################################
 
@@ -99,6 +100,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.set_flags()
         self.__lines_count = None
         self.lang = 'python'
+        self._last_block_position = 0
 
         self._sidebarWidget = sidebar_widget.SidebarWidget(self, neditable)
 
@@ -875,6 +877,13 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         #emit a signal then plugings can do something
         self.emit(SIGNAL("keyPressEvent(QEvent)"), event)
 
+    def keyReleaseEvent(self, event):
+        QPlainTextEdit.keyReleaseEvent(self, event)
+        block_number = self.textCursor().blockNumber()
+        if block_number != self._last_block_position:
+            self._last_block_position = block_number
+            self.emit(SIGNAL("currentLineChanged(int)"), block_number)
+
     def _text_under_cursor(self):
         tc = self.textCursor()
         tc.select(QTextCursor.WordUnderCursor)
@@ -978,6 +987,10 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         QPlainTextEdit.mouseReleaseEvent(self, event)
         if event.button() == Qt.LeftButton:
             self.highlight_selected_word()
+        block_number = self.textCursor().blockNumber()
+        if block_number != self._last_block_position:
+            self._last_block_position = block_number
+            self.emit(SIGNAL("currentLineChanged(int)"), block_number)
 
     def dropEvent(self, event):
         if len(event.mimeData().urls()) > 0:

@@ -211,3 +211,97 @@ def obtain_imports(source='', body=None):
                     fromImports[item.name] = {'module': sym.module,
                         'asname': item.asname, 'lineno': sym.lineno}
     return {'imports': imports, 'fromImports': fromImports}
+
+
+def _parse_class_simplified(symbol):
+    results = {}
+    name = symbol.name + '('
+    name += ', '.join([
+        analyzer.expand_attribute(base) for base in symbol.bases])
+    name += ')'
+    for sym in symbol.body:
+        if sym.__class__ is ast.FunctionDef:
+            result = _parse_function_simplified(sym, symbol.name)
+            results.update(result)
+        elif sym.__class__ is ast.ClassDef:
+            result = _parse_class_simplified(sym)
+            results.update(result)
+
+    lineno = symbol.lineno
+    for decorator in symbol.decorator_list:
+        lineno += 1
+
+    results[lineno] = (name, 'c')
+    return results
+
+
+def _parse_function_simplified(symbol, member_of=""):
+    results = {}
+
+    if member_of:
+        func_name = member_of + " : " + symbol.name + '('
+    else:
+        func_name = symbol.name + '('
+    #We store the arguments to compare with default backwards
+    defaults = []
+    for value in symbol.args.defaults:
+        #TODO: In some cases we can have something like: a=os.path
+        defaults.append(value)
+    arguments = []
+    for arg in reversed(symbol.args.args):
+        if arg.__class__ is not _ast.Name or arg.id == 'self':
+            continue
+        argument = arg.id
+        if defaults:
+            value = defaults.pop()
+            arg_default = _map_type.get(value.__class__, None)
+            if arg_default is None:
+                if value.__class__ is _ast.Attribute:
+                    arg_default = analyzer.expand_attribute(value)
+                elif value.__class__ is _ast.Name:
+                    arg_default = value.id
+                else:
+                    arg_default = 'object'
+            argument += '=' + arg_default
+        arguments.append(argument)
+    func_name += ', '.join(reversed(arguments))
+    if symbol.args.vararg is not None:
+        if not func_name.endswith('('):
+            func_name += ', '
+        func_name += '*' + symbol.args.vararg
+    if symbol.args.kwarg is not None:
+        if not func_name.endswith('('):
+            func_name += ', '
+        func_name += '**' + symbol.args.kwarg
+    func_name += ')'
+
+    for sym in symbol.body:
+        if sym.__class__ is ast.FunctionDef:
+            result = _parse_function_simplified(sym, symbol.name)
+            results.update(result)
+
+    lineno = symbol.lineno
+    for decorator in symbol.decorator_list:
+        lineno += 1
+
+    results[lineno] = (func_name, 'f')
+    return results
+
+
+def get_symbols_simplified(source):
+    """Parse a module source code to obtain: Classes, Functions."""
+    symbols = {}
+    try:
+        module = ast.parse(source)
+    except:
+        return symbols
+
+    for symbol in module.body:
+        if symbol.__class__ is ast.FunctionDef:
+            result = _parse_function_simplified(symbol)
+            symbols.update(result)
+        elif symbol.__class__ is ast.ClassDef:
+            result = _parse_class_simplified(symbol)
+            symbols.update(result)
+
+    return symbols

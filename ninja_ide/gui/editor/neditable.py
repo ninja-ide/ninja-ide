@@ -14,6 +14,7 @@ class NEditable(QObject):
     @checkersUpdated(PyQt_PyObject)
     @neverSavedFileClosing(PyQt_PyObject)
     @fileClosing(PyQt_PyObject)
+    @fileSaved(PyQt_PyObject)
     """
 
     def __init__(self, nfile):
@@ -98,11 +99,12 @@ class NEditable(QObject):
         return sorted(self.registered_checkers,
                       key=lambda x: x[2], reverse=True)
 
-    def save_content(self):
+    def save_content(self, path=None):
         """Save the content of the UI to a file."""
         content = self.__editor.get_text()
-        self._nfile.save(content)
+        self._nfile.save(content, path)
         self.run_checkers(content)
+        self.emit(SIGNAL("fileSaved(PyQt_PyObject)"), self)
 
     def include_checkers(self, lang='python'):
         """Initialize the Checkers, should be refreshed on checkers change."""
