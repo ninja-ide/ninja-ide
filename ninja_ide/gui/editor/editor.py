@@ -101,6 +101,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.__lines_count = None
         self.lang = 'python'
         self._last_block_position = 0
+        self.__lines_count = 0
 
         self._sidebarWidget = sidebar_widget.SidebarWidget(self, neditable)
 
@@ -264,26 +265,26 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if self._mini:
             self._mini.set_code(self.toPlainText())
 
+    def _block_contains_text(self):
+        block = self.textCursor().block()
+        return len(block.text().strip()) != 0
+
     def _update_file_metadata(self, val):
         """Update the info of bookmarks, breakpoint and checkers."""
         if (self._sidebarWidget.bookmarks or
            self._sidebarWidget.breakpoints or
            self._sidebarWidget.foldedBlocks):
+            diference = val - self.__lines_count
             cursor = self.textCursor()
-            if self.__lines_count:
-                diference = val - self.__lines_count
-            else:
-                diference = 0
             blockNumber = cursor.blockNumber() - abs(diference)
-            self._sidebarWidget.update_sidebar_marks(blockNumber, diference)
+            self._sidebarWidget.update_sidebar_marks(blockNumber, diference,
+                self._block_contains_text())
         if self._neditable.has_checkers:
+            diference = val - self.__lines_count
             cursor = self.textCursor()
-            if self.__lines_count:
-                diference = val - self.__lines_count
-            else:
-                diference = 0
             blockNumber = cursor.blockNumber() - abs(diference)
-            self._neditable.update_checkers_metadata(blockNumber, diference)
+            self._neditable.update_checkers_metadata(blockNumber, diference,
+                self._block_contains_text())
         self.__lines_count = val
         self.highlight_current_line()
 

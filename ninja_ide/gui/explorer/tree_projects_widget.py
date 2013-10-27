@@ -36,12 +36,12 @@ from PyQt4.QtGui import QInputDialog
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QBrush
+from PyQt4.QtGui import QLinearGradient
 from PyQt4.QtGui import QMenu
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QStyle
 from PyQt4.QtGui import QCursor
 from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QTimer
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QUrl
 from PyQt4.QtGui import QDesktopServices
@@ -50,8 +50,6 @@ from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core.file_handling.filesystem_notifications import (
     NinjaFileSystemWatcher)
-from ninja_ide.core.file_handling.filesystem_notifications.base_watcher import (
-    ADDED, DELETED, REMOVE, RENAME)
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs import project_properties_widget
@@ -66,6 +64,29 @@ def scrollable_wrapper(widget):
     scrollable.setWidgetResizable(True)
     scrollable.setEnabled(True)
     return scrollable
+
+
+class TreeHeader(QHeaderView):
+
+    def __init__(self):
+        super(TreeHeader, self).__init__(Qt.Horizontal)
+        #hbox = QHBoxLayout(self)
+        #hbox.setContentsMargins(0, 0, 0, 0)
+        #hbox.setSpacing(0)
+
+        #push = QPushButton("boton")
+        #push.setFixedHeight(self.height())
+        #push.setFixedWidth(self.width())
+        #hbox.addWidget(push)
+
+    def paintSection(self, painter, rect, logicalIndex):
+        gradient = QLinearGradient(0, 0, 0, rect.height())
+        gradient.setColorAt(0.0, QColor("#727272"))
+        gradient.setColorAt(1.0, QColor("#363636"))
+        painter.fillRect(rect, QBrush(gradient))
+
+        painter.setPen(QColor(Qt.white))
+        painter.drawText(10, 10, "Project")
 
 
 class ProjectTreeColumn(QScrollArea):
@@ -153,11 +174,13 @@ class TreeProjectsWidget(QTreeView):
         self.setSelectionMode(QTreeView.SingleSelection)
         self.setAnimated(True)
 
-        t_header = self.header()
-        t_header.setHidden(True)
+        t_header = TreeHeader()
+        self.setHeader(t_header)
+        #t_header.setHidden(True)
         t_header.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
-        t_header.setResizeMode(0, QHeaderView.ResizeToContents)
+        t_header.setResizeMode(0, QHeaderView.Stretch)
         t_header.setStretchLastSection(False)
+        t_header.setClickable(True)
 
         self.hideColumn(1)  # Size
         self.hideColumn(2)  # Type

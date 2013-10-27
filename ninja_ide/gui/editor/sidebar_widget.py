@@ -78,22 +78,22 @@ class SidebarWidget(QWidget):
     def update(self, *args):
         QWidget.update(self, *args)
 
-    def update_sidebar_marks(self, blockNumber, diference):
+    def update_sidebar_marks(self, blockNumber, diference, atLineStart=False):
         if self.breakpoints:
             self.breakpoints = helpers.add_line_increment(
-                self.breakpoints, blockNumber, diference)
+                self.breakpoints, blockNumber, diference, atLineStart)
             if not self._neditable.new_document:
                 settings.BREAKPOINTS[self._neditable.file_path] = \
                     self._sidebarWidget._breakpoints
         if self.bookmarks:
             self.bookmarks = helpers.add_line_increment(
-                self.bookmarks, blockNumber, diference)
+                self.bookmarks, blockNumber, diference, atLineStart)
             if not self._neditable.new_document:
                 settings.BOOKMARKS[self._neditable.file_path] = \
                     self._sidebarWidget._bookmarks
         if self.foldedBlocks and self._neditable.file_path:
             self.foldedBlocks = self._add_line_increment(
-                self.foldedBlocks, blockNumber - 1, diference)
+                self.foldedBlocks, blockNumber - 1, diference, atLineStart)
 
     def code_folding_event(self, lineNumber):
         if self._is_folded(lineNumber):

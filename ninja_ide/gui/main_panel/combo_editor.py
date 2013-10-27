@@ -23,7 +23,6 @@ from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 
 from ninja_ide import translations
-from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
 
@@ -176,7 +175,8 @@ class ComboEditor(QWidget):
         # Check if it's current to avoid signals from other splits.
         if ignore_sender or editor == obj:
             index = bisect.bisect(self._symbols_index, line)
-            if self._symbols_index[index] > line:
+            if (index >= len(self._symbols_index) or
+                self._symbols_index[index] > (line + 1)):
                 index -= 1
             self.bar.set_current_symbol(index)
 
@@ -381,7 +381,8 @@ class ActionBar(QFrame):
         if index is None:
             index = self.combo.currentIndex()
         neditable = self.combo.itemData(index)
-        neditable.nfile.close()
+        if neditable:
+            neditable.nfile.close()
 
     def close_file(self, neditable):
         """Receive the confirmation to close the file."""
@@ -484,24 +485,24 @@ class CodeNavigator(QWidget):
         self.menuNavigate.exec_(QCursor.pos())
 
     def _show_bookmarks(self):
-        self.btnPrevious.setIcon(QIcon(resources.IMAGES['book-left']))
-        self.btnNext.setIcon(QIcon(resources.IMAGES['book-right']))
+        self.btnPrevious.setIcon(QIcon(':img/book-left'))
+        self.btnNext.setIcon(QIcon(':img/book-right'))
         self.bookmarksAction.setChecked(True)
         self.breakpointsAction.setChecked(False)
         self.codeAction.setChecked(False)
         self.operation = 1
 
     def _show_breakpoints(self):
-        self.btnPrevious.setIcon(QIcon(resources.IMAGES['break-left']))
-        self.btnNext.setIcon(QIcon(resources.IMAGES['break-right']))
+        self.btnPrevious.setIcon(QIcon(':img/break-left'))
+        self.btnNext.setIcon(QIcon(':img/break-right'))
         self.bookmarksAction.setChecked(False)
         self.breakpointsAction.setChecked(True)
         self.codeAction.setChecked(False)
         self.operation = 2
 
     def _show_code_nav(self):
-        self.btnPrevious.setIcon(QIcon(resources.IMAGES['nav-code-left']))
-        self.btnNext.setIcon(QIcon(resources.IMAGES['nav-code-right']))
+        self.btnPrevious.setIcon(QIcon(':img/nav-code-left'))
+        self.btnNext.setIcon(QIcon(':img/nav-code-right'))
         self.bookmarksAction.setChecked(False)
         self.breakpointsAction.setChecked(False)
         self.codeAction.setChecked(True)
