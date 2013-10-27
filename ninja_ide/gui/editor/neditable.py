@@ -118,13 +118,14 @@ class NEditable(QObject):
             self.connect(check, SIGNAL("finished()"),
                 self.show_checkers_notifications)
 
-    def update_checkers_metadata(self, blockNumber, diference):
+    def update_checkers_metadata(self, blockNumber, diference,
+                                 atLineStart=False):
         """Update the lines in the checkers when the editor change."""
         for i, values in enumerate(self.registered_checkers):
             checker, color, priority = values
             if checker.checks:
                 checker.checks = helpers.add_line_increment_for_dict(
-                    checker.checks, blockNumber, diference)
+                    checker.checks, blockNumber, diference, atLineStart)
         self.emit(SIGNAL("checkersUpdated(PyQt_PyObject)"), self)
 
     def run_checkers(self, content, path=None, encoding=None):

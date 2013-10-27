@@ -69,19 +69,22 @@ def get_indentation(line, indent=settings.INDENT, useTabs=settings.USE_TABS):
     return indentation
 
 
-def add_line_increment(lines, blockModified, diference):
+def add_line_increment(lines, blockModified, diference, atLineStart=False):
     """Increment the line number of the list content when needed."""
     def _inner_increment(line):
-        if line < blockModified:
+        if (not atLineStart and line <= blockModified) or (
+            blockModified == line + diference):
             return line
         return line + diference
     return list(map(_inner_increment, lines))
 
 
-def add_line_increment_for_dict(data, blockModified, diference):
+def add_line_increment_for_dict(data, blockModified, diference,
+                                atLineStart=False):
     """Increment the line number of the dict content when needed."""
     def _inner_increment(line):
-        if line < blockModified:
+        if (not atLineStart and line <= blockModified) or (
+            blockModified == line + diference):
             return line
         newLine = line + diference
         summary = data.pop(line)
