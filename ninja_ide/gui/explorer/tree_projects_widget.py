@@ -41,11 +41,13 @@ from PyQt4.QtGui import QMenu
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QStyle
 from PyQt4.QtGui import QCursor
+from PyQt4.QtGui import QFontMetrics
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QUrl
 from PyQt4.QtGui import QDesktopServices
 
+from ninja_ide import translations
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core.file_handling.filesystem_notifications import (
@@ -67,29 +69,54 @@ def scrollable_wrapper(widget):
 
 
 class TreeHeader(QHeaderView):
+    """
+    SIGNALS:
+    @headerClicked(QPoint)
+    """
 
     def __init__(self):
         super(TreeHeader, self).__init__(Qt.Horizontal)
-        #hbox = QHBoxLayout(self)
-        #hbox.setContentsMargins(0, 0, 0, 0)
-        #hbox.setSpacing(0)
-
-        #push = QPushButton("boton")
-        #push.setFixedHeight(self.height())
-        #push.setFixedWidth(self.width())
-        #hbox.addWidget(push)
+        self.title = ""
+        self.is_current_project = False
+        self._mouse_over = False
+        self.setToolTip(translations.TR_PROJECT_OPTIONS)
 
     def paintSection(self, painter, rect, logicalIndex):
         gradient = QLinearGradient(0, 0, 0, rect.height())
-        gradient.setColorAt(0.0, QColor("#727272"))
-        gradient.setColorAt(1.0, QColor("#363636"))
+        if self._mouse_over:
+            gradient.setColorAt(0.0, QColor("#808080"))
+            gradient.setColorAt(1.0, QColor("#474747"))
+        else:
+            gradient.setColorAt(0.0, QColor("#727272"))
+            gradient.setColorAt(1.0, QColor("#363636"))
         painter.fillRect(rect, QBrush(gradient))
 
-        painter.setPen(QColor(Qt.white))
-        painter.drawText(10, 10, "Project")
+        if self.is_current_project:
+            painter.setPen(QColor(0, 204, 82))
+        else:
+            painter.setPen(QColor(Qt.white))
+        font = painter.font()
+        font.setBold(True)
+        painter.setFont(font)
+        font_metrics = QFontMetrics(painter.font())
+        ypos = (rect.height() / 2) + (font_metrics.height() / 3)
+        painter.drawText(10, ypos, self.title)
+
+    def enterEvent(self, event):
+        super(TreeHeader, self).enterEvent(event)
+        self._mouse_over = True
+
+    def leaveEvent(self, event):
+        super(TreeHeader, self).leaveEvent(event)
+        self._mouse_over = False
+
+    def mousePressEvent(self, event):
+        super(TreeHeader, self).mousePressEvent(event)
+        self.emit(SIGNAL("headerClicked(QPoint)"), QCursor.pos())
 
 
 class ProjectTreeColumn(QScrollArea):
+
     def __init__(self, *args, **kwargs):
         super(ProjectTreeColumn, self).__init__(*args, **kwargs)
         self._widget = QWidget()
@@ -98,6 +125,7 @@ class ProjectTreeColumn(QScrollArea):
         self.setWidgetResizable(True)
         self.setEnabled(True)
         self.projects = []
+        self._active_project = None
 
         #connections = (
             #{'target': 'main_container',
@@ -129,13 +157,21 @@ class ProjectTreeColumn(QScrollArea):
 
     def add_project(self, project):
         if project not in self.projects:
-            self.projects.append(project)
-            ptree = TreeProjectsWidget()
+            ptree = TreeProjectsWidget(project)
+            self.connect(ptree, SIGNAL("setActiveProject(PyQt_PyObject)"),
+                self._set_active_project)
             pmodel = project.model
             ptree.setModel(pmodel)
+            ptree.header().title = project.name
             pindex = pmodel.index(pmodel.rootPath())
             ptree.setRootIndex(pindex)
             self._widget.layout().addWidget(scrollable_wrapper(ptree))
+            if self._active_project is None:
+                ptree.set_default_project()
+            self.projects.append(ptree)
+
+    def _set_active_project(self, tree_proj):
+        self._active_project = tree_proj
 
 
 class TreeProjectsWidget(QTreeView):
@@ -146,6 +182,7 @@ class TreeProjectsWidget(QTreeView):
 
     """
     runProject()
+    setActiveProject(PyQt_PyObject)
     closeProject(QString)
     closeFilesFromProjectClosed(QString)
     addProjectToConsole(QString)
@@ -175,8 +212,9 @@ class TreeProjectsWidget(QTreeView):
         self.setAnimated(True)
 
         t_header = TreeHeader()
+        self.connect(t_header, SIGNAL("headerClicked(QPoint)"),
+            lambda point: self._menu_context_tree(point, True))
         self.setHeader(t_header)
-        #t_header.setHidden(True)
         t_header.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
         t_header.setResizeMode(0, QHeaderView.Stretch)
         t_header.setStretchLastSection(False)
@@ -193,8 +231,9 @@ class TreeProjectsWidget(QTreeView):
         self.connect(self, SIGNAL("activated(const QModelIndex &)"),
                     self._open_file)
 
-    def __init__(self, state_index=list()):
+    def __init__(self, project, state_index=list()):
         super(TreeProjectsWidget, self).__init__()
+        self.project = project
 
         self._actualProject = None
         #self._projects -> key: [Item, folderStructure]
@@ -203,7 +242,6 @@ class TreeProjectsWidget(QTreeView):
         self._thread_execution = {}
         self.__enableCloseNotification = True
         self._fileWatcher = NinjaFileSystemWatcher
-        self._refresh_projects_queue = []
         self._timer_running = False
 
         self.__format_tree()
@@ -256,24 +294,24 @@ class TreeProjectsWidget(QTreeView):
         if scope.file:
             self.extra_menus_by_scope['file'].append(menu)
 
-    def _menu_context_tree(self, point):
+    def _menu_context_tree(self, point, isRoot=False):
         index = self.indexAt(point)
-        if not index.isValid():
+        if not index.isValid() and not isRoot:
             return
 
-        item = self.itemAt(point)
         handler = None
         menu = QMenu(self)
-        if item.isFolder or item.parent() is None:
-            self._add_context_menu_for_folders(menu, item)
-        elif not item.isFolder:
-            self._add_context_menu_for_files(menu, item)
-        if item.parent() is None:
+        if isRoot or self.model().isDir(index):
+            self._add_context_menu_for_folders(menu, isRoot)
+        else:
+            filename = self.model().fileName(index)
+            lang = file_manager.get_file_extension(filename)
+            self._add_context_menu_for_files(menu, lang)
+        if isRoot:
             #get the extra context menu for this projectType
-            if isinstance(item, ProjectItem):
-                return
-            handler = settings.get_project_type_handler(item.projectType)
-            self._add_context_menu_for_root(menu, item)
+            handler = settings.get_project_type_handler(
+                self.project.project_type)
+            self._add_context_menu_for_root(menu)
 
         menu.addMenu(self._folding_menu)
 
@@ -293,7 +331,7 @@ class TreeProjectsWidget(QTreeView):
         #show the menu!
         menu.exec_(QCursor.pos())
 
-    def _add_context_menu_for_root(self, menu, item):
+    def _add_context_menu_for_root(self, menu):
         menu.addSeparator()
         actionRunProject = menu.addAction(QIcon(
             ":img/play"), self.tr("Run Project"))
@@ -301,28 +339,23 @@ class TreeProjectsWidget(QTreeView):
             SIGNAL("runProject()"))
         actionMainProject = menu.addAction(self.tr("Set as Main Project"))
         self.connect(actionMainProject, SIGNAL("triggered()"),
-            lambda: self.set_default_project(item))
-        if item.addedToConsole:
-            actionRemoveFromConsole = menu.addAction(
-                self.tr("Remove this Project from the Python Console"))
-            self.connect(actionRemoveFromConsole, SIGNAL("triggered()"),
-                self._remove_project_from_console)
-        else:
-            actionAdd2Console = menu.addAction(
-                self.tr("Add this Project to the Python Console"))
-            self.connect(actionAdd2Console, SIGNAL("triggered()"),
-                self._add_project_to_console)
+            self.set_default_project)
+        #if item.addedToConsole:
+            #actionRemoveFromConsole = menu.addAction(
+                #self.tr("Remove this Project from the Python Console"))
+            #self.connect(actionRemoveFromConsole, SIGNAL("triggered()"),
+                #self._remove_project_from_console)
+        #else:
+            #actionAdd2Console = menu.addAction(
+                #self.tr("Add this Project to the Python Console"))
+            #self.connect(actionAdd2Console, SIGNAL("triggered()"),
+                #self._add_project_to_console)
         actionProperties = menu.addAction(QIcon(":img/pref"),
             self.tr("Project Properties"))
         self.connect(actionProperties, SIGNAL("triggered()"),
             self.open_project_properties)
 
         menu.addSeparator()
-        action_refresh = menu.addAction(
-            self.style().standardIcon(QStyle.SP_BrowserReload),
-            self.tr("Refresh Project"))
-        self.connect(action_refresh, SIGNAL("triggered()"),
-            self._refresh_project)
         action_close = menu.addAction(
             self.style().standardIcon(QStyle.SP_DialogCloseButton),
             self.tr("Close Project"))
@@ -334,7 +367,7 @@ class TreeProjectsWidget(QTreeView):
                 menu.addSeparator()
                 menu.addMenu(m)
 
-    def _add_context_menu_for_folders(self, menu, item):
+    def _add_context_menu_for_folders(self, menu, isRoot):
         action_add_file = menu.addAction(QIcon(":img/new"),
                     self.tr("Add New File"))
         self.connect(action_add_file, SIGNAL("triggered()"),
@@ -347,18 +380,17 @@ class TreeProjectsWidget(QTreeView):
             self.tr("Create '__init__' Complete"))
         self.connect(action_create_init, SIGNAL("triggered()"),
             self._create_init)
-        if item.isFolder and (item.parent() is not None):
+        if not isRoot:
+            #Folders but not the root
             action_remove_folder = menu.addAction(self.tr("Remove Folder"))
             self.connect(action_remove_folder, SIGNAL("triggered()"),
                 self._delete_folder)
-        #Folders but not the root
-        if item.isFolder and item.parent() is not None:
             for m in self.extra_menus_by_scope['folder']:
                 if isinstance(m, QMenu):
                     menu.addSeparator()
                     menu.addMenu(m)
 
-    def _add_context_menu_for_files(self, menu, item):
+    def _add_context_menu_for_files(self, menu, lang):
         action_rename_file = menu.addAction(self.tr("Rename File"))
         action_move_file = menu.addAction(self.tr("Move File"))
         action_copy_file = menu.addAction(self.tr("Copy File"))
@@ -374,12 +406,12 @@ class TreeProjectsWidget(QTreeView):
         self.connect(action_move_file, SIGNAL("triggered()"),
             self._move_file)
         #Allow to edit Qt UI files with the appropiate program
-        if item.lang() == 'ui':
+        if lang == 'ui':
             action_edit_ui_file = menu.addAction(self.tr("Edit UI File"))
             self.connect(action_edit_ui_file, SIGNAL("triggered()"),
                 self._edit_ui_file)
         #menu per file language (legacy plugin API)!
-        for m in self.extra_menus.get(item.lang(), ()):
+        for m in self.extra_menus.get(lang, ()):
             if isinstance(m, QMenu):
                 menu.addSeparator()
                 menu.addMenu(m)
@@ -416,11 +448,9 @@ class TreeProjectsWidget(QTreeView):
             item = item.parent()
         return item
 
-    def set_default_project(self, item):
-        item.setForeground(0, QBrush(QColor(0, 204, 82)))
-        if self._actualProject:
-            item.setForeground(0, QBrush(QColor(255, 165, 0)))
-        self._actualProject = item
+    def set_default_project(self):
+        self.header().is_current_project = True
+        self.emit(SIGNAL("setActiveProject(PyQt_PyObject)"), self)
 
     def open_project_properties(self):
         item = self._get_project_root()
@@ -437,16 +467,6 @@ class TreeProjectsWidget(QTreeView):
             thread = self._thread_execution.pop(path, None)
             if thread:
                 thread.wait()
-
-    def _callback_refresh_project(self, value):
-        path, item, structure = value
-        item.takeChildren()
-        self._load_folder(structure, path, item)
-        #todo: refresh completion
-        item.setExpanded(True)
-        if isinstance(item, ProjectTree):
-            self.emit(SIGNAL("projectPropertiesUpdated(QTreeWidgetItem)"),
-                item)
 
     def _close_project(self):
         item = self.currentItem()
@@ -476,7 +496,6 @@ class TreeProjectsWidget(QTreeView):
         except file_manager.NinjaFileExistsException as ex:
             QMessageBox.information(self, self.tr("Create INIT fail"),
                 ex.message)
-        self._refresh_project(item)
 
     def _add_new_file(self):
         item = self.currentItem()
@@ -540,7 +559,6 @@ class TreeProjectsWidget(QTreeView):
             subitem = ProjectItem(item, name, pathForFolder)
             subitem.setToolTip(0, name)
             subitem.setIcon(0, QIcon(":img/tree-folder"))
-            self._refresh_project(item)
 
     def _delete_file(self):
         item = self.currentItem()
