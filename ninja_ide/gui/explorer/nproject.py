@@ -73,11 +73,12 @@ class NProject(QObject):
         return self.__model
 
     @model.setter
-    def model(self, model):
+    def model(self, model):  # lint:ok
         self.__model = model
-        self.__model.setFilter(QDir.AllDirs | QDir.NoDotAndDotDot | QDir.AllEntries)
+        self.__model.setFilter(QDir.AllDirs | QDir.NoDotAndDotDot |
+            QDir.AllEntries)
         self.__model.setNameFilters(self.extensions)
 
     @model.deleter
-    def model(self):
+    def model(self):  # lint:ok
         del(self.__model)
