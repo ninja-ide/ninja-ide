@@ -77,9 +77,19 @@ class TreeHeader(QHeaderView):
     def __init__(self):
         super(TreeHeader, self).__init__(Qt.Horizontal)
         self.title = ""
-        self.is_current_project = False
+        self._is_current_project = False
         self._mouse_over = False
         self.setToolTip(translations.TR_PROJECT_OPTIONS)
+
+    def _get_is_current_project(self):
+        return self._is_current_project
+
+    def _set_is_current_project(self, val):
+        self._is_current_project = val
+        self.repaint()
+
+    is_current_project = property(_get_is_current_project,
+                                  _set_is_current_project)
 
     def paintSection(self, painter, rect, logicalIndex):
         gradient = QLinearGradient(0, 0, 0, rect.height())
@@ -91,7 +101,7 @@ class TreeHeader(QHeaderView):
             gradient.setColorAt(1.0, QColor("#363636"))
         painter.fillRect(rect, QBrush(gradient))
 
-        if self.is_current_project:
+        if self._is_current_project:
             painter.setPen(QColor(0, 204, 82))
         else:
             painter.setPen(QColor(Qt.white))
@@ -120,7 +130,10 @@ class ProjectTreeColumn(QScrollArea):
     def __init__(self, *args, **kwargs):
         super(ProjectTreeColumn, self).__init__(*args, **kwargs)
         self._widget = QWidget()
-        self._widget.setLayout(QVBoxLayout())
+        vbox = QVBoxLayout()
+        vbox.setContentsMargins(0, 0, 0, 0)
+        vbox.setSpacing(0)
+        self._widget.setLayout(vbox)
         self.setWidget(self._widget)
         self.setWidgetResizable(True)
         self.setEnabled(True)
@@ -165,12 +178,15 @@ class ProjectTreeColumn(QScrollArea):
             ptree.header().title = project.name
             pindex = pmodel.index(pmodel.rootPath())
             ptree.setRootIndex(pindex)
-            self._widget.layout().addWidget(scrollable_wrapper(ptree))
+            #self._widget.layout().addWidget(scrollable_wrapper(ptree))
+            self._widget.layout().addWidget(ptree)
             if self._active_project is None:
                 ptree.set_default_project()
             self.projects.append(ptree)
 
     def _set_active_project(self, tree_proj):
+        if self._active_project is not None:
+            self._active_project.set_default_project(False)
         self._active_project = tree_proj
 
 
@@ -448,9 +464,10 @@ class TreeProjectsWidget(QTreeView):
             item = item.parent()
         return item
 
-    def set_default_project(self):
-        self.header().is_current_project = True
-        self.emit(SIGNAL("setActiveProject(PyQt_PyObject)"), self)
+    def set_default_project(self, value=True):
+        self.header().is_current_project = value
+        if value:
+            self.emit(SIGNAL("setActiveProject(PyQt_PyObject)"), self)
 
     def open_project_properties(self):
         item = self._get_project_root()
