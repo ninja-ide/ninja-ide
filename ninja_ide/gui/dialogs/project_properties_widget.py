@@ -56,7 +56,7 @@ DEBUG = logger.debug
 
 class ProjectProperties(QDialog):
 
-    def __init__(self, item, parent=None):
+    def __init__(self, project, parent=None):
         QDialog.__init__(self, parent, Qt.Dialog)
         self._item = item
         self.setWindowTitle(self.tr("Project Properties"))
