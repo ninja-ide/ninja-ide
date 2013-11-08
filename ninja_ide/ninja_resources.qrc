@@ -96,7 +96,7 @@
     <file alias='file-run'>img/file-run.png</file>
   </qresource>
   <qresource prefix='img'>
-    <file alias='splash'>img/splash.png</file>
+    <file alias='splash'>img/splash.jpg</file>
   </qresource>
   <qresource prefix='img'>
     <file alias='deactivate-profile'>img/deactivate_profile.png</file>

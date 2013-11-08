@@ -41,6 +41,7 @@ from PyQt4.QtGui import QMenu
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QStyle
 from PyQt4.QtGui import QCursor
+from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QFontMetrics
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
@@ -240,6 +241,17 @@ class TreeProjectsWidget(QTreeView):
         self.hideColumn(2)  # Type
         self.hideColumn(3)  # Modification date
 
+        #TODO: We need to expand the widget to be as big as the real area
+        #that contains all the visible tree items, the code below
+        #tries to detect when that area grows to adjust the size of the
+        #widget, but i'm not sure this is the proper approach
+        #self.connect(self.verticalScrollBar(),
+            #SIGNAL("rangeChanged(int, int)"), self.test)
+
+    #def test(self, minimum, maximum):
+        #print self.height(), self.viewport().size().height()
+        ##self.setFixedHeight()
+
     def setModel(self, model):
         super(TreeProjectsWidget, self).setModel(model)
         self.__format_tree()
@@ -250,15 +262,8 @@ class TreeProjectsWidget(QTreeView):
     def __init__(self, project, state_index=list()):
         super(TreeProjectsWidget, self).__init__()
         self.project = project
-
-        self._actualProject = None
-        #self._projects -> key: [Item, folderStructure]
-        self._projects = {}
-        self._loading_items = {}
-        self._thread_execution = {}
-        self.__enableCloseNotification = True
-        self._fileWatcher = NinjaFileSystemWatcher
-        self._timer_running = False
+        self._added_to_console = False
+        #self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
         self.__format_tree()
 
@@ -269,7 +274,6 @@ class TreeProjectsWidget(QTreeView):
 
         self.expanded.connect(self._item_expanded)
         self.collapsed.connect(self._item_collapsed)
-        self.mute_signals = False
         self.state_index = list()
         self._folding_menu = FoldingContextMenu(self)
 
@@ -438,16 +442,13 @@ class TreeProjectsWidget(QTreeView):
                 menu.addMenu(m)
 
     def _add_project_to_console(self):
-        item = self.currentItem()
-        if isinstance(item, ProjectTree):
-            self.emit(SIGNAL("addProjectToConsole(QString)"), item.path)
-            item.addedToConsole = True
+        self.emit(SIGNAL("addProjectToConsole(QString)"), self.project.path)
+        self._added_to_console = True
 
     def _remove_project_from_console(self):
-        item = self.currentItem()
-        if isinstance(item, ProjectTree):
-            self.emit(SIGNAL("removeProjectFromConsole(QString)"), item.path)
-            item.addedToConsole = False
+        self.emit(SIGNAL("removeProjectFromConsole(QString)"),
+            self.project.path)
+        self._added_to_console = False
 
     def _open_file(self, model_index):
         path = self.model().filePath(model_index)
@@ -457,33 +458,14 @@ class TreeProjectsWidget(QTreeView):
             logger.debug("will call open file")
             main_container.open_file(path)
 
-    def _get_project_root(self, item=None):
-        if item is None:
-            item = self.currentItem()
-        while item is not None and item.parent() is not None:
-            item = item.parent()
-        return item
-
     def set_default_project(self, value=True):
         self.header().is_current_project = value
         if value:
             self.emit(SIGNAL("setActiveProject(PyQt_PyObject)"), self)
 
     def open_project_properties(self):
-        item = self._get_project_root()
-        proj = project_properties_widget.ProjectProperties(item, self)
+        proj = project_properties_widget.ProjectProperties(self.project, self)
         proj.show()
-
-    def _clean_threads(self):
-        paths_to_delete = []
-        for path in self._thread_execution:
-            thread = self._thread_execution.get(path, None)
-            if thread and not thread.isRunning():
-                paths_to_delete.append(path)
-        for path in paths_to_delete:
-            thread = self._thread_execution.pop(path, None)
-            if thread:
-                thread.wait()
 
     def _close_project(self):
         item = self.currentItem()
@@ -706,73 +688,6 @@ class TreeProjectsWidget(QTreeView):
         #open the correct program to edit Qt UI files!
         QDesktopServices.openUrl(QUrl(pathForFile, QUrl.TolerantMode))
 
-    def loading_project(self, folder, reload_item=None):
-        loadingItem = ui_tools.LoadingItem()
-        if reload_item is None:
-            parent = self
-        else:
-            parent = reload_item.parent()
-        item = loadingItem.add_item_to_tree(folder, self, ProjectItem, parent)
-        self._loading_items[folder] = item
-
-    def remove_loading_icon(self, folder):
-        item = self._loading_items.pop(folder, None)
-        if item is not None:
-            index = self.indexOfTopLevelItem(item)
-            self.takeTopLevelItem(index)
-
-    def load_project(self, folderStructure, folder):
-        if not folder:
-            return
-
-        self.remove_loading_icon(folder)
-
-        ninjaide = IDE.get_service('ide')
-        project = ninjaide.get_project(folder)
-        item = ProjectTree(self, project)
-        item.isFolder = True
-        item.setToolTip(0, folder)
-        item.setIcon(0, QIcon(":img/tree-app"))
-        self._projects[folder] = item
-        if folderStructure[folder][1] is not None:
-            folderStructure[folder][1].sort()
-        self._load_folder(folderStructure, folder, item)
-        item.setExpanded(True)
-        if len(self._projects) == 1:
-            self.set_default_project(item)
-        if self.currentItem() is None:
-            item.setSelected(True)
-            self.setCurrentItem(item)
-        self._fileWatcher.add_watch(folder)
-        completion_daemon.add_project_folder(folder)
-        self.sortItems(0, Qt.AscendingOrder)
-
-    def _load_folder(self, folderStructure, folder, parentItem):
-        """Load the Tree Project structure recursively."""
-        # Avoid failing if for some reason folder is not found
-        # Might be the case of special files, as links or versioning files
-        files, folders = folderStructure.get(folder, [None, None])
-
-        if files is not None:
-            files.sort()
-            for i in files:
-                subitem = ProjectItem(parentItem, i, folder)
-                subitem.setToolTip(0, i)
-                subitem.setIcon(0, self._get_file_icon(i))
-        if folders is not None:
-            folders.sort()
-            for _folder in folders:
-                if _folder.startswith('.'):
-                    continue
-                subfolder = ProjectItem(parentItem, _folder, folder, True)
-                subfolder.setToolTip(0, _folder)
-                subfolder.setIcon(0, QIcon(":img/tree-folder"))
-                subFolderPath = os.path.join(folder, _folder)
-                if subFolderPath in self.state_index:
-                    subfolder.setExpanded(True)
-                self._load_folder(folderStructure,
-                    subFolderPath, subfolder)
-
     def _get_file_icon(self, fileName):
         return QIcon(self.images.get(file_manager.get_file_extension(fileName),
             ":img/tree-generic"))
@@ -825,74 +740,6 @@ class TreeProjectsWidget(QTreeView):
             self._close_project()
         self.__enableCloseNotification = True
         self._projects = {}
-
-
-class ProjectItem(QTreeWidgetItem):
-
-    def __init__(self, parent, name, path, isFolder=False):
-        QTreeWidgetItem.__init__(self, parent)
-        self.setText(0, name)
-        self.path = path
-        self.isFolder = isFolder
-
-    @property
-    def isProject(self):
-        #flag to check if the item is a project ALWAYS FALSE
-        return False
-
-    def lang(self):
-        return file_manager.get_file_extension(self.text(0))
-
-    def get_full_path(self):
-        '''
-        Returns the full path of the file
-        '''
-        return os.path.join(self.path, self.text(0))
-
-    def set_item_icon(self, icon):
-        self.setIcon(0, icon)
-
-    def __lt__(self, otherItem):
-        column = self.treeWidget().sortColumn()
-        my_text = ('1%s' % self.text(column).lower() if
-            self.isFolder else '0%s' % self.text(column).lower())
-        other_text = ('1%s' % otherItem.text(column).lower() if
-            otherItem.isFolder else '0%s' % otherItem.text(column).lower())
-        return my_text < other_text
-
-
-class ProjectTree(QTreeWidgetItem):
-
-    def __init__(self, parent, project):
-        QTreeWidgetItem.__init__(self, parent)
-        self._parent = parent
-        self._project = project
-        self.setText(0, self._project.name)
-        self.path = self._project.path
-        self.isFolder = True
-        self.setForeground(0, QBrush(QColor(255, 165, 0)))
-
-        self.update_paths()
-
-    def update_paths(self):
-        for path in self._project.related_projects:
-            completion_daemon.add_project_folder(path)
-
-    @property
-    def isProject(self):
-        #flag to check if the item is a project ALWAYS TRUE
-        return True
-
-    def lang(self):
-        if self._project.main_file != '':
-            return file_manager.get_file_extension(self._project.main_file)
-        return 'py'
-
-    def get_full_path(self):
-        '''
-        Returns the full path of the project
-        '''
-        return self._project.full_path
 
 
 class FoldingContextMenu(QMenu):
