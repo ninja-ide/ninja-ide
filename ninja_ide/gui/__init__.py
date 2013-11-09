@@ -148,7 +148,11 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
 
     #Showing GUI
     ninjaide.show()
-
+    #OSX workaround for ninja window not in front
+    try:
+	ninjaide.raise_()
+    except:
+	pass  # I really dont mind if this fails in any form
     #Loading Session Files
     splash.showMessage("Loading Files and Projects",
         Qt.AlignRight | Qt.AlignTop, Qt.black)
