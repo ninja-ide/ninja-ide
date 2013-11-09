@@ -146,14 +146,18 @@ def _parse_function(symbol, with_docstrings):
         'attrs': attrs, 'docstring': docstring, 'functions': func}
 
 
-def obtain_symbols(source, with_docstrings=False, filename=''):
+def obtain_symbols(source, with_docstrings=False, filename='', simple=False):
     """Parse a module source code to obtain: Classes, Functions and Assigns."""
     try:
         module = ast.parse(source)
     except:
         logger_symbols.debug("The file contains syntax errors: %s" % filename)
-        return {}
+        if simple:
+            return {}, {}
+        else:
+            return {}
     symbols = {}
+    symbols_simplified = {}
     globalAttributes = {}
     globalFunctions = {}
     classes = {}
@@ -170,6 +174,9 @@ def obtain_symbols(source, with_docstrings=False, filename=''):
                 docstrings.update(result['docstring'])
             globalFunctions[result['name']] = {'lineno': result['lineno'],
                 'functions': result['functions']}
+            if simple:
+                result_simple = _parse_function_simplified(symbol)
+                symbols_simplified.update(result_simple)
         elif symbol.__class__ is ast.ClassDef:
             result = _parse_class(symbol, with_docstrings)
             classes[result['name']] = {'lineno': result['lineno'],
@@ -177,6 +184,9 @@ def obtain_symbols(source, with_docstrings=False, filename=''):
                 'functions': result['functions'],
                 'classes': result['classes']}}
             docstrings.update(result['docstring'])
+            if simple:
+                result_simple = _parse_class_simplified(symbol)
+                symbols_simplified.update(result_simple)
     if globalAttributes:
         symbols['attributes'] = globalAttributes
     if globalFunctions:
@@ -186,7 +196,10 @@ def obtain_symbols(source, with_docstrings=False, filename=''):
     if docstrings and with_docstrings:
         symbols['docstrings'] = docstrings
 
-    return symbols
+    if simple:
+        return symbols, symbols_simplified
+    else:
+        return symbols
 
 
 def obtain_imports(source='', body=None):
@@ -286,22 +299,3 @@ def _parse_function_simplified(symbol, member_of=""):
 
     results[lineno] = (func_name, 'f')
     return results
-
-
-def get_symbols_simplified(source):
-    """Parse a module source code to obtain: Classes, Functions."""
-    symbols = {}
-    try:
-        module = ast.parse(source)
-    except:
-        return symbols
-
-    for symbol in module.body:
-        if symbol.__class__ is ast.FunctionDef:
-            result = _parse_function_simplified(symbol)
-            symbols.update(result)
-        elif symbol.__class__ is ast.ClassDef:
-            result = _parse_class_simplified(symbol)
-            symbols.update(result)
-
-    return symbols

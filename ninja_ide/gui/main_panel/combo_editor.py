@@ -195,8 +195,8 @@ class ComboEditor(QWidget):
         symbols_handler = settings.get_symbols_handler('py')
         source = neditable.editor.toPlainText()
         source = source.encode(neditable.editor.encoding)
-        symbols_simplified = symbols_handler.get_symbols_simplified(source)
-        symbols = symbols_handler.obtain_symbols(source)
+        symbols, symbols_simplified = symbols_handler.obtain_symbols(
+            source, simple=True)
         self._symbols_index = sorted(symbols_simplified.keys())
         symbols_simplified = sorted(
             list(symbols_simplified.items()), key=lambda x: x[0])
