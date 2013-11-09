@@ -30,7 +30,10 @@ from PyQt4.QtGui import QTextCursor
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
+from ninja_ide import translations
+from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
+from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
 
 
 class MigrationWidget(QWidget):
@@ -59,6 +62,8 @@ class MigrationWidget(QWidget):
         self.connect(self.current_list,
             SIGNAL("itemClicked(QListWidgetItem*)"), self.load_suggestion)
         self.connect(self.btn_apply, SIGNAL("clicked()"), self.apply_changes)
+
+        ExplorerContainer.register_tab(translations.TR_TAB_MIGRATION, self)
 
     def apply_changes(self):
         lineno = int(self.current_list.currentItem().data(Qt.UserRole))
@@ -124,3 +129,9 @@ class MigrationWidget(QWidget):
         """
         self.current_list.clear()
         self.suggestion.clear()
+
+
+if settings.SHOW_MIGRATION_LIST:
+    migrationWidget = MigrationWidget()
+else:
+    migrationWidget = None

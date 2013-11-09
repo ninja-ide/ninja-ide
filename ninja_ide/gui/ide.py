@@ -215,6 +215,7 @@ class IDE(QMainWindow):
             menu_bar.load_menu(self)
             #These two are the same service, I think that's ok
             menu_bar.load_toolbar(self)
+        self.__instance = self
 
     @classmethod
     def get_service(cls, service_name):

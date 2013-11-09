@@ -56,6 +56,7 @@ from ninja_ide.core.file_handling.filesystem_notifications import (
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs import project_properties_widget
+from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
 from ninja_ide.gui.explorer import actions
 from ninja_ide.gui.explorer.nproject import NProject
 from ninja_ide.tools.completion import completion_daemon
@@ -146,9 +147,10 @@ class ProjectTreeColumn(QScrollArea):
             #'signal_name': 'openProject(QString)',
             #'slot': self.open_project_folder},
                 #)
-        #IDE.register_signals('tree_projects_widget', connections)
+        IDE.register_service('tree_projects', self)
+        ExplorerContainer.register_tab(translations.TR_TAB_PROJECTS, self)
 
-    def install(self):
+    def install_tab(self):
         ide = IDE.get_service('ide')
         ui_tools.install_shortcuts(self, actions.PROJECTS_TREE_ACTIONS, ide)
 
@@ -279,18 +281,16 @@ class TreeProjectsWidget(QTreeView):
 
     def _item_collapsed(self, tree_item):
         """Store status of item when collapsed"""
-        if not self.mute_signals:
-            path = self.model().filePath(tree_item)
-            if path in self.state_index:
-                path_index = self.state_index.index(path)
-                self.state_index.pop(path_index)
+        path = self.model().filePath(tree_item)
+        if path in self.state_index:
+            path_index = self.state_index.index(path)
+            self.state_index.pop(path_index)
 
     def _item_expanded(self, tree_item):
         """Store status of item when expanded"""
-        if not self.mute_signals:
-            path = self.model().filePath(tree_item)
-            if path not in self.state_index:
-                self.state_index.append(path)
+        path = self.model().filePath(tree_item)
+        if path not in self.state_index:
+            self.state_index.append(path)
 
     def add_extra_menu(self, menu, lang='all'):
         '''
@@ -799,6 +799,7 @@ class FoldingContextMenu(QMenu):
         self._tree.expandAll()
 
 
-PTColumn = ProjectTreeColumn()
-ec = IDE.get_service("explorer_container")
-ec.addTab(PTColumn, PTColumn.tr('Projects'))
+if settings.SHOW_PROJECT_EXPLORER:
+    projectsColumn = ProjectTreeColumn()
+else:
+    projectsColumn = None

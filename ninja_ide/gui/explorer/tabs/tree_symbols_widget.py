@@ -27,6 +27,11 @@ from PyQt4.QtGui import QMenu
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
+from ninja_ide import translations
+from ninja_ide.core import settings
+from ninja_ide.gui.ide import IDE
+from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
+
 
 class TreeSymbolsWidget(QTreeWidget):
 
@@ -65,10 +70,8 @@ class TreeSymbolsWidget(QTreeWidget):
         self.connect(self, SIGNAL("itemExpanded(QTreeWidgetItem *)"),
             self._item_expanded)
 
-    def select_current_item(self, line, col):
-        #TODO
-        #print line, col
-        pass
+        IDE.register_service('tree_symbols', self)
+        ExplorerContainer.register_tab(translations.TR_TAB_SYMBOLS, self)
 
     def _menu_context_tree(self, point):
         index = self.indexAt(point)
@@ -288,3 +291,9 @@ class ItemTree(QTreeWidgetItem):
         self.isAttribute = False
         self.isClass = False
         self.isMethod = False
+
+
+if settings.SHOW_SYMBOLS_LIST:
+    treeSymbols = TreeSymbolsWidget()
+else:
+    treeSymbols = None
