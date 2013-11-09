@@ -28,8 +28,10 @@ from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
+from ninja_ide import translations
 from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
+from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
 
 
 class ErrorsWidget(QWidget):
@@ -84,6 +86,8 @@ class ErrorsWidget(QWidget):
             self._turn_on_off_lint)
         self.connect(self.btn_pep8_activate, SIGNAL("clicked()"),
             self._turn_on_off_pep8)
+
+        ExplorerContainer.register_tab(translations.TR_TAB_ERRORS, self)
 
     def _turn_on_off_lint(self):
         """Change the status of the lint checker state."""
@@ -151,3 +155,9 @@ class ErrorsWidget(QWidget):
         """
         self.listErrors.clear()
         self.listPep8.clear()
+
+
+if settings.SHOW_ERRORS_LIST:
+    errorsWidget = ErrorsWidget()
+else:
+    errorsWidget = None
