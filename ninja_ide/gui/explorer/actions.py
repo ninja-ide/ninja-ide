@@ -30,14 +30,14 @@ ACTIONS = (
                'weight': 110},
     "connect": "create_new_project"
     },
-    {
-    "shortcut": "Save-project",
-    "action": {'text': translations.TR_SAVE_PROJECT,
-               'image': 'saveAll',
-               'section': (translations.TR_MENU_FILE, None),
-               'weight': 190},
-    "connect": "save_project"
-    },
+    #{
+    #"shortcut": "Save-project",
+    #"action": {'text': translations.TR_SAVE_PROJECT,
+               #'image': 'saveAll',
+               #'section': (translations.TR_MENU_FILE, None),
+               #'weight': 190},
+    #"connect": "save_project"
+    #},
     {
     "action": {'text': translations.TR_CLOSE_ALL_PROJECTS,
                'image': QStyle.SP_DialogCloseButton,

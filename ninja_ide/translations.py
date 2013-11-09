@@ -108,6 +108,12 @@ TR_COPY_FILE_PATH_TO_CLIPBOARD = tr("NINJA-IDE",
     "Copy file location to Clipboard")
 TR_REOPEN_FILE = tr("NINJA-IDE", "Reopen last closed File")
 TR_PROJECT_OPTIONS = tr("NINJA-IDE", "Click for Project options.")
+TR_UNDOCK = tr("NINJA-IDE", "Undock")
+TR_TAB_PROJECTS = tr("NINJA-IDE", "Projects")
+TR_TAB_SYMBOLS = tr("NINJA-IDE", "Symbols")
+TR_TAB_ERRORS = tr("NINJA-IDE", "Errors")
+TR_TAB_MIGRATION = tr("NINJA-IDE", "Migration 2to3")
+TR_TAB_WEB_INSPECTOR = tr("NINJA-IDE", "Web Inspector")
 
 #Locator Strings
 TR_ONLY_FILES = tr("NINJA-IDE", "@\t(Filter only by Files)")
