@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from PyQt4.QtCore import QObject, QDir
+from PyQt4.QtCore import QObject, QDir, SIGNAL
 
 import os
 
@@ -22,9 +22,9 @@ class NProject(QObject):
         project = json_manager.read_ninja_project(path)
 
         self.path = path
-        self.name = project.get('name', '')
-        if self.name == '':
-            self.name = file_manager.get_basename(path)
+        self._name = project.get('name', '')
+        if self._name == '':
+            self._name = file_manager.get_basename(path)
         self.project_type = project.get('project-type', '')
         self.description = project.get('description', '')
         if self.description == '':
@@ -38,7 +38,7 @@ class NProject(QObject):
         self.use_tabs = project.get('use-tabs', settings.USE_TABS)
         self.extensions = project.get('supported-extensions',
             settings.SUPPORTED_EXTENSIONS)
-        self.python_exec = project.get('pythonPath', settings.PYTHON_EXEC)
+        self.python_exec = project.get('pythonExec', settings.PYTHON_EXEC)
         self.python_path = project.get('PYTHONPATH', '')
         self.additional_builtins = project.get('additional_builtins', [])
         self.program_params = project.get('programParams', '')
@@ -48,6 +48,43 @@ class NProject(QObject):
         self.is_current = False
         #Model is a QFileSystemModel to be set on runtime
         self.__model = None
+
+    def _get_name(self):
+        return self._name
+
+    def _set_name(self, name):
+        if name == '':
+            self._name = file_manager.get_basename(self.path)
+        else:
+            self._name = name
+        self.emit(SIGNAL("projectNameUpdated(QString)"), self._name)
+
+    name = property(_get_name, _set_name)
+
+    def save_project_properties(self):
+        #save project properties
+        project = {}
+        project['name'] = self._name
+        project['description'] = self.description
+        project['url'] = self.url
+        project['license'] = self.license
+        project['mainFile'] = self.main_file
+        project['project-type'] = self.project_type
+        project['supported-extensions'] = self.extensions
+        project['indentation'] = self.indentation
+        project['use-tabs'] = self.use_tabs
+        project['pythonExec'] = self.python_exec  # FIXME
+        project['PYTHONPATH'] = self.python_path
+        project['additional_builtins'] = self.additional_builtins
+        project['preExecScript'] = self.pre_exec_script
+        project['postExecScript'] = self.post_exec_script
+        project['venv'] = self.venv
+        project['programParams'] = self.program_params
+        project['relatedProjects'] = self.related_projects
+        if file_manager.file_exists(self.path, self._name + '.nja'):
+            file_manager.delete_file(self.path, self._name + '.nja')
+        json_manager.create_ninja_project(self.path, self._name, project)
+        #TODO: update project tree on extensions changed
 
     @property
     def full_path(self):
