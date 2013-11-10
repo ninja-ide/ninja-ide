@@ -63,13 +63,7 @@ class _ToolsDock(QWidget):
             {'target': 'main_container',
             'signal_name': "runFile(QString)",
             'slot': self.execute_file},
-            {'target': 'explorer_container',
-            'signal_name': "removeProjectFromConsole(QString)",
-            'slot': self.remove_project_from_console},
-            {'target': 'explorer_container',
-            'signal_name': "addProjectToConsole(QString)",
-            'slot': self.add_project_to_console},
-            )
+        )
         IDE.register_signals('tools_dock', connections)
         IDE.register_service("tools_dock", self)
 

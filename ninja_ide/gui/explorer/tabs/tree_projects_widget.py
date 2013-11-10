@@ -217,6 +217,8 @@ class ProjectTreeColumn(QScrollArea):
             ptree = TreeProjectsWidget(project)
             self.connect(ptree, SIGNAL("setActiveProject(PyQt_PyObject)"),
                 self._set_active_project)
+            self.connect(ptree, SIGNAL("closeProject(PyQt_PyObject)"),
+                self._close_project)
             pmodel = project.model
             ptree.setModel(pmodel)
             ptree.header().title = project.name
@@ -227,6 +229,14 @@ class ProjectTreeColumn(QScrollArea):
             if self._active_project is None:
                 ptree.set_default_project()
             self.projects.append(ptree)
+
+    def _close_project(self, widget):
+        """Close the project related to the tree widget."""
+        self.projects.remove(widget)
+        if self._active_project == widget and len(self.projects) > 0:
+            self.projects[0].set_default_project()
+        self._widget.layout().removeWidget(widget)
+        widget.deleteLater()
 
     def _set_active_project(self, tree_proj):
         if self._active_project is not None:
@@ -406,16 +416,16 @@ class TreeProjectsWidget(QTreeView):
         actionMainProject = menu.addAction(self.tr("Set as Main Project"))
         self.connect(actionMainProject, SIGNAL("triggered()"),
             self.set_default_project)
-        #if item.addedToConsole:
-            #actionRemoveFromConsole = menu.addAction(
-                #self.tr("Remove this Project from the Python Console"))
-            #self.connect(actionRemoveFromConsole, SIGNAL("triggered()"),
-                #self._remove_project_from_console)
-        #else:
-            #actionAdd2Console = menu.addAction(
-                #self.tr("Add this Project to the Python Console"))
-            #self.connect(actionAdd2Console, SIGNAL("triggered()"),
-                #self._add_project_to_console)
+        if self._added_to_console:
+            actionRemoveFromConsole = menu.addAction(
+                self.tr("Remove this Project from the Python Console"))
+            self.connect(actionRemoveFromConsole, SIGNAL("triggered()"),
+                self._remove_project_from_console)
+        else:
+            actionAdd2Console = menu.addAction(
+                self.tr("Add this Project to the Python Console"))
+            self.connect(actionAdd2Console, SIGNAL("triggered()"),
+                self._add_project_to_console)
         actionProperties = menu.addAction(QIcon(":img/pref"),
             self.tr("Project Properties"))
         self.connect(actionProperties, SIGNAL("triggered()"),
@@ -488,13 +498,16 @@ class TreeProjectsWidget(QTreeView):
                 menu.addMenu(m)
 
     def _add_project_to_console(self):
-        self.emit(SIGNAL("addProjectToConsole(QString)"), self.project.path)
-        self._added_to_console = True
+        tools_dock = IDE.get_service('tools_dock')
+        if tools_dock:
+            tools_dock.add_project_to_console(self.project.path)
+            self._added_to_console = True
 
     def _remove_project_from_console(self):
-        self.emit(SIGNAL("removeProjectFromConsole(QString)"),
-            self.project.path)
-        self._added_to_console = False
+        tools_dock = IDE.get_service('tools_dock')
+        if tools_dock:
+            tools_dock.remove_project_from_console(self.project.path)
+            self._added_to_console = False
 
     def _open_file(self, model_index):
         path = self.model().filePath(model_index)
@@ -514,21 +527,7 @@ class TreeProjectsWidget(QTreeView):
         proj.show()
 
     def _close_project(self):
-        item = self.currentItem()
-        index = self.indexOfTopLevelItem(item)
-        pathKey = item.path
-        self._fileWatcher.remove_watch(pathKey)
-        self.takeTopLevelItem(index)
-        self._projects.pop(pathKey, None)
-        if self.__enableCloseNotification:
-            self.emit(SIGNAL("closeProject(QString)"), pathKey)
-        self.emit(SIGNAL("closeFilesFromProjectClosed(QString)"), pathKey)
-        item = self.currentItem()
-        if item:
-            self.set_default_project(item)
-            self._actualProject = item
-        else:
-            self._actualProject = None
+        self.emit(SIGNAL("closeProject(PyQt_PyObject)"), self)
 
     def _create_init(self):
         item = self.currentItem()
