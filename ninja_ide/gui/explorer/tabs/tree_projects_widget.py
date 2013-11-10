@@ -530,36 +530,24 @@ class TreeProjectsWidget(QTreeView):
         self.emit(SIGNAL("closeProject(PyQt_PyObject)"), self)
 
     def _create_init(self):
-        item = self.currentItem()
-        if item.parent() is None:
-            pathFolder = item.path
-        else:
-            pathFolder = os.path.join(item.path, str(item.text(0)))
+        path = self.model().filePath(self.currentIndex())
         try:
-            file_manager.create_init_file_complete(pathFolder)
+            file_manager.create_init_file_complete(path)
         except file_manager.NinjaFileExistsException as ex:
             QMessageBox.information(self, self.tr("Create INIT fail"),
                 ex.message)
 
     def _add_new_file(self):
-        item = self.currentItem()
-        if item.parent() is None:
-            pathForFile = item.path
-        else:
-            pathForFile = os.path.join(item.path, item.text(0))
+        path = self.model().filePath(self.currentIndex())
         result = QInputDialog.getText(self, self.tr("New File"),
             self.tr("Enter the File Name:"))
         fileName = result[0]
 
         if result[1] and fileName.strip() != '':
             try:
-                fileName = os.path.join(pathForFile, fileName)
+                fileName = os.path.join(path, fileName)
                 fileName = file_manager.store_file_content(
                     fileName, '', newFile=True)
-                name = file_manager.get_basename(fileName)
-                subitem = ProjectItem(item, name, pathForFile)
-                subitem.setToolTip(0, name)
-                subitem.setIcon(0, self._get_file_icon(name))
                 main_container = IDE.get_service('main_container')
                 if main_container:
                     main_container.open_file(fileName)
@@ -568,6 +556,7 @@ class TreeProjectsWidget(QTreeView):
                     (self.tr("Invalid Path: the file '%s' already exists.") %
                         ex.filename))
 
+    #FIXME
     def add_existing_file(self, path):
         relative = file_manager.convert_to_relative(
             self._actualProject.path, path)
@@ -587,76 +576,55 @@ class TreeProjectsWidget(QTreeView):
         itemParent.setExpanded(True)
 
     def _add_new_folder(self):
-        item = self.currentItem()
-        if item.parent() is None:
-            pathForFolder = item.path
-        else:
-            pathForFolder = os.path.join(item.path, item.text(0))
+        path = self.model().filePath(self.currentIndex())
         result = QInputDialog.getText(self, self.tr("New Folder"),
             self.tr("Enter the Folder Name:"))
         folderName = result[0]
 
         if result[1] and folderName.strip() != '':
-            folderName = os.path.join(pathForFolder, folderName)
+            folderName = os.path.join(path, folderName)
             file_manager.create_folder(folderName)
-            name = file_manager.get_basename(folderName)
-            subitem = ProjectItem(item, name, pathForFolder)
-            subitem.setToolTip(0, name)
-            subitem.setIcon(0, QIcon(":img/tree-folder"))
 
     def _delete_file(self):
-        item = self.currentItem()
+        path = self.model().filePath(self.currentIndex())
         val = QMessageBox.question(self, self.tr("Delete File"),
                 self.tr("Do you want to delete the following file: ")
-                + os.path.join(item.path, item.text(0)),
+                + path,
                 QMessageBox.Yes, QMessageBox.No)
         if val == QMessageBox.Yes:
-            path = file_manager.create_path(item.path, item.text(0))
-            file_manager.delete_file(item.path, item.text(0))
-            index = item.parent().indexOfChild(item)
-            item.parent().takeChild(index)
+            path = file_manager.create_path(path)
+            file_manager.delete_file(path)
             main_container = IDE.get_service('main_container')
             if main_container and main_container.is_open(path):
                 main_container.close_deleted_file(path)
 
     def _delete_folder(self):
-        item = self.currentItem()
+        path = self.model().filePath(self.currentIndex())
         val = QMessageBox.question(self, self.tr("Delete Folder"),
                 self.tr("Do you want to delete the following folder: ")
-                + os.path.join(item.path, item.text(0)),
+                + path,
                 QMessageBox.Yes, QMessageBox.No)
         if val == QMessageBox.Yes:
-            file_manager.delete_folder(item.path, item.text(0))
-            index = item.parent().indexOfChild(item)
-            item.parent().takeChild(index)
+            file_manager.delete_folder(path)
 
     def _rename_file(self):
-        item = self.currentItem()
-        if item.parent() is None:
-            pathForFile = item.path
-        else:
-            pathForFile = os.path.join(item.path, item.text(0))
+        path = self.model().filePath(self.currentIndex())
+        name = file_manager.get_basename(path)
         result = QInputDialog.getText(self, self.tr("Rename File"),
-            self.tr("Enter New File Name:"), text=item.text(0))
+            self.tr("Enter New File Name:"), text=name)
         fileName = result[0]
 
         if result[1] and fileName.strip() != '':
             fileName = os.path.join(
-                file_manager.get_folder(pathForFile), fileName)
-            if pathForFile == fileName:
+                file_manager.get_folder(path), fileName)
+            if path == fileName:
                 return
             try:
-                fileName = file_manager.rename_file(pathForFile, fileName)
+                fileName = file_manager.rename_file(path, fileName)
                 name = file_manager.get_basename(fileName)
                 main_container = IDE.get_service('main_container')
-                if main_container and main_container.is_open(pathForFile):
-                    main_container.change_open_tab_name(pathForFile, fileName)
-                subitem = ProjectItem(item.parent(), name,
-                    file_manager.get_folder(fileName))
-                subitem.setToolTip(0, name)
-                subitem.setIcon(0, self._get_file_icon(name))
-                index = item.parent().indexOfChild(item)
-                subitem.parent().takeChild(index)
+                if main_container and main_container.is_open(path):
+                    main_container.change_open_tab_name(path, fileName)
             except file_manager.NinjaFileExistsException as ex:
                 QMessageBox.information(self, self.tr("File Already Exists"),
                     (self.tr("Invalid Path: the file '%s' already exists.") %
@@ -664,11 +632,8 @@ class TreeProjectsWidget(QTreeView):
 
     def _copy_file(self):
         #get the selected QTreeWidgetItem
-        item = self.currentItem()
-        if item.parent() is None:
-            pathForFile = item.path
-        else:
-            pathForFile = os.path.join(item.path, item.text(0))
+        path = self.model().filePath(self.currentIndex())
+        name = file_manager.get_basename(path)
         pathProjects = [p.path for p in self.get_open_projects()]
         addToProject = add_to_project.AddToProject(pathProjects, self)
         addToProject.setWindowTitle(self.tr("Copy File to"))
@@ -676,14 +641,14 @@ class TreeProjectsWidget(QTreeView):
         if not addToProject.pathSelected:
             return
         name = QInputDialog.getText(self, self.tr("Copy File"),
-            self.tr("File Name:"), text=item.text(0))[0]
+            self.tr("File Name:"), text=name)[0]
         if not name:
             QMessageBox.information(self, self.tr("Invalid Name"),
                 self.tr("The file name is empty, please enter a name"))
             return
         path = file_manager.create_path(addToProject.pathSelected, name)
         try:
-            content = file_manager.read_file_content(pathForFile)
+            content = file_manager.read_file_content(path)
             path = file_manager.store_file_content(path, content, newFile=True)
             self.add_existing_file(path)
         except file_manager.NinjaFileExistsException as ex:
@@ -692,30 +657,24 @@ class TreeProjectsWidget(QTreeView):
                         ex.filename))
 
     def _move_file(self):
-        item = self.currentItem()
-        if item.parent() is None:
-            pathForFile = item.path
-        else:
-            pathForFile = os.path.join(item.path, item.text(0))
+        path = self.model().filePath(self.currentIndex())
         pathProjects = [p.path for p in self.get_open_projects()]
         addToProject = add_to_project.AddToProject(pathProjects, self)
         addToProject.setWindowTitle(self.tr("Copy File to"))
         addToProject.exec_()
         if not addToProject.pathSelected:
             return
-        name = file_manager.get_basename(pathForFile)
+        name = file_manager.get_basename(path)
         path = file_manager.create_path(addToProject.pathSelected, name)
         try:
-            content = file_manager.read_file_content(pathForFile)
+            content = file_manager.read_file_content(path)
             path = file_manager.store_file_content(path, content, newFile=True)
-            file_manager.delete_file(pathForFile)
-            index = item.parent().indexOfChild(item)
-            item.parent().takeChild(index)
+            file_manager.delete_file(path)
             self.add_existing_file(path)
             # Update path of opened file
             main = IDE.get_service('main_container')
-            if main and main.is_open(pathForFile):
-                widget = main.get_widget_for_path(pathForFile)
+            if main and main.is_open(path):
+                widget = main.get_widget_for_path(path)
                 if widget:
                     widget.ID = path
         except file_manager.NinjaFileExistsException as ex:
@@ -724,12 +683,8 @@ class TreeProjectsWidget(QTreeView):
                         ex.filename))
 
     def _edit_ui_file(self):
-        item = self.currentItem()
-        if item.parent() is None:
-            pathForFile = item.path
-        else:
-            pathForFile = os.path.join(item.path, item.text(0))
-        pathForFile = "file://%s" % pathForFile
+        path = self.model().filePath(self.currentIndex())
+        pathForFile = "file://%s" % path
         #open the correct program to edit Qt UI files!
         QDesktopServices.openUrl(QUrl(pathForFile, QUrl.TolerantMode))
 
@@ -738,6 +693,7 @@ class TreeProjectsWidget(QTreeView):
             ":img/tree-generic"))
 
     def get_item_for_path(self, path):
+        #FIXME use model index search by path in model
         items = self.findItems(file_manager.get_basename(path),
             Qt.MatchRecursive, 0)
         folder = file_manager.get_folder(path)
