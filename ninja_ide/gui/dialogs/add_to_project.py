@@ -89,7 +89,7 @@ class AddToProject(QDialog):
 
     def _select_path(self):
         """Set pathSelected to the folder selected in the tree."""
-        indexes = self._tree.selectedIndexes()
-        if indexes:
-            self.pathSelected = self._tree.model().filePath(indexes[0])
+        path = self._tree.model().filePath(self._tree.currentIndex())
+        if path:
+            self.pathSelected = path
             self.close()
