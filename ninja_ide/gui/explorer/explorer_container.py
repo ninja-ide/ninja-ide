@@ -81,9 +81,6 @@ class ExplorerContainer(QSplitter):
             #{'target': 'main_container',
             #'signal_name': "currentEditorChanged(QString)",
             #'slot': self.update_explorer},
-            #{'target': 'main_container',
-            #'signal_name': 'addToProject(QString)',
-            #'slot': self._add_file_to_project},
 
             #{'target': 'main_container',
             #'signal_name': 'currentEditorChanged(QString)',
@@ -140,48 +137,6 @@ class ExplorerContainer(QSplitter):
             self.hide()
         else:
             self.show()
-
-    def _add_file_to_project(self, path):
-        """Add the file for 'path' in the project the user choose here."""
-        pathProject = [self.get_actual_project()]
-        addToProject = ui_tools.AddToProject(pathProject, self.ide)
-        addToProject.exec_()
-        if not addToProject.pathSelected:
-            return
-        main_container = IDE.get_service('main_container')
-        if not main_container:
-            return
-        editorWidget = main_container.get_actual_editor()
-        if not editorWidget.ID:
-            name = QInputDialog.getText(None,
-                self.tr("Add File To Project"), self.tr("File Name:"))[0]
-            if not name:
-                QMessageBox.information(self, self.tr("Invalid Name"),
-                    self.tr("The file name is empty, please enter a name"))
-                return
-        else:
-            name = file_manager.get_basename(editorWidget.ID)
-        path = file_manager.create_path(addToProject.pathSelected, name)
-        try:
-            path = file_manager.store_file_content(
-                path, editorWidget.get_text(), newFile=True)
-            main_container._file_watcher.allow_kill = False
-            if path != editorWidget.ID:
-                main_container.remove_standalone_watcher(
-                    editorWidget.ID)
-            editorWidget.ID = path
-            main_container.add_standalone_watcher(path)
-            main_container._file_watcher.allow_kill = True
-            self.add_existing_file(path)
-            self.emit(SIGNAL("changeWindowTitle(QString)"), path)
-            name = file_manager.get_basename(path)
-            main_container.actualTab.setTabText(
-                main_container.actualTab.currentIndex(), name)
-            editorWidget._file_saved()
-        except file_manager.NinjaFileExistsException as ex:
-            QMessageBox.information(self, self.tr("File Already Exists"),
-                (self.tr("Invalid Path: the file '%s' already exists.") %
-                    ex.filename))
 
     def save_project(self):
         """Save all the opened files that belongs to the actual project."""
@@ -447,11 +402,6 @@ class ExplorerContainer(QSplitter):
     def add_existing_file(self, path):
         if self.tree_projects:
             self.tree_projects.add_existing_file(path)
-
-    def get_actual_project(self):
-        if self.tree_projects:
-            return self.tree_projects.get_selected_project_path()
-        return None
 
     def get_project_given_filename(self, filename):
         projects = self.get_opened_projects()

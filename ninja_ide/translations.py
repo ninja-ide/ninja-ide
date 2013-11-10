@@ -114,6 +114,56 @@ TR_TAB_SYMBOLS = tr("NINJA-IDE", "Symbols")
 TR_TAB_ERRORS = tr("NINJA-IDE", "Errors")
 TR_TAB_MIGRATION = tr("NINJA-IDE", "Migration 2to3")
 TR_TAB_WEB_INSPECTOR = tr("NINJA-IDE", "Web Inspector")
+TR_ADD_FILE_TO_PROJECT = tr("NINJA-IDE", "Add File to Project")
+TR_CANCEL = tr("NINJA-IDE", "Cancel")
+TR_ADD_HERE = tr("NINJA-IDE", "Add here!")
+# Project Properties
+TR_PROJECT_PROPERTIES = tr("NINJA-IDE", "Project Properties")
+TR_PROJECT_DATA = tr("NINJA-IDE", "Project Data")
+TR_PROJECT_EXECUTION = tr("NINJA-IDE", "Project Execution")
+TR_PROJECT_METADATA = tr("NINJA-IDE", "Project Metadata")
+TR_PROJECT_NAME = tr("NINJA-IDE", "Name:")
+TR_PROJECT_LOCATION = tr("NINJA-IDE", "Project Location:")
+TR_PROJECT_TYPE = tr("NINJA-IDE", "Project Type:")
+TR_PROJECT_DESCRIPTION = tr("NINJA-IDE", "Description:")
+TR_PROJECT_URL = tr("NINJA-IDE", "URL:")
+TR_PROJECT_LICENSE = tr("NINJA-IDE", "Licence:")
+TR_PROJECT_EXTENSIONS = tr("NINJA-IDE", "Supported Extensions:")
+TR_PROJECT_INDENTATION = tr("NINJA-IDE", "Indentation:")
+TR_PROJECT_USE_TABS = tr("NINJA-IDE", "Use Tabs.")
+TR_PROJECT_SAVE_INVALID = tr("NINJA-IDE", "Properties Invalid")
+TR_PROJECT_INVALID_MESSAGE = tr("NINJA-IDE", "The Project must have a name.")
+TR_PROJECT_MAIN_FILE = tr("NINJA-IDE", "Main File:")
+TR_PROJECT_PYTHON_INTERPRETER = tr("NINJA-IDE", "Python Custom Interpreter:")
+TR_PROJECT_PYTHON_PATH = tr("NINJA-IDE", "Custom PYTHONPATH:")
+TR_PROJECT_PATH_PER_LINE = tr("NINJA-IDE", "One path per line")
+TR_PROJECT_BUILTINS = tr("NINJA-IDE", "Additional builtins/globals:")
+TR_PROJECT_BUILTINS_TOOLTIP = tr("NINJA-IDE",
+    ("Space-separated list of symbols that will be considered as "
+    "builtin in every file"))
+TR_PROJECT_PRE_EXEC = tr("NINJA-IDE", "Pre-exec Script:")
+TR_PROJECT_POST_EXEC = tr("NINJA-IDE", "Post-exec Script:")
+TR_PROJECT_PROPERTIES = tr("NINJA-IDE", "Properties:")
+TR_PROJECT_PARAMS_TOOLTIP = tr("NINJA-IDE",
+    "Separate the params with commas (ie: help, verbose)")
+TR_PROJECT_PARAMS = tr("NINJA-IDE", "Params (comma separated):")
+TR_PROJECT_VIRTUALENV = tr("NINJA-IDE", "Virtualenv Folder:")
+TR_PROJECT_SELECT_PYTHON_PATH = tr("NINJA-IDE", "Select Python Path")
+TR_PROJECT_SELECT_VIRTUALENV = tr("NINJA-IDE", "Select Virtualenv Folder")
+TR_PROJECT_SELECT_VIRTUALENV_MESSAGE_TITLE = tr("NINJA-IDE",
+    "Virtualenv Folder")
+TR_PROJECT_SELECT_VIRTUALENV_MESSAGE_BODY = tr("NINJA-IDE",
+    "This is not a valid Virtualenv Folder")
+TR_PROJECT_SELECT_MAIN_FILE = tr("NINJA-IDE", "Select Main File")
+TR_PROJECT_SELECT_PRE_SCRIPT = tr("NINJA-IDE",
+    "Select Pre Execution Script File")
+TR_PROJECT_SELECT_POST_SCRIPT = tr("NINJA-IDE",
+    "Select Post Execution Script File")
+TR_PROJECT_METADATA_RELATED = tr("NINJA-IDE",
+    ("Insert the path of Python Projects related"
+    "to this one in order\nto improve Code Completion."))
+TR_PROJECT_METADATA_TIP = tr("NINJA-IDE",
+    "Split your paths using newlines [ENTER].")
 
 #Locator Strings
 TR_ONLY_FILES = tr("NINJA-IDE", "@\t(Filter only by Files)")

@@ -28,7 +28,6 @@ from PyQt4.QtGui import QTreeView
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QScrollArea
 from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QTreeWidgetItem
 from PyQt4.QtGui import QAbstractItemView
 from PyQt4.QtGui import QHeaderView
 from PyQt4.QtGui import QFileDialog
@@ -41,7 +40,7 @@ from PyQt4.QtGui import QMenu
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QStyle
 from PyQt4.QtGui import QCursor
-from PyQt4.QtGui import QSizePolicy
+#from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QFontMetrics
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
@@ -51,15 +50,13 @@ from PyQt4.QtGui import QDesktopServices
 from ninja_ide import translations
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
-from ninja_ide.core.file_handling.filesystem_notifications import (
-    NinjaFileSystemWatcher)
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui.ide import IDE
+from ninja_ide.gui.dialogs import add_to_project
 from ninja_ide.gui.dialogs import project_properties_widget
 from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
 from ninja_ide.gui.explorer import actions
 from ninja_ide.gui.explorer.nproject import NProject
-from ninja_ide.tools.completion import completion_daemon
 
 
 def scrollable_wrapper(widget):
@@ -142,12 +139,13 @@ class ProjectTreeColumn(QScrollArea):
         self.projects = []
         self._active_project = None
 
-        #connections = (
-            #{'target': 'main_container',
-            #'signal_name': 'openProject(QString)',
-            #'slot': self.open_project_folder},
-                #)
+        connections = (
+            {'target': 'main_container',
+            'signal_name': 'addToProject(QString)',
+            'slot': self._add_file_to_project},
+        )
         IDE.register_service('tree_projects', self)
+        IDE.register_signals('tree_projects', connections)
         ExplorerContainer.register_tab(translations.TR_TAB_PROJECTS, self)
 
     def install_tab(self):
@@ -170,6 +168,49 @@ class ProjectTreeColumn(QScrollArea):
             qfsm = ninjaide.filesystem.open_project(project)
             if qfsm:
                 self.add_project(project)
+
+    def _add_file_to_project(self, path):
+        """Add the file for 'path' in the project the user choose here."""
+        if self._active_project:
+            pathProject = [self._active_project.project]
+            addToProject = add_to_project.AddToProject(pathProject, self)
+            addToProject.exec_()
+            if not addToProject.pathSelected:
+                return
+            main_container = IDE.get_service('main_container')
+            if not main_container:
+                return
+            editorWidget = main_container.get_current_editor()
+            if not editorWidget.file_path:
+                name = QInputDialog.getText(None,
+                    self.tr("Add File To Project"), self.tr("File Name:"))[0]
+                if not name:
+                    QMessageBox.information(self, self.tr("Invalid Name"),
+                        self.tr("The file name is empty, please enter a name"))
+                    return
+            else:
+                name = file_manager.get_basename(editorWidget.file_path)
+            path = file_manager.create_path(addToProject.pathSelected, name)
+            try:
+                path = file_manager.store_file_content(
+                    path, editorWidget.get_text(), newFile=True)
+                if path != editorWidget.ID:
+                    main_container.remove_standalone_watcher(
+                        editorWidget.ID)
+                editorWidget.ID = path
+                self.add_existing_file(path)
+                self.emit(SIGNAL("changeWindowTitle(QString)"), path)
+                name = file_manager.get_basename(path)
+                main_container.actualTab.setTabText(
+                    main_container.actualTab.currentIndex(), name)
+                editorWidget._file_saved()
+            except file_manager.NinjaFileExistsException as ex:
+                QMessageBox.information(self, self.tr("File Already Exists"),
+                    (self.tr("Invalid Path: the file '%s' already exists.") %
+                        ex.filename))
+        else:
+            pass
+            # Message about no project
 
     def add_project(self, project):
         if project not in self.projects:
@@ -274,10 +315,15 @@ class TreeProjectsWidget(QTreeView):
             "customContextMenuRequested(const QPoint &)"),
             self._menu_context_tree)
 
+        self.connect(project, SIGNAL("projectNameUpdated(QString)"),
+            self._update_header_title)
         self.expanded.connect(self._item_expanded)
         self.collapsed.connect(self._item_collapsed)
         self.state_index = list()
         self._folding_menu = FoldingContextMenu(self)
+
+    def _update_header_title(self, title):
+        self.header().title = title
 
     def _item_collapsed(self, tree_item):
         """Store status of item when collapsed"""
@@ -625,7 +671,7 @@ class TreeProjectsWidget(QTreeView):
         else:
             pathForFile = os.path.join(item.path, item.text(0))
         pathProjects = [p.path for p in self.get_open_projects()]
-        addToProject = ui_tools.AddToProject(pathProjects, self)
+        addToProject = add_to_project.AddToProject(pathProjects, self)
         addToProject.setWindowTitle(self.tr("Copy File to"))
         addToProject.exec_()
         if not addToProject.pathSelected:
@@ -653,7 +699,7 @@ class TreeProjectsWidget(QTreeView):
         else:
             pathForFile = os.path.join(item.path, item.text(0))
         pathProjects = [p.path for p in self.get_open_projects()]
-        addToProject = ui_tools.AddToProject(pathProjects, self)
+        addToProject = add_to_project.AddToProject(pathProjects, self)
         addToProject.setWindowTitle(self.tr("Copy File to"))
         addToProject.exec_()
         if not addToProject.pathSelected:
