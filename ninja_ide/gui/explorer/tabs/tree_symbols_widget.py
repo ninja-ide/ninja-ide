@@ -35,16 +35,6 @@ from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
 
 class TreeSymbolsWidget(QTreeWidget):
 
-###############################################################################
-# TreeSymbolsWidget SIGNALS
-###############################################################################
-
-    """
-    goToDefinition(int)
-    """
-
-###############################################################################
-
     def __init__(self):
         QTreeWidget.__init__(self)
         self.header().setHidden(True)
@@ -240,8 +230,9 @@ class TreeSymbolsWidget(QTreeWidget):
                     parent=item)
 
     def _go_to_definition(self, item):
-        if item.isClickable:
-            self.emit(SIGNAL("goToDefinition(int)"), item.lineno - 1)
+        main_container = IDE.get_service('main_container')
+        if item.isClickable and main_container:
+            main_container.editor_go_to_line(item.lineno - 1)
 
     def create_tooltip(self, name, lineno):
         doc = self.docstrings.get(lineno, None)

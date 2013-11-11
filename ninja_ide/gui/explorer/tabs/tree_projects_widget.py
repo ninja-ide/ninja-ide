@@ -192,13 +192,10 @@ class ProjectTreeColumn(QScrollArea):
                 name = file_manager.get_basename(editorWidget.file_path)
             path = file_manager.create_path(addToProject.pathSelected, name)
             try:
+                #FIXME
                 path = file_manager.store_file_content(
                     path, editorWidget.get_text(), newFile=True)
-                if path != editorWidget.ID:
-                    main_container.remove_standalone_watcher(
-                        editorWidget.ID)
-                editorWidget.ID = path
-                self.add_existing_file(path)
+                editorWidget.nfile = path
                 self.emit(SIGNAL("changeWindowTitle(QString)"), path)
                 name = file_manager.get_basename(path)
                 main_container.actualTab.setTabText(
@@ -556,25 +553,6 @@ class TreeProjectsWidget(QTreeView):
                     (self.tr("Invalid Path: the file '%s' already exists.") %
                         ex.filename))
 
-    #FIXME
-    def add_existing_file(self, path):
-        relative = file_manager.convert_to_relative(
-            self._actualProject.path, path)
-        paths = relative.split(os.sep)[:-1]
-        itemParent = self._actualProject
-        for p in paths:
-            for i in range(itemParent.childCount()):
-                item = itemParent.child(i)
-                if item.text(0) == p:
-                    itemParent = item
-                    break
-        itemParent.setSelected(True)
-        name = file_manager.get_basename(path)
-        subitem = ProjectItem(itemParent, name, file_manager.get_folder(path))
-        subitem.setToolTip(0, name)
-        subitem.setIcon(0, self._get_file_icon(name))
-        itemParent.setExpanded(True)
-
     def _add_new_folder(self):
         path = self.model().filePath(self.currentIndex())
         result = QInputDialog.getText(self, self.tr("New Folder"),
@@ -634,7 +612,8 @@ class TreeProjectsWidget(QTreeView):
         #get the selected QTreeWidgetItem
         path = self.model().filePath(self.currentIndex())
         name = file_manager.get_basename(path)
-        pathProjects = [p.path for p in self.get_open_projects()]
+        global projectsColumn
+        pathProjects = [p.path for p in projectsColumn.projects]
         addToProject = add_to_project.AddToProject(pathProjects, self)
         addToProject.setWindowTitle(self.tr("Copy File to"))
         addToProject.exec_()
@@ -650,7 +629,6 @@ class TreeProjectsWidget(QTreeView):
         try:
             content = file_manager.read_file_content(path)
             path = file_manager.store_file_content(path, content, newFile=True)
-            self.add_existing_file(path)
         except file_manager.NinjaFileExistsException as ex:
                 QMessageBox.information(self, self.tr("File Already Exists"),
                     (self.tr("Invalid Path: the file '%s' already exists.") %
@@ -658,7 +636,8 @@ class TreeProjectsWidget(QTreeView):
 
     def _move_file(self):
         path = self.model().filePath(self.currentIndex())
-        pathProjects = [p.path for p in self.get_open_projects()]
+        global projectsColumn
+        pathProjects = [p.path for p in projectsColumn.projects]
         addToProject = add_to_project.AddToProject(pathProjects, self)
         addToProject.setWindowTitle(self.tr("Copy File to"))
         addToProject.exec_()
@@ -670,7 +649,6 @@ class TreeProjectsWidget(QTreeView):
             content = file_manager.read_file_content(path)
             path = file_manager.store_file_content(path, content, newFile=True)
             file_manager.delete_file(path)
-            self.add_existing_file(path)
             # Update path of opened file
             main = IDE.get_service('main_container')
             if main and main.is_open(path):
@@ -687,60 +665,6 @@ class TreeProjectsWidget(QTreeView):
         pathForFile = "file://%s" % path
         #open the correct program to edit Qt UI files!
         QDesktopServices.openUrl(QUrl(pathForFile, QUrl.TolerantMode))
-
-    def _get_file_icon(self, fileName):
-        return QIcon(self.images.get(file_manager.get_file_extension(fileName),
-            ":img/tree-generic"))
-
-    def get_item_for_path(self, path):
-        #FIXME use model index search by path in model
-        items = self.findItems(file_manager.get_basename(path),
-            Qt.MatchRecursive, 0)
-        folder = file_manager.get_folder(path)
-        for item in items:
-            if file_manager.belongs_to_folder(folder, item.path):
-                return item
-
-    def get_project_by_name(self, projectName):
-        """Return the name of the project item based on the project name."""
-        # Return the item or None if it's not found
-        for item in list(self._projects.values()):
-            if item.name == projectName:
-                return item
-
-    def get_selected_project_path(self):
-        if self._actualProject:
-            return self._actualProject.path
-        return None
-
-    def get_selected_project_type(self):
-        rootItem = self._get_project_root()
-        return rootItem.projectType
-
-    def get_selected_project_lang(self):
-        rootItem = self._get_project_root()
-        return rootItem.lang()
-
-    def get_open_projects(self):
-        return list(self._projects.values())
-
-    def is_open(self, path):
-        return len([True for item in list(self._projects.values())
-            if item.path == path]) != 0
-
-    def _set_current_project(self, path):
-        for item in list(self._projects.values()):
-            if item.path == path:
-                self.set_default_project(item)
-                break
-
-    def _close_open_projects(self):
-        self.__enableCloseNotification = False
-        for i in range(self.topLevelItemCount()):
-            self.setCurrentItem(self.topLevelItem(0))
-            self._close_project()
-        self.__enableCloseNotification = True
-        self._projects = {}
 
 
 class FoldingContextMenu(QMenu):
