@@ -145,10 +145,6 @@ class ExplorerContainer(QSplitter):
         if path and main_container:
             main_container.save_project(path)
 
-    #def update_symbols(self, symbols, fileName):
-        #if self._treeSymbols:
-            #self._treeSymbols.update_symbols_tree(symbols, filename=fileName)
-
     #def update_errors(self, errors, pep8):
         #if self._listErrors:
             #self._listErrors.refresh_lists(errors, pep8)
@@ -156,32 +152,6 @@ class ExplorerContainer(QSplitter):
     #def update_migration(self, migration):
         #if self._listMigration:
             #self._listMigration.refresh_lists(migration)
-
-    def update_explorer(self):
-        """Update the symbols in the Symbol Explorer when a file is saved."""
-        main_container = IDE.get_service('main_container')
-        if not main_container:
-            return
-        editorWidget = main_container.get_current_editor()
-        if editorWidget:
-            ext = file_manager.get_file_extension(editorWidget.ID)
-            #obtain a symbols handler for this file extension
-            symbols_handler = settings.get_symbols_handler(ext)
-            if symbols_handler:
-                source = editorWidget.toPlainText()
-                if editorWidget.encoding is not None:
-                    source = source.encode(editorWidget.encoding)
-                if ext == 'py':
-                    args = (source, True)
-                else:
-                    args = (source,)
-                symbols = symbols_handler.obtain_symbols(*args)
-                self.update_symbols(symbols, editorWidget.ID)
-
-            #TODO: Should we change the code below similar to the code above?
-            exts = settings.SYNTAX.get('python')['extension']
-            #if ext in exts or editorWidget.neditable.new_document:
-                #self.update_errors(editorWidget.errors, editorWidget.pep8)
 
     #def add_tab_projects(self):
         #if not self.tree_projects:
@@ -218,16 +188,6 @@ class ExplorerContainer(QSplitter):
         tools_dock = IDE.get_service('tools_dock')
         if tools_dock:
             tools_dock.execute_project()
-
-    def _add_project_to_console(self):
-        tools_dock = IDE.get_service('tools_dock')
-        if tools_dock:
-            tools_dock.add_project_to_console()
-
-    def _remove_project_from_console(self):
-        tools_dock = IDE.get_service('tools_dock')
-        if tools_dock:
-            tools_dock.remove_project_from_console()
 
     def add_tab_symbols(self):
         if not self._treeSymbols:
