@@ -33,6 +33,7 @@ logger = NinjaLogger('ninja_ide.gui.explorer.explorer_container')
 
 
 #TODO: Support undock/redock y split
+#TODO: Each tab should handle close and reopen and notify the explorer
 
 class ExplorerContainer(QSplitter):
 

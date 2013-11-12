@@ -296,7 +296,6 @@ class ActionBar(QFrame):
             else:
                 icon = QIcon(":img/class")
             self.symbols_combo.addItem(icon, data[0])
-        self.combo.setCurrentIndex(self.combo.count() - 1)
 
     def set_current_symbol(self, index):
         self.symbols_combo.setCurrentIndex(index)

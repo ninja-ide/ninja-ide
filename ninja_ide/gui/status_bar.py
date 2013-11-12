@@ -95,8 +95,6 @@ class _StatusBar(QStatusBar):
             self.hide_status)
         self.connect(shortEscStatus, SIGNAL("activated()"), self.hide_status)
 
-        IDE.register_service('status_bar', self)
-
         #Register signals connections
         connections = (
             {'target': 'main_container',
@@ -111,6 +109,7 @@ class _StatusBar(QStatusBar):
             )
 
         IDE.register_signals('status_bar', connections)
+        IDE.register_service('status_bar', self)
 
     def install(self):
         self.hide()
