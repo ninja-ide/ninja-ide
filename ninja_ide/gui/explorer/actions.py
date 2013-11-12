@@ -19,9 +19,14 @@ PROJECTS_TREE_ACTIONS = (
                'weight': 410},
     "connect": "open_project_folder"
     },
-)
-
-ACTIONS = (
+    {
+    "shortcut": "Save-project",
+    "action": {'text': translations.TR_SAVE_PROJECT,
+               'image': 'saveAll',
+               'section': (translations.TR_MENU_FILE, None),
+               'weight': 190},
+    "connect": "save_project"
+    },
     {
     "shortcut": "New-project",
     "action": {'text': translations.TR_NEW_PROJECT,
@@ -30,14 +35,6 @@ ACTIONS = (
                'weight': 110},
     "connect": "create_new_project"
     },
-    #{
-    #"shortcut": "Save-project",
-    #"action": {'text': translations.TR_SAVE_PROJECT,
-               #'image': 'saveAll',
-               #'section': (translations.TR_MENU_FILE, None),
-               #'weight': 190},
-    #"connect": "save_project"
-    #},
     {
     "action": {'text': translations.TR_CLOSE_ALL_PROJECTS,
                'image': QStyle.SP_DialogCloseButton,
@@ -51,6 +48,9 @@ ACTIONS = (
                'weight': 200},
     "connect": "open_project_properties"
     },
+)
+
+ACTIONS = (
     {
     "shortcut": "Hide-explorer",
     "action": {'text': translations.TR_EXPLORER_VISIBILITY,

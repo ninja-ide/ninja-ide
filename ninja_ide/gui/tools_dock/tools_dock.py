@@ -193,30 +193,32 @@ class _ToolsDock(QWidget):
             elif ext == 'html':
                 self.render_web_page(editorWidget.ID)
 
-    def execute_project(self):
+    def execute_project(self, project_path):
         """Execute the project marked as Main Project."""
-        ide = IDE.get_service('ide')
-        nproject = ide.get_current_project()
-        main_file = nproject.main_file
-        explorer_container = IDE.get_service('explorer_container')
-        if not explorer_container:
-            return
-        if not main_file and explorer_container._treeProjects and \
-          explorer_container._treeProjects._actualProject:
-            explorer_container._treeProjects.open_project_properties()
-        elif main_file:
-            self.save_project()
-            #emit a signal for plugin!
-            self.emit(SIGNAL("projectExecuted(QString)"), nproject.path)
+        #FIXME
+        pass
+        #ide = IDE.get_service('ide')
+        #nproject = ide.get_current_project()
+        #main_file = nproject.main_file
+        #explorer_container = IDE.get_service('explorer_container')
+        #if not explorer_container:
+            #return
+        #if not main_file and explorer_container._treeProjects and \
+          #explorer_container._treeProjects._actualProject:
+            #explorer_container._treeProjects.open_project_properties()
+        #elif main_file:
+            #self.save_project()
+            ##emit a signal for plugin!
+            #self.emit(SIGNAL("projectExecuted(QString)"), nproject.path)
 
-            main_file = file_manager.create_path(nproject.path,
-                nproject.main_file)
-            self.run_application(main_file,
-                pythonPath=nproject.python_exec_command,
-                PYTHONPATH=nproject.python_path,
-                programParams=nproject.program_params,
-                preExec=nproject.pre_exec_script,
-                postExec=nproject.post_exec_script)
+            #main_file = file_manager.create_path(nproject.path,
+                #nproject.main_file)
+            #self.run_application(main_file,
+                #pythonPath=nproject.python_exec_command,
+                #PYTHONPATH=nproject.python_path,
+                #programParams=nproject.program_params,
+                #preExec=nproject.pre_exec_script,
+                #postExec=nproject.post_exec_script)
 
     def run_application(self, fileName, pythonPath=False, PYTHONPATH=None,
             programParams='', preExec='', postExec=''):

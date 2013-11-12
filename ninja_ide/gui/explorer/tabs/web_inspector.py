@@ -41,8 +41,20 @@ class WebInspector(QWidget):
 
         ExplorerContainer.register_tab(translations.TR_TAB_WEB_INSPECTOR, self)
 
+    def refresh_inspector(self):
+        self._webInspector.hide()
+        self._webInspector.show()
+
+    def set_inspection_page(self, page):
+        self._webInspector.setPage(page)
+        self._webInspector.setVisible(True)
+
 
 if settings.SHOW_WEB_INSPECTOR and settings.WEBINSPECTOR_SUPPORTED:
     webInspector = WebInspector()
 else:
+    #if not settings.WEBINSPECTOR_SUPPORTED:
+        #QMessageBox.information(self,
+            #self.tr("Web Inspector not Supported"),
+            #self.tr("Your Qt version doesn't support the Web Inspector"))
     webInspector = None
