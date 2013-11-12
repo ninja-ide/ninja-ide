@@ -54,6 +54,7 @@ from ninja_ide.tools import ui_tools
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs import add_to_project
 from ninja_ide.gui.dialogs import project_properties_widget
+from ninja_ide.gui.dialogs import wizard_new_project
 from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
 from ninja_ide.gui.explorer import actions
 from ninja_ide.gui.explorer.nproject import NProject
@@ -144,9 +145,33 @@ class ProjectTreeColumn(QScrollArea):
             'signal_name': 'addToProject(QString)',
             'slot': self._add_file_to_project},
         )
-        IDE.register_service('tree_projects', self)
-        IDE.register_signals('tree_projects', connections)
+        IDE.register_service('projects_explorer', self)
+        IDE.register_signals('projects_explorer', connections)
         ExplorerContainer.register_tab(translations.TR_TAB_PROJECTS, self)
+
+        #TODO: check this:
+        #self.connect(ide, SIGNAL("goingDown()"),
+            #self.tree_projects.shutdown)
+        #self.connect(self.tree_projects,
+            #SIGNAL("addProjectToConsole(QString)"),
+            #self._add_project_to_console)
+        #self.connect(self.tree_projects,
+            #SIGNAL("removeProjectFromConsole(QString)"),
+            #self._remove_project_from_console)
+
+        #def close_project_signal():
+            #self.emit(SIGNAL("updateLocator()"))
+
+        #def close_files_related_to_closed_project(project):
+            #if project:
+                #self.emit(SIGNAL("projectClosed(QString)"), project)
+        #self.connect(self.tree_projects, SIGNAL("closeProject(QString)"),
+            #close_project_signal)
+        #self.connect(self.tree_projects, SIGNAL("refreshProject()"),
+            #close_project_signal)
+        #self.connect(self.tree_projects,
+            #SIGNAL("closeFilesFromProjectClosed(QString)"),
+            #close_files_related_to_closed_project)
 
     def install_tab(self):
         ide = IDE.get_service('ide')
@@ -239,6 +264,64 @@ class ProjectTreeColumn(QScrollArea):
         if self._active_project is not None:
             self._active_project.set_default_project(False)
         self._active_project = tree_proj
+
+    def close_opened_projects(self):
+        for project in reversed(self.projects):
+            self._close_project(project)
+
+    def save_project(self):
+        """Save all the opened files that belongs to the actual project."""
+        path = self._active_project.project.path
+        main_container = IDE.get_service('main_container')
+        if path and main_container:
+            main_container.save_project(path)
+
+    def create_new_project(self):
+        if not self.tree_projects:
+            QMessageBox.information(self, self.tr("Projects Disabled"),
+                self.tr("Project support has been disabled from Preferences"))
+            return
+        wizard = wizard_new_project.WizardNewProject(self)
+        wizard.show()
+
+    #TODO: ANALYZE
+    #def save_recent_projects(self, folder):
+        #recent_project_list = QSettings(
+            #resources.SETTINGS_PATH, QSettings.IniFormat).value(
+                #'recentProjects', {})
+
+        #project = nproject.NProject(folder)
+        ##if already exist on the list update the date time
+        #if folder in recent_project_list:
+            #properties = recent_project_list[folder]
+            #properties["lastopen"] = QDateTime.currentDateTime()
+            #properties["name"] = project.name
+            #properties["description"] = project.description
+            #recent_project_list[folder] = properties
+        #else:
+            #recent_project_list[folder] = {
+                #"name": project.name,
+                #"description": project.description,
+                #"isFavorite": False, "lastopen": QDateTime.currentDateTime()}
+            ##if the length of the project list it's high that 10 then delete
+            ##the most old
+            ##TODO: add the length of available projects to setting
+            #if len(recent_project_list) > 10:
+                #del recent_project_list[self.find_most_old_open()]
+        #QSettings(resources.SETTINGS_PATH, QSettings.IniFormat).setValue(
+            #'recentProjects', recent_project_list)
+
+    #def find_most_old_open(self):
+        #recent_project_list = QSettings(
+            #resources.SETTINGS_PATH, QSettings.IniFormat).value(
+                #'recentProjects', {})
+        #listFounder = []
+        #for recent_project_path, content in list(recent_project_list.items()):
+            #listFounder.append((recent_project_path, int(
+                #content["lastopen"].toString("yyyyMMddHHmmzzz"))))
+        #listFounder = sorted(listFounder, key=lambda date: listFounder[1],
+            #reverse=True)   # sort by date last used
+        #return listFounder[0][0]
 
 
 class TreeProjectsWidget(QTreeView):
@@ -409,7 +492,7 @@ class TreeProjectsWidget(QTreeView):
         actionRunProject = menu.addAction(QIcon(
             ":img/play"), self.tr("Run Project"))
         self.connect(actionRunProject, SIGNAL("triggered()"),
-            SIGNAL("runProject()"))
+            self._execute_project)
         actionMainProject = menu.addAction(self.tr("Set as Main Project"))
         self.connect(actionMainProject, SIGNAL("triggered()"),
             self.set_default_project)
@@ -665,6 +748,11 @@ class TreeProjectsWidget(QTreeView):
         pathForFile = "file://%s" % path
         #open the correct program to edit Qt UI files!
         QDesktopServices.openUrl(QUrl(pathForFile, QUrl.TolerantMode))
+
+    def _execute_project(self):
+        tools_dock = IDE.get_service('tools_dock')
+        if tools_dock:
+            tools_dock.execute_project(self.project.path)
 
 
 class FoldingContextMenu(QMenu):
