@@ -10,7 +10,7 @@ Rectangle {
     border.color: "#aae3ef"
     border.width: 2
 
-    property int interval: 2000
+    property int interval: 3000
     signal close
 
     function setText(message){
@@ -25,7 +25,7 @@ Rectangle {
     SequentialAnimation {
         id: showFrame
         running: false
-        NumberAnimation { target: frame; property: "opacity"; to: 0.5; duration: (frame.interval / 2); easing.type: Easing.InOutQuad }
+        NumberAnimation { target: frame; property: "opacity"; to: 1; duration: (frame.interval / 2); easing.type: Easing.InOutQuad }
         NumberAnimation { target: frame; property: "opacity"; to: 0; duration: (frame.interval / 2); easing.type: Easing.InOutQuad }
     }
 

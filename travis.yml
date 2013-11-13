@@ -1,0 +1,57 @@
+# 2013-11-13T16:39:56 by gatox .travis.yml Continuous Integration by Ninja-IDE
+language: python
+python:
+
+
+    - 2.7
+
+    - 3.3
+
+before_install: sudo apt-get update -qq ; sudo apt-get install -qq sloccount python-qt4 python3-pyqt4; pip install pep8 pip-tools coviolations_app coverage --use-mirrors;
+install: true
+before_script: rm --recursive --force --verbose *.pyc
+script: ./run-tests ninja_tests
+after_script: coverage report
+after_success: true
+# after_failure: true  # runs when failed
+notifications:
+    irc:
+        channels: "irc.freenode.org#ninja-ide"
+        template:
+            - "%{repository}@%{branch}: %{message}(%{build_url})"
+            - "GitHub Repo URL: %{repository}"
+            - "Build Number: %{build_number}"
+            - "Branch Name: %{branch}"
+            - "Shortened SHA: %{commit}"
+            - "Commit Author: %{author}"
+            - "Diff View URL: %{compare_url}"
+            - "Build Detail: %{build_url}"
+            - "Travis Message: %{message}"
+            - "Travis Job Number: ${TRAVIS_JOB_NUMBER}"
+            - "Travis Build Dir: ${TRAVIS_BUILD_DIR}"
+            - "Travis Build Number: ${TRAVIS_BUILD_NUMBER}"
+            - "Travis Python Version: ${TRAVIS_PYTHON_VERSION}"
+        on_success: change
+        on_failure: change
+        use_notice: true  # false to disable
+    email:
+        recipients: dojo@ninja-ide.org
+        template:
+            - "%{repository}@%{branch}: %{message}(%{build_url})"
+            - "GitHub Repo URL: %{repository}"
+            - "Build Number: %{build_number}"
+            - "Branch Name: %{branch}"
+            - "Shortened SHA: %{commit}"
+            - "Commit Author: %{author}"
+            - "Diff View URL: %{compare_url}"
+            - "Build Detail: %{build_url}"
+            - "Travis Message: %{message}"
+            - "Travis Job Number: ${TRAVIS_JOB_NUMBER}"
+            - "Travis Build Dir: ${TRAVIS_BUILD_DIR}"
+            - "Travis Build Number: ${TRAVIS_BUILD_NUMBER}"
+            - "Travis Python Version: ${TRAVIS_PYTHON_VERSION}"
+        on_success: change
+        on_failure: change
+cache: apt
+addons:
+    hosts:

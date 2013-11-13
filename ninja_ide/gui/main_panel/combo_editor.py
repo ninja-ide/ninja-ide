@@ -203,7 +203,7 @@ class ComboEditor(QWidget):
         self.bar.add_symbols(symbols_simplified)
         line = neditable.editor.textCursor().blockNumber()
         self._set_current_symbol(line, True)
-        tree_symbols = IDE.get_service('tree_symbols')
+        tree_symbols = IDE.get_service('symbols_explorer')
         tree_symbols.update_symbols_tree(symbols, neditable.file_path)
 
     def _show_notification_icon(self, neditable):
