@@ -28,6 +28,7 @@ class Notification(QFrame):
         self._root = view.rootObject()
         vbox = QVBoxLayout(self)
         vbox.addWidget(view)
+        self._height = self.height()
 
         self.connect(self._root, SIGNAL("close()"), self.close)
 
@@ -35,7 +36,7 @@ class Notification(QFrame):
         super(Notification, self).showEvent(event)
         width = self._parent.width() / 2
         x = self._parent.geometry().left()
-        y = self._parent.geometry().bottom() - self.height()
+        y = self._parent.geometry().bottom() - self._height
         self.setFixedWidth(width)
         self.setGeometry(x, y, self.width(), self.height())
         self._root.start(3000)
