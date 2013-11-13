@@ -41,6 +41,10 @@ Piece of cake, uh?
 
 http://ninja-ide.github.io/ninja-ide
 
+## CI Report
+
+https://travis-ci.org/ninja-ide/ninja-ide
+
 ## License
 
 -   GPL v3
