@@ -12,7 +12,7 @@ install: true
 before_script: rm --recursive --force --verbose *.pyc
 script: ./run-tests ninja_tests
 after_script: coverage report
-after_success: true
+after_success: covio
 # after_failure: true  # runs when failed
 notifications:
     irc:
@@ -53,5 +53,3 @@ notifications:
         on_success: change
         on_failure: change
 cache: apt
-addons:
-    hosts:
