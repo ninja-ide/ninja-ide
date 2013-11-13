@@ -60,7 +60,7 @@ class TreeSymbolsWidget(QTreeWidget):
         self.connect(self, SIGNAL("itemExpanded(QTreeWidgetItem *)"),
             self._item_expanded)
 
-        IDE.register_service('tree_symbols', self)
+        IDE.register_service('symbols_explorer', self)
         ExplorerContainer.register_tab(translations.TR_TAB_SYMBOLS, self)
 
     def _menu_context_tree(self, point):
