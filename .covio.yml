@@ -7,5 +7,3 @@ violations:
     pip_review:
         command: pip-review
         nofail: true
-    testem: cat test_result
-    jslint: jslint *.js
