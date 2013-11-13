@@ -7,12 +7,13 @@ python:
 
     - 3.3
 
-before_install: sudo apt-get update -qq ; sudo apt-get install -qq sloccount python-qt4 python3-pyqt4 python3-sip python-sip; pip install pep8 pip-tools coviolations_app coverage --use-mirrors;
+before_install: sudo apt-get update -qq ; sudo apt-get install -qq sloccount python-qt4 python3-pyqt4 sip-dev python3-sip python-sip python-sip-dev; pip install pep8 pip-tools coviolations_app coverage --use-mirrors;
 install: true
 before_script: rm --recursive --force --verbose *.pyc
 script: ./run-tests ninja_tests
 after_script: coverage report
 after_success: covio
+after_failure: covio
 # after_failure: true  # runs when failed
 notifications:
     irc:
