@@ -1,58 +1,48 @@
 # 2013-11-13T16:39:56 by gatox .travis.yml Continuous Integration by Ninja-IDE
 language: python
+
 python:
-    - 2.7
-    - 3.3
+  - 2.7
+  - 3.3
+    
+virtualenv:
+  system_site_packages: true  # allows install PyQt via apt-get and import it.
+  
 before_install: 
-    - sudo apt-get update -qq 
-    - sudo apt-get install -qq sloccount python-qt4 python3-pyqt4 sip python3-sip python-sip python-sip-dev python3-sip-dev
-    - pip install pep8 pip-tools coviolations_app coverage --use-mirrors --quiet
-    - "export DISPLAY=:99.0"
-    - "sh -e /etc/init.d/xvfb start" 
-virtualenv: 
-    - system_site_packages: true  # sip seems complicated to install via pip AFAIK
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start" 
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq sloccount python-qt4 python-qt4-dev python3-pyqt4 python3-qt4-dev sip python3-sip python-sip python-sip-dev python3-sip-dev libqt4-dev
+  - pip install pep8 pip-tools coviolations_app coverage --use-mirrors --quiet
+  - python -c 'import PyQt4, PyQt4.QtGui, PyQt4.QtCore, sip'
+
 install: true
+
 before_script: rm --recursive --force --verbose *.pyc
+
 script: ./run-tests ninja_tests
+
 after_script: coverage report
+
 after_success: covio
+
 after_failure: covio
+
 notifications:
-    irc:
-        channels: "irc.freenode.org#ninja-ide"
-        template:
-            - "%{repository}@%{branch}: %{message}(%{build_url})"
-            - "GitHub Repo URL: %{repository}"
-            - "Build Number: %{build_number}"
-            - "Branch Name: %{branch}"
-            - "Shortened SHA: %{commit}"
-            - "Commit Author: %{author}"
-            - "Diff View URL: %{compare_url}"
-            - "Build Detail: %{build_url}"
-            - "Travis Message: %{message}"
-            - "Travis Job Number: ${TRAVIS_JOB_NUMBER}"
-            - "Travis Build Dir: ${TRAVIS_BUILD_DIR}"
-            - "Travis Build Number: ${TRAVIS_BUILD_NUMBER}"
-            - "Travis Python Version: ${TRAVIS_PYTHON_VERSION}"
-        on_success: change
-        on_failure: change
-        use_notice: true  # false to disable
-    email:
-        recipients: dojo@ninja-ide.org
-        template:
-            - "%{repository}@%{branch}: %{message}(%{build_url})"
-            - "GitHub Repo URL: %{repository}"
-            - "Build Number: %{build_number}"
-            - "Branch Name: %{branch}"
-            - "Shortened SHA: %{commit}"
-            - "Commit Author: %{author}"
-            - "Diff View URL: %{compare_url}"
-            - "Build Detail: %{build_url}"
-            - "Travis Message: %{message}"
-            - "Travis Job Number: ${TRAVIS_JOB_NUMBER}"
-            - "Travis Build Dir: ${TRAVIS_BUILD_DIR}"
-            - "Travis Build Number: ${TRAVIS_BUILD_NUMBER}"
-            - "Travis Python Version: ${TRAVIS_PYTHON_VERSION}"
-        on_success: change
-        on_failure: change
+  irc:
+      channels: "irc.freenode.org#ninja-ide"
+      template:
+          - "%{repository}@%{branch}: %{message}(%{build_url})"
+          - "Build: %{build_number}, SHA: %{commit}, Committer: %{author}, Diff: %{compare_url}"
+      on_success: change
+      on_failure: always
+      use_notice: true  # false to disable
+  email:
+      recipients: dojo@ninja-ide.org
+      template:
+          - "%{repository}@%{branch}: %{message}(%{build_url})"
+          - "Build: %{build_number}, SHA: %{commit}, Committer: %{author}, Diff: %{compare_url}"
+      on_success: change
+      on_failure: always
+
 cache: apt
