@@ -14,14 +14,26 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
+import os
+import sys
 
 from PyQt4.QtGui import QKeySequence
 from PyQt4.QtCore import QDir
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import Qt
 
-import os
-import sys
+
+###############################################################################
+# CHECK PYTHON VERSION
+###############################################################################
+
+if sys.version_info.major == 3:
+    IS_PYTHON3 = True
+else:
+    IS_PYTHON3 = False
 
 
 ###############################################################################
@@ -32,7 +44,9 @@ HOME_PATH = QDir.toNativeSeparators(QDir.homePath())
 
 NINJA_EXECUTABLE = os.path.realpath(sys.argv[0])
 
-PRJ_PATH = os.path.abspath(os.path.dirname(__file__)).decode('utf-8')
+PRJ_PATH = os.path.abspath(os.path.dirname(__file__))
+if not IS_PYTHON3:
+    PRJ_PATH = PRJ_PATH.decode('utf-8')
 #Only for py2exe
 frozen = getattr(sys, 'frozen', '')
 if frozen in ('dll', 'console_exe', 'windows_exe'):
