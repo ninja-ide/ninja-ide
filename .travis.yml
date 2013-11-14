@@ -36,13 +36,13 @@ install: true
 
 before_script: rm --recursive --force --verbose *.pyc
 
-script: ./run-tests ninja_tests/tools/jsonmanager 2>test_result
+script: ./run-tests ninja_tests/tools/jsonmanager
 
 after_script: coverage report
 
-after_success: covio
+after_success: true
 
-after_failure: covio
+after_failure: true
 
 notifications:
   irc:
