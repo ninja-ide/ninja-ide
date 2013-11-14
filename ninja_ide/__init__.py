@@ -41,7 +41,6 @@ tools and utilities of NINJA-IDE, making the task of writing software easier
 and more enjoyable.
 """
 
-
 ###############################################################################
 # SET PYQT API 2
 ###############################################################################
