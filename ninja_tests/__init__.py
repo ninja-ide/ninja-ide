@@ -16,6 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
 import unittest
+from os import path, makedirs
 
 
 class BaseTest(unittest.TestCase):
@@ -23,6 +24,8 @@ class BaseTest(unittest.TestCase):
     def setUp(self):
         super(BaseTest, self).setUp()
         self._original_values = []
+        if not path.isdir(path.join(path.expanduser('~'), '.ninja_ide')):
+            makedirs(path.join(path.expanduser('~'), '.ninja_ide'))
 
     def patch(self, obj, attr, new_value):
         self._original_values.append((obj, attr, getattr(obj, attr)))
