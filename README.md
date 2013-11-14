@@ -44,7 +44,6 @@ http://ninja-ide.github.io/ninja-ide
 ## CI Report
 
 - https://travis-ci.org/ninja-ide/ninja-ide
-- https://coviolations.io/#/projects/ninja-ide/ninja-ide/
 
 ## License
 
