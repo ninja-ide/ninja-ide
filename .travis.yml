@@ -29,14 +29,14 @@ before_install:
   - python -B configure.py --confirm-license
   - make --quiet
   - sudo make --quiet install
-  - python -c 'import PyQt4, PyQt4.QtGui, PyQt4.QtCore, sip'
+  # - python -c 'import PyQt4, PyQt4.QtGui, PyQt4.QtCore, sip'  # to test if compile its ok
   - cd $TRAVIS_BUILD_DIR
 
 install: true
 
 before_script: rm --recursive --force --verbose *.pyc
 
-script: ./run-tests ninja_tests/tools/jsonmanager
+script: ./run-tests ninja_tests/tools/jsonmanager 2>test_result
 
 after_script: coverage report
 
