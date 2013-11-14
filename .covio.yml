@@ -1,9 +1,0 @@
-# 2013-11-13T16:39:56 by gatox .covio.yml Continuous Integration by Ninja-IDE
-violations:
-    pep8: pep8 . --exclude="*migrations*,*settings*,*components*,*docs*"
-    sloccount: sloccount .
-    py_unittest: cat test_result
-    coverage: coverage report
-    pip_review:
-        command: pip-review
-        nofail: true
