@@ -13,7 +13,7 @@ virtualenv:
     - system_site_packages: true  # sip seems complicated to install via pip AFAIK
 install: true
 before_script: rm --recursive --force --verbose *.pyc
-script: ./run-tests ninja_tests
+script: ./run-tests ninja_tests/tools/jsonmanager
 after_script: coverage report
 after_success: covio
 after_failure: covio

@@ -5,5 +5,8 @@ if [ $# -eq 1 ]
     FOLDER=$PWD/$1
 fi
 
+if [ ! -d "$DIRECTORY" ]; then
+    mkdir $HOME/.ninja_ide
+fi
 clear
 python -m unittest discover -v -s $FOLDER
