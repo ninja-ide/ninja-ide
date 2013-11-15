@@ -9,10 +9,9 @@ before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start" 
   - sudo apt-get update -qq
-  - sudo apt-get install -qq sloccount wget build-essential python3-dev python-dev 
+  - sudo apt-get install -qq wget build-essential python3-dev python-dev 
   - sudo apt-get install -qq python-qt4 python-qt4-dev libqt4-dev python-sip-dev
   - sudo apt-get install -qq python3-pyqt4 python3-sip-dev
-  - pip install pep8 pip-tools coviolations_app coverage --use-mirrors --quiet
   # install SIP
   - cd /tmp
   - wget --quiet --output-document=sip.tar.gz http://downloads.sourceforge.net/project/pyqt/sip/sip-4.15.3/sip-4.15.3.tar.gz
@@ -38,7 +37,7 @@ before_script: rm --recursive --force --verbose *.pyc
 
 script: ./run-tests ninja_tests/tools/jsonmanager
 
-after_script: coverage report
+after_script: true
 
 after_success: true
 
