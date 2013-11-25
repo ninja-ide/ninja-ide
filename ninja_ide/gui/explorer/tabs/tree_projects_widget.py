@@ -25,7 +25,6 @@ logger = NinjaLogger('ninja_ide.gui.explorer.tree_projects_widget')
 DEBUG = logger.debug
 
 from PyQt4.QtGui import QTreeView
-from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QScrollArea
 from PyQt4.QtGui import QVBoxLayout
@@ -403,7 +402,7 @@ class TreeProjectsWidget(QTreeView):
 
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.test(self.verticalScrollBar().minimum(), 
+        self.auto_resize(self.verticalScrollBar().minimum(), 
                 self.verticalScrollBar().maximum())
 
 
@@ -412,9 +411,9 @@ class TreeProjectsWidget(QTreeView):
         #tries to detect when that area grows to adjust the size of the
         #widget, but i'm not sure this is the proper approach
         self.connect(self.verticalScrollBar(),
-            SIGNAL("rangeChanged(int, int)"), self.test)
+            SIGNAL("rangeChanged(int, int)"), self.auto_resize)
 
-    def test(self, minimum, maximum):
+    def auto_resize(self, minimum, maximum):
         logger.debug("This is the minimum")
         logger.debug(minimum)
         logger.debug("This is the maximum")
