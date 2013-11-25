@@ -25,6 +25,7 @@ logger = NinjaLogger('ninja_ide.gui.explorer.tree_projects_widget')
 DEBUG = logger.debug
 
 from PyQt4.QtGui import QTreeView
+from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QScrollArea
 from PyQt4.QtGui import QVBoxLayout
@@ -40,7 +41,7 @@ from PyQt4.QtGui import QMenu
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QStyle
 from PyQt4.QtGui import QCursor
-#from PyQt4.QtGui import QSizePolicy
+from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QFontMetrics
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
@@ -125,20 +126,42 @@ class TreeHeader(QHeaderView):
         self.emit(SIGNAL("headerClicked(QPoint)"), QCursor.pos())
 
 
-class ProjectTreeColumn(QScrollArea):
+class ProjectTreeColumn(QWidget):
 
     def __init__(self, *args, **kwargs):
         super(ProjectTreeColumn, self).__init__(*args, **kwargs)
-        self._widget = QWidget()
-        vbox = QVBoxLayout()
-        vbox.setContentsMargins(0, 0, 0, 0)
-        vbox.setSpacing(0)
-        self._widget.setLayout(vbox)
-        self.setWidget(self._widget)
-        self.setWidgetResizable(True)
-        self.setEnabled(True)
+        #self._widget = QWidget()
+        self._layout = QVBoxLayout()
+        self._layout.setSizeConstraint(QVBoxLayout.SetDefaultConstraint)
+        self._layout.setContentsMargins(0, 0, 0, 0)
+        self._layout.setSpacing(0)
+        self.setLayout(self._layout)
+        self._vbox = QVBoxLayout()
+        self._vbox.setContentsMargins(0, 0, 0, 0)
+        self._vbox.setSpacing(0)
+        self._vbox.setSizeConstraint(QVBoxLayout.SetDefaultConstraint)
+        self._buttons = []
+        
+        self._projects_area = QWidget()
+        logger.debug("This is the projects area")
+        logger.debug(self._projects_area)
+        self._projects_area.setLayout(self._vbox)
+        
+        self._scroll_area = QScrollArea()
+        self.layout().addWidget(self._scroll_area)
+        self._scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self._scroll_area.setWidgetResizable(True)
+        self._scroll_area.setEnabled(True)
+        self._scroll_area.setWidget(self._projects_area)
+        self._scroll_area.setGeometry(self.geometry())
+        #self._projects_area.setGeometry(self.geometry())
+        self._vbox.setGeometry(self.geometry())
         self.projects = []
         self._active_project = None
+        #for each_test in range(50):
+        #    button = QPushButton('Test%d' % each_test)
+        #    self._buttons.append(button)
+        #    self._projects_area.layout().addWidget(button)
 
         connections = (
             {'target': 'main_container',
@@ -172,6 +195,7 @@ class ProjectTreeColumn(QScrollArea):
         #self.connect(self.tree_projects,
             #SIGNAL("closeFilesFromProjectClosed(QString)"),
             #close_files_related_to_closed_project)
+
 
     def install_tab(self):
         ide = IDE.get_service('ide')
@@ -247,10 +271,11 @@ class ProjectTreeColumn(QScrollArea):
             pindex = pmodel.index(pmodel.rootPath())
             ptree.setRootIndex(pindex)
             #self._widget.layout().addWidget(scrollable_wrapper(ptree))
-            self._widget.layout().addWidget(ptree)
+            self._projects_area.layout().addWidget(ptree)
             if self._active_project is None:
                 ptree.set_default_project()
             self.projects.append(ptree)
+            ptree.setGeometry(self.geometry())
 
     def _close_project(self, widget):
         """Close the project related to the tree widget."""
@@ -373,17 +398,38 @@ class TreeProjectsWidget(QTreeView):
         self.hideColumn(1)  # Size
         self.hideColumn(2)  # Type
         self.hideColumn(3)  # Modification date
+        self.setUniformRowHeights(True)
+
+
+        self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.test(self.verticalScrollBar().minimum(), 
+                self.verticalScrollBar().maximum())
+
 
         #TODO: We need to expand the widget to be as big as the real area
         #that contains all the visible tree items, the code below
         #tries to detect when that area grows to adjust the size of the
         #widget, but i'm not sure this is the proper approach
-        #self.connect(self.verticalScrollBar(),
-            #SIGNAL("rangeChanged(int, int)"), self.test)
+        self.connect(self.verticalScrollBar(),
+            SIGNAL("rangeChanged(int, int)"), self.test)
 
-    #def test(self, minimum, maximum):
-        #print self.height(), self.viewport().size().height()
-        ##self.setFixedHeight()
+    def test(self, minimum, maximum):
+        logger.debug("This is the minimum")
+        logger.debug(minimum)
+        logger.debug("This is the maximum")
+        logger.debug(maximum)
+        height = self.height()
+
+        if minimum != maximum:
+            model = self.model()
+            logger.debug(model.index(0,0))
+            rowheight = self.rowHeight(model.index(0,0))
+            logger.debug(rowheight)  
+            #FIXME: I dont know how to use the maximum to grow properly
+            #FIXME: I dont know how to know when or how much to srink this.
+            #FIXME: We should add a expand/collapse project
+            self.setFixedHeight(height + (maximum * 10))
 
     def setModel(self, model):
         super(TreeProjectsWidget, self).setModel(model)
@@ -396,8 +442,6 @@ class TreeProjectsWidget(QTreeView):
         super(TreeProjectsWidget, self).__init__()
         self.project = project
         self._added_to_console = False
-        #self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-
         self.__format_tree()
 
         self.setContextMenuPolicy(Qt.CustomContextMenu)
@@ -421,12 +465,14 @@ class TreeProjectsWidget(QTreeView):
         if path in self.state_index:
             path_index = self.state_index.index(path)
             self.state_index.pop(path_index)
+        self.updateGeometries()
 
     def _item_expanded(self, tree_item):
         """Store status of item when expanded"""
         path = self.model().filePath(tree_item)
         if path not in self.state_index:
             self.state_index.append(path)
+        self.updateGeometries()
 
     def add_extra_menu(self, menu, lang='all'):
         '''
