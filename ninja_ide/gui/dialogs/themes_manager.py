@@ -35,7 +35,6 @@ from PyQt4.QtGui import QTableWidget
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QDialog
 from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
 from ninja_ide.core.file_handling import file_manager
@@ -69,10 +68,10 @@ class ThemesManagerWidget(QDialog):
         self.downloadItems = []
 
         #Load Themes with Thread
-        self.connect(btnReload, SIGNAL("clicked()"), self._reload_themes)
+        btnReload.clicked.connect(self._reload_themes)
         self._thread = ui_tools.ThreadExecution(self.execute_thread)
-        self.connect(self._thread, SIGNAL("finished()"), self.load_skins_data)
-        self.connect(btn_close, SIGNAL('clicked()'), self.close)
+        self._thread.finished.connect(self.load_skins_data)
+        btn_close.clicked.connect(self.close)
         self._reload_themes()
 
     def _reload_themes(self):
@@ -116,7 +115,7 @@ class ThemesManagerWidget(QDialog):
         if not file_manager.folder_exists(resources.EDITOR_SKINS):
             file_manager.create_tree_folders(resources.EDITOR_SKINS)
         schemes = os.listdir(resources.EDITOR_SKINS)
-        schemes = [s for s in schemes if s.endswith('.color')]
+        schemes = [s for s in schemes if s.lower().endswith('.color')]
         return schemes
 
     def _download_scheme_thread(self):
@@ -127,9 +126,8 @@ class ThemesManagerWidget(QDialog):
         fileName = os.path.join(folder, os.path.basename(url))
         try:
             content = urlopen(url)
-            f = open(fileName, 'w')
-            f.write(content.read())
-            f.close()
+            with open(fileName, 'w') as f:
+                f.write(content.read())
         except URLError:
             return
 
@@ -150,10 +148,10 @@ class SchemeWidget(QWidget):
         btnUninstall.setMaximumWidth(100)
         vbox.addWidget(btnUninstall)
         self._table.setColumnWidth(0, 200)
-
-        self.connect(btnUninstall, SIGNAL("clicked()"), self._download_scheme)
+        self._table.setSortingEnabled(True)
+        self._table.setAlternatingRowColors(True)
+        btnUninstall.clicked.connect(self._download_scheme)
 
     def _download_scheme(self):
-        schemes = ui_tools.remove_get_selected_items(self._table,
-            self._schemes)
+        schemes = ui_tools.remove_get_selected_items(self._table, self._schemes)
         self._parent.download_scheme(schemes)

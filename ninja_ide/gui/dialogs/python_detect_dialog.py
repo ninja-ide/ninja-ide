@@ -1,4 +1,20 @@
 # -*- coding: utf-8 -*-
+#
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+
 
 from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QVBoxLayout
@@ -11,7 +27,6 @@ from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QSize
-from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -43,8 +58,8 @@ class PythonDetectDialog(QDialog):
         hbox.addWidget(btnAccept)
         vbox.addLayout(hbox)
 
-        self.connect(btnAccept, SIGNAL("clicked()"), self._set_python_path)
-        self.connect(btnCancel, SIGNAL("clicked()"), self.close)
+        btnAccept.clicked.connect(self._set_python_path)
+        btnCancel.clicked.connect(self.close)
 
         for path in suggested:
             self.listPaths.addItem(path)

@@ -35,7 +35,6 @@ from PyQt4.QtGui import QTableWidget
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QDialog
 from PyQt4.QtCore import Qt
-from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
 from ninja_ide.core.file_handling import file_manager
@@ -69,11 +68,10 @@ class LanguagesManagerWidget(QDialog):
         self.downloadItems = []
 
         #Load Themes with Thread
-        self.connect(btnReload, SIGNAL("clicked()"), self._reload_languages)
+        btnReload.clicked.connect(self._reload_languages)
         self._thread = ui_tools.ThreadExecution(self.execute_thread)
-        self.connect(self._thread, SIGNAL("finished()"),
-            self.load_languages_data)
-        self.connect(btn_close, SIGNAL('clicked()'), self.close)
+        self._thread.finished.connect(self.load_languages_data)
+        btn_close.clicked.connect(self.close)
         self._reload_languages()
 
     def _reload_languages(self):
@@ -119,7 +117,7 @@ class LanguagesManagerWidget(QDialog):
             file_manager.create_tree_folders(resources.LANGS_DOWNLOAD)
         languages = os.listdir(resources.LANGS_DOWNLOAD) + \
             os.listdir(resources.LANGS)
-        languages = [s for s in languages if s.endswith('.qm')]
+        languages = [s for s in languages if s.lower().endswith('.qm')]
         return languages
 
     def _download_language_thread(self):
@@ -130,9 +128,8 @@ class LanguagesManagerWidget(QDialog):
         fileName = os.path.join(folder, os.path.basename(url))
         try:
             content = urlopen(url)
-            f = open(fileName, 'wb')
-            f.write(content.read())
-            f.close()
+            with open(fileName, 'wb') as f:
+                f.write(content.read())
         except URLError:
             return
 
@@ -153,9 +150,9 @@ class LanguageWidget(QWidget):
         btnUninstall.setMaximumWidth(100)
         vbox.addWidget(btnUninstall)
         self._table.setColumnWidth(0, 200)
-
-        self.connect(btnUninstall, SIGNAL("clicked()"),
-            self._download_language)
+        self._table.setSortingEnabled(True)
+        self._table.setAlternatingRowColors(True)
+        btnUninstall.clicked.connect(self._download_language)
 
     def _download_language(self):
         languages = ui_tools.remove_get_selected_items(self._table,

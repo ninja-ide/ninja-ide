@@ -25,7 +25,6 @@ from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QPushButton
-from PyQt4.QtCore import SIGNAL
 
 
 class PluginErrorDialog(QDialog):
@@ -35,7 +34,7 @@ class PluginErrorDialog(QDialog):
     def __init__(self):
         QDialog.__init__(self)
         self.setWindowTitle(self.tr("Plugin error report"))
-        self.resize(525, 400)
+        self.resize(600, 400)
         vbox = QVBoxLayout(self)
         label = QLabel(self.tr('Some plugins have errors and were removed'))
         vbox.addWidget(label)
@@ -47,7 +46,7 @@ class PluginErrorDialog(QDialog):
         hbox.addWidget(btnAccept)
         vbox.addLayout(hbox)
         #signals
-        self.connect(btnAccept, SIGNAL("clicked()"), self.close)
+        btnAccept.clicked.connect(self.close)
 
     def add_traceback(self, plugin_name, traceback_msg):
         traceback_widget = TracebackWidget(traceback_msg)
@@ -66,4 +65,6 @@ class TracebackWidget(QWidget):
         vbox.addWidget(QLabel(self.tr('Traceback')))
         vbox.addWidget(self._editor)
         self._editor.setReadOnly(True)
+        self._editor.setLineWrapMode(0)
         self._editor.insertPlainText(traceback_msg)
+        self._editor.selectAll()
