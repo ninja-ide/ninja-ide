@@ -39,9 +39,12 @@ from PyQt4.QtGui import QSpacerItem
 from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QIcon
+from PyQt4.QtGui import QCompleter
+from PyQt4.QtGui import QDirModel
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QThread
+from PyQt4.QtCore import QDir
 
 from ninja_ide.core import plugin_manager
 from ninja_ide.core.file_handling import file_manager
@@ -259,6 +262,8 @@ class UpdatesWidget(QWidget):
         self._table.removeRow(0)
         self._table.setSelectionMode(QTableWidget.SingleSelection)
         self._table.setColumnWidth(0, 500)
+        self._table.setSortingEnabled(True)
+        self._table.setAlternatingRowColors(True)
         vbox.addWidget(self._table)
         ui_tools.load_table(self._table, (self.tr('Name'), self.tr('Version')),
             _format_for_table(updates))
@@ -305,6 +310,8 @@ class AvailableWidget(QWidget):
         ui_tools.load_table(self._table, (self.tr('Name'), self.tr('Version')),
             _format_for_table(available))
         self._table.setColumnWidth(0, 500)
+        self._table.setSortingEnabled(True)
+        self._table.setAlternatingRowColors(True)
         hbox = QHBoxLayout()
         btnInstall = QPushButton(self.tr('Install'))
         btnInstall.setMaximumWidth(100)
@@ -379,6 +386,8 @@ class InstalledWidget(QWidget):
         ui_tools.load_table(self._table, (self.tr('Name'), self.tr('Version')),
             _format_for_table(installed))
         self._table.setColumnWidth(0, 500)
+        self._table.setSortingEnabled(True)
+        self._table.setAlternatingRowColors(True)
         btnUninstall = QPushButton(self.tr("Uninstall"))
         btnUninstall.setMaximumWidth(100)
         vbox.addWidget(btnUninstall)
@@ -432,6 +441,10 @@ class ManualInstallWidget(QWidget):
         hPath = QHBoxLayout()
         self._txtFilePath = QLineEdit()
         self._btnFilePath = QPushButton(QIcon(":img/open"), '')
+        self.completer, self.dirs = QCompleter(self), QDirModel(self)
+        self.dirs.setFilter(QDir.AllEntries | QDir.NoDotAndDotDot)
+        self.completer.setModel(self.dirs)
+        self._txtFilePath.setCompleter(self.completer)
         hPath.addWidget(QLabel(self.tr("Plugin File:")))
         hPath.addWidget(self._txtFilePath)
         hPath.addWidget(self._btnFilePath)
