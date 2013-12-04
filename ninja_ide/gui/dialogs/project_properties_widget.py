@@ -19,6 +19,7 @@ from __future__ import absolute_import
 
 import os
 import sys
+from getpass import getuser
 
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QSizePolicy
@@ -40,7 +41,6 @@ from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QSpinBox
 from PyQt4.QtGui import QCheckBox
-from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 
 from ninja_ide import translations
@@ -53,12 +53,32 @@ logger = NinjaLogger('ninja_ide.gui.dialogs.project_properties_widget')
 DEBUG = logger.debug
 
 
+# http://opensource.org/licenses/alphabetical
+LICENCES = ('Academic Free License', 'Apache License 2.0',
+    'Apple Public Source License', 'Artistic License', 'Artistic license',
+    'Common Development and Distribution License',
+    'Common Public Attribution License', 'Eclipse Public License',
+    'Educational Community License', 'European Union Public License',
+    'GNU Affero General Public License', 'GNU General Public License v2',
+    'GNU General Public License v3', 'GNU Lesser General Public License 2.1',
+    'GNU Lesser General Public License 3.0', 'MIT license',
+    'Microsoft Public License', 'Microsoft Reciprocal License',
+    'Mozilla Public License 1.1', 'Mozilla Public License 2.0',
+    'NASA Open Source Agreement', 'New BSD License 3-Clause',
+    'Non-Profit Open Software License', 'Old BSD License 2-Clause',
+    'Open Software License', 'Other', 'Other Open Source', 'PHP License',
+    'PostgreSQL License', 'Proprietary', 'Python Software License',
+    'Simple Public License', 'W3C License', 'Zope Public License',
+    'zlib license')
+
+
 class ProjectProperties(QDialog):
 
     def __init__(self, project, parent=None):
         QDialog.__init__(self, parent, Qt.Dialog)
         self.project = project
         self.setWindowTitle(translations.TR_PROJECT_PROPERTIES)
+        self.resize(600, 500)
         vbox = QVBoxLayout(self)
         self.tab_widget = QTabWidget()
         self.projectData = ProjectData(self)
@@ -79,11 +99,11 @@ class ProjectProperties(QDialog):
 
         vbox.addLayout(hbox)
 
-        self.connect(self.btnCancel, SIGNAL("clicked()"), self.close)
-        self.connect(self.btnSave, SIGNAL("clicked()"), self.save_properties)
+        self.btnCancel.clicked.connect(self.close)
+        self.btnSave.clicked.connect(self.save_properties)
 
     def save_properties(self):
-        if self.projectData.name.text().strip() == '':
+        if not len(self.projectData.name.text().strip()):
             QMessageBox.critical(self, translations.TR_PROJECT_SAVE_INVALID,
                 translations.TR_PROJECT_INVALID_MESSAGE)
             return
@@ -110,7 +130,7 @@ class ProjectProperties(QDialog):
         self.project.indentation = self.projectData.spinIndentation.value()
         self.project.use_tabs = self.projectData.checkUseTabs.isChecked()
         related = self.projectMetadata.txt_projects.toPlainText()
-        related = [path for path in related.split('\n') if path != '']
+        related = [_path for _path in related.split('\n') if len(_path.strip())]
         self.project.related_projects = related
         self.project.save_project_properties()
 
@@ -125,7 +145,7 @@ class ProjectData(QWidget):
         grid = QGridLayout(self)
         grid.addWidget(QLabel(translations.TR_PROJECT_NAME), 0, 0)
         self.name = QLineEdit()
-        if self._parent.project.name == '':
+        if not len(self._parent.project.name):
             self.name.setText(file_manager.get_basename(
                 self._parent.project.path))
         else:
@@ -150,22 +170,12 @@ class ProjectData(QWidget):
         grid.addWidget(QLabel(translations.TR_PROJECT_URL), 4, 0)
         self.url = QLineEdit()
         self.url.setText(self._parent.project.url)
+        self.url.setPlaceholderText('https://www.{}.com'.format(getuser()))
         grid.addWidget(self.url, 4, 1)
         grid.addWidget(QLabel(translations.TR_PROJECT_LICENSE), 5, 0)
         self.cboLicense = QComboBox()
-        self.cboLicense.addItem('Apache License 2.0')
-        self.cboLicense.addItem('Artistic License/GPL')
-        self.cboLicense.addItem('Eclipse Public License 1.0')
-        self.cboLicense.addItem('GNU General Public License v2')
-        self.cboLicense.addItem('GNU General Public License v3')
-        self.cboLicense.addItem('GNU Lesser General Public License')
-        self.cboLicense.addItem('MIT License')
-        self.cboLicense.addItem('Mozilla Public License 1.1')
-        self.cboLicense.addItem('Mozilla Public License 2.0')
-        self.cboLicense.addItem('New BSD License')
-        self.cboLicense.addItem('Other Open Source')
-        self.cboLicense.addItem('Other')
-        self.cboLicense.setCurrentIndex(4)
+        self.cboLicense.addItems(LICENCES)
+        self.cboLicense.setCurrentIndex(12)
         index = self.cboLicense.findText(self._parent.project.license)
         self.cboLicense.setCurrentIndex(index)
         grid.addWidget(self.cboLicense, 5, 1)
@@ -178,7 +188,9 @@ class ProjectData(QWidget):
         grid.addWidget(QLabel(translations.TR_PROJECT_INDENTATION), 7, 0)
         self.spinIndentation = QSpinBox()
         self.spinIndentation.setValue(self._parent.project.indentation)
-        self.spinIndentation.setMinimum(1)
+        self.spinIndentation.setRange(2, 10)
+        self.spinIndentation.setValue(4)
+        self.spinIndentation.setSingleStep(2)
         grid.addWidget(self.spinIndentation, 7, 1)
         self.checkUseTabs = QCheckBox(translations.TR_PROJECT_USE_TABS)
         self.checkUseTabs.setChecked(self._parent.project.use_tabs)
@@ -194,6 +206,8 @@ class ProjectExecution(QWidget):
 
         grid.addWidget(QLabel(translations.TR_PROJECT_MAIN_FILE), 0, 0)
         self.path = QLineEdit()
+        self.path.setPlaceholderText(
+            os.path.join(os.path.expanduser("~"), 'path', 'to', 'main.py'))
         ui_tools.LineEditButton(self.path, self.path.clear,
             self.style().standardPixmap(self.style().SP_TrashIcon))
         self.path.setText(self._parent.project.main_file)
@@ -208,6 +222,8 @@ class ProjectExecution(QWidget):
         # PYTHONPATH
         self.txtPythonInterpreter = QLineEdit()
         self.txtPythonInterpreter.setText(self._parent.project.python_exec)
+        self.txtPythonInterpreter.setCompleter(QCompleter(('python', 'python2',
+            'python3', 'python.exe', 'pythonw.exe')))
         self.btnPythonPath = QPushButton(QIcon(":img/open"), '')
         grid.addWidget(QLabel(
             translations.TR_PROJECT_PYTHON_INTERPRETER), 1, 0)
@@ -234,6 +250,8 @@ class ProjectExecution(QWidget):
             self.style().standardPixmap(self.style().SP_TrashIcon))
         self.txtPreExec.setReadOnly(True)
         self.txtPreExec.setText(self._parent.project.pre_exec_script)
+        self.txtPreExec.setPlaceholderText(
+            os.path.join(os.path.expanduser("~"), 'path', 'to', 'script.sh'))
         self.btnPreExec = QPushButton(QIcon(":img/open"), '')
         grid.addWidget(QLabel(translations.TR_PROJECT_PRE_EXEC), 4, 0)
         grid.addWidget(self.txtPreExec, 4, 1)
@@ -243,6 +261,8 @@ class ProjectExecution(QWidget):
             self.style().standardPixmap(self.style().SP_TrashIcon))
         self.txtPostExec.setReadOnly(True)
         self.txtPostExec.setText(self._parent.project.post_exec_script)
+        self.txtPostExec.setPlaceholderText(
+            os.path.join(os.path.expanduser("~"), 'path', 'to', 'script.sh'))
         self.btnPostExec = QPushButton(QIcon(":img/open"), '')
         grid.addWidget(QLabel(translations.TR_PROJECT_POST_EXEC), 5, 0)
         grid.addWidget(self.txtPostExec, 5, 1)
@@ -256,6 +276,7 @@ class ProjectExecution(QWidget):
         self.txtParams = QLineEdit()
         self.txtParams.setToolTip(translations.TR_PROJECT_PARAMS_TOOLTIP)
         self.txtParams.setText(self._parent.project.program_params)
+        self.txtParams.setPlaceholderText('verbose, debug, force')
         grid.addWidget(QLabel(translations.TR_PROJECT_PARAMS), 8, 0)
         grid.addWidget(self.txtParams, 8, 1)
         #Widgets for virtualenv properties
@@ -266,20 +287,18 @@ class ProjectExecution(QWidget):
         self._dir_completer = QCompleter()
         self._dir_completer.setModel(QDirModel(self._dir_completer))
         self.txtVenvPath.setCompleter(self._dir_completer)
+        self.txtVenvPath.setPlaceholderText(
+            os.path.join(os.path.expanduser("~"), 'path', 'to', 'virtualenv'))
         self.btnVenvPath = QPushButton(QIcon(":img/open"), '')
         grid.addWidget(QLabel(translations.TR_PROJECT_VIRTUALENV), 9, 0)
         grid.addWidget(self.txtVenvPath, 9, 1)
         grid.addWidget(self.btnVenvPath, 9, 2)
 
-        self.connect(self.btnBrowse, SIGNAL("clicked()"), self.select_file)
-        self.connect(self.btnPythonPath, SIGNAL("clicked()"),
-            self._load_python_path)
-        self.connect(self.btnVenvPath, SIGNAL("clicked()"),
-            self._load_python_venv)
-        self.connect(self.btnPreExec, SIGNAL("clicked()"),
-            self.select_pre_exec_script)
-        self.connect(self.btnPostExec, SIGNAL("clicked()"),
-            self.select_post_exec_script)
+        self.btnBrowse.clicked.connect(self.select_file)
+        self.btnPythonPath.clicked.connect(self._load_python_path)
+        self.btnVenvPath.clicked.connect(self._load_python_venv)
+        self.btnPreExec.clicked.connect(self.select_pre_exec_script)
+        self.btnPostExec.clicked.connect(self.select_post_exec_script)
 
     def _load_python_path(self):
         path = QFileDialog.getOpenFileName(
@@ -305,7 +324,7 @@ class ProjectExecution(QWidget):
     def select_file(self):
         fileName = QFileDialog.getOpenFileName(
             self, translations.TR_PROJECT_SELECT_MAIN_FILE,
-                        self._parent.project.path, '(*.py);;(*.*)')
+                        self._parent.project.path, 'PY(*.py);;*(*.*)')
         if fileName != '':
             fileName = file_manager.convert_to_relative(
                 self._parent.project.path, fileName)

@@ -35,6 +35,7 @@ from PyQt4.QtGui import QTableWidget
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QDialog
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
 from ninja_ide.core.file_handling import file_manager
@@ -68,10 +69,11 @@ class LanguagesManagerWidget(QDialog):
         self.downloadItems = []
 
         #Load Themes with Thread
-        btnReload.clicked.connect(self._reload_languages)
+        self.connect(btnReload, SIGNAL("clicked()"), self._reload_languages)
         self._thread = ui_tools.ThreadExecution(self.execute_thread)
-        self._thread.finished.connect(self.load_languages_data)
-        btn_close.clicked.connect(self.close)
+        self.connect(self._thread, SIGNAL("finished()"),
+            self.load_languages_data)
+        self.connect(btn_close, SIGNAL('clicked()'), self.close)
         self._reload_languages()
 
     def _reload_languages(self):
@@ -152,7 +154,8 @@ class LanguageWidget(QWidget):
         self._table.setColumnWidth(0, 200)
         self._table.setSortingEnabled(True)
         self._table.setAlternatingRowColors(True)
-        btnUninstall.clicked.connect(self._download_language)
+        self.connect(btnUninstall, SIGNAL("clicked()"),
+            self._download_language)
 
     def _download_language(self):
         languages = ui_tools.remove_get_selected_items(self._table,

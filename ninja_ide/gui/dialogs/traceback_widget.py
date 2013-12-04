@@ -26,6 +26,8 @@ from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QPushButton
 
+from PyQt4.QtCore import SIGNAL
+
 
 class PluginErrorDialog(QDialog):
     """
@@ -46,7 +48,7 @@ class PluginErrorDialog(QDialog):
         hbox.addWidget(btnAccept)
         vbox.addLayout(hbox)
         #signals
-        btnAccept.clicked.connect(self.close)
+        self.connect(btnAccept, SIGNAL("clicked()"), self.close)
 
     def add_traceback(self, plugin_name, traceback_msg):
         traceback_widget = TracebackWidget(traceback_msg)
