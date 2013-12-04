@@ -42,6 +42,7 @@ from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QSpinBox
 from PyQt4.QtGui import QCheckBox
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import translations
 from ninja_ide.core.file_handling import file_manager
@@ -99,8 +100,8 @@ class ProjectProperties(QDialog):
 
         vbox.addLayout(hbox)
 
-        self.btnCancel.clicked.connect(self.close)
-        self.btnSave.clicked.connect(self.save_properties)
+        self.connect(self.btnCancel, SIGNAL("clicked()"), self.close)
+        self.connect(self.btnSave, SIGNAL("clicked()"), self.save_properties)
 
     def save_properties(self):
         if not len(self.projectData.name.text().strip()):
@@ -294,11 +295,15 @@ class ProjectExecution(QWidget):
         grid.addWidget(self.txtVenvPath, 9, 1)
         grid.addWidget(self.btnVenvPath, 9, 2)
 
-        self.btnBrowse.clicked.connect(self.select_file)
-        self.btnPythonPath.clicked.connect(self._load_python_path)
-        self.btnVenvPath.clicked.connect(self._load_python_venv)
-        self.btnPreExec.clicked.connect(self.select_pre_exec_script)
-        self.btnPostExec.clicked.connect(self.select_post_exec_script)
+        self.connect(self.btnBrowse, SIGNAL("clicked()"), self.select_file)
+        self.connect(self.btnPythonPath, SIGNAL("clicked()"),
+            self._load_python_path)
+        self.connect(self.btnVenvPath, SIGNAL("clicked()"),
+            self._load_python_venv)
+        self.connect(self.btnPreExec, SIGNAL("clicked()"),
+            self.select_pre_exec_script)
+        self.connect(self.btnPostExec, SIGNAL("clicked()"),
+            self.select_post_exec_script)
 
     def _load_python_path(self):
         path = QFileDialog.getOpenFileName(
