@@ -529,7 +529,7 @@ class IDE(QMainWindow):
         Info saved: Tabs and projects opened, windows state(size and position).
         """
         qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
-        editor_widget = self.mainContainer.get_actual_editor()
+        editor_widget = self.mainContainer.get_current_editor()
         current_file = ''
         if editor_widget is not None:
             current_file = editor_widget.ID

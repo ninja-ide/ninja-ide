@@ -87,6 +87,7 @@ class ErrorsWidget(QWidget):
         self.connect(self.btn_pep8_activate, SIGNAL("clicked()"),
             self._turn_on_off_pep8)
 
+        IDE.register_service('tab_errors', self)
         ExplorerContainer.register_tab(translations.TR_TAB_ERRORS, self)
 
     def _turn_on_off_lint(self):
@@ -110,7 +111,7 @@ class ErrorsWidget(QWidget):
     def errors_selected(self):
         main_container = IDE.get_service('main_container')
         if main_container:
-            editorWidget = main_container.get_actual_editor()
+            editorWidget = main_container.get_current_editor()
             if editorWidget and self._outRefresh:
                 lineno = int(self.listErrors.currentItem().data(Qt.UserRole))
                 editorWidget.jump_to_line(lineno)
@@ -119,34 +120,38 @@ class ErrorsWidget(QWidget):
     def pep8_selected(self):
         main_container = IDE.get_service('main_container')
         if main_container:
-            editorWidget = main_container.get_actual_editor()
+            editorWidget = main_container.get_current_editor()
             if editorWidget and self._outRefresh:
                 lineno = int(self.listPep8.currentItem().data(Qt.UserRole))
                 editorWidget.jump_to_line(lineno)
                 editorWidget.setFocus()
 
-    def refresh_lists(self, errors, pep8):
+    def refresh_pep8_list(self, pep8):
         self._outRefresh = False
-        self.listErrors.clear()
         self.listPep8.clear()
-        for lineno in errors.errorsSummary:
+        for lineno in pep8:
             linenostr = 'L%s\t' % str(lineno + 1)
-            for data in errors.errorsSummary[lineno]:
-                item = QListWidgetItem(linenostr + data)
-                item.setToolTip(linenostr + data)
-                item.setData(Qt.UserRole, lineno)
-                self.listErrors.addItem(item)
-        self.errorsLabel.setText(self.tr("Static Errors: %s") %
-            len(errors.errorsSummary))
-        for lineno in pep8.pep8checks:
-            linenostr = 'L%s\t' % str(lineno + 1)
-            for data in pep8.pep8checks[lineno]:
+            for data in pep8[lineno]:
                 item = QListWidgetItem(linenostr + data.split('\n')[0])
                 item.setToolTip(linenostr + data.split('\n')[0])
                 item.setData(Qt.UserRole, lineno)
                 self.listPep8.addItem(item)
         self.pep8Label.setText(self.tr("PEP8 Errors: %s") %
-            len(pep8.pep8checks))
+            len(pep8))
+        self._outRefresh = True
+
+    def refresh_error_list(self, errors):
+        self._outRefresh = False
+        self.listErrors.clear()
+        for lineno in errors:
+            linenostr = 'L%s\t' % str(lineno + 1)
+            for data in errors[lineno]:
+                item = QListWidgetItem(linenostr + data)
+                item.setToolTip(linenostr + data)
+                item.setData(Qt.UserRole, lineno)
+                self.listErrors.addItem(item)
+        self.errorsLabel.setText(self.tr("Static Errors: %s") %
+            len(errors))
         self._outRefresh = True
 
     def clear(self):

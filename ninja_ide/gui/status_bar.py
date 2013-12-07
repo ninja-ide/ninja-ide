@@ -129,7 +129,7 @@ class _StatusBar(QStatusBar):
         Re-run search if tab changed, we use the find of search widget because
         we want the widget to be updated.
         """
-        editor = main_container.MainContainer().get_actual_editor()
+        editor = main_container.MainContainer().get_current_editor()
         if self._searchWidget.isVisible():
             self._searchWidget.find_matches(editor)
         if editor:
@@ -144,7 +144,7 @@ class _StatusBar(QStatusBar):
         needs to be re-run
         """
         if self._searchWidget.isVisible():
-            editor = main_container.MainContainer().get_actual_editor()
+            editor = main_container.MainContainer().get_current_editor()
             self._searchWidget.contents_changed(editor)
 
     def explore_code(self):
@@ -156,7 +156,7 @@ class _StatusBar(QStatusBar):
     def show(self):
         self.clearMessage()
         QStatusBar.show(self)
-        editor = main_container.MainContainer().get_actual_editor()
+        editor = main_container.MainContainer().get_current_editor()
         if editor and editor.textCursor().hasSelection():
             text = editor.textCursor().selectedText()
             self._searchWidget._line.setText(text)
@@ -168,7 +168,7 @@ class _StatusBar(QStatusBar):
     def show_replace(self):
         self.clearMessage()
         self.show()
-        editor = main_container.MainContainer().get_actual_editor()
+        editor = main_container.MainContainer().get_current_editor()
         if editor:
             if editor.textCursor().hasSelection():
                 word = editor.textCursor().selectedText()
@@ -177,11 +177,11 @@ class _StatusBar(QStatusBar):
 
     def show_with_word(self):
         self.clearMessage()
-        editor = main_container.MainContainer().get_actual_editor()
+        editor = main_container.MainContainer().get_current_editor()
         if editor:
             word = editor._text_under_cursor()
             self._searchWidget._line.setText(word)
-            editor = main_container.MainContainer().get_actual_editor()
+            editor = main_container.MainContainer().get_current_editor()
             editor.moveCursor(QTextCursor.WordLeft)
             self._searchWidget.find_matches(editor)
             self.show()
@@ -220,7 +220,7 @@ class _StatusBar(QStatusBar):
         w = 0 if not self._searchWidget._checkWholeWord.isChecked() \
             else QTextDocument.FindWholeWords
         flags = 0 + s + w
-        editor = main_container.MainContainer().get_actual_editor()
+        editor = main_container.MainContainer().get_current_editor()
         if editor:
             editor.replace_match(self._searchWidget._line.text(),
                 self._replaceWidget._lineReplace.text(), flags)
@@ -236,7 +236,7 @@ class _StatusBar(QStatusBar):
         w = 0 if not self._searchWidget._checkWholeWord.isChecked() \
             else QTextDocument.FindWholeWords
         flags = 0 + s + w
-        editor = main_container.MainContainer().get_actual_editor()
+        editor = main_container.MainContainer().get_current_editor()
         if editor:
             editor.replace_match(self._searchWidget._line.text(),
                 self._replaceWidget._lineReplace.text(), flags, True,
@@ -248,7 +248,7 @@ class _StatusBar(QStatusBar):
         w = 0 if not self._searchWidget._checkWholeWord.isChecked() \
             else QTextDocument.FindWholeWords
         flags = s + w
-        editor = main_container.MainContainer().get_actual_editor()
+        editor = main_container.MainContainer().get_current_editor()
         if editor:
             editor.find_match(self._searchWidget._line.text(), flags)
 
@@ -258,7 +258,7 @@ class _StatusBar(QStatusBar):
         w = 0 if not self._searchWidget._checkWholeWord.isChecked() \
             else QTextDocument.FindWholeWords
         flags = 0 + s + w
-        editor = main_container.MainContainer().get_actual_editor()
+        editor = main_container.MainContainer().get_current_editor()
         if editor:
             editor.find_match(self._searchWidget._line.text(), flags, True)
 
@@ -268,7 +268,7 @@ class _StatusBar(QStatusBar):
         w = 0 if not self._searchWidget._checkWholeWord.isChecked() \
             else QTextDocument.FindWholeWords
         flags = 1 + s + w
-        editor = main_container.MainContainer().get_actual_editor()
+        editor = main_container.MainContainer().get_current_editor()
         if editor:
             editor.find_match(self._searchWidget._line.text(), flags, True)
 
@@ -336,7 +336,7 @@ class SearchWidget(QWidget):
             self._checks_state_changed)
 
     def _checks_state_changed(self):
-        editor = main_container.MainContainer().get_actual_editor()
+        editor = main_container.MainContainer().get_current_editor()
         editor.moveCursor(QTextCursor.Start)
         self.find_matches(editor)
 
@@ -361,7 +361,7 @@ class SearchWidget(QWidget):
             self.index -= 1
         elif self.totalMatches > 0:
             self.index = self.totalMatches
-            editor = main_container.MainContainer().get_actual_editor()
+            editor = main_container.MainContainer().get_current_editor()
             editor.moveCursor(QTextCursor.End)
             self._parent.find_previous()
         self._line.counter.update_count(self.index, self.totalMatches)
@@ -433,7 +433,7 @@ class TextLine(QLineEdit):
         self.counter = ui_tools.LineEditCount(self)
 
     def keyPressEvent(self, event):
-        editor = main_container.MainContainer().get_actual_editor()
+        editor = main_container.MainContainer().get_current_editor()
         if editor is None:
             super(TextLine, self).keyPressEvent(event)
             return

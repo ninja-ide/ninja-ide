@@ -20,9 +20,16 @@ from __future__ import unicode_literals
 from PyQt4.QtGui import QStyle
 from PyQt4.QtCore import QThread
 
+from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
+from ninja_ide.gui.ide import IDE
 from ninja_ide.dependencies import pep8mod
+from ninja_ide.gui.editor.checkers import (
+    register_checker,
+    remove_checker,
+)
+from ninja_ide.gui.editor.checkers import errors_lists  # lint:ok
 
 
 class Pep8Checker(QThread):
@@ -78,3 +85,19 @@ class Pep8Checker(QThread):
                         self.checks[lineno] = message
         else:
             self.reset()
+        error_list = IDE.get_service('tab_errors')
+        if error_list:
+            error_list.refresh_pep8_list(self.checks)
+
+
+def remove_pep8_checker():
+    checker = (Pep8Checker,
+        resources.CUSTOM_SCHEME.get('pep8-underline',
+        resources.COLOR_SCHEME['pep8-underline']), 2)
+    remove_checker(checker)
+
+
+if settings.CHECK_STYLE:
+    register_checker(checker=Pep8Checker,
+        color=resources.CUSTOM_SCHEME.get('pep8-underline',
+        resources.COLOR_SCHEME['pep8-underline']), priority=2)

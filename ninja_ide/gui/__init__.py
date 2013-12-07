@@ -45,9 +45,13 @@ import ninja_ide.gui.menus.menubar
 # Explorer Container
 from ninja_ide.gui.explorer.tabs import tree_projects_widget
 from ninja_ide.gui.explorer.tabs import tree_symbols_widget
-from ninja_ide.gui.explorer.tabs import errors_lists
-from ninja_ide.gui.explorer.tabs import migration_lists
 from ninja_ide.gui.explorer.tabs import web_inspector
+# Checkers
+from ninja_ide.gui.editor.checkers import errors_checker
+from ninja_ide.gui.editor.checkers import pep8_checker
+from ninja_ide.gui.editor.checkers import migration_2to3
+
+from ninja_ide.gui.editor.checkers import migration_lists
 import ninja_ide.gui.explorer.explorer_container
 
 from ninja_ide.gui import ide

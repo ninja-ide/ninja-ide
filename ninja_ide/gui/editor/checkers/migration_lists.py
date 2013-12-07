@@ -63,11 +63,12 @@ class MigrationWidget(QWidget):
             SIGNAL("itemClicked(QListWidgetItem*)"), self.load_suggestion)
         self.connect(self.btn_apply, SIGNAL("clicked()"), self.apply_changes)
 
+        IDE.register_service('tab_migration', self)
         ExplorerContainer.register_tab(translations.TR_TAB_MIGRATION, self)
 
     def apply_changes(self):
         lineno = int(self.current_list.currentItem().data(Qt.UserRole))
-        lines = self._migration.migration_data[lineno][0].split('\n')
+        lines = self._migration[lineno][0].split('\n')
         remove = -1
         code = ''
         for line in lines:
@@ -78,7 +79,7 @@ class MigrationWidget(QWidget):
 
         main_container = IDE.get_service('main_container')
         if main_container:
-            editorWidget = main_container.get_actual_editor()
+            editorWidget = main_container.get_current_editor()
             block_start = editorWidget.document().findBlockByLineNumber(lineno)
             block_end = editorWidget.document().findBlockByLineNumber(
                 lineno + remove)
@@ -90,7 +91,7 @@ class MigrationWidget(QWidget):
 
     def load_suggestion(self, item):
         lineno = int(item.data(Qt.UserRole))
-        lines = self._migration.migration_data[lineno][0].split('\n')
+        lines = self._migration[lineno][0].split('\n')
         code = ''
         for line in lines:
             if line.startswith('+'):
@@ -98,7 +99,7 @@ class MigrationWidget(QWidget):
         self.suggestion.setPlainText(code)
         main_container = IDE.get_service('main_container')
         if main_container:
-            editorWidget = main_container.get_actual_editor()
+            editorWidget = main_container.get_current_editor()
             if editorWidget:
                 editorWidget.jump_to_line(lineno)
                 editorWidget.setFocus()
@@ -107,9 +108,9 @@ class MigrationWidget(QWidget):
         self._migration = migration
         self.current_list.clear()
         base_lineno = -1
-        for lineno in sorted(migration.migration_data.keys()):
+        for lineno in sorted(migration.keys()):
             linenostr = 'L%s\n' % str(lineno + 1)
-            data = migration.migration_data[lineno]
+            data = migration[lineno]
             lines = data[0].split('\n')
             if base_lineno == data[1]:
                 continue
