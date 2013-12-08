@@ -22,8 +22,15 @@ import subprocess
 
 from PyQt4.QtCore import QThread
 
+from ninja_ide import resources
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
+from ninja_ide.gui.ide import IDE
+from ninja_ide.gui.editor.checkers import (
+    register_checker,
+    remove_checker,
+)
+from ninja_ide.gui.editor.checkers import migration_lists  # lint:ok
 
 
 class MigrationTo3(QThread):
@@ -93,3 +100,19 @@ class MigrationTo3(QThread):
 
                 if line.startswith('@@'):
                     lineno = int(line[line.index('-') + 1:line.index(',')]) - 1
+        tab_migration = IDE.get_service('tab_migration')
+        if tab_migration:
+            tab_migration.refresh_lists(self.checks)
+
+
+def remove_migration_checker():
+    checker = (MigrationTo3,
+        resources.CUSTOM_SCHEME.get('migration-underline',
+        resources.COLOR_SCHEME['migration-underline']), 1)
+    remove_checker(checker)
+
+
+if settings.SHOW_MIGRATION_TIPS:
+    register_checker(checker=MigrationTo3,
+        color=resources.CUSTOM_SCHEME.get('migration-underline',
+        resources.COLOR_SCHEME['migration-underline']))

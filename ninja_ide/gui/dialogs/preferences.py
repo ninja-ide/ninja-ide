@@ -118,7 +118,7 @@ class PreferencesWidget(QDialog):
 
     #def _cancel(self):
         #main_container = self._ide.get_service("main_container")
-        #editorWidget = main_container.get_actual_editor()
+        #editorWidget = main_container.get_current_editor()
         #if editorWidget is not None:
             #editorWidget.restyle(editorWidget.lang)
         #self.close()
@@ -907,7 +907,7 @@ class PreferencesWidget(QDialog):
     #def hideEvent(self, event):
         #super(EditorGeneral, self).hideEvent(event)
         #resources.CUSTOM_SCHEME = self.original_style
-        #editorWidget = main_container.MainContainer().get_actual_editor()
+        #editorWidget = main_container.MainContainer().get_current_editor()
         #if editorWidget is not None:
             #editorWidget.restyle(editorWidget.lang)
             #editorWidget._sidebarWidget.repaint()
@@ -916,7 +916,7 @@ class PreferencesWidget(QDialog):
         #scheme = self._listScheme.currentItem().text()
         #if scheme == self.current_scheme:
             #return
-        #editorWidget = main_container.MainContainer().get_actual_editor()
+        #editorWidget = main_container.MainContainer().get_current_editor()
         #if editorWidget is not None:
             #resources.CUSTOM_SCHEME = self._schemes.get(scheme,
                 #resources.COLOR_SCHEME)
@@ -967,7 +967,7 @@ class PreferencesWidget(QDialog):
         #settings.FONT_SIZE = int(fontText.split(',')[1])
         #qsettings.setValue('fontFamily', settings.FONT_FAMILY)
         #qsettings.setValue('fontSize', settings.FONT_SIZE)
-        #editorWidget = main_container.MainContainer().get_actual_editor()
+        #editorWidget = main_container.MainContainer().get_current_editor()
         #scheme = self._listScheme.currentItem().text()
         #self.original_style = resources.CUSTOM_SCHEME
         #if editorWidget is not None:
@@ -1685,7 +1685,7 @@ class PreferencesWidget(QDialog):
 
     #def _get_editor(self):
         #main_container = self._ide.get_service("main_container")
-        #editorWidget = main_container.get_actual_editor()
+        #editorWidget = main_container.get_current_editor()
         #return editorWidget
 
     #def hideEvent(self, event):

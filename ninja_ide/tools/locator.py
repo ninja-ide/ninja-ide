@@ -575,7 +575,7 @@ class LocateCompleter(QLineEdit):
             #if the prefix is "." it means only the metadata of current file
             if main_container and filterOption == FILTERS['this-file']:
                 inCurrentFile = True
-                editorWidget = main_container.get_actual_editor()
+                editorWidget = main_container.get_current_editor()
                 if editorWidget:
                     self.tempLocations = \
                         self._parent._thread.get_this_file_locations(
@@ -591,7 +591,7 @@ class LocateCompleter(QLineEdit):
                     for f in opened]
                 self.__prefix = self.__prefix[1:].lstrip()
             elif main_container and filterOption == FILTERS['lines']:
-                editorWidget = main_container.get_actual_editor()
+                editorWidget = main_container.get_current_editor()
                 self.tempLocations = [
                     x for x in self._parent._thread.get_locations()
                         if x.type == FILTERS['files'] and
@@ -625,7 +625,7 @@ class LocateCompleter(QLineEdit):
             main_container = IDE.get_service('main_container')
             editorWidget = None
             if main_container:
-                editorWidget = main_container.get_actual_editor()
+                editorWidget = main_container.get_current_editor()
             if editorWidget:
                 filterOptions.insert(1, editorWidget.ID)
             if previous_filter == FILTERS['lines']:

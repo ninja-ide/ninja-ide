@@ -140,12 +140,12 @@ class ProjectTreeColumn(QWidget):
         self._vbox.setSpacing(0)
         self._vbox.setSizeConstraint(QVBoxLayout.SetDefaultConstraint)
         self._buttons = []
-        
+
         self._projects_area = QWidget()
         logger.debug("This is the projects area")
         logger.debug(self._projects_area)
         self._projects_area.setLayout(self._vbox)
-        
+
         self._scroll_area = QScrollArea()
         self.layout().addWidget(self._scroll_area)
         self._scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
@@ -194,7 +194,6 @@ class ProjectTreeColumn(QWidget):
         #self.connect(self.tree_projects,
             #SIGNAL("closeFilesFromProjectClosed(QString)"),
             #close_files_related_to_closed_project)
-
 
     def install_tab(self):
         ide = IDE.get_service('ide')
@@ -402,7 +401,7 @@ class TreeProjectsWidget(QTreeView):
 
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.auto_resize(self.verticalScrollBar().minimum(), 
+        self.auto_resize(self.verticalScrollBar().minimum(),
                 self.verticalScrollBar().maximum())
 
 
@@ -424,7 +423,7 @@ class TreeProjectsWidget(QTreeView):
             model = self.model()
             logger.debug(model.index(0,0))
             rowheight = self.rowHeight(model.index(0,0))
-            logger.debug(rowheight)  
+            logger.debug(rowheight)
             #FIXME: I dont know how to use the maximum to grow properly
             #FIXME: I dont know how to know when or how much to srink this.
             #FIXME: We should add a expand/collapse project

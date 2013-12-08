@@ -103,7 +103,7 @@ class MainService(QObject):
         """
         #if not editor try to get the current
         if editorWidget is None:
-            editorWidget = self._main.get_actual_editor()
+            editorWidget = self._main.get_current_editor()
         belongs = ''
         if editorWidget is None:
             return belongs
@@ -118,7 +118,7 @@ class MainService(QObject):
     def get_file_syntax(self, editorWidget=None):
         """Return the syntax for this file -> {}."""
         if editorWidget is None:
-            editorWidget = self._main.get_actual_editor()
+            editorWidget = self._main.get_current_editor()
 
         if editorWidget is not None:
             ext = file_manager.get_file_extension(editorWidget.ID)
@@ -141,14 +141,14 @@ class MainService(QObject):
         Returns the actual editor (instance of ninja_ide.gui.editor.Editor)
         This method could return None
         """
-        return self._main.get_actual_editor()
+        return self._main.get_current_editor()
 
     def get_editor_path(self):
         """
         Returns the actual editor path
         This method could return None if there is not an editor
         """
-        editor = self._main.get_actual_editor()
+        editor = self._main.get_current_editor()
         if editor:
             return editor.ID
         return None
@@ -158,7 +158,7 @@ class MainService(QObject):
         Returns the editor encoding
         """
         if editorWidget is None:
-            editorWidget = self._main.get_actual_editor()
+            editorWidget = self._main.get_current_editor()
 
         if editorWidget is not None:
             return editorWidget.encoding
@@ -169,7 +169,7 @@ class MainService(QObject):
         Returns the plain text of the current editor
         or None if thre is not an editor.
         """
-        editor = self._main.get_actual_editor()
+        editor = self._main.get_current_editor()
         if editor:
             return editor.get_text()
         return
@@ -179,7 +179,7 @@ class MainService(QObject):
         Returns the selected text of and editor.
         This method could return None
         """
-        editor = self._main.get_actual_editor()
+        editor = self._main.get_current_editor()
         if editor:
             return editor.textCursor().selectedText()
         return None
@@ -189,7 +189,7 @@ class MainService(QObject):
         Insert text in the current cursor position
         @text: string
         """
-        editor = self._main.get_actual_editor()
+        editor = self._main.get_current_editor()
         if editor:
             editor.insertPlainText(text)
 
@@ -203,7 +203,7 @@ class MainService(QObject):
         """
         Returns the count of lines in the current editor
         """
-        editor = self._main.get_actual_editor()
+        editor = self._main.get_current_editor()
         if editor:
             return editor.get_lines_count()
         return None

@@ -25,8 +25,15 @@ except ImportError:
 
 from PyQt4.QtCore import QThread
 
+from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
+from ninja_ide.gui.ide import IDE
+from ninja_ide.gui.editor.checkers import (
+    register_checker,
+    remove_checker,
+)
+from ninja_ide.gui.editor.checkers import errors_lists  # lint:ok
 try:
     from ninja_ide.dependencies.pyflakes_mod import checker
 except ImportError:
@@ -99,6 +106,9 @@ class ErrorsChecker(QThread):
                     self.checks.pop(line, None)
         else:
             self.reset()
+        error_list = IDE.get_service('tab_errors')
+        if error_list:
+            error_list.refresh_error_list(self.checks)
 
     def _get_ignore_range(self):
         ignored_range = []
@@ -118,3 +128,16 @@ class ErrorsChecker(QThread):
             block = block.next()
 
         return (ignored_range, ignored_lines)
+
+
+def remove_error_checker():
+    checker = (ErrorsChecker,
+        resources.CUSTOM_SCHEME.get('error-underline',
+        resources.COLOR_SCHEME['error-underline']), 10)
+    remove_checker(checker)
+
+
+if settings.FIND_ERRORS:
+    register_checker(checker=ErrorsChecker,
+        color=resources.CUSTOM_SCHEME.get('error-underline',
+        resources.COLOR_SCHEME['error-underline']), priority=10)
