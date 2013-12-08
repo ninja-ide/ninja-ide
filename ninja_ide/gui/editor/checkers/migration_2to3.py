@@ -30,6 +30,7 @@ from ninja_ide.gui.editor.checkers import (
     register_checker,
     remove_checker,
 )
+from ninja_ide.gui.editor.checkers import migration_lists  # lint:ok
 
 
 class MigrationTo3(QThread):
