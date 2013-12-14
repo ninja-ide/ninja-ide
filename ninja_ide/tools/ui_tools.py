@@ -19,7 +19,10 @@ from __future__ import absolute_import
 import os
 import math
 import collections
-from urlparse import urlparse, urlunparse
+try:
+    from urllib.parse import urlparse, urlunparse  # isort:skip
+except ImportError:
+    from urlparse import urlparse, urlunparse  # lint:ok
 
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QWidget
@@ -69,21 +72,33 @@ from ninja_ide.tools import json_manager
 ###############################################################################
 
 class CheckableHeaderTable(QTableWidget):
-    """ QTableWidget subclassed with QCheckBox on Header to select all items """
+    """QTableWidget subclassed with QCheckBox on Header to select all items"""
 
     def __init__(self, parent=None, *args):
-        """ init CheckableHeaderTable and add custom widgets and connections """
         super(QTableWidget, self).__init__(parent, *args)
         self.chkbox = QCheckBox(self.horizontalHeader())
         self.connect(self.chkbox, SIGNAL("stateChanged(int)"),
                      self.change_items_selection)
+        self.search = QPushButton(QIcon(":img/find"), '', self)
+        self.search.resize(22, 22)
+        self.connect(self.search, SIGNAL("clicked()"), self.search_popup)
 
     def change_items_selection(self, state):
-        """ de/select all items iterating over all table rows at column 0 """
+        """De/select all items iterating over all table rows at column 0"""
         for i in range(self.rowCount()):
             item = self.item(i, 0)
             if item is not None:
                 item.setCheckState(state)
+
+    def search_popup(self):
+        """Search the table based on user input query string"""
+        query, ok = QInputDialog.getText(self, __doc__, self.tr('Search'))
+        if ok:
+            for row in range(self.rowCount()):
+                for column in range(self.columnCount()):
+                    item = self.item(row, column)
+                    if query.lower() in item.data(Qt.DisplayRole).lower():
+                        return self.setCurrentItem(item)
 
 
 def load_table(table, headers, data, checkFirstColumn=True):
