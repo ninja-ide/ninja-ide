@@ -31,7 +31,6 @@ from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QSpacerItem
 from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QTabWidget
-from PyQt4.QtGui import QTableWidget
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QDialog
 from PyQt4.QtCore import Qt
@@ -143,7 +142,7 @@ class LanguageWidget(QWidget):
         self._parent = parent
         self._languages = languages
         vbox = QVBoxLayout(self)
-        self._table = QTableWidget(1, 2)
+        self._table = ui_tools.checkableHeaderQTableWidget(1, 2)
         self._table.removeRow(0)
         vbox.addWidget(self._table)
         ui_tools.load_table(self._table,

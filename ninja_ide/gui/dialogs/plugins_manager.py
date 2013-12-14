@@ -21,6 +21,7 @@ from __future__ import unicode_literals
 import webbrowser
 from copy import copy
 from distutils import version
+from os import path
 
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QFormLayout
@@ -258,7 +259,7 @@ class UpdatesWidget(QWidget):
         self._parent = parent
         self._updates = updates
         vbox = QVBoxLayout(self)
-        self._table = QTableWidget(1, 2)
+        self._table = ui_tools.checkableHeaderQTableWidget(1, 2)
         self._table.removeRow(0)
         self._table.setSelectionMode(QTableWidget.SingleSelection)
         self._table.setColumnWidth(0, 500)
@@ -303,7 +304,7 @@ class AvailableWidget(QWidget):
         self._parent = parent
         self._available = available
         vbox = QVBoxLayout(self)
-        self._table = QTableWidget(1, 2)
+        self._table = ui_tools.checkableHeaderQTableWidget(1, 2)
         self._table.setSelectionMode(QTableWidget.SingleSelection)
         self._table.removeRow(0)
         vbox.addWidget(self._table)
@@ -379,7 +380,7 @@ class InstalledWidget(QWidget):
         self._parent = parent
         self._installed = installed
         vbox = QVBoxLayout(self)
-        self._table = QTableWidget(1, 2)
+        self._table = ui_tools.checkableHeaderQTableWidget(1, 2)
         self._table.setSelectionMode(QTableWidget.SingleSelection)
         self._table.removeRow(0)
         vbox.addWidget(self._table)
@@ -434,12 +435,16 @@ class ManualInstallWidget(QWidget):
         vbox = QVBoxLayout(self)
         form = QFormLayout()
         self._txtName = QLineEdit()
+        self._txtName.setPlaceholderText('my_plugin')
         self._txtVersion = QLineEdit()
+        self._txtVersion.setPlaceholderText('0.1')
         form.addRow(self.tr("Plugin Name:"), self._txtName)
         form.addRow(self.tr("Plugin Version:"), self._txtVersion)
         vbox.addLayout(form)
         hPath = QHBoxLayout()
         self._txtFilePath = QLineEdit()
+        self._txtFilePath.setPlaceholderText(
+            path.join(path.expanduser('~'), 'full', 'path', 'to', 'plugin.zip'))
         self._btnFilePath = QPushButton(QIcon(":img/open"), '')
         self.completer, self.dirs = QCompleter(self), QDirModel(self)
         self.dirs.setFilter(QDir.AllEntries | QDir.NoDotAndDotDot)

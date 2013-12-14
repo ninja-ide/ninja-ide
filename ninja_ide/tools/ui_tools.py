@@ -49,6 +49,8 @@ from PyQt4.QtGui import QTreeWidgetItem
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QPushButton
+from PyQt4.QtGui import QCheckBox
+from PyQt4.QtGui import QTableWidget
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QDir
 from PyQt4.QtCore import QUrl
@@ -63,6 +65,28 @@ from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core.file_handling.file_manager import NinjaIOException
 from ninja_ide.tools import json_manager
+
+
+###############################################################################
+# Custom Table
+###############################################################################
+
+class checkableHeaderQTableWidget(QTableWidget):
+    """ QTableWidget subclassed with QCheckBox on Header to select all items """
+
+    def __init__(self, parent=None, *args):
+        QTableWidget.__init__(self, parent, *args)
+        self.chkbox = QCheckBox(self.horizontalHeader())
+        self.chkbox.toggled.connect(self.select_all_items)
+
+    def select_all_items(self):
+        """ de/select all items iterating over all table rows at column 0 """
+        rows, column = self.rowCount(), 0
+        pos = rows - 1
+        for i in range(rows):
+            if self.item(pos - i, 0) is not None:
+                item = self.item(i, column)
+                item.setCheckState(2 if item.checkState() != 2 else 0)
 
 
 def load_table(table, headers, data, checkFirstColumn=True):
