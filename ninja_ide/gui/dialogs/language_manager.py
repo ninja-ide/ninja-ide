@@ -142,7 +142,7 @@ class LanguageWidget(QWidget):
         self._parent = parent
         self._languages = languages
         vbox = QVBoxLayout(self)
-        self._table = ui_tools.checkableHeaderQTableWidget(1, 2)
+        self._table = ui_tools.CheckableHeaderTable(1, 2)
         self._table.removeRow(0)
         vbox.addWidget(self._table)
         ui_tools.load_table(self._table,
