@@ -65,6 +65,7 @@ from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core.file_handling.file_manager import NinjaIOException
 from ninja_ide.tools import json_manager
+from ninja_ide import translations
 
 
 ###############################################################################
@@ -92,7 +93,8 @@ class CheckableHeaderTable(QTableWidget):
 
     def search_popup(self):
         """Search the table based on user input query string"""
-        query, ok = QInputDialog.getText(self, __doc__, self.tr('Search'))
+        query, ok = QInputDialog.getText(self, 'ninja-ide',
+                                         translations.TR_FIND)
         if ok:
             for row in range(self.rowCount()):
                 for column in range(self.columnCount()):
