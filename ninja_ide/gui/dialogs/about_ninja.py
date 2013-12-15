@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+
 from __future__ import absolute_import
 
 from PyQt4.QtGui import QDialog
@@ -24,14 +25,13 @@ from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QPixmap
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QSize
-from PyQt4.QtCore import SIGNAL
 
 from ninja_ide.tools import ui_tools
 
 import ninja_ide
 
 
-LINKS = """<center><table><tr>
+LINKS = """<h4>Links:</h4><center><table><tr>
     <td><a href="{web}" title="{web}" style="{sty}">Website</a>
     <td><a href="{cod}" title="{cod}" style="{sty}">Source Code</a>
     <td><a href="{plg}" title="{plg}" style="{sty}">Plugins</a>
@@ -52,15 +52,16 @@ LINKS = """<center><table><tr>
     sho='http://www.zazzle.com/ninja-ide',
     irc='https://kiwiirc.com/client/chat.freenode.net/?nick=Ninja%7C?&theme=cli#ninja-ide',
 ).strip()
-ABOUTEXT1 = """NINJA-IDE is a cross-platform integrated development
-environment specially designed to build Python Applications."""
-ABOUTEXT2 = ("NINJA-IDE provides tools to simplify the Python-software "
-"development and handles all kinds of situations thanks to its rich "
-"extensibility.")
+ABOUTEXT = """NINJA-IDE is a cross-platform integrated development
+environment specially designed to build Python Applications.
 
+NINJA-IDE provides tools to simplify the Python-software development
+and handles all kinds of situations thanks to its rich extensibility.
+"""
 
 
 class AboutNinja(QDialog):
+    """About Dialog for Ninja-IDE to provide description and links"""
 
     def __init__(self, parent=None):
         QDialog.__init__(self, parent, Qt.Dialog)
@@ -82,12 +83,11 @@ class AboutNinja(QDialog):
         hbox.addWidget(lblTitle)
         vbox.addLayout(hbox)
         #Add description
-        vbox.addWidget(QLabel(ABOUTEXT1))
-        scrollabel = ui_tools.ScrollLabel(ABOUTEXT2)
+        vbox.addWidget(QLabel(ABOUTEXT))
+        scrollabel = ui_tools.ScrollLabel("Version: {}".format(
+                                          ninja_ide.__version__))
         scrollabel.setScrolling(True)
-        scrollabel.setMaximumSize(400, 25)
         vbox.addWidget(scrollabel)
-        vbox.addWidget(QLabel("<b>Version: {}".format(ninja_ide.__version__)))
         links = QLabel(LINKS)
         links.setTextInteractionFlags(Qt.LinksAccessibleByMouse)
         links.setOpenExternalLinks(True)
