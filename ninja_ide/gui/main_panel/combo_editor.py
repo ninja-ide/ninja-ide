@@ -72,7 +72,7 @@ class ComboEditor(QWidget):
         self._main_container = IDE.get_service('main_container')
 
         self.connect(self.bar, SIGNAL("changeCurrent(PyQt_PyObject)"),
-            self.set_current)
+            self._set_current)
         self.connect(self.bar, SIGNAL("runFile(QString)"),
             self._run_file)
         self.connect(self.bar, SIGNAL("addToProject(QString)"),
@@ -164,6 +164,10 @@ class ComboEditor(QWidget):
         self._main_container._add_to_project(path)
 
     def set_current(self, neditable):
+        if neditable:
+            self.bar.set_current_file(neditable)
+
+    def _set_current(self, neditable):
         if neditable:
             self.stacked.setCurrentWidget(neditable.editor)
             self._update_cursor_position(ignore_sender=True)
@@ -411,6 +415,10 @@ class ActionBar(QFrame):
             self._resyntax = [self.currentIndex(), syntaxAction]
             self.emit(SIGNAL("syntaxChanged(QWidget, QString)"),
                 self.currentWidget(), syntaxAction.text())
+
+    def set_current_file(self, neditable):
+        index = self.combo.findData(neditable)
+        self.combo.setCurrentIndex(index)
 
     def about_to_close_file(self, index=None):
         """Close the NFile object."""

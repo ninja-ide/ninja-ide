@@ -536,6 +536,9 @@ class _MainContainer(QWidget):
     def add_editor(self, fileName=None, tabIndex=None):
         ninjaide = IDE.get_service('ide')
         editable = ninjaide.get_or_create_editable(fileName)
+        if editable.editor:
+            self.combo_area.set_current(editable)
+            return editable.editor
         editorWidget = editor.create_editor(editable)
 
         #add the tab
@@ -720,22 +723,12 @@ class _MainContainer(QWidget):
     def __open_file(self, fileName='', cursorPosition=-1,
                     tabIndex=None, positionIsLineNumber=False):
         try:
-            if not self.is_open(fileName):
-                editorWidget = self.add_editor(fileName, tabIndex=tabIndex)
-                if cursorPosition == -1:
-                    cursorPosition = 0
+            editorWidget = self.add_editor(fileName, tabIndex=tabIndex)
+            if cursorPosition != -1:
                 if positionIsLineNumber:
                     editorWidget.go_to_line(cursorPosition)
                 else:
                     editorWidget.set_cursor_position(cursorPosition)
-            else:
-                self.move_to_open(fileName)
-                editorWidget = self.get_current_editor()
-                if editorWidget and cursorPosition != -1:
-                    if positionIsLineNumber:
-                        editorWidget.go_to_line(cursorPosition)
-                    else:
-                        editorWidget.set_cursor_position(cursorPosition)
             self.emit(SIGNAL("currentEditorChanged(QString)"), fileName)
         except file_manager.NinjaIOException as reason:
             QMessageBox.information(self,
