@@ -175,6 +175,7 @@ class LocateThread(QThread):
 
     def find_code_location(self):
         self.cancel()
+        print 'locator'
         self._cancel = False
         if not self.isRunning():
             global mapping_locations

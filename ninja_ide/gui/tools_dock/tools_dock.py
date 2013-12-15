@@ -35,12 +35,12 @@ from PyQt4.QtWebKit import QWebPage
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.ide import IDE
-from ninja_ide.gui.misc import actions
-from ninja_ide.gui.misc import console_widget
-from ninja_ide.gui.misc import run_widget
-from ninja_ide.gui.misc import web_render
-from ninja_ide.gui.misc import find_in_files
-from ninja_ide.gui.misc import results
+from ninja_ide.gui.tools_dock import actions
+from ninja_ide.gui.tools_dock import console_widget
+from ninja_ide.gui.tools_dock import run_widget
+from ninja_ide.gui.tools_dock import web_render
+from ninja_ide.gui.tools_dock import find_in_files
+from ninja_ide.gui.tools_dock import results
 from ninja_ide.tools import ui_tools
 
 

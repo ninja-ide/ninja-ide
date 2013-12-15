@@ -288,7 +288,7 @@ class ProjectTreeColumn(QWidget):
         self.projects.remove(widget)
         if self._active_project == widget and len(self.projects) > 0:
             self.projects[0].set_default_project()
-        self._widget.layout().removeWidget(widget)
+        self._layout.removeWidget(widget)
         widget.deleteLater()
 
     def _set_active_project(self, tree_proj):
