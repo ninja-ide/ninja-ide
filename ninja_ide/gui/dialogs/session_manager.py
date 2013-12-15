@@ -33,7 +33,7 @@ class SessionsManager(QDialog):
 
     def __init__(self, load_func, create_func, save_func,
             profiles, parent=None):
-        super(ProfilesManager, self).__init__(parent, Qt.Dialog)
+        super(SessionsManager, self).__init__(parent, Qt.Dialog)
         self.setWindowTitle(self.tr("Session Manager"))
         self.setMinimumWidth(400)
         self._profiles = profiles

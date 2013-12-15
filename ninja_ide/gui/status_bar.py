@@ -106,7 +106,7 @@ class _StatusBar(QStatusBar):
             {'target': 'main_container',
             'signal_name': 'updateLocator(QString)',
             'slot': self._explore_file_code},
-            {'target': 'explorer_container',  # Is this working?
+            {'target': 'projects_explorer',  # Is this working?
             'signal_name': 'updateLocator()',
             'slot': self._explore_code},
             )
