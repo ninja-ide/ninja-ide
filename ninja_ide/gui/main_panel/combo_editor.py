@@ -303,6 +303,17 @@ class ActionBar(QFrame):
             self.about_to_close_file)
         hbox.addWidget(self.btn_close)
 
+    def resizeEvent(self, event):
+        super(ActionBar, self).resizeEvent(event)
+        if event.size().width() < 350:
+            self.symbols_combo.hide()
+            self.code_navigator.hide()
+            self.lbl_position.hide()
+        else:
+            self.symbols_combo.show()
+            self.code_navigator.show()
+            self.lbl_position.show()
+
     def add_item(self, text, neditable):
         """Add a new item to the combo and add the neditable data."""
         self.combo.addItem(text, neditable)

@@ -17,7 +17,9 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+import os
 import re
+import sqlite3
 try:
     import Queue
 except:
@@ -76,6 +78,14 @@ FILTERS = {
     'this-file': '.',
     'tabs': '/',
     'lines': ':'}
+
+
+_locator_db = None
+
+
+def _initialize_db():
+    db_path = os.path.join(resources.NINJA_KNOWLEDGE_PATH, 'locator.db')
+    connection = sqlite3.connect(db_path)
 
 
 class GoToDefinition(QObject):
@@ -821,3 +831,7 @@ class PopupCompleter(QFrame):
         Item.setForeground(QBrush(Qt.black))
         Item.setFont(font)
         return Item
+
+
+# Initialize Database and open connection
+_initialize_db()
