@@ -84,6 +84,7 @@ class ScrollLabel(QLabel):
         QLabel.__init__(self, parent)
         if caption:
             self.setText(caption)
+            self.setTextFormat(Qt.AutoText)
         if isinstance(parent, str):
             parent = None
         self.__separator = '    '
@@ -124,6 +125,7 @@ class ScrollLabel(QLabel):
         if self.__separator not in self.text():
             self.setText(self.text() + "    " + self.__separator + "    ")
         self.setText(str(self.text())[1:] + str(self.text())[:1])
+        self.setTextFormat(Qt.AutoText)
 
     def __on_scrolling_timer(self):
         """What to do on scrolling timer"""
@@ -138,6 +140,7 @@ class ScrollLabel(QLabel):
         else:
             self.__scrolling_timer.stop()
             self.setText(self.__original_text)
+            self.setTextFormat(Qt.AutoText)
 
     def setScrollingTime(self, value):
         """Set scrolling time by value integer

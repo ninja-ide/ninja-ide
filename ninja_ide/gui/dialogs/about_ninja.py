@@ -26,21 +26,22 @@ from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QSize
 from PyQt4.QtCore import SIGNAL
 
-from ninja_ide.ui_tools import ScrollLabel
+from ninja_ide.tools import ui_tools
 
 import ninja_ide
 
-LINKS = """
-    <a href="{web}" title="{web}" style="{sty}">Website</a>,
-    <a href="{cod}" title="{cod}" style="{sty}">Source Code</a>,
-    <a href="{plg}" title="{plg}" style="{sty}">Plugins</a>,
-    <a href="{sch}" title="{sch}" style="{sty}">Schemes</a>,
-    <a href="{twt}" title="{twt}" style="{sty}">Twitter</a>,
-    <a href="{plu}" title="{plu}" style="{sty}">Google Plus</a>,
-    <a href="{mai}" title="{mai}" style="{sty}">Mailing List</a>,
-    <a href="{irc}" title="{irc}" style="{sty}">IRC Channel</a>,
-    <a href="{sho}" title="{sho}" style="{sty}">Ninja Store</a>,
-    <a href="{trv}" title="{trv}" style="{sty}">Travis CI</a>""".format(
+
+LINKS = """<center><table><tr>
+    <td><a href="{web}" title="{web}" style="{sty}">Website</a>
+    <td><a href="{cod}" title="{cod}" style="{sty}">Source Code</a>
+    <td><a href="{plg}" title="{plg}" style="{sty}">Plugins</a>
+    <td><a href="{sch}" title="{sch}" style="{sty}">Schemes</a>
+    <td><a href="{twt}" title="{twt}" style="{sty}">Twitter</a><tr>
+    <td><a href="{plu}" title="{plu}" style="{sty}">Google Plus</a>
+    <td><a href="{mai}" title="{mai}" style="{sty}">Mailing List</a>
+    <td><a href="{irc}" title="{irc}" style="{sty}">IRC Channel</a>
+    <td><a href="{sho}" title="{sho}" style="{sty}">Ninja Store</a>
+    <td><a href="{trv}" title="{trv}" style="{sty}">Travis CI</a>""".format(
     sty='text-decoration:underline;color:#ff9e21',
     web=ninja_ide.__url__,
     cod=ninja_ide.__source__, plg=ninja_ide.__url__ + '/plugins',
@@ -51,6 +52,12 @@ LINKS = """
     sho='http://www.zazzle.com/ninja-ide',
     irc='https://kiwiirc.com/client/chat.freenode.net/?nick=Ninja%7C?&theme=cli#ninja-ide',
 ).strip()
+ABOUTEXT1 = """NINJA-IDE is a cross-platform integrated development
+environment specially designed to build Python Applications."""
+ABOUTEXT2 = ("NINJA-IDE provides tools to simplify the Python-software "
+"development and handles all kinds of situations thanks to its rich "
+"extensibility.")
+
 
 
 class AboutNinja(QDialog):
@@ -70,23 +77,18 @@ class AboutNinja(QDialog):
         hbox = QHBoxLayout()
         hbox.addWidget(self.lblIcon)
 
-        lblTitle = QLabel(
-                '<h1>NINJA-IDE</h1>\n<i>Ninja-IDE Is Not Just Another IDE')
-        lblTitle.setTextFormat(Qt.RichText)
-        lblTitle.setAlignment(Qt.AlignLeft)
+        lblTitle = QLabel('''<h1>NINJA-IDE</h1><br>
+                          <i>Ninja-IDE Is Not Just Another IDE''')
         hbox.addWidget(lblTitle)
         vbox.addLayout(hbox)
         #Add description
-        vbox.addWidget(QLabel(
-self.tr("""NINJA-IDE (from: "Ninja Is Not Just Another IDE"), is a
-cross-platform integrated development environment specially designed
-to build Python Applications.
-NINJA-IDE provides tools to simplify the Python-software development
-and handles all kinds of situations thanks to its rich extensibility.""")))
-        vbox.addWidget(QLabel(self.tr("Version: %s") % ninja_ide.__version__))
-        links = ScrollLabel(LINKS)
+        vbox.addWidget(QLabel(ABOUTEXT1))
+        scrollabel = ui_tools.ScrollLabel(ABOUTEXT2)
+        scrollabel.setScrolling(True)
+        scrollabel.setMaximumSize(400, 25)
+        vbox.addWidget(scrollabel)
+        vbox.addWidget(QLabel("<b>Version: {}".format(ninja_ide.__version__)))
+        links = QLabel(LINKS)
         links.setTextInteractionFlags(Qt.LinksAccessibleByMouse)
         links.setOpenExternalLinks(True)
-        links.setScrolling(True)
         vbox.addWidget(links)
-
