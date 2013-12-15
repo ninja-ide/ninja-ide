@@ -55,33 +55,35 @@ if frozen in ('dll', 'console_exe', 'windows_exe'):
 
 HOME_NINJA_PATH = os.path.join(HOME_PATH, ".ninja_ide")
 
+NINJA_KNOWLEDGE_PATH = os.path.join(HOME_NINJA_PATH, 'knowledge')
+
 SETTINGS_PATH = os.path.join(HOME_NINJA_PATH, 'settings.ini')
 
-ADDINS = os.path.join(HOME_NINJA_PATH, "addins")
+EXTENSIONS_PATH = os.path.join(HOME_NINJA_PATH, "extensions")
 
-SYNTAX_FILES = os.path.join(PRJ_PATH, "addins", "syntax")
+SYNTAX_FILES = os.path.join(PRJ_PATH, "extensions", "syntax")
 
-PLUGINS = os.path.join(HOME_NINJA_PATH, "addins", "plugins")
+PLUGINS = os.path.join(HOME_NINJA_PATH, "extensions", "plugins")
 
-PLUGINS_DESCRIPTOR = os.path.join(HOME_NINJA_PATH, "addins",
+PLUGINS_DESCRIPTOR = os.path.join(EXTENSIONS_PATH,
                                     "plugins", "descriptor.json")
 
-LANGS = os.path.join(HOME_NINJA_PATH, "addins", "languages")
+LANGS = os.path.join(EXTENSIONS_PATH, "languages")
 
-EDITOR_SKINS = os.path.join(HOME_NINJA_PATH, "addins", "schemes")
+EDITOR_SKINS = os.path.join(EXTENSIONS_PATH, "schemes")
 
-NINJA_THEME = os.path.join(PRJ_PATH, "addins", "theme", "ninja_dark.qss")
+NINJA_THEME = os.path.join(PRJ_PATH, "extensions", "theme", "ninja_dark.qss")
 
 NINJA_THEME_CLASSIC = os.path.join(
-    PRJ_PATH, "addins", "theme", "ninja_theme.qss")
+    PRJ_PATH, "extensions", "theme", "ninja_theme.qss")
 
-NINJA_THEME_DOWNLOAD = os.path.join(HOME_NINJA_PATH, "addins", "theme")
+NINJA_THEME_DOWNLOAD = os.path.join(EXTENSIONS_PATH, "theme")
 
 LOG_FILE_PATH = os.path.join(HOME_NINJA_PATH, 'ninja_ide.log')
 
 GET_SYSTEM_PATH = os.path.join(PRJ_PATH, 'tools', 'get_system_path.py')
 
-QML_FILES = os.path.join(PRJ_PATH, "addins", "qml")
+QML_FILES = os.path.join(PRJ_PATH, "gui", "qml")
 
 ###############################################################################
 # URLS
@@ -268,7 +270,7 @@ def create_home_dir_structure():
     """
     Create the necesary directories structure for NINJA-IDE
     """
-    for d in (HOME_NINJA_PATH, ADDINS, PLUGINS, EDITOR_SKINS,
-              LANGS, NINJA_THEME_DOWNLOAD):
+    for d in (HOME_NINJA_PATH, EXTENSIONS_PATH, PLUGINS, EDITOR_SKINS,
+              LANGS, NINJA_THEME_DOWNLOAD, NINJA_KNOWLEDGE_PATH):
         if not os.path.isdir(d):
             os.mkdir(d)
