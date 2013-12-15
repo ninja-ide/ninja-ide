@@ -167,6 +167,7 @@ class _StatusBar(QStatusBar):
 
     def show_search(self):
         """Show the status bar with the search widget."""
+        self.current_status = _STATUSBAR_STATE_SEARCH
         self._searchWidget.setVisible(True)
         self.show()
         main_container = IDE.get_service("main_container")
@@ -184,6 +185,7 @@ class _StatusBar(QStatusBar):
 
     def show_replace(self):
         """Show the status bar with the search/replace widget."""
+        self.current_status = _STATUSBAR_STATE_REPLACE
         self._replaceWidget.setVisible(True)
         self.show_search()
 
@@ -202,6 +204,7 @@ class _StatusBar(QStatusBar):
 
     def show_locator(self):
         """Show the status bar with the locator widget."""
+        self.current_status = _STATUSBAR_STATE_LOCATOR
         if not self._codeLocator.isVisible():
             self._codeLocator.setVisible(True)
             self.show()
@@ -209,6 +212,7 @@ class _StatusBar(QStatusBar):
 
     def show_file_opener(self):
         """Show the status bar with the file opener completer widget."""
+        self.current_status = _STATUSBAR_STATE_FILEOPENER
         self._fileSystemOpener.setVisible(True)
         self.show()
         self._fileSystemOpener.pathLine.setFocus()
