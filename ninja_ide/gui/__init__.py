@@ -169,7 +169,7 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     #First check if we need to load last session files
     if qsettings.value('preferences/general/loadFiles', True, type=bool):
         #Files in Main Tab
-        files = qsettings.value('openFiles/mainTab', [])
+        files = qsettings.value('openFiles/openedFiles', [])
         tempFiles = []
         if files:
             for file_ in files:

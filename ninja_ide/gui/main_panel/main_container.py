@@ -966,8 +966,8 @@ class _MainContainer(QWidget):
             editorWidget.jump_to_line(lineno=lineno)
 
     def get_opened_documents(self):
-        pass
         #return self.tabs.get_documents_data()
+        return []
 
     def open_files(self, files):
         for fileData in files:

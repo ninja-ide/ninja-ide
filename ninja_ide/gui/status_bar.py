@@ -97,6 +97,8 @@ class _StatusBar(QStatusBar):
             self.hide_status)
         self.connect(self._fileSystemOpener, SIGNAL("requestHide()"),
             self.hide_status)
+        self.connect(self._codeLocator, SIGNAL("hidden()"),
+            self.hide_status)
 
         #Register signals connections
         connections = (
@@ -106,7 +108,7 @@ class _StatusBar(QStatusBar):
             {'target': 'main_container',
             'signal_name': 'updateLocator(QString)',
             'slot': self._explore_file_code},
-            {'target': 'projects_explorer',  # Is this working?
+            {'target': 'projects_explorer',
             'signal_name': 'updateLocator()',
             'slot': self._explore_code},
             )

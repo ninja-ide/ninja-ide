@@ -421,6 +421,8 @@ class CodeLocatorWidget(QWidget):
 
         self.connect(self._thread, SIGNAL("finished()"), self._cleanup)
         self.connect(self._thread, SIGNAL("terminated()"), self._cleanup)
+        self.connect(self._completer, SIGNAL("hidden()"),
+            lambda: self.emit(SIGNAL("hidden()")))
 
     def _cleanup(self):
         self._thread.wait()
@@ -702,11 +704,11 @@ class LocatorCompleter(QLineEdit):
     def _go_to_location(self, item):
         if type(item) is LocateItem:
             self._open_item(item.data)
-        self.emit(SIGNAL("hidden(PyQt_PyObject)"), self)
+        self.emit(SIGNAL("hidden()"))
 
     def focusOutEvent(self, event):
         """Hide Popup on focus lost."""
-        self.emit(SIGNAL("hidden(PyQt_PyObject)"), self)
+        self.emit(SIGNAL("hidden()"))
         super(LocatorCompleter, self).focusOutEvent(event)
 
     def _open_item(self, data):

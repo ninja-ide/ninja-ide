@@ -539,7 +539,7 @@ class IDE(QMainWindow):
             qsettings.setValue('openFiles/projects',
                 projects)
             if openedFiles:
-                qsettings.setValue('openFiles/openedFiles', openedFiles[0])
+                qsettings.setValue('openFiles/openedFiles', openedFiles)
             qsettings.setValue('openFiles/currentFile', current_file)
             qsettings.setValue('openFiles/recentFiles',
                 settings.LAST_OPENED_FILES)
