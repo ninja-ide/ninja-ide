@@ -599,6 +599,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         """
         tc = self.textCursor()
         if selection and tc.hasSelection():
+            tc.beginEditBlock()
             start, end = tc.selectionStart(), tc.selectionEnd()
             text = tc.selectedText()
             old_len = len(text)
@@ -608,17 +609,20 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             tc.insertText(text)
             offset = new_len - old_len
             self.__set_selection_from_pair(start, end + offset)
+            tc.endEditBlock()
             return
 
         flags = QTextDocument.FindFlags(flags)
-        self.moveCursor(QTextCursor.Start, QTextCursor.KeepAnchor)
 
         cursor = self.textCursor()
         cursor.beginEditBlock()
+        if allwords:
+            current_pos = cursor.position()
+            self.moveCursor(QTextCursor.Start)
 
+        # replace is used for first replacement without selection.
         replace = True
         while (replace or allwords):
-            result = False
             result = self.find(wordOld, flags)
 
             if result:
@@ -630,6 +634,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             replace = False
 
         cursor.endEditBlock()
+        if allwords:
+            cursor.setPosition(current_pos)
+            self.setTextCursor(cursor)
 
     def focusInEvent(self, event):
         super(Editor, self).focusInEvent(event)

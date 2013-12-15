@@ -37,7 +37,7 @@ from ninja_ide.tools import json_manager
 #Register Components:
 #lint:disable
 import ninja_ide.gui.central_widget
-#import ninja_ide.gui.status_bar
+import ninja_ide.gui.status_bar
 import ninja_ide.gui.main_panel.main_container
 #import ninja_ide.gui.tools_dock.tools_dock
 import ninja_ide.gui.menus.menubar

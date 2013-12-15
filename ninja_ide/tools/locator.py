@@ -412,7 +412,7 @@ class LocateThread(QThread):
 
 class CodeLocatorWidget(QWidget):
 
-    def __init__(self, parent):
+    def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         #Parent is StatusBar
         self.statusBar = parent
@@ -444,6 +444,7 @@ class CodeLocatorWidget(QWidget):
         self._thread.find_file_code_location(path)
 
     def show_suggestions(self):
+        self._completer.setFocus()
         self._completer.complete()
 
     def setVisible(self, val):
