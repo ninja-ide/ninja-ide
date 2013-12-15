@@ -31,7 +31,6 @@ from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QSpacerItem
 from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QTabWidget
-from PyQt4.QtGui import QTableWidget
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QDialog
 from PyQt4.QtCore import Qt
@@ -119,7 +118,7 @@ class LanguagesManagerWidget(QDialog):
             file_manager.create_tree_folders(resources.LANGS_DOWNLOAD)
         languages = os.listdir(resources.LANGS_DOWNLOAD) + \
             os.listdir(resources.LANGS)
-        languages = [s for s in languages if s.endswith('.qm')]
+        languages = [s for s in languages if s.lower().endswith('.qm')]
         return languages
 
     def _download_language_thread(self):
@@ -130,9 +129,8 @@ class LanguagesManagerWidget(QDialog):
         fileName = os.path.join(folder, os.path.basename(url))
         try:
             content = urlopen(url)
-            f = open(fileName, 'wb')
-            f.write(content.read())
-            f.close()
+            with open(fileName, 'wb') as f:
+                f.write(content.read())
         except URLError:
             return
 
@@ -144,7 +142,7 @@ class LanguageWidget(QWidget):
         self._parent = parent
         self._languages = languages
         vbox = QVBoxLayout(self)
-        self._table = QTableWidget(1, 2)
+        self._table = ui_tools.CheckableHeaderTable(1, 2)
         self._table.removeRow(0)
         vbox.addWidget(self._table)
         ui_tools.load_table(self._table,
@@ -153,7 +151,8 @@ class LanguageWidget(QWidget):
         btnUninstall.setMaximumWidth(100)
         vbox.addWidget(btnUninstall)
         self._table.setColumnWidth(0, 200)
-
+        self._table.setSortingEnabled(True)
+        self._table.setAlternatingRowColors(True)
         self.connect(btnUninstall, SIGNAL("clicked()"),
             self._download_language)
 

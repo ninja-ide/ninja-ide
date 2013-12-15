@@ -199,6 +199,10 @@ class ProjectTreeColumn(QWidget):
         ide = IDE.get_service('ide')
         ui_tools.install_shortcuts(self, actions.PROJECTS_TREE_ACTIONS, ide)
 
+    def load_session_projects(self, projects):
+        for project in projects:
+            self._open_project_folder(project)
+
     def open_project_folder(self):
         if settings.WORKSPACE:
             directory = settings.WORKSPACE
@@ -210,11 +214,15 @@ class ProjectTreeColumn(QWidget):
         logger.debug("Choosing Foldername")
         if folderName:
             logger.debug("Opening %s" % folderName)
-            ninjaide = IDE.get_service("ide")
-            project = NProject(folderName)
-            qfsm = ninjaide.filesystem.open_project(project)
-            if qfsm:
-                self.add_project(project)
+            self._open_project_folder(folderName)
+
+    def _open_project_folder(self, folderName):
+        ninjaide = IDE.get_service("ide")
+        project = NProject(folderName)
+        qfsm = ninjaide.filesystem.open_project(project)
+        if qfsm:
+            self.add_project(project)
+            self.emit(SIGNAL("updateLocator()"))
 
     def _add_file_to_project(self, path):
         """Add the file for 'path' in the project the user choose here."""
@@ -280,7 +288,7 @@ class ProjectTreeColumn(QWidget):
         self.projects.remove(widget)
         if self._active_project == widget and len(self.projects) > 0:
             self.projects[0].set_default_project()
-        self._widget.layout().removeWidget(widget)
+        self._layout.removeWidget(widget)
         widget.deleteLater()
 
     def _set_active_project(self, tree_proj):
@@ -398,12 +406,10 @@ class TreeProjectsWidget(QTreeView):
         self.hideColumn(3)  # Modification date
         self.setUniformRowHeights(True)
 
-
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.auto_resize(self.verticalScrollBar().minimum(),
                 self.verticalScrollBar().maximum())
-
 
         #TODO: We need to expand the widget to be as big as the real area
         #that contains all the visible tree items, the code below
@@ -421,8 +427,8 @@ class TreeProjectsWidget(QTreeView):
 
         if minimum != maximum:
             model = self.model()
-            logger.debug(model.index(0,0))
-            rowheight = self.rowHeight(model.index(0,0))
+            logger.debug(model.index(0, 0))
+            rowheight = self.rowHeight(model.index(0, 0))
             logger.debug(rowheight)
             #FIXME: I dont know how to use the maximum to grow properly
             #FIXME: I dont know how to know when or how much to srink this.

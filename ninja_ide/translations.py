@@ -10,7 +10,7 @@ TR_MENU_EDIT = tr("NINJA-IDE", "&Edit")
 TR_MENU_VIEW = tr("NINJA-IDE", "&View")
 TR_MENU_SOURCE = tr("NINJA-IDE", "&Source")
 TR_MENU_PROJECT = tr("NINJA-IDE", "&Project")
-TR_MENU_ADDINS = tr("NINJA-IDE", "&Addins")
+TR_MENU_EXTENSIONS = tr("NINJA-IDE", "E&xtensions")
 TR_MENU_ABOUT = tr("NINJA-IDE", "Abou&t")
 
 TR_DUPLICATE = tr("NINJA-IDE", "Duplicate")
@@ -177,3 +177,7 @@ TR_ONLY_CURRENT_EDITORS = tr("NINJA-IDE",
 TR_GO_TO_LINE = tr("NINJA-IDE", ":\t(Go to Line)")
 TR_ONLY_NON_PYTHON = tr("NINJA-IDE", "!\t(Filter only by Non Python Files)")
 TR_NO_RESULTS = tr("NINJA-IDE", "No results were found!")
+
+# Status Bar
+TR_SEARCH_CASE_SENSITIVE = tr("NINJA-IDE", "Respect Case Sensitive")
+TR_SEARCH_WHOLE_WORDS = tr("NINJA-IDE", "Find Whole Words")

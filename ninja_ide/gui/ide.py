@@ -50,6 +50,7 @@ from ninja_ide.gui.dialogs import about_ninja
 from ninja_ide.gui.dialogs import plugins_manager
 from ninja_ide.gui.dialogs import themes_manager
 from ninja_ide.gui.dialogs import language_manager
+from ninja_ide.gui.dialogs import session_manager
 from ninja_ide.gui.dialogs import preferences
 from ninja_ide.gui.dialogs import traceback_widget
 from ninja_ide.gui.dialogs import python_detect_dialog
@@ -174,7 +175,7 @@ class IDE(QMainWindow):
         IDE.register_bar_category(translations.TR_MENU_VIEW, 120)
         IDE.register_bar_category(translations.TR_MENU_SOURCE, 130)
         IDE.register_bar_category(translations.TR_MENU_PROJECT, 140)
-        IDE.register_bar_category(translations.TR_MENU_ADDINS, 150)
+        IDE.register_bar_category(translations.TR_MENU_EXTENSIONS, 150)
         IDE.register_bar_category(translations.TR_MENU_ABOUT, 160)
         # Register General Menu Items
         ui_tools.install_shortcuts(self, actions.ACTIONS_GENERAL, self)
@@ -185,7 +186,7 @@ class IDE(QMainWindow):
         connections = (
             {'target': 'main_container',
             'signal_name': 'fileSaved(QString)',
-            'slot': self.show_status_message},
+            'slot': self.show_message},
             {'target': 'main_container',
             'signal_name': 'currentEditorChanged(QString)',
             'slot': self.change_window_title},
@@ -375,9 +376,6 @@ class IDE(QMainWindow):
         self.style().unpolish(widget)
         self.style().polish(widget)
 
-    def get_opened_projects(self):
-        return self.__projects
-
     def _close_tray_icon(self):
         """Close the System Tray Icon."""
         self.trayIcon.hide()
@@ -456,21 +454,19 @@ class IDE(QMainWindow):
         pref = preferences.PreferencesWidget(self)
         pref.show()
 
-    def load_session_files_projects(self, filesTab1, filesTab2, projects,
-        current_file, recent_files=None):
+    def load_session_files_projects(self, files, projects,
+            current_file, recent_files=None):
         """Load the files and projects from previous session."""
-        self.__project_to_open = len(projects)
-        explorer = IDE.get_service('explorer_container')
         main_container = IDE.get_service('main_container')
-        if explorer and main_container:
-            self.connect(explorer, SIGNAL("projectOpened(QString)"),
-                self._set_editors_project_data)
-            explorer.open_session_projects(projects, notIDEStart=False)
-            main_container.open_files(filesTab1, notIDEStart=False)
-            main_container.open_files(filesTab2, mainTab=False,
-                notIDEStart=False)
+        projects_explorer = IDE.get_service('projects_explorer')
+        if main_container and files:
+            #self.connect(explorer, SIGNAL("projectOpened(QString)"),
+                #self._set_editors_project_data)
+            main_container.open_files(files)
             if current_file:
-                main_container.open_file(current_file, notStart=False)
+                main_container.open_file(current_file)
+        if projects_explorer and projects:
+            projects_explorer.load_session_projects(projects)
             #if recent_files is not None:
                 #menu_file = IDE.get_service('menu_file')
                 #menu_file.update_recent_files(recent_files)
@@ -529,28 +525,29 @@ class IDE(QMainWindow):
         Info saved: Tabs and projects opened, windows state(size and position).
         """
         qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
-        editor_widget = self.mainContainer.get_current_editor()
+        main_container = self.get_service("main_container")
+        editor_widget = None
+        if main_container:
+            editor_widget = main_container.get_current_editor()
         current_file = ''
         if editor_widget is not None:
-            current_file = editor_widget.ID
+            current_file = editor_widget.file_path
         if qsettings.value('preferences/general/loadFiles', True, type=bool):
-            openedFiles = self.mainContainer.get_opened_documents()
-            projects_obj = self.get_opened_projects()
-            projects = [p.path for p in projects_obj]
+            openedFiles = main_container.get_opened_documents()
+            projects_obj = self.filesystem.get_projects()
+            projects = [projects_obj[proj].path for proj in projects_obj]
             qsettings.setValue('openFiles/projects',
                 projects)
-            if len(openedFiles) > 0:
-                qsettings.setValue('openFiles/mainTab', openedFiles[0])
-            if len(openedFiles) == 2:
-                qsettings.setValue('openFiles/secondaryTab', openedFiles[1])
+            if openedFiles:
+                qsettings.setValue('openFiles/openedFiles', openedFiles)
             qsettings.setValue('openFiles/currentFile', current_file)
             qsettings.setValue('openFiles/recentFiles',
-                self.mainContainer._tabMain.get_recent_files_list())
+                settings.LAST_OPENED_FILES)
         qsettings.setValue('preferences/editor/bookmarks', settings.BOOKMARKS)
         qsettings.setValue('preferences/editor/breakpoints',
             settings.BREAKPOINTS)
-        qsettings.setValue('preferences/general/toolbarArea',
-            self.toolBarArea(self.toolbar))
+        #qsettings.setValue('preferences/general/toolbarArea',
+            #self.toolBarArea(self.toolbar))
         #Save if the windows state is maximixed
         if(self.isMaximized()):
             qsettings.setValue("window/maximized", True)
@@ -560,22 +557,22 @@ class IDE(QMainWindow):
             qsettings.setValue("window/size", self.size())
             qsettings.setValue("window/pos", self.pos())
         #Save the size of de splitters
-        qsettings.setValue("window/central/baseSize",
-            self.central.get_area_sizes())
-        qsettings.setValue("window/central/insideSize",
-            self.central.get_main_sizes())
+        #qsettings.setValue("window/central/baseSize",
+            #self.central.get_area_sizes())
+        #qsettings.setValue("window/central/insideSize",
+            #self.central.get_main_sizes())
         #Save the toolbar visibility
-        if not self.toolbar.isVisible() and self.menuBar().isVisible():
-            qsettings.setValue("window/hide_toolbar", True)
-        else:
-            qsettings.setValue("window/hide_toolbar", False)
+        #if not self.toolbar.isVisible() and self.menuBar().isVisible():
+            #qsettings.setValue("window/hide_toolbar", True)
+        #else:
+            #qsettings.setValue("window/hide_toolbar", False)
         #Save Misc state
-        qsettings.setValue("window/show_region1", self.misc.isVisible())
+        #qsettings.setValue("window/show_region1", self.misc.isVisible())
         #Save Profiles
-        if self.profile is not None:
-            self.actions.save_profile(self.profile)
-        else:
-            qsettings.setValue('ide/profiles', settings.PROFILES)
+        #if self.profile is not None:
+            #self.actions.save_profile(self.profile)
+        #else:
+            #qsettings.setValue('ide/profiles', settings.PROFILES)
 
     def create_profile(self):
         """Create a profile binding files and projects to a key."""
@@ -608,8 +605,8 @@ class IDE(QMainWindow):
 
     def activate_profile(self):
         """Show the Profile Manager dialog."""
-        profilesLoader = ui_tools.ProfilesLoader(self._load_profile_data,
-            self.create_profile, self.save_profile,
+        profilesLoader = session_manager.SessionsManager(
+            self._load_profile_data, self.create_profile, self.save_profile,
             settings.PROFILES, self.ide)
         profilesLoader.show()
 
@@ -641,27 +638,27 @@ class IDE(QMainWindow):
         """Saves some global settings before closing."""
         if self.s_listener:
             self.s_listener.close()
-        #if (settings.CONFIRM_EXIT and
-                #self.mainContainer.check_for_unsaved_tabs()):
-            #unsaved_files = self.mainContainer.get_unsaved_files()
-            #txt = '\n'.join(unsaved_files)
-            #val = QMessageBox.question(self,
-                #self.tr("Some changes were not saved"),
-                #(self.tr("%s\n\nDo you want to save them?") % txt),
-                #QMessageBox.Yes, QMessageBox.No, QMessageBox.Cancel)
-            #if val == QMessageBox.Yes:
-                ##Saves all open files
-                #main_container = IDE.get_service('main_container')
-                #if main_container:
-                    #main_container.save_all()
-            #if val == QMessageBox.Cancel:
-                #event.ignore()
-        #self.emit(SIGNAL("goingDown()"))
-        #self.save_settings()
-        #completion_daemon.shutdown_daemon()
-        ##close python documentation server (if running)
-        #self.mainContainer.close_python_doc()
-        ##Shutdown PluginManager
+        main_container = self.get_service("main_container")
+        if (settings.CONFIRM_EXIT and
+                main_container and main_container.check_for_unsaved_files()):
+            unsaved_files = main_container.get_unsaved_files()
+            txt = '\n'.join(unsaved_files)
+            val = QMessageBox.question(self,
+                self.tr("Some changes were not saved"),
+                (self.tr("%s\n\nDo you want to save them?") % txt),
+                QMessageBox.Yes, QMessageBox.No, QMessageBox.Cancel)
+            if val == QMessageBox.Yes:
+                #Saves all open files
+                main_container = IDE.get_service('main_container')
+                if main_container:
+                    main_container.save_all()
+            if val == QMessageBox.Cancel:
+                event.ignore()
+        self.emit(SIGNAL("goingDown()"))
+        self.save_settings()
+        #close python documentation server (if running)
+        main_container.close_python_doc()
+        #Shutdown PluginManager
         self.plugin_manager.shutdown()
         super(IDE, self).closeEvent(event)
 
@@ -675,7 +672,7 @@ class IDE(QMainWindow):
             #show the dialog
             plugin_error_dialog.exec_()
 
-    def show_status_message(self, message, duration=3000):
+    def show_message(self, message, duration=3000):
         """Show status message."""
         self.notification.set_message(message, duration)
         self.notification.show()

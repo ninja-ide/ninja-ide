@@ -32,15 +32,7 @@ ACTIONS_STATUS = (
                'image': 'find',
                'section': (translations.TR_MENU_EDIT, None),
                'weight': 200},
-    "connect": "show"
-    },
-    {
-    "shortcut": "Find-next",
-    "connect": "find_next_result"
-    },
-    {
-    "shortcut": "Find-previous",
-    "connect": "find_previous_result"
+    "connect": "show_search"
     },
     {
     "shortcut": "Find-replace",
@@ -90,22 +82,34 @@ ACTIONS_STATUS = (
 )
 
 
+ACTIONS_STATUS_SEARCH = (
+    {
+    "shortcut": "Find-next",
+    "connect": "find_next"
+    },
+    {
+    "shortcut": "Find-previous",
+    "connect": "find_previous"
+    },
+)
+
+
 ACTIONS_GENERAL = (
     {
     "action": {'text': translations.TR_MANAGE_PLUGINS,
-               'section': (translations.TR_MENU_ADDINS, None),
+               'section': (translations.TR_MENU_EXTENSIONS, None),
                'weight': 100},
     "connect": "show_manager"
     },
     {
     "action": {'text': translations.TR_EDITOR_SCHEMES,
-               'section': (translations.TR_MENU_ADDINS, None),
+               'section': (translations.TR_MENU_EXTENSIONS, None),
                'weight': 110},
     "connect": "show_themes"
     },
     {
     "action": {'text': translations.TR_LANGUAGE_MANAGER,
-               'section': (translations.TR_MENU_ADDINS, None),
+               'section': (translations.TR_MENU_EXTENSIONS, None),
                'weight': 120},
     "connect": "show_languages"
     },

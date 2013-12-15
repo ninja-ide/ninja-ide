@@ -63,7 +63,7 @@ class ComboEditor(QWidget):
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
 
-        self.bar = ActionBar()
+        self.bar = ActionBar(main_combo=original)
         vbox.addWidget(self.bar)
 
         self.stacked = QStackedLayout()
@@ -72,7 +72,7 @@ class ComboEditor(QWidget):
         self._main_container = IDE.get_service('main_container')
 
         self.connect(self.bar, SIGNAL("changeCurrent(PyQt_PyObject)"),
-            self.set_current)
+            self._set_current)
         self.connect(self.bar, SIGNAL("runFile(QString)"),
             self._run_file)
         self.connect(self.bar, SIGNAL("addToProject(QString)"),
@@ -165,6 +165,10 @@ class ComboEditor(QWidget):
 
     def set_current(self, neditable):
         if neditable:
+            self.bar.set_current_file(neditable)
+
+    def _set_current(self, neditable):
+        if neditable:
             self.stacked.setCurrentWidget(neditable.editor)
             self._update_cursor_position(ignore_sender=True)
             neditable.editor.setFocus()
@@ -247,7 +251,7 @@ class ActionBar(QFrame):
     @recentTabsModified()
     """
 
-    def __init__(self):
+    def __init__(self, main_combo=False):
         super(ActionBar, self).__init__()
         self.setObjectName("actionbar")
         hbox = QHBoxLayout(self)
@@ -292,12 +296,27 @@ class ActionBar(QFrame):
 
         self.btn_close = QPushButton(
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
-        self.btn_close.setObjectName('navigation_button')
-        self.btn_close.setToolTip(translations.TR_CLOSE_SPLIT)
+        if main_combo:
+            self.btn_close.setObjectName('navigation_button')
+            self.btn_close.setToolTip(translations.TR_CLOSE_FILE)
+        else:
+            self.btn_close.setObjectName('close_split')
+            self.btn_close.setToolTip(translations.TR_CLOSE_SPLIT)
         self.btn_close.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.connect(self.btn_close, SIGNAL("clicked()"),
             self.about_to_close_file)
         hbox.addWidget(self.btn_close)
+
+    def resizeEvent(self, event):
+        super(ActionBar, self).resizeEvent(event)
+        if event.size().width() < 350:
+            self.symbols_combo.hide()
+            self.code_navigator.hide()
+            self.lbl_position.hide()
+        else:
+            self.symbols_combo.show()
+            self.code_navigator.show()
+            self.lbl_position.show()
 
     def add_item(self, text, neditable):
         """Add a new item to the combo and add the neditable data."""
@@ -396,6 +415,10 @@ class ActionBar(QFrame):
             self._resyntax = [self.currentIndex(), syntaxAction]
             self.emit(SIGNAL("syntaxChanged(QWidget, QString)"),
                 self.currentWidget(), syntaxAction.text())
+
+    def set_current_file(self, neditable):
+        index = self.combo.findData(neditable)
+        self.combo.setCurrentIndex(index)
 
     def about_to_close_file(self, index=None):
         """Close the NFile object."""

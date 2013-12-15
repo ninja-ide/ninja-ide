@@ -57,7 +57,7 @@ class TestSyntaxLoader(unittest.TestCase):
         extensions = python_syntax['extension']
         for kw in extensions:
             self.assertTrue(kw in settings.EXTENSIONS)
-            self.assertEquals(settings.EXTENSIONS[kw], py_syntax_name)
+            self.assertEqual(settings.EXTENSIONS[kw], py_syntax_name)
 
     def test_load_bad_json_syntax_file(self):
 
