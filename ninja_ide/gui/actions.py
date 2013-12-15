@@ -32,15 +32,7 @@ ACTIONS_STATUS = (
                'image': 'find',
                'section': (translations.TR_MENU_EDIT, None),
                'weight': 200},
-    "connect": "show"
-    },
-    {
-    "shortcut": "Find-next",
-    "connect": "find_next_result"
-    },
-    {
-    "shortcut": "Find-previous",
-    "connect": "find_previous_result"
+    "connect": "show_search"
     },
     {
     "shortcut": "Find-replace",
@@ -86,6 +78,18 @@ ACTIONS_STATUS = (
                'section': (translations.TR_MENU_EDIT, None),
                'weight': 320},
     "connect": "editor_title"
+    },
+)
+
+
+ACTIONS_STATUS_SEARCH = (
+    {
+    "shortcut": "Find-next",
+    "connect": "find_next"
+    },
+    {
+    "shortcut": "Find-previous",
+    "connect": "find_previous"
     },
 )
 

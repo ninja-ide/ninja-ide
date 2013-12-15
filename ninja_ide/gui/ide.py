@@ -50,6 +50,7 @@ from ninja_ide.gui.dialogs import about_ninja
 from ninja_ide.gui.dialogs import plugins_manager
 from ninja_ide.gui.dialogs import themes_manager
 from ninja_ide.gui.dialogs import language_manager
+from ninja_ide.gui.dialogs import session_manager
 from ninja_ide.gui.dialogs import preferences
 from ninja_ide.gui.dialogs import traceback_widget
 from ninja_ide.gui.dialogs import python_detect_dialog
@@ -185,7 +186,7 @@ class IDE(QMainWindow):
         connections = (
             {'target': 'main_container',
             'signal_name': 'fileSaved(QString)',
-            'slot': self.show_status_message},
+            'slot': self.show_message},
             {'target': 'main_container',
             'signal_name': 'currentEditorChanged(QString)',
             'slot': self.change_window_title},
@@ -608,8 +609,8 @@ class IDE(QMainWindow):
 
     def activate_profile(self):
         """Show the Profile Manager dialog."""
-        profilesLoader = ui_tools.ProfilesLoader(self._load_profile_data,
-            self.create_profile, self.save_profile,
+        profilesLoader = session_manager.SessionsManager(
+            self._load_profile_data, self.create_profile, self.save_profile,
             settings.PROFILES, self.ide)
         profilesLoader.show()
 
@@ -675,7 +676,7 @@ class IDE(QMainWindow):
             #show the dialog
             plugin_error_dialog.exec_()
 
-    def show_status_message(self, message, duration=3000):
+    def show_message(self, message, duration=3000):
         """Show status message."""
         self.notification.set_message(message, duration)
         self.notification.show()
