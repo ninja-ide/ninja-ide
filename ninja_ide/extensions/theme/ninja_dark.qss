@@ -384,6 +384,10 @@ QTableView QTableCornerButton::section {
                                       stop: 0.6 #434343, stop:1 #656565);
 }
 
+QTableView::item:alternate {
+    background: #4d4949;
+}
+
 QComboBox {
     border: 1px solid gray;
     padding: 1px 18px 1px 20px;

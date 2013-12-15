@@ -69,7 +69,7 @@ class TestNinjaProject(unittest.TestCase):
         structure = dict(foo='bar')
 
         structure = read_ninja_project(path)
-        self.assertEquals(structure, dict())
+        self.assertEqual(structure, dict())
 
         structure = dict(foo='bar')
         create_ninja_project(path, project, structure)
