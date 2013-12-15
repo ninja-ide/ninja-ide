@@ -17,7 +17,9 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+import os
 import re
+import sqlite3
 try:
     import Queue
 except:
@@ -78,11 +80,19 @@ FILTERS = {
     'lines': ':'}
 
 
-class Locator(QObject):
+_locator_db = None
+
+
+def _initialize_db():
+    db_path = os.path.join(resources.NINJA_KNOWLEDGE_PATH, 'locator.db')
+    connection = sqlite3.connect(db_path)
+
+
+class GoToDefinition(QObject):
     """This class is used Go To Definition feature."""
 
     def __init__(self):
-        QObject.__init__(self)
+        super(GoToDefinition, self).__init__()
         self._thread = LocateThread()
         self.connect(self._thread, SIGNAL("finished()"), self._load_results)
         self.connect(self._thread, SIGNAL("finished()"), self._cleanup)
@@ -110,16 +120,6 @@ class Locator(QObject):
         else:
             tool_dock = IDE.get_service("tools_dock")
             tool_dock.show_results(self._thread.results)
-
-    def get_classes_from_project(self, projectPath):
-        global mapping_locations
-        filesFromProject = [filePath for filePath in
-            mapping_locations if filePath.startswith(projectPath)]
-        classes = [item
-            for key in filesFromProject
-            for item in mapping_locations[key]
-            if item[0] == FILTERS['classes']]
-        return classes
 
 
 class ResultItem(object):
@@ -155,7 +155,7 @@ class ResultItem(object):
 class LocateThread(QThread):
 
     def __init__(self):
-        QThread.__init__(self)
+        super(LocateThread, self).__init__()
         self.results = []
         self._cancel = False
         self.locations = []
@@ -198,7 +198,7 @@ class LocateThread(QThread):
 
     def locate_code(self):
         ide = IDE.get_service('ide')
-        projects = ide.get_opened_projects()
+        projects = ide.filesystem.get_projects()
         if not projects:
             return
         for path in projects:
@@ -412,12 +412,10 @@ class LocateThread(QThread):
 
 class CodeLocatorWidget(QWidget):
 
-    def __init__(self, parent):
+    def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         #Parent is StatusBar
-        self.statusBar = parent
         self._thread = LocateThread()
-        self._thread.execute = self._thread.locate_code
 
         hLocator = QHBoxLayout(self)
         hLocator.setContentsMargins(0, 0, 0, 0)
@@ -425,7 +423,7 @@ class CodeLocatorWidget(QWidget):
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
         self._btnGo = QPushButton(
             self.style().standardIcon(QStyle.SP_ArrowRight), self.tr('Go!'))
-        self._completer = LocateCompleter(self)
+        self._completer = LocatorCompleter(self)
 
         hLocator.addWidget(self._btnClose)
         hLocator.addWidget(self._completer)
@@ -433,6 +431,8 @@ class CodeLocatorWidget(QWidget):
 
         self.connect(self._thread, SIGNAL("finished()"), self._cleanup)
         self.connect(self._thread, SIGNAL("terminated()"), self._cleanup)
+        self.connect(self._completer, SIGNAL("hidden()"),
+            lambda: self.emit(SIGNAL("hidden()")))
 
     def _cleanup(self):
         self._thread.wait()
@@ -444,13 +444,14 @@ class CodeLocatorWidget(QWidget):
         self._thread.find_file_code_location(path)
 
     def show_suggestions(self):
+        self._completer.setFocus()
         self._completer.complete()
 
     def setVisible(self, val):
-        if self._completer.frame:
+        if not val:
             self._completer.frame.setVisible(False)
             self._completer.setText('')
-        QWidget.setVisible(self, val)
+        super(CodeLocatorWidget, self).setVisible(val)
 
 
 class LocateItem(QListWidgetItem):
@@ -464,8 +465,8 @@ class LocateItem(QListWidgetItem):
         FILTERS['attribs']: ":img/attribute"}
 
     def __init__(self, data):
-        QListWidgetItem.__init__(self, QIcon(self.icons[data.type]), "\n")
-        self._data = data
+        super(LocateItem, self).__init__(QIcon(self.icons[data.type]), "\n")
+        self.data = data
 
 
 class LocateWidget(QLabel):
@@ -476,13 +477,7 @@ class LocateWidget(QLabel):
         QLabel.__init__(self)
         self.name = data.name
         self.path = data.path
-        locator_name = resources.CUSTOM_SCHEME.get('locator-name',
-            resources.COLOR_SCHEME['locator-name'])
-        locator_path = resources.CUSTOM_SCHEME.get('locator-path',
-            resources.COLOR_SCHEME['locator-path'])
-        self.setText("<span style='color: {2};'>{0}</span><br>"
-            "<span style='font-size: 12px; color: {3};'>({1})</span>".format(
-                data.name, data.path, locator_name, locator_path))
+        self.set_not_selected()
 
     def set_selected(self):
         locator_name = resources.CUSTOM_SCHEME.get('locator-name-selected',
@@ -503,10 +498,10 @@ class LocateWidget(QLabel):
                 self.name, self.path, locator_name, locator_path))
 
 
-class LocateCompleter(QLineEdit):
+class LocatorCompleter(QLineEdit):
 
     def __init__(self, parent):
-        QLineEdit.__init__(self, parent)
+        super(LocatorCompleter, self).__init__(parent)
         self._parent = parent
         self.__prefix = ''
         self.frame = PopupCompleter()
@@ -634,9 +629,9 @@ class LocateCompleter(QLineEdit):
              FILTERS['classes'], FILTERS['files'], FILTERS['tabs']):
             currentItem = self.frame.listWidget.currentItem()
             if type(currentItem) is LocateItem:
-                if currentItem._data.type in (FILTERS['files'],
+                if currentItem.data.type in (FILTERS['files'],
                    FILTERS['classes']):
-                    self._filterData = currentItem._data
+                    self._filterData = currentItem.data
             if filterOptions[0] == FILTERS['classes']:
                 filterOptions.insert(0, FILTERS['files'])
                 filterOptions.insert(1, self._filterData.path)
@@ -645,8 +640,8 @@ class LocateCompleter(QLineEdit):
         if was_this_file and len(filterOptions) > 4:
             currentItem = self.frame.listWidget.currentItem()
             if type(currentItem) is LocateItem:
-                if currentItem._data.type == FILTERS['classes']:
-                    self._filterData = currentItem._data
+                if currentItem.data.type == FILTERS['classes']:
+                    self._filterData = currentItem.data
         global mapping_locations
         filePath = filterOptions[1]
 
@@ -690,7 +685,7 @@ class LocateCompleter(QLineEdit):
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Space:
             item = self.frame.listWidget.currentItem()
-            self.setText(item._data.comparison)
+            self.setText(item.data.comparison)
             return
 
         QLineEdit.keyPressEvent(self, event)
@@ -718,21 +713,21 @@ class LocateCompleter(QLineEdit):
 
     def _go_to_location(self, item):
         if type(item) is LocateItem:
-            self._open_item(item._data)
-        self.emit(SIGNAL("hidden(PyQt_PyObject)"), self)
+            self._open_item(item.data)
+        self.emit(SIGNAL("hidden()"))
 
     def focusOutEvent(self, event):
         """Hide Popup on focus lost."""
-        self.emit(SIGNAL("hidden(PyQt_PyObject)"), self)
-        QLineEdit.focusOutEvent(self, event)
+        self.emit(SIGNAL("hidden()"))
+        super(LocatorCompleter, self).focusOutEvent(event)
 
     def _open_item(self, data):
         """Open the item received."""
         main_container = IDE.get_service('main_container')
         if not main_container:
             return
-        jump = data.lineno if self._line_jump != -1 else self._line_jump
-        main_container.open_file(data.path, jump, None, True)
+        #jump = data.lineno if self._line_jump != -1 else self._line_jump
+        main_container.open_file(data.path, data.lineno, None, True)
 
 
 class PopupCompleter(QFrame):
@@ -836,3 +831,7 @@ class PopupCompleter(QFrame):
         Item.setForeground(QBrush(Qt.black))
         Item.setFont(font)
         return Item
+
+
+# Initialize Database and open connection
+_initialize_db()
