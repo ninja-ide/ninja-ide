@@ -564,7 +564,7 @@ class ComboBoxButton(object):
 
 
 class LineEditCount(QObject):
-
+    """Update the values displayed in the line edit counter."""
     def __init__(self, lineEdit):
         QObject.__init__(self)
         hbox = QHBoxLayout(lineEdit)
@@ -577,7 +577,8 @@ class LineEditCount(QObject):
         lineEdit.setTextMargins(0, 0, 60, 0)
 
     def update_count(self, index, total, hasSearch=False):
-        message = self.tr("%s of %s") % (index, total)
+        """Update the values displayed in the line edit counter."""
+        message = "%s / %s" % (index, total)
         self.counter.setText(message)
         self.counter.setStyleSheet("background: none;color: gray;")
         if index == 0 and total == 0 and hasSearch:
