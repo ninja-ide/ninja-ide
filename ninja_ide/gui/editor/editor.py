@@ -613,7 +613,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             return
 
         flags = QTextDocument.FindFlags(flags)
-        #self.moveCursor(QTextCursor.Start, QTextCursor.KeepAnchor)
 
         cursor = self.textCursor()
         cursor.beginEditBlock()
