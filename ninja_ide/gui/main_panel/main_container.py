@@ -87,7 +87,7 @@ class _MainContainer(QWidget):
         #documentation browser
         self.docPage = None
         #Code Navigation
-        self._locator = locator.Locator()
+        self._locator = locator.GoToDefinition()
         self.__codeBack = []
         self.__codeForward = []
         self.__bookmarksFile = ''
@@ -677,7 +677,7 @@ class _MainContainer(QWidget):
                 self.tr("The image couldn\'t be open"))
 
     def open_file(self, filename='', cursorPosition=-1,
-                  tabIndex=None, positionIsLineNumber=False, notStart=True):
+                  tabIndex=None, positionIsLineNumber=False):
         logger.debug("will try to open %s" % filename)
         if not filename:
             logger.debug("has nofilename")
@@ -974,7 +974,7 @@ class _MainContainer(QWidget):
             if file_manager.file_exists(fileData[0]):
                 self.open_file(fileData[0], fileData[1])
 
-    def check_for_unsaved_tabs(self):
+    def check_for_unsaved_files(self):
         pass
         #return self.tabs._check_unsaved_tabs()
 

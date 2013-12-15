@@ -63,7 +63,7 @@ class ComboEditor(QWidget):
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
 
-        self.bar = ActionBar()
+        self.bar = ActionBar(main_combo=original)
         vbox.addWidget(self.bar)
 
         self.stacked = QStackedLayout()
@@ -247,7 +247,7 @@ class ActionBar(QFrame):
     @recentTabsModified()
     """
 
-    def __init__(self):
+    def __init__(self, main_combo=False):
         super(ActionBar, self).__init__()
         self.setObjectName("actionbar")
         hbox = QHBoxLayout(self)
@@ -292,8 +292,12 @@ class ActionBar(QFrame):
 
         self.btn_close = QPushButton(
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
-        self.btn_close.setObjectName('navigation_button')
-        self.btn_close.setToolTip(translations.TR_CLOSE_SPLIT)
+        if main_combo:
+            self.btn_close.setObjectName('navigation_button')
+            self.btn_close.setToolTip(translations.TR_CLOSE_FILE)
+        else:
+            self.btn_close.setObjectName('close_split')
+            self.btn_close.setToolTip(translations.TR_CLOSE_SPLIT)
         self.btn_close.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.connect(self.btn_close, SIGNAL("clicked()"),
             self.about_to_close_file)
