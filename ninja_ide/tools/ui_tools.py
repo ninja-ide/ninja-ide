@@ -19,7 +19,10 @@ from __future__ import absolute_import
 import os
 import math
 import collections
-from urlparse import urlparse, urlunparse
+try:
+    from urllib.parse import urlparse, urlunparse  # isort:skip
+except ImportError:
+    from urlparse import urlparse, urlunparse  # lint:ok
 
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QWidget
@@ -29,6 +32,8 @@ from PyQt4.QtGui import QCompleter
 from PyQt4.QtGui import QKeyEvent
 from PyQt4.QtGui import QLineEdit
 from PyQt4.QtGui import QLabel
+from PyQt4.QtGui import QSizePolicy
+from PyQt4.QtGui import QListWidget
 from PyQt4.QtGui import QLinearGradient
 from PyQt4.QtGui import QTableWidgetItem
 from PyQt4.QtGui import QAbstractItemView
@@ -42,7 +47,9 @@ from PyQt4.QtGui import QPixmap
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QPen
 from PyQt4.QtGui import QColor
+from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QTreeWidgetItem
+from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QCheckBox
@@ -56,12 +63,89 @@ from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QThread
 from PyQt4.QtCore import QEvent
 from PyQt4.QtCore import QTimeLine
+from PyQt4.QtCore import QTimer
+from PyQt4.QtCore import pyqtProperty
 
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core.file_handling.file_manager import NinjaIOException
 from ninja_ide.tools import json_manager
+from ninja_ide import translations
+
+
+###############################################################################
+# Custom Label Scroll + Blink
+###############################################################################
+
+class ScrollLabel(QLabel):
+    """Ninja Label, Custom Label Widget, Blinking and Scrolling features"""
+    def __init__(self, parent=None, caption=None):
+        QLabel.__init__(self, parent)
+        if caption:
+            self.setText(caption)
+            self.setTextFormat(Qt.AutoText)
+        if isinstance(parent, str):
+            parent = None
+        self.__separator = '    '
+        # Blinks
+        self.__blink_timer = QTimer(parent)
+        self.__blink_timer.timeout.connect(self.__on_blink_timer)
+        self.__blink_timer_interval = 250
+        # Scrollings
+        self.__scrolling_timer = QTimer(parent)
+        self.__scrolling_timer.timeout.connect(self.__on_scrolling_timer)
+        self.__scroll_time, self.__original_text = 100, ""
+
+    def __on_blink_timer(self):
+        """Switch its Text visibility"""
+        self.setVisible(not (self.isVisible()))
+
+    def setBlinking(self, blink):
+        """Set blinking on the label by blink boolean"""
+        if blink:
+            self.__blink_timer.setInterval(self.__blink_timer_interval)
+            self.__blink_timer.start()
+        else:
+            self.__blink_timer.stop()
+            self.setVisible(True)
+
+    def setBlinkInterval(self, value):
+        """Sets blink interval by value integer on milliseconds"""
+        self.__blink_timer_interval = value
+
+    def getBlinkInterval(self):
+        """Returns the blinking interval"""
+        return self.__blink_timer_interval
+
+    blinkInterval = pyqtProperty("int", getBlinkInterval, setBlinkInterval)
+
+    def __move_text_left(self):
+        """Move the Text to the left by sequence slicing"""
+        if self.__separator not in self.text():
+            self.setText(self.text() + "    " + self.__separator + "    ")
+        self.setText(str(self.text())[1:] + str(self.text())[:1])
+        self.setTextFormat(Qt.AutoText)
+
+    def __on_scrolling_timer(self):
+        """What to do on scrolling timer"""
+        self.__move_text_left()
+
+    def setScrolling(self, scroll):
+        """Set the scrolling on the label by scroll boolean"""
+        self.__scrolling_timer.setInterval(self.__scroll_time)
+        if scroll:
+            self.__original_text = self.text()
+            self.__scrolling_timer.start()
+        else:
+            self.__scrolling_timer.stop()
+            self.setText(self.__original_text)
+            self.setTextFormat(Qt.AutoText)
+
+    def setScrollingTime(self, value):
+        """Set scrolling time by value integer
+        Everytime interval is reached, string is scrolled to left by one char"""
+        self.__scroll_time = value
 
 
 ###############################################################################
@@ -69,21 +153,34 @@ from ninja_ide.tools import json_manager
 ###############################################################################
 
 class CheckableHeaderTable(QTableWidget):
-    """ QTableWidget subclassed with QCheckBox on Header to select all items """
+    """QTableWidget subclassed with QCheckBox on Header to select all items"""
 
     def __init__(self, parent=None, *args):
-        """ init CheckableHeaderTable and add custom widgets and connections """
         super(QTableWidget, self).__init__(parent, *args)
         self.chkbox = QCheckBox(self.horizontalHeader())
         self.connect(self.chkbox, SIGNAL("stateChanged(int)"),
                      self.change_items_selection)
+        self.search = QPushButton(QIcon(":img/find"), '', self)
+        self.search.resize(22, 22)
+        self.connect(self.search, SIGNAL("clicked()"), self.search_popup)
 
     def change_items_selection(self, state):
-        """ de/select all items iterating over all table rows at column 0 """
+        """De/select all items iterating over all table rows at column 0"""
         for i in range(self.rowCount()):
             item = self.item(i, 0)
             if item is not None:
                 item.setCheckState(state)
+
+    def search_popup(self):
+        """Search the table based on user input query string"""
+        query, ok = QInputDialog.getText(self, 'ninja-ide',
+                                         translations.TR_FIND)
+        if ok:
+            for row in range(self.rowCount()):
+                for column in range(self.columnCount()):
+                    item = self.item(row, column)
+                    if query.lower() in item.data(Qt.DisplayRole).lower():
+                        return self.setCurrentItem(item)
 
 
 def load_table(table, headers, data, checkFirstColumn=True):
@@ -339,6 +436,99 @@ class FaderWidget(QWidget):
 
 
 ###############################################################################
+# PROFILE WIDGET
+###############################################################################
+
+class ProfilesLoader(QDialog):
+
+    def __init__(self, load_func, create_func, save_func,
+    profiles, parent=None):
+        QDialog.__init__(self, parent, Qt.Dialog)
+        self.setWindowTitle(self.tr("Profile Manager"))
+        self.setMinimumWidth(400)
+        self._profiles = profiles
+        self.load_function = load_func
+        self.create_function = create_func
+        self.save_function = save_func
+        self.ide = parent
+        vbox = QVBoxLayout(self)
+        vbox.addWidget(QLabel(self.tr("Save your opened files and projects "
+                        "into a profile and change really quick\n"
+                        "between projects and files sessions.\n"
+                        "This allows you to save your working environment, "
+                        "keep working in another\nproject and then go back "
+                        "exactly where you left.")))
+        self.profileList = QListWidget()
+        self.profileList.addItems([key for key in profiles])
+        self.profileList.setCurrentRow(0)
+        self.contentList = QListWidget()
+        self.btnDelete = QPushButton(self.tr("Delete Profile"))
+        self.btnDelete.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.btnUpdate = QPushButton(self.tr("Update Profile"))
+        self.btnUpdate.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.btnCreate = QPushButton(self.tr("Create New Profile"))
+        self.btnCreate.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.btnOpen = QPushButton(self.tr("Open Profile"))
+        self.btnOpen.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.btnOpen.setDefault(True)
+        hbox = QHBoxLayout()
+        hbox.addWidget(self.btnDelete)
+        hbox.addWidget(self.btnUpdate)
+        hbox.addWidget(self.btnCreate)
+        hbox.addWidget(self.btnOpen)
+
+        vbox.addWidget(self.profileList)
+        vbox.addWidget(self.contentList)
+        vbox.addLayout(hbox)
+
+        self.connect(self.profileList, SIGNAL("itemSelectionChanged()"),
+            self.load_profile_content)
+        self.connect(self.btnOpen, SIGNAL("clicked()"), self.open_profile)
+        self.connect(self.btnUpdate, SIGNAL("clicked()"), self.save_profile)
+        self.connect(self.btnCreate, SIGNAL("clicked()"), self.create_profile)
+        self.connect(self.btnDelete, SIGNAL("clicked()"), self.delete_profile)
+
+    def load_profile_content(self):
+        item = self.profileList.currentItem()
+        self.contentList.clear()
+        if item is not None:
+            key = item.text()
+            files = [self.tr('Files:')] + \
+                [file[0] for file in self._profiles[key][0]]
+            projects = [self.tr('Projects:')] + self._profiles[key][1]
+            content = files + projects
+            self.contentList.addItems(content)
+
+    def create_profile(self):
+        profileName = self.create_function()
+        self.ide.Profile = profileName
+        self.close()
+
+    def save_profile(self):
+        if self.profileList.currentItem():
+            profileName = self.profileList.currentItem().text()
+            self.save_function(profileName)
+            smessage = self.ide.get_service("status_bar")
+            smessage.showMessage(self.tr("Profile %s Updated!") %
+                profileName, 2000)
+            self.load_profile_content()
+
+    def open_profile(self):
+        if self.profileList.currentItem():
+            key = self.profileList.currentItem().text()
+            self.load_function(key)
+            self.ide.Profile = key
+            self.close()
+
+    def delete_profile(self):
+        if self.profileList.currentItem():
+            key = self.profileList.currentItem().text()
+            self._profiles.pop(key)
+            self.profileList.takeItem(self.profileList.currentRow())
+            self.contentList.clear()
+
+
+###############################################################################
 # Enhanced UI Widgets
 ###############################################################################
 
@@ -374,9 +564,7 @@ class ComboBoxButton(object):
 
 
 class LineEditCount(QObject):
-
-    """Show summary results inside the line edit, for counting some property."""
-
+    """Update the values displayed in the line edit counter."""
     def __init__(self, lineEdit):
         QObject.__init__(self)
         hbox = QHBoxLayout(lineEdit)
