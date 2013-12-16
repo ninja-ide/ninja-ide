@@ -533,13 +533,18 @@ class IDE(QMainWindow):
         if editor_widget is not None:
             current_file = editor_widget.file_path
         if qsettings.value('preferences/general/loadFiles', True, type=bool):
-            openedFiles = main_container.get_opened_documents()
+            openedFiles = self.filesystem.get_files()
             projects_obj = self.filesystem.get_projects()
             projects = [projects_obj[proj].path for proj in projects_obj]
             qsettings.setValue('openFiles/projects',
                 projects)
             if openedFiles:
-                qsettings.setValue('openFiles/openedFiles', openedFiles)
+                files_info = []
+                for path in openedFiles:
+                    editable = self.__neditables.get(openedFiles[path])
+                    files_info.append([path,
+                        editable.editor.get_cursor_position()])
+                qsettings.setValue('openFiles/openedFiles', files_info)
             qsettings.setValue('openFiles/currentFile', current_file)
             qsettings.setValue('openFiles/recentFiles',
                 settings.LAST_OPENED_FILES)

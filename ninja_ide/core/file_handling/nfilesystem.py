@@ -116,3 +116,6 @@ class NVirtualFileSystem(QObject):
         nfile = self.get_file(filename)
         project = self.__reverse_project_map.get(nfile, None)
         return project
+
+    def get_files(self):
+        return self.__tree
