@@ -488,7 +488,7 @@ def install_shortcuts(obj, actions, ide):
             if short_key and not is_menu:
                 item_ui.setShortcut(short(short_key))
             elif keysequence:
-                item_ui.setShortcut(resources.get_shortcut(keysequence))
+                item_ui.setShortcut(short(keysequence))
             if isinstance(func, collections.Callable) and not is_menu:
                 ide.connect(item_ui, SIGNAL("triggered()"), func)
             if section and weight:
