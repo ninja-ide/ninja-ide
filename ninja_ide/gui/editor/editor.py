@@ -43,6 +43,7 @@ from PyQt4.QtGui import QFont
 from PyQt4.QtGui import QMenu
 from PyQt4.QtGui import QPainter
 from PyQt4.QtGui import QColor
+from PyQt4.QtCore import QRect
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QMimeData
 from PyQt4.QtCore import Qt
@@ -905,10 +906,19 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if settings.SHOW_MARGIN_LINE:
             painter = QPainter()
             painter.begin(self.viewport())
-            painter.setPen(QColor('#FE9E9A'))
+            opacity = resources.CUSTOM_SCHEME.get("margin-opacity",
+                resources.COLOR_SCHEME["margin-opacity"])
+            color_name = resources.CUSTOM_SCHEME.get("margin-line",
+                resources.COLOR_SCHEME["margin-line"])
+            painter.setPen(QColor(color_name))
             offset = self.contentOffset()
-            painter.drawLine(self.pos_margin + offset.x(), 0,
-                self.pos_margin + offset.x(), self.viewport().height())
+            width = self.viewport().width() - (self.pos_margin + offset.x())
+            rect = QRect(self.pos_margin + offset.x(), 0,
+                width, self.viewport().height())
+            background = QColor(color_name)
+            background.setAlpha(opacity)
+            painter.fillRect(rect, background)
+            painter.drawRect(rect)
             painter.end()
 
     def wheelEvent(self, event, forward=True):

@@ -37,7 +37,7 @@ ACTIONS = (
     "action": {'text': translations.TR_DUPLICATE,
                'image': None,
                'section': (translations.TR_MENU_SOURCE, None),
-               'weight:': 470},
+               'weight': 470},
     "connect": "editor_duplicate"
     },
     {

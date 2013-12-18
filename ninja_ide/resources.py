@@ -144,6 +144,8 @@ COLOR_SCHEME = {
     "migration-underline": "blue",
     "current-line-opacity": 20,
     "checker-background-opacity": 60,
+    "margin-line": '#7c7c7c',
+    "margin-opacity": 20,
 }
 
 CUSTOM_SCHEME = {}
