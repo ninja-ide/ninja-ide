@@ -126,6 +126,11 @@ class NFile(QObject):
         self.emit(SIGNAL("gotAPath(PyQt_PyObject)"), self)
         return self._file_path
 
+    def create(self):
+        if self.__created:
+            self.save("")
+        self.__created = False
+
     def save(self, content, path=None):
         """
         Write a temprorary file with .tnj extension and copy it over the
@@ -223,7 +228,24 @@ class NFile(QObject):
         """
         Copy the file to a new path
         """
-        raise NotImplementedError("Have not yet found use for this")
+        if self._exists():
+            signal_handler = SignalFlowControl()
+            #SIGNALL: WILL COPY TO, to warn folder to exist
+            self.emit(SIGNAL("willCopyTo(Qt_PyQtObject, QString, QString)"),
+                                                            signal_handler,
+                                                            self._file_path,
+                                                            new_path)
+            if signal_handler.stopped():
+                return
+            if os.path.exists(new_path):
+                signal_handler = SignalFlowControl()
+                self.emit(
+                    SIGNAL("willOverWrite(PyQt_PyObject, QString, QString)"),
+                                    signal_handler, self._file_path, new_path)
+                if signal_handler.stopped():
+                    return
+
+            shutil.copy(self._file_path, new_path)
 
     def delete(self, force=False):
         """

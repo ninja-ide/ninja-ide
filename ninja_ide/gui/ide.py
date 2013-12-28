@@ -330,6 +330,10 @@ class IDE(QMainWindow):
         if action:
             action.setShortcut(short(shortcut_name))
 
+    def get_or_create_nfile(self, filename):
+        """For convenience access to files from ide"""
+        return self.filesystem.get_file(nfile_path=filename)
+
     def get_or_create_editable(self, filename):
         nfile = self.filesystem.get_file(nfile_path=filename)
         editable = self.__neditables.get(nfile)
