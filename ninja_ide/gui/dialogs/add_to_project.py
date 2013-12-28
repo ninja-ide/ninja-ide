@@ -65,17 +65,28 @@ class AddToProject(QDialog):
 
         self.connect(btnCancel, SIGNAL("clicked()"), self.close)
         self.connect(btnAdd, SIGNAL("clicked()"), self._select_path)
+        self.connect(self._list,
+             SIGNAL("currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)"),
+             self._project_changed)
+
+    def _project_changed(self, item, previous):
+        #FIXME, this is not being called, at least in osx
+        for each_project in self._projects:
+            if each_project.name == item.text():
+                self.load_tree(each_project)
 
     def load_tree(self, project):
         """Load the tree view on the right based on the project selected."""
         qfsm = QFileSystemModel()
-        #FIXME it's not loading the proper folder, just the root /
         qfsm.setRootPath(project.path)
+        load_index = qfsm.index(qfsm.rootPath())
         qfsm.setFilter(QDir.AllDirs | QDir.NoDotAndDotDot)
         qfsm.setNameFilterDisables(False)
         pext = ["*{0}".format(x) for x in project.extensions]
         qfsm.setNameFilters(pext)
+
         self._tree.setModel(qfsm)
+        self._tree.setRootIndex(load_index)
 
         t_header = self._tree.header()
         t_header.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
@@ -86,6 +97,9 @@ class AddToProject(QDialog):
         self._tree.hideColumn(1)  # Size
         self._tree.hideColumn(2)  # Type
         self._tree.hideColumn(3)  # Modification date
+
+        #FIXME: Changing the name column's title requires some magic
+        #Please look at the project tree
 
     def _select_path(self):
         """Set pathSelected to the folder selected in the tree."""
