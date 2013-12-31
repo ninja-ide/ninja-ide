@@ -17,6 +17,7 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+import os
 import collections
 
 from PyQt4.QtGui import QApplication
@@ -37,6 +38,7 @@ from PyQt4.QtNetwork import QLocalServer
 from ninja_ide import resources
 from ninja_ide import translations
 from ninja_ide.core import plugin_manager
+from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core.file_handling import nfilesystem
 #from ninja_ide.core import plugin_services
 from ninja_ide.core import settings
@@ -466,7 +468,12 @@ class IDE(QMainWindow):
         if main_container and files:
             #self.connect(explorer, SIGNAL("projectOpened(QString)"),
                 #self._set_editors_project_data)
-            main_container.open_files(files)
+            for fileData in files:
+                if file_manager.file_exists(fileData[0]):
+                    mtime = os.stat(fileData[0]).st_mtime
+                    ignore_checkers = (mtime == fileData[2])
+                    main_container.open_file(fileData[0], fileData[1],
+                        ignore_checkers=ignore_checkers)
             if current_file:
                 main_container.open_file(current_file)
         if projects_explorer and projects:
@@ -540,17 +547,22 @@ class IDE(QMainWindow):
             openedFiles = self.filesystem.get_files()
             projects_obj = self.filesystem.get_projects()
             projects = [projects_obj[proj].path for proj in projects_obj]
-            qsettings.setValue('openFiles/projects',
+            qsettings.setValue('lastSession/projects',
                 projects)
             if openedFiles:
                 files_info = []
                 for path in openedFiles:
                     editable = self.__neditables.get(openedFiles[path])
+                    if editable.is_dirty:
+                        stat_value = 0
+                    else:
+                        stat_value = os.stat(path).st_mtime
                     files_info.append([path,
-                        editable.editor.get_cursor_position()])
-                qsettings.setValue('openFiles/openedFiles', files_info)
-            qsettings.setValue('openFiles/currentFile', current_file)
-            qsettings.setValue('openFiles/recentFiles',
+                        editable.editor.get_cursor_position(),
+                        stat_value])
+                qsettings.setValue('lastSession/openedFiles', files_info)
+            qsettings.setValue('lastSession/currentFile', current_file)
+            qsettings.setValue('lastSession/recentFiles',
                 settings.LAST_OPENED_FILES)
         qsettings.setValue('preferences/editor/bookmarks', settings.BOOKMARKS)
         qsettings.setValue('preferences/editor/breakpoints',
@@ -629,8 +641,9 @@ class IDE(QMainWindow):
         main_container = IDE.get_service('main_container')
         if explorer and main_container:
             explorer.close_opened_projects()
-            main_container.open_files(settings.PROFILES[key][0])
-            explorer.open_session_projects(settings.PROFILES[key][1])
+            #TODO
+            #main_container.open_files(settings.PROFILES[key][0])
+            #explorer.open_session_projects(settings.PROFILES[key][1])
 
     def load_window_geometry(self):
         """Load from QSettings the window size of de Ninja IDE"""

@@ -29,6 +29,10 @@ ACTIONS = (
     "connect": "expand_file_combo"
     },
     {
+    "shortcut": "expand-symbol-combo",
+    "connect": "expand_symbol_combo"
+    },
+    {
     "shortcut": "Change-Tab-Reverse",
     "connect": "change_tab_reverse"
     },
