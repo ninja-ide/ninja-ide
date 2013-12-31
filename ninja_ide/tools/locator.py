@@ -20,6 +20,7 @@ from __future__ import unicode_literals
 import os
 import re
 import sqlite3
+import pickle
 try:
     import Queue
 except:
@@ -49,6 +50,7 @@ from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
 from ninja_ide import translations
+from ninja_ide.extensions import handlers
 from ninja_ide.gui.ide import IDE
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core import settings
@@ -58,7 +60,7 @@ from ninja_ide.tools.logger import NinjaLogger
 
 logger = NinjaLogger('ninja_ide.tools.locator')
 
-mapping_locations = {}
+mapping_symbols = {}
 
 
 #@ FILES
@@ -80,12 +82,23 @@ FILTERS = {
     'lines': ':'}
 
 
-_locator_db = None
+db_path = os.path.join(resources.NINJA_KNOWLEDGE_PATH, 'locator.db')
 
 
 def _initialize_db():
-    db_path = os.path.join(resources.NINJA_KNOWLEDGE_PATH, 'locator.db')
-    connection = sqlite3.connect(db_path)
+    locator_db = sqlite3.connect(db_path)
+    cur = locator_db.cursor()
+    cur.execute("create table if not exists "
+        "locator(path text, stat integer, data blob)")
+    locator_db.commit()
+    locator_db.close()
+
+
+# Initialize Database and open connection
+_initialize_db()
+
+
+#TODO: Clean non existent paths from the DB
 
 
 class GoToDefinition(QObject):
@@ -93,7 +106,7 @@ class GoToDefinition(QObject):
 
     def __init__(self):
         super(GoToDefinition, self).__init__()
-        self._thread = LocateThread()
+        self._thread = LocateSymbolsThread()
         self.connect(self._thread, SIGNAL("finished()"), self._load_results)
         self.connect(self._thread, SIGNAL("finished()"), self._cleanup)
         self.connect(self._thread, SIGNAL("terminated()"), self._cleanup)
@@ -114,9 +127,10 @@ class GoToDefinition(QObject):
                 cursorPosition=self._thread.results[0][2],
                 positionIsLineNumber=True)
         elif len(self._thread.results) == 0:
+            #TODO: Check imports
             QMessageBox.information(main_container,
-                self.tr("Definition Not Found"),
-                self.tr("This Definition does not belong to this Project."))
+                translations.TR_DEFINITION_NOT_FOUND,
+                translations.TR_DEFINITION_NOT_FOUND_BODY)
         else:
             tool_dock = IDE.get_service("tools_dock")
             tool_dock.show_results(self._thread.results)
@@ -152,17 +166,20 @@ class ResultItem(object):
         return self.name[index]
 
 
-class LocateThread(QThread):
+class LocateSymbolsThread(QThread):
 
     def __init__(self):
-        super(LocateThread, self).__init__()
+        super(LocateSymbolsThread, self).__init__()
         self.results = []
         self._cancel = False
         self.locations = []
-        self.execute = self.go_to_definition
+        self.execute = None
         self.dirty = False
         self._search = None
         self._isVariable = None
+
+        # Locator Knowledge
+        self._locator_db = None
 
     def find(self, search, filePath, isVariable):
         self.cancel()
@@ -177,8 +194,8 @@ class LocateThread(QThread):
         self.cancel()
         self._cancel = False
         if not self.isRunning():
-            global mapping_locations
-            mapping_locations = {}
+            global mapping_symbols
+            mapping_symbols = {}
             self.execute = self.locate_code
             self.start()
 
@@ -191,12 +208,37 @@ class LocateThread(QThread):
             self.start()
 
     def run(self):
+        self.results = []
+        self.locations = []
         self.execute()
+        if self._cancel:
+            self.results = []
+            self.locations = []
         self._cancel = False
         self._search = None
         self._isVariable = None
+        if self._locator_db is not None:
+            self._locator_db.commit()
+            self._locator_db.close()
+            self._locator_db = None
+
+    def _save_file_symbols(self, path, stat, data):
+        if self._locator_db is not None:
+            pdata = pickle.dumps(data, pickle.HIGHEST_PROTOCOL)
+            cur = self._locator_db.cursor()
+            cur.execute("INSERT INTO locator values (?, ?, ?)",
+                (path, stat, sqlite3.Binary(pdata)))
+            self._locator_db.commit()
+
+    def _get_file_symbols(self, path):
+        if self._locator_db is not None:
+            cur = self._locator_db.cursor()
+            cur.execute("SELECT * FROM locator WHERE path=:path",
+                {'path': path})
+            return cur.fetchone()
 
     def locate_code(self):
+        self._locator_db = sqlite3.connect(db_path)
         ide = IDE.get_service('ide')
         projects = ide.filesystem.get_projects()
         if not projects:
@@ -236,7 +278,7 @@ class LocateThread(QThread):
             #process all files in current dir!
             for one_file in current_files:
                 try:
-                    self._grep_file_locate(one_file.absoluteFilePath(),
+                    self._grep_file_symbols(one_file.absoluteFilePath(),
                         one_file.fileName())
                 except Exception as reason:
                     logger.error(
@@ -246,11 +288,11 @@ class LocateThread(QThread):
                         one_file.absoluteFilePath())
 
     def locate_file_code(self):
+        self._locator_db = sqlite3.connect(db_path)
         file_name = file_manager.get_basename(self._file_path)
         try:
-            self._grep_file_locate(self._file_path, file_name)
+            self._grep_file_symbols(self._file_path, file_name)
             self.dirty = True
-            self.execute = self.locate_code
         except Exception as reason:
             logger.error('locate_file_code, error: %r' % reason)
 
@@ -286,8 +328,6 @@ class LocateThread(QThread):
                 #take the next line!
                 line = stream.readLine()
                 line_index += 1
-        self._search = None
-        self._isVariable = None
 
     def get_locations(self):
         if self.dirty:
@@ -295,42 +335,46 @@ class LocateThread(QThread):
             self.dirty = False
         return self.locations
 
-    def get_this_file_locations(self, path):
-        global mapping_locations
-        thisFileLocations = mapping_locations.get(path, ())
+    def get_this_file_symbols(self, path):
+        global mapping_symbols
+        symbols = mapping_symbols.get(path, ())
         try:
-            if not thisFileLocations:
+            if not symbols:
                 file_name = file_manager.get_basename(path)
-                self._grep_file_locate(path, file_name)
-                thisFileLocations = mapping_locations.get(path, ())
-            thisFileLocations = sorted(thisFileLocations[1:],
-                key=lambda item: item.name)
+                self._grep_file_symbols(path, file_name)
+                symbols = mapping_symbols.get(path, ())
+            symbols = sorted(symbols[1:], key=lambda item: item.name)
         except Exception as reason:
-            logger.error('get_this_file_locations, error: %r' % reason)
-        return thisFileLocations
+            logger.error('get_this_file_symbols, error: %r' % reason)
+        return symbols
 
     def convert_map_to_array(self):
-        global mapping_locations
-        self.locations = [x for location in mapping_locations
-            for x in mapping_locations[location]]
+        global mapping_symbols
+        self.locations = [x for location in mapping_symbols
+            for x in mapping_symbols[location]]
         self.locations = sorted(self.locations, key=lambda item: item.name)
 
-    def _grep_file_locate(self, file_path, file_name):
+    def _grep_file_symbols(self, file_path, file_name):
         #type - file_name - file_path
-        global mapping_locations
-        #TODO: Check if the last know state of the file is valid and load that
+        global mapping_symbols
         exts = settings.SYNTAX.get('python')['extension']
         file_ext = file_manager.get_file_extension(file_path)
         if file_ext not in exts:
-            mapping_locations[file_path] = [
+            mapping_symbols[file_path] = [
                 ResultItem(type=FILTERS['non-python'], name=file_name,
-                    path=file_path, lineno=0)]
+                    path=file_path, lineno=-1)]
         else:
-            mapping_locations[file_path] = [
+            mapping_symbols[file_path] = [
                 ResultItem(type=FILTERS['files'], name=file_name,
-                        path=file_path, lineno=0)]
+                        path=file_path, lineno=-1)]
+        data = self._get_file_symbols(file_path)
+        mtime = int(os.stat(file_path).st_mtime)
+        if data is not None and (mtime == int(data[1])):
+            results = pickle.loads(str(data[2]))
+            mapping_symbols[file_path] += results
+            return
         #obtain a symbols handler for this file extension
-        symbols_handler = settings.get_symbols_handler(file_ext)
+        symbols_handler = handlers.get_symbols_handler(file_ext)
         if symbols_handler is None:
             return
         results = []
@@ -341,7 +385,8 @@ class LocateThread(QThread):
             self.__parse_symbols(symbols, results, file_path)
 
         if results:
-            mapping_locations[file_path] += results
+            self._save_file_symbols(file_path, mtime, results)
+            mapping_symbols[file_path] += results
 
     def __parse_symbols(self, symbols, results, file_path):
         if "classes" in symbols:
@@ -352,9 +397,10 @@ class LocateThread(QThread):
             self.__parse_functions(symbols, results, file_path)
 
     def __parse_class(self, symbols, results, file_path):
-        for claz in symbols['classes']:
-            line_number = symbols['classes'][claz]['lineno'] - 1
-            members = symbols['classes'][claz]['members']
+        clazzes = symbols['classes']
+        for claz in clazzes:
+            line_number = clazzes[claz]['lineno'] - 1
+            members = clazzes[claz]['members']
             results.append(ResultItem(type=FILTERS['classes'],
                 name=claz, path=file_path,
                 lineno=line_number))
@@ -377,19 +423,21 @@ class LocateThread(QThread):
                 self.__parse_class(members, results, file_path)
 
     def __parse_attributes(self, symbols, results, file_path):
-        for attr in symbols['attributes']:
-            line_number = symbols['attributes'][attr] - 1
+        attributes = symbols['attributes']
+        for attr in attributes:
+            line_number = attributes[attr] - 1
             results.append(ResultItem(type=FILTERS['attribs'],
                 name=attr, path=file_path,
                 lineno=line_number))
 
     def __parse_functions(self, symbols, results, file_path):
-        for func in symbols['functions']:
-            line_number = symbols['functions'][func]['lineno'] - 1
+        functions = symbols['functions']
+        for func in functions:
+            line_number = functions[func]['lineno'] - 1
             results.append(ResultItem(
                 type=FILTERS['functions'], name=func,
                 path=file_path, lineno=line_number))
-            self.__parse_symbols(symbols['functions'][func]['functions'],
+            self.__parse_symbols(functions[func]['functions'],
                     results, file_path)
 
     def get_symbols_for_class(self, file_path, clazzName):
@@ -398,7 +446,7 @@ class LocateThread(QThread):
             content = f.read()
             ext = file_manager.get_file_extension(file_path)
             #obtain a symbols handler for this file extension
-            symbols_handler = settings.get_symbols_handler(ext)
+            symbols_handler = handlers.get_symbols_handler(ext)
             symbols = symbols_handler.obtain_symbols(content,
                 filename=file_path)
             self.__parse_symbols(symbols, results, file_path)
@@ -406,42 +454,38 @@ class LocateThread(QThread):
 
     def cancel(self):
         self._cancel = True
-        self.results = []
-        self.locations = []
 
 
 class CodeLocatorWidget(QWidget):
 
     def __init__(self, parent=None):
-        QWidget.__init__(self, parent)
+        super(CodeLocatorWidget, self).__init__(parent)
         #Parent is StatusBar
-        self._thread = LocateThread()
+        self.locate_symbols = LocateSymbolsThread()
 
         hLocator = QHBoxLayout(self)
         hLocator.setContentsMargins(0, 0, 0, 0)
         self._btnClose = QPushButton(
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
-        self._btnGo = QPushButton(
-            self.style().standardIcon(QStyle.SP_ArrowRight), self.tr('Go!'))
         self._completer = LocatorCompleter(self)
 
         hLocator.addWidget(self._btnClose)
         hLocator.addWidget(self._completer)
-        hLocator.addWidget(self._btnGo)
 
-        self.connect(self._thread, SIGNAL("finished()"), self._cleanup)
-        self.connect(self._thread, SIGNAL("terminated()"), self._cleanup)
+        self.connect(self.locate_symbols, SIGNAL("finished()"), self._cleanup)
+        self.connect(self.locate_symbols, SIGNAL("terminated()"),
+            self._cleanup)
         self.connect(self._completer, SIGNAL("hidden()"),
             lambda: self.emit(SIGNAL("hidden()")))
 
     def _cleanup(self):
-        self._thread.wait()
+        self.locate_symbols.wait()
 
     def explore_code(self):
-        self._thread.find_code_location()
+        self.locate_symbols.find_code_location()
 
     def explore_file_code(self, path):
-        self._thread.find_file_code_location(path)
+        self.locate_symbols.find_file_code_location(path)
 
     def show_suggestions(self):
         self._completer.setFocus()
@@ -449,7 +493,7 @@ class CodeLocatorWidget(QWidget):
 
     def setVisible(self, val):
         if not val:
-            self._completer.frame.setVisible(False)
+            self._completer.popup.setVisible(False)
             self._completer.setText('')
         super(CodeLocatorWidget, self).setVisible(val)
 
@@ -474,7 +518,7 @@ class LocateWidget(QLabel):
     """Create a styled QLabel that will show the info."""
 
     def __init__(self, data):
-        QLabel.__init__(self)
+        super(LocateWidget, self).__init__()
         self.name = data.name
         self.path = data.path
         self.set_not_selected()
@@ -504,20 +548,29 @@ class LocatorCompleter(QLineEdit):
         super(LocatorCompleter, self).__init__(parent)
         self._parent = parent
         self.__prefix = ''
-        self.frame = PopupCompleter()
-        self.filterPrefix = re.compile(r'^(@|<|>|-|!|\.|/|:)(\s)*')
-        self.advancePrefix = re.compile(r'(@|<|>|-|!|/|:)')
+        self.popup = PopupCompleter()
+        self.filterPrefix = re.compile(r'(@|<|>|-|!|\.|/|:)')
         self.tempLocations = []
         self.setMinimumWidth(700)
         self.items_in_page = 0
         self.page_items_step = 10
-        self._filterData = [None, None, None, None]
         self._line_jump = -1
+
+        self._filter_actions = {
+            '@': self._filter_generic,
+            '<': self._filter_generic,
+            '>': self._filter_generic,
+            '-': self._filter_generic,
+            '!': self._filter_generic,
+            '.': self._filter_this_file,
+            '/': self._filter_tabs,
+            ':': self._filter_lines
+        }
 
         self.connect(self, SIGNAL("textChanged(QString)"),
             self.set_prefix)
 
-        self.connect(self.frame.listWidget,
+        self.connect(self.popup.listWidget,
             SIGNAL("itemPressed(QListWidgetItem*)"), self._go_to_location)
 
     def set_prefix(self, prefix):
@@ -526,11 +579,11 @@ class LocatorCompleter(QLineEdit):
         self._refresh_filter()
 
     def complete(self):
-        self.frame.reload(self.filter())
-        self.frame.setFixedWidth(self.width())
+        self.popup.reload(self.filter())
+        self.popup.setFixedWidth(self.width())
         point = self._parent.mapToGlobal(self.pos())
-        self.frame.show()
-        self.frame.move(point.x(), point.y() - self.frame.height())
+        self.popup.show()
+        self.popup.move(point.x(), point.y() - self.popup.height())
 
     def _create_list_widget_items(self, locations):
         """Create a list of items (using pages for results to speed up)."""
@@ -546,169 +599,142 @@ class LocatorCompleter(QLineEdit):
     def filter(self):
         self._line_jump = -1
         self.items_in_page = 0
-        #Clean the objects from the listWidget
-        inCurrentFile = False
-        filterOptions = self.advancePrefix.split(self.__prefix.lstrip())
+
+        filterOptions = self.filterPrefix.split(self.__prefix.lstrip())
         if filterOptions[0] == '':
             del filterOptions[0]
 
-        if len(filterOptions) > 2:
-            if FILTERS['files'] in (filterOptions[1], filterOptions[2]):
-                self._advanced_filter_by_file(filterOptions)
-            else:
-                self._advanced_filter(filterOptions)
-            return self._create_list_widget_items(self.tempLocations)
-        # Clear frame after advance filter because advance filter
-        # ask for the first element in the popup
-        self.tempLocations = []
-        self.frame.clear()
-
-        #if the user type any of the prefix
-        if self.filterPrefix.match(self.__prefix):
-            filterOption = self.__prefix[:1]
-            main_container = IDE.get_service('main_container')
-            #if the prefix is "." it means only the metadata of current file
-            if main_container and filterOption == FILTERS['this-file']:
-                inCurrentFile = True
-                editorWidget = main_container.get_current_editor()
-                if editorWidget:
-                    self.tempLocations = \
-                        self._parent._thread.get_this_file_locations(
-                            editorWidget.ID)
-                    self.__prefix = self.__prefix[1:].lstrip()
-                    self.tempLocations = [x for x in self.tempLocations
-                        if x.comparison.lower().find(self.__prefix) > -1]
-            elif filterOption == FILTERS['tabs']:
-                tab1, tab2 = main_container.get_opened_documents()
-                opened = tab1 + tab2
-                self.tempLocations = [ResultItem(FILTERS['files'],
-                    file_manager.get_basename(f[0]), f[0])
-                    for f in opened]
-                self.__prefix = self.__prefix[1:].lstrip()
-            elif main_container and filterOption == FILTERS['lines']:
-                editorWidget = main_container.get_current_editor()
-                self.tempLocations = [
-                    x for x in self._parent._thread.get_locations()
-                        if x.type == FILTERS['files'] and
-                        x.path == editorWidget.ID]
-                inCurrentFile = True
-                if filterOptions[1].isdigit():
-                    self._line_jump = int(filterOptions[1]) - 1
-            else:
-                #Is not "." filter by the other options
-                self.tempLocations = [
-                    x for x in self._parent._thread.get_locations()
-                    if x.type == filterOption]
-                #Obtain the user input without the filter prefix
-                self.__prefix = self.__prefix[1:].lstrip()
-        else:
-            self.tempLocations = self._parent._thread.get_locations()
-
-        if self.__prefix and not inCurrentFile:
-            #if prefix (user search now) is not empty, filter words that1
-            #contain the user input
-            self.tempLocations = [x for x in self.tempLocations
-                if x.comparison.lower().find(self.__prefix) > -1]
-
+        index = 0
+        while index < len(filterOptions):
+            filter_action = self._filter_actions.get(filterOptions[index])
+            if filter_action is None:
+                break
+            index = filter_action(filterOptions, index)
+        if len(filterOptions) == 0:
+            self.tempLocations = self._parent.locate_symbols.get_locations()
         return self._create_list_widget_items(self.tempLocations)
 
-    def _advanced_filter(self, filterOptions):
-        was_this_file = filterOptions[0] == FILTERS['this-file']
-        if was_this_file:
-            previous_filter = filterOptions[0]
-            filterOptions[0] = FILTERS['files']
+    def _filter_generic(self, filterOptions, index):
+        at_start = (index == 0)
+        if at_start:
+            self.tempLocations = [
+                x for x in self._parent.locate_symbols.get_locations()
+                    if x.type == filterOptions[0] and
+                    x.comparison.lower().find(filterOptions[1]) > -1]
+        else:
+            currentItem = self.popup.listWidget.currentItem()
+            filter_data = None
+            if type(currentItem) is LocateItem:
+                filter_data = currentItem.data
+            if filterOptions[index - 2] == FILTERS['classes'] and filter_data:
+                symbols = self._parent.locate_symbols.get_symbols_for_class(
+                    filter_data.path, filter_data.name)
+                self.tempLocations = symbols
+            elif filter_data:
+                global mapping_symbols
+                self.tempLocations = mapping_symbols.get(filter_data.path, [])
+            self.tempLocations = [x for x in self.tempLocations
+                    if x.type == filterOptions[index] and
+                    x.comparison.lower().find(filterOptions[index + 1]) > -1]
+        return index + 2
+
+    def _filter_this_file(self, filterOptions, index):
+        at_start = (index == 0)
+        if at_start:
             main_container = IDE.get_service('main_container')
             editorWidget = None
             if main_container:
                 editorWidget = main_container.get_current_editor()
+            index += 2
             if editorWidget:
-                filterOptions.insert(1, editorWidget.ID)
-            if previous_filter == FILTERS['lines']:
-                filterOptions.insert(2, ':')
-        elif filterOptions[0] in (
-             FILTERS['classes'], FILTERS['files'], FILTERS['tabs']):
-            currentItem = self.frame.listWidget.currentItem()
-            if type(currentItem) is LocateItem:
-                if currentItem.data.type in (FILTERS['files'],
-                   FILTERS['classes']):
-                    self._filterData = currentItem.data
-            if filterOptions[0] == FILTERS['classes']:
-                filterOptions.insert(0, FILTERS['files'])
-                filterOptions.insert(1, self._filterData.path)
-            else:
-                filterOptions[1] = self._filterData.path
-        if was_this_file and len(filterOptions) > 4:
-            currentItem = self.frame.listWidget.currentItem()
-            if type(currentItem) is LocateItem:
-                if currentItem.data.type == FILTERS['classes']:
-                    self._filterData = currentItem.data
-        global mapping_locations
-        filePath = filterOptions[1]
-
-        moveIndex = 0
-        if len(filterOptions) > 4 and filterOptions[2] == FILTERS['classes']:
-            moveIndex = 2
-            if self._filterData.type == FILTERS['classes']:
-                self._classFilter = self._filterData.name
-            symbols = self._parent._thread.get_symbols_for_class(filePath,
-                self._classFilter)
-            self.tempLocations = [x for x in symbols
-                if x.type == filterOptions[4]]
-        elif len(filterOptions) == 4 and filterOptions[2] == FILTERS['lines']:
-            self.tempLocations = [
-                x for x in self.tempLocations if x.path == filePath]
-            if filterOptions[3].isdigit():
-                self._line_jump = int(filterOptions[3]) - 1
-                return
+                exts = settings.SYNTAX.get('python')['extension']
+                file_ext = file_manager.get_file_extension(
+                    editorWidget.file_path)
+                if file_ext in exts:
+                    filterOptions.insert(0, FILTERS['files'])
+                else:
+                    filterOptions.insert(0, FILTERS['non-python'])
+                filterOptions.insert(1, editorWidget.file_path)
+                self.tempLocations = \
+                    self._parent.locate_symbols.get_this_file_symbols(
+                        editorWidget.file_path)
+                search = filterOptions[index + 1].lstrip()
+                self.tempLocations = [x for x in self.tempLocations
+                    if x.comparison.lower().find(search) > -1]
         else:
-            self.tempLocations = [
-                x for x in mapping_locations.get(filePath, [])
-                if x.type == filterOptions[2]]
-        moveIndex += 3
-        if len(filterOptions) > moveIndex and filterOptions[moveIndex]:
-            self.tempLocations = [x for x in self.tempLocations
-              if x.comparison.lower().find(filterOptions[moveIndex]) > -1]
+            del filterOptions[index + 1]
+            del filterOptions[index]
+        return index
 
-    def _advanced_filter_by_file(self, filterOptions):
-        if filterOptions[1] == FILTERS['files']:
+    def _filter_tabs(self, filterOptions, index):
+        at_start = (index == 0)
+        if at_start:
+            ninjaide = IDE.get_service('ide')
+            opened = ninjaide.filesystem.get_files()
+            self.tempLocations = [ResultItem(FILTERS['files'],
+                opened[f].file_name, opened[f].file_path) for f in opened]
+            index += 2
+        else:
+            del filterOptions[index + 1]
+            del filterOptions[index]
+        return index
+
+    def _filter_lines(self, filterOptions, index):
+        at_start = (index == 0)
+        if at_start:
+            main_container = IDE.get_service('main_container')
+            editorWidget = None
+            if main_container:
+                editorWidget = main_container.get_current_editor()
             index = 2
-        else:
-            index = 3
-        self.tempLocations = [x for x in self.tempLocations
-            if file_manager.get_basename(x.path).lower().find(
-                filterOptions[index]) > -1]
+            if editorWidget:
+                exts = settings.SYNTAX.get('python')['extension']
+                file_ext = file_manager.get_file_extension(
+                    editorWidget.file_path)
+                if file_ext in exts:
+                    filterOptions.insert(0, FILTERS['files'])
+                else:
+                    filterOptions.insert(0, FILTERS['non-python'])
+                filterOptions.insert(1, editorWidget.file_path)
+            self.tempLocations = [
+                x for x in self._parent.locate_symbols.get_locations()
+                    if x.type == filterOptions[0] and
+                    x.path == filterOptions[1]]
+        if filterOptions[index + 1].isdigit():
+            self._line_jump = int(filterOptions[index + 1]) - 1
+        return index + 2
 
     def _refresh_filter(self):
         has_text = len(self.text()) != 0
-        self.frame.refresh(self.filter(), has_text)
+        self.popup.refresh(self.filter(), has_text)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Space:
-            item = self.frame.listWidget.currentItem()
+            item = self.popup.listWidget.currentItem()
             self.setText(item.data.comparison)
             return
 
-        QLineEdit.keyPressEvent(self, event)
-        currentRow = self.frame.listWidget.currentRow()
+        super(LocatorCompleter, self).keyPressEvent(event)
+        currentRow = self.popup.listWidget.currentRow()
         if event.key() == Qt.Key_Down:
-            count = self.frame.listWidget.count()
+            count = self.popup.listWidget.count()
             #If the current position is greater than the amount of items in
             #the list - 6, then try to fetch more items in the list.
             if currentRow >= (count - 6):
                 locations = self._create_list_widget_items(self.tempLocations)
-                self.frame.fetch_more(locations)
+                self.popup.fetch_more(locations)
             #While the current position is lower that the list size go to next
             if currentRow != count - 1:
-                self.frame.listWidget.setCurrentRow(
-                    self.frame.listWidget.currentRow() + 1)
+                self.popup.listWidget.setCurrentRow(
+                    self.popup.listWidget.currentRow() + 1)
         elif event.key() == Qt.Key_Up:
             #while the current position is greater than 0, go to previous
             if currentRow > 0:
-                self.frame.listWidget.setCurrentRow(
-                    self.frame.listWidget.currentRow() - 1)
+                self.popup.listWidget.setCurrentRow(
+                    self.popup.listWidget.currentRow() - 1)
         elif event.key() in (Qt.Key_Return, Qt.Key_Enter):
             #If the user press enter, go to the item selected
-            item = self.frame.listWidget.currentItem()
+            item = self.popup.listWidget.currentItem()
             self._go_to_location(item)
 
     def _go_to_location(self, item):
@@ -726,14 +752,15 @@ class LocatorCompleter(QLineEdit):
         main_container = IDE.get_service('main_container')
         if not main_container:
             return
-        #jump = data.lineno if self._line_jump != -1 else self._line_jump
-        main_container.open_file(data.path, data.lineno, None, True)
+        jump = data.lineno if self._line_jump == -1 else self._line_jump
+        main_container.open_file(data.path, jump, None, True)
 
 
 class PopupCompleter(QFrame):
 
     def __init__(self):
-        QFrame.__init__(self, None, Qt.FramelessWindowHint | Qt.ToolTip)
+        super(PopupCompleter, self).__init__(
+            None, Qt.FramelessWindowHint | Qt.ToolTip)
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
@@ -831,7 +858,3 @@ class PopupCompleter(QFrame):
         Item.setForeground(QBrush(Qt.black))
         Item.setFont(font)
         return Item
-
-
-# Initialize Database and open connection
-_initialize_db()

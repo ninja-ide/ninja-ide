@@ -46,7 +46,7 @@ class ErrorsWidget(QWidget):
 ###############################################################################
 
     def __init__(self):
-        QWidget.__init__(self)
+        super(ErrorsWidget, self).__init__()
         self.pep8 = None
         self._outRefresh = True
 

@@ -226,11 +226,8 @@ LANGS = []
 SHOW_PROJECT_EXPLORER = True
 SHOW_SYMBOLS_LIST = True
 SHOW_WEB_INSPECTOR = False
-SHOW_ERRORS_LIST = False
+SHOW_ERRORS_LIST = True
 SHOW_MIGRATION_LIST = True
-
-#Symbols handler per language (file extension)
-SYMBOLS_HANDLER = {}
 
 #Backward compatibility with older Qt versions
 WEBINSPECTOR_SUPPORTED = True
@@ -270,22 +267,6 @@ def get_all_project_types():
     """
     global PROJECT_TYPES
     return list(PROJECT_TYPES.keys())
-
-
-def set_symbols_handler(file_extension, symbols_handler):
-    """
-    Set a symbol handler for the given file_extension
-    """
-    global SYMBOLS_HANDLER
-    SYMBOLS_HANDLER[file_extension] = symbols_handler
-
-
-def get_symbols_handler(file_extension):
-    """
-    Returns the symbol handler for the given file_extension
-    """
-    global SYMBOLS_HANDLER
-    return SYMBOLS_HANDLER.get(file_extension, None)
 
 
 def add_toolbar_item_for_plugins(toolbar_action):
@@ -551,8 +532,5 @@ def load_settings():
     # Checkers
     CHECK_FOR_DOCSTRINGS = qsettings.value(
         'preferences/editor/checkForDocstrings', False, type=bool)
-    # Import introspection here, it not needed in the namespace of
-    # the rest of the file.
-    from ninja_ide.tools import introspection
-    #Set Default Symbol Handler
-    set_symbols_handler('py', introspection)
+    from ninja_ide.extensions import handlers
+    handlers.init_basic_handlers()
