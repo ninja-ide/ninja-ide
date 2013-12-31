@@ -167,23 +167,22 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     #First check if we need to load last session files
     if qsettings.value('preferences/general/loadFiles', True, type=bool):
         #Files in Main Tab
-        files = qsettings.value('openFiles/openedFiles', [])
+        files = qsettings.value('lastSession/openedFiles', [])
         tempFiles = []
         if files:
             for file_ in files:
-                fileData = list(file_)
+                fileData = tuple(file_)
                 if fileData:
-                    lineno = fileData[1]
-                    tempFiles.append((fileData[0], lineno))
+                    tempFiles.append(fileData)
         files = tempFiles
 
         # Recent Files
-        recent_files = qsettings.value('openFiles/recentFiles', [])
+        recent_files = qsettings.value('lastSession/recentFiles', [])
         #Current File
         current_file = qsettings.value(
-                        'openFiles/currentFile', '', type='QString')
+                        'lastSession/currentFile', '', type='QString')
         #Projects
-        projects = qsettings.value('openFiles/projects', [])
+        projects = qsettings.value('lastSession/projects', [])
     else:
         files = []
         recent_files = []

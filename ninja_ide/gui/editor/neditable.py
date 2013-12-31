@@ -17,13 +17,14 @@ class NEditable(QObject):
     @fileSaved(PyQt_PyObject)
     """
 
-    def __init__(self, nfile):
+    def __init__(self, nfile=None):
         super(NEditable, self).__init__()
         self.__editor = None
         #Create NFile
         self._nfile = nfile
         self.text_modified = False
         self._has_checkers = False
+        self.ignore_checkers = False
 
         #Checkers:
         self.registered_checkers = []
@@ -57,7 +58,10 @@ class NEditable(QObject):
             self.__editor.setPlainText(content)
             encoding = file_manager.get_file_encoding(content)
             self.__editor.encoding = encoding
-            self.run_checkers(content)
+            if not self.ignore_checkers:
+                self.run_checkers(content)
+            else:
+                self.ignore_checkers = False
 
         #New file then try to add a coding line
         if not content:
@@ -99,11 +103,24 @@ class NEditable(QObject):
         return sorted(self.registered_checkers,
                       key=lambda x: x[2], reverse=True)
 
+    @property
+    def is_dirty(self):
+        dirty = False
+        for items in self.registered_checkers:
+            checker, _, _ = items
+            if checker.dirty:
+                dirty = True
+                break
+        return dirty
+
     def save_content(self, path=None):
         """Save the content of the UI to a file."""
         content = self.__editor.get_text()
         self._nfile.save(content, path)
-        self.run_checkers(content)
+        if not self.ignore_checkers:
+            self.run_checkers(content)
+        else:
+            self.ignore_checkers = False
         self.emit(SIGNAL("fileSaved(PyQt_PyObject)"), self)
 
     def include_checkers(self, lang='python'):

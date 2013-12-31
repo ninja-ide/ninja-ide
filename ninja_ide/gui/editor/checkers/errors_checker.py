@@ -55,6 +55,10 @@ class ErrorsChecker(QThread):
 
         self.checker_icon = ":img/bug"
 
+    @property
+    def dirty(self):
+        return self.checks != {}
+
     def run_checks(self):
         if not self.isRunning():
             self._path = self._editor.file_path

@@ -126,6 +126,9 @@ class ComboEditor(QWidget):
     def show_combo_file(self):
         self.bar.combo.showPopup()
 
+    def show_combo_symbol(self):
+        self.bar.symbols_combo.showPopup()
+
     def close_current_file(self):
         self.bar.about_to_close_file()
 

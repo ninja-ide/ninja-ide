@@ -144,6 +144,10 @@ class _MainContainer(QWidget):
         else:
             self.show()
 
+    def expand_symbol_combo(self):
+        #FIXME
+        self.current_widget.show_combo_symbol()
+
     def expand_file_combo(self):
         self.current_widget.show_combo_file()
 
@@ -533,12 +537,14 @@ class _MainContainer(QWidget):
         #TODO
         pass
 
-    def add_editor(self, fileName=None, tabIndex=None):
+    def add_editor(self, fileName=None, tabIndex=None, ignore_checkers=False):
         ninjaide = IDE.get_service('ide')
         editable = ninjaide.get_or_create_editable(fileName)
         if editable.editor:
             self.combo_area.set_current(editable)
             return editable.editor
+        else:
+            editable.ignore_checkers = ignore_checkers
         editorWidget = editor.create_editor(editable)
 
         #add the tab
@@ -680,7 +686,8 @@ class _MainContainer(QWidget):
                 self.tr("The image couldn\'t be open"))
 
     def open_file(self, filename='', cursorPosition=-1,
-                  tabIndex=None, positionIsLineNumber=False):
+                  tabIndex=None, positionIsLineNumber=False,
+                  ignore_checkers=False):
         logger.debug("will try to open %s" % filename)
         if not filename:
             logger.debug("has nofilename")
@@ -718,12 +725,14 @@ class _MainContainer(QWidget):
             else:
                 logger.debug("will try to open")
                 self.__open_file(filename, cursorPosition,
-                    tabIndex, positionIsLineNumber)
+                    tabIndex, positionIsLineNumber, ignore_checkers)
 
     def __open_file(self, fileName='', cursorPosition=-1,
-                    tabIndex=None, positionIsLineNumber=False):
+                    tabIndex=None, positionIsLineNumber=False,
+                    ignore_checkers=False):
         try:
-            editorWidget = self.add_editor(fileName, tabIndex=tabIndex)
+            editorWidget = self.add_editor(fileName, tabIndex=tabIndex,
+                ignore_checkers=ignore_checkers)
             if cursorPosition != -1:
                 if positionIsLineNumber:
                     editorWidget.go_to_line(cursorPosition)
@@ -961,11 +970,6 @@ class _MainContainer(QWidget):
     def get_opened_documents(self):
         #return self.tabs.get_documents_data()
         return []
-
-    def open_files(self, files):
-        for fileData in files:
-            if file_manager.file_exists(fileData[0]):
-                self.open_file(fileData[0], fileData[1])
 
     def check_for_unsaved_files(self):
         pass

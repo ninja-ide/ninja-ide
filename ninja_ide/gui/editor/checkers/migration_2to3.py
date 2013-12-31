@@ -39,6 +39,7 @@ class MigrationTo3(QThread):
         QThread.__init__(self)
         self._editor = editor
         self._path = ''
+        self.dirty = False
         self.checks = {}
         if settings.IS_WINDOWS and settings.PYTHON_PATH_CONFIGURED_BY_USER:
             tool_path = os.path.join(os.path.dirname(settings.PYTHON_PATH),
