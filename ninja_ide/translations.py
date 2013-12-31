@@ -176,6 +176,9 @@ TR_ONLY_CURRENT_EDITORS = tr("NINJA-IDE",
 TR_GO_TO_LINE = tr("NINJA-IDE", ":\t(Go to Line)")
 TR_ONLY_NON_PYTHON = tr("NINJA-IDE", "!\t(Filter only by Non Python Files)")
 TR_NO_RESULTS = tr("NINJA-IDE", "No results were found!")
+TR_DEFINITION_NOT_FOUND = tr("NINJA-IDE", "Definition Not Found")
+TR_DEFINITION_NOT_FOUND_BODY = tr("NINJA-IDE",
+    "This Definition does not belong to this Project.")
 
 # Status Bar
 TR_SEARCH_CASE_SENSITIVE = tr("NINJA-IDE", "Respect Case Sensitive")

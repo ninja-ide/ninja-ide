@@ -41,6 +41,7 @@ from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 
 from ninja_ide import translations
+from ninja_ide.extensions import handlers
 from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
 
@@ -214,7 +215,7 @@ class ComboEditor(QWidget):
             self._load_symbols(neditable)
 
     def _load_symbols(self, neditable):
-        symbols_handler = settings.get_symbols_handler('py')
+        symbols_handler = handlers.get_symbols_handler('py')
         source = neditable.editor.toPlainText()
         source = source.encode(neditable.editor.encoding)
         symbols, symbols_simplified = symbols_handler.obtain_symbols(

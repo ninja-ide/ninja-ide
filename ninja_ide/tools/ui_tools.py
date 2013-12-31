@@ -48,6 +48,7 @@ from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QCheckBox
 from PyQt4.QtGui import QTableWidget
 from PyQt4.QtGui import QInputDialog
+from PyQt4.QtGui import QKeySequence
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QDir
 from PyQt4.QtCore import QUrl
@@ -463,7 +464,10 @@ def install_shortcuts(obj, actions, ide):
             func = getattr(obj, connect, None)
 
         if short_key and not action_data:
-            shortcut = QShortcut(short(short_key), ide)
+            if isinstance(short_key, QKeySequence):
+                shortcut = QShortcut(short_key, ide)
+            else:
+                shortcut = QShortcut(short(short_key), ide)
             if isinstance(func, collections.Callable):
                 ide.connect(shortcut, SIGNAL("activated()"), func)
         if action_data:
