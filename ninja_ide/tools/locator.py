@@ -557,11 +557,6 @@ class LocatorCompleter(QLineEdit):
         self._line_jump = -1
 
         self._filter_actions = {
-            '@': self._filter_generic,
-            '<': self._filter_generic,
-            '>': self._filter_generic,
-            '-': self._filter_generic,
-            '!': self._filter_generic,
             '.': self._filter_this_file,
             '/': self._filter_tabs,
             ':': self._filter_lines
@@ -606,7 +601,8 @@ class LocatorCompleter(QLineEdit):
 
         index = 0
         while index < len(filterOptions):
-            filter_action = self._filter_actions.get(filterOptions[index])
+            filter_action = self._filter_actions.get(
+                filterOptions[index], self._filter_generic)
             if filter_action is None:
                 break
             index = filter_action(filterOptions, index)
