@@ -561,7 +561,8 @@ class IDE(QMainWindow):
                         editable.editor.get_cursor_position(),
                         stat_value])
                 qsettings.setValue('lastSession/openedFiles', files_info)
-            qsettings.setValue('lastSession/currentFile', current_file)
+            if current_file is not None:
+                qsettings.setValue('lastSession/currentFile', current_file)
             qsettings.setValue('lastSession/recentFiles',
                 settings.LAST_OPENED_FILES)
         qsettings.setValue('preferences/editor/bookmarks', settings.BOOKMARKS)
