@@ -658,6 +658,7 @@ class IDE(QMainWindow):
                 QPointF(100, 100).toPoint(), type='QPoint'))
 
     def _get_unsaved_files(self):
+        """Return an array with the path of the unsaved files."""
         unsaved = []
         files = self.filesystem.get_files()
         for f in files:
@@ -668,6 +669,7 @@ class IDE(QMainWindow):
         return unsaved
 
     def _save_unsaved_files(self, files):
+        """Save the files from the paths in the array."""
         for f in files:
             editable = self.get_or_create_editable(f)
             editable.ignore_checkers = True

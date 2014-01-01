@@ -30,6 +30,8 @@ from ninja_ide.gui.ide import IDE
 
 class Results(QWidget):
 
+    """Show results of occurrences in files inside the tools dock."""
+
     def __init__(self, parent):
         super(Results, self).__init__(parent)
         self._parent = parent
@@ -55,6 +57,7 @@ class Results(QWidget):
             self._open_result)
 
     def _open_result(self, item, col):
+        """Get the data of the selected item and open the file."""
         filename = item.toolTip(1)
         line = int(item.text(2)) - 1
         main_container = IDE.get_service('main_container')
@@ -66,6 +69,7 @@ class Results(QWidget):
         self._parent.hide()
 
     def update_result(self, items):
+        """Update the result tree with the new items."""
         self._tree.clear()
         for i in items:
             item = QTreeWidgetItem(self._tree, (i[3], i[0], str(i[2] + 1)))

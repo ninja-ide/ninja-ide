@@ -62,6 +62,7 @@ class _ToolsDock(QWidget):
         IDE.register_service("tools_dock", self)
 
     def setup_ui(self):
+        """Load all the components of the ui during the install process."""
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
@@ -128,12 +129,14 @@ class _ToolsDock(QWidget):
         self.connect(btn_close, SIGNAL('clicked()'), self.hide)
 
     def install(self):
+        """Install triggered by the ide."""
         self.setup_ui()
         ide = IDE.get_service('ide')
         ide.place_me_on("tools_dock", self, "central")
         ui_tools.install_shortcuts(self, actions.ACTIONS, ide)
 
     def change_visibility(self):
+        """Change tools dock visibility."""
         if self.isVisible():
             self.hide()
         else:
@@ -147,27 +150,23 @@ class _ToolsDock(QWidget):
         """Remove the namespace of the project received from the console."""
         self._console.unload_project_from_console(projectFolder)
 
-    def gain_focus(self):
-        self._console.setFocus()
-
     def _item_changed(self, val):
+        """Change the current item."""
         if not self.isVisible():
             self.show()
         self.stack.show_display(val)
 
     def show_find_in_files_widget(self):
+        """Show the Find In Files widget."""
         index_of = self.stack.indexOf(self._findInFilesWidget)
         self._item_changed(index_of)
         self._findInFilesWidget.open()
 
     def show_find_occurrences(self, word):
+        """Show Find In Files widget in find occurrences mode."""
         index_of = self.stack.indexOf(self._findInFilesWidget)
         self._item_changed(index_of)
         self._findInFilesWidget.find_occurrences(word)
-
-    def load_toolbar(self, toolbar):
-        toolbar.addWidget(self._combo)
-        toolbar.addSeparator()
 
     def execute_file(self):
         """Execute the current file."""
@@ -205,21 +204,23 @@ class _ToolsDock(QWidget):
                 main_file = file_manager.create_path(nproject.path,
                     nproject.main_file)
                 self._run_application(main_file,
-                    pythonPath=nproject.python_exec_command,
+                    pythonExec=nproject.python_exec_command,
                     PYTHONPATH=nproject.python_path,
                     programParams=nproject.program_params,
                     preExec=nproject.pre_exec_script,
                     postExec=nproject.post_exec_script)
 
-    def _run_application(self, fileName, pythonPath=False, PYTHONPATH=None,
+    def _run_application(self, fileName, pythonExec=False, PYTHONPATH=None,
             programParams='', preExec='', postExec=''):
+        """Execute the process to run the application."""
         self._item_changed(1)
         self.show()
-        self._runWidget.start_process(fileName, pythonPath, PYTHONPATH,
+        self._runWidget.start_process(fileName, pythonExec, PYTHONPATH,
             programParams, preExec, postExec)
         self._runWidget.input.setFocus()
 
     def show_results(self, items):
+        """Show Results of Navigate to for several occurrences."""
         index_of = self.stack.indexOf(self._results)
         self._item_changed(index_of)
         self.show()
@@ -227,9 +228,11 @@ class _ToolsDock(QWidget):
         self._results._tree.setFocus()
 
     def kill_application(self):
+        """Kill the process of the application being executed."""
         self._runWidget.kill_process()
 
     def render_web_page(self, url):
+        """Render a webpage from the url path."""
         index_of = self.stack.indexOf(self._web)
         self._item_changed(index_of)
         self.show()
@@ -260,12 +263,16 @@ class _ToolsDock(QWidget):
 
 class StackedWidget(QStackedWidget):
 
+    """Handle the different widgets in the stack of tools dock."""
+
     def setCurrentIndex(self, index):
+        """Change the current widget being displayed with an animation."""
         self.fader_widget = ui_tools.FaderWidget(self.currentWidget(),
             self.widget(index))
         QStackedWidget.setCurrentIndex(self, index)
 
     def show_display(self, index):
+        """Change the current widget and trigger the animation."""
         self.setCurrentIndex(index)
 
 
