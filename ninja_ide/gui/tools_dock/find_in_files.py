@@ -65,6 +65,7 @@ class FindInFilesThread(QThread):
     '''
 
     def find_in_files(self, dir_name, filters, reg_exp, recursive, by_phrase):
+        """Trigger the find in files thread and return the lines found."""
         self._cancel = False
         self.recursive = recursive
         self.search_pattern = reg_exp
@@ -77,6 +78,7 @@ class FindInFilesThread(QThread):
         self.start()
 
     def run(self):
+        """Start the thread."""
         file_filter = QDir.Files | QDir.NoDotAndDotDot | QDir.Readable
         dir_filter = QDir.Dirs | QDir.NoDotAndDotDot | QDir.Readable
         while not self._cancel and not self.queue.empty():
@@ -100,6 +102,7 @@ class FindInFilesThread(QThread):
                     one_file.fileName())
 
     def _grep_file(self, file_path, file_name):
+        """Search for each line inside the file."""
         if not self.by_phrase:
             with open(file_path, 'r') as f:
                 content = f.read()
@@ -133,13 +136,16 @@ class FindInFilesThread(QThread):
             (relative_file_name, lines))
 
     def cancel(self):
+        """Cancel the thread execution."""
         self._cancel = True
 
 
 class FindInFilesResult(QTreeWidget):
 
+    """Display the results."""
+
     def __init__(self):
-        QTreeWidget.__init__(self)
+        super(FindInFilesResult, self).__init__()
         self.setHeaderLabels((self.tr('File'), self.tr('Line')))
         self.header().setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.header().setResizeMode(0, QHeaderView.ResizeToContents)
@@ -148,6 +154,7 @@ class FindInFilesResult(QTreeWidget):
         self.sortByColumn(0, Qt.AscendingOrder)
 
     def update_result(self, dir_name_root, file_name, items):
+        """Update the results in the tree."""
         if items:
             root_item = FindInFilesRootItem(self, (file_name, ''),
                 dir_name_root)
@@ -158,15 +165,19 @@ class FindInFilesResult(QTreeWidget):
 
 class FindInFilesRootItem(QTreeWidgetItem):
 
+    """Each Tree item with the proper metadata."""
+
     def __init__(self, parent, names, dir_name_root):
-        QTreeWidgetItem.__init__(self, parent, names)
+        super(FindInFilesRootItem, self).__init__(parent, names)
         self.dir_name_root = dir_name_root
 
 
 class FindInFilesDialog(QDialog):
 
+    """Dialog to configure and trigger the search in the files."""
+
     def __init__(self, result_widget, parent):
-        QDialog.__init__(self, parent)
+        super(FindInFilesDialog, self).__init__(parent)
         self._find_thread = FindInFilesThread()
         self.setWindowTitle("Find in files")
         self.resize(400, 300)
@@ -260,20 +271,24 @@ class FindInFilesDialog(QDialog):
             self._words_radio_pressed)
 
     def _replace_activated(self):
+        """If replace is activated, display the replace widgets."""
         self.replace_line.setEnabled(self.check_replace.isChecked())
         self.phrase_radio.setChecked(True)
 
     def _words_radio_pressed(self, value):
+        """If search by independent words is activated, replace is not."""
         self.replace_line.setEnabled(not value)
         self.check_replace.setChecked(not value)
         self.words_radio.setChecked(True)
 
     def _change_radio_enabled(self, val):
+        """Control the state of the radio buttons."""
         enabled = not self.type_checkbox.isChecked()
         self.phrase_radio.setEnabled(enabled)
         self.words_radio.setEnabled(enabled)
 
     def show(self, actual_project=None, actual=None):
+        """Display the dialog and load the projects."""
         self.dir_combo.clear()
         self.dir_name_root = actual_project if \
             actual_project else [self.user_home]
@@ -285,16 +300,20 @@ class FindInFilesDialog(QDialog):
         self.pattern_line_edit.setFocus()
 
     def reject(self):
+        """Close the dialog and hide the tools dock."""
         self._kill_thread()
-        # Crazy hack to avoid circular imports
-        self.result_widget.parent().parent().parent().hide()
+        tools_dock = IDE.get_service('tools_dock')
+        if tools_dock:
+            tools_dock.hide()
         super(FindInFilesDialog, self).reject()
 
     def _find_thread_finished(self):
+        """Wait on thread finished."""
         self.emit(SIGNAL("finished()"))
         self._find_thread.wait()
 
     def _select_dir(self):
+        """When a new folder is selected, add to the combo if needed."""
         dir_name = QFileDialog.getExistingDirectory(self,
             self.tr("Open Directory"),
             self.dir_combo.currentText(),
@@ -307,17 +326,20 @@ class FindInFilesDialog(QDialog):
             self.dir_combo.setCurrentIndex(0)
 
     def _found_match(self, result):
+        """Update the tree for each match found."""
         file_name = result[0]
         items = result[1]
         self.result_widget.update_result(
             self.dir_combo.currentText(), file_name, items)
 
     def _kill_thread(self):
+        """Kill the thread."""
         if self._find_thread.isRunning():
             self._find_thread.cancel()
         self.accept()
 
     def _find_in_files(self):
+        """Trigger the search on the files."""
         self.emit(SIGNAL("findStarted()"))
         self._kill_thread()
         self.result_widget.clear()
@@ -325,10 +347,6 @@ class FindInFilesDialog(QDialog):
         dir_name = self.dir_combo.currentText()
 
         filters = re.split("[,;]", self.filters_line_edit.text())
-
-        # Version of PyQt API 1
-        # filters = self.filters_line_edit.text().split(QRegExp("[,;]"),
-        #     QString.SkipEmptyParts)
 
         #remove the spaces in the words Ex. (" *.foo"--> "*.foo")
         filters = [f.strip() for f in filters]
@@ -353,8 +371,10 @@ class FindInFilesDialog(QDialog):
 
 class FindInFilesWidget(QWidget):
 
+    """Find In Files central widget in tools dock."""
+
     def __init__(self, parent):
-        QWidget.__init__(self, parent)
+        super(FindInFilesWidget, self).__init__(parent)
         self._main_container = IDE.get_service('main_container')
         self._explorer_container = IDE.get_service('explorer')
         self._result_widget = FindInFilesResult()
@@ -413,6 +433,7 @@ class FindInFilesWidget(QWidget):
             self._replace_results)
 
     def _find_finished(self):
+        """Search has finished."""
         self._stop_button.setEnabled(False)
         self._open_find_button.setEnabled(True)
         self._error_label.setVisible(False)
@@ -428,16 +449,20 @@ class FindInFilesWidget(QWidget):
         self._result_widget.setFocus()
 
     def _find_stop(self):
+        """Stop search."""
         self._find_widget._kill_thread()
 
     def _find_started(self):
+        """Search has started."""
         self._open_find_button.setEnabled(False)
         self._stop_button.setEnabled(True)
 
     def _clear_results(self):
+        """Clear the results displayed."""
         self._result_widget.clear()
 
     def _go_to(self, item, val):
+        """Open the proper file in the proper line from the results."""
         if item.text(1):
             parent = item.parent()
             file_name = parent.text(0)
@@ -445,23 +470,28 @@ class FindInFilesWidget(QWidget):
             root_dir_name = parent.dir_name_root
             file_path = file_manager.create_path(root_dir_name, file_name)
             #open the file and jump_to_line
-            self._main_container.open_file(file_path)
-            self._main_container.editor_jump_to_line(lineno=int(lineno) - 1)
+            self._main_container.open_file(file_path,
+                cursorPosition=int(lineno) - 1,
+                positionIsLineNumber=True)
 
     def open(self):
+        """Open the selected file in the proper line."""
         if not self._find_widget.isVisible():
-            ide = IDE.get_service('ide')
-            actual_projects_obj = ide.get_opened_projects()
-            actual_projects = [p.path for p in actual_projects_obj]
-            actual = ide.get_current_project()
+            ninjaide = IDE.get_service('ide')
+            actual_projects_obj = ninjaide.filesystem.get_projects()
+            actual_projects = [path for path in actual_projects_obj]
+            actual = ninjaide.get_current_project()
+            actual_path = None
+            if actual:
+                actual_path = actual.path
             self._find_widget.show(actual_project=actual_projects,
-                actual=actual.path)
+                actual=actual_path)
 
     def find_occurrences(self, word):
+        """Trigger the find occurrences mode with pre-search data."""
         self._find_widget.pattern_line_edit.setText(word)
         ninjaide = IDE.get_service('ide')
-        main_container = IDE.get_service('main_container')
-        editorWidget = main_container.get_current_editor()
+        editorWidget = self._main_container.get_current_editor()
         nproject = ninjaide.get_project_for_file(editorWidget.file_path)
         if nproject is None:
             nproject = ninjaide.get_current_project()
@@ -471,6 +501,7 @@ class FindInFilesWidget(QWidget):
         self._find_widget._find_in_files()
 
     def _replace_results(self):
+        """Replace the search with the proper text in all the files."""
         result = QMessageBox.question(self, self.tr("Replace Files Contents"),
             self.tr("Are you sure you want to replace the content in "
                     "this files?\n(The change is not reversible)"),
