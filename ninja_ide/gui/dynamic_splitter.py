@@ -25,7 +25,6 @@ class DynamicSplitter(QSplitter):
         super(DynamicSplitter, self).__init__(orientation)
 
     def add_widget(self, widget, top=False):
-        #self.splitter.setSizes([1, 1])
         if top:
             self.insertWidget(0, widget)
         else:

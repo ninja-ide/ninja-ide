@@ -552,3 +552,28 @@ class ConsoleWidget(QPlainTextEdit):
         self._console.push("import sys; "
             "sys.path = [path for path in sys.path "
             "if path != '%s']" % projectFolder)
+
+    def zoom_in(self):
+        font = self.document().defaultFont()
+        size = font.pointSize()
+        if size < settings.FONT_MAX_SIZE:
+            size += 2
+            font.setPointSize(size)
+        self.setFont(font)
+
+    def zoom_out(self):
+        font = self.document().defaultFont()
+        size = font.pointSize()
+        if size > settings.FONT_MIN_SIZE:
+            size -= 2
+            font.setPointSize(size)
+        self.setFont(font)
+
+    def wheelEvent(self, event):
+        if event.modifiers() == Qt.ControlModifier:
+            if event.delta() == 120:
+                self.zoom_in()
+            elif event.delta() == -120:
+                self.zoom_out()
+            event.ignore()
+        super(ConsoleWidget, self).wheelEvent(event)

@@ -288,10 +288,11 @@ class ProjectTreeColumn(QWidget):
 
     def save_project(self):
         """Save all the opened files that belongs to the actual project."""
-        path = self._active_project.project.path
-        main_container = IDE.get_service('main_container')
-        if path and main_container:
-            main_container.save_project(path)
+        if self._active_project:
+            path = self._active_project.project.path
+            main_container = IDE.get_service('main_container')
+            if path and main_container:
+                main_container.save_project(path)
 
     def create_new_project(self):
         if not self.tree_projects:
@@ -300,6 +301,15 @@ class ProjectTreeColumn(QWidget):
             return
         wizard = wizard_new_project.WizardNewProject(self)
         wizard.show()
+
+    @property
+    def current_project(self):
+        if self._active_project:
+            return self._active_project.project
+
+    @property
+    def current_tree(self):
+        return self._active_project
 
     #TODO: Save recently open projects into project data when it exists
 

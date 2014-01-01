@@ -98,25 +98,23 @@ class CentralWidget(QWidget):
 
     def hide_all(self):
         """Hide/Show all the containers except the editor."""
-        menu_bar = IDE.get_service('menu_bar')
+        ninjaide = IDE.get_service('ide')
         tools_dock = IDE.get_service('tools_dock')
         toolbar = IDE.get_service('toolbar')
-        if menu_bar and menu_bar.isVisible():
+        if ninjaide and ninjaide.menuBar().isVisible():
             if self.lateralPanel:
                 self.lateralPanel.hide()
             if tools_dock:
                 tools_dock.hide()
             if toolbar:
                 toolbar.hide()
-            if menu_bar:
-                menu_bar.hide()
+            ninjaide.menuBar().hide()
         else:
             if self.lateralPanel:
                 self.lateralPanel.show()
             if toolbar:
                 toolbar.show()
-            if menu_bar:
-                menu_bar.show()
+            ninjaide.menuBar().show()
 
     def showEvent(self, event):
         #Show Event

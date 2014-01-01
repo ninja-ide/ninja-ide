@@ -106,13 +106,17 @@ PROFILES = {}
 
 TOOLBAR_ITEMS = [
     "_MainContainer.add_editor",
-    "_ExplorerContainer.create_new_project",
+    "ProjectTreeColumn.create_new_project",
     "_MainContainer.open_file",
     "ProjectTreeColumn.open_project_folder",
     "_MainContainer.save_file",
+    #TODO: splitter, sessions
     "_MainContainer.editor_cut",
     "_MainContainer.editor_copy",
     "_MainContainer.editor_paste",
+    "_ToolsDock.execute_file",
+    "_ToolsDock.execute_project",
+    "_ToolsDock.kill_application",
     #"run-project", "run-file", "stop", "separator",
     ]
 
