@@ -138,12 +138,7 @@ class NFile(QObject):
         .nsf = Ninja Swap File
         #FIXME: Where to locate addExtension, does not fit here
         """
-        if path and self._file_path:
-            created_file = NFile(path).save(content)
-            self.emit(SIGNAL("savedAsNewFile(PyQt_PyObject, QString, QString)"),
-                        created_file, self._file_path, path)
-            return created_file
-        elif path and not self._file_path:
+        if path:
             self.attach_to_path(path)
 
         save_path = self._file_path

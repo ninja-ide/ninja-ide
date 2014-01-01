@@ -113,6 +113,8 @@ class ComboEditor(QWidget):
                 self._show_notification_icon)
             self.connect(neditable, SIGNAL("fileSaved(PyQt_PyObject)"),
                 self._update_symbols)
+            self.connect(neditable, SIGNAL("fileSaved(PyQt_PyObject)"),
+                self._update_combo_info)
 
             # Connect file system signals only in the original
             self.connect(neditable, SIGNAL("fileClosing(PyQt_PyObject)"),
@@ -227,6 +229,10 @@ class ComboEditor(QWidget):
         # Check if it's current to avoid signals from other splits.
         if editor == neditable.editor:
             self._load_symbols(neditable)
+
+    def _update_combo_info(self, neditable):
+        self.bar.update_item_text(neditable, neditable.display_name)
+        self._main_container.current_editor_changed(neditable.file_path)
 
     def _load_symbols(self, neditable):
         symbols_handler = handlers.get_symbols_handler('py')
