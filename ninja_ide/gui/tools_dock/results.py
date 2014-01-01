@@ -25,13 +25,13 @@ from PyQt4.QtGui import QHeaderView
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
-from ninja_ide.gui.main_panel import main_container
+from ninja_ide.gui.ide import IDE
 
 
 class Results(QWidget):
 
     def __init__(self, parent):
-        QWidget.__init__(self, parent)
+        super(Results, self).__init__(parent)
         self._parent = parent
         vbox = QVBoxLayout(self)
         self._tree = QTreeWidget()
@@ -57,7 +57,9 @@ class Results(QWidget):
     def _open_result(self, item, col):
         filename = item.toolTip(1)
         line = int(item.text(2)) - 1
-        main_container.MainContainer().open_file(
+        main_container = IDE.get_service('main_container')
+        if main_container:
+            main_container.open_file(
                 filename=filename,
                 cursorPosition=line,
                 positionIsLineNumber=True)

@@ -157,6 +157,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
             self.highlight_current_line)
         self.connect(self, SIGNAL("blockCountChanged(int)"),
             self._update_file_metadata)
+        self.connect(self.document(), SIGNAL("modificationChanged(bool)"),
+            lambda x: self.emit(SIGNAL("modificationChanged(bool)"), x))
 
         self._mini = None
         if settings.SHOW_MINIMAP:

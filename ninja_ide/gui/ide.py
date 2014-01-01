@@ -561,7 +561,8 @@ class IDE(QMainWindow):
                         editable.editor.get_cursor_position(),
                         stat_value])
                 qsettings.setValue('lastSession/openedFiles', files_info)
-            qsettings.setValue('lastSession/currentFile', current_file)
+            if current_file is not None:
+                qsettings.setValue('lastSession/currentFile', current_file)
             qsettings.setValue('lastSession/recentFiles',
                 settings.LAST_OPENED_FILES)
         qsettings.setValue('preferences/editor/bookmarks', settings.BOOKMARKS)
@@ -656,14 +657,29 @@ class IDE(QMainWindow):
             self.move(qsettings.value("window/pos",
                 QPointF(100, 100).toPoint(), type='QPoint'))
 
+    def _get_unsaved_files(self):
+        unsaved = []
+        files = self.filesystem.get_files()
+        for f in files:
+            editable = self.__neditables.get(files[f])
+            if editable is not None:
+                if editable.editor.is_modified:
+                    unsaved.append(f)
+        return unsaved
+
+    def _save_unsaved_files(self, files):
+        for f in files:
+            editable = self.get_or_create_editable(f)
+            editable.ignore_checkers = True
+            editable.save_content()
+
     def closeEvent(self, event):
         """Saves some global settings before closing."""
         if self.s_listener:
             self.s_listener.close()
         main_container = self.get_service("main_container")
-        if (settings.CONFIRM_EXIT and
-                main_container and main_container.check_for_unsaved_files()):
-            unsaved_files = main_container.get_unsaved_files()
+        unsaved_files = self._get_unsaved_files()
+        if (settings.CONFIRM_EXIT and unsaved_files):
             txt = '\n'.join(unsaved_files)
             val = QMessageBox.question(self,
                 self.tr("Some changes were not saved"),
@@ -671,11 +687,10 @@ class IDE(QMainWindow):
                 QMessageBox.Yes, QMessageBox.No, QMessageBox.Cancel)
             if val == QMessageBox.Yes:
                 #Saves all open files
-                main_container = IDE.get_service('main_container')
-                if main_container:
-                    main_container.save_all()
+                self._save_unsaved_files(unsaved_files)
             if val == QMessageBox.Cancel:
                 event.ignore()
+                return
         self.emit(SIGNAL("goingDown()"))
         self.save_settings()
         #close python documentation server (if running)

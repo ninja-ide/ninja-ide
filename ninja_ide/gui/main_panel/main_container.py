@@ -811,7 +811,6 @@ class _MainContainer(QWidget):
             editorWidget._file_saved()
             return True
         except Exception as reason:
-            #editorWidget.just_saved = False
             logger.error('save_file: %s', reason)
             QMessageBox.information(self, self.tr("Save Error"),
                 self.tr("The file couldn't be saved!"))
@@ -837,8 +836,7 @@ class _MainContainer(QWidget):
             if settings.REMOVE_TRAILING_SPACES:
                 helpers.remove_trailing_spaces(editorWidget)
             #newFile = file_manager.get_file_extension(fileName) == ''
-            editorWidget.neditable.save_content(editorWidget.get_text(),
-                path=fileName)
+            editorWidget.neditable.save_content(path=fileName)
             #fileName = file_manager.store_file_content(
                 #fileName, editorWidget.get_text(),
                 #addExtension=True, newFile=newFile)
@@ -858,17 +856,15 @@ class _MainContainer(QWidget):
             #self._file_watcher.allow_kill = True
             return True
         except file_manager.NinjaFileExistsException as ex:
-            #editorWidget.just_saved = False
             QMessageBox.information(self, self.tr("File Already Exists"),
                 (self.tr("Invalid Path: the file '%s' already exists.") %
                     ex.filename))
         except Exception as reason:
-            #editorWidget.just_saved = False
             logger.error('save_file_as: %s', reason)
             QMessageBox.information(self, self.tr("Save Error"),
                 self.tr("The file couldn't be saved!"))
-            self.actualTab.setTabText(self.actualTab.currentIndex(),
-                self.tr("New Document"))
+            #self.actualTab.setTabText(self.actualTab.currentIndex(),
+                #self.tr("New Document"))
         return False
 
     def _get_save_folder(self, fileName):

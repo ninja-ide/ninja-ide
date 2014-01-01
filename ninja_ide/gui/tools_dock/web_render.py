@@ -26,7 +26,7 @@ from PyQt4.QtWebKit import QWebSettings
 class WebRender(QWidget):
 
     def __init__(self):
-        QWidget.__init__(self)
+        super(WebRender, self).__init__()
 
         vbox = QVBoxLayout(self)
         #Web Frame

@@ -107,6 +107,8 @@ class ComboEditor(QWidget):
                 self._update_cursor_position)
             self.connect(neditable.editor, SIGNAL("currentLineChanged(int)"),
                 self._set_current_symbol)
+            self.connect(neditable.editor, SIGNAL("modificationChanged(bool)"),
+                self._editor_modified)
             self.connect(neditable, SIGNAL("checkersUpdated(PyQt_PyObject)"),
                 self._show_notification_icon)
             self.connect(neditable, SIGNAL("fileSaved(PyQt_PyObject)"),
@@ -205,6 +207,15 @@ class ComboEditor(QWidget):
                 self._symbols_index[index] > (line + 1)):
                 index -= 1
             self.bar.set_current_symbol(index)
+
+    def _editor_modified(self, value):
+        obj = self.sender()
+        neditable = obj.neditable
+        if value:
+            text = "%s (*)" % neditable.display_name
+            self.bar.update_item_text(neditable, text)
+        else:
+            self.bar.update_item_text(neditable, neditable.display_name)
 
     def _go_to_symbol(self, index):
         line = self._symbols_index[index]
@@ -344,6 +355,10 @@ class ActionBar(QFrame):
     def update_item_icon(self, neditable, icon):
         index = self.combo.findData(neditable)
         self.combo.setItemIcon(index, icon)
+
+    def update_item_text(self, neditable, text):
+        index = self.combo.findData(neditable)
+        self.combo.setItemText(index, text)
 
     def current_changed(self, index):
         """Change the current item in the combo."""

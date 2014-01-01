@@ -183,9 +183,9 @@ class _ToolsDock(QWidget):
             ext = file_manager.get_file_extension(editorWidget.file_path)
             #TODO: Remove the IF statment and use Handlers
             if ext == 'py':
-                self._run_application(editorWidget.ID)
+                self._run_application(editorWidget.file_path)
             elif ext == 'html':
-                self.render_web_page(editorWidget.ID)
+                self.render_web_page(editorWidget.file_path)
 
     def execute_project(self):
         """Execute the project marked as Main Project."""
