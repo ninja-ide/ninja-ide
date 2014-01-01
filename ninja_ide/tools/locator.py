@@ -368,6 +368,7 @@ class LocateSymbolsThread(QThread):
                 ResultItem(type=FILTERS['files'], name=file_name,
                         path=file_path, lineno=-1)]
         data = self._get_file_symbols(file_path)
+        #FIXME: stat not int
         mtime = int(os.stat(file_path).st_mtime)
         if data is not None and (mtime == int(data[1])):
             results = pickle.loads(str(data[2]))

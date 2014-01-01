@@ -21,6 +21,7 @@ from PyQt4.QtGui import QPushButton
 
 from ninja_ide import translations
 from ninja_ide.core import settings
+from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
 
 try:
@@ -40,6 +41,7 @@ class WebInspector(QWidget):
         vbox.addWidget(self.btnDock)
 
         ExplorerContainer.register_tab(translations.TR_TAB_WEB_INSPECTOR, self)
+        IDE.register_service('web_inspector', self)
 
     def refresh_inspector(self):
         self._webInspector.hide()

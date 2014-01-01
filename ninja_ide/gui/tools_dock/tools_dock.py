@@ -55,12 +55,6 @@ class _ToolsDock(QWidget):
             'signal_name': "findOcurrences(QString)",
             'slot': self.show_find_occurrences},
             {'target': 'main_container',
-            'signal_name': "updateFileMetadata()",
-            'slot': self.show_find_occurrences},
-            {'target': 'main_container',
-            'signal_name': "findOcurrences(QString)",
-            'slot': self.show_find_occurrences},
-            {'target': 'main_container',
             'signal_name': "runFile(QString)",
             'slot': self.execute_file},
         )
@@ -121,8 +115,8 @@ class _ToolsDock(QWidget):
 
         # Not Configurable Shortcuts
         shortEscMisc = QShortcut(QKeySequence(Qt.Key_Escape), self)
-        self.connect(shortEscMisc, SIGNAL("activated()"), self.hide)
 
+        self.connect(shortEscMisc, SIGNAL("activated()"), self.hide)
         self.connect(self._btnConsole, SIGNAL("clicked()"),
             lambda: self._item_changed(0))
         self.connect(self._btnRun, SIGNAL("clicked()"),
@@ -187,40 +181,37 @@ class _ToolsDock(QWidget):
                 editorWidget.file_path)
             main_container.save_file(editorWidget)
             ext = file_manager.get_file_extension(editorWidget.file_path)
-            #TODO: Remove the IF statment with polymorphism using Handler
+            #TODO: Remove the IF statment and use Handlers
             if ext == 'py':
-                self.run_application(editorWidget.ID)
+                self._run_application(editorWidget.ID)
             elif ext == 'html':
                 self.render_web_page(editorWidget.ID)
 
-    def execute_project(self, project_path):
+    def execute_project(self):
         """Execute the project marked as Main Project."""
-        #FIXME
-        pass
-        #ide = IDE.get_service('ide')
-        #nproject = ide.get_current_project()
-        #main_file = nproject.main_file
-        #explorer_container = IDE.get_service('explorer_container')
-        #if not explorer_container:
-            #return
-        #if not main_file and explorer_container._treeProjects and \
-          #explorer_container._treeProjects._actualProject:
-            #explorer_container._treeProjects.open_project_properties()
-        #elif main_file:
-            #self.save_project()
-            ##emit a signal for plugin!
-            #self.emit(SIGNAL("projectExecuted(QString)"), nproject.path)
+        projects_explorer = IDE.get_service('projects_explorer')
+        if projects_explorer is None:
+            return
+        nproject = projects_explorer.current_project
+        if nproject:
+            main_file = nproject.main_file
+            if not main_file and projects_explorer.current_tree:
+                projects_explorer.current_tree.open_project_properties()
+            elif main_file:
+                projects_explorer.save_project()
+                #emit a signal for plugin!
+                self.emit(SIGNAL("projectExecuted(QString)"), nproject.path)
 
-            #main_file = file_manager.create_path(nproject.path,
-                #nproject.main_file)
-            #self.run_application(main_file,
-                #pythonPath=nproject.python_exec_command,
-                #PYTHONPATH=nproject.python_path,
-                #programParams=nproject.program_params,
-                #preExec=nproject.pre_exec_script,
-                #postExec=nproject.post_exec_script)
+                main_file = file_manager.create_path(nproject.path,
+                    nproject.main_file)
+                self._run_application(main_file,
+                    pythonPath=nproject.python_exec_command,
+                    PYTHONPATH=nproject.python_path,
+                    programParams=nproject.program_params,
+                    preExec=nproject.pre_exec_script,
+                    postExec=nproject.post_exec_script)
 
-    def run_application(self, fileName, pythonPath=False, PYTHONPATH=None,
+    def _run_application(self, fileName, pythonPath=False, PYTHONPATH=None,
             programParams='', preExec='', postExec=''):
         self._item_changed(1)
         self.show()
@@ -229,7 +220,8 @@ class _ToolsDock(QWidget):
         self._runWidget.input.setFocus()
 
     def show_results(self, items):
-        self._item_changed(4)
+        index_of = self.stack.indexOf(self._results)
+        self._item_changed(index_of)
         self.show()
         self._results.update_result(items)
         self._results._tree.setFocus()
@@ -238,17 +230,17 @@ class _ToolsDock(QWidget):
         self._runWidget.kill_process()
 
     def render_web_page(self, url):
-        self._item_changed(2)
+        index_of = self.stack.indexOf(self._web)
+        self._item_changed(index_of)
         self.show()
         self._web.render_page(url)
         if settings.SHOW_WEB_INSPECTOR:
-            explorer_container = IDE.get_service('explorer_container')
-            if explorer_container:
-                explorer_container.set_inspection_page(
-                self._web.webFrame.page())
+            web_inspector = IDE.get_service('web_inspector')
+            if web_inspector:
+                web_inspector.set_inspection_page(self._web.webFrame.page())
                 self._web.webFrame.triggerPageAction(
                     QWebPage.InspectElement, True)
-                explorer_container.refresh_inspector()
+                web_inspector.refresh_inspector()
 
     def add_to_stack(self, widget, icon_path, description):
         """
@@ -268,9 +260,6 @@ class _ToolsDock(QWidget):
 
 class StackedWidget(QStackedWidget):
 
-    def __init__(self):
-        QStackedWidget.__init__(self)
-
     def setCurrentIndex(self, index):
         self.fader_widget = ui_tools.FaderWidget(self.currentWidget(),
             self.widget(index))
@@ -278,5 +267,6 @@ class StackedWidget(QStackedWidget):
 
     def show_display(self, index):
         self.setCurrentIndex(index)
+
 
 ToolsDock = _ToolsDock()

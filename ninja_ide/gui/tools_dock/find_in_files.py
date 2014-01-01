@@ -459,12 +459,12 @@ class FindInFilesWidget(QWidget):
 
     def find_occurrences(self, word):
         self._find_widget.pattern_line_edit.setText(word)
-        ide = IDE.get_service('ide')
+        ninjaide = IDE.get_service('ide')
         main_container = IDE.get_service('main_container')
         editorWidget = main_container.get_current_editor()
-        nproject = ide.get_project_for_file(editorWidget.ID)
+        nproject = ninjaide.get_project_for_file(editorWidget.file_path)
         if nproject is None:
-            nproject = ide.get_current_project()
+            nproject = ninjaide.get_current_project()
         self._find_widget.dir_combo.clear()
         self._find_widget.dir_combo.addItem(nproject.path)
         self._find_widget.case_checkbox.setChecked(True)
