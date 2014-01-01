@@ -116,7 +116,8 @@ class NEditable(QObject):
     def save_content(self, path=None):
         """Save the content of the UI to a file."""
         content = self.__editor.get_text()
-        self._nfile.save(content, path)
+        nfile = self._nfile.save(content, path)
+        self._nfile = nfile
         if not self.ignore_checkers:
             self.run_checkers(content)
         else:

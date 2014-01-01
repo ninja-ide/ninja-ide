@@ -65,7 +65,7 @@ class _MainContainer(QWidget):
     --------openProject(QString)
     openPreferences()
     ---------dontOpenStartPage()
-    ----------updateLocator(QString)
+    updateLocator(QString)
     ---------updateFileMetadata()
     findOcurrences(QString)
     fileOpened(QString)
@@ -552,8 +552,6 @@ class _MainContainer(QWidget):
         #index = self.add_tab(editorWidget, tab_name, tabIndex=tabIndex)
         #self.tabs.setTabToolTip(index, QDir.toNativeSeparators(fileName))
         #Connect signals
-        self.connect(editorWidget, SIGNAL("modificationChanged(bool)"),
-            self._editor_tab_was_modified)
         self.connect(editorWidget, SIGNAL("fileSaved(QPlainTextEdit)"),
             self._editor_tab_was_saved)
         self.connect(editorWidget, SIGNAL("openDropFile(QString)"),
@@ -631,14 +629,8 @@ class _MainContainer(QWidget):
         self.emit(SIGNAL("locateFunction(QString, QString, bool)"),
             function, filePath, isVariable)
 
-    def _editor_tab_was_modified(self, val=True):
-        pass
-        #self.tabs.tab_was_modified(val)
-
     def _editor_tab_was_saved(self, editorWidget=None):
-        pass
-        #self.tabs.tab_was_saved(editorWidget)
-        #self.emit(SIGNAL("updateLocator(QString)"), editorWidget.ID)
+        self.emit(SIGNAL("updateLocator(QString)"), editorWidget.file_path)
 
     def get_current_widget(self):
         return self.current_widget.currentWidget()
@@ -821,7 +813,6 @@ class _MainContainer(QWidget):
         if not editorWidget:
             return False
         try:
-            #editorWidget.just_saved = True
             filters = '(*.py);;(*.*)'
             if editorWidget.file_path:
                 ext = file_manager.get_file_extension(editorWidget.file_path)
