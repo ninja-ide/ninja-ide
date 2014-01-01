@@ -209,7 +209,7 @@ SHORTCUTS = {
     "Open-recent-closed": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_T),
     "Change-Tab": QKeySequence(Qt.CTRL + Qt.Key_PageDown),
     "Change-Tab-Reverse": QKeySequence(Qt.CTRL + Qt.Key_PageUp),
-    "Show-Code-Nav": QKeySequence(Qt.CTRL + Qt.Key_1),
+    "Show-Code-Nav": QKeySequence(Qt.CTRL + Qt.Key_3),
     "Show-Paste-History": QKeySequence(Qt.CTRL + Qt.Key_4),
     "History-Copy": QKeySequence(Qt.CTRL + Qt.ALT + Qt.Key_C),
     "History-Paste": QKeySequence(Qt.CTRL + Qt.ALT + Qt.Key_V),
@@ -224,8 +224,8 @@ SHORTCUTS = {
     "cut": QKeySequence(Qt.CTRL + Qt.Key_X),
     "copy": QKeySequence(Qt.CTRL + Qt.Key_C),
     "paste": QKeySequence(Qt.CTRL + Qt.Key_V),
-    "expand-symbol-combo": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_U),
-    "expand-file-combo": QKeySequence(Qt.CTRL + Qt.Key_U)}
+    "expand-symbol-combo": QKeySequence(Qt.CTRL + Qt.Key_2),
+    "expand-file-combo": QKeySequence(Qt.CTRL + Qt.Key_1)}
 
 CUSTOM_SHORTCUTS = {}
 

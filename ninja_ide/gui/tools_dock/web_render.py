@@ -25,6 +25,8 @@ from PyQt4.QtWebKit import QWebSettings
 
 class WebRender(QWidget):
 
+    """Render a web page inside the tools dock area."""
+
     def __init__(self):
         super(WebRender, self).__init__()
 
@@ -36,8 +38,10 @@ class WebRender(QWidget):
         vbox.addWidget(self.webFrame)
 
     def render_page(self, url):
+        """Render a web page from a local file."""
         self.webFrame.load(QUrl('file:///' + url))
 
     def render_from_html(self, html, url=None):
+        """Render a webpage from a string."""
         url = url and QUrl(url) or ""
         self.webFrame.setHtml(html, url)
