@@ -947,12 +947,12 @@ class Editor(QPlainTextEdit):
         popup_menu.insertAction(popup_menu.actions()[0],
             self.__actionFindOccurrences)
         #add extra menus (from Plugins)
-        lang = file_manager.get_file_extension(self.file_path)
-        extra_menus = self.EXTRA_MENU.get(lang, None)
-        if extra_menus:
-            popup_menu.addSeparator()
-            for menu in extra_menus:
-                popup_menu.addMenu(menu)
+        #lang = file_manager.get_file_extension(self.file_path)
+        #extra_menus = self.EXTRA_MENU.get(lang, None)
+        #if extra_menus:
+            #popup_menu.addSeparator()
+            #for menu in extra_menus:
+                #popup_menu.addMenu(menu)
         #show menu
         popup_menu.exec_(event.globalPos())
 
