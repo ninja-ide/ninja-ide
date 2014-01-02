@@ -549,18 +549,17 @@ class IDE(QMainWindow):
             projects = [projects_obj[proj].path for proj in projects_obj]
             qsettings.setValue('lastSession/projects',
                 projects)
-            if openedFiles:
-                files_info = []
-                for path in openedFiles:
-                    editable = self.__neditables.get(openedFiles[path])
-                    if editable.is_dirty:
-                        stat_value = 0
-                    else:
-                        stat_value = os.stat(path).st_mtime
-                    files_info.append([path,
-                        editable.editor.get_cursor_position(),
-                        stat_value])
-                qsettings.setValue('lastSession/openedFiles', files_info)
+            files_info = []
+            for path in openedFiles:
+                editable = self.__neditables.get(openedFiles[path])
+                if editable.is_dirty:
+                    stat_value = 0
+                else:
+                    stat_value = os.stat(path).st_mtime
+                files_info.append([path,
+                    editable.editor.get_cursor_position(),
+                    stat_value])
+            qsettings.setValue('lastSession/openedFiles', files_info)
             if current_file is not None:
                 qsettings.setValue('lastSession/currentFile', current_file)
             qsettings.setValue('lastSession/recentFiles',
