@@ -73,6 +73,10 @@ class TabsHandler(QFrame):
         result = old - new
         for item in result:
             del self._model[item]
+        current_editor = self._main_container.get_current_editor()
+        current_path = None
+        if current_editor:
+            current_path = current_editor.file_path
         model = []
         for nfile in files_data:
             if nfile.file_path not in self._model:
@@ -88,6 +92,10 @@ class TabsHandler(QFrame):
                          "checker_color": color})
             modified = neditable.document.isModified()
             model.append([nfile.file_name, nfile.file_path, checks, modified])
+        if current_path:
+            index = self._model[current_path]
+            self._max_index = max(self._max_index, index) + 1
+            self._model[current_path] = self._max_index
         model = sorted(model, key=lambda x: self._model[x[1]], reverse=True)
         self._root.set_model(model)
 
