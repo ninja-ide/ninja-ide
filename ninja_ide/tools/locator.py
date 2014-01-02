@@ -595,20 +595,26 @@ class LocatorCompleter(QLineEdit):
     def filter(self):
         self._line_jump = -1
         self.items_in_page = 0
+        #TODO: if prefix not change use tempLocations
 
         filterOptions = self.filterPrefix.split(self.__prefix.lstrip())
         if filterOptions[0] == '':
             del filterOptions[0]
 
-        index = 0
-        while index < len(filterOptions):
-            filter_action = self._filter_actions.get(
-                filterOptions[index], self._filter_generic)
-            if filter_action is None:
-                break
-            index = filter_action(filterOptions, index)
         if len(filterOptions) == 0:
             self.tempLocations = self._parent.locate_symbols.get_locations()
+        elif len(filterOptions) == 1:
+            self.tempLocations = [
+                x for x in self._parent.locate_symbols.get_locations()
+                    if x.comparison.lower().find(filterOptions[0].lower()) > -1]
+        else:
+            index = 0
+            while index < len(filterOptions):
+                filter_action = self._filter_actions.get(
+                    filterOptions[index], self._filter_generic)
+                if filter_action is None:
+                    break
+                index = filter_action(filterOptions, index)
         return self._create_list_widget_items(self.tempLocations)
 
     def _filter_generic(self, filterOptions, index):
@@ -617,7 +623,7 @@ class LocatorCompleter(QLineEdit):
             self.tempLocations = [
                 x for x in self._parent.locate_symbols.get_locations()
                     if x.type == filterOptions[0] and
-                    x.comparison.lower().find(filterOptions[1]) > -1]
+                    x.comparison.lower().find(filterOptions[1].lower()) > -1]
         else:
             currentItem = self.popup.listWidget.currentItem()
             filter_data = None
@@ -632,7 +638,8 @@ class LocatorCompleter(QLineEdit):
                 self.tempLocations = mapping_symbols.get(filter_data.path, [])
             self.tempLocations = [x for x in self.tempLocations
                     if x.type == filterOptions[index] and
-                    x.comparison.lower().find(filterOptions[index + 1]) > -1]
+                    x.comparison.lower().find(
+                        filterOptions[index + 1].lower()) > -1]
         return index + 2
 
     def _filter_this_file(self, filterOptions, index):
@@ -655,7 +662,7 @@ class LocatorCompleter(QLineEdit):
                 self.tempLocations = \
                     self._parent.locate_symbols.get_this_file_symbols(
                         editorWidget.file_path)
-                search = filterOptions[index + 1].lstrip()
+                search = filterOptions[index + 1].lstrip().lower()
                 self.tempLocations = [x for x in self.tempLocations
                     if x.comparison.lower().find(search) > -1]
         else:
@@ -670,6 +677,9 @@ class LocatorCompleter(QLineEdit):
             opened = ninjaide.filesystem.get_files()
             self.tempLocations = [ResultItem(FILTERS['files'],
                 opened[f].file_name, opened[f].file_path) for f in opened]
+            search = filterOptions[index + 1].lstrip().lower()
+            self.tempLocations = [x for x in self.tempLocations
+                if x.comparison.lower().find(search) > -1]
             index += 2
         else:
             del filterOptions[index + 1]
