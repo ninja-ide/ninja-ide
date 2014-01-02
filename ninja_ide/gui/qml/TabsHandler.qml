@@ -74,6 +74,17 @@ Rectangle {
                 PropertyAction { target: item; property: "ListView.delayRemove"; value: false }
             }
 
+            MouseArea {
+                anchors.fill: parent
+
+                onClicked: {
+                    var coord = mapToItem(listFiles, mouseX, mouseY)
+                    var index = listFiles.indexAt(coord.x, coord.y);
+                    var path = listFiles.model.get(index).path;
+                    root.open(path);
+                }
+            }
+
             Image {
                 id: imgClose
                 source: "img/delete-project.png"
