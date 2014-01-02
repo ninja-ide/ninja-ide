@@ -1022,8 +1022,8 @@ class _MainContainer(QWidget):
         self.tabs_handler.previous_item()
 
     def show_navigation_buttons(self):
-        pass
-        #self.tabs.navigator.show_menu_navigation()
+        """Show Navigation menu."""
+        self.combo_area.show_menu_navigation()
 
     def change_split_focus(self):
         pass
