@@ -49,6 +49,7 @@ class TabsHandler(QFrame):
         self._max_index = 0
 
         self.connect(self._root, SIGNAL("open(QString)"), self._open)
+        self.connect(self._root, SIGNAL("close(QString)"), self._close)
 
     def _open(self, path):
         self._main_container.open_file(path)
@@ -56,6 +57,11 @@ class TabsHandler(QFrame):
         self._max_index = max(self._max_index, index) + 1
         self._model[path] = self._max_index
         self.hide()
+
+    def _close(self, path):
+        ninjaide = IDE.get_service("ide")
+        nfile = ninjaide.get_or_create_nfile(path)
+        nfile.close()
 
     def _add_model(self):
         ninjaide = IDE.get_service("ide")
@@ -97,6 +103,10 @@ class TabsHandler(QFrame):
         y_diff = self._main_container.combo_header_size
         self.move(point.x(), point.y() + y_diff)
         self.view.setFocus()
+
+    def hideEvent(self, event):
+        super(TabsHandler, self).hideEvent(event)
+        self._root.clear_model()
 
     def next_item(self):
         if not self.isVisible():

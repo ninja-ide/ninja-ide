@@ -16,6 +16,7 @@ Rectangle {
     }
 
     signal open(string path)
+    signal close(string path)
 
     function show_animation() {
         root.opacity = 0;
@@ -28,7 +29,6 @@ Rectangle {
     }
 
     function set_model(model) {
-        listFiles.model.clear();
         listFiles.currentIndex = 0;
         for(var i = 0; i < model.length; i++) {
             listFiles.model.append(
@@ -37,6 +37,10 @@ Rectangle {
                 "checkers": model[i][2],
                 "modified": model[i][3]});
         }
+    }
+
+    function clear_model() {
+        listFiles.model.clear();
     }
 
     function next_item() {
@@ -63,8 +67,32 @@ Rectangle {
             id: item
             width: root.width;
             height: checkers ? 70 : 60
-            property string _name: name
-            property string _path: path
+
+            ListView.onRemove: SequentialAnimation {
+                PropertyAction { target: item; property: "ListView.delayRemove"; value: true }
+                NumberAnimation { target: item; property: "scale"; to: 0; duration: 400; easing.type: Easing.InOutQuad }
+                PropertyAction { target: item; property: "ListView.delayRemove"; value: false }
+            }
+
+            Image {
+                id: imgClose
+                source: "img/delete-project.png"
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.margins: 7
+
+                MouseArea {
+                    anchors.fill: parent
+
+                    onClicked: {
+                        var coord = mapToItem(listFiles, mouseX, mouseY)
+                        var index = listFiles.indexAt(coord.x, coord.y);
+                        var path = listFiles.model.get(index).path;
+                        root.close(path);
+                        listFiles.model.remove(index);
+                    }
+                }
+            }
 
             Column {
                 id: col
