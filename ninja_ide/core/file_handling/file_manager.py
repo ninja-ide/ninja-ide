@@ -142,13 +142,17 @@ def get_file_encoding(content):
     Returns the encoding or the default UTF-8
     """
     encoding = None
-    lines_to_check = content.split("\n", 2)
-    for index in range(2):
-        if len(lines_to_check) > index:
-            line_encoding = _search_coding_line(lines_to_check[index])
-            if line_encoding:
-                encoding = line_encoding
-                break
+    try:
+        lines_to_check = content.split("\n", 2)
+        for index in range(2):
+            if len(lines_to_check) > index:
+                line_encoding = _search_coding_line(lines_to_check[index])
+                if line_encoding:
+                    encoding = line_encoding
+                    break
+    except UnicodeDecodeError as error:
+        #add logger
+        print(error)
     #if not encoding is set then use UTF-8 as default
     if encoding is None:
         encoding = "UTF-8"
