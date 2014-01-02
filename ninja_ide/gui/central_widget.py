@@ -112,6 +112,8 @@ class CentralWidget(QWidget):
         else:
             if self.lateralPanel:
                 self.lateralPanel.show()
+            if tools_dock:
+                tools_dock.show()
             if toolbar:
                 toolbar.show()
             ninjaide.menuBar().show()

@@ -70,7 +70,7 @@ Rectangle {
 
             ListView.onRemove: SequentialAnimation {
                 PropertyAction { target: item; property: "ListView.delayRemove"; value: true }
-                NumberAnimation { target: item; property: "scale"; to: 0; duration: 400; easing.type: Easing.InOutQuad }
+                NumberAnimation { target: item; property: "scale"; to: 0; duration: 300; easing.type: Easing.InOutQuad }
                 PropertyAction { target: item; property: "ListView.delayRemove"; value: false }
             }
 
