@@ -183,6 +183,7 @@ class ComboEditor(QWidget):
             self._main_container.current_editor_changed(
                 neditable.file_path)
             self._load_symbols(neditable)
+            neditable.update_checkers_display()
 
     def widget(self, index):
         return self.stacked.widget(index)

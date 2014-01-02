@@ -115,6 +115,9 @@ class ErrorsChecker(QThread):
                     self.checks.pop(line, None)
         else:
             self.reset()
+        self.refresh_display()
+
+    def refresh_display(self):
         error_list = IDE.get_service('tab_errors')
         if error_list:
             error_list.refresh_error_list(self.checks)
