@@ -39,6 +39,7 @@ from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.main_panel import actions
 from ninja_ide.gui.main_panel import browser_widget
 from ninja_ide.gui.main_panel import start_page
+from ninja_ide.gui.main_panel import tabs_handler
 from ninja_ide.gui.main_panel import image_viewer
 from ninja_ide.gui.main_panel import combo_editor
 from ninja_ide.gui.main_panel.helpers import split_orientation
@@ -83,6 +84,7 @@ class _MainContainer(QWidget):
 
         self.splitter = dynamic_splitter.DynamicSplitter()
         self.setAcceptDrops(True)
+        self.tabs_handler = tabs_handler.TabsHandler(self)
 
         #documentation browser
         self.docPage = None
@@ -137,6 +139,10 @@ class _MainContainer(QWidget):
 
         ui_tools.install_shortcuts(self, actions.ACTIONS, ide)
 
+    @property
+    def combo_header_size(self):
+        return self.combo_area.bar.height()
+
     def change_visibility(self):
         """Show/Hide the Main Container area."""
         if self.isVisible():
@@ -145,7 +151,6 @@ class _MainContainer(QWidget):
             self.show()
 
     def expand_symbol_combo(self):
-        #FIXME
         self.current_widget.show_combo_symbol()
 
     def expand_file_combo(self):
@@ -1010,13 +1015,11 @@ class _MainContainer(QWidget):
 
     def change_tab(self):
         """Change the tab in the current TabWidget."""
-        pass
-        #self.tabs.change_tab()
+        self.tabs_handler.next_item()
 
     def change_tab_reverse(self):
         """Change the tab in the current TabWidget backwards."""
-        pass
-        #self.tabs.change_tab_reverse()
+        self.tabs_handler.previous_item()
 
     def show_navigation_buttons(self):
         pass

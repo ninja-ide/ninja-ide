@@ -21,6 +21,7 @@ from PyQt4.QtGui import QStyle
 from PyQt4.QtCore import QThread
 
 from ninja_ide import resources
+from ninja_ide import translations
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.ide import IDE
@@ -46,6 +47,10 @@ class Pep8Checker(QThread):
     @property
     def dirty(self):
         return self.checks != {}
+
+    @property
+    def dirty_text(self):
+        return translations.TR_PEP8_DIRTY_TEXT + str(len(self.checks))
 
     def run_checks(self):
         if not self.isRunning():

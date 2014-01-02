@@ -243,10 +243,10 @@ class LocateSymbolsThread(QThread):
         projects = ide.filesystem.get_projects()
         if not projects:
             return
-        for path in projects:
+        projects = list(projects.values())
+        for nproject in projects:
             if self._cancel:
                 break
-            nproject = projects[path]
             current_dir = QDir(nproject.path)
             #Skip not readable dirs!
             if not current_dir.isReadable():
