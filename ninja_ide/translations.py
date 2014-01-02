@@ -183,3 +183,7 @@ TR_DEFINITION_NOT_FOUND_BODY = tr("NINJA-IDE",
 # Status Bar
 TR_SEARCH_CASE_SENSITIVE = tr("NINJA-IDE", "Respect Case Sensitive")
 TR_SEARCH_WHOLE_WORDS = tr("NINJA-IDE", "Find Whole Words")
+
+# Checkers
+TR_PEP8_DIRTY_TEXT = tr("NINJA-IDE", "PEP8 violations: ")
+TR_LINT_DIRTY_TEXT = tr("NINJA-IDE", "Lint errors: ")
