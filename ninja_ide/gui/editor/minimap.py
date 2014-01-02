@@ -55,7 +55,7 @@ class MiniMap(QPlainTextEdit):
         self.lines_count = 0
 
         self.connect(self._parent, SIGNAL("updateRequest(const QRect&, int)"),
-                self.update_visible_area)
+            self.update_visible_area)
 
         if ACTIVATE_OPACITY:
             self.goe = QGraphicsOpacityEffect()
