@@ -606,7 +606,7 @@ class TreeProjectsWidget(QTreeView):
         if result[1] and fileName.strip() != '':
             fileName = os.path.join(path, fileName)
             ide_srv = IDE.get_service('ide')
-            current_nfile = ide_srv.get_or_create_nfile(path)
+            current_nfile = ide_srv.get_or_create_nfile(fileName)
             current_nfile.create()
             main_container = IDE.get_service('main_container')
             if main_container:

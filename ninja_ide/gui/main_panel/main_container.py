@@ -213,7 +213,7 @@ class _MainContainer(QWidget):
                 self.save_file()
             ext = file_manager.get_file_extension(editorWidget.file_path)
             if ext == 'html':
-                webbrowser.open(editorWidget.ID)
+                webbrowser.open(editorWidget.file_path)
 
     def add_bookmark_breakpoint(self):
         """Add a bookmark or breakpoint to the current file in the editor."""
@@ -698,8 +698,8 @@ class _MainContainer(QWidget):
                     current_project = ninjaide.get_current_project()
                     if current_project is not None:
                         directory = current_project
-                    elif editorWidget is not None and editorWidget.ID:
-                        directory = file_manager.get_folder(editorWidget.ID)
+                    elif editorWidget is not None and editorWidget.file_path:
+                        directory = file_manager.get_folder(editorWidget.file_path)
             extensions = ';;'.join(
                 ['(*%s)' % e for e in
                     settings.SUPPORTED_EXTENSIONS + ['.*', '']])
@@ -841,9 +841,9 @@ class _MainContainer(QWidget):
             editorWidget.register_syntax(
                 file_manager.get_file_extension(fileName))
             #self._file_watcher.allow_kill = False
-            #if editorWidget.ID != fileName:
-                #self.remove_standalone_watcher(editorWidget.ID)
-            #editorWidget.ID = fileName
+            #if editorWidget.file_path != fileName:
+                #self.remove_standalone_watcher(editorWidget.file_path)
+            #editorWidget.file_path = fileName
             self.emit(SIGNAL("fileSaved(QString)"),
                 (self.tr("File Saved: %s") % fileName))
             self.emit(SIGNAL("currentEditorChanged(QString)"), fileName)
@@ -879,7 +879,7 @@ class _MainContainer(QWidget):
         #for i in range(self._tabMain.count()):
             #editorWidget = self._tabMain.widget(i)
             #if type(editorWidget) is editor.Editor and \
-            #file_manager.belongs_to_folder(projectFolder, editorWidget.ID):
+            #file_manager.belongs_to_folder(projectFolder, editorWidget.file_path):
                 #reloaded = self._tabMain.check_for_external_modifications(
                     #editorWidget)
                 #if not reloaded:
@@ -887,7 +887,7 @@ class _MainContainer(QWidget):
         #for i in range(self.tabsecondary.count()):
             #editorWidget = self.tabsecondary.widget(i)
             #if type(editorWidget) is editor.Editor and \
-            #file_manager.belongs_to_folder(projectFolder, editorWidget.ID):
+            #file_manager.belongs_to_folder(projectFolder, editorWidget.file_path):
                 #reloaded = self.tabsecondary.check_for_external_modifications(
                     #editorWidget)
                 #if not reloaded:
@@ -1048,9 +1048,9 @@ class _MainContainer(QWidget):
         editorWidget = self.get_current_editor()
         if editorWidget is not None:
             fileName = "newDocument.pdf"
-            if editorWidget.ID:
+            if editorWidget.file_path:
                 fileName = file_manager.get_basename(
-                    editorWidget.ID)
+                    editorWidget.file_path)
                 fileName = fileName[:fileName.rfind('.')] + '.pdf'
             ui_tools.print_file(fileName, editorWidget.print_)
 

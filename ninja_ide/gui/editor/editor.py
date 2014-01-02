@@ -325,7 +325,7 @@ class Editor(QPlainTextEdit):
                 None, resources.CUSTOM_SCHEME, self.errors, self.pep8,
                 self.migration)
         if not syntaxLang:
-            ext = file_manager.get_file_extension(self.ID)
+            ext = file_manager.get_file_extension(self.file_path)
             self.highlighter.apply_highlight(
                 settings.EXTENSIONS.get(ext, 'python'),
                 resources.CUSTOM_SCHEME)
@@ -947,7 +947,7 @@ class Editor(QPlainTextEdit):
         popup_menu.insertAction(popup_menu.actions()[0],
             self.__actionFindOccurrences)
         #add extra menus (from Plugins)
-        lang = file_manager.get_file_extension(self.ID)
+        lang = file_manager.get_file_extension(self.file_path)
         extra_menus = self.EXTRA_MENU.get(lang, None)
         if extra_menus:
             popup_menu.addSeparator()
@@ -1032,13 +1032,13 @@ class Editor(QPlainTextEdit):
             cursor.setPosition(selection_start)
             cursor.setPosition(selection_end, QTextCursor.KeepAnchor)
             self.emit(SIGNAL("locateFunction(QString, QString, bool)"),
-                cursor.selectedText(), self.ID, False)
+                cursor.selectedText(), self.file_path, False)
         elif cursor.selectedText().endswith('.') or \
              cursor.selectedText().startswith('.'):
             cursor.setPosition(selection_start)
             cursor.setPosition(selection_end, QTextCursor.KeepAnchor)
             self.emit(SIGNAL("locateFunction(QString, QString, bool)"),
-                cursor.selectedText(), self.ID, True)
+                cursor.selectedText(), self.file_path, True)
 
     def get_selection(self, posStart, posEnd):
         cursor = self.textCursor()

@@ -142,7 +142,7 @@ def insert_horizontal_line(editorWidget):
     editorWidget.moveCursor(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
     text = editorWidget.textCursor().selection().toPlainText()
     editorWidget.moveCursor(QTextCursor.EndOfLine, QTextCursor.MoveAnchor)
-    lang = file_manager.get_file_extension(editorWidget.ID)
+    lang = file_manager.get_file_extension(editorWidget.file_path)
     key = settings.EXTENSIONS.get(lang, 'python')
     comment_wildcard = settings.SYNTAX[key].get('comment', ['#'])[0]
     comment = comment_wildcard * ((79 - len(text)) / len(comment_wildcard))
@@ -157,7 +157,7 @@ def insert_title_comment(editorWidget):
         editorWidget.textCursor().beginEditBlock()
         editorWidget.moveCursor(QTextCursor.StartOfLine,
             QTextCursor.MoveAnchor)
-        lang = file_manager.get_file_extension(editorWidget.ID)
+        lang = file_manager.get_file_extension(editorWidget.file_path)
         key = settings.EXTENSIONS.get(lang, 'python')
         comment_wildcard = settings.SYNTAX[key].get('comment', ['#'])[0]
         comment = comment_wildcard * (79 / len(comment_wildcard))
@@ -171,7 +171,7 @@ def insert_title_comment(editorWidget):
 
 
 def insert_coding_line(editorWidget):
-    lang = file_manager.get_file_extension(editorWidget.ID)
+    lang = file_manager.get_file_extension(editorWidget.file_path)
     key = settings.EXTENSIONS.get(lang)
     coding_line = CODING_LINE.get(key)
     if coding_line:
@@ -422,7 +422,7 @@ def uncomment(editorWidget):
         cursor.selectionStart())
     block_end = editorWidget.document().findBlock(
         cursor.selectionEnd()).next()
-    lang = file_manager.get_file_extension(editorWidget.ID)
+    lang = file_manager.get_file_extension(editorWidget.file_path)
     key = settings.EXTENSIONS.get(lang, 'python')
     same_line = (block_start == block_end.previous())
     funcs = {'comment': uncomment_single_line,
@@ -494,7 +494,7 @@ def comment(editorWidget):
         cursor.selectionStart())
     block_end = editorWidget.document().findBlock(
         cursor.selectionEnd()).next()
-    lang = file_manager.get_file_extension(editorWidget.ID)
+    lang = file_manager.get_file_extension(editorWidget.file_path)
     key = settings.EXTENSIONS.get(lang, 'python')
     same_line = (block_start == block_end.previous())
     funcs = {'comment': comment_single_line,

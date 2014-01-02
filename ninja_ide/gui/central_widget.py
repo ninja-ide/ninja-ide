@@ -53,6 +53,7 @@ class CentralWidget(QWidget):
         self._splitterBaseSizes = None
         self._splitterInsideSizes = None
         self.lateralPanel = LateralPanel()
+        self._fullscreen = False
 
         self._add_functions = {
             "central": self._insert_widget_region0,
