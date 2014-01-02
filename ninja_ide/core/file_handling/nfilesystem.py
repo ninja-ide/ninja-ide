@@ -58,8 +58,10 @@ class NVirtualFileSystem(QObject):
     def close_project(self, project_path):
         if project_path in self.__projects:
             project_root = self.__projects[project_path]
-            for nfile in self.__tree:
+            nfiles = list(self.__tree.values())
+            for nfile in nfiles:
                 if self.__reverse_project_map[nfile] == project_root:
+                    del self.__tree[nfile.file_path]
                     nfile.close()
             #This might not be needed just being extra cautious
             del self.__projects[project_path].model
@@ -69,7 +71,8 @@ class NVirtualFileSystem(QObject):
         project = self.__projects[project_path]
         for each_file_path in list(self.__tree.keys()):
             nfile = self.__tree[each_file_path]
-            self.__reverse_project_map[nfile] = project
+            if nfile.file_path.startswith(project_path):
+                self.__reverse_project_map[nfile] = project
 
     def __closed_file(self, nfile_path):
         if nfile_path in self.__tree:

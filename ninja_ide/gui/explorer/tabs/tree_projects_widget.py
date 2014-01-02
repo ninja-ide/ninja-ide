@@ -275,6 +275,8 @@ class ProjectTreeColumn(QWidget):
         if self._active_project == widget and len(self.projects) > 0:
             self.projects[0].set_default_project()
         self._layout.removeWidget(widget)
+        ninjaide = IDE.get_service('ide')
+        ninjaide.filesystem.close_project(widget.project.path)
         widget.deleteLater()
 
     def _set_active_project(self, tree_proj):
