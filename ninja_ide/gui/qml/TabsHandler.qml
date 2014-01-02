@@ -4,11 +4,7 @@ Rectangle {
     id: root
 
     radius: 10
-
-    gradient: Gradient {
-        GradientStop { position: 0.0; color: "#dfdfdf" }
-        GradientStop { position: 0.6; color: "#a0a0a0" }
-    }
+    color: "#d7d7d7"
 
     PropertyAnimation {
         id: showAnim
