@@ -182,6 +182,7 @@ class ComboEditor(QWidget):
             neditable.editor.setFocus()
             self._main_container.current_editor_changed(
                 neditable.file_path)
+            self._load_symbols(neditable)
 
     def widget(self, index):
         return self.stacked.widget(index)
@@ -261,6 +262,9 @@ class ComboEditor(QWidget):
                     icon = QIcon(checker.checker_icon)
                 break
         self.bar.update_item_icon(neditable, icon)
+
+    def show_menu_navigation(self):
+        self.bar.code_navigator.show_menu_navigation()
 
 
 class ActionBar(QFrame):
@@ -503,7 +507,7 @@ class ActionBar(QFrame):
 class CodeNavigator(QWidget):
 
     def __init__(self):
-        QWidget.__init__(self)
+        super(CodeNavigator, self).__init__()
         self.setContextMenuPolicy(Qt.DefaultContextMenu)
         self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.setContentsMargins(0, 0, 0, 0)
