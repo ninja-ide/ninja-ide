@@ -53,7 +53,6 @@ from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools.completion import completer_widget
 from ninja_ide.gui.ide import IDE
-from ninja_ide.gui.main_panel import itab_item
 from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import syntax_highlighter
 from ninja_ide.gui.editor import helpers
@@ -73,7 +72,7 @@ else:
     python3 = False
 
 
-class Editor(QPlainTextEdit, itab_item.ITabItem):
+class Editor(QPlainTextEdit):
 
 ###############################################################################
 # EDITOR SIGNALS
@@ -94,8 +93,7 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 ###############################################################################
 
     def __init__(self, neditable):
-        QPlainTextEdit.__init__(self)
-        itab_item.ITabItem.__init__(self)
+        super(Editor, self).__init__()
         self._neditable = neditable
         #Config Editor
         self.set_flags()
@@ -175,6 +173,9 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
 
         # Set the editor after initialization
         self._neditable.set_editor(self)
+
+        if self._mini:
+            self._mini.set_code(self.toPlainText())
 
     @property
     def display_name(self):
@@ -262,11 +263,6 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         self.setTabStopWidth(tab_size)
         if self._mini:
             self._mini.setTabStopWidth(tab_size)
-
-    def set_id(self, id_):
-        super(Editor, self).set_id(id_)
-        if self._mini:
-            self._mini.set_code(self.toPlainText())
 
     def _block_contains_text(self):
         block = self.textCursor().block()
@@ -361,6 +357,8 @@ class Editor(QPlainTextEdit, itab_item.ITabItem):
         if not undoAvailable:
             self.emit(SIGNAL("fileSaved(QPlainTextEdit)"), self)
             self.document().setModified(False)
+            if self._mini:
+                self._mini.set_code(self.toPlainText())
 
     def register_syntax(self, lang='', syntax=None):
         #self.lang = settings.EXTENSIONS.get(lang, 'python')

@@ -98,9 +98,10 @@ Rectangle {
                     onClicked: {
                         var coord = mapToItem(listFiles, mouseX, mouseY)
                         var index = listFiles.indexAt(coord.x, coord.y);
+                        //FIXME: when index == 0 then start removing the wrong items
                         var path = listFiles.model.get(index).path;
-                        root.close(path);
                         listFiles.model.remove(index);
+                        root.close(path);
                     }
                 }
             }
