@@ -53,7 +53,6 @@ class CentralWidget(QWidget):
         self._splitterBaseSizes = None
         self._splitterInsideSizes = None
         self.lateralPanel = LateralPanel()
-        self._fullscreen = False
 
         self._add_functions = {
             "central": self._insert_widget_region0,
@@ -113,6 +112,8 @@ class CentralWidget(QWidget):
         else:
             if self.lateralPanel:
                 self.lateralPanel.show()
+            if tools_dock:
+                tools_dock.show()
             if toolbar:
                 toolbar.show()
             ninjaide.menuBar().show()
