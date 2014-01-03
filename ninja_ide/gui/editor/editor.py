@@ -119,7 +119,6 @@ class Editor(QPlainTextEdit):
         #Completer
         self.completer = completer_widget.CodeCompletionWidget(self)
         #Flag to dont bug the user when answer *the modification dialog*
-        #self.just_saved = False
         #Dict functions for KeyPress
         self.preKeyPress = {
             Qt.Key_Tab: self.__insert_indentation,
@@ -991,12 +990,12 @@ class Editor(QPlainTextEdit):
     def mousePressEvent(self, event):
         if self.completer.isVisible():
             self.completer.hide_completer()
-        elif event.modifiers() == Qt.ControlModifier:
+        if event.modifiers() == Qt.ControlModifier:
             cursor = self.cursorForPosition(event.pos())
             self.setTextCursor(cursor)
             self.go_to_definition(cursor)
         elif event.button() == Qt.RightButton and \
-        not self.textCursor().hasSelection():
+                not self.textCursor().hasSelection():
             cursor = self.cursorForPosition(event.pos())
             self.setTextCursor(cursor)
         QPlainTextEdit.mousePressEvent(self, event)

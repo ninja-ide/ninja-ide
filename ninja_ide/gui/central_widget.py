@@ -177,7 +177,7 @@ class CentralWidget(QWidget):
 
     def get_inside_sizes(self):
         region1 = self._splitterInside.widget(1)
-        if region1.isVisible():
+        if region1 and region1.isVisible():
             self._splitterInsideSizes = self._splitterInside.sizes()
         return self._splitterInsideSizes
 
