@@ -71,12 +71,13 @@ def scrollable_wrapper(widget):
 class TreeHeader(QHeaderView):
     """
     SIGNALS:
-    @headerClicked(QPoint)
+    @headerClicked(QPoint, QString)
     """
 
     def __init__(self):
         super(TreeHeader, self).__init__(Qt.Horizontal)
         self.title = ""
+        self.path = ""
         self._is_current_project = False
         self._mouse_over = False
         self.setToolTip(translations.TR_PROJECT_OPTIONS)
@@ -122,7 +123,8 @@ class TreeHeader(QHeaderView):
 
     def mousePressEvent(self, event):
         super(TreeHeader, self).mousePressEvent(event)
-        self.emit(SIGNAL("headerClicked(QPoint)"), QCursor.pos())
+        self.emit(SIGNAL("headerClicked(QPoint, QString)"),
+            QCursor.pos(), self.path)
 
 
 class ProjectTreeColumn(QWidget):
@@ -260,6 +262,7 @@ class ProjectTreeColumn(QWidget):
             pmodel = project.model
             ptree.setModel(pmodel)
             ptree.header().title = project.name
+            ptree.header().path = project.path
             pindex = pmodel.index(pmodel.rootPath())
             ptree.setRootIndex(pindex)
             #self._widget.layout().addWidget(scrollable_wrapper(ptree))
@@ -355,8 +358,8 @@ class TreeProjectsWidget(QTreeView):
         self.setAnimated(True)
 
         t_header = TreeHeader()
-        self.connect(t_header, SIGNAL("headerClicked(QPoint)"),
-            lambda point: self._menu_context_tree(point, True))
+        self.connect(t_header, SIGNAL("headerClicked(QPoint, QString)"),
+            lambda point, path: self._menu_context_tree(point, True, path))
         self.setHeader(t_header)
         t_header.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
         t_header.setResizeMode(0, QHeaderView.Stretch)
@@ -440,7 +443,7 @@ class TreeProjectsWidget(QTreeView):
         if path not in self.state_index:
             self.state_index.append(path)
 
-    def _menu_context_tree(self, point, isRoot=False):
+    def _menu_context_tree(self, point, isRoot=False, root_path=None):
         index = self.indexAt(point)
         if not index.isValid() and not isRoot:
             return
@@ -448,7 +451,7 @@ class TreeProjectsWidget(QTreeView):
         handler = None
         menu = QMenu(self)
         if isRoot or self.model().isDir(index):
-            self._add_context_menu_for_folders(menu, isRoot)
+            self._add_context_menu_for_folders(menu, isRoot, root_path)
         else:
             filename = self.model().fileName(index)
             lang = file_manager.get_file_extension(filename)
@@ -506,7 +509,7 @@ class TreeProjectsWidget(QTreeView):
                 menu.addSeparator()
                 menu.addMenu(m)
 
-    def _add_context_menu_for_folders(self, menu, isRoot):
+    def _add_context_menu_for_folders(self, menu, isRoot=False, path=None):
         #Create Actions
         action_add_file = menu.addAction(QIcon(":img/new"),
                     self.tr("Add New File"))
@@ -517,14 +520,22 @@ class TreeProjectsWidget(QTreeView):
         action_remove_folder = menu.addAction(self.tr("Remove Folder"))
 
         #Connect actions
-        self.connect(action_add_file, SIGNAL("triggered()"),
-            self._add_new_file)
-        self.connect(action_add_folder, SIGNAL("triggered()"),
-            self._add_new_folder)
-        self.connect(action_create_init, SIGNAL("triggered()"),
-            self._create_init)
-        self.connect(action_remove_folder, SIGNAL("triggered()"),
-            self._delete_folder)
+        if isRoot:
+            self.connect(action_add_file, SIGNAL("triggered()"),
+                lambda: self._add_new_file(path))
+            self.connect(action_add_folder, SIGNAL("triggered()"),
+                lambda: self._add_new_folder(path))
+            self.connect(action_create_init, SIGNAL("triggered()"),
+                lambda: self._create_init(path))
+        else:
+            self.connect(action_add_file, SIGNAL("triggered()"),
+                self._add_new_file)
+            self.connect(action_add_folder, SIGNAL("triggered()"),
+                self._add_new_folder)
+            self.connect(action_create_init, SIGNAL("triggered()"),
+                self._create_init)
+            self.connect(action_remove_folder, SIGNAL("triggered()"),
+                self._delete_folder)
 
     def _add_context_menu_for_files(self, menu, lang):
         #Create actions
@@ -597,8 +608,9 @@ class TreeProjectsWidget(QTreeView):
             QMessageBox.information(self, self.tr("Create INIT fail"),
                 ex.message)
 
-    def _add_new_file(self):
-        path = self.model().filePath(self.currentIndex())
+    def _add_new_file(self, path=''):
+        if not path:
+            path = self.model().filePath(self.currentIndex())
         result = QInputDialog.getText(self, self.tr("New File"),
             self.tr("Enter the File Name:"))
         fileName = result[0]
@@ -612,9 +624,10 @@ class TreeProjectsWidget(QTreeView):
             if main_container:
                 main_container.open_file(fileName)
 
-    def _add_new_folder(self):
+    def _add_new_folder(self, path=''):
         #FIXME: We need nfilesystem support for this
-        path = self.model().filePath(self.currentIndex())
+        if not path:
+            path = self.model().filePath(self.currentIndex())
         result = QInputDialog.getText(self, self.tr("New Folder"),
             self.tr("Enter the Folder Name:"))
         folderName = result[0]
@@ -623,8 +636,9 @@ class TreeProjectsWidget(QTreeView):
             folderName = os.path.join(path, folderName)
             file_manager.create_folder(folderName)
 
-    def _delete_file(self):
-        path = self.model().filePath(self.currentIndex())
+    def _delete_file(self, path=''):
+        if not path:
+            path = self.model().filePath(self.currentIndex())
         val = QMessageBox.question(self, self.tr("Delete File"),
                 self.tr("Do you want to delete the following file: ")
                 + path,
