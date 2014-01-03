@@ -22,6 +22,13 @@ ACTIONS_CENTRAL = (
                'weight': 120},
     "connect": "hide_all"
     },
+    {
+    "shortcut": "Hide-explorer",
+    "action": {'text': translations.TR_EXPLORER_VISIBILITY,
+               'section': (translations.TR_MENU_VIEW, None),
+               'weight': 130},
+    "connect": "change_lateral_visibility"
+    },
 )
 
 

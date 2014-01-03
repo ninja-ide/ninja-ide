@@ -24,7 +24,6 @@ from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QComboBox
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QSettings
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -50,13 +49,11 @@ class CentralWidget(QWidget):
         super(CentralWidget, self).__init__(parent)
         self.parent = parent
         #This variables are used to save the splitter sizes before hide
-        self._splitterBaseSizes = None
-        self._splitterInsideSizes = None
         self.lateralPanel = LateralPanel()
 
         self._add_functions = {
-            "central": self._insert_widget_region0,
-            "lateral": self._insert_widget_region1,
+            "central": self._insert_widget_inside,
+            "lateral": self._insert_widget_base,
         }
         self._items = {}
 
@@ -86,15 +83,21 @@ class CentralWidget(QWidget):
     def get_item(self, name):
         return self._items.get(name, None)
 
-    def _insert_widget_region0(self, container, top=False):
+    def _insert_widget_inside(self, container, top=False):
         self._splitterInside.add_widget(container, top)
 
-    def _insert_widget_region1(self, container, top=False):
+    def _insert_widget_base(self, container, top=False):
         if not self.lateralPanel.has_component:
             self.lateralPanel.add_component(container)
             self._splitterBase.add_widget(self.lateralPanel, top)
         else:
             self._splitterBase.add_widget(container, top)
+
+    def change_lateral_visibility(self):
+        if self.lateralPanel.isVisible():
+            self.lateralPanel.hide()
+        else:
+            self.lateralPanel.show()
 
     def hide_all(self):
         """Hide/Show all the containers except the editor."""
@@ -128,7 +131,7 @@ class CentralWidget(QWidget):
         if bin(settings.UI_LAYOUT >> 2)[-1] == '1':
             self.splitter_base_orientation()
         #Rearrange widgets on Window
-        qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
+        qsettings = IDE.ninja_settings()
         #Lists of sizes as list of QVariant- heightList = [QVariant, QVariant]
         heightSize = qsettings.value("window/central/insideSplitterSize", None)
         widthSize = qsettings.value("window/central/baseSplitterSize", None)
@@ -168,11 +171,13 @@ class CentralWidget(QWidget):
         #else:
             #self._splitterInside.setOrientation(Qt.Horizontal)
 
-    def get_area_sizes(self):
-        return self._splitterBase.saveState()
-
-    def get_inside_sizes(self):
-        return self._splitterInside.saveState()
+    def save_configuration(self):
+        qsettings = IDE.ninja_settings()
+        #Save the size of de splitters
+        qsettings.setValue("window/central/baseSplitterSize",
+            self._splitterBase.saveState())
+        qsettings.setValue("window/central/insideSplitterSize",
+            self._splitterInside.saveState())
 
     def get_paste(self):
         return self.lateralPanel.get_paste()
