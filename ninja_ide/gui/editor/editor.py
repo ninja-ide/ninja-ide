@@ -697,8 +697,7 @@ class Editor(QPlainTextEdit):
         self.moveCursor(QTextCursor.StartOfLine, move)
         self.moveCursor(QTextCursor.WordRight, move)
         if position != self.textCursor().position() and \
-           (cursor.block().text().startswith(' ') or
-           cursor.block().text().startswith('\t')):
+           cursor.block().text().startswith(' ', '\t'):
             return True
 
     def __ignore_extended_line(self, event):

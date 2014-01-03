@@ -827,7 +827,7 @@ class PreferencesWidget(QDialog):
         #self._spinSize.setValue(settings.SIZE_PROPORTION * 100)
         #formMini.addWidget(QLabel(
             #self.tr("Enable/Disable MiniMap (Requires restart):\n"
-            #"(opacity not supported in MAC OS)")), 0, 0,
+            #"(opacity not supported in Mac OS X)")), 0, 0,
             #Qt.AlignRight)
         #formMini.addWidget(QLabel(self.tr("Max Opacity:")), 1, 0,
             #Qt.AlignRight)

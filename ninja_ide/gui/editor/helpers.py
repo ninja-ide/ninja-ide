@@ -129,7 +129,7 @@ def remove_trailing_spaces(editorWidget):
     block = editorWidget.document().findBlockByLineNumber(0)
     while block.isValid():
         text = block.text()
-        if text.endswith(' '):
+        if text.endswith((' ', '\t')):
             cursor.setPosition(block.position())
             cursor.select(QTextCursor.LineUnderCursor)
             cursor.insertText(text.rstrip())
