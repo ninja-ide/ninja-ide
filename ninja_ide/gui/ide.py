@@ -57,6 +57,7 @@ from ninja_ide.gui.dialogs import preferences
 from ninja_ide.gui.dialogs import traceback_widget
 from ninja_ide.gui.dialogs import python_detect_dialog
 from ninja_ide.tools import ui_tools
+from ninja_ide.tools.completion import completion_daemon
 
 ###############################################################################
 # LOGGER INITIALIZE
@@ -698,6 +699,7 @@ class IDE(QMainWindow):
         main_container.close_python_doc()
         #Shutdown PluginManager
         self.plugin_manager.shutdown()
+        completion_daemon.shutdown_daemon()
         super(IDE, self).closeEvent(event)
 
     def notify_plugin_errors(self):
