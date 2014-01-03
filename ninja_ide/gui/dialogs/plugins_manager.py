@@ -607,7 +607,7 @@ class DependenciesHelpDialog(QDialog):
         vbox = QVBoxLayout(self)
         label = QLabel(self.tr("""It seems that some plugins needs some
             dependencies to be solved to work properly, you should install them
-            as follows using a Terminal"""))
+            as follows using a command line."""))
         vbox.addWidget(label)
         self._editor = QPlainTextEdit()
         self._editor.setReadOnly(True)

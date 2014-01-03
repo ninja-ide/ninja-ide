@@ -226,7 +226,7 @@ class ImportFromSourcesProjectHandler(plugin_interfaces.IProjectTypeHandler):
         path = page.txtPlace.text()
         if not path:
             QMessageBox.critical(self, self.tr("Incorrect Location"),
-                self.tr("The project couldn\'t be create"))
+                self.tr("The project couldn\'t be created"))
             return
         project = {}
         project['name'] = name
