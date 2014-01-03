@@ -579,9 +579,9 @@ class IDE(QMainWindow):
             qsettings.setValue("window/size", self.size())
             qsettings.setValue("window/pos", self.pos())
         #Save the size of de splitters
-        qsettings.setValue("window/central/baseSize",
+        qsettings.setValue("window/central/baseSplitterSize",
             self.central.get_area_sizes())
-        qsettings.setValue("window/central/insideSize",
+        qsettings.setValue("window/central/insideSplitterSize",
             self.central.get_inside_sizes())
         #Save the toolbar visibility
         #if not self.toolbar.isVisible() and self.menuBar().isVisible():
