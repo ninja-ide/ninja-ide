@@ -24,8 +24,6 @@ from PyQt4.QtGui import QTabWidget
 from PyQt4.QtGui import QIcon
 
 from ninja_ide.gui.ide import IDE
-from ninja_ide.gui.explorer import actions
-from ninja_ide.tools import ui_tools
 
 from ninja_ide.tools.logger import NinjaLogger
 
@@ -87,7 +85,6 @@ class ExplorerContainer(QSplitter):
 
         if self.count() == 0:
             self.hide()
-        ui_tools.install_shortcuts(self, actions.ACTIONS, ide)
 
     def create_tab_widget(self):
         tab_widget = QTabWidget()
@@ -103,12 +100,6 @@ class ExplorerContainer(QSplitter):
         func = getattr(obj, 'install_tab', None)
         if isinstance(func, collections.Callable):
             func()
-
-    def change_visibility(self):
-        if self.isVisible():
-            self.hide()
-        else:
-            self.show()
 
     def rotate_tab_position(self):
         for i in range(self.count()):

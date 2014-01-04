@@ -531,6 +531,14 @@ class IDE(QMainWindow):
         else:
             QMainWindow.wheelEvent(self, event)
 
+    @classmethod
+    def ninja_settings(self):
+        return QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
+
+    @classmethod
+    def data_settings(self):
+        return QSettings(resources.DATA_SETTINGS_PATH, QSettings.IniFormat)
+
     def save_settings(self):
         """Save the settings before the application is closed with QSettings.
 
@@ -578,11 +586,7 @@ class IDE(QMainWindow):
             #Save the size and position of the mainwindow
             qsettings.setValue("window/size", self.size())
             qsettings.setValue("window/pos", self.pos())
-        #Save the size of de splitters
-        qsettings.setValue("window/central/baseSplitterSize",
-            self.central.get_area_sizes())
-        qsettings.setValue("window/central/insideSplitterSize",
-            self.central.get_inside_sizes())
+        self.central.save_configuration()
         #Save the toolbar visibility
         #if not self.toolbar.isVisible() and self.menuBar().isVisible():
             #qsettings.setValue("window/hide_toolbar", True)

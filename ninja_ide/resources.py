@@ -59,6 +59,8 @@ NINJA_KNOWLEDGE_PATH = os.path.join(HOME_NINJA_PATH, 'knowledge')
 
 SETTINGS_PATH = os.path.join(HOME_NINJA_PATH, 'settings.ini')
 
+DATA_SETTINGS_PATH = os.path.join(HOME_NINJA_PATH, 'data_settings.ini')
+
 EXTENSIONS_PATH = os.path.join(HOME_NINJA_PATH, "extensions")
 
 SYNTAX_FILES = os.path.join(PRJ_PATH, "extensions", "syntax")
