@@ -24,7 +24,6 @@ from PyQt4.QtGui import QTabWidget
 from PyQt4.QtGui import QIcon
 
 from ninja_ide.gui.ide import IDE
-from ninja_ide.tools import ui_tools
 
 from ninja_ide.tools.logger import NinjaLogger
 

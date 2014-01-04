@@ -131,9 +131,19 @@ class _ToolsDock(QWidget):
     def install(self):
         """Install triggered by the ide."""
         self.setup_ui()
-        ide = IDE.get_service('ide')
-        ide.place_me_on("tools_dock", self, "central")
-        ui_tools.install_shortcuts(self, actions.ACTIONS, ide)
+        ninjaide = IDE.get_service('ide')
+        ninjaide.place_me_on("tools_dock", self, "central")
+        ui_tools.install_shortcuts(self, actions.ACTIONS, ninjaide)
+
+        self.connect(ninjaide, SIGNAL("goingDown()"), self.save_configuration)
+
+        qsettings = IDE.ninja_settings()
+        value = qsettings.value("tools_dock/visible", True, type=bool)
+        self.setVisible(value)
+
+    def save_configuration(self):
+        qsettings = IDE.ninja_settings()
+        qsettings.setValue("tools_dock/visible", self.isVisible())
 
     def change_visibility(self):
         """Change tools dock visibility."""

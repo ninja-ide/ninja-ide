@@ -135,16 +135,19 @@ class CentralWidget(QWidget):
         #Lists of sizes as list of QVariant- heightList = [QVariant, QVariant]
         heightSize = qsettings.value("window/central/insideSplitterSize", None)
         widthSize = qsettings.value("window/central/baseSplitterSize", None)
+        lateralVisible = qsettings.value("window/central/lateralVisible", True,
+            type=bool)
         if heightSize is None:
             self._splitterInside.setSizes([(self.height() / 3) * 2,
                                          self.height() / 3])
         else:
             self._splitterInside.restoreState(heightSize)
-
         if widthSize is None:
             self._splitterBase.setSizes([900, 100])
         else:
             self._splitterBase.restoreState(widthSize)
+        if not lateralVisible:
+            self.lateralPanel.hide()
         #self.tool.setVisible(
             #qsettings.value("window/show_region1", False, type=bool))
 
@@ -178,6 +181,8 @@ class CentralWidget(QWidget):
             self._splitterBase.saveState())
         qsettings.setValue("window/central/insideSplitterSize",
             self._splitterInside.saveState())
+        qsettings.setValue("window/central/lateralVisible",
+            self.lateralPanel.isVisible())
 
     def get_paste(self):
         return self.lateralPanel.get_paste()
