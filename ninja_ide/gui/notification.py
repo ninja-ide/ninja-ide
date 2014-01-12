@@ -37,7 +37,7 @@ class Notification(QFrame):
         self.setAttribute(Qt.WA_ShowWithoutActivating)
         self.setStyleSheet("background:transparent;")
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
-        self.setFixedHeight(30)
+        self.setFixedHeight(80)
         # Create the QML user interface.
         view = QDeclarativeView()
         view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
