@@ -13,6 +13,7 @@ TR_MENU_PROJECT = tr("NINJA-IDE", "&Project")
 TR_MENU_EXTENSIONS = tr("NINJA-IDE", "E&xtensions")
 TR_MENU_ABOUT = tr("NINJA-IDE", "Abou&t")
 
+TR_SESSION_IDE_HEADER = tr("NINJA-IDE", "NINJA-IDE (SESSION: %(session)s)")
 TR_DUPLICATE = tr("NINJA-IDE", "Duplicate")
 TR_REMOVE_LINE = tr("NINJA-IDE", "Remove Line")
 TR_MOVE_UP = tr("NINJA-IDE", "Move Up")
@@ -67,8 +68,8 @@ TR_CONVERT_UPPER = tr("NINJA-IDE", "Convert selected Text to: UPPER")
 TR_CONVERT_LOWER = tr("NINJA-IDE", "Convert selected Text to: lower")
 TR_CONVERT_TITLE = tr("NINJA-IDE", "Convert selected Text to: Title Word")
 TR_PREFERENCES = tr("NINJA-IDE", "Preferences")
-TR_ACTIVATE_PROFILE = tr("NINJA-IDE", "Activate Profile")
-TR_DEACTIVATE_PROFILE = tr("NINJA-IDE", "Deactivate Profile")
+TR_ACTIVATE_PROFILE = tr("NINJA-IDE", "Activate Session")
+TR_DEACTIVATE_PROFILE = tr("NINJA-IDE", "Deactivate Session")
 TR_CLOSE_ALL_PROJECTS = tr("NINJA-IDE", "Close All Projects")
 TR_EXIT = tr("NINJA-IDE", "Exit")
 TR_OPEN_PROJECT_PROPERTIES = tr("NINJA-IDE", "Open Project Properties")
@@ -179,6 +180,15 @@ TR_NO_RESULTS = tr("NINJA-IDE", "No results were found!")
 TR_DEFINITION_NOT_FOUND = tr("NINJA-IDE", "Definition Not Found")
 TR_DEFINITION_NOT_FOUND_BODY = tr("NINJA-IDE",
     "This Definition does not belong to this Project.")
+TR_SESSION_ACTIVE_IDE_CLOSING_TITLE = tr("NINJA-IDE",
+    "Session active")
+TR_SESSION_ACTIVE_IDE_CLOSING_BODY = tr("NINJA-IDE",
+    "Session: %(session)s still active, do you want to update this session"
+    " with the current files and projects before closing?")
+TR_IDE_CONFIRM_EXIT_TITLE = tr("NINJA-IDE", "Some changes were not saved")
+TR_IDE_CONFIRM_EXIT_BODY = tr("NINJA-IDE",
+    "%(files)s\n\nDo you want to save them?")
+TR_IDE_TOOLBAR_TOOLTIP = tr("NINJA-IDE", "Press and Drag to Move")
 
 # Status Bar
 TR_SEARCH_CASE_SENSITIVE = tr("NINJA-IDE", "Respect Case Sensitive")
@@ -187,3 +197,25 @@ TR_SEARCH_WHOLE_WORDS = tr("NINJA-IDE", "Find Whole Words")
 # Checkers
 TR_PEP8_DIRTY_TEXT = tr("NINJA-IDE", "PEP8 violations: ")
 TR_LINT_DIRTY_TEXT = tr("NINJA-IDE", "Lint errors: ")
+
+# Dialogs
+TR_PREFERENCES_TITLE = tr("NINJA-IDE", "NINJA-IDE - Preferences")
+TR_SESSIONS_TITLE = tr("NINJA-IDE", "Sessions Manager")
+TR_SESSIONS_DIALOG_BODY = tr("NINJA-IDE",
+    "Save your opened files and projects "
+    "into a session and change really quick\n"
+    "between projects and files sessions.\n"
+    "This allows you to save your working environment, "
+    "keep working in another\nproject and then go back "
+    "exactly where you left.")
+TR_SESSIONS_BTN_DELETE = tr("NINJA-IDE", "Delete Session")
+TR_SESSIONS_BTN_UPDATE = tr("NINJA-IDE", "Update Session")
+TR_SESSIONS_BTN_CREATE = tr("NINJA-IDE", "Create New Session")
+TR_SESSIONS_BTN_ACTIVATE = tr("NINJA-IDE", "Activate Session")
+TR_SESSIONS_CREATE_TITLE = tr("NINJA-IDE", "Create Session")
+TR_SESSIONS_CREATE_BODY = tr("NINJA-IDE", "The Current Files and Projects will"
+    " be associated to this session.\nSession Name:")
+TR_SESSIONS_MESSAGE_TITLE = tr("NINJA-IDE", "Session Name Invalid")
+TR_SESSIONS_MESSAGE_BODY = tr("NINJA-IDE",
+    "The Session name is invalid or already exists.")
+TR_SESSIONS_UPDATED_NOTIF = tr("NINJA-IDE", "Session %(session)s Updated!")

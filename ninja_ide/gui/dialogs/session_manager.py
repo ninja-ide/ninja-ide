@@ -16,6 +16,8 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
+import os
+
 from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
@@ -23,42 +25,38 @@ from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QListWidget
 from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QPushButton
+from PyQt4.QtGui import QInputDialog
+from PyQt4.QtGui import QMessageBox
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
+
+from ninja_ide import translations
+from ninja_ide.core import settings
+from ninja_ide.core.file_handling import file_manager
 
 
 class SessionsManager(QDialog):
 
     """Session Manager, to load different configurations of ninja."""
 
-    def __init__(self, load_func, create_func, save_func,
-            profiles, parent=None):
+    def __init__(self, parent=None):
         super(SessionsManager, self).__init__(parent, Qt.Dialog)
-        self.setWindowTitle(self.tr("Session Manager"))
+        self._ide = parent
+        self.setWindowTitle(translations.TR_SESSIONS_TITLE)
         self.setMinimumWidth(400)
-        self._profiles = profiles
-        self.load_function = load_func
-        self.create_function = create_func
-        self.save_function = save_func
-        self.ide = parent
         vbox = QVBoxLayout(self)
-        vbox.addWidget(QLabel(self.tr("Save your opened files and projects "
-                        "into a profile and change really quick\n"
-                        "between projects and files sessions.\n"
-                        "This allows you to save your working environment, "
-                        "keep working in another\nproject and then go back "
-                        "exactly where you left.")))
-        self.profileList = QListWidget()
-        self.profileList.addItems([key for key in profiles])
-        self.profileList.setCurrentRow(0)
+        vbox.addWidget(QLabel(translations.TR_SESSIONS_DIALOG_BODY))
+        self.sessionList = QListWidget()
+        self.sessionList.addItems([key for key in settings.SESSIONS])
+        self.sessionList.setCurrentRow(0)
         self.contentList = QListWidget()
-        self.btnDelete = QPushButton(self.tr("Delete Profile"))
+        self.btnDelete = QPushButton(translations.TR_SESSIONS_BTN_DELETE)
         self.btnDelete.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        self.btnUpdate = QPushButton(self.tr("Update Profile"))
+        self.btnUpdate = QPushButton(translations.TR_SESSIONS_BTN_UPDATE)
         self.btnUpdate.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        self.btnCreate = QPushButton(self.tr("Create New Profile"))
+        self.btnCreate = QPushButton(translations.TR_SESSIONS_BTN_CREATE)
         self.btnCreate.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        self.btnOpen = QPushButton(self.tr("Open Profile"))
+        self.btnOpen = QPushButton(translations.TR_SESSIONS_BTN_ACTIVATE)
         self.btnOpen.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.btnOpen.setDefault(True)
         hbox = QHBoxLayout()
@@ -67,53 +65,102 @@ class SessionsManager(QDialog):
         hbox.addWidget(self.btnCreate)
         hbox.addWidget(self.btnOpen)
 
-        vbox.addWidget(self.profileList)
+        vbox.addWidget(self.sessionList)
         vbox.addWidget(self.contentList)
         vbox.addLayout(hbox)
 
-        self.connect(self.profileList, SIGNAL("itemSelectionChanged()"),
-            self.load_profile_content)
-        self.connect(self.btnOpen, SIGNAL("clicked()"), self.open_profile)
-        self.connect(self.btnUpdate, SIGNAL("clicked()"), self.save_profile)
-        self.connect(self.btnCreate, SIGNAL("clicked()"), self.create_profile)
-        self.connect(self.btnDelete, SIGNAL("clicked()"), self.delete_profile)
+        self.connect(self.sessionList, SIGNAL("itemSelectionChanged()"),
+            self.load_session_content)
+        self.connect(self.btnOpen, SIGNAL("clicked()"), self.open_session)
+        self.connect(self.btnUpdate, SIGNAL("clicked()"), self.save_session)
+        self.connect(self.btnCreate, SIGNAL("clicked()"), self.create_session)
+        self.connect(self.btnDelete, SIGNAL("clicked()"), self.delete_session)
+        self.load_session_content()
 
-    def load_profile_content(self):
-        """Load the selected profile, replacing the current session."""
-        item = self.profileList.currentItem()
+    def load_session_content(self):
+        """Load the selected session, replacing the current session."""
+        item = self.sessionList.currentItem()
         self.contentList.clear()
         if item is not None:
             key = item.text()
             files = [self.tr('Files:')] + \
-                [file[0] for file in self._profiles[key][0]]
-            projects = [self.tr('Projects:')] + self._profiles[key][1]
+                [file[0] for file in settings.SESSIONS[key][0]]
+            projects = [self.tr('Projects:')] + settings.SESSIONS[key][1]
             content = files + projects
             self.contentList.addItems(content)
 
-    def create_profile(self):
-        """Create a new Profile."""
-        profileName = self.create_function()
-        self.ide.Profile = profileName
+    def create_session(self):
+        """Create a new Session."""
+        sessionInfo = QInputDialog.getText(None,
+            translations.TR_SESSIONS_CREATE_TITLE,
+            translations.TR_SESSIONS_CREATE_BODY)
+        if sessionInfo[1]:
+            sessionName = sessionInfo[0]
+            if not sessionName or sessionName in settings.SESSIONS:
+                QMessageBox.information(self,
+                    translations.TR_SESSIONS_MESSAGE_TITLE,
+                    translations.TR_SESSIONS_MESSAGE_BODY)
+                return
+            SessionsManager.save_session_data(sessionName, self._ide)
+        self._ide.Session = sessionName
         self.close()
 
-    def save_profile(self):
-        if self.profileList.currentItem():
-            profileName = self.profileList.currentItem().text()
-            self.save_function(profileName)
-            self.ide.show_message(self.tr("Profile %s Updated!") %
-                profileName, 2000)
-            self.load_profile_content()
+    @classmethod
+    def save_session_data(cls, sessionName, ide):
+        """Save the updates from a session."""
+        openedFiles = ide.filesystem.get_files()
+        files_info = []
+        for path in openedFiles:
+            editable = ide.get_or_create_editable(path)
+            if editable.is_dirty:
+                stat_value = 0
+            else:
+                stat_value = os.stat(path).st_mtime
+            files_info.append([path,
+                editable.editor.get_cursor_position(), stat_value])
+        projects_obj = ide.filesystem.get_projects()
+        projects = [projects_obj[proj].path for proj in projects_obj]
+        settings.SESSIONS[sessionName] = [files_info, projects]
+        qsettings = ide.data_settings()
+        qsettings.setValue('ide/sessions', settings.SESSIONS)
 
-    def open_profile(self):
-        if self.profileList.currentItem():
-            key = self.profileList.currentItem().text()
-            self.load_function(key)
-            self.ide.Profile = key
+    def save_session(self):
+        if self.sessionList.currentItem():
+            sessionName = self.sessionList.currentItem().text()
+            SessionsManager.save_session_data(sessionName, self._ide)
+            self._ide.show_message(translations.TR_SESSIONS_UPDATED_NOTIF %
+                {'session': sessionName}, 2000)
+            self.load_session_content()
+
+    def open_session(self):
+        if self.sessionList.currentItem():
+            key = self.sessionList.currentItem().text()
+            self._load_session_data(key)
+            self._ide.Session = key
             self.close()
 
-    def delete_profile(self):
-        if self.profileList.currentItem():
-            key = self.profileList.currentItem().text()
-            self._profiles.pop(key)
-            self.profileList.takeItem(self.profileList.currentRow())
+    def delete_session(self):
+        if self.sessionList.currentItem():
+            key = self.sessionList.currentItem().text()
+            settings.SESSIONS.pop(key)
+            self.sessionList.takeItem(self.sessionList.currentRow())
             self.contentList.clear()
+            qsettings = self._ide.data_settings()
+            qsettings.setValue('ide/sessions', settings.SESSIONS)
+
+    def _load_session_data(self, key):
+        """Activate the selected session, closing the current files/projects"""
+        main_container = self._ide.get_service('main_container')
+        projects_explorer = self._ide.get_service('projects_explorer')
+        if projects_explorer and main_container:
+            projects_explorer.close_opened_projects()
+            for fileData in settings.SESSIONS[key][0]:
+                path, line, stat_value = fileData
+                if file_manager.file_exists(path):
+                    mtime = os.stat(path).st_mtime
+                    ignore_checkers = (mtime == stat_value)
+                    main_container.open_file(path, line,
+                        ignore_checkers=ignore_checkers)
+            if projects_explorer:
+                projects_explorer.load_session_projects(
+                    settings.SESSIONS[key][1])

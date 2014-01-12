@@ -90,7 +90,8 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     QTextCodec.setCodecForCStrings(QTextCodec.codecForName('utf-8'))
 
     #Translator
-    qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
+    qsettings = ide.IDE.ninja_settings()
+    data_qsettings = ide.IDE.data_settings()
     language = QLocale.system().name()
     lang = qsettings.value('preferences/interface/language',
         defaultValue=language, type='QString') + '.qm'
@@ -167,7 +168,7 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     #First check if we need to load last session files
     if qsettings.value('preferences/general/loadFiles', True, type=bool):
         #Files in Main Tab
-        files = qsettings.value('lastSession/openedFiles', [])
+        files = data_qsettings.value('lastSession/openedFiles', [])
         tempFiles = []
         if files:
             for file_ in files:
@@ -177,12 +178,12 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
         files = tempFiles
 
         # Recent Files
-        recent_files = qsettings.value('lastSession/recentFiles', [])
+        recent_files = data_qsettings.value('lastSession/recentFiles', [])
         #Current File
-        current_file = qsettings.value(
+        current_file = data_qsettings.value(
                         'lastSession/currentFile', '', type='QString')
         #Projects
-        projects = qsettings.value('lastSession/projects', [])
+        projects = data_qsettings.value('lastSession/projects', [])
     else:
         files = []
         recent_files = []

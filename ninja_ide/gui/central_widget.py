@@ -122,12 +122,10 @@ class CentralWidget(QWidget):
     def showEvent(self, event):
         #Show Event
         super(CentralWidget, self).showEvent(event)
-        #if not event.spontaneous():
-            #self.change_region1_visibility()
         if bin(settings.UI_LAYOUT)[-1] == '1':
             self.splitter_base_rotate()
         if bin(settings.UI_LAYOUT >> 1)[-1] == '1':
-            self.splitter_region1_rotate()
+            self.splitter_inside_rotate()
         if bin(settings.UI_LAYOUT >> 2)[-1] == '1':
             self.splitter_base_orientation()
         #Rearrange widgets on Window
@@ -148,31 +146,28 @@ class CentralWidget(QWidget):
             self._splitterBase.restoreState(widthSize)
         if not lateralVisible:
             self.lateralPanel.hide()
-        #self.tool.setVisible(
-            #qsettings.value("window/show_region1", False, type=bool))
 
-    #def splitter_base_rotate(self):
-        #w1, w2 = self._splitterBase.widget(0), self._splitterBase.widget(1)
-        #self._splitterBase.insertWidget(0, w2)
-        #self._splitterBase.insertWidget(1, w1)
-        #self.emit(SIGNAL("splitterBaseRotated()"))
+    def splitter_base_rotate(self):
+        w1, w2 = self._splitterBase.widget(0), self._splitterBase.widget(1)
+        self._splitterBase.insertWidget(0, w2)
+        self._splitterBase.insertWidget(1, w1)
 
-    #def splitter_base_orientation(self):
-        #if self._splitterBase.orientation() == Qt.Horizontal:
-            #self._splitterBase.setOrientation(Qt.Vertical)
-        #else:
-            #self._splitterBase.setOrientation(Qt.Horizontal)
+    def splitter_base_orientation(self):
+        if self._splitterBase.orientation() == Qt.Horizontal:
+            self._splitterBase.setOrientation(Qt.Vertical)
+        else:
+            self._splitterBase.setOrientation(Qt.Horizontal)
 
-    #def splitter_inside_rotate(self):
-        #w1, w2 = self._splitterMain.widget(0), self._splitterMain.widget(1)
-        #self._splitterMain.insertWidget(0, w2)
-        #self._splitterMain.insertWidget(1, w1)
+    def splitter_inside_rotate(self):
+        w1, w2 = self._splitterMain.widget(0), self._splitterMain.widget(1)
+        self._splitterMain.insertWidget(0, w2)
+        self._splitterMain.insertWidget(1, w1)
 
-    #def splitter_inside_orientation(self):
-        #if self._splitterInside.orientation() == Qt.Horizontal:
-            #self._splitterInside.setOrientation(Qt.Vertical)
-        #else:
-            #self._splitterInside.setOrientation(Qt.Horizontal)
+    def splitter_inside_orientation(self):
+        if self._splitterInside.orientation() == Qt.Horizontal:
+            self._splitterInside.setOrientation(Qt.Vertical)
+        else:
+            self._splitterInside.setOrientation(Qt.Horizontal)
 
     def save_configuration(self):
         qsettings = IDE.ninja_settings()

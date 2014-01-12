@@ -102,7 +102,7 @@ PYTHON_EXEC = "python"
 PYTHON_EXEC_CONFIGURED_BY_USER = False
 EXECUTION_OPTIONS = ""
 
-PROFILES = {}
+SESSIONS = {}
 
 TOOLBAR_ITEMS = [
     "_MainContainer.add_editor",
@@ -340,6 +340,8 @@ def pep8mod_update_margin_line_length(new_margin_line):
 
 def load_settings():
     qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
+    data_qsettings = QSettings(resources.DATA_SETTINGS_PATH,
+        QSettings.IniFormat)
     #Globals
     global TOOLBAR_AREA
     global LANGUAGE
@@ -349,7 +351,7 @@ def load_settings():
     global NOTIFY_UPDATES
     global PYTHON_EXEC
     global PYTHON_EXEC_CONFIGURED_BY_USER
-    global PROFILES
+    global SESSIONS
     global NINJA_SKIN
     global EXECUTION_OPTIONS
     global SUPPORTED_EXTENSIONS
@@ -410,23 +412,22 @@ def load_settings():
         'preferences/execution/pythonExecConfigured', False, type=bool)
     NINJA_SKIN = qsettings.value('preferences/theme/skin',
         'Default', type='QString')
-    profileDict = dict(qsettings.value('ide/profiles', {}))
-    for key in profileDict:
-        profile_list = list(profileDict[key])
+    sessionDict = dict(data_qsettings.value('ide/sessions', {}))
+    for key in sessionDict:
+        session_list = list(sessionDict[key])
         files = []
-        if profile_list:
-            files = [item
-                for item in list(profile_list[0])]
+        if session_list:
+            files = [item for item in list(session_list[0])]
         tempFiles = []
         for file_ in files:
             fileData = list(file_)
             if len(fileData) > 0:
-                tempFiles.append([fileData[0], int(fileData[1])])
+                tempFiles.append([fileData[0], int(fileData[1]), fileData[2]])
         files = tempFiles
         projects = []
-        if len(profile_list) > 1:
-            projects = [item for item in list(profile_list[1])]
-        PROFILES[key] = [files, projects]
+        if len(session_list) > 1:
+            projects = [item for item in list(session_list[1])]
+        SESSIONS[key] = [files, projects]
     #TODO
     #toolbar_items = [item for item in list(qsettings.value(
         #'preferences/interface/toolbar', []))]

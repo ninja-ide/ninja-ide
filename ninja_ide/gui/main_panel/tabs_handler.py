@@ -50,6 +50,7 @@ class TabsHandler(QFrame):
 
         self.connect(self._root, SIGNAL("open(QString)"), self._open)
         self.connect(self._root, SIGNAL("close(QString)"), self._close)
+        self.connect(self._root, SIGNAL("hide()"), self.hide)
 
     def _open(self, path):
         self._main_container.open_file(path)

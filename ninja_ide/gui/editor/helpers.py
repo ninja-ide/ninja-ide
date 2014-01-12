@@ -171,8 +171,7 @@ def insert_title_comment(editorWidget):
 
 
 def insert_coding_line(editorWidget):
-    lang = file_manager.get_file_extension(editorWidget.file_path)
-    key = settings.EXTENSIONS.get(lang)
+    key = settings.EXTENSIONS.get(editorWidget.nfile.file_ext)
     coding_line = CODING_LINE.get(key)
     if coding_line:
         editorWidget.textCursor().insertText("%s\n" % coding_line)
