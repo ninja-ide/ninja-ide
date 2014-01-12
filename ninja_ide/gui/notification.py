@@ -23,6 +23,7 @@ from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtDeclarative import QDeclarativeView
 
+from ninja_ide.core import settings
 from ninja_ide.tools import ui_tools
 
 
@@ -37,7 +38,11 @@ class Notification(QFrame):
         self.setAttribute(Qt.WA_ShowWithoutActivating)
         self.setStyleSheet("background:transparent;")
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
-        self.setFixedHeight(30)
+        #FIXME: Find out why this fails to look the same in os x
+        if settings.IS_MAC_OS:
+            self.setFixedHeight(80)
+        else:
+            self.setFixedHeight(31)
         # Create the QML user interface.
         view = QDeclarativeView()
         view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
