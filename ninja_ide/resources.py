@@ -57,7 +57,7 @@ HOME_NINJA_PATH = os.path.join(HOME_PATH, ".ninja_ide")
 
 NINJA_KNOWLEDGE_PATH = os.path.join(HOME_NINJA_PATH, 'knowledge')
 
-SETTINGS_PATH = os.path.join(HOME_NINJA_PATH, 'settings.ini')
+SETTINGS_PATH = os.path.join(HOME_NINJA_PATH, 'ninja_settings.ini')
 
 DATA_SETTINGS_PATH = os.path.join(HOME_NINJA_PATH, 'data_settings.ini')
 

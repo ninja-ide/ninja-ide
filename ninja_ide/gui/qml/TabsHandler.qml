@@ -17,6 +17,7 @@ Rectangle {
 
     signal open(string path)
     signal close(string path)
+    signal hide
 
     function show_animation() {
         root.opacity = 0;
@@ -98,10 +99,13 @@ Rectangle {
                     onClicked: {
                         var coord = mapToItem(listFiles, mouseX, mouseY)
                         var index = listFiles.indexAt(coord.x, coord.y);
-                        //FIXME: when index == 0 then start removing the wrong items
                         var path = listFiles.model.get(index).path;
                         listFiles.model.remove(index);
                         root.close(path);
+                        //FIXME: when index == 0 then start removing the wrong items
+                        if(index == 0) {
+                            root.hide();
+                        }
                     }
                 }
             }

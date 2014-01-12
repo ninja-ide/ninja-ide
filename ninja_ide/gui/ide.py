@@ -27,9 +27,8 @@ from PyQt4.QtGui import QToolBar
 from PyQt4.QtGui import QToolTip
 from PyQt4.QtGui import QFont
 from PyQt4.QtGui import QKeySequence
-from PyQt4.QtGui import QInputDialog
-from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QSettings
+from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QSizeF
 from PyQt4.QtCore import QPointF
@@ -42,6 +41,7 @@ from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core.file_handling import nfilesystem
 #from ninja_ide.core import plugin_services
 from ninja_ide.core import settings
+from ninja_ide.core import nsettings
 from ninja_ide.core import ipc
 from ninja_ide.gui import actions
 from ninja_ide.gui import updates
@@ -53,7 +53,7 @@ from ninja_ide.gui.dialogs import plugins_manager
 from ninja_ide.gui.dialogs import themes_manager
 from ninja_ide.gui.dialogs import language_manager
 from ninja_ide.gui.dialogs import session_manager
-from ninja_ide.gui.dialogs import preferences
+from ninja_ide.gui.dialogs.preferences import preferences
 from ninja_ide.gui.dialogs import traceback_widget
 from ninja_ide.gui.dialogs import python_detect_dialog
 from ninja_ide.tools import ui_tools
@@ -122,14 +122,14 @@ class IDE(QMainWindow):
             self.connect(self.s_listener, SIGNAL("newConnection()"),
                 self._process_connection)
 
-        #Profile handler
-        self.profile = None
+        #Sessions handler
+        self._session = None
         #Opacity
         self.opacity = settings.MAX_OPACITY
 
         #ToolBar
         self.toolbar = QToolBar(self)
-        self.toolbar.setToolTip(self.tr("Press and Drag to Move"))
+        self.toolbar.setToolTip(translations.TR_IDE_TOOLBAR_TOOLTIP)
         self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
         self.addToolBar(settings.TOOLBAR_AREA, self.toolbar)
         if settings.HIDE_TOOLBAR:
@@ -213,13 +213,13 @@ class IDE(QMainWindow):
         # Install Services
         for service_name in self.__IDESERVICES:
             self.install_service(service_name)
-        self.__created = True
+        IDE.__created = True
         menu_bar = IDE.get_service('menu_bar')
         if menu_bar:
             menu_bar.load_menu(self)
             #These two are the same service, I think that's ok
             menu_bar.load_toolbar(self)
-        self.__instance = self
+        IDE.__instance = self
 
     @classmethod
     def get_service(cls, service_name):
@@ -228,15 +228,15 @@ class IDE(QMainWindow):
 
     def get_menuitems(self):
         """Return a dictionary with the registered menu items."""
-        return self.__IDEMENUS
+        return IDE.__IDEMENUS
 
     def get_bar_categories(self):
         """Get the registered Categories for the Application menus."""
-        return self.__IDEBARCATEGORIES
+        return IDE.__IDEBARCATEGORIES
 
     def get_toolbaritems(self):
         """Return a dictionary with the registered menu items."""
-        return self.__IDETOOLBAR
+        return IDE.__IDETOOLBAR
 
     @classmethod
     def register_service(cls, service_name, obj):
@@ -247,7 +247,7 @@ class IDE(QMainWindow):
 
     def install_service(self, service_name):
         """Activate the registered service."""
-        obj = self.__IDESERVICES.get(service_name, None)
+        obj = IDE.__IDESERVICES.get(service_name, None)
         func = getattr(obj, 'install', None)
         if isinstance(func, collections.Callable):
             func()
@@ -276,12 +276,12 @@ class IDE(QMainWindow):
 
     def _connect_signals(self):
         """Connect the signals between the different services."""
-        for service_name in self.__IDECONNECTIONS:
-            connections = self.__IDECONNECTIONS[service_name]
+        for service_name in IDE.__IDECONNECTIONS:
+            connections = IDE.__IDECONNECTIONS[service_name]
             for connection in connections:
                 if connection.get('connected', False):
                     continue
-                target = self.__IDESERVICES.get(
+                target = IDE.__IDESERVICES.get(
                     connection['target'], None)
                 slot = connection['slot']
                 signal_name = connection['signal_name']
@@ -458,7 +458,7 @@ class IDE(QMainWindow):
 
     def show_preferences(self):
         """Open the Preferences Dialog."""
-        pref = preferences.PreferencesWidget(self)
+        pref = preferences.Preferences(self)
         pref.show()
 
     def load_session_files_projects(self, files, projects,
@@ -467,8 +467,6 @@ class IDE(QMainWindow):
         main_container = IDE.get_service('main_container')
         projects_explorer = IDE.get_service('projects_explorer')
         if main_container and files:
-            #self.connect(explorer, SIGNAL("projectOpened(QString)"),
-                #self._set_editors_project_data)
             for fileData in files:
                 if file_manager.file_exists(fileData[0]):
                     mtime = os.stat(fileData[0]).st_mtime
@@ -498,26 +496,27 @@ class IDE(QMainWindow):
         #if project:
             #self.actions.open_project(project)
 
-    def __get_profile(self):
-        return self.profile
+    def __get_session(self):
+        return self._session
 
-    def __set_profile(self, profileName):
-        self.profile = profileName
-        if self.profile is not None:
-            self.setWindowTitle('NINJA-IDE (PROFILE: %s)' % self.profile)
+    def __set_session(self, sessionName):
+        self._session = sessionName
+        if self._session is not None:
+            self.setWindowTitle(translations.TR_SESSION_IDE_HEADER %
+                {'session': self._session})
         else:
             self.setWindowTitle(
                 'NINJA-IDE {Ninja-IDE Is Not Just Another IDE}')
 
-    Profile = property(__get_profile, __set_profile)
+    Session = property(__get_session, __set_session)
 
     def change_window_title(self, title):
         """Change the title of the Application."""
-        if self.profile is None:
+        if self._session is None:
             self.setWindowTitle('NINJA-IDE - %s' % title)
         else:
-            self.setWindowTitle('NINJA-IDE (PROFILE: %s) - %s' % (
-                self.profile, title))
+            self.setWindowTitle((translations.TR_SESSION_IDE_HEADER %
+                {'session': self._session}) + ' - %s' % title)
 
     def wheelEvent(self, event):
         """Change the opacity of the application."""
@@ -532,19 +531,35 @@ class IDE(QMainWindow):
             QMainWindow.wheelEvent(self, event)
 
     @classmethod
-    def ninja_settings(self):
-        return QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
+    def ninja_settings(cls):
+        qsettings = nsettings.NSettings(resources.SETTINGS_PATH,
+            prefix="ns")
+        if cls.__created:
+            cls.__instance.connect(qsettings, SIGNAL("valueChanged(QString)"),
+                cls.__instance._settings_value_changed)
+        return qsettings
 
     @classmethod
-    def data_settings(self):
-        return QSettings(resources.DATA_SETTINGS_PATH, QSettings.IniFormat)
+    def data_settings(cls):
+        qsettings = nsettings.NSettings(resources.DATA_SETTINGS_PATH,
+            prefix="ds")
+        if cls.__created:
+            cls.__instance.connect(qsettings,
+                SIGNAL("valueChanged(QString, PyQt_PyObject)"),
+                cls.__instance._settings_value_changed)
+        return qsettings
+
+    def _settings_value_changed(self, key, value):
+        signal_name = "%s(PyQt_PyObject)" % key.replace("/", "_")
+        self.emit(SIGNAL(signal_name), value)
 
     def save_settings(self):
         """Save the settings before the application is closed with QSettings.
 
         Info saved: Tabs and projects opened, windows state(size and position).
         """
-        qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
+        qsettings = IDE.ninja_settings()
+        data_qsettings = IDE.data_settings()
         main_container = self.get_service("main_container")
         editor_widget = None
         if main_container:
@@ -552,12 +567,12 @@ class IDE(QMainWindow):
         current_file = ''
         if editor_widget is not None:
             current_file = editor_widget.file_path
-        if qsettings.value('preferences/general/loadFiles', True, type=bool):
+        if qsettings.value('preferences/general/loadFiles',
+                True, type=bool):
             openedFiles = self.filesystem.get_files()
             projects_obj = self.filesystem.get_projects()
             projects = [projects_obj[proj].path for proj in projects_obj]
-            qsettings.setValue('lastSession/projects',
-                projects)
+            data_qsettings.setValue('lastSession/projects', projects)
             files_info = []
             for path in openedFiles:
                 editable = self.__neditables.get(openedFiles[path])
@@ -568,14 +583,26 @@ class IDE(QMainWindow):
                 files_info.append([path,
                     editable.editor.get_cursor_position(),
                     stat_value])
-            qsettings.setValue('lastSession/openedFiles', files_info)
+            data_qsettings.setValue('lastSession/openedFiles', files_info)
             if current_file is not None:
-                qsettings.setValue('lastSession/currentFile', current_file)
-            qsettings.setValue('lastSession/recentFiles',
+                data_qsettings.setValue('lastSession/currentFile', current_file)
+            data_qsettings.setValue('lastSession/recentFiles',
                 settings.LAST_OPENED_FILES)
-        qsettings.setValue('preferences/editor/bookmarks', settings.BOOKMARKS)
-        qsettings.setValue('preferences/editor/breakpoints',
+        data_qsettings.setValue('preferences/editor/bookmarks',
+            settings.BOOKMARKS)
+        data_qsettings.setValue('preferences/editor/breakpoints',
             settings.BREAKPOINTS)
+
+        # Session
+        if self._session is not None:
+            val = QMessageBox.question(self,
+                translations.TR_SESSION_ACTIVE_IDE_CLOSING_TITLE,
+                (translations.TR_SESSION_ACTIVE_IDE_CLOSING_BODY %
+                    {'session': self.Session}),
+                QMessageBox.Yes, QMessageBox.No)
+            if val == QMessageBox.Yes:
+                session_manager.SessionsManager.save_session_data(
+                    self.Session, self)
         #qsettings.setValue('preferences/general/toolbarArea',
             #self.toolBarArea(self.toolbar))
         #Save if the windows state is maximixed
@@ -600,55 +627,14 @@ class IDE(QMainWindow):
         #else:
             #qsettings.setValue('ide/profiles', settings.PROFILES)
 
-    def create_profile(self):
-        """Create a profile binding files and projects to a key."""
-        profileInfo = QInputDialog.getText(None,
-            self.tr("Create Profile"), self.tr(
-                "The Current Files and Projects will "
-                "be associated to this profile.\n"
-                "Profile Name:"))
-        if profileInfo[1]:
-            profileName = profileInfo[0]
-            if not profileName or profileName in settings.PROFILES:
-                QMessageBox.information(self, self.tr("Profile Name Invalid"),
-                    self.tr("The Profile name is invalid or already exists."))
-                return
-            self.save_profile(profileName)
-            return profileName
-
-    def save_profile(self, profileName):
-        """Save the updates from a profile."""
-        ide = IDE.get_service('ide')
-        main_container = IDE.get_service('main_container')
-        if main_container:
-            projects_obj = ide.get_opened_projects()
-            projects = [p.path for p in projects_obj]
-            files = main_container.get_opened_documents()
-            files = files[0] + files[1]
-            settings.PROFILES[profileName] = [files, projects]
-            qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
-            qsettings.setValue('ide/profiles', settings.PROFILES)
-
     def activate_profile(self):
-        """Show the Profile Manager dialog."""
-        profilesLoader = session_manager.SessionsManager(
-            self._load_profile_data, self.create_profile, self.save_profile,
-            settings.PROFILES, self.ide)
+        """Show the Session Manager dialog."""
+        profilesLoader = session_manager.SessionsManager(self)
         profilesLoader.show()
 
     def deactivate_profile(self):
-        """Close the Profile Session."""
-        self.Profile = None
-
-    def _load_profile_data(self, key):
-        """Activate the selected profile, closing the current files/projects"""
-        explorer = IDE.get_service('explorer_container')
-        main_container = IDE.get_service('main_container')
-        if explorer and main_container:
-            explorer.close_opened_projects()
-            #TODO
-            #main_container.open_files(settings.PROFILES[key][0])
-            #explorer.open_session_projects(settings.PROFILES[key][1])
+        """Close the Session Session."""
+        self.Session = None
 
     def load_window_geometry(self):
         """Load from QSettings the window size of de Ninja IDE"""
@@ -688,8 +674,8 @@ class IDE(QMainWindow):
         if (settings.CONFIRM_EXIT and unsaved_files):
             txt = '\n'.join(unsaved_files)
             val = QMessageBox.question(self,
-                self.tr("Some changes were not saved"),
-                (self.tr("%s\n\nDo you want to save them?") % txt),
+                translations.TR_IDE_CONFIRM_EXIT_TITLE,
+                (translations.TR_IDE_CONFIRM_EXIT_BODY % {'files': txt}),
                 QMessageBox.Yes, QMessageBox.No, QMessageBox.Cancel)
             if val == QMessageBox.Yes:
                 #Saves all open files

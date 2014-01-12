@@ -89,7 +89,7 @@ def _initialize_db():
     locator_db = sqlite3.connect(db_path)
     cur = locator_db.cursor()
     cur.execute("create table if not exists "
-        "locator(path text, stat integer, data blob)")
+        "locator(path text PRIMARY KEY, stat integer, data blob)")
     locator_db.commit()
     locator_db.close()
 
@@ -139,9 +139,9 @@ class GoToDefinition(QObject):
 class ResultItem(object):
     """The Representation of each item found with the locator."""
 
-    def __init__(self, type='', name='', path='', lineno=-1):
+    def __init__(self, symbol_type='', name='', path='', lineno=-1):
         if name:
-            self.type = type  # Function, Class, etc
+            self.type = symbol_type  # Function, Class, etc
             self.name = name
             self.path = path
             self.lineno = lineno
@@ -226,7 +226,7 @@ class LocateSymbolsThread(QThread):
         if self._locator_db is not None:
             pdata = pickle.dumps(data, pickle.HIGHEST_PROTOCOL)
             cur = self._locator_db.cursor()
-            cur.execute("INSERT INTO locator values (?, ?, ?)",
+            cur.execute("INSERT OR REPLACE INTO locator values (?, ?, ?)",
                 (path, stat, sqlite3.Binary(pdata)))
             self._locator_db.commit()
 
@@ -361,11 +361,11 @@ class LocateSymbolsThread(QThread):
         file_ext = file_manager.get_file_extension(file_path)
         if file_ext not in exts:
             mapping_symbols[file_path] = [
-                ResultItem(type=FILTERS['non-python'], name=file_name,
+                ResultItem(symbol_type=FILTERS['non-python'], name=file_name,
                     path=file_path, lineno=-1)]
         else:
             mapping_symbols[file_path] = [
-                ResultItem(type=FILTERS['files'], name=file_name,
+                ResultItem(symbol_type=FILTERS['files'], name=file_name,
                         path=file_path, lineno=-1)]
         data = self._get_file_symbols(file_path)
         #FIXME: stat not int
@@ -402,20 +402,20 @@ class LocateSymbolsThread(QThread):
         for claz in clazzes:
             line_number = clazzes[claz]['lineno'] - 1
             members = clazzes[claz]['members']
-            results.append(ResultItem(type=FILTERS['classes'],
+            results.append(ResultItem(symbol_type=FILTERS['classes'],
                 name=claz, path=file_path,
                 lineno=line_number))
             if 'attributes' in members:
                 for attr in members['attributes']:
                     line_number = members['attributes'][attr] - 1
-                    results.append(ResultItem(type=FILTERS['attribs'],
+                    results.append(ResultItem(symbol_type=FILTERS['attribs'],
                         name=attr, path=file_path,
                         lineno=line_number))
             if 'functions' in members:
                 for func in members['functions']:
                     line_number = members['functions'][func]['lineno'] - 1
                     results.append(ResultItem(
-                        type=FILTERS['functions'], name=func,
+                        symbol_type=FILTERS['functions'], name=func,
                         path=file_path, lineno=line_number))
                     self.__parse_symbols(
                         members['functions'][func]['functions'],
@@ -427,7 +427,7 @@ class LocateSymbolsThread(QThread):
         attributes = symbols['attributes']
         for attr in attributes:
             line_number = attributes[attr] - 1
-            results.append(ResultItem(type=FILTERS['attribs'],
+            results.append(ResultItem(symbol_type=FILTERS['attribs'],
                 name=attr, path=file_path,
                 lineno=line_number))
 
@@ -436,7 +436,7 @@ class LocateSymbolsThread(QThread):
         for func in functions:
             line_number = functions[func]['lineno'] - 1
             results.append(ResultItem(
-                type=FILTERS['functions'], name=func,
+                symbol_type=FILTERS['functions'], name=func,
                 path=file_path, lineno=line_number))
             self.__parse_symbols(functions[func]['functions'],
                     results, file_path)
@@ -549,6 +549,8 @@ class LocatorCompleter(QLineEdit):
         super(LocatorCompleter, self).__init__(parent)
         self._parent = parent
         self.__prefix = ''
+        self.__pre_filters = []
+        self.__pre_results = []
         self.popup = PopupCompleter()
         self.filterPrefix = re.compile(r'(@|<|>|-|!|\.|/|:)')
         self.tempLocations = []
@@ -595,7 +597,6 @@ class LocatorCompleter(QLineEdit):
     def filter(self):
         self._line_jump = -1
         self.items_in_page = 0
-        #TODO: if prefix not change use tempLocations
 
         filterOptions = self.filterPrefix.split(self.__prefix.lstrip())
         if filterOptions[0] == '':
@@ -609,12 +610,18 @@ class LocatorCompleter(QLineEdit):
                     if x.comparison.lower().find(filterOptions[0].lower()) > -1]
         else:
             index = 0
+            if not self.tempLocations and (self.__pre_filters == filterOptions):
+                self.tempLocations = self.__pre_results
+                return self._create_list_widget_items(self.tempLocations)
             while index < len(filterOptions):
                 filter_action = self._filter_actions.get(
                     filterOptions[index], self._filter_generic)
                 if filter_action is None:
                     break
                 index = filter_action(filterOptions, index)
+            if self.tempLocations:
+                self.__pre_filters = filterOptions
+                self.__pre_results = self.tempLocations
         return self._create_list_widget_items(self.tempLocations)
 
     def _filter_generic(self, filterOptions, index):
@@ -761,6 +768,12 @@ class LocatorCompleter(QLineEdit):
             return
         jump = data.lineno if self._line_jump == -1 else self._line_jump
         main_container.open_file(data.path, jump, None, True)
+
+    def hideEvent(self, event):
+        self.tempLocations = []
+        self.__pre_filters = []
+        self.__pre_results = []
+        super(LocatorCompleter, self).hideEvent(event)
 
 
 class PopupCompleter(QFrame):
