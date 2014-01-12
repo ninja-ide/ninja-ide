@@ -17,6 +17,9 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+from ninja_ide.tools.logger import NinjaLogger
+logger = NinjaLogger(__name__)
+
 from PyQt4.QtGui import QFrame
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtCore import Qt
@@ -102,8 +105,13 @@ class TabsHandler(QFrame):
     def showEvent(self, event):
         self._add_model()
         width = max(self._main_container.width() / 3, 300)
+        logger.debug("This is the width")
+        logger.debug(width)
         height = max(self._main_container.height() / 2, 400)
+        logger.debug("This is the height")
+        logger.debug(height)
         self.view.setFixedWidth(width)
+
         self.view.setFixedHeight(height)
         super(TabsHandler, self).showEvent(event)
         self._root.show_animation()
