@@ -21,7 +21,6 @@ from PyQt4.QtGui import QSplashScreen
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QPixmap
 from PyQt4.QtCore import Qt
-from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import QTextCodec
 from PyQt4.QtCore import QCoreApplication
 from PyQt4.QtCore import QTranslator
@@ -51,6 +50,9 @@ import ninja_ide.gui.explorer.explorer_container
 from ninja_ide.gui.editor.checkers import errors_checker
 from ninja_ide.gui.editor.checkers import pep8_checker
 from ninja_ide.gui.editor.checkers import migration_2to3
+# Preferences
+from ninja_ide.gui.dialogs.preferences import preferences_general
+from ninja_ide.gui.dialogs.preferences import preferences_editor_general
 
 from ninja_ide.gui import ide
 #lint:enable

@@ -535,7 +535,8 @@ class IDE(QMainWindow):
         qsettings = nsettings.NSettings(resources.SETTINGS_PATH,
             prefix="ns")
         if cls.__created:
-            cls.__instance.connect(qsettings, SIGNAL("valueChanged(QString)"),
+            cls.__instance.connect(qsettings,
+                SIGNAL("valueChanged(QString, PyQt_PyObject)"),
                 cls.__instance._settings_value_changed)
         return qsettings
 
