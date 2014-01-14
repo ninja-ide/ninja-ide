@@ -53,6 +53,7 @@ from ninja_ide.gui.editor.checkers import migration_2to3
 # Preferences
 from ninja_ide.gui.dialogs.preferences import preferences_general
 from ninja_ide.gui.dialogs.preferences import preferences_editor_general
+from ninja_ide.gui.dialogs.preferences import preferences_editor_configuration
 
 from ninja_ide.gui import ide
 #lint:enable
