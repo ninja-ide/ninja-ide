@@ -219,3 +219,28 @@ TR_SESSIONS_MESSAGE_TITLE = tr("NINJA-IDE", "Session Name Invalid")
 TR_SESSIONS_MESSAGE_BODY = tr("NINJA-IDE",
     "The Session name is invalid or already exists.")
 TR_SESSIONS_UPDATED_NOTIF = tr("NINJA-IDE", "Session %(session)s Updated!")
+
+# Preferences
+TR_PREFERENCES_GENERAL = tr("NINJA-IDE", "General")
+TR_PREFERENCES_EDITOR_GENERAL = tr("NINJA-IDE", "Editor")
+TR_PREFERENCES_GENERAL_START = tr("NINJA-IDE", "On Start:")
+TR_PREFERENCES_GENERAL_CLOSE = tr("NINJA-IDE", "On Close:")
+TR_PREFERENCES_GENERAL_WORKSPACE = tr("NINJA-IDE", "Workspace and Project:")
+TR_PREFERENCES_GENERAL_RESET = tr("NINJA-IDE", "Reset NINJA-IDE Preferences:")
+TR_PREFERENCES_GENERAL_LOAD_LAST_SESSION = tr("NINJA-IDE",
+    "Load files from last session")
+TR_PREFERENCES_GENERAL_ACTIVATE_PLUGINS = tr("NINJA-IDE",
+    "Activate Plugins")
+TR_PREFERENCES_GENERAL_NOTIFY_UPDATES = tr("NINJA-IDE",
+    "Notify me of new updates.")
+TR_PREFERENCES_GENERAL_SHOW_START_PAGE = tr("NINJA-IDE", "Show Start Page")
+TR_PREFERENCES_GENERAL_CONFIRM_EXIT = tr("NINJA-IDE", "Confirm Exit.")
+TR_PREFERENCES_GENERAL_WORKSPACE = tr("NINJA-IDE", "Workspace")
+TR_PREFERENCES_GENERAL_SUPPORTED_EXT = tr("NINJA-IDE", "Supported Extensions:")
+TR_PREFERENCES_GENERAL_RESET_PREFERENCES = tr("NINJA-IDE", "Reset preferences")
+TR_PREFERENCES_GENERAL_SELECT_WORKSPACE = tr("NINJA-IDE", "Select Workspace")
+TR_PREFERENCES_GENERAL_SELECT_PYTHON_PATH = tr("NINJA-IDE",
+    "Select Python Path")
+TR_PREFERENCES_GENERAL_RESET_TITLE = tr("NINJA-IDE", "Reset preferences?")
+TR_PREFERENCES_GENERAL_RESET_BODY = tr("NINJA-IDE",
+    "Are you sure you want to reset your preferences?")

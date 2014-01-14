@@ -176,6 +176,11 @@ class Editor(QPlainTextEdit):
         if self._mini:
             self._mini.set_code(self.toPlainText())
 
+        ninjaide = IDE.get_service('ide')
+        self.connect(ninjaide,
+            SIGNAL("ns_preferences_editor_fontFamily(PyQt_PyObject)"),
+            lambda: self.set_font())
+
     @property
     def display_name(self):
         self._neditable.display_name
@@ -428,7 +433,11 @@ class Editor(QPlainTextEdit):
             inside = True
         return inside
 
-    def set_font(self, family=settings.FONT_FAMILY, size=settings.FONT_SIZE):
+    def set_font(self, family=None, size=None):
+        if family is None:
+            family = settings.FONT_FAMILY
+        if size is None:
+            size = settings.FONT_SIZE
         font = QFont(family, size)
         self.document().setDefaultFont(font)
         self._update_margin_line(font)
@@ -697,7 +706,7 @@ class Editor(QPlainTextEdit):
         self.moveCursor(QTextCursor.StartOfLine, move)
         self.moveCursor(QTextCursor.WordRight, move)
         if position != self.textCursor().position() and \
-           cursor.block().text().startswith(' ', '\t'):
+           cursor.block().text().startswith((' ', '\t')):
             return True
 
     def __ignore_extended_line(self, event):
