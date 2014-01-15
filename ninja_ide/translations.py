@@ -245,3 +245,37 @@ TR_PREFERENCES_GENERAL_SELECT_PYTHON_PATH = tr("NINJA-IDE",
 TR_PREFERENCES_GENERAL_RESET_TITLE = tr("NINJA-IDE", "Reset preferences?")
 TR_PREFERENCES_GENERAL_RESET_BODY = tr("NINJA-IDE",
     "Are you sure you want to reset your preferences?")
+TR_PREFERENCES_EDITOR_CONFIG_FEATURES = tr("NINJA-IDE", "Features:")
+TR_PREFERENCES_EDITOR_CONFIG_INDENTATION = tr("NINJA-IDE",
+    "Indentation Length:")
+TR_PREFERENCES_EDITOR_CONFIG_USE_TABS = tr("NINJA-IDE", "Use Tabs.")
+TR_PREFERENCES_EDITOR_CONFIG_TAB_SIZE = tr("NINJA-IDE", "  (tab size)")
+TR_PREFERENCES_EDITOR_CONFIG_SPACES = tr("NINJA-IDE", "  (spaces)")
+TR_PREFERENCES_EDITOR_CONFIG_MARGIN_LINE = tr("NINJA-IDE", "Margin Line:")
+TR_PREFERENCES_EDITOR_CONFIG_SHOW_MARGIN_LINE = tr("NINJA-IDE",
+    "Show Margin Line")
+TR_PREFERENCES_EDITOR_CONFIG_END_OF_LINE = tr("NINJA-IDE",
+    "Use Platform End of Line")
+TR_PREFERENCES_EDITOR_CONFIG_ERROR_HIGHLIGHTING = tr("NINJA-IDE",
+    "Check: Highlight errors using Underline\n"
+    "Uncheck: Highlight errors using Background")
+TR_PREFERENCES_EDITOR_CONFIG_FIND_ERRORS = tr("NINJA-IDE",
+    "Find and Show Errors.")
+TR_PREFERENCES_EDITOR_CONFIG_SHOW_TOOLTIP_ERRORS = tr("NINJA-IDE",
+    "Show Tool tip information about the errors.")
+TR_PREFERENCES_EDITOR_CONFIG_SHOW_PEP8 = tr("NINJA-IDE",
+    "Find and Show Check Style errors.")
+TR_PREFERENCES_EDITOR_CONFIG_SHOW_TOOLTIP_PEP8 = tr("NINJA-IDE",
+    "Show Tool tip information about the PEP8 errors.")
+TR_PREFERENCES_EDITOR_CONFIG_SHOW_MIGRATION = tr("NINJA-IDE",
+    "Show Python3 Migration Tips.")
+TR_PREFERENCES_EDITOR_CONFIG_CENTER_SCROLL = tr("NINJA-IDE",
+    "Center on Scroll.")
+TR_PREFERENCES_EDITOR_CONFIG_REMOVE_TRAILING = tr("NINJA-IDE",
+    "Remove Trailing Spaces and\nadd Last Line automatically.")
+TR_PREFERENCES_EDITOR_CONFIG_SHOW_TABS_AND_SPACES = tr("NINJA-IDE",
+    "Show Tabs and Spaces.")
+TR_PREFERENCES_EDITOR_CONFIG_WORD_WRAP = tr("NINJA-IDE", "Allow Word Wrap.")
+TR_PREFERENCES_EDITOR_CONFIG_CHECK_FOR_DOCSTRINGS = tr("NINJA-IDE",
+    "Check for Docstrings in Classes and Functions.")
+#TR_PREFERENCES_EDITOR_CONFIG_WORD_WRAP = tr("NINJA-IDE", "")
