@@ -44,103 +44,112 @@ class EditorConfiguration(QWidget):
         vbox = QVBoxLayout(self)
 
         #Indentation
-        groupBoxFeatures = QGroupBox(self.tr("Features:"))
+        groupBoxFeatures = QGroupBox(
+            translations.TR_PREFERENCES_EDITOR_CONFIG_FEATURES)
         formFeatures = QGridLayout(groupBoxFeatures)
         formFeatures.addWidget(QLabel(
-            self.tr("Indentation Length:")), 1, 0, Qt.AlignRight)
+            translations.TR_PREFERENCES_EDITOR_CONFIG_INDENTATION),
+            1, 0, Qt.AlignRight)
         self._spin = QSpinBox()
         self._spin.setAlignment(Qt.AlignRight)
         self._spin.setMinimum(1)
         self._spin.setValue(settings.INDENT)
         formFeatures.addWidget(self._spin, 1, 1, alignment=Qt.AlignTop)
         self._checkUseTabs = QCheckBox(
-            self.tr("Use Tabs."))
+            translations.TR_PREFERENCES_EDITOR_CONFIG_USE_TABS)
         self._checkUseTabs.setChecked(settings.USE_TABS)
         self.connect(self._checkUseTabs, SIGNAL("stateChanged(int)"),
             self._change_tab_spaces)
         formFeatures.addWidget(self._checkUseTabs, 1, 2, alignment=Qt.AlignTop)
         if settings.USE_TABS:
-            self._spin.setSuffix(self.tr("  (tab size)"))
+            self._spin.setSuffix(
+                translations.TR_PREFERENCES_EDITOR_CONFIG_TAB_SIZE)
         else:
-            self._spin.setSuffix(self.tr("  (spaces)"))
+            self._spin.setSuffix(
+                translations.TR_PREFERENCES_EDITOR_CONFIG_SPACES)
         #Margin Line
-        formFeatures.addWidget(QLabel(self.tr("Margin Line:")), 2, 0,
+        formFeatures.addWidget(QLabel(
+            translations.TR_PREFERENCES_EDITOR_CONFIG_MARGIN_LINE), 2, 0,
             Qt.AlignRight)
         self._spinMargin = QSpinBox()
         self._spinMargin.setMaximum(200)
         self._spinMargin.setValue(settings.MARGIN_LINE)
         formFeatures.addWidget(self._spinMargin, 2, 1, alignment=Qt.AlignTop)
-        self._checkShowMargin = QCheckBox(self.tr("Show Margin Line"))
+        self._checkShowMargin = QCheckBox(
+            translations.TR_PREFERENCES_EDITOR_CONFIG_SHOW_MARGIN_LINE)
         self._checkShowMargin.setChecked(settings.SHOW_MARGIN_LINE)
         formFeatures.addWidget(self._checkShowMargin, 2, 2,
             alignment=Qt.AlignTop)
         #End of line
-        self._checkEndOfLine = QCheckBox(self.tr("Use Platform End of Line"))
+        self._checkEndOfLine = QCheckBox(
+            translations.TR_PREFERENCES_EDITOR_CONFIG_END_OF_LINE)
         self._checkEndOfLine.setChecked(settings.USE_PLATFORM_END_OF_LINE)
         formFeatures.addWidget(self._checkEndOfLine, 3, 1,
             alignment=Qt.AlignTop)
         #Find Errors
         self._checkHighlightLine = QCheckBox(
-            self.tr("Check: Highlight errors using Underline\n"
-                "Uncheck: Highlight errors using Background"))
+            translations.TR_PREFERENCES_EDITOR_CONFIG_ERROR_HIGHLIGHTING)
         self._checkHighlightLine.setChecked(settings.UNDERLINE_NOT_BACKGROUND)
         formFeatures.addWidget(self._checkHighlightLine, 4, 1, 1, 2,
             alignment=Qt.AlignTop)
-        self._checkErrors = QCheckBox(self.tr("Find and Show Errors."))
+        self._checkErrors = QCheckBox(
+            translations.TR_PREFERENCES_EDITOR_CONFIG_FIND_ERRORS)
         self._checkErrors.setChecked(settings.FIND_ERRORS)
         formFeatures.addWidget(self._checkErrors, 5, 1, 1, 2,
             alignment=Qt.AlignTop)
         self.connect(self._checkErrors, SIGNAL("stateChanged(int)"),
             self._disable_show_errors)
         self._showErrorsOnLine = QCheckBox(
-            self.tr("Show Tool tip information about the errors."))
+            translations.TR_PREFERENCES_EDITOR_CONFIG_SHOW_TOOLTIP_ERRORS)
         self._showErrorsOnLine.setChecked(settings.ERRORS_HIGHLIGHT_LINE)
         self.connect(self._showErrorsOnLine, SIGNAL("stateChanged(int)"),
             self._enable_errors_inline)
         formFeatures.addWidget(self._showErrorsOnLine, 6, 2, 1, 1, Qt.AlignTop)
         #Find Check Style
         self._checkStyle = QCheckBox(
-            self.tr("Find and Show Check Style errors."))
+            translations.TR_PREFERENCES_EDITOR_CONFIG_SHOW_PEP8)
         self._checkStyle.setChecked(settings.CHECK_STYLE)
         formFeatures.addWidget(self._checkStyle, 7, 1, 1, 2,
             alignment=Qt.AlignTop)
         self.connect(self._checkStyle, SIGNAL("stateChanged(int)"),
             self._disable_check_style)
         self._checkStyleOnLine = QCheckBox(
-            self.tr("Show Tool tip information about the PEP8 errors."))
+            translations.TR_PREFERENCES_EDITOR_CONFIG_SHOW_TOOLTIP_PEP8)
         self._checkStyleOnLine.setChecked(settings.CHECK_HIGHLIGHT_LINE)
         self.connect(self._checkStyleOnLine, SIGNAL("stateChanged(int)"),
             self._enable_check_inline)
         formFeatures.addWidget(self._checkStyleOnLine, 8, 2, 1, 1, Qt.AlignTop)
         # Python3 Migration
         self._showMigrationTips = QCheckBox(
-            self.tr("Show Python3 Migration Tips."))
+            translations.TR_PREFERENCES_EDITOR_CONFIG_SHOW_MIGRATION)
         self._showMigrationTips.setChecked(settings.SHOW_MIGRATION_TIPS)
         formFeatures.addWidget(self._showMigrationTips, 9, 1, 1, 2,
             Qt.AlignTop)
         #Center On Scroll
         self._checkCenterScroll = QCheckBox(
-            self.tr("Center on Scroll."))
+            translations.TR_PREFERENCES_EDITOR_CONFIG_CENTER_SCROLL)
         self._checkCenterScroll.setChecked(settings.CENTER_ON_SCROLL)
         formFeatures.addWidget(self._checkCenterScroll, 10, 1, 1, 2,
             alignment=Qt.AlignTop)
         #Remove Trailing Spaces add Last empty line automatically
-        self._checkTrailing = QCheckBox(self.tr(
-            "Remove Trailing Spaces and\nadd Last Line automatically."))
+        self._checkTrailing = QCheckBox(
+            translations.TR_PREFERENCES_EDITOR_CONFIG_REMOVE_TRAILING)
         self._checkTrailing.setChecked(settings.REMOVE_TRAILING_SPACES)
         formFeatures.addWidget(self._checkTrailing, 11, 1, 1, 2,
             alignment=Qt.AlignTop)
         #Show Tabs and Spaces
-        self._checkShowSpaces = QCheckBox(self.tr("Show Tabs and Spaces."))
+        self._checkShowSpaces = QCheckBox(
+            translations.TR_PREFERENCES_EDITOR_CONFIG_SHOW_TABS_AND_SPACES)
         self._checkShowSpaces.setChecked(settings.SHOW_TABS_AND_SPACES)
         formFeatures.addWidget(self._checkShowSpaces, 12, 1, 1, 2,
             alignment=Qt.AlignTop)
-        self._allowWordWrap = QCheckBox(self.tr("Allow Word Wrap."))
+        self._allowWordWrap = QCheckBox(
+            translations.TR_PREFERENCES_EDITOR_CONFIG_WORD_WRAP)
         self._allowWordWrap.setChecked(settings.ALLOW_WORD_WRAP)
         formFeatures.addWidget(self._allowWordWrap, 13, 1, 1, 2,
             alignment=Qt.AlignTop)
         self._checkForDocstrings = QCheckBox(
-            self.tr("Check for Docstrings in Classes and Functions."))
+            translations.TR_PREFERENCES_EDITOR_CONFIG_CHECK_FOR_DOCSTRINGS)
         self._checkForDocstrings.setChecked(settings.CHECK_FOR_DOCSTRINGS)
         formFeatures.addWidget(self._checkForDocstrings, 14, 1, 1, 2,
             alignment=Qt.AlignTop)
@@ -169,9 +178,11 @@ class EditorConfiguration(QWidget):
 
     def _change_tab_spaces(self, val):
         if val == Qt.Unchecked:
-            self._spin.setSuffix(self.tr("  (spaces)"))
+            self._spin.setSuffix(
+                translations.TR_PREFERENCES_EDITOR_CONFIG_SPACES)
         else:
-            self._spin.setSuffix(self.tr("  (tab size)"))
+            self._spin.setSuffix(
+                translations.TR_PREFERENCES_EDITOR_CONFIG_TAB_SIZE)
 
     def save(self):
         qsettings = IDE.ninja_settings()
