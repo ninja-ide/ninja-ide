@@ -54,9 +54,12 @@ class EditorGeneral(QWidget):
         self.original_style = copy.copy(resources.CUSTOM_SCHEME)
         self.current_scheme = 'default'
 
-        groupBoxMini = QGroupBox(self.tr("MiniMap:"))
-        groupBoxTypo = QGroupBox(self.tr("Typography:"))
-        groupBoxScheme = QGroupBox(self.tr("Scheme Color:"))
+        groupBoxMini = QGroupBox(
+            translations.TR_PREFERENCES_EDITOR_GENERAL_MINIMAP)
+        groupBoxTypo = QGroupBox(
+            translations.TR_PREFERENCES_EDITOR_GENERAL_TYPOGRAPHY)
+        groupBoxScheme = QGroupBox(
+            translations.TR_PREFERENCES_EDITOR_GENERAL_SCHEME)
 
         #Minimap
         formMini = QGridLayout(groupBoxMini)
@@ -71,15 +74,17 @@ class EditorGeneral(QWidget):
         self._spinSize.setMaximum(100)
         self._spinSize.setMinimum(0)
         formMini.addWidget(QLabel(
-            self.tr("Enable/Disable MiniMap (Requires restart):\n"
-            "(opacity not supported in Mac OS X)")), 0, 0,
-            Qt.AlignRight)
-        formMini.addWidget(QLabel(self.tr("Max Opacity:")), 1, 0,
-            Qt.AlignRight)
-        formMini.addWidget(QLabel(self.tr("Min Opacity:")), 2, 0,
+            translations.TR_PREFERENCES_EDITOR_GENERAL_ENABLE_MINIMAP), 0, 0,
             Qt.AlignRight)
         formMini.addWidget(QLabel(
-            self.tr("Size Area relative to the Editor:")), 3, 0, Qt.AlignRight)
+            translations.TR_PREFERENCES_EDITOR_GENERAL_MAX_OPACITY), 1, 0,
+            Qt.AlignRight)
+        formMini.addWidget(QLabel(
+            translations.TR_PREFERENCES_EDITOR_GENERAL_MIN_OPACITY), 2, 0,
+            Qt.AlignRight)
+        formMini.addWidget(QLabel(
+            translations.TR_PREFERENCES_EDITOR_GENERAL_AREA_MINIMAP), 3, 0,
+            Qt.AlignRight)
         formMini.addWidget(self._checkShowMinimap, 0, 1)
         formMini.addWidget(self._spinMaxOpacity, 1, 1)
         formMini.addWidget(self._spinMinOpacity, 2, 1)
@@ -88,7 +93,8 @@ class EditorGeneral(QWidget):
         gridTypo = QGridLayout(groupBoxTypo)
         self._btnEditorFont = QPushButton('')
         gridTypo.addWidget(QLabel(
-            self.tr("Editor Font:")), 0, 0, Qt.AlignRight)
+            translations.TR_PREFERENCES_EDITOR_GENERAL_EDITOR_FONT), 0, 0,
+            Qt.AlignRight)
         gridTypo.addWidget(self._btnEditorFont, 0, 1)
         #Scheme
         hbox = QHBoxLayout(groupBoxScheme)
@@ -190,8 +196,8 @@ class EditorGeneral(QWidget):
             self._btnEditorFont.setText(font)
         except:
             QMessageBox.warning(self,
-                self.tr("Invalid Font"),
-                self.tr("This font can not be used in the Editor."))
+                translations.TR_PREFERENCES_EDITOR_GENERAL_FONT_MESSAGE_TITLE,
+                translations.TR_PREFERENCES_EDITOR_GENERAL_FONT_MESSAGE_BODY)
 
     def _get_font_from_string(self, font):
         if not font:
