@@ -152,6 +152,14 @@ class _ToolsDock(QWidget):
         else:
             self.show()
 
+    def toggle_tabs_and_spaces(self):
+        """ Toggle Show/Hide Tabs and Spaces """
+
+        settings.SHOW_TABS_AND_SPACES = not settings.SHOW_TABS_AND_SPACES
+        qsettings = IDE.ninja_settings()
+        qsettings.setValue('preferences/editor/showTabsAndSpaces',
+            settings.SHOW_TABS_AND_SPACES)
+
     def add_project_to_console(self, projectFolder):
         """Add the namespace of the project received into the ninja-console."""
         self._console.load_project_into_console(projectFolder)
