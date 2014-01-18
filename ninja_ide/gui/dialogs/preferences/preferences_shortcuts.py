@@ -149,6 +149,7 @@ class ShortcutConfiguration(QWidget):
             "Hide-misc": self.tr("Hide Misc Container"),
             "Hide-editor": self.tr("Hide Editor Area"),
             "Hide-explorer": self.tr("Hide Explorer"),
+            "Toggle-tabs-spaces": self.tr("Show/Hide Tabs and Spaces"),
             "Run-file": self.tr("Execute current file"),
             "Run-project": self.tr("Execute current project"),
             "Debug": self.tr("Debug"),

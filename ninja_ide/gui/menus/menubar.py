@@ -125,7 +125,7 @@ class _MenuBar(QObject):
         for action in menuitems:
             category, weight = menuitems[action]
             category, subcategory = category
-            #FIXME: Need cateogory and sub, which should be none
+            #FIXME: Need category and sub, which should be none
             self.add_child(category, subcategory, action, weight)
 
         #FIXME: This should add to the given methods and they to the actual adding on menu upon add
