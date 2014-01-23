@@ -57,6 +57,7 @@ from PyQt4.QtGui import QCompleter
 
 from ninja_ide.gui.ide import IDE
 from ninja_ide.core.file_handling import file_manager
+from ninja_ide.core import settings
 
 
 class FindInFilesThread(QThread):
@@ -153,7 +154,6 @@ class FindInFilesResult(QTreeWidget):
         self.header().setResizeMode(1, QHeaderView.ResizeToContents)
         self.header().setStretchLastSection(False)
         self.sortByColumn(0, Qt.AscendingOrder)
-        self.setAlternatingRowColors(True)
 
     def update_result(self, dir_name_root, file_name, items):
         """Update the results in the tree."""
@@ -161,8 +161,8 @@ class FindInFilesResult(QTreeWidget):
             root_item = FindInFilesRootItem(self, (file_name, ''),
                 dir_name_root)
             root_item.setExpanded(True)
-            root_item.setToolTip(0,
-                "Found {} on {}".format(len(items), file_name[-99:]))
+            root_item.setToolTip(0, "Found {} on {}".format(
+                len(items), os.path.basename(file_name)))
             for line, content in items:
                 QTreeWidgetItem(root_item, (content, str(line + 1)))
 
@@ -199,8 +199,8 @@ class FindInFilesDialog(QDialog):
             self.tr("Open"))
         self.filters_line_edit = QLineEdit("*.py")
         self.filters_line_edit.setPlaceholderText("*.py")
-        self.filters_line_edit.setCompleter(QCompleter(("*.py", "*.pyw",
-            "*.html", "*.css", "*.json", "*.js", "*.ini", "*.sh", "*.*")))
+        self.filters_line_edit.setCompleter(QCompleter(
+            ["*{}".format(a) for a in settings.SUPPORTED_EXTENSIONS]))
         self.replace_line = QLineEdit()
         self.replace_line.setEnabled(False)
         self.replace_line.setPlaceholderText("Text to replace...")
