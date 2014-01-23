@@ -220,6 +220,8 @@ TR_SESSIONS_MESSAGE_BODY = tr("NINJA-IDE",
     "The Session name is invalid or already exists.")
 TR_SESSIONS_UPDATED_NOTIF = tr("NINJA-IDE", "Session %(session)s Updated!")
 
+TR_FIND_IN_FILES_TEXT_FOR_REPLACE = tr("NINJA-IDE", "Text for Replace...")
+
 # Preferences
 TR_PREFERENCES_GENERAL = tr("NINJA-IDE", "General")
 TR_PREFERENCES_EDITOR_GENERAL = tr("NINJA-IDE", "Editor")

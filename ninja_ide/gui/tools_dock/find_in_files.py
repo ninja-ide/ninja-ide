@@ -189,7 +189,7 @@ class FindInFilesDialog(QDialog):
         main_vbox = QVBoxLayout(self)
 
         self.pattern_line_edit = QLineEdit()
-        self.pattern_line_edit.setPlaceholderText("Search...")
+        self.pattern_line_edit.setPlaceholderText(self.tr("Find") + "...")
         self.dir_name_root = None
         self.user_home = os.path.expanduser('~')
         self.dir_combo = QComboBox()
@@ -203,7 +203,7 @@ class FindInFilesDialog(QDialog):
             ["*{}".format(a) for a in settings.SUPPORTED_EXTENSIONS]))
         self.replace_line = QLineEdit()
         self.replace_line.setEnabled(False)
-        self.replace_line.setPlaceholderText("Text for Replace...")
+        self.replace_line.setPlaceholderText(self.tr("Text for Replace..."))
         self.check_replace = QCheckBox(self.tr("Replace: "))
         self.case_checkbox = QCheckBox(self.tr("C&ase sensitive"))
         self.type_checkbox = QCheckBox(self.tr("R&egular Expression"))
