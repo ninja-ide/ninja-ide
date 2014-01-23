@@ -203,7 +203,7 @@ class FindInFilesDialog(QDialog):
             ["*{}".format(a) for a in settings.SUPPORTED_EXTENSIONS]))
         self.replace_line = QLineEdit()
         self.replace_line.setEnabled(False)
-        self.replace_line.setPlaceholderText("Text to replace...")
+        self.replace_line.setPlaceholderText("Text for Replace...")
         self.check_replace = QCheckBox(self.tr("Replace: "))
         self.case_checkbox = QCheckBox(self.tr("C&ase sensitive"))
         self.type_checkbox = QCheckBox(self.tr("R&egular Expression"))
