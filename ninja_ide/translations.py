@@ -220,7 +220,28 @@ TR_SESSIONS_MESSAGE_BODY = tr("NINJA-IDE",
     "The Session name is invalid or already exists.")
 TR_SESSIONS_UPDATED_NOTIF = tr("NINJA-IDE", "Session %(session)s Updated!")
 
-TR_FIND_IN_FILES_TEXT_FOR_REPLACE = tr("NINJA-IDE", "Text for Replace...")
+# tools_dock
+TR_TEXT_FOR_REPLACE = tr("NINJA-IDE", "Text for Replace")
+TR_FILE = tr("NINJA-IDE", "File")
+TR_LINE = tr("NINJA-IDE", "Line")
+TR_REPLACE = tr("NINJA-IDE", "Replace:")
+TR_CASE_SENSITIVE = tr("NINJA-IDE", "C&ase sensitive")
+TR_REGULAR_EXPRESSION = tr("NINJA-IDE", "R&egular Expression")
+TR_RECURSIVE = tr("NINJA-IDE", "Rec&ursive")
+TR_SEARCH_BY_PHRASE = tr("NINJA-IDE", "Search by Phrase (Exact Match)")
+TR_OPTIONS = tr("NINJA-IDE", "Options")
+TR_SEARCH_FOR_ALL_THE_WORDS = tr("NINJA-IDE",
+    "Search for all the words (anywhere in the document, not together).")
+TR_MAIN = tr("NINJA-IDE", "Main")
+TR_DIRECTORY = tr("NINJA-IDE", "Directory:")
+TR_FILTER = tr("NINJA-IDE", "Filter:")
+TR_TEXT = tr("NINJA-IDE", "Text:")
+TR_CLEAR = tr("NINJA-IDE", "Clear")
+TR_REPLACE_RESULTS_WITH = tr("NINJA-IDE", "Replace results with:")
+TR_ARE_YOU_SURE_WANT_TO_REPLACE = tr("NINJA-IDE",
+    "Are you sure you want to replace the content in "
+    "this files?\n(The change is not reversible)")
+TR_REPLACE_FILES_CONTENTS = tr("NINJA-IDE", "Replace Files Contents")
 
 # Preferences
 TR_PREFERENCES_GENERAL = tr("NINJA-IDE", "General")
