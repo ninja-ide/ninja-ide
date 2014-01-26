@@ -53,9 +53,12 @@ from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QFileDialog
+from PyQt4.QtGui import QCompleter
 
 from ninja_ide.gui.ide import IDE
 from ninja_ide.core.file_handling import file_manager
+from ninja_ide.core import settings
+from ninja_ide import translations
 
 
 class FindInFilesThread(QThread):
@@ -146,7 +149,7 @@ class FindInFilesResult(QTreeWidget):
 
     def __init__(self):
         super(FindInFilesResult, self).__init__()
-        self.setHeaderLabels((self.tr('File'), self.tr('Line')))
+        self.setHeaderLabels((translations.TR_FILE, translations.TR_LINE))
         self.header().setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.header().setResizeMode(0, QHeaderView.ResizeToContents)
         self.header().setResizeMode(1, QHeaderView.ResizeToContents)
@@ -159,6 +162,8 @@ class FindInFilesResult(QTreeWidget):
             root_item = FindInFilesRootItem(self, (file_name, ''),
                 dir_name_root)
             root_item.setExpanded(True)
+            root_item.setToolTip(0, "Found {} on {}".format(
+                len(items), os.path.basename(file_name)))
             for line, content in items:
                 QTreeWidgetItem(root_item, (content, str(line + 1)))
 
@@ -179,36 +184,39 @@ class FindInFilesDialog(QDialog):
     def __init__(self, result_widget, parent):
         super(FindInFilesDialog, self).__init__(parent)
         self._find_thread = FindInFilesThread()
-        self.setWindowTitle("Find in files")
+        self.setWindowTitle(translations.TR_FIND_IN_FILES)
         self.resize(400, 300)
         #MAIN LAYOUT
         main_vbox = QVBoxLayout(self)
 
         self.pattern_line_edit = QLineEdit()
+        self.pattern_line_edit.setPlaceholderText(translations.TR_FIND + "...")
         self.dir_name_root = None
         self.user_home = os.path.expanduser('~')
         self.dir_combo = QComboBox()
         self.dir_combo.addItem(self.user_home)
         self.dir_combo.setEditable(True)
-        self.open_button = QPushButton(QIcon(":img/find"),
-            self.tr("Open"))
+        self.open_button = QPushButton(QIcon(":img/find"), translations.TR_OPEN)
         self.filters_line_edit = QLineEdit("*.py")
+        self.filters_line_edit.setPlaceholderText("*.py")
+        self.filters_line_edit.setCompleter(QCompleter(
+            ["*{}".format(item) for item in settings.SUPPORTED_EXTENSIONS]))
         self.replace_line = QLineEdit()
         self.replace_line.setEnabled(False)
-        self.check_replace = QCheckBox(self.tr("Replace: "))
-        self.case_checkbox = QCheckBox(self.tr("C&ase sensitive"))
-        self.type_checkbox = QCheckBox(self.tr("R&egular Expression"))
-        self.recursive_checkbox = QCheckBox(self.tr("Rec&ursive"))
+        self.replace_line.setPlaceholderText(
+            translations.TR_TEXT_FOR_REPLACE + "...")
+        self.check_replace = QCheckBox(translations.TR_REPLACE)
+        self.case_checkbox = QCheckBox(translations.TR_CASE_SENSITIVE)
+        self.type_checkbox = QCheckBox(translations.TR_REGULAR_EXPRESSION)
+        self.recursive_checkbox = QCheckBox(translations.TR_RECURSIVE)
         self.recursive_checkbox.setCheckState(Qt.Checked)
-        self.phrase_radio = QRadioButton(
-            self.tr("Search by Phrase (Exact Match)."))
+        self.phrase_radio = QRadioButton(translations.TR_SEARCH_BY_PHRASE)
         self.phrase_radio.setChecked(True)
         self.words_radio = QRadioButton(
-            self.tr("Search for all the words "
-                    "(anywhere in the document, not together)."))
-        self.find_button = QPushButton(self.tr("Find!"))
+            translations.TR_SEARCH_FOR_ALL_THE_WORDS)
+        self.find_button = QPushButton(translations.TR_FIND + "!")
         self.find_button.setMaximumWidth(150)
-        self.cancel_button = QPushButton(self.tr("Cancel"))
+        self.cancel_button = QPushButton(translations.TR_CANCEL)
         self.cancel_button.setMaximumWidth(150)
         self.result_widget = result_widget
 
@@ -217,14 +225,14 @@ class FindInFilesDialog(QDialog):
         hbox.addWidget(self.cancel_button)
 
         #main section
-        find_group_box = QGroupBox(self.tr("Main"))
+        find_group_box = QGroupBox(translations.TR_MAIN)
         grid = QGridLayout()
-        grid.addWidget(QLabel(self.tr("Text: ")), 0, 0)
+        grid.addWidget(QLabel(translations.TR_TEXT), 0, 0)
         grid.addWidget(self.pattern_line_edit, 0, 1)
-        grid.addWidget(QLabel(self.tr("Directory: ")), 1, 0)
+        grid.addWidget(QLabel(translations.TR_DIRECTORY), 1, 0)
         grid.addWidget(self.dir_combo, 1, 1)
         grid.addWidget(self.open_button, 1, 2)
-        grid.addWidget(QLabel(self.tr("Filter: ")), 2, 0)
+        grid.addWidget(QLabel(translations.TR_FILTER), 2, 0)
         grid.addWidget(self.filters_line_edit, 2, 1)
         grid.addWidget(self.check_replace, 3, 0)
         grid.addWidget(self.replace_line, 3, 1)
@@ -234,7 +242,7 @@ class FindInFilesDialog(QDialog):
         main_vbox.addWidget(find_group_box)
 
         #options sections
-        options_group_box = QGroupBox(self.tr("Options"))
+        options_group_box = QGroupBox(translations.TR_OPTIONS)
         gridOptions = QGridLayout()
         gridOptions.addWidget(self.case_checkbox, 0, 0)
         gridOptions.addWidget(self.type_checkbox, 1, 0)
@@ -314,8 +322,7 @@ class FindInFilesDialog(QDialog):
 
     def _select_dir(self):
         """When a new folder is selected, add to the combo if needed."""
-        dir_name = QFileDialog.getExistingDirectory(self,
-            self.tr("Open Directory"),
+        dir_name = QFileDialog.getExistingDirectory(self, translations.TR_OPEN,
             self.dir_combo.currentText(),
             QFileDialog.ShowDirsOnly)
         index = self.dir_combo.findText(dir_name)
@@ -378,18 +385,18 @@ class FindInFilesWidget(QWidget):
         self._main_container = IDE.get_service('main_container')
         self._explorer_container = IDE.get_service('explorer')
         self._result_widget = FindInFilesResult()
-        self._open_find_button = QPushButton(self.tr("Find!"))
-        self._stop_button = QPushButton(self.tr("Stop"))
-        self._clear_button = QPushButton(self.tr("Clear!"))
-        self._replace_button = QPushButton(self.tr("Replace"))
+        self._open_find_button = QPushButton(translations.TR_FIND + "!")
+        self._stop_button = QPushButton(translations.TR_STOP + "!")
+        self._clear_button = QPushButton(translations.TR_CLEAR + "!")
+        self._replace_button = QPushButton(translations.TR_REPLACE)
         self._find_widget = FindInFilesDialog(self._result_widget, self)
-        self._error_label = QLabel(self.tr("No Results"))
+        self._error_label = QLabel(translations.TR_NO_RESULTS)
         self._error_label.setVisible(False)
         #Replace Area
         self.replace_widget = QWidget()
         hbox_replace = QHBoxLayout(self.replace_widget)
         hbox_replace.setContentsMargins(0, 0, 0, 0)
-        self.lbl_replace = QLabel(self.tr("Replace results with:"))
+        self.lbl_replace = QLabel(translations.TR_REPLACE_RESULTS_WITH)
         self.lbl_replace.setTextFormat(Qt.PlainText)
         self.replace_edit = QLineEdit()
         hbox_replace.addWidget(self.lbl_replace)
@@ -502,9 +509,9 @@ class FindInFilesWidget(QWidget):
 
     def _replace_results(self):
         """Replace the search with the proper text in all the files."""
-        result = QMessageBox.question(self, self.tr("Replace Files Contents"),
-            self.tr("Are you sure you want to replace the content in "
-                    "this files?\n(The change is not reversible)"),
+        result = QMessageBox.question(self,
+            translations.TR_REPLACE_FILES_CONTENTS,
+            translations.TR_ARE_YOU_SURE_WANT_TO_REPLACE,
             buttons=QMessageBox.Yes | QMessageBox.No)
         if result == QMessageBox.Yes:
             for index in range(self._result_widget.topLevelItemCount()):
@@ -527,5 +534,5 @@ class FindInFilesWidget(QWidget):
                     file_manager.store_file_content(file_path,
                         new_content, False)
                 except:
-                    print('File: %s content, could not be replaced' %
-                          file_path)
+                    print(('File: {} content, could not be replaced'.format(
+                           file_path)))
