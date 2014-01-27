@@ -42,6 +42,7 @@ from ninja_ide.gui.tools_dock import web_render
 from ninja_ide.gui.tools_dock import find_in_files
 from ninja_ide.gui.tools_dock import results
 from ninja_ide.tools import ui_tools
+from ninja_ide import translations
 
 
 class _ToolsDock(QWidget):
@@ -93,13 +94,13 @@ class _ToolsDock(QWidget):
         self.stack.addWidget(self._results)
 
         self._btnConsole = QPushButton(QIcon(":img/console"), '')
-        self._btnConsole.setToolTip(self.tr("Console"))
+        self._btnConsole.setToolTip(translations.TR_CONSOLE)
         self._btnRun = QPushButton(QIcon(":img/play"), '')
-        self._btnRun.setToolTip(self.tr("Output"))
+        self._btnRun.setToolTip(translations.TR_OUTPUT)
         self._btnWeb = QPushButton(QIcon(":img/web"), '')
-        self._btnWeb.setToolTip(self.tr("Web Preview"))
+        self._btnWeb.setToolTip(translations.TR_WEB_PREVIEW)
         self._btnFind = QPushButton(QIcon(":img/find"), '')
-        self._btnFind.setToolTip(self.tr("Find in Files"))
+        self._btnFind.setToolTip(translations.TR_FIND_IN_FILES)
         #Toolbar
         hbox.addWidget(self.__toolbar)
         self.__toolbar.addWidget(self._btnConsole)
@@ -111,7 +112,7 @@ class _ToolsDock(QWidget):
         btn_close = QPushButton(
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
         btn_close.setObjectName('navigation_button')
-        btn_close.setToolTip(self.tr('F4: Show/Hide'))
+        btn_close.setToolTip('F4: ' + translations.TR_ALL_VISIBILITY)
         hbox.addWidget(btn_close)
 
         # Not Configurable Shortcuts
