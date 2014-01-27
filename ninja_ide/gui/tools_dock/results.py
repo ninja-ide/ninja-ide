@@ -26,6 +26,7 @@ from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
 from ninja_ide.gui.ide import IDE
+from ninja_ide import translations
 
 
 class Results(QWidget):
@@ -37,8 +38,8 @@ class Results(QWidget):
         self._parent = parent
         vbox = QVBoxLayout(self)
         self._tree = QTreeWidget()
-        self._tree.setHeaderLabels((self.tr("Content"),
-            self.tr('File'), self.tr('Line')))
+        self._tree.setHeaderLabels((translations.TR_CONTENT,
+            translations.TR_FILE, translations.TR_LINE))
         self._tree.header().setHorizontalScrollMode(
             QAbstractItemView.ScrollPerPixel)
         self._tree.header().setResizeMode(0, QHeaderView.ResizeToContents)
