@@ -587,6 +587,8 @@ class TreeProjectsWidget(QTreeView):
             self._added_to_console = False
 
     def _open_file(self, model_index):
+        if self.model().isDir(model_index):
+            return
         path = self.model().filePath(model_index)
         main_container = IDE.get_service('main_container')
         logger.debug("tried to get main container")
