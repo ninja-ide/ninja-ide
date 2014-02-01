@@ -245,8 +245,8 @@ class ProjectTreeColumn(QWidget):
                 name = file_manager.get_basename(editorWidget.file_path)
             new_path = file_manager.create_path(addToProject.pathSelected, name)
             ide_srv = IDE.get_service("ide")
-            old_file, ide_srv.get_or_create_nfile(path)
-            new_file = old_file.save(editorWidget.get_text(), path)
+            old_file = ide_srv.get_or_create_nfile(path)
+            new_file = old_file.save(editorWidget.get_text(), new_path)
             #FIXME: Make this file replace the original in the open tab
         else:
             pass
@@ -373,7 +373,7 @@ class TreeProjectsWidget(QTreeView):
 
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.auto_resize(self.verticalScrollBar().minimum(),
+        self.auto_resize_grow(self.verticalScrollBar().minimum(),
                 self.verticalScrollBar().maximum())
 
         #TODO: We need to expand the widget to be as big as the real area
@@ -381,24 +381,26 @@ class TreeProjectsWidget(QTreeView):
         #tries to detect when that area grows to adjust the size of the
         #widget, but i'm not sure this is the proper approach
         self.connect(self.verticalScrollBar(),
-            SIGNAL("rangeChanged(int, int)"), self.auto_resize)
+            SIGNAL("rangeChanged(int, int)"), self.auto_resize_grow)
 
-    def auto_resize(self, minimum, maximum):
-        logger.debug("This is the minimum")
-        logger.debug(minimum)
+    def auto_resize_grow(self, minimum, maximum):
         logger.debug("This is the maximum")
         logger.debug(maximum)
-        height = self.height()
 
-        if minimum != maximum:
-            model = self.model()
-            logger.debug(model.index(0, 0))
-            rowheight = self.rowHeight(model.index(0, 0))
-            logger.debug(rowheight)
-            #FIXME: I dont know how to use the maximum to grow properly
+        if maximum:
+            height = self.height()
+            #I am very reluctant to do this with a for an linear search
+            #even for an alpha, so lets just try guessing
+            #FIXME: We need to know the value in pixels of qslider's single
+            #value to know how to add it to height
             #FIXME: I dont know how to know when or how much to srink this.
-            #FIXME: We should add a expand/collapse project
-            self.setFixedHeight(height + (maximum * 10))
+            new_height = height + (maximum * 8)
+            self.setFixedHeight(new_height)
+
+    def auto_resize_shrink(self):
+        self.setFixedHeight(1)
+        #self.auto_resize_grow(self.verticalScrollBar().minimum(),
+                #self.verticalScrollBar().maximum())
 
     def setModel(self, model):
         super(TreeProjectsWidget, self).setModel(model)
@@ -412,6 +414,7 @@ class TreeProjectsWidget(QTreeView):
         self.project = project
         self._added_to_console = False
         self.__format_tree()
+        self.setMinimumHeight(self.height())
 
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.connect(self, SIGNAL(
@@ -430,12 +433,15 @@ class TreeProjectsWidget(QTreeView):
     def _update_header_title(self, title):
         self.header().title = title
 
+    #FIXME: Check using the amount of items under this tree
+    #add it to the items of pindex item children
     def _item_collapsed(self, tree_item):
         """Store status of item when collapsed"""
         path = self.model().filePath(tree_item)
         if path in self.state_index:
             path_index = self.state_index.index(path)
             self.state_index.pop(path_index)
+        self.auto_resize_shrink()
 
     def _item_expanded(self, tree_item):
         """Store status of item when expanded"""
@@ -581,6 +587,8 @@ class TreeProjectsWidget(QTreeView):
             self._added_to_console = False
 
     def _open_file(self, model_index):
+        if self.model().isDir(model_index):
+            return
         path = self.model().filePath(model_index)
         main_container = IDE.get_service('main_container')
         logger.debug("tried to get main container")
