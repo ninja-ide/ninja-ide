@@ -230,4 +230,7 @@
   <qresource prefix='img'>
     <file alias='delete'>img/delete.png</file>
   </qresource>
+  <qresource prefix='img'>
+    <file alias='selector'>img/main_selector.png</file>
+  </qresource>
 </RCC>

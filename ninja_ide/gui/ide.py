@@ -396,25 +396,6 @@ class IDE(QMainWindow):
             obj = self.sender()
             shortcut_index(obj.index)
 
-    def switch_focus(self):
-        """Switch the current keyboard focus to the next widget."""
-        widget = QApplication.focusWidget()
-        main_container = IDE.get_service('main_container')
-        tools_dock = IDE.get_service('tools_dock')
-        explorer_container = IDE.get_service('explorer_container')
-        if widget and main_container and tools_dock and explorer_container:
-            if widget in (main_container.actualTab,
-               main_container.actualTab.currentWidget()):
-                explorer_container.currentWidget().setFocus()
-            elif widget in (explorer_container,
-                 explorer_container.currentWidget()):
-                if tools_dock.isVisible():
-                    tools_dock.stack.currentWidget().setFocus()
-                else:
-                    main_container.actualTab.currentWidget().setFocus()
-            elif widget.parent() is tools_dock.stack:
-                main_container.actualTab.currentWidget().setFocus()
-
     def _process_connection(self):
         """Read the ipc input from another instance of ninja."""
         connection = self.s_listener.nextPendingConnection()

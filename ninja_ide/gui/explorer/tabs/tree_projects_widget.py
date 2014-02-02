@@ -44,13 +44,13 @@ from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QFontMetrics
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QUrl
-from PyQt4.QtGui import QDesktopServices
+from PyQt4.QtCore import QDateTime
 
 from ninja_ide import translations
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import ui_tools
+from ninja_ide.tools import json_manager
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs import add_to_project
 from ninja_ide.gui.dialogs import project_properties_widget
@@ -201,15 +201,16 @@ class ProjectTreeColumn(QWidget):
         for project in projects:
             self._open_project_folder(project)
 
-    def open_project_folder(self):
+    def open_project_folder(self, folderName=None):
         if settings.WORKSPACE:
             directory = settings.WORKSPACE
         else:
             directory = os.path.expanduser("~")
 
-        folderName = QFileDialog.getExistingDirectory(self,
-                self.tr("Open Project Directory"), directory)
-        logger.debug("Choosing Foldername")
+        if folderName is None:
+            folderName = QFileDialog.getExistingDirectory(self,
+                    self.tr("Open Project Directory"), directory)
+            logger.debug("Choosing Foldername")
         if folderName:
             logger.debug("Opening %s" % folderName)
             self._open_project_folder(folderName)
@@ -221,6 +222,7 @@ class ProjectTreeColumn(QWidget):
         if qfsm:
             self.add_project(project)
             self.emit(SIGNAL("updateLocator()"))
+            self.save_recent_projects(folderName)
 
     def _add_file_to_project(self, path):
         """Add the file for 'path' in the project the user choose here."""
@@ -316,7 +318,47 @@ class ProjectTreeColumn(QWidget):
     def current_tree(self):
         return self._active_project
 
-    #TODO: Save recently open projects into project data when it exists
+    def save_recent_projects(self, folder):
+        settings = IDE.data_settings()
+        recent_project_list = settings.value('recentProjects', {})
+        #if already exist on the list update the date time
+        projectProperties = json_manager.read_ninja_project(folder)
+        name = projectProperties.get('name', '')
+        description = projectProperties.get('description', '')
+
+        if name == '':
+            name = file_manager.get_basename(folder)
+
+        if description == '':
+            description = self.tr('no description available')
+
+        if folder in recent_project_list:
+            properties = recent_project_list[folder]
+            properties["lastopen"] = QDateTime.currentDateTime()
+            properties["name"] = name
+            properties["description"] = description
+            recent_project_list[folder] = properties
+        else:
+            recent_project_list[folder] = {
+                "name": name,
+                "description": description,
+                "isFavorite": False, "lastopen": QDateTime.currentDateTime()}
+            #if the length of the project list it's high that 10 then delete
+            #the most old
+            #TODO: add the length of available projects to setting
+            if len(recent_project_list) > 10:
+                del recent_project_list[self.find_most_old_open(
+                    recent_project_list)]
+        settings.setValue('recentProjects', recent_project_list)
+
+    def find_most_old_open(self, recent_project_list):
+        listFounder = []
+        for recent_project_path, content in list(recent_project_list.items()):
+            listFounder.append((recent_project_path, int(
+                content["lastopen"].toString("yyyyMMddHHmmzzz"))))
+        listFounder = sorted(listFounder, key=lambda date: listFounder[1],
+                             reverse=True)   # sort by date last used
+        return listFounder[0][0]
 
 
 class TreeProjectsWidget(QTreeView):
@@ -767,7 +809,6 @@ class FoldingContextMenu(QMenu):
             self._tree.expandAll()
         else:
             self._tree.collapseAll()
-
 
     def _fold_all_projects(self):
         """

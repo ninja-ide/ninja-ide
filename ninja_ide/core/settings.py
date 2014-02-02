@@ -105,6 +105,7 @@ EXECUTION_OPTIONS = ""
 SESSIONS = {}
 
 TOOLBAR_ITEMS = [
+    "_MainContainer.show_selector",
     "_MainContainer.add_editor",
     "ProjectTreeColumn.create_new_project",
     "_MainContainer.open_file",

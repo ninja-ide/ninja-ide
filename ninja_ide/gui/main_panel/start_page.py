@@ -2,20 +2,17 @@
 
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtDeclarative import QDeclarativeView
 
-from ninja_ide import resources
+from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
-from ninja_ide.gui.main_panel import itab_item
 
 
-class StartPage(QWidget, itab_item.ITabItem):
+class StartPage(QWidget):
 
     def __init__(self, parent=None):
         super(StartPage, self).__init__(parent)
-        self._id = "Start Page"
         vbox = QVBoxLayout(self)
         self.view = QDeclarativeView()
         self.view.setMinimumWidth(400)
@@ -36,17 +33,19 @@ class StartPage(QWidget, itab_item.ITabItem):
             lambda: self.emit(SIGNAL("openPreferences()")))
 
     def _open_project(self, path):
-        self.emit(SIGNAL("openProject(QString)"), path)
+        projects_explorer = IDE.get_service('projects_explorer')
+        if projects_explorer:
+            projects_explorer.open_project_folder(path)
 
     def _on_click_on_delete(self, path):
-        settings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
+        settings = IDE.data_settings()
         recent_projects = settings.value("recentProjects")
         if path in recent_projects:
             del recent_projects[path]
             settings.setValue("recentProjects", recent_projects)
 
     def _on_click_on_favorite(self, path, value):
-        settings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
+        settings = IDE.data_settings()
         recent_projects = settings.value("recentProjects")
         properties = recent_projects[path]
         properties["isFavorite"] = value
@@ -54,7 +53,7 @@ class StartPage(QWidget, itab_item.ITabItem):
         settings.setValue("recentProjects", recent_projects)
 
     def load_items(self):
-        settings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
+        settings = IDE.data_settings()
         listByFavorites = []
         listNoneFavorites = []
         recent_projects_dict = dict(settings.value('recentProjects', {}))

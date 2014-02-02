@@ -12,9 +12,11 @@ Rectangle {
     signal openPreferences
 
     gradient: Gradient {
-         GradientStop { position: 0.0; color: "#1e1e1e" }
-         GradientStop { position: 1.0; color: "#a4a4a4" }
-     }
+        GradientStop { position: 0.0; color: "#2f2f2f" }
+        GradientStop { position: 0.5; color: "#2f2f2f" }
+        GradientStop { position: 0.5; color: "#454545" }
+        GradientStop { position: 1.0; color: "#454545" }
+    }
 
     onWidthChanged: {
         if(root.width < 500){
@@ -35,10 +37,12 @@ Rectangle {
     Rectangle {
         id: mainArea
         color: "white"
+        border.color: "gray"
         anchors.fill: parent
         radius: 10
         anchors.margins: parent.height / 14
         smooth: true
+
         Image {
             id: logo
             source: "img/ninja-ide.png"
@@ -131,8 +135,8 @@ Rectangle {
     Row {
         spacing: 10
         anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.topMargin: 5
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 5
         anchors.rightMargin: parent.height / 14
 
         Text {
@@ -158,8 +162,8 @@ Rectangle {
         anchors.left: parent.left
         anchors.leftMargin: parent.height / 14
         anchors.bottomMargin: 5
-        color: "black"
-        text: "Copyright © 2011-2013 NINJA-IDE under GPLv3 License agreements"
+        color: "white"
+        text: "Copyright © 2011-2014 NINJA-IDE under GPLv3 License agreements"
     }
 
     function get_padding(item){

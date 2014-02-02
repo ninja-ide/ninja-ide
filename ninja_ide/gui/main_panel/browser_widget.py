@@ -27,10 +27,9 @@ from PyQt4.QtCore import SIGNAL
 from PyQt4.QtWebKit import QWebView
 
 from ninja_ide.core.file_handling import file_manager
-from ninja_ide.gui.main_panel import itab_item
 
 
-class BrowserWidget(QWidget, itab_item.ITabItem):
+class BrowserWidget(QWidget):
 
 ###############################################################################
 # RecentProjectItem SIGNALS
@@ -44,8 +43,6 @@ class BrowserWidget(QWidget, itab_item.ITabItem):
 
     def __init__(self, url, process=None, parent=None):
         QWidget.__init__(self, parent)
-        itab_item.ITabItem.__init__(self)
-        self._id = url
         self._process = process
         vbox = QVBoxLayout(self)
         #Web Frame

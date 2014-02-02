@@ -26,6 +26,8 @@ from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QStackedLayout
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QFileDialog
+from PyQt4.QtGui import QPixmap
+from PyQt4.QtCore import QDir
 from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
@@ -37,6 +39,7 @@ from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.editor import editor
 from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.main_panel import actions
+from ninja_ide.gui.main_panel import main_selector
 from ninja_ide.gui.main_panel import browser_widget
 from ninja_ide.gui.main_panel import start_page
 from ninja_ide.gui.main_panel import tabs_handler
@@ -81,6 +84,7 @@ class _MainContainer(QWidget):
         super(_MainContainer, self).__init__(parent)
         self._parent = parent
         self.stack = QStackedLayout(self)
+        self.stack.setStackingMode(QStackedLayout.StackAll)
 
         self.splitter = dynamic_splitter.DynamicSplitter()
         self.setAcceptDrops(True)
@@ -124,8 +128,14 @@ class _MainContainer(QWidget):
 
         IDE.register_signals('main_container', connections)
 
+        self.selector = main_selector.MainSelector(self)
+        self.stack.addWidget(self.selector)
+
         if settings.SHOW_START_PAGE:
             self.show_start_page()
+
+        self.connect(self.selector, SIGNAL("changeCurrent(int)"),
+            self._change_current_stack)
 
     def install(self):
         ide = IDE.get_service('ide')
@@ -142,6 +152,35 @@ class _MainContainer(QWidget):
     @property
     def combo_header_size(self):
         return self.combo_area.bar.height()
+
+    def show_selector(self):
+        if self.selector != self.stack.currentWidget():
+            temp_dir = os.path.join(QDir.tempPath(), "ninja-ide")
+            if not os.path.exists(temp_dir):
+                os.mkdir(temp_dir)
+            collected_data = []
+            preview = None
+            current = self.stack.currentIndex()
+            for index in range(self.stack.count()):
+                widget = self.stack.widget(index)
+                if widget == self.selector:
+                    continue
+                pixmap = QPixmap.grabWidget(widget, widget.rect())
+                path = os.path.join(temp_dir, "screen%s.png" % index)
+                pixmap.save(path)
+                if index == current:
+                    preview = (index, path)
+                    collected_data.insert(0, (index, path))
+                else:
+                    collected_data.append((index, path))
+            self.selector.set_preview(*preview)
+            self.selector.set_model(collected_data)
+            self.stack.setCurrentWidget(self.selector)
+        else:
+            self.selector.close_selector()
+
+    def _change_current_stack(self, index):
+        self.stack.setCurrentIndex(index)
 
     def change_visibility(self):
         """Show/Hide the Main Container area."""
@@ -736,6 +775,7 @@ class _MainContainer(QWidget):
                 else:
                     editorWidget.set_cursor_position(cursorPosition)
             self.emit(SIGNAL("currentEditorChanged(QString)"), fileName)
+            self.stack.setCurrentWidget(self.splitter)
         except file_manager.NinjaIOException as reason:
             QMessageBox.information(self,
                 self.tr("The file couldn't be open"), str(reason))
@@ -924,16 +964,17 @@ class _MainContainer(QWidget):
         #TODO: add other splits
 
     def show_start_page(self):
-        pass
-        #if not self.is_open("Start Page"):
-            #startPage = start_page.StartPage(parent=self)
-            #self.connect(startPage, SIGNAL("openProject(QString)"),
-                #self.open_project)
-            #self.connect(startPage, SIGNAL("openPreferences()"),
-                #lambda: self.emit(SIGNAL("openPreferences()")))
-            #self.add_tab(startPage, 'Start Page')
-        #else:
-            #self.move_to_open("Start Page")
+        start = self.stack.widget(0)
+        if isinstance(start, start_page.StartPage):
+            self.stack.setCurrentIndex(0)
+        else:
+            startPage = start_page.StartPage(parent=self)
+            self.connect(startPage, SIGNAL("openProject(QString)"),
+                self.open_project)
+            self.connect(startPage, SIGNAL("openPreferences()"),
+                lambda: self.emit(SIGNAL("openPreferences()")))
+            self.stack.insertWidget(0, startPage)
+            self.stack.setCurrentIndex(0)
 
     def show_python_doc(self):
         if sys.platform == 'win32':
