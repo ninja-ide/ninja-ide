@@ -7,7 +7,7 @@ Rectangle {
     signal open(int index)
     signal ready
 
-    property int duration: 500
+    property int duration: 300
     property int indexSelected: 0
     property int currentIndex: 0
 
