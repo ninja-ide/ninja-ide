@@ -107,7 +107,7 @@ SESSIONS = {}
 TOOLBAR_ITEMS = [
     "_MainContainer.show_selector",
     "_MainContainer.add_editor",
-    "ProjectTreeColumn.create_new_project",
+    #"ProjectTreeColumn.create_new_project",
     "_MainContainer.open_file",
     "ProjectTreeColumn.open_project_folder",
     "_MainContainer.save_file",
