@@ -145,14 +145,14 @@ ACTIONS_GENERAL = (
     "action": {'text': translations.TR_ACTIVATE_PROFILE,
                'image': 'activate-profile',
                'section': (translations.TR_MENU_FILE, None),
-               'weight': 500},
+               'weight': 510},
     "connect": "activate_profile"
     },
     {
     "action": {'text': translations.TR_DEACTIVATE_PROFILE,
                'image': 'deactivate-profile',
                'section': (translations.TR_MENU_FILE, None),
-               'weight': 510},
+               'weight': 520},
     "connect": "deactivate_profile"
     },
     {
@@ -175,9 +175,5 @@ ACTIONS_GENERAL = (
                'section': (translations.TR_MENU_VIEW, None),
                'weight': 150},
     "connect": "fullscreen_mode"
-    },
-    {
-    "shortcut": "Switch-Focus",
-    "connect": "switch_focus"
     },
 )

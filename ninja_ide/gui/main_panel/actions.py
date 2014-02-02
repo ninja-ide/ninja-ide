@@ -21,6 +21,14 @@ from ninja_ide import translations
 
 ACTIONS = (
     {
+    "shortcut": "Show-Selector",
+    "action": {'text': translations.TR_SHOW_SELECTOR,
+               'image': 'selector',
+               'section': (translations.TR_MENU_FILE, None),
+               'weight': 500},
+    "connect": "show_selector"
+    },
+    {
     "shortcut": "Change-Tab",
     "connect": "change_tab"
     },
