@@ -5,6 +5,7 @@ Rectangle {
     color: "#33363b"
 
     signal open(int index)
+    signal ready
 
     property int duration: 500
     property int indexSelected: 0
@@ -35,9 +36,10 @@ Rectangle {
 
         onCompleted: {
             root.open(root.indexSelected);
+            imagePreview.source = "";
         }
     }
-    
+
     Flickable {
         anchors.fill: parent
         contentHeight: grid.height
@@ -52,11 +54,11 @@ Rectangle {
                 right: parent.right
                 margins: 20
             }
-    
+
             Repeater {
                 id: repeater
                 model: ListModel {}
-    
+
                 Rectangle {
                     id: tile
                     color: "#24262c"
@@ -65,12 +67,13 @@ Rectangle {
                     width: grid.width / grid.columns - grid.spacing
                     height: image.height + 5
                     focus: index == root.currentIndex ? true : false
-    
+
                     property int widgetIndex: obj_index
                     property alias mouse: mouseArea
-    
+
                     Image {
                         id: image
+                        cache: false
                         width: grid.width / grid.columns - grid.spacing - 5
                         anchors.centerIn: parent
                         asynchronous: true
@@ -109,7 +112,7 @@ Rectangle {
                 }
             }
         }
-        
+
     }
 
     Rectangle {
@@ -123,7 +126,14 @@ Rectangle {
         Image {
             id: imagePreview
             anchors.fill: parent
+            cache: false
             fillMode: Image.PreserveAspectFit
+
+            onStatusChanged: {
+                if (imagePreview.status == Image.Ready) {
+                    root.ready();
+                }
+            }
         }
     }
 
@@ -138,8 +148,6 @@ Rectangle {
 
     function start_animation() {
         animation.start();
-        var item = repeater.itemAt(0);
-        item.focus = true;
     }
 
     function clear_model() {

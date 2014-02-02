@@ -41,16 +41,20 @@ class MainSelector(QWidget):
 
         self.connect(self._root, SIGNAL("open(int)"),
             lambda i: self.emit(SIGNAL("changeCurrent(int)"), i))
+        self.connect(self._root, SIGNAL("ready()"),
+            lambda: self.emit(SIGNAL("ready()")))
 
     def set_model(self, model):
         self._root.clear_model()
         for index, path in model:
             self._root.add_widget(index, path)
-        self._root.start_animation()
-        self._root.forceActiveFocus()
 
     def set_preview(self, index, preview_path):
         self._root.add_preview(index, preview_path)
 
     def close_selector(self):
         self._root.close_selector()
+
+    def start_animation(self):
+        self._root.start_animation()
+        self._root.forceActiveFocus()

@@ -136,6 +136,8 @@ class _MainContainer(QWidget):
 
         self.connect(self.selector, SIGNAL("changeCurrent(int)"),
             self._change_current_stack)
+        self.connect(self.selector, SIGNAL("ready()"),
+            self._selector_ready)
 
     def install(self):
         ide = IDE.get_service('ide')
@@ -161,7 +163,6 @@ class _MainContainer(QWidget):
             if not os.path.exists(temp_dir):
                 os.mkdir(temp_dir)
             collected_data = []
-            preview = None
             current = self.stack.currentIndex()
             for index in range(self.stack.count()):
                 widget = self.stack.widget(index)
@@ -171,15 +172,17 @@ class _MainContainer(QWidget):
                 path = os.path.join(temp_dir, "screen%s.png" % index)
                 pixmap.save(path)
                 if index == current:
-                    preview = (index, path)
+                    self.selector.set_preview(index, path)
                     collected_data.insert(0, (index, path))
                 else:
                     collected_data.append((index, path))
-            self.selector.set_preview(*preview)
             self.selector.set_model(collected_data)
-            self.stack.setCurrentWidget(self.selector)
         else:
             self.selector.close_selector()
+
+    def _selector_ready(self):
+        self.stack.setCurrentWidget(self.selector)
+        self.selector.start_animation()
 
     def _change_current_stack(self, index):
         self.stack.setCurrentIndex(index)
