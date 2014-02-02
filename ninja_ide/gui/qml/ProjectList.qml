@@ -9,8 +9,23 @@ Rectangle {
     signal openProject(string path)
     signal removeProject(string path)
 
+    Text {
+        id: txtProjects
+        color: "#2f2d2d"
+        text: "Recent Projects:"
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.margins: 10
+        horizontalAlignment: Text.AlignHCenter
+        font.bold: true
+        font.pointSize: 26
+        style: Text.Raised
+        styleColor: "black"
+    }
+
     Component {
-    id: contactDelegate
+        id: contactDelegate
         Item {
             id: item
             width: root.width; height: 50
@@ -100,8 +115,13 @@ Rectangle {
 
     ListView {
         id: listProjects
-        width: root.width
-        height: root.height
+        anchors {
+            left: parent.left
+            right: parent.right
+            top: txtProjects.bottom
+            bottom: parent.bottom
+            margins: 10
+        }
 
         focus: true
         model: ListModel {}

@@ -37,6 +37,7 @@ Rectangle {
         onCompleted: {
             root.open(root.indexSelected);
             imagePreview.source = "";
+            repeater.model.clear();
         }
     }
 
@@ -79,6 +80,7 @@ Rectangle {
                         asynchronous: true
                         source: Qt.resolvedUrl(image_path)
                         fillMode: Image.PreserveAspectFit
+                        smooth: true
                     }
 
                     Rectangle {
@@ -128,6 +130,7 @@ Rectangle {
             anchors.fill: parent
             cache: false
             fillMode: Image.PreserveAspectFit
+            smooth: true
 
             onStatusChanged: {
                 if (imagePreview.status == Image.Ready) {
@@ -148,10 +151,6 @@ Rectangle {
 
     function start_animation() {
         animation.start();
-    }
-
-    function clear_model() {
-        repeater.model.clear();
     }
 
     function close_selector() {

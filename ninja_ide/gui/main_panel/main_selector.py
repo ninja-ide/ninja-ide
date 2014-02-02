@@ -45,7 +45,6 @@ class MainSelector(QWidget):
             lambda: self.emit(SIGNAL("ready()")))
 
     def set_model(self, model):
-        self._root.clear_model()
         for index, path in model:
             self._root.add_widget(index, path)
 

@@ -3,8 +3,7 @@ import QtQuick 1.1
 Rectangle {
     id: root
 
-    property int _padding: (mainArea.width / 4)
-    property bool compressed: true
+    property bool compressed: false
 
     signal markAsFavorite(string pat, bool value)
     signal openProject(string path)
@@ -19,18 +18,10 @@ Rectangle {
     }
 
     onWidthChanged: {
-        if(root.width < 500){
+        if(root.width < 650){
             compressed = true;
-            root._padding = (mainArea.width / 2);
-            logo.width = 300;
-            txtProjects.visible = false;
-            projectList.visible = false;
         }else{
             compressed = false;
-            root._padding = (mainArea.width / 4);
-            logo.width = logo.sourceSize.width;
-            txtProjects.visible = true;
-            projectList.visible = true;
         }
     }
 
@@ -39,96 +30,102 @@ Rectangle {
         color: "white"
         border.color: "gray"
         anchors.fill: parent
-        radius: 10
+        radius: 15
         anchors.margins: parent.height / 14
         smooth: true
 
-        Image {
-            id: logo
-            source: "img/ninja-ide.png"
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.leftMargin: root.compressed ? 10 : root.get_padding(logo);
-            anchors.topMargin: 10
-            fillMode: Image.PreserveAspectFit
-        }
+        Flickable {
+            anchors.fill: parent
+            contentHeight: colLeft.height + 30
+            clip: true
 
-        Text {
-            id: txtWelcome
-            anchors.left: parent.left
-            anchors.top: logo.bottom
-            anchors.leftMargin: root.compressed ? 10 : root.get_padding(txtWelcome);
-            anchors.topMargin: 15
-            color: "#2f2d2d"
-            text: "Welcome!"
-            font.bold: true
-            font.pointSize: 45
-            style: Text.Raised
-            styleColor: "black"
-        }
-
-        Text {
-            id: txtDescription
-            width: compressed ? parent.width - 20 : root._padding * 1.5
-            anchors.left: parent.left
-            anchors.top: txtWelcome.bottom
-            anchors.leftMargin: root.compressed ? 10 : root.get_padding(txtDescription);
-            anchors.topMargin: 10
-            text: "NINJA-IDE (from: \"Ninja-IDE Is Not Just Another IDE\"), is a cross-platform integrated development environment specially designed to build Python Applications. NINJA-IDE provides tools to simplify the Python-software development and handles all kinds of situations thanks to its rich extensibility."
-            wrapMode: Text.WordWrap
-        }
-
-        Column {
-            id: colButtons
-            anchors.top: txtDescription.bottom
-            anchors.left: parent.left
-            anchors.leftMargin: root.compressed ? 10 : root.get_padding(colButtons);
-            anchors.topMargin: root.compressed ? 10 : 50
-
-            property int buttonWidth: compressed ? (mainArea.width / 2) - 20 : (mainArea.width / 4) - 50
-            Row {
+            Column {
+                id: colLeft
                 spacing: 10
-                Button {
-                    width: colButtons.buttonWidth
-                    height: 35
-                    text: "Chat with us!"
-                    onClicked: Qt.openUrlExternally("https://kiwiirc.com/client/chat.freenode.net/?nick=Ninja|?&theme=cli#ninja-ide")
+                anchors {
+                    top: parent.top
+                    left: parent.left
+                    margins: 20
                 }
-                Button {
-                    width: colButtons.buttonWidth
-                    height: 35
-                    text: "Preferences"
-                    onClicked: openPreferences();
+                width: root.compressed ? parent.width - 40 : parent.width / 2 - 20
+
+                Image {
+                    id: logo
+                    source: "img/ninja-ide.png"
+                    fillMode: Image.PreserveAspectFit
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    smooth: true
+                }
+
+                Text {
+                    id: txtWelcome
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    horizontalAlignment: Text.AlignHCenter
+                    color: "#2f2d2d"
+                    text: "Welcome!"
+                    font.bold: true
+                    font.pointSize: 45
+                    style: Text.Raised
+                    styleColor: "black"
+                }
+
+                Text {
+                    id: txtDescription
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    horizontalAlignment: Text.AlignHCenter
+                    text: "NINJA-IDE (from: \"Ninja-IDE Is Not Just Another IDE\"), is a cross-platform integrated development environment specially designed to build Python Applications. NINJA-IDE provides tools to simplify the Python-software development and handles all kinds of situations thanks to its rich extensibility."
+                    wrapMode: Text.WordWrap
+                }
+
+                Column {
+                    id: colButtons
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.leftMargin: 20
+
+                    property int buttonWidth: colLeft.width / 2 - 30
+                    Row {
+                        spacing: 10
+                        Button {
+                            width: colButtons.buttonWidth
+                            height: 35
+                            text: "Chat with us!"
+                            onClicked: Qt.openUrlExternally("https://kiwiirc.com/client/chat.freenode.net/?nick=Ninja|?&theme=cli#ninja-ide")
+                        }
+                        Button {
+                            width: colButtons.buttonWidth
+                            height: 35
+                            text: "Preferences"
+                            onClicked: openPreferences();
+                        }
+                    }
                 }
             }
         }
 
-        Text {
-            id: txtProjects
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.rightMargin: root.get_padding(txtProjects);
-            anchors.topMargin: 30
-            color: "#2f2d2d"
-            text: "Recent Projects:"
-            font.bold: true
-            font.pointSize: 30
-            style: Text.Raised
-            styleColor: "black"
-        }
+        Column {
+            id: colRight
+            spacing: 10
+            anchors {
+                top: parent.top
+                right: parent.right
+                margins: 20
+            }
+            width: parent.width / 2 - 20
+            visible: !root.compressed
 
-        ProjectList {
-            id: projectList
-            width: (parent.width / 2) - 20
-            height: parent.height - txtProjects.height - 70
-            anchors.right: parent.right
-            anchors.top: txtProjects.bottom
-            anchors.rightMargin: root.get_padding(projectList)
-            anchors.topMargin: 10
+            ProjectList {
+                id: projectList
+                anchors.left: parent.left
+                anchors.right: parent.right
 
-            onMarkAsFavorite: root.markAsFavorite(path, value);
-            onOpenProject: root.openProject(path);
-            onRemoveProject: root.removeProject(path);
+                onMarkAsFavorite: root.markAsFavorite(path, value);
+                onOpenProject: root.openProject(path);
+                onRemoveProject: root.removeProject(path);
+            }
         }
     }
 
@@ -136,8 +133,9 @@ Rectangle {
         spacing: 10
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 5
+        anchors.bottomMargin: 15
         anchors.rightMargin: parent.height / 14
+        visible: !root.compressed
 
         Text {
             text: "Powered by:"
@@ -161,14 +159,10 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.leftMargin: parent.height / 14
-        anchors.bottomMargin: 5
+        anchors.bottomMargin: 10
+        font.pixelSize: 12
         color: "white"
         text: "Copyright © 2011-2014 NINJA-IDE under GPLv3 License agreements"
-    }
-
-    function get_padding(item){
-        var newPadding = (root._padding - (item.width / 2)) - 10;
-        return newPadding;
     }
 
     function add_project(name, path, favorite){
