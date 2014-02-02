@@ -56,6 +56,11 @@ Rectangle {
                 border.color= "steelblue";
             }
 
+            onReleased: {
+                button.gradient = hover;
+                border.color= "steelblue";
+            }
+
             onEntered:{
                 button.gradient = hover;
                 border.color= "steelblue";

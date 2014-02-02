@@ -982,6 +982,7 @@ class _MainContainer(QWidget):
                 self.open_project)
             self.connect(startPage, SIGNAL("openPreferences()"),
                 lambda: self.emit(SIGNAL("openPreferences()")))
+            self.connect(startPage, SIGNAL("newFile()"), self.add_editor)
             self.stack.insertWidget(0, startPage)
             self.stack.setCurrentIndex(0)
 
