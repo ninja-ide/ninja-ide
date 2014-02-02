@@ -26,6 +26,7 @@ DEBUG = logger.debug
 
 from PyQt4.QtGui import QTreeView
 from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QScrollArea
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QAbstractItemView
@@ -127,10 +128,12 @@ class TreeHeader(QHeaderView):
             QCursor.pos(), self.path)
 
 
-class ProjectTreeColumn(QWidget):
+class ProjectTreeColumn(QDialog):
 
-    def __init__(self, *args, **kwargs):
-        super(ProjectTreeColumn, self).__init__(*args, **kwargs)
+    def __init__(self, parent=None):
+        super(ProjectTreeColumn, self).__init__(parent,
+            Qt.WindowStaysOnTopHint)
+        self.setWindowTitle(translations.TR_TAB_PROJECTS)
         self._layout = QVBoxLayout()
         self._layout.setSizeConstraint(QVBoxLayout.SetDefaultConstraint)
         self._layout.setContentsMargins(0, 0, 0, 0)
@@ -197,6 +200,8 @@ class ProjectTreeColumn(QWidget):
         ide = IDE.get_service('ide')
         ui_tools.install_shortcuts(self, actions.PROJECTS_TREE_ACTIONS, ide)
 
+        self.connect(ide, SIGNAL("goingDown()"), self.close)
+
     def load_session_projects(self, projects):
         for project in projects:
             self._open_project_folder(project)
@@ -223,6 +228,9 @@ class ProjectTreeColumn(QWidget):
             self.add_project(project)
             self.emit(SIGNAL("updateLocator()"))
             self.save_recent_projects(folderName)
+            main_container = IDE.get_service('main_container')
+            if main_container:
+                main_container.show_editor_area()
 
     def _add_file_to_project(self, path):
         """Add the file for 'path' in the project the user choose here."""
@@ -355,6 +363,10 @@ class ProjectTreeColumn(QWidget):
         listFounder = sorted(listFounder, key=lambda date: listFounder[1],
                              reverse=True)   # sort by date last used
         return listFounder[0][0]
+
+    def closeEvent(self, event):
+        self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
+        event.ignore()
 
 
 class TreeProjectsWidget(QTreeView):

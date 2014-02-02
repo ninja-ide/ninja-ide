@@ -665,8 +665,8 @@ class IDE(QMainWindow):
             if val == QMessageBox.Cancel:
                 event.ignore()
                 return
-        self.emit(SIGNAL("goingDown()"))
         self.save_settings()
+        self.emit(SIGNAL("goingDown()"))
         #close python documentation server (if running)
         main_container.close_python_doc()
         #Shutdown PluginManager

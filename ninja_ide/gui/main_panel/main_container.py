@@ -187,6 +187,9 @@ class _MainContainer(QWidget):
     def _change_current_stack(self, index):
         self.stack.setCurrentIndex(index)
 
+    def show_editor_area(self):
+        self.stack.setCurrentWidget(self.splitter)
+
     def _files_closed(self):
         if settings.SHOW_START_PAGE:
             self.show_start_page()
