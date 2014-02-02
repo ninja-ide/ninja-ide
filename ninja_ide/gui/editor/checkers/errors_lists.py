@@ -16,7 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QListWidget
 from PyQt4.QtGui import QListWidgetItem
 from PyQt4.QtGui import QLabel
@@ -34,7 +34,7 @@ from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
 
 
-class ErrorsWidget(QWidget):
+class ErrorsWidget(QDialog):
 
 ###############################################################################
 # ERRORS WIDGET SIGNALS
@@ -45,8 +45,8 @@ class ErrorsWidget(QWidget):
     """
 ###############################################################################
 
-    def __init__(self):
-        super(ErrorsWidget, self).__init__()
+    def __init__(self, parent=None):
+        super(ErrorsWidget, self).__init__(parent, Qt.WindowStaysOnTopHint)
         self.pep8 = None
         self._outRefresh = True
 
@@ -89,6 +89,10 @@ class ErrorsWidget(QWidget):
 
         IDE.register_service('tab_errors', self)
         ExplorerContainer.register_tab(translations.TR_TAB_ERRORS, self)
+
+    def install_tab(self):
+        ide = IDE.get_service('ide')
+        self.connect(ide, SIGNAL("goingDown()"), self.close)
 
     def _turn_on_off_lint(self):
         """Change the status of the lint checker state."""
@@ -160,6 +164,10 @@ class ErrorsWidget(QWidget):
         """
         self.listErrors.clear()
         self.listPep8.clear()
+
+    def closeEvent(self, event):
+        self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
+        event.ignore()
 
 
 if settings.SHOW_ERRORS_LIST:

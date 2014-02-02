@@ -16,7 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
-from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QListWidget
 from PyQt4.QtGui import QListWidgetItem
 from PyQt4.QtGui import QLabel
@@ -36,10 +36,10 @@ from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
 
 
-class MigrationWidget(QWidget):
+class MigrationWidget(QDialog):
 
-    def __init__(self):
-        super(MigrationWidget, self).__init__()
+    def __init__(self, parent=None):
+        super(MigrationWidget, self).__init__(parent, Qt.WindowStaysOnTopHint)
         self._migration = {}
         vbox = QVBoxLayout(self)
         lbl_title = QLabel(self.tr("Current code:"))
@@ -65,6 +65,10 @@ class MigrationWidget(QWidget):
 
         IDE.register_service('tab_migration', self)
         ExplorerContainer.register_tab(translations.TR_TAB_MIGRATION, self)
+
+    def install_tab(self):
+        ide = IDE.get_service('ide')
+        self.connect(ide, SIGNAL("goingDown()"), self.close)
 
     def apply_changes(self):
         lineno = int(self.current_list.currentItem().data(Qt.UserRole))
@@ -130,6 +134,10 @@ class MigrationWidget(QWidget):
         """
         self.current_list.clear()
         self.suggestion.clear()
+
+    def closeEvent(self, event):
+        self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
+        event.ignore()
 
 
 if settings.SHOW_MIGRATION_LIST:

@@ -117,6 +117,7 @@ TR_TAB_WEB_INSPECTOR = tr("NINJA-IDE", "Web Inspector")
 TR_ADD_FILE_TO_PROJECT = tr("NINJA-IDE", "Add File to Project")
 TR_CANCEL = tr("NINJA-IDE", "Cancel")
 TR_ADD_HERE = tr("NINJA-IDE", "Add here!")
+TR_UNDOCK = tr("NINJA-IDE", "Undock Tab")
 
 # Project Properties
 TR_PROJECT_PROPERTIES = tr("NINJA-IDE", "Project Properties")
