@@ -33,6 +33,8 @@ class StartPage(QWidget):
             self._on_click_on_favorite)
         self.connect(self.root, SIGNAL("openPreferences()"),
             lambda: self.emit(SIGNAL("openPreferences()")))
+        self.connect(self.root, SIGNAL("newFile()"),
+            lambda: self.emit(SIGNAL("newFile()")))
 
     def _open_project(self, path):
         projects_explorer = IDE.get_service('projects_explorer')

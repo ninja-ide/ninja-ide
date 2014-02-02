@@ -6,6 +6,7 @@ Rectangle {
     property bool compressed: false
 
     signal markAsFavorite(string pat, bool value)
+    signal newFile
     signal openProject(string path)
     signal removeProject(string path)
     signal openPreferences
@@ -85,8 +86,24 @@ Rectangle {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.leftMargin: 20
+                    spacing: 10
 
                     property int buttonWidth: colLeft.width / 2 - 30
+                    Row {
+                        spacing: 10
+                        Button {
+                            width: colButtons.buttonWidth
+                            height: 35
+                            text: "New File"
+                            onClicked: root.newFile();
+                        }
+                        /*Button {
+                            width: colButtons.buttonWidth
+                            height: 35
+                            text: "New Project"
+                            onClicked: root.newFile();
+                        }*/
+                    }
                     Row {
                         spacing: 10
                         Button {
