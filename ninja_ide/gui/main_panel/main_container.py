@@ -199,9 +199,11 @@ class _MainContainer(QWidget):
             self.show()
 
     def expand_symbol_combo(self):
+        self.stack.setCurrentWidget(self.splitter)
         self.current_widget.show_combo_symbol()
 
     def expand_file_combo(self):
+        self.stack.setCurrentWidget(self.splitter)
         self.current_widget.show_combo_file()
 
     def locate_function(self, function, filePath, isVariable):
