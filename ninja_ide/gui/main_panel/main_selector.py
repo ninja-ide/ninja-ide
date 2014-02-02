@@ -47,6 +47,7 @@ class MainSelector(QWidget):
         for index, path in model:
             self._root.add_widget(index, path)
         self._root.start_animation()
+        self._root.forceActiveFocus()
 
     def set_preview(self, index, preview_path):
         self._root.add_preview(index, preview_path)

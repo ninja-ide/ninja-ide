@@ -8,6 +8,7 @@ Rectangle {
 
     property int duration: 500
     property int indexSelected: 0
+    property int currentIndex: 0
 
     ParallelAnimation {
         id: animation
@@ -59,12 +60,14 @@ Rectangle {
                 Rectangle {
                     id: tile
                     color: "#24262c"
-                    border.color: "lightblue"
+                    border.color: tile.focus ? "white" : "lightblue"
                     radius: 5
                     width: grid.width / grid.columns - grid.spacing
                     height: image.height + 5
+                    focus: index == root.currentIndex ? true : false
     
                     property int widgetIndex: obj_index
+                    property alias mouse: mouseArea
     
                     Image {
                         id: image
@@ -78,11 +81,12 @@ Rectangle {
                     Rectangle {
                         id: hover
                         anchors.fill: parent
-                        opacity: 0
+                        opacity: tile.focus ? 0.2 : 0
                         color: "white"
                     }
 
                     MouseArea {
+                        id: mouseArea
                         anchors.fill: parent
                         hoverEnabled: true
                         onClicked: {
@@ -93,13 +97,13 @@ Rectangle {
                         }
 
                         onEntered: {
-                            hover.opacity = 0.2;
-                            tile.border.color = "white";
+                            tile.focus = true;
+                            root.currentIndex = index;
                         }
 
                         onExited: {
-                            hover.opacity = 0;
-                            tile.border.color = "lightblue";
+                            tile.focus = false;
+                            root.currentIndex = 0;
                         }
                     }
                 }
@@ -134,6 +138,8 @@ Rectangle {
 
     function start_animation() {
         animation.start();
+        var item = repeater.itemAt(0);
+        item.focus = true;
     }
 
     function clear_model() {
@@ -143,6 +149,42 @@ Rectangle {
     function close_selector() {
         preview.visible = true;
         animationSelected.start();
+    }
+
+    function calculate_index(key) {
+        var columns = grid.columns;
+        if (key == Qt.Key_Right) {
+            var index = root.currentIndex + 1;
+            if (index < repeater.count) {
+                root.currentIndex = index;
+            }
+        } else if (key == Qt.Key_Left) {
+            var index = root.currentIndex - 1;
+            if (index >= 0) {
+                root.currentIndex = index;
+            }
+        } else if (key == Qt.Key_Down) {
+            var index = root.currentIndex + columns;
+            if (index < repeater.count) {
+                root.currentIndex = index;
+            }
+        } else if (key == Qt.Key_Up) {
+            var index = root.currentIndex - columns;
+            if (index >= 0) {
+                root.currentIndex = index;
+            }
+        }
+    }
+
+    Keys.onPressed: {
+        root.calculate_index(event.key);
+        var item = repeater.itemAt(root.currentIndex);
+        item.focus = true;
+        if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter) {
+            item.mouse.clicked(null);
+        }
+
+        event.accepted = true;
     }
 
 }

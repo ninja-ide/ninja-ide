@@ -84,3 +84,4 @@ class StartPage(QWidget):
             path = recent_project_path[0]
             name = recent_projects_dict[path]['name']
             self.root.add_project(name, path, False)
+        self.root.forceActiveFocus()
