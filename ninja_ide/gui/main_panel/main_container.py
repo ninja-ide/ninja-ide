@@ -142,6 +142,8 @@ class _MainContainer(QWidget):
         ide.place_me_on("main_container", self, "central", top=True)
 
         self.combo_area = combo_editor.ComboEditor(original=True)
+        self.connect(self.combo_area, SIGNAL("allFilesClosed()"),
+            self._files_closed)
         self.splitter.addWidget(self.combo_area)
         self.stack.addWidget(self.splitter)
 
@@ -181,6 +183,10 @@ class _MainContainer(QWidget):
 
     def _change_current_stack(self, index):
         self.stack.setCurrentIndex(index)
+
+    def _files_closed(self):
+        if settings.SHOW_START_PAGE:
+            self.show_start_page()
 
     def change_visibility(self):
         """Show/Hide the Main Container area."""
@@ -621,6 +627,7 @@ class _MainContainer(QWidget):
         #emit a signal about the file open
         self.emit(SIGNAL("fileOpened(QString)"), fileName)
 
+        self.stack.setCurrentWidget(self.splitter)
         return editorWidget
 
     def reset_pep8_warnings(self, value):
@@ -775,7 +782,6 @@ class _MainContainer(QWidget):
                 else:
                     editorWidget.set_cursor_position(cursorPosition)
             self.emit(SIGNAL("currentEditorChanged(QString)"), fileName)
-            self.stack.setCurrentWidget(self.splitter)
         except file_manager.NinjaIOException as reason:
             QMessageBox.information(self,
                 self.tr("The file couldn't be open"), str(reason))

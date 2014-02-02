@@ -143,6 +143,9 @@ class ComboEditor(QWidget):
         self._add_to_last_opened(neditable.file_path)
         layoutItem.widget().deleteLater()
 
+        if self.stacked.isEmpty():
+            self.emit(SIGNAL("allFilesClosed()"))
+
     def _add_to_last_opened(self, path):
         if path not in settings.LAST_OPENED_FILES:
             settings.LAST_OPENED_FILES.append(path)

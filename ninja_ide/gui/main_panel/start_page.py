@@ -14,6 +14,8 @@ class StartPage(QWidget):
     def __init__(self, parent=None):
         super(StartPage, self).__init__(parent)
         vbox = QVBoxLayout(self)
+        vbox.setContentsMargins(0, 0, 0, 0)
+        vbox.setSpacing(0)
         self.view = QDeclarativeView()
         self.view.setMinimumWidth(400)
         self.view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
