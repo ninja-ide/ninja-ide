@@ -302,10 +302,6 @@ class ProjectTreeColumn(QWidget):
                 main_container.save_project(path)
 
     def create_new_project(self):
-        if not self.tree_projects:
-            QMessageBox.information(self, self.tr("Projects Disabled"),
-                self.tr("Project support has been disabled from Preferences"))
-            return
         wizard = wizard_new_project.WizardNewProject(self)
         wizard.show()
 
