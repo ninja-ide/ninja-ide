@@ -40,6 +40,7 @@ class MigrationWidget(QDialog):
 
     def __init__(self, parent=None):
         super(MigrationWidget, self).__init__(parent, Qt.WindowStaysOnTopHint)
+        self.setWindowTitle(translations.TR_TAB_MIGRATION)
         self._migration = {}
         vbox = QVBoxLayout(self)
         lbl_title = QLabel(self.tr("Current code:"))
