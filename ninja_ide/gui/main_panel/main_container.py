@@ -1066,14 +1066,17 @@ class _MainContainer(QWidget):
 
     def change_tab(self):
         """Change the tab in the current TabWidget."""
+        self.stack.setCurrentWidget(self.splitter)
         self.tabs_handler.next_item()
 
     def change_tab_reverse(self):
         """Change the tab in the current TabWidget backwards."""
+        self.stack.setCurrentWidget(self.splitter)
         self.tabs_handler.previous_item()
 
     def show_navigation_buttons(self):
         """Show Navigation menu."""
+        self.stack.setCurrentWidget(self.splitter)
         self.combo_area.show_menu_navigation()
 
     def change_split_focus(self):
