@@ -412,7 +412,7 @@ QComboBox#combotab {
     border-right-width: 0px;
     border-top-width: 0px;
     border-bottom-width: 0px;
-    padding: 3px 18px 3px 5px;
+    padding: 1px 18px 1px 5px;
     min-width: 4em;
     color: #FFFFFF;
 }
@@ -428,7 +428,7 @@ QComboBox#combo_symbols {
     border-top-width: 0px;
     border-bottom-width: 0px;
     margin-left: 10px;
-    padding: 3px 18px 3px 5px;
+    padding: 1px 18px 1px 5px;
     min-width: 4em;
 }
 
