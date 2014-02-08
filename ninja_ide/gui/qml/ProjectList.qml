@@ -116,12 +116,12 @@ Rectangle {
     ListView {
         id: listProjects
         anchors {
-            left: parent.left
             right: parent.right
             top: txtProjects.bottom
-            bottom: parent.bottom
             margins: 10
         }
+        width: parent.width
+        height: 500
 
         focus: true
         model: ListModel {}
