@@ -175,26 +175,9 @@ class ProjectTreeColumn(QDialog):
         #TODO: check this:
         #self.connect(ide, SIGNAL("goingDown()"),
             #self.tree_projects.shutdown)
-        #self.connect(self.tree_projects,
-            #SIGNAL("addProjectToConsole(QString)"),
-            #self._add_project_to_console)
-        #self.connect(self.tree_projects,
-            #SIGNAL("removeProjectFromConsole(QString)"),
-            #self._remove_project_from_console)
 
         #def close_project_signal():
             #self.emit(SIGNAL("updateLocator()"))
-
-        #def close_files_related_to_closed_project(project):
-            #if project:
-                #self.emit(SIGNAL("projectClosed(QString)"), project)
-        #self.connect(self.tree_projects, SIGNAL("closeProject(QString)"),
-            #close_project_signal)
-        #self.connect(self.tree_projects, SIGNAL("refreshProject()"),
-            #close_project_signal)
-        #self.connect(self.tree_projects,
-            #SIGNAL("closeFilesFromProjectClosed(QString)"),
-            #close_files_related_to_closed_project)
 
     def install_tab(self):
         ide = IDE.get_service('ide')

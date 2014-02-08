@@ -129,6 +129,7 @@ Rectangle {
             anchors {
                 top: parent.top
                 right: parent.right
+                bottom: parent.bottom
                 margins: 20
             }
             width: parent.width / 2 - 20
