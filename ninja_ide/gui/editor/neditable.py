@@ -56,6 +56,8 @@ class NEditable(QObject):
             self.connect(self._nfile, SIGNAL("fileClosing(QString)"),
                 lambda: self.emit(SIGNAL("fileClosing(PyQt_PyObject)"),
                     self))
+            self.connect(self._nfile, SIGNAL("fileChanged()"),
+                lambda: self.emit(SIGNAL("fileChanged(PyQt_PyObject)"), self))
 
     def _about_to_close_never_saved(self, path):
         modified = False
@@ -74,6 +76,7 @@ class NEditable(QObject):
         content = ''
         if not self._nfile.is_new_file:
             content = self._nfile.read()
+            self._nfile.start_watching()
             self.__editor.setPlainText(content)
             encoding = file_manager.get_file_encoding(content)
             self.__editor.encoding = encoding
@@ -85,6 +88,17 @@ class NEditable(QObject):
         #New file then try to add a coding line
         if not content:
             helpers.insert_coding_line(self.__editor)
+
+    def reload_file(self):
+        content = self._nfile.read()
+        self._nfile.start_watching()
+        self.__editor.setPlainText(content)
+        encoding = file_manager.get_file_encoding(content)
+        self.__editor.encoding = encoding
+        if not self.ignore_checkers:
+            self.run_checkers(content)
+        else:
+            self.ignore_checkers = False
 
     @property
     def file_path(self):

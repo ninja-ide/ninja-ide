@@ -123,6 +123,8 @@ class ComboEditor(QWidget):
                 self.connect(neditable,
                     SIGNAL("neverSavedFileClosing(PyQt_PyObject)"),
                     self._ask_for_save)
+                self.connect(neditable, SIGNAL("fileChanged(PyQt_PyObject)"),
+                    self._file_has_been_modified)
 
             # Load Symbols
             self._load_symbols(neditable)
@@ -167,6 +169,15 @@ class ComboEditor(QWidget):
         elif val == QMessageBox.Yes:
             self._main_container.save_file(neditable.editor)
             neditable.nfile.close()
+
+    def _file_has_been_modified(self, neditable):
+        val = QMessageBox.No
+        fileName = neditable.file_path
+        val = QMessageBox.question(self, translations.TR_FILE_HAS_BEEN_MODIFIED,
+                "%s%s" % (fileName, translations.TR_FILE_MODIFIED_OUTSIDE),
+                QMessageBox.Yes | QMessageBox.No)
+        if val == QMessageBox.Yes:
+            neditable.reload_file()
 
     def _run_file(self, path):
         self._main_container.run_file(path)
