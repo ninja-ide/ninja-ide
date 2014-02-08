@@ -47,7 +47,6 @@ from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QCheckBox
 from PyQt4.QtGui import QTableWidget
-from PyQt4.QtGui import QInputDialog
 from PyQt4.QtGui import QKeySequence
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QDir
@@ -63,6 +62,10 @@ from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.core.file_handling.file_manager import NinjaIOException
 from ninja_ide.tools import json_manager
+
+from ninja_ide.tools.logger import NinjaLogger
+
+logger_tools = NinjaLogger('ninja_ide.tools.ui_tools')
 
 
 ###############################################################################
@@ -495,7 +498,7 @@ def install_shortcuts(obj, actions, ide):
                 item_ui.setShortcut(short(keysequence))
             if isinstance(func, collections.Callable) and not is_menu:
                 ide.connect(item_ui, SIGNAL("triggered()"), func)
-            if section and weight:
+            if section and section[0] is not None and weight:
                 ide.register_menuitem(item_ui, section, weight)
                 if image_name and not is_menu:
                     ide.register_toolbar(item_ui, section, weight)
