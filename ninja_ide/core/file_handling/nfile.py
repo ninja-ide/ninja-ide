@@ -17,7 +17,8 @@
 
 import os
 import shutil
-from PyQt4.QtCore import QObject, QFile, QIODevice, QTextStream, SIGNAL
+from PyQt4.QtCore import (QObject, QFile, QFileSystemWatcher,
+                          QIODevice, QTextStream, SIGNAL)
 
 from ninja_ide import translations
 #FIXME: Obtain these form a getter
@@ -48,6 +49,7 @@ class NFile(QObject):
     SIGNALS:
     @neverSavedFileClosing(QString)
     @fileClosing(QString)
+    @fileChanged()
     @willDelete(PyQt_PyObject, PyQt_PyObject)
     @willOverWrite(PyQt_PyObject, QString, QString)
     @willMove(Qt_PyQtObject, QString, QString)
@@ -62,6 +64,8 @@ class NFile(QObject):
         """
         self._file_path = path
         self.__created = False
+        self.__watcher = None
+        self._block_watcher_signal = False
         super(NFile, self).__init__()
         if not self._exists():
             self.__created = True
@@ -98,6 +102,19 @@ class NFile(QObject):
     def file_path(self):
         """"Returns file path of nfile"""
         return self._file_path
+
+    def start_watching(self):
+        # NOT WORKING PROPERLY, SEVERAL MODIFICATIONS ARE NOT INFORMED
+        self.__watcher = QFileSystemWatcher(self)
+        self.connect(self.__watcher, SIGNAL("fileChanged(const QString&)"),
+            self._file_changed)
+        if self._file_path is not None:
+            self.__watcher.addPath(self._file_path)
+
+    def _file_changed(self, path):
+        if not self._block_watcher_signal:
+            self.emit(SIGNAL("fileChanged()"))
+            self._block_watcher_signal = False
 
     def has_write_permission(self):
         if not self._exists():
@@ -138,8 +155,11 @@ class NFile(QObject):
         .nsf = Ninja Swap File
         #FIXME: Where to locate addExtension, does not fit here
         """
+        new_path = False
+        self._block_watcher_signal = True
         if path:
             self.attach_to_path(path)
+            new_path = True
 
         save_path = self._file_path
 
@@ -170,6 +190,9 @@ class NFile(QObject):
                                                         save_path)
         shutil.move(swap_save_path, save_path)
         self.reset_state()
+        if self.__watcher and new_path:
+            self.__watcher.removePath(self.__watcher.files()[0])
+            self.__watcher.addPath(self._file_path)
         return self
 
     def reset_state(self):
@@ -214,8 +237,11 @@ class NFile(QObject):
                                     signal_handler, self._file_path, new_path)
                 if signal_handler.stopped():
                     return
-
+            if self.__watcher:
+                self.__watcher.removePath(self._file_path)
             shutil.move(self._file_path, new_path)
+            if self.__watcher:
+                self.__watcher.addPath(new_path)
         self._file_path = new_path
         return
 
@@ -254,6 +280,8 @@ class NFile(QObject):
             self.emit(SIGNAL("willDelete(PyQt_PyObject, PyQt_PyObject)"),
                                                         signal_handler, self)
             if not signal_handler.stopped():
+                if self.__watcher:
+                    self.__watcher.removePath(self._file_path)
                 os.remove(self._file_path)
 
     def close(self, force_close=False):
@@ -268,3 +296,5 @@ class NFile(QObject):
                         self._file_path)
         else:
             self.emit(SIGNAL("fileClosing(QString)"), self._file_path)
+            if self.__watcher:
+                self.__watcher.removePath(self._file_path)

@@ -221,6 +221,10 @@ TR_SESSIONS_MESSAGE_TITLE = tr("NINJA-IDE", "Session Name Invalid")
 TR_SESSIONS_MESSAGE_BODY = tr("NINJA-IDE",
     "The Session name is invalid or already exists.")
 TR_SESSIONS_UPDATED_NOTIF = tr("NINJA-IDE", "Session %(session)s Updated!")
+TR_FILE_HAS_BEEN_MODIFIED = tr("NINJA-IDE", "The File has been Modified")
+TR_FILE_MODIFIED_OUTSIDE = tr("NINJA-IDE",
+    "\nThe File has been modified outside the application\n"
+    "Do you want to reload the file?")
 
 # tools_dock
 TR_TEXT_FOR_REPLACE = tr("NINJA-IDE", "Text for Replace")
