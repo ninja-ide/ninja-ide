@@ -78,6 +78,7 @@ class ComboEditor(QWidget):
 
         self.connect(self.bar, SIGNAL("changeCurrent(PyQt_PyObject, int)"),
             self._set_current)
+        self.connect(self.bar, SIGNAL("splitEditor(bool)"), self.split_editor)
         self.connect(self.bar, SIGNAL("runFile(QString)"),
             self._run_file)
         self.connect(self.bar, SIGNAL("closeSplit()"),
@@ -475,9 +476,9 @@ class ActionBar(QFrame):
             actionReopen.setEnabled(False)
         #Connect actions
         self.connect(actionSplitH, SIGNAL("triggered()"),
-            lambda: self._split_this_tab(True))
+            lambda: self._split(False))
         self.connect(actionSplitV, SIGNAL("triggered()"),
-            lambda: self._split_this_tab(False))
+            lambda: self._split(True))
         self.connect(actionRun, SIGNAL("triggered()"),
             self._run_this_file)
         self.connect(actionAdd, SIGNAL("triggered()"),
@@ -551,10 +552,8 @@ class ActionBar(QFrame):
             settings.LAST_OPENED_FILES.pop())
         self.emit(SIGNAL("recentTabsModified()"))
 
-    def _split_this_tab(self, orientation):
-        #TODO
-        self.emit(SIGNAL("splitTab(QTabWidget, int, bool)"),
-            self, self.currentIndex(), orientation)
+    def _split(self, orientation):
+        self.emit(SIGNAL("splitEditor(bool)"), orientation)
 
     def _copy_file_location(self):
         """Copy the path of the current opened file to the clipboard."""
