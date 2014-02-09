@@ -112,7 +112,7 @@ class ComboEditor(QWidget):
         ninjaide = IDE.get_service('ide')
         editable = ninjaide.get_or_create_editable(path)
         self.add_editor(editable)
-        self.stacked.setCurrentIndex(index)
+        self.bar.set_current_by_index(index)
 
     def add_editor(self, neditable):
         """Add Editor Widget to the UI area."""
@@ -513,6 +513,9 @@ class ActionBar(QFrame):
 
     def set_current_file(self, neditable):
         index = self.combo.findData(neditable)
+        self.combo.setCurrentIndex(index)
+
+    def set_current_by_index(self, index):
         self.combo.setCurrentIndex(index)
 
     def about_to_close_file(self, index=None):
