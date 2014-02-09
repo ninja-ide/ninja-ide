@@ -72,10 +72,16 @@ class ComboEditor(QWidget):
 
         self._main_container = IDE.get_service('main_container')
 
-        self.connect(self.bar, SIGNAL("changeCurrent(PyQt_PyObject)"),
+        if not self.__original:
+            self.connect(self._main_container, SIGNAL("fileOpened(QString)"),
+                self._file_opened_by_main)
+
+        self.connect(self.bar, SIGNAL("changeCurrent(PyQt_PyObject, int)"),
             self._set_current)
         self.connect(self.bar, SIGNAL("runFile(QString)"),
             self._run_file)
+        self.connect(self.bar, SIGNAL("closeSplit()"),
+            lambda: self.emit(SIGNAL("closeSplit(PyQt_PyObject)"), self))
         self.connect(self.bar, SIGNAL("addToProject(QString)"),
             self._add_to_project)
         self.connect(self.bar, SIGNAL("goToSymbol(int)"),
@@ -96,18 +102,37 @@ class ComboEditor(QWidget):
     def currentWidget(self):
         return self.stacked.currentWidget()
 
+    def setFocus(self):
+        super(ComboEditor, self).setFocus()
+        self.stacked.currentWidget().setFocus()
+        self._editor_with_focus()
+
+    def _file_opened_by_main(self, path):
+        index = self.stacked.currentIndex()
+        ninjaide = IDE.get_service('ide')
+        editable = ninjaide.get_or_create_editable(path)
+        self.add_editor(editable)
+        self.stacked.setCurrentIndex(index)
+
     def add_editor(self, neditable):
         """Add Editor Widget to the UI area."""
         if neditable.editor:
-            self.stacked.addWidget(neditable.editor)
+            if self.__original:
+                editor = neditable.editor
+            else:
+                editor = self._main_container.create_editor_from_editable(
+                    neditable)
+            self.stacked.addWidget(editor)
             self.bar.add_item(neditable.display_name, neditable)
 
             # Editor Signals
-            self.connect(neditable.editor, SIGNAL("cursorPositionChanged()"),
+            self.connect(editor, SIGNAL("cursorPositionChanged()"),
                 self._update_cursor_position)
-            self.connect(neditable.editor, SIGNAL("currentLineChanged(int)"),
+            self.connect(editor, SIGNAL("editorClicked()"),
+                self._editor_with_focus)
+            self.connect(editor, SIGNAL("currentLineChanged(int)"),
                 self._set_current_symbol)
-            self.connect(neditable.editor, SIGNAL("modificationChanged(bool)"),
+            self.connect(editor, SIGNAL("modificationChanged(bool)"),
                 self._editor_modified)
             self.connect(neditable, SIGNAL("checkersUpdated(PyQt_PyObject)"),
                 self._show_notification_icon)
@@ -135,6 +160,13 @@ class ComboEditor(QWidget):
     def show_combo_symbol(self):
         self.bar.symbols_combo.showPopup()
 
+    def split_editor(self, orientationVertical):
+        new_widget = ComboEditor()
+        for neditable in self.bar.get_editables():
+            new_widget.add_editor(neditable)
+        self.emit(SIGNAL("splitEditor(PyQt_PyObject, PyQt_PyObject, bool)"),
+            self, new_widget, orientationVertical)
+
     def close_current_file(self):
         self.bar.about_to_close_file()
 
@@ -154,6 +186,15 @@ class ComboEditor(QWidget):
             if len(settings.LAST_OPENED_FILES) > settings.MAX_REMEMBER_TABS:
                 self.__lastOpened = self.__lastOpened[1:]
             self.emit(SIGNAL("recentTabsModified()"))
+
+    def _editor_with_focus(self):
+        if self._main_container.current_widget is not self:
+            self._main_container.current_widget = self
+            editor = self.stacked.currentWidget()
+            self._main_container.current_editor_changed(
+                editor.neditable.file_path)
+            self._load_symbols(editor.neditable)
+            editor.neditable.update_checkers_display()
 
     def _ask_for_save(self, neditable):
         val = QMessageBox.No
@@ -189,11 +230,12 @@ class ComboEditor(QWidget):
         if neditable:
             self.bar.set_current_file(neditable)
 
-    def _set_current(self, neditable):
+    def _set_current(self, neditable, index):
         if neditable:
-            self.stacked.setCurrentWidget(neditable.editor)
+            self.stacked.setCurrentIndex(index)
+            editor = self.stacked.currentWidget()
             self._update_cursor_position(ignore_sender=True)
-            neditable.editor.setFocus()
+            editor.setFocus()
             self._main_container.current_editor_changed(
                 neditable.file_path)
             self._load_symbols(neditable)
@@ -339,12 +381,14 @@ class ActionBar(QFrame):
         if main_combo:
             self.btn_close.setObjectName('navigation_button')
             self.btn_close.setToolTip(translations.TR_CLOSE_FILE)
+            self.connect(self.btn_close, SIGNAL("clicked()"),
+                self.about_to_close_file)
         else:
             self.btn_close.setObjectName('close_split')
             self.btn_close.setToolTip(translations.TR_CLOSE_SPLIT)
+            self.connect(self.btn_close, SIGNAL("clicked()"),
+                self.close_split)
         self.btn_close.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        self.connect(self.btn_close, SIGNAL("clicked()"),
-            self.about_to_close_file)
         hbox.addWidget(self.btn_close)
 
     def resizeEvent(self, event):
@@ -362,6 +406,13 @@ class ActionBar(QFrame):
         """Add a new item to the combo and add the neditable data."""
         self.combo.addItem(text, neditable)
         self.combo.setCurrentIndex(self.combo.count() - 1)
+
+    def get_editables(self):
+        editables = []
+        for index in range(self.combo.count()):
+            neditable = self.combo.itemData(index)
+            editables.append(neditable)
+        return editables
 
     def add_symbols(self, symbols):
         """Add the symbols to the symbols's combo."""
@@ -388,7 +439,7 @@ class ActionBar(QFrame):
     def current_changed(self, index):
         """Change the current item in the combo."""
         neditable = self.combo.itemData(index)
-        self.emit(SIGNAL("changeCurrent(PyQt_PyObject)"), neditable)
+        self.emit(SIGNAL("changeCurrent(PyQt_PyObject, int)"), neditable, index)
 
     def current_symbol_changed(self, index):
         """Change the current symbol in the combo."""
@@ -471,6 +522,9 @@ class ActionBar(QFrame):
         neditable = self.combo.itemData(index)
         if neditable:
             neditable.nfile.close()
+
+    def close_split(self):
+        self.emit(SIGNAL("closeSplit()"))
 
     def close_file(self, neditable):
         """Receive the confirmation to close the file."""

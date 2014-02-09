@@ -171,7 +171,10 @@ class Editor(QPlainTextEdit):
             self._find_occurrences)
 
         # Set the editor after initialization
-        self._neditable.set_editor(self)
+        if self._neditable.editor:
+            self.setDocument(self._neditable.document)
+        else:
+            self._neditable.set_editor(self)
 
         if self._mini:
             self._mini.set_code(self.toPlainText())
@@ -1017,6 +1020,7 @@ class Editor(QPlainTextEdit):
         if block_number != self._last_block_position:
             self._last_block_position = block_number
             self.emit(SIGNAL("currentLineChanged(int)"), block_number)
+        self.emit(SIGNAL("editorClicked()"))
 
     def dropEvent(self, event):
         if len(event.mimeData().urls()) > 0:

@@ -146,7 +146,7 @@ class _MainContainer(QWidget):
         self.combo_area = combo_editor.ComboEditor(original=True)
         self.connect(self.combo_area, SIGNAL("allFilesClosed()"),
             self._files_closed)
-        self.splitter.addWidget(self.combo_area)
+        self.splitter.add_widget(self.combo_area)
         self.stack.addWidget(self.splitter)
 
         self.current_widget = self.combo_area
@@ -591,24 +591,35 @@ class _MainContainer(QWidget):
             filename = translations.TR_NEW_DOCUMENT
         self.emit(SIGNAL("currentEditorChanged(QString)"), filename)
 
-    def show_split(self, orientation):
-        #TODO
-        pass
+    def show_split(self, orientation_vertical=False):
+        IDE.select_current(self.current_widget)
+        self.current_widget.split_editor(orientation_vertical)
 
-    def add_editor(self, fileName=None, tabIndex=None, ignore_checkers=False):
+    def add_editor(self, fileName=None, ignore_checkers=False):
         ninjaide = IDE.get_service('ide')
         editable = ninjaide.get_or_create_editable(fileName)
         if editable.editor:
-            self.combo_area.set_current(editable)
+            self.current_widget.set_current(editable)
             return editable.editor
         else:
             editable.ignore_checkers = ignore_checkers
-        editorWidget = editor.create_editor(editable)
+
+        editorWidget = self.create_editor_from_editable(editable)
 
         #add the tab
-        self.combo_area.add_editor(editable)
-        #index = self.add_tab(editorWidget, tab_name, tabIndex=tabIndex)
-        #self.tabs.setTabToolTip(index, QDir.toNativeSeparators(fileName))
+        if self.current_widget != self.combo_area:
+            self.combo_area.add_editor(editable)
+        self.current_widget.add_editor(editable)
+
+        #emit a signal about the file open
+        self.emit(SIGNAL("fileOpened(QString)"), fileName)
+
+        self.stack.setCurrentWidget(self.splitter)
+        return editorWidget
+
+    def create_editor_from_editable(self, editable):
+        editorWidget = editor.create_editor(editable)
+
         #Connect signals
         self.connect(editorWidget, SIGNAL("fileSaved(QPlainTextEdit)"),
             self._editor_tab_was_saved)
@@ -632,10 +643,6 @@ class _MainContainer(QWidget):
         self.connect(editorWidget, SIGNAL("keyPressEvent(QEvent)"),
             self._editor_keyPressEvent)
 
-        #emit a signal about the file open
-        self.emit(SIGNAL("fileOpened(QString)"), fileName)
-
-        self.stack.setCurrentWidget(self.splitter)
         return editorWidget
 
     def reset_pep8_warnings(self, value):
@@ -753,7 +760,8 @@ class _MainContainer(QWidget):
                     if current_project is not None:
                         directory = current_project
                     elif editorWidget is not None and editorWidget.file_path:
-                        directory = file_manager.get_folder(editorWidget.file_path)
+                        directory = file_manager.get_folder(
+                            editorWidget.file_path)
             extensions = ';;'.join(
                 ['(*%s)' % e for e in
                     settings.SUPPORTED_EXTENSIONS + ['.*', '']])
@@ -782,7 +790,7 @@ class _MainContainer(QWidget):
                     tabIndex=None, positionIsLineNumber=False,
                     ignore_checkers=False):
         try:
-            editorWidget = self.add_editor(fileName, tabIndex=tabIndex,
+            editorWidget = self.add_editor(fileName,
                 ignore_checkers=ignore_checkers)
             if cursorPosition != -1:
                 if positionIsLineNumber:
