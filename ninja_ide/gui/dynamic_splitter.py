@@ -46,6 +46,16 @@ class DynamicSplitter(QSplitter):
             SIGNAL("closeSplit(PyQt_PyObject)"),
             self.close_split)
 
+    def _get_sizes(self, widget, orientation):
+        sizes = [1, 1]
+        if orientation:
+            height = widget.height() / 2
+            sizes = [height, height]
+        else:
+            width = widget.width()
+            sizes = [width, width]
+        return sizes
+
     def split(self, current, new_widget, orientationVertical=False):
         index = self.indexOf(current)
         if index == -1:
@@ -54,6 +64,7 @@ class DynamicSplitter(QSplitter):
         if orientationVertical:
             orientation = Qt.Vertical
         if self.count() == 2:
+            sizes = self._get_sizes(current, orientationVertical)
             splitter = DynamicSplitter(orientation)
             self.connect(splitter,
                 SIGNAL("closeDynamicSplit(PyQt_PyObject, PyQt_PyObject)"),
@@ -61,9 +72,12 @@ class DynamicSplitter(QSplitter):
             self.insertWidget(index, splitter)
             splitter.add_widget(current)
             splitter.add_widget(new_widget)
+            splitter.setSizes(sizes)
         else:
             self.add_widget(new_widget)
             self.setOrientation(orientation)
+            sizes = self._get_sizes(self, orientationVertical)
+            self.setSizes(sizes)
         new_widget.setFocus()
 
     def close_split(self, widget):
