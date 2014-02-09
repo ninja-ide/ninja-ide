@@ -1126,7 +1126,13 @@ class _MainContainer(QWidget):
         dialog.show()
 
     def close_split(self):
-        pass
+        self.current_widget.bar.close_split()
+
+    def split_vertically(self):
+        self.show_split(False)
+
+    def split_horizontally(self):
+        self.show_split(True)
 
     def navigate_back(self):
         self.__navigate_with_keyboard(False)
