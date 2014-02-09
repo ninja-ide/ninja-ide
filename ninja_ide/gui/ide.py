@@ -371,17 +371,19 @@ class IDE(QMainWindow):
                 break
         return current_project
 
-    def select_current(self, widget):
+    @classmethod
+    def select_current(cls, widget):
         """Show the widget with a 4px lightblue border line."""
-        self.setProperty("highlight", True)
-        self.style().unpolish(self)
-        self.style().polish(self)
+        widget.setProperty("highlight", True)
+        widget.style().unpolish(widget)
+        widget.style().polish(widget)
 
-    def unselect_current(self, widget):
+    @classmethod
+    def unselect_current(cls, widget):
         """Remove the 4px lightblue border line from the widget."""
-        self.setProperty("highlight", False)
-        self.style().unpolish(widget)
-        self.style().polish(widget)
+        widget.setProperty("highlight", False)
+        widget.style().unpolish(widget)
+        widget.style().polish(widget)
 
     def _close_tray_icon(self):
         """Close the System Tray Icon."""
