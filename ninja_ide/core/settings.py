@@ -113,6 +113,8 @@ TOOLBAR_ITEMS = [
     "_MainContainer.save_file",
     "_MainContainer.split_vertically",
     "_MainContainer.split_horizontally",
+    "IDE.activate_profile",
+    "IDE.deactivate_profile",
     #TODO: sessions
     "_MainContainer.editor_cut",
     "_MainContainer.editor_copy",
