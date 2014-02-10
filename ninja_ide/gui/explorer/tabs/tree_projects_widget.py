@@ -245,9 +245,14 @@ class ProjectTreeColumn(QDialog):
             pass
             # Message about no project
 
+    @property
+    def children(self):
+        return self._projects_area.layout().count()
+
     def add_project(self, project):
         if project not in self.projects:
             ptree = TreeProjectsWidget(project)
+            ptree.setParent(self)
             self.connect(ptree, SIGNAL("setActiveProject(PyQt_PyObject)"),
                 self._set_active_project)
             self.connect(ptree, SIGNAL("closeProject(PyQt_PyObject)"),
@@ -416,6 +421,9 @@ class TreeProjectsWidget(QTreeView):
         self.connect(self.verticalScrollBar(),
             SIGNAL("rangeChanged(int, int)"), self.auto_resize_grow)
 
+    def setParent(self, parent):
+        self.__parent = parent
+
     def auto_resize_grow(self, minimum, maximum):
         logger.debug("This is the maximum")
         logger.debug(maximum)
@@ -431,7 +439,11 @@ class TreeProjectsWidget(QTreeView):
             self.setFixedHeight(new_height)
 
     def auto_resize_shrink(self):
-        self.setFixedHeight(1)
+        count = 0
+        if self.__parent:
+            count = self.__parent.children
+        if count != 1:
+            self.setFixedHeight(1)
         #self.auto_resize_grow(self.verticalScrollBar().minimum(),
                 #self.verticalScrollBar().maximum())
 
@@ -447,6 +459,7 @@ class TreeProjectsWidget(QTreeView):
         self.project = project
         self._added_to_console = False
         self.__format_tree()
+        self.__parent = None
         self.setMinimumHeight(self.height())
 
         self.setContextMenuPolicy(Qt.CustomContextMenu)
