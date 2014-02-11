@@ -133,7 +133,6 @@ class ProjectTreeColumn(QDialog):
     def __init__(self, parent=None):
         super(ProjectTreeColumn, self).__init__(parent,
             Qt.WindowStaysOnTopHint)
-        self.setWindowTitle(translations.TR_TAB_PROJECTS)
         self._layout = QVBoxLayout()
         self._layout.setSizeConstraint(QVBoxLayout.SetDefaultConstraint)
         self._layout.setContentsMargins(0, 0, 0, 0)

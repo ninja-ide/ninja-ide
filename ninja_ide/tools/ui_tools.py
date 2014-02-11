@@ -471,6 +471,7 @@ def install_shortcuts(obj, actions, ide):
                 shortcut = QShortcut(short_key, ide)
             else:
                 shortcut = QShortcut(short(short_key), ide)
+            shortcut.setContext(Qt.ApplicationShortcut)
             if isinstance(func, collections.Callable):
                 ide.connect(shortcut, SIGNAL("activated()"), func)
         if action_data:
@@ -494,8 +495,10 @@ def install_shortcuts(obj, actions, ide):
                     item_ui.setIcon(icon)
             if short_key and not is_menu:
                 item_ui.setShortcut(short(short_key))
-            elif keysequence:
+                item_ui.setShortcutContext(Qt.ApplicationShortcut)
+            elif keysequence and not is_menu:
                 item_ui.setShortcut(short(keysequence))
+                item_ui.setShortcutContext(Qt.ApplicationShortcut)
             if isinstance(func, collections.Callable) and not is_menu:
                 ide.connect(item_ui, SIGNAL("triggered()"), func)
             if section and section[0] is not None and weight:

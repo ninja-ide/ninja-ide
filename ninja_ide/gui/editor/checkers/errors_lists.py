@@ -47,7 +47,6 @@ class ErrorsWidget(QDialog):
 
     def __init__(self, parent=None):
         super(ErrorsWidget, self).__init__(parent, Qt.WindowStaysOnTopHint)
-        self.setWindowTitle(translations.TR_TAB_ERRORS)
         self.pep8 = None
         self._outRefresh = True
 
