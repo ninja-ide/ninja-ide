@@ -652,13 +652,14 @@ class Editor(QPlainTextEdit):
 
     def focusInEvent(self, event):
         super(Editor, self).focusInEvent(event)
-        try:
-            #use parent().parent() to Access QTabWidget
-            #First parent() = QStackedWidget, Second parent() = TabWidget
-            #Check for modifications
-            self.parent().parent().focusInEvent(event)
-        except RuntimeError:
-            pass
+        self.emit(SIGNAL("editorFocusObtained()"))
+        #try:
+            ##use parent().parent() to Access QTabWidget
+            ##First parent() = QStackedWidget, Second parent() = TabWidget
+            ##Check for modifications
+            #self.parent().parent().focusInEvent(event)
+        #except RuntimeError:
+            #pass
 
     def focusOutEvent(self, event):
         """Hide Popup on focus lost."""
@@ -1020,7 +1021,6 @@ class Editor(QPlainTextEdit):
         if block_number != self._last_block_position:
             self._last_block_position = block_number
             self.emit(SIGNAL("currentLineChanged(int)"), block_number)
-        self.emit(SIGNAL("editorClicked()"))
 
     def dropEvent(self, event):
         if len(event.mimeData().urls()) > 0:

@@ -129,7 +129,7 @@ class _MainContainer(QWidget):
         IDE.register_signals('main_container', connections)
 
         self.selector = main_selector.MainSelector(self)
-        self.stack.addWidget(self.selector)
+        self.add_widget(self.selector)
 
         if settings.SHOW_START_PAGE:
             self.show_start_page()
@@ -147,7 +147,7 @@ class _MainContainer(QWidget):
         self.connect(self.combo_area, SIGNAL("allFilesClosed()"),
             self._files_closed)
         self.splitter.add_widget(self.combo_area)
-        self.stack.addWidget(self.splitter)
+        self.add_widget(self.splitter)
 
         self.current_widget = self.combo_area
 
@@ -156,6 +156,9 @@ class _MainContainer(QWidget):
     @property
     def combo_header_size(self):
         return self.combo_area.bar.height()
+
+    def add_widget(self, widget):
+        self.stack.addWidget(widget)
 
     def show_selector(self):
         if self.selector != self.stack.currentWidget():
@@ -592,7 +595,7 @@ class _MainContainer(QWidget):
         self.emit(SIGNAL("currentEditorChanged(QString)"), filename)
 
     def show_split(self, orientation_vertical=False):
-        IDE.select_current(self.current_widget)
+        #IDE.select_current(self.current_widget.currentWidget())
         self.current_widget.split_editor(orientation_vertical)
 
     def add_editor(self, fileName=None, ignore_checkers=False):
@@ -941,7 +944,8 @@ class _MainContainer(QWidget):
         #for i in range(self._tabMain.count()):
             #editorWidget = self._tabMain.widget(i)
             #if type(editorWidget) is editor.Editor and \
-            #file_manager.belongs_to_folder(projectFolder, editorWidget.file_path):
+            #file_manager.belongs_to_folder(projectFolder,
+                    #editorWidget.file_path):
                 #reloaded = self._tabMain.check_for_external_modifications(
                     #editorWidget)
                 #if not reloaded:
@@ -949,7 +953,8 @@ class _MainContainer(QWidget):
         #for i in range(self.tabsecondary.count()):
             #editorWidget = self.tabsecondary.widget(i)
             #if type(editorWidget) is editor.Editor and \
-            #file_manager.belongs_to_folder(projectFolder, editorWidget.file_path):
+            #file_manager.belongs_to_folder(projectFolder,
+                    #editorWidget.file_path):
                 #reloaded = self.tabsecondary.check_for_external_modifications(
                     #editorWidget)
                 #if not reloaded:
