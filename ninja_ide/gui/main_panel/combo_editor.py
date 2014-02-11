@@ -25,7 +25,6 @@ from PyQt4.QtGui import QMessageBox
 #from PyQt4.QtGui import QAbstractItemView
 from PyQt4.QtGui import QClipboard
 from PyQt4.QtGui import QWidget
-#from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QCursor
 from PyQt4.QtGui import QMenu
 from PyQt4.QtGui import QIcon

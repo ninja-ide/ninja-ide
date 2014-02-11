@@ -134,8 +134,11 @@ class ExplorerContainer(QSplitter):
         self.addWidget(tab_widget)
 
     def add_tab(self, tabname, obj, icon=None):
+        obj.setWindowTitle(tabname)
         if icon is not None:
-            self.widget(0).addTab(obj, QIcon(icon), tabname)
+            qicon = QIcon(icon)
+            self.widget(0).addTab(obj, qicon, tabname)
+            obj.setWindowIcon(qicon)
         else:
             self.widget(0).addTab(obj, tabname)
         func = getattr(obj, 'install_tab', None)
