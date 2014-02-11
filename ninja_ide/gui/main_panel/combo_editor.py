@@ -174,6 +174,7 @@ class ComboEditor(QDialog):
 
     def undock_editor(self):
         new_combo = ComboEditor()
+        new_combo.setWindowTitle("NINJA-IDE")
         self.__undocked.append(new_combo)
         for neditable in self.bar.get_editables():
             new_combo.add_editor(neditable)
