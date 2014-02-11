@@ -40,7 +40,6 @@ class TreeSymbolsWidget(QDialog):
     def __init__(self, parent=None):
         super(TreeSymbolsWidget, self).__init__(parent,
             Qt.WindowStaysOnTopHint)
-        self.setWindowTitle(translations.TR_TAB_SYMBOLS)
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
