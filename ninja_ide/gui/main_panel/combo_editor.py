@@ -24,6 +24,7 @@ from PyQt4.QtGui import QMessageBox
 #from PyQt4.QtGui import QStandardItemModel
 #from PyQt4.QtGui import QAbstractItemView
 from PyQt4.QtGui import QClipboard
+from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QCursor
 from PyQt4.QtGui import QMenu
@@ -54,11 +55,12 @@ except NameError:
     pass
 
 
-class ComboEditor(QWidget):
+class ComboEditor(QDialog):
 
     def __init__(self, original=False):
-        super(ComboEditor, self).__init__()
+        super(ComboEditor, self).__init__(None, Qt.WindowStaysOnTopHint)
         self.__original = original
+        self.__undocked = []
         self._symbols_index = []
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
@@ -172,10 +174,17 @@ class ComboEditor(QWidget):
 
     def undock_editor(self):
         new_combo = ComboEditor()
+        self.__undocked.append(new_combo)
         for neditable in self.bar.get_editables():
             new_combo.add_editor(neditable)
         new_combo.resize(500, 500)
+        self.connect(new_combo, SIGNAL("aboutToCloseComboEditor()"),
+            self._remove_undock)
         new_combo.show()
+
+    def _remove_undock(self):
+        widget = self.sender()
+        self.__undocked.remove(widget)
 
     def close_current_file(self):
         self.bar.about_to_close_file()
@@ -332,6 +341,10 @@ class ComboEditor(QWidget):
 
     def show_menu_navigation(self):
         self.bar.code_navigator.show_menu_navigation()
+
+    def closeEvent(self, event):
+        self.emit(SIGNAL("aboutToCloseComboEditor()"))
+        super(ComboEditor, self).closeEvent(event)
 
 
 class ActionBar(QFrame):
