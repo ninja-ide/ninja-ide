@@ -25,6 +25,7 @@ from PyQt4.QtGui import QMessageBox
 #from PyQt4.QtGui import QAbstractItemView
 from PyQt4.QtGui import QClipboard
 from PyQt4.QtGui import QWidget
+#from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QCursor
 from PyQt4.QtGui import QMenu
 from PyQt4.QtGui import QIcon
@@ -87,6 +88,8 @@ class ComboEditor(QWidget):
             self._add_to_project)
         self.connect(self.bar, SIGNAL("goToSymbol(int)"),
             self._go_to_symbol)
+        self.connect(self.bar, SIGNAL("undockEditor()"),
+            self.undock_editor)
         self.connect(self.bar, SIGNAL("reopenTab(QString)"),
             lambda path: self._main_container.open_file(path))
         self.connect(self.bar, SIGNAL("recentTabsModified()"),
@@ -129,7 +132,7 @@ class ComboEditor(QWidget):
             # Editor Signals
             self.connect(editor, SIGNAL("cursorPositionChanged()"),
                 self._update_cursor_position)
-            self.connect(editor, SIGNAL("editorClicked()"),
+            self.connect(editor, SIGNAL("editorFocusObtained()"),
                 self._editor_with_focus)
             self.connect(editor, SIGNAL("currentLineChanged(int)"),
                 self._set_current_symbol)
@@ -167,6 +170,13 @@ class ComboEditor(QWidget):
             new_widget.add_editor(neditable)
         self.emit(SIGNAL("splitEditor(PyQt_PyObject, PyQt_PyObject, bool)"),
             self, new_widget, orientationVertical)
+
+    def undock_editor(self):
+        new_combo = ComboEditor()
+        for neditable in self.bar.get_editables():
+            new_combo.add_editor(neditable)
+        new_combo.resize(500, 500)
+        new_combo.show()
 
     def close_current_file(self):
         self.bar.about_to_close_file()
@@ -472,6 +482,7 @@ class ActionBar(QFrame):
         actionCopyPath = menu.addAction(
             translations.TR_COPY_FILE_PATH_TO_CLIPBOARD)
         actionReopen = menu.addAction(translations.TR_REOPEN_FILE)
+        actionUndock = menu.addAction(translations.TR_UNDOCK_EDITOR)
         if len(settings.LAST_OPENED_FILES) == 0:
             actionReopen.setEnabled(False)
         #Connect actions
@@ -493,6 +504,8 @@ class ActionBar(QFrame):
             self._copy_file_location)
         self.connect(actionReopen, SIGNAL("triggered()"),
             self._reopen_last_tab)
+        self.connect(actionUndock, SIGNAL("triggered()"),
+            self._undock_editor)
 
         menu.exec_(QCursor.pos())
 
@@ -551,6 +564,9 @@ class ActionBar(QFrame):
         self.emit(SIGNAL("reopenTab(QString)"),
             settings.LAST_OPENED_FILES.pop())
         self.emit(SIGNAL("recentTabsModified()"))
+
+    def _undock_editor(self):
+        self.emit(SIGNAL("undockEditor()"))
 
     def _split(self, orientation):
         self.emit(SIGNAL("splitEditor(bool)"), orientation)
