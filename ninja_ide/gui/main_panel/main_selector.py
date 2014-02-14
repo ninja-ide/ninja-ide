@@ -17,49 +17,43 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from PyQt4.QtGui import QFrame
+from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtDeclarative import QDeclarativeView
 
 from ninja_ide.tools import ui_tools
 
 
-class Notification(QFrame):
+class MainSelector(QWidget):
 
     def __init__(self, parent=None):
-        super(Notification, self).__init__(None, Qt.ToolTip)
-        self._parent = parent
-        self._duration = 3000
-        self.setAttribute(Qt.WA_TranslucentBackground)
-        self.setAttribute(Qt.WA_TransparentForMouseEvents)
-        self.setAttribute(Qt.WA_ShowWithoutActivating)
-        self.setStyleSheet("background:transparent;")
-        self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
-        self.setFixedHeight(30)
+        super(MainSelector, self).__init__(parent)
         # Create the QML user interface.
         view = QDeclarativeView()
         view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
-        view.setSource(ui_tools.get_qml_resource("Notification.qml"))
+        view.setSource(ui_tools.get_qml_resource("MainSelector.qml"))
         self._root = view.rootObject()
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
         vbox.addWidget(view)
-        self._height = self.height()
 
-        self.connect(self._root, SIGNAL("close()"), self.close)
+        self.connect(self._root, SIGNAL("open(int)"),
+            lambda i: self.emit(SIGNAL("changeCurrent(int)"), i))
+        self.connect(self._root, SIGNAL("ready()"),
+            lambda: self.emit(SIGNAL("ready()")))
 
-    def showEvent(self, event):
-        super(Notification, self).showEvent(event)
-        width = self._parent.width() / 2
-        x = self._parent.geometry().left()
-        y = self._parent.geometry().bottom() - self._height
-        self.setFixedWidth(width)
-        self.setGeometry(x, y, self.width(), self.height())
-        self._root.start(3000)
+    def set_model(self, model):
+        for index, path in model:
+            self._root.add_widget(index, path)
 
-    def set_message(self, text='', duration=3000):
-        self._root.setText(text)
-        self._duration = duration
+    def set_preview(self, index, preview_path):
+        self._root.add_preview(index, preview_path)
+
+    def close_selector(self):
+        self._root.close_selector()
+
+    def start_animation(self):
+        self._root.start_animation()
+        self._root.forceActiveFocus()

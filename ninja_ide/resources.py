@@ -184,7 +184,7 @@ SHORTCUTS = {
     "Run-file": QKeySequence(Qt.CTRL + Qt.Key_F6),
     "Run-project": QKeySequence(Qt.Key_F6),
     "Debug": QKeySequence(Qt.Key_F7),
-    "Switch-Focus": QKeySequence(Qt.CTRL + Qt.Key_QuoteLeft),
+    "Show-Selector": QKeySequence(Qt.CTRL + Qt.Key_QuoteLeft),
     "Stop-execution": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_F6),
     "Hide-all": QKeySequence(Qt.Key_F11),
     "Full-screen": QKeySequence(Qt.CTRL + Qt.Key_F11),

@@ -3,55 +3,77 @@ import QtQuick 1.1
 Rectangle {
     id: button
 
-    property alias text: txtButton.text
-
     signal clicked
+    property alias text: btnText.text
 
-    radius: 10
-    border.color: "gray"
-    border.width: 2
-    gradient: Gradient {
-         GradientStop { id: stop1; position: 0.0; color: "#570000" }
-         GradientStop { id: stop2; position: 1.0; color: "#881f1f" }
-     }
+    height: 50
+    //radius: 10
+    border.color:"#6a6363"
+
+    gradient: off
+
+     Gradient {
+        id: off
+        GradientStop { position: 0.0; color: "lightsteelblue" }
+        GradientStop { position: 0.5; color: "lightsteelblue" }
+        GradientStop { position: 0.5; color: "black" }
+        GradientStop { position: 1.0; color: "black" }
+    }
+
+    Gradient {
+        id: onn
+        GradientStop { position: 0.0; color: "steelblue" }
+        GradientStop { position: 0.7; color: "steelblue" }
+        GradientStop { position: 0.7; color: "black" }
+        GradientStop { position: 1.0; color: "black" }
+    }
+
+    Gradient {
+        id: hover
+        GradientStop { position: 0.0; color: "lightsteelblue" }
+        GradientStop { position: 0.7; color: "lightsteelblue" }
+        GradientStop { position: 0.7; color: "black" }
+        GradientStop { position: 1.0; color: "black" }
+    }
 
     Text {
-        id: txtButton
-        anchors.centerIn: parent
-
-        text: button.text
-        color: "white"
+        id: btnText
+        anchors.centerIn:parent
+        color:"white"
+        text: "text"
     }
-
-    states: [
-        State {
-            name: "ENTERED"
-            PropertyChanges { target: stop1; color: "gray" }
-        },
-        State {
-            name: "EXITED"
-            PropertyChanges { target: stop1; color: "#570000" }
-        },
-        State {
-            name: "PRESSED"
-            PropertyChanges { target: stop2; color: "#3d0000" }
-            PropertyChanges { target: stop1; color: "#631717" }
-        },
-        State {
-            name: "RELEASED"
-            PropertyChanges { target: stop1; color: "#570000" }
-            PropertyChanges { target: stop2; color: "#881f1f" }
-        }
-     ]
 
     MouseArea {
-        anchors.fill: parent
-        hoverEnabled: true
+            id: mouseArea
+            anchors.fill: parent
+            hoverEnabled: true
+            onClicked: {
+                button.clicked();
+            }
 
-        onEntered: button.state = "ENTERED";
-        onExited: button.state = "EXITED";
-        onClicked: button.clicked();
-        onPressed: button.state = "PRESSED";
-        onReleased: button.state = "RELEASED";
-    }
+            onPressed: {
+                button.gradient = onn;
+                border.color= "steelblue";
+            }
+
+            onReleased: {
+                button.gradient = hover;
+                border.color= "steelblue";
+            }
+
+            onEntered:{
+                button.gradient = hover;
+                border.color= "steelblue";
+            }
+
+            onCanceled:{
+                border.color = "#6a6363";
+                button.gradient = off;
+            }
+
+            onExited: {
+                border.color= "#6a6363"
+                button.gradient = off;
+            }
+        }
 }

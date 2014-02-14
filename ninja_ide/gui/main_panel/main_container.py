@@ -26,6 +26,8 @@ from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QStackedLayout
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QFileDialog
+from PyQt4.QtGui import QPixmap
+from PyQt4.QtCore import QDir
 from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
@@ -37,6 +39,7 @@ from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.editor import editor
 from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.main_panel import actions
+from ninja_ide.gui.main_panel import main_selector
 from ninja_ide.gui.main_panel import browser_widget
 from ninja_ide.gui.main_panel import start_page
 from ninja_ide.gui.main_panel import tabs_handler
@@ -81,6 +84,7 @@ class _MainContainer(QWidget):
         super(_MainContainer, self).__init__(parent)
         self._parent = parent
         self.stack = QStackedLayout(self)
+        self.stack.setStackingMode(QStackedLayout.StackAll)
 
         self.splitter = dynamic_splitter.DynamicSplitter()
         self.setAcceptDrops(True)
@@ -124,16 +128,26 @@ class _MainContainer(QWidget):
 
         IDE.register_signals('main_container', connections)
 
+        self.selector = main_selector.MainSelector(self)
+        self.add_widget(self.selector)
+
         if settings.SHOW_START_PAGE:
             self.show_start_page()
+
+        self.connect(self.selector, SIGNAL("changeCurrent(int)"),
+            self._change_current_stack)
+        self.connect(self.selector, SIGNAL("ready()"),
+            self._selector_ready)
 
     def install(self):
         ide = IDE.get_service('ide')
         ide.place_me_on("main_container", self, "central", top=True)
 
         self.combo_area = combo_editor.ComboEditor(original=True)
-        self.splitter.addWidget(self.combo_area)
-        self.stack.addWidget(self.splitter)
+        self.connect(self.combo_area, SIGNAL("allFilesClosed()"),
+            self._files_closed)
+        self.splitter.add_widget(self.combo_area)
+        self.add_widget(self.splitter)
 
         self.current_widget = self.combo_area
 
@@ -143,6 +157,46 @@ class _MainContainer(QWidget):
     def combo_header_size(self):
         return self.combo_area.bar.height()
 
+    def add_widget(self, widget):
+        self.stack.addWidget(widget)
+
+    def show_selector(self):
+        if self.selector != self.stack.currentWidget():
+            temp_dir = os.path.join(QDir.tempPath(), "ninja-ide")
+            if not os.path.exists(temp_dir):
+                os.mkdir(temp_dir)
+            collected_data = []
+            current = self.stack.currentIndex()
+            for index in range(self.stack.count()):
+                widget = self.stack.widget(index)
+                if widget == self.selector:
+                    continue
+                pixmap = QPixmap.grabWidget(widget, widget.rect())
+                path = os.path.join(temp_dir, "screen%s.png" % index)
+                pixmap.save(path)
+                if index == current:
+                    self.selector.set_preview(index, path)
+                    collected_data.insert(0, (index, path))
+                else:
+                    collected_data.append((index, path))
+            self.selector.set_model(collected_data)
+        else:
+            self.selector.close_selector()
+
+    def _selector_ready(self):
+        self.stack.setCurrentWidget(self.selector)
+        self.selector.start_animation()
+
+    def _change_current_stack(self, index):
+        self.stack.setCurrentIndex(index)
+
+    def show_editor_area(self):
+        self.stack.setCurrentWidget(self.splitter)
+
+    def _files_closed(self):
+        if settings.SHOW_START_PAGE:
+            self.show_start_page()
+
     def change_visibility(self):
         """Show/Hide the Main Container area."""
         if self.isVisible():
@@ -151,9 +205,11 @@ class _MainContainer(QWidget):
             self.show()
 
     def expand_symbol_combo(self):
+        self.stack.setCurrentWidget(self.splitter)
         self.current_widget.show_combo_symbol()
 
     def expand_file_combo(self):
+        self.stack.setCurrentWidget(self.splitter)
         self.current_widget.show_combo_file()
 
     def locate_function(self, function, filePath, isVariable):
@@ -538,24 +594,35 @@ class _MainContainer(QWidget):
             filename = translations.TR_NEW_DOCUMENT
         self.emit(SIGNAL("currentEditorChanged(QString)"), filename)
 
-    def show_split(self, orientation):
-        #TODO
-        pass
+    def show_split(self, orientation_vertical=False):
+        #IDE.select_current(self.current_widget.currentWidget())
+        self.current_widget.split_editor(orientation_vertical)
 
-    def add_editor(self, fileName=None, tabIndex=None, ignore_checkers=False):
+    def add_editor(self, fileName=None, ignore_checkers=False):
         ninjaide = IDE.get_service('ide')
         editable = ninjaide.get_or_create_editable(fileName)
         if editable.editor:
-            self.combo_area.set_current(editable)
+            self.current_widget.set_current(editable)
             return editable.editor
         else:
             editable.ignore_checkers = ignore_checkers
-        editorWidget = editor.create_editor(editable)
+
+        editorWidget = self.create_editor_from_editable(editable)
 
         #add the tab
-        self.combo_area.add_editor(editable)
-        #index = self.add_tab(editorWidget, tab_name, tabIndex=tabIndex)
-        #self.tabs.setTabToolTip(index, QDir.toNativeSeparators(fileName))
+        if self.current_widget != self.combo_area:
+            self.combo_area.add_editor(editable)
+        self.current_widget.add_editor(editable)
+
+        #emit a signal about the file open
+        self.emit(SIGNAL("fileOpened(QString)"), fileName)
+
+        self.stack.setCurrentWidget(self.splitter)
+        return editorWidget
+
+    def create_editor_from_editable(self, editable):
+        editorWidget = editor.create_editor(editable)
+
         #Connect signals
         self.connect(editorWidget, SIGNAL("fileSaved(QPlainTextEdit)"),
             self._editor_tab_was_saved)
@@ -578,9 +645,6 @@ class _MainContainer(QWidget):
         #keyPressEventSignal for plugins
         self.connect(editorWidget, SIGNAL("keyPressEvent(QEvent)"),
             self._editor_keyPressEvent)
-
-        #emit a signal about the file open
-        self.emit(SIGNAL("fileOpened(QString)"), fileName)
 
         return editorWidget
 
@@ -699,7 +763,8 @@ class _MainContainer(QWidget):
                     if current_project is not None:
                         directory = current_project
                     elif editorWidget is not None and editorWidget.file_path:
-                        directory = file_manager.get_folder(editorWidget.file_path)
+                        directory = file_manager.get_folder(
+                            editorWidget.file_path)
             extensions = ';;'.join(
                 ['(*%s)' % e for e in
                     settings.SUPPORTED_EXTENSIONS + ['.*', '']])
@@ -728,7 +793,7 @@ class _MainContainer(QWidget):
                     tabIndex=None, positionIsLineNumber=False,
                     ignore_checkers=False):
         try:
-            editorWidget = self.add_editor(fileName, tabIndex=tabIndex,
+            editorWidget = self.add_editor(fileName,
                 ignore_checkers=ignore_checkers)
             if cursorPosition != -1:
                 if positionIsLineNumber:
@@ -879,7 +944,8 @@ class _MainContainer(QWidget):
         #for i in range(self._tabMain.count()):
             #editorWidget = self._tabMain.widget(i)
             #if type(editorWidget) is editor.Editor and \
-            #file_manager.belongs_to_folder(projectFolder, editorWidget.file_path):
+            #file_manager.belongs_to_folder(projectFolder,
+                    #editorWidget.file_path):
                 #reloaded = self._tabMain.check_for_external_modifications(
                     #editorWidget)
                 #if not reloaded:
@@ -887,7 +953,8 @@ class _MainContainer(QWidget):
         #for i in range(self.tabsecondary.count()):
             #editorWidget = self.tabsecondary.widget(i)
             #if type(editorWidget) is editor.Editor and \
-            #file_manager.belongs_to_folder(projectFolder, editorWidget.file_path):
+            #file_manager.belongs_to_folder(projectFolder,
+                    #editorWidget.file_path):
                 #reloaded = self.tabsecondary.check_for_external_modifications(
                     #editorWidget)
                 #if not reloaded:
@@ -924,16 +991,18 @@ class _MainContainer(QWidget):
         #TODO: add other splits
 
     def show_start_page(self):
-        pass
-        #if not self.is_open("Start Page"):
-            #startPage = start_page.StartPage(parent=self)
-            #self.connect(startPage, SIGNAL("openProject(QString)"),
-                #self.open_project)
-            #self.connect(startPage, SIGNAL("openPreferences()"),
-                #lambda: self.emit(SIGNAL("openPreferences()")))
-            #self.add_tab(startPage, 'Start Page')
-        #else:
-            #self.move_to_open("Start Page")
+        start = self.stack.widget(0)
+        if isinstance(start, start_page.StartPage):
+            self.stack.setCurrentIndex(0)
+        else:
+            startPage = start_page.StartPage(parent=self)
+            self.connect(startPage, SIGNAL("openProject(QString)"),
+                self.open_project)
+            self.connect(startPage, SIGNAL("openPreferences()"),
+                lambda: self.emit(SIGNAL("openPreferences()")))
+            self.connect(startPage, SIGNAL("newFile()"), self.add_editor)
+            self.stack.insertWidget(0, startPage)
+            self.stack.setCurrentIndex(0)
 
     def show_python_doc(self):
         if sys.platform == 'win32':
@@ -1015,14 +1084,17 @@ class _MainContainer(QWidget):
 
     def change_tab(self):
         """Change the tab in the current TabWidget."""
+        self.stack.setCurrentWidget(self.splitter)
         self.tabs_handler.next_item()
 
     def change_tab_reverse(self):
         """Change the tab in the current TabWidget backwards."""
+        self.stack.setCurrentWidget(self.splitter)
         self.tabs_handler.previous_item()
 
     def show_navigation_buttons(self):
         """Show Navigation menu."""
+        self.stack.setCurrentWidget(self.splitter)
         self.combo_area.show_menu_navigation()
 
     def change_split_focus(self):
@@ -1059,7 +1131,13 @@ class _MainContainer(QWidget):
         dialog.show()
 
     def close_split(self):
-        pass
+        self.current_widget.bar.close_split()
+
+    def split_vertically(self):
+        self.show_split(False)
+
+    def split_horizontally(self):
+        self.show_split(True)
 
     def navigate_back(self):
         self.__navigate_with_keyboard(False)

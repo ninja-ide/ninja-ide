@@ -16,7 +16,9 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
+from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QTreeWidget
+from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QTreeWidgetItem
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QAbstractItemView
@@ -33,16 +35,23 @@ from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
 
 
-class TreeSymbolsWidget(QTreeWidget):
+class TreeSymbolsWidget(QDialog):
 
-    def __init__(self):
-        QTreeWidget.__init__(self)
-        self.header().setHidden(True)
-        self.setSelectionMode(self.SingleSelection)
-        self.setAnimated(True)
-        self.header().setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.header().setResizeMode(0, QHeaderView.ResizeToContents)
-        self.header().setStretchLastSection(False)
+    def __init__(self, parent=None):
+        super(TreeSymbolsWidget, self).__init__(parent,
+            Qt.WindowStaysOnTopHint)
+        vbox = QVBoxLayout(self)
+        vbox.setContentsMargins(0, 0, 0, 0)
+        vbox.setSpacing(0)
+        self.tree = QTreeWidget()
+        vbox.addWidget(self.tree)
+        self.tree.header().setHidden(True)
+        self.tree.setSelectionMode(self.tree.SingleSelection)
+        self.tree.setAnimated(True)
+        self.tree.header().setHorizontalScrollMode(
+            QAbstractItemView.ScrollPerPixel)
+        self.tree.header().setResizeMode(0, QHeaderView.ResizeToContents)
+        self.tree.header().setStretchLastSection(False)
         self.actualSymbols = ('', {})
         self.docstrings = {}
         self.collapsedItems = {}
@@ -51,7 +60,7 @@ class TreeSymbolsWidget(QTreeWidget):
             self._go_to_definition)
         self.connect(self, SIGNAL("itemActivated(QTreeWidgetItem *, int)"),
             self._go_to_definition)
-        self.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.tree.setContextMenuPolicy(Qt.CustomContextMenu)
         self.connect(self,
             SIGNAL("customContextMenuRequested(const QPoint &)"),
             self._menu_context_tree)
@@ -63,8 +72,12 @@ class TreeSymbolsWidget(QTreeWidget):
         IDE.register_service('symbols_explorer', self)
         ExplorerContainer.register_tab(translations.TR_TAB_SYMBOLS, self)
 
+    def install_tab(self):
+        ide = IDE.get_service('ide')
+        self.connect(ide, SIGNAL("goingDown()"), self.close)
+
     def _menu_context_tree(self, point):
-        index = self.indexAt(point)
+        index = self.tree.indexAt(point)
         if not index.isValid():
             return
 
@@ -79,9 +92,9 @@ class TreeSymbolsWidget(QTreeWidget):
         #save_state = menu.addAction(self.tr("Save State"))
 
         self.connect(f_all, SIGNAL("triggered()"),
-            lambda: self.collapseAll())
+            lambda: self.tree.collapseAll())
         self.connect(u_all, SIGNAL("triggered()"),
-            lambda: self.expandAll())
+            lambda: self.tree.expandAll())
         self.connect(u_class, SIGNAL("triggered()"), self._unfold_class)
         self.connect(u_class_method, SIGNAL("triggered()"),
             self._unfold_class_method)
@@ -94,15 +107,15 @@ class TreeSymbolsWidget(QTreeWidget):
 
     def _get_classes_root(self):
         class_root = None
-        for i in range(self.topLevelItemCount()):
-            item = self.topLevelItem(i)
+        for i in range(self.tree.topLevelItemCount()):
+            item = self.tree.topLevelItem(i)
             if item.isClass and not item.isClickable:
                 class_root = item
                 break
         return class_root
 
     def _unfold_class(self):
-        self.collapseAll()
+        self.tree.collapseAll()
         classes_root = self._get_classes_root()
         if not classes_root:
             return
@@ -110,7 +123,7 @@ class TreeSymbolsWidget(QTreeWidget):
         classes_root.setExpanded(True)
 
     def _unfold_class_method(self):
-        self.expandAll()
+        self.tree.expandAll()
         classes_root = self._get_classes_root()
         if not classes_root:
             return
@@ -126,7 +139,7 @@ class TreeSymbolsWidget(QTreeWidget):
                     break
 
     def _unfold_class_attribute(self):
-        self.expandAll()
+        self.tree.expandAll()
         classes_root = self._get_classes_root()
         if not classes_root:
             return
@@ -181,10 +194,10 @@ class TreeSymbolsWidget(QTreeWidget):
                 return
 
             # we have new symbols refresh it
-            self.clear()
+            self.tree.clear()
             self.actualSymbols = (filename, symbols)
             self.docstrings = symbols.get('docstrings', {})
-            parent = self
+            parent = self.tree
         if 'attributes' in symbols:
             globalAttribute = ItemTree(parent, [self.tr("Attributes")])
             globalAttribute.isClickable = False
@@ -269,14 +282,18 @@ class TreeSymbolsWidget(QTreeWidget):
         """
         Reset the tree and reset attributes
         """
-        self.clear()
+        self.tree.clear()
         self.collapsedItems = {}
+
+    def closeEvent(self, event):
+        self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
+        event.ignore()
 
 
 class ItemTree(QTreeWidgetItem):
 
     def __init__(self, parent, name, lineno=None):
-        QTreeWidgetItem.__init__(self, parent, name)
+        super(ItemTree, self).__init__(parent, name)
         self.lineno = lineno
         self.isClickable = True
         self.isAttribute = False

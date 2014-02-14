@@ -371,17 +371,19 @@ class IDE(QMainWindow):
                 break
         return current_project
 
-    def select_current(self, widget):
+    @classmethod
+    def select_current(cls, widget):
         """Show the widget with a 4px lightblue border line."""
-        self.setProperty("highlight", True)
-        self.style().unpolish(self)
-        self.style().polish(self)
+        widget.setProperty("highlight", True)
+        widget.style().unpolish(widget)
+        widget.style().polish(widget)
 
-    def unselect_current(self, widget):
+    @classmethod
+    def unselect_current(cls, widget):
         """Remove the 4px lightblue border line from the widget."""
-        self.setProperty("highlight", False)
-        self.style().unpolish(widget)
-        self.style().polish(widget)
+        widget.setProperty("highlight", False)
+        widget.style().unpolish(widget)
+        widget.style().polish(widget)
 
     def _close_tray_icon(self):
         """Close the System Tray Icon."""
@@ -395,25 +397,6 @@ class IDE(QMainWindow):
         if shortcut_index:
             obj = self.sender()
             shortcut_index(obj.index)
-
-    def switch_focus(self):
-        """Switch the current keyboard focus to the next widget."""
-        widget = QApplication.focusWidget()
-        main_container = IDE.get_service('main_container')
-        tools_dock = IDE.get_service('tools_dock')
-        explorer_container = IDE.get_service('explorer_container')
-        if widget and main_container and tools_dock and explorer_container:
-            if widget in (main_container.actualTab,
-               main_container.actualTab.currentWidget()):
-                explorer_container.currentWidget().setFocus()
-            elif widget in (explorer_container,
-                 explorer_container.currentWidget()):
-                if tools_dock.isVisible():
-                    tools_dock.stack.currentWidget().setFocus()
-                else:
-                    main_container.actualTab.currentWidget().setFocus()
-            elif widget.parent() is tools_dock.stack:
-                main_container.actualTab.currentWidget().setFocus()
 
     def _process_connection(self):
         """Read the ipc input from another instance of ninja."""
@@ -684,8 +667,8 @@ class IDE(QMainWindow):
             if val == QMessageBox.Cancel:
                 event.ignore()
                 return
-        self.emit(SIGNAL("goingDown()"))
         self.save_settings()
+        self.emit(SIGNAL("goingDown()"))
         #close python documentation server (if running)
         main_container.close_python_doc()
         #Shutdown PluginManager

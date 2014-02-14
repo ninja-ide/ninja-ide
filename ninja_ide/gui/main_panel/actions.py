@@ -21,6 +21,14 @@ from ninja_ide import translations
 
 ACTIONS = (
     {
+    "shortcut": "Show-Selector",
+    "action": {'text': translations.TR_SHOW_SELECTOR,
+               'image': 'selector',
+               'section': (translations.TR_MENU_FILE, None),
+               'weight': 500},
+    "connect": "show_selector"
+    },
+    {
     "shortcut": "Change-Tab",
     "connect": "change_tab"
     },
@@ -190,11 +198,33 @@ ACTIONS = (
     },
     {
     "shortcut": "Close-Split",
+    "action": {'text': translations.TR_CLOSE_CURRENT_SPLIT,
+               'image': None,
+               'section': (translations.TR_MENU_VIEW, None),
+               'weight': 460},
     "connect": "close_split"
     },
     {
     "shortcut": "Split-assistance",
+    "action": {'text': translations.TR_SHOW_SPLIT_ASSISTANCE,
+               'image': None,
+               'section': (translations.TR_MENU_VIEW, None),
+               'weight': 430},
     "connect": "split_assistance"
+    },
+    {
+    "action": {'text': translations.TR_SPLIT_VERTICALLY,
+               'image': 'splitV',
+               'section': (translations.TR_MENU_VIEW, None),
+               'weight': 440},
+    "connect": "split_vertically"
+    },
+    {
+    "action": {'text': translations.TR_SPLIT_HORIZONTALLY,
+               'image': 'splitH',
+               'section': (translations.TR_MENU_VIEW, None),
+               'weight': 450},
+    "connect": "split_horizontally"
     },
     {
     "shortcut": "Reload-file",

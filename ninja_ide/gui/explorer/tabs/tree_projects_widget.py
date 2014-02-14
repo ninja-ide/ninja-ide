@@ -26,6 +26,7 @@ DEBUG = logger.debug
 
 from PyQt4.QtGui import QTreeView
 from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QScrollArea
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QAbstractItemView
@@ -44,13 +45,13 @@ from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QFontMetrics
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
-from PyQt4.QtCore import QUrl
-from PyQt4.QtGui import QDesktopServices
+from PyQt4.QtCore import QDateTime
 
 from ninja_ide import translations
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import ui_tools
+from ninja_ide.tools import json_manager
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs import add_to_project
 from ninja_ide.gui.dialogs import project_properties_widget
@@ -127,10 +128,11 @@ class TreeHeader(QHeaderView):
             QCursor.pos(), self.path)
 
 
-class ProjectTreeColumn(QWidget):
+class ProjectTreeColumn(QDialog):
 
-    def __init__(self, *args, **kwargs):
-        super(ProjectTreeColumn, self).__init__(*args, **kwargs)
+    def __init__(self, parent=None):
+        super(ProjectTreeColumn, self).__init__(parent,
+            Qt.WindowStaysOnTopHint)
         self._layout = QVBoxLayout()
         self._layout.setSizeConstraint(QVBoxLayout.SetDefaultConstraint)
         self._layout.setContentsMargins(0, 0, 0, 0)
@@ -172,44 +174,30 @@ class ProjectTreeColumn(QWidget):
         #TODO: check this:
         #self.connect(ide, SIGNAL("goingDown()"),
             #self.tree_projects.shutdown)
-        #self.connect(self.tree_projects,
-            #SIGNAL("addProjectToConsole(QString)"),
-            #self._add_project_to_console)
-        #self.connect(self.tree_projects,
-            #SIGNAL("removeProjectFromConsole(QString)"),
-            #self._remove_project_from_console)
 
         #def close_project_signal():
             #self.emit(SIGNAL("updateLocator()"))
-
-        #def close_files_related_to_closed_project(project):
-            #if project:
-                #self.emit(SIGNAL("projectClosed(QString)"), project)
-        #self.connect(self.tree_projects, SIGNAL("closeProject(QString)"),
-            #close_project_signal)
-        #self.connect(self.tree_projects, SIGNAL("refreshProject()"),
-            #close_project_signal)
-        #self.connect(self.tree_projects,
-            #SIGNAL("closeFilesFromProjectClosed(QString)"),
-            #close_files_related_to_closed_project)
 
     def install_tab(self):
         ide = IDE.get_service('ide')
         ui_tools.install_shortcuts(self, actions.PROJECTS_TREE_ACTIONS, ide)
 
+        self.connect(ide, SIGNAL("goingDown()"), self.close)
+
     def load_session_projects(self, projects):
         for project in projects:
             self._open_project_folder(project)
 
-    def open_project_folder(self):
+    def open_project_folder(self, folderName=None):
         if settings.WORKSPACE:
             directory = settings.WORKSPACE
         else:
             directory = os.path.expanduser("~")
 
-        folderName = QFileDialog.getExistingDirectory(self,
-                self.tr("Open Project Directory"), directory)
-        logger.debug("Choosing Foldername")
+        if folderName is None:
+            folderName = QFileDialog.getExistingDirectory(self,
+                    self.tr("Open Project Directory"), directory)
+            logger.debug("Choosing Foldername")
         if folderName:
             logger.debug("Opening %s" % folderName)
             self._open_project_folder(folderName)
@@ -221,6 +209,10 @@ class ProjectTreeColumn(QWidget):
         if qfsm:
             self.add_project(project)
             self.emit(SIGNAL("updateLocator()"))
+            self.save_recent_projects(folderName)
+            main_container = IDE.get_service('main_container')
+            if main_container:
+                main_container.show_editor_area()
 
     def _add_file_to_project(self, path):
         """Add the file for 'path' in the project the user choose here."""
@@ -252,9 +244,14 @@ class ProjectTreeColumn(QWidget):
             pass
             # Message about no project
 
+    @property
+    def children(self):
+        return self._projects_area.layout().count()
+
     def add_project(self, project):
         if project not in self.projects:
             ptree = TreeProjectsWidget(project)
+            ptree.setParent(self)
             self.connect(ptree, SIGNAL("setActiveProject(PyQt_PyObject)"),
                 self._set_active_project)
             self.connect(ptree, SIGNAL("closeProject(PyQt_PyObject)"),
@@ -300,10 +297,6 @@ class ProjectTreeColumn(QWidget):
                 main_container.save_project(path)
 
     def create_new_project(self):
-        if not self.tree_projects:
-            QMessageBox.information(self, self.tr("Projects Disabled"),
-                self.tr("Project support has been disabled from Preferences"))
-            return
         wizard = wizard_new_project.WizardNewProject(self)
         wizard.show()
 
@@ -316,7 +309,51 @@ class ProjectTreeColumn(QWidget):
     def current_tree(self):
         return self._active_project
 
-    #TODO: Save recently open projects into project data when it exists
+    def save_recent_projects(self, folder):
+        settings = IDE.data_settings()
+        recent_project_list = settings.value('recentProjects', {})
+        #if already exist on the list update the date time
+        projectProperties = json_manager.read_ninja_project(folder)
+        name = projectProperties.get('name', '')
+        description = projectProperties.get('description', '')
+
+        if name == '':
+            name = file_manager.get_basename(folder)
+
+        if description == '':
+            description = self.tr('no description available')
+
+        if folder in recent_project_list:
+            properties = recent_project_list[folder]
+            properties["lastopen"] = QDateTime.currentDateTime()
+            properties["name"] = name
+            properties["description"] = description
+            recent_project_list[folder] = properties
+        else:
+            recent_project_list[folder] = {
+                "name": name,
+                "description": description,
+                "isFavorite": False, "lastopen": QDateTime.currentDateTime()}
+            #if the length of the project list it's high that 10 then delete
+            #the most old
+            #TODO: add the length of available projects to setting
+            if len(recent_project_list) > 10:
+                del recent_project_list[self.find_most_old_open(
+                    recent_project_list)]
+        settings.setValue('recentProjects', recent_project_list)
+
+    def find_most_old_open(self, recent_project_list):
+        listFounder = []
+        for recent_project_path, content in list(recent_project_list.items()):
+            listFounder.append((recent_project_path, int(
+                content["lastopen"].toString("yyyyMMddHHmmzzz"))))
+        listFounder = sorted(listFounder, key=lambda date: listFounder[1],
+                             reverse=True)   # sort by date last used
+        return listFounder[0][0]
+
+    def closeEvent(self, event):
+        self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
+        event.ignore()
 
 
 class TreeProjectsWidget(QTreeView):
@@ -383,6 +420,9 @@ class TreeProjectsWidget(QTreeView):
         self.connect(self.verticalScrollBar(),
             SIGNAL("rangeChanged(int, int)"), self.auto_resize_grow)
 
+    def setParent(self, parent):
+        self.__parent = parent
+
     def auto_resize_grow(self, minimum, maximum):
         logger.debug("This is the maximum")
         logger.debug(maximum)
@@ -398,7 +438,11 @@ class TreeProjectsWidget(QTreeView):
             self.setFixedHeight(new_height)
 
     def auto_resize_shrink(self):
-        self.setFixedHeight(1)
+        count = 0
+        if self.__parent:
+            count = self.__parent.children
+        if count != 1:
+            self.setFixedHeight(1)
         #self.auto_resize_grow(self.verticalScrollBar().minimum(),
                 #self.verticalScrollBar().maximum())
 
@@ -414,6 +458,7 @@ class TreeProjectsWidget(QTreeView):
         self.project = project
         self._added_to_console = False
         self.__format_tree()
+        self.__parent = None
         self.setMinimumHeight(self.height())
 
         self.setContextMenuPolicy(Qt.CustomContextMenu)
@@ -587,6 +632,8 @@ class TreeProjectsWidget(QTreeView):
             self._added_to_console = False
 
     def _open_file(self, model_index):
+        if self.model().isDir(model_index):
+            return
         path = self.model().filePath(model_index)
         main_container = IDE.get_service('main_container')
         logger.debug("tried to get main container")
@@ -765,7 +812,6 @@ class FoldingContextMenu(QMenu):
             self._tree.expandAll()
         else:
             self._tree.collapseAll()
-
 
     def _fold_all_projects(self):
         """

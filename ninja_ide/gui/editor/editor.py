@@ -171,7 +171,10 @@ class Editor(QPlainTextEdit):
             self._find_occurrences)
 
         # Set the editor after initialization
-        self._neditable.set_editor(self)
+        if self._neditable.editor:
+            self.setDocument(self._neditable.document)
+        else:
+            self._neditable.set_editor(self)
 
         if self._mini:
             self._mini.set_code(self.toPlainText())
@@ -649,13 +652,14 @@ class Editor(QPlainTextEdit):
 
     def focusInEvent(self, event):
         super(Editor, self).focusInEvent(event)
-        try:
-            #use parent().parent() to Access QTabWidget
-            #First parent() = QStackedWidget, Second parent() = TabWidget
-            #Check for modifications
-            self.parent().parent().focusInEvent(event)
-        except RuntimeError:
-            pass
+        self.emit(SIGNAL("editorFocusObtained()"))
+        #try:
+            ##use parent().parent() to Access QTabWidget
+            ##First parent() = QStackedWidget, Second parent() = TabWidget
+            ##Check for modifications
+            #self.parent().parent().focusInEvent(event)
+        #except RuntimeError:
+            #pass
 
     def focusOutEvent(self, event):
         """Hide Popup on focus lost."""
@@ -1265,16 +1269,22 @@ class Editor(QPlainTextEdit):
 
 
 def create_editor(neditable, syntax=None):
+    has_editor = neditable.editor is not None
     editor = Editor(neditable)
-    #if syntax is specified, use it
-    if syntax:
+    if not has_editor:
         editor.register_syntax(syntax)
     else:
+        editor.highlighter = neditable.editor.highlighter
+    #if syntax is specified, use it
+    #if syntax:
+        #editor.register_syntax(syntax)
+    #else:
         #try to set a syntax based on the file extension
         #ext = file_manager.get_file_extension(neditable.ID)
         #if ext not in settings.EXTENSIONS and neditable.ID == '':
             #by default use python syntax
-        editor.register_syntax('py')
+        #if not has_editor:
+            #editor.register_syntax('py')
         #else:
             #editor.register_syntax(ext)
 

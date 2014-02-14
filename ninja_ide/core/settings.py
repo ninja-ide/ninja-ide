@@ -105,12 +105,17 @@ EXECUTION_OPTIONS = ""
 SESSIONS = {}
 
 TOOLBAR_ITEMS = [
+    "_MainContainer.show_selector",
     "_MainContainer.add_editor",
-    "ProjectTreeColumn.create_new_project",
+    #"ProjectTreeColumn.create_new_project",
     "_MainContainer.open_file",
     "ProjectTreeColumn.open_project_folder",
     "_MainContainer.save_file",
-    #TODO: splitter, sessions
+    "_MainContainer.split_vertically",
+    "_MainContainer.split_horizontally",
+    "IDE.activate_profile",
+    "IDE.deactivate_profile",
+    #TODO: sessions
     "_MainContainer.editor_cut",
     "_MainContainer.editor_copy",
     "_MainContainer.editor_paste",
@@ -121,10 +126,21 @@ TOOLBAR_ITEMS = [
     ]
 
 TOOLBAR_ITEMS_DEFAULT = [
-    "new-file", "new-project", "open-file", "open-project", "save-file",
-    "separator", "splitv", "splith", "follow-mode", "separator",
-    "cut", "copy", "paste", "separator",
-    "run-project", "run-file", "stop", "separator",
+    "_MainContainer.show_selector",
+    "_MainContainer.add_editor",
+    #"ProjectTreeColumn.create_new_project",
+    "_MainContainer.open_file",
+    "ProjectTreeColumn.open_project_folder",
+    "_MainContainer.save_file",
+    "_MainContainer.split_assistance",
+    #TODO: sessions
+    "_MainContainer.editor_cut",
+    "_MainContainer.editor_copy",
+    "_MainContainer.editor_paste",
+    "_ToolsDock.execute_file",
+    "_ToolsDock.execute_project",
+    "_ToolsDock.kill_application",
+    #"run-project", "run-file", "stop", "separator",
     ]
 
 #hold the toolbar actions added by plugins
