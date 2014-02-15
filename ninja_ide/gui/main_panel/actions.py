@@ -363,7 +363,6 @@ ACTIONS = (
     "connect": "change_visibility"
     },
     {
-    "shortcut": "Toggle-tabs-spaces",
     "action": {'text': translations.TR_TABS_SPACES_VISIBILITY,
                'section': (translations.TR_MENU_VIEW, None),
                'weight': 110},

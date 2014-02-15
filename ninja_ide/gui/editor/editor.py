@@ -184,6 +184,10 @@ class Editor(QPlainTextEdit):
             SIGNAL("ns_preferences_editor_fontFamily(PyQt_PyObject)"),
             lambda: self.set_font())
 
+        self.connect(ninjaide,
+            SIGNAL("ns_preferences_editor_showTabsAndSpaces(PyQt_PyObject)"),
+            self.set_flags)
+
     @property
     def display_name(self):
         self._neditable.display_name
