@@ -1092,6 +1092,14 @@ class _MainContainer(QWidget):
         self.stack.setCurrentWidget(self.splitter)
         self.tabs_handler.previous_item()
 
+    def toggle_tabs_and_spaces(self):
+        """ Toggle Show/Hide Tabs and Spaces """
+
+        settings.SHOW_TABS_AND_SPACES = not settings.SHOW_TABS_AND_SPACES
+        qsettings = IDE.ninja_settings()
+        qsettings.setValue('preferences/editor/showTabsAndSpaces',
+            settings.SHOW_TABS_AND_SPACES)
+
     def show_navigation_buttons(self):
         """Show Navigation menu."""
         self.stack.setCurrentWidget(self.splitter)
