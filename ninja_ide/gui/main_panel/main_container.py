@@ -1131,7 +1131,8 @@ class _MainContainer(QWidget):
         dialog.show()
 
     def close_split(self):
-        self.current_widget.bar.close_split()
+        if self.current_widget != self.combo_area:
+            self.current_widget.bar.close_split()
 
     def split_vertically(self):
         self.show_split(False)

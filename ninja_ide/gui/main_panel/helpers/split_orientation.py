@@ -20,14 +20,16 @@ class SplitOrientation(QDialog):
         self.setModal(True)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setStyleSheet("background:transparent;")
-        self.setFixedHeight(150)
-        self.setFixedWidth(310)
+        self.setFixedHeight(130)
+        self.setFixedWidth(290)
         # Create the QML user interface.
         view = QDeclarativeView()
         view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
         view.setSource(ui_tools.get_qml_resource("SplitOrientation.qml"))
         self._root = view.rootObject()
         vbox = QVBoxLayout(self)
+        vbox.setContentsMargins(0, 0, 0, 0)
+        vbox.setSpacing(0)
         vbox.addWidget(view)
 
         self.connect(self._root, SIGNAL("selected(QString)"),
