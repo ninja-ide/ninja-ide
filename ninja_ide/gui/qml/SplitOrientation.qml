@@ -173,6 +173,6 @@ Rectangle {
             margins: 5
         }
         color: "white"
-        font.pointSize: 7
+        font.pointSize: 10
     }
 }

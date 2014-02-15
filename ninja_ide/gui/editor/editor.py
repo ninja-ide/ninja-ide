@@ -182,7 +182,7 @@ class Editor(QPlainTextEdit):
         ninjaide = IDE.get_service('ide')
         self.connect(ninjaide,
             SIGNAL("ns_preferences_editor_fontFamily(PyQt_PyObject)"),
-            lambda: self.set_font())
+            self.set_font)
 
         self.connect(ninjaide,
             SIGNAL("ns_preferences_editor_showTabsAndSpaces(PyQt_PyObject)"),
