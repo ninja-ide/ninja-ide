@@ -347,6 +347,10 @@ class ComboEditor(QDialog):
         self.emit(SIGNAL("aboutToCloseComboEditor()"))
         super(ComboEditor, self).closeEvent(event)
 
+    def reject(self):
+        if not self.__original:
+            super(ComboEditor, self).reject()
+
 
 class ActionBar(QFrame):
     """
