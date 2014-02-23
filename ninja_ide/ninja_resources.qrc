@@ -1,82 +1,236 @@
 <RCC>
-    <qresource prefix="/img">
-        <file alias="chevron">img/chevron-down.png</file>
-        <file alias="separator">img/separator.png</file>
-        <file alias="splitV">img/split-vertical.png</file>
-        <file alias="comment-code">img/comment-code.png</file>
-        <file alias="go-to-definition">img/go_to_definition.png</file>
-        <file alias="locate-function">img/locate-function.png</file>
-        <file alias="attribute">img/attribute.png</file>
-        <file alias="insert-import">img/insert_import.png</file>
-        <file alias="break-left">img/break-left.png</file>
-        <file alias="module">img/module.png</file>
-        <file alias="locator">img/locator.png</file>
-        <file alias="splitMPosition">img/panels-change-vertical-position.png</file>
-        <file alias="exit">img/exit.png</file>
-        <file alias="book-right">img/book-right.png</file>
-        <file alias="nav-code-right">img/nav-code-right.png</file>
-        <file alias="preview-web">img/preview_web.png</file>
-        <file alias="open">img/document-open.png</file>
-        <file alias="find">img/find.png</file>
-        <file alias="tree-html">img/tree-html.png</file>
-        <file alias="web">img/web.png</file>
-        <file alias="tree-folder">img/tree-folder.png</file>
-        <file alias="cut">img/edit-cut.png</file>
-        <file alias="splitCPosition">img/panels-change-position.png</file>
-        <file alias="uncomment-code">img/uncomment-code.png</file>
-        <file alias="redo">img/edit-redo.png</file>
-        <file alias="zoom-out">img/zoom_out.png</file>
-        <file alias="pref">img/preferences-system.png</file>
-        <file alias="findReplace">img/find-replace.png</file>
-        <file alias="locate-nonpython">img/locate-nonpython.png</file>
-        <file alias="bug">img/bug.png</file>
-        <file alias="locate-line">img/locate-line.png</file>
-        <file alias="file-run">img/file-run.png</file>
-        <file alias="splash">img/splash.jpg</file>
-        <file alias="deactivate-profile">img/deactivate_profile.png</file>
-        <file alias="print">img/document-print.png</file>
-        <file alias="new">img/document-new.png</file>
-        <file alias="save">img/document-save.png</file>
-        <file alias="reload-file">img/reload-file.png</file>
-        <file alias="function">img/function.png</file>
-        <file alias="saveAs">img/document-save-as.png</file>
-        <file alias="play">img/play.png</file>
-        <file alias="designer">img/qtdesigner.png</file>
-        <file alias="splitCRotate">img/panels-change-orientation.png</file>
-        <file alias="fullscreen">img/fullscreen.png</file>
-        <file alias="newProj">img/project-new.png</file>
-        <file alias="class">img/class.png</file>
-        <file alias="stop">img/stop.png</file>
-        <file alias="locate-file">img/locate-file.png</file>
-        <file alias="undo">img/edit-undo.png</file>
-        <file alias="nav-code-left">img/nav-code-left.png</file>
-        <file alias="locate-class">img/locate-class.png</file>
-        <file alias="locate-on-this-file">img/locate-on-this-file.png</file>
-        <file alias="tree-css">img/tree-CSS.png</file>
-        <file alias="locate-tab">img/locate-tab.png</file>
-        <file alias="indent-more">img/indent-more.png</file>
-        <file alias="tree-python">img/tree-python.png</file>
-        <file alias="console">img/console.png</file>
-        <file alias="book-left">img/book-left.png</file>
-        <file alias="copy">img/edit-copy.png</file>
-        <file alias="paste">img/edit-paste.png</file>
-        <file alias="activate-profile">img/activate_profile.png</file>
-        <file alias="splitH">img/split-horizontal.png</file>
-        <file alias="icon">img/ninja_icon.png</file>
-        <file alias="openProj">img/project-open.png</file>
-        <file alias="saveAll">img/document-save-all.png</file>
-        <file alias="indent-less">img/indent-less.png</file>
-        <file alias="zoom-in">img/zoom_in.png</file>
-        <file alias="break-right">img/break-right.png</file>
-        <file alias="tree-code">img/tree-code.png</file>
-        <file alias="tree-generic">img/tree-generic.png</file>
-        <file alias="locate-attributes">img/locate-attributes.png</file>
-        <file alias="tree-image">img/tree-image.png</file>
-        <file alias="add">img/add.png</file>
-        <file alias="debug">img/debug.png</file>
-        <file alias="iconUpdate">img/ninja_icon.png</file>
-        <file alias="openFolder">img/folder-open.png</file>
-        <file alias="delete">img/delete.png</file>
-        <file alias="selector">img/main_selector.png</file>
-    </qresource>
+  <qresource prefix="img">
+    <file alias="chevron">img/chevron-down.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='separator'>img/separator.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='splitV'>img/split-vertical.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='comment-code'>img/comment-code.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='go-to-definition'>img/go_to_definition.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='locate-function'>img/locate-function.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='attribute'>img/attribute.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='insert-import'>img/insert_import.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='break-left'>img/break-left.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='module'>img/module.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='locator'>img/locator.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='splitMPosition'>img/panels-change-vertical-position.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='exit'>img/exit.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='book-right'>img/book-right.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='nav-code-right'>img/nav-code-right.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='preview-web'>img/preview_web.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='open'>img/document-open.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='find'>img/find.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='tree-html'>img/tree-html.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='web'>img/web.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='tree-folder'>img/tree-folder.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='cut'>img/edit-cut.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='splitCPosition'>img/panels-change-position.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='uncomment-code'>img/uncomment-code.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='redo'>img/edit-redo.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='zoom-out'>img/zoom_out.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='pref'>img/preferences-system.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='findReplace'>img/find-replace.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='locate-nonpython'>img/locate-nonpython.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='bug'>img/bug.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='locate-line'>img/locate-line.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='file-run'>img/file-run.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='splash'>img/splash.jpg</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='deactivate-profile'>img/deactivate_profile.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='print'>img/document-print.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='new'>img/document-new.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='save'>img/document-save.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='reload-file'>img/reload-file.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='function'>img/function.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='saveAs'>img/document-save-as.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='play'>img/play.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='designer'>img/qtdesigner.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='splitCRotate'>img/panels-change-orientation.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='fullscreen'>img/fullscreen.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='newProj'>img/project-new.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='class'>img/class.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='stop'>img/stop.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='locate-file'>img/locate-file.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='undo'>img/edit-undo.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='nav-code-left'>img/nav-code-left.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='locate-class'>img/locate-class.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='locate-on-this-file'>img/locate-on-this-file.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='tree-css'>img/tree-CSS.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='locate-tab'>img/locate-tab.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='indent-more'>img/indent-more.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='tree-python'>img/tree-python.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='console'>img/console.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='book-left'>img/book-left.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='copy'>img/edit-copy.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='paste'>img/edit-paste.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='activate-profile'>img/activate_profile.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='splitH'>img/split-horizontal.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='icon'>img/icon.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='openProj'>img/project-open.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='saveAll'>img/document-save-all.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='indent-less'>img/indent-less.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='zoom-in'>img/zoom_in.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='break-right'>img/break-right.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='tree-code'>img/tree-code.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='tree-generic'>img/tree-generic.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='locate-attributes'>img/locate-attributes.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='tree-image'>img/tree-image.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='add'>img/add.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='debug'>img/debug.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='iconUpdate'>img/icon.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='openFolder'>img/folder-open.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='delete'>img/delete.png</file>
+  </qresource>
+  <qresource prefix='img'>
+    <file alias='selector'>img/main_selector.png</file>
+  </qresource>
 </RCC>
