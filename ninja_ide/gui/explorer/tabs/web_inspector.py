@@ -15,14 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QPushButton
+
+from PyQt4.QtGui import QPushButton, QVBoxLayout, QWidget, QMessageBox
 
 from ninja_ide import translations
 from ninja_ide.core import settings
-from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
+from ninja_ide.gui.ide import IDE
 
 try:
     from PyQt4.QtWebKit import QWebInspector
@@ -31,6 +30,7 @@ except:
 
 
 class WebInspector(QWidget):
+    """WebInspector widget class"""
 
     def __init__(self, parent):
         QWidget.__init__(self, parent)
@@ -44,10 +44,12 @@ class WebInspector(QWidget):
         IDE.register_service('web_inspector', self)
 
     def refresh_inspector(self):
+        """Refresh WebInspector widget by hiding and showing"""
         self._webInspector.hide()
         self._webInspector.show()
 
     def set_inspection_page(self, page):
+        """Method to load an argument page object on the WebInspector"""
         self._webInspector.setPage(page)
         self._webInspector.setVisible(True)
 
@@ -55,8 +57,7 @@ class WebInspector(QWidget):
 if settings.SHOW_WEB_INSPECTOR and settings.WEBINSPECTOR_SUPPORTED:
     webInspector = WebInspector()
 else:
-    #if not settings.WEBINSPECTOR_SUPPORTED:
-        #QMessageBox.information(self,
-            #self.tr("Web Inspector not Supported"),
-            #self.tr("Your Qt version doesn't support the Web Inspector"))
+    if not settings.WEBINSPECTOR_SUPPORTED:
+        QMessageBox.information(None, translations.TR_TAB_WEB_INSPECTOR,
+                                translations.TR_WEB_INSPECTOR_NOT_SUPPORTED)
     webInspector = None
