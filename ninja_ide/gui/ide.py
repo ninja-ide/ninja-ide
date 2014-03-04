@@ -131,6 +131,10 @@ class IDE(QMainWindow):
         self.toolbar = QToolBar(self)
         self.toolbar.setToolTip(translations.TR_IDE_TOOLBAR_TOOLTIP)
         self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        # Set toggleViewAction text and tooltip
+        self.toggleView = self.toolbar.toggleViewAction()
+        self.toggleView.setText(translations.TR_TOOLBAR_VISIBILITY)
+        self.toggleView.setToolTip(translations.TR_TOOLBAR_VISIBILITY)
         self.addToolBar(settings.TOOLBAR_AREA, self.toolbar)
         if settings.HIDE_TOOLBAR:
             self.toolbar.hide()
