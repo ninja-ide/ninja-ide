@@ -472,7 +472,8 @@ class ConsoleWidget(QPlainTextEdit):
         #remove the prompt from the QString
         command = command[len(self.prompt):]
         self._add_history(command)
-        incomplete = self._write(command)
+        conditional = command.strip() != 'quit()'
+        incomplete = self._write(command) if conditional else None
         if self.patFrom.match(command) or self.patImport.match(command):
             self.imports += [command]
         if not incomplete:
