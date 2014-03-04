@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
+
 from PyQt4 import QtCore
 
 
 tr = QtCore.QCoreApplication.translate
+
 
 TR_MENU_FILE = tr("NINJA-IDE", "&File")
 TR_MENU_EDIT = tr("NINJA-IDE", "&Edit")
@@ -12,6 +14,7 @@ TR_MENU_SOURCE = tr("NINJA-IDE", "&Source")
 TR_MENU_PROJECT = tr("NINJA-IDE", "&Project")
 TR_MENU_EXTENSIONS = tr("NINJA-IDE", "E&xtensions")
 TR_MENU_ABOUT = tr("NINJA-IDE", "Abou&t")
+
 
 TR_SHOW_SELECTOR = tr("NINJA-IDE", "Show Selector")
 TR_SESSION_IDE_HEADER = tr("NINJA-IDE", "NINJA-IDE (SESSION: %(session)s)")
@@ -118,10 +121,13 @@ TR_TAB_SYMBOLS = tr("NINJA-IDE", "Symbols")
 TR_TAB_ERRORS = tr("NINJA-IDE", "Errors")
 TR_TAB_MIGRATION = tr("NINJA-IDE", "Migration 2to3")
 TR_TAB_WEB_INSPECTOR = tr("NINJA-IDE", "Web Inspector")
+TR_WEB_INSPECTOR_NOT_SUPPORTED = tr("NINJA-IDE",
+    "Your Qt version doesn't support the Web Inspector")
 TR_ADD_FILE_TO_PROJECT = tr("NINJA-IDE", "Add File to Project")
 TR_CANCEL = tr("NINJA-IDE", "Cancel")
 TR_ADD_HERE = tr("NINJA-IDE", "Add here!")
 TR_UNDOCK = tr("NINJA-IDE", "Undock Tab")
+
 
 # Project Properties
 TR_PROJECT_PROPERTIES = tr("NINJA-IDE", "Project Properties")
@@ -171,6 +177,7 @@ TR_PROJECT_METADATA_RELATED = tr("NINJA-IDE",
 TR_PROJECT_METADATA_TIP = tr("NINJA-IDE",
     "Split your paths using newlines [ENTER].")
 
+
 #Locator Strings
 TR_ONLY_FILES = tr("NINJA-IDE", "@\t(Filter only by Files)")
 TR_ONLY_CLASSES = tr("NINJA-IDE", "<\t(Filter only by Classes)")
@@ -196,13 +203,16 @@ TR_IDE_CONFIRM_EXIT_BODY = tr("NINJA-IDE",
     "%(files)s\n\nDo you want to save them?")
 TR_IDE_TOOLBAR_TOOLTIP = tr("NINJA-IDE", "Press and Drag to Move")
 
+
 # Status Bar
 TR_SEARCH_CASE_SENSITIVE = tr("NINJA-IDE", "Respect Case Sensitive")
 TR_SEARCH_WHOLE_WORDS = tr("NINJA-IDE", "Find Whole Words")
 
+
 # Checkers
 TR_PEP8_DIRTY_TEXT = tr("NINJA-IDE", "PEP8 violations: ")
 TR_LINT_DIRTY_TEXT = tr("NINJA-IDE", "Lint errors: ")
+
 
 # Dialogs
 TR_PREFERENCES_TITLE = tr("NINJA-IDE", "NINJA-IDE - Preferences")
@@ -229,6 +239,7 @@ TR_FILE_HAS_BEEN_MODIFIED = tr("NINJA-IDE", "The File has been Modified")
 TR_FILE_MODIFIED_OUTSIDE = tr("NINJA-IDE",
     "\nThe File has been modified outside the application\n"
     "Do you want to reload the file?")
+
 
 # tools_dock
 TR_TEXT_FOR_REPLACE = tr("NINJA-IDE", "Text for Replace")
@@ -258,6 +269,7 @@ TR_WEB_PREVIEW = tr("NINJA-IDE", "Web Preview")
 TR_CONTENT = tr("NINJA-IDE", "Content")
 TR_SHORTCUT = tr("NINJA-IDE", "Shortcut")
 TR_ACCEPT = tr("NINJA-IDE", "Accept")
+
 
 # shortcut manager
 TR_DUPLICATE_LINE = tr("NINJA-IDE", "Duplicate the line/selection")
@@ -313,6 +325,7 @@ TR_SHORCUTS_IN_MENUS_REFRESH_ON_RESTART = tr("NINJA-IDE",
     "The Shortcuts Text in the Menus are going to be refreshed on restart")
 TR_SHORCUTS_ALREADY_ON_USE = tr("NINJA-IDE",
     "Shortcut is already in use, do you want to remove it ?")
+
 
 # Preferences
 TR_PREFERENCES_GENERAL = tr("NINJA-IDE", "General")
@@ -388,3 +401,135 @@ TR_PREFERENCES_EDITOR_GENERAL_FONT_MESSAGE_TITLE = tr("NINJA-IDE",
     "Invalid Font")
 TR_PREFERENCES_EDITOR_GENERAL_FONT_MESSAGE_BODY = tr("NINJA-IDE",
     "This font can not be used in the Editor.")
+
+
+# tree symbol
+TR_FOLD = tr("NINJA-IDE", "Fold")
+TR_UNFOLD = tr("NINJA-IDE", "Unfold")
+TR_FOLD_ALL = tr("NINJA-IDE", "Fold all")
+TR_UNFOLD_ALL = tr("NINJA-IDE", "Unfold all")
+TR_UNFOLD_CLASSES = tr("NINJA-IDE", "Unfold classes")
+TR_UNFOLD_CLASSES_AND_METHODS = tr("NINJA-IDE", "Unfold classes and methods")
+TR_UNFOLD_CLASSES_AND_ATTRIBUTES = tr("NINJA-IDE",
+    "Unfold classes and attributes")
+TR_FOLD_PROJECT = tr("NINJA-IDE", "Fold project")
+TR_UNFOLD_PROJECT = tr("NINJA-IDE", "Unfold project")
+TR_ATTRIBUTES = tr("NINJA-IDE", "Attributes")
+TR_FUNCTIONS = tr("NINJA-IDE", "Functions")
+TR_CLASSES = tr("NINJA-IDE", "Classes")
+TR_FILENAME = tr("NINJA-IDE", "Filename")
+TR_INVALID_FILENAME = tr("NINJA-IDE", "Invalid filename")
+TR_INVALID_FILENAME_ENTER_A_FILENAME = tr("NINJA-IDE",
+    "The filename is empty, please enter a filename")
+
+
+# tree project
+TR_SET_AS_MAIN_PROJECT = tr("NINJA-IDE", "Set as main project")
+TR_REMOVE_PROJECT_FROM_PYTHON_CONSOLE = tr("NINJA-IDE",
+    "Remove this project from the Python console")
+TR_ADD_PROJECT_TO_PYTHON_CONSOLE = tr("NINJA-IDE",
+    "Add this project to the Python console")
+TR_CLOSE_PROJECT = tr("NINJA-IDE", "Close project")
+TR_ADD_NEW_FILE = tr("NINJA-IDE", "Add new file")
+TR_ADD_NEW_FOLDER = tr("NINJA-IDE", "Add new folder")
+TR_CREATE_INIT = tr("NINJA-IDE", "Create '__init__.py'")
+TR_CREATE_INIT_FAIL = tr("NINJA-IDE", "Create '__init__.py' fail")
+TR_REMOVE_FOLDER = tr("NINJA-IDE", "Remove folder")
+TR_RENAME_FILE = tr("NINJA-IDE", "Rename file")
+TR_MOVE_FILE = tr("NINJA-IDE", "Move file")
+TR_COPY_FILE = tr("NINJA-IDE", "Copy file")
+TR_DELETE_FILE = tr("NINJA-IDE", "Delete file")
+TR_DELETE_FOLLOWING_FILE = tr("NINJA-IDE",
+    "Do you want to delete the following file?")
+TR_DELETE_FOLLOWING_FOLDER = tr("NINJA-IDE",
+    "Do you want to delete the following folder?")
+TR_EDIT_UI_FILE = tr("NINJA-IDE", "Edit UI file")
+TR_ENTER_NEW_FILENAME = tr("NINJA-IDE", "Enter New Filename")
+TR_OPEN_PROJECT_DIRECTORY = tr("NINJA-IDE", "Open Project Directory")
+TR_COPY_FILE_TO = tr("NINJA-IDE", "Copy file to")
+TR_COPY_FILE = tr("NINJA-IDE", "Copy file")
+
+
+# traceback_widget
+TR_TRACEBACK = tr("NINJA-IDE", "Traceback")
+TR_SOME_PLUGINS_REMOVED = tr("NINJA-IDE",
+    "Some plugins have errors and were removed")
+TR_PLUGIN_ERROR_REPORT = tr("NINJA-IDE", "Plugin error report")
+
+
+# plugins manager
+TR_PLUGIN_MANAGER = tr("NINJA-IDE", "Plugin Manager")
+TR_CLOSE = tr("NINJA-IDE", "Close")
+TR_RELOAD = tr("NINJA-IDE", "Reload")
+TR_OFFICIAL_AVAILABLE = tr("NINJA-IDE", "Official Available")
+TR_COMMUNITY_AVAILABLE = tr("NINJA-IDE", "Community Available")
+TR_UPDATE = tr("NINJA-IDE", "Update")
+TR_INSTALL = tr("NINJA-IDE", "Install")
+TR_UNINSTALL = tr("NINJA-IDE", "Uninstall")
+TR_INSTALLED = tr("NINJA-IDE", "Installed")
+TR_MANUAL_INSTALL = tr("NINJA-IDE", "Manual Install")
+TR_VERSION = tr("NINJA-IDE", "Version")
+TR_SELECT_PLUGIN_PATH = tr("NINJA-IDE", "Select plugin path")
+TR_EXTERNAL_PLUGIN = tr("NINJA-IDE", "External plugin")
+TR_URL_IS_MISSING = tr("NINJA-IDE", "URL is missing")
+TR_NINJA_NEEDS_TO_BE_RESTARTED = tr("NINJA-IDE",
+    "NINJA needs to be restarted for changes to take effect")
+TR_REQUIREMENTS = tr("NINJA-IDE", "Requirements")
+TR_SOME_PLUGINS_NEED_DEPENDENCIES = tr("NINJA-IDE",
+    """It seems that plugins needs dependencies to be solved to work properly,
+    you should install them as follows using a command line""")
+
+
+# session manager
+TR_PROJECT = tr("NINJA-IDE", "Project")
+TR_FILES = tr("NINJA-IDE", "Files")
+
+
+# preferences shorcuts
+TR_DUPLICATE_SELECTION = tr("NINJA-IDE", "Duplicate line/selection")
+TR_REMOVE_SELECTION = tr("NINJA-IDE", "Remove line/selection")
+R_MOVE_SELECTION_UP = tr("NINJA-IDE", "Move line/selection up")
+TR_MOVE_SELECTION_DOWN = tr("NINJA-IDE", "Move line/selection down")
+TR_CLOSE_TAB = tr("NINJA-IDE", "Close current tab")
+TR_NEW_TAB = tr("NINJA-IDE", "Create a New tab")
+TR_NEW_PROJECT = tr("NINJA-IDE", "Create a new Project")
+TR_OPEN_A_FILE = tr("NINJA-IDE", "Open a File")
+TR_OPEN_A_PROJECT = tr("NINJA-IDE", "Open a Project")
+TR_SAVE_FILE = tr("NINJA-IDE", "Save the current file")
+TR_SAVE_OPENED_FILES = tr("NINJA-IDE", "Save current project opened files")
+TR_PRINT_FILE = tr("NINJA-IDE", "Print current file")
+TR_REDO = tr("NINJA-IDE", "")
+TR_COMMENT_SELECTION = tr("NINJA-IDE", "Comment line/selection")
+TR_UNCOMMENT_SELECTION = tr("NINJA-IDE", "Uncomment line/selection")
+TR_INSERT_HORIZONTAL_LINE = tr("NINJA-IDE", "Insert Horizontal line")
+TR_INSERT_TITLE_COMMENT = tr("NINJA-IDE", "Insert comment Title")
+TR_INDENT_LESS = tr("NINJA-IDE", "Indent less")
+TR_HIDE_MISC = tr("NINJA-IDE", "Hide Misc Container")
+TR_HIDE_EDITOR = tr("NINJA-IDE", "Hide Editor Area")
+TR_HIDE_EXPLORER = tr("NINJA-IDE", "Hide Explorer")
+TR_TOGGLE_TABS = tr("NINJA-IDE", "Show/Hide Tabs and Spaces")
+TR_RUN_FILE = tr("NINJA-IDE", "Execute current file")
+TR_RUN_PROJECT = tr("NINJA-IDE", "Execute current project")
+TR_DEBUG = tr("NINJA-IDE", "Debug")
+TR_SWITCH_FOCUS = tr("NINJA-IDE", "Switch keyboard focus")
+TR_STOP_EXECUTION = tr("NINJA-IDE", "Stop Execution")
+TR_HIDE_ALL = tr("NINJA-IDE", "Hide all (Except Editor)")
+TR_FULLSCREEN = tr("NINJA-IDE", "Full Screen")
+TR_FIND_WORD_UNDER_CURSOR = tr("NINJA-IDE", "Find word under cursor")
+TR_ACTIVATE_FOLLOW_MODE = tr("NINJA-IDE", "Activate/Deactivate Follow Mode")
+TR_NAVIGATE_BACK = tr("NINJA-IDE", "Navigate Back")
+TR_NAVIGATE_FORWARD = tr("NINJA-IDE", "Navigate Forward")
+TR_ACTIVATE_HISTORY_NAVIGATION = tr("NINJA-IDE", "Activate History Navigation")
+TR_ACTIVATE_BOOKMARKS_NAVIGATION = tr("NINJA-IDE", "")
+TR_ACTIVATE_BREAKPOINTS_NAVIGATION = tr("NINJA-IDE", "")
+TR_SHOW_COPYPASTE_HISTORY = tr("NINJA-IDE", "Show copy/paste history")
+TR_COPY_TO_HISTORY = tr("NINJA-IDE", "Copy to copy/paste history")
+TR_PASTE_FROM_HISTORY = tr("NINJA-IDE", "Paste from copy/paste history")
+TR_CHANGE_KEYBOARD_FOCUS_BETWEEN_SPLITS = tr("NINJA-IDE",
+    "Change the keyboard focus between the current splits")
+TR_MOVE_TAB_TO_NEXT_SPLIT = tr("NINJA-IDE", "Move current Tab to next split")
+TR_SHORTCUT_ALREADY_ON_USE = tr("NINJA-IDE", "Shortcut is already in use")
+TR_DO_YOU_WANT_TO_REMOVE = tr("NINJA-IDE", "Do you want to remove it?")
+TR_LOAD_DEFAULTS = tr("NINJA-IDE", "Load defaults")
+TR_SHORTCUTS_ARE_GOING_TO_BE_REFRESH = tr("NINJA-IDE",
+    "The Shortcut's Text in the Menus are going to be refreshed on restart.")

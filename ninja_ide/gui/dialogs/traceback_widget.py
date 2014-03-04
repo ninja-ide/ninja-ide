@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+
 from __future__ import absolute_import
 
 from PyQt4.QtGui import QDialog
@@ -28,6 +29,8 @@ from PyQt4.QtGui import QPushButton
 
 from PyQt4.QtCore import SIGNAL
 
+from ninja_ide import translations
+
 
 class PluginErrorDialog(QDialog):
     """
@@ -35,15 +38,15 @@ class PluginErrorDialog(QDialog):
     """
     def __init__(self):
         QDialog.__init__(self)
-        self.setWindowTitle(self.tr("Plugin error report"))
+        self.setWindowTitle(translations.TR_PLUGIN_ERROR_REPORT)
         self.resize(600, 400)
         vbox = QVBoxLayout(self)
-        label = QLabel(self.tr('Some plugins have errors and were removed'))
+        label = QLabel(translations.TR_SOME_PLUGINS_REMOVED)
         vbox.addWidget(label)
         self._tabs = QTabWidget()
         vbox.addWidget(self._tabs)
         hbox = QHBoxLayout()
-        btnAccept = QPushButton(self.tr("Accept"))
+        btnAccept = QPushButton(translations.TR_ACCEPT)
         btnAccept.setMaximumWidth(100)
         hbox.addWidget(btnAccept)
         vbox.addLayout(hbox)
@@ -51,6 +54,7 @@ class PluginErrorDialog(QDialog):
         self.connect(btnAccept, SIGNAL("clicked()"), self.close)
 
     def add_traceback(self, plugin_name, traceback_msg):
+        """Add a Traceback to the widget on a new tab"""
         traceback_widget = TracebackWidget(traceback_msg)
         self._tabs.addTab(traceback_widget, plugin_name)
 
@@ -64,7 +68,7 @@ class TracebackWidget(QWidget):
         QWidget.__init__(self)
         vbox = QVBoxLayout(self)
         self._editor = QPlainTextEdit()
-        vbox.addWidget(QLabel(self.tr('Traceback')))
+        vbox.addWidget(QLabel(translations.TR_TRACEBACK))
         vbox.addWidget(self._editor)
         self._editor.setReadOnly(True)
         self._editor.setLineWrapMode(0)

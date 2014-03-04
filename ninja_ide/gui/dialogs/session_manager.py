@@ -83,9 +83,9 @@ class SessionsManager(QDialog):
         self.contentList.clear()
         if item is not None:
             key = item.text()
-            files = [self.tr('Files:')] + \
+            files = [translations.TR_FILES] + \
                 [file[0] for file in settings.SESSIONS[key][0]]
-            projects = [self.tr('Projects:')] + settings.SESSIONS[key][1]
+            projects = [translations.TR_PROJECT] + settings.SESSIONS[key][1]
             content = files + projects
             self.contentList.addItems(content)
 
@@ -125,6 +125,7 @@ class SessionsManager(QDialog):
         qsettings.setValue('ide/sessions', settings.SESSIONS)
 
     def save_session(self):
+        """Save current session"""
         if self.sessionList.currentItem():
             sessionName = self.sessionList.currentItem().text()
             SessionsManager.save_session_data(sessionName, self._ide)
@@ -133,6 +134,7 @@ class SessionsManager(QDialog):
             self.load_session_content()
 
     def open_session(self):
+        """Open a saved session"""
         if self.sessionList.currentItem():
             key = self.sessionList.currentItem().text()
             self._load_session_data(key)
@@ -140,6 +142,7 @@ class SessionsManager(QDialog):
             self.close()
 
     def delete_session(self):
+        """Delete a session"""
         if self.sessionList.currentItem():
             key = self.sessionList.currentItem().text()
             settings.SESSIONS.pop(key)

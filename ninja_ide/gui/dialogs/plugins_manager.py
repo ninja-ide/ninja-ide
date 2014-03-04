@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
@@ -50,10 +51,11 @@ from PyQt4.QtCore import QDir
 from ninja_ide.core import plugin_manager
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import ui_tools
-
+from ninja_ide import translations
 from ninja_ide.tools.logger import NinjaLogger
 
 logger = NinjaLogger('ninja_ide.gui.dialogs.plugin_manager')
+
 
 HTML_STYLE = """
 <html>
@@ -69,6 +71,7 @@ HTML_STYLE = """
 
 
 def _get_plugin(plugin_name, plugin_list):
+    """Takes a plugin name and plugin list and return the Plugin object"""
     plugin = None
     for plug in plugin_list:
         if plug["name"] == plugin_name:
@@ -78,15 +81,17 @@ def _get_plugin(plugin_name, plugin_list):
 
 
 def _format_for_table(plugins):
+    """Take a list of plugins and format it for the table on the UI"""
     return [[data["name"], data["version"], data["description"],
         data["authors"], data["home"]] for data in plugins]
 
 
 class PluginsManagerWidget(QDialog):
+    """Plugin Manager widget"""
 
     def __init__(self, parent):
         QDialog.__init__(self, parent, Qt.Dialog)
-        self.setWindowTitle(self.tr("Plugins Manager"))
+        self.setWindowTitle(translations.TR_PLUGIN_MANAGER)
         self.resize(700, 600)
 
         vbox = QVBoxLayout(self)
@@ -94,12 +99,12 @@ class PluginsManagerWidget(QDialog):
         vbox.addWidget(self._tabs)
         self._txt_data = QTextBrowser()
         self._txt_data.setOpenLinks(False)
-        vbox.addWidget(QLabel(self.tr("Description:")))
+        vbox.addWidget(QLabel(translations.TR_PROJECT_DESCRIPTION))
         vbox.addWidget(self._txt_data)
         # Footer
         hbox = QHBoxLayout()
-        btn_close = QPushButton(self.tr('Close'))
-        btnReload = QPushButton(self.tr("Reload"))
+        btn_close = QPushButton(translations.TR_CLOSE)
+        btnReload = QPushButton(translations.TR_RELOAD)
         hbox.addWidget(btn_close)
         hbox.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
         hbox.addWidget(btnReload)
@@ -132,6 +137,7 @@ class PluginsManagerWidget(QDialog):
         self._reload_plugins()
 
     def show_plugin_info(self, data):
+        """Takes data argument, format for HTML and display it"""
         plugin_description = data[2].replace('\n', '<br>')
         html = HTML_STYLE.format(name=data[0],
             version=data[1], description=plugin_description,
@@ -139,18 +145,21 @@ class PluginsManagerWidget(QDialog):
         self._txt_data.setHtml(html)
 
     def _open_link(self, url):
+        """Takes an url argument and open the link on web browser"""
         link = url.toString()
         if link.startswith('/plugins/'):
             link = 'http://ninja-ide.org' + link
         webbrowser.open(link)
 
     def _reload_plugins(self):
+        """Reload all plugins"""
         self.overlay.show()
         self._loading = True
         self.thread.runnable = self.thread.collect_data_thread
         self.thread.start()
 
     def _after_manual_install_plugin(self, plugin):
+        """After installing, take plugin and add it to installedWidget items"""
         data = {}
         data['name'] = plugin[0]
         data['version'] = plugin[1]
@@ -160,6 +169,7 @@ class PluginsManagerWidget(QDialog):
         self._installedWidget.add_table_items([data])
 
     def _after_download_plugin(self, plugin):
+        """After installing, take plugin and add it to installedWidget items"""
         oficial_plugin = _get_plugin(plugin[0], self._oficial_available)
         community_plugin = _get_plugin(plugin[0], self._community_available)
         if oficial_plugin:
@@ -170,7 +180,7 @@ class PluginsManagerWidget(QDialog):
             self._availableCommunityWidget.remove_item(plugin[0])
 
     def _after_uninstall_plugin(self, plugin):
-        #make available the plugin corresponding to the type
+        """After uninstall plugin,make available plugin corresponding to type"""
         oficial_plugin = _get_plugin(plugin[0], self._oficial_available)
         community_plugin = _get_plugin(plugin[0], self._community_available)
         if oficial_plugin:
@@ -181,6 +191,7 @@ class PluginsManagerWidget(QDialog):
             self._installedWidget.remove_item(plugin[0])
 
     def _load_plugins_data(self):
+        """Load all the plugins data"""
         if self._loading:
             self._tabs.clear()
             self._updatesWidget = UpdatesWidget(self, copy(self._updates))
@@ -190,13 +201,14 @@ class PluginsManagerWidget(QDialog):
                 copy(self._community_available))
             self._installedWidget = InstalledWidget(self, copy(self._locals))
             self._tabs.addTab(self._availableOficialWidget,
-                self.tr("Official Available"))
+                translations.TR_OFFICIAL_AVAILABLE)
             self._tabs.addTab(self._availableCommunityWidget,
-                self.tr("Community Available"))
-            self._tabs.addTab(self._updatesWidget, self.tr("Updates"))
-            self._tabs.addTab(self._installedWidget, self.tr("Installed"))
+                translations.TR_COMMUNITY_AVAILABLE)
+            self._tabs.addTab(self._updatesWidget, translations.TR_UPDATE)
+            self._tabs.addTab(self._installedWidget, translations.TR_INSTALLED)
             self._manualWidget = ManualInstallWidget(self)
-            self._tabs.addTab(self._manualWidget, self.tr("Manual Install"))
+            self._tabs.addTab(self._manualWidget,
+                translations.TR_MANUAL_INSTALL)
             self._loading = False
         self.overlay.hide()
         self.thread.wait()
@@ -240,11 +252,13 @@ class PluginsManagerWidget(QDialog):
         self.thread.start()
 
     def reset_installed_plugins(self):
+        """Reset all the installed plugins"""
         local_plugins = plugin_manager.local_plugins()
         plugins = _format_for_table(local_plugins)
         self._installedWidget.reset_table(plugins)
 
     def resizeEvent(self, event):
+        """Handle Resize events"""
         self.overlay.resize(event.size())
         event.accept()
 
@@ -266,9 +280,10 @@ class UpdatesWidget(QWidget):
         self._table.setSortingEnabled(True)
         self._table.setAlternatingRowColors(True)
         vbox.addWidget(self._table)
-        ui_tools.load_table(self._table, (self.tr('Name'), self.tr('Version')),
+        ui_tools.load_table(self._table,
+            (translations.TR_PROJECT_NAME, translations.TR_VERSION),
             _format_for_table(updates))
-        btnUpdate = QPushButton(self.tr("Update"))
+        btnUpdate = QPushButton(translations.TR_UPDATE)
         btnUpdate.setMaximumWidth(100)
         vbox.addWidget(btnUpdate)
 
@@ -277,12 +292,14 @@ class UpdatesWidget(QWidget):
             self._show_item_description)
 
     def _show_item_description(self):
+        """Get current item if any and show plugin information"""
         item = self._table.currentItem()
         if item is not None:
             data = list(item.data(Qt.UserRole))
             self._parent.show_plugin_info(data)
 
     def _update_plugins(self):
+        """Iterate over the plugins list and update each one"""
         data = _format_for_table(self._updates)
         plugins = ui_tools.remove_get_selected_items(self._table, data)
         #get the download link of each plugin
@@ -298,6 +315,7 @@ class UpdatesWidget(QWidget):
 
 
 class AvailableWidget(QWidget):
+    """Available plugins widget"""
 
     def __init__(self, parent, available):
         QWidget.__init__(self, parent)
@@ -308,17 +326,17 @@ class AvailableWidget(QWidget):
         self._table.setSelectionMode(QTableWidget.SingleSelection)
         self._table.removeRow(0)
         vbox.addWidget(self._table)
-        ui_tools.load_table(self._table, (self.tr('Name'), self.tr('Version')),
+        ui_tools.load_table(self._table,
+            (translations.TR_PROJECT_NAME, translations.TR_VERSION),
             _format_for_table(available))
         self._table.setColumnWidth(0, 500)
         self._table.setSortingEnabled(True)
         self._table.setAlternatingRowColors(True)
         hbox = QHBoxLayout()
-        btnInstall = QPushButton(self.tr('Install'))
+        btnInstall = QPushButton(translations.TR_INSTALL)
         btnInstall.setMaximumWidth(100)
         hbox.addWidget(btnInstall)
-        hbox.addWidget(QLabel(self.tr("NINJA needs to be restarted for "
-            "changes to take effect.")))
+        hbox.addWidget(QLabel(translations.TR_NINJA_NEEDS_TO_BE_RESTARTED))
         vbox.addLayout(hbox)
 
         self.connect(btnInstall, SIGNAL("clicked()"), self._install_plugins)
@@ -326,12 +344,14 @@ class AvailableWidget(QWidget):
             self._show_item_description)
 
     def _show_item_description(self):
+        """Get current item if any and show plugin information"""
         item = self._table.currentItem()
         if item is not None:
             data = list(item.data(Qt.UserRole))
             self._parent.show_plugin_info(data)
 
     def _install_plugins(self):
+        """Iterate over the plugins list and download each one"""
         data = _format_for_table(self._available)
         plugins = ui_tools.remove_get_selected_items(self._table, data)
         #get the download link of each plugin
@@ -347,13 +367,15 @@ class AvailableWidget(QWidget):
         self._parent.download_plugins(plugins)
 
     def remove_item(self, plugin_name):
+        """Take a plugin name as argument and remove it"""
         plugin = _get_plugin(plugin_name, self._available)
         self._available.remove(plugin)
 
     def _install_external(self):
+        """Install external plugins"""
         if self._link.text().isEmpty():
-            QMessageBox.information(self, self.tr("External Plugins"),
-                self.tr("URL from Plugin missing..."))
+            QMessageBox.information(self, translations.TR_EXTERNAL_PLUGIN,
+                translations.TR_URL_IS_MISSING + "...")
             return
         plug = [
             file_manager.get_module_name(str(self._link.text())),
@@ -364,10 +386,11 @@ class AvailableWidget(QWidget):
         self._link.setText('')
 
     def add_table_items(self, plugs):
+        """Add list of plugins to table on the UI"""
         self._available += plugs
         data = _format_for_table(self._available)
-        ui_tools.load_table(self._table, (self.tr('Name'), self.tr('Version')),
-            data)
+        ui_tools.load_table(self._table,
+            (translations.TR_PROJECT_NAME, translations.TR_VERSION), data)
 
 
 class InstalledWidget(QWidget):
@@ -384,12 +407,13 @@ class InstalledWidget(QWidget):
         self._table.setSelectionMode(QTableWidget.SingleSelection)
         self._table.removeRow(0)
         vbox.addWidget(self._table)
-        ui_tools.load_table(self._table, (self.tr('Name'), self.tr('Version')),
+        ui_tools.load_table(self._table,
+            (translations.TR_PROJECT_NAME, translations.TR_VERSION),
             _format_for_table(installed))
         self._table.setColumnWidth(0, 500)
         self._table.setSortingEnabled(True)
         self._table.setAlternatingRowColors(True)
-        btnUninstall = QPushButton(self.tr("Uninstall"))
+        btnUninstall = QPushButton(translations.TR_UNINSTALL)
         btnUninstall.setMaximumWidth(100)
         vbox.addWidget(btnUninstall)
 
@@ -399,35 +423,42 @@ class InstalledWidget(QWidget):
             self._show_item_description)
 
     def _show_item_description(self):
+        """Get current item if any and show plugin information"""
         item = self._table.currentItem()
         if item is not None:
             data = list(item.data(Qt.UserRole))
             self._parent.show_plugin_info(data)
 
     def remove_item(self, plugin_name):
+        """Take a plugin name as argument and remove it"""
         plugin = _get_plugin(plugin_name, self._installed)
         self._installed.remove(plugin)
 
     def add_table_items(self, plugs):
+        """Add list of plugins to table on the UI"""
         self._installed += plugs
         data = _format_for_table(self._installed)
-        ui_tools.load_table(self._table, (self.tr('Name'), self.tr('Version')),
-            data)
+        ui_tools.load_table(self._table,
+            (translations.TR_PROJECT_NAME, translations.TR_VERSION), data)
 
     def _uninstall_plugins(self):
+        """Take a plugin name as argument and uninstall it"""
         data = _format_for_table(self._installed)
         plugins = ui_tools.remove_get_selected_items(self._table, data)
         self._parent.mark_as_available(plugins)
 
     def reset_table(self, installed):
+        """Reset the list of plugins on the table on the UI"""
         self._installed = installed
         while self._table.rowCount() > 0:
             self._table.removeRow(0)
-        ui_tools.load_table(self._table, (self.tr('Name'), self.tr('Version')),
+        ui_tools.load_table(self._table,
+            (translations.TR_PROJECT_NAME, translations.TR_VERSION),
             self._installed)
 
 
 class ManualInstallWidget(QWidget):
+    """Manually Installed plugins widget"""
 
     def __init__(self, parent):
         super(ManualInstallWidget, self).__init__()
@@ -438,8 +469,8 @@ class ManualInstallWidget(QWidget):
         self._txtName.setPlaceholderText('my_plugin')
         self._txtVersion = QLineEdit()
         self._txtVersion.setPlaceholderText('0.1')
-        form.addRow(self.tr("Plugin Name:"), self._txtName)
-        form.addRow(self.tr("Plugin Version:"), self._txtVersion)
+        form.addRow(translations.TR_PROJECT_NAME, self._txtName)
+        form.addRow(translations.TR_VERSION, self._txtVersion)
         vbox.addLayout(form)
         hPath = QHBoxLayout()
         self._txtFilePath = QLineEdit()
@@ -450,7 +481,7 @@ class ManualInstallWidget(QWidget):
         self.dirs.setFilter(QDir.AllEntries | QDir.NoDotAndDotDot)
         self.completer.setModel(self.dirs)
         self._txtFilePath.setCompleter(self.completer)
-        hPath.addWidget(QLabel(self.tr("Plugin File:")))
+        hPath.addWidget(QLabel(translations.TR_FILENAME))
         hPath.addWidget(self._txtFilePath)
         hPath.addWidget(self._btnFilePath)
         vbox.addLayout(hPath)
@@ -459,7 +490,7 @@ class ManualInstallWidget(QWidget):
 
         hbox = QHBoxLayout()
         hbox.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
-        self._btnInstall = QPushButton(self.tr("Install"))
+        self._btnInstall = QPushButton(translations.TR_INSTALL)
         hbox.addWidget(self._btnInstall)
         vbox.addLayout(hbox)
 
@@ -470,11 +501,14 @@ class ManualInstallWidget(QWidget):
             self.install_plugin)
 
     def _load_plugin_path(self):
-        path = QFileDialog.getOpenFileName(self, self.tr("Select Plugin Path"))
+        """Ask the user a plugin filename"""
+        path = QFileDialog.getOpenFileName(self,
+                                           translations.TR_SELECT_PLUGIN_PATH)
         if path:
             self._txtFilePath.setText(path)
 
     def install_plugin(self):
+        """Install a plugin manually"""
         if self._txtFilePath.text() and self._txtName.text():
             plug = []
             plug.append(self._txtName.text())
@@ -500,6 +534,7 @@ class ThreadLoadPlugins(QThread):
         self.plug = None
 
     def run(self):
+        """Start the Thread"""
         self.runnable()
         self.plug = None
 
@@ -577,6 +612,7 @@ class ThreadLoadPlugins(QThread):
                 logger.warning("Impossible to install (%s): %s", p[0], e)
 
     def uninstall_plugins_thread(self):
+        """Uninstall a plugin"""
         for p in self.plug:
             try:
                 plugin_manager.uninstall_plugin(p)
@@ -600,20 +636,20 @@ class ThreadLoadPlugins(QThread):
 
 
 class DependenciesHelpDialog(QDialog):
+    """Help on Plugin Dependencies widget"""
+
     def __init__(self, requirements_dict):
         super(DependenciesHelpDialog, self).__init__()
-        self.setWindowTitle(self.tr("Plugin requirements"))
+        self.setWindowTitle(translations.TR_REQUIREMENTS)
         self.resize(525, 400)
         vbox = QVBoxLayout(self)
-        label = QLabel(self.tr("""It seems that some plugins needs some
-            dependencies to be solved to work properly, you should install them
-            as follows using a command line."""))
+        label = QLabel(translations.TR_SOME_PLUGINS_NEED_DEPENDENCIES)
         vbox.addWidget(label)
         self._editor = QPlainTextEdit()
         self._editor.setReadOnly(True)
         vbox.addWidget(self._editor)
         hbox = QHBoxLayout()
-        btnAccept = QPushButton(self.tr("Accept"))
+        btnAccept = QPushButton(translations.TR_ACCEPT)
         btnAccept.setMaximumWidth(100)
         hbox.addWidget(btnAccept)
         vbox.addLayout(hbox)
