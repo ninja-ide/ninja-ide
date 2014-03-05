@@ -340,27 +340,25 @@ TR_PREFERENCES_GENERAL_RESET_TITLE = tr("NINJA-IDE", "Reset preferences?")
 TR_PREFERENCES_GENERAL_RESET_BODY = tr("NINJA-IDE",
     "Are you sure you want to reset your preferences?")
 TR_PREFERENCES_EDITOR_CONFIG_FEATURES = tr("NINJA-IDE", "Features:")
-TR_PREFERENCES_EDITOR_CONFIG_INDENTATION = tr("NINJA-IDE",
-    "Indentation Length:")
-TR_PREFERENCES_EDITOR_CONFIG_USE_TABS = tr("NINJA-IDE", "Use Tabs.")
-TR_PREFERENCES_EDITOR_CONFIG_TAB_SIZE = tr("NINJA-IDE", "  (tab size)")
-TR_PREFERENCES_EDITOR_CONFIG_SPACES = tr("NINJA-IDE", "  (spaces)")
-TR_PREFERENCES_EDITOR_CONFIG_MARGIN_LINE = tr("NINJA-IDE", "Margin Line:")
-TR_PREFERENCES_EDITOR_CONFIG_SHOW_MARGIN_LINE = tr("NINJA-IDE",
-    "Show Margin Line")
+TR_PREFERENCES_EDITOR_CONFIG_INDENT = tr("NINJA-IDE", "Indentation Length")
+TR_PREFERENCES_EDITOR_CONFIG_TABS = tr("NINJA-IDE", "tabs")
+TR_PREFERENCES_EDITOR_CONFIG_SPACES = tr("NINJA-IDE", "spaces")
+TR_PREFERENCES_EDITOR_CONFIG_MARGIN = tr("NINJA-IDE", "Margin Line")
+TR_PREFERENCES_EDITOR_CONFIG_SHOW_MARGIN_LINE = tr("NINJA-IDE", "Show Line at")
 TR_PREFERENCES_EDITOR_CONFIG_END_OF_LINE = tr("NINJA-IDE",
     "Use Platform End of Line")
-TR_PREFERENCES_EDITOR_CONFIG_ERROR_HIGHLIGHTING = tr("NINJA-IDE",
-    "Check: Highlight errors using Underline\n"
-    "Uncheck: Highlight errors using Background")
+TR_PREFERENCES_EDITOR_CONFIG_ERROR_USE_UNDERLINE = tr("NINJA-IDE",
+    "using Underline")
+TR_PREFERENCES_EDITOR_CONFIG_ERROR_USE_BACKGROUND = tr("NINJA-IDE",
+    "using Background")
 TR_PREFERENCES_EDITOR_CONFIG_FIND_ERRORS = tr("NINJA-IDE",
-    "Find and Show Errors.")
+    "Highlight Errors")
 TR_PREFERENCES_EDITOR_CONFIG_SHOW_TOOLTIP_ERRORS = tr("NINJA-IDE",
-    "Show Tool tip information about the errors.")
+    "Show Lint errors Tooltip information")
 TR_PREFERENCES_EDITOR_CONFIG_SHOW_PEP8 = tr("NINJA-IDE",
-    "Find and Show Check Style errors.")
+    "Highlight PEP8 Style errors.")
 TR_PREFERENCES_EDITOR_CONFIG_SHOW_TOOLTIP_PEP8 = tr("NINJA-IDE",
-    "Show Tool tip information about the PEP8 errors.")
+    "Show PEP8 errors Tooltip information")
 TR_PREFERENCES_EDITOR_CONFIG_SHOW_MIGRATION = tr("NINJA-IDE",
     "Show Python3 Migration Tips.")
 TR_PREFERENCES_EDITOR_CONFIG_CENTER_SCROLL = tr("NINJA-IDE",
@@ -371,7 +369,7 @@ TR_PREFERENCES_EDITOR_CONFIG_SHOW_TABS_AND_SPACES = tr("NINJA-IDE",
     "Show Tabs and Spaces.")
 TR_PREFERENCES_EDITOR_CONFIG_WORD_WRAP = tr("NINJA-IDE", "Allow Word Wrap.")
 TR_PREFERENCES_EDITOR_CONFIG_CHECK_FOR_DOCSTRINGS = tr("NINJA-IDE",
-    "Check for Docstrings in Classes and Functions.")
+    "Check for missing Docstrings.")
 TR_PREFERENCES_EDITOR_GENERAL_MINIMAP = tr("NINJA-IDE", "MiniMap:")
 TR_PREFERENCES_EDITOR_GENERAL_TYPOGRAPHY = tr("NINJA-IDE", "Typography:")
 TR_PREFERENCES_EDITOR_GENERAL_SCHEME = tr("NINJA-IDE", "Scheme Color:")
@@ -388,3 +386,7 @@ TR_PREFERENCES_EDITOR_GENERAL_FONT_MESSAGE_TITLE = tr("NINJA-IDE",
     "Invalid Font")
 TR_PREFERENCES_EDITOR_GENERAL_FONT_MESSAGE_BODY = tr("NINJA-IDE",
     "This font can not be used in the Editor.")
+
+TR_CHARACTERS = tr("NINJA-IDE", "Characters")
+TR_TYPING_ASSISTANCE = tr("NINJA-IDE", "Typing assistance")
+TR_HIGHLIGHTER_EXTRAS = tr("NINJA-IDE", "Highlighter Extras")
