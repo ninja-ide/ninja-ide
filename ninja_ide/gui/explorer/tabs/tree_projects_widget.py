@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
@@ -196,7 +197,7 @@ class ProjectTreeColumn(QDialog):
 
         if folderName is None:
             folderName = QFileDialog.getExistingDirectory(self,
-                    self.tr("Open Project Directory"), directory)
+                    translations.TR_OPEN_PROJECT_DIRECTORY, directory)
             logger.debug("Choosing Foldername")
         if folderName:
             logger.debug("Opening %s" % folderName)
@@ -228,10 +229,12 @@ class ProjectTreeColumn(QDialog):
             editorWidget = main_container.get_current_editor()
             if not editorWidget.file_path:
                 name = QInputDialog.getText(None,
-                    self.tr("Add File To Project"), self.tr("File Name:"))[0]
+                       translations.TR_ADD_FILE_TO_PROJECT,
+                       translations.TR_FILENAME + ": ")[0]
                 if not name:
-                    QMessageBox.information(self, self.tr("Invalid Name"),
-                        self.tr("The file name is empty, please enter a name"))
+                    QMessageBox.information(self,
+                        translations.TR_INVALID_FILENAME,
+                        translations.TR_INVALID_FILENAME_ENTER_A_FILENAME)
                     return
             else:
                 name = file_manager.get_basename(editorWidget.file_path)
@@ -321,7 +324,7 @@ class ProjectTreeColumn(QDialog):
             name = file_manager.get_basename(folder)
 
         if description == '':
-            description = self.tr('no description available')
+            description = translations.TR_NO_DESCRIPTION
 
         if folder in recent_project_list:
             properties = recent_project_list[folder]
@@ -527,31 +530,31 @@ class TreeProjectsWidget(QTreeView):
     def _add_context_menu_for_root(self, menu):
         menu.addSeparator()
         actionRunProject = menu.addAction(QIcon(
-            ":img/play"), self.tr("Run Project"))
+            ":img/play"), translations.TR_RUN_PROJECT)
         self.connect(actionRunProject, SIGNAL("triggered()"),
             self._execute_project)
-        actionMainProject = menu.addAction(self.tr("Set as Main Project"))
+        actionMainProject = menu.addAction(translations.TR_SET_AS_MAIN_PROJECT)
         self.connect(actionMainProject, SIGNAL("triggered()"),
             self.set_default_project)
         if self._added_to_console:
             actionRemoveFromConsole = menu.addAction(
-                self.tr("Remove this Project from the Python Console"))
+                translations.TR_REMOVE_PROJECT_FROM_PYTHON_CONSOLE)
             self.connect(actionRemoveFromConsole, SIGNAL("triggered()"),
                 self._remove_project_from_console)
         else:
             actionAdd2Console = menu.addAction(
-                self.tr("Add this Project to the Python Console"))
+                translations.TR_ADD_PROJECT_TO_PYTHON_CONSOLE)
             self.connect(actionAdd2Console, SIGNAL("triggered()"),
                 self._add_project_to_console)
         actionProperties = menu.addAction(QIcon(":img/pref"),
-            self.tr("Project Properties"))
+            translations.TR_PROJECT_PROPERTIES)
         self.connect(actionProperties, SIGNAL("triggered()"),
             self.open_project_properties)
 
         menu.addSeparator()
         action_close = menu.addAction(
             self.style().standardIcon(QStyle.SP_DialogCloseButton),
-            self.tr("Close Project"))
+            translations.TR_CLOSE_PROJECT)
         self.connect(action_close, SIGNAL("triggered()"),
             self._close_project)
         #menu for the project
@@ -563,12 +566,11 @@ class TreeProjectsWidget(QTreeView):
     def _add_context_menu_for_folders(self, menu, isRoot=False, path=None):
         #Create Actions
         action_add_file = menu.addAction(QIcon(":img/new"),
-                    self.tr("Add New File"))
+            translations.TR_ADD_NEW_FILE)
         action_add_folder = menu.addAction(QIcon(
-            ":img/openProj"), self.tr("Add New Folder"))
-        action_create_init = menu.addAction(
-            self.tr("Create '__init__' Complete"))
-        action_remove_folder = menu.addAction(self.tr("Remove Folder"))
+            ":img/openProj"), translations.TR_ADD_NEW_FOLDER)
+        action_create_init = menu.addAction(translations.TR_CREATE_INIT)
+        action_remove_folder = menu.addAction(translations.TR_REMOVE_FOLDER)
 
         #Connect actions
         if isRoot:
@@ -590,12 +592,12 @@ class TreeProjectsWidget(QTreeView):
 
     def _add_context_menu_for_files(self, menu, lang):
         #Create actions
-        action_rename_file = menu.addAction(self.tr("Rename File"))
-        action_move_file = menu.addAction(self.tr("Move File"))
-        action_copy_file = menu.addAction(self.tr("Copy File"))
+        action_rename_file = menu.addAction(translations.TR_RENAME_FILE)
+        action_move_file = menu.addAction(translations.TR_MOVE_FILE)
+        action_copy_file = menu.addAction(translations.TR_COPY_FILE)
         action_remove_file = menu.addAction(
             self.style().standardIcon(QStyle.SP_DialogCloseButton),
-            self.tr("Delete File"))
+            translations.TR_DELETE_FILE)
 
         #Connect actions
         self.connect(action_remove_file, SIGNAL("triggered()"),
@@ -609,7 +611,7 @@ class TreeProjectsWidget(QTreeView):
 
         #Allow to edit Qt UI files with the appropiate program
         if lang == 'ui':
-            action_edit_ui_file = menu.addAction(self.tr("Edit UI File"))
+            action_edit_ui_file = menu.addAction(translations.TR_EDIT_UI_FILE)
             self.connect(action_edit_ui_file, SIGNAL("triggered()"),
                 self._edit_ui_file)
 
@@ -658,14 +660,14 @@ class TreeProjectsWidget(QTreeView):
         try:
             file_manager.create_init_file_complete(path)
         except file_manager.NinjaFileExistsException as ex:
-            QMessageBox.information(self, self.tr("Create INIT fail"),
+            QMessageBox.information(self, translations.TR_CREATE_INIT_FAIL,
                 ex.message)
 
     def _add_new_file(self, path=''):
         if not path:
             path = self.model().filePath(self.currentIndex())
-        result = QInputDialog.getText(self, self.tr("New File"),
-            self.tr("Enter the File Name:"))
+        result = QInputDialog.getText(self, translations.TR_NEW_FILE,
+            translations.TR_ENTER_NEW_FILENAME + ": ")
         fileName = result[0]
 
         if result[1] and fileName.strip() != '':
@@ -681,8 +683,8 @@ class TreeProjectsWidget(QTreeView):
         #FIXME: We need nfilesystem support for this
         if not path:
             path = self.model().filePath(self.currentIndex())
-        result = QInputDialog.getText(self, self.tr("New Folder"),
-            self.tr("Enter the Folder Name:"))
+        result = QInputDialog.getText(self, translations.TR_ADD_NEW_FOLDER,
+            translations.TR_ENTER_NEW_FOLDER_NAME + ": ")
         folderName = result[0]
 
         if result[1] and folderName.strip() != '':
@@ -692,9 +694,8 @@ class TreeProjectsWidget(QTreeView):
     def _delete_file(self, path=''):
         if not path:
             path = self.model().filePath(self.currentIndex())
-        val = QMessageBox.question(self, self.tr("Delete File"),
-                self.tr("Do you want to delete the following file: ")
-                + path,
+        val = QMessageBox.question(self, translations.TR_DELETE_FILE,
+                translations.TR_DELETE_FOLLOWING_FILE + path,
                 QMessageBox.Yes, QMessageBox.No)
         if val == QMessageBox.Yes:
             path = file_manager.create_path(path)
@@ -710,9 +711,8 @@ class TreeProjectsWidget(QTreeView):
     def _delete_folder(self):
         #FIXME: We need nfilesystem support for this
         path = self.model().filePath(self.currentIndex())
-        val = QMessageBox.question(self, self.tr("Delete Folder"),
-                self.tr("Do you want to delete the following folder: ")
-                + path,
+        val = QMessageBox.question(self, translations.TR_REMOVE_FOLDER,
+                translations.TR_DELETE_FOLLOWING_FOLDER + path,
                 QMessageBox.Yes, QMessageBox.No)
         if val == QMessageBox.Yes:
             file_manager.delete_folder(path)
@@ -720,8 +720,8 @@ class TreeProjectsWidget(QTreeView):
     def _rename_file(self):
         path = self.model().filePath(self.currentIndex())
         name = file_manager.get_basename(path)
-        result = QInputDialog.getText(self, self.tr("Rename File"),
-            self.tr("Enter New File Name:"), text=name)
+        result = QInputDialog.getText(self, translations.TR_RENAME_FILE,
+            translations.TR_ENTER_NEW_FILENAME, text=name)
         fileName = result[0]
 
         if result[1] and fileName.strip() != '':
@@ -740,15 +740,15 @@ class TreeProjectsWidget(QTreeView):
         global projectsColumn
         pathProjects = [p.project for p in projectsColumn.projects]
         addToProject = add_to_project.AddToProject(pathProjects, self)
-        addToProject.setWindowTitle(self.tr("Copy File to"))
+        addToProject.setWindowTitle(translations.TR_COPY_FILE_TO)
         addToProject.exec_()
         if not addToProject.pathSelected:
             return
-        name = QInputDialog.getText(self, self.tr("Copy File"),
-            self.tr("File Name:"), text=name)[0]
+        name = QInputDialog.getText(self, translations.TR_COPY_FILE,
+            translations.TR_FILENAME, text=name)[0]
         if not name:
-            QMessageBox.information(self, self.tr("Invalid Name"),
-                self.tr("The file name is empty, please enter a name"))
+            QMessageBox.information(self, translations.TR_INVALID_FILENAME,
+                translations.TR_INVALID_FILENAME_ENTER_A_FILENAME)
             return
         new_path = file_manager.create_path(addToProject.pathSelected, name)
         ide_srv = IDE.get_service("ide")
@@ -761,7 +761,7 @@ class TreeProjectsWidget(QTreeView):
         global projectsColumn
         pathProjects = [p.project for p in projectsColumn.projects]
         addToProject = add_to_project.AddToProject(pathProjects, self)
-        addToProject.setWindowTitle(self.tr("Copy File to"))
+        addToProject.setWindowTitle(translations.TR_COPY_FILE_TO)
         addToProject.exec_()
         if not addToProject.pathSelected:
             return
@@ -794,10 +794,10 @@ class FoldingContextMenu(QMenu):
         self._tree = tree
         self._collapsed = True
 
-        self.setTitle(self.tr("Fold/Unfold"))
+        self.setTitle(translations.TR_FOLD + " / " + translations.TR_UNFOLD)
 
-        fold_project = self.addAction(self.tr("Fold the project"))
-        unfold_project = self.addAction(self.tr("Unfold the project"))
+        fold_project = self.addAction(translations.TR_FOLD_PROJECT)
+        unfold_project = self.addAction(translations.TR_UNFOLD_PROJECT)
 
         self.connect(fold_project, SIGNAL("triggered()"),
             lambda: self._fold_unfold_project(False))
