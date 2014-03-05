@@ -44,8 +44,7 @@ class EditorConfiguration(QWidget):
 
     def __init__(self, parent):
         super(EditorConfiguration, self).__init__()
-        self._preferences = parent
-        vbox = QVBoxLayout(self)
+        self._preferences, vbox = parent, QVBoxLayout(self)
 
         # groups
         group1 = QGroupBox(translations.TR_PREFERENCES_EDITOR_CONFIG_INDENT)
@@ -68,7 +67,7 @@ class EditorConfiguration(QWidget):
         self._checkUseTabs.addItems([
             translations.TR_PREFERENCES_EDITOR_CONFIG_SPACES.capitalize(),
             translations.TR_PREFERENCES_EDITOR_CONFIG_TABS.capitalize()])
-        self._checkUseTabs.setCurrentIndex(1 if settings.USE_TABS else 0)
+        self._checkUseTabs.setCurrentIndex(int(settings.USE_TABS))
         hboxg1.addWidget(self._checkUseTabs)
         formFeatures.addWidget(group1, 0, 0)
 
@@ -100,7 +99,7 @@ class EditorConfiguration(QWidget):
             translations.TR_PREFERENCES_EDITOR_CONFIG_ERROR_USE_BACKGROUND,
             translations.TR_PREFERENCES_EDITOR_CONFIG_ERROR_USE_UNDERLINE])
         self._checkHighlightLine.setCurrentIndex(
-            1 if settings.UNDERLINE_NOT_BACKGROUND else 0)
+            int(settings.UNDERLINE_NOT_BACKGROUND))
         hboxg3.addWidget(self._checkHighlightLine)
         self._showErrorsOnLine = QCheckBox(
             translations.TR_PREFERENCES_EDITOR_CONFIG_SHOW_TOOLTIP_ERRORS)
