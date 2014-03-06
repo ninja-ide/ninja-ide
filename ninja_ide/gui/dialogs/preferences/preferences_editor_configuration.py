@@ -60,6 +60,7 @@ class EditorConfiguration(QWidget):
 
         # Indentation
         hboxg1 = QHBoxLayout(group1)
+        hboxg1.setContentsMargins(5, 15, 5, 5)
         self._spin, self._checkUseTabs = QSpinBox(), QComboBox()
         self._spin.setRange(1, 10)
         self._spin.setValue(settings.INDENT)
@@ -73,6 +74,7 @@ class EditorConfiguration(QWidget):
 
         # Margin Line
         hboxg2 = QHBoxLayout(group2)
+        hboxg2.setContentsMargins(5, 15, 5, 5)
         self._checkShowMargin = QCheckBox(
             translations.TR_PREFERENCES_EDITOR_CONFIG_SHOW_MARGIN_LINE)
         self._checkShowMargin.setChecked(settings.SHOW_MARGIN_LINE)
@@ -88,6 +90,7 @@ class EditorConfiguration(QWidget):
         # Find Lint Errors (highlighter)
         vboxg3, container0 = QVBoxLayout(group3), QWidget()
         hboxg3 = QHBoxLayout(container0)
+        hboxg3.setContentsMargins(5, 15, 5, 5)
         self._checkErrors = QCheckBox(
             translations.TR_PREFERENCES_EDITOR_CONFIG_FIND_ERRORS)
         self._checkErrors.setChecked(settings.FIND_ERRORS)
@@ -112,6 +115,7 @@ class EditorConfiguration(QWidget):
 
         # Find PEP8 Errors (highlighter)
         vboxg4 = QVBoxLayout(group4)
+        vboxg4.setContentsMargins(5, 15, 5, 5)
         self._checkStyle = QCheckBox(
             translations.TR_PREFERENCES_EDITOR_CONFIG_SHOW_PEP8)
         self._checkStyle.setChecked(settings.CHECK_STYLE)
@@ -128,6 +132,7 @@ class EditorConfiguration(QWidget):
 
         # Show Python3 Migration, DocStrings and Spaces (highlighter)
         vboxg5 = QVBoxLayout(group5)
+        vboxg5.setContentsMargins(5, 15, 5, 5)
         self._showMigrationTips = QCheckBox(
             translations.TR_PREFERENCES_EDITOR_CONFIG_SHOW_MIGRATION)
         self._showMigrationTips.setChecked(settings.SHOW_MIGRATION_TIPS)
@@ -144,6 +149,7 @@ class EditorConfiguration(QWidget):
 
         # End of line, Center On Scroll, Trailing space, Word wrap
         vboxg6 = QVBoxLayout(group6)
+        vboxg6.setContentsMargins(5, 15, 5, 5)
         self._checkEndOfLine = QCheckBox(
             translations.TR_PREFERENCES_EDITOR_CONFIG_END_OF_LINE)
         self._checkEndOfLine.setChecked(settings.USE_PLATFORM_END_OF_LINE)

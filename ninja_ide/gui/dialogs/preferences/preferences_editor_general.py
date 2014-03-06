@@ -63,6 +63,7 @@ class EditorGeneral(QWidget):
 
         #Minimap
         formMini = QGridLayout(groupBoxMini)
+        formMini.setContentsMargins(5, 15, 5, 5)
         self._checkShowMinimap = QCheckBox()
         self._spinMaxOpacity = QSpinBox()
         self._spinMaxOpacity.setMaximum(100)
@@ -91,6 +92,7 @@ class EditorGeneral(QWidget):
         formMini.addWidget(self._spinSize, 3, 1)
         #Typo
         gridTypo = QGridLayout(groupBoxTypo)
+        gridTypo.setContentsMargins(5, 15, 5, 5)
         self._btnEditorFont = QPushButton('')
         gridTypo.addWidget(QLabel(
             translations.TR_PREFERENCES_EDITOR_GENERAL_EDITOR_FONT), 0, 0,
@@ -98,6 +100,7 @@ class EditorGeneral(QWidget):
         gridTypo.addWidget(self._btnEditorFont, 0, 1)
         #Scheme
         hbox = QHBoxLayout(groupBoxScheme)
+        hbox.setContentsMargins(5, 15, 5, 5)
         self._listScheme = QListWidget()
         hbox.addWidget(self._listScheme)
 
