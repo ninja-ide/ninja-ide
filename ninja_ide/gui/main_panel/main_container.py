@@ -717,17 +717,7 @@ class _MainContainer(QWidget):
     def reload_file(self, editorWidget=None):
         if editorWidget is None:
             editorWidget = self.get_current_editor()
-        #if editorWidget is not None and editorWidget.file_path:
-            #fileName = editorWidget.file_path
-            #old_cursor_position = editorWidget.textCursor().position()
-            #self.tabs.removeTab(old_widget_index)
-            ##open the file in the same tab as before
-            #self.open_file(fileName, tabIndex=old_widget_index)
-            ##get the new editor and set the old cursor position
-            #editorWidget = self.get_current_editor()
-            #cursor = editorWidget.textCursor()
-            #cursor.setPosition(old_cursor_position)
-            #editorWidget.setTextCursor(cursor)
+            editorWidget.neditable.reload_file()
 
     def add_tab(self, widget, tabName, tabIndex=None):
         pass
