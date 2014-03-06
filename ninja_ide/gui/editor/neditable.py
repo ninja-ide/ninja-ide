@@ -90,15 +90,16 @@ class NEditable(QObject):
             helpers.insert_coding_line(self.__editor)
 
     def reload_file(self):
-        content = self._nfile.read()
-        self._nfile.start_watching()
-        self.__editor.setPlainText(content)
-        encoding = file_manager.get_file_encoding(content)
-        self.__editor.encoding = encoding
-        if not self.ignore_checkers:
-            self.run_checkers(content)
-        else:
-            self.ignore_checkers = False
+        if self._nfile:
+            content = self._nfile.read()
+            self._nfile.start_watching()
+            self.__editor.setPlainText(content)
+            encoding = file_manager.get_file_encoding(content)
+            self.__editor.encoding = encoding
+            if not self.ignore_checkers:
+                self.run_checkers(content)
+            else:
+                self.ignore_checkers = False
 
     @property
     def file_path(self):
