@@ -523,3 +523,15 @@ QSpinBox {
 TabWidget::tab-bar {
     alignment: left;
 }
+
+QGroupBox {
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin-top: 10px; /* leave space at the top for the title */
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top center; /* position at the top center */
+    padding: 5 10px;
+}
