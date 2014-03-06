@@ -5,8 +5,6 @@ on Linux/X11, Mac OS X and Windows desktop operating systems. Ninja-IDE allows
 developers to create applications for any purpose making the task of writing
 software easier and more enjoyable.
 
-# The code in repository is NOT working right now, we are integrating the changes and doing lot of improves for the new Architecture!!
-
 ## Contact
 
 -   [Homepage](http://ninja-ide.org) at ninja-ide.org
@@ -20,12 +18,6 @@ Both of these:
 
 -   [Python](http://python.org/) >= 2.7 (or Python3)
 -   [PyQt](http://www.riverbankcomputing.com/software/pyqt/intro) >= 4.8
-
-And one of these:
-
--   [pyinotify](https://github.com/seb-m/pyinotify) (on Linux)
--   [pywin32](http://sourceforge.net/projects/pywin32/files/pywin32/) (on Windows)
--   [macfsevents](http://pypi.python.org/pypi/MacFSEvents) (on Mac OS)
 
 ## Cloning and Running
 

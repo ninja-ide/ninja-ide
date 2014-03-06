@@ -363,6 +363,12 @@ ACTIONS = (
     "connect": "change_visibility"
     },
     {
+    "action": {'text': translations.TR_TABS_SPACES_VISIBILITY,
+               'section': (translations.TR_MENU_VIEW, None),
+               'weight': 110},
+    "connect": "toggle_tabs_and_spaces"
+    },
+    {
     "action": {'text': translations.TR_ZOOM_IN,
                'section': (translations.TR_MENU_VIEW, None),
                'weight': 400},
