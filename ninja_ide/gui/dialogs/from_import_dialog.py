@@ -17,6 +17,9 @@
 
 from __future__ import absolute_import
 
+from sys import builtin_module_names
+from pkgutil import iter_modules
+
 from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QLabel
@@ -31,6 +34,7 @@ from ninja_ide.tools import introspection
 
 
 class FromImportDialog(QDialog):
+    """From Import dialog class"""
 
     def __init__(self, editorWidget, parent=None):
         QDialog.__init__(self, parent, Qt.Dialog)
@@ -40,8 +44,11 @@ class FromImportDialog(QDialog):
         text = self._editorWidget.get_text()
         self._imports = introspection.obtain_imports(text)
 
-        self._froms = sorted(set([self._imports['fromImports'][imp]['module']
-                            for imp in self._imports['fromImports']]))
+        self._froms = [self._imports['fromImports'][imp]['module']
+                            for imp in self._imports['fromImports']]
+        self._froms += builtin_module_names
+        self._froms += [module_name[1] for module_name in iter_modules()]
+        self._froms = tuple(sorted(set(self._froms)))
 
         hbox = QHBoxLayout(self)
         hbox.addWidget(QLabel('from'))
@@ -61,6 +68,7 @@ class FromImportDialog(QDialog):
             self._add_import)
 
     def _add_import(self):
+        """Get From item and Import item and add the import on the code"""
         fromItem = self._lineFrom.text()
         importItem = self._lineImport.text()
         if fromItem in self._froms:
