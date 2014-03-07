@@ -43,11 +43,12 @@ from ninja_ide.tools import json_manager
 
 
 class ThemesManagerWidget(QDialog):
+    """Themes manager dialog class"""
 
     def __init__(self, parent):
         QDialog.__init__(self, parent, Qt.Dialog)
         self.setWindowTitle(self.tr("Themes Manager"))
-        self.resize(700, 500)
+        self.setMinimumSize(ui_tools.get_modal_size())
 
         vbox = QVBoxLayout(self)
         self._tabs = QTabWidget()
@@ -75,12 +76,14 @@ class ThemesManagerWidget(QDialog):
         self._reload_themes()
 
     def _reload_themes(self):
+        """Display the overlay and reload all themes"""
         self.overlay.show()
         self._loading = True
         self._thread.execute = self.execute_thread
         self._thread.start()
 
     def load_skins_data(self):
+        """Load all schemes data"""
         if self._loading:
             self._tabs.clear()
             self._schemeWidget = SchemeWidget(self, self._schemes)
@@ -90,16 +93,19 @@ class ThemesManagerWidget(QDialog):
         self._thread.wait()
 
     def download_scheme(self, scheme):
+        """Download an argument scheme"""
         self.overlay.show()
         self.downloadItems = scheme
         self._thread.execute = self._download_scheme_thread
         self._thread.start()
 
     def resizeEvent(self, event):
+        """Handle Resize event"""
         self.overlay.resize(event.size())
         event.accept()
 
     def execute_thread(self):
+        """Execute a download thread"""
         try:
             descriptor_schemes = urlopen(resources.SCHEMES_URL)
             schemes = json_manager.parse(descriptor_schemes)
@@ -112,6 +118,7 @@ class ThemesManagerWidget(QDialog):
             self._schemes = []
 
     def get_local_schemes(self):
+        """Return all already available local schemes"""
         if not file_manager.folder_exists(resources.EDITOR_SKINS):
             file_manager.create_tree_folders(resources.EDITOR_SKINS)
         schemes = os.listdir(resources.EDITOR_SKINS)
@@ -119,10 +126,12 @@ class ThemesManagerWidget(QDialog):
         return schemes
 
     def _download_scheme_thread(self):
+        """Iterate over all items downloading them"""
         for d in self.downloadItems:
             self.download(d[1], resources.EDITOR_SKINS)
 
     def download(self, url, folder):
+        """Download argument url on arguement folder"""
         fileName = os.path.join(folder, os.path.basename(url))
         try:
             content = urlopen(url)
@@ -133,6 +142,7 @@ class ThemesManagerWidget(QDialog):
 
 
 class SchemeWidget(QWidget):
+    """Scheme internal widget class for Scheme Manager parent window"""
 
     def __init__(self, parent, schemes):
         QWidget.__init__(self, parent)
@@ -153,5 +163,6 @@ class SchemeWidget(QWidget):
         self.connect(btnUninstall, SIGNAL("clicked()"), self._download_scheme)
 
     def _download_scheme(self):
+        """Download an scheme calling parent class method"""
         schemes = ui_tools.remove_get_selected_items(self._table, self._schemes)
         self._parent.download_scheme(schemes)

@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+
 from __future__ import absolute_import
 
 import os
@@ -74,12 +75,13 @@ LICENCES = ('Academic Free License', 'Apache License 2.0',
 
 
 class ProjectProperties(QDialog):
+    """Project properties dialog class"""
 
     def __init__(self, project, parent=None):
         QDialog.__init__(self, parent, Qt.Dialog)
         self.project = project
         self.setWindowTitle(translations.TR_PROJECT_PROPERTIES)
-        self.resize(600, 500)
+        self.setMinimumSize(ui_tools.get_modal_size())
         vbox = QVBoxLayout(self)
         self.tab_widget = QTabWidget()
         self.projectData = ProjectData(self)
@@ -104,6 +106,7 @@ class ProjectProperties(QDialog):
         self.connect(self.btnSave, SIGNAL("clicked()"), self.save_properties)
 
     def save_properties(self):
+        """Save all properties and close the window"""
         if not len(self.projectData.name.text().strip()):
             QMessageBox.critical(self, translations.TR_PROJECT_SAVE_INVALID,
                 translations.TR_PROJECT_INVALID_MESSAGE)
@@ -139,6 +142,7 @@ class ProjectProperties(QDialog):
 
 
 class ProjectData(QWidget):
+    """Project Data internal widget for Project properties window"""
 
     def __init__(self, parent):
         super(ProjectData, self).__init__()
@@ -199,6 +203,7 @@ class ProjectData(QWidget):
 
 
 class ProjectExecution(QWidget):
+    """Project Execution internal widget for Project properties window"""
 
     def __init__(self, parent):
         super(ProjectExecution, self).__init__()
@@ -306,11 +311,13 @@ class ProjectExecution(QWidget):
             self.select_post_exec_script)
 
     def _load_python_path(self):
+        """Ask the user for a Python Path and set the provided value"""
         path = QFileDialog.getOpenFileName(
             translations.TR_PROJECT_SELECT_PYTHON_PATH)
         self.txtPythonInterpreter.setText(path)
 
     def _load_python_venv(self):
+        """Ask the user for a Python Virtualenv and set the value if it exist"""
         venv = QFileDialog.getExistingDirectory(
             translations.TR_PROJECT_SELECT_VIRTUALENV)
         if sys.platform == 'win32':
@@ -327,6 +334,7 @@ class ProjectExecution(QWidget):
             self.txtVenvPath.setText(venv)
 
     def select_file(self):
+        """Ask the user for a Python file and set its value if any"""
         fileName = QFileDialog.getOpenFileName(
             self, translations.TR_PROJECT_SELECT_MAIN_FILE,
                         self._parent.project.path, 'PY(*.py);;*(*.*)')
@@ -336,6 +344,7 @@ class ProjectExecution(QWidget):
             self.path.setText(fileName)
 
     def select_pre_exec_script(self):
+        """Ask the user for a Pre-Exec script file and set its value if any"""
         fileName = QFileDialog.getOpenFileName(
             self, translations.TR_PROJECT_SELECT_PRE_SCRIPT,
                         self._parent.project.path, '(*.*)')
@@ -345,6 +354,7 @@ class ProjectExecution(QWidget):
             self.txtPreExec.setText(fileName)
 
     def select_post_exec_script(self):
+        """Ask the user for a Post-Exec script file and set its value if any"""
         fileName = QFileDialog.getOpenFileName(
             self, translations.TR_PROJECT_SELECT_POST_SCRIPT,
                         self._parent.project.path, '(*.*)')
@@ -355,6 +365,7 @@ class ProjectExecution(QWidget):
 
 
 class ProjectMetadata(QWidget):
+    """Project Metadata internal widget for Project properties window"""
 
     def __init__(self, parent):
         super(ProjectMetadata, self).__init__()

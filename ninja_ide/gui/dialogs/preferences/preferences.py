@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
@@ -30,11 +31,11 @@ from PyQt4.QtGui import QHeaderView
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QSpacerItem
 from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtCore import QSize
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import translations
+from ninja_ide.tools import ui_tools
 
 
 SECTIONS = {
@@ -47,6 +48,7 @@ SECTIONS = {
 
 
 class Preferences(QDialog):
+    """Preferences dialog widget class"""
 
     configuration = {}
     weight = 0
@@ -54,8 +56,7 @@ class Preferences(QDialog):
     def __init__(self, parent=None):
         super(Preferences, self).__init__(parent, Qt.Dialog)
         self.setWindowTitle(translations.TR_PREFERENCES_TITLE)
-        self.setMinimumSize(QSize(900, 600))
-        self.setMaximumSize(QSize(0, 0))
+        self.setMinimumSize(ui_tools.get_modal_size())
         vbox = QVBoxLayout(self)
         hbox = QHBoxLayout()
         vbox.setContentsMargins(0, 0, 5, 5)
@@ -93,10 +94,12 @@ class Preferences(QDialog):
         self.tree.setCurrentItem(self.tree.topLevelItem(0))
 
     def _save_preferences(self):
+        """Method to save the preferences and close the dialog"""
         self.emit(SIGNAL("savePreferences()"))
         self.close()
 
     def load_ui(self):
+        """Load the preferences widget items"""
         sections = sorted(list(Preferences.configuration.keys()),
             key=lambda item: Preferences.configuration[item]['weight'])
         for section in sections:
@@ -131,6 +134,7 @@ class Preferences(QDialog):
         self.tree.expandAll()
 
     def _change_current(self):
+        """Change the current item on the preferences"""
         item = self.tree.currentItem()
         index = item.data(0, Qt.UserRole)
         self.stacked.setCurrentIndex(index)
@@ -138,6 +142,7 @@ class Preferences(QDialog):
     @classmethod
     def register_configuration(cls, section, widget, text, weight=None,
             subsection=None):
+        """Method to Register a new configuration on preferences"""
         if weight is None:
             Preferences.weight += 1
             weight = Preferences.weight

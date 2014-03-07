@@ -34,6 +34,7 @@ from ninja_ide.core import settings
 
 
 class PythonDetectDialog(QDialog):
+    """Python Detection dialog class"""
 
     def __init__(self, suggested, parent=None):
         super(PythonDetectDialog, self).__init__(parent, Qt.Dialog)
@@ -67,6 +68,7 @@ class PythonDetectDialog(QDialog):
         self.listPaths.setCurrentRow(0)
 
     def _set_python_path(self):
+        """Set a Python Path and close the window"""
         python_path = self.listPaths.currentItem().text()
 
         qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)

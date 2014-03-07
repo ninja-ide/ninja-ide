@@ -48,6 +48,7 @@ from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QCheckBox
 from PyQt4.QtGui import QTableWidget
 from PyQt4.QtGui import QKeySequence
+from PyQt4.QtGui import QDesktopWidget
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QDir
 from PyQt4.QtCore import QUrl
@@ -56,6 +57,7 @@ from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QThread
 from PyQt4.QtCore import QEvent
 from PyQt4.QtCore import QTimeLine
+from PyQt4.QtCore import QSize
 
 from ninja_ide import resources
 from ninja_ide.core import settings
@@ -522,3 +524,9 @@ class TabShortcuts(QShortcut):
     def __init__(self, key, parent, index):
         super(TabShortcuts, self).__init__(key, parent)
         self.index = index
+
+
+def get_modal_size():
+    """Return a basic minimum size for Modal and Secondary Dialog Windows"""
+    return QSize(QDesktopWidget().screenGeometry().width() // 2.25,
+                 QDesktopWidget().screenGeometry().height() // 2.25)

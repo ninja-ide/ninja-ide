@@ -43,6 +43,7 @@ from ninja_ide.core import settings
 from ninja_ide.core import plugin_interfaces
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import json_manager
+from ninja_ide.tools import ui_tools
 from ninja_ide.tools.logger import NinjaLogger
 
 
@@ -66,6 +67,7 @@ class WizardNewProject(QWizard):
         self.__explorer = parent
         self.setWindowTitle(self.tr("NINJA - New Project Wizard"))
         self.setPixmap(QWizard.LogoPixmap, QPixmap(":img/icon"))
+        self.setMinimumSize(ui_tools.get_modal_size())
 
         self.option = 'Python'
         #Add a project type handler for Python
@@ -86,6 +88,7 @@ class WizardNewProject(QWizard):
             QWizard.FinishButton])
 
     def add_project_pages(self, option='Python'):
+        """Add a new page to the project"""
         logger.debug("Add project pages")
         self.option = option
         pages = settings.get_project_type_handler(option).get_pages()
@@ -99,6 +102,7 @@ class WizardNewProject(QWizard):
             self.removePage(i)
 
     def done(self, result):
+        """Display results when its done"""
         logger.debug("Done")
         if result == 1:
             page = self.currentPage()
@@ -244,6 +248,7 @@ class ImportFromSourcesProjectHandler(plugin_interfaces.IProjectTypeHandler):
 
 
 class PageProjectType(QWizardPage):
+    """Project Page Type class"""
 
     def __init__(self, wizard):
         QWizardPage.__init__(self)
@@ -266,10 +271,12 @@ class PageProjectType(QWizardPage):
             self.load_pages)
 
     def validatePage(self):
+        """Validate a Project page"""
         self._wizard.option = self.listWidget.currentItem().text()
         return True
 
     def load_pages(self):
+        """Load pages from current items"""
         self.wizard().add_project_pages(self.listWidget.currentItem().text())
 
 
@@ -279,6 +286,7 @@ class PageProjectType(QWizardPage):
 
 
 class PageProjectProperties(QWizardPage):
+    """Page of Project properties"""
 
     def __init__(self):
         QWizardPage.__init__(self)
@@ -350,15 +358,18 @@ class PageProjectProperties(QWizardPage):
             lambda: self.emit(SIGNAL("completeChanged()")))
 
     def isComplete(self):
+        """Return True if data is complete"""
         name = self.txtName.text().strip()
         place = self.txtPlace.text().strip()
         return (len(name) > 0) and (len(place) > 0)
 
     def load_folder(self):
+        """Ask the user a new project folder and set its value"""
         self.txtPlace.setText(QFileDialog.getExistingDirectory(
             self, self.tr("New Project Folder")))
         self.emit(SIGNAL("completeChanged()"))
 
     def load_folder_venv(self):
+        """Ask the user for a Python Virtualenv folder and set its value"""
         self.vtxtPlace.setText(QFileDialog.getExistingDirectory(
             self, self.tr("Select Virtualenv Folder")))

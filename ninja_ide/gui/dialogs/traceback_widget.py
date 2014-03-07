@@ -29,6 +29,7 @@ from PyQt4.QtGui import QPushButton
 
 from PyQt4.QtCore import SIGNAL
 
+from ninja_ide.tools import ui_tools
 from ninja_ide import translations
 
 
@@ -39,7 +40,7 @@ class PluginErrorDialog(QDialog):
     def __init__(self):
         QDialog.__init__(self)
         self.setWindowTitle(translations.TR_PLUGIN_ERROR_REPORT)
-        self.resize(600, 400)
+        self.setMinimumSize(ui_tools.get_modal_size())
         vbox = QVBoxLayout(self)
         label = QLabel(translations.TR_SOME_PLUGINS_REMOVED)
         vbox.addWidget(label)
