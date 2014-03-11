@@ -55,7 +55,6 @@ class Preferences(QDialog):
         super(Preferences, self).__init__(parent, Qt.Dialog)
         self.setWindowTitle(translations.TR_PREFERENCES_TITLE)
         self.setMinimumSize(QSize(900, 600))
-        self.setMaximumSize(QSize(0, 0))
         vbox = QVBoxLayout(self)
         hbox = QHBoxLayout()
         vbox.setContentsMargins(0, 0, 5, 5)
