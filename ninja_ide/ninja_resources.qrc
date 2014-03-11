@@ -186,7 +186,7 @@
     <file alias='splitH'>img/split-horizontal.png</file>
   </qresource>
   <qresource prefix='img'>
-    <file alias='icon'>img/icon.png</file>
+    <file alias='icon'>img/ninja_icon.png</file>
   </qresource>
   <qresource prefix='img'>
     <file alias='openProj'>img/project-open.png</file>
@@ -222,7 +222,7 @@
     <file alias='debug'>img/debug.png</file>
   </qresource>
   <qresource prefix='img'>
-    <file alias='iconUpdate'>img/icon.png</file>
+    <file alias='iconUpdate'>img/ninja_icon.png</file>
   </qresource>
   <qresource prefix='img'>
     <file alias='openFolder'>img/folder-open.png</file>
