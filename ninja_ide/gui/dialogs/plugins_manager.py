@@ -92,7 +92,7 @@ class PluginsManagerWidget(QDialog):
     def __init__(self, parent):
         QDialog.__init__(self, parent, Qt.Dialog)
         self.setWindowTitle(translations.TR_PLUGIN_MANAGER)
-        self.resize(700, 600)
+        self.setMinimumSize(ui_tools.get_modal_size())
 
         vbox = QVBoxLayout(self)
         self._tabs = QTabWidget()
@@ -641,7 +641,7 @@ class DependenciesHelpDialog(QDialog):
     def __init__(self, requirements_dict):
         super(DependenciesHelpDialog, self).__init__()
         self.setWindowTitle(translations.TR_REQUIREMENTS)
-        self.resize(525, 400)
+        self.setMinimumSize(ui_tools.get_modal_size())
         vbox = QVBoxLayout(self)
         label = QLabel(translations.TR_SOME_PLUGINS_NEED_DEPENDENCIES)
         vbox.addWidget(label)

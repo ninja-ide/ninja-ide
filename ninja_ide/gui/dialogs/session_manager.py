@@ -33,6 +33,7 @@ from PyQt4.QtCore import SIGNAL
 from ninja_ide import translations
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
+from ninja_ide.tools import ui_tools
 
 
 class SessionsManager(QDialog):
@@ -43,7 +44,7 @@ class SessionsManager(QDialog):
         super(SessionsManager, self).__init__(parent, Qt.Dialog)
         self._ide = parent
         self.setWindowTitle(translations.TR_SESSIONS_TITLE)
-        self.setMinimumWidth(400)
+        self.setMinimumSize(ui_tools.get_modal_size())
         vbox = QVBoxLayout(self)
         vbox.addWidget(QLabel(translations.TR_SESSIONS_DIALOG_BODY))
         self.sessionList = QListWidget()

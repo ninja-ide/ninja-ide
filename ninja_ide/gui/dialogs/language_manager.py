@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+
 import os
 #lint:disable
 try:
@@ -43,11 +44,12 @@ from ninja_ide.tools import json_manager
 
 
 class LanguagesManagerWidget(QDialog):
+    """Languages Manager dialog class"""
 
     def __init__(self, parent):
         QDialog.__init__(self, parent, Qt.Dialog)
         self.setWindowTitle(self.tr("Language Manager"))
-        self.resize(700, 500)
+        self.setMinimumSize(ui_tools.get_modal_size())
 
         vbox = QVBoxLayout(self)
         self._tabs = QTabWidget()
@@ -76,12 +78,14 @@ class LanguagesManagerWidget(QDialog):
         self._reload_languages()
 
     def _reload_languages(self):
+        """Show overlay and reload all languages"""
         self.overlay.show()
         self._loading = True
         self._thread.execute = self.execute_thread
         self._thread.start()
 
     def load_languages_data(self):
+        """Load languages data on the GUI"""
         if self._loading:
             self._tabs.clear()
             self._languageWidget = LanguageWidget(self, self._languages)
@@ -92,16 +96,19 @@ class LanguagesManagerWidget(QDialog):
         self._thread.wait()
 
     def download_language(self, language):
+        """Take a language argument, show the overlay and download it"""
         self.overlay.show()
         self.downloadItems = language
         self._thread.execute = self._download_language_thread
         self._thread.start()
 
     def resizeEvent(self, event):
+        """Handle Resize event"""
         self.overlay.resize(event.size())
         event.accept()
 
     def execute_thread(self):
+        """Execute a downloader thread"""
         try:
             descriptor_languages = urlopen(resources.LANGUAGES_URL)
             languages = json_manager.parse(descriptor_languages)
@@ -114,6 +121,7 @@ class LanguagesManagerWidget(QDialog):
             self._languages = []
 
     def get_local_languages(self):
+        """Get all languages already available locally"""
         if not file_manager.folder_exists(resources.LANGS_DOWNLOAD):
             file_manager.create_tree_folders(resources.LANGS_DOWNLOAD)
         languages = os.listdir(resources.LANGS_DOWNLOAD) + \
@@ -122,10 +130,12 @@ class LanguagesManagerWidget(QDialog):
         return languages
 
     def _download_language_thread(self):
+        """Iterate over all items downloading them"""
         for d in self.downloadItems:
             self.download(d[1], resources.LANGS_DOWNLOAD)
 
     def download(self, url, folder):
+        """Download url argument on folder argument"""
         fileName = os.path.join(folder, os.path.basename(url))
         try:
             content = urlopen(url)
@@ -136,6 +146,7 @@ class LanguagesManagerWidget(QDialog):
 
 
 class LanguageWidget(QWidget):
+    """Language internal widget class"""
 
     def __init__(self, parent, languages):
         QWidget.__init__(self, parent)
@@ -157,6 +168,7 @@ class LanguageWidget(QWidget):
             self._download_language)
 
     def _download_language(self):
+        """Download a language calling parent class method"""
         languages = ui_tools.remove_get_selected_items(self._table,
             self._languages)
         self._parent.download_language(languages)
