@@ -28,6 +28,7 @@ from PyQt4.QtGui import QSpacerItem
 from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QShortcut
 from PyQt4.QtGui import QKeySequence
+from PyQt4.QtCore import QSize
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtWebKit import QWebPage
@@ -94,12 +95,16 @@ class _ToolsDock(QWidget):
         self.stack.addWidget(self._results)
 
         self._btnConsole = QPushButton(QIcon(":img/console"), '')
+        self._btnConsole.setIconSize(QSize(16, 16))
         self._btnConsole.setToolTip(translations.TR_CONSOLE)
         self._btnRun = QPushButton(QIcon(":img/play"), '')
+        self._btnRun.setIconSize(QSize(16, 16))
         self._btnRun.setToolTip(translations.TR_OUTPUT)
         self._btnWeb = QPushButton(QIcon(":img/web"), '')
+        self._btnWeb.setIconSize(QSize(16, 16))
         self._btnWeb.setToolTip(translations.TR_WEB_PREVIEW)
         self._btnFind = QPushButton(QIcon(":img/find"), '')
+        self._btnFind.setIconSize(QSize(16, 16))
         self._btnFind.setToolTip(translations.TR_FIND_IN_FILES)
         #Toolbar
         hbox.addWidget(self.__toolbar)
@@ -111,6 +116,7 @@ class _ToolsDock(QWidget):
         hbox.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
         btn_close = QPushButton(
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
+        btn_close.setIconSize(QSize(24, 24))
         btn_close.setObjectName('navigation_button')
         btn_close.setToolTip('F4: ' + translations.TR_ALL_VISIBILITY)
         hbox.addWidget(btn_close)
@@ -265,6 +271,7 @@ class _ToolsDock(QWidget):
         self.stack.addWidget(widget)
         #create a button in the toolbar to show the widget
         button = QPushButton(QIcon(icon_path), '')
+        button.setIconSize(QSize(16, 16))
         button.setToolTip(description)
         index = self.stack.count() - 1
         func = lambda: self._item_changed(index)
