@@ -32,6 +32,7 @@ from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QSizeF
 from PyQt4.QtCore import QPointF
+from PyQt4.QtCore import QSize
 from PyQt4.QtNetwork import QLocalServer
 
 from ninja_ide import resources
@@ -129,6 +130,7 @@ class IDE(QMainWindow):
 
         #ToolBar
         self.toolbar = QToolBar(self)
+        self.toolbar.setIconSize(QSize(24, 24))
         self.toolbar.setToolTip(translations.TR_IDE_TOOLBAR_TOOLTIP)
         self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
         # Set toggleViewAction text and tooltip

@@ -38,6 +38,7 @@ from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QComboBox
 from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QPushButton
+from PyQt4.QtCore import QSize
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 
@@ -375,6 +376,7 @@ class ActionBar(QFrame):
         hbox.addWidget(self.lbl_checks)
 
         self.combo = QComboBox()
+        self.combo.setIconSize(QSize(16, 16))
         #model = QStandardItemModel()
         #self.combo.setModel(model)
         #self.combo.view().setDragDropMode(QAbstractItemView.InternalMove)
@@ -390,6 +392,7 @@ class ActionBar(QFrame):
         hbox.addWidget(self.combo)
 
         self.symbols_combo = QComboBox()
+        self.symbols_combo.setIconSize(QSize(16, 16))
         self.symbols_combo.setObjectName("combo_symbols")
         self.connect(self.symbols_combo, SIGNAL("activated(int)"),
             self.current_symbol_changed)
@@ -406,6 +409,7 @@ class ActionBar(QFrame):
 
         self.btn_close = QPushButton(
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
+        self.btn_close.setIconSize(QSize(16, 16))
         if main_combo:
             self.btn_close.setObjectName('navigation_button')
             self.btn_close.setToolTip(translations.TR_CLOSE_FILE)
@@ -620,11 +624,13 @@ class CodeNavigator(QWidget):
         hbox.setSpacing(0)
         self.btnPrevious = QPushButton(
             QIcon(":img/nav-code-left"), '')
+        self.btnPrevious.setIconSize(QSize(16, 16))
         self.btnPrevious.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.btnPrevious.setObjectName('navigation_button')
         self.btnPrevious.setToolTip(translations.TR_TOOLTIP_NAV_BUTTONS)
         self.btnNext = QPushButton(
             QIcon(":img/nav-code-right"), '')
+        self.btnNext.setIconSize(QSize(16, 16))
         self.btnNext.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.btnNext.setObjectName('navigation_button')
         self.btnNext.setToolTip(translations.TR_TOOLTIP_NAV_BUTTONS)
