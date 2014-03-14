@@ -97,7 +97,6 @@ class Editor(QPlainTextEdit):
         self._neditable = neditable
         #Config Editor
         self.set_flags()
-        self.__lines_count = None
         self.lang = 'python'
         self._last_block_position = 0
         self.__lines_count = 0
