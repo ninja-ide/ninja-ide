@@ -62,7 +62,7 @@ class RunWidget(QWidget):
         hbox.addWidget(self.input)
         vbox.addLayout(hbox)
 
-        self.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
+        self.set_font(settings.FONT)
 
         #process
         self.currentProcess = None
@@ -94,9 +94,8 @@ class RunWidget(QWidget):
         self.connect(self._postExecScriptProc,
             SIGNAL("readyReadStandardError()"), self.output.refresh_error)
 
-    def set_font(self, family, size):
+    def set_font(self, font):
         """Set the font for the output widget."""
-        font = QFont(family, size)
         self.output.document().setDefaultFont(font)
         self.output.plain_format.setFont(font)
         self.output.error_format.setFont(font)
@@ -108,7 +107,7 @@ class RunWidget(QWidget):
         self._proc.kill()
         format_ = QTextCharFormat()
         format_.setAnchor(True)
-        font = QFont(settings.FONT_FAMILY, settings.FONT_SIZE)
+        font = settings.FONT
         format_.setFont(font)
         format_.setForeground(QBrush(QColor(resources.CUSTOM_SCHEME.get(
             "error-underline", resources.COLOR_SCHEME["error-underline"]))))
@@ -126,7 +125,7 @@ class RunWidget(QWidget):
         self.input.hide()
         format_ = QTextCharFormat()
         format_.setAnchor(True)
-        font = QFont(settings.FONT_FAMILY, settings.FONT_SIZE)
+        font = settings.FONT
         format_.setFont(font)
         self.output.textCursor().insertText('\n\n')
         if exitStatus == QProcess.NormalExit:
@@ -260,7 +259,7 @@ class OutputWidget(QPlainTextEdit):
         #traceback pattern
         self.patLink = re.compile(r'(\s)*File "(.*?)", line \d.+')
         #formats
-        font = QFont(settings.FONT_FAMILY, settings.FONT_SIZE)
+        font = settings.FONT
         self.plain_format = QTextCharFormat()
         self.plain_format.setFont(font)
         self.plain_format.setForeground(QBrush(QColor(
