@@ -119,7 +119,9 @@ class GeneralConfiguration(QWidget):
             qsettings.value('loadFiles', True, type=bool))
         self._checkActivatePlugins.setChecked(
             qsettings.value('activatePlugins', defaultValue=True, type=bool))
-        self._checkNotifyUpdates.setChecked(settings.NOTIFY_UPDATES)
+        self._checkNotifyUpdates.setChecked(
+            qsettings.value('preferences/general/notifyUpdates',
+            defaultValue=True, type=bool))
         self._checkShowStartPage.setChecked(settings.SHOW_START_PAGE)
         self._checkConfirmExit.setChecked(settings.CONFIRM_EXIT)
         self._txtWorkspace.setText(settings.WORKSPACE)
@@ -166,7 +168,6 @@ class GeneralConfiguration(QWidget):
             self._checkNotifyUpdates.isChecked())
         qsettings.setValue('preferences/general/showStartPage',
             self._checkShowStartPage.isChecked())
-        settings.NOTIFY_UPDATES = self._checkNotifyUpdates.isChecked()
         qsettings.setValue('preferences/general/confirmExit',
             self._checkConfirmExit.isChecked())
         settings.CONFIRM_EXIT = self._checkConfirmExit.isChecked()

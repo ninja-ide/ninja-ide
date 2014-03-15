@@ -155,7 +155,7 @@ TR_PROJECT_BUILTINS_TOOLTIP = tr("NINJA-IDE",
     "builtin in every file"))
 TR_PROJECT_PRE_EXEC = tr("NINJA-IDE", "Pre-exec Script:")
 TR_PROJECT_POST_EXEC = tr("NINJA-IDE", "Post-exec Script:")
-TR_PROJECT_PROPERTIES = tr("NINJA-IDE", "Properties:")
+TR_PROJECT_PROPERTIES = tr("NINJA-IDE", "Properties")
 TR_PROJECT_PARAMS_TOOLTIP = tr("NINJA-IDE",
     "Separate the params with commas (ie: help, verbose)")
 TR_PROJECT_PARAMS = tr("NINJA-IDE", "Params (comma separated):")

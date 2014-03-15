@@ -194,8 +194,8 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
         projects = []
 
     #Include files received from console args
-    file_with_nro = list([(f[0], f[1] - 1) for f in zip(filenames, linenos)])
-    file_without_nro = list([(f, 0) for f in filenames[len(linenos):]])
+    file_with_nro = list([(f[0], f[1] - 1, 0) for f in zip(filenames, linenos)])
+    file_without_nro = list([(f, 0, 0) for f in filenames[len(linenos):]])
     files += file_with_nro + file_without_nro
     #Include projects received from console args
     if projects_path:

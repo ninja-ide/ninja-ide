@@ -18,6 +18,7 @@
 import os
 import sys
 
+from PyQt4.QtGui import QFont
 from PyQt4.QtCore import QSettings
 from PyQt4.QtCore import QDir
 from PyQt4.QtCore import QFileInfo
@@ -36,19 +37,18 @@ IS_MAC_OS = False
 
 OS_KEY = "Ctrl"
 
+FONT = QFont('Monospace', 13)
 FONT_FAMILY = 'Monospace'
 FONT_SIZE = 11
 if sys.platform == "darwin":
     from PyQt4.QtGui import QKeySequence
     from PyQt4.QtCore import Qt
 
-    FONT_FAMILY = 'Monaco'
-    FONT_SIZE = 11
+    FONT = QFont('Monaco', 13)
     OS_KEY = QKeySequence(Qt.CTRL).toString(QKeySequence.NativeText)
     IS_MAC_OS = True
 elif sys.platform == "win32":
-    FONT_FAMILY = 'Courier'
-    FONT_SIZE = 10
+    FONT = QFont('Courier', 13)
     IS_WINDOWS = True
 
 
@@ -94,7 +94,6 @@ LANGUAGE = ""
 SHOW_START_PAGE = True
 
 CONFIRM_EXIT = True
-NOTIFY_UPDATES = True
 HIDE_TOOLBAR = False
 SHOW_STATUS_NOTIFICATIONS = True
 
@@ -366,7 +365,6 @@ def load_settings():
     global SHOW_START_PAGE
     global CONFIRM_EXIT
     global UI_LAYOUT
-    global NOTIFY_UPDATES
     global PYTHON_EXEC
     global PYTHON_EXEC_CONFIGURED_BY_USER
     global SESSIONS
@@ -423,8 +421,6 @@ def load_settings():
     CONFIRM_EXIT = qsettings.value('preferences/general/confirmExit',
         True, type=bool)
     UI_LAYOUT = qsettings.value('preferences/interface/uiLayout', 0, type=int)
-    NOTIFY_UPDATES = qsettings.value(
-        'preferences/general/notifyUpdates', True, type=bool)
     PYTHON_EXEC = qsettings.value('preferences/execution/pythonExec',
         'python', type='QString')
     PYTHON_EXEC_CONFIGURED_BY_USER = qsettings.value(

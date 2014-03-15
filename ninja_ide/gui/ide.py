@@ -144,6 +144,7 @@ class IDE(QMainWindow):
         self.notification = notification.Notification(self)
 
         #Plugin Manager
+        # CHECK ACTIVATE PLUGINS SETTING
         #services = {
             #'editor': plugin_services.MainService(),
             #'toolbar': plugin_services.ToolbarService(self.toolbar),
