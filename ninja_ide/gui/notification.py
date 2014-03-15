@@ -59,10 +59,10 @@ class Notification(QFrame):
         """Method takes an event to show the Notification"""
         super(Notification, self).showEvent(event)
         width, pgeo = self._parent.width() / 2, self._parent.geometry()
-        conditional_horizont = settings.NOTIFICATION_POSITION in (0, 1)
-        conditional_vertical = settings.NOTIFICATION_POSITION in (0, 2)
-        x = pgeo.left() if conditional_vertical else pgeo.right()
-        y = pgeo.bottom() if conditional_horizont else pgeo.top() - self._height
+        conditional_vertical = settings.NOTIFICATION_POSITION in (0, 1)
+        conditional_horizont = settings.NOTIFICATION_POSITION in (0, 2)
+        x = pgeo.left() if conditional_horizont else pgeo.right()
+        y = pgeo.bottom() if conditional_vertical else pgeo.top() - self._height
         self.setFixedWidth(width)
         self.setGeometry(x, y, self.width(), self.height())
         self._root.start(self._duration)
