@@ -30,7 +30,6 @@ from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QListWidget
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QSpinBox
-from PyQt4.QtGui import QFont
 from PyQt4.QtGui import QFontDialog
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtCore import Qt
@@ -42,7 +41,6 @@ from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs.preferences import preferences
 from ninja_ide.tools import json_manager
-from ninja_ide.tools import ui_tools
 
 
 class EditorGeneral(QWidget):
@@ -53,6 +51,7 @@ class EditorGeneral(QWidget):
         vbox = QVBoxLayout(self)
         self.original_style = copy.copy(resources.CUSTOM_SCHEME)
         self.current_scheme = 'default'
+        self._font = settings.FONT
 
         groupBoxMini = QGroupBox(
             translations.TR_PREFERENCES_EDITOR_GENERAL_MINIMAP)
@@ -116,8 +115,8 @@ class EditorGeneral(QWidget):
         self._spinMaxOpacity.setValue(settings.MINIMAP_MAX_OPACITY * 100)
         self._spinMinOpacity.setValue(settings.MINIMAP_MIN_OPACITY * 100)
         self._spinSize.setValue(settings.SIZE_PROPORTION * 100)
-        self._btnEditorFont.setText(
-            ', '.join([settings.FONT_FAMILY, str(settings.FONT_SIZE)]))
+        btnText = ', '.join(self._font.toString().split(',')[0:2])
+        self._btnEditorFont.setText(btnText)
         self._listScheme.clear()
         self._listScheme.addItem('default')
         self._schemes = json_manager.load_editor_skins()
@@ -168,29 +167,15 @@ class EditorGeneral(QWidget):
 
     def _load_editor_font(self):
         try:
-            font = self._load_font(
-                self._get_font_from_string(self._btnEditorFont.text()), self)
-            self._btnEditorFont.setText(font)
+            font, ok = QFontDialog.getFont(self._font, self)
+            if ok:
+                self._font = font
+                btnText = ', '.join(self._font.toString().split(',')[0:2])
+                self._btnEditorFont.setText(btnText)
         except:
             QMessageBox.warning(self,
                 translations.TR_PREFERENCES_EDITOR_GENERAL_FONT_MESSAGE_TITLE,
                 translations.TR_PREFERENCES_EDITOR_GENERAL_FONT_MESSAGE_BODY)
-
-    def _get_font_from_string(self, font):
-        if not font:
-            font = QFont(settings.FONT_FAMILY, settings.FONT_SIZE)
-        else:
-            listFont = font.split(',')
-            font = QFont(listFont[0].strip(), int(listFont[1].strip()))
-        return font
-
-    def _load_font(self, initialFont, parent=0):
-        font, ok = QFontDialog.getFont(initialFont, parent)
-        if ok:
-            newFont = font.toString().split(',')
-        else:
-            newFont = initialFont.toString().split(',')
-        return newFont[0] + ', ' + newFont[1]
 
     def save(self):
         qsettings = IDE.ninja_settings()
@@ -206,12 +191,8 @@ class EditorGeneral(QWidget):
             settings.MINIMAP_MIN_OPACITY)
         qsettings.setValue('preferences/editor/minimapSizeProportion',
             settings.SIZE_PROPORTION)
-        fontText = self._btnEditorFont.text().replace(' ', '')
-        settings.FONT_FAMILY = fontText.split(',')[0]
-        settings.FONT_SIZE = int(fontText.split(',')[1])
-        qsettings.setValue('preferences/editor/fontFamily',
-            settings.FONT_FAMILY)
-        qsettings.setValue('preferences/editor/fontSize', settings.FONT_SIZE)
+        settings.FONT = self._font
+        qsettings.setValue('preferences/editor/font', settings.FONT)
         scheme = self._listScheme.currentItem().text()
         self.original_style = resources.CUSTOM_SCHEME
         qsettings.setValue('preferences/editor/scheme', scheme)
