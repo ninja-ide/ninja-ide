@@ -107,7 +107,7 @@ class Editor(QPlainTextEdit):
         self.allows_less_indentation = ['else', 'elif', 'finally', 'except']
         #Set editor style
         self.apply_editor_style()
-        self.set_font(settings.FONT_FAMILY, settings.FONT_SIZE)
+        self.set_font(settings.FONT)
         #For Highlighting in document
         self.extraSelections = []
         self._selected_word = ''
@@ -180,7 +180,7 @@ class Editor(QPlainTextEdit):
 
         ninjaide = IDE.get_service('ide')
         self.connect(ninjaide,
-            SIGNAL("ns_preferences_editor_fontFamily(PyQt_PyObject)"),
+            SIGNAL("ns_preferences_editor_font(PyQt_PyObject)"),
             self.set_font)
 
         self.connect(ninjaide,
@@ -439,12 +439,7 @@ class Editor(QPlainTextEdit):
             inside = True
         return inside
 
-    def set_font(self, family=None, size=None):
-        if family is None:
-            family = settings.FONT_FAMILY
-        if size is None:
-            size = settings.FONT_SIZE
-        font = QFont(family, size)
+    def set_font(self, font):
         self.document().setDefaultFont(font)
         self._update_margin_line(font)
 

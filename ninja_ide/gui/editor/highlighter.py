@@ -40,7 +40,7 @@ def format(color, style=''):
     _color.setNamedColor(color)
 
     _format = QTextCharFormat()
-    _format.setFontFamily(settings.FONT_FAMILY)
+    _format.setFontFamily(settings.FONT)
     _format.setForeground(_color)
     if 'bold' in style:
         _format.setFontWeight(QFont.Bold)

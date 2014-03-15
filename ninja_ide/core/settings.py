@@ -37,18 +37,16 @@ IS_MAC_OS = False
 
 OS_KEY = "Ctrl"
 
-FONT = QFont('Monospace', 13)
-FONT_FAMILY = 'Monospace'
-FONT_SIZE = 11
+FONT = QFont('Monospace', 12)
 if sys.platform == "darwin":
     from PyQt4.QtGui import QKeySequence
     from PyQt4.QtCore import Qt
 
-    FONT = QFont('Monaco', 13)
+    FONT = QFont('Monaco', 12)
     OS_KEY = QKeySequence(Qt.CTRL).toString(QKeySequence.NativeText)
     IS_MAC_OS = True
 elif sys.platform == "win32":
-    FONT = QFont('Courier', 13)
+    FONT = QFont('Courier', 12)
     IS_WINDOWS = True
 
 
@@ -379,8 +377,7 @@ def load_settings():
     global ALLOW_WORD_WRAP
     global COMPLETE_DECLARATIONS
     global UNDERLINE_NOT_BACKGROUND
-    global FONT_FAMILY
-    global FONT_SIZE
+    global FONT
     global SHOW_MARGIN_LINE
     global FIND_ERRORS
     global ERRORS_HIGHLIGHT_LINE
@@ -485,13 +482,9 @@ def load_settings():
         'preferences/editor/completeDeclarations', True, type=bool)
     UNDERLINE_NOT_BACKGROUND = qsettings.value(
         'preferences/editor/errorsUnderlineBackground', True, type=bool)
-    font_family = qsettings.value(
-        'preferences/editor/fontFamily', "", type='QString')
-    if font_family:
-        FONT_FAMILY = font_family
-    font_size = qsettings.value('preferences/editor/fontSize', 0, type=int)
-    if font_size != 0:
-        FONT_SIZE = font_size
+    font = qsettings.value('preferences/editor/font', None)
+    if font:
+        FONT = font
     SHOW_MARGIN_LINE = qsettings.value(
         'preferences/editor/showMarginLine', True, type=bool)
     FIND_ERRORS = qsettings.value('preferences/editor/errors',
