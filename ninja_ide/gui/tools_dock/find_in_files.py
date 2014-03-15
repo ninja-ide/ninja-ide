@@ -480,6 +480,7 @@ class FindInFilesWidget(QWidget):
             self._main_container.open_file(file_path,
                 cursorPosition=int(lineno) - 1,
                 positionIsLineNumber=True)
+            self._main_container.get_current_editor().setFocus()
 
     def open(self):
         """Open the selected file in the proper line."""

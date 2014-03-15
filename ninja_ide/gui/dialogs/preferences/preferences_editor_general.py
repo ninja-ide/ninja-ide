@@ -140,50 +140,24 @@ class EditorGeneral(QWidget):
             self._preview_style)
         self.connect(self._preferences, SIGNAL("savePreferences()"), self.save)
 
-    def showEvent(self, event):
-        super(EditorGeneral, self).showEvent(event)
-        self.thread_callback = ui_tools.ThreadExecution(self._get_editor_skins)
-        self.connect(self.thread_callback, SIGNAL("finished()"),
-            self._show_editor_skins)
-        self.thread_callback.start()
-
-    def _get_editor_skins(self):
-        qsettings = IDE.ninja_settings()
-        qsettings.beginGroup('preferences')
-        qsettings.beginGroup('editor')
-        self._schemes = json_manager.load_editor_skins()
-        self._selected_scheme = qsettings.value('scheme', defaultValue='',
-            type='QString')
-        qsettings.endGroup()
-        qsettings.endGroup()
-
-    def _show_editor_skins(self):
-        self._listScheme.clear()
-        self._listScheme.addItem('default')
-        for item in self._schemes:
-            self._listScheme.addItem(item)
-        items = self._listScheme.findItems(
-            self._selected_scheme, Qt.MatchExactly)
-        if items:
-            self._listScheme.setCurrentItem(items[0])
-        else:
-            self._listScheme.setCurrentRow(0)
-        self.thread_callback.wait()
-
     def hideEvent(self, event):
         super(EditorGeneral, self).hideEvent(event)
+        #FIXME: WHAT IF THE USER CHANGE THE CURRENT EDITOR?
         resources.CUSTOM_SCHEME = self.original_style
         main_container = IDE.get_service('main_container')
-        editorWidget = main_container.get_current_editor()
-        if editorWidget is not None:
-            editorWidget.restyle(editorWidget.lang)
-            editorWidget._sidebarWidget.repaint()
+        if main_container:
+            editorWidget = main_container.get_current_editor()
+            if editorWidget is not None:
+                editorWidget.restyle(editorWidget.lang)
+                editorWidget._sidebarWidget.repaint()
 
     def _preview_style(self):
         scheme = self._listScheme.currentItem().text()
         if scheme == self.current_scheme:
             return
         main_container = IDE.get_service('main_container')
+        if not main_container:
+            return
         editorWidget = main_container.get_current_editor()
         if editorWidget is not None:
             resources.CUSTOM_SCHEME = self._schemes.get(scheme,

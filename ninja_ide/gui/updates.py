@@ -29,7 +29,6 @@ from PyQt4.QtCore import SIGNAL
 
 import ninja_ide
 from ninja_ide import resources
-from ninja_ide.core import settings
 from ninja_ide.tools import json_manager
 from ninja_ide.tools.logger import NinjaLogger
 
@@ -43,14 +42,16 @@ class TrayIconUpdates(QSystemTrayIcon):
     """
 
     def __init__(self, parent):
-        QSystemTrayIcon.__init__(self, parent)
+        super(TrayIconUpdates, self).__init__(parent)
         icon = QIcon(":img/iconUpdate")
         self.setIcon(icon)
         self.setup_menu()
         self.ide_version = '0'
         self.download_link = ''
 
-        if settings.NOTIFY_UPDATES:
+        notify = parent.ninja_settings().value(
+            'preferences/general/notifyUpdates', True, type=bool)
+        if notify:
             self.thread = ThreadUpdates()
             self.connect(self.thread,
                 SIGNAL("versionReceived(QString, QString)"),
