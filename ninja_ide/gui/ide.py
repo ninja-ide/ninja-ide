@@ -130,7 +130,7 @@ class IDE(QMainWindow):
 
         #ToolBar
         self.toolbar = QToolBar(self)
-        self.toolbar.setIconSize(QSize(32, 32))
+        self.toolbar.setIconSize(QSize(24, 24))
         self.toolbar.setToolTip(translations.TR_IDE_TOOLBAR_TOOLTIP)
         self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
         # Set toggleViewAction text and tooltip

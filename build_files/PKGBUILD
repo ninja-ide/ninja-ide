@@ -41,7 +41,7 @@ package() {
   cd "$srcdir/$_gitname-build"
 
   install -Dm644 "$srcdir/$pkgname.desktop" "$pkgdir/usr/share/applications/$pkgname.desktop"
-  install -Dm644 "ninja_ide/img/icon.png" "$pkgdir/usr/share/pixmaps/$pkgname.png"
+  install -Dm644 "ninja_ide/img/ninja_icon.png" "$pkgdir/usr/share/icons/hicolor/256x256/apps/$pkgname.png"
 
   sed -i 's|#!/usr/bin/env python|#!/usr/bin/env python2|' ninja-ide.py
   python2 setup.py install --root=$pkgdir/ --optimize=1
