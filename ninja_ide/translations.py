@@ -386,6 +386,7 @@ TR_PREFERENCES_EDITOR_CONFIG_SHOW_TABS_AND_SPACES = tr("NINJA-IDE",
 TR_PREFERENCES_EDITOR_CONFIG_WORD_WRAP = tr("NINJA-IDE", "Allow Word Wrap.")
 TR_PREFERENCES_EDITOR_CONFIG_CHECK_FOR_DOCSTRINGS = tr("NINJA-IDE",
     "Check for missing Docstrings.")
+TR_PREFERENCES_EDITOR_DOWNLOAD_SCHEME = tr("NINJA-IDE", "Download Schemes")
 TR_PREFERENCES_EDITOR_GENERAL_MINIMAP = tr("NINJA-IDE", "MiniMap:")
 TR_PREFERENCES_EDITOR_GENERAL_TYPOGRAPHY = tr("NINJA-IDE", "Typography:")
 TR_PREFERENCES_EDITOR_GENERAL_SCHEME = tr("NINJA-IDE", "Scheme Color:")
@@ -401,7 +402,12 @@ TR_PREFERENCES_EDITOR_GENERAL_EDITOR_FONT = tr("NINJA-IDE",
 TR_PREFERENCES_EDITOR_GENERAL_FONT_MESSAGE_TITLE = tr("NINJA-IDE",
     "Invalid Font")
 TR_PREFERENCES_EDITOR_GENERAL_FONT_MESSAGE_BODY = tr("NINJA-IDE",
-    "This font can not be used in the Editor.")
+    "This font can not be used in the editor.")
+TR_CHARACTERS = tr("NINJA-IDE", "Characters")
+TR_TYPING_ASSISTANCE = tr("NINJA-IDE", "Typing assistance")
+TR_HIGHLIGHTER_EXTRAS = tr("NINJA-IDE", "Highlighter extras")
+TR_EDITOR_CREATE_SCHEME = tr("NINJA-IDE", "Create Scheme")
+TR_EDITOR_REMOVE_SCHEME = tr("NINJA-IDE", "Remove scheme")
 
 
 # tree symbol
@@ -548,9 +554,6 @@ TR_DO_YOU_WANT_TO_REMOVE = tr("NINJA-IDE", "Do you want to remove it?")
 TR_LOAD_DEFAULTS = tr("NINJA-IDE", "Load defaults")
 TR_SHORTCUTS_ARE_GOING_TO_BE_REFRESH = tr("NINJA-IDE",
     "The Shortcut's Text in the Menus are going to be refreshed on restart.")
-TR_CHARACTERS = tr("NINJA-IDE", "Characters")
-TR_TYPING_ASSISTANCE = tr("NINJA-IDE", "Typing assistance")
-TR_HIGHLIGHTER_EXTRAS = tr("NINJA-IDE", "Highlighter Extras")
 TR_NOTIFICATION = tr("NINJA-IDE", "Notification")
 TR_POSITION_ON_SCREEN = tr("NINJA-IDE", "Position on screen")
 TR_LEFT = tr("NINJA-IDE", "left")

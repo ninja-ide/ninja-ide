@@ -37,16 +37,17 @@ from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
+from ninja_ide import translations
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import ui_tools
 from ninja_ide.tools import json_manager
 
 
-class ThemesManagerWidget(QDialog):
+class SchemesManagerWidget(QDialog):
 
     def __init__(self, parent):
-        QDialog.__init__(self, parent, Qt.Dialog)
-        self.setWindowTitle(self.tr("Themes Manager"))
+        super(SchemesManagerWidget, self).__init__(parent, Qt.Dialog)
+        self.setWindowTitle(translations.TR_EDITOR_SCHEMES)
         self.resize(700, 500)
 
         vbox = QVBoxLayout(self)

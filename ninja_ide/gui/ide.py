@@ -51,7 +51,7 @@ from ninja_ide.gui.editor import neditable
 from ninja_ide.gui.explorer import nproject
 from ninja_ide.gui.dialogs import about_ninja
 from ninja_ide.gui.dialogs import plugins_manager
-from ninja_ide.gui.dialogs import themes_manager
+from ninja_ide.gui.dialogs import schemes_manager
 from ninja_ide.gui.dialogs import language_manager
 from ninja_ide.gui.dialogs import session_manager
 from ninja_ide.gui.dialogs.preferences import preferences
@@ -712,9 +712,9 @@ class IDE(QMainWindow):
         manager = language_manager.LanguagesManagerWidget(self)
         manager.show()
 
-    def show_themes(self):
-        """Open the Themes Manager to install/uninstall themes."""
-        manager = themes_manager.ThemesManagerWidget(self)
+    def show_schemes(self):
+        """Open the Schemes Manager to install/uninstall schemes."""
+        manager = schemes_manager.SchemesManagerWidget(self)
         manager.show()
 
     def show_about_qt(self):

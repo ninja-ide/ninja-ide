@@ -32,7 +32,6 @@ from ninja_ide import translations
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
-from ninja_ide.gui.dialogs.preferences import preferences
 
 
 class EditorSchemeDesigner(QDialog):
@@ -127,8 +126,3 @@ class EditorSchemeDesigner(QDialog):
             self._checkCompleteDeclarations.isChecked()
         qsettings.setValue("preferences/editor/completeDeclarations",
             settings.COMPLETE_DECLARATIONS)
-
-
-preferences.Preferences.register_configuration('EDITOR', EditorSchemeDesigner,
-    translations.TR_PREFERENCES_EDITOR_SCHEME_DESIGNER,
-    weight=2, subsection='SCHEME_DESIGNER')

@@ -29,10 +29,14 @@ from PyQt4.QtGui import QGridLayout
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QListWidget
 from PyQt4.QtGui import QLabel
+from PyQt4.QtGui import QSizePolicy
+from PyQt4.QtGui import QSpacerItem
+from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QSpinBox
 from PyQt4.QtGui import QFontDialog
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import QSize
 from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
@@ -103,6 +107,25 @@ class EditorGeneral(QWidget):
         vboxScheme.setContentsMargins(5, 15, 5, 5)
         self._listScheme = QListWidget()
         vboxScheme.addWidget(self._listScheme)
+        hbox = QHBoxLayout()
+        btnDownload = QPushButton(
+            translations.TR_PREFERENCES_EDITOR_DOWNLOAD_SCHEME)
+        btnDownload.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.connect(btnDownload, SIGNAL("clicked()"),
+            self._open_schemes_manager)
+        hbox.addWidget(btnDownload)
+        btnAdd = QPushButton(QIcon(":img/add"),
+            translations.TR_EDITOR_CREATE_SCHEME)
+        btnAdd.setIconSize(QSize(16, 16))
+        btnAdd.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        btnRemove = QPushButton(QIcon(":img/delete"),
+            translations.TR_EDITOR_REMOVE_SCHEME)
+        btnRemove.setIconSize(QSize(16, 16))
+        btnRemove.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        hbox.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
+        hbox.addWidget(btnAdd)
+        hbox.addWidget(btnRemove)
+        vboxScheme.addLayout(hbox)
 
         vbox.addWidget(groupBoxMini)
         vbox.addWidget(groupBoxTypo)
@@ -139,6 +162,11 @@ class EditorGeneral(QWidget):
         self.connect(self._listScheme, SIGNAL("itemSelectionChanged()"),
             self._preview_style)
         self.connect(self._preferences, SIGNAL("savePreferences()"), self.save)
+
+    def _open_schemes_manager(self):
+        ninjaide = IDE.get_service("ide")
+        ninjaide.show_schemes()
+        # refresh schemes
 
     def hideEvent(self, event):
         super(EditorGeneral, self).hideEvent(event)

@@ -113,7 +113,7 @@ ACTIONS_GENERAL = (
     "action": {'text': translations.TR_EDITOR_SCHEMES,
                'section': (translations.TR_MENU_EXTENSIONS, None),
                'weight': 110},
-    "connect": "show_themes"
+    "connect": "show_schemes"
     },
     {
     "action": {'text': translations.TR_LANGUAGE_MANAGER,
