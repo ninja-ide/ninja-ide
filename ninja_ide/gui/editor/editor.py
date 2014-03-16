@@ -185,6 +185,12 @@ class Editor(QPlainTextEdit):
             SIGNAL("ns_preferences_editor_minimapShow(PyQt_PyObject)"),
             self._load_minimap)
         self.connect(ninjaide,
+            SIGNAL("ns_preferences_editor_indent(PyQt_PyObject)"),
+            self.load_project_config)
+        self.connect(ninjaide,
+            SIGNAL("ns_preferences_editor_marginLine(PyQt_PyObject)"),
+            self._update_margin_line)
+        self.connect(ninjaide,
             SIGNAL("ns_preferences_editor_scheme(PyQt_PyObject)"),
             lambda: self.restyle())
 
@@ -986,8 +992,8 @@ class Editor(QPlainTextEdit):
         checkers = self._neditable.sorted_checkers
         for items in checkers:
             checker, color, _ = items
-            if block.blockNumber() in checker.checks:
-                message = checker.checks[block.blockNumber()][0]
+            message = checker.message(block.blockNumber())
+            if message:
                 QToolTip.showText(self.mapToGlobal(position), message, self)
         if event.modifiers() == Qt.ControlModifier:
             cursor.select(QTextCursor.WordUnderCursor)

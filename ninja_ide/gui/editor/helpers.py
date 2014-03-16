@@ -46,7 +46,11 @@ def get_leading_spaces(line):
     return ''
 
 
-def get_indentation(line, indent=settings.INDENT, useTabs=settings.USE_TABS):
+def get_indentation(line, indent=None, useTabs=None):
+    if indent is None:
+        indent = settings.INDENT
+    if useTabs is None:
+        useTabs = settings.USE_TABS
     global patIndent
     global endCharsForIndent
     indentation = ''
