@@ -332,6 +332,7 @@ TR_SHORCUTS_ALREADY_ON_USE = tr("NINJA-IDE",
 TR_PREFERENCES_GENERAL = tr("NINJA-IDE", "General")
 TR_PREFERENCES_EDITOR_GENERAL = tr("NINJA-IDE", "Editor")
 TR_PREFERENCES_EDITOR_CONFIGURATION = tr("NINJA-IDE", "Configuration")
+TR_PREFERENCES_EDITOR_COMPLETION = tr("NINJA-IDE", "Completion")
 TR_PREFERENCES_GENERAL_START = tr("NINJA-IDE", "On start:")
 TR_PREFERENCES_GENERAL_CLOSE = tr("NINJA-IDE", "On close:")
 TR_PREFERENCES_GENERAL_WORKSPACE = tr("NINJA-IDE", "Workspace and project:")
@@ -482,6 +483,20 @@ TR_SOME_PLUGINS_NEED_DEPENDENCIES = tr("NINJA-IDE",
 # session manager
 TR_PROJECT = tr("NINJA-IDE", "Project")
 TR_FILES = tr("NINJA-IDE", "Files")
+
+
+# preferences editor completion
+TR_PREF_EDITOR_COMPLETE = tr("NINJA-IDE", "Complete:")
+TR_PREF_EDITOR_PARENTHESES = tr("NINJA-IDE", "Parentheses:")
+TR_PREF_EDITOR_KEYS = tr("NINJA-IDE", "Keys:")
+TR_PREF_EDITOR_BRACKETS = tr("NINJA-IDE", "Brackets:")
+TR_PREF_EDITOR_SIMPLE_QUOTES = tr("NINJA-IDE", "Simple Quotes:")
+TR_PREF_EDITOR_DOUBLE_QUOTES = tr("NINJA-IDE", "Double Quotes:")
+TR_PREF_EDITOR_COMPLETE_DECLARATIONS = tr("NINJA-IDE", "Complete Declarations\n"
+            "(execute the opposite action with: {0}).")
+TR_PREF_EDITOR_CODE_COMPLETION = tr("NINJA-IDE", "Code Completion:")
+TR_PREF_EDITOR_ACTIVATE_COMPLETION = tr("NINJA-IDE",
+    "Activate Code Completion with: \".\"")
 
 
 # preferences shorcuts
