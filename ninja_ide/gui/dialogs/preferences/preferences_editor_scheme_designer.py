@@ -35,10 +35,10 @@ from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs.preferences import preferences
 
 
-class EditorCompletion(QWidget):
+class EditorSchemeDesigner(QWidget):
 
     def __init__(self, parent):
-        super(EditorCompletion, self).__init__()
+        super(EditorSchemeDesigner, self).__init__()
         vbox = QVBoxLayout(self)
 
         groupBoxClose = QGroupBox(translations.TR_PREF_EDITOR_COMPLETE)
@@ -129,6 +129,6 @@ class EditorCompletion(QWidget):
             settings.COMPLETE_DECLARATIONS)
 
 
-preferences.Preferences.register_configuration('EDITOR', EditorCompletion,
-    translations.TR_PREFERENCES_EDITOR_COMPLETION,
-    weight=1, subsection='COMPLETION')
+preferences.Preferences.register_configuration('EDITOR', EditorSchemeDesigner,
+    translations.TR_PREFERENCES_EDITOR_SCHEME_DESIGNER,
+    weight=2, subsection='SCHEME_DESIGNER')
