@@ -99,10 +99,10 @@ class EditorGeneral(QWidget):
             Qt.AlignRight)
         gridTypo.addWidget(self._btnEditorFont, 0, 1)
         #Scheme
-        hbox = QHBoxLayout(groupBoxScheme)
-        hbox.setContentsMargins(5, 15, 5, 5)
+        vboxScheme = QVBoxLayout(groupBoxScheme)
+        vboxScheme.setContentsMargins(5, 15, 5, 5)
         self._listScheme = QListWidget()
-        hbox.addWidget(self._listScheme)
+        vboxScheme.addWidget(self._listScheme)
 
         vbox.addWidget(groupBoxMini)
         vbox.addWidget(groupBoxTypo)
