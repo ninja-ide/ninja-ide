@@ -18,7 +18,7 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QGroupBox
 from PyQt4.QtGui import QCheckBox
@@ -35,10 +35,10 @@ from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs.preferences import preferences
 
 
-class EditorSchemeDesigner(QWidget):
+class EditorSchemeDesigner(QDialog):
 
     def __init__(self, parent):
-        super(EditorSchemeDesigner, self).__init__()
+        super(EditorSchemeDesigner, self).__init__(parent)
         vbox = QVBoxLayout(self)
 
         groupBoxClose = QGroupBox(translations.TR_PREF_EDITOR_COMPLETE)
