@@ -51,6 +51,7 @@ class EditorGeneral(QWidget):
         vbox = QVBoxLayout(self)
         self.original_style = copy.copy(resources.CUSTOM_SCHEME)
         self.current_scheme = 'default'
+        self._modified_editors = []
         self._font = settings.FONT
 
         groupBoxMini = QGroupBox(
@@ -141,14 +142,12 @@ class EditorGeneral(QWidget):
 
     def hideEvent(self, event):
         super(EditorGeneral, self).hideEvent(event)
-        #FIXME: WHAT IF THE USER CHANGE THE CURRENT EDITOR?
         resources.CUSTOM_SCHEME = self.original_style
-        main_container = IDE.get_service('main_container')
-        if main_container:
-            editorWidget = main_container.get_current_editor()
-            if editorWidget is not None:
+        for editorWidget in self._modified_editors:
+            try:
                 editorWidget.restyle(editorWidget.lang)
-                editorWidget._sidebarWidget.repaint()
+            except RuntimeError:
+                print 'the editor has been removed'
 
     def _preview_style(self):
         scheme = self._listScheme.currentItem().text()
@@ -162,7 +161,7 @@ class EditorGeneral(QWidget):
             resources.CUSTOM_SCHEME = self._schemes.get(scheme,
                 resources.COLOR_SCHEME)
             editorWidget.restyle(editorWidget.lang)
-            editorWidget._sidebarWidget.repaint()
+            self._modified_editors.append(editorWidget)
         self.current_scheme = scheme
 
     def _load_editor_font(self):
@@ -179,25 +178,24 @@ class EditorGeneral(QWidget):
 
     def save(self):
         qsettings = IDE.ninja_settings()
+        settings.FONT = self._font
+        qsettings.setValue('preferences/editor/font', settings.FONT)
         settings.SHOW_MINIMAP = self._checkShowMinimap.isChecked()
         settings.MINIMAP_MAX_OPACITY = self._spinMaxOpacity.value() / 100.0
         settings.MINIMAP_MIN_OPACITY = self._spinMinOpacity.value() / 100.0
         settings.SIZE_PROPORTION = self._spinSize.value() / 100.0
-        qsettings.setValue('preferences/editor/minimapShow',
-            settings.SHOW_MINIMAP)
         qsettings.setValue('preferences/editor/minimapMaxOpacity',
             settings.MINIMAP_MAX_OPACITY)
         qsettings.setValue('preferences/editor/minimapMinOpacity',
             settings.MINIMAP_MIN_OPACITY)
         qsettings.setValue('preferences/editor/minimapSizeProportion',
             settings.SIZE_PROPORTION)
-        settings.FONT = self._font
-        qsettings.setValue('preferences/editor/font', settings.FONT)
+        qsettings.setValue('preferences/editor/minimapShow',
+            settings.SHOW_MINIMAP)
         scheme = self._listScheme.currentItem().text()
-        self.original_style = resources.CUSTOM_SCHEME
-        qsettings.setValue('preferences/editor/scheme', scheme)
         resources.CUSTOM_SCHEME = self._schemes.get(scheme,
             resources.COLOR_SCHEME)
+        qsettings.setValue('preferences/editor/scheme', scheme)
 
 
 preferences.Preferences.register_configuration('EDITOR', EditorGeneral,

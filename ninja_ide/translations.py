@@ -384,7 +384,7 @@ TR_PREFERENCES_EDITOR_GENERAL_MINIMAP = tr("NINJA-IDE", "MiniMap:")
 TR_PREFERENCES_EDITOR_GENERAL_TYPOGRAPHY = tr("NINJA-IDE", "Typography:")
 TR_PREFERENCES_EDITOR_GENERAL_SCHEME = tr("NINJA-IDE", "Scheme color:")
 TR_PREFERENCES_EDITOR_GENERAL_ENABLE_MINIMAP = tr("NINJA-IDE",
-    "Enable/Disable MiniMap (requires restart):\n"
+    "Enable/Disable MiniMap:\n"
     "(opacity not supported in Mac OS X)")
 TR_PREFERENCES_EDITOR_GENERAL_MAX_OPACITY = tr("NINJA-IDE", "Max opacity:")
 TR_PREFERENCES_EDITOR_GENERAL_MIN_OPACITY = tr("NINJA-IDE", "Min opacity:")

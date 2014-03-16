@@ -156,11 +156,6 @@ class Editor(QPlainTextEdit):
         self.connect(self.document(), SIGNAL("modificationChanged(bool)"),
             lambda x: self.emit(SIGNAL("modificationChanged(bool)"), x))
 
-        self._mini = None
-        if settings.SHOW_MINIMAP:
-            self._mini = minimap.MiniMap(self)
-            self._mini.show()
-
         #Indentation
         self.load_project_config()
         #Context Menu Options
@@ -175,17 +170,23 @@ class Editor(QPlainTextEdit):
         else:
             self._neditable.set_editor(self)
 
-        if self._mini:
-            self._mini.set_code(self.toPlainText())
+        self._mini = None
+        if settings.SHOW_MINIMAP:
+            self._load_minimap(settings.SHOW_MINIMAP)
 
         ninjaide = IDE.get_service('ide')
         self.connect(ninjaide,
             SIGNAL("ns_preferences_editor_font(PyQt_PyObject)"),
             self.set_font)
-
         self.connect(ninjaide,
             SIGNAL("ns_preferences_editor_showTabsAndSpaces(PyQt_PyObject)"),
             self.set_flags)
+        self.connect(ninjaide,
+            SIGNAL("ns_preferences_editor_minimapShow(PyQt_PyObject)"),
+            self._load_minimap)
+        self.connect(ninjaide,
+            SIGNAL("ns_preferences_editor_scheme(PyQt_PyObject)"),
+            lambda: self.restyle())
 
     @property
     def display_name(self):
@@ -223,6 +224,17 @@ class Editor(QPlainTextEdit):
             self.indent = settings.INDENT
             self.useTabs = settings.USE_TABS
             self.additional_builtins = None
+
+    def _load_minimap(self, show):
+        if show:
+            self._mini = minimap.MiniMap(self)
+            self._mini.set_code(self.toPlainText())
+            #FIXME: register syntax
+            self._mini.show()
+        else:
+            self._mini.shutdown()
+            self._mini.deleteLater()
+            self._mini = None
 
     def __retreat_to_keywords(self, event):
         """Unindent some kind of blocks if needed."""
@@ -349,6 +361,7 @@ class Editor(QPlainTextEdit):
             if self._mini:
                 self._mini.highlighter.apply_highlight(
                     syntaxLang, resources.CUSTOM_SCHEME)
+        self._sidebarWidget.repaint()
 
     def apply_editor_style(self):
         css = 'QPlainTextEdit {color: %s; background-color: %s;' \
