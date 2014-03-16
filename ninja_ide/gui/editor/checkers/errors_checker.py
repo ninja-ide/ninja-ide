@@ -24,6 +24,7 @@ except ImportError:
     print('Errors checker not working in Python3')
 
 from PyQt4.QtCore import QThread
+from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
 from ninja_ide import translations
@@ -55,6 +56,11 @@ class ErrorsChecker(QThread):
         self.checks = {}
 
         self.checker_icon = ":img/bug"
+
+        ninjaide = IDE.get_service('ide')
+        self.connect(ninjaide,
+            SIGNAL("ns_preferences_editor_errors(PyQt_PyObject)"),
+            lambda: remove_error_checker())
 
     @property
     def dirty(self):
@@ -121,6 +127,11 @@ class ErrorsChecker(QThread):
         error_list = IDE.get_service('tab_errors')
         if error_list:
             error_list.refresh_error_list(self.checks)
+
+    def message(self, index):
+        if index in self.checks and settings.ERRORS_HIGHLIGHT_LINE:
+            return self.checks[index][0]
+        return None
 
     def _get_ignore_range(self):
         ignored_range = []

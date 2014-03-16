@@ -53,6 +53,7 @@ class EditorConfiguration(QWidget):
         group4 = QGroupBox(translations.TR_PEP8_DIRTY_TEXT)
         group5 = QGroupBox(translations.TR_HIGHLIGHTER_EXTRAS)
         group6 = QGroupBox(translations.TR_TYPING_ASSISTANCE)
+        group7 = QGroupBox(translations.TR_DISPLAY_ERRORS)
 
         # groups container
         container_widget_with_all_preferences = QWidget()
@@ -87,31 +88,33 @@ class EditorConfiguration(QWidget):
         hboxg2.addWidget(QLabel(translations.TR_CHARACTERS))
         formFeatures.addWidget(group2, 0, 1)
 
-        # Find Lint Errors (highlighter)
-        vboxg3, container0 = QVBoxLayout(group3), QWidget()
-        hboxg3 = QHBoxLayout(container0)
-        hboxg3.setContentsMargins(5, 15, 5, 5)
-        self._checkErrors = QCheckBox(
-            translations.TR_PREFERENCES_EDITOR_CONFIG_FIND_ERRORS)
-        self._checkErrors.setChecked(settings.FIND_ERRORS)
-        self.connect(self._checkErrors, SIGNAL("stateChanged(int)"),
-            self._disable_show_errors)
-        hboxg3.addWidget(self._checkErrors)
+        # Display Errors
+        hboxDisplay = QHBoxLayout(group7)
+        hboxDisplay.setContentsMargins(5, 15, 5, 5)
         self._checkHighlightLine = QComboBox()
         self._checkHighlightLine.addItems([
             translations.TR_PREFERENCES_EDITOR_CONFIG_ERROR_USE_BACKGROUND,
             translations.TR_PREFERENCES_EDITOR_CONFIG_ERROR_USE_UNDERLINE])
         self._checkHighlightLine.setCurrentIndex(
             int(settings.UNDERLINE_NOT_BACKGROUND))
-        hboxg3.addWidget(self._checkHighlightLine)
+        hboxDisplay.addWidget(self._checkHighlightLine)
+        formFeatures.addWidget(group7, 1, 0, 1, 0)
+
+        # Find Lint Errors (highlighter)
+        vboxg3 = QVBoxLayout(group3)
+        self._checkErrors = QCheckBox(
+            translations.TR_PREFERENCES_EDITOR_CONFIG_FIND_ERRORS)
+        self._checkErrors.setChecked(settings.FIND_ERRORS)
+        self.connect(self._checkErrors, SIGNAL("stateChanged(int)"),
+            self._disable_show_errors)
         self._showErrorsOnLine = QCheckBox(
             translations.TR_PREFERENCES_EDITOR_CONFIG_SHOW_TOOLTIP_ERRORS)
         self._showErrorsOnLine.setChecked(settings.ERRORS_HIGHLIGHT_LINE)
         self.connect(self._showErrorsOnLine, SIGNAL("stateChanged(int)"),
             self._enable_errors_inline)
-        vboxg3.addWidget(container0)
+        vboxg3.addWidget(self._checkErrors)
         vboxg3.addWidget(self._showErrorsOnLine)
-        formFeatures.addWidget(group3, 1, 0)
+        formFeatures.addWidget(group3, 2, 0)
 
         # Find PEP8 Errors (highlighter)
         vboxg4 = QVBoxLayout(group4)
@@ -128,7 +131,7 @@ class EditorConfiguration(QWidget):
         self.connect(self._checkStyleOnLine, SIGNAL("stateChanged(int)"),
             self._enable_check_inline)
         vboxg4.addWidget(self._checkStyleOnLine)
-        formFeatures.addWidget(group4, 1, 1)
+        formFeatures.addWidget(group4, 2, 1)
 
         # Show Python3 Migration, DocStrings and Spaces (highlighter)
         vboxg5 = QVBoxLayout(group5)
@@ -145,7 +148,7 @@ class EditorConfiguration(QWidget):
             translations.TR_PREFERENCES_EDITOR_CONFIG_SHOW_TABS_AND_SPACES)
         self._checkShowSpaces.setChecked(settings.SHOW_TABS_AND_SPACES)
         vboxg5.addWidget(self._checkShowSpaces)
-        formFeatures.addWidget(group5, 2, 0)
+        formFeatures.addWidget(group5, 3, 0)
 
         # End of line, Center On Scroll, Trailing space, Word wrap
         vboxg6 = QVBoxLayout(group6)
@@ -166,7 +169,7 @@ class EditorConfiguration(QWidget):
             translations.TR_PREFERENCES_EDITOR_CONFIG_WORD_WRAP)
         self._allowWordWrap.setChecked(settings.ALLOW_WORD_WRAP)
         vboxg6.addWidget(self._allowWordWrap)
-        formFeatures.addWidget(group6, 2, 1)
+        formFeatures.addWidget(group6, 3, 1)
 
         # pack all the groups
         vbox.addWidget(container_widget_with_all_preferences)
@@ -198,66 +201,60 @@ class EditorConfiguration(QWidget):
     def save(self):
         """Method to save settings"""
         qsettings = IDE.ninja_settings()
-        qsettings.setValue('preferences/editor/indent', self._spin.value())
-        settings.INDENT = self._spin.value()
-        endOfLine = self._checkEndOfLine.isChecked()
-        qsettings.setValue('preferences/editor/platformEndOfLine', endOfLine)
-        settings.USE_PLATFORM_END_OF_LINE = endOfLine
+        settings.USE_TABS = bool(self._checkUseTabs.currentIndex())
+        qsettings.setValue('preferences/editor/useTabs',
+            settings.USE_TABS)
         margin_line = self._spinMargin.value()
-        qsettings.setValue('preferences/editor/marginLine', margin_line)
         settings.MARGIN_LINE = margin_line
         settings.pep8mod_update_margin_line_length(margin_line)
-        qsettings.setValue('preferences/editor/showMarginLine',
-            self._checkShowMargin.isChecked())
+        qsettings.setValue('preferences/editor/marginLine', margin_line)
         settings.SHOW_MARGIN_LINE = self._checkShowMargin.isChecked()
+        qsettings.setValue('preferences/editor/showMarginLine',
+            settings.SHOW_MARGIN_LINE)
+        settings.INDENT = self._spin.value()
+        qsettings.setValue('preferences/editor/indent', settings.INDENT)
+        endOfLine = self._checkEndOfLine.isChecked()
+        settings.USE_PLATFORM_END_OF_LINE = endOfLine
+        qsettings.setValue('preferences/editor/platformEndOfLine', endOfLine)
         settings.UNDERLINE_NOT_BACKGROUND = \
             bool(self._checkHighlightLine.currentIndex())
         qsettings.setValue('preferences/editor/errorsUnderlineBackground',
             settings.UNDERLINE_NOT_BACKGROUND)
-        qsettings.setValue('preferences/editor/errors',
-            self._checkErrors.isChecked())
         settings.FIND_ERRORS = self._checkErrors.isChecked()
-        qsettings.setValue('preferences/editor/errorsInLine',
-            self._showErrorsOnLine.isChecked())
+        qsettings.setValue('preferences/editor/errors', settings.FIND_ERRORS)
         settings.ERRORS_HIGHLIGHT_LINE = self._showErrorsOnLine.isChecked()
-        qsettings.setValue('preferences/editor/checkStyle',
-            self._checkStyle.isChecked())
+        qsettings.setValue('preferences/editor/errorsInLine',
+            settings.ERRORS_HIGHLIGHT_LINE)
         settings.CHECK_STYLE = self._checkStyle.isChecked()
-        qsettings.setValue('preferences/editor/showMigrationTips',
-            self._showMigrationTips.isChecked())
+        qsettings.setValue('preferences/editor/checkStyle',
+            settings.CHECK_STYLE)
         settings.SHOW_MIGRATION_TIPS = self._showMigrationTips.isChecked()
-        qsettings.setValue('preferences/editor/checkStyleInline',
-            self._checkStyleOnLine.isChecked())
+        qsettings.setValue('preferences/editor/showMigrationTips',
+            settings.SHOW_MIGRATION_TIPS)
         settings.CHECK_HIGHLIGHT_LINE = self._checkStyleOnLine.isChecked()
-        qsettings.setValue('preferences/editor/centerOnScroll',
-            self._checkCenterScroll.isChecked())
+        qsettings.setValue('preferences/editor/checkStyleInline',
+            settings.CHECK_HIGHLIGHT_LINE)
         settings.CENTER_ON_SCROLL = self._checkCenterScroll.isChecked()
-        qsettings.setValue('preferences/editor/removeTrailingSpaces',
-            self._checkTrailing.isChecked())
+        qsettings.setValue('preferences/editor/centerOnScroll',
+            settings.CENTER_ON_SCROLL)
         settings.REMOVE_TRAILING_SPACES = self._checkTrailing.isChecked()
-        qsettings.setValue('preferences/editor/showTabsAndSpaces',
-            self._checkShowSpaces.isChecked())
-        settings.SHOW_TABS_AND_SPACES = self._checkShowSpaces.isChecked()
-        qsettings.setValue('preferences/editor/useTabs',
-            bool(self._checkUseTabs.currentIndex()))
-        settings.USE_TABS = bool(self._checkUseTabs.currentIndex())
-        qsettings.setValue('preferences/editor/allowWordWrap',
-            self._allowWordWrap.isChecked())
+        qsettings.setValue('preferences/editor/removeTrailingSpaces',
+            settings.REMOVE_TRAILING_SPACES)
         settings.ALLOW_WORD_WRAP = self._allowWordWrap.isChecked()
-        qsettings.setValue('preferences/editor/checkForDocstrings',
-            self._checkForDocstrings.isChecked())
+        qsettings.setValue('preferences/editor/allowWordWrap',
+            settings.ALLOW_WORD_WRAP)
+        settings.SHOW_TABS_AND_SPACES = self._checkShowSpaces.isChecked()
+        qsettings.setValue('preferences/editor/showTabsAndSpaces',
+            settings.SHOW_TABS_AND_SPACES)
         settings.CHECK_FOR_DOCSTRINGS = self._checkForDocstrings.isChecked()
+        qsettings.setValue('preferences/editor/checkForDocstrings',
+            settings.CHECK_FOR_DOCSTRINGS)
 
-        #main_container = self._ide.get_service('main_container')
-        #if main_container:
-            #main_container.reset_editor_flags()
-            #main_container.call_editors_function("set_tab_usage")
-        #if settings.USE_TABS:
-            #settings.pep8mod_add_ignore("W191")
-        #else:
-            #settings.pep8mod_remove_ignore("W191")
-        #settings.pep8mod_refresh_checks()
-        #main_container.MainContainer().update_editor_margin_line()
+        if settings.USE_TABS:
+            settings.pep8mod_add_ignore("W191")
+        else:
+            settings.pep8mod_remove_ignore("W191")
+        settings.pep8mod_refresh_checks()
 
 
 preferences.Preferences.register_configuration('EDITOR', EditorConfiguration,
