@@ -35,6 +35,7 @@ from PyQt4.QtGui import QCheckBox
 from PyQt4.QtGui import QStyle
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QShortcut
+from PyQt4.QtGui import QGroupBox
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 
@@ -236,7 +237,7 @@ class _StatusBar(QStatusBar):
             widget.setFocus()
 
 
-class SearchWidget(QWidget):
+class SearchWidget(QGroupBox):
 
     """Search widget component, search for text inside the editor."""
 
@@ -250,18 +251,23 @@ class SearchWidget(QWidget):
         self._line.setMinimumWidth(250)
         self._btnClose = QPushButton(
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
+        self._btnClose.setToolTip(translations.TR_CLOSE)
         self._btnFind = QPushButton(QIcon(":img/find"), '')
+        self._btnFind.setToolTip(translations.TR_FIND)
         self.btnPrevious = QPushButton(
-            self.style().standardIcon(QStyle.SP_ArrowLeft), '')
+            self.style().standardIcon(QStyle.SP_ArrowLeft),
+            translations.TR_PREVIOUS)
         self.btnPrevious.setToolTip(self.trUtf8("Press %s") %
                 resources.get_shortcut("Find-previous").toString(
                     QKeySequence.NativeText))
         self.btnNext = QPushButton(
-            self.style().standardIcon(QStyle.SP_ArrowRight), '')
+            self.style().standardIcon(QStyle.SP_ArrowRight),
+            translations.TR_NEXT)
         self.btnNext.setToolTip(self.trUtf8("Press %s") %
                 resources.get_shortcut("Find-next").toString(
                     QKeySequence.NativeText))
         hSearch.addWidget(self._btnClose)
+        hSearch.addWidget(QLabel(translations.TR_FIND))
         hSearch.addWidget(self._line)
         hSearch.addWidget(self._btnFind)
         hSearch.addWidget(self.btnPrevious)
@@ -403,23 +409,25 @@ class SearchWidget(QWidget):
         return current_index
 
 
-class ReplaceWidget(QWidget):
+class ReplaceWidget(QGroupBox):
 
     """Replace widget to find and replace occurrences of words in editor."""
 
     def __init__(self, parent=None):
-        QWidget.__init__(self, parent)
+        QGroupBox.__init__(self, parent)
         hReplace = QHBoxLayout(self)
         hReplace.setContentsMargins(0, 0, 0, 0)
         self._lineReplace = QLineEdit()
         self._lineReplace.setMinimumWidth(250)
         self._btnCloseReplace = QPushButton(
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
+        self._btnCloseReplace.setToolTip(translations.TR_CLOSE)
         self._btnReplace = QPushButton(self.trUtf8("Replace"))
         self._btnReplaceAll = QPushButton(self.trUtf8("Replace All"))
         self._btnReplaceSelection = QPushButton(
             self.trUtf8("Replace Selection"))
         hReplace.addWidget(self._btnCloseReplace)
+        hReplace.addWidget(QLabel(translations.TR_REPLACE))
         hReplace.addWidget(self._lineReplace)
         hReplace.addWidget(self._btnReplace)
         hReplace.addWidget(self._btnReplaceAll)

@@ -205,8 +205,8 @@ TR_IDE_TOOLBAR_TOOLTIP = tr("NINJA-IDE", "Press and Drag to Move")
 
 
 # Status Bar
-TR_SEARCH_CASE_SENSITIVE = tr("NINJA-IDE", "Respect case sensitive")
-TR_SEARCH_WHOLE_WORDS = tr("NINJA-IDE", "Find whole words")
+TR_SEARCH_CASE_SENSITIVE = tr("NINJA-IDE", "Case sensitive")
+TR_SEARCH_WHOLE_WORDS = tr("NINJA-IDE", "Whole words")
 
 
 # Checkers
@@ -290,8 +290,8 @@ TR_EXECUTE_PROJECT = tr("NINJA-IDE", "Execute current project")
 TR_DEBUG = tr("NINJA-IDE", "Debug")
 TR_SWITCH_KEYBOARD_FOCUS = tr("NINJA-IDE", "Switch keyboard focus")
 TR_STOP_EXECUTION = tr("NINJA-IDE", "Stop Execution")
-TR_FIND_NEXT = tr("NINJA-IDE", "Find Next")
-TR_FIND_PREVIOUS = tr("NINJA-IDE", "Find Previous")
+TR_FIND_NEXT = tr("NINJA-IDE", "Find next")
+TR_FIND_PREVIOUS = tr("NINJA-IDE", "Find previous")
 TR_SHOW_PYTHON_HELP = tr("NINJA-IDE", "Show Python Help")
 TR_SPLIT_TABS_VERTICAL = tr("NINJA-IDE", "Split Tabs Vertically")
 TR_SPLIT_TABS_HORIZONTAL = tr("NINJA-IDE", "Split Tabs Horizontally")
@@ -547,3 +547,5 @@ TR_DO_YOU_WANT_TO_REMOVE = tr("NINJA-IDE", "Do you want to remove it?")
 TR_LOAD_DEFAULTS = tr("NINJA-IDE", "Load defaults")
 TR_SHORTCUTS_ARE_GOING_TO_BE_REFRESH = tr("NINJA-IDE",
     "The Shortcut's Text in the Menus are going to be refreshed on restart.")
+TR_PREVIOUS = tr("NINJA-IDE", "Previous")
+TR_NEXT = tr("NINJA-IDE", "Next")
