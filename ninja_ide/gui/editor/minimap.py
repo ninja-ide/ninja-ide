@@ -66,6 +66,11 @@ class MiniMap(QPlainTextEdit):
         self.slider = SliderArea(self)
         self.slider.show()
 
+    def shutdown(self):
+        self.disconnect(self._parent,
+            SIGNAL("updateRequest(const QRect&, int)"),
+            self.update_visible_area)
+
     def __calculate_max(self):
         line_height = self._parent.cursorRect().height()
         if line_height > 0:
