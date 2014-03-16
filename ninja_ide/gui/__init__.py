@@ -55,6 +55,7 @@ from ninja_ide.gui.dialogs.preferences import preferences_general
 from ninja_ide.gui.dialogs.preferences import preferences_editor_general
 from ninja_ide.gui.dialogs.preferences import preferences_editor_configuration
 from ninja_ide.gui.dialogs.preferences import preferences_editor_completion
+from ninja_ide.gui.dialogs.preferences import preferences_editor_scheme_designer
 
 from ninja_ide.gui import ide
 #lint:enable
