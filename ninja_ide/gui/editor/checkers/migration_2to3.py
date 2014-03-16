@@ -105,6 +105,11 @@ class MigrationTo3(QThread):
         if tab_migration:
             tab_migration.refresh_lists(self.checks)
 
+    def message(self, index):
+        if index in self.checks:
+            return self.checks[index][0]
+        return None
+
 
 def remove_migration_checker():
     checker = (MigrationTo3,

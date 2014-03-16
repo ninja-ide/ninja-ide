@@ -96,6 +96,11 @@ class Pep8Checker(QThread):
             self.reset()
         self.refresh_display()
 
+    def message(self, index):
+        if index in self.checks and settings.CHECK_HIGHLIGHT_LINE:
+            return self.checks[index][0]
+        return None
+
     def refresh_display(self):
         error_list = IDE.get_service('tab_errors')
         if error_list:
