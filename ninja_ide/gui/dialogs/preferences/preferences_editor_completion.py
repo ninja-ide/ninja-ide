@@ -18,30 +18,51 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QVBoxLayout
+from PyQt4.QtGui import QGroupBox
+from PyQt4.QtGui import QCheckBox
+from PyQt4.QtGui import QGridLayout
+from PyQt4.QtGui import QSpacerItem
+from PyQt4.QtGui import QSizePolicy
+from PyQt4.QtGui import QKeySequence
+from PyQt4.QtCore import Qt
+
+from ninja_ide import translations
+from ninja_ide import resources
+from ninja_ide.core import settings
+from ninja_ide.gui.ide import IDE
+from ninja_ide.gui.dialogs.preferences import preferences
+
 
 class EditorCompletion(QWidget):
 
-    def __init__(self):
+    def __init__(self, parent):
+        super(EditorCompletion, self).__init__()
         QWidget.__init__(self)
         vbox = QVBoxLayout(self)
 
-        groupBoxClose = QGroupBox(self.tr("Complete:"))
+        groupBoxClose = QGroupBox(translations.TR_PREF_EDITOR_COMPLETE)
         formClose = QGridLayout(groupBoxClose)
-        self._checkParentheses = QCheckBox(self.tr("Parentheses: ()"))
+        formClose.setContentsMargins(5, 15, 5, 5)
+        self._checkParentheses = QCheckBox(
+            translations.TR_PREF_EDITOR_PARENTHESES + " ()")
         self._checkParentheses.setChecked('(' in settings.BRACES)
-        self._checkKeys = QCheckBox(self.tr("Keys: {}"))
+        self._checkKeys = QCheckBox(translations.TR_PREF_EDITOR_KEYS + " {}")
         self._checkKeys.setChecked('{' in settings.BRACES)
-        self._checkBrackets = QCheckBox(self.tr("Brackets: []"))
+        self._checkBrackets = QCheckBox(
+            translations.TR_PREF_EDITOR_BRACKETS + " []")
         self._checkBrackets.setChecked('[' in settings.BRACES)
-        self._checkSimpleQuotes = QCheckBox(self.tr("Simple Quotes: ''"))
+        self._checkSimpleQuotes = QCheckBox(
+            translations.TR_PREF_EDITOR_SIMPLE_QUOTES)
         self._checkSimpleQuotes.setChecked("'" in settings.QUOTES)
-        self._checkDoubleQuotes = QCheckBox(self.tr("Double Quotes: \"\""))
+        self._checkDoubleQuotes = QCheckBox(
+            translations.TR_PREF_EDITOR_DOUBLE_QUOTES)
         self._checkDoubleQuotes.setChecked('"' in settings.QUOTES)
         self._checkCompleteDeclarations = QCheckBox(
-            self.tr("Complete Declarations\n"
-            "(execute the opposite action with: %s).") %
-                resources.get_shortcut("Complete-Declarations").toString(
-                    QKeySequence.NativeText))
+            translations.TR_PREF_EDITOR_COMPLETE_DECLARATIONS.format(
+            resources.get_shortcut("Complete-Declarations").toString(
+                    QKeySequence.NativeText)))
         self._checkCompleteDeclarations.setChecked(
             settings.COMPLETE_DECLARATIONS)
         formClose.addWidget(self._checkParentheses, 1, 1,
@@ -54,10 +75,11 @@ class EditorCompletion(QWidget):
             alignment=Qt.AlignTop)
         vbox.addWidget(groupBoxClose)
 
-        groupBoxCode = QGroupBox(self.tr("Code Completion:"))
+        groupBoxCode = QGroupBox(translations.TR_PREF_EDITOR_CODE_COMPLETION)
         formCode = QGridLayout(groupBoxCode)
+        formCode.setContentsMargins(5, 15, 5, 5)
         self._checkCodeDot = QCheckBox(
-            self.tr("Activate Code Completion with: \".\""))
+            translations.TR_PREF_EDITOR_ACTIVATE_COMPLETION)
         self._checkCodeDot.setChecked(settings.CODE_COMPLETION)
         formCode.addWidget(self._checkCompleteDeclarations, 5, 1,
             alignment=Qt.AlignTop)
@@ -68,39 +90,46 @@ class EditorCompletion(QWidget):
             QSizePolicy.Expanding))
 
     def save(self):
-        qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
-        qsettings.beginGroup('preferences')
-        qsettings.beginGroup('editor')
-        qsettings.setValue('parentheses', self._checkParentheses.isChecked())
+        qsettings = IDE.ninja_settings()
         if self._checkParentheses.isChecked():
             settings.BRACES['('] = ')'
         elif ('(') in settings.BRACES:
             del settings.BRACES['(']
-        qsettings.setValue('brackets', self._checkBrackets.isChecked())
+        qsettings.setValue('preferences/editor/parentheses',
+            self._checkParentheses.isChecked())
         if self._checkBrackets.isChecked():
             settings.BRACES['['] = ']'
         elif ('[') in settings.BRACES:
             del settings.BRACES['[']
-        qsettings.setValue('keys', self._checkKeys.isChecked())
+        qsettings.setValue('preferences/editor/brackets',
+            self._checkBrackets.isChecked())
         if self._checkKeys.isChecked():
             settings.BRACES['{'] = '}'
         elif ('{') in settings.BRACES:
             del settings.BRACES['{']
-        qsettings.setValue('simpleQuotes', self._checkSimpleQuotes.isChecked())
+        qsettings.setValue('preferences/editor/keys',
+            self._checkKeys.isChecked())
         if self._checkSimpleQuotes.isChecked():
             settings.QUOTES["'"] = "'"
         elif ("'") in settings.QUOTES:
             del settings.QUOTES["'"]
-        qsettings.setValue('doubleQuotes', self._checkDoubleQuotes.isChecked())
+        qsettings.setValue('preferences/editor/simpleQuotes',
+            self._checkSimpleQuotes.isChecked())
         if self._checkDoubleQuotes.isChecked():
             settings.QUOTES['"'] = '"'
         elif ('"') in settings.QUOTES:
             del settings.QUOTES['"']
-        qsettings.setValue('codeCompletion', self._checkCodeDot .isChecked())
+        qsettings.setValue('preferences/editor/doubleQuotes',
+            self._checkDoubleQuotes.isChecked())
         settings.CODE_COMPLETION = self._checkCodeDot.isChecked()
+        qsettings.setValue('preferences/editor/codeCompletion',
+            self._checkCodeDot .isChecked())
         settings.COMPLETE_DECLARATIONS = \
             self._checkCompleteDeclarations.isChecked()
-        qsettings.setValue("completeDeclarations",
+        qsettings.setValue("preferences/editor/completeDeclarations",
             settings.COMPLETE_DECLARATIONS)
-        qsettings.endGroup()
-        qsettings.endGroup()
+
+
+preferences.Preferences.register_configuration('EDITOR', EditorCompletion,
+    translations.TR_PREFERENCES_EDITOR_COMPLETION,
+    weight=1, subsection='COMPLETION')
