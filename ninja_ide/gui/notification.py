@@ -19,6 +19,8 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+from string import maketrans
+
 from PyQt4.QtGui import QFrame
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtCore import Qt
@@ -65,6 +67,10 @@ class Notification(QFrame):
         y = pgeo.bottom() if conditional_vertical else pgeo.top() - self._height
         self.setFixedWidth(width)
         self.setGeometry(x, y, self.width(), self.height())
+        background_color = str(settings.NOTIFICATION_COLOR)
+        foreground_color = str(settings.NOTIFICATION_COLOR).lower().translate(
+            maketrans('0123456789abcdef', 'fedcba9876543210'))
+        self._root.setColor(background_color, foreground_color)
         self._root.start(self._duration)
 
     def set_message(self, text='', duration=3000):

@@ -405,6 +405,7 @@ def load_settings():
     global MINIMAP_MIN_OPACITY
     global SIZE_PROPORTION
     global NOTIFICATION_POSITION
+    global NOTIFICATION_COLOR
     #General
     HIDE_TOOLBAR = qsettings.value("window/hide_toolbar", False, type=bool)
     SHOW_STATUS_NOTIFICATIONS = qsettings.value(
@@ -547,5 +548,7 @@ def load_settings():
         'preferences/editor/checkForDocstrings', False, type=bool)
     NOTIFICATION_POSITION = qsettings.value(
         'preferences/general/notification_position', 0, type=int)
+    NOTIFICATION_COLOR = qsettings.value(
+        'preferences/general/notification_color', "#000", type='QString')
     from ninja_ide.extensions import handlers
     handlers.init_basic_handlers()
