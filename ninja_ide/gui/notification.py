@@ -14,6 +14,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+
+
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
@@ -23,10 +25,12 @@ from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtDeclarative import QDeclarativeView
 
+from ninja_ide.core import settings
 from ninja_ide.tools import ui_tools
 
 
 class Notification(QFrame):
+    """Notification class with the Logic for the QML UI"""
 
     def __init__(self, parent=None):
         super(Notification, self).__init__(None, Qt.ToolTip)
@@ -35,7 +39,7 @@ class Notification(QFrame):
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setAttribute(Qt.WA_TransparentForMouseEvents)
         self.setAttribute(Qt.WA_ShowWithoutActivating)
-        self.setStyleSheet("background:transparent;")
+        self.setStyleSheet("background:transparent")
         self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
         self.setFixedHeight(30)
         # Create the QML user interface.
@@ -52,14 +56,18 @@ class Notification(QFrame):
         self.connect(self._root, SIGNAL("close()"), self.close)
 
     def showEvent(self, event):
+        """Method takes an event to show the Notification"""
         super(Notification, self).showEvent(event)
-        width = self._parent.width() / 2
-        x = self._parent.geometry().left()
-        y = self._parent.geometry().bottom() - self._height
+        width, pgeo = self._parent.width() / 2, self._parent.geometry()
+        conditional_vertical = settings.NOTIFICATION_POSITION in (0, 1)
+        conditional_horizont = settings.NOTIFICATION_POSITION in (0, 2)
+        x = pgeo.left() if conditional_horizont else pgeo.right()
+        y = pgeo.bottom() if conditional_vertical else pgeo.top() - self._height
         self.setFixedWidth(width)
         self.setGeometry(x, y, self.width(), self.height())
-        self._root.start(3000)
+        self._root.start(self._duration)
 
     def set_message(self, text='', duration=3000):
+        """Method that takes str text and int duration to setup Notification"""
         self._root.setText(text)
         self._duration = duration

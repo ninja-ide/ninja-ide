@@ -15,13 +15,16 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QVBoxLayout
+from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QGroupBox
 from PyQt4.QtGui import QCheckBox
+from PyQt4.QtGui import QComboBox
 from PyQt4.QtGui import QGridLayout
 from PyQt4.QtGui import QLineEdit
 from PyQt4.QtGui import QMessageBox
@@ -40,6 +43,7 @@ from ninja_ide.tools import ui_tools
 
 
 class GeneralConfiguration(QWidget):
+    """General Configuration class"""
 
     def __init__(self, parent):
         super(GeneralConfiguration, self).__init__()
@@ -50,6 +54,7 @@ class GeneralConfiguration(QWidget):
         groupBoxClose = QGroupBox(translations.TR_PREFERENCES_GENERAL_CLOSE)
         groupBoxWorkspace = QGroupBox(
             translations.TR_PREFERENCES_GENERAL_WORKSPACE)
+        groupBoxNoti = QGroupBox(translations.TR_NOTIFICATION)
         groupBoxReset = QGroupBox(translations.TR_PREFERENCES_GENERAL_RESET)
 
         #Start
@@ -78,8 +83,7 @@ class GeneralConfiguration(QWidget):
             self._txtWorkspace.clear,
             self.style().standardPixmap(self.style().SP_TrashIcon))
         self._txtWorkspace.setReadOnly(True)
-        self._btnWorkspace = QPushButton(
-            QIcon(':img/openFolder'), '')
+        self._btnWorkspace = QPushButton(QIcon(':img/openFolder'), '')
         gridWorkspace.addWidget(
             QLabel(translations.TR_PREFERENCES_GENERAL_WORKSPACE), 0, 0,
             Qt.AlignRight)
@@ -90,6 +94,16 @@ class GeneralConfiguration(QWidget):
             translations.TR_PREFERENCES_GENERAL_SUPPORTED_EXT), 1, 0,
             Qt.AlignRight)
         gridWorkspace.addWidget(self._txtExtensions, 1, 1)
+
+        # Notification
+        hboxNoti, self._notify_position = QHBoxLayout(groupBoxNoti), QComboBox()
+        self._notify_position.addItems(
+            [translations.TR_BOTTOM + "-" + translations.TR_LEFT,
+             translations.TR_BOTTOM + "-" + translations.TR_RIGHT,
+             translations.TR_TOP + "-" + translations.TR_LEFT,
+             translations.TR_TOP + "-" + translations.TR_RIGHT])
+        hboxNoti.addWidget(QLabel(translations.TR_POSITION_ON_SCREEN))
+        hboxNoti.addWidget(self._notify_position)
 
         # Resetting preferences
         vboxReset = QVBoxLayout(groupBoxReset)
@@ -113,12 +127,14 @@ class GeneralConfiguration(QWidget):
         self._txtWorkspace.setText(settings.WORKSPACE)
         extensions = ', '.join(settings.SUPPORTED_EXTENSIONS)
         self._txtExtensions.setText(extensions)
+        self._notify_position.setCurrentIndex(settings.NOTIFICATION_POSITION)
         qsettings.endGroup()
         qsettings.endGroup()
 
         vbox.addWidget(groupBoxStart)
         vbox.addWidget(groupBoxClose)
         vbox.addWidget(groupBoxWorkspace)
+        vbox.addWidget(groupBoxNoti)
         vbox.addWidget(groupBoxReset)
 
         #Signals
@@ -129,17 +145,20 @@ class GeneralConfiguration(QWidget):
         self.connect(self._preferences, SIGNAL("savePreferences()"), self.save)
 
     def _load_workspace(self):
+        """Ask the user for a Workspace path"""
         path = QFileDialog.getExistingDirectory(
             self, translations.TR_PREFERENCES_GENERAL_SELECT_WORKSPACE)
         self._txtWorkspace.setText(path)
 
     def _load_python_path(self):
+        """Ask the user for a Python path"""
         path = QFileDialog.getOpenFileName(self,
             translations.TR_PREFERENCES_GENERAL_SELECT_PYTHON_PATH)
         if path:
             self._txtPythonPath.setText(path)
 
     def save(self):
+        """Method to Save all preferences values"""
         qsettings = IDE.ninja_settings()
         qsettings.setValue('preferences/general/loadFiles',
             self._checkLastSession.isChecked())
@@ -160,8 +179,12 @@ class GeneralConfiguration(QWidget):
         qsettings.setValue('preferences/general/supportedExtensions',
             extensions)
         settings.SUPPORTED_EXTENSIONS = list(extensions)
+        settings.NOTIFICATION_POSITION = self._notify_position.currentIndex()
+        qsettings.setValue('preferences/general/notification_position',
+            settings.NOTIFICATION_POSITION)
 
     def _reset_preferences(self):
+        """Method to Reset all Preferences to default values"""
         result = QMessageBox.question(self,
             translations.TR_PREFERENCES_GENERAL_RESET_TITLE,
             translations.TR_PREFERENCES_GENERAL_RESET_BODY,
