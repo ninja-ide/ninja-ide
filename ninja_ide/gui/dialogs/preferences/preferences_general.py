@@ -32,6 +32,7 @@ from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QPushButton
+from PyQt4.QtGui import QColorDialog
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
@@ -102,8 +103,12 @@ class GeneralConfiguration(QWidget):
              translations.TR_BOTTOM + "-" + translations.TR_RIGHT,
              translations.TR_TOP + "-" + translations.TR_LEFT,
              translations.TR_TOP + "-" + translations.TR_RIGHT])
+        self._notify_color = QPushButton(
+                             translations.TR_EDITOR_SCHEME_PICK_COLOR)
+        self._notification_choosed_color = settings.NOTIFICATION_COLOR
         hboxNoti.addWidget(QLabel(translations.TR_POSITION_ON_SCREEN))
         hboxNoti.addWidget(self._notify_position)
+        hboxNoti.addWidget(self._notify_color, 0, Qt.AlignRight)
 
         # Resetting preferences
         vboxReset = QVBoxLayout(groupBoxReset)
@@ -140,9 +145,16 @@ class GeneralConfiguration(QWidget):
         #Signals
         self.connect(self._btnWorkspace,
             SIGNAL("clicked()"), self._load_workspace)
+        self.connect(self._notify_color, SIGNAL("clicked()"), self._pick_color)
         self.connect(self._btnReset,
             SIGNAL('clicked()'), self._reset_preferences)
         self.connect(self._preferences, SIGNAL("savePreferences()"), self.save)
+
+    def _pick_color(self):
+        """Ask the user for a Color"""
+        choosed_color = QColorDialog.getColor()
+        if choosed_color.isValid():
+            self._notification_choosed_color = choosed_color.name()
 
     def _load_workspace(self):
         """Ask the user for a Workspace path"""
@@ -182,6 +194,9 @@ class GeneralConfiguration(QWidget):
         settings.NOTIFICATION_POSITION = self._notify_position.currentIndex()
         qsettings.setValue('preferences/general/notification_position',
             settings.NOTIFICATION_POSITION)
+        settings.NOTIFICATION_COLOR = self._notification_choosed_color
+        qsettings.setValue('preferences/general/notification_color',
+            settings.NOTIFICATION_COLOR)
 
     def _reset_preferences(self):
         """Method to Reset all Preferences to default values"""
