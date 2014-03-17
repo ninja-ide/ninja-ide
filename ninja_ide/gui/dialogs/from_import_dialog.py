@@ -41,9 +41,12 @@ class FromImportDialog(QDialog):
         self.setWindowTitle('from ... import ...')
         self._editorWidget = editorWidget
 
-        text = self._editorWidget.get_text()
-        self._imports = introspection.obtain_imports(text)
+        source = self._editorWidget.get_text()
+        source = source.encode(self._editorWidget.encoding)
+        self._imports = introspection.obtain_imports(source)
 
+        self._imports_names = list(self._imports["imports"].keys())
+        self._imports_names += [imp for imp in self._imports['fromImports']]
         self._froms = [self._imports['fromImports'][imp]['module']
                             for imp in self._imports['fromImports']]
         self._froms += builtin_module_names
@@ -58,6 +61,8 @@ class FromImportDialog(QDialog):
         hbox.addWidget(self._lineFrom)
         hbox.addWidget(QLabel('import'))
         self._lineImport = QLineEdit()
+        self._completerImport = QCompleter(self._imports_names)
+        self._lineImport.setCompleter(self._completerImport)
         hbox.addWidget(self._lineImport)
         self._btnAdd = QPushButton(self.tr('Add'))
         hbox.addWidget(self._btnAdd)

@@ -18,7 +18,7 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QGroupBox
 from PyQt4.QtGui import QCheckBox
@@ -32,13 +32,12 @@ from ninja_ide import translations
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
-from ninja_ide.gui.dialogs.preferences import preferences
 
 
-class EditorCompletion(QWidget):
+class EditorSchemeDesigner(QDialog):
 
     def __init__(self, parent):
-        super(EditorCompletion, self).__init__()
+        super(EditorSchemeDesigner, self).__init__(parent)
         vbox = QVBoxLayout(self)
 
         groupBoxClose = QGroupBox(translations.TR_PREF_EDITOR_COMPLETE)
@@ -127,8 +126,3 @@ class EditorCompletion(QWidget):
             self._checkCompleteDeclarations.isChecked()
         qsettings.setValue("preferences/editor/completeDeclarations",
             settings.COMPLETE_DECLARATIONS)
-
-
-preferences.Preferences.register_configuration('EDITOR', EditorCompletion,
-    translations.TR_PREFERENCES_EDITOR_COMPLETION,
-    weight=1, subsection='COMPLETION')

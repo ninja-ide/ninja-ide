@@ -49,6 +49,7 @@ from PyQt4.QtGui import QCheckBox
 from PyQt4.QtGui import QTableWidget
 from PyQt4.QtGui import QKeySequence
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import QSize
 from PyQt4.QtCore import QDir
 from PyQt4.QtCore import QUrl
 from PyQt4.QtCore import QObject
@@ -357,6 +358,7 @@ class LineEditButton(object):
         btnOperation.setObjectName('line_button')
         if icon:
             btnOperation.setIcon(QIcon(icon))
+            btnOperation.setIconSize(QSize(16, 16))
         hbox.addWidget(btnOperation)
         btnOperation.clicked.connect(operation)
 
@@ -373,6 +375,7 @@ class ComboBoxButton(object):
         btnOperation.setObjectName('combo_button')
         if icon:
             btnOperation.setIcon(QIcon(icon))
+            btnOperation.setIconSize(QSize(16, 16))
         hbox.addWidget(btnOperation)
         btnOperation.clicked.connect(operation)
 
