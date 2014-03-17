@@ -114,14 +114,17 @@ class EditorGeneral(QWidget):
         self.connect(btnDownload, SIGNAL("clicked()"),
             self._open_schemes_manager)
         hbox.addWidget(btnDownload)
+        #FIXME: NOT DONE
         btnAdd = QPushButton(QIcon(":img/add"),
             translations.TR_EDITOR_CREATE_SCHEME)
         btnAdd.setIconSize(QSize(16, 16))
         btnAdd.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.connect(btnAdd, SIGNAL("clicked()"), self._open_schemes_designer)
         btnRemove = QPushButton(QIcon(":img/delete"),
             translations.TR_EDITOR_REMOVE_SCHEME)
         btnRemove.setIconSize(QSize(16, 16))
         btnRemove.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.connect(btnRemove, SIGNAL("clicked()"), self._remove_scheme)
         hbox.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
         hbox.addWidget(btnAdd)
         hbox.addWidget(btnRemove)
@@ -167,6 +170,12 @@ class EditorGeneral(QWidget):
         ninjaide = IDE.get_service("ide")
         ninjaide.show_schemes()
         # refresh schemes
+
+    def _open_schemes_designer(self):
+        pass
+
+    def _remove_scheme(self):
+        pass
 
     def hideEvent(self, event):
         super(EditorGeneral, self).hideEvent(event)
