@@ -42,8 +42,10 @@ from PyQt4.QtCore import SIGNAL
 from ninja_ide import resources
 from ninja_ide import translations
 from ninja_ide.core import settings
+from ninja_ide.core.file_handling import file_manager
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs.preferences import preferences
+from ninja_ide.gui.dialogs.preferences import preferences_editor_scheme_designer
 from ninja_ide.tools import json_manager
 
 
@@ -114,7 +116,6 @@ class EditorGeneral(QWidget):
         self.connect(btnDownload, SIGNAL("clicked()"),
             self._open_schemes_manager)
         hbox.addWidget(btnDownload)
-        #FIXME: NOT DONE
         btnAdd = QPushButton(QIcon(":img/add"),
             translations.TR_EDITOR_CREATE_SCHEME)
         btnAdd.setIconSize(QSize(16, 16))
@@ -172,10 +173,26 @@ class EditorGeneral(QWidget):
         # refresh schemes
 
     def _open_schemes_designer(self):
-        pass
+        name = self._listScheme.currentItem().text()
+        scheme = self._schemes.get(name, resources.COLOR_SCHEME)
+        designer = preferences_editor_scheme_designer.EditorSchemeDesigner(
+            scheme, self)
+        designer.exec_()
+        if designer.saved:
+            scheme_name = designer.line_name.text()
+            scheme = designer.original_style
+            self._schemes[scheme_name] = scheme
+            result = self._listScheme.findItems(scheme_name, Qt.MatchExactly)
+            if not result:
+                self._listScheme.addItem(scheme_name)
 
     def _remove_scheme(self):
-        pass
+        name = self._listScheme.currentItem().text()
+        fileName = ('{0}.color'.format(
+            file_manager.create_path(resources.EDITOR_SKINS, name)))
+        file_manager.delete_file(fileName)
+        item = self._listScheme.takeItem(self._listScheme.currentRow())
+        del item
 
     def hideEvent(self, event):
         super(EditorGeneral, self).hideEvent(event)

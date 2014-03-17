@@ -192,6 +192,9 @@ class Editor(QPlainTextEdit):
             self._update_margin_line)
         self.connect(ninjaide,
             SIGNAL("ns_preferences_editor_scheme(PyQt_PyObject)"),
+            self.restyle)
+        self.connect(ninjaide,
+            SIGNAL("ns_preferences_editor_scheme(PyQt_PyObject)"),
             lambda: self.restyle())
 
     @property
