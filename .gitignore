@@ -12,3 +12,10 @@ build/*
 dist/*
 
 *.pyo
+
+ninja_ide/gui/dialogs/.ropeproject/config.py
+ninja_ide/gui/dialogs/.ropeproject/globalnames
+ninja_ide/gui/dialogs/.ropeproject/history
+ninja_ide/gui/dialogs/.ropeproject/objectdb
+nohup.out
+

@@ -77,7 +77,7 @@ Rectangle {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     horizontalAlignment: Text.AlignHCenter
-                    text: "NINJA-IDE (from: \"Ninja-IDE Is Not Just Another IDE\"), is a cross-platform integrated development environment specially designed to build Python Applications. NINJA-IDE provides tools to simplify the Python-software development and handles all kinds of situations thanks to its rich extensibility."
+                    text: "NINJA-IDE (from: \"Ninja-IDE Is Not Just Another IDE\"), is a cross-platform integrated development environment specifically designed to build Python Applications. NINJA-IDE provides the tools necessary to simplify the Python software development process and handles all kinds of situations thanks to its rich extensibility."
                     wrapMode: Text.WordWrap
                 }
 
