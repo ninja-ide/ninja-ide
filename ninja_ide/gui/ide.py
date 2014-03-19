@@ -74,14 +74,14 @@ logger = NinjaLogger('ninja_ide.gui.ide')
 ###############################################################################
 
 class IDE(QMainWindow):
-    """This class is like the Sauron's Ring:
+    """This class is like Sauron's Ring:
     One ring to rule them all, One ring to find them,
     One ring to bring them all and in the darkness bind them.
 
-    This Class knows all the containers, and its know by all the containers,
-    but the containers don't need to know between each other, in this way we
-    can keep a better api without the need to tie the behaviour between
-    the widgets, and let them just consume the 'actions' they need."""
+    This class knows all the containers, and is known by all the containers,
+    but the containers don't need to know about each other so that we may
+    maintain a better api, without the need to increase the coupling between
+    widgets.  In other words, widgets simply consume the 'actions' they need."""
 
 ###############################################################################
 # SIGNALS
