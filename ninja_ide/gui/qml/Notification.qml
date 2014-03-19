@@ -14,7 +14,12 @@ Rectangle {
     signal close
 
     function setText(message){
-        textArea.text = message;
+        textArea.text = message
+    }
+
+    function setColor(background_color, foreground_color){
+        frame.color = background_color;
+        textArea.color = foreground_color
     }
 
     function start(interval) {

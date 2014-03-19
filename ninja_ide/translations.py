@@ -405,7 +405,7 @@ TR_TYPING_ASSISTANCE = tr("NINJA-IDE", "Typing assistance")
 TR_HIGHLIGHTER_EXTRAS = tr("NINJA-IDE", "Highlighter extras")
 TR_EDITOR_CREATE_SCHEME = tr("NINJA-IDE", "Create Scheme")
 TR_EDITOR_REMOVE_SCHEME = tr("NINJA-IDE", "Remove scheme")
-TR_EDITOR_SCHEME_PICK_COLOR = tr("NINJA-IDE", "Pick Color")
+TR_EDITOR_SCHEME_PICK_COLOR = tr("NINJA-IDE", "Pick color")
 
 
 # tree symbol
