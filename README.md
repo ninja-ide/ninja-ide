@@ -27,7 +27,7 @@ You can clone this repo and simply execute:
     cd ninja-ide
     python ninja-ide.py
 
-Piece of cake, uh?
+Piece of cake, huh?
 
 ## Source Code API Documentation
 

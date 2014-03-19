@@ -112,7 +112,7 @@ class TreeHeader(QHeaderView):
         font.setBold(True)
         painter.setFont(font)
         font_metrics = QFontMetrics(painter.font())
-        ypos = (rect.height() / 2) + (font_metrics.height() / 3)
+        ypos = int(rect.height() / 2.0) + int(font_metrics.height() / 3.0)
         painter.drawText(10, ypos, self.title)
 
     def enterEvent(self, event):
