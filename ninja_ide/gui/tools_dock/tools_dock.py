@@ -78,41 +78,31 @@ class _ToolsDock(QWidget):
         vbox.addWidget(self.stack)
 
         self._console = console_widget.ConsoleWidget()
-        self.stack.addWidget(self._console)
-
         self._runWidget = run_widget.RunWidget()
-        self.stack.addWidget(self._runWidget)
-
         self._web = web_render.WebRender()
-        self.stack.addWidget(self._web)
-
         self._findInFilesWidget = find_in_files.FindInFilesWidget(
             self.parent())
-        self.stack.addWidget(self._findInFilesWidget)
 
+        # Not Configurable Shortcuts
+        shortEscMisc = QShortcut(QKeySequence(Qt.Key_Escape), self)
+
+        self.connect(shortEscMisc, SIGNAL("activated()"), self.hide)
+
+        #Toolbar
+        hbox.addWidget(self.__toolbar)
+        self.add_to_stack(self._console, ":img/console",
+            translations.TR_CONSOLE)
+        self.add_to_stack(self._runWidget, ":img/play",
+            translations.TR_OUTPUT)
+        self.add_to_stack(self._web, ":img/web",
+            translations.TR_WEB_PREVIEW)
+        self.add_to_stack(self._findInFilesWidget, ":img/find",
+            translations.TR_FIND_IN_FILES)
         #Last Element in the Stacked widget
         self._results = results.Results(self)
         self.stack.addWidget(self._results)
-
-        self._btnConsole = QPushButton(QIcon(":img/console"), '')
-        self._btnConsole.setIconSize(QSize(16, 16))
-        self._btnConsole.setToolTip(translations.TR_CONSOLE)
-        self._btnRun = QPushButton(QIcon(":img/play"), '')
-        self._btnRun.setIconSize(QSize(16, 16))
-        self._btnRun.setToolTip(translations.TR_OUTPUT)
-        self._btnWeb = QPushButton(QIcon(":img/web"), '')
-        self._btnWeb.setIconSize(QSize(16, 16))
-        self._btnWeb.setToolTip(translations.TR_WEB_PREVIEW)
-        self._btnFind = QPushButton(QIcon(":img/find"), '')
-        self._btnFind.setIconSize(QSize(16, 16))
-        self._btnFind.setToolTip(translations.TR_FIND_IN_FILES)
-        #Toolbar
-        hbox.addWidget(self.__toolbar)
-        self.__toolbar.addWidget(self._btnConsole)
-        self.__toolbar.addWidget(self._btnRun)
-        self.__toolbar.addWidget(self._btnWeb)
-        self.__toolbar.addWidget(self._btnFind)
         self.__toolbar.addSeparator()
+
         hbox.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
         btn_close = QPushButton(
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
@@ -120,19 +110,6 @@ class _ToolsDock(QWidget):
         btn_close.setObjectName('navigation_button')
         btn_close.setToolTip('F4: ' + translations.TR_ALL_VISIBILITY)
         hbox.addWidget(btn_close)
-
-        # Not Configurable Shortcuts
-        shortEscMisc = QShortcut(QKeySequence(Qt.Key_Escape), self)
-
-        self.connect(shortEscMisc, SIGNAL("activated()"), self.hide)
-        self.connect(self._btnConsole, SIGNAL("clicked()"),
-            lambda: self._item_changed(0))
-        self.connect(self._btnRun, SIGNAL("clicked()"),
-            lambda: self._item_changed(1))
-        self.connect(self._btnWeb, SIGNAL("clicked()"),
-            lambda: self._item_changed(2))
-        self.connect(self._btnFind, SIGNAL("clicked()"),
-            lambda: self._item_changed(3))
         self.connect(btn_close, SIGNAL('clicked()'), self.hide)
 
     def install(self):
