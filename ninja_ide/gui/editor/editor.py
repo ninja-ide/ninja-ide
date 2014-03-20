@@ -181,9 +181,10 @@ class Editor(QPlainTextEdit):
         self.connect(ninjaide,
             SIGNAL("ns_preferences_editor_showTabsAndSpaces(PyQt_PyObject)"),
             self.set_flags)
-        self.connect(ninjaide,
-            SIGNAL("ns_preferences_editor_minimapShow(PyQt_PyObject)"),
-            self._load_minimap)
+        #TODO: figure it out it doesn´t work if gets shown after init
+        #self.connect(ninjaide,
+            #SIGNAL("ns_preferences_editor_minimapShow(PyQt_PyObject)"),
+            #self._load_minimap)
         self.connect(ninjaide,
             SIGNAL("ns_preferences_editor_indent(PyQt_PyObject)"),
             self.load_project_config)
