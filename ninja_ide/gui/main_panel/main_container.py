@@ -27,7 +27,6 @@ from PyQt4.QtGui import QStackedLayout
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QPixmap
-from PyQt4.QtGui import QInputDialog
 from PyQt4.QtCore import QDir
 from PyQt4.QtCore import SIGNAL
 
@@ -428,10 +427,9 @@ class _MainContainer(QWidget):
             editorWidget.to_upper()
 
     def editor_get_jump_to_line_number(self):
-        lineNo, ok = QInputDialog.getInt(self, 'Jump to Line',
-                                            'Enter line number:')
-        if ok:
-            self.editor_jump_to_line(lineno=lineNo)
+        editorWidget = self.get_current_editor()
+        if editorWidget:
+            editorWidget.jump_to_line()
 
     def editor_lower(self):
         editorWidget = self.get_current_editor()
