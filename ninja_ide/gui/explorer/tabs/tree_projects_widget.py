@@ -354,6 +354,10 @@ class ProjectTreeColumn(QDialog):
                              reverse=True)   # sort by date last used
         return listFounder[0][0]
 
+    def reject(self):
+        if self.parent() is None:
+            self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
+
     def closeEvent(self, event):
         self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
         event.ignore()
