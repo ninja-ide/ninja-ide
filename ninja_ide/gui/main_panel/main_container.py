@@ -430,7 +430,6 @@ class _MainContainer(QWidget):
     def editor_get_jump_to_line_number(self):
         lineNo, ok = QInputDialog.getInt(self, 'Jump to Line',
                                             'Enter line number:')
-        import pdb; pdb.set_trace();
         if ok:
             self.editor_jump_to_line(lineno=lineNo)
 
