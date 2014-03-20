@@ -349,6 +349,13 @@ ACTIONS = (
     "connect": "editor_paste"
     },
     {
+    "shortcut": "Jump",
+    "action": {'text': translations.TR_JUMP_TO_LINE,
+               'section': (translations.TR_MENU_EDIT, None),
+               'weight': 240},
+    "connect": "editor_get_jump_to_line_number"
+    },
+    {
     "action": {'text': translations.TR_PREVIEW_IN_BROWSER,
                'image': 'preview-web',
                'section': (translations.TR_MENU_PROJECT, None),

@@ -201,6 +201,7 @@ SHORTCUTS = {
     "Follow-mode": QKeySequence(Qt.CTRL + Qt.Key_F10),
     "Reload-file": QKeySequence(Qt.Key_F5),
     "Find-in-files": QKeySequence(Qt.CTRL + Qt.Key_L),
+    "Jump": QKeySequence(Qt.CTRL + Qt.Key_G),
     "Import": QKeySequence(Qt.CTRL + Qt.Key_I),
     "Go-to-definition": QKeySequence(Qt.CTRL + Qt.Key_Return),
     "Complete-Declarations": QKeySequence(Qt.ALT + Qt.Key_Return),
