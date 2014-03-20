@@ -33,11 +33,12 @@ from PyQt4.QtGui import QMessageBox
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QEvent
-from PyQt4.QtCore import QSettings
 
 from ninja_ide import resources
 from ninja_ide.gui import actions
 from ninja_ide import translations
+from ninja_ide.gui.ide import IDE
+from ninja_ide.gui.dialogs.preferences import preferences
 
 
 class TreeResult(QTreeWidget):
@@ -62,7 +63,7 @@ class ShortcutDialog(QDialog):
     """
 
     def __init__(self, parent):
-        QDialog.__init__(self, parent)
+        super(ShortcutDialog, self).__init__()
         self.keys = 0
         #Keyword modifiers!
         self.keyword_modifiers = (Qt.Key_Control, Qt.Key_Meta, Qt.Key_Shift,
@@ -132,10 +133,20 @@ class ShortcutConfiguration(QWidget):
     Dialog to manage ALL shortcuts
     """
 
-    def __init__(self):
-        QWidget.__init__(self)
+    def __init__(self, parent):
+        super(ShortcutConfiguration, self).__init__()
 
         self.shortcuts_text = {
+            "Show-Selector": translations.TR_SHOW_SELECTOR,
+            "cut": translations.TR_CUT,
+            "Indent-more": translations.TR_INDENT_MORE,
+            "expand-file-combo": translations.TR_EXPAND_FILE_COMBO,
+            "expand-symbol-combo": translations.TR_EXPAND_SYMBOL_COMBO,
+            "undo": translations.TR_UNDO,
+            "Close-Split": translations.TR_CLOSE_SPLIT,
+            "Split-assistance": translations.TR_SHOW_SPLIT_ASSISTANCE,
+            "copy": translations.TR_COPY,
+            "paste": translations.TR_PASTE,
             "Duplicate": translations.TR_DUPLICATE_SELECTION,
             "Remove-line": translations.TR_REMOVE_SELECTION,
             "Move-up": translations.TR_MOVE_SELECTION_UP,
@@ -285,7 +296,7 @@ class ShortcutConfiguration(QWidget):
         """
         Save all shortcuts to settings
         """
-        settings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
+        settings = IDE.ninja_settings()
         settings.beginGroup("shortcuts")
         for index in range(self.result_widget.topLevelItemCount()):
             item = self.result_widget.topLevelItem(index)
@@ -317,3 +328,7 @@ class ShortcutConfiguration(QWidget):
                 shortcut_action.toString(QKeySequence.NativeText), name]
             item = QTreeWidgetItem(self.result_widget, tree_data)
             item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+
+
+preferences.Preferences.register_configuration('GENERAL', ShortcutConfiguration,
+    translations.TR_PREFERENCES_SHORTCUTS, weight=1, subsection='SHORTCUTS')
