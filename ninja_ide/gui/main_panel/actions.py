@@ -19,6 +19,16 @@ from ninja_ide import translations
 #FIXME: add remove unused imports
 #FIXME: add extract method
 
+'''Actions included here are those that are associated with the main
+IDE window, in other words, these are all actions the signals of which
+must ultimately connect to slots in main_container.py
+
+The weight attribute is used to determine the order in which the actions
+are added to the menus.  The first digit determines the menu section it
+must be placed in and the subsequent digits its position in that section,
+i.e. everything 1** will be in the same section (a section being an area in
+the menu between separators) everything 2** in another section LOWER than
+the section determined by 1** and so forth.'''
 ACTIONS = (
     {
     "shortcut": "Show-Selector",
