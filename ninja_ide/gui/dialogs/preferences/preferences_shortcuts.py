@@ -331,4 +331,4 @@ class ShortcutConfiguration(QWidget):
 
 
 preferences.Preferences.register_configuration('GENERAL', ShortcutConfiguration,
-    translations.TR_PREFERENCES_SHORTCUTS, weight=1, subsection='SHORTCUTS')
+    translations.TR_PREFERENCES_SHORTCUTS, weight=2, subsection='SHORTCUTS')
