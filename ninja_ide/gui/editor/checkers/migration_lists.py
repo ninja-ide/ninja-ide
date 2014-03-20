@@ -135,6 +135,10 @@ class MigrationWidget(QDialog):
         self.current_list.clear()
         self.suggestion.clear()
 
+    def reject(self):
+        if self.parent() is None:
+            self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
+
     def closeEvent(self, event):
         self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
         event.ignore()

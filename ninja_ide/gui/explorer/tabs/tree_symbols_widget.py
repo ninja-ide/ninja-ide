@@ -300,6 +300,10 @@ class TreeSymbolsWidget(QDialog):
         self.tree.clear()
         self.collapsedItems = {}
 
+    def reject(self):
+        if self.parent() is None:
+            self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
+
     def closeEvent(self, event):
         """On Close event handling"""
         self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)

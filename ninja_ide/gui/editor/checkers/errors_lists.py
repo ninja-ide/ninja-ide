@@ -165,6 +165,10 @@ class ErrorsWidget(QDialog):
         self.listErrors.clear()
         self.listPep8.clear()
 
+    def reject(self):
+        if self.parent() is None:
+            self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
+
     def closeEvent(self, event):
         self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
         event.ignore()
