@@ -19,71 +19,18 @@ from ninja_ide import translations
 #FIXME: add remove unused imports
 #FIXME: add extract method
 
+'''Actions included here are those that are associated with the main
+IDE window, in other words, all actions the signals of which must ultimately
+connect to slots in main_container.py
+
+The weight attribute is used to determine the order in which the actions
+are ultimately added.  The first digit determines the menu section it
+must be placed in and the subsequent digits its position in that section,
+i.e. everything 1** will be in the same section (a section being an area in
+the menu between separators) everything 2** in another section LOWER than
+the section determined by 1** and so forth.'''
 ACTIONS = (
-    {
-    "shortcut": "Show-Selector",
-    "action": {'text': translations.TR_SHOW_SELECTOR,
-               'image': 'selector',
-               'section': (translations.TR_MENU_FILE, None),
-               'weight': 500},
-    "connect": "show_selector"
-    },
-    {
-    "shortcut": "Change-Tab",
-    "connect": "change_tab"
-    },
-    {
-    "shortcut": "expand-file-combo",
-    "connect": "expand_file_combo"
-    },
-    {
-    "shortcut": "expand-symbol-combo",
-    "connect": "expand_symbol_combo"
-    },
-    {
-    "shortcut": "Change-Tab-Reverse",
-    "connect": "change_tab_reverse"
-    },
-    {
-    "shortcut": "Duplicate",
-    "action": {'text': translations.TR_DUPLICATE,
-               'image': None,
-               'section': (translations.TR_MENU_SOURCE, None),
-               'weight': 470},
-    "connect": "editor_duplicate"
-    },
-    {
-    "shortcut": "Remove-line",
-    "action": {'text': translations.TR_REMOVE_LINE,
-               'image': None,
-               'section': (translations.TR_MENU_SOURCE, None),
-               'weight': 480},
-    "connect": "editor_remove_line"
-    },
-    {
-    "shortcut": "Move-up",
-    "action": {'text': translations.TR_MOVE_UP,
-               'image': None,
-               'section': (translations.TR_MENU_SOURCE, None),
-               'weight': 440},
-    "connect": "editor_move_up"
-    },
-    {
-    "shortcut": "Move-down",
-    "action": {'text': translations.TR_MOVE_DOWN,
-               'image': None,
-               'section': (translations.TR_MENU_SOURCE, None),
-               'weight': 450},
-    "connect": "editor_move_down"
-    },
-    {
-    "shortcut": "Close-file",
-    "action": {'text': translations.TR_CLOSE_FILE,
-               'image': QStyle.SP_DialogCloseButton,
-               'section': (translations.TR_MENU_FILE, None),
-               'weight': 910},
-    "connect": "close_file"
-    },
+    # Add FILE MENU actions here:
     {
     "shortcut": "New-file",
     "action": {'text': translations.TR_NEW_FILE,
@@ -91,14 +38,6 @@ ACTIONS = (
                'section': (translations.TR_MENU_FILE, None),
                'weight': 100},
     "connect": "add_editor"
-    },
-    {
-    "shortcut": "Open-file",
-    "action": {'text': translations.TR_OPEN,
-               'image': 'open',
-               'section': (translations.TR_MENU_FILE, None),
-               'weight': 400},
-    "connect": "open_file"
     },
     {
     "shortcut": "Save-file",
@@ -123,24 +62,62 @@ ACTIONS = (
     "connect": "save_all"
     },
     {
-    "action": {'text': translations.TR_UNDO,
-               'image': 'undo',
-               'section': (translations.TR_MENU_EDIT, None),
-               'keysequence': 'undo',
-               'weight': 100},
-    "connect": "editor_undo"
+    "shortcut": "Reload-file",
+    "action": {'text': translations.TR_RELOAD_FILE,
+               'image': 'reload-file',
+               'section': (translations.TR_MENU_FILE, None),
+               'weight': 300},
+    "connect": "reload_file"
     },
     {
-    "shortcut": "Redo",
-    "action": {'text': translations.TR_REDO,
-               'image': 'redo',
-               'section': (translations.TR_MENU_EDIT, None),
+    "shortcut": "Open-file",
+    "action": {'text': translations.TR_OPEN,
+               'image': 'open',
+               'section': (translations.TR_MENU_FILE, None),
+               'weight': 400},
+    "connect": "open_file"
+    },
+    {
+    "shortcut": "Show-Selector",
+    "action": {'text': translations.TR_SHOW_SELECTOR,
+               'image': 'selector',
+               'section': (translations.TR_MENU_FILE, None),
+               'weight': 500},
+    "connect": "show_selector"
+    },
+    {
+    "shortcut": "Print-file",
+    "action": {'text': translations.TR_PRINT_FILE,
+               'image': 'print',
+               'section': (translations.TR_MENU_FILE, None),
+               'weight': 900},
+    "connect": "print_file"
+    },
+    {
+    "shortcut": "Close-file",
+    "action": {'text': translations.TR_CLOSE_FILE,
+               'image': QStyle.SP_DialogCloseButton,
+               'section': (translations.TR_MENU_FILE, None),
+               'weight': 910},
+    "connect": "close_file"
+    },
+
+    # Add SOURCE MENUE actions here:
+    {
+    "action": {'text': translations.TR_INDENT_MORE,
+               'image': 'indent-more',
+               'section': (translations.TR_MENU_SOURCE, None),
+               'weight': 100,
+               'keysequence': 'Indent-more'},
+    "connect": "editor_indent_more"
+    },
+    {
+    "shortcut": "Indent-less",
+    "action": {'text': translations.TR_INDENT_LESS,
+               'image': 'indent-less',
+               'section': (translations.TR_MENU_SOURCE, None),
                'weight': 110},
-    "connect": "editor_redo"
-    },
-    {
-    "shortcut": "Add-Bookmark-or-Breakpoint",
-    "connect": "add_bookmark_breakpoint"
+    "connect": "editor_indent_less"
     },
     {
     "shortcut": "Comment",
@@ -181,58 +158,12 @@ ACTIONS = (
     "connect": "count_file_code_lines"
     },
     {
-    "action": {'text': translations.TR_INDENT_MORE,
-               'image': 'indent-more',
+    "shortcut": "Go-to-definition",
+    "action": {'text': translations.TR_GO_TO_DEFINITION,
+               'image': 'go-to-definition',
                'section': (translations.TR_MENU_SOURCE, None),
-               'weight': 100,
-               'keysequence': 'Indent-more'},
-    "connect": "editor_indent_more"
-    },
-    {
-    "shortcut": "Indent-less",
-    "action": {'text': translations.TR_INDENT_LESS,
-               'image': 'indent-less',
-               'section': (translations.TR_MENU_SOURCE, None),
-               'weight': 110},
-    "connect": "editor_indent_less"
-    },
-    {
-    "shortcut": "Close-Split",
-    "action": {'text': translations.TR_CLOSE_CURRENT_SPLIT,
-               'image': None,
-               'section': (translations.TR_MENU_VIEW, None),
-               'weight': 460},
-    "connect": "close_split"
-    },
-    {
-    "shortcut": "Split-assistance",
-    "action": {'text': translations.TR_SHOW_SPLIT_ASSISTANCE,
-               'image': None,
-               'section': (translations.TR_MENU_VIEW, None),
-               'weight': 430},
-    "connect": "split_assistance"
-    },
-    {
-    "action": {'text': translations.TR_SPLIT_VERTICALLY,
-               'image': 'splitV',
-               'section': (translations.TR_MENU_VIEW, None),
-               'weight': 440},
-    "connect": "split_vertically"
-    },
-    {
-    "action": {'text': translations.TR_SPLIT_HORIZONTALLY,
-               'image': 'splitH',
-               'section': (translations.TR_MENU_VIEW, None),
-               'weight': 450},
-    "connect": "split_horizontally"
-    },
-    {
-    "shortcut": "Reload-file",
-    "action": {'text': translations.TR_RELOAD_FILE,
-               'image': 'reload-file',
-               'section': (translations.TR_MENU_FILE, None),
                'weight': 300},
-    "connect": "reload_file"
+    "connect": "editor_go_to_definition"
     },
     {
     "shortcut": "Import",
@@ -243,86 +174,84 @@ ACTIONS = (
     "connect": "import_from_everywhere"
     },
     {
-    "shortcut": "Go-to-definition",
-    "action": {'text': translations.TR_GO_TO_DEFINITION,
-               'image': 'go-to-definition',
+    "action": {'text': translations.TR_DEBUGGING_TRICKS,
                'section': (translations.TR_MENU_SOURCE, None),
-               'weight': 300},
-    "connect": "editor_go_to_definition"
+               'is_menu': True,
+               'weight': 320},
     },
     {
-    "shortcut": "Complete-Declarations",
-    "connect": "editor_complete_declaration"
+    "action": {'text': translations.TR_PRINT_PER_LINE,
+               'section': (translations.TR_MENU_SOURCE,
+                           translations.TR_DEBUGGING_TRICKS),
+               'weight': 320},
     },
     {
-    "shortcut": "Navigate-back",
-    "connect": "navigate_back"
+    "action": {'text': translations.TR_INSERT_PDB,
+               'section': (translations.TR_MENU_SOURCE,
+                           translations.TR_DEBUGGING_TRICKS),
+               'weight': 320},
     },
     {
-    "shortcut": "Navigate-forward",
-    "connect": "navigate_forward"
+    "action": {'text': translations.TR_REMOVE_TRAILING_SPACES,
+               'section': (translations.TR_MENU_SOURCE, None),
+               'weight': 400},
+    "connect": "editor_remove_trailing_spaces"
     },
     {
-    "shortcut": "Open-recent-closed",
-    "connect": "reopen_last_tab"
+    "action": {'text': translations.TR_REPLACE_TABS_SPACES,
+               'section': (translations.TR_MENU_SOURCE, None),
+               'weight': 410},
+    "connect": "editor_replace_tabs_with_spaces"
     },
     {
-    "shortcut": "Show-Code-Nav",
-    "connect": "show_navigation_buttons"
-    },
-    {
-    "shortcut": "change-split-focus",
-    "connect": "change_split_focus"
-    },
-    {
-    "shortcut": "change-tab-visibility",
-    "connect": "change_tabs_visibility"
-    },
-    {
-    "shortcut": "Help",
-    "action": {'text': translations.TR_HELP,
+    "shortcut": "Move-up",
+    "action": {'text': translations.TR_MOVE_UP,
                'image': None,
-               'section': (translations.TR_MENU_ABOUT, None),
-               'weight': 110},
-    "connect": "show_python_doc"
+               'section': (translations.TR_MENU_SOURCE, None),
+               'weight': 440},
+    "connect": "editor_move_up"
     },
     {
-    "shortcut": "Highlight-Word",
-    "connect": "editor_highlight_word"
+    "shortcut": "Move-down",
+    "action": {'text': translations.TR_MOVE_DOWN,
+               'image': None,
+               'section': (translations.TR_MENU_SOURCE, None),
+               'weight': 450},
+    "connect": "editor_move_down"
     },
     {
-    "shortcut": "Print-file",
-    "action": {'text': translations.TR_PRINT_FILE,
-               'image': 'print',
-               'section': (translations.TR_MENU_FILE, None),
-               'weight': 900},
-    "connect": "print_file"
+    "shortcut": "Duplicate",
+    "action": {'text': translations.TR_DUPLICATE,
+               'image': None,
+               'section': (translations.TR_MENU_SOURCE, None),
+               'weight': 470},
+    "connect": "editor_duplicate"
     },
     {
-    "shortcut": "History-Copy",
-    "connect": "copy_history"
+    "shortcut": "Remove-line",
+    "action": {'text': translations.TR_REMOVE_LINE,
+               'image': None,
+               'section': (translations.TR_MENU_SOURCE, None),
+               'weight': 480},
+    "connect": "editor_remove_line"
     },
+
+    # Add EDIT MENU actions here:
     {
-    "shortcut": "History-Paste",
-    "connect": "paste_history"
-    },
-    {
-    "action": {'text': translations.TR_SHOW_START_PAGE,
-               'section': (translations.TR_MENU_ABOUT, None),
+    "action": {'text': translations.TR_UNDO,
+               'image': 'undo',
+               'section': (translations.TR_MENU_EDIT, None),
+               'keysequence': 'undo',
                'weight': 100},
-    "connect": "show_start_page"
+    "connect": "editor_undo"
     },
     {
-    "action": {'text': translations.TR_REPORT_BUGS,
-               'section': (translations.TR_MENU_ABOUT, None),
-               'weight': 200},
-    "connect": "show_report_bugs"
-    },
-    {
-    "action": {'text': translations.TR_PLUGINS_DOCUMENTATION,
-               'section': (translations.TR_MENU_ABOUT, None),
-               'weight': 210},
-    "connect": "show_plugins_doc"
+    "shortcut": "Redo",
+    "action": {'text': translations.TR_REDO,
+               'image': 'redo',
+               'section': (translations.TR_MENU_EDIT, None),
+               'weight': 110},
+    "connect": "editor_redo"
     },
     {
     "action": {'text': translations.TR_CUT,
@@ -355,13 +284,8 @@ ACTIONS = (
                'weight': 240},
     "connect": "editor_get_jump_to_line_number"
     },
-    {
-    "action": {'text': translations.TR_PREVIEW_IN_BROWSER,
-               'image': 'preview-web',
-               'section': (translations.TR_MENU_PROJECT, None),
-               'weight': 300},
-    "connect": "preview_in_browser"
-    },
+
+    # Add VIEW MENU actions here:
     {
     "shortcut": "Hide-editor",
     "action": {'text': translations.TR_EDITOR_VISIBILITY,
@@ -388,33 +312,132 @@ ACTIONS = (
     "connect": "zoom_out_editor"
     },
     {
-    "action": {'text': translations.TR_DEBUGGING_TRICKS,
-               'section': (translations.TR_MENU_SOURCE, None),
-               'is_menu': True,
-               'weight': 320},
+    "shortcut": "Split-assistance",
+    "action": {'text': translations.TR_SHOW_SPLIT_ASSISTANCE,
+               'image': None,
+               'section': (translations.TR_MENU_VIEW, None),
+               'weight': 430},
+    "connect": "split_assistance"
     },
     {
-    "action": {'text': translations.TR_PRINT_PER_LINE,
-               'section': (translations.TR_MENU_SOURCE,
-                           translations.TR_DEBUGGING_TRICKS),
-               'weight': 320},
+    "action": {'text': translations.TR_SPLIT_VERTICALLY,
+               'image': 'splitV',
+               'section': (translations.TR_MENU_VIEW, None),
+               'weight': 440},
+    "connect": "split_vertically"
     },
     {
-    "action": {'text': translations.TR_INSERT_PDB,
-               'section': (translations.TR_MENU_SOURCE,
-                           translations.TR_DEBUGGING_TRICKS),
-               'weight': 320},
+    "action": {'text': translations.TR_SPLIT_HORIZONTALLY,
+               'image': 'splitH',
+               'section': (translations.TR_MENU_VIEW, None),
+               'weight': 450},
+    "connect": "split_horizontally"
     },
     {
-    "action": {'text': translations.TR_REMOVE_TRAILING_SPACES,
-               'section': (translations.TR_MENU_SOURCE, None),
-               'weight': 400},
-    "connect": "editor_remove_trailing_spaces"
+    "shortcut": "Close-Split",
+    "action": {'text': translations.TR_CLOSE_CURRENT_SPLIT,
+               'image': None,
+               'section': (translations.TR_MENU_VIEW, None),
+               'weight': 460},
+    "connect": "close_split"
+    },
+
+    # Add ABOUT MENU actions here:
+    {
+    "action": {'text': translations.TR_SHOW_START_PAGE,
+               'section': (translations.TR_MENU_ABOUT, None),
+               'weight': 100},
+    "connect": "show_start_page"
     },
     {
-    "action": {'text': translations.TR_REPLACE_TABS_SPACES,
-               'section': (translations.TR_MENU_SOURCE, None),
-               'weight': 410},
-    "connect": "editor_replace_tabs_with_spaces"
+    "shortcut": "Help",
+    "action": {'text': translations.TR_HELP,
+               'image': None,
+               'section': (translations.TR_MENU_ABOUT, None),
+               'weight': 110},
+    "connect": "show_python_doc"
+    },
+    {
+    "action": {'text': translations.TR_REPORT_BUGS,
+               'section': (translations.TR_MENU_ABOUT, None),
+               'weight': 200},
+    "connect": "show_report_bugs"
+    },
+    {
+    "action": {'text': translations.TR_PLUGINS_DOCUMENTATION,
+               'section': (translations.TR_MENU_ABOUT, None),
+               'weight': 210},
+    "connect": "show_plugins_doc"
+    },
+
+    # Add PROJECT MENU actions here:
+    {
+    "action": {'text': translations.TR_PREVIEW_IN_BROWSER,
+               'image': 'preview-web',
+               'section': (translations.TR_MENU_PROJECT, None),
+               'weight': 300},
+    "connect": "preview_in_browser"
+    },
+
+    # Add all other actions here:
+    {
+    "shortcut": "Complete-Declarations",
+    "connect": "editor_complete_declaration"
+    },
+    {
+    "shortcut": "Navigate-back",
+    "connect": "navigate_back"
+    },
+    {
+    "shortcut": "Navigate-forward",
+    "connect": "navigate_forward"
+    },
+    {
+    "shortcut": "Open-recent-closed",
+    "connect": "reopen_last_tab"
+    },
+    {
+    "shortcut": "Show-Code-Nav",
+    "connect": "show_navigation_buttons"
+    },
+    {
+    "shortcut": "change-split-focus",
+    "connect": "change_split_focus"
+    },
+    {
+    "shortcut": "change-tab-visibility",
+    "connect": "change_tabs_visibility"
+    },
+    {
+    "shortcut": "Change-Tab",
+    "connect": "change_tab"
+    },
+    {
+    "shortcut": "expand-file-combo",
+    "connect": "expand_file_combo"
+    },
+    {
+    "shortcut": "expand-symbol-combo",
+    "connect": "expand_symbol_combo"
+    },
+    {
+    "shortcut": "Change-Tab-Reverse",
+    "connect": "change_tab_reverse"
+    },
+    {
+    "shortcut": "Add-Bookmark-or-Breakpoint",
+    "connect": "add_bookmark_breakpoint"
+    },
+        {
+    "shortcut": "Highlight-Word",
+    "connect": "editor_highlight_word"
+    },
+    {
+    "shortcut": "History-Copy",
+    "connect": "copy_history"
+    },
+    {
+    "shortcut": "History-Paste",
+    "connect": "paste_history"
     },
 )
