@@ -304,9 +304,9 @@ class IDE(QMainWindow):
     @classmethod
     def register_menuitem(cls, menu_action, section, weight):
         """Register a QAction or QMenu in the IDE to be loaded later in the
-        menubar using the section(string) to define where is going to be
-        contained, and the weight define the order where is going to be
-        placed.
+        menubar using the section(string) to define where it is going to be
+        contained, and the weight to define the order in which it is going
+        to be added.
         @menu_action: QAction or QMenu
         @section: String (name)
         @weight: int"""
