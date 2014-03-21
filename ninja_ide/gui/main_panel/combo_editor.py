@@ -14,15 +14,16 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+
+
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
 import bisect
+from os import path
 
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QMessageBox
-#from PyQt4.QtGui import QStandardItemModel
-#from PyQt4.QtGui import QAbstractItemView
 from PyQt4.QtGui import QClipboard
 from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QWidget
@@ -502,6 +503,11 @@ class ActionBar(QFrame):
         menu.addSeparator()
         actionCopyPath = menu.addAction(
             translations.TR_COPY_FILE_PATH_TO_CLIPBOARD)
+        actionCopyFilename = menu.addAction(
+            translations.TR_COPY_FILENAME_TO_CLIPBOARD)
+        actionCopyPathOnly = menu.addAction(
+            translations.TR_COPY_PATH_TO_CLIPBOARD)
+        menu.addSeparator()
         actionReopen = menu.addAction(translations.TR_REOPEN_FILE)
         actionUndock = menu.addAction(translations.TR_UNDOCK_EDITOR)
         if len(settings.LAST_OPENED_FILES) == 0:
@@ -523,6 +529,10 @@ class ActionBar(QFrame):
             self._close_all_files)
         self.connect(actionCopyPath, SIGNAL("triggered()"),
             self._copy_file_location)
+        self.connect(actionCopyFilename, SIGNAL("triggered()"),
+            self._copy_filename)
+        self.connect(actionCopyPathOnly, SIGNAL("triggered()"),
+            self._copy_path)
         self.connect(actionReopen, SIGNAL("triggered()"),
             self._reopen_last_tab)
         self.connect(actionUndock, SIGNAL("triggered()"),
@@ -593,9 +603,21 @@ class ActionBar(QFrame):
         self.emit(SIGNAL("splitEditor(bool)"), orientation)
 
     def _copy_file_location(self):
-        """Copy the path of the current opened file to the clipboard."""
+        """Copy the Path+Filename of the current opened file to the clipboard"""
         neditable = self.combo.itemData(self.combo.currentIndex())
         QApplication.clipboard().setText(neditable.file_path,
+            QClipboard.Clipboard)
+
+    def _copy_filename(self):
+        """Copy the Filename only of the current opened file to the clipboard"""
+        neditable = self.combo.itemData(self.combo.currentIndex())
+        QApplication.clipboard().setText(path.basename(neditable.file_path),
+            QClipboard.Clipboard)
+
+    def _copy_path(self):
+        """Copy the Path only of the current opened file to the clipboard."""
+        neditable = self.combo.itemData(self.combo.currentIndex())
+        QApplication.clipboard().setText(path.dirname(neditable.file_path),
             QClipboard.Clipboard)
 
     def _close_all_files(self):
