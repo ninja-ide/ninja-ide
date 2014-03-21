@@ -34,6 +34,7 @@ from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QCheckBox
 from PyQt4.QtGui import QStyle
 from PyQt4.QtGui import QIcon
+from PyQt4.QtCore import QSize
 from PyQt4.QtGui import QShortcut
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
@@ -250,14 +251,18 @@ class SearchWidget(QWidget):
         self._line.setMinimumWidth(250)
         self._btnClose = QPushButton(
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
+        self._btnClose.setIconSize(QSize(16, 16))
         self._btnFind = QPushButton(QIcon(":img/find"), '')
+        self._btnFind.setIconSize(QSize(16, 16))
         self.btnPrevious = QPushButton(
             self.style().standardIcon(QStyle.SP_ArrowLeft), '')
+        self.btnPrevious.setIconSize(QSize(16, 16))
         self.btnPrevious.setToolTip(self.trUtf8("Press %s") %
                 resources.get_shortcut("Find-previous").toString(
                     QKeySequence.NativeText))
         self.btnNext = QPushButton(
             self.style().standardIcon(QStyle.SP_ArrowRight), '')
+        self.btnNext.setIconSize(QSize(16, 16))
         self.btnNext.setToolTip(self.trUtf8("Press %s") %
                 resources.get_shortcut("Find-next").toString(
                     QKeySequence.NativeText))
@@ -408,13 +413,14 @@ class ReplaceWidget(QWidget):
     """Replace widget to find and replace occurrences of words in editor."""
 
     def __init__(self, parent=None):
-        QWidget.__init__(self, parent)
+        super(ReplaceWidget, self).__init__(parent)
         hReplace = QHBoxLayout(self)
         hReplace.setContentsMargins(0, 0, 0, 0)
         self._lineReplace = QLineEdit()
         self._lineReplace.setMinimumWidth(250)
         self._btnCloseReplace = QPushButton(
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
+        self._btnCloseReplace.setIconSize(QSize(16, 16))
         self._btnReplace = QPushButton(self.trUtf8("Replace"))
         self._btnReplaceAll = QPushButton(self.trUtf8("Replace All"))
         self._btnReplaceSelection = QPushButton(
@@ -511,11 +517,12 @@ class FileSystemOpener(QWidget):
     """Widget to handle opening files through path write with completion."""
 
     def __init__(self):
-        QWidget.__init__(self)
+        super(FileSystemOpener, self).__init__()
         hbox = QHBoxLayout(self)
         hbox.setContentsMargins(0, 0, 0, 0)
         self.btnClose = QPushButton(
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
+        self.btnClose
         self.completer = QCompleter(self)
         self.pathLine = ui_tools.LineEditTabCompleter(self.completer)
         fileModel = QFileSystemModel(self.completer)
