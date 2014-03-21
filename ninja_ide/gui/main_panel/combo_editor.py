@@ -79,6 +79,8 @@ class ComboEditor(QDialog):
             self.connect(self._main_container, SIGNAL("fileOpened(QString)"),
                 self._file_opened_by_main)
 
+        self.connect(self.bar.combo, SIGNAL("showComboSelector()"),
+            lambda: self.emit(SIGNAL("showComboSelector()")))
         self.connect(self.bar, SIGNAL("changeCurrent(PyQt_PyObject, int)"),
             self._set_current)
         self.connect(self.bar, SIGNAL("splitEditor(bool)"), self.split_editor)
@@ -375,7 +377,7 @@ class ActionBar(QFrame):
         self.lbl_checks.setVisible(False)
         hbox.addWidget(self.lbl_checks)
 
-        self.combo = QComboBox()
+        self.combo = ComboFiles()
         self.combo.setIconSize(QSize(16, 16))
         #model = QStandardItemModel()
         #self.combo.setModel(model)
@@ -610,6 +612,12 @@ class ActionBar(QFrame):
             ne = self.combo.itemData(i)
             if ne is not neditable:
                 self.about_to_close_file(i)
+
+
+class ComboFiles(QComboBox):
+
+    def showPopup(self):
+        self.emit(SIGNAL("showComboSelector()"))
 
 
 class CodeNavigator(QWidget):
