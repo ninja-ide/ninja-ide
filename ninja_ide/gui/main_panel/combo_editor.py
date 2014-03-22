@@ -250,8 +250,8 @@ class ComboEditor(QDialog):
         self._main_container._add_to_project(path)
 
     def _show_file_in_explorer(self, path):
-	'''Connected to ActionBar's showFileInExplorer(QString)
-	signal, forwards the file path on to the main container.'''
+        '''Connected to ActionBar's showFileInExplorer(QString)
+        signal, forwards the file path on to the main container.'''
         self._main_container._show_file_in_explorer(path)
 
     def set_current(self, neditable):
