@@ -165,6 +165,9 @@ class ProjectTreeColumn(QDialog):
             {'target': 'main_container',
             'signal_name': 'addToProject(QString)',
             'slot': self._add_file_to_project},
+            {'target': 'main_container',
+            'signal_name': 'showFileInExplorer(QString)',
+            'slot': self._show_file_in_explorer},
         )
         IDE.register_service('projects_explorer', self)
         IDE.register_signals('projects_explorer', connections)
@@ -246,6 +249,26 @@ class ProjectTreeColumn(QDialog):
         else:
             pass
             # Message about no project
+
+    def _show_file_in_explorer(self, path):
+        '''Iterate through the list of available projects and show
+        the current file in the explorer view for the first
+        project that contains it (i.e. if the same file is
+        included in multiple open projects, the path will be
+        expanded for the first project only).
+        Note: This slot is connected to the main container's
+        "showFileInExplorer(QString)" signal.'''
+        for project in self.projects:
+            index = project.model().index(path)
+            if index.isValid():
+                # This highlights the index in the tree for us
+                project.setCurrentIndex(index)
+                # Loop through the parents to expand the tree
+                # all the way up to the selected index.
+                while index.isValid():
+                    project.expand(index)
+                    index = index.parent()
+                break
 
     @property
     def children(self):

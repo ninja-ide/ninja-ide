@@ -62,22 +62,27 @@ class _MainContainer(QWidget):
 # MainContainer SIGNALS
 ###############################################################################
     """
+    newFileOpened(QString)
+    allTabClosed()
+    runFile(QString)
+    addToProject(QString)
+    showFileInExplorer(QString)
+    recentTabsModified()
+    currentEditorChanged(QString)
+    fileOpened(QString)
+    ---------migrationAnalyzed()
+    findOcurrences(QString)
+    ---------updateFileMetadata()
+    editorKeyPressEvent(QEvent)
+    locateFunction(QString, QString, bool) [functionName, filePath, isVariable]
+    updateLocator(QString)
     beforeFileSaved(QString)
     fileSaved(QString)
-    currentEditorChanged(QString)
-    locateFunction(QString, QString, bool) [functionName, filePath, isVariable]
-    --------openProject(QString)
     openPreferences()
+    --------openProject(QString)
     ---------dontOpenStartPage()
-    updateLocator(QString)
-    ---------updateFileMetadata()
-    findOcurrences(QString)
-    fileOpened(QString)
-    newFileOpened(QString)
-    recentTabsModified()
-    ---------migrationAnalyzed()
-    allTabClosed()
     """
+
 ###############################################################################
 
     def __init__(self, parent=None):
@@ -226,6 +231,9 @@ class _MainContainer(QWidget):
 
     def _add_to_project(self, path):
         self.emit(SIGNAL("addToProject(QString)"), path)
+
+    def _show_file_in_explorer(self, path):
+        self.emit(SIGNAL("showFileInExplorer(QString)"), path)
 
     def paste_history(self):
         """Paste the text from the copy/paste history."""

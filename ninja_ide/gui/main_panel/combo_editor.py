@@ -88,6 +88,8 @@ class ComboEditor(QDialog):
             lambda: self.emit(SIGNAL("closeSplit(PyQt_PyObject)"), self))
         self.connect(self.bar, SIGNAL("addToProject(QString)"),
             self._add_to_project)
+        self.connect(self.bar, SIGNAL("showFileInExplorer(QString)"),
+            self._show_file_in_explorer)
         self.connect(self.bar, SIGNAL("goToSymbol(int)"),
             self._go_to_symbol)
         self.connect(self.bar, SIGNAL("undockEditor()"),
@@ -246,6 +248,11 @@ class ComboEditor(QDialog):
 
     def _add_to_project(self, path):
         self._main_container._add_to_project(path)
+
+    def _show_file_in_explorer(self, path):
+	'''Connected to ActionBar's showFileInExplorer(QString)
+	signal, forwards the file path on to the main container.'''
+        self._main_container._show_file_in_explorer(path)
 
     def set_current(self, neditable):
         if neditable:
@@ -502,6 +509,8 @@ class ActionBar(QFrame):
         menu.addSeparator()
         actionCopyPath = menu.addAction(
             translations.TR_COPY_FILE_PATH_TO_CLIPBOARD)
+        actionShowFileInExplorer = menu.addAction(
+            translations.TR_SHOW_FILE_IN_EXPLORER)
         actionReopen = menu.addAction(translations.TR_REOPEN_FILE)
         actionUndock = menu.addAction(translations.TR_UNDOCK_EDITOR)
         if len(settings.LAST_OPENED_FILES) == 0:
@@ -523,6 +532,8 @@ class ActionBar(QFrame):
             self._close_all_files)
         self.connect(actionCopyPath, SIGNAL("triggered()"),
             self._copy_file_location)
+        self.connect(actionShowFileInExplorer, SIGNAL("triggered()"),
+            self._show_file_in_explorer)
         self.connect(actionReopen, SIGNAL("triggered()"),
             self._reopen_last_tab)
         self.connect(actionUndock, SIGNAL("triggered()"),
@@ -580,6 +591,13 @@ class ActionBar(QFrame):
         inside a project."""
         neditable = self.combo.itemData(self.combo.currentIndex())
         self.emit(SIGNAL("addToProject(QString)"), neditable.file_path)
+
+    def _show_file_in_explorer(self):
+        '''Triggered when the "Show File in Explorer" context
+        menu action is selected. Emits the "showFileInExplorer(QString)"
+        signal with the current file's full path as argument.'''
+        neditable = self.combo.itemData(self.combo.currentIndex())
+        self.emit(SIGNAL("showFileInExplorer(QString)"), neditable.file_path)
 
     def _reopen_last_tab(self):
         self.emit(SIGNAL("reopenTab(QString)"),

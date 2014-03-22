@@ -112,6 +112,7 @@ TR_CLOSE_ALL_FILES = tr("NINJA-IDE", "Close All Files")
 TR_CLOSE_OTHER_FILES = tr("NINJA-IDE", "Close All Files But This")
 TR_COPY_FILE_PATH_TO_CLIPBOARD = tr("NINJA-IDE",
     "Copy File Location to Clipboard")
+TR_SHOW_FILE_IN_EXPLORER = tr("NINJA-IDE", "Show File in Explorer")
 TR_REOPEN_FILE = tr("NINJA-IDE", "Reopen Last Closed File")
 TR_UNDOCK_EDITOR = tr("NINJA-IDE", "Undock Editor")
 TR_PROJECT_OPTIONS = tr("NINJA-IDE", "Click for Project options.")
