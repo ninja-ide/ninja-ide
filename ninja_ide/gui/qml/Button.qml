@@ -7,12 +7,11 @@ Rectangle {
     property alias text: btnText.text
 
     height: 50
-    //radius: 10
     border.color:"#6a6363"
 
     gradient: off
 
-     Gradient {
+    Gradient {
         id: off
         GradientStop { position: 0.0; color: "lightsteelblue" }
         GradientStop { position: 0.5; color: "lightsteelblue" }
