@@ -205,8 +205,8 @@ TR_IDE_TOOLBAR_TOOLTIP = tr("NINJA-IDE", "Press and Drag to Move")
 
 
 # Status Bar
-TR_SEARCH_CASE_SENSITIVE = tr("NINJA-IDE", "Respect Case Sensitive")
-TR_SEARCH_WHOLE_WORDS = tr("NINJA-IDE", "Find Whole Words")
+TR_SEARCH_CASE_SENSITIVE = tr("NINJA-IDE", "Respect case sensitive")
+TR_SEARCH_WHOLE_WORDS = tr("NINJA-IDE", "Find whole words")
 
 
 # Checkers
@@ -342,67 +342,64 @@ TR_PREFERENCES_GENERAL_WORKSPACE = tr("NINJA-IDE", "Workspace and project:")
 TR_PREFERENCES_GENERAL_RESET = tr("NINJA-IDE", "Reset NINJA-IDE preferences:")
 TR_PREFERENCES_GENERAL_LOAD_LAST_SESSION = tr("NINJA-IDE",
     "Load files from last session")
-TR_PREFERENCES_GENERAL_ACTIVATE_PLUGINS = tr("NINJA-IDE",
-    "Activate Plugins")
+TR_PREFERENCES_GENERAL_ACTIVATE_PLUGINS = tr("NINJA-IDE", "Activate plugins")
 TR_PREFERENCES_GENERAL_NOTIFY_UPDATES = tr("NINJA-IDE",
     "Notify me of new updates.")
-TR_PREFERENCES_GENERAL_SHOW_START_PAGE = tr("NINJA-IDE", "Show Start Page")
-TR_PREFERENCES_GENERAL_CONFIRM_EXIT = tr("NINJA-IDE", "Confirm Exit.")
+TR_PREFERENCES_GENERAL_SHOW_START_PAGE = tr("NINJA-IDE", "Show start page")
+TR_PREFERENCES_GENERAL_CONFIRM_EXIT = tr("NINJA-IDE", "Confirm exit.")
 TR_PREFERENCES_GENERAL_WORKSPACE = tr("NINJA-IDE", "Workspace")
-TR_PREFERENCES_GENERAL_SUPPORTED_EXT = tr("NINJA-IDE", "Supported Extensions:")
+TR_PREFERENCES_GENERAL_SUPPORTED_EXT = tr("NINJA-IDE", "Supported extensions:")
 TR_PREFERENCES_GENERAL_RESET_PREFERENCES = tr("NINJA-IDE", "Reset preferences")
-TR_PREFERENCES_GENERAL_SELECT_WORKSPACE = tr("NINJA-IDE", "Select Workspace")
+TR_PREFERENCES_GENERAL_SELECT_WORKSPACE = tr("NINJA-IDE", "Select workspace")
 TR_PREFERENCES_GENERAL_SELECT_PYTHON_PATH = tr("NINJA-IDE",
-    "Select Python Path")
+    "Select Python path")
 TR_PREFERENCES_GENERAL_RESET_TITLE = tr("NINJA-IDE", "Reset preferences?")
 TR_PREFERENCES_GENERAL_RESET_BODY = tr("NINJA-IDE",
     "Are you sure you want to reset your preferences?")
 TR_PREFERENCES_EDITOR_CONFIG_FEATURES = tr("NINJA-IDE", "Features:")
-TR_PREFERENCES_EDITOR_CONFIG_INDENT = tr("NINJA-IDE", "Indentation Length")
+TR_PREFERENCES_EDITOR_CONFIG_INDENT = tr("NINJA-IDE", "Indentation length")
 TR_PREFERENCES_EDITOR_CONFIG_TABS = tr("NINJA-IDE", "tabs")
 TR_PREFERENCES_EDITOR_CONFIG_SPACES = tr("NINJA-IDE", "spaces")
-TR_PREFERENCES_EDITOR_CONFIG_MARGIN = tr("NINJA-IDE", "Margin Line")
-TR_PREFERENCES_EDITOR_CONFIG_SHOW_MARGIN_LINE = tr("NINJA-IDE", "Show Line at")
+TR_PREFERENCES_EDITOR_CONFIG_MARGIN = tr("NINJA-IDE", "Margin line")
+TR_PREFERENCES_EDITOR_CONFIG_SHOW_MARGIN_LINE = tr("NINJA-IDE", "Show line at")
 TR_PREFERENCES_EDITOR_CONFIG_END_OF_LINE = tr("NINJA-IDE",
-    "Use Platform End of Line")
+    "Use platform end of line")
 TR_PREFERENCES_EDITOR_CONFIG_ERROR_USE_UNDERLINE = tr("NINJA-IDE",
-    "using Underline")
+    "using underline")
 TR_PREFERENCES_EDITOR_CONFIG_ERROR_USE_BACKGROUND = tr("NINJA-IDE",
-    "using Background")
-TR_PREFERENCES_EDITOR_CONFIG_FIND_ERRORS = tr("NINJA-IDE",
-    "Highlight Errors")
+    "using background")
+TR_PREFERENCES_EDITOR_CONFIG_FIND_ERRORS = tr("NINJA-IDE", "Highlight errors")
 TR_PREFERENCES_EDITOR_CONFIG_SHOW_TOOLTIP_ERRORS = tr("NINJA-IDE",
-    "Show Lint errors Tooltip information")
+    "Show Lint errors tooltip information")
 TR_PREFERENCES_EDITOR_CONFIG_SHOW_PEP8 = tr("NINJA-IDE",
-    "Highlight PEP8 Style errors.")
+    "Highlight PEP8 style errors.")
 TR_PREFERENCES_EDITOR_CONFIG_SHOW_TOOLTIP_PEP8 = tr("NINJA-IDE",
-    "Show PEP8 errors Tooltip information")
+    "Show PEP8 errors tooltip information")
 TR_PREFERENCES_EDITOR_CONFIG_SHOW_MIGRATION = tr("NINJA-IDE",
-    "Show Python3 Migration Tips.")
-TR_PREFERENCES_EDITOR_CONFIG_CENTER_SCROLL = tr("NINJA-IDE",
-    "Center on Scroll.")
+    "Show Python3 migration tips.")
+TR_PREFERENCES_EDITOR_CONFIG_CENTER_SCROLL = tr("NINJA-IDE", "Center on scroll")
 TR_PREFERENCES_EDITOR_CONFIG_REMOVE_TRAILING = tr("NINJA-IDE",
-    "Remove Trailing Spaces and\nadd Last Line automatically.")
+    "Remove trailing spaces and\nadd last line automatically.")
 TR_PREFERENCES_EDITOR_CONFIG_SHOW_TABS_AND_SPACES = tr("NINJA-IDE",
-    "Show Tabs and Spaces.")
-TR_PREFERENCES_EDITOR_CONFIG_WORD_WRAP = tr("NINJA-IDE", "Allow Word Wrap.")
+    "Show tabs and spaces.")
+TR_PREFERENCES_EDITOR_CONFIG_WORD_WRAP = tr("NINJA-IDE", "Allow word wrap.")
 TR_PREFERENCES_EDITOR_CONFIG_CHECK_FOR_DOCSTRINGS = tr("NINJA-IDE",
     "Check for missing Docstrings.")
 TR_PREFERENCES_EDITOR_DOWNLOAD_SCHEME = tr("NINJA-IDE", "Download Schemes")
 TR_PREFERENCES_EDITOR_GENERAL_MINIMAP = tr("NINJA-IDE", "MiniMap:")
 TR_PREFERENCES_EDITOR_GENERAL_TYPOGRAPHY = tr("NINJA-IDE", "Typography:")
-TR_PREFERENCES_EDITOR_GENERAL_SCHEME = tr("NINJA-IDE", "Scheme Color:")
+TR_PREFERENCES_EDITOR_GENERAL_SCHEME = tr("NINJA-IDE", "Scheme color:")
 TR_PREFERENCES_EDITOR_GENERAL_ENABLE_MINIMAP = tr("NINJA-IDE",
     "Enable/Disable MiniMap (requires restart):\n"
     "(opacity not supported in Mac OS X)")
-TR_PREFERENCES_EDITOR_GENERAL_MAX_OPACITY = tr("NINJA-IDE", "Max Opacity:")
-TR_PREFERENCES_EDITOR_GENERAL_MIN_OPACITY = tr("NINJA-IDE", "Min Opacity:")
+TR_PREFERENCES_EDITOR_GENERAL_MAX_OPACITY = tr("NINJA-IDE", "Max opacity:")
+TR_PREFERENCES_EDITOR_GENERAL_MIN_OPACITY = tr("NINJA-IDE", "Min opacity:")
 TR_PREFERENCES_EDITOR_GENERAL_AREA_MINIMAP = tr("NINJA-IDE",
-    "Size Area relative to the Editor:")
+    "Size area relative to the editor:")
 TR_PREFERENCES_EDITOR_GENERAL_EDITOR_FONT = tr("NINJA-IDE",
-    "Editor Font:")
+    "Editor font:")
 TR_PREFERENCES_EDITOR_GENERAL_FONT_MESSAGE_TITLE = tr("NINJA-IDE",
-    "Invalid Font")
+    "Invalid font")
 TR_PREFERENCES_EDITOR_GENERAL_FONT_MESSAGE_BODY = tr("NINJA-IDE",
     "This font can not be used in the editor.")
 TR_CHARACTERS = tr("NINJA-IDE", "Characters")
@@ -454,8 +451,8 @@ TR_DELETE_FOLLOWING_FILE = tr("NINJA-IDE",
 TR_DELETE_FOLLOWING_FOLDER = tr("NINJA-IDE",
     "Do you want to delete the following folder?")
 TR_EDIT_UI_FILE = tr("NINJA-IDE", "Edit UI file")
-TR_ENTER_NEW_FILENAME = tr("NINJA-IDE", "Enter New Filename")
-TR_OPEN_PROJECT_DIRECTORY = tr("NINJA-IDE", "Open Project Directory")
+TR_ENTER_NEW_FILENAME = tr("NINJA-IDE", "Enter new filename")
+TR_OPEN_PROJECT_DIRECTORY = tr("NINJA-IDE", "Open project directory")
 TR_COPY_FILE_TO = tr("NINJA-IDE", "Copy file to")
 TR_COPY_FILE = tr("NINJA-IDE", "Copy file")
 
@@ -468,16 +465,16 @@ TR_PLUGIN_ERROR_REPORT = tr("NINJA-IDE", "Plugin error report")
 
 
 # plugins manager
-TR_PLUGIN_MANAGER = tr("NINJA-IDE", "Plugin Manager")
+TR_PLUGIN_MANAGER = tr("NINJA-IDE", "Plugin manager")
 TR_CLOSE = tr("NINJA-IDE", "Close")
 TR_RELOAD = tr("NINJA-IDE", "Reload")
-TR_OFFICIAL_AVAILABLE = tr("NINJA-IDE", "Official Available")
-TR_COMMUNITY_AVAILABLE = tr("NINJA-IDE", "Community Available")
+TR_OFFICIAL_AVAILABLE = tr("NINJA-IDE", "Official available")
+TR_COMMUNITY_AVAILABLE = tr("NINJA-IDE", "Community available")
 TR_UPDATE = tr("NINJA-IDE", "Update")
 TR_INSTALL = tr("NINJA-IDE", "Install")
 TR_UNINSTALL = tr("NINJA-IDE", "Uninstall")
 TR_INSTALLED = tr("NINJA-IDE", "Installed")
-TR_MANUAL_INSTALL = tr("NINJA-IDE", "Manual Install")
+TR_MANUAL_INSTALL = tr("NINJA-IDE", "Manual install")
 TR_VERSION = tr("NINJA-IDE", "Version")
 TR_SELECT_PLUGIN_PATH = tr("NINJA-IDE", "Select plugin path")
 TR_EXTERNAL_PLUGIN = tr("NINJA-IDE", "External plugin")
