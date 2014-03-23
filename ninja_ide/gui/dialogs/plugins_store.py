@@ -15,19 +15,25 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-
-# Get project types
-# Project type is language
-# Should have subtype, which is pyqt, ninja plugin, pytk, etc...
-
-#We provide the first window of the wizard, to do this everyone will inherit
-# from us
 from PyQt4.QtGui import QDialog
+from PyQt4.QtGui import QVBoxLayout
+from PyQt4.QtDeclarative import QDeclarativeView
 from PyQt4.QtCore import Qt
 
+from ninja_ide.tools import ui_tools
 
-class NewProjectTypeChooser(QDialog):
+
+class PluginsStore(QDialog):
 
     def __init__(self, parent=None):
-        super(NewProjectTypeChooser, self).__init__(parent, Qt.Dialog)
-        pass
+        super(PluginsStore, self).__init__(parent, Qt.Dialog)
+        vbox = QVBoxLayout(self)
+        vbox.setContentsMargins(0, 0, 0, 0)
+        vbox.setSpacing(0)
+        self.view = QDeclarativeView()
+        self.view.setMinimumWidth(800)
+        self.view.setMinimumHeight(600)
+        self.view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
+        self.view.setSource(ui_tools.get_qml_resource("PluginsStore.qml"))
+        self.root = self.view.rootObject()
+        vbox.addWidget(self.view)

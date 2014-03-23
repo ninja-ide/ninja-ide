@@ -24,32 +24,12 @@ import ast
 import _ast
 
 from ninja_ide.tools.logger import NinjaLogger
-from ninja_ide.tools.completion import model
+from ninja_ide.intellisensei.analyzer import model
 
 
 logger = NinjaLogger('ninja_ide.tools.completion.analyzer')
 
 MAX_THRESHOLD = 3
-
-
-def expand_attribute(attribute):
-    parent_name = []
-    while attribute.__class__ is ast.Attribute:
-        parent_name.append(attribute.attr)
-        attribute = attribute.value
-    name = '.'.join(reversed(parent_name))
-    attribute_id = ''
-    if attribute.__class__ is ast.Name:
-        attribute_id = attribute.id
-    elif attribute.__class__ is ast.Call:
-        if attribute.func.__class__ is ast.Attribute:
-            attribute_id = '%s.%s()' % (
-                expand_attribute(attribute.func.value),
-                attribute.func.attr)
-        else:
-            attribute_id = '%s()' % attribute.func.id
-    name = attribute_id if name == '' else ("%s.%s" % (attribute_id, name))
-    return name
 
 
 class Analyzer(object):
@@ -316,3 +296,34 @@ class Analyzer(object):
                 self._search_recursive_for_types(function, else_item, parent)
 #        elif symbol.__class__ is ast.Expr:
 #            self._process_expression(symbol.value)
+
+
+class CodeParser(ast.NodeVisitor):
+
+    def analyze(self, astmodule):
+        self.module = model.Module()
+        self.visit(astmodule)
+
+    def visit_ClassDef(self, node):
+        self.module = self.module.create_class(node)
+        for item in node.body:
+            self.visit(item)
+        self.module = self.module.close_class()
+        return node
+
+    def visit_FunctionDef(self, node):
+        self.module.create_function(node)
+        for item in node.body:
+            self.visit(item)
+        self.module = self.module.close_function()
+        return node
+
+    def visit_Name(self, node):
+        if node.id not in self.code_names:
+            self.code_names.append(node.id)
+        return node
+
+    def visit_Attribute(self, node):
+        if node.attr not in self.code_names:
+            self.code_names.append(node.attr)
+        return node

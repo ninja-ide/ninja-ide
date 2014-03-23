@@ -29,7 +29,10 @@ from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QComboBox
 from PyQt4.QtGui import QIcon
+from PyQt4.QtGui import QCompleter
+from PyQt4.QtGui import QDirModel
 from PyQt4.QtCore import SIGNAL
+from PyQt4.QtCore import QDir
 
 from ninja_ide import translations
 from ninja_ide.core import settings
@@ -38,6 +41,7 @@ from ninja_ide.gui.dialogs.preferences import preferences
 
 
 class GeneralExecution(QWidget):
+    """General Execution widget class"""
 
     def __init__(self, parent):
         super(GeneralExecution, self).__init__()
@@ -50,6 +54,10 @@ class GeneralExecution(QWidget):
         hPath = QHBoxLayout()
         self._txtPythonPath = QLineEdit()
         self._btnPythonPath = QPushButton(QIcon(':img/open'), '')
+        self.completer, self.dirs = QCompleter(self), QDirModel(self)
+        self.dirs.setFilter(QDir.AllEntries | QDir.NoDotAndDotDot)
+        self.completer.setModel(self.dirs)
+        self._txtPythonPath.setCompleter(self.completer)
         hPath.addWidget(QLabel(translations.TR_SELECT_PYTHON_EXEC))
         hPath.addWidget(self._txtPythonPath)
         hPath.addWidget(self._btnPythonPath)
@@ -142,12 +150,14 @@ class GeneralExecution(QWidget):
             SIGNAL("clicked()"), self._load_python_path)
 
     def _load_python_path(self):
+        """Ask the user for a Python Path"""
         path = QFileDialog.getOpenFileName(self,
             translations.TR_SELECT_SELECT_PYTHON_EXEC)
         if path:
             self._txtPythonPath.setText(path)
 
     def save(self):
+        """Save all the Execution Preferences"""
         qsettings = IDE.ninja_settings()
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('execution')

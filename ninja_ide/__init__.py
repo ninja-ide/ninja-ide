@@ -52,7 +52,6 @@ API_VERSION = 2
 for name in API_NAMES:
     sip.setapi(name, API_VERSION)
 
-
 ###############################################################################
 # START
 ###############################################################################
@@ -60,6 +59,12 @@ for name in API_NAMES:
 
 def setup_and_run():
     """Load the Core module and trigger the execution."""
+    ###########################################################################
+    # Start Virtual Env that supports encapsulation of plugins
+    ###########################################################################
+
+    from ninja_ide.core.encapsulated_env import nenvironement
+
     # import only on run
     # Dont import always this, setup.py will fail
     from ninja_ide import core

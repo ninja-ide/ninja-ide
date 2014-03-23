@@ -102,13 +102,12 @@ ACTIONS_STATUS_SEARCH = (
 
 
 ACTIONS_GENERAL = (
-    #TODO
-    #{
-    #"action": {'text': translations.TR_MANAGE_PLUGINS,
-               #'section': (translations.TR_MENU_EXTENSIONS, None),
-               #'weight': 100},
-    #"connect": "show_manager"
-    #},
+    {
+    "action": {'text': translations.TR_MANAGE_PLUGINS,
+               'section': (translations.TR_MENU_EXTENSIONS, None),
+               'weight': 100},
+    "connect": "show_plugins_store"
+    },
     {
     "action": {'text': translations.TR_EDITOR_SCHEMES,
                'section': (translations.TR_MENU_EXTENSIONS, None),
