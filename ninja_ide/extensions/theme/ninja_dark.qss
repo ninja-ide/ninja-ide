@@ -301,6 +301,22 @@ QLabel, QListWidget {
     background: transparent;
 }
 
+QListWidget[wizard="true"] {
+    color: #f3f3f3;
+    background: transparent;
+    border-style: outset;
+    border-width: 2px;
+    border-color: beige;
+}
+
+QTextBrowser[wizard="true"] {
+    color: #f3f3f3;
+    background: transparent;
+    border-style: outset;
+    border-width: 2px;
+    border-color: beige;
+}
+
 QPushButton {
     background: #97b9c4;
     border-radius: 5px;

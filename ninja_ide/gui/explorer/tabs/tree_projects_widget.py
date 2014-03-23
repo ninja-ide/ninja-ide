@@ -56,7 +56,7 @@ from ninja_ide.tools import json_manager
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs import add_to_project
 from ninja_ide.gui.dialogs import project_properties_widget
-from ninja_ide.gui.dialogs import wizard_new_project
+from ninja_ide.gui.dialogs import new_project_manager
 from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
 from ninja_ide.gui.explorer import actions
 from ninja_ide.gui.explorer.nproject import NProject
@@ -327,7 +327,7 @@ class ProjectTreeColumn(QDialog):
                 main_container.save_project(path)
 
     def create_new_project(self):
-        wizard = wizard_new_project.WizardNewProject(self)
+        wizard = new_project_manager.NewProjectManager(self)
         wizard.show()
 
     @property
