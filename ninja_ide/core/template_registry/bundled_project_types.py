@@ -19,6 +19,25 @@ import os
 from ninja_ide.core.template_registry.ntemplate_registry import BaseProjectType
 
 
+SETUP_PY_FILE = \
+    r"""
+    #BEWARE: This is a minimal version you will most likely need to extend it
+    from setuptools import setup, find_packages
+
+    setup(name='%s',
+          version='1.0',
+          packages=find_packages(),
+          )
+"""
+
+BASIC_HELLO = \
+    r"""
+    #This is a sample yet useful program, for python 3
+    def hello_world():
+        print("hello world, this is %s's main")
+    """
+
+
 class PythonProject(BaseProjectType):
 
     type_name = "Basic Python Project"
@@ -49,19 +68,21 @@ class PythonProject(BaseProjectType):
                 os.mkdir(full_path)
 
         #Create a single init file
-        with base_init as open(os.path.join(self.path, "__init__.py")):
-            self.init_file(base_init, "py")
+        filepath = os.path.join(self.path, "__init__.py")
+        with base_init as open(filepath, "r"):
+            self.init_file(base_init, filepath)
 
         #Create a setup.py
-        #Create a basic main file
+        filepath = os.path.join(self.path, "setup.py")
+        with base_setup as open(filepath, "r"):
+            self.init_file(base_setup, filepath)
+            base_setup.write(SETUP_PY_FILE % self.name)
 
-    def update_layout(self):
-        """
-        If you must (notice the version attribute) you can update a given
-        project environment.
-        You should save versions somehow in said project
-        """
-        pass
+        #Create a basic main file
+        filepath = os.path.join(self.path, "main.py")
+        with base_main as open(filepath, "r"):
+            self.init_file(base_main, filepath)
+            base_setup.write(BASIC_HELLO % self.name)
 
     def get_project_api(self):
         """
