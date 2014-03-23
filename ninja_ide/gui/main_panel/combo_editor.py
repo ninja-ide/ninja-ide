@@ -196,7 +196,7 @@ class ComboEditor(QDialog):
     def _close_file(self, neditable):
         index = self.bar.close_file(neditable)
         layoutItem = self.stacked.takeAt(index)
-        neditable.editor.completer.cc.unload_module()
+        #neditable.editor.completer.cc.unload_module()
         self._add_to_last_opened(neditable.file_path)
         layoutItem.widget().deleteLater()
 
