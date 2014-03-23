@@ -16,6 +16,8 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from PyQt4.QtCore import QObject
 
+from ninja_ide.gui.ide import IDE
+
 
 class ConflictingTypeForCategory(Exception):
 
@@ -43,13 +45,13 @@ class NTemplateRegistry(QObject):
         super(NTemplateRegistry, self).__init__()
 
     def register_project_type(self, ptype):
-        if ptype.compount_name in self.__project_types.keys():
+        if ptype.compound_name in self.__project_types.keys():
             self.__project_types[ptype.compound_name] = ptype
             #This is here mostly for convenience
             self.__types_by_category.setdefault(ptype.cateogory,
                                                 []).append(ptype)
         else:
-            raise ConflictingTypeForCategory(ptype.name, ptype.category)
+            raise ConflictingTypeForCategory(ptype.type_name, ptype.category)
 
     def list_project_types(self):
         return self.__registry_data.keys()
@@ -70,17 +72,32 @@ class BaseProjectType(QObject):
     The only mandatory method is create_layout
     """
 
-    def __init__(self, category, name, path, version=None):
+    type_name = "No Type"
+    layout_version = "0.0"
+    category = "No Category"
+
+    def __init__(self, name, path):
         self.name = name
-        self.category = category
         self.path = path
         self.description = ""
-        self.layout_version = version
         super(BaseProjectType, self).__init__()
 
-    @property
-    def compound_name(self):
-        return "%s_%s" % (self.name, self.category)
+    @classmethod
+    def compound_name(cls):
+        return "%s_%s" % (cls.type_name, cls.category)
+
+    @classmethod
+    def register(cls):
+        """
+        Just a convenience method that registers a given type
+        """
+        tr = IDE.get_service("template_registry")
+        try:
+            tr.register_project_type(cls)
+        except ConflictingTypeForCategory:
+            pass
+        finally:
+            return tr.get_project_type(cls.type_name)
 
     def create_layout(self):
         """
