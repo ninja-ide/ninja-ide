@@ -50,7 +50,7 @@ from ninja_ide.gui import notification
 from ninja_ide.gui.editor import neditable
 from ninja_ide.gui.explorer import nproject
 from ninja_ide.gui.dialogs import about_ninja
-from ninja_ide.gui.dialogs import plugins_manager
+from ninja_ide.gui.dialogs import plugins_store
 from ninja_ide.gui.dialogs import schemes_manager
 from ninja_ide.gui.dialogs import language_manager
 from ninja_ide.gui.dialogs import session_manager
@@ -58,7 +58,7 @@ from ninja_ide.gui.dialogs.preferences import preferences
 from ninja_ide.gui.dialogs import traceback_widget
 from ninja_ide.gui.dialogs import python_detect_dialog
 from ninja_ide.tools import ui_tools
-from ninja_ide.tools.completion import completion_daemon
+#from ninja_ide.tools.completion import completion_daemon
 
 ###############################################################################
 # LOGGER INITIALIZE
@@ -680,7 +680,7 @@ class IDE(QMainWindow):
         main_container.close_python_doc()
         #Shutdown PluginManager
         self.plugin_manager.shutdown()
-        completion_daemon.shutdown_daemon()
+        #completion_daemon.shutdown_daemon()
         super(IDE, self).closeEvent(event)
 
     def notify_plugin_errors(self):
@@ -698,14 +698,16 @@ class IDE(QMainWindow):
         self.notification.set_message(message, duration)
         self.notification.show()
 
-    def show_manager(self):
+    def show_plugins_store(self):
         """Open the Plugins Manager to install/uninstall plugins."""
-        manager = plugins_manager.PluginsManagerWidget(self)
-        manager.show()
-        if manager._requirements:
-            dependencyDialog = plugins_manager.DependenciesHelpDialog(
-                manager._requirements)
-            dependencyDialog.show()
+        store = plugins_store.PluginsStore(self)
+        store.show()
+        #manager = plugins_manager.PluginsManagerWidget(self)
+        #manager.show()
+        #if manager._requirements:
+            #dependencyDialog = plugins_manager.DependenciesHelpDialog(
+                #manager._requirements)
+            #dependencyDialog.show()
 
     def show_languages(self):
         """Open the Language Manager to install/uninstall languages."""

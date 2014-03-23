@@ -17,7 +17,7 @@
 import _ast
 import ast
 
-from ninja_ide.tools.completion import analyzer
+from ninja_ide.intellisensei.analyzer import model
 
 from ninja_ide.tools.logger import NinjaLogger
 
@@ -54,7 +54,7 @@ def _parse_class(symbol, with_docstrings):
     clazz = {}
     name = symbol.name + '('
     name += ', '.join([
-        analyzer.expand_attribute(base) for base in symbol.bases])
+        model.expand_attribute(base) for base in symbol.bases])
     name += ')'
     for sym in symbol.body:
         if sym.__class__ is ast.Assign:
@@ -106,7 +106,7 @@ def _parse_function(symbol, with_docstrings):
             arg_default = _map_type.get(value.__class__, None)
             if arg_default is None:
                 if value.__class__ is _ast.Attribute:
-                    arg_default = analyzer.expand_attribute(value)
+                    arg_default = model.expand_attribute(value)
                 elif value.__class__ is _ast.Name:
                     arg_default = value.id
                 else:
@@ -230,7 +230,7 @@ def _parse_class_simplified(symbol):
     results = {}
     name = symbol.name + '('
     name += ', '.join([
-        analyzer.expand_attribute(base) for base in symbol.bases])
+        model.expand_attribute(base) for base in symbol.bases])
     name += ')'
     for sym in symbol.body:
         if sym.__class__ is ast.FunctionDef:
@@ -270,7 +270,7 @@ def _parse_function_simplified(symbol, member_of=""):
             arg_default = _map_type.get(value.__class__, None)
             if arg_default is None:
                 if value.__class__ is _ast.Attribute:
-                    arg_default = analyzer.expand_attribute(value)
+                    arg_default = model.expand_attribute(value)
                 elif value.__class__ is _ast.Name:
                     arg_default = value.id
                 else:
