@@ -87,14 +87,14 @@ class AsyncRunner(QThread):
     def _success_finish(self):
         self.__finished = True
         self.wait()
-        self.emit(SIGNAL("threadFinished(PyQt_PyObject)", self.status))
+        self.emit(SIGNAL("threadFinished(PyQt_PyObject)"), self.status)
 
     def _fail_finish(self, errmsg):
         self.__finished = True
         self.__iserror = True
         self.__errmsg = errmsg
         self.wait()
-        self.emit(SIGNAL("threadFinished(PyQt_PyObject)", self.status))
+        self.emit(SIGNAL("threadFinished(PyQt_PyObject)"), self.status)
 
     def status(self):
         """
@@ -114,7 +114,7 @@ class AsyncRunner(QThread):
         """
         self.__args = args
         self.__kwargs = kwargs
-        self.run()
+        self.start()
         return self
 
     def run(self):
@@ -122,16 +122,21 @@ class AsyncRunner(QThread):
             self.__runable(*self.__args, **self.__kwargs)
             self.emit(SIGNAL("threadEnded()"))
         except Exception as e:
-            if hasattr("message", e):
+            if hasattr(e, "message"):
                 errmsg = e.message
             else:  # Python 3
                 errmsg = str(e)
-            self.emit(SIGNAL("threadFailed(QString)", errmsg))
+            self.emit(SIGNAL("threadFailed(QString)"), errmsg)
 
 
 def make_async(func):
     """Decorate methods to be run as Qthreads"""
-    return AsyncRunner(func)
+    def make_me_async(*args, **kwargs):
+        async_func = AsyncRunner(func)
+        async_func(*args, **kwargs)
+        return async_func
+
+    return make_me_async
 
 
 class NenvEggSearcher(QObject):
@@ -142,6 +147,7 @@ class NenvEggSearcher(QObject):
     """
 
     def __init__(self):
+        super(NenvEggSearcher, self).__init__()
         self.search_url = "https://pypi.python.org/pypi"
         self.__pypi = None
 
@@ -156,8 +162,8 @@ class NenvEggSearcher(QObject):
     def do_search(self):
         self.emit(SIGNAL("searchTriggered()"))
         plugins_found = self.pypi.search(PLUGIN_QUERY, "and")
-        self.emit(SIGNAL("searchCompleted(PyQt_PyObject)",
-                        self.__iterate_results(plugins_found)))
+        self.emit(SIGNAL("searchCompleted(PyQt_PyObject)"),
+                        self.__iterate_results(plugins_found))
 
     def __iterate_results(self, result_list):
         for each_plugin in result_list:
@@ -271,7 +277,8 @@ from setuptools import setup, find_packages
 
 setup(name='ninja_ide.contrib.plugins.plugin_a',
       version='1.0',
-      namespace_packages=['ninja_ide','ninja_ide.contrib','ninja_ide.contrib.plugins'],
+      namespace_packages=['ninja_ide','ninja_ide.contrib',
+          'ninja_ide.contrib.plugins'],
       packages=find_packages(),
       )
 """
