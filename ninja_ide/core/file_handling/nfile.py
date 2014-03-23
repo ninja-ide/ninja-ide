@@ -65,7 +65,6 @@ class NFile(QObject):
         self._file_path = path
         self.__created = False
         self.__watcher = None
-        self._block_watcher_signal = False
         super(NFile, self).__init__()
         if not self._exists():
             self.__created = True
@@ -104,7 +103,6 @@ class NFile(QObject):
         return self._file_path
 
     def start_watching(self):
-        # NOT WORKING PROPERLY, SEVERAL MODIFICATIONS ARE NOT INFORMED
         self.__watcher = QFileSystemWatcher(self)
         self.connect(self.__watcher, SIGNAL("fileChanged(const QString&)"),
             self._file_changed)
@@ -112,9 +110,7 @@ class NFile(QObject):
             self.__watcher.addPath(self._file_path)
 
     def _file_changed(self, path):
-        if not self._block_watcher_signal:
-            self.emit(SIGNAL("fileChanged()"))
-            self._block_watcher_signal = False
+        self.emit(SIGNAL("fileChanged()"))
 
     def has_write_permission(self):
         if not self._exists():
@@ -156,7 +152,6 @@ class NFile(QObject):
         #FIXME: Where to locate addExtension, does not fit here
         """
         new_path = False
-        self._block_watcher_signal = True
         if path:
             self.attach_to_path(path)
             new_path = True
@@ -168,6 +163,7 @@ class NFile(QObject):
                                 "file but no one told me where")
         swap_save_path = u"%s.nsp" % save_path
 
+        self.__watcher.removePath(save_path)
         flags = QIODevice.WriteOnly | QIODevice.Truncate
         f = QFile(swap_save_path)
         if settings.use_platform_specific_eol():
@@ -189,6 +185,7 @@ class NFile(QObject):
         self.emit(SIGNAL("willSave(QString, QString)"), swap_save_path,
                                                         save_path)
         shutil.move(swap_save_path, save_path)
+        self.__watcher.addPath(save_path)
         self.reset_state()
         if self.__watcher and new_path:
             self.__watcher.removePath(self.__watcher.files()[0])
