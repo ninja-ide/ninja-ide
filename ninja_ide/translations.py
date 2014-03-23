@@ -439,6 +439,7 @@ TR_ADD_PROJECT_TO_PYTHON_CONSOLE = tr("NINJA-IDE",
 TR_CLOSE_PROJECT = tr("NINJA-IDE", "Close project")
 TR_ADD_NEW_FILE = tr("NINJA-IDE", "Add new file")
 TR_ADD_NEW_FOLDER = tr("NINJA-IDE", "Add new folder")
+TR_ENTER_NEW_FOLDER_NAME = tr("NINJA-IDE", "Enter new folder name")
 TR_CREATE_INIT = tr("NINJA-IDE", "Create '__init__.py'")
 TR_CREATE_INIT_FAIL = tr("NINJA-IDE", "Create '__init__.py' fail")
 TR_REMOVE_FOLDER = tr("NINJA-IDE", "Remove folder")
