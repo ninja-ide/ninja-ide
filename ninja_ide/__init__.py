@@ -63,7 +63,7 @@ def setup_and_run():
     # Start Virtual Env that supports encapsulation of plugins
     ###########################################################################
 
-    from ninja_ide.core.encapsulated_env import nenvironement
+    from ninja_ide.core.encapsulated_env import nenvironment
 
     # import only on run
     # Dont import always this, setup.py will fail
