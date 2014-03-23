@@ -19,8 +19,10 @@ from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtDeclarative import QDeclarativeView
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import SIGNAL
 
 from ninja_ide.tools import ui_tools
+from ninja_ide.core.encapsulated_env import nenvironment
 
 
 class PluginsStore(QDialog):
@@ -37,3 +39,13 @@ class PluginsStore(QDialog):
         self.view.setSource(ui_tools.get_qml_resource("PluginsStore.qml"))
         self.root = self.view.rootObject()
         vbox.addWidget(self.view)
+
+        self.nenv = nenvironment.NenvEggSearcher()
+        self.connect(self.nenv, SIGNAL("searchCompleted(PyQt_PyObject)"),
+            self.callback)
+
+        self.status = self.nenv.do_search()
+
+    def callback(self, values):
+        for each_val in values:
+            print each_val
