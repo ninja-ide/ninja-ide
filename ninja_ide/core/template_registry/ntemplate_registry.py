@@ -14,6 +14,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+import os
+
 from PyQt4.QtCore import QObject
 
 from ninja_ide.gui.ide import IDE
@@ -45,8 +47,8 @@ class NTemplateRegistry(QObject):
         super(NTemplateRegistry, self).__init__()
 
     def register_project_type(self, ptype):
-        if ptype.compound_name in self.__project_types.keys():
-            self.__project_types[ptype.compound_name] = ptype
+        if ptype.compound_name() in self.__project_types.keys():
+            self.__project_types[ptype.compound_name()] = ptype
             #This is here mostly for convenience
             self.__types_by_category.setdefault(ptype.cateogory,
                                                 []).append(ptype)
@@ -75,11 +77,17 @@ class BaseProjectType(QObject):
     type_name = "No Type"
     layout_version = "0.0"
     category = "No Category"
+    encoding_string = {}
+    single_line_comment = {}
+    description = "No Description"
 
-    def __init__(self, name, path):
+    def __init__(self, name, path, licence_text, licence_short_name="GPLv2",
+                base_encoding="utf-8"):
         self.name = name
         self.path = path
-        self.description = ""
+        self.base_encoding = base_encoding
+        self.licence_short_name = licence_short_name
+        self.licence_text = licence_text
         super(BaseProjectType, self).__init__()
 
     @classmethod
@@ -97,7 +105,22 @@ class BaseProjectType(QObject):
         except ConflictingTypeForCategory:
             pass
         finally:
-            return tr.get_project_type(cls.type_name)
+            return tr.get_project_type(cls.compound_name())
+
+    def get_file_extension(self, filename):
+        _, extension = os.path.splitext(filename)
+        return extension[1:]
+
+    def init_file(self, fd, filepath):
+        """
+        Adds encoding line and licence if possible
+        """
+        ext = self.get_file_extension(filepath)
+        if self.base_encoding and (ext in self.encoding_string):
+            fd.write(self.encoding_string[ext] % self.base_encoding)
+        if self.licence_text and (ext in self.single_line_comment):
+            for each_line in self.licence_text.splitlines():
+                fd.write(self.single_line_comment + each_line)
 
     def create_layout(self):
         """
