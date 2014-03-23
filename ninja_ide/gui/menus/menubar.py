@@ -168,7 +168,8 @@ class _MenuBar(QObject):
                 action = item[0]
                 if action.objectName() in settings.TOOLBAR_ITEMS:
                     toolbar.addAction(action)
-            toolbar.addSeparator()
+            if items_in_category:
+                toolbar.addSeparator()
 
 
 menu = _MenuBar()

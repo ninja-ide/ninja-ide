@@ -20,9 +20,8 @@ import time
 from threading import Thread, Lock
 from multiprocessing import Process, Queue
 
-from ninja_ide.tools.completion import model
-from ninja_ide.tools.completion import completer
-from ninja_ide.tools.completion import analyzer
+from ninja_ide.intellisensei.analyzer import model
+from ninja_ide.intellisense.analyzer import analyzer
 
 
 try:
