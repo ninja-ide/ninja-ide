@@ -43,6 +43,7 @@ from PyQt4.QtGui import QFont
 from PyQt4.QtGui import QMenu
 from PyQt4.QtGui import QPainter
 from PyQt4.QtGui import QColor
+from PyQt4.QtGui import QKeySequence
 from PyQt4.QtCore import QRect
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QMimeData
@@ -904,10 +905,12 @@ class Editor(QPlainTextEdit):
             return
         #On Return == True stop the execution of this method
         if self.preKeyPress.get(event.key(), lambda x: False)(event):
-            #emit a signal then plugings can do something
+            #emit a signal so that plugins can do their thing
             self.emit(SIGNAL("keyPressEvent(QEvent)"), event)
             return
         self.selected_text = self.textCursor().selectedText()
+
+        self._check_auto_copy_cut(event)
 
         QPlainTextEdit.keyPressEvent(self, event)
 
@@ -916,8 +919,19 @@ class Editor(QPlainTextEdit):
         #Completer post key event
         self.completer.process_post_key_event(event)
 
-        #emit a signal then plugings can do something
+        #emit a signal so that plugins can do their thing
         self.emit(SIGNAL("keyPressEvent(QEvent)"), event)
+
+    def _check_auto_copy_cut(self, event):
+        """Convenience method, when the user hits Ctrl+C or
+        Ctrl+X with no text selected, we automatically select
+        the entire line under the cursor."""
+        tc = self.textCursor()
+        copyOrCut = event.matches(QKeySequence.Copy) or \
+                    event.matches(QKeySequence.Cut)
+        if copyOrCut and not tc.hasSelection():
+            tc.select(QTextCursor.LineUnderCursor)
+            self.setTextCursor(tc)
 
     def keyReleaseEvent(self, event):
         QPlainTextEdit.keyReleaseEvent(self, event)
