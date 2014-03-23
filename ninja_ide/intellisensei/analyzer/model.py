@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+import ast
+
 try:
     unicode
 except NameError:
@@ -55,21 +57,21 @@ def remove_function_arguments(line):
     return line
 
 
-class _TypeData(object):
+class TypeData(object):
 
-    def __init__(self, lineno, data_type, line_content, oper):
+    def __init__(self, lineno, data_type, line_content):
         self.lineno = lineno
         self.data_type = data_type
         self.line_content = line_content
-        if data_type != late_resolution:
-            oper = None
-        self.operation = oper
-        self.from_import = False
+        #if data_type != late_resolution:
+            #oper = None
+        #self.operation = oper
+        #self.from_import = False
         if isinstance(data_type, str):
             self.is_native = True
         else:
             self.is_native = False
-        self.can_resolve = True
+        #self.can_resolve = True
 
     def get_data_type(self):
         return self.data_type
@@ -180,7 +182,7 @@ class Module(Structure):
     def add_imports(self, imports):
         for imp in imports:
             line_content = "import %s" % imp[1]
-            info = _TypeData(None, imp[1], line_content, None)
+            info = TypeData(None, imp[1], line_content, None)
             self.imports[imp[0]] = info
 
     def add_class(self, clazz):
@@ -386,7 +388,7 @@ class Function(Structure):
         self.return_type = []
 
     def add_return(self, lineno, data_type, line_content, oper):
-        info = _TypeData(lineno, data_type, line_content, oper)
+        info = TypeData(lineno, data_type, line_content, oper)
         if info not in self.return_type:
             self.return_type.append(info)
 
@@ -408,7 +410,7 @@ class Assign(object):
         self.parent = None
 
     def add_data(self, lineno, data_type, line_content, oper):
-        info = _TypeData(lineno, data_type, line_content, oper)
+        info = TypeData(lineno, data_type, line_content, oper)
         if info not in self.data:
             self.data.append(info)
 
@@ -443,3 +445,135 @@ class LinkedModule(object):
                 child_attr = to_resolve[1]
             result = module.get_type(main_attr, child_attr)
         return result
+
+
+def expand_attribute(attribute):
+    parent_name = []
+    while attribute.__class__ is ast.Attribute:
+        parent_name.append(attribute.attr)
+        attribute = attribute.value
+    name = '.'.join(reversed(parent_name))
+    attribute_id = ''
+    if attribute.__class__ is ast.Name:
+        attribute_id = attribute.id
+    elif attribute.__class__ is ast.Call:
+        if attribute.func.__class__ is ast.Attribute:
+            attribute_id = '%s.%s()' % (
+                expand_attribute(attribute.func.value),
+                attribute.func.attr)
+        else:
+            attribute_id = '%s()' % attribute.func.id
+    name = attribute_id if name == '' else ("%s.%s" % (attribute_id, name))
+    return name
+
+
+#class Structure(object):
+
+    #def __init__(self, parent=None):
+        #super(Module, self).__init__()
+        #self._parent = parent
+        #self.attributes = {}
+        #self.functions = {}
+
+    #def create_function(self, symbol):
+        #return Function(symbol, self)
+
+    #def create_attribute(self, symbol):
+        #pass
+
+
+#class Module(Structure):
+
+    #def __init__(self):
+        #super(Module, self).__init__()
+        #self.imports = {}
+        #self.clazzes = {}
+
+    #def create_class(self, symbol):
+        #return Clazz(symbol, self)
+
+
+#class Clazz(Structure):
+
+    #def __init__(self, symbol, parent):
+        #super(Clazz, self).__init__(parent)
+        #self.bases = {}
+        #for base in symbol.bases:
+            #if base == 'object':
+                #continue
+            #name = expand_attribute(base)
+            #value = self.bases.get(name, None)
+            #if value is None:
+                #self.bases[name] = value
+
+    #def close_class(self):
+        #return self._parent
+
+
+#class Function(Structure):
+
+    #def __init__(self, symbol, parent):
+        #super(Function, self).__init__(parent)
+        #self.name = symbol.name
+        #self.args = {}
+        #self.decorators = []
+        #self.return_type = []
+
+        #for decorator in symbol.decorator_list:
+            ##Decorators can be: Name, Call, Attributes
+            #self.decorators.append(decorator.id)
+
+        #if symbol.args.vararg is not None:
+            #assign = Assign(symbol.args.vararg)
+            #assign.add_data(symbol.lineno, '__builtin__.list', None, None)
+            #self.args[assign.name] = assign
+        #if symbol.args.kwarg is not None:
+            #assign = Assign(symbol.args.kwarg)
+            #assign.add_data(symbol.lineno, '__builtin__.dict', None, None)
+            #self.args[assign.name] = assign
+        ##We store the arguments to compare with default backwards
+        #defaults = []
+        #for value in symbol.args.defaults:
+            ##TODO: In some cases we can have something like: a=os.path
+            #type_value = value.__class__
+            #data_type = self.__mapping.get(type_value, None)
+            #defaults.append((data_type, type_value))
+        #for arg in reversed(symbol.args.args):
+            #if isinstance(arg, ast.Tuple):
+                #self._parse_tuple_in_func_arg(arg, function, symbol.lineno)
+                #continue
+            #elif arg.id == 'self':
+                #continue
+            #assign = Assign(arg.id)
+            #data_type = (late_resolution, None)
+            #if defaults:
+                #data_type = defaults.pop()
+            #assign.add_data(symbol.lineno, data_type[0], None, data_type[1])
+            #self.args[assign.name] = assign
+
+    #def close_function(self):
+        #return self._parent
+
+
+#class Assign(object):
+
+    #def __init__(self, symbol):
+        #super(Assign, self).__init__()
+        #self.name = symbol.name
+        #self.data = []
+        #self.add_symbol(symbol)
+
+    #def add_symbol(self, symbol):
+        #pass
+    ##def add_data(self, lineno, data_type, line_content, oper):
+        ##info = TypeData(symbol.lineno, data_type, line_content)
+        ##if info not in self.data:
+            ##self.data.append(info)
+
+    #def get_data_type(self):
+        #possible = [d.data_type for d in self.data
+                    #if d.data_type is not late_resolution]
+        #if possible:
+            #return filter_data_type(possible)
+        #else:
+            #return None

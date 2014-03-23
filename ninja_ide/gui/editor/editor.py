@@ -51,7 +51,7 @@ from PyQt4.QtCore import Qt
 from ninja_ide import resources
 from ninja_ide.core import settings
 from ninja_ide.core.file_handling import file_manager
-from ninja_ide.tools.completion import completer_widget
+#from ninja_ide.tools.completion import completer_widget
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import syntax_highlighter
@@ -116,7 +116,7 @@ class Editor(QPlainTextEdit):
         self._braces = None
         self.__encoding = None
         #Completer
-        self.completer = completer_widget.CodeCompletionWidget(self)
+        #self.completer = completer_widget.CodeCompletionWidget(self)
         #Flag to dont bug the user when answer *the modification dialog*
         #Dict functions for KeyPress
         self.preKeyPress = {
@@ -684,7 +684,7 @@ class Editor(QPlainTextEdit):
 
     def focusOutEvent(self, event):
         """Hide Popup on focus lost."""
-        self.completer.hide_completer()
+        #self.completer.hide_completer()
         super(Editor, self).focusOutEvent(event)
 
     def resizeEvent(self, event):
@@ -900,8 +900,8 @@ class Editor(QPlainTextEdit):
 
     def keyPressEvent(self, event):
         #Completer pre key event
-        if self.completer.process_pre_key_event(event):
-            return
+        #if self.completer.process_pre_key_event(event):
+            #return
         #On Return == True stop the execution of this method
         if self.preKeyPress.get(event.key(), lambda x: False)(event):
             #emit a signal then plugings can do something
@@ -914,7 +914,7 @@ class Editor(QPlainTextEdit):
         self.postKeyPress.get(event.key(), lambda x: False)(event)
 
         #Completer post key event
-        self.completer.process_post_key_event(event)
+        #self.completer.process_post_key_event(event)
 
         #emit a signal then plugings can do something
         self.emit(SIGNAL("keyPressEvent(QEvent)"), event)
@@ -1022,8 +1022,8 @@ class Editor(QPlainTextEdit):
         QPlainTextEdit.mouseMoveEvent(self, event)
 
     def mousePressEvent(self, event):
-        if self.completer.isVisible():
-            self.completer.hide_completer()
+        #if self.completer.isVisible():
+            #self.completer.hide_completer()
         if event.modifiers() == Qt.ControlModifier:
             cursor = self.cursorForPosition(event.pos())
             self.setTextCursor(cursor)

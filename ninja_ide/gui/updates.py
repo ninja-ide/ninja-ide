@@ -113,7 +113,7 @@ class TrayIconUpdates(QSystemTrayIcon):
 class ThreadUpdates(QThread):
 
     def __init__(self):
-        QThread.__init__(self)
+        super(ThreadUpdates, self).__init___()
 
     def run(self):
         try:
