@@ -23,7 +23,6 @@ import os
 
 from virtualenv import create_environment
 
-
 #This is here only for reference purposes
 #def create_environment(home_dir, site_packages=False, clear=False,
 #                       unzip_setuptools=False,

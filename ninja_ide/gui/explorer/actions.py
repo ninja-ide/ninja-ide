@@ -27,14 +27,14 @@ PROJECTS_TREE_ACTIONS = (
                'weight': 190},
     "connect": "save_project"
     },
-    #{
-    #"shortcut": "New-project",
-    #"action": {'text': translations.TR_NEW_PROJECT,
-               #'image': 'newProj',
-               #'section': (translations.TR_MENU_FILE, None),
-               #'weight': 110},
-    #"connect": "create_new_project"
-    #},
+    {
+    "shortcut": "New-project",
+    "action": {'text': translations.TR_NEW_PROJECT,
+               'image': 'newProj',
+               'section': (translations.TR_MENU_FILE, None),
+               'weight': 110},
+    "connect": "create_new_project"
+    },
     {
     "action": {'text': translations.TR_CLOSE_ALL_PROJECTS,
                'image': QStyle.SP_DialogCloseButton,
