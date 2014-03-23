@@ -419,8 +419,8 @@ TR_UNFOLD_CLASSES = tr("NINJA-IDE", "Unfold classes")
 TR_UNFOLD_CLASSES_AND_METHODS = tr("NINJA-IDE", "Unfold classes and methods")
 TR_UNFOLD_CLASSES_AND_ATTRIBUTES = tr("NINJA-IDE",
     "Unfold classes and attributes")
-TR_FOLD_PROJECT = tr("NINJA-IDE", "Fold project")
-TR_UNFOLD_PROJECT = tr("NINJA-IDE", "Unfold project")
+TR_FOLD_PROJECT = tr("NINJA-IDE", "Fold Project")
+TR_UNFOLD_PROJECT = tr("NINJA-IDE", "Unfold Project")
 TR_ATTRIBUTES = tr("NINJA-IDE", "Attributes")
 TR_FUNCTIONS = tr("NINJA-IDE", "Functions")
 TR_CLASSES = tr("NINJA-IDE", "Classes")
@@ -442,10 +442,10 @@ TR_ADD_NEW_FOLDER = tr("NINJA-IDE", "Add new folder")
 TR_CREATE_INIT = tr("NINJA-IDE", "Create '__init__.py'")
 TR_CREATE_INIT_FAIL = tr("NINJA-IDE", "Create '__init__.py' fail")
 TR_REMOVE_FOLDER = tr("NINJA-IDE", "Remove folder")
-TR_RENAME_FILE = tr("NINJA-IDE", "Rename file")
-TR_MOVE_FILE = tr("NINJA-IDE", "Move file")
-TR_COPY_FILE = tr("NINJA-IDE", "Copy file")
-TR_DELETE_FILE = tr("NINJA-IDE", "Delete file")
+TR_RENAME_FILE = tr("NINJA-IDE", "Rename File")
+TR_MOVE_FILE = tr("NINJA-IDE", "Move File")
+TR_COPY_FILE = tr("NINJA-IDE", "Copy File")
+TR_DELETE_FILE = tr("NINJA-IDE", "Delete File")
 TR_DELETE_FOLLOWING_FILE = tr("NINJA-IDE",
     "Do you want to delete the following file?")
 TR_DELETE_FOLLOWING_FOLDER = tr("NINJA-IDE",
@@ -454,7 +454,6 @@ TR_EDIT_UI_FILE = tr("NINJA-IDE", "Edit UI file")
 TR_ENTER_NEW_FILENAME = tr("NINJA-IDE", "Enter new filename")
 TR_OPEN_PROJECT_DIRECTORY = tr("NINJA-IDE", "Open project directory")
 TR_COPY_FILE_TO = tr("NINJA-IDE", "Copy file to")
-TR_COPY_FILE = tr("NINJA-IDE", "Copy file")
 
 
 # traceback_widget
