@@ -10,7 +10,12 @@ Rectangle {
     signal install
     signal downloadFinished
     signal selection(bool value)
+    signal showPlugin
     property bool selected: false
+    property alias title: txtTitle.text
+    property alias author: txtAuthor.text
+    property string version: "0"
+    property string summary: ""
 
     states: [
         State {
@@ -30,6 +35,10 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         hoverEnabled: true
+        onClicked: {
+            root.showPlugin();
+        }
+
         onEntered:{
             root.color = "#32353d";
         }
@@ -43,6 +52,25 @@ Rectangle {
         }
     }
 
+    Rectangle {
+        id: btnSelected
+        height: 15
+        width: 15
+        color: root.selected ? "lightgreen" : "white"
+        anchors {
+            left: parent.left
+            top: parent.top
+            margins: 10
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                root.selection(!root.selected);
+            }
+        }
+    }
+
     Column {
         anchors.fill: parent
         anchors.margins: 5
@@ -53,30 +81,50 @@ Rectangle {
                 left: parent.left
                 right: parent.right
             }
-            spacing: 2
+            spacing: 5
             Text {
-                text: "Django"
+                id: txtTitle
                 color: "#ededed"
                 anchors {
                     left: parent.left
+                    leftMargin: 25
                     right: parent.right
+                    rightMargin: 25
                 }
+                elide: Text.ElideRight
                 horizontalAlignment: Text.AlignHCenter
             }
             Text {
-                text: "Version: 0.1"
+                text: "Version: " + root.version
                 color: "#ededed"
                 font.pixelSize: 10
                 anchors {
                     left: parent.left
+                    leftMargin: 25
                     right: parent.right
+                    rightMargin: 25
                 }
+                elide: Text.ElideRight
                 horizontalAlignment: Text.AlignHCenter
             }
             Text {
-                text: "Diego Sarmentero"
+                id: txtAuthor
                 color: "#ededed"
                 font.pixelSize: 10
+                visible: !txtProgress.visible
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                }
+                elide: Text.ElideRight
+                horizontalAlignment: Text.AlignHCenter
+            }
+            Text {
+                id: txtProgress
+                text: "Loading..."
+                color: "#ededed"
+                font.pixelSize: 10
+                visible: txtAuthor.text ? false : true
                 anchors {
                     left: parent.left
                     right: parent.right
@@ -97,6 +145,7 @@ Rectangle {
 
             onClicked: {
                 root.state = "INSTALLING";
+                root.install();
                 progress.start()
             }
         }
@@ -144,47 +193,6 @@ Rectangle {
                     }
                 }
             }
-        }
-    }
-
-    Rectangle {
-        id: btnSelected
-        height: 15
-        width: 15
-        radius: width / 2
-        color: root.selected ? "lightgreen" : "white"
-        anchors {
-            left: parent.left
-            bottom: parent.bottom
-            margins: 10
-        }
-
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                root.selection(!root.selected);
-            }
-        }
-    }
-
-    Row {
-        spacing: 2
-        anchors {
-            bottom: parent.bottom
-            right: parent.right
-            margins: 10
-        }
-
-        Image {
-            source: "img/download.png"
-            width: 12
-            height: 12
-            fillMode: Image.PreserveAspectFit
-        }
-        Text {
-            text: "252"
-            color: "#d6d6d6"
-            font.pixelSize: 10
         }
     }
 }
