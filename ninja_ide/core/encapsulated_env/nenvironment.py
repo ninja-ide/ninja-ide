@@ -208,18 +208,18 @@ class PluginMetadata(QObject):
         self.identifier = 0
         #Inflated attributes (zeroed, declared here just for doc purposes)
         self.stable_version = ""
-        self.author = ""  #
-        self.author_email = ""  #
+        self.author = ""  # used by store
+        self.author_email = ""  # used by store
         self.maintainer = ""
         self.maintainer_email = ""
-        self.home_page = ""  #
-        self.license = ""  #
-        self.description = ""  #
-        self.keywords = ""  #
+        self.home_page = ""  # used by store
+        self.license = ""  # used by store
+        self.description = ""  # used by store
+        self.keywords = ""  # used by store
         self.platform = ""
-        self.download_url = ""  #
+        self.download_url = ""  # used by store
         #(list of classifier strings)
-        self.classifiers = []  #
+        self.classifiers = []  # used by store
         self.requires = ""
         self.requires_dist = ""
         self.provides = ""
