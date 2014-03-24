@@ -4,26 +4,54 @@ Rectangle {
     id: root
     color: "#616161"
 
+    signal inflatePlugin(int identifier)
     property int currentDownloads: 0
 
     ListModel {
         id: pluginsModel
 
         ListElement {
+            identifier: 0
             mname: ""
             mversion: ""
             mauthor: ""
+            msummary: ""
             mdownloads: ""
             mdownload_url: ""
-            mselected: ""
+            mselected: false
             minstalled: false
+        }
+    }
+
+    function showGrid() {
+        imgLoading.visible = false;
+        btnName.visible = true;
+        btnTags.visible = true;
+        btnAuthor.visible = true;
+        btnInstalled.visible = true;
+        searchComponent.visible = true;
+        grid.visible = true;
+    }
+
+    function addPlugin(identifier, name, summary, version) {
+        pluginsModel.append({"identifier": identifier, "mname": name,
+            "msummary": summary, "mversion": version,
+            "mauthor": "", "mdownloads": 0, "mdownload_url": "", "mselected": false,
+            "minstalled": false});
+    }
+
+    function updatePlugin(identifier, author) {
+        for (var i = 0; i < pluginsModel.count; i++) {
+            var plugin = pluginsModel.get(i)
+            if (plugin.identifier == identifier) {
+                plugin.mauthor = author;
+                break;
+            }
         }
     }
 
     Component.onCompleted: {
         pluginsModel.clear();
-        //SEARCH
-        //grid.visible = true;
     }
 
     Row {
@@ -42,11 +70,13 @@ Rectangle {
             width: 70
             color: "#b8b8b8"
             toggled: true
+            visible: false
 
             onClicked: {
                 btnAuthor.toggled = false;
                 btnTags.toggled = false;
                 btnInstalled.toggled = false;
+                btnName.toggled = true;
             }
         }
         ToggleButton {
@@ -54,11 +84,13 @@ Rectangle {
             text: "By Tags"
             height: 20
             width: 70
+            visible: false
 
             onClicked: {
                 btnName.toggled = false;
                 btnAuthor.toggled = false;
                 btnInstalled.toggled = false;
+                btnTags.toggled = true;
             }
         }
         ToggleButton {
@@ -66,11 +98,13 @@ Rectangle {
             text: "By Author"
             height: 20
             width: 70
+            visible: false
 
             onClicked: {
                 btnName.toggled = false;
                 btnTags.toggled = false;
                 btnInstalled.toggled = false;
+                btnAuthor.toggled = true;
             }
         }
         ToggleButton {
@@ -78,11 +112,13 @@ Rectangle {
             text: "Installed"
             height: 20
             width: 70
+            visible: false
 
             onClicked: {
                 btnName.toggled = false;
                 btnTags.toggled = false;
                 btnAuthor.toggled = false;
+                btnInstalled.toggled = true;
             }
         }
     }
@@ -115,11 +151,13 @@ Rectangle {
     }
 
     Rectangle {
+        id: searchComponent
         height: 20
         width: 250
         color: "white"
         radius: 5
         smooth: true
+        visible: false
         anchors {
             right: parent.right
             top: parent.top
@@ -147,8 +185,8 @@ Rectangle {
 
     GridView {
         id: grid
-        cellWidth: 150
-        cellHeight: 130
+        cellWidth: 190
+        cellHeight: 110
         clip: true
         visible: false
 
@@ -163,9 +201,17 @@ Rectangle {
         model: pluginsModel
 
         delegate: PluginComponent {
-            width: 140
-            height: 120
+            width: 180
+            height: 100
+            title: mname
+            version: mversion
+            summary: msummary
             selected: mselected
+            author: mauthor
+
+            onShowPlugin: {
+                root.inflatePlugin(identifier);
+            }
 
             onDownloadFinished: {
                 pluginsModel.remove(index);
@@ -174,6 +220,34 @@ Rectangle {
             onSelection: {
                 pluginsModel.setProperty(index, "mselected", value);
             }
+        }
+    }
+
+    Item {
+        anchors.fill: parent
+        Image {
+            id: imgLoading
+            source: "img/spinner.png"
+            anchors.centerIn: parent
+            height: 80
+            width: 80
+            smooth: true
+
+            Timer {
+                interval: 100
+                running: imgLoading.visible
+                repeat: true
+                onTriggered: imgLoading.rotation = imgLoading.rotation + 20
+            }
+        }
+
+        Text {
+            id: textLoading
+            text: "Loading"
+            font.pixelSize: 15
+            color: "white"
+            anchors.centerIn: imgLoading
+            visible: imgLoading.visible
         }
     }
 }
