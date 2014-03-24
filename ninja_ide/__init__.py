@@ -59,11 +59,14 @@ for name in API_NAMES:
 
 def setup_and_run():
     """Load the Core module and trigger the execution."""
+    # Create NINJA-IDE user folder structure for plugins, themes, etc
+    from ninja_ide import resources
+    resources.create_home_dir_structure()
+
     ###########################################################################
     # Start Virtual Env that supports encapsulation of plugins
     ###########################################################################
-
-    from ninja_ide.core.encapsulated_env import nenvironement
+    from ninja_ide.core.encapsulated_env import nenvironment  # lint:ok
 
     # import only on run
     # Dont import always this, setup.py will fail

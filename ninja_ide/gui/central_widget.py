@@ -99,6 +99,9 @@ class CentralWidget(QWidget):
         else:
             self.lateralPanel.show()
 
+    def is_lateral_panel_visible(self):
+        return self.lateralPanel.isVisible()
+
     def hide_all(self):
         """Hide/Show all the containers except the editor."""
         tools_dock = IDE.get_service('tools_dock')

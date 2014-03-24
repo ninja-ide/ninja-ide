@@ -56,7 +56,7 @@ from ninja_ide.tools import json_manager
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.dialogs import add_to_project
 from ninja_ide.gui.dialogs import project_properties_widget
-from ninja_ide.gui.dialogs import wizard_new_project
+from ninja_ide.gui.dialogs import new_project_manager
 from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
 from ninja_ide.gui.explorer import actions
 from ninja_ide.gui.explorer.nproject import NProject
@@ -165,6 +165,9 @@ class ProjectTreeColumn(QDialog):
             {'target': 'main_container',
             'signal_name': 'addToProject(QString)',
             'slot': self._add_file_to_project},
+            {'target': 'main_container',
+            'signal_name': 'showFileInExplorer(QString)',
+            'slot': self._show_file_in_explorer},
         )
         IDE.register_service('projects_explorer', self)
         IDE.register_signals('projects_explorer', connections)
@@ -247,6 +250,30 @@ class ProjectTreeColumn(QDialog):
             pass
             # Message about no project
 
+    def _show_file_in_explorer(self, path):
+        '''Iterate through the list of available projects and show
+        the current file in the explorer view for the first
+        project that contains it (i.e. if the same file is
+        included in multiple open projects, the path will be
+        expanded for the first project only).
+        Note: This slot is connected to the main container's
+        "showFileInExplorer(QString)" signal.'''
+        for project in self.projects:
+            index = project.model().index(path)
+            if index.isValid():
+                # Show the explorer if it is currently hidden
+                central = IDE.get_service('central_container')
+                if central and not central.is_lateral_panel_visible():
+                    central.change_lateral_visibility()
+                # This highlights the index in the tree for us
+                project.setCurrentIndex(index)
+                # Loop through the parents to expand the tree
+                # all the way up to the selected index.
+                while index.isValid():
+                    project.expand(index)
+                    index = index.parent()
+                break
+
     @property
     def children(self):
         return self._projects_area.layout().count()
@@ -300,7 +327,7 @@ class ProjectTreeColumn(QDialog):
                 main_container.save_project(path)
 
     def create_new_project(self):
-        wizard = wizard_new_project.WizardNewProject(self)
+        wizard = new_project_manager.NewProjectManager(self)
         wizard.show()
 
     @property
