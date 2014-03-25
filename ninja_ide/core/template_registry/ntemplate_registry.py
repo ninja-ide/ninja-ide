@@ -14,7 +14,11 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+import os
+
 from PyQt4.QtCore import QObject
+
+from ninja_ide.gui.ide import IDE
 
 
 class ConflictingTypeForCategory(Exception):
@@ -41,18 +45,19 @@ class NTemplateRegistry(QObject):
         self.__project_types = {}
         self.__types_by_category = {}
         super(NTemplateRegistry, self).__init__()
+        IDE.register_service("template_registry", self)
 
     def register_project_type(self, ptype):
-        if ptype.compount_name in self.__project_types.keys():
-            self.__project_types[ptype.compound_name] = ptype
-            #This is here mostly for convenience
-            self.__types_by_category.setdefault(ptype.cateogory,
-                                                []).append(ptype)
+        if ptype.compound_name() in self.__project_types.keys():
+            raise ConflictingTypeForCategory(ptype.type_name, ptype.category)
         else:
-            raise ConflictingTypeForCategory(ptype.name, ptype.category)
+            self.__project_types[ptype.compound_name()] = ptype
+            #This is here mostly for convenience
+            self.__types_by_category.setdefault(ptype.category,
+                                                []).append(ptype)
 
     def list_project_types(self):
-        return self.__registry_data.keys()
+        return self.__project_types.keys()
 
     def list_project_categories(self):
         return self.__types_by_category.keys()
@@ -63,6 +68,10 @@ class NTemplateRegistry(QObject):
     def get_project_type(self, ptype):
         return self.__project_types.get(ptype, None)
 
+    @classmethod
+    def create_compound_name(cls, type_name, category):
+        return "%s_%s" % (type_name, category)
+
 
 class BaseProjectType(QObject):
     """
@@ -70,17 +79,66 @@ class BaseProjectType(QObject):
     The only mandatory method is create_layout
     """
 
-    def __init__(self, category, name, path, version=None):
+    type_name = "No Type"
+    layout_version = "0.0"
+    category = "No Category"
+    encoding_string = {}
+    single_line_comment = {}
+    description = "No Description"
+
+    def __init__(self, name, path, licence_text, licence_short_name="GPLv2",
+                 base_encoding="utf-8"):
         self.name = name
-        self.category = category
         self.path = path
-        self.description = ""
-        self.layout_version = version
+        self.base_encoding = base_encoding
+        self.licence_short_name = licence_short_name
+        self.licence_text = licence_text
         super(BaseProjectType, self).__init__()
 
-    @property
-    def compound_name(self):
-        return "%s_%s" % (self.name, self.category)
+    @classmethod
+    def compound_name(cls):
+        return NTemplateRegistry.create_compound_name(
+            cls.type_name, cls.category)
+
+    @classmethod
+    def register(cls):
+        """
+        Just a convenience method that registers a given type
+        """
+        tr = IDE.get_service("template_registry")
+        try:
+            tr.register_project_type(cls)
+        except ConflictingTypeForCategory:
+            pass
+        finally:
+            return tr.get_project_type(cls.compound_name())
+
+    @classmethod
+    def wizard_pages(cls):
+        """Return the pages to be displayed in the wizard."""
+        raise NotImplementedError("%s lacks wizard_pages" %
+                                  cls.__name__)
+
+    @classmethod
+    def from_dict(cls, results):
+        """Create an instance from this project type using the wizard result"""
+        raise NotImplementedError("%s lacks from_dict" %
+                                  cls.__name__)
+
+    def get_file_extension(self, filename):
+        _, extension = os.path.splitext(filename)
+        return extension[1:]
+
+    def init_file(self, fd, filepath):
+        """
+        Adds encoding line and licence if possible
+        """
+        ext = self.get_file_extension(filepath)
+        if self.base_encoding and (ext in self.encoding_string):
+            fd.write(self.encoding_string[ext] % self.base_encoding)
+        if self.licence_text and (ext in self.single_line_comment):
+            for each_line in self.licence_text.splitlines():
+                fd.write(self.single_line_comment + each_line)
 
     def create_layout(self):
         """
@@ -114,3 +172,6 @@ class BaseProjectType(QObject):
         path and return True/False if the QMenu is apt for said file.
         """
         pass
+
+
+template_registry = NTemplateRegistry()

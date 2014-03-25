@@ -57,6 +57,11 @@ from ninja_ide.gui.dialogs.preferences import preferences_shortcuts
 from ninja_ide.gui.dialogs.preferences import preferences_editor_general
 from ninja_ide.gui.dialogs.preferences import preferences_editor_configuration
 from ninja_ide.gui.dialogs.preferences import preferences_editor_completion
+# Templates
+from ninja_ide.core.template_registry import ntemplate_registry
+from ninja_ide.core.template_registry import (
+    bundled_project_types
+)
 
 from ninja_ide.gui import ide
 #lint:enable
