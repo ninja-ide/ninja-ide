@@ -15,18 +15,25 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt4.QtGui import QDialog
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QListWidget
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QTextBrowser
-from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QSpacerItem
-from PyQt4.QtGui import QSizePolicy
-from PyQt4.QtCore import Qt
+from PyQt4.QtGui import (
+    QDialog,
+    QVBoxLayout,
+    QListWidget,
+    QListWidgetItem,
+    QHBoxLayout,
+    QLabel,
+    QTextBrowser,
+    QPushButton,
+    QSpacerItem,
+    QSizePolicy,
+)
+from PyQt4.QtCore import (
+    Qt,
+    SIGNAL,
+)
 
 from ninja_ide import translations
+from ninja_ide.gui.ide import IDE
 
 
 class NewProjectManager(QDialog):
@@ -55,10 +62,44 @@ class NewProjectManager(QDialog):
         vbox.addLayout(hbox)
 
         hbox2 = QHBoxLayout()
-        self.cancel = QPushButton(translations.TR_CANCEL)
-        self.choose = QPushButton(translations.TR_CHOOSE)
-        hbox.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding,
-            QSizePolicy.Fixed))
-        hbox2.addWidget(self.cancel)
-        hbox2.addWidget(self.choose)
+        cancel = QPushButton(translations.TR_CANCEL)
+        choose = QPushButton(translations.TR_CHOOSE)
+        hbox2.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding,
+                            QSizePolicy.Fixed))
+        hbox2.addWidget(cancel)
+        hbox2.addWidget(choose)
         vbox.addLayout(hbox2)
+
+        self.template_registry = IDE.get_service("template_registry")
+        categories = self.template_registry.list_project_categories()
+        for category in categories:
+            self.list_projects.addItem(category)
+
+        self.connect(cancel, SIGNAL("clicked()"), self.close)
+        self.connect(choose, SIGNAL("clicked()"), self._start_wizard)
+        self.connect(self.list_projects,
+                     SIGNAL("itemSelectionChanged()"),
+                     self._project_selected)
+        self.connect(self.list_templates,
+                     SIGNAL("itemSelectionChanged()"),
+                     self._template_selected)
+
+    def _project_selected(self):
+        self.list_templates.clear()
+        item = self.list_projects.currentItem()
+        category = item.text()
+        for template in self.template_registry.list_templates_for_cateogory(
+                category):
+            item = QListWidgetItem(template.type_name)
+            item.setData(Qt.UserRole, template)
+            item = self.list_templates.addItem(item)
+
+    def _template_selected(self):
+        item = self.list_templates.currentItem()
+        ptype = item.data(Qt.UserRole)
+        self.text_info.setText(ptype.description)
+
+    def _start_wizard(self):
+        item = self.list_templates.currentItem()
+        if item is not None:
+            ptype = item.data(Qt.UserRole)

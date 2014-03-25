@@ -69,18 +69,18 @@ class PythonProject(BaseProjectType):
 
         #Create a single init file
         filepath = os.path.join(self.path, "__init__.py")
-        with base_init as open(filepath, "r"):
+        with open(filepath, "r") as base_init:
             self.init_file(base_init, filepath)
 
         #Create a setup.py
         filepath = os.path.join(self.path, "setup.py")
-        with base_setup as open(filepath, "r"):
+        with open(filepath, "r") as base_setup:
             self.init_file(base_setup, filepath)
             base_setup.write(SETUP_PY_FILE % self.name)
 
         #Create a basic main file
         filepath = os.path.join(self.path, "main.py")
-        with base_main as open(filepath, "r"):
+        with open(filepath, "r") as base_main:
             self.init_file(base_main, filepath)
             base_setup.write(BASIC_HELLO % self.name)
 
@@ -101,3 +101,6 @@ class PythonProject(BaseProjectType):
         path and return True/False if the QMenu is apt for said file.
         """
         pass
+
+
+PythonProject.register()
