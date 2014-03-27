@@ -277,8 +277,7 @@ TR_ACCEPT = tr("NINJA-IDE", "Accept")
 
 
 # shortcut manager
-TR_DUPLICATE_LINE = tr("NINJA-IDE", "Duplicate Line/Selection")
-TR_REMOVE_LINE = tr("NINJA-IDE", "Remove Line/Selection")
+TR_REMOVE_LINE_SELECTION = tr("NINJA-IDE", "Remove Line/Selection")
 TR_MOVE_LINE_UP = tr("NINJA-IDE", "Move Line/Selection Up")
 TR_MOVE_LINE_DOWN = tr("NINJA-IDE", "Move Line/Selection Down")
 TR_CLOSE_CURRENT_TAB = tr("NINJA-IDE", "Close Current Tab")
@@ -515,7 +514,6 @@ TR_PREF_EDITOR_ACTIVATE_COMPLETION = tr("NINJA-IDE",
 TR_EXPAND_FILE_COMBO = tr("NINJA-IDE", "Expand File Combo")
 TR_EXPAND_SYMBOL_COMBO = tr("NINJA-IDE", "Expand Symbol Combo")
 TR_DUPLICATE_SELECTION = tr("NINJA-IDE", "Duplicate Line/Selection")
-TR_REMOVE_SELECTION = tr("NINJA-IDE", "Remove Line/Selection")
 TR_MOVE_SELECTION_UP = tr("NINJA-IDE", "Move Line/Selection Up")
 TR_MOVE_SELECTION_DOWN = tr("NINJA-IDE", "Move Line/Selection Down")
 TR_CLOSE_TAB = tr("NINJA-IDE", "Close Current Tab")

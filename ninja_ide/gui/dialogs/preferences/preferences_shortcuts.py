@@ -148,7 +148,7 @@ class ShortcutConfiguration(QWidget):
             "copy": translations.TR_COPY,
             "paste": translations.TR_PASTE,
             "Duplicate": translations.TR_DUPLICATE_SELECTION,
-            "Remove-line": translations.TR_REMOVE_SELECTION,
+            "Remove-line": translations.TR_REMOVE_LINE_SELECTION,
             "Move-up": translations.TR_MOVE_SELECTION_UP,
             "Move-down": translations.TR_MOVE_SELECTION_DOWN,
             "Close-file": translations.TR_CLOSE_TAB,
