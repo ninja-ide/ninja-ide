@@ -5,13 +5,13 @@ python:
   - 2.7
   - 3.3
 
-before_install: 
+before_install:
   - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start" 
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq wget build-essential python3-dev python-dev 
-  - sudo apt-get install -qq python-qt4 python-qt4-dev libqt4-dev python-sip-dev
-  - sudo apt-get install -qq python3-pyqt4 python3-sip-dev
+  - "sh -e /etc/init.d/xvfb start"
+  - sudo apt-get update -qqm
+  - sudo apt-get install -qqm wget build-essential python3-dev python-dev
+  - sudo apt-get install -qqm python-qt4 python-qt4-dev libqt4-dev python-sip-dev
+  - sudo apt-get install -qqm python3-pyqt4 python3-sip-dev
   # install SIP
   - cd /tmp
   - wget --quiet --output-document=sip.tar.gz http://downloads.sourceforge.net/project/pyqt/sip/sip-4.15.3/sip-4.15.3.tar.gz
@@ -33,7 +33,7 @@ before_install:
 
 install: true
 
-before_script: rm --recursive --force --verbose *.pyc
+before_script: rm --recursive --force --verbose *.py[cod]
 
 script: ./run-tests ninja_tests/tools/jsonmanager
 
@@ -49,7 +49,7 @@ notifications:
       template:
           - "%{repository}@%{branch}: %{message}(%{build_url})"
           - "Build: %{build_number}, SHA: %{commit}, Committer: %{author}, Diff: %{compare_url}"
-      on_success: change
+      on_success: always
       on_failure: always
       use_notice: true  # false to disable
   email:
