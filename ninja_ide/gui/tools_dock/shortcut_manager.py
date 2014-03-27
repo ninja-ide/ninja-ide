@@ -160,7 +160,7 @@ class ShortcutConfiguration(QWidget):
             "Full-screen": translations.TR_FULLSCREEN_VISIBILITY,
             "Find": translations.TR_FIND,
             "Find-replace": translations.TR_FIND_REPLACE,
-            "Find-with-word": translations.TR_FIND_WITH_WORD,
+            "Find-with-word": translations.TR_FIND_WORD_UNDER_CURSOR,
             "Find-next": translations.TR_FIND_NEXT,
             "Find-previous": translations.TR_FIND_PREVIOUS,
             "Help": translations.TR_SHOW_PYTHON_HELP,

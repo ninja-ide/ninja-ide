@@ -155,7 +155,7 @@ class ShortcutConfiguration(QWidget):
             "New-file": translations.TR_NEW_TAB,
             "New-project": translations.TR_NEW_PROJECT,
             "Open-file": translations.TR_OPEN_A_FILE,
-            "Open-project": translations.TR_OPEN_A_PROJECT,
+            "Open-project": translations.TR_OPEN_PROJECT,
             "Save-file": translations.TR_SAVE_FILE,
             "Save-project": translations.TR_SAVE_OPENED_FILES,
             "Print-file": translations.TR_PRINT_FILE,
