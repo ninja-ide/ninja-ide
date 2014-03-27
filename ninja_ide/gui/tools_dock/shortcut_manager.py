@@ -146,7 +146,7 @@ class ShortcutConfiguration(QWidget):
             "Comment": translations.TR_COMMENT,
             "Uncomment": translations.TR_UNCOMMENT,
             "Horizontal-line": translations.TR_HORIZONTAL_LINE,
-            "Title-comment": translations.TR_TITLE_COMMENT,
+            "Title-comment": translations.TR_INSERT_TITLE_COMMENT,
             "Indent-less": translations.TR_INDENT_LESS,
             "Hide-misc": translations.TR_HIDE_MISC_CONTAINER,
             "Hide-editor": translations.TR_HIDE_EDITOR,

@@ -178,7 +178,7 @@ ACTIONS = (
     },
     {
     "shortcut": "Title-comment",
-    "action": {'text': translations.TR_TITLE_COMMENT,
+    "action": {'text': translations.TR_INSERT_TITLE_COMMENT,
                'image': None,
                'section': (translations.TR_MENU_SOURCE, None),
                'weight': 160},
