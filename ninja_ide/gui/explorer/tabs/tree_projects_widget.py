@@ -20,6 +20,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 import os
+from shutil import make_archive
 
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.gui.explorer.tree_projects_widget')
@@ -510,6 +511,7 @@ class TreeProjectsWidget(QTreeView):
         #Perhaps store after each change
         self.state_index = list()
         self._folding_menu = FoldingContextMenu(self)
+        self._compressmenu = QMenu(translations.TR_COMPRESS)
 
     def _update_header_title(self, title):
         self.header().title = title
@@ -550,6 +552,7 @@ class TreeProjectsWidget(QTreeView):
             self._add_context_menu_for_root(menu)
 
         menu.addMenu(self._folding_menu)
+        menu.addMenu(self._compressmenu)
 
         #menu for the Project Type(if present)
         if handler:
@@ -600,6 +603,7 @@ class TreeProjectsWidget(QTreeView):
                 menu.addMenu(m)
 
     def _add_context_menu_for_folders(self, menu, isRoot=False, path=None):
+        """Context Menu for Folders on TreeProjectsWidget"""
         #Create Actions
         action_add_file = menu.addAction(QIcon(":img/new"),
                                          translations.TR_ADD_NEW_FILE)
@@ -607,6 +611,11 @@ class TreeProjectsWidget(QTreeView):
             ":img/openProj"), translations.TR_ADD_NEW_FOLDER)
         action_create_init = menu.addAction(translations.TR_CREATE_INIT)
         action_remove_folder = menu.addAction(translations.TR_REMOVE_FOLDER)
+        self._compressmenu.clear()
+        action_compreszip = self._compressmenu.addAction(translations.TR_TO_ZIP)
+        action_comprestar = self._compressmenu.addAction(translations.TR_TO_TAR)
+        action_compresbz2 = self._compressmenu.addAction(translations.TR_TO_BZ2)
+        action_comprestgz = self._compressmenu.addAction(translations.TR_TO_TGZ)
 
         #Connect actions
         if isRoot:
@@ -625,6 +634,20 @@ class TreeProjectsWidget(QTreeView):
                          self._create_init)
             self.connect(action_remove_folder, SIGNAL("triggered()"),
                          self._delete_folder)
+        self.connect(action_compreszip, SIGNAL("triggered()"),
+                     lambda: self._compress_path(path, 'zip'))
+        self.connect(action_comprestar, SIGNAL("triggered()"),
+                     lambda: self._compress_path(path, 'tar'))
+        self.connect(action_compresbz2, SIGNAL("triggered()"),
+                     lambda: self._compress_path(path, 'bztar'))
+        self.connect(action_comprestgz, SIGNAL("triggered()"),
+                     lambda: self._compress_path(path, 'gztar'))
+
+    def _compress_path(self, path_to_compress, compression_format):
+        """Take a path and compression format and compress it"""
+        if not path_to_compress:
+            path_to_compress = self.model().filePath(self.currentIndex())
+        make_archive(path_to_compress, compression_format, path_to_compress)
 
     def _add_context_menu_for_files(self, menu, lang):
         #Create actions
@@ -656,6 +679,8 @@ class TreeProjectsWidget(QTreeView):
             if isinstance(m, QMenu):
                 menu.addSeparator()
                 menu.addMenu(m)
+        #TODO: Design and implement compress for single files using stdlib
+        self._compressmenu.clear()
 
     def _add_project_to_console(self):
         tools_dock = IDE.get_service('tools_dock')

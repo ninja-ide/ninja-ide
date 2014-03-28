@@ -460,6 +460,12 @@ TR_ENTER_NEW_FILENAME = tr("NINJA-IDE", "Enter New File Name")
 TR_OPEN_PROJECT_DIRECTORY = tr("NINJA-IDE", "Open Project Directory")
 TR_COPY_FILE_TO = tr("NINJA-IDE", "Copy File To")
 TR_SHOW_FILESIZE = tr("NINJA-IDE", "Show/Hide Filesize Info")
+TR_COMPRESS = tr("NINJA-IDE", "Compress")
+TR_NO_COMPRESS = tr("NINJA-IDE", "Available for folders only")
+TR_TO_ZIP = tr("NINJA-IDE", "To ZIP")
+TR_TO_TAR = tr("NINJA-IDE", "To TAR")
+TR_TO_BZ2 = tr("NINJA-IDE", "To TAR.BZ2")
+TR_TO_TGZ = tr("NINJA-IDE", "To TAR.GZ")
 
 
 # traceback_widget
