@@ -459,6 +459,7 @@ TR_EDIT_UI_FILE = tr("NINJA-IDE", "Edit UI file")
 TR_ENTER_NEW_FILENAME = tr("NINJA-IDE", "Enter New File Name")
 TR_OPEN_PROJECT_DIRECTORY = tr("NINJA-IDE", "Open Project Directory")
 TR_COPY_FILE_TO = tr("NINJA-IDE", "Copy File To")
+TR_SHOW_FILESIZE = tr("NINJA-IDE", "Show/Hide Filesize Info")
 
 
 # traceback_widget
