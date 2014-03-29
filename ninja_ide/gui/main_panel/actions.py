@@ -170,7 +170,7 @@ ACTIONS = (
     },
     {
     "shortcut": "Horizontal-line",
-    "action": {'text': translations.TR_HORIZONTAL_LINE,
+    "action": {'text': translations.TR_INSERT_HORIZONTAL_LINE,
                'image': None,
                'section': (translations.TR_MENU_SOURCE, None),
                'weight': 150},

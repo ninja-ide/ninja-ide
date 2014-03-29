@@ -151,7 +151,7 @@ class ShortcutConfiguration(QWidget):
             "Remove-line": translations.TR_REMOVE_LINE_SELECTION,
             "Move-up": translations.TR_MOVE_LINE_SELECTION_UP,
             "Move-down": translations.TR_MOVE_LINE_SELECTION_DOWN,
-            "Close-file": translations.TR_CLOSE_TAB,
+            "Close-file": translations.TR_CLOSE_CURRENT_TAB,
             "New-file": translations.TR_NEW_TAB,
             "New-project": translations.TR_NEW_PROJECT,
             "Open-file": translations.TR_OPEN_A_FILE,
