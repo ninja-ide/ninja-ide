@@ -13,9 +13,8 @@ Rectangle {
     signal showPlugin
     property bool selected: false
     property alias title: txtTitle.text
-    property alias author: txtAuthor.text
+    property alias summary: txtSummary.text
     property string version: "0"
-    property string summary: ""
 
     states: [
         State {
@@ -108,88 +107,79 @@ Rectangle {
                 horizontalAlignment: Text.AlignHCenter
             }
             Text {
-                id: txtAuthor
+                id: txtSummary
                 color: "#ededed"
                 font.pixelSize: 10
-                visible: !txtProgress.visible
                 anchors {
                     left: parent.left
                     right: parent.right
                 }
-                elide: Text.ElideRight
-                horizontalAlignment: Text.AlignHCenter
-            }
-            Text {
-                id: txtProgress
-                text: "Loading..."
-                color: "#ededed"
-                font.pixelSize: 10
-                visible: txtAuthor.text ? false : true
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                }
+                maximumLineCount: 5
+                wrapMode: Text.WordWrap
                 horizontalAlignment: Text.AlignHCenter
             }
         }
+    }
+    ToggleButton {
+        id: btnInstall
+        height: 20
+        text: "Install"
+        toggledEnagled: false
+        anchors {
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+            margins: 10
+        }
 
-        ToggleButton {
-            id: btnInstall
-            height: 20
-            text: "Install"
-            toggledEnagled: false
-            anchors {
-                left: parent.left
-                right: parent.right
-            }
+        onClicked: {
+            root.state = "INSTALLING";
+            root.install();
+            progress.start()
+        }
+    }
 
-            onClicked: {
-                root.state = "INSTALLING";
-                root.install();
-                progress.start()
-            }
+    Rectangle {
+        id: progress
+        height: 20
+        color: "#ededed"
+        anchors {
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+            margins: 10
+        }
+
+        function start() {
+            timer.start();
         }
 
         Rectangle {
-            id: progress
-            height: 20
-            color: "#ededed"
+            id: bar
+            property int percentage: 0
+            visible: progress.visible
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "lightsteelblue" }
+                GradientStop { position: 0.5; color: "lightsteelblue" }
+                GradientStop { position: 0.5; color: "steelblue" }
+                GradientStop { position: 1.0; color: "steelblue" }
+            }
             anchors {
-                left: parent.left
-                right: parent.right
+                top: parent.top
+                bottom: parent.bottom
             }
+            width: (bar.percentage * progress.width / 100)
 
-            function start() {
-                timer.start();
-            }
-
-            Rectangle {
-                id: bar
-                property int percentage: 0
-                visible: progress.visible
-                gradient: Gradient {
-                    GradientStop { position: 0.0; color: "lightsteelblue" }
-                    GradientStop { position: 0.5; color: "lightsteelblue" }
-                    GradientStop { position: 0.5; color: "steelblue" }
-                    GradientStop { position: 1.0; color: "steelblue" }
-                }
-                anchors {
-                    top: parent.top
-                    bottom: parent.bottom
-                }
-                width: (bar.percentage * progress.width / 100)
-
-                Timer {
-                    id: timer
-                    interval: 200
-                    running: false
-                    repeat: true
-                    onTriggered: {
-                        bar.percentage += 10;
-                        if (bar.percentage == 100) {
-                            timer.stop();
-                            root.downloadFinished();
-                        }
+            Timer {
+                id: timer
+                interval: 200
+                running: false
+                repeat: true
+                onTriggered: {
+                    bar.percentage += 10;
+                    if (bar.percentage == 100) {
+                        timer.stop();
+                        root.downloadFinished();
                     }
                 }
             }
