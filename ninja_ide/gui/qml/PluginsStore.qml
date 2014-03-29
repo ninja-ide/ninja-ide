@@ -186,7 +186,7 @@ Rectangle {
     GridView {
         id: grid
         cellWidth: 190
-        cellHeight: 110
+        cellHeight: 150
         clip: true
         visible: false
 
@@ -202,12 +202,11 @@ Rectangle {
 
         delegate: PluginComponent {
             width: 180
-            height: 100
+            height: 140
             title: mname
             version: mversion
             summary: msummary
             selected: mselected
-            author: mauthor
 
             onShowPlugin: {
                 root.inflatePlugin(identifier);
