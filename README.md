@@ -14,10 +14,9 @@ software easier and more enjoyable.
 
 ## Dependencies
 
-Both of these:
-
 -   [Python](http://python.org/) >= 2.7 (or Python3)
 -   [PyQt](http://www.riverbankcomputing.com/software/pyqt/intro) >= 4.8
+-   Virtualenv
 
 ## Cloning and Running
 
