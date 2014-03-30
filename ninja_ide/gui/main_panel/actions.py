@@ -170,7 +170,7 @@ ACTIONS = (
     },
     {
     "shortcut": "Horizontal-line",
-    "action": {'text': translations.TR_HORIZONTAL_LINE,
+    "action": {'text': translations.TR_INSERT_HORIZONTAL_LINE,
                'image': None,
                'section': (translations.TR_MENU_SOURCE, None),
                'weight': 150},
@@ -178,7 +178,7 @@ ACTIONS = (
     },
     {
     "shortcut": "Title-comment",
-    "action": {'text': translations.TR_TITLE_COMMENT,
+    "action": {'text': translations.TR_INSERT_TITLE_COMMENT,
                'image': None,
                'section': (translations.TR_MENU_SOURCE, None),
                'weight': 160},
