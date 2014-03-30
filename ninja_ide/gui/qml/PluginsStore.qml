@@ -9,6 +9,7 @@ Rectangle {
     signal loadTagsGrid
     signal loadAuthorGrid
     signal loadPluginsForCategory(string tag)
+    signal search(string key)
     property int currentDownloads: 0
     property int pluginsSelected: 0
     property int categoryCounter: 0
@@ -64,7 +65,6 @@ Rectangle {
         btnTags.visible = true;
         btnAuthor.visible = true;
         btnInstalled.visible = true;
-        btnSearch.visible = true;
         searchComponent.visible = true;
         gridPlugins.opacity = 1;
     }
@@ -170,7 +170,7 @@ Rectangle {
                 btnAuthor.toggled = false;
                 btnTags.toggled = false;
                 btnInstalled.toggled = false;
-                btnSearch.toggled = false;
+                btnSearch.visible = false;
                 btnName.toggled = true;
                 btnSelection.visible = false;
                 root.loadPluginsGrid();
@@ -187,7 +187,7 @@ Rectangle {
                 btnName.toggled = false;
                 btnAuthor.toggled = false;
                 btnInstalled.toggled = false;
-                btnSearch.toggled = false;
+                btnSearch.visible = false;
                 btnTags.toggled = true;
                 btnSelection.visible = false;
                 root.showTagsGrid();
@@ -204,7 +204,7 @@ Rectangle {
                 btnName.toggled = false;
                 btnTags.toggled = false;
                 btnInstalled.toggled = false;
-                btnSearch.toggled = false;
+                btnSearch.visible = false;
                 btnAuthor.toggled = true;
                 btnSelection.visible = false;
                 root.showAuthorGrid();
@@ -221,7 +221,7 @@ Rectangle {
                 btnName.toggled = false;
                 btnTags.toggled = false;
                 btnAuthor.toggled = false;
-                btnSearch.toggled = false;
+                btnSearch.visible = false;
                 btnSelection.visible = false;
                 btnInstalled.toggled = true;
             }
@@ -231,15 +231,17 @@ Rectangle {
             text: "Search"
             height: 20
             width: 70
+            toggled: true
             visible: false
 
-            onClicked: {
-                btnName.toggled = false;
-                btnTags.toggled = false;
-                btnAuthor.toggled = false;
-                btnInstalled.toggled = false;
-                btnSelection.visible = false;
-                btnSearch.toggled = true;
+            onVisibleChanged: {
+                if (btnSearch.visible) {
+                    btnName.toggled = false;
+                    btnTags.toggled = false;
+                    btnAuthor.toggled = false;
+                    btnInstalled.toggled = false;
+                    btnSelection.visible = false;
+                }
             }
         }
     }
@@ -264,7 +266,6 @@ Rectangle {
                     btnTags.toggled = false;
                     btnAuthor.toggled = false;
                     btnInstalled.toggled = false;
-                    btnSearch.toggled = false;
                 }
             }
         }
@@ -284,12 +285,21 @@ Rectangle {
         }
 
         TextInput {
-            id: text
+            id: textInput
             color: "gray"
             smooth: true
             anchors.fill: parent
             anchors.margins: 2
             anchors.rightMargin: 20
+
+            onAccepted: {
+                pluginsModel.clear();
+                loadingArea.visible = true;
+                gridCategories.opacity = 0;
+                gridPlugins.opacity = 1;
+                btnSearch.visible = true;
+                root.search(textInput.text);
+            }
         }
 
         Image {
