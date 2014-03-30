@@ -48,7 +48,7 @@ class FromImportDialog(QDialog):
         self._imports_names = list(self._imports["imports"].keys())
         self._imports_names += [imp for imp in self._imports['fromImports']]
         self._froms = [self._imports['fromImports'][imp]['module']
-                            for imp in self._imports['fromImports']]
+                       for imp in self._imports['fromImports']]
         self._froms += builtin_module_names
         self._froms += [module_name[1] for module_name in iter_modules()]
         self._froms = tuple(sorted(set(self._froms)))
@@ -68,9 +68,9 @@ class FromImportDialog(QDialog):
         hbox.addWidget(self._btnAdd)
 
         self.connect(self._lineImport, SIGNAL("returnPressed()"),
-            self._add_import)
+                     self._add_import)
         self.connect(self._btnAdd, SIGNAL("clicked()"),
-            self._add_import)
+                     self._add_import)
 
     def _add_import(self):
         """Get From item and Import item and add the import on the code"""

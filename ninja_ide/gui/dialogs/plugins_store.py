@@ -54,6 +54,7 @@ class PluginsStore(QDialog):
         self._counter_callback = None
         self._inflating_plugins = []
         self._categoryTags = True
+        self._search = []
 
         self.nenv = nenvironment.NenvEggSearcher()
         self.connect(self.nenv, SIGNAL("searchCompleted(PyQt_PyObject)"),
@@ -66,6 +67,8 @@ class PluginsStore(QDialog):
                      self._load_tags_grid)
         self.connect(self.root, SIGNAL("loadAuthorGrid()"),
                      self._load_author_grid)
+        self.connect(self.root, SIGNAL("search(QString)"),
+                     self._load_search_results)
         self.connect(self.root, SIGNAL("loadPluginsForCategory(QString)"),
                      self._load_plugins_for_category)
         self.connect(self, SIGNAL("processCompleted(PyQt_PyObject)"),
@@ -128,6 +131,14 @@ class PluginsStore(QDialog):
         self._inflating_plugins = list(self._plugins.values())
         self._loading_function()
 
+    def _load_search_results(self, search):
+        self._search = search.lower().split()
+        self._counter = len(self._plugins)
+        self.root.updateCategoryCounter(self._counter)
+        self._counter_callback = self._show_search_grid
+        self._inflating_plugins = list(self._plugins.values())
+        self._loading_function()
+
     def _loading_function(self):
         plugin = self._inflating_plugins.pop()
         if plugin.shallow:
@@ -145,6 +156,15 @@ class PluginsStore(QDialog):
             self._counter_callback(plugin)
         else:
             self._loading_function()
+
+    def _show_search_grid(self, plugin=None):
+        self.root.showGridPlugins()
+        for plugin in list(self._plugins.values()):
+            keywords = plugin.keywords.lower().split() + [plugin.name.lower()]
+            for word in self._search:
+                if word in keywords:
+                    self.root.addPlugin(plugin.identifier, plugin.name,
+                                        plugin.summary, plugin.version)
 
     def _show_details(self, plugin):
         self.root.displayDetails(plugin.identifier)
