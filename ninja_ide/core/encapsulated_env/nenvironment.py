@@ -81,7 +81,7 @@ class AsyncRunner(QThread):
         super(AsyncRunner, self).__init__()
         self.connect(self, SIGNAL("threadEnded()"), self._success_finish)
         self.connect(self, SIGNAL("threadFailed(const QString&)"),
-                    self._fail_finish)
+                     self._fail_finish)
 
     def _success_finish(self):
         self.__finished = True
@@ -162,7 +162,7 @@ class NenvEggSearcher(QObject):
         self.emit(SIGNAL("searchTriggered()"))
         plugins_found = self.pypi.search(PLUGIN_QUERY, "and")
         self.emit(SIGNAL("searchCompleted(PyQt_PyObject)"),
-                        self.__iterate_results(plugins_found))
+                  self.__iterate_results(plugins_found))
 
     def __iterate_results(self, result_list):
         for each_plugin in result_list:
@@ -233,19 +233,19 @@ class PluginMetadata(QObject):
         self.docs_url = ""
 
         #internal attributes
-        self.__shallow = True
+        self.shallow = shallow
         super(PluginMetadata, self).__init__()
         if kwargs:
             for each_kwarg, each_value in kwargs:
                 setattr(self, each_kwarg, each_value)
-            self.__shallow = False
+            self.shallow = False
 
     @make_async
     def inflate(self):
         """
         Fill extra attributes of a shallow object
         """
-        if self.__shallow:
+        if self.shallow:
             self.emit(SIGNAL("willInflatePluginMetadata()"))
             rdata = self.pypi.release_data(self.name, self.version)
             for each_arg, each_value in rdata.items():

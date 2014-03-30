@@ -8,7 +8,6 @@ Rectangle {
     color: "#24262c"
 
     signal install
-    signal downloadFinished
     signal selection(bool value)
     signal showPlugin
     property bool selected: false
@@ -151,13 +150,13 @@ Rectangle {
         }
 
         function start() {
-            timer.start();
+            bar.x = bar.end;
         }
 
         Rectangle {
             id: bar
-            property int percentage: 0
             visible: progress.visible
+            property int end: (progress.width - bar.width)
             gradient: Gradient {
                 GradientStop { position: 0.0; color: "lightsteelblue" }
                 GradientStop { position: 0.5; color: "lightsteelblue" }
@@ -168,19 +167,16 @@ Rectangle {
                 top: parent.top
                 bottom: parent.bottom
             }
-            width: (bar.percentage * progress.width / 100)
+            width: 50
+            x: parent.x
 
-            Timer {
-                id: timer
-                interval: 200
-                running: false
-                repeat: true
-                onTriggered: {
-                    bar.percentage += 10;
-                    if (bar.percentage == 100) {
-                        timer.stop();
-                        root.downloadFinished();
-                    }
+            Behavior on x { PropertyAnimation {duration: 800} }
+
+            onXChanged: {
+                if (bar.x == 0) {
+                    bar.x = bar.end;
+                } else if (bar.x == bar.end) {
+                    bar.x = 0;
                 }
             }
         }
