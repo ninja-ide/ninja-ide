@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+
 from __future__ import absolute_import
 
 import os
@@ -40,7 +41,6 @@ from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QSpinBox
-from PyQt4.QtGui import QCheckBox
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
@@ -55,7 +55,8 @@ DEBUG = logger.debug
 
 
 # http://opensource.org/licenses/alphabetical
-LICENCES = ('Academic Free License', 'Apache License 2.0',
+LICENCES = (
+    'Academic Free License', 'Apache License 2.0',
     'Apple Public Source License', 'Artistic License', 'Artistic license',
     'Common Development and Distribution License',
     'Common Public Attribution License', 'Eclipse Public License',
@@ -74,6 +75,7 @@ LICENCES = ('Academic Free License', 'Apache License 2.0',
 
 
 class ProjectProperties(QDialog):
+    """Project Properties widget class"""
 
     def __init__(self, project, parent=None):
         QDialog.__init__(self, parent, Qt.Dialog)
@@ -87,9 +89,9 @@ class ProjectProperties(QDialog):
         self.projectMetadata = ProjectMetadata(self)
         self.tab_widget.addTab(self.projectData, translations.TR_PROJECT_DATA)
         self.tab_widget.addTab(self.projectExecution,
-            translations.TR_PROJECT_EXECUTION)
+                               translations.TR_PROJECT_EXECUTION)
         self.tab_widget.addTab(self.projectMetadata,
-            translations.TR_PROJECT_METADATA)
+                               translations.TR_PROJECT_METADATA)
 
         vbox.addWidget(self.tab_widget)
         self.btnSave = QPushButton(translations.TR_SAVE)
@@ -104,9 +106,10 @@ class ProjectProperties(QDialog):
         self.connect(self.btnSave, SIGNAL("clicked()"), self.save_properties)
 
     def save_properties(self):
+        """Show warning message if Project Name is empty"""
         if not len(self.projectData.name.text().strip()):
             QMessageBox.critical(self, translations.TR_PROJECT_SAVE_INVALID,
-                translations.TR_PROJECT_INVALID_MESSAGE)
+                                 translations.TR_PROJECT_INVALID_MESSAGE)
             return
 
         self.project.name = self.projectData.name.text()
@@ -120,7 +123,8 @@ class ProjectProperties(QDialog):
             self.projectExecution.txtPythonInterpreter.text()
         self.project.python_path = \
             self.projectExecution.txtPythonPath.toPlainText()
-        self.project.additional_builtins = [e for e in
+        self.project.additional_builtins = [
+            e for e in
             self.projectExecution.additional_builtins.text().split(' ') if e]
         self.project.pre_exec_script = self.projectExecution.txtPreExec.text()
         self.project.post_exec_script = self.projectExecution.txtPostExec.text()
@@ -129,7 +133,8 @@ class ProjectProperties(QDialog):
         extensions = self.projectData.txtExtensions.text().split(', ')
         self.project.extensions = tuple(extensions)
         self.project.indentation = self.projectData.spinIndentation.value()
-        self.project.use_tabs = self.projectData.checkUseTabs.isChecked()
+        self.project.use_tabs = bool(
+            self.projectData.checkUseTabs.currentIndex())
         related = self.projectMetadata.txt_projects.toPlainText()
         related = [_path for _path in related.split('\n') if len(_path.strip())]
         self.project.related_projects = related
@@ -139,6 +144,7 @@ class ProjectProperties(QDialog):
 
 
 class ProjectData(QWidget):
+    """Project Data widget class"""
 
     def __init__(self, parent):
         super(ProjectData, self).__init__()
@@ -162,6 +168,7 @@ class ProjectData(QWidget):
         completer = QCompleter(sorted(settings.PROJECT_TYPES))
         completer.setCompletionMode(QCompleter.UnfilteredPopupCompletion)
         self.txtType.setCompleter(completer)
+        self.txtType.setPlaceholderText("python")
         self.txtType.setText(self._parent.project.project_type)
         grid.addWidget(self.txtType, 2, 1)
         grid.addWidget(QLabel(translations.TR_PROJECT_DESCRIPTION), 3, 0)
@@ -193,12 +200,16 @@ class ProjectData(QWidget):
         self.spinIndentation.setValue(4)
         self.spinIndentation.setSingleStep(2)
         grid.addWidget(self.spinIndentation, 7, 1)
-        self.checkUseTabs = QCheckBox(translations.TR_PROJECT_USE_TABS)
-        self.checkUseTabs.setChecked(self._parent.project.use_tabs)
+        self.checkUseTabs = QComboBox()
+        self.checkUseTabs.addItems([
+            translations.TR_PREFERENCES_EDITOR_CONFIG_SPACES.capitalize(),
+            translations.TR_PREFERENCES_EDITOR_CONFIG_TABS.capitalize()])
+        self.checkUseTabs.setCurrentIndex(int(self._parent.project.use_tabs))
         grid.addWidget(self.checkUseTabs, 7, 2)
 
 
 class ProjectExecution(QWidget):
+    """Project Execution widget class"""
 
     def __init__(self, parent):
         super(ProjectExecution, self).__init__()
@@ -209,7 +220,8 @@ class ProjectExecution(QWidget):
         self.path = QLineEdit()
         self.path.setPlaceholderText(
             os.path.join(os.path.expanduser("~"), 'path', 'to', 'main.py'))
-        ui_tools.LineEditButton(self.path, self.path.clear,
+        ui_tools.LineEditButton(
+            self.path, self.path.clear,
             self.style().standardPixmap(self.style().SP_TrashIcon))
         self.path.setText(self._parent.project.main_file)
         self.path.setReadOnly(True)
@@ -223,8 +235,9 @@ class ProjectExecution(QWidget):
         # PYTHONPATH
         self.txtPythonInterpreter = QLineEdit()
         self.txtPythonInterpreter.setText(self._parent.project.python_exec)
-        self.txtPythonInterpreter.setCompleter(QCompleter(('python', 'python2',
-            'python3', 'python.exe', 'pythonw.exe')))
+        self.txtPythonInterpreter.setCompleter(QCompleter(
+            ('python', 'python2', 'python3', 'python.exe', 'pythonw.exe')))
+        self.txtPythonInterpreter.setPlaceholderText("python")
         self.btnPythonPath = QPushButton(QIcon(":img/open"), '')
         grid.addWidget(QLabel(
             translations.TR_PROJECT_PYTHON_INTERPRETER), 1, 0)
@@ -241,13 +254,14 @@ class ProjectExecution(QWidget):
         grid.addWidget(QLabel(translations.TR_PROJECT_BUILTINS), 3, 0)
         self.additional_builtins = QLineEdit()
         self.additional_builtins.setText(
-                ' '.join(self._parent.project.additional_builtins))
+            ' '.join(self._parent.project.additional_builtins))
         self.additional_builtins.setToolTip(
             translations.TR_PROJECT_BUILTINS_TOOLTIP)
         grid.addWidget(self.additional_builtins, 3, 1)
 
         self.txtPreExec = QLineEdit()
-        ui_tools.LineEditButton(self.txtPreExec, self.txtPreExec.clear,
+        ui_tools.LineEditButton(
+            self.txtPreExec, self.txtPreExec.clear,
             self.style().standardPixmap(self.style().SP_TrashIcon))
         self.txtPreExec.setReadOnly(True)
         self.txtPreExec.setText(self._parent.project.pre_exec_script)
@@ -258,7 +272,8 @@ class ProjectExecution(QWidget):
         grid.addWidget(self.txtPreExec, 4, 1)
         grid.addWidget(self.btnPreExec, 4, 2)
         self.txtPostExec = QLineEdit()
-        ui_tools.LineEditButton(self.txtPostExec, self.txtPostExec.clear,
+        ui_tools.LineEditButton(
+            self.txtPostExec, self.txtPostExec.clear,
             self.style().standardPixmap(self.style().SP_TrashIcon))
         self.txtPostExec.setReadOnly(True)
         self.txtPostExec.setText(self._parent.project.post_exec_script)
@@ -270,7 +285,7 @@ class ProjectExecution(QWidget):
         grid.addWidget(self.btnPostExec, 5, 2)
 
         grid.addItem(QSpacerItem(5, 10, QSizePolicy.Expanding,
-            QSizePolicy.Expanding), 6, 0)
+                     QSizePolicy.Expanding), 6, 0)
 
         # Properties
         grid.addWidget(QLabel(translations.TR_PROJECT_PROPERTIES), 7, 0)
@@ -282,7 +297,8 @@ class ProjectExecution(QWidget):
         grid.addWidget(self.txtParams, 8, 1)
         #Widgets for virtualenv properties
         self.txtVenvPath = QLineEdit()
-        ui_tools.LineEditButton(self.txtVenvPath, self.txtVenvPath.clear,
+        ui_tools.LineEditButton(
+            self.txtVenvPath, self.txtVenvPath.clear,
             self.style().standardPixmap(self.style().SP_TrashIcon))
         self.txtVenvPath.setText(self._parent.project.venv)
         self._dir_completer = QCompleter()
@@ -297,29 +313,32 @@ class ProjectExecution(QWidget):
 
         self.connect(self.btnBrowse, SIGNAL("clicked()"), self.select_file)
         self.connect(self.btnPythonPath, SIGNAL("clicked()"),
-            self._load_python_path)
+                     self._load_python_path)
         self.connect(self.btnVenvPath, SIGNAL("clicked()"),
-            self._load_python_venv)
+                     self._load_python_venv)
         self.connect(self.btnPreExec, SIGNAL("clicked()"),
-            self.select_pre_exec_script)
+                     self.select_pre_exec_script)
         self.connect(self.btnPostExec, SIGNAL("clicked()"),
-            self.select_post_exec_script)
+                     self.select_post_exec_script)
 
     def _load_python_path(self):
+        """Ask the user a python path and set its value"""
         path = QFileDialog.getOpenFileName(
-            translations.TR_PROJECT_SELECT_PYTHON_PATH)
+            self, translations.TR_PROJECT_SELECT_PYTHON_PATH)
         self.txtPythonInterpreter.setText(path)
 
     def _load_python_venv(self):
+        """Ask the user a python venv and set its value"""
         venv = QFileDialog.getExistingDirectory(
-            translations.TR_PROJECT_SELECT_VIRTUALENV)
+            self, translations.TR_PROJECT_SELECT_VIRTUALENV)
         if sys.platform == 'win32':
             venv = os.path.join(venv, 'Scripts', 'python.exe')
         else:
             venv = os.path.join(venv, 'bin', 'python')
         #check if venv folder exists
         if not os.path.exists(venv):
-            QMessageBox.information(self,
+            QMessageBox.information(
+                self,
                 translations.TR_PROJECT_SELECT_VIRTUALENV_MESSAGE_TITLE,
                 translations.TR_PROJECT_SELECT_VIRTUALENV_MESSAGE_BODY)
             self.txtVenvPath.setText("")
@@ -327,27 +346,32 @@ class ProjectExecution(QWidget):
             self.txtVenvPath.setText(venv)
 
     def select_file(self):
+        """Ask the user a python main file and set its value"""
         fileName = QFileDialog.getOpenFileName(
             self, translations.TR_PROJECT_SELECT_MAIN_FILE,
-                        self._parent.project.path, 'PY(*.py);;*(*.*)')
+            self._parent.project.path, 'PY(*.py[codw]);;*(*.*)')
         if fileName != '':
             fileName = file_manager.convert_to_relative(
                 self._parent.project.path, fileName)
             self.path.setText(fileName)
 
     def select_pre_exec_script(self):
+        """Ask the user a python pre-exec script and set its value"""
         fileName = QFileDialog.getOpenFileName(
             self, translations.TR_PROJECT_SELECT_PRE_SCRIPT,
-                        self._parent.project.path, '(*.*)')
+            self._parent.project.path,
+            '*(*.*);;Bash(*.sh);;PY(*.py[codw]);;Bat(*.bat);;Cmd(*.cmd)')
         if fileName != '':
             fileName = file_manager.convert_to_relative(
                 self._parent.project.path, fileName)
             self.txtPreExec.setText(fileName)
 
     def select_post_exec_script(self):
+        """Ask the user a python post-exec script and set its value"""
         fileName = QFileDialog.getOpenFileName(
             self, translations.TR_PROJECT_SELECT_POST_SCRIPT,
-                        self._parent.project.path, '(*.*)')
+            self._parent.project.path,
+            '*(*.*);;Bash(*.sh);;PY(*.py[codw]);;Bat(*.bat);;Cmd(*.cmd)')
         if fileName != '':
             fileName = file_manager.convert_to_relative(
                 self._parent.project.path, fileName)
@@ -355,6 +379,7 @@ class ProjectExecution(QWidget):
 
 
 class ProjectMetadata(QWidget):
+    """Project Metadata widget class"""
 
     def __init__(self, parent):
         super(ProjectMetadata, self).__init__()
@@ -368,3 +393,4 @@ class ProjectMetadata(QWidget):
 
         paths = '\n'.join(self._parent.project.related_projects)
         self.txt_projects.setPlainText(paths)
+        self.txt_projects.setToolTip(translations.TR_PROJECT_PATH_PER_LINE)
