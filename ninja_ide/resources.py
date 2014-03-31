@@ -111,16 +111,16 @@ PLUGINS_COMMUNITY = 'http://ninja-ide.org/plugins/api/community'
 ###############################################################################
 
 COLOR_SCHEME = {
-    "keyword": "#92c9fd",
+    "keyword": "#83c1fb",
     "operator": "#FFFFFF",
     "brace": "#FFFFFF",
-    "definition": "#feff91",
+    "definition": "#fdff74",
     "string": "#d07cd3",
     "string2": "#86d986",
     "comment": "#7c7c7c",
     "properObject": "#6EC7D7",
     "numbers": "#F8A008",
-    "extras": "#fbb978",
+    "extras": "#fdb269",
     "editor-background": "#1d1f21",
     "editor-selection-color": "#000000",
     "editor-selection-background": "#aaaaaa",
