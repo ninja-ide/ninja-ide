@@ -349,7 +349,8 @@ class ProjectExecution(QWidget):
         """Ask the user a python main file and set its value"""
         fileName = QFileDialog.getOpenFileName(
             self, translations.TR_PROJECT_SELECT_MAIN_FILE,
-            self._parent.project.path, 'PY(*.py[codw]);;*(*.*)')
+            self._parent.project.path,
+            'Python PY(*.py);;Python Bytecode(*.py[codw]);;*(*.*)')
         if fileName != '':
             fileName = file_manager.convert_to_relative(
                 self._parent.project.path, fileName)
@@ -360,7 +361,8 @@ class ProjectExecution(QWidget):
         fileName = QFileDialog.getOpenFileName(
             self, translations.TR_PROJECT_SELECT_PRE_SCRIPT,
             self._parent.project.path,
-            '*(*.*);;Bash(*.sh);;PY(*.py[codw]);;Bat(*.bat);;Cmd(*.cmd)')
+            '*(*.*);;Bash(*.sh);;Python PY(*.py);;Python Bytecode(*.py[codw]);;'
+            'Bat(*.bat);;Cmd(*.cmd);;Exe(*.exe);;Bin(*.bin);;App(*.app)')
         if fileName != '':
             fileName = file_manager.convert_to_relative(
                 self._parent.project.path, fileName)
@@ -371,7 +373,8 @@ class ProjectExecution(QWidget):
         fileName = QFileDialog.getOpenFileName(
             self, translations.TR_PROJECT_SELECT_POST_SCRIPT,
             self._parent.project.path,
-            '*(*.*);;Bash(*.sh);;PY(*.py[codw]);;Bat(*.bat);;Cmd(*.cmd)')
+            '*(*.*);;Bash(*.sh);;Python PY(*.py);;Python Bytecode(*.py[codw]);;'
+            'Bat(*.bat);;Cmd(*.cmd);;Exe(*.exe);;Bin(*.bin);;App(*.app)')
         if fileName != '':
             fileName = file_manager.convert_to_relative(
                 self._parent.project.path, fileName)
