@@ -647,7 +647,10 @@ class CodeNavigator(QWidget):
         self.setContentsMargins(0, 0, 0, 0)
         hbox = QHBoxLayout(self)
         hbox.setContentsMargins(1, 1, 5, 1)
-        hbox.setSpacing(0)
+        if settings.IS_MAC_OS:
+            hbox.setSpacing(10)
+        else:
+            hbox.setSpacing(0)
         self.btnPrevious = QPushButton(
             QIcon(":img/nav-code-left"), '')
         self.btnPrevious.setIconSize(QSize(16, 16))
