@@ -292,7 +292,7 @@ QTabBar::tab:only-one {
 }
 
 QTreeWidget{
-    background: #5e5f5d;
+    background: transparent;
     color: white;
 }
 
