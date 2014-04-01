@@ -21,6 +21,7 @@ import os
 import subprocess
 
 from PyQt4.QtCore import QThread
+from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
 from ninja_ide.core.file_handling import file_manager
@@ -43,12 +44,19 @@ class MigrationTo3(QThread):
         self.checks = {}
         if settings.IS_WINDOWS and settings.PYTHON_EXEC_CONFIGURED_BY_USER:
             tool_path = os.path.join(os.path.dirname(settings.PYTHON_PATH),
-                'Tools', 'Scripts', '2to3.py')
+                                     'Tools', 'Scripts', '2to3.py')
             self._command = [settings.PYTHON_PATH, tool_path]
         else:
             self._command = ['2to3']
 
         self.checker_icon = None
+
+        ninjaide = IDE.get_service('ide')
+        self.connect(
+            ninjaide,
+            SIGNAL("ns_preferences_editor_showMigrationTips(PyQt_PyObject)"),
+            lambda: remove_migration_checker())
+        self.connect(self, SIGNAL("checkerCompleted()"), self.refresh_display)
 
     def run_checks(self):
         if not self.isRunning() and settings.VALID_2TO3:
@@ -80,7 +88,7 @@ class MigrationTo3(QThread):
                 if parsing_adds:
                     # Add in migration
                     removes = '\n'.join([liner
-                        for _, liner in lines_to_remove])
+                                        for _, liner in lines_to_remove])
                     adds = '\n'.join(lines_to_add)
                     message = self.tr(
                         'The actual code looks like this:\n%s\n\n'
@@ -101,6 +109,9 @@ class MigrationTo3(QThread):
 
                 if line.startswith('@@'):
                     lineno = int(line[line.index('-') + 1:line.index(',')]) - 1
+            self.emit(SIGNAL("checkerCompleted()"))
+
+    def refresh_display(self):
         tab_migration = IDE.get_service('tab_migration')
         if tab_migration:
             tab_migration.refresh_lists(self.checks)
@@ -113,12 +124,14 @@ class MigrationTo3(QThread):
 
 def remove_migration_checker():
     checker = (MigrationTo3,
-        resources.CUSTOM_SCHEME.get('migration-underline',
-        resources.COLOR_SCHEME['migration-underline']), 1)
+               resources.CUSTOM_SCHEME.get(
+                   'migration-underline',
+                   resources.COLOR_SCHEME['migration-underline']), 1)
     remove_checker(checker)
 
 
 if settings.SHOW_MIGRATION_TIPS:
     register_checker(checker=MigrationTo3,
-        color=resources.CUSTOM_SCHEME.get('migration-underline',
-        resources.COLOR_SCHEME['migration-underline']))
+                     color=resources.CUSTOM_SCHEME.get(
+                         'migration-underline',
+                         resources.COLOR_SCHEME['migration-underline']))
