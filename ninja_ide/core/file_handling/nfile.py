@@ -24,8 +24,8 @@ from ninja_ide import translations
 #FIXME: Obtain these form a getter
 from ninja_ide.core import settings
 from ninja_ide.tools.utils import SignalFlowControl
-from file_manager import NinjaIOException, NinjaNoFileNameException, \
-get_file_encoding, get_basename, get_file_extension
+from .file_manager import (NinjaIOException, NinjaNoFileNameException,
+                           get_file_encoding, get_basename, get_file_extension)
 
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.core.file_handling.nfile')
