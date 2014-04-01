@@ -19,7 +19,10 @@ from __future__ import absolute_import
 import os
 import math
 import collections
-from urlparse import urlparse, urlunparse
+try:
+    from urlparse import urlparse, urlunparse
+except ImportError:
+    from urllib.parse import urlparse, urlunparse
 
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QWidget
