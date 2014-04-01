@@ -19,7 +19,10 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from string import maketrans
+try:
+    from string import maketrans as _maketrans
+except ImportError:
+    _maketrans = str.maketrans
 
 from PyQt4.QtGui import QFrame
 from PyQt4.QtGui import QVBoxLayout
@@ -29,6 +32,10 @@ from PyQt4.QtDeclarative import QDeclarativeView
 
 from ninja_ide.core import settings
 from ninja_ide.tools import ui_tools
+
+
+_color_trans = _maketrans('0123456789abcdef', 'fedcba9876543210')
+_invert_color = lambda color: color.lower().translate(_color_trans)
 
 
 class Notification(QFrame):
@@ -68,8 +75,7 @@ class Notification(QFrame):
         self.setFixedWidth(width)
         self.setGeometry(x, y, self.width(), self.height())
         background_color = str(settings.NOTIFICATION_COLOR)
-        foreground_color = str(settings.NOTIFICATION_COLOR).lower().translate(
-            maketrans('0123456789abcdef', 'fedcba9876543210'))
+        foreground_color = _invert_color(background_color)
         self._root.setColor(background_color, foreground_color)
         self._root.start(self._duration)
 
