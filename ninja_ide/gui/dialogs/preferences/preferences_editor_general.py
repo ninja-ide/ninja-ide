@@ -17,6 +17,7 @@
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
+from __future__ import print_function
 
 import copy
 
@@ -201,7 +202,7 @@ class EditorGeneral(QWidget):
             try:
                 editorWidget.restyle(editorWidget.lang)
             except RuntimeError:
-                print 'the editor has been removed'
+                print('the editor has been removed')
 
     def _preview_style(self):
         scheme = self._listScheme.currentItem().text()
