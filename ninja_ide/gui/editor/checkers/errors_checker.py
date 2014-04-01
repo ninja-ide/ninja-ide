@@ -56,6 +56,7 @@ class ErrorsChecker(QThread):
         self.connect(ninjaide,
                      SIGNAL("ns_preferences_editor_errors(PyQt_PyObject)"),
                      lambda: remove_error_checker())
+        self.connect(self, SIGNAL("checkerCompleted()"), self.refresh_display)
 
     @property
     def dirty(self):
@@ -117,7 +118,7 @@ class ErrorsChecker(QThread):
                     self.checks.pop(line, None)
         else:
             self.reset()
-        self.refresh_display()
+        self.emit(SIGNAL("checkerCompleted()"))
 
     def refresh_display(self):
         error_list = IDE.get_service('tab_errors')
