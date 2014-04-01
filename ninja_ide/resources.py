@@ -68,7 +68,7 @@ SYNTAX_FILES = os.path.join(PRJ_PATH, "extensions", "syntax")
 PLUGINS = os.path.join(HOME_NINJA_PATH, "extensions", "plugins")
 
 PLUGINS_DESCRIPTOR = os.path.join(EXTENSIONS_PATH,
-                                    "plugins", "descriptor.json")
+                                  "plugins", "descriptor.json")
 
 LANGS = os.path.join(EXTENSIONS_PATH, "languages")
 
@@ -247,7 +247,7 @@ def load_shortcuts():
         default_action = SHORTCUTS[action].toString()
         #get the custom shortcut or the default
         shortcut_action = settings.value("shortcuts/%s" % action,
-            default_action)
+                                         default_action)
         #set the shortcut
         CUSTOM_SHORTCUTS[action] = QKeySequence(shortcut_action)
 
