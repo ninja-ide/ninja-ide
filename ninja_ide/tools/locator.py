@@ -468,6 +468,7 @@ class CodeLocatorWidget(QWidget):
         hLocator.setContentsMargins(0, 0, 0, 0)
         self._btnClose = QPushButton(
             self.style().standardIcon(QStyle.SP_DialogCloseButton), '')
+        self._btnClose.setIconSize(QSize(16, 16))
         self._completer = LocatorCompleter(self)
 
         hLocator.addWidget(self._btnClose)
@@ -503,7 +504,8 @@ class LocateItem(QListWidgetItem):
 
     """Create QListWidgetItem that contains the proper icon and file data."""
 
-    icons = {FILTERS['functions']: ":img/function",
+    icons = {
+        FILTERS['functions']: ":img/function",
         FILTERS['files']: ":img/tree-python",
         FILTERS['classes']: ":img/class",
         FILTERS['non-python']: ":img/tree-code",
@@ -525,20 +527,26 @@ class LocateWidget(QLabel):
         self.set_not_selected()
 
     def set_selected(self):
-        locator_name = resources.CUSTOM_SCHEME.get('locator-name-selected',
+        locator_name = resources.CUSTOM_SCHEME.get(
+            'locator-name-selected',
             resources.COLOR_SCHEME['locator-name-selected'])
-        locator_path = resources.CUSTOM_SCHEME.get('locator-path-selected',
+        locator_path = resources.CUSTOM_SCHEME.get(
+            'locator-path-selected',
             resources.COLOR_SCHEME['locator-path-selected'])
-        self.setText("<span style='color: {2};'>{0}</span><br>"
+        self.setText(
+            "<span style='color: {2};'>{0}</span><br>"
             "<span style='font-size: 12px; color: {3};'>({1})</span>".format(
                 self.name, self.path, locator_name, locator_path))
 
     def set_not_selected(self):
-        locator_name = resources.CUSTOM_SCHEME.get('locator-name',
+        locator_name = resources.CUSTOM_SCHEME.get(
+            'locator-name',
             resources.COLOR_SCHEME['locator-name'])
-        locator_path = resources.CUSTOM_SCHEME.get('locator-path',
+        locator_path = resources.CUSTOM_SCHEME.get(
+            'locator-path',
             resources.COLOR_SCHEME['locator-path'])
-        self.setText("<span style='color: {2};'>{0}</span><br>"
+        self.setText(
+            "<span style='color: {2};'>{0}</span><br>"
             "<span style='font-size: 12px; color: {3};'>({1})</span>".format(
                 self.name, self.path, locator_name, locator_path))
 
@@ -566,10 +574,11 @@ class LocatorCompleter(QLineEdit):
         }
 
         self.connect(self, SIGNAL("textChanged(QString)"),
-            self.set_prefix)
+                     self.set_prefix)
 
         self.connect(self.popup.listWidget,
-            SIGNAL("itemPressed(QListWidgetItem*)"), self._go_to_location)
+                     SIGNAL("itemPressed(QListWidgetItem*)"),
+                     self._go_to_location)
 
     def set_prefix(self, prefix):
         """Set the prefix for the completer."""
@@ -591,7 +600,7 @@ class LocatorCompleter(QLineEdit):
         begin = self.items_in_page
         self.items_in_page += self.page_items_step
         locations_view = [(LocateItem(x), LocateWidget(x))
-            for x in locations[begin:self.items_in_page]]
+                          for x in locations[begin:self.items_in_page]]
         return locations_view
 
     def filter(self):
@@ -607,7 +616,7 @@ class LocatorCompleter(QLineEdit):
         elif len(filterOptions) == 1:
             self.tempLocations = [
                 x for x in self._parent.locate_symbols.get_locations()
-                    if x.comparison.lower().find(filterOptions[0].lower()) > -1]
+                if x.comparison.lower().find(filterOptions[0].lower()) > -1]
         else:
             index = 0
             if not self.tempLocations and (self.__pre_filters == filterOptions):
@@ -629,8 +638,8 @@ class LocatorCompleter(QLineEdit):
         if at_start:
             self.tempLocations = [
                 x for x in self._parent.locate_symbols.get_locations()
-                    if x.type == filterOptions[0] and
-                    x.comparison.lower().find(filterOptions[1].lower()) > -1]
+                if x.type == filterOptions[0] and
+                x.comparison.lower().find(filterOptions[1].lower()) > -1]
         else:
             currentItem = self.popup.listWidget.currentItem()
             filter_data = None
@@ -644,9 +653,9 @@ class LocatorCompleter(QLineEdit):
                 global mapping_symbols
                 self.tempLocations = mapping_symbols.get(filter_data.path, [])
             self.tempLocations = [x for x in self.tempLocations
-                    if x.type == filterOptions[index] and
-                    x.comparison.lower().find(
-                        filterOptions[index + 1].lower()) > -1]
+                                  if x.type == filterOptions[index] and
+                                  x.comparison.lower().find(
+                                      filterOptions[index + 1].lower()) > -1]
         return index + 2
 
     def _filter_this_file(self, filterOptions, index):
@@ -671,7 +680,7 @@ class LocatorCompleter(QLineEdit):
                         editorWidget.file_path)
                 search = filterOptions[index + 1].lstrip().lower()
                 self.tempLocations = [x for x in self.tempLocations
-                    if x.comparison.lower().find(search) > -1]
+                                      if x.comparison.lower().find(search) > -1]
         else:
             del filterOptions[index + 1]
             del filterOptions[index]
@@ -682,10 +691,13 @@ class LocatorCompleter(QLineEdit):
         if at_start:
             ninjaide = IDE.get_service('ide')
             opened = ninjaide.filesystem.get_files()
-            self.tempLocations = [ResultItem(FILTERS['files'],
-                opened[f].file_name, opened[f].file_path) for f in opened]
+            self.tempLocations = [
+                ResultItem(
+                    FILTERS['files'],
+                    opened[f].file_name, opened[f].file_path) for f in opened]
             search = filterOptions[index + 1].lstrip().lower()
-            self.tempLocations = [x for x in self.tempLocations
+            self.tempLocations = [
+                x for x in self.tempLocations
                 if x.comparison.lower().find(search) > -1]
             index += 2
         else:
@@ -712,8 +724,8 @@ class LocatorCompleter(QLineEdit):
                 filterOptions.insert(1, editorWidget.file_path)
             self.tempLocations = [
                 x for x in self._parent.locate_symbols.get_locations()
-                    if x.type == filterOptions[0] and
-                    x.path == filterOptions[1]]
+                if x.type == filterOptions[0] and
+                x.path == filterOptions[1]]
         if filterOptions[index + 1].isdigit():
             self._line_jump = int(filterOptions[index + 1]) - 1
         return index + 2
@@ -835,38 +847,38 @@ class PopupCompleter(QFrame):
     def add_no_found(self):
         """Load no results found message"""
         noFoundItem = self._create_help_item(":img/delete",
-                translations.TR_NO_RESULTS)
+                                             translations.TR_NO_RESULTS)
         self.listWidget.addItem(noFoundItem)
 
     def add_help(self):
         #Load help
         fileItem = self._create_help_item(":img/locate-file",
-                         translations.TR_ONLY_FILES)
+                                          translations.TR_ONLY_FILES)
         self.listWidget.addItem(fileItem)
         classItem = self._create_help_item(":img/locate-class",
-                        translations.TR_ONLY_CLASSES)
+                                           translations.TR_ONLY_CLASSES)
         self.listWidget.addItem(classItem)
         methodItem = self._create_help_item(
-                        ":img/locate-function",
-                        translations.TR_ONLY_METHODS)
+            ":img/locate-function",
+            translations.TR_ONLY_METHODS)
         self.listWidget.addItem(methodItem)
         attributeItem = self._create_help_item(
-                            ":img/locate-attributes",
-                            translations.TR_ONLY_ATRIBUTES)
+            ":img/locate-attributes",
+            translations.TR_ONLY_ATRIBUTES)
         self.listWidget.addItem(attributeItem)
         thisFileItem = self._create_help_item(
-                    ":img/locate-on-this-file",
-                    translations.TR_ONLY_CLASSES_METHODS)
+            ":img/locate-on-this-file",
+            translations.TR_ONLY_CLASSES_METHODS)
         self.listWidget.addItem(thisFileItem)
         tabsItem = self._create_help_item(":img/locate-tab",
-                translations.TR_ONLY_CURRENT_EDITORS)
+                                          translations.TR_ONLY_CURRENT_EDITORS)
         self.listWidget.addItem(tabsItem)
         lineItem = self._create_help_item(":img/locate-line",
-                translations.TR_GO_TO_LINE)
+                                          translations.TR_GO_TO_LINE)
         self.listWidget.addItem(lineItem)
         nonPythonItem = self._create_help_item(
-                ":img/locate-nonpython",
-                translations.TR_ONLY_NON_PYTHON)
+            ":img/locate-nonpython",
+            translations.TR_ONLY_NON_PYTHON)
         self.listWidget.addItem(nonPythonItem)
 
     def _create_help_item(self, image, text):

@@ -68,7 +68,7 @@ SYNTAX_FILES = os.path.join(PRJ_PATH, "extensions", "syntax")
 PLUGINS = os.path.join(HOME_NINJA_PATH, "extensions", "plugins")
 
 PLUGINS_DESCRIPTOR = os.path.join(EXTENSIONS_PATH,
-                                    "plugins", "descriptor.json")
+                                  "plugins", "descriptor.json")
 
 LANGS = os.path.join(EXTENSIONS_PATH, "languages")
 
@@ -111,34 +111,33 @@ PLUGINS_COMMUNITY = 'http://ninja-ide.org/plugins/api/community'
 ###############################################################################
 
 COLOR_SCHEME = {
-    "keyword": "#6EC7D7",
+    "keyword": "#83c1fb",
     "operator": "#FFFFFF",
     "brace": "#FFFFFF",
-    "definition": "#F6EC2A",
-    "string": "#B369BF",
+    "definition": "#fdff74",
+    "string": "#d07cd3",
     "string2": "#86d986",
-    "comment": "#80FF80",
+    "comment": "#7c7c7c",
     "properObject": "#6EC7D7",
     "numbers": "#F8A008",
-    "spaces": "#7b7b7b",
-    "extras": "#ee8859",
-    "editor-background": "#1E1E1E",
-    "editor-selection-color": "#FFFFFF",
-    "editor-selection-background": "#437DCD",
-    "editor-text": "#B3BFA7",
+    "extras": "#fdb269",
+    "editor-background": "#1d1f21",
+    "editor-selection-color": "#000000",
+    "editor-selection-background": "#aaaaaa",
+    "editor-text": "#c5c8c6",
     "current-line": "#858585",
-    "selected-word": "red",
+    "selected-word": "#a8ff60",
     "pending": "red",
     "selected-word-background": "#009B00",
-    "fold-area": "#FFFFFF",
-    "fold-arrow": "#454545",
+    "fold-area": "#292c2f",
+    "fold-arrow": "#696c6e",
     "linkNavigate": "orange",
     "brace-background": "#5BC85B",
     "brace-foreground": "red",
     "error-underline": "red",
     "pep8-underline": "yellow",
-    "sidebar-background": "#c4c4c4",
-    "sidebar-foreground": "black",
+    "sidebar-background": "#292c2f",
+    "sidebar-foreground": "#868989",
     "locator-name": "white",
     "locator-name-selected": "black",
     "locator-path": "gray",
@@ -248,7 +247,7 @@ def load_shortcuts():
         default_action = SHORTCUTS[action].toString()
         #get the custom shortcut or the default
         shortcut_action = settings.value("shortcuts/%s" % action,
-            default_action)
+                                         default_action)
         #set the shortcut
         CUSTOM_SHORTCUTS[action] = QKeySequence(shortcut_action)
 

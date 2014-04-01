@@ -190,7 +190,8 @@ class ProjectTreeColumn(QDialog):
 
     def load_session_projects(self, projects):
         for project in projects:
-            self._open_project_folder(project)
+            if os.path.exists(project):
+                self._open_project_folder(project)
 
     def open_project_folder(self, folderName=None):
         if settings.WORKSPACE:

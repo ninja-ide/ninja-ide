@@ -51,7 +51,7 @@ ACTIONS_STATUS = (
     },
     {
     "shortcut": "Find-with-word",
-    "action": {'text': translations.TR_FIND_WITH_WORD,
+    "action": {'text': translations.TR_FIND_WORD_UNDER_CURSOR,
                'section': (translations.TR_MENU_EDIT, None),
                'weight': 220},
     "connect": "show_with_word"
