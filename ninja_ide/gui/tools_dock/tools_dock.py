@@ -54,11 +54,11 @@ class _ToolsDock(QWidget):
         #Register signals connections
         connections = (
             {'target': 'main_container',
-            'signal_name': "findOcurrences(QString)",
-            'slot': self.show_find_occurrences},
+             'signal_name': "findOcurrences(QString)",
+             'slot': self.show_find_occurrences},
             {'target': 'main_container',
-            'signal_name': "runFile(QString)",
-            'slot': self.execute_file},
+             'signal_name': "runFile(QString)",
+             'slot': self.execute_file},
         )
         IDE.register_signals('tools_dock', connections)
         IDE.register_service("tools_dock", self)
@@ -91,13 +91,13 @@ class _ToolsDock(QWidget):
         #Toolbar
         hbox.addWidget(self.__toolbar)
         self.add_to_stack(self._console, ":img/console",
-            translations.TR_CONSOLE)
+                          translations.TR_CONSOLE)
         self.add_to_stack(self._runWidget, ":img/play",
-            translations.TR_OUTPUT)
+                          translations.TR_OUTPUT)
         self.add_to_stack(self._web, ":img/web",
-            translations.TR_WEB_PREVIEW)
+                          translations.TR_WEB_PREVIEW)
         self.add_to_stack(self._findInFilesWidget, ":img/find",
-            translations.TR_FIND_IN_FILES)
+                          translations.TR_FIND_IN_FILES)
         #Last Element in the Stacked widget
         self._results = results.Results(self)
         self.stack.addWidget(self._results)
@@ -171,7 +171,7 @@ class _ToolsDock(QWidget):
         if editorWidget:
             #emit a signal for plugin!
             self.emit(SIGNAL("fileExecuted(QString)"),
-                editorWidget.file_path)
+                      editorWidget.file_path)
             main_container.save_file(editorWidget)
             ext = file_manager.get_file_extension(editorWidget.file_path)
             #TODO: Remove the IF statment and use Handlers
@@ -196,8 +196,9 @@ class _ToolsDock(QWidget):
                 self.emit(SIGNAL("projectExecuted(QString)"), nproject.path)
 
                 main_file = file_manager.create_path(nproject.path,
-                    nproject.main_file)
-                self._run_application(main_file,
+                                                     nproject.main_file)
+                self._run_application(
+                    main_file,
                     pythonExec=nproject.python_exec_command,
                     PYTHONPATH=nproject.python_path,
                     programParams=nproject.program_params,
@@ -205,12 +206,12 @@ class _ToolsDock(QWidget):
                     postExec=nproject.post_exec_script)
 
     def _run_application(self, fileName, pythonExec=False, PYTHONPATH=None,
-            programParams='', preExec='', postExec=''):
+                         programParams='', preExec='', postExec=''):
         """Execute the process to run the application."""
         self._item_changed(1)
         self.show()
         self._runWidget.start_process(fileName, pythonExec, PYTHONPATH,
-            programParams, preExec, postExec)
+                                      programParams, preExec, postExec)
         self._runWidget.input.setFocus()
 
     def show_results(self, items):
@@ -263,7 +264,7 @@ class StackedWidget(QStackedWidget):
     def setCurrentIndex(self, index):
         """Change the current widget being displayed with an animation."""
         self.fader_widget = ui_tools.FaderWidget(self.currentWidget(),
-            self.widget(index))
+                                                 self.widget(index))
         QStackedWidget.setCurrentIndex(self, index)
 
     def show_display(self, index):

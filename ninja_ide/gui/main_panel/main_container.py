@@ -111,24 +111,24 @@ class _MainContainer(QWidget):
             2: self._navigate_breakpoints}
 
         self.connect(self, SIGNAL("locateFunction(QString, QString, bool)"),
-            self.locate_function)
+                     self.locate_function)
 
         IDE.register_service('main_container', self)
 
         #Register signals connections
         connections = (
             {'target': 'menu_file',
-            'signal_name': 'openFile(QString)',
-            'slot': self.open_file},
+             'signal_name': 'openFile(QString)',
+             'slot': self.open_file},
             {'target': 'explorer_container',
-            'signal_name': 'goToDefinition(int)',
-            'slot': self.editor_go_to_line},
+             'signal_name': 'goToDefinition(int)',
+             'slot': self.editor_go_to_line},
             {'target': 'explorer_container',
-            'signal_name': 'pep8Activated(bool)',
-            'slot': self.reset_pep8_warnings},
+             'signal_name': 'pep8Activated(bool)',
+             'slot': self.reset_pep8_warnings},
             {'target': 'explorer_container',
-            'signal_name': 'lintActivated(bool)',
-            'slot': self.reset_lint_warnings},
+             'signal_name': 'lintActivated(bool)',
+             'slot': self.reset_lint_warnings},
             )
 
         IDE.register_signals('main_container', connections)
@@ -140,9 +140,9 @@ class _MainContainer(QWidget):
             self.show_start_page()
 
         self.connect(self.selector, SIGNAL("changeCurrent(int)"),
-            self._change_current_stack)
+                     self._change_current_stack)
         self.connect(self.selector, SIGNAL("ready()"),
-            self._selector_ready)
+                     self._selector_ready)
 
     def install(self):
         ide = IDE.get_service('ide')
@@ -150,9 +150,9 @@ class _MainContainer(QWidget):
 
         self.combo_area = combo_editor.ComboEditor(original=True)
         self.connect(self.combo_area, SIGNAL("allFilesClosed()"),
-            self._files_closed)
+                     self._files_closed)
         self.connect(self.combo_area, SIGNAL("showComboSelector()"),
-            self.change_tab)
+                     self.change_tab)
         self.splitter.add_widget(self.combo_area)
         self.add_widget(self.splitter)
 
@@ -997,9 +997,9 @@ class _MainContainer(QWidget):
         else:
             startPage = start_page.StartPage(parent=self)
             self.connect(startPage, SIGNAL("openProject(QString)"),
-                self.open_project)
+                         self.open_project)
             self.connect(startPage, SIGNAL("openPreferences()"),
-                lambda: self.emit(SIGNAL("openPreferences()")))
+                         lambda: self.emit(SIGNAL("openPreferences()")))
             self.connect(startPage, SIGNAL("newFile()"), self.add_editor)
             self.stack.insertWidget(0, startPage)
             self.stack.setCurrentIndex(0)
@@ -1098,7 +1098,7 @@ class _MainContainer(QWidget):
         settings.SHOW_TABS_AND_SPACES = not settings.SHOW_TABS_AND_SPACES
         qsettings = IDE.ninja_settings()
         qsettings.setValue('preferences/editor/showTabsAndSpaces',
-            settings.SHOW_TABS_AND_SPACES)
+                           settings.SHOW_TABS_AND_SPACES)
 
     def show_navigation_buttons(self):
         """Show Navigation menu."""

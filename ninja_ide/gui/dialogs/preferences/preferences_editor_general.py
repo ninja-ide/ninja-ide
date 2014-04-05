@@ -114,15 +114,15 @@ class EditorGeneral(QWidget):
             translations.TR_PREFERENCES_EDITOR_DOWNLOAD_SCHEME)
         btnDownload.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.connect(btnDownload, SIGNAL("clicked()"),
-            self._open_schemes_manager)
+                     self._open_schemes_manager)
         hbox.addWidget(btnDownload)
         btnAdd = QPushButton(QIcon(":img/add"),
-            translations.TR_EDITOR_CREATE_SCHEME)
+                             translations.TR_EDITOR_CREATE_SCHEME)
         btnAdd.setIconSize(QSize(16, 16))
         btnAdd.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.connect(btnAdd, SIGNAL("clicked()"), self._open_schemes_designer)
         btnRemove = QPushButton(QIcon(":img/delete"),
-            translations.TR_EDITOR_REMOVE_SCHEME)
+                                translations.TR_EDITOR_REMOVE_SCHEME)
         btnRemove.setIconSize(QSize(16, 16))
         btnRemove.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.connect(btnRemove, SIGNAL("clicked()"), self._remove_scheme)
@@ -152,7 +152,7 @@ class EditorGeneral(QWidget):
             self._listScheme.addItem(item)
         items = self._listScheme.findItems(
             qsettings.value('scheme', defaultValue='',
-                type='QString'), Qt.MatchExactly)
+                            type='QString'), Qt.MatchExactly)
         if items:
             self._listScheme.setCurrentItem(items[0])
         else:
@@ -162,9 +162,9 @@ class EditorGeneral(QWidget):
 
         #Signals
         self.connect(self._btnEditorFont,
-            SIGNAL("clicked()"), self._load_editor_font)
+                     SIGNAL("clicked()"), self._load_editor_font)
         self.connect(self._listScheme, SIGNAL("itemSelectionChanged()"),
-            self._preview_style)
+                     self._preview_style)
         self.connect(self._preferences, SIGNAL("savePreferences()"), self.save)
 
     def _open_schemes_manager(self):
@@ -212,7 +212,8 @@ class EditorGeneral(QWidget):
             return
         editorWidget = main_container.get_current_editor()
         if editorWidget is not None:
-            resources.CUSTOM_SCHEME = self._schemes.get(scheme,
+            resources.CUSTOM_SCHEME = self._schemes.get(
+                scheme,
                 resources.COLOR_SCHEME)
             editorWidget.restyle(editorWidget.lang)
             self._modified_editors.append(editorWidget)
@@ -226,7 +227,8 @@ class EditorGeneral(QWidget):
                 btnText = ', '.join(self._font.toString().split(',')[0:2])
                 self._btnEditorFont.setText(btnText)
         except:
-            QMessageBox.warning(self,
+            QMessageBox.warning(
+                self,
                 translations.TR_PREFERENCES_EDITOR_GENERAL_FONT_MESSAGE_TITLE,
                 translations.TR_PREFERENCES_EDITOR_GENERAL_FONT_MESSAGE_BODY)
 
@@ -239,18 +241,21 @@ class EditorGeneral(QWidget):
         settings.MINIMAP_MIN_OPACITY = self._spinMinOpacity.value() / 100.0
         settings.SIZE_PROPORTION = self._spinSize.value() / 100.0
         qsettings.setValue('preferences/editor/minimapMaxOpacity',
-            settings.MINIMAP_MAX_OPACITY)
+                           settings.MINIMAP_MAX_OPACITY)
         qsettings.setValue('preferences/editor/minimapMinOpacity',
-            settings.MINIMAP_MIN_OPACITY)
+                           settings.MINIMAP_MIN_OPACITY)
         qsettings.setValue('preferences/editor/minimapSizeProportion',
-            settings.SIZE_PROPORTION)
+                           settings.SIZE_PROPORTION)
         qsettings.setValue('preferences/editor/minimapShow',
-            settings.SHOW_MINIMAP)
+                           settings.SHOW_MINIMAP)
         scheme = self._listScheme.currentItem().text()
         resources.CUSTOM_SCHEME = self._schemes.get(scheme,
-            resources.COLOR_SCHEME)
+                                                    resources.COLOR_SCHEME)
         qsettings.setValue('preferences/editor/scheme', scheme)
 
 
-preferences.Preferences.register_configuration('EDITOR', EditorGeneral,
-    translations.TR_PREFERENCES_EDITOR_GENERAL, preferences.SECTIONS['EDITOR'])
+preferences.Preferences.register_configuration(
+    'EDITOR',
+    EditorGeneral,
+    translations.TR_PREFERENCES_EDITOR_GENERAL,
+    preferences.SECTIONS['EDITOR'])

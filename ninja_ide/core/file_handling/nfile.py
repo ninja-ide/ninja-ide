@@ -105,7 +105,7 @@ class NFile(QObject):
     def start_watching(self):
         self.__watcher = QFileSystemWatcher(self)
         self.connect(self.__watcher, SIGNAL("fileChanged(const QString&)"),
-            self._file_changed)
+                     self._file_changed)
         if self._file_path is not None:
             self.__watcher.addPath(self._file_path)
 
@@ -131,8 +131,8 @@ class NFile(QObject):
         if os.path.exists(new_path):
             signal_handler = SignalFlowControl()
             self.emit(
-                    SIGNAL("willAttachToExistingFile(PyQt_PyObject, QString)"),
-                    signal_handler, new_path)
+                SIGNAL("willAttachToExistingFile(PyQt_PyObject, QString)"),
+                signal_handler, new_path)
             if signal_handler.stopped():
                     return
         self._file_path = new_path
