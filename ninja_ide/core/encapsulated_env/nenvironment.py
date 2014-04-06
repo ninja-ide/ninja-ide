@@ -61,7 +61,6 @@ from PyQt4.QtCore import QObject, SIGNAL, QThread
 
 
 PLUGIN_QUERY = {"keywords": "ninja_ide plugin"}
-PLUGIN_QUERY = {'keywords': "CPAN PyPI distutils eggs package management"}
 
 
 class AsyncRunner(QThread):
