@@ -31,8 +31,11 @@ from PyQt4.QtGui import QLineEdit
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QColorDialog
+from PyQt4.QtGui import QSizePolicy
+
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
+from PyQt4.QtCore import QSize
 
 from ninja_ide import translations
 from ninja_ide import resources
@@ -45,6 +48,11 @@ class EditorSchemeDesigner(QDialog):
 
     def __init__(self, scheme, parent):
         super(EditorSchemeDesigner, self).__init__(parent, Qt.Dialog)
+
+        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Minimum)
+        self.setSizePolicy(sizePolicy)
+        self.setMaximumSize(QSize(480, 640))
+
         self.original_style = copy.copy(resources.CUSTOM_SCHEME)
         self._avoid_on_loading = True
         self.saved = False
