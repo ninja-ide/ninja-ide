@@ -206,20 +206,22 @@ class PluginMetadata(QObject):
         self.version = version
         self.pypi = pypi
 
+        #Set manually to bind in the ui after inflate
+        self.identifier = 0
         #Inflated attributes (zeroed, declared here just for doc purposes)
         self.stable_version = ""
-        self.author = ""
-        self.author_email = ""
+        self.author = ""  # used by store
+        self.author_email = ""  # used by store
         self.maintainer = ""
         self.maintainer_email = ""
-        self.home_page = ""
-        self.license = ""
-        self.description = ""
-        self.keywords = ""
+        self.home_page = ""  # used by store
+        self.license = ""  # used by store
+        self.description = ""  # used by store
+        self.keywords = ""  # used by store
         self.platform = ""
-        self.download_url = ""
+        self.download_url = ""  # used by store
         #(list of classifier strings)
-        self.classifiers = []
+        self.classifiers = []  # used by store
         self.requires = ""
         self.requires_dist = ""
         self.provides = ""
@@ -233,12 +235,12 @@ class PluginMetadata(QObject):
         self.docs_url = ""
 
         #internal attributes
-        self.__shallow = True
+        self.shallow = shallow
         super(PluginMetadata, self).__init__()
         if kwargs:
             for each_kwarg, each_value in kwargs:
                 setattr(self, each_kwarg, each_value)
-            self.__shallow = False
+            self.shallow = False
 
     def activate(self):
         imported_plugin = __import__(self.name)
@@ -249,12 +251,12 @@ class PluginMetadata(QObject):
         """
         Fill extra attributes of a shallow object
         """
-        if self.__shallow:
+        if self.shallow:
             self.emit(SIGNAL("willInflatePluginMetadata()"))
             rdata = self.pypi.release_data(self.name, self.version)
             for each_arg, each_value in rdata.items():
                 setattr(self, each_arg, each_value)
-            self.emit(SIGNAL("pluginMetadataInflated()"))
+            self.emit(SIGNAL("pluginMetadataInflated(PyQt_PyObject)"), self)
             self.shallow = False
 
     @make_async

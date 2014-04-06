@@ -45,18 +45,19 @@ class NTemplateRegistry(QObject):
         self.__project_types = {}
         self.__types_by_category = {}
         super(NTemplateRegistry, self).__init__()
+        IDE.register_service("template_registry", self)
 
     def register_project_type(self, ptype):
         if ptype.compound_name() in self.__project_types.keys():
+            raise ConflictingTypeForCategory(ptype.type_name, ptype.category)
+        else:
             self.__project_types[ptype.compound_name()] = ptype
             #This is here mostly for convenience
-            self.__types_by_category.setdefault(ptype.cateogory,
+            self.__types_by_category.setdefault(ptype.category,
                                                 []).append(ptype)
-        else:
-            raise ConflictingTypeForCategory(ptype.type_name, ptype.category)
 
     def list_project_types(self):
-        return self.__registry_data.keys()
+        return self.__project_types.keys()
 
     def list_project_categories(self):
         return self.__types_by_category.keys()
@@ -66,6 +67,10 @@ class NTemplateRegistry(QObject):
 
     def get_project_type(self, ptype):
         return self.__project_types.get(ptype, None)
+
+    @classmethod
+    def create_compound_name(cls, type_name, category):
+        return "%s_%s" % (type_name, category)
 
 
 class BaseProjectType(QObject):
@@ -92,7 +97,8 @@ class BaseProjectType(QObject):
 
     @classmethod
     def compound_name(cls):
-        return "%s_%s" % (cls.type_name, cls.category)
+        return NTemplateRegistry.create_compound_name(
+            cls.type_name, cls.category)
 
     @classmethod
     def register(cls):
@@ -119,6 +125,17 @@ class BaseProjectType(QObject):
                 full_path += "/"
             if not os.path.exists(full_path):
                 os.mkdir(full_path)
+    @classmethod
+    def wizard_pages(cls):
+        """Return the pages to be displayed in the wizard."""
+        raise NotImplementedError("%s lacks wizard_pages" %
+                                  cls.__name__)
+
+    @classmethod
+    def from_dict(cls, results):
+        """Create an instance from this project type using the wizard result"""
+        raise NotImplementedError("%s lacks from_dict" %
+                                  cls.__name__)
 
     def get_file_extension(self, filename):
         _, extension = os.path.splitext(filename)
@@ -178,3 +195,5 @@ class BaseProjectType(QObject):
 
     def wizard_callback(self):
         pass
+
+template_registry = NTemplateRegistry()

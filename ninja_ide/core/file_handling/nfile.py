@@ -65,6 +65,7 @@ class NFile(QObject):
         self._file_path = path
         self.__created = False
         self.__watcher = None
+        self.__mtime = None
         super(NFile, self).__init__()
         if not self._exists():
             self.__created = True
@@ -107,10 +108,14 @@ class NFile(QObject):
         self.connect(self.__watcher, SIGNAL("fileChanged(const QString&)"),
                      self._file_changed)
         if self._file_path is not None:
+            self.__mtime = os.path.getmtime(self._file_path)
             self.__watcher.addPath(self._file_path)
 
     def _file_changed(self, path):
-        self.emit(SIGNAL("fileChanged()"))
+        current_mtime = os.path.getmtime(self._file_path)
+        if current_mtime != self.__mtime:
+            self.__mtime = current_mtime
+            self.emit(SIGNAL("fileChanged()"))
 
     def has_write_permission(self):
         if not self._exists():
@@ -184,6 +189,7 @@ class NFile(QObject):
         #SIGNAL: Will save (temp, definitive) to warn folder to do something
         self.emit(SIGNAL("willSave(QString, QString)"), swap_save_path,
                                                         save_path)
+        self.__mtime = os.path.getmtime(swap_save_path)
         shutil.move(swap_save_path, save_path)
         self.__watcher.addPath(save_path)
         self.reset_state()

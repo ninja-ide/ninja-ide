@@ -107,3 +107,5 @@ class PythonProject(BaseProjectType):
 
     def wizard_callback(self):
         pass
+
+PythonProject.register()

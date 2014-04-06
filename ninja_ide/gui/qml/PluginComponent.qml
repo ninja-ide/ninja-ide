@@ -8,9 +8,12 @@ Rectangle {
     color: "#24262c"
 
     signal install
-    signal downloadFinished
     signal selection(bool value)
+    signal showPlugin
     property bool selected: false
+    property alias title: txtTitle.text
+    property alias summary: txtSummary.text
+    property string version: "0"
 
     states: [
         State {
@@ -30,6 +33,10 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         hoverEnabled: true
+        onClicked: {
+            root.showPlugin();
+        }
+
         onEntered:{
             root.color = "#32353d";
         }
@@ -43,119 +50,14 @@ Rectangle {
         }
     }
 
-    Column {
-        anchors.fill: parent
-        anchors.margins: 5
-        spacing: 15
-
-        Column {
-            anchors {
-                left: parent.left
-                right: parent.right
-            }
-            spacing: 2
-            Text {
-                text: "Django"
-                color: "#ededed"
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                }
-                horizontalAlignment: Text.AlignHCenter
-            }
-            Text {
-                text: "Version: 0.1"
-                color: "#ededed"
-                font.pixelSize: 10
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                }
-                horizontalAlignment: Text.AlignHCenter
-            }
-            Text {
-                text: "Diego Sarmentero"
-                color: "#ededed"
-                font.pixelSize: 10
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                }
-                horizontalAlignment: Text.AlignHCenter
-            }
-        }
-
-        ToggleButton {
-            id: btnInstall
-            height: 20
-            text: "Install"
-            toggledEnagled: false
-            anchors {
-                left: parent.left
-                right: parent.right
-            }
-
-            onClicked: {
-                root.state = "INSTALLING";
-                progress.start()
-            }
-        }
-
-        Rectangle {
-            id: progress
-            height: 20
-            color: "#ededed"
-            anchors {
-                left: parent.left
-                right: parent.right
-            }
-
-            function start() {
-                timer.start();
-            }
-
-            Rectangle {
-                id: bar
-                property int percentage: 0
-                visible: progress.visible
-                gradient: Gradient {
-                    GradientStop { position: 0.0; color: "lightsteelblue" }
-                    GradientStop { position: 0.5; color: "lightsteelblue" }
-                    GradientStop { position: 0.5; color: "steelblue" }
-                    GradientStop { position: 1.0; color: "steelblue" }
-                }
-                anchors {
-                    top: parent.top
-                    bottom: parent.bottom
-                }
-                width: (bar.percentage * progress.width / 100)
-
-                Timer {
-                    id: timer
-                    interval: 200
-                    running: false
-                    repeat: true
-                    onTriggered: {
-                        bar.percentage += 10;
-                        if (bar.percentage == 100) {
-                            timer.stop();
-                            root.downloadFinished();
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     Rectangle {
         id: btnSelected
         height: 15
         width: 15
-        radius: width / 2
         color: root.selected ? "lightgreen" : "white"
         anchors {
             left: parent.left
-            bottom: parent.bottom
+            top: parent.top
             margins: 10
         }
 
@@ -167,24 +69,116 @@ Rectangle {
         }
     }
 
-    Row {
-        spacing: 2
+    Column {
+        anchors.fill: parent
+        anchors.margins: 5
+        spacing: 15
+
+        Column {
+            anchors {
+                left: parent.left
+                right: parent.right
+            }
+            spacing: 5
+            Text {
+                id: txtTitle
+                color: "#ededed"
+                anchors {
+                    left: parent.left
+                    leftMargin: 25
+                    right: parent.right
+                    rightMargin: 25
+                }
+                elide: Text.ElideRight
+                horizontalAlignment: Text.AlignHCenter
+            }
+            Text {
+                text: "Version: " + root.version
+                color: "#ededed"
+                font.pixelSize: 10
+                anchors {
+                    left: parent.left
+                    leftMargin: 25
+                    right: parent.right
+                    rightMargin: 25
+                }
+                elide: Text.ElideRight
+                horizontalAlignment: Text.AlignHCenter
+            }
+            Text {
+                id: txtSummary
+                color: "#ededed"
+                font.pixelSize: 10
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                }
+                maximumLineCount: 5
+                wrapMode: Text.WordWrap
+                horizontalAlignment: Text.AlignHCenter
+            }
+        }
+    }
+    ToggleButton {
+        id: btnInstall
+        height: 20
+        text: "Install"
+        toggledEnagled: false
         anchors {
-            bottom: parent.bottom
+            left: parent.left
             right: parent.right
+            bottom: parent.bottom
             margins: 10
         }
 
-        Image {
-            source: "img/download.png"
-            width: 12
-            height: 12
-            fillMode: Image.PreserveAspectFit
+        onClicked: {
+            root.state = "INSTALLING";
+            root.install();
+            progress.start()
         }
-        Text {
-            text: "252"
-            color: "#d6d6d6"
-            font.pixelSize: 10
+    }
+
+    Rectangle {
+        id: progress
+        height: 20
+        color: "#ededed"
+        anchors {
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+            margins: 10
+        }
+
+        function start() {
+            bar.x = bar.end;
+        }
+
+        Rectangle {
+            id: bar
+            visible: progress.visible
+            property int end: (progress.width - bar.width)
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "lightsteelblue" }
+                GradientStop { position: 0.5; color: "lightsteelblue" }
+                GradientStop { position: 0.5; color: "steelblue" }
+                GradientStop { position: 1.0; color: "steelblue" }
+            }
+            anchors {
+                top: parent.top
+                bottom: parent.bottom
+            }
+            width: 50
+            x: parent.x
+
+            Behavior on x { PropertyAnimation {duration: 800} }
+
+            onXChanged: {
+                if (bar.x == 0) {
+                    bar.x = bar.end;
+                } else if (bar.x == bar.end) {
+                    bar.x = 0;
+                }
+            }
         }
     }
 }

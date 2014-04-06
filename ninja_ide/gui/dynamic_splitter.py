@@ -32,20 +32,20 @@ class DynamicSplitter(QSplitter):
         else:
             self.addWidget(widget)
         self.connect(widget,
-            SIGNAL("splitEditor(PyQt_PyObject, PyQt_PyObject, bool)"),
-            self.split)
+                     SIGNAL("splitEditor(PyQt_PyObject, PyQt_PyObject, bool)"),
+                     self.split)
         self.connect(widget,
-            SIGNAL("closeSplit(PyQt_PyObject)"),
-            self.close_split)
+                     SIGNAL("closeSplit(PyQt_PyObject)"),
+                     self.close_split)
 
     def insert_widget(self, index, widget):
         self.insertWidget(index, widget)
         self.connect(widget,
-            SIGNAL("splitEditor(PyQt_PyObject, PyQt_PyObject, bool)"),
-            self.split)
+                     SIGNAL("splitEditor(PyQt_PyObject, PyQt_PyObject, bool)"),
+                     self.split)
         self.connect(widget,
-            SIGNAL("closeSplit(PyQt_PyObject)"),
-            self.close_split)
+                     SIGNAL("closeSplit(PyQt_PyObject)"),
+                     self.close_split)
 
     def _get_sizes(self, widget, orientation):
         sizes = [1, 1]
@@ -67,7 +67,8 @@ class DynamicSplitter(QSplitter):
         if self.count() == 2:
             sizes = self._get_sizes(current, orientationVertical)
             splitter = DynamicSplitter(orientation)
-            self.connect(splitter,
+            self.connect(
+                splitter,
                 SIGNAL("closeDynamicSplit(PyQt_PyObject, PyQt_PyObject)"),
                 self.close_dynamic_split)
             self.insertWidget(index, splitter)
@@ -89,7 +90,7 @@ class DynamicSplitter(QSplitter):
         combo_widget = self.widget(new_index)
         widget.deleteLater()
         self.emit(SIGNAL("closeDynamicSplit(PyQt_PyObject, PyQt_PyObject)"),
-            self, combo_widget)
+                  self, combo_widget)
         combo_widget.setFocus()
 
     def close_dynamic_split(self, split, widget):
