@@ -150,6 +150,7 @@ class NenvEggSearcher(QObject):
         super(NenvEggSearcher, self).__init__()
         self.search_url = "https://pypi.python.org/pypi"
         self.__pypi = None
+        IDE.register_service("nenvironment", self)
 
     @property
     def pypi(self):
@@ -350,3 +351,6 @@ ninja_ide/
                 __init__.py
                 yourcode.py
 """
+
+
+egg_searcher = NenvEggSearcher()
