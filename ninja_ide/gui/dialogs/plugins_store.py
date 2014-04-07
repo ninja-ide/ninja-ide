@@ -27,13 +27,13 @@ from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import translations
 from ninja_ide.tools import ui_tools
-from ninja_ide.core.encapsulated_env import nenvironment
 
 
 class PluginsStore(QDialog):
 
     def __init__(self, parent=None):
         super(PluginsStore, self).__init__(parent, Qt.Dialog)
+        self._parent = parent
         self.setWindowTitle(translations.TR_MANAGE_PLUGINS)
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
@@ -55,10 +55,8 @@ class PluginsStore(QDialog):
         self._inflating_plugins = []
         self._categoryTags = True
         self._search = []
+        self.status = None
 
-        self.nenv = nenvironment.NenvEggSearcher()
-        self.connect(self.nenv, SIGNAL("searchCompleted(PyQt_PyObject)"),
-                     self.callback)
         self.connect(self.root, SIGNAL("loadPluginsGrid()"),
                      self._load_by_name)
         self.connect(self.root, SIGNAL("showPluginDetails(int)"),
@@ -74,7 +72,11 @@ class PluginsStore(QDialog):
         self.connect(self, SIGNAL("processCompleted(PyQt_PyObject)"),
                      self._process_complete)
 
-        self.status = self.nenv.do_search()
+        self.nenv = self._parent.get_service("nenvironment")
+        if self.nenv:
+            self.connect(self.nenv, SIGNAL("searchCompleted(PyQt_PyObject)"),
+                         self.callback)
+            self.status = self.nenv.do_search()
 
     def _load_by_name(self):
         if self._plugins:
