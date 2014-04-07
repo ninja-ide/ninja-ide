@@ -23,6 +23,8 @@ import os
 
 from virtualenv import create_environment
 
+from ninja_ide.gui.ide import IDE
+
 #This is here only for reference purposes
 #def create_environment(home_dir, site_packages=False, clear=False,
 #                       unzip_setuptools=False,
@@ -49,7 +51,7 @@ if not os.path.isdir(NINJA_ENV):
 
 
 exec(compile(open(NINJA_ENV_ACTIVATE).read(), NINJA_ENV_ACTIVATE, 'exec'),
-            dict(__file__=NINJA_ENV_ACTIVATE))
+     dict(__file__=NINJA_ENV_ACTIVATE))
 
 ###############################################################################
 from pip import main as pipmain
@@ -59,7 +61,6 @@ from PyQt4.QtCore import QObject, SIGNAL, QThread
 
 
 PLUGIN_QUERY = {"keywords": "ninja_ide plugin"}
-PLUGIN_QUERY = {'keywords': "CPAN PyPI distutils eggs package management"}
 
 
 class AsyncRunner(QThread):
@@ -188,6 +189,7 @@ class PluginMetadata(QObject):
     SIGNALS:
     @willInflatePluginMetadata()
     @pluginMetadataInflated()
+    @pluginInstalled(PyQt_PyObject)
     """
 
     @classmethod
@@ -240,6 +242,10 @@ class PluginMetadata(QObject):
                 setattr(self, each_kwarg, each_value)
             self.shallow = False
 
+    def activate(self):
+        imported_plugin = __import__(self.name)
+        imported_plugin.activate()
+
     @make_async
     def inflate(self):
         """
@@ -262,32 +268,76 @@ class PluginMetadata(QObject):
         """
         pkg_string = "%s==%s" % (self.name, self.version)
         pipmain(["install", "-q", pkg_string])
+        self.emit(SIGNAL("pluginInstalled(PyQt_PyObject)"), self)
+
+    @make_async
+    def reinstall(self):
+        pipmain(["install", "-q", "--force-reinstall", self.name])
+        self.emit(SIGNAL("pluginInstalled(PyQt_PyObject)"), self)
+
+    @make_async
+    def upgrade(self):
+        pipmain(["install", "-q", "--ugprade", self.name])
+        self.emit(SIGNAL("pluginInstalled(PyQt_PyObject)"), self)
 
     @make_async
     def remove(self):
         pipmain(["uninstall", "-q", "-y", self.name])
 
-#Your package should always be named
-"""
-ninja_ide.contrib.plugins.<pluginname>
-"""
 
-#This is how you declare a plugin egg
-"""
-from setuptools import setup, find_packages
+class PluginManager(QObject):
 
-setup(name='ninja_ide.contrib.plugins.plugin_a',
-      version='1.0',
-      namespace_packages=['ninja_ide','ninja_ide.contrib',
-          'ninja_ide.contrib.plugins'],
-      packages=find_packages(),
-      )
-"""
-#__init__.py in ninja_ide, contrib and plugins should contain ONLY:
-"""
-import pkg_resources
-pkg_resources.declare_namespace(__name__)"
-"""
+    def __init__(self):
+        super(PluginManager, self).__init__()
+
+    def get_activated_plugins(self):
+        qsettings = IDE.ninja_settings()
+        return qsettings.value('plugins/registry/activated', [])
+
+    def get_failstate_plugins(self):
+        qsettings = IDE.ninja_settings()
+        return qsettings.value('plugins/registry/failure', [])
+
+    def activate_plugin(self, plugin):
+        """
+        Receives PluginMetadata instance and activates its given plugin
+        BEWARE: We do not do any kind of checking about if the plugin is
+        actually installed.
+        """
+        qsettings = IDE.ninja_settings()
+        activated = qsettings.value('plugins/registry/activated', [])
+        failure = qsettings.value('plugins/registry/failure', [])
+
+        plugin_name = plugin.name
+        try:
+            plugin.activate()
+        except Exception:
+            #This plugin can no longer be activated
+            if plugin.name in activated:
+                activated.remove(plugin_name)
+            if plugin.name not in failure:
+                failure.append(plugin_name)
+        else:
+            activated.append(plugin_name)
+            if plugin_name in failure:
+                failure.remove(plugin_name)
+        finally:
+            qsettings.setValue('plugins/registry/activated', activated)
+            qsettings.setValue('plugins/registry/failure', failure)
+
+
+class BasePlugin(QObject):
+    """
+    A base from which every plugin should inherit
+    """
+
+    def __init__(self, name):
+        super(BasePlugin, self).__init__()
+
+    def activate(self):
+        pass
+
+
 #This is how the directory structure should look
 """
 ninja_ide/
