@@ -384,7 +384,7 @@ class ActionBar(QFrame):
         self.lbl_checks.setVisible(False)
         hbox.addWidget(self.lbl_checks)
 
-        self.combo = ComboFiles()
+        self.combo = ComboFiles(self)
         self.combo.setIconSize(QSize(16, 16))
         #model = QStandardItemModel()
         #self.combo.setModel(model)
@@ -394,10 +394,13 @@ class ActionBar(QFrame):
         self.connect(self.combo, SIGNAL("currentIndexChanged(int)"),
             self.current_changed)
         self.combo.setToolTip(translations.TR_COMBO_FILE_TOOLTIP)
-        self.combo.setContextMenuPolicy(Qt.CustomContextMenu)
+        #self.combo.setContextMenuPolicy(Qt.CustomContextMenu)
         self.connect(self.combo, SIGNAL(
             "customContextMenuRequested(const QPoint &)"),
             self._context_menu_requested)
+        self.connect(self.combo, SIGNAL(
+            "contextMenuSelectedWithIndex()"),
+            self._file_specific_context_menu_requested)
         hbox.addWidget(self.combo)
 
         self.symbols_combo = QComboBox()
@@ -490,12 +493,11 @@ class ActionBar(QFrame):
         """Update the line and column position."""
         self.lbl_position.setText(self._pos_text % (line, col))
 
-    def _context_menu_requested(self, point):
-        """Display context menu for the combo file."""
-        if self.combo.count() == 0:
-            # If there is not an Editor opened, don't show the menu
-            return
-        menu = QMenu()
+    def _add_file_specific_actions_to_menu(self, menu):
+        """Adds all context menu actions relevant to files to
+        the menu passed in as argument and connects their triggers
+        to the necessary slots"""
+        # Create and add menu actions.
         actionAdd = menu.addAction(translations.TR_ADD_TO_PROJECT)
         actionRun = menu.addAction(translations.TR_RUN_FILE)
         menuSyntax = menu.addMenu(translations.TR_CHANGE_SYNTAX)
@@ -506,22 +508,14 @@ class ActionBar(QFrame):
         actionCloseAllNotThis = menu.addAction(
             translations.TR_CLOSE_OTHER_FILES)
         menu.addSeparator()
-        actionSplitH = menu.addAction(translations.TR_SPLIT_VERTICALLY)
-        actionSplitV = menu.addAction(translations.TR_SPLIT_HORIZONTALLY)
-        menu.addSeparator()
         actionCopyPath = menu.addAction(
             translations.TR_COPY_FILE_PATH_TO_CLIPBOARD)
         actionShowFileInExplorer = menu.addAction(
             translations.TR_SHOW_FILE_IN_EXPLORER)
         actionReopen = menu.addAction(translations.TR_REOPEN_FILE)
-        actionUndock = menu.addAction(translations.TR_UNDOCK_EDITOR)
         if len(settings.LAST_OPENED_FILES) == 0:
             actionReopen.setEnabled(False)
-        #Connect actions
-        self.connect(actionSplitH, SIGNAL("triggered()"),
-            lambda: self._split(False))
-        self.connect(actionSplitV, SIGNAL("triggered()"),
-            lambda: self._split(True))
+        # Connect "triggered()" signals to slots
         self.connect(actionRun, SIGNAL("triggered()"),
             self._run_this_file)
         self.connect(actionAdd, SIGNAL("triggered()"),
@@ -538,9 +532,35 @@ class ActionBar(QFrame):
             self._show_file_in_explorer)
         self.connect(actionReopen, SIGNAL("triggered()"),
             self._reopen_last_tab)
+
+    def _file_specific_context_menu_requested(self):
+        """Displays a context menu for the combo editor specifically
+        for actions related to files."""
+        if self.combo.count() == 0:
+            # If there is not an Editor opened, don't show the menu
+            return
+        menu = QMenu()
+        self._add_file_specific_actions_to_menu(menu)
+        menu.exec_(QCursor.pos())
+
+    def _context_menu_requested(self, point):
+        """Displays the context menu for the action bar."""
+        if self.combo.count() == 0:
+            # If there is not an Editor opened, don't show the menu
+            return
+        menu = QMenu()
+        self._add_file_specific_actions_to_menu(menu)
+        menu.addSeparator()
+        actionSplitH = menu.addAction(translations.TR_SPLIT_VERTICALLY)
+        actionSplitV = menu.addAction(translations.TR_SPLIT_HORIZONTALLY)
+        actionUndock = menu.addAction(translations.TR_UNDOCK_EDITOR)
+        # Connect "triggered()" signals to slots
+        self.connect(actionSplitH, SIGNAL("triggered()"),
+            lambda: self._split(False))
+        self.connect(actionSplitV, SIGNAL("triggered()"),
+            lambda: self._split(True))
         self.connect(actionUndock, SIGNAL("triggered()"),
             self._undock_editor)
-
         menu.exec_(QCursor.pos())
 
     def _create_menu_syntax(self, menuSyntax):
@@ -569,7 +589,7 @@ class ActionBar(QFrame):
     def about_to_close_file(self, index=None):
         """Close the NFile object."""
         if index is None:
-            index = self.combo.currentIndex()
+            index = self.combo.selected_index()
         neditable = self.combo.itemData(index)
         if neditable:
             neditable.nfile.close()
@@ -585,20 +605,20 @@ class ActionBar(QFrame):
 
     def _run_this_file(self):
         """Execute the current file."""
-        neditable = self.combo.itemData(self.combo.currentIndex())
+        neditable = self.combo.itemData(self.combo.selected_index())
         self.emit(SIGNAL("runFile(QString)"), neditable.file_path)
 
     def _add_to_project(self):
         """Emit a signal to let someone handle the inclusion of the file
         inside a project."""
-        neditable = self.combo.itemData(self.combo.currentIndex())
+        neditable = self.combo.itemData(self.combo.selected_index())
         self.emit(SIGNAL("addToProject(QString)"), neditable.file_path)
 
     def _show_file_in_explorer(self):
         '''Triggered when the "Show File in Explorer" context
         menu action is selected. Emits the "showFileInExplorer(QString)"
         signal with the current file's full path as argument.'''
-        neditable = self.combo.itemData(self.combo.currentIndex())
+        neditable = self.combo.itemData(self.combo.selected_index())
         self.emit(SIGNAL("showFileInExplorer(QString)"), neditable.file_path)
 
     def _reopen_last_tab(self):
@@ -614,7 +634,7 @@ class ActionBar(QFrame):
 
     def _copy_file_location(self):
         """Copy the path of the current opened file to the clipboard."""
-        neditable = self.combo.itemData(self.combo.currentIndex())
+        neditable = self.combo.itemData(self.combo.selected_index())
         QApplication.clipboard().setText(neditable.file_path,
             QClipboard.Clipboard)
 
@@ -625,7 +645,7 @@ class ActionBar(QFrame):
 
     def _close_all_files_except_this(self):
         """Close all the files except the current one."""
-        neditable = self.combo.itemData(self.combo.currentIndex())
+        neditable = self.combo.itemData(self.combo.selected_index())
         for i in reversed(list(range(self.combo.count()))):
             ne = self.combo.itemData(i)
             if ne is not neditable:
@@ -633,9 +653,46 @@ class ActionBar(QFrame):
 
 
 class ComboFiles(QComboBox):
+    def __init__(self, eventFilter):
+        QComboBox.__init__(self)
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
 
-    def showPopup(self):
-        self.emit(SIGNAL("showComboSelector()"))
+        self.view().viewport().installEventFilter(eventFilter)
+        self.view().setContextMenuPolicy(Qt.CustomContextMenu)
+        self.connect(self.view(),
+            SIGNAL("customContextMenuRequested(const QPoint&)"),
+            self.list_context_menu)
+        self.selectedIndex = None
+        self.contextMenuWasTriggered = False
+
+    def list_context_menu(self, qPoint):
+        """Connected to its own view's
+        "customContextMenuRequested(const QPoint&)" signal,
+        this method will emit the "contextMenuSelectedWithIndex()"
+        signal if the custom context menu was triggered on a valid
+        index, or simply forward the signal it received to whoever
+        might be listening if not."""
+        self.contextMenuWasTriggered = False
+        self.selectedIndex = self.view().indexAt(qPoint)
+        if self.selectedIndex:
+            self.contextMenuWasTriggered = True
+            self.emit(SIGNAL("contextMenuSelectedWithIndex()"))
+        else:
+            self.emit(
+                SIGNAL("customContextMenuRequested(const QPoint&)"),
+                qPoint)
+
+    def selected_index(self):
+        """Returns the index selected when the context menu was
+        triggered (if valid) or the current index if not."""
+        if self.contextMenuWasTriggered and self.selectedIndex.isValid:
+            # Reset the flag
+            self.contextMenuWasTriggered = False
+            return self.selectedIndex.row()
+        return self.currentIndex()
+
+    #def showPopup(self):
+        #self.emit(SIGNAL("showComboSelector()"))
 
 
 class CodeNavigator(QWidget):
