@@ -55,10 +55,8 @@ class PluginsStore(QDialog):
         self._inflating_plugins = []
         self._categoryTags = True
         self._search = []
+        self.status = None
 
-        self.nenv = nenvironment.NenvEggSearcher()
-        self.connect(self.nenv, SIGNAL("searchCompleted(PyQt_PyObject)"),
-                     self.callback)
         self.connect(self.root, SIGNAL("loadPluginsGrid()"),
                      self._load_by_name)
         self.connect(self.root, SIGNAL("showPluginDetails(int)"),
@@ -74,6 +72,10 @@ class PluginsStore(QDialog):
         self.connect(self, SIGNAL("processCompleted(PyQt_PyObject)"),
                      self._process_complete)
 
+        self.nenv = nenvironment.NenvEggSearcher()
+        self.connect(self.nenv,
+                     SIGNAL("searchCompleted(PyQt_PyObject)"),
+                     self.callback)
         self.status = self.nenv.do_search()
 
     def _load_by_name(self):

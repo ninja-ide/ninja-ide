@@ -213,12 +213,24 @@ class SidebarWidget(QWidget):
             resources.COLOR_SCHEME['sidebar-background'])
         foreground = resources.CUSTOM_SCHEME.get('sidebar-foreground',
             resources.COLOR_SCHEME['sidebar-foreground'])
+        background_selected = resources.CUSTOM_SCHEME.get(
+            'sidebar-selected-background',
+            resources.COLOR_SCHEME['sidebar-selected-background'])
+        foreground_selected = resources.CUSTOM_SCHEME.get(
+            'sidebar-selected-foreground',
+            resources.COLOR_SCHEME['sidebar-selected-foreground'])
         painter.fillRect(self.rect(), QColor(background))
 
         block = self.edit.firstVisibleBlock()
         viewport_offset = self.edit.contentOffset()
         line_count = block.blockNumber()
         painter.setFont(self.edit.document().defaultFont())
+
+        xofs = self.width() - self.foldArea
+        painter.fillRect(xofs, 0, self.foldArea, self.height(),
+                QColor(resources.CUSTOM_SCHEME.get('fold-area',
+                resources.COLOR_SCHEME['fold-area'])))
+
         while block.isValid():
             line_count += 1
             # The top left position of the block in the document
@@ -246,9 +258,16 @@ class SidebarWidget(QWidget):
             # We want the line number for the selected line to be bold.
             bold = False
             if block == current_block:
+                painter.fillRect(
+                    0, round(position.y()) + font_metrics.descent(),
+                    self.width(),
+                    font_metrics.ascent() + font_metrics.descent(),
+                    QColor(background_selected))
+
                 bold = True
                 font = painter.font()
                 font.setBold(True)
+                painter.setPen(QColor(foreground_selected))
                 painter.setFont(font)
 
             # Draw the line number right justified at the y position of the
@@ -276,10 +295,6 @@ class SidebarWidget(QWidget):
         self.highest_line = line_count
 
         #Code Folding
-        xofs = self.width() - self.foldArea
-        painter.fillRect(xofs, 0, self.foldArea, self.height(),
-                QColor(resources.CUSTOM_SCHEME.get('fold-area',
-                resources.COLOR_SCHEME['fold-area'])))
         if self.foldArea != self.rightArrowIcon.width():
             polygon = QPolygonF()
 

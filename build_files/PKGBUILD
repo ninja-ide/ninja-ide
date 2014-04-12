@@ -4,7 +4,7 @@
 pkgname=ninja-ide-git
 pkgver=20130206
 pkgrel=1
-pkgdesc="Ninja Is Not Just Another Intergrated Development Environment - Latest git pull"
+pkgdesc="Ninja Is Not Just Another Integrated Development Environment - Latest git pull"
 arch=('any')
 url="http://ninja-ide.org"
 license=('GPL')

@@ -42,6 +42,7 @@ def run_ninja():
             print("The process couldn't be renamed'")
     filenames, projects_path, extra_plugins, linenos, log_level, log_file = \
                                                             cliparser.parse()
+    resources.create_home_dir_structure()
     # Load Logger
     from ninja_ide.tools.logger import NinjaLogger
     NinjaLogger.argparse(log_level, log_file)

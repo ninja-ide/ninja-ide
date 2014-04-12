@@ -69,20 +69,20 @@ class PythonProject(BaseProjectType):
 
         #Create a single init file
         filepath = os.path.join(self.path, "__init__.py")
-        with open(filepath, "r") as base_init:
+        with open(filepath, "w") as base_init:
             self.init_file(base_init, filepath)
 
         #Create a setup.py
         filepath = os.path.join(self.path, "setup.py")
-        with open(filepath, "r") as base_setup:
+        with open(filepath, "w") as base_setup:
             self.init_file(base_setup, filepath)
             base_setup.write(SETUP_PY_FILE % self.name)
 
         #Create a basic main file
         filepath = os.path.join(self.path, "main.py")
-        with open(filepath, "r") as base_main:
+        with open(filepath, "w") as base_main:
             self.init_file(base_main, filepath)
-            base_setup.write(BASIC_HELLO % self.name)
+            base_main.write(BASIC_HELLO % self.name)
 
     def get_project_api(self):
         """
@@ -102,5 +102,10 @@ class PythonProject(BaseProjectType):
         """
         pass
 
+    def get_project_wizard_pages(self):
+        pass
+
+    def wizard_callback(self):
+        pass
 
 PythonProject.register()
