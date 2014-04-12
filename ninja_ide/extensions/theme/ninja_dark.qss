@@ -1,5 +1,5 @@
 QWidget{
-    background: #333;
+    background: #282828;
     color: white;
 }
 
@@ -475,7 +475,7 @@ QComboBox#combo_symbols::down-arrow {
 
 QFrame#actionbar {
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-        stop: 0 #727272, stop: 1.0 #363636);
+        stop: 0 #727272, stop: 1.0 #222222);
     color: gray;
     border: 0px solid darkgray;
     border-radius: 5px;

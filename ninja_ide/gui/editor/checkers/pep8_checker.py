@@ -19,6 +19,7 @@ from __future__ import unicode_literals
 
 from PyQt4.QtGui import QStyle
 from PyQt4.QtCore import QThread
+from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import resources
 from ninja_ide import translations
@@ -43,6 +44,12 @@ class Pep8Checker(QThread):
         self.checks = {}
 
         self.checker_icon = QStyle.SP_MessageBoxWarning
+
+        ninjaide = IDE.get_service('ide')
+        self.connect(ninjaide,
+                     SIGNAL("ns_preferences_editor_checkStyle(PyQt_PyObject)"),
+                     lambda: remove_pep8_checker())
+        self.connect(self, SIGNAL("checkerCompleted()"), self.refresh_display)
 
     @property
     def dirty(self):
@@ -70,9 +77,11 @@ class Pep8Checker(QThread):
             source = self._editor.get_text()
             tempData = pep8mod.run_check(self._path, source)
             for result in tempData:
-                message = "\n".join(("%s %s" % (result["code"], result["text"]),
-                           result["line"],
-                           result["pointer"]))
+                message = "\n".join(("%s %s" % (
+                    result["code"],
+                    result["text"]),
+                    result["line"],
+                    result["pointer"]))
                 if result["line_number"] not in self.checks:
                     self.checks[result["line_number"]] = [message]
                 else:
@@ -81,7 +90,7 @@ class Pep8Checker(QThread):
                     self.checks[result["line_number"]] = original
         else:
             self.reset()
-        self.refresh_display()
+        self.emit(SIGNAL("checkerCompleted()"))
 
     def message(self, index):
         if index in self.checks and settings.CHECK_HIGHLIGHT_LINE:
@@ -102,6 +111,8 @@ def remove_pep8_checker():
 
 
 if settings.CHECK_STYLE:
-    register_checker(checker=Pep8Checker,
-        color=resources.CUSTOM_SCHEME.get('pep8-underline',
-        resources.COLOR_SCHEME['pep8-underline']), priority=2)
+    register_checker(
+        checker=Pep8Checker,
+        color=resources.CUSTOM_SCHEME.get(
+            'pep8-underline',
+            resources.COLOR_SCHEME['pep8-underline']), priority=2)
