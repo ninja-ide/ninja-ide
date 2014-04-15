@@ -91,7 +91,7 @@ class FromImportDialog(QDialog):
         hbox.addWidget(self._insertAt, 1, 1)
         hbox.addWidget(QLabel(translations.TR_WITH_COMMENT), 1, 2)
         hbox.addWidget(self._lineComment, 1, 3)
-        self._btnAdd = QPushButton(self.tr('Add'), self)
+        self._btnAdd = QPushButton(translations.TR_ADD, self)
         hbox.addWidget(self._btnAdd, 1, 5)
 
         self.connect(self._lineImport, SIGNAL("returnPressed()"),

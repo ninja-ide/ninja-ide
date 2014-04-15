@@ -585,3 +585,4 @@ TR_SELECT_EXEC_OPTION_3 = tr("NINJA-IDE",
 # from_import_dialog
 TR_INSERT_AT_LINE = tr("NINJA-IDE", "Insert at line")
 TR_WITH_COMMENT = tr("NINJA-IDE", "with comment")
+TR_ADD = tr("NINJA-IDE", "Add")
