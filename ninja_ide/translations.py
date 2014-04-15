@@ -580,3 +580,8 @@ TR_SELECT_EXEC_OPTION_W = tr("NINJA-IDE", "-W: warning control:")
 TR_SELECT_EXEC_OPTION_X = tr("NINJA-IDE", "-x: skip first line of source")
 TR_SELECT_EXEC_OPTION_3 = tr("NINJA-IDE",
   "-3: warn about Python 3.x incompatibilities that 2to3 cannot trivially fix")
+
+
+# from_import_dialog
+TR_INSERT_AT_LINE = tr("NINJA-IDE", "Insert at line")
+TR_WITH_COMMENT = tr("NINJA-IDE", "with comment")
