@@ -580,3 +580,10 @@ TR_SELECT_EXEC_OPTION_W = tr("NINJA-IDE", "-W: warning control:")
 TR_SELECT_EXEC_OPTION_X = tr("NINJA-IDE", "-x: skip first line of source")
 TR_SELECT_EXEC_OPTION_3 = tr("NINJA-IDE",
   "-3: warn about Python 3.x incompatibilities that 2to3 cannot trivially fix")
+
+
+# 2to3
+TR_CURRENT_CODE = tr("NINJA-IDE", "Current code")
+TR_SUGGESTED_CHANGES = tr("NINJA-IDE", "Suggested code")
+TR_APPLY_CHANGES = tr("NINJA-IDE", "Apply changes")
+TR_SAVE_BEFORE_APPLY = tr("NINJA-IDE", "Save the file before applying changes")
