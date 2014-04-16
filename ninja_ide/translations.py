@@ -134,7 +134,7 @@ TR_PROJECT_PROPERTIES = tr("NINJA-IDE", "Project Properties")
 TR_PROJECT_DATA = tr("NINJA-IDE", "Project Data")
 TR_PROJECT_EXECUTION = tr("NINJA-IDE", "Project Execution")
 TR_PROJECT_METADATA = tr("NINJA-IDE", "Project Metadata")
-TR_PROJECT_NAME = tr("NINJA-IDE", "Name:")
+TR_PROJECT_NAME = tr("NINJA-IDE", "Name")
 TR_PROJECT_LOCATION = tr("NINJA-IDE", "Project Location:")
 TR_PROJECT_TYPE = tr("NINJA-IDE", "Project Type:")
 TR_PROJECT_DESCRIPTION = tr("NINJA-IDE", "Description:")
@@ -155,7 +155,7 @@ TR_PROJECT_BUILTINS_TOOLTIP = tr("NINJA-IDE",
     "builtin in every file"))
 TR_PROJECT_PRE_EXEC = tr("NINJA-IDE", "Pre-exec Script:")
 TR_PROJECT_POST_EXEC = tr("NINJA-IDE", "Post-exec Script:")
-TR_PROJECT_PROPERTIES = tr("NINJA-IDE", "Properties")
+TR_PROPERTIES = tr("NINJA-IDE", "Properties")
 TR_PROJECT_PARAMS_TOOLTIP = tr("NINJA-IDE",
     "Separate the params with commas (ie: help, verbose)")
 TR_PROJECT_PARAMS = tr("NINJA-IDE", "Params (comma separated):")
@@ -580,3 +580,12 @@ TR_SELECT_EXEC_OPTION_W = tr("NINJA-IDE", "-W: warning control:")
 TR_SELECT_EXEC_OPTION_X = tr("NINJA-IDE", "-x: skip first line of source")
 TR_SELECT_EXEC_OPTION_3 = tr("NINJA-IDE",
   "-3: warn about Python 3.x incompatibilities that 2to3 cannot trivially fix")
+
+
+TR_CODE = tr("NINJA-IDE", "Code")
+TR_PREVIEW = tr("NINJA-IDE", "Preview")
+TR_SCHEME_INVALID_NAME = tr("NINJA-IDE",
+    "The scheme name you have chosen is invalid. "
+    "\nPlease pick a different name.")
+TR_WANT_OVERWRITE_FILE = tr("NINJA-IDE", "Do you want to overwrite the file")
+TR_SCHEME_SAVED = tr("NINJA-IDE", "The scheme has been saved")
