@@ -60,7 +60,7 @@ class EditorSchemeDesigner(QDialog):
 
         # all layouts and groupboxes
         group0 = QGroupBox(translations.TR_PROJECT_NAME)  # scheme filename
-        group1 = QGroupBox(translations.TR_PROPERTIES)    # scheme properties
+        group1 = QGroupBox(translations.TR_PROJECT_PROPERTIES)  # properties
         group2 = QGroupBox(translations.TR_PREVIEW)       # quick preview thingy
         group0_hbox, group1_vbox = QHBoxLayout(group0), QVBoxLayout(group1)
         this_dialog_vbox, group2_vbox = QVBoxLayout(self), QVBoxLayout(group2)
