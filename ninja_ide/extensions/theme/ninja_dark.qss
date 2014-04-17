@@ -8,6 +8,11 @@ QWidget[highlight="true"] {
      border-radius: 3px;
 }
 
+QMenu {
+    border: 1px solid lightblue;
+    border-radius: 2px;
+}
+
 QMenuBar::item {
     spacing: 3px;
     padding: 1px 4px;
