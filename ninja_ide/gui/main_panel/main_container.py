@@ -766,8 +766,8 @@ class _MainContainer(QWidget):
                         directory = file_manager.get_folder(
                             editorWidget.file_path)
             extensions = ';;'.join(
-                ['(*%s)' % e for e in
-                    settings.SUPPORTED_EXTENSIONS + ['.*', '']])
+                ['{}(*{})'.format(e.upper()[1:], e)
+                 for e in settings.SUPPORTED_EXTENSIONS + ['.*', '']])
             fileNames = list(QFileDialog.getOpenFileNames(self,
                 self.tr("Open File"), directory, extensions))
         else:
