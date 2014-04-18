@@ -14,6 +14,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+
+
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
@@ -30,11 +32,7 @@ from PyQt4.QtCore import Qt
 # CHECK PYTHON VERSION
 ###############################################################################
 
-if sys.version_info.major == 3:
-    IS_PYTHON3 = True
-else:
-    IS_PYTHON3 = False
-
+IS_PYTHON3 = sys.version_info.major == 3
 
 ###############################################################################
 # PATHS
@@ -241,8 +239,7 @@ def load_shortcuts():
     """
     Loads the shortcuts from QSettings
     """
-    global SHORTCUTS
-    global CUSTOM_SHORTCUTS
+    global SHORTCUTS, CUSTOM_SHORTCUTS
     settings = QSettings(SETTINGS_PATH, QSettings.IniFormat)
     for action in SHORTCUTS:
         #default shortcut
@@ -259,8 +256,7 @@ def get_shortcut(shortcut_name):
     Returns the shortcut looking into CUSTOM_SHORTCUTS and
     SHORTCUTS
     """
-    global SHORTCUTS
-    global CUSTOM_SHORTCUTS
+    global SHORTCUTS, CUSTOM_SHORTCUTS
     return CUSTOM_SHORTCUTS.get(shortcut_name, SHORTCUTS.get(shortcut_name))
 
 
@@ -276,7 +272,7 @@ def create_home_dir_structure():
     """
     Create the necesary directories structure for NINJA-IDE
     """
-    for d in (HOME_NINJA_PATH, EXTENSIONS_PATH, PLUGINS, EDITOR_SKINS,
-              LANGS, NINJA_THEME_DOWNLOAD, NINJA_KNOWLEDGE_PATH):
-        if not os.path.isdir(d):
-            os.mkdir(d)
+    for directory in (HOME_NINJA_PATH, EXTENSIONS_PATH, PLUGINS, EDITOR_SKINS,
+                      LANGS, NINJA_THEME_DOWNLOAD, NINJA_KNOWLEDGE_PATH):
+        if not os.path.isdir(directory):
+            os.mkdir(directory)
