@@ -1,6 +1,7 @@
 QWidget{
     background: #282828;
     color: white;
+    border: 0px solid transparent;
 }
 
 QWidget[highlight="true"] {
@@ -54,32 +55,6 @@ MiniMap {
     margin-right: 5px;
 }
 
-WebPluginList {
-    background-color: white;
-    border-radius: 5px;
-    color: black;
-    padding-top: 5px;
-    selection-color: blue;
-    selection-background-color: #437DCD;
-}
-
-WebPluginList:Item:hover {
-    color: black;
-    border-style: solid;
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-        stop: 0 #FAFBFE, stop: 1 #6181E0);
-}
-
-RecentProjectItem > QPushButton {
-}
-
-RecentProjectItem > QLineEdit {
-    background:transparent;
-    border:none;
-    border-radius: 6px;
-    color: black;
-}
-
 TabNavigator > QPushButton {
     border: 0;
     padding: 10px 5px;
@@ -107,12 +82,12 @@ OutputWidget {
 QScrollBar:vertical{
     background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
         stop: 0 #212121,stop: 1.0 #323232);
-    width: 12px;
+    width: 10px;
 }
 QScrollBar:horizontal{
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
         stop: 0 #212121,stop: 1.0 #323232);
-    height: 12px;
+    height: 10px;
 }
 QScrollBar::handle:vertical{
     padding: 2px;
@@ -318,14 +293,15 @@ QTextBrowser[wizard="true"] {
 }
 
 QPushButton {
-    background: #97b9c4;
-    border-radius: 5px;
-    padding: 4px 8px;
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+        stop: 0 #42474c, stop: 1.0 #373b3f);
+    border-radius: 3px;
+    padding: 6px 10px;
     border: 0;
     margin-left: 5px;
-    color: #000;
+    color: #b5b5b5;
     margin-top: 0px;
-    border-bottom: 2px solid #266d96;
+    border-bottom: 0px solid transparent;
 }
 
 QPushButton:only-one {
