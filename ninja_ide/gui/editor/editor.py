@@ -960,8 +960,8 @@ class Editor(QPlainTextEdit):
             painter.setPen(QColor(color_name))
             offset = self.contentOffset()
             width = self.viewport().width() - (self.pos_margin + offset.x())
-            rect = QRect(self.pos_margin + offset.x(), 0,
-                width, self.viewport().height())
+            rect = QRect(self.pos_margin + offset.x(), -1,
+                         width + 1, self.viewport().height() + 3)
             background = QColor(color_name)
             background.setAlpha(opacity)
             painter.fillRect(rect, background)
