@@ -49,7 +49,7 @@ if not os.path.isdir(NINJA_ENV):
 
 
 exec(compile(open(NINJA_ENV_ACTIVATE).read(), NINJA_ENV_ACTIVATE, 'exec'),
-            dict(__file__=NINJA_ENV_ACTIVATE))
+     dict(__file__=NINJA_ENV_ACTIVATE))
 
 ###############################################################################
 from pip import main as pipmain
