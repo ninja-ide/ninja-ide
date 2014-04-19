@@ -222,9 +222,9 @@ def open_project(path):
     d = {}
     for root, dirs, files in os.walk(path, followlinks=True):
         d[root] = [[f for f in files
-                if (os.path.splitext(f.lower())[-1]) in
-                settings.SUPPORTED_EXTENSIONS],
-                dirs]
+                   if (os.path.splitext(f.lower())[-1]) in
+                   settings.SUPPORTED_EXTENSIONS],
+                   dirs]
     return d
 
 
