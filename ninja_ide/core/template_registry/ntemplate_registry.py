@@ -113,6 +113,18 @@ class BaseProjectType(QObject):
         finally:
             return tr.get_project_type(cls.compound_name())
 
+    def _create_path(self, path=None):
+        path = path if path else self.path
+        full_path = os.path.expanduser(path)
+        split_path = full_path.split(os.path.sep)
+        full_path = ""
+        for each_folder in split_path:
+            if each_folder:
+                full_path += each_folder + "/"
+            else:
+                full_path += "/"
+            if not os.path.exists(full_path):
+                os.mkdir(full_path)
     @classmethod
     def wizard_pages(cls):
         """Return the pages to be displayed in the wizard."""
@@ -139,6 +151,11 @@ class BaseProjectType(QObject):
         if self.licence_text and (ext in self.single_line_comment):
             for each_line in self.licence_text.splitlines():
                 fd.write(self.single_line_comment + each_line)
+
+    def _create_file(self, path, content):
+        with open(path, "w") as writable:
+            self.init_file(writable, path)
+            writable.write(content)
 
     def create_layout(self):
         """
@@ -173,5 +190,10 @@ class BaseProjectType(QObject):
         """
         pass
 
+    def get_project_wizard_pages(self):
+        pass
+
+    def wizard_callback(self):
+        pass
 
 template_registry = NTemplateRegistry()

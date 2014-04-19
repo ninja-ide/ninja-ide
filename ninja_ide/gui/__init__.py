@@ -62,6 +62,10 @@ from ninja_ide.core.template_registry import ntemplate_registry
 from ninja_ide.core.template_registry import (
     bundled_project_types
 )
+###########################################################################
+# Start Virtual Env that supports encapsulation of plugins
+###########################################################################
+from ninja_ide.core.encapsulated_env import nenvironment
 
 from ninja_ide.gui import ide
 #lint:enable
@@ -135,17 +139,17 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
         qss_file = file_manager.create_path(resources.NINJA_THEME_DOWNLOAD,
             file_name)
         if file_manager.file_exists(qss_file):
-            with open(qss_file) as f:
-                qss = f.read()
+            with open(qss_file) as fileaccess:
+                qss = fileaccess.read()
                 app.setStyleSheet(qss)
                 style_applied = True
     if not style_applied:
         if settings.NINJA_SKIN == 'Default':
-            with open(resources.NINJA_THEME) as f:
-                qss = f.read()
+            with open(resources.NINJA_THEME) as fileaccess:
+                qss = fileaccess.read()
         else:
-            with open(resources.NINJA_THEME_CLASSIC) as f:
-                qss = f.read()
+            with open(resources.NINJA_THEME_CLASSIC) as fileaccess:
+                qss = fileaccess.read()
         app.setStyleSheet(qss)
 
     #Loading Schemes

@@ -59,7 +59,6 @@ from PyQt4.QtCore import QObject, SIGNAL, QThread
 
 
 PLUGIN_QUERY = {"keywords": "ninja_ide plugin"}
-PLUGIN_QUERY = {'keywords': "CPAN PyPI distutils eggs package management"}
 
 
 class AsyncRunner(QThread):
@@ -188,6 +187,7 @@ class PluginMetadata(QObject):
     SIGNALS:
     @willInflatePluginMetadata()
     @pluginMetadataInflated()
+    @pluginInstalled(PyQt_PyObject)
     """
 
     @classmethod
@@ -240,6 +240,10 @@ class PluginMetadata(QObject):
                 setattr(self, each_kwarg, each_value)
             self.shallow = False
 
+    def activate(self):
+        imported_plugin = __import__(self.name)
+        imported_plugin.activate()
+
     @make_async
     def inflate(self):
         """
@@ -262,32 +266,35 @@ class PluginMetadata(QObject):
         """
         pkg_string = "%s==%s" % (self.name, self.version)
         pipmain(["install", "-q", pkg_string])
+        self.emit(SIGNAL("pluginInstalled(PyQt_PyObject)"), self)
+
+    @make_async
+    def reinstall(self):
+        pipmain(["install", "-q", "--force-reinstall", self.name])
+        self.emit(SIGNAL("pluginInstalled(PyQt_PyObject)"), self)
+
+    @make_async
+    def upgrade(self):
+        pipmain(["install", "-q", "--ugprade", self.name])
+        self.emit(SIGNAL("pluginInstalled(PyQt_PyObject)"), self)
 
     @make_async
     def remove(self):
         pipmain(["uninstall", "-q", "-y", self.name])
 
-#Your package should always be named
-"""
-ninja_ide.contrib.plugins.<pluginname>
-"""
 
-#This is how you declare a plugin egg
-"""
-from setuptools import setup, find_packages
+class BasePlugin(QObject):
+    """
+    A base from which every plugin should inherit
+    """
 
-setup(name='ninja_ide.contrib.plugins.plugin_a',
-      version='1.0',
-      namespace_packages=['ninja_ide','ninja_ide.contrib',
-          'ninja_ide.contrib.plugins'],
-      packages=find_packages(),
-      )
-"""
-#__init__.py in ninja_ide, contrib and plugins should contain ONLY:
-"""
-import pkg_resources
-pkg_resources.declare_namespace(__name__)"
-"""
+    def __init__(self, name):
+        super(BasePlugin, self).__init__()
+
+    def activate(self):
+        pass
+
+
 #This is how the directory structure should look
 """
 ninja_ide/

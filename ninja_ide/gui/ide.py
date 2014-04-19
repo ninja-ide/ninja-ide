@@ -50,13 +50,13 @@ from ninja_ide.gui import notification
 from ninja_ide.gui.editor import neditable
 from ninja_ide.gui.explorer import nproject
 from ninja_ide.gui.dialogs import about_ninja
-from ninja_ide.gui.dialogs import plugins_store
 from ninja_ide.gui.dialogs import schemes_manager
 from ninja_ide.gui.dialogs import language_manager
 from ninja_ide.gui.dialogs import session_manager
 from ninja_ide.gui.dialogs.preferences import preferences
 from ninja_ide.gui.dialogs import traceback_widget
 from ninja_ide.gui.dialogs import python_detect_dialog
+from ninja_ide.gui.dialogs import plugins_store
 from ninja_ide.tools import ui_tools
 #from ninja_ide.tools.completion import completion_daemon
 
@@ -130,7 +130,7 @@ class IDE(QMainWindow):
 
         #ToolBar
         self.toolbar = QToolBar(self)
-        self.toolbar.setIconSize(QSize(24, 24))
+        self.toolbar.setIconSize(QSize(36, 36))
         self.toolbar.setToolTip(translations.TR_IDE_TOOLBAR_TOOLTIP)
         self.toolbar.setToolButtonStyle(Qt.ToolButtonIconOnly)
         # Set toggleViewAction text and tooltip

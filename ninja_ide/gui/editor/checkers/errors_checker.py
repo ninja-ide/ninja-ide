@@ -17,11 +17,8 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+import _ast
 import re
-try:
-    import compiler
-except ImportError:
-    print('Errors checker not working in Python3')
 
 from PyQt4.QtCore import QThread
 from PyQt4.QtCore import SIGNAL
@@ -36,10 +33,7 @@ from ninja_ide.gui.editor.checkers import (
     remove_checker,
 )
 from ninja_ide.gui.editor.checkers import errors_lists  # lint:ok
-try:
-    from ninja_ide.dependencies.pyflakes_mod import checker
-except ImportError:
-    print('Errors checker not working in Python3')
+from ninja_ide.dependencies.pyflakes_mod import checker
 
 
 class ErrorsChecker(QThread):
@@ -54,13 +48,15 @@ class ErrorsChecker(QThread):
         self._path = ''
         self._encoding = ''
         self.checks = {}
+        self.reporter = None
 
         self.checker_icon = ":img/bug"
 
         ninjaide = IDE.get_service('ide')
         self.connect(ninjaide,
-            SIGNAL("ns_preferences_editor_errors(PyQt_PyObject)"),
-            lambda: remove_error_checker())
+                     SIGNAL("ns_preferences_editor_errors(PyQt_PyObject)"),
+                     lambda: remove_error_checker())
+        self.connect(self, SIGNAL("checkerCompleted()"), self.refresh_display)
 
     @property
     def dirty(self):
@@ -90,8 +86,9 @@ class ErrorsChecker(QThread):
                 source = self._editor.get_text()
                 if self._encoding is not None:
                     source = source.encode(self._encoding)
-                parseResult = compiler.parse(source)
-                lint_checker = checker.Checker(parseResult, self._path,
+                tree = compile(source, self._path, "exec", _ast.PyCF_ONLY_AST)
+                #parseResult = compiler.parse(source)
+                lint_checker = checker.Checker(tree, self._path,
                                                builtins=self._builtins)
                 for m in lint_checker.messages:
                     lineno = m.lineno - 1
@@ -121,7 +118,7 @@ class ErrorsChecker(QThread):
                     self.checks.pop(line, None)
         else:
             self.reset()
-        self.refresh_display()
+        self.emit(SIGNAL("checkerCompleted()"))
 
     def refresh_display(self):
         error_list = IDE.get_service('tab_errors')
@@ -155,12 +152,15 @@ class ErrorsChecker(QThread):
 
 def remove_error_checker():
     checker = (ErrorsChecker,
-        resources.CUSTOM_SCHEME.get('error-underline',
-        resources.COLOR_SCHEME['error-underline']), 10)
+               resources.CUSTOM_SCHEME.get(
+                   'error-underline',
+                   resources.COLOR_SCHEME['error-underline']), 10)
     remove_checker(checker)
 
 
 if settings.FIND_ERRORS:
     register_checker(checker=ErrorsChecker,
-        color=resources.CUSTOM_SCHEME.get('error-underline',
-        resources.COLOR_SCHEME['error-underline']), priority=10)
+                     color=resources.CUSTOM_SCHEME.get(
+                         'error-underline',
+                         resources.COLOR_SCHEME['error-underline']),
+                     priority=10)
