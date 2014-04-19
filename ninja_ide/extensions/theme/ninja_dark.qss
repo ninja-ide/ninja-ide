@@ -310,8 +310,8 @@ QPushButton:only-one {
 
 QPushButton:hover {
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-        stop: 0 #b8deea, stop: 1.0 #97b9c4);
-    border-bottom: 2px solid #5D7886;
+        stop: 0 #4e545e, stop: 1.0 #43484e);
+    color: #ffffff
 }
 
 QPushButton:focus {
@@ -386,9 +386,12 @@ QTableView::item:alternate {
 }
 
 QComboBox {
-    border: 1px solid gray;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+        stop: 0 #727272, stop: 1.0 #222222);
+    border: 0px solid gray;
     padding: 1px 18px 1px 20px;
     min-width: 6em;
+    color: #FFFFFF;
 }
 
 QComboBox:item:selected {
@@ -428,12 +431,14 @@ QComboBox#combo_symbols QAbstractItemView::item {
     margin: 2px 5px 2px 5px;
 }
 
+QComboBox:hover,
 QComboBox#combotab:hover,
 QComboBox#combo_symbols:hover {
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
         stop: 0 #808080, stop: 1.0 #474747);
 }
 
+QComboBox::drop-down,
 QComboBox#combotab::drop-down,
 QComboBox#combo_symbols::drop-down {
     subcontrol-origin: padding;
@@ -442,6 +447,7 @@ QComboBox#combo_symbols::drop-down {
     border-left-width: 1px;
 }
 
+QComboBox::down-arrow,
 QComboBox#combotab::down-arrow,
 QComboBox#combo_symbols::down-arrow {
      image: url(:img/chevron);

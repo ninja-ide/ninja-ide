@@ -41,6 +41,7 @@ from PyQt4.QtCore import Qt
 
 from ninja_ide import resources
 from ninja_ide import translations
+from ninja_ide.core import settings
 from ninja_ide.tools import locator
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui import actions
@@ -68,7 +69,10 @@ class _StatusBar(QStatusBar):
         self._widgetStatus = QWidget()
         vbox = QVBoxLayout(self._widgetStatus)
         vbox.setContentsMargins(0, 0, 0, 0)
-        vbox.setSpacing(0)
+        if settings.IS_MAC_OS:
+            vbox.setSpacing(0)
+        else:
+            vbox.setSpacing(3)
         #Search Layout
         self._searchWidget = SearchWidget()
         vbox.addWidget(self._searchWidget)
