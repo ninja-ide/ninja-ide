@@ -307,6 +307,7 @@ Rectangle {
                                 visible: lineno > -1 ? true : false
                                 color: listItem.current ? "#aaaaaa" : "#555555"
                                 font.pixelSize: 10
+                                font.bold: true
                                 smooth: true
                                 style: Text.Raised
                                 styleColor: "black"
@@ -320,6 +321,7 @@ Rectangle {
                             }
                             text: path
                             color: listItem.current ? "#aaaaaa" : "#555555"
+                            font.bold: true
                             font.pixelSize: 12
                             smooth: true
                             style: Text.Raised
