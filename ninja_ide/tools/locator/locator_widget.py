@@ -76,6 +76,7 @@ class LocatorWidget(QDialog):
             "/": "#fff118",
             ":": "#18ffd6",
             "!": "#ffa018"}
+        self._replace_symbol_type = {"<": "&lt;", ">": "&gt;"}
 
         #self._filter_actions = {
             #'.': self._filter_this_file,
@@ -279,7 +280,11 @@ class LocatorWidget(QDialog):
         locations = self.locate_symbols.get_locations()
         l = self._create_list_items(locations)
         for item in l:
-            self._root.loadItem(item.type, item.name, item.lineno,
+            if item.type in ("<", ">"):
+                typeIcon = self._replace_symbol_type[item.type]
+            else:
+                typeIcon = item.type
+            self._root.loadItem(typeIcon, item.name, item.lineno,
                                 item.path, self._colors[item.type])
         #self.popup.refresh(self.filter(), has_text)
 
