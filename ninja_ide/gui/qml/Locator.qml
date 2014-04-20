@@ -6,10 +6,40 @@ Rectangle {
     height: 400
     color: "#202123"
 
-    property string filterVerbose: "@Files <font color='#18ff6a'>&gt;Classes</font> <font color='red'>&lt;Methods</font> <font color='#18e1ff'>-Attribute</font> <font color='#f118ff'>.Current</font> <font color='#fff118'>/Opened</font> <font color='#18ffd6'>:Lines</font> <font color='#ffa018'>!NoPython</font>"
+    property string filterVerbose: "<font color='#8f8f8f'>@Files &gt;Classes &lt;Methods -Attribute .Current /Opened :Lines !NoPython</font>"
+
+    signal textChanged(string text)
 
     function activateInput() {
         input.forceActiveFocus();
+    }
+
+    function loadItem(type, name, lineno, path, color) {
+        itemsModel.append({"type": type, "name": name, "lineno": lineno,
+                           "path": path, "colorType": color});
+    }
+
+    function clear() {
+        itemsModel.clear();
+    }
+
+    function cleanText() {
+        input.text = "";
+    }
+
+    ListModel {
+        id: itemsModel
+        ListElement {
+            type: ""
+            name: ""
+            lineno: ""
+            path: ""
+            colorType: ""
+        }
+    }
+
+    Component.onCompleted: {
+        itemsModel.clear();
     }
 
     Column {
@@ -154,6 +184,17 @@ Rectangle {
             clip: true
             color: "white"
             font.pixelSize: 18
+
+            onTextChanged: {
+                root.textChanged(input.text);
+            }
+
+            Keys.onDownPressed: {
+                listResults.incrementCurrentIndex();
+            }
+            Keys.onUpPressed: {
+                listResults.decrementCurrentIndex();
+            }
         }
     }
 
@@ -193,14 +234,16 @@ Rectangle {
             anchors.fill: parent
             clip: true
             spacing: 2
-            model: 10
+            model: itemsModel
             delegate: Rectangle {
+                id: listItem
                 anchors {
                     left: parent.left
                     right: parent.right
                 }
                 height: 70
-                color: "#27292b"
+                property bool current: ListView.isCurrentItem
+                color: listItem.current ? "#4182c4" : "#27292b"
 
                 Item {
                     anchors.fill: parent
@@ -213,7 +256,7 @@ Rectangle {
                             top: parent.top
                             bottom: parent.bottom
                         }
-                        text: "<font color='#18e1ff'>@</font>"
+                        text: "<font color='" + colorType + "'>" + type + "</font>"
                         font.bold: true
                         font.pixelSize: 30
                         smooth: true
@@ -226,30 +269,48 @@ Rectangle {
                     Column {
                         id: colFileInfo
                         anchors {
-                            left: parent.left
-                            right: parent.right
-                            top: parent.top
-                            bottom: parent.bottom
-                            topMargin: 10
+                            fill: parent
+                            topMargin: 15
                             leftMargin: 45
                             rightMargin: 10
                         }
                         spacing: 10
 
-                        Text {
-                            id: filenameText
+                        Item {
                             anchors {
                                 left: parent.left
                                 right: parent.right
                             }
-                            text: "filename"
-                            color: "white"
-                            font.pixelSize: 13
-                            smooth: true
-                            opacity: .9
-                            style: Text.Raised
-                            styleColor: "black"
-                            elide: Text.ElideLeft
+                            height: filenameText.height
+
+                            Text {
+                                id: filenameText
+                                anchors {
+                                    left: parent.left
+                                    right: lineText.right
+                                }
+                                text: name
+                                color: listItem.current ? "white" : "#aaaaaa"
+                                font.pixelSize: 13
+                                font.bold: true
+                                smooth: true
+                                style: Text.Raised
+                                styleColor: "black"
+                                elide: Text.ElideLeft
+                            }
+                            Text {
+                                id: lineText
+                                anchors {
+                                    right: parent.right
+                                }
+                                text: "[Line: " + lineno + "]"
+                                visible: lineno > -1 ? true : false
+                                color: listItem.current ? "#aaaaaa" : "#555555"
+                                font.pixelSize: 10
+                                smooth: true
+                                style: Text.Raised
+                                styleColor: "black"
+                            }
                         }
                         Text {
                             id: pathText
@@ -257,11 +318,10 @@ Rectangle {
                                 left: parent.left
                                 right: parent.right
                             }
-                            text: "filename/filename/filename/filename"
-                            color: "white"
+                            text: path
+                            color: listItem.current ? "#aaaaaa" : "#555555"
                             font.pixelSize: 12
                             smooth: true
-                            opacity: .6
                             style: Text.Raised
                             styleColor: "black"
                             elide: Text.ElideLeft
@@ -322,12 +382,11 @@ Rectangle {
     Text {
         id: filtersText
         text: "Filters: "
-        color: "white"
+        color: "#8f8f8f"
         font.pixelSize: 10
         style: Text.Raised
         styleColor: "black"
         font.bold: true
-        font.italic: true
         anchors {
             left: parent.left
             bottom: parent.bottom

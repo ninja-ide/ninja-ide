@@ -44,6 +44,7 @@ from ninja_ide import translations
 from ninja_ide.core import settings
 from ninja_ide.tools.locator import locator
 from ninja_ide.tools import ui_tools
+from ninja_ide.tools.locator import locator_widget
 from ninja_ide.gui import actions
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools.logger import NinjaLogger
@@ -126,6 +127,7 @@ class _StatusBar(QStatusBar):
         self.hide()
         ide = IDE.get_service('ide')
         ide.setStatusBar(self)
+        self._codLoc = locator_widget.LocatorWidget(ide)
 
         ui_tools.install_shortcuts(self, actions.ACTIONS_STATUS, ide)
 
@@ -166,11 +168,11 @@ class _StatusBar(QStatusBar):
 
     def _explore_code(self):
         """Update locator metadata for the current projects."""
-        self._codeLocator.explore_code()
+        #self._codeLocator.explore_code()
 
     def _explore_file_code(self, path):
         """Update locator metadata for the file in path."""
-        self._codeLocator.explore_file_code(path)
+        #self._codeLocator.explore_file_code(path)
 
     def show_search(self):
         """Show the status bar with the search widget."""
@@ -211,11 +213,11 @@ class _StatusBar(QStatusBar):
 
     def show_locator(self):
         """Show the status bar with the locator widget."""
-        self.current_status = _STATUSBAR_STATE_LOCATOR
         if not self._codeLocator.isVisible():
-            self._codeLocator.setVisible(True)
-            self.show()
-            self._codeLocator.show_suggestions()
+            self._codLoc.show()
+            #self._codeLocator.setVisible(True)
+            #self.show()
+            #self._codeLocator.show_suggestions()
 
     def show_file_opener(self):
         """Show the status bar with the file opener completer widget."""
