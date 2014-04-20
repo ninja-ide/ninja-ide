@@ -47,7 +47,7 @@ from ninja_ide.gui.main_panel import image_viewer
 from ninja_ide.gui.main_panel import combo_editor
 from ninja_ide.gui.main_panel.helpers import split_orientation
 from ninja_ide.gui.dialogs import from_import_dialog
-from ninja_ide.tools import locator
+from ninja_ide.tools.locator import locator
 from ninja_ide.tools import runner
 from ninja_ide.tools import ui_tools
 

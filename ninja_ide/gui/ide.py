@@ -59,6 +59,7 @@ from ninja_ide.gui.dialogs import python_detect_dialog
 from ninja_ide.gui.dialogs import plugins_store
 from ninja_ide.tools import ui_tools
 #from ninja_ide.tools.completion import completion_daemon
+from ninja_ide.tools.locator import locator_widget
 
 ###############################################################################
 # LOGGER INITIALIZE
@@ -698,8 +699,10 @@ class IDE(QMainWindow):
 
     def show_message(self, message, duration=3000):
         """Show status message."""
-        self.notification.set_message(message, duration)
-        self.notification.show()
+        self.loc = locator_widget.LocatorWidget(self)
+        self.loc.show()
+        #self.notification.set_message(message, duration)
+        #self.notification.show()
 
     def show_plugins_store(self):
         """Open the Plugins Manager to install/uninstall plugins."""

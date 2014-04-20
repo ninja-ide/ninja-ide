@@ -42,7 +42,7 @@ from PyQt4.QtCore import Qt
 from ninja_ide import resources
 from ninja_ide import translations
 from ninja_ide.core import settings
-from ninja_ide.tools import locator
+from ninja_ide.tools.locator import locator
 from ninja_ide.tools import ui_tools
 from ninja_ide.gui import actions
 from ninja_ide.gui.ide import IDE
