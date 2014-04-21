@@ -137,6 +137,7 @@ class MigrationWidget(QDialog):
         self.suggestion.clear()
 
     def reject(self):
+        """Reject"""
         if self.parent() is None:
             self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
 
