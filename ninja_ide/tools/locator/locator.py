@@ -18,7 +18,6 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 import os
-import re
 import sqlite3
 import pickle
 try:
@@ -27,22 +26,8 @@ except:
     import queue as Queue  # lint:ok
 
 from PyQt4.QtGui import QMessageBox
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QBrush
-from PyQt4.QtGui import QVBoxLayout
-from PyQt4.QtGui import QFrame
-from PyQt4.QtGui import QIcon
-from PyQt4.QtGui import QListWidgetItem
-from PyQt4.QtGui import QListWidget
-from PyQt4.QtGui import QStyle
-from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QWidget
-from PyQt4.QtGui import QHBoxLayout
-from PyQt4.QtGui import QPushButton
 from PyQt4.QtCore import QObject
-from PyQt4.QtCore import QSize
 from PyQt4.QtCore import QThread
-from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QDir
 from PyQt4.QtCore import QFile
 from PyQt4.QtCore import QTextStream

@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+
 import os
 import sys
 import datetime
@@ -33,8 +34,8 @@ from ninja_ide.dependencies import pep8mod
 ###############################################################################
 
 # Use this flags instead of sys.platform spreaded in the source code
-IS_WINDOWS = False
-IS_MAC_OS = False
+IS_WINDOWS = IS_MAC_OS = False
+
 
 OS_KEY = "Ctrl"
 
@@ -55,11 +56,11 @@ def detect_python_path():
     if (IS_WINDOWS and PYTHON_EXEC_CONFIGURED_BY_USER) or not IS_WINDOWS:
         return []
 
-    suggested = []
+    suggested = dirs = []
     try:
         drives = [QDir.toNativeSeparators(d.absolutePath())
                   for d in QDir.drives()]
-        dirs = []
+
         for drive in drives:
             info = QFileInfo(drive)
             if info.isReadable():
@@ -67,39 +68,35 @@ def detect_python_path():
                          for folder in os.listdir(drive)]
         for folder in dirs:
             file_path = os.path.join(folder, "python.exe")
-            if ("Python" in folder) and os.path.exists(file_path):
+            if ("python" in folder.lower()) and os.path.exists(file_path):
                 suggested.append(file_path)
     except:
         print("Detection couldnt be executed")
-
-    return suggested
+    finally:
+        return suggested
 
 ###############################################################################
 # IDE
 ###############################################################################
 
-MAX_OPACITY = 1
+MAX_OPACITY = TOOLBAR_AREA = 1
 MIN_OPACITY = 0.3
 
-TOOLBAR_AREA = 1
 #UI LAYOUT
 #001 : Central Rotate
 #010 : Panels Rotate
 #100 : Central Orientation
-UI_LAYOUT = 0
+UI_LAYOUT = NOTIFICATION_POSITION = 0
 
-LANGUAGE = ""
+LANGUAGE = EXECUTION_OPTIONS = ""
 
-SHOW_START_PAGE = True
+SHOW_START_PAGE = CONFIRM_EXIT = SHOW_STATUS_NOTIFICATIONS = True
 
-CONFIRM_EXIT = True
-HIDE_TOOLBAR = False
-SHOW_STATUS_NOTIFICATIONS = True
+HIDE_TOOLBAR = PYTHON_EXEC_CONFIGURED_BY_USER = False
+
 NOTIFICATION_COLOR = "#000"
 
 PYTHON_EXEC = "python"
-PYTHON_EXEC_CONFIGURED_BY_USER = False
-EXECUTION_OPTIONS = ""
 
 SESSIONS = {}
 
@@ -143,7 +140,7 @@ TOOLBAR_ITEMS_DEFAULT = [
 ]
 
 #hold the toolbar actions added by plugins
-TOOLBAR_ITEMS_PLUGINS = []
+TOOLBAR_ITEMS_PLUGINS = LAST_OPENED_FILES = []
 
 NINJA_SKIN = 'Default'
 
@@ -157,16 +154,14 @@ LAST_CLEAN_LOCATOR = None
 ###############################################################################
 # EDITOR
 ###############################################################################
-
-USE_TABS = False
-ALLOW_WORD_WRAP = False
-INDENT = 4
 # by default Unix (\n) is used
-USE_PLATFORM_END_OF_LINE = False
+USE_TABS = ALLOW_WORD_WRAP = USE_PLATFORM_END_OF_LINE = False
+
+SHOW_MARGIN_LINE = REMOVE_TRAILING_SPACES = SHOW_TABS_AND_SPACES = True
+
+INDENT = 4
+
 MARGIN_LINE = 80
-SHOW_MARGIN_LINE = True
-REMOVE_TRAILING_SPACES = True
-SHOW_TABS_AND_SPACES = True
 
 BRACES = {'{': '}', '[': ']', '(': ')'}
 QUOTES = {'"': '"', "'": "'"}
@@ -176,24 +171,11 @@ FONT_MIN_SIZE = 6
 MAX_REMEMBER_TABS = 50
 COPY_HISTORY_BUFFER = 20
 
-FIND_ERRORS = True
-ERRORS_HIGHLIGHT_LINE = True
-CHECK_STYLE = True
-CHECK_HIGHLIGHT_LINE = True
-CODE_COMPLETION = True
-COMPLETE_DECLARATIONS = True
-SHOW_MIGRATION_TIPS = True
-VALID_2TO3 = True
-UNDERLINE_NOT_BACKGROUND = True
+FIND_ERRORS = ERRORS_HIGHLIGHT_LINE = CHECK_STYLE = CHECK_HIGHLIGHT_LINE = True
+CODE_COMPLETION = COMPLETE_DECLARATIONS = SHOW_MIGRATION_TIPS = True
+UNDERLINE_NOT_BACKGROUND = VALID_2TO3 = CENTER_ON_SCROLL = True
 
-CENTER_ON_SCROLL = True
-
-SYNTAX = {}
-
-EXTENSIONS = {}
-
-BREAKPOINTS = {}
-BOOKMARKS = {}
+SYNTAX = EXTENSIONS = BREAKPOINTS = BOOKMARKS = {}
 
 
 ###############################################################################
@@ -219,6 +201,7 @@ SIZE_PROPORTION = 0.17
 
 SUPPORTED_EXTENSIONS = [
     '.py',
+    '.pyw',
     '.html',
     '.jpg',
     '.png',
@@ -243,14 +226,9 @@ LANGS = []
 # EXPLORER
 ###############################################################################
 
-SHOW_PROJECT_EXPLORER = True
-SHOW_SYMBOLS_LIST = True
+SHOW_PROJECT_EXPLORER = SHOW_SYMBOLS_LIST = True
+SHOW_ERRORS_LIST = SHOW_MIGRATION_LIST = WEBINSPECTOR_SUPPORTED = True
 SHOW_WEB_INSPECTOR = False
-SHOW_ERRORS_LIST = True
-SHOW_MIGRATION_LIST = True
-
-#Backward compatibility with older Qt versions
-WEBINSPECTOR_SUPPORTED = True
 
 
 ###############################################################################
@@ -453,16 +431,16 @@ def load_settings():
         session_list = list(sessionDict[key])
         files = []
         if session_list:
-            files = [item for item in list(session_list[0])]
+            files = [item for item in tuple(session_list[0])]
         tempFiles = []
         for file_ in files:
-            fileData = list(file_)
+            fileData = tuple(file_)
             if len(fileData) > 0:
                 tempFiles.append([fileData[0], int(fileData[1]), fileData[2]])
         files = tempFiles
         projects = []
         if len(session_list) > 1:
-            projects = [item for item in list(session_list[1])]
+            projects = [item for item in tuple(session_list[1])]
         SESSIONS[key] = [files, projects]
     #TODO
     #toolbar_items = [item for item in list(qsettings.value(
@@ -473,7 +451,7 @@ def load_settings():
     EXECUTION_OPTIONS = qsettings.value(
         'preferences/execution/executionOptions',
         defaultValue='', type='QString')
-    extensions = [item for item in list(qsettings.value(
+    extensions = [item for item in tuple(qsettings.value(
         'preferences/general/supportedExtensions', []))]
     if extensions:
         SUPPORTED_EXTENSIONS = extensions
@@ -514,8 +492,7 @@ def load_settings():
         FONT = font
     SHOW_MARGIN_LINE = qsettings.value(
         'preferences/editor/showMarginLine', True, type=bool)
-    FIND_ERRORS = qsettings.value('preferences/editor/errors',
-                                  True, type=bool)
+    FIND_ERRORS = qsettings.value('preferences/editor/errors', True, type=bool)
     SHOW_MIGRATION_TIPS = qsettings.value(
         'preferences/editor/showMigrationTips', True, type=bool)
     ERRORS_HIGHLIGHT_LINE = qsettings.value(
@@ -561,11 +538,11 @@ def load_settings():
     bookmarks = dict(qsettings.value('preferences/editor/bookmarks', {}))
     for key in bookmarks:
         if key:
-            BOOKMARKS[key] = [int(i) for i in list(bookmarks[key])]
+            BOOKMARKS[key] = [int(i) for i in tuple(bookmarks[key])]
     breakpoints = dict(qsettings.value('preferences/editor/breakpoints', {}))
     for key in breakpoints:
         if key:
-            BREAKPOINTS[key] = [int(i) for i in list(breakpoints[key])]
+            BREAKPOINTS[key] = [int(i) for i in tuple(breakpoints[key])]
     # Checkers
     CHECK_FOR_DOCSTRINGS = qsettings.value(
         'preferences/editor/checkForDocstrings', False, type=bool)
