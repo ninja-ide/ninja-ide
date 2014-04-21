@@ -89,7 +89,7 @@ def _initialize_db():
     locator_db = sqlite3.connect(db_path)
     cur = locator_db.cursor()
     cur.execute("create table if not exists "
-        "locator(path text PRIMARY KEY, stat integer, data blob)")
+                "locator(path text PRIMARY KEY, stat integer, data blob)")
     locator_db.commit()
     locator_db.close()
 
@@ -128,7 +128,8 @@ class GoToDefinition(QObject):
                 positionIsLineNumber=True)
         elif len(self._thread.results) == 0:
             #TODO: Check imports
-            QMessageBox.information(main_container,
+            QMessageBox.information(
+                main_container,
                 translations.TR_DEFINITION_NOT_FOUND,
                 translations.TR_DEFINITION_NOT_FOUND_BODY)
         else:
@@ -310,7 +311,7 @@ class LocateSymbolsThread(QThread):
                 [file_manager.get_basename(x.path), x.path, x.lineno, '']
                 for x in locations
                 if ((x.type == FILTERS['functions']) or
-                   (x.type == FILTERS['classes'])) and
+                    (x.type == FILTERS['classes'])) and
                    (x.name.startswith(self._search))]
         for data in preResults:
             file_object = QFile(data[1])
@@ -407,14 +408,14 @@ class LocateSymbolsThread(QThread):
             line_number = clazzes[claz]['lineno'] - 1
             members = clazzes[claz]['members']
             results.append(ResultItem(symbol_type=FILTERS['classes'],
-                name=claz, path=file_path,
-                lineno=line_number))
+                           name=claz, path=file_path,
+                           lineno=line_number))
             if 'attributes' in members:
                 for attr in members['attributes']:
                     line_number = members['attributes'][attr] - 1
                     results.append(ResultItem(symbol_type=FILTERS['attribs'],
-                        name=attr, path=file_path,
-                        lineno=line_number))
+                                   name=attr, path=file_path,
+                                   lineno=line_number))
             if 'functions' in members:
                 for func in members['functions']:
                     line_number = members['functions'][func]['lineno'] - 1
@@ -432,8 +433,8 @@ class LocateSymbolsThread(QThread):
         for attr in attributes:
             line_number = attributes[attr] - 1
             results.append(ResultItem(symbol_type=FILTERS['attribs'],
-                name=attr, path=file_path,
-                lineno=line_number))
+                           name=attr, path=file_path,
+                           lineno=line_number))
 
     def __parse_functions(self, symbols, results, file_path):
         functions = symbols['functions']
@@ -443,7 +444,7 @@ class LocateSymbolsThread(QThread):
                 symbol_type=FILTERS['functions'], name=func,
                 path=file_path, lineno=line_number))
             self.__parse_symbols(functions[func]['functions'],
-                    results, file_path)
+                                 results, file_path)
 
     def get_symbols_for_class(self, file_path, clazzName):
         results = []
@@ -453,7 +454,7 @@ class LocateSymbolsThread(QThread):
             #obtain a symbols handler for this file extension
             symbols_handler = handlers.get_symbols_handler(ext)
             symbols = symbols_handler.obtain_symbols(content,
-                filename=file_path)
+                                                     filename=file_path)
             self.__parse_symbols(symbols, results, file_path)
         return results
 
@@ -480,9 +481,9 @@ class CodeLocatorWidget(QWidget):
 
         self.connect(self.locate_symbols, SIGNAL("finished()"), self._cleanup)
         self.connect(self.locate_symbols, SIGNAL("terminated()"),
-            self._cleanup)
+                     self._cleanup)
         self.connect(self._completer, SIGNAL("hidden()"),
-            lambda: self.emit(SIGNAL("hidden()")))
+                     lambda: self.emit(SIGNAL("hidden()")))
 
     def _cleanup(self):
         self.locate_symbols.wait()

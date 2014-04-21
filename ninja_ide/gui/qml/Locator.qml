@@ -365,47 +365,198 @@ Rectangle {
 
         back: Flickable {
             anchors.fill: parent
+            clip: true
+            contentHeight: colHelp.childrenRect.height
 
             Column {
-                anchors.fill: parent
-                spacing: 20
-                Text {
-                    anchors {
-                        left: parent.left
-                        right: parent.left
-                    }
-                    text: "<font color='#18e1ff'>@</font>"
-                    font.bold: true
-                    font.pixelSize: 30
-                    smooth: true
-                    style: Text.Raised
-                    styleColor: "black"
+                id: colHelp
+                anchors {
+                    left: parent.left
+                    right: parent.right
                 }
-
+                spacing: 10
                 Text {
+                    text: "The Code Locator provides you an easy way to access any file, class, function, attribute with a few keystrokes."
+                    font.pixelSize: 14
                     anchors {
                         left: parent.left
-                        right: parent.left
+                        right: parent.right
                     }
-                    text: "<font color='#18e1ff'>@</font>"
-                    font.bold: true
-                    font.pixelSize: 30
-                    smooth: true
-                    style: Text.Raised
-                    styleColor: "black"
+                    color: "white"
+                    wrapMode: Text.WordWrap
                 }
-
                 Text {
+                    text: "You can just enter your search and you will see the results being filtered. You can search for any part of the word, for example:"
+                    font.pixelSize: 14
                     anchors {
                         left: parent.left
-                        right: parent.left
+                        right: parent.right
                     }
-                    text: "<font color='#18e1ff'>@</font>"
-                    font.bold: true
-                    font.pixelSize: 30
-                    smooth: true
+                    color: "white"
+                    wrapMode: Text.WordWrap
+                }
+                Text {
+                    text: "If you want to obtain: EDITOR\nSearching for: ITO\nIs a valid search and it will contain EDITOR among the possible results."
+                    font.pixelSize: 14
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                    }
+                    color: "white"
+                    wrapMode: Text.WordWrap
+                }
+                Text {
+                    text: "You can also use any of the filters to specialize your query and even combine them to specialize it even more."
+                    font.pixelSize: 14
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                    }
+                    color: "white"
+                    wrapMode: Text.WordWrap
+                }
+                Text {
+                    text: "@ Python Files"
+                    color: "white"
+                    font.pixelSize: 16
                     style: Text.Raised
                     styleColor: "black"
+                    font.bold: true
+                    horizontalAlignment: Text.AlignHCenter
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                    }
+                }
+                Text {
+                    text: "< Classes"
+                    color: "#18ff6a"
+                    font.pixelSize: 16
+                    style: Text.Raised
+                    styleColor: "black"
+                    font.bold: true
+                    horizontalAlignment: Text.AlignHCenter
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                    }
+                }
+                Text {
+                    text: "> Functions"
+                    color: "red"
+                    font.pixelSize: 16
+                    style: Text.Raised
+                    styleColor: "black"
+                    font.bold: true
+                    horizontalAlignment: Text.AlignHCenter
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                    }
+                }
+                Text {
+                    text: "- Attributes"
+                    color: "#18e1ff"
+                    font.pixelSize: 16
+                    style: Text.Raised
+                    styleColor: "black"
+                    font.bold: true
+                    horizontalAlignment: Text.AlignHCenter
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                    }
+                }
+                Text {
+                    text: ". Current File"
+                    color: "#f118ff"
+                    font.pixelSize: 16
+                    style: Text.Raised
+                    styleColor: "black"
+                    font.bold: true
+                    horizontalAlignment: Text.AlignHCenter
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                    }
+                }
+                Text {
+                    text: "/ Opened Files"
+                    color: "#fff118"
+                    font.pixelSize: 16
+                    style: Text.Raised
+                    styleColor: "black"
+                    font.bold: true
+                    horizontalAlignment: Text.AlignHCenter
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                    }
+                }
+                Text {
+                    text: ": Line number"
+                    color: "#18ffd6"
+                    font.pixelSize: 16
+                    style: Text.Raised
+                    styleColor: "black"
+                    font.bold: true
+                    horizontalAlignment: Text.AlignHCenter
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                    }
+                }
+                Text {
+                    text: "! Non Python Files"
+                    color: "#ffa018"
+                    font.pixelSize: 16
+                    style: Text.Raised
+                    styleColor: "black"
+                    font.bold: true
+                    horizontalAlignment: Text.AlignHCenter
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                    }
+                }
+                Text {
+                    text: "Combining them:"
+                    font.pixelSize: 14
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                    }
+                    font.bold: true
+                    color: "white"
+                    wrapMode: Text.WordWrap
+                }
+                Text {
+                    text: "Search for files containing \"edi\" in the name, check out the classes of the current result, and check out the Functions that contains the word \"key\" in the name for the selected Class."
+                    font.pixelSize: 14
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                    }
+                    color: "white"
+                    wrapMode: Text.WordWrap
+                }
+                Image {
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                    }
+                    source: "qrc:/help/locator"
+                    fillMode: Image.PreserveAspectFit
+                }
+                Text {
+                    text: "When you combine the filters, for example, to list the classes of an specific file, the second filter will take as input the current selected element in the results list.\nCheck out at the bottom of the screen which filters are being used, they will be highlighted."
+                    font.pixelSize: 14
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                    }
+                    color: "white"
+                    wrapMode: Text.WordWrap
                 }
             }
         }

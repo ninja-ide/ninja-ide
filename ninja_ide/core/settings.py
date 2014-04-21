@@ -17,6 +17,7 @@
 
 import os
 import sys
+import datetime
 
 from PyQt4.QtGui import QFont
 from PyQt4.QtCore import QSettings
@@ -121,7 +122,7 @@ TOOLBAR_ITEMS = [
     "_ToolsDock.execute_project",
     "_ToolsDock.kill_application",
     #"run-project", "run-file", "stop", "separator",
-    ]
+]
 
 TOOLBAR_ITEMS_DEFAULT = [
     "_MainContainer.show_selector",
@@ -139,7 +140,7 @@ TOOLBAR_ITEMS_DEFAULT = [
     "_ToolsDock.execute_project",
     "_ToolsDock.kill_application",
     #"run-project", "run-file", "stop", "separator",
-    ]
+]
 
 #hold the toolbar actions added by plugins
 TOOLBAR_ITEMS_PLUGINS = []
@@ -149,6 +150,8 @@ NINJA_SKIN = 'Default'
 LAST_OPENED_FILES = []
 
 NOTIFICATION_POSITION = 0
+
+LAST_CLEAN_LOCATOR = None
 
 
 ###############################################################################
@@ -165,11 +168,8 @@ SHOW_MARGIN_LINE = True
 REMOVE_TRAILING_SPACES = True
 SHOW_TABS_AND_SPACES = True
 
-BRACES = {'{': '}',
-    '[': ']',
-    '(': ')'}
-QUOTES = {'"': '"',
-    "'": "'"}
+BRACES = {'{': '}', '[': ']', '(': ')'}
+QUOTES = {'"': '"', "'": "'"}
 
 FONT_MAX_SIZE = 28
 FONT_MIN_SIZE = 6
@@ -354,10 +354,31 @@ def pep8mod_update_margin_line_length(new_margin_line):
 ###############################################################################
 
 
+def should_clean_locator_knowledge():
+    value = None
+    if LAST_CLEAN_LOCATOR is not None:
+        delta = datetime.date.today() - LAST_CLEAN_LOCATOR
+        if delta.days >= 10:
+            value = datetime.date.today()
+    elif LAST_CLEAN_LOCATOR is None:
+        value = datetime.date.today()
+    return value
+
+
+#Clean Locator Knowledge
+def clean_locator_db(qsettings):
+    last_clean = should_clean_locator_knowledge()
+    if last_clean is not None:
+        file_path = os.path.join(resources.NINJA_KNOWLEDGE_PATH, 'locator.db')
+        if os.path.isfile(file_path):
+            os.remove(file_path)
+        qsettings.setValue("preferences/general/cleanLocator", last_clean)
+
+
 def load_settings():
     qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
     data_qsettings = QSettings(resources.DATA_SETTINGS_PATH,
-        QSettings.IniFormat)
+                               QSettings.IniFormat)
     #Globals
     global TOOLBAR_AREA
     global LANGUAGE
@@ -407,25 +428,26 @@ def load_settings():
     global SIZE_PROPORTION
     global NOTIFICATION_POSITION
     global NOTIFICATION_COLOR
+    global LAST_CLEAN_LOCATOR
     #General
     HIDE_TOOLBAR = qsettings.value("window/hide_toolbar", False, type=bool)
     SHOW_STATUS_NOTIFICATIONS = qsettings.value(
         "preferences/interface/showStatusNotifications", True, type=bool)
     TOOLBAR_AREA = qsettings.value('preferences/general/toolbarArea', 1,
-        type=int)
+                                   type=int)
     LANGUAGE = qsettings.value('preferences/interface/language', '',
-        type='QString')
+                               type='QString')
     SHOW_START_PAGE = qsettings.value(
         'preferences/general/showStartPage', True, type=bool)
     CONFIRM_EXIT = qsettings.value('preferences/general/confirmExit',
-        True, type=bool)
+                                   True, type=bool)
     UI_LAYOUT = qsettings.value('preferences/interface/uiLayout', 0, type=int)
     PYTHON_EXEC = qsettings.value('preferences/execution/pythonExec',
-        'python', type='QString')
+                                  'python', type='QString')
     PYTHON_EXEC_CONFIGURED_BY_USER = qsettings.value(
         'preferences/execution/pythonExecConfigured', False, type=bool)
     NINJA_SKIN = qsettings.value('preferences/theme/skin',
-        'Default', type='QString')
+                                 'Default', type='QString')
     sessionDict = dict(data_qsettings.value('ide/sessions', {}))
     for key in sessionDict:
         session_list = list(sessionDict[key])
@@ -471,7 +493,7 @@ def load_settings():
     USE_PLATFORM_END_OF_LINE = qsettings.value(
         'preferences/editor/platformEndOfLine', False, type=bool)
     MARGIN_LINE = qsettings.value('preferences/editor/marginLine', 80,
-        type=int)
+                                  type=int)
     pep8mod_update_margin_line_length(MARGIN_LINE)
     REMOVE_TRAILING_SPACES = qsettings.value(
         'preferences/editor/removeTrailingSpaces', True, type=bool)
@@ -493,13 +515,13 @@ def load_settings():
     SHOW_MARGIN_LINE = qsettings.value(
         'preferences/editor/showMarginLine', True, type=bool)
     FIND_ERRORS = qsettings.value('preferences/editor/errors',
-        True, type=bool)
+                                  True, type=bool)
     SHOW_MIGRATION_TIPS = qsettings.value(
         'preferences/editor/showMigrationTips', True, type=bool)
     ERRORS_HIGHLIGHT_LINE = qsettings.value(
         'preferences/editor/errorsInLine', True, type=bool)
     CHECK_STYLE = qsettings.value('preferences/editor/checkStyle',
-        True, type=bool)
+                                  True, type=bool)
     CHECK_HIGHLIGHT_LINE = qsettings.value(
         'preferences/editor/checkStyleInline', True, type=bool)
     CODE_COMPLETION = qsettings.value(
@@ -507,7 +529,7 @@ def load_settings():
     CENTER_ON_SCROLL = qsettings.value(
         'preferences/editor/centerOnScroll', True, type=bool)
     parentheses = qsettings.value('preferences/editor/parentheses', True,
-        type=bool)
+                                  type=bool)
     if not parentheses:
         del BRACES['(']
     brackets = qsettings.value('preferences/editor/brackets', True, type=bool)
@@ -517,11 +539,11 @@ def load_settings():
     if not keys:
         del BRACES['{']
     simpleQuotes = qsettings.value('preferences/editor/simpleQuotes',
-        True, type=bool)
+                                   True, type=bool)
     if not simpleQuotes:
         del QUOTES["'"]
     doubleQuotes = qsettings.value('preferences/editor/doubleQuotes',
-        True, type=bool)
+                                   True, type=bool)
     if not doubleQuotes:
         del QUOTES['"']
     #Projects
@@ -551,5 +573,8 @@ def load_settings():
         'preferences/general/notification_position', 0, type=int)
     NOTIFICATION_COLOR = qsettings.value(
         'preferences/general/notification_color', "#000", type='QString')
+    LAST_CLEAN_LOCATOR = qsettings.value(
+        'preferences/general/cleanLocator', None)
     from ninja_ide.extensions import handlers
     handlers.init_basic_handlers()
+    clean_locator_db(qsettings)
