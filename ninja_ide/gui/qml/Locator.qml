@@ -323,6 +323,14 @@ Rectangle {
                 property bool current: ListView.isCurrentItem
                 color: listItem.current ? "#4182c4" : "#27292b"
 
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        listResults.currentIndex = index;
+                        root.openCurrent();
+                    }
+                }
+
                 Item {
                     anchors.fill: parent
 
