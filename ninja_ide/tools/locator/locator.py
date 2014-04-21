@@ -227,14 +227,14 @@ class LocateSymbolsThread(QThread):
             pdata = pickle.dumps(data, pickle.HIGHEST_PROTOCOL)
             cur = self._locator_db.cursor()
             cur.execute("INSERT OR REPLACE INTO locator values (?, ?, ?)",
-                (path, stat, sqlite3.Binary(pdata)))
+                        (path, stat, sqlite3.Binary(pdata)))
             self._locator_db.commit()
 
     def _get_file_symbols(self, path):
         if self._locator_db is not None:
             cur = self._locator_db.cursor()
             cur.execute("SELECT * FROM locator WHERE path=:path",
-                {'path': path})
+                        {'path': path})
             return cur.fetchone()
 
     def locate_code(self):
@@ -279,7 +279,7 @@ class LocateSymbolsThread(QThread):
             for one_file in current_files:
                 try:
                     self._grep_file_symbols(one_file.absoluteFilePath(),
-                        one_file.fileName())
+                                            one_file.fileName())
                 except Exception as reason:
                     logger.error(
                         '__locate_code_in_project, error: %r' % reason)
@@ -351,7 +351,7 @@ class LocateSymbolsThread(QThread):
     def convert_map_to_array(self):
         global mapping_symbols
         self.locations = [x for location in mapping_symbols
-            for x in mapping_symbols[location]]
+                          for x in mapping_symbols[location]]
         self.locations = sorted(self.locations, key=lambda item: item.name)
 
     def _grep_file_symbols(self, file_path, file_name):
@@ -362,18 +362,21 @@ class LocateSymbolsThread(QThread):
         if file_ext not in exts:
             mapping_symbols[file_path] = [
                 ResultItem(symbol_type=FILTERS['non-python'], name=file_name,
-                    path=file_path, lineno=-1)]
+                           path=file_path, lineno=-1)]
         else:
             mapping_symbols[file_path] = [
                 ResultItem(symbol_type=FILTERS['files'], name=file_name,
-                        path=file_path, lineno=-1)]
+                           path=file_path, lineno=-1)]
         data = self._get_file_symbols(file_path)
         #FIXME: stat not int
         mtime = int(os.stat(file_path).st_mtime)
         if data is not None and (mtime == int(data[1])):
-            results = pickle.loads(str(data[2]))
-            mapping_symbols[file_path] += results
-            return
+            try:
+                results = pickle.loads(str(data[2]))
+                mapping_symbols[file_path] += results
+                return
+            except:
+                print "ResultItem couldn't be loaded, let's analyze it again'"
         #obtain a symbols handler for this file extension
         symbols_handler = handlers.get_symbols_handler(file_ext)
         if symbols_handler is None:
@@ -381,7 +384,8 @@ class LocateSymbolsThread(QThread):
         results = []
         with open(file_path) as f:
             content = f.read()
-            symbols = symbols_handler.obtain_symbols(content,
+            symbols = symbols_handler.obtain_symbols(
+                content,
                 filename=file_path)
             self.__parse_symbols(symbols, results, file_path)
 

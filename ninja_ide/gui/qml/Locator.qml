@@ -6,7 +6,7 @@ Rectangle {
     height: 400
     color: "#202123"
 
-    property string filterVerbose: "<font color='#8f8f8f'>@Files &gt;Classes &lt;Methods -Attribute .Current /Opened :Lines !NoPython</font>"
+    property string filterVerbose: "<font color='#8f8f8f'>@Filename &lt;Classes &gt;Methods -Attribute .Current /Opened :Lines !NoPython</font>"
 
     signal textChanged(string text)
 
@@ -25,6 +25,13 @@ Rectangle {
 
     function cleanText() {
         input.text = "";
+    }
+
+    function currentItem() {
+        if (listResults.currentIndex > -1) {
+            var item = itemsModel.get(listResults.currentIndex);
+            return [item.type, item.name, item.path, item.lineno];
+        }
     }
 
     ListModel {
