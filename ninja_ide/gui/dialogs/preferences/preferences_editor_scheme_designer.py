@@ -98,7 +98,6 @@ class EditorSchemeDesigner(QDialog):
         this_dialog_vbox.addWidget(group1)
         this_dialog_vbox.addWidget(group2)
         this_dialog_vbox.addWidget(group0)
-
         self._avoid_on_loading = self._modified = False
 
     def add_item(self, key, scheme):
@@ -193,14 +192,10 @@ class EditorSchemeDesigner(QDialog):
 
     def _is_valid_scheme_name(self, name):
         """Check if a given name is a valid name for an editor scheme.
-
         Params:
             name := the name to check
-
         Returns:
-            True if and only if the name is okay to use for a scheme
-
-        """
+            True if and only if the name is okay to use for a scheme. """
         return name not in ('', 'default')
 
     def save_scheme(self):
