@@ -44,7 +44,7 @@ LIST_OF_PY_CHECKERS_COMMENTS = (
 
 
 class FromImportDialog(QDialog):
-    """From Import dialog class"""
+    """From Import dialog class."""
 
     def __init__(self, editorWidget, parent=None):
         QDialog.__init__(self, parent, Qt.Dialog)
@@ -100,7 +100,7 @@ class FromImportDialog(QDialog):
                      self._add_import)
 
     def _add_import(self):
-        """Get From item and Import item and add the import on the code"""
+        """Get From item and Import item and add the import on the code."""
         fromItem = self._lineFrom.text().strip()  # from FOO
         importItem = self._lineImport.text().strip()  # import BAR
         asItem = self._asImport.text().strip()  # as FOO_BAR
