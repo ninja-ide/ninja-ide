@@ -86,6 +86,12 @@ Rectangle {
                 left: parent.left
                 right: parent.right
             }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    input.text += parent.text;
+                }
+            }
         }
         Text {
             text: "<"
@@ -98,6 +104,12 @@ Rectangle {
             anchors {
                 left: parent.left
                 right: parent.right
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    input.text += parent.text;
+                }
             }
         }
         Text {
@@ -112,6 +124,12 @@ Rectangle {
                 left: parent.left
                 right: parent.right
             }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    input.text += parent.text;
+                }
+            }
         }
         Text {
             text: "-"
@@ -124,6 +142,12 @@ Rectangle {
             anchors {
                 left: parent.left
                 right: parent.right
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    input.text += parent.text;
+                }
             }
         }
         Text {
@@ -138,6 +162,12 @@ Rectangle {
                 left: parent.left
                 right: parent.right
             }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    input.text += parent.text;
+                }
+            }
         }
         Text {
             text: "/"
@@ -150,6 +180,12 @@ Rectangle {
             anchors {
                 left: parent.left
                 right: parent.right
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    input.text += parent.text;
+                }
             }
         }
         Text {
@@ -164,6 +200,12 @@ Rectangle {
                 left: parent.left
                 right: parent.right
             }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    input.text += parent.text;
+                }
+            }
         }
         Text {
             text: "!"
@@ -176,6 +218,12 @@ Rectangle {
             anchors {
                 left: parent.left
                 right: parent.right
+            }
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    input.text += parent.text;
+                }
             }
         }
     }
