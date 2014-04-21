@@ -224,7 +224,7 @@ class _MainContainer(QWidget):
         editorWidget = self.get_current_editor()
         if editorWidget:
             self.__codeBack.append((editorWidget.file_path,
-                editorWidget.textCursor().position()))
+                                   editorWidget.textCursor().position()))
             self.__codeForward = []
         self._locator.navigate_to(function, filePath, isVariable)
 
@@ -268,7 +268,7 @@ class _MainContainer(QWidget):
         editorWidget = self.get_current_editor()
         if editorWidget:
             self.__codeBack.append((editorWidget.file_path,
-                editorWidget.textCursor().position()))
+                                   editorWidget.textCursor().position()))
             self.__codeForward = []
 
     def preview_in_browser(self):
@@ -309,13 +309,13 @@ class _MainContainer(QWidget):
             editorWidget = self.get_current_editor()
             if editorWidget:
                 self.__codeForward.append((editorWidget.file_path,
-                    editorWidget.textCursor().position()))
+                                          editorWidget.textCursor().position()))
         elif val and self.__codeForward:
             node = self.__codeForward.pop()
             editorWidget = self.get_current_editor()
             if editorWidget:
                 self.__codeBack.append((editorWidget.file_path,
-                    editorWidget.textCursor().position()))
+                                       editorWidget.textCursor().position()))
         if node:
             self.open_file(node[0], node[1])
 
@@ -393,7 +393,7 @@ class _MainContainer(QWidget):
                 lineNumber = bookms[self.__bookmarksPos]
         if file_manager.file_exists(self.__bookmarksFile):
             self.open_file(self.__bookmarksFile,
-                lineNumber, None, True)
+                           lineNumber, None, True)
         else:
             settings.BOOKMARKS.pop(self.__bookmarksFile)
             if settings.BOOKMARKS:
@@ -405,15 +405,15 @@ class _MainContainer(QWidget):
         if editorWidget:
             block_count = editorWidget.blockCount()
             blanks = re.findall('(^\n)|(^(\s+)?#)|(^( +)?($|\n))',
-                editorWidget.get_text(), re.M)
+                                editorWidget.get_text(), re.M)
             blanks_count = len(blanks)
             resume = self.tr("Lines code: %s\n") % (block_count - blanks_count)
             resume += (self.tr("Blanks and commented lines: %s\n\n") %
-                blanks_count)
+                       blanks_count)
             resume += self.tr("Total lines: %s") % block_count
             msgBox = QMessageBox(QMessageBox.Information,
-                self.tr("Summary of lines"), resume,
-                QMessageBox.Ok, editorWidget)
+                                 self.tr("Summary of lines"), resume,
+                                 QMessageBox.Ok, editorWidget)
             msgBox.exec_()
 
     def editor_cut(self):
@@ -635,26 +635,26 @@ class _MainContainer(QWidget):
 
         #Connect signals
         self.connect(editorWidget, SIGNAL("fileSaved(QPlainTextEdit)"),
-            self._editor_tab_was_saved)
+                     self._editor_tab_was_saved)
         self.connect(editorWidget, SIGNAL("openDropFile(QString)"),
-            self.open_file)
+                     self.open_file)
         self.connect(editorWidget, SIGNAL("addBackItemNavigation()"),
-            self.add_back_item_navigation)
+                     self.add_back_item_navigation)
         self.connect(editorWidget,
-            SIGNAL("locateFunction(QString, QString, bool)"),
-            self._editor_locate_function)
+                     SIGNAL("locateFunction(QString, QString, bool)"),
+                     self._editor_locate_function)
         self.connect(editorWidget,
-            SIGNAL("checksFound(QPlainTextEdit, PyQt_PyObject)"),
-            self._show_tab_indicator)
+                     SIGNAL("checksFound(QPlainTextEdit, PyQt_PyObject)"),
+                     self._show_tab_indicator)
         self.connect(editorWidget, SIGNAL("cleanDocument(QPlainTextEdit)"),
-            self._hide_icon_tab_indicator)
+                     self._hide_icon_tab_indicator)
         self.connect(editorWidget, SIGNAL("findOcurrences(QString)"),
-            self._find_occurrences)
+                     self._find_occurrences)
         self.connect(editorWidget, SIGNAL("migrationAnalyzed()"),
-            lambda: self.emit(SIGNAL("migrationAnalyzed()")))
+                     lambda: self.emit(SIGNAL("migrationAnalyzed()")))
         #keyPressEventSignal for plugins
         self.connect(editorWidget, SIGNAL("keyPressEvent(QEvent)"),
-            self._editor_keyPressEvent)
+                     self._editor_keyPressEvent)
 
         return editorWidget
 
@@ -706,7 +706,7 @@ class _MainContainer(QWidget):
 
     def _editor_locate_function(self, function, filePath, isVariable):
         self.emit(SIGNAL("locateFunction(QString, QString, bool)"),
-            function, filePath, isVariable)
+                  function, filePath, isVariable)
 
     def _editor_tab_was_saved(self, editorWidget=None):
         self.emit(SIGNAL("updateLocator(QString)"), editorWidget.file_path)
@@ -744,7 +744,7 @@ class _MainContainer(QWidget):
         except Exception as reason:
             logger.error('open_image: %s', reason)
             QMessageBox.information(self, self.tr("Incorrect File"),
-                self.tr("The image couldn\'t be open"))
+                                    self.tr("The image couldn\'t be open"))
 
     def open_file(self, filename='', cursorPosition=-1,
                   tabIndex=None, positionIsLineNumber=False,
@@ -769,7 +769,7 @@ class _MainContainer(QWidget):
                 ['(*%s)' % e for e in
                     settings.SUPPORTED_EXTENSIONS + ['.*', '']])
             fileNames = list(QFileDialog.getOpenFileNames(self,
-                self.tr("Open File"), directory, extensions))
+                             self.tr("Open File"), directory, extensions))
         else:
             logger.debug("has filename")
             fileNames = [filename]
@@ -787,14 +787,15 @@ class _MainContainer(QWidget):
             else:
                 logger.debug("will try to open")
                 self.__open_file(filename, cursorPosition,
-                    tabIndex, positionIsLineNumber, ignore_checkers)
+                                 tabIndex, positionIsLineNumber,
+                                 ignore_checkers)
 
     def __open_file(self, fileName='', cursorPosition=-1,
                     tabIndex=None, positionIsLineNumber=False,
                     ignore_checkers=False):
         try:
             editorWidget = self.add_editor(fileName,
-                ignore_checkers=ignore_checkers)
+                                           ignore_checkers=ignore_checkers)
             if cursorPosition != -1:
                 if positionIsLineNumber:
                     editorWidget.go_to_line(cursorPosition)
@@ -803,7 +804,8 @@ class _MainContainer(QWidget):
             self.emit(SIGNAL("currentEditorChanged(QString)"), fileName)
         except file_manager.NinjaIOException as reason:
             QMessageBox.information(self,
-                self.tr("The file couldn't be open"), str(reason))
+                                    self.tr("The file couldn't be open"),
+                                    str(reason))
 
     def is_open(self, filename):
         pass
@@ -856,11 +858,11 @@ class _MainContainer(QWidget):
         try:
             #editorWidget.just_saved = True
             if (editorWidget.nfile.is_new_file or
-                not editorWidget.nfile.has_write_permission()):
+                    not editorWidget.nfile.has_write_permission()):
                 return self.save_file_as()
 
             self.emit(SIGNAL("beforeFileSaved(QString)"),
-                editorWidget.file_path)
+                      editorWidget.file_path)
             if settings.REMOVE_TRAILING_SPACES:
                 helpers.remove_trailing_spaces(editorWidget)
             editorWidget.neditable.save_content()
@@ -869,13 +871,13 @@ class _MainContainer(QWidget):
             encoding = file_manager.get_file_encoding(editorWidget.get_text())
             editorWidget.encoding = encoding
             self.emit(SIGNAL("fileSaved(QString)"),
-                (self.tr("File Saved: %s") % editorWidget.file_path))
+                      (self.tr("File Saved: %s") % editorWidget.file_path))
             editorWidget._file_saved()
             return True
         except Exception as reason:
             logger.error('save_file: %s', reason)
             QMessageBox.information(self, self.tr("Save Error"),
-                self.tr("The file couldn't be saved!"))
+                                    self.tr("The file couldn't be saved!"))
         return False
 
     def save_file_as(self):
@@ -896,36 +898,25 @@ class _MainContainer(QWidget):
 
             if settings.REMOVE_TRAILING_SPACES:
                 helpers.remove_trailing_spaces(editorWidget)
-            #newFile = file_manager.get_file_extension(fileName) == ''
+
             editorWidget.neditable.save_content(path=fileName)
-            #fileName = file_manager.store_file_content(
-                #fileName, editorWidget.get_text(),
-                #addExtension=True, newFile=newFile)
-            #self.actualTab.setTabText(self.actualTab.currentIndex(),
-                #file_manager.get_basename(fileName))
             editorWidget.register_syntax(
                 file_manager.get_file_extension(fileName))
-            #self._file_watcher.allow_kill = False
-            #if editorWidget.file_path != fileName:
-                #self.remove_standalone_watcher(editorWidget.file_path)
-            #editorWidget.file_path = fileName
+
             self.emit(SIGNAL("fileSaved(QString)"),
-                (self.tr("File Saved: %s") % fileName))
+                            (self.tr("File Saved: %s") % fileName))
             self.emit(SIGNAL("currentEditorChanged(QString)"), fileName)
             editorWidget._file_saved()
-            #self.add_standalone_watcher(fileName)
-            #self._file_watcher.allow_kill = True
             return True
         except file_manager.NinjaFileExistsException as ex:
             QMessageBox.information(self, self.tr("File Already Exists"),
-                (self.tr("Invalid Path: the file '%s' already exists.") %
-                    ex.filename))
+                                    (self.tr("Invalid Path: the file '%s' "
+                                             " already exists.") %
+                                    ex.filename))
         except Exception as reason:
             logger.error('save_file_as: %s', reason)
             QMessageBox.information(self, self.tr("Save Error"),
-                self.tr("The file couldn't be saved!"))
-            #self.actualTab.setTabText(self.actualTab.currentIndex(),
-                #self.tr("New Document"))
+                                    self.tr("The file couldn't be saved!"))
         return False
 
     def _get_save_folder(self, fileName):
