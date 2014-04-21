@@ -109,7 +109,7 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     data_qsettings = ide.IDE.data_settings()
     language = QLocale.system().name()
     lang = qsettings.value('preferences/interface/language',
-        defaultValue=language, type='QString') + '.qm'
+                           defaultValue=language, type='QString') + '.qm'
     lang_path = file_manager.create_path(resources.LANGS, lang)
     if file_manager.file_exists(lang_path):
         settings.LANGUAGE = lang_path
@@ -119,7 +119,8 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
         app.installTranslator(translator)
 
         qtTranslator = QTranslator()
-        qtTranslator.load("qt_" + language,
+        qtTranslator.load(
+            "qt_" + language,
             QLibraryInfo.location(QLibraryInfo.TranslationsPath))
         app.installTranslator(qtTranslator)
 
@@ -129,15 +130,14 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
 
     #Read Settings
     splash.showMessage("Loading Settings", Qt.AlignRight | Qt.AlignTop,
-        Qt.black)
-    settings.load_settings()
+                       Qt.black)
 
     #Set Stylesheet
     style_applied = False
     if settings.NINJA_SKIN not in ('Default', 'Classic Theme'):
         file_name = ("%s.qss" % settings.NINJA_SKIN)
         qss_file = file_manager.create_path(resources.NINJA_THEME_DOWNLOAD,
-            file_name)
+                                            file_name)
         if file_manager.file_exists(qss_file):
             with open(qss_file) as fileaccess:
                 qss = fileaccess.read()
@@ -154,12 +154,12 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
 
     #Loading Schemes
     splash.showMessage("Loading Schemes",
-        Qt.AlignRight | Qt.AlignTop, Qt.black)
+                       Qt.AlignRight | Qt.AlignTop, Qt.black)
     scheme = qsettings.value('preferences/editor/scheme', "default",
-        type='QString')
+                             type='QString')
     if scheme != 'default':
         scheme = file_manager.create_path(resources.EDITOR_SKINS,
-            scheme + '.color')
+                                          scheme + '.color')
         if file_manager.file_exists(scheme):
             resources.CUSTOM_SCHEME = json_manager.parse(open(scheme))
 
@@ -178,7 +178,7 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
         pass  # I really dont mind if this fails in any form
     #Loading Session Files
     splash.showMessage("Loading Files and Projects",
-        Qt.AlignRight | Qt.AlignTop, Qt.black)
+                       Qt.AlignRight | Qt.AlignTop, Qt.black)
 
     #First check if we need to load last session files
     if qsettings.value('preferences/general/loadFiles', True, type=bool):
@@ -196,7 +196,7 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
         recent_files = data_qsettings.value('lastSession/recentFiles', [])
         #Current File
         current_file = data_qsettings.value(
-                        'lastSession/currentFile', '', type='QString')
+            'lastSession/currentFile', '', type='QString')
         #Projects
         projects = data_qsettings.value('lastSession/projects', [])
     else:

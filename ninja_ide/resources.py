@@ -226,7 +226,7 @@ SHORTCUTS = {
     "copy": QKeySequence(Qt.CTRL + Qt.Key_C),
     "paste": QKeySequence(Qt.CTRL + Qt.Key_V),
     "expand-symbol-combo": QKeySequence(Qt.CTRL + Qt.Key_2),
-    "expand-file-combo": QKeySequence(Qt.CTRL + Qt.Key_1)}
+    "expand-file-combo": QKeySequence(Qt.CTRL + Qt.Key_Tab)}
 
 CUSTOM_SHORTCUTS = {}
 
