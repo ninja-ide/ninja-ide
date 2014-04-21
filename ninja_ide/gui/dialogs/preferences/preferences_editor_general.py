@@ -70,13 +70,8 @@ class EditorGeneral(QWidget):
         #Minimap
         formMini = QGridLayout(groupBoxMini)
         formMini.setContentsMargins(5, 15, 5, 5)
-        # Message of opacity only needed on OSX else hide it to simplify UX
-        minimap_msg = translations.TR_PREFERENCES_EDITOR_GENERAL_ENABLE_MINIMAP
-        _osx = translations.TR_PREFERENCES_EDITOR_GENERAL_ENABLE_MINIMAP_TOOLTIP
-        if settings.IS_MAC_OS:
-            minimap_msg += "\n" + _osx
-        self._checkShowMinimap = QCheckBox(minimap_msg)
-        self._checkShowMinimap.setToolTip(_osx)
+        self._checkShowMinimap = QCheckBox(
+            translations.TR_PREFERENCES_EDITOR_GENERAL_ENABLE_MINIMAP)
         self._spinMaxOpacity = QSpinBox()
         self._spinMaxOpacity.setRange(0, 100)
         self._spinMaxOpacity.setSuffix("% Max.")
