@@ -41,8 +41,10 @@ from PyQt4.QtCore import Qt
 
 from ninja_ide import resources
 from ninja_ide import translations
-from ninja_ide.tools import locator
+from ninja_ide.core import settings
+from ninja_ide.tools.locator import locator
 from ninja_ide.tools import ui_tools
+from ninja_ide.tools.locator import locator_widget
 from ninja_ide.gui import actions
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools.logger import NinjaLogger
@@ -68,7 +70,10 @@ class _StatusBar(QStatusBar):
         self._widgetStatus = QWidget()
         vbox = QVBoxLayout(self._widgetStatus)
         vbox.setContentsMargins(0, 0, 0, 0)
-        vbox.setSpacing(0)
+        if settings.IS_MAC_OS:
+            vbox.setSpacing(0)
+        else:
+            vbox.setSpacing(3)
         #Search Layout
         self._searchWidget = SearchWidget()
         vbox.addWidget(self._searchWidget)
@@ -76,10 +81,6 @@ class _StatusBar(QStatusBar):
         self._replaceWidget = ReplaceWidget()
         vbox.addWidget(self._replaceWidget)
         self._replaceWidget.setVisible(False)
-        #Code Locator
-        self._codeLocator = locator.CodeLocatorWidget()
-        vbox.addWidget(self._codeLocator)
-        self._codeLocator.setVisible(False)
         #File system completer
         self._fileSystemOpener = FileSystemOpener()
         vbox.addWidget(self._fileSystemOpener)
@@ -91,27 +92,25 @@ class _StatusBar(QStatusBar):
 
         self.connect(shortEscStatus, SIGNAL("activated()"), self.hide_status)
         self.connect(self._searchWidget._btnClose, SIGNAL("clicked()"),
-            self.hide_status)
+                     self.hide_status)
         self.connect(self._replaceWidget._btnCloseReplace, SIGNAL("clicked()"),
-            lambda: self._replaceWidget.setVisible(False))
+                     lambda: self._replaceWidget.setVisible(False))
         self.connect(self._fileSystemOpener.btnClose, SIGNAL("clicked()"),
-            self.hide_status)
+                     self.hide_status)
         self.connect(self._fileSystemOpener, SIGNAL("requestHide()"),
-            self.hide_status)
-        self.connect(self._codeLocator, SIGNAL("hidden()"),
-            self.hide_status)
+                     self.hide_status)
 
         #Register signals connections
         connections = (
             {'target': 'main_container',
-            'signal_name': 'currentEditorChanged(QString)',
-            'slot': self._handle_tab_changed},
+             'signal_name': 'currentEditorChanged(QString)',
+             'slot': self._handle_tab_changed},
             {'target': 'main_container',
-            'signal_name': 'updateLocator(QString)',
-            'slot': self._explore_file_code},
+             'signal_name': 'updateLocator(QString)',
+             'slot': self._explore_file_code},
             {'target': 'projects_explorer',
-            'signal_name': 'updateLocator()',
-            'slot': self._explore_code},
+             'signal_name': 'updateLocator()',
+             'slot': self._explore_code},
             )
 
         IDE.register_signals('status_bar', connections)
@@ -122,6 +121,7 @@ class _StatusBar(QStatusBar):
         self.hide()
         ide = IDE.get_service('ide')
         ide.setStatusBar(self)
+        self._codeLocator = locator_widget.LocatorWidget(ide)
 
         ui_tools.install_shortcuts(self, actions.ACTIONS_STATUS, ide)
 
@@ -207,11 +207,8 @@ class _StatusBar(QStatusBar):
 
     def show_locator(self):
         """Show the status bar with the locator widget."""
-        self.current_status = _STATUSBAR_STATE_LOCATOR
         if not self._codeLocator.isVisible():
-            self._codeLocator.setVisible(True)
-            self.show()
-            self._codeLocator.show_suggestions()
+            self._codeLocator.show()
 
     def show_file_opener(self):
         """Show the status bar with the file opener completer widget."""
@@ -227,7 +224,6 @@ class _StatusBar(QStatusBar):
         self._searchWidget._checkWholeWord.setCheckState(Qt.Unchecked)
         self._searchWidget.setVisible(False)
         self._replaceWidget.setVisible(False)
-        self._codeLocator.setVisible(False)
         self._fileSystemOpener.setVisible(False)
         main_container = IDE.get_service("main_container")
         widget = None

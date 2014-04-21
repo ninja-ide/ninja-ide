@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+
 from __future__ import absolute_import
 
 import argparse
@@ -35,38 +36,34 @@ epilog = ("This program comes with ABSOLUTELY NO WARRANTY."
 
 
 def _get_parser():
-    global usage
-    global epilog
+    global usage, epilog
 
     parser = argparse.ArgumentParser(description=usage, epilog=epilog)
 
     parser.add_argument('file', metavar='file', type=str,
-        nargs='*', help='A file/s to edit', default=[])
+                        nargs='*', help='A file/s to edit', default=[])
     parser.add_argument('-f', '--files', metavar='file', type=str,
-        nargs='+', help='A file/s to edit', default=[])
+                        nargs='+', help='A file/s to edit', default=[])
     parser.add_argument('-l', '--lineno', metavar='lineno', type=int,
-        nargs='+', help='Line number for the files to open', default=[])
+                        nargs='+', help='Line number for the files to open',
+                        default=[])
     parser.add_argument('-p', '--project', metavar='project', type=str,
-        nargs='+', help='A project/s to edit', default=[])
-    parser.add_argument('--plugin',
-        metavar='plugin', type=str,
-        nargs='+', help='A plugin to load', default=[])
-    parser.add_argument('--loglevel', help="Level to use for logging, "
-                "one of 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'",
-                default=None, metavar="loglevel")
+                        nargs='+', help='A project/s to edit', default=[])
+    parser.add_argument('--plugin', metavar='plugin', type=str,
+                        nargs='+', help='A plugin to load', default=[])
+    parser.add_argument(
+        '--loglevel', help="Level to use for logging, "
+        "one of 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'",
+        default=None, metavar="loglevel")
     parser.add_argument('--logfile', help="A file path to log, special "
-                                    "words STDOUT or STDERR are accepted",
-                                    default=None, metavar="logfile")
+                        "words STDOUT or STDERR are accepted",
+                        default=None, metavar="logfile")
     return parser
 
 
 def parse():
-    filenames = None
-    projects_path = None
-    linenos = None
-    extra_plugins = None
-    log_level = None
-    log_file = None
+    filenames = projects_path = linenos = None
+    extra_plugins = log_level = log_file = None
 
     try:
         opts = _get_parser().parse_args()
