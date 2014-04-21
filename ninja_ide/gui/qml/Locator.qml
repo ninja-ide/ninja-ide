@@ -6,12 +6,19 @@ Rectangle {
     height: 400
     color: "#202123"
 
-    property string filterVerbose: "<font color='#8f8f8f'>@Filename &lt;Classes &gt;Methods -Attribute .Current /Opened :Lines !NoPython</font>"
+    property string filterVerbose: "<font color='#8f8f8f'>@Filename &lt;Class &gt;Function -Attribute .Current /Opened :Line !NoPython</font>"
+    property string filterComposite: ""
 
     signal textChanged(string text)
+    signal open(string path, int lineno)
+    signal fetchMore
 
     function activateInput() {
         input.forceActiveFocus();
+    }
+
+    function setFilterComposite(filter) {
+        root.filterComposite = filter;
     }
 
     function loadItem(type, name, lineno, path, color) {
@@ -31,6 +38,13 @@ Rectangle {
         if (listResults.currentIndex > -1) {
             var item = itemsModel.get(listResults.currentIndex);
             return [item.type, item.name, item.path, item.lineno];
+        }
+    }
+
+    function openCurrent() {
+        if (listResults.currentIndex > -1) {
+            var item = itemsModel.get(listResults.currentIndex);
+            root.open(item.path, item.lineno);
         }
     }
 
@@ -198,9 +212,18 @@ Rectangle {
 
             Keys.onDownPressed: {
                 listResults.incrementCurrentIndex();
+                if (listResults.currentIndex == (listResults.count - 2)) {
+                    root.fetchMore();
+                }
             }
             Keys.onUpPressed: {
                 listResults.decrementCurrentIndex();
+            }
+            Keys.onEnterPressed: {
+                root.openCurrent();
+            }
+            Keys.onReturnPressed: {
+                root.openCurrent();
             }
         }
     }
@@ -404,7 +427,7 @@ Rectangle {
     }
     Text {
         id: filtersExplainedText
-        text: root.filterVerbose
+        text: root.filterComposite ? root.filterComposite : root.filterVerbose
         color: "white"
         font.pixelSize: 10
         style: Text.Raised

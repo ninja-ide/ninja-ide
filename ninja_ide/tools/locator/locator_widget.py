@@ -72,6 +72,16 @@ class LocatorWidget(QDialog):
             "/": "#fff118",
             ":": "#18ffd6",
             "!": "#ffa018"}
+        self._filters_list = [
+            ("@", "Filename"),
+            ("<", "Class"),
+            (">", "Function"),
+            ("-", "Attribute"),
+            (".", "Current"),
+            ("/", "Opened"),
+            (":", "Line"),
+            ("!", "NoPython")
+        ]
         self._replace_symbol_type = {"<": "&lt;", ">": "&gt;"}
         self.reset_values()
 
@@ -83,6 +93,10 @@ class LocatorWidget(QDialog):
 
         self.connect(self._root, SIGNAL("textChanged(QString)"),
                      self.set_prefix)
+        self.connect(self._root, SIGNAL("open(QString, int)"),
+                     self._open_item)
+        self.connect(self._root, SIGNAL("fetchMore()"),
+                     self._fetch_more)
 
     def reset_values(self):
         self._avoid_refresh = False
@@ -122,13 +136,29 @@ class LocatorWidget(QDialog):
     def _refresh_filter(self):
         items = self.filter()
         self._root.clear()
-        for item in items:
-            if item.type in ("<", ">"):
-                typeIcon = self._replace_symbol_type[item.type]
+        self._load_items(items)
+        filter_composite = ""
+        for symbol, text in self._filters_list:
+            typeIcon = self._replace_symbol_type.get(symbol, symbol)
+            if symbol in self.__prefix:
+                composite = "<font color='{0}'>{1}{2}</font> ".format(
+                    self._colors.get(symbol, "#8f8f8f"), typeIcon, text)
+                filter_composite += composite
             else:
-                typeIcon = item.type
+                composite = "<font color='#8f8f8f'>{0}{1}</font> ".format(
+                    typeIcon, text)
+                filter_composite += composite
+        self._root.setFilterComposite(filter_composite)
+
+    def _load_items(self, items):
+        for item in items:
+            typeIcon = self._replace_symbol_type.get(item.type, item.type)
             self._root.loadItem(typeIcon, item.name, item.lineno,
                                 item.path, self._colors[item.type])
+
+    def _fetch_more(self):
+        locations = self._create_list_items(self.tempLocations)
+        self._load_items(locations)
 
     def _create_list_items(self, locations):
         """Create a list of items (using pages for results to speed up)."""
@@ -295,18 +325,14 @@ class LocatorWidget(QDialog):
             #item = self.popup.listWidget.currentItem()
             #self._go_to_location(item)
 
-    #def _go_to_location(self, item):
-        #if type(item) is LocateItem:
-            #self._open_item(item.data)
-        #self.emit(SIGNAL("hidden()"))
-
-    def _open_item(self, data):
+    def _open_item(self, path, lineno):
         """Open the item received."""
         main_container = IDE.get_service('main_container')
         if not main_container:
             return
-        jump = data.lineno if self._line_jump == -1 else self._line_jump
-        main_container.open_file(data.path, jump, None, True)
+        jump = lineno if self._line_jump == -1 else self._line_jump
+        main_container.open_file(path, jump, None, True)
+        self.hide()
 
     def hideEvent(self, event):
         super(LocatorWidget, self).hideEvent(event)
