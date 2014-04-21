@@ -197,7 +197,7 @@ class LateralPanel(QWidget):
         self.vbox = QVBoxLayout(self)
         self.vbox.setContentsMargins(0, 0, 0, 0)
         hbox = QHBoxLayout()
-        hbox.setContentsMargins(0, 0, 0, 0)
+        hbox.setContentsMargins(0, 0, 5, 5)
         self.combo = QComboBox()
         ui_tools.ComboBoxButton(self.combo, self.combo.clear,
             self.style().standardPixmap(self.style().SP_TrashIcon))
