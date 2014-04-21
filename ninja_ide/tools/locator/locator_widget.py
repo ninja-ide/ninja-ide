@@ -292,6 +292,13 @@ class LocatorWidget(QDialog):
                 x for x in self.locate_symbols.get_locations()
                 if x.type == filterOptions[0] and
                 x.path == filterOptions[1]]
+        else:
+            currentItem = self._root.currentItem()
+            if currentItem:
+                self.tempLocations = [
+                    x for x in self.locate_symbols.get_locations()
+                    if x.type == currentItem[0] and
+                    x.path == currentItem[2]]
         if filterOptions[index + 1].isdigit():
             self._line_jump = int(filterOptions[index + 1]) - 1
         return index + 2
