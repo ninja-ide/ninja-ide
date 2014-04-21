@@ -233,4 +233,7 @@
   <qresource prefix='img'>
     <file alias='selector'>img/main_selector.png</file>
   </qresource>
+  <qresource prefix='help'>
+    <file alias='locator'>img/help/help_locator.png</file>
+  </qresource>
 </RCC>

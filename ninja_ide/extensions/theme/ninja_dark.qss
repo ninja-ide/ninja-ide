@@ -412,6 +412,7 @@ QComboBox#combotab {
     border-right-width: 0px;
     border-top-width: 0px;
     border-bottom-width: 0px;
+    border-radius: 2px;
     padding: 1px 18px 1px 5px;
     min-width: 4em;
     color: #FFFFFF;

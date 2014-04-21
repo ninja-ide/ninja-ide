@@ -18,6 +18,7 @@
 
 import os
 import sys
+import datetime
 
 from PyQt4.QtGui import QFont
 from PyQt4.QtCore import QSettings
@@ -118,7 +119,7 @@ TOOLBAR_ITEMS = [
     "_ToolsDock.execute_project",
     "_ToolsDock.kill_application",
     #"run-project", "run-file", "stop", "separator",
-    ]
+]
 
 TOOLBAR_ITEMS_DEFAULT = [
     "_MainContainer.show_selector",
@@ -136,12 +137,18 @@ TOOLBAR_ITEMS_DEFAULT = [
     "_ToolsDock.execute_project",
     "_ToolsDock.kill_application",
     #"run-project", "run-file", "stop", "separator",
-    ]
+]
 
 #hold the toolbar actions added by plugins
 TOOLBAR_ITEMS_PLUGINS = LAST_OPENED_FILES = []
 
 NINJA_SKIN = 'Default'
+
+LAST_OPENED_FILES = []
+
+NOTIFICATION_POSITION = 0
+
+LAST_CLEAN_LOCATOR = None
 
 
 ###############################################################################
@@ -156,11 +163,8 @@ INDENT = 4
 
 MARGIN_LINE = 80
 
-BRACES = {'{': '}',
-          '[': ']',
-          '(': ')'}
-QUOTES = {'"': '"',
-          "'": "'"}
+BRACES = {'{': '}', '[': ']', '(': ')'}
+QUOTES = {'"': '"', "'": "'"}
 
 FONT_MAX_SIZE = 28
 FONT_MIN_SIZE = 6
@@ -328,6 +332,27 @@ def pep8mod_update_margin_line_length(new_margin_line):
 ###############################################################################
 
 
+def should_clean_locator_knowledge():
+    value = None
+    if LAST_CLEAN_LOCATOR is not None:
+        delta = datetime.date.today() - LAST_CLEAN_LOCATOR
+        if delta.days >= 10:
+            value = datetime.date.today()
+    elif LAST_CLEAN_LOCATOR is None:
+        value = datetime.date.today()
+    return value
+
+
+#Clean Locator Knowledge
+def clean_locator_db(qsettings):
+    last_clean = should_clean_locator_knowledge()
+    if last_clean is not None:
+        file_path = os.path.join(resources.NINJA_KNOWLEDGE_PATH, 'locator.db')
+        if os.path.isfile(file_path):
+            os.remove(file_path)
+        qsettings.setValue("preferences/general/cleanLocator", last_clean)
+
+
 def load_settings():
     qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
     data_qsettings = QSettings(resources.DATA_SETTINGS_PATH,
@@ -381,6 +406,7 @@ def load_settings():
     global SIZE_PROPORTION
     global NOTIFICATION_POSITION
     global NOTIFICATION_COLOR
+    global LAST_CLEAN_LOCATOR
     #General
     HIDE_TOOLBAR = qsettings.value("window/hide_toolbar", False, type=bool)
     SHOW_STATUS_NOTIFICATIONS = qsettings.value(
@@ -524,5 +550,8 @@ def load_settings():
         'preferences/general/notification_position', 0, type=int)
     NOTIFICATION_COLOR = qsettings.value(
         'preferences/general/notification_color', "#000", type='QString')
+    LAST_CLEAN_LOCATOR = qsettings.value(
+        'preferences/general/cleanLocator', None)
     from ninja_ide.extensions import handlers
     handlers.init_basic_handlers()
+    clean_locator_db(qsettings)
