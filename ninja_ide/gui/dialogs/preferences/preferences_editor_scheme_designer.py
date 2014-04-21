@@ -31,8 +31,11 @@ from PyQt4.QtGui import QLineEdit
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QColorDialog
+from PyQt4.QtGui import QSizePolicy
+
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
+from PyQt4.QtCore import QSize
 
 from ninja_ide import translations
 from ninja_ide import resources
@@ -45,6 +48,11 @@ class EditorSchemeDesigner(QDialog):
 
     def __init__(self, scheme, parent):
         super(EditorSchemeDesigner, self).__init__(parent, Qt.Dialog)
+
+        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Minimum)
+        self.setSizePolicy(sizePolicy)
+        self.setMaximumSize(QSize(480, 640))
+
         self.original_style = copy.copy(resources.CUSTOM_SCHEME)
         self._avoid_on_loading = True
         self.saved = False
@@ -54,19 +62,26 @@ class EditorSchemeDesigner(QDialog):
         self.setMinimumWidth(500)
         vbox = QVBoxLayout(self)
         scrollArea = QScrollArea()
-        vbox.addWidget(scrollArea)
 
         frame = QFrame()
+
+        name_frame = QFrame()
+
+        self._name_grid = QGridLayout()
+        self._name_grid.addWidget(QLabel('Scheme Name:'), 0, 0)
+        self.line_name = QLineEdit()
+        self._name_grid.addWidget(self.line_name, 0, 1)
+        btnSave = QPushButton('Save Scheme')
+        self._name_grid.addWidget(btnSave, 0, 2)
+        self._name_grid.addWidget(QLabel('Properties:'), 1, 0)
+        self.connect(btnSave, SIGNAL("clicked()"), self.save_scheme)
+        name_frame.setLayout(self._name_grid)
+
+        vbox.addWidget(name_frame)
+        vbox.addWidget(scrollArea)
+
         vbox = QVBoxLayout()
         self._grid = QGridLayout()
-
-        self._grid.addWidget(QLabel('Scheme Name:'), 0, 0)
-        self.line_name = QLineEdit()
-        self._grid.addWidget(self.line_name, 0, 1)
-        btnSave = QPushButton('Save Scheme')
-        self._grid.addWidget(btnSave, 0, 2)
-        self._grid.addWidget(QLabel('Properties:'), 1, 0)
-        self.connect(btnSave, SIGNAL("clicked()"), self.save_scheme)
 
         keys = sorted(list(resources.COLOR_SCHEME.keys()))
         for key in keys:
