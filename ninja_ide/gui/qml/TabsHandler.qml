@@ -15,8 +15,8 @@ Rectangle {
         duration: 300
     }
 
-    signal open(string path)
-    signal close(string path)
+    signal open(string path, string tempFile)
+    signal close(string path, string tempFile)
     signal hide
 
     function show_animation() {
@@ -25,8 +25,10 @@ Rectangle {
     }
 
     function open_item() {
-        var path = listFiles.model.get(listFiles.currentIndex).path;
-        root.open(path);
+        var item = listFiles.model.get(listFiles.currentIndex);
+        var path = item.path;
+        var tempFile = item.tempFile;
+        root.open(path, tempFile);
     }
 
     function set_model(model) {
@@ -36,7 +38,8 @@ Rectangle {
                 {"name": model[i][0],
                 "path": model[i][1],
                 "checkers": model[i][2],
-                "modified": model[i][3]});
+                "modified": model[i][3],
+                "tempFile": model[i][4]});
         }
     }
 
@@ -82,7 +85,8 @@ Rectangle {
                     var coord = mapToItem(listFiles, mouseX, mouseY)
                     var index = listFiles.indexAt(coord.x, coord.y);
                     var path = listFiles.model.get(index).path;
-                    root.open(path);
+                    var tempFile = listFiles.model.get(index).tempFile;
+                    root.open(path, tempFile);
                 }
             }
 
@@ -100,8 +104,9 @@ Rectangle {
                         var coord = mapToItem(listFiles, mouseX, mouseY)
                         var index = listFiles.indexAt(coord.x, coord.y);
                         var path = listFiles.model.get(index).path;
+                        var tempFile = listFiles.model.get(index).tempFile;
                         listFiles.model.remove(index);
-                        root.close(path);
+                        root.close(path, tempFile);
                         //FIXME: when index == 0 then start removing the wrong items
                         if(index == 0) {
                             root.hide();

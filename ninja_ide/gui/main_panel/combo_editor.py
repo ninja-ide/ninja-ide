@@ -137,29 +137,29 @@ class ComboEditor(QDialog):
 
             # Editor Signals
             self.connect(editor, SIGNAL("cursorPositionChanged()"),
-                self._update_cursor_position)
+                         self._update_cursor_position)
             self.connect(editor, SIGNAL("editorFocusObtained()"),
-                self._editor_with_focus)
+                         self._editor_with_focus)
             self.connect(editor, SIGNAL("currentLineChanged(int)"),
-                self._set_current_symbol)
+                         self._set_current_symbol)
             self.connect(editor, SIGNAL("modificationChanged(bool)"),
-                self._editor_modified)
+                         self._editor_modified)
             self.connect(neditable, SIGNAL("checkersUpdated(PyQt_PyObject)"),
-                self._show_notification_icon)
+                         self._show_notification_icon)
             self.connect(neditable, SIGNAL("fileSaved(PyQt_PyObject)"),
-                self._update_symbols)
+                         self._update_symbols)
             self.connect(neditable, SIGNAL("fileSaved(PyQt_PyObject)"),
-                self._update_combo_info)
+                         self._update_combo_info)
 
             # Connect file system signals only in the original
             self.connect(neditable, SIGNAL("fileClosing(PyQt_PyObject)"),
-                self._close_file)
+                         self._close_file)
             if self.__original:
                 self.connect(neditable,
-                    SIGNAL("neverSavedFileClosing(PyQt_PyObject)"),
-                    self._ask_for_save)
+                             SIGNAL("neverSavedFileClosing(PyQt_PyObject)"),
+                             self._ask_for_save)
                 self.connect(neditable, SIGNAL("fileChanged(PyQt_PyObject)"),
-                    self._file_has_been_modified)
+                             self._file_has_been_modified)
 
             # Load Symbols
             self._load_symbols(neditable)
@@ -175,7 +175,7 @@ class ComboEditor(QDialog):
         for neditable in self.bar.get_editables():
             new_widget.add_editor(neditable)
         self.emit(SIGNAL("splitEditor(PyQt_PyObject, PyQt_PyObject, bool)"),
-            self, new_widget, orientationVertical)
+                  self, new_widget, orientationVertical)
 
     def undock_editor(self):
         new_combo = ComboEditor()
@@ -185,7 +185,7 @@ class ComboEditor(QDialog):
             new_combo.add_editor(neditable)
         new_combo.resize(500, 500)
         self.connect(new_combo, SIGNAL("aboutToCloseComboEditor()"),
-            self._remove_undock)
+                     self._remove_undock)
         new_combo.show()
 
     def _remove_undock(self):
@@ -222,14 +222,14 @@ class ComboEditor(QDialog):
             editor.neditable.update_checkers_display()
 
     def _ask_for_save(self, neditable):
-        val = QMessageBox.No
-        fileName = neditable.file_path
+        val = QMessageBox.Yes
+        fileName = neditable.nfile.file_name
         val = QMessageBox.question(
             self, (self.tr('The file %s was not saved') %
-                fileName),
-                self.tr("Do you want to save before closing?"),
-                QMessageBox.Yes | QMessageBox.No |
-                QMessageBox.Cancel)
+                   fileName),
+            self.tr("Do you want to save before closing?"),
+            QMessageBox.Yes | QMessageBox.No |
+            QMessageBox.Cancel)
         if val == QMessageBox.No:
             neditable.nfile.close(force_close=True)
         elif val == QMessageBox.Yes:
@@ -239,9 +239,10 @@ class ComboEditor(QDialog):
     def _file_has_been_modified(self, neditable):
         val = QMessageBox.No
         fileName = neditable.file_path
-        val = QMessageBox.question(self, translations.TR_FILE_HAS_BEEN_MODIFIED,
-                "%s%s" % (fileName, translations.TR_FILE_MODIFIED_OUTSIDE),
-                QMessageBox.Yes | QMessageBox.No)
+        val = QMessageBox.question(
+            self, translations.TR_FILE_HAS_BEEN_MODIFIED,
+            "%s%s" % (fileName, translations.TR_FILE_MODIFIED_OUTSIDE),
+            QMessageBox.Yes | QMessageBox.No)
         if val == QMessageBox.Yes:
             neditable.reload_file()
 

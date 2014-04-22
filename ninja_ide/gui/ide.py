@@ -198,23 +198,23 @@ class IDE(QMainWindow):
         #Register signals connections
         connections = (
             {'target': 'main_container',
-            'signal_name': 'fileSaved(QString)',
-            'slot': self.show_message},
+             'signal_name': 'fileSaved(QString)',
+             'slot': self.show_message},
             {'target': 'main_container',
-            'signal_name': 'currentEditorChanged(QString)',
-            'slot': self.change_window_title},
+             'signal_name': 'currentEditorChanged(QString)',
+             'slot': self.change_window_title},
             {'target': 'main_container',
-            'signal_name': 'openPreferences()',
-            'slot': self.show_preferences},
+             'signal_name': 'openPreferences()',
+             'slot': self.show_preferences},
             {'target': 'main_container',
-            'signal_name': 'allTabsClosed()',
-            'slot': self._last_tab_closed},
+             'signal_name': 'allTabsClosed()',
+             'slot': self._last_tab_closed},
             {'target': 'explorer_container',
-            'signal_name': 'changeWindowTitle(QString)',
-            'slot': self.change_window_title},
+             'signal_name': 'changeWindowTitle(QString)',
+             'slot': self.change_window_title},
             {'target': 'explorer_container',
-            'signal_name': 'projectClosed(QString)',
-            'slot': self.close_project},
+             'signal_name': 'projectClosed(QString)',
+             'slot': self.close_project},
             )
         self.register_signals('ide', connections)
         # Central Widget MUST always exists
@@ -347,13 +347,24 @@ class IDE(QMainWindow):
         """For convenience access to files from ide"""
         return self.filesystem.get_file(nfile_path=filename)
 
-    def get_or_create_editable(self, filename):
-        nfile = self.filesystem.get_file(nfile_path=filename)
+    def get_or_create_editable(self, filename="", nfile=None):
+        if nfile is None:
+            nfile = self.filesystem.get_file(nfile_path=filename)
         editable = self.__neditables.get(nfile)
         if editable is None:
             editable = neditable.NEditable(nfile)
+            self.connect(editable, SIGNAL("fileClosing(PyQt_PyObject)"),
+                         lambda: self._unload_neditable(nfile))
             self.__neditables[nfile] = editable
         return editable
+
+    def _unload_neditable(self, nfile):
+        del self.__neditables[nfile]
+        del nfile
+
+    @property
+    def opened_files(self):
+        return tuple(self.__neditables.keys())
 
     def get_project_for_file(self, filename):
         project = None
