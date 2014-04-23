@@ -76,10 +76,6 @@ Rectangle {
             width: root.width;
             height: checkers ? 70 : 60
 
-            ListView.onRemove: SequentialAnimation {
-                NumberAnimation { target: item; property: "scale"; to: 0; duration: 300; easing.type: Easing.InOutQuad }
-            }
-
             MouseArea {
                 anchors.fill: parent
 
