@@ -15,9 +15,13 @@ Rectangle {
         duration: 300
     }
 
-    signal open(string path)
-    signal close(string path)
+    signal open(string path, string tempFile)
+    signal close(string path, string tempFile)
     signal hide
+
+    function activateInput() {
+        listFiles.forceActiveFocus();
+    }
 
     function show_animation() {
         root.opacity = 0;
@@ -25,8 +29,10 @@ Rectangle {
     }
 
     function open_item() {
-        var path = listFiles.model.get(listFiles.currentIndex).path;
-        root.open(path);
+        var item = listFiles.model.get(listFiles.currentIndex);
+        var path = item.path;
+        var tempFile = item.tempFile;
+        root.open(path, tempFile);
     }
 
     function set_model(model) {
@@ -36,7 +42,8 @@ Rectangle {
                 {"name": model[i][0],
                 "path": model[i][1],
                 "checkers": model[i][2],
-                "modified": model[i][3]});
+                "modified": model[i][3],
+                "tempFile": model[i][4]});
         }
     }
 
@@ -70,19 +77,16 @@ Rectangle {
             height: checkers ? 70 : 60
 
             ListView.onRemove: SequentialAnimation {
-                PropertyAction { target: item; property: "ListView.delayRemove"; value: true }
                 NumberAnimation { target: item; property: "scale"; to: 0; duration: 300; easing.type: Easing.InOutQuad }
-                PropertyAction { target: item; property: "ListView.delayRemove"; value: false }
             }
 
             MouseArea {
                 anchors.fill: parent
 
                 onClicked: {
-                    var coord = mapToItem(listFiles, mouseX, mouseY)
-                    var index = listFiles.indexAt(coord.x, coord.y);
                     var path = listFiles.model.get(index).path;
-                    root.open(path);
+                    var tempFile = listFiles.model.get(index).tempFile;
+                    root.open(path, tempFile);
                 }
             }
 
@@ -97,15 +101,14 @@ Rectangle {
                     anchors.fill: parent
 
                     onClicked: {
-                        var coord = mapToItem(listFiles, mouseX, mouseY)
-                        var index = listFiles.indexAt(coord.x, coord.y);
                         var path = listFiles.model.get(index).path;
-                        listFiles.model.remove(index);
-                        root.close(path);
+                        var tempFile = listFiles.model.get(index).tempFile;
                         //FIXME: when index == 0 then start removing the wrong items
                         if(index == 0) {
                             root.hide();
                         }
+                        root.close(path, tempFile);
+                        listFiles.model.remove(index);
                     }
                 }
             }
@@ -168,5 +171,18 @@ Rectangle {
         delegate: tabDelegate
         highlight: Rectangle { color: "lightsteelblue"; radius: 10; width: root.width }
         highlightMoveDuration: 200
+
+        Keys.onDownPressed: {
+            listFiles.incrementCurrentIndex();
+        }
+        Keys.onUpPressed: {
+            listFiles.decrementCurrentIndex();
+        }
+        Keys.onEnterPressed: {
+            root.open_item();
+        }
+        Keys.onReturnPressed: {
+            root.open_item();
+        }
     }
 }

@@ -42,7 +42,7 @@ from ninja_ide.gui.main_panel import actions
 from ninja_ide.gui.main_panel import main_selector
 from ninja_ide.gui.main_panel import browser_widget
 from ninja_ide.gui.main_panel import start_page
-from ninja_ide.gui.main_panel import tabs_handler
+from ninja_ide.gui.main_panel import files_handler
 from ninja_ide.gui.main_panel import image_viewer
 from ninja_ide.gui.main_panel import combo_editor
 from ninja_ide.gui.main_panel.helpers import split_orientation
@@ -93,7 +93,7 @@ class _MainContainer(QWidget):
 
         self.splitter = dynamic_splitter.DynamicSplitter()
         self.setAcceptDrops(True)
-        self.tabs_handler = tabs_handler.TabsHandler(self)
+        self.files_handler = files_handler.FilesHandler(self)
 
         #documentation browser
         self.docPage = None
@@ -1076,12 +1076,12 @@ class _MainContainer(QWidget):
     def change_tab(self):
         """Change the tab in the current TabWidget."""
         self.stack.setCurrentWidget(self.splitter)
-        self.tabs_handler.next_item()
+        self.files_handler.next_item()
 
     def change_tab_reverse(self):
         """Change the tab in the current TabWidget backwards."""
         self.stack.setCurrentWidget(self.splitter)
-        self.tabs_handler.previous_item()
+        self.files_handler.previous_item()
 
     def toggle_tabs_and_spaces(self):
         """ Toggle Show/Hide Tabs and Spaces """

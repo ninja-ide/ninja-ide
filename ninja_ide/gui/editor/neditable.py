@@ -52,11 +52,12 @@ class NEditable(QObject):
         # Connect signals
         if self._nfile:
             self.connect(self._nfile, SIGNAL("neverSavedFileClosing(QString)"),
-                self._about_to_close_never_saved)
+                         self._about_to_close_never_saved)
             self.connect(self._nfile, SIGNAL("fileClosing(QString)"),
-                lambda: self.emit(SIGNAL("fileClosing(PyQt_PyObject)"),
-                    self))
-            self.connect(self._nfile, SIGNAL("fileChanged()"),
+                         lambda: self.emit(SIGNAL("fileClosing(PyQt_PyObject)"),
+                         self))
+            self.connect(
+                self._nfile, SIGNAL("fileChanged()"),
                 lambda: self.emit(SIGNAL("fileChanged(PyQt_PyObject)"), self))
 
     def _about_to_close_never_saved(self, path):

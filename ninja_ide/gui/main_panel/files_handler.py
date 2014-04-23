@@ -17,6 +17,8 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+import uuid
+
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger(__name__)
 
@@ -30,18 +32,18 @@ from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
 
 
-class TabsHandler(QFrame):
+class FilesHandler(QFrame):
 
     def __init__(self, parent=None):
-        super(TabsHandler, self).__init__(None,
-            Qt.FramelessWindowHint | Qt.Popup)
+        super(FilesHandler, self).__init__(
+            None, Qt.FramelessWindowHint | Qt.Popup)
         self._main_container = parent
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setStyleSheet("background:transparent;")
         # Create the QML user interface.
         self.view = QDeclarativeView()
         self.view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
-        self.view.setSource(ui_tools.get_qml_resource("TabsHandler.qml"))
+        self.view.setSource(ui_tools.get_qml_resource("FilesHandler.qml"))
         self._root = self.view.rootObject()
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
@@ -49,31 +51,41 @@ class TabsHandler(QFrame):
         vbox.addWidget(self.view)
 
         self._model = {}
+        self._temp_files = {}
         self._max_index = 0
 
-        self.connect(self._root, SIGNAL("open(QString)"), self._open)
-        self.connect(self._root, SIGNAL("close(QString)"), self._close)
+        self.connect(self._root, SIGNAL("open(QString, QString)"), self._open)
+        self.connect(self._root, SIGNAL("close(QString, QString)"), self._close)
         self.connect(self._root, SIGNAL("hide()"), self.hide)
 
-    def _open(self, path):
-        self._main_container.open_file(path)
-        index = self._model[path]
-        self._max_index = max(self._max_index, index) + 1
-        self._model[path] = self._max_index
+    def _open(self, path, temp):
+        if temp:
+            nfile = self._temp_files[temp]
+            ninjaide = IDE.get_service("ide")
+            neditable = ninjaide.get_or_create_editable(nfile=nfile)
+            self._main_container.current_widget.set_current(neditable)
+        else:
+            self._main_container.open_file(path)
+            index = self._model[path]
+            self._max_index = max(self._max_index, index) + 1
+            self._model[path] = self._max_index
         self.hide()
 
-    def _close(self, path):
-        ninjaide = IDE.get_service("ide")
-        nfile = ninjaide.get_or_create_nfile(path)
-        nfile.close()
+    def _close(self, path, temp):
+        if temp:
+            nfile = self._temp_files.get(temp, None)
+        else:
+            ninjaide = IDE.get_service("ide")
+            nfile = ninjaide.get_or_create_nfile(path)
+        if nfile is not None:
+            nfile.close()
 
     def _add_model(self):
         ninjaide = IDE.get_service("ide")
-        files = ninjaide.filesystem.get_files()
-        files_data = list(files.values())
+        files = ninjaide.opened_files
         # Update model
         old = set(self._model.keys())
-        new = set([nfile.file_path for nfile in files_data])
+        new = set([nfile.file_path for nfile in files])
         result = old - new
         for item in result:
             del self._model[item]
@@ -82,10 +94,11 @@ class TabsHandler(QFrame):
         if current_editor:
             current_path = current_editor.file_path
         model = []
-        for nfile in files_data:
-            if nfile.file_path not in self._model:
+        for nfile in files:
+            if (nfile.file_path not in self._model and
+                    nfile.file_path is not None):
                 self._model[nfile.file_path] = 0
-            neditable = ninjaide.get_or_create_editable(nfile.file_path)
+            neditable = ninjaide.get_or_create_editable(nfile=nfile)
             checkers = neditable.sorted_checkers
             checks = []
             for items in checkers:
@@ -95,12 +108,18 @@ class TabsHandler(QFrame):
                         {"checker_text": checker.dirty_text,
                          "checker_color": color})
             modified = neditable.document.isModified()
-            model.append([nfile.file_name, nfile.file_path, checks, modified])
+            temp_file = str(uuid.uuid4()) if nfile.file_path is None else ""
+            filepath = nfile.file_path if nfile.file_path is not None else ""
+            model.append([nfile.file_name, filepath, checks, modified,
+                          temp_file])
+            if temp_file:
+                self._temp_files[temp_file] = nfile
         if current_path:
             index = self._model[current_path]
             self._max_index = max(self._max_index, index) + 1
             self._model[current_path] = self._max_index
-        model = sorted(model, key=lambda x: self._model[x[1]], reverse=True)
+        model = sorted(model, key=lambda x: self._model.get(x[1], False),
+                       reverse=True)
         self._root.set_model(model)
 
     def showEvent(self, event):
@@ -114,15 +133,17 @@ class TabsHandler(QFrame):
         self.view.setFixedWidth(width)
 
         self.view.setFixedHeight(height)
-        super(TabsHandler, self).showEvent(event)
+        super(FilesHandler, self).showEvent(event)
         self._root.show_animation()
         point = self._main_container.mapToGlobal(self.view.pos())
         y_diff = self._main_container.combo_header_size
         self.move(point.x(), point.y() + y_diff)
         self.view.setFocus()
+        self._root.activateInput()
 
     def hideEvent(self, event):
-        super(TabsHandler, self).hideEvent(event)
+        super(FilesHandler, self).hideEvent(event)
+        self._temp_files = {}
         self._root.clear_model()
 
     def next_item(self):
@@ -146,4 +167,4 @@ class TabsHandler(QFrame):
             self._root.previous_item()
         elif event.key() in (Qt.Key_Return, Qt.Key_Enter):
             self._root.open_item()
-        super(TabsHandler, self).keyPressEvent(event)
+        super(FilesHandler, self).keyPressEvent(event)

@@ -104,9 +104,10 @@ class NVirtualFileSystem(QObject):
             nfile = self.__tree[nfile_path]
         else:
             nfile = NFile()
-            self.connect(nfile,
-                    SIGNAL("savedAsNewFile(PyQt_PyObject, QString, QString)"),
-                    self.__file_copied)
+            self.connect(
+                nfile,
+                SIGNAL("savedAsNewFile(PyQt_PyObject, QString, QString)"),
+                self.__file_copied)
         return nfile
 
     def __file_copied(self, nfile, old_path, new_path):

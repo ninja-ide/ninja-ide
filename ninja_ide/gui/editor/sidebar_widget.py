@@ -209,9 +209,11 @@ class SidebarWidget(QWidget):
         pattern = self.pat if self.edit.lang == "python" else self.patNotPython
 
         painter = QPainter(self)
-        background = resources.CUSTOM_SCHEME.get('sidebar-background',
+        background = resources.CUSTOM_SCHEME.get(
+            'sidebar-background',
             resources.COLOR_SCHEME['sidebar-background'])
-        foreground = resources.CUSTOM_SCHEME.get('sidebar-foreground',
+        foreground = resources.CUSTOM_SCHEME.get(
+            'sidebar-foreground',
             resources.COLOR_SCHEME['sidebar-foreground'])
         background_selected = resources.CUSTOM_SCHEME.get(
             'sidebar-selected-background',
@@ -228,8 +230,8 @@ class SidebarWidget(QWidget):
 
         xofs = self.width() - self.foldArea
         painter.fillRect(xofs, 0, self.foldArea, self.height(),
-                QColor(resources.CUSTOM_SCHEME.get('fold-area',
-                resources.COLOR_SCHEME['fold-area'])))
+                         QColor(resources.CUSTOM_SCHEME.get('fold-area',
+                                resources.COLOR_SCHEME['fold-area'])))
 
         while block.isValid():
             line_count += 1
@@ -267,13 +269,15 @@ class SidebarWidget(QWidget):
                 bold = True
                 font = painter.font()
                 font.setBold(True)
-                painter.setPen(QColor(foreground_selected))
+                if not error:
+                    painter.setPen(QColor(foreground_selected))
                 painter.setFont(font)
 
             # Draw the line number right justified at the y position of the
             # line. 3 is a magic padding number. drawText(x, y, text).
             if block.isVisible():
-                painter.drawText(self.width() - self.foldArea -
+                painter.drawText(
+                    self.width() - self.foldArea -
                     font_metrics.width(str(line_count)) - 3,
                     round(position.y()) + font_metrics.ascent() +
                     font_metrics.descent() - 1,
