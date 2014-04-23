@@ -354,13 +354,15 @@ class IDE(QMainWindow):
         if editable is None:
             editable = neditable.NEditable(nfile)
             self.connect(editable, SIGNAL("fileClosing(PyQt_PyObject)"),
-                         lambda: self._unload_neditable(nfile))
+                         self._unload_neditable)
             self.__neditables[nfile] = editable
         return editable
 
-    def _unload_neditable(self, nfile):
-        del self.__neditables[nfile]
-        del nfile
+    def _unload_neditable(self, editable):
+        self.__neditables.pop(editable.nfile)
+        editable.nfile.deleteLater()
+        editable.editor.deleteLater()
+        editable.deleteLater()
 
     @property
     def opened_files(self):
@@ -582,7 +584,7 @@ class IDE(QMainWindow):
             files_info = []
             for path in openedFiles:
                 editable = self.__neditables.get(openedFiles[path])
-                if editable.is_dirty:
+                if editable is not None and editable.is_dirty:
                     stat_value = 0
                 else:
                     stat_value = os.stat(path).st_mtime
