@@ -16,7 +16,7 @@ Rectangle {
     }
 
     signal open(string path, string tempFile)
-    signal close(string path, string tempFile)
+    signal closeItem(string path, string tempFile)
     signal hide
 
     function show_animation() {
@@ -82,8 +82,6 @@ Rectangle {
                 anchors.fill: parent
 
                 onClicked: {
-                    var coord = mapToItem(listFiles, mouseX, mouseY)
-                    var index = listFiles.indexAt(coord.x, coord.y);
                     var path = listFiles.model.get(index).path;
                     var tempFile = listFiles.model.get(index).tempFile;
                     root.open(path, tempFile);
@@ -101,16 +99,14 @@ Rectangle {
                     anchors.fill: parent
 
                     onClicked: {
-                        var coord = mapToItem(listFiles, mouseX, mouseY)
-                        var index = listFiles.indexAt(coord.x, coord.y);
                         var path = listFiles.model.get(index).path;
                         var tempFile = listFiles.model.get(index).tempFile;
                         listFiles.model.remove(index);
-                        root.close(path, tempFile);
                         //FIXME: when index == 0 then start removing the wrong items
                         if(index == 0) {
                             root.hide();
                         }
+                        root.closeItem(path, tempFile);
                     }
                 }
             }

@@ -24,6 +24,7 @@ logger = NinjaLogger(__name__)
 
 from PyQt4.QtGui import QFrame
 from PyQt4.QtGui import QVBoxLayout
+from PyQt4.QtGui import QMessageBox
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtDeclarative import QDeclarativeView
@@ -55,30 +56,33 @@ class TabsHandler(QFrame):
         self._max_index = 0
 
         self.connect(self._root, SIGNAL("open(QString, QString)"), self._open)
-        self.connect(self._root, SIGNAL("close(QString, QString)"), self._close)
+        self.connect(self._root, SIGNAL("closeItem(QString, QString)"),
+                     self._open)
         self.connect(self._root, SIGNAL("hide()"), self.hide)
 
     def _open(self, path, temp):
-        if temp:
-            nfile = self._temp_files[temp]
-            ninjaide = IDE.get_service("ide")
-            neditable = ninjaide.get_or_create_editable(nfile=nfile)
-            self._main_container.current_widget.set_current(neditable)
-        else:
-            self._main_container.open_file(path)
-            index = self._model[path]
-            self._max_index = max(self._max_index, index) + 1
-            self._model[path] = self._max_index
+        #if temp:
+            #nfile = self._temp_files[temp]
+            #ninjaide = IDE.get_service("ide")
+            #neditable = ninjaide.get_or_create_editable(nfile=nfile)
+            #self._main_container.current_widget.set_current(neditable)
+        #else:
+            #self._main_container.open_file(path)
+            #index = self._model[path]
+            #self._max_index = max(self._max_index, index) + 1
+            #self._model[path] = self._max_index
         self.hide()
+        QMessageBox.question(None, "title", "text")
 
-    def _close(self, path, temp):
-        if temp:
-            nfile = self._temp_files.get(temp, None)
-        else:
-            ninjaide = IDE.get_service("ide")
-            nfile = ninjaide.get_or_create_nfile(path)
-        if nfile is not None:
-            nfile.close()
+    #def _close(self, path, temp):
+        #QMessageBox.question(self, "title", "text")
+        #if temp:
+            #nfile = self._temp_files.get(temp, None)
+        #else:
+            #ninjaide = IDE.get_service("ide")
+            #nfile = ninjaide.get_or_create_nfile(path)
+        #if nfile is not None:
+            #nfile.close()
 
     def _add_model(self):
         ninjaide = IDE.get_service("ide")
