@@ -222,7 +222,7 @@ class ComboEditor(QDialog):
             editor.neditable.update_checkers_display()
 
     def _ask_for_save(self, neditable):
-        val = QMessageBox.Yes
+        val = QMessageBox.No
         fileName = neditable.nfile.file_name
         val = QMessageBox.question(
             self, (self.tr('The file %s was not saved') %

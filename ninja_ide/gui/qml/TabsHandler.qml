@@ -16,8 +16,12 @@ Rectangle {
     }
 
     signal open(string path, string tempFile)
-    signal closeItem(string path, string tempFile)
+    signal close(string path, string tempFile)
     signal hide
+
+    function activateInput() {
+        listFiles.forceActiveFocus();
+    }
 
     function show_animation() {
         root.opacity = 0;
@@ -73,9 +77,7 @@ Rectangle {
             height: checkers ? 70 : 60
 
             ListView.onRemove: SequentialAnimation {
-                PropertyAction { target: item; property: "ListView.delayRemove"; value: true }
                 NumberAnimation { target: item; property: "scale"; to: 0; duration: 300; easing.type: Easing.InOutQuad }
-                PropertyAction { target: item; property: "ListView.delayRemove"; value: false }
             }
 
             MouseArea {
@@ -101,12 +103,12 @@ Rectangle {
                     onClicked: {
                         var path = listFiles.model.get(index).path;
                         var tempFile = listFiles.model.get(index).tempFile;
-                        listFiles.model.remove(index);
                         //FIXME: when index == 0 then start removing the wrong items
                         if(index == 0) {
                             root.hide();
                         }
-                        root.closeItem(path, tempFile);
+                        root.close(path, tempFile);
+                        listFiles.model.remove(index);
                     }
                 }
             }
@@ -169,5 +171,18 @@ Rectangle {
         delegate: tabDelegate
         highlight: Rectangle { color: "lightsteelblue"; radius: 10; width: root.width }
         highlightMoveDuration: 200
+
+        Keys.onDownPressed: {
+            listFiles.incrementCurrentIndex();
+        }
+        Keys.onUpPressed: {
+            listFiles.decrementCurrentIndex();
+        }
+        Keys.onEnterPressed: {
+            root.open_item();
+        }
+        Keys.onReturnPressed: {
+            root.open_item();
+        }
     }
 }
