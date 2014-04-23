@@ -32,10 +32,10 @@ from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
 
 
-class TabsHandler(QFrame):
+class FilesHandler(QFrame):
 
     def __init__(self, parent=None):
-        super(TabsHandler, self).__init__(
+        super(FilesHandler, self).__init__(
             None, Qt.FramelessWindowHint | Qt.Popup)
         self._main_container = parent
         self.setAttribute(Qt.WA_TranslucentBackground)
@@ -43,7 +43,7 @@ class TabsHandler(QFrame):
         # Create the QML user interface.
         self.view = QDeclarativeView()
         self.view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
-        self.view.setSource(ui_tools.get_qml_resource("TabsHandler.qml"))
+        self.view.setSource(ui_tools.get_qml_resource("FilesHandler.qml"))
         self._root = self.view.rootObject()
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
@@ -133,7 +133,7 @@ class TabsHandler(QFrame):
         self.view.setFixedWidth(width)
 
         self.view.setFixedHeight(height)
-        super(TabsHandler, self).showEvent(event)
+        super(FilesHandler, self).showEvent(event)
         self._root.show_animation()
         point = self._main_container.mapToGlobal(self.view.pos())
         y_diff = self._main_container.combo_header_size
@@ -142,7 +142,7 @@ class TabsHandler(QFrame):
         self._root.activateInput()
 
     def hideEvent(self, event):
-        super(TabsHandler, self).hideEvent(event)
+        super(FilesHandler, self).hideEvent(event)
         self._temp_files = {}
         self._root.clear_model()
 
@@ -167,4 +167,4 @@ class TabsHandler(QFrame):
             self._root.previous_item()
         elif event.key() in (Qt.Key_Return, Qt.Key_Enter):
             self._root.open_item()
-        super(TabsHandler, self).keyPressEvent(event)
+        super(FilesHandler, self).keyPressEvent(event)
