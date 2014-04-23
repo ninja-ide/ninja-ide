@@ -121,7 +121,7 @@ class IDE(QMainWindow):
             self.s_listener = QLocalServer()
             self.s_listener.listen("ninja_ide")
             self.connect(self.s_listener, SIGNAL("newConnection()"),
-                self._process_connection)
+                         self._process_connection)
 
         #Sessions handler
         self._session = None
@@ -158,7 +158,7 @@ class IDE(QMainWindow):
         #serviceLocator = plugin_manager.ServiceLocator(services)
         serviceLocator = plugin_manager.ServiceLocator(None)
         self.plugin_manager = plugin_manager.PluginManager(resources.PLUGINS,
-            serviceLocator)
+                                                           serviceLocator)
         self.plugin_manager.discover()
         #load all plugins!
         self.plugin_manager.load_all()
@@ -166,7 +166,7 @@ class IDE(QMainWindow):
         #Tray Icon
         self.trayIcon = updates.TrayIconUpdates(self)
         self.connect(self.trayIcon, SIGNAL("closeTrayIcon()"),
-            self._close_tray_icon)
+                     self._close_tray_icon)
         self.trayIcon.show()
 
         key = Qt.Key_1
@@ -428,7 +428,7 @@ class IDE(QMainWindow):
         if data:
             files, projects = str(data).split(ipc.project_delimiter, 1)
             files = [(x.split(':')[0], int(x.split(':')[1]))
-                for x in files.split(ipc.file_delimiter)]
+                     for x in files.split(ipc.file_delimiter)]
             projects = projects.split(ipc.project_delimiter)
             self.load_session_files_projects(files, [], projects, None)
 
@@ -466,7 +466,7 @@ class IDE(QMainWindow):
         pref.show()
 
     def load_session_files_projects(self, files, projects,
-            current_file, recent_files=None):
+                                    current_file, recent_files=None):
         """Load the files and projects from previous session."""
         main_container = IDE.get_service('main_container')
         projects_explorer = IDE.get_service('projects_explorer')
@@ -476,7 +476,7 @@ class IDE(QMainWindow):
                     mtime = os.stat(fileData[0]).st_mtime
                     ignore_checkers = (mtime == fileData[2])
                     main_container.open_file(fileData[0], fileData[1],
-                        ignore_checkers=ignore_checkers)
+                                             ignore_checkers=ignore_checkers)
             if current_file:
                 main_container.open_file(current_file)
         if projects_explorer and projects:
@@ -507,7 +507,7 @@ class IDE(QMainWindow):
         self._session = sessionName
         if self._session is not None:
             self.setWindowTitle(translations.TR_SESSION_IDE_HEADER %
-                {'session': self._session})
+                                {'session': self._session})
         else:
             self.setWindowTitle(
                 'NINJA-IDE {Ninja-IDE Is Not Just Another IDE}')
@@ -520,7 +520,7 @@ class IDE(QMainWindow):
             self.setWindowTitle('NINJA-IDE - %s' % title)
         else:
             self.setWindowTitle((translations.TR_SESSION_IDE_HEADER %
-                {'session': self._session}) + ' - %s' % title)
+                                {'session': self._session}) + ' - %s' % title)
 
     def wheelEvent(self, event):
         """Change the opacity of the application."""
@@ -537,9 +537,10 @@ class IDE(QMainWindow):
     @classmethod
     def ninja_settings(cls):
         qsettings = nsettings.NSettings(resources.SETTINGS_PATH,
-            prefix="ns")
+                                        prefix="ns")
         if cls.__created:
-            cls.__instance.connect(qsettings,
+            cls.__instance.connect(
+                qsettings,
                 SIGNAL("valueChanged(QString, PyQt_PyObject)"),
                 cls.__instance._settings_value_changed)
         return qsettings
@@ -547,9 +548,10 @@ class IDE(QMainWindow):
     @classmethod
     def data_settings(cls):
         qsettings = nsettings.NSettings(resources.DATA_SETTINGS_PATH,
-            prefix="ds")
+                                        prefix="ds")
         if cls.__created:
-            cls.__instance.connect(qsettings,
+            cls.__instance.connect(
+                qsettings,
                 SIGNAL("valueChanged(QString, PyQt_PyObject)"),
                 cls.__instance._settings_value_changed)
         return qsettings
@@ -572,8 +574,7 @@ class IDE(QMainWindow):
         current_file = ''
         if editor_widget is not None:
             current_file = editor_widget.file_path
-        if qsettings.value('preferences/general/loadFiles',
-                True, type=bool):
+        if qsettings.value('preferences/general/loadFiles', True, type=bool):
             openedFiles = self.filesystem.get_files()
             projects_obj = self.filesystem.get_projects()
             projects = [projects_obj[proj].path for proj in projects_obj]
@@ -586,21 +587,22 @@ class IDE(QMainWindow):
                 else:
                     stat_value = os.stat(path).st_mtime
                 files_info.append([path,
-                    editable.editor.get_cursor_position(),
-                    stat_value])
+                                  editable.editor.get_cursor_position(),
+                                  stat_value])
             data_qsettings.setValue('lastSession/openedFiles', files_info)
             if current_file is not None:
                 data_qsettings.setValue('lastSession/currentFile', current_file)
             data_qsettings.setValue('lastSession/recentFiles',
-                settings.LAST_OPENED_FILES)
+                                    settings.LAST_OPENED_FILES)
         data_qsettings.setValue('preferences/editor/bookmarks',
-            settings.BOOKMARKS)
+                                settings.BOOKMARKS)
         data_qsettings.setValue('preferences/editor/breakpoints',
-            settings.BREAKPOINTS)
+                                settings.BREAKPOINTS)
 
         # Session
         if self._session is not None:
-            val = QMessageBox.question(self,
+            val = QMessageBox.question(
+                self,
                 translations.TR_SESSION_ACTIVE_IDE_CLOSING_TITLE,
                 (translations.TR_SESSION_ACTIVE_IDE_CLOSING_BODY %
                     {'session': self.Session}),
@@ -647,9 +649,11 @@ class IDE(QMainWindow):
         if qsettings.value("window/maximized", True, type=bool):
             self.setWindowState(Qt.WindowMaximized)
         else:
-            self.resize(qsettings.value("window/size",
+            self.resize(qsettings.value(
+                "window/size",
                 QSizeF(800, 600).toSize(), type='QSize'))
-            self.move(qsettings.value("window/pos",
+            self.move(qsettings.value(
+                "window/pos",
                 QPointF(100, 100).toPoint(), type='QPoint'))
 
     def _get_unsaved_files(self):
@@ -678,7 +682,8 @@ class IDE(QMainWindow):
         unsaved_files = self._get_unsaved_files()
         if (settings.CONFIRM_EXIT and unsaved_files):
             txt = '\n'.join(unsaved_files)
-            val = QMessageBox.question(self,
+            val = QMessageBox.question(
+                self,
                 translations.TR_IDE_CONFIRM_EXIT_TITLE,
                 (translations.TR_IDE_CONFIRM_EXIT_BODY % {'files': txt}),
                 QMessageBox.Yes, QMessageBox.No, QMessageBox.Cancel)
