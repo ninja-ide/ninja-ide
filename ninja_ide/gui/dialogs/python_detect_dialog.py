@@ -70,6 +70,7 @@ class PythonDetectDialog(QDialog):
         python_path = self.listPaths.currentItem().text()
 
         qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
+        settings.PYTHON_PATH = python_path
         settings.PYTHON_EXEC = python_path
         settings.PYTHON_EXEC_CONFIGURED_BY_USER = True
         qsettings.setValue('preferences/execution/pythonPath', python_path)
