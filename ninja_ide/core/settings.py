@@ -56,7 +56,8 @@ def detect_python_path():
     if (IS_WINDOWS and PYTHON_EXEC_CONFIGURED_BY_USER) or not IS_WINDOWS:
         return []
 
-    suggested = dirs = []
+    suggested = []
+    dirs = []
     try:
         drives = [QDir.toNativeSeparators(d.absolutePath())
                   for d in QDir.drives()]
