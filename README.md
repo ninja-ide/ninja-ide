@@ -24,6 +24,7 @@ You can clone this repo and simply execute:
 
     git clone git://github.com/ninja-ide/ninja-ide.git
     cd ninja-ide
+    sudo pip install -r requeriments.txt
     python ninja-ide.py
 
 Piece of cake, huh?
