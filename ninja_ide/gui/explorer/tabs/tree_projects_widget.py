@@ -68,6 +68,7 @@ class ProjectTreeColumn(QDialog):
 
         self._combo_project = QComboBox()
         self._combo_project.setMinimumHeight(30)
+        self._combo_project.setContextMenuPolicy(Qt.CustomContextMenu)
         vbox.addWidget(self._combo_project)
 
         self._projects_area = QStackedLayout()
@@ -77,6 +78,11 @@ class ProjectTreeColumn(QDialog):
 
         self.projects = []
 
+        self.connect(self._combo_project, SIGNAL("currentIndexChanged(int)"),
+                     self._change_current_project)
+        self.connect(self._combo_project, SIGNAL(
+            "customContextMenuRequested(const QPoint &)"),
+            self.context_menu_for_root)
         connections = (
             {'target': 'main_container',
              'signal_name': 'addToProject(QString)',
@@ -213,10 +219,13 @@ class ProjectTreeColumn(QDialog):
         self._projects_area.takeAt(index)
         self._combo_project.removeItem(index)
         index = self._combo_project.currentIndex()
-        self._project_area.setCurrentIndex(index)
+        self._projects_area.setCurrentIndex(index)
         ninjaide = IDE.get_service('ide')
         ninjaide.filesystem.close_project(widget.project.path)
         widget.deleteLater()
+
+    def _change_current_project(self, index):
+        self._projects_area.setCurrentIndex(index)
 
     def close_opened_projects(self):
         for project in reversed(self.projects):
@@ -292,6 +301,58 @@ class ProjectTreeColumn(QDialog):
     def closeEvent(self, event):
         self.emit(SIGNAL("dockWidget(PyQt_PyObject)"), self)
         event.ignore()
+
+    def context_menu_for_root(self):
+        menu = QMenu(self)
+        path = self.current_tree.project.path
+        action_add_file = menu.addAction(QIcon(":img/new"),
+                                         translations.TR_ADD_NEW_FILE)
+        action_add_folder = menu.addAction(QIcon(
+            ":img/openProj"), translations.TR_ADD_NEW_FOLDER)
+        action_create_init = menu.addAction(translations.TR_CREATE_INIT)
+        self.connect(action_add_file, SIGNAL("triggered()"),
+                     lambda: self.current_tree._add_new_file(path))
+        self.connect(action_add_folder, SIGNAL("triggered()"),
+                     lambda: self.current_tree._add_new_folder(path))
+        self.connect(action_create_init, SIGNAL("triggered()"),
+                     lambda: self.current_tree._create_init(path))
+        menu.addSeparator()
+        actionRunProject = menu.addAction(QIcon(
+            ":img/play"), translations.TR_RUN_PROJECT)
+        self.connect(actionRunProject, SIGNAL("triggered()"),
+                     self.current_tree._execute_project)
+        if self.current_tree._added_to_console:
+            actionRemoveFromConsole = menu.addAction(
+                translations.TR_REMOVE_PROJECT_FROM_PYTHON_CONSOLE)
+            self.connect(actionRemoveFromConsole, SIGNAL("triggered()"),
+                         self.current_tree._remove_project_from_console)
+        else:
+            actionAdd2Console = menu.addAction(
+                translations.TR_ADD_PROJECT_TO_PYTHON_CONSOLE)
+            self.connect(actionAdd2Console, SIGNAL("triggered()"),
+                         self.current_tree._add_project_to_console)
+        actionShowFileSizeInfo = menu.addAction(translations.TR_SHOW_FILESIZE)
+        self.connect(actionShowFileSizeInfo, SIGNAL("triggered()"),
+                     self.current_tree.show_filesize_info)
+        actionProperties = menu.addAction(QIcon(":img/pref"),
+                                          translations.TR_PROJECT_PROPERTIES)
+        self.connect(actionProperties, SIGNAL("triggered()"),
+                     self.current_tree.open_project_properties)
+
+        menu.addSeparator()
+        action_close = menu.addAction(
+            self.style().standardIcon(QStyle.SP_DialogCloseButton),
+            translations.TR_CLOSE_PROJECT)
+        self.connect(action_close, SIGNAL("triggered()"),
+                     self.current_tree._close_project)
+        #menu for the project
+        for m in self.current_tree.extra_menus_by_scope['project']:
+            if isinstance(m, QMenu):
+                menu.addSeparator()
+                menu.addMenu(m)
+
+        #show the menu!
+        menu.exec_(QCursor.pos())
 
 
 class TreeProjectsWidget(QTreeView):
@@ -370,24 +431,19 @@ class TreeProjectsWidget(QTreeView):
         if path not in self.state_index:
             self.state_index.append(path)
 
-    def _menu_context_tree(self, point, isRoot=False, root_path=None):
+    def _menu_context_tree(self, point):
         index = self.indexAt(point)
-        if not index.isValid() and not isRoot:
+        if not index.isValid():
             return
 
         handler = None
         menu = QMenu(self)
-        if isRoot or self.model().isDir(index):
-            self._add_context_menu_for_folders(menu, isRoot, root_path)
+        if self.model().isDir(index):
+            self._add_context_menu_for_folders(menu)
         else:
             filename = self.model().fileName(index)
             lang = file_manager.get_file_extension(filename)
             self._add_context_menu_for_files(menu, lang)
-        if isRoot:
-            #get the extra context menu for this projectType
-            handler = settings.get_project_type_handler(
-                self.project.project_type)
-            self._add_context_menu_for_root(menu)
 
         menu.addMenu(self._folding_menu)
 
@@ -400,46 +456,7 @@ class TreeProjectsWidget(QTreeView):
         #show the menu!
         menu.exec_(QCursor.pos())
 
-    def _add_context_menu_for_root(self, menu):
-        menu.addSeparator()
-        actionRunProject = menu.addAction(QIcon(
-            ":img/play"), translations.TR_RUN_PROJECT)
-        self.connect(actionRunProject, SIGNAL("triggered()"),
-                     self._execute_project)
-        actionMainProject = menu.addAction(translations.TR_SET_AS_MAIN_PROJECT)
-        self.connect(actionMainProject, SIGNAL("triggered()"),
-                     self.set_default_project)
-        if self._added_to_console:
-            actionRemoveFromConsole = menu.addAction(
-                translations.TR_REMOVE_PROJECT_FROM_PYTHON_CONSOLE)
-            self.connect(actionRemoveFromConsole, SIGNAL("triggered()"),
-                         self._remove_project_from_console)
-        else:
-            actionAdd2Console = menu.addAction(
-                translations.TR_ADD_PROJECT_TO_PYTHON_CONSOLE)
-            self.connect(actionAdd2Console, SIGNAL("triggered()"),
-                         self._add_project_to_console)
-        actionShowFileSizeInfo = menu.addAction(translations.TR_SHOW_FILESIZE)
-        self.connect(actionShowFileSizeInfo, SIGNAL("triggered()"),
-                     self.show_filesize_info)
-        actionProperties = menu.addAction(QIcon(":img/pref"),
-                                          translations.TR_PROJECT_PROPERTIES)
-        self.connect(actionProperties, SIGNAL("triggered()"),
-                     self.open_project_properties)
-
-        menu.addSeparator()
-        action_close = menu.addAction(
-            self.style().standardIcon(QStyle.SP_DialogCloseButton),
-            translations.TR_CLOSE_PROJECT)
-        self.connect(action_close, SIGNAL("triggered()"),
-                     self._close_project)
-        #menu for the project
-        for m in self.extra_menus_by_scope['project']:
-            if isinstance(m, QMenu):
-                menu.addSeparator()
-                menu.addMenu(m)
-
-    def _add_context_menu_for_folders(self, menu, isRoot=False, path=None):
+    def _add_context_menu_for_folders(self, menu):
         #Create Actions
         action_add_file = menu.addAction(QIcon(":img/new"),
                                          translations.TR_ADD_NEW_FILE)
@@ -448,23 +465,14 @@ class TreeProjectsWidget(QTreeView):
         action_create_init = menu.addAction(translations.TR_CREATE_INIT)
         action_remove_folder = menu.addAction(translations.TR_REMOVE_FOLDER)
 
-        #Connect actions
-        if isRoot:
-            self.connect(action_add_file, SIGNAL("triggered()"),
-                         lambda: self._add_new_file(path))
-            self.connect(action_add_folder, SIGNAL("triggered()"),
-                         lambda: self._add_new_folder(path))
-            self.connect(action_create_init, SIGNAL("triggered()"),
-                         lambda: self._create_init(path))
-        else:
-            self.connect(action_add_file, SIGNAL("triggered()"),
-                         self._add_new_file)
-            self.connect(action_add_folder, SIGNAL("triggered()"),
-                         self._add_new_folder)
-            self.connect(action_create_init, SIGNAL("triggered()"),
-                         self._create_init)
-            self.connect(action_remove_folder, SIGNAL("triggered()"),
-                         self._delete_folder)
+        self.connect(action_add_file, SIGNAL("triggered()"),
+                     self._add_new_file)
+        self.connect(action_add_folder, SIGNAL("triggered()"),
+                     self._add_new_folder)
+        self.connect(action_create_init, SIGNAL("triggered()"),
+                     self._create_init)
+        self.connect(action_remove_folder, SIGNAL("triggered()"),
+                     self._delete_folder)
 
     def _add_context_menu_for_files(self, menu, lang):
         #Create actions
