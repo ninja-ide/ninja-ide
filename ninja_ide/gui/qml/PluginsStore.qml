@@ -157,11 +157,13 @@ Rectangle {
         }
         spacing: 1
 
+        property int buttonsPadding: 20
+
         ToggleButton {
             id: btnName
             text: "By Name"
             height: 20
-            width: 70
+            width: btnName.textWidth + rowButtons.buttonsPadding
             color: "#b8b8b8"
             toggled: true
             visible: false
@@ -180,7 +182,7 @@ Rectangle {
             id: btnTags
             text: "By Tags"
             height: 20
-            width: 70
+            width: btnName.textWidth + rowButtons.buttonsPadding
             visible: false
 
             onClicked: {
@@ -197,7 +199,7 @@ Rectangle {
             id: btnAuthor
             text: "By Author"
             height: 20
-            width: 70
+            width: btnName.textWidth + rowButtons.buttonsPadding
             visible: false
 
             onClicked: {
@@ -214,7 +216,7 @@ Rectangle {
             id: btnInstalled
             text: "Installed"
             height: 20
-            width: 70
+            width: btnName.textWidth + rowButtons.buttonsPadding
             visible: false
 
             onClicked: {
@@ -230,7 +232,7 @@ Rectangle {
             id: btnSearch
             text: "Search"
             height: 20
-            width: 70
+            width: btnName.textWidth + rowButtons.buttonsPadding
             toggled: true
             visible: false
 
