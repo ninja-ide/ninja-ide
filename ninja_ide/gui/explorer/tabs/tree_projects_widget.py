@@ -31,12 +31,14 @@ from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QComboBox
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QFileDialog
+from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QInputDialog
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QMenu
 from PyQt4.QtGui import QIcon
 from PyQt4.QtGui import QStyle
 from PyQt4.QtGui import QCursor
+from PyQt4.QtGui import QLabel
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QDateTime
@@ -66,14 +68,24 @@ class ProjectTreeColumn(QDialog):
         #vbox.setSpacing(0)
         self._buttons = []
 
+        hbox = QHBoxLayout(self)
+        hbox.setSizeConstraint(QHBoxLayout.SetDefaultConstraint)
+        hbox.setContentsMargins(0, 0, 0, 0)
+        hbox.setSpacing(0)
+
         self._combo_project = QComboBox()
         self._combo_project.setMinimumHeight(30)
         self._combo_project.setContextMenuPolicy(Qt.CustomContextMenu)
-        vbox.addWidget(self._combo_project)
+        hbox.addWidget(self._combo_project)
+
+        self._label_num_project = QLabel()
+        self._label_num_project.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+        hbox.addWidget(self._label_num_project)
 
         self._projects_area = QStackedLayout()
         logger.debug("This is the projects area")
         logger.debug(self._projects_area)
+        vbox.addLayout(hbox)
         vbox.addLayout(self._projects_area)
 
         self.projects = []
@@ -211,11 +223,17 @@ class ProjectTreeColumn(QDialog):
             ptree.setRootIndex(pindex)
             #self._widget.layout().addWidget(scrollable_wrapper(ptree))
             self.projects.append(ptree)
+            self._label_num_project.setText("{}/{}".format(
+                                            self._combo_project.currentIndex() + 1,
+                                            len(self.projects)))
 
     def _close_project(self, widget):
         """Close the project related to the tree widget."""
         index = self._projects_area.currentIndex()
         self.projects.remove(widget)
+        self._label_num_project.setText("{}/{}".format(
+                                        self._combo_project.currentIndex() + 1,
+                                        len(self.projects)))
         self._projects_area.takeAt(index)
         self._combo_project.removeItem(index)
         index = self._combo_project.currentIndex()
@@ -226,6 +244,9 @@ class ProjectTreeColumn(QDialog):
 
     def _change_current_project(self, index):
         self._projects_area.setCurrentIndex(index)
+        self._label_num_project.setText("{}/{}".format(
+                                        self._combo_project.currentIndex() + 1,
+                                        len(self.projects)))
 
     def close_opened_projects(self):
         for project in reversed(self.projects):
