@@ -68,7 +68,7 @@ class ProjectTreeColumn(QDialog):
         #vbox.setSpacing(0)
         self._buttons = []
 
-	hbox = QHBoxLayout(self)
+        hbox = QHBoxLayout(self)
         hbox.setSizeConstraint(QHBoxLayout.SetDefaultConstraint)
         hbox.setContentsMargins(0, 0, 0, 0)
         hbox.setSpacing(0)
@@ -78,14 +78,14 @@ class ProjectTreeColumn(QDialog):
         self._combo_project.setContextMenuPolicy(Qt.CustomContextMenu)
         hbox.addWidget(self._combo_project)
 
-	self._label_num_project = QLabel()
+        self._label_num_project = QLabel()
         self._label_num_project.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
         hbox.addWidget(self._label_num_project)
 
         self._projects_area = QStackedLayout()
         logger.debug("This is the projects area")
         logger.debug(self._projects_area)
-	vbox.addLayout(hbox)
+        vbox.addLayout(hbox)
         vbox.addLayout(self._projects_area)
 
         self.projects = []
@@ -223,7 +223,7 @@ class ProjectTreeColumn(QDialog):
             ptree.setRootIndex(pindex)
             #self._widget.layout().addWidget(scrollable_wrapper(ptree))
             self.projects.append(ptree)
-	    self._label_num_project.setText("{}/{}".format(
+            self._label_num_project.setText("{}/{}".format(
                                             self._combo_project.currentIndex() + 1,
                                             len(self.projects)))
 
@@ -231,7 +231,7 @@ class ProjectTreeColumn(QDialog):
         """Close the project related to the tree widget."""
         index = self._projects_area.currentIndex()
         self.projects.remove(widget)
-	self._label_num_project.setText("{}/{}".format(
+        self._label_num_project.setText("{}/{}".format(
                                         self._combo_project.currentIndex() + 1,
                                         len(self.projects)))
         self._projects_area.takeAt(index)
@@ -244,7 +244,7 @@ class ProjectTreeColumn(QDialog):
 
     def _change_current_project(self, index):
         self._projects_area.setCurrentIndex(index)
-	self._label_num_project.setText("{}/{}".format(
+        self._label_num_project.setText("{}/{}".format(
                                         self._combo_project.currentIndex() + 1,
                                         len(self.projects)))
 
