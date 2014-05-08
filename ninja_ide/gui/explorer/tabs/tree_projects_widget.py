@@ -209,8 +209,10 @@ class ProjectTreeColumn(QDialog):
             ptree.setModel(pmodel)
             pindex = pmodel.index(pmodel.rootPath())
             ptree.setRootIndex(pindex)
-            #self._widget.layout().addWidget(scrollable_wrapper(ptree))
             self.projects.append(ptree)
+            current_index = self._projects_area.count()
+            self._projects_area.setCurrentIndex(current_index - 1)
+            self._combo_project.setCurrentIndex(current_index - 1)
 
     def _close_project(self, widget):
         """Close the project related to the tree widget."""
