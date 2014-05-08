@@ -675,6 +675,11 @@ class TreeProjectsWidget(QTreeView):
         if tools_dock:
             tools_dock.execute_project(self.project.path)
 
+    def keyPressEvent(self, event):
+        super(TreeProjectsWidget, self).keyPressEvent(event)
+        if event.key() in (Qt.Key_Enter, Qt.Key_Return):
+            self._open_node(self.currentIndex())
+
 
 class FoldingContextMenu(QMenu):
     """
