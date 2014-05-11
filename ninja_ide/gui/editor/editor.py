@@ -34,7 +34,6 @@ from PyQt4.QtGui import QFontMetricsF
 from PyQt4.QtGui import QToolTip
 from PyQt4.QtGui import QAction
 from PyQt4.QtGui import QTextOption
-from PyQt4.QtGui import QTextEdit
 from PyQt4.QtGui import QInputDialog
 from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QTextDocument
@@ -297,7 +296,6 @@ class Editor(QPlainTextEdit):
             option.setFlags(QTextOption.ShowTabsAndSpaces)
         doc.setDefaultTextOption(option)
         self.setDocument(doc)
-        self.setCenterOnScroll(settings.CENTER_ON_SCROLL)
 
     def set_tab_usage(self):
         """Update tab stop width and margin line."""
@@ -701,7 +699,7 @@ class Editor(QPlainTextEdit):
         super(Editor, self).focusOutEvent(event)
 
     def resizeEvent(self, event):
-        QPlainTextEdit.resizeEvent(self, event)
+        super(Editor, self).resizeEvent(event)
         self._sidebarWidget.setFixedHeight(self.height())
         if self._mini:
             self._mini.adjust_to_parent()
@@ -924,7 +922,7 @@ class Editor(QPlainTextEdit):
 
         self._check_auto_copy_cut(event)
 
-        QPlainTextEdit.keyPressEvent(self, event)
+        super(Editor, self).keyPressEvent(event)
 
         self.postKeyPress.get(event.key(), lambda x: False)(event)
 
@@ -946,7 +944,7 @@ class Editor(QPlainTextEdit):
             self.setTextCursor(tc)
 
     def keyReleaseEvent(self, event):
-        QPlainTextEdit.keyReleaseEvent(self, event)
+        super(Editor, self).keyReleaseEvent(event)
         block_number = self.textCursor().blockNumber()
         if block_number != self._last_block_position:
             self._last_block_position = block_number
@@ -987,7 +985,7 @@ class Editor(QPlainTextEdit):
             elif event.delta() == -120:
                 self.zoom_out()
             event.ignore()
-        QPlainTextEdit.wheelEvent(self, event)
+        super(Editor, self).wheelEvent(event)
 
     def contextMenuEvent(self, event):
         popup_menu = self.createStandardContextMenu()
@@ -1034,7 +1032,7 @@ class Editor(QPlainTextEdit):
             if (cursor.selectedText()[-1:] in ('(', '.') or
                     cursor.selectedText()[:1] in ('.', '@')):
                 self.extraSelections = []
-                selection = QTextEdit.ExtraSelection()
+                selection = QPlainTextEdit.ExtraSelection()
                 lineColor = QColor(resources.CUSTOM_SCHEME.get('linkNavigate',
                                    resources.COLOR_SCHEME['linkNavigate']))
                 selection.format.setForeground(lineColor)
@@ -1045,7 +1043,7 @@ class Editor(QPlainTextEdit):
             else:
                 self.extraSelections = []
                 self.setExtraSelections(self.extraSelections)
-        QPlainTextEdit.mouseMoveEvent(self, event)
+        super(Editor, self).mouseMoveEvent(event)
 
     def mousePressEvent(self, event):
         #if self.completer.isVisible():
@@ -1058,10 +1056,10 @@ class Editor(QPlainTextEdit):
                 not self.textCursor().hasSelection():
             cursor = self.cursorForPosition(event.pos())
             self.setTextCursor(cursor)
-        QPlainTextEdit.mousePressEvent(self, event)
+        super(Editor, self).mousePressEvent(event)
 
     def mouseReleaseEvent(self, event):
-        QPlainTextEdit.mouseReleaseEvent(self, event)
+        super(Editor, self).mouseReleaseEvent(event)
         if event.button() == Qt.LeftButton:
             self.highlight_selected_word()
         block_number = self.textCursor().blockNumber()
@@ -1075,7 +1073,7 @@ class Editor(QPlainTextEdit):
             self.emit(SIGNAL("openDropFile(QString)"), path)
             event.ignore()
             event.mimeData = QMimeData()
-        QPlainTextEdit.dropEvent(self, event)
+        super(Editor, self).dropEvent(event)
         self.undo()
 
     def go_to_definition(self, cursor=None):
@@ -1181,7 +1179,7 @@ class Editor(QPlainTextEdit):
 
         if not self.isReadOnly():
             block = self.textCursor()
-            selection = QTextEdit.ExtraSelection()
+            selection = QPlainTextEdit.ExtraSelection()
             lineColor = self._current_line_color
             lineColor.setAlpha(resources.CUSTOM_SCHEME.get(
                 "current-line-opacity",
@@ -1227,14 +1225,14 @@ class Editor(QPlainTextEdit):
             return
         if pos2 is not None:
             self._braces = (pos1, pos2)
-            selection = QTextEdit.ExtraSelection()
+            selection = QPlainTextEdit.ExtraSelection()
             selection.format.setForeground(QColor(
                 resources.CUSTOM_SCHEME.get(
                     'brace-foreground',
                     resources.COLOR_SCHEME.get('brace-foreground'))))
             selection.cursor = cursor
             self.extraSelections.append(selection)
-            selection = QTextEdit.ExtraSelection()
+            selection = QPlainTextEdit.ExtraSelection()
             selection.format.setForeground(QColor(
                 resources.CUSTOM_SCHEME.get(
                     'brace-foreground',
@@ -1250,7 +1248,7 @@ class Editor(QPlainTextEdit):
             self.extraSelections.append(selection)
         else:
             self._braces = (pos1,)
-            selection = QTextEdit.ExtraSelection()
+            selection = QPlainTextEdit.ExtraSelection()
             selection.format.setBackground(QColor(
                 resources.CUSTOM_SCHEME.get(
                     'brace-background',
