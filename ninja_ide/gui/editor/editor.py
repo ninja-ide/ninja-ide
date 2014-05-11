@@ -999,6 +999,7 @@ class Editor(QPlainTextEdit):
             painter.pen().setCosmetic(True)
             char_height = self.fontMetrics().height()
             block = self.firstVisibleBlock()
+            previous_line = []
             while block.isValid():
                 geometry = self.blockBoundingGeometry(block)
                 geometry.translate(offset)
@@ -1009,11 +1010,18 @@ class Editor(QPlainTextEdit):
                     break
                 cols = (len(helpers.get_leading_spaces(
                     block.text())) // self.indent)
+                if cols == 0:
+                    for line in previous_line:
+                        painter.drawLine(line, pos_y,
+                                         line, pos_y + char_height)
+                else:
+                    previous_line = []
                 for i in range(1, cols):
                     pos_line = self._indent_start + (
                         self._indentation_guide * (i - 1))
                     painter.drawLine(pos_line, pos_y,
                                      pos_line, pos_y + char_height)
+                    previous_line.append(pos_line)
                 block = block.next()
             painter.end()
 
