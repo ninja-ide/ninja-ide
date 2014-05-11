@@ -208,185 +208,185 @@ class SidebarWidget(QWidget):
             self.edit.textCursor().position())
         pattern = self.pat if self.edit.lang == "python" else self.patNotPython
 
-        #painter = QPainter(self)
-        #background = resources.CUSTOM_SCHEME.get(
-            #'sidebar-background',
-            #resources.COLOR_SCHEME['sidebar-background'])
-        #foreground = resources.CUSTOM_SCHEME.get(
-            #'sidebar-foreground',
-            #resources.COLOR_SCHEME['sidebar-foreground'])
-        #background_selected = resources.CUSTOM_SCHEME.get(
-            #'sidebar-selected-background',
-            #resources.COLOR_SCHEME['sidebar-selected-background'])
-        #foreground_selected = resources.CUSTOM_SCHEME.get(
-            #'sidebar-selected-foreground',
-            #resources.COLOR_SCHEME['sidebar-selected-foreground'])
-        #painter.fillRect(self.rect(), QColor(background))
+        painter = QPainter(self)
+        background = resources.CUSTOM_SCHEME.get(
+            'sidebar-background',
+            resources.COLOR_SCHEME['sidebar-background'])
+        foreground = resources.CUSTOM_SCHEME.get(
+            'sidebar-foreground',
+            resources.COLOR_SCHEME['sidebar-foreground'])
+        background_selected = resources.CUSTOM_SCHEME.get(
+            'sidebar-selected-background',
+            resources.COLOR_SCHEME['sidebar-selected-background'])
+        foreground_selected = resources.CUSTOM_SCHEME.get(
+            'sidebar-selected-foreground',
+            resources.COLOR_SCHEME['sidebar-selected-foreground'])
+        painter.fillRect(self.rect(), QColor(background))
 
-        #block = self.edit.firstVisibleBlock()
-        #viewport_offset = self.edit.contentOffset()
-        #line_count = block.blockNumber()
-        #painter.setFont(self.edit.document().defaultFont())
+        block = self.edit.firstVisibleBlock()
+        viewport_offset = self.edit.contentOffset()
+        line_count = block.blockNumber()
+        painter.setFont(self.edit.document().defaultFont())
 
-        #xofs = self.width() - self.foldArea
-        #painter.fillRect(xofs, 0, self.foldArea, self.height(),
-                         #QColor(resources.CUSTOM_SCHEME.get('fold-area',
-                                #resources.COLOR_SCHEME['fold-area'])))
+        xofs = self.width() - self.foldArea
+        painter.fillRect(xofs, 0, self.foldArea, self.height(),
+                         QColor(resources.CUSTOM_SCHEME.get('fold-area',
+                                resources.COLOR_SCHEME['fold-area'])))
 
-        #while block.isValid():
-            #line_count += 1
-            ## The top left position of the block in the document
-            #position = self.edit.blockBoundingGeometry(block).topLeft() + \
-                #viewport_offset
-            ## Check if the position of the block is outside of the visible area
-            #if position.y() > page_bottom:
-                #break
+        while block.isValid():
+            line_count += 1
+            # The top left position of the block in the document
+            position = self.edit.blockBoundingGeometry(block).topLeft() + \
+                viewport_offset
+            # Check if the position of the block is outside of the visible area
+            if position.y() > page_bottom:
+                break
 
-            ## Set the Painter Pen depending on special lines
-            #painter.setPen(QColor(foreground))
-            #error = False
-            #checkers = self._neditable.sorted_checkers
-            #for items in checkers:
-                #checker, color, _ = items
-                #if (line_count - 1) in checker.checks:
-                    #painter.setPen(QColor(color))
-                    #font = painter.font()
-                    #font.setItalic(True)
-                    #font.setUnderline(True)
-                    #painter.setFont(font)
-                    #error = True
-                    #break
+            # Set the Painter Pen depending on special lines
+            painter.setPen(QColor(foreground))
+            error = False
+            checkers = self._neditable.sorted_checkers
+            for items in checkers:
+                checker, color, _ = items
+                if (line_count - 1) in checker.checks:
+                    painter.setPen(QColor(color))
+                    font = painter.font()
+                    font.setItalic(True)
+                    font.setUnderline(True)
+                    painter.setFont(font)
+                    error = True
+                    break
 
-            ## We want the line number for the selected line to be bold.
-            #bold = False
-            #if block == current_block:
-                #painter.fillRect(
-                    #0, round(position.y()) + font_metrics.descent(),
-                    #self.width(),
-                    #font_metrics.ascent() + font_metrics.descent(),
-                    #QColor(background_selected))
+            # We want the line number for the selected line to be bold.
+            bold = False
+            if block == current_block:
+                painter.fillRect(
+                    0, round(position.y()) + font_metrics.descent(),
+                    self.width(),
+                    font_metrics.ascent() + font_metrics.descent(),
+                    QColor(background_selected))
 
-                #bold = True
-                #font = painter.font()
-                #font.setBold(True)
-                #if not error:
-                    #painter.setPen(QColor(foreground_selected))
-                #painter.setFont(font)
+                bold = True
+                font = painter.font()
+                font.setBold(True)
+                if not error:
+                    painter.setPen(QColor(foreground_selected))
+                painter.setFont(font)
 
-            ## Draw the line number right justified at the y position of the
-            ## line. 3 is a magic padding number. drawText(x, y, text).
-            #if block.isVisible():
-                #painter.drawText(
-                    #self.width() - self.foldArea -
-                    #font_metrics.width(str(line_count)) - 3,
-                    #round(position.y()) + font_metrics.ascent() +
-                    #font_metrics.descent() - 1,
-                    #str(line_count))
+            # Draw the line number right justified at the y position of the
+            # line. 3 is a magic padding number. drawText(x, y, text).
+            if block.isVisible():
+                painter.drawText(
+                    self.width() - self.foldArea -
+                    font_metrics.width(str(line_count)) - 3,
+                    round(position.y()) + font_metrics.ascent() +
+                    font_metrics.descent() - 1,
+                    str(line_count))
 
-            ## Remove the bold style if it was set previously.
-            #if bold:
-                #font = painter.font()
-                #font.setBold(False)
-                #painter.setFont(font)
-            #if error:
-                #font = painter.font()
-                #font.setItalic(False)
-                #font.setUnderline(False)
-                #painter.setFont(font)
+            # Remove the bold style if it was set previously.
+            if bold:
+                font = painter.font()
+                font.setBold(False)
+                painter.setFont(font)
+            if error:
+                font = painter.font()
+                font.setItalic(False)
+                font.setUnderline(False)
+                painter.setFont(font)
 
-            #block = block.next()
+            block = block.next()
 
-        #self.highest_line = line_count
+        self.highest_line = line_count
 
-        ##Code Folding
-        #if self.foldArea != self.rightArrowIcon.width():
-            #polygon = QPolygonF()
+        #Code Folding
+        if self.foldArea != self.rightArrowIcon.width():
+            polygon = QPolygonF()
 
-            #self.rightArrowIcon = QPixmap(self.foldArea, self.foldArea)
-            #self.rightArrowIcon.fill(Qt.transparent)
-            #self.downArrowIcon = QPixmap(self.foldArea, self.foldArea)
-            #self.downArrowIcon.fill(Qt.transparent)
+            self.rightArrowIcon = QPixmap(self.foldArea, self.foldArea)
+            self.rightArrowIcon.fill(Qt.transparent)
+            self.downArrowIcon = QPixmap(self.foldArea, self.foldArea)
+            self.downArrowIcon.fill(Qt.transparent)
 
-            #polygon.append(QPointF(self.foldArea * 0.4, self.foldArea * 0.25))
-            #polygon.append(QPointF(self.foldArea * 0.4, self.foldArea * 0.75))
-            #polygon.append(QPointF(self.foldArea * 0.8, self.foldArea * 0.5))
-            #iconPainter = QPainter(self.rightArrowIcon)
-            #iconPainter.setRenderHint(QPainter.Antialiasing)
-            #iconPainter.setPen(Qt.NoPen)
-            #iconPainter.setBrush(QColor(
-                #resources.CUSTOM_SCHEME.get(
-                    #'fold-arrow',
-                    #resources.COLOR_SCHEME['fold-arrow'])))
-            #iconPainter.drawPolygon(polygon)
+            polygon.append(QPointF(self.foldArea * 0.4, self.foldArea * 0.25))
+            polygon.append(QPointF(self.foldArea * 0.4, self.foldArea * 0.75))
+            polygon.append(QPointF(self.foldArea * 0.8, self.foldArea * 0.5))
+            iconPainter = QPainter(self.rightArrowIcon)
+            iconPainter.setRenderHint(QPainter.Antialiasing)
+            iconPainter.setPen(Qt.NoPen)
+            iconPainter.setBrush(QColor(
+                resources.CUSTOM_SCHEME.get(
+                    'fold-arrow',
+                    resources.COLOR_SCHEME['fold-arrow'])))
+            iconPainter.drawPolygon(polygon)
 
-            #polygon.clear()
-            #polygon.append(QPointF(self.foldArea * 0.25, self.foldArea * 0.4))
-            #polygon.append(QPointF(self.foldArea * 0.75, self.foldArea * 0.4))
-            #polygon.append(QPointF(self.foldArea * 0.5, self.foldArea * 0.8))
-            #iconPainter = QPainter(self.downArrowIcon)
-            #iconPainter.setRenderHint(QPainter.Antialiasing)
-            #iconPainter.setPen(Qt.NoPen)
-            #iconPainter.setBrush(QColor(
-                #resources.CUSTOM_SCHEME.get(
-                    #'fold-arrow',
-                    #resources.COLOR_SCHEME['fold-arrow'])))
-            #iconPainter.drawPolygon(polygon)
+            polygon.clear()
+            polygon.append(QPointF(self.foldArea * 0.25, self.foldArea * 0.4))
+            polygon.append(QPointF(self.foldArea * 0.75, self.foldArea * 0.4))
+            polygon.append(QPointF(self.foldArea * 0.5, self.foldArea * 0.8))
+            iconPainter = QPainter(self.downArrowIcon)
+            iconPainter.setRenderHint(QPainter.Antialiasing)
+            iconPainter.setPen(Qt.NoPen)
+            iconPainter.setBrush(QColor(
+                resources.CUSTOM_SCHEME.get(
+                    'fold-arrow',
+                    resources.COLOR_SCHEME['fold-arrow'])))
+            iconPainter.drawPolygon(polygon)
 
-            #self.calculate_docstring_block_fold()
+            self.calculate_docstring_block_fold()
 
-        #block = self.edit.firstVisibleBlock()
-        #while block.isValid():
-            #position = self.edit.blockBoundingGeometry(
-                #block).topLeft() + viewport_offset
-            ##Check if the position of the block is outside of the visible area
-            #if position.y() > page_bottom:
-                #break
+        block = self.edit.firstVisibleBlock()
+        while block.isValid():
+            position = self.edit.blockBoundingGeometry(
+                block).topLeft() + viewport_offset
+            #Check if the position of the block is outside of the visible area
+            if position.y() > page_bottom:
+                break
 
-            #if pattern.match(block.text()) and block.isVisible():
-                #can_fold = True
-                #if self.patComment.match(block.text()) and \
-                   #(block.blockNumber() in self._endDocstringBlocks):
-                    #can_fold = False
+            if pattern.match(block.text()) and block.isVisible():
+                can_fold = True
+                if self.patComment.match(block.text()) and \
+                   (block.blockNumber() in self._endDocstringBlocks):
+                    can_fold = False
 
-                #if can_fold:
-                    #if block.blockNumber() in self.foldedBlocks:
-                        #painter.drawPixmap(xofs, round(position.y()),
-                                           #self.rightArrowIcon)
-                    #else:
-                        #painter.drawPixmap(xofs, round(position.y()),
-                                           #self.downArrowIcon)
-            ##Add Bookmarks and Breakpoint
-            #if block.blockNumber() in self.breakpoints:
-                #linear_gradient = QLinearGradient(
-                    #xofs, round(position.y()),
-                    #xofs + self.foldArea, round(position.y()) + self.foldArea)
-                #linear_gradient.setColorAt(0, QColor(255, 11, 11))
-                #linear_gradient.setColorAt(1, QColor(147, 9, 9))
-                #painter.setRenderHints(QPainter.Antialiasing, True)
-                #painter.setPen(Qt.NoPen)
-                #painter.setBrush(QBrush(linear_gradient))
-                #painter.drawEllipse(
-                    #xofs + 1,
-                    #round(position.y()) + 6,
-                    #self.foldArea - 1, self.foldArea - 1)
-            #elif block.blockNumber() in self.bookmarks:
-                #linear_gradient = QLinearGradient(
-                    #xofs, round(position.y()),
-                    #xofs + self.foldArea, round(position.y()) + self.foldArea)
-                #linear_gradient.setColorAt(0, QColor(13, 62, 243))
-                #linear_gradient.setColorAt(1, QColor(5, 27, 106))
-                #painter.setRenderHints(QPainter.Antialiasing, True)
-                #painter.setPen(Qt.NoPen)
-                #painter.setBrush(QBrush(linear_gradient))
-                #painter.drawRoundedRect(
-                    #xofs + 1,
-                    #round(position.y()) + 6,
-                    #self.foldArea - 2, self.foldArea - 1,
-                    #3, 3)
+                if can_fold:
+                    if block.blockNumber() in self.foldedBlocks:
+                        painter.drawPixmap(xofs, round(position.y()),
+                                           self.rightArrowIcon)
+                    else:
+                        painter.drawPixmap(xofs, round(position.y()),
+                                           self.downArrowIcon)
+            #Add Bookmarks and Breakpoint
+            if block.blockNumber() in self.breakpoints:
+                linear_gradient = QLinearGradient(
+                    xofs, round(position.y()),
+                    xofs + self.foldArea, round(position.y()) + self.foldArea)
+                linear_gradient.setColorAt(0, QColor(255, 11, 11))
+                linear_gradient.setColorAt(1, QColor(147, 9, 9))
+                painter.setRenderHints(QPainter.Antialiasing, True)
+                painter.setPen(Qt.NoPen)
+                painter.setBrush(QBrush(linear_gradient))
+                painter.drawEllipse(
+                    xofs + 1,
+                    round(position.y()) + 6,
+                    self.foldArea - 1, self.foldArea - 1)
+            elif block.blockNumber() in self.bookmarks:
+                linear_gradient = QLinearGradient(
+                    xofs, round(position.y()),
+                    xofs + self.foldArea, round(position.y()) + self.foldArea)
+                linear_gradient.setColorAt(0, QColor(13, 62, 243))
+                linear_gradient.setColorAt(1, QColor(5, 27, 106))
+                painter.setRenderHints(QPainter.Antialiasing, True)
+                painter.setPen(Qt.NoPen)
+                painter.setBrush(QBrush(linear_gradient))
+                painter.drawRoundedRect(
+                    xofs + 1,
+                    round(position.y()) + 6,
+                    self.foldArea - 2, self.foldArea - 1,
+                    3, 3)
 
-            #block = block.next()
+            block = block.next()
 
-        #painter.end()
+        painter.end()
         super(SidebarWidget, self).paintEvent(event)
 
     def calculate_docstring_block_fold(self):

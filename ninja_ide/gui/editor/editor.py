@@ -29,7 +29,7 @@ except:
     from io import StringIO
 #lint:enable
 
-from PyQt4.QtGui import QTextEdit
+from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QFontMetricsF
 from PyQt4.QtGui import QToolTip
 from PyQt4.QtGui import QAction
@@ -72,19 +72,19 @@ else:
     python3 = False
 
 
-class Editor(QTextEdit):
+class Editor(QPlainTextEdit):
 
 ###############################################################################
 # EDITOR SIGNALS
 ###############################################################################
     """
     modificationChanged(bool)
-    fileSaved(QTextEdit)
+    fileSaved(QPlainTextEdit)
     locateFunction(QString, QString, bool) [functionName, filePath, isVariable]
     openDropFile(QString)
     addBackItemNavigation()
-    checksFound(QTextEdit, PyQt_PyObject)
-    cleanDocument(QTextEdit)
+    checksFound(QPlainTextEdit, PyQt_PyObject)
+    cleanDocument(QPlainTextEdit)
     findOcurrences(QString)
     cursorPositionChange(int, int)    #row, col
     migrationAnalyzed()
@@ -333,12 +333,12 @@ class Editor(QTextEdit):
             checker, _, _ = items
             if checker.checks:
                 self.emit(
-                    SIGNAL("checksFound(QTextEdit, PyQt_PyObject)"),
+                    SIGNAL("checksFound(QPlainTextEdit, PyQt_PyObject)"),
                     self, checker.checker_icon)
                 signal_emitted = True
 
         if not signal_emitted:
-            self.emit(SIGNAL("cleanDocument(QTextEdit)"), self)
+            self.emit(SIGNAL("cleanDocument(QPlainTextEdit)"), self)
         #TODO:
         #if self.highlighter:
             #lines = list(set(list(self.errors.errorsSummary.keys()) +
@@ -383,7 +383,7 @@ class Editor(QTextEdit):
         self._sidebarWidget.repaint()
 
     def apply_editor_style(self):
-        css = 'QTextEdit {color: %s; background-color: %s;' \
+        css = 'QPlainTextEdit {color: %s; background-color: %s;' \
             'selection-color: %s; selection-background-color: %s;}' \
             % (resources.CUSTOM_SCHEME.get(
                 'editor-text',
@@ -401,7 +401,7 @@ class Editor(QTextEdit):
 
     def _file_saved(self, undoAvailable=False):
         if not undoAvailable:
-            self.emit(SIGNAL("fileSaved(QTextEdit)"), self)
+            self.emit(SIGNAL("fileSaved(QPlainTextEdit)"), self)
             self.document().setModified(False)
             if self._mini:
                 self._mini.set_code(self.toPlainText())
@@ -565,7 +565,7 @@ class Editor(QTextEdit):
             self.setTextCursor(cursor)
 
     def indent_more(self):
-        #cursor is a COPY all changes do not affect the QTextEdit's cursor
+        #cursor is a COPY all changes do not affect the QPlainTextEdit's cursor
         cursor = self.textCursor()
         #line where indent_more should start and end
         block = self.document().findBlock(
@@ -589,7 +589,7 @@ class Editor(QTextEdit):
         cursor.endEditBlock()
 
     def indent_less(self):
-        #cursor is a COPY all changes do not affect the QTextEdit's cursor
+        #cursor is a COPY all changes do not affect the QPlainTextEdit's cursor
         cursor = self.textCursor()
         if not cursor.hasSelection():
             cursor.movePosition(QTextCursor.EndOfLine)
@@ -1032,7 +1032,7 @@ class Editor(QTextEdit):
             if (cursor.selectedText()[-1:] in ('(', '.') or
                     cursor.selectedText()[:1] in ('.', '@')):
                 self.extraSelections = []
-                selection = QTextEdit.ExtraSelection()
+                selection = QPlainTextEdit.ExtraSelection()
                 lineColor = QColor(resources.CUSTOM_SCHEME.get('linkNavigate',
                                    resources.COLOR_SCHEME['linkNavigate']))
                 selection.format.setForeground(lineColor)
@@ -1179,7 +1179,7 @@ class Editor(QTextEdit):
 
         if not self.isReadOnly():
             block = self.textCursor()
-            selection = QTextEdit.ExtraSelection()
+            selection = QPlainTextEdit.ExtraSelection()
             lineColor = self._current_line_color
             lineColor.setAlpha(resources.CUSTOM_SCHEME.get(
                 "current-line-opacity",
@@ -1225,14 +1225,14 @@ class Editor(QTextEdit):
             return
         if pos2 is not None:
             self._braces = (pos1, pos2)
-            selection = QTextEdit.ExtraSelection()
+            selection = QPlainTextEdit.ExtraSelection()
             selection.format.setForeground(QColor(
                 resources.CUSTOM_SCHEME.get(
                     'brace-foreground',
                     resources.COLOR_SCHEME.get('brace-foreground'))))
             selection.cursor = cursor
             self.extraSelections.append(selection)
-            selection = QTextEdit.ExtraSelection()
+            selection = QPlainTextEdit.ExtraSelection()
             selection.format.setForeground(QColor(
                 resources.CUSTOM_SCHEME.get(
                     'brace-foreground',
@@ -1248,7 +1248,7 @@ class Editor(QTextEdit):
             self.extraSelections.append(selection)
         else:
             self._braces = (pos1,)
-            selection = QTextEdit.ExtraSelection()
+            selection = QPlainTextEdit.ExtraSelection()
             selection.format.setBackground(QColor(
                 resources.CUSTOM_SCHEME.get(
                     'brace-background',
