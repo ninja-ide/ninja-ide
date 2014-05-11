@@ -143,18 +143,21 @@ class Editor(QPlainTextEdit):
             Qt.Key_QuoteDbl: self.__complete_quotes}
 
         self._current_line_color = QColor(
-            resources.CUSTOM_SCHEME.get('current-line',
-            resources.COLOR_SCHEME['current-line']))
+            resources.CUSTOM_SCHEME.get(
+                'current-line',
+                resources.COLOR_SCHEME['current-line']))
 
-        self.connect(self, SIGNAL("updateRequest(const QRect&, int)"),
-            self._sidebarWidget.update_area)
+        self.connect(self,
+                     SIGNAL("updateRequest(const QRect&, int)"),
+                     self._sidebarWidget.update_area)
         #FIXME: Should file saved be handled by neditable??
         self.connect(self, SIGNAL("undoAvailable(bool)"), self._file_saved)
         self.connect(self, SIGNAL("cursorPositionChanged()"),
-            self.highlight_current_line)
+                     self.highlight_current_line)
         self.connect(self, SIGNAL("blockCountChanged(int)"),
-            self._update_file_metadata)
-        self.connect(self.document(), SIGNAL("modificationChanged(bool)"),
+                     self._update_file_metadata)
+        self.connect(
+            self.document(), SIGNAL("modificationChanged(bool)"),
             lambda x: self.emit(SIGNAL("modificationChanged(bool)"), x))
 
         #Indentation
@@ -163,7 +166,7 @@ class Editor(QPlainTextEdit):
         self.__actionFindOccurrences = QAction(
             self.tr("Find Usages"), self)
         self.connect(self.__actionFindOccurrences, SIGNAL("triggered()"),
-            self._find_occurrences)
+                     self._find_occurrences)
 
         # Set the editor after initialization
         if self._neditable.editor:
@@ -176,26 +179,32 @@ class Editor(QPlainTextEdit):
             self._load_minimap(settings.SHOW_MINIMAP)
 
         ninjaide = IDE.get_service('ide')
-        self.connect(ninjaide,
+        self.connect(
+            ninjaide,
             SIGNAL("ns_preferences_editor_font(PyQt_PyObject)"),
             self.set_font)
-        self.connect(ninjaide,
+        self.connect(
+            ninjaide,
             SIGNAL("ns_preferences_editor_showTabsAndSpaces(PyQt_PyObject)"),
             self.set_flags)
         #TODO: figure it out it doesn´t work if gets shown after init
         #self.connect(ninjaide,
             #SIGNAL("ns_preferences_editor_minimapShow(PyQt_PyObject)"),
             #self._load_minimap)
-        self.connect(ninjaide,
+        self.connect(
+            ninjaide,
             SIGNAL("ns_preferences_editor_indent(PyQt_PyObject)"),
             self.load_project_config)
-        self.connect(ninjaide,
+        self.connect(
+            ninjaide,
             SIGNAL("ns_preferences_editor_marginLine(PyQt_PyObject)"),
             self._update_margin_line)
-        self.connect(ninjaide,
+        self.connect(
+            ninjaide,
             SIGNAL("ns_preferences_editor_scheme(PyQt_PyObject)"),
             self.restyle)
-        self.connect(ninjaide,
+        self.connect(
+            ninjaide,
             SIGNAL("ns_preferences_editor_scheme(PyQt_PyObject)"),
             lambda: self.restyle())
 
@@ -229,7 +238,7 @@ class Editor(QPlainTextEdit):
             if self.useTabs:
                 self.set_tab_usage()
             self.connect(project, SIGNAL("projectPropertiesUpdated()"),
-                self.load_project_config)
+                         self.load_project_config)
             self.additional_builtins = project.additional_builtins
         else:
             self.indent = settings.INDENT
@@ -309,14 +318,14 @@ class Editor(QPlainTextEdit):
             diference = val - self.__lines_count
             cursor = self.textCursor()
             blockNumber = cursor.blockNumber() - abs(diference)
-            self._sidebarWidget.update_sidebar_marks(blockNumber, diference,
-                self._block_contains_text())
+            self._sidebarWidget.update_sidebar_marks(
+                blockNumber, diference, self._block_contains_text())
         if self._neditable.has_checkers:
             diference = val - self.__lines_count
             cursor = self.textCursor()
             blockNumber = cursor.blockNumber() - abs(diference)
-            self._neditable.update_checkers_metadata(blockNumber, diference,
-                self._block_contains_text())
+            self._neditable.update_checkers_metadata(
+                blockNumber, diference, self._block_contains_text())
         self.__lines_count = val
         self.highlight_current_line()
 
@@ -354,7 +363,8 @@ class Editor(QPlainTextEdit):
             return
         if self.highlighter is None or isinstance(self.highlighter,
            highlighter.EmpyHighlighter):
-            self.highlighter = highlighter.Highlighter(self.document(),
+            self.highlighter = highlighter.Highlighter(
+                self.document(),
                 None, resources.CUSTOM_SCHEME, self.errors, self.pep8,
                 self.migration)
         if not syntaxLang:
@@ -377,13 +387,17 @@ class Editor(QPlainTextEdit):
     def apply_editor_style(self):
         css = 'QPlainTextEdit {color: %s; background-color: %s;' \
             'selection-color: %s; selection-background-color: %s;}' \
-            % (resources.CUSTOM_SCHEME.get('editor-text',
-            resources.COLOR_SCHEME['editor-text']),
-            resources.CUSTOM_SCHEME.get('editor-background',
+            % (resources.CUSTOM_SCHEME.get(
+                'editor-text',
+                resources.COLOR_SCHEME['editor-text']),
+               resources.CUSTOM_SCHEME.get(
+                'editor-background',
                 resources.COLOR_SCHEME['editor-background']),
-            resources.CUSTOM_SCHEME.get('editor-selection-color',
+               resources.CUSTOM_SCHEME.get(
+                'editor-selection-color',
                 resources.COLOR_SCHEME['editor-selection-color']),
-            resources.CUSTOM_SCHEME.get('editor-selection-background',
+               resources.CUSTOM_SCHEME.get(
+                'editor-selection-background',
                 resources.COLOR_SCHEME['editor-selection-background']))
         self.setStyleSheet(css)
 
@@ -464,8 +478,8 @@ class Editor(QPlainTextEdit):
         return inside
 
     def set_font(self, font):
-        self.document().setDefaultFont(font)
-        self._update_margin_line(font)
+        self.setFont(font)
+        self._update_margin_line()
 
     def jump_to_line(self, lineno=None):
         """
@@ -478,7 +492,7 @@ class Editor(QPlainTextEdit):
 
         maximum = self.blockCount()
         line = QInputDialog.getInt(self, self.tr("Jump to Line"),
-            self.tr("Line:"), 1, 1, maximum, 1)
+                                   self.tr("Line:"), 1, 1, maximum, 1)
         if line[1]:
             self.emit(SIGNAL("addBackItemNavigation()"))
             self.go_to_line(line[0] - 1)
@@ -516,7 +530,7 @@ class Editor(QPlainTextEdit):
             size += 2
             font.setPointSize(size)
         self.setFont(font)
-        self._update_margin_line(font)
+        self._update_margin_line()
 
     def zoom_out(self):
         font = self.document().defaultFont()
@@ -525,25 +539,23 @@ class Editor(QPlainTextEdit):
             size -= 2
             font.setPointSize(size)
         self.setFont(font)
-        self._update_margin_line(font)
+        self._update_margin_line()
 
-    def _update_margin_line(self, font=None):
-        if not font:
-            font = self.document().defaultFont()
+    def _update_margin_line(self, margin=None):
+        if margin is None:
+            margin = settings.MARGIN_LINE
         # Fix for older version of Qt which doens't has ForceIntegerMetrics
         if "ForceIntegerMetrics" in dir(QFont):
             self.document().defaultFont().setStyleStrategy(
                 QFont.ForceIntegerMetrics)
         font_metrics = QFontMetricsF(self.document().defaultFont())
-        if (font_metrics.width("#") * settings.MARGIN_LINE) == \
-           (font_metrics.width(" ") * settings.MARGIN_LINE):
-            self.pos_margin = font_metrics.width('#') * settings.MARGIN_LINE
+        if (font_metrics.width("#") * margin) == \
+           (font_metrics.width(" ") * margin):
+            self.pos_margin = ((font_metrics.width('#') * margin) +
+                               (font_metrics.width('#') / 2))
         else:
             char_width = font_metrics.averageCharWidth()
-            self.pos_margin = char_width * settings.MARGIN_LINE
-
-    def get_parent_project(self):
-        return ''
+            self.pos_margin = char_width * margin
 
     def get_cursor_position(self):
         return self.textCursor().position()
@@ -599,7 +611,7 @@ class Editor(QPlainTextEdit):
                 cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
             else:
                 cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
-                    self.indent)
+                                    self.indent)
             text = cursor.selectedText()
             if not self.useTabs and text == ' ' * self.indent:
                 cursor.removeSelectedText()
@@ -627,7 +639,7 @@ class Editor(QPlainTextEdit):
             self.highlight_selected_word(word)
 
     def replace_match(self, wordOld, wordNew, flags, allwords=False,
-                        selection=False):
+                      selection=False):
         """Find if searched text exists and replace it with new one.
         If there is a selection just do it inside it and exit.
         """
@@ -712,7 +724,7 @@ class Editor(QPlainTextEdit):
         if (len(text) % self.indent == 0) and text.isspace():
             cursor.movePosition(QTextCursor.StartOfLine)
             cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor,
-                self.indent)
+                                self.indent)
             cursor.removeSelectedText()
             return True
 
@@ -863,13 +875,13 @@ class Editor(QPlainTextEdit):
 
         if (self.lang == "python") and (len(token_buffer) == 3) and \
                 (token_buffer[2][0] == brace) and (token_buffer[0][0] in
-                                                        ("def", "class")):
+                                                   ("def", "class")):
             #are we in presence of a function?
             self.textCursor().insertText("):")
             self.__fancyMoveCursor(QTextCursor.Left, 2)
             self.textCursor().insertText(self.selected_text)
-        elif token_buffer and (not is_unbalance) and \
-           self.selected_text:
+        elif (token_buffer and (not is_unbalance) and
+              self.selected_text):
             self.textCursor().insertText(self.selected_text)
         elif is_unbalance:
             pos = self.textCursor().position()
@@ -887,7 +899,7 @@ class Editor(QPlainTextEdit):
         """
         cursor = self.textCursor()
         cursor.movePosition(QTextCursor.StartOfLine,
-            QTextCursor.KeepAnchor)
+                            QTextCursor.KeepAnchor)
         symbol = event.text()
         if symbol in settings.QUOTES:
             pre_context = self.__reverse_select_text_portion_from_offset(0, 3)
@@ -928,7 +940,7 @@ class Editor(QPlainTextEdit):
         the entire line under the cursor."""
         tc = self.textCursor()
         copyOrCut = event.matches(QKeySequence.Copy) or \
-                    event.matches(QKeySequence.Cut)
+            event.matches(QKeySequence.Cut)
         if copyOrCut and not tc.hasSelection():
             tc.select(QTextCursor.LineUnderCursor)
             self.setTextCursor(tc)
@@ -953,10 +965,10 @@ class Editor(QPlainTextEdit):
         if settings.SHOW_MARGIN_LINE:
             painter = QPainter()
             painter.begin(self.viewport())
-            opacity = resources.CUSTOM_SCHEME.get("margin-opacity",
-                resources.COLOR_SCHEME["margin-opacity"])
-            color_name = resources.CUSTOM_SCHEME.get("margin-line",
-                resources.COLOR_SCHEME["margin-line"])
+            opacity = resources.CUSTOM_SCHEME.get(
+                "margin-opacity", resources.COLOR_SCHEME["margin-opacity"])
+            color_name = resources.CUSTOM_SCHEME.get(
+                "margin-line", resources.COLOR_SCHEME["margin-line"])
             painter.setPen(QColor(color_name))
             offset = self.contentOffset()
             width = self.viewport().width() - (self.pos_margin + offset.x())
@@ -986,13 +998,13 @@ class Editor(QPlainTextEdit):
         ignoreSelectedAction = menu_lint.addAction(
             self.tr("Ignore Selected Area"))
         self.connect(ignoreLineAction, SIGNAL("triggered()"),
-            lambda: helpers.lint_ignore_line(self))
+                     lambda: helpers.lint_ignore_line(self))
         self.connect(ignoreSelectedAction, SIGNAL("triggered()"),
-            lambda: helpers.lint_ignore_selection(self))
+                     lambda: helpers.lint_ignore_selection(self))
         popup_menu.insertSeparator(popup_menu.actions()[0])
         popup_menu.insertMenu(popup_menu.actions()[0], menu_lint)
         popup_menu.insertAction(popup_menu.actions()[0],
-            self.__actionFindOccurrences)
+                                self.__actionFindOccurrences)
         #add extra menus (from Plugins)
         #lang = file_manager.get_file_extension(self.file_path)
         #extra_menus = self.EXTRA_MENU.get(lang, None)
@@ -1019,12 +1031,12 @@ class Editor(QPlainTextEdit):
             selection_end = cursor.selectionEnd()
             cursor.setPosition(selection_start - 1)
             cursor.setPosition(selection_end + 1, QTextCursor.KeepAnchor)
-            if cursor.selectedText()[-1:] in ('(', '.') or \
-            cursor.selectedText()[:1] in ('.', '@'):
+            if (cursor.selectedText()[-1:] in ('(', '.') or
+                    cursor.selectedText()[:1] in ('.', '@')):
                 self.extraSelections = []
                 selection = QTextEdit.ExtraSelection()
                 lineColor = QColor(resources.CUSTOM_SCHEME.get('linkNavigate',
-                            resources.COLOR_SCHEME['linkNavigate']))
+                                   resources.COLOR_SCHEME['linkNavigate']))
                 selection.format.setForeground(lineColor)
                 selection.format.setFontUnderline(True)
                 selection.cursor = cursor
@@ -1079,13 +1091,13 @@ class Editor(QPlainTextEdit):
             cursor.setPosition(selection_start)
             cursor.setPosition(selection_end, QTextCursor.KeepAnchor)
             self.emit(SIGNAL("locateFunction(QString, QString, bool)"),
-                cursor.selectedText(), self.file_path, False)
-        elif cursor.selectedText().endswith('.') or \
-             cursor.selectedText().startswith('.'):
+                      cursor.selectedText(), self.file_path, False)
+        elif (cursor.selectedText().endswith('.') or
+              cursor.selectedText().startswith('.')):
             cursor.setPosition(selection_start)
             cursor.setPosition(selection_end, QTextCursor.KeepAnchor)
             self.emit(SIGNAL("locateFunction(QString, QString, bool)"),
-                cursor.selectedText(), self.file_path, True)
+                      cursor.selectedText(), self.file_path, True)
 
     def get_selection(self, posStart, posEnd):
         cursor = self.textCursor()
@@ -1111,7 +1123,7 @@ class Editor(QPlainTextEdit):
         return full_lenght + insplit_line + relative_position
 
     def __fancyMoveCursor(self, operation, repeat=1,
-                                            moveMode=QTextCursor.MoveAnchor):
+                          moveMode=QTextCursor.MoveAnchor):
         """Move the cursor a given number of times (with or without
         anchoring), just a helper given the less than practical way qt
         has for such a common operation"""
@@ -1124,7 +1136,7 @@ class Editor(QPlainTextEdit):
         token_buffer = []
         try:
             for tkn_type, tkn_rep, tkn_begin, tkn_end, _ in \
-                            generate_tokens(StringIO(text).readline):
+                    generate_tokens(StringIO(text).readline):
                 token_buffer.append((tkn_type, tkn_rep, tkn_begin, tkn_end))
         except (TokenError, IndentationError, SyntaxError):
             invalid_syntax = True
@@ -1152,19 +1164,19 @@ class Editor(QPlainTextEdit):
 
         for tkn_rep, tkn_position in brace_buffer:
             if (tkn_rep == braceMatch) and not brace_stack:
-                hl_position = \
-                self.__get_abs_position_on_text(text, tkn_position)
+                hl_position = self.__get_abs_position_on_text(
+                    text, tkn_position)
                 return forward and hl_position + position or hl_position
-            elif brace_stack and \
-                (BRACE_DICT.get(tkn_rep, '') == brace_stack[-1]):
+            elif brace_stack and (
+                    BRACE_DICT.get(tkn_rep, '') == brace_stack[-1]):
                 brace_stack.pop(-1)
             else:
                 brace_stack.append(tkn_rep)
 
     def highlight_current_line(self):
         self.emit(SIGNAL("cursorPositionChange(int, int)"),
-            self.textCursor().blockNumber() + 1,
-            self.textCursor().columnNumber())
+                  self.textCursor().blockNumber() + 1,
+                  self.textCursor().columnNumber())
         self.extraSelections = []
 
         if not self.isReadOnly():
@@ -1203,7 +1215,7 @@ class Editor(QPlainTextEdit):
             self.setExtraSelections(self.extraSelections)
             return
         cursor.movePosition(QTextCursor.PreviousCharacter,
-                             QTextCursor.KeepAnchor)
+                            QTextCursor.KeepAnchor)
         text = cursor.selectedText()
         pos1 = cursor.position()
         if text in (")", "]", "}"):
@@ -1217,31 +1229,36 @@ class Editor(QPlainTextEdit):
             self._braces = (pos1, pos2)
             selection = QTextEdit.ExtraSelection()
             selection.format.setForeground(QColor(
-                resources.CUSTOM_SCHEME.get('brace-foreground',
-                resources.COLOR_SCHEME.get('brace-foreground'))))
+                resources.CUSTOM_SCHEME.get(
+                    'brace-foreground',
+                    resources.COLOR_SCHEME.get('brace-foreground'))))
             selection.cursor = cursor
             self.extraSelections.append(selection)
             selection = QTextEdit.ExtraSelection()
             selection.format.setForeground(QColor(
-                resources.CUSTOM_SCHEME.get('brace-foreground',
-                resources.COLOR_SCHEME.get('brace-foreground'))))
+                resources.CUSTOM_SCHEME.get(
+                    'brace-foreground',
+                    resources.COLOR_SCHEME.get('brace-foreground'))))
             selection.format.setBackground(QColor(
-                resources.CUSTOM_SCHEME.get('brace-background',
-                resources.COLOR_SCHEME.get('brace-background'))))
+                resources.CUSTOM_SCHEME.get(
+                    'brace-background',
+                    resources.COLOR_SCHEME.get('brace-background'))))
             selection.cursor = self.textCursor()
             selection.cursor.setPosition(pos2)
             selection.cursor.movePosition(QTextCursor.NextCharacter,
-                             QTextCursor.KeepAnchor)
+                                          QTextCursor.KeepAnchor)
             self.extraSelections.append(selection)
         else:
             self._braces = (pos1,)
             selection = QTextEdit.ExtraSelection()
             selection.format.setBackground(QColor(
-                resources.CUSTOM_SCHEME.get('brace-background',
-                resources.COLOR_SCHEME.get('brace-background'))))
+                resources.CUSTOM_SCHEME.get(
+                    'brace-background',
+                    resources.COLOR_SCHEME.get('brace-background'))))
             selection.format.setForeground(QColor(
-                resources.CUSTOM_SCHEME.get('brace-foreground',
-                resources.COLOR_SCHEME.get('brace-foreground'))))
+                resources.CUSTOM_SCHEME.get(
+                    'brace-foreground',
+                    resources.COLOR_SCHEME.get('brace-foreground'))))
             selection.cursor = cursor
             self.extraSelections.append(selection)
         self.setExtraSelections(self.extraSelections)
@@ -1275,7 +1292,7 @@ class Editor(QPlainTextEdit):
             text = self._text_under_cursor().upper()
             self.moveCursor(QTextCursor.StartOfWord)
             self.moveCursor(QTextCursor.EndOfWord,
-                QTextCursor.KeepAnchor)
+                            QTextCursor.KeepAnchor)
         self.textCursor().insertText(text)
         self.textCursor().endEditBlock()
 
@@ -1287,7 +1304,7 @@ class Editor(QPlainTextEdit):
             text = self._text_under_cursor().lower()
             self.moveCursor(QTextCursor.StartOfWord)
             self.moveCursor(QTextCursor.EndOfWord,
-                QTextCursor.KeepAnchor)
+                            QTextCursor.KeepAnchor)
         self.textCursor().insertText(text)
         self.textCursor().endEditBlock()
 
