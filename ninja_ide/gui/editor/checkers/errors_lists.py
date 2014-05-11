@@ -79,13 +79,13 @@ class ErrorsWidget(QDialog):
         vbox.addWidget(self.listPep8)
 
         self.connect(self.listErrors, SIGNAL("itemSelectionChanged()"),
-            self.errors_selected)
+                     self.errors_selected)
         self.connect(self.listPep8, SIGNAL("itemSelectionChanged()"),
-            self.pep8_selected)
+                     self.pep8_selected)
         self.connect(self.btn_lint_activate, SIGNAL("clicked()"),
-            self._turn_on_off_lint)
+                     self._turn_on_off_lint)
         self.connect(self.btn_pep8_activate, SIGNAL("clicked()"),
-            self._turn_on_off_pep8)
+                     self._turn_on_off_pep8)
 
         IDE.register_service('tab_errors', self)
         ExplorerContainer.register_tab(translations.TR_TAB_ERRORS, self)
@@ -141,7 +141,7 @@ class ErrorsWidget(QDialog):
                 item.setData(Qt.UserRole, lineno)
                 self.listPep8.addItem(item)
         self.pep8Label.setText(self.tr("PEP8 Errors: %s") %
-            len(pep8))
+                               len(pep8))
         self._outRefresh = True
 
     def refresh_error_list(self, errors):
@@ -155,7 +155,7 @@ class ErrorsWidget(QDialog):
                 item.setData(Qt.UserRole, lineno)
                 self.listErrors.addItem(item)
         self.errorsLabel.setText(self.tr("Static Errors: %s") %
-            len(errors))
+                                 len(errors))
         self._outRefresh = True
 
     def clear(self):

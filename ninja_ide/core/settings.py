@@ -531,7 +531,7 @@ def load_settings():
     SHOW_WEB_INSPECTOR = qsettings.value(
         'preferences/interface/showWebInspector', False, type=bool)
     SHOW_ERRORS_LIST = qsettings.value(
-        'preferences/interface/showErrorsList', False, type=bool)
+        'preferences/interface/showErrorsList', True, type=bool)
     SHOW_MIGRATION_LIST = qsettings.value(
         'preferences/interface/showMigrationList', True, type=bool)
     #Bookmarks and Breakpoints
