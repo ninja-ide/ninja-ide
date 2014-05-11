@@ -125,8 +125,8 @@ class ExplorerContainer(QSplitter):
         tab_widget = QTabWidget()
         tab_widget.setTabPosition(QTabWidget.East)
         tab_widget.setMovable(True)
-
         tabBar = tab_widget.tabBar()
+        tabBar.hide()
         tabBar.setContextMenuPolicy(Qt.CustomContextMenu)
         self.connect(
             tabBar,
@@ -161,6 +161,16 @@ class ExplorerContainer(QSplitter):
         bar = self.widget(0).tabBar()
         self._point = point
         self.menu.exec_(bar.mapToGlobal(point))
+
+    def enterEvent(self, event):
+        super(ExplorerContainer, self).enterEvent(event)
+        bar = self.widget(0).tabBar()
+        bar.show()
+
+    def leaveEvent(self, event):
+        super(ExplorerContainer, self).leaveEvent(event)
+        bar = self.widget(0).tabBar()
+        bar.hide()
 
 
 explorer = ExplorerContainer()
