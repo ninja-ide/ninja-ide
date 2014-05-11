@@ -63,11 +63,11 @@ class ExplorerContainer(QSplitter):
 
         connections = (
             {'target': 'central_container',
-            'signal_name': "splitterBaseRotated()",
-            'slot': self.rotate_tab_position},
+             'signal_name': "splitterBaseRotated()",
+             'slot': self.rotate_tab_position},
             {'target': 'central_container',
-            'signal_name': 'splitterBaseRotated()',
-            'slot': self.rotate_tab_position},
+             'signal_name': 'splitterBaseRotated()',
+             'slot': self.rotate_tab_position},
         )
 
         self._point = None
@@ -93,9 +93,9 @@ class ExplorerContainer(QSplitter):
             tabname, icon = ExplorerContainer.__TABS[obj]
             self.add_tab(tabname, obj, icon)
             self.connect(obj, SIGNAL("dockWidget(PyQt_PyObject)"),
-                self._dock_widget)
+                         self._dock_widget)
             self.connect(obj, SIGNAL("undockWidget()"),
-                self._undock_widget)
+                         self._undock_widget)
 
         if self.count() == 0:
             self.hide()
@@ -128,7 +128,8 @@ class ExplorerContainer(QSplitter):
 
         tabBar = tab_widget.tabBar()
         tabBar.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.connect(tabBar,
+        self.connect(
+            tabBar,
             SIGNAL("customContextMenuRequested(const QPoint&)"),
             self.show_tab_context_menu)
         self.addWidget(tab_widget)
