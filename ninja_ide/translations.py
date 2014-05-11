@@ -341,6 +341,7 @@ TR_CHANGE_KEYBOARD_FOCUS_BETWEEN_SPLITS = tr(
 TR_INSERT_BREAKPOINT = tr("NINJA-IDE", "Insert Bookmark/Breakpoint")
 TR_MOVE_TAB_TO_NEXT_SPLIT = tr("NINJA-IDE", "Move Current Tab to Next Split")
 TR_SHOW_TABS_IN_EDITOR = tr("NINJA-IDE", "Show/Hide Tabs in Editor")
+TR_SHOW_INDENTATION_GUIDE = tr("NINJA-IDE", "Show Indentation Guide")
 TR_HIGHLIGHT_OCCURRENCES = tr(
     "NINJA-IDE",
     "Highlight Occurrences of Word Under Cursor")
@@ -649,11 +650,6 @@ TR_SELECT_EXEC_OPTION_3 = tr(
     "NINJA-IDE",
     "-3: warn about Python 3.x incompatibilities "
     "that 2to3 cannot trivially fix")
-
-
-
-
-
 
 
 TR_CODE = tr("NINJA-IDE", "Code")

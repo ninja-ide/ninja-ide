@@ -30,6 +30,7 @@ except:
 #lint:enable
 
 from PyQt4.QtGui import QPlainTextEdit
+from PyQt4.QtGui import QTextEdit
 from PyQt4.QtGui import QFontMetricsF
 from PyQt4.QtGui import QToolTip
 from PyQt4.QtGui import QAction
@@ -100,6 +101,9 @@ class Editor(QPlainTextEdit):
         self.lang = 'python'
         self._last_block_position = 0
         self.__lines_count = 0
+        self.pos_margin = 0
+        self._indentation_guide = 0
+        self.indent = 0
 
         self._sidebarWidget = sidebar_widget.SidebarWidget(self, neditable)
 
@@ -243,6 +247,7 @@ class Editor(QPlainTextEdit):
             self.indent = settings.INDENT
             self.useTabs = settings.USE_TABS
             self.additional_builtins = None
+        self._update_margin_line()
 
     def _load_minimap(self, show):
         if show:
@@ -296,6 +301,7 @@ class Editor(QPlainTextEdit):
             option.setFlags(QTextOption.ShowTabsAndSpaces)
         doc.setDefaultTextOption(option)
         self.setDocument(doc)
+        self.setCenterOnScroll(settings.CENTER_ON_SCROLL)
 
     def set_tab_usage(self):
         """Update tab stop width and margin line."""
@@ -303,6 +309,7 @@ class Editor(QPlainTextEdit):
         self.setTabStopWidth(tab_size)
         if self._mini:
             self._mini.setTabStopWidth(tab_size)
+        self._update_margin_line()
 
     def _block_contains_text(self):
         block = self.textCursor().block()
@@ -547,13 +554,13 @@ class Editor(QPlainTextEdit):
             self.document().defaultFont().setStyleStrategy(
                 QFont.ForceIntegerMetrics)
         font_metrics = QFontMetricsF(self.document().defaultFont())
-        if (font_metrics.width("#") * margin) == \
-           (font_metrics.width(" ") * margin):
-            self.pos_margin = ((font_metrics.width('#') * margin) +
-                               (font_metrics.width('#') / 2))
-        else:
-            char_width = font_metrics.averageCharWidth()
-            self.pos_margin = char_width * margin
+        self.char_width = font_metrics.averageCharWidth()
+        self.pos_margin = ((self.char_width * margin) +
+                           (font_metrics.width('#') / 2))
+        if self.indent:
+            self._indentation_guide = self.char_width * self.indent
+            self._indent_start = (-(self.char_width / 2) +
+                                  self._indentation_guide + self.char_width)
 
     def get_cursor_position(self):
         return self.textCursor().position()
@@ -978,6 +985,38 @@ class Editor(QPlainTextEdit):
             painter.drawRect(rect)
             painter.end()
 
+        if settings.SHOW_INDENTATION_GUIDE:  # Indentation Guide
+            # Blocks info
+            height = self.viewport().height()
+            offset = self.contentOffset()
+            painter = QPainter()
+            painter.begin(self.viewport())
+            color_name = resources.CUSTOM_SCHEME.get(
+                "margin-line", resources.COLOR_SCHEME["margin-line"])
+            color = QColor(color_name)
+            color.setAlpha(80)
+            painter.setPen(color)
+            painter.pen().setCosmetic(True)
+            char_height = self.fontMetrics().height()
+            block = self.firstVisibleBlock()
+            while block.isValid():
+                geometry = self.blockBoundingGeometry(block)
+                geometry.translate(offset)
+                # The top position of the block in the document
+                pos_y = geometry.top()
+                # Check only visible blocks
+                if pos_y > height:
+                    break
+                cols = (len(helpers.get_leading_spaces(
+                    block.text())) // self.indent)
+                for i in range(1, cols):
+                    pos_line = self._indent_start + (
+                        self._indentation_guide * (i - 1))
+                    painter.drawLine(pos_line, pos_y,
+                                     pos_line, pos_y + char_height)
+                block = block.next()
+            painter.end()
+
     def wheelEvent(self, event, forward=True):
         if event.modifiers() == Qt.ControlModifier:
             if event.delta() == 120:
@@ -1032,7 +1071,7 @@ class Editor(QPlainTextEdit):
             if (cursor.selectedText()[-1:] in ('(', '.') or
                     cursor.selectedText()[:1] in ('.', '@')):
                 self.extraSelections = []
-                selection = QPlainTextEdit.ExtraSelection()
+                selection = QTextEdit.ExtraSelection()
                 lineColor = QColor(resources.CUSTOM_SCHEME.get('linkNavigate',
                                    resources.COLOR_SCHEME['linkNavigate']))
                 selection.format.setForeground(lineColor)
@@ -1179,7 +1218,7 @@ class Editor(QPlainTextEdit):
 
         if not self.isReadOnly():
             block = self.textCursor()
-            selection = QPlainTextEdit.ExtraSelection()
+            selection = QTextEdit.ExtraSelection()
             lineColor = self._current_line_color
             lineColor.setAlpha(resources.CUSTOM_SCHEME.get(
                 "current-line-opacity",
@@ -1225,14 +1264,14 @@ class Editor(QPlainTextEdit):
             return
         if pos2 is not None:
             self._braces = (pos1, pos2)
-            selection = QPlainTextEdit.ExtraSelection()
+            selection = QTextEdit.ExtraSelection()
             selection.format.setForeground(QColor(
                 resources.CUSTOM_SCHEME.get(
                     'brace-foreground',
                     resources.COLOR_SCHEME.get('brace-foreground'))))
             selection.cursor = cursor
             self.extraSelections.append(selection)
-            selection = QPlainTextEdit.ExtraSelection()
+            selection = QTextEdit.ExtraSelection()
             selection.format.setForeground(QColor(
                 resources.CUSTOM_SCHEME.get(
                     'brace-foreground',
@@ -1248,7 +1287,7 @@ class Editor(QPlainTextEdit):
             self.extraSelections.append(selection)
         else:
             self._braces = (pos1,)
-            selection = QPlainTextEdit.ExtraSelection()
+            selection = QTextEdit.ExtraSelection()
             selection.format.setBackground(QColor(
                 resources.CUSTOM_SCHEME.get(
                     'brace-background',
