@@ -29,12 +29,11 @@ except:
     from io import StringIO
 #lint:enable
 
-from PyQt4.QtGui import QPlainTextEdit
+from PyQt4.QtGui import QTextEdit
 from PyQt4.QtGui import QFontMetricsF
 from PyQt4.QtGui import QToolTip
 from PyQt4.QtGui import QAction
 from PyQt4.QtGui import QTextOption
-from PyQt4.QtGui import QTextEdit
 from PyQt4.QtGui import QInputDialog
 from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QTextDocument
@@ -73,19 +72,19 @@ else:
     python3 = False
 
 
-class Editor(QPlainTextEdit):
+class Editor(QTextEdit):
 
 ###############################################################################
 # EDITOR SIGNALS
 ###############################################################################
     """
     modificationChanged(bool)
-    fileSaved(QPlainTextEdit)
+    fileSaved(QTextEdit)
     locateFunction(QString, QString, bool) [functionName, filePath, isVariable]
     openDropFile(QString)
     addBackItemNavigation()
-    checksFound(QPlainTextEdit, PyQt_PyObject)
-    cleanDocument(QPlainTextEdit)
+    checksFound(QTextEdit, PyQt_PyObject)
+    cleanDocument(QTextEdit)
     findOcurrences(QString)
     cursorPositionChange(int, int)    #row, col
     migrationAnalyzed()
@@ -297,7 +296,6 @@ class Editor(QPlainTextEdit):
             option.setFlags(QTextOption.ShowTabsAndSpaces)
         doc.setDefaultTextOption(option)
         self.setDocument(doc)
-        self.setCenterOnScroll(settings.CENTER_ON_SCROLL)
 
     def set_tab_usage(self):
         """Update tab stop width and margin line."""
@@ -335,12 +333,12 @@ class Editor(QPlainTextEdit):
             checker, _, _ = items
             if checker.checks:
                 self.emit(
-                    SIGNAL("checksFound(QPlainTextEdit, PyQt_PyObject)"),
+                    SIGNAL("checksFound(QTextEdit, PyQt_PyObject)"),
                     self, checker.checker_icon)
                 signal_emitted = True
 
         if not signal_emitted:
-            self.emit(SIGNAL("cleanDocument(QPlainTextEdit)"), self)
+            self.emit(SIGNAL("cleanDocument(QTextEdit)"), self)
         #TODO:
         #if self.highlighter:
             #lines = list(set(list(self.errors.errorsSummary.keys()) +
@@ -385,7 +383,7 @@ class Editor(QPlainTextEdit):
         self._sidebarWidget.repaint()
 
     def apply_editor_style(self):
-        css = 'QPlainTextEdit {color: %s; background-color: %s;' \
+        css = 'QTextEdit {color: %s; background-color: %s;' \
             'selection-color: %s; selection-background-color: %s;}' \
             % (resources.CUSTOM_SCHEME.get(
                 'editor-text',
@@ -403,7 +401,7 @@ class Editor(QPlainTextEdit):
 
     def _file_saved(self, undoAvailable=False):
         if not undoAvailable:
-            self.emit(SIGNAL("fileSaved(QPlainTextEdit)"), self)
+            self.emit(SIGNAL("fileSaved(QTextEdit)"), self)
             self.document().setModified(False)
             if self._mini:
                 self._mini.set_code(self.toPlainText())
@@ -567,7 +565,7 @@ class Editor(QPlainTextEdit):
             self.setTextCursor(cursor)
 
     def indent_more(self):
-        #cursor is a COPY all changes do not affect the QPlainTextEdit's cursor
+        #cursor is a COPY all changes do not affect the QTextEdit's cursor
         cursor = self.textCursor()
         #line where indent_more should start and end
         block = self.document().findBlock(
@@ -591,7 +589,7 @@ class Editor(QPlainTextEdit):
         cursor.endEditBlock()
 
     def indent_less(self):
-        #cursor is a COPY all changes do not affect the QPlainTextEdit's cursor
+        #cursor is a COPY all changes do not affect the QTextEdit's cursor
         cursor = self.textCursor()
         if not cursor.hasSelection():
             cursor.movePosition(QTextCursor.EndOfLine)
@@ -701,7 +699,7 @@ class Editor(QPlainTextEdit):
         super(Editor, self).focusOutEvent(event)
 
     def resizeEvent(self, event):
-        QPlainTextEdit.resizeEvent(self, event)
+        super(Editor, self).resizeEvent(event)
         self._sidebarWidget.setFixedHeight(self.height())
         if self._mini:
             self._mini.adjust_to_parent()
@@ -924,7 +922,7 @@ class Editor(QPlainTextEdit):
 
         self._check_auto_copy_cut(event)
 
-        QPlainTextEdit.keyPressEvent(self, event)
+        super(Editor, self).keyPressEvent(event)
 
         self.postKeyPress.get(event.key(), lambda x: False)(event)
 
@@ -946,7 +944,7 @@ class Editor(QPlainTextEdit):
             self.setTextCursor(tc)
 
     def keyReleaseEvent(self, event):
-        QPlainTextEdit.keyReleaseEvent(self, event)
+        super(Editor, self).keyReleaseEvent(event)
         block_number = self.textCursor().blockNumber()
         if block_number != self._last_block_position:
             self._last_block_position = block_number
@@ -987,7 +985,7 @@ class Editor(QPlainTextEdit):
             elif event.delta() == -120:
                 self.zoom_out()
             event.ignore()
-        QPlainTextEdit.wheelEvent(self, event)
+        super(Editor, self).wheelEvent(event)
 
     def contextMenuEvent(self, event):
         popup_menu = self.createStandardContextMenu()
@@ -1045,7 +1043,7 @@ class Editor(QPlainTextEdit):
             else:
                 self.extraSelections = []
                 self.setExtraSelections(self.extraSelections)
-        QPlainTextEdit.mouseMoveEvent(self, event)
+        super(Editor, self).mouseMoveEvent(event)
 
     def mousePressEvent(self, event):
         #if self.completer.isVisible():
@@ -1058,10 +1056,10 @@ class Editor(QPlainTextEdit):
                 not self.textCursor().hasSelection():
             cursor = self.cursorForPosition(event.pos())
             self.setTextCursor(cursor)
-        QPlainTextEdit.mousePressEvent(self, event)
+        super(Editor, self).mousePressEvent(event)
 
     def mouseReleaseEvent(self, event):
-        QPlainTextEdit.mouseReleaseEvent(self, event)
+        super(Editor, self).mouseReleaseEvent(event)
         if event.button() == Qt.LeftButton:
             self.highlight_selected_word()
         block_number = self.textCursor().blockNumber()
@@ -1075,7 +1073,7 @@ class Editor(QPlainTextEdit):
             self.emit(SIGNAL("openDropFile(QString)"), path)
             event.ignore()
             event.mimeData = QMimeData()
-        QPlainTextEdit.dropEvent(self, event)
+        super(Editor, self).dropEvent(event)
         self.undo()
 
     def go_to_definition(self, cursor=None):
