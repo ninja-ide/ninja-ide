@@ -296,7 +296,7 @@ def pep8mod_refresh_checks():
     """
     Force to reload all checks in pep8mod.py
     """
-    pep8mod.refresh_checks()
+    #pep8mod.refresh_checks()
 
 
 def pep8mod_add_ignore(ignore_code):
