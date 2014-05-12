@@ -78,8 +78,6 @@ Rectangle {
             text: "@"
             color: "white"
             font.pixelSize: 16
-            style: Text.Raised
-            styleColor: "black"
             font.bold: true
             horizontalAlignment: Text.AlignHCenter
             anchors {
@@ -97,8 +95,6 @@ Rectangle {
             text: "<"
             color: "#18ff6a"
             font.pixelSize: 16
-            style: Text.Raised
-            styleColor: "black"
             font.bold: true
             horizontalAlignment: Text.AlignHCenter
             anchors {
@@ -116,8 +112,6 @@ Rectangle {
             text: ">"
             color: "red"
             font.pixelSize: 16
-            style: Text.Raised
-            styleColor: "black"
             font.bold: true
             horizontalAlignment: Text.AlignHCenter
             anchors {
@@ -135,8 +129,6 @@ Rectangle {
             text: "-"
             color: "#18e1ff"
             font.pixelSize: 16
-            style: Text.Raised
-            styleColor: "black"
             font.bold: true
             horizontalAlignment: Text.AlignHCenter
             anchors {
@@ -154,8 +146,6 @@ Rectangle {
             text: "."
             color: "#f118ff"
             font.pixelSize: 16
-            style: Text.Raised
-            styleColor: "black"
             font.bold: true
             horizontalAlignment: Text.AlignHCenter
             anchors {
@@ -173,8 +163,6 @@ Rectangle {
             text: "/"
             color: "#fff118"
             font.pixelSize: 16
-            style: Text.Raised
-            styleColor: "black"
             font.bold: true
             horizontalAlignment: Text.AlignHCenter
             anchors {
@@ -192,8 +180,6 @@ Rectangle {
             text: ":"
             color: "#18ffd6"
             font.pixelSize: 16
-            style: Text.Raised
-            styleColor: "black"
             font.bold: true
             horizontalAlignment: Text.AlignHCenter
             anchors {
@@ -211,8 +197,6 @@ Rectangle {
             text: "!"
             color: "#ffa018"
             font.pixelSize: 16
-            style: Text.Raised
-            styleColor: "black"
             font.bold: true
             horizontalAlignment: Text.AlignHCenter
             anchors {
@@ -345,9 +329,6 @@ Rectangle {
                         text: "<font color='" + colorType + "'>" + type + "</font>"
                         font.bold: true
                         font.pixelSize: 30
-                        smooth: true
-                        style: Text.Raised
-                        styleColor: "black"
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                     }
@@ -373,16 +354,14 @@ Rectangle {
                                 id: filenameText
                                 anchors {
                                     left: parent.left
-                                    right: lineText.right
+                                    right: lineText.left
+                                    rightMargin: 5
                                 }
                                 text: name
                                 color: listItem.current ? "white" : "#aaaaaa"
                                 font.pixelSize: 13
                                 font.bold: true
-                                smooth: true
-                                style: Text.Raised
-                                styleColor: "black"
-                                elide: Text.ElideLeft
+                                elide: Text.ElideRight
                             }
                             Text {
                                 id: lineText
@@ -394,9 +373,6 @@ Rectangle {
                                 color: listItem.current ? "#aaaaaa" : "#555555"
                                 font.pixelSize: 10
                                 font.bold: true
-                                smooth: true
-                                style: Text.Raised
-                                styleColor: "black"
                             }
                         }
                         Text {
@@ -408,10 +384,6 @@ Rectangle {
                             text: path
                             color: listItem.current ? "#aaaaaa" : "#555555"
                             font.bold: true
-                            font.pixelSize: 12
-                            smooth: true
-                            style: Text.Raised
-                            styleColor: "black"
                             elide: Text.ElideLeft
                         }
                     }
@@ -475,8 +447,6 @@ Rectangle {
                     text: "@ Python Files"
                     color: "white"
                     font.pixelSize: 16
-                    style: Text.Raised
-                    styleColor: "black"
                     font.bold: true
                     horizontalAlignment: Text.AlignHCenter
                     anchors {
@@ -488,8 +458,6 @@ Rectangle {
                     text: "< Classes"
                     color: "#18ff6a"
                     font.pixelSize: 16
-                    style: Text.Raised
-                    styleColor: "black"
                     font.bold: true
                     horizontalAlignment: Text.AlignHCenter
                     anchors {
@@ -501,8 +469,6 @@ Rectangle {
                     text: "> Functions"
                     color: "red"
                     font.pixelSize: 16
-                    style: Text.Raised
-                    styleColor: "black"
                     font.bold: true
                     horizontalAlignment: Text.AlignHCenter
                     anchors {
@@ -514,8 +480,6 @@ Rectangle {
                     text: "- Attributes"
                     color: "#18e1ff"
                     font.pixelSize: 16
-                    style: Text.Raised
-                    styleColor: "black"
                     font.bold: true
                     horizontalAlignment: Text.AlignHCenter
                     anchors {
@@ -527,8 +491,6 @@ Rectangle {
                     text: ". Current File"
                     color: "#f118ff"
                     font.pixelSize: 16
-                    style: Text.Raised
-                    styleColor: "black"
                     font.bold: true
                     horizontalAlignment: Text.AlignHCenter
                     anchors {
@@ -540,8 +502,6 @@ Rectangle {
                     text: "/ Opened Files"
                     color: "#fff118"
                     font.pixelSize: 16
-                    style: Text.Raised
-                    styleColor: "black"
                     font.bold: true
                     horizontalAlignment: Text.AlignHCenter
                     anchors {
@@ -553,8 +513,6 @@ Rectangle {
                     text: ": Line number"
                     color: "#18ffd6"
                     font.pixelSize: 16
-                    style: Text.Raised
-                    styleColor: "black"
                     font.bold: true
                     horizontalAlignment: Text.AlignHCenter
                     anchors {
@@ -566,8 +524,6 @@ Rectangle {
                     text: "! Non Python Files"
                     color: "#ffa018"
                     font.pixelSize: 16
-                    style: Text.Raised
-                    styleColor: "black"
                     font.bold: true
                     horizontalAlignment: Text.AlignHCenter
                     anchors {
@@ -623,8 +579,6 @@ Rectangle {
         text: "Filters: "
         color: "#8f8f8f"
         font.pixelSize: 10
-        style: Text.Raised
-        styleColor: "black"
         font.bold: true
         anchors {
             left: parent.left
@@ -637,8 +591,6 @@ Rectangle {
         text: root.filterComposite ? root.filterComposite : root.filterVerbose
         color: "white"
         font.pixelSize: 10
-        style: Text.Raised
-        styleColor: "black"
         font.bold: true
         anchors {
             left: parent.left

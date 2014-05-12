@@ -124,7 +124,7 @@ class FilesHandler(QFrame):
 
     def showEvent(self, event):
         self._add_model()
-        width = max(self._main_container.width() / 3, 300)
+        width = max(self._main_container.width() / 2, 300)
         logger.debug("This is the width")
         logger.debug(width)
         height = max(self._main_container.height() / 2, 400)
