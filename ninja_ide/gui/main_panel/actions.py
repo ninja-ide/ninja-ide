@@ -280,10 +280,10 @@ ACTIONS = (
     "shortcut": "Show-Code-Nav",
     "connect": "show_navigation_buttons"
     },
-    {
-    "shortcut": "change-split-focus",
-    "connect": "change_split_focus"
-    },
+    #{
+    #"shortcut": "change-split-focus",
+    #"connect": "change_split_focus"
+    #},
     {
     "shortcut": "change-tab-visibility",
     "connect": "change_tabs_visibility"

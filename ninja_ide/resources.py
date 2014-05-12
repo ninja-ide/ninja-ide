@@ -215,7 +215,7 @@ SHORTCUTS = {
     "History-Copy": QKeySequence(Qt.CTRL + Qt.ALT + Qt.Key_C),
     "History-Paste": QKeySequence(Qt.CTRL + Qt.ALT + Qt.Key_V),
     "Add-Bookmark-or-Breakpoint": QKeySequence(Qt.CTRL + Qt.Key_B),
-    "change-split-focus": QKeySequence(Qt.CTRL + Qt.Key_Tab),
+    #"change-split-focus": QKeySequence(Qt.CTRL + Qt.Key_Tab),
     "Move-Tab-to-right": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_0),
     "Move-Tab-to-left": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_9),
     "change-tab-visibility": QKeySequence(Qt.SHIFT + Qt.Key_F1),
