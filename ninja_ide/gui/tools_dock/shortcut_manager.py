@@ -188,8 +188,8 @@ class ShortcutConfiguration(QWidget):
             "Show-Paste-History": translations.TR_SHOW_CLIPBOARD_HISTORY,
             "History-Copy": translations.TR_COPY_TO_HISTORY,
             "History-Paste": translations.TR_PASTE_FROM_HISTORY,
-            "change-split-focus":
-                translations.TR_CHANGE_KEYBOARD_FOCUS_BETWEEN_SPLITS,
+            #"change-split-focus":
+                #translations.TR_CHANGE_KEYBOARD_FOCUS_BETWEEN_SPLITS,
             "Add-Bookmark-or-Breakpoint": translations.TR_INSERT_BREAKPOINT,
             "move-tab-to-next-split": translations.TR_MOVE_TAB_TO_NEXT_SPLIT,
             "change-tab-visibility": translations.TR_SHOW_TABS_IN_EDITOR,
