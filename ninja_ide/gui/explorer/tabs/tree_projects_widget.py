@@ -63,7 +63,6 @@ class ProjectTreeColumn(QDialog):
         vbox = QVBoxLayout(self)
         vbox.setSizeConstraint(QVBoxLayout.SetDefaultConstraint)
         vbox.setContentsMargins(0, 0, 0, 0)
-        #vbox.setSpacing(0)
         self._buttons = []
 
         self._combo_project = QComboBox()

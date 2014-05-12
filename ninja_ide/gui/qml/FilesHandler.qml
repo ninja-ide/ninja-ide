@@ -3,8 +3,10 @@ import QtQuick 1.1
 Rectangle {
     id: root
 
-    radius: 10
-    color: "#d7d7d7"
+    radius: 5
+    color: "#202123"
+    border.width: 1
+    border.color: "gray"
 
     PropertyAnimation {
         id: showAnim
@@ -20,7 +22,8 @@ Rectangle {
     signal hide
 
     function activateInput() {
-        listFiles.forceActiveFocus();
+        input.text = "";
+        input.forceActiveFocus();
     }
 
     function show_animation() {
@@ -43,7 +46,8 @@ Rectangle {
                 "path": model[i][1],
                 "checkers": model[i][2],
                 "modified": model[i][3],
-                "tempFile": model[i][4]});
+                "tempFile": model[i][4],
+                "itemVisible": true});
         }
     }
 
@@ -52,29 +56,91 @@ Rectangle {
     }
 
     function next_item() {
-        var index = listFiles.currentIndex + 1;
-        if(index < listFiles.count) {
-            listFiles.currentIndex = index;
-        } else {
-            listFiles.currentIndex = 0;
+        for (var i = 0; i < listFiles.model.count; i++) {
+            listFiles.incrementCurrentIndex();
+            if (listFiles.model.get(listFiles.currentIndex).itemVisible) {
+                break
+            }
         }
     }
 
     function previous_item() {
-        var index = listFiles.currentIndex - 1;
-        if(index >= 0) {
-            listFiles.currentIndex = index;
-        } else {
-            listFiles.currentIndex = listFiles.count - 1;
+        for (var i = 0; i < listFiles.model.count; i++) {
+            listFiles.decrementCurrentIndex();
+            if (listFiles.model.get(listFiles.currentIndex).itemVisible) {
+                break
+            }
+        }
+    }
+
+    Rectangle {
+        id: inputArea
+        radius: 2
+        color: "#2d2f31"
+        height: 30
+        anchors {
+            left: parent.left
+            right: parent.right
+            top: parent.top
+            margins: 10
+        }
+        border.color: "black"
+        border.width: 1
+        smooth: true
+
+        TextInput {
+            id: input
+            anchors {
+                fill: parent
+                margins: 4
+            }
+            focus: true
+            clip: true
+            color: "white"
+            font.pixelSize: 18
+
+            onTextChanged: {
+                var firstValidItem = -1;
+                for (var i = 0; i < listFiles.model.count; i++) {
+                    var item = listFiles.model.get(i);
+                    if (item.name.indexOf(input.text) == -1) {
+                        item.itemVisible = false;
+                    } else {
+                        if (firstValidItem == -1) firstValidItem = i;
+                        item.itemVisible = true;
+                    }
+                }
+                listFiles.currentIndex = firstValidItem;
+            }
+
+            Keys.onDownPressed: {
+                root.next_item();
+            }
+            Keys.onUpPressed: {
+                root.previous_item();
+            }
+            Keys.onEnterPressed: {
+                root.open_item();
+            }
+            Keys.onReturnPressed: {
+                root.open_item();
+            }
         }
     }
 
     Component {
         id: tabDelegate
-        Item {
+        Rectangle {
             id: item
-            width: root.width;
-            height: checkers ? 70 : 60
+            visible: itemVisible
+            width: parent.width
+            property int defaultValues: checkers ? 70 : 60
+            height: itemVisible ? defaultValues : 0
+            property bool current: ListView.isCurrentItem
+            color: item.current ? "#4182c4" : "#27292b"
+
+            property string mainTextColor: item.current ? "white" : "#aaaaaa"
+            property string mainTextModifiedColor: item.current ? "lightgreen" : "green"
 
             MouseArea {
                 anchors.fill: parent
@@ -84,6 +150,13 @@ Rectangle {
                     var tempFile = listFiles.model.get(index).tempFile;
                     root.open(path, tempFile);
                 }
+            }
+
+            Rectangle {
+                anchors.fill: imgClose
+                anchors.margins: 2
+                radius: width / 2
+                color: "white"
             }
 
             Image {
@@ -121,11 +194,13 @@ Rectangle {
                     anchors {
                         left: parent.left
                         right: parent.right
+                        rightMargin: imgClose.width
                     }
-                    color: modified ? "green" : "black"
+                    color: modified ? mainTextModifiedColor : mainTextColor
                     font.pixelSize: 18
                     font.bold: true
                     text: name
+                    elide: Text.ElideRight
                     font.italic: modified
                 }
                 Text {
@@ -133,7 +208,7 @@ Rectangle {
                         left: parent.left
                         right: parent.right
                     }
-                    color: "gray"
+                    color: item.current ? "#aaaaaa" : "#555555"
                     elide: Text.ElideLeft
                     text: path
                 }
@@ -160,25 +235,18 @@ Rectangle {
 
     ListView {
         id: listFiles
-        anchors.fill: parent
+        anchors {
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+            top: inputArea.bottom
+            margins: 5
+        }
+        spacing: 2
 
         focus: true
         model: ListModel {}
         delegate: tabDelegate
-        highlight: Rectangle { color: "lightsteelblue"; radius: 10; width: root.width }
         highlightMoveDuration: 200
-
-        Keys.onDownPressed: {
-            listFiles.incrementCurrentIndex();
-        }
-        Keys.onUpPressed: {
-            listFiles.decrementCurrentIndex();
-        }
-        Keys.onEnterPressed: {
-            root.open_item();
-        }
-        Keys.onReturnPressed: {
-            root.open_item();
-        }
     }
 }
