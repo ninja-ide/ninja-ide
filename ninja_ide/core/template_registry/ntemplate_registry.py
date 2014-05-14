@@ -125,6 +125,7 @@ class BaseProjectType(QObject):
                 full_path += "/"
             if not os.path.exists(full_path):
                 os.mkdir(full_path)
+
     @classmethod
     def wizard_pages(cls):
         """Return the pages to be displayed in the wizard."""
