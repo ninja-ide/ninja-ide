@@ -124,7 +124,7 @@ QScrollBar::sub-page:horizontal{
     border: none;
 }
 
-QLineEdit{
+QLineEdit, QSpinBox, QDoubleSpinBox {
     color: #444;
     background: #ddd;
     border-radius: 6px;
@@ -456,7 +456,6 @@ QComboBox#combo_symbols::drop-down {
 QComboBox::down-arrow,
 QComboBox#combotab::down-arrow,
 QComboBox#combo_symbols::down-arrow {
-     image: url(:img/chevron);
      top: 2px;
      right: 7px;
 }
@@ -517,11 +516,6 @@ QMenu::item:selected {
     background: rgba(100, 100, 100, 150);
     */
     background: #e20000;
-}
-
-QSpinBox {
-    background : white;
-    color: black;
 }
 
 TabWidget::tab-bar {
