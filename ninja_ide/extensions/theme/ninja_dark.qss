@@ -46,7 +46,8 @@ QToolBar#custom {
     border: 1px solid #222;
 }
 
-QToolBar::handle, QToolBar::handle:vertical, QToolBar::handle:horizontal {
+QToolBar::handle, QToolBar::handle:vertical, QToolBar::handle:horizontal,
+QSplitter::handle:horizontal, QSplitter::handle:vertical, QSplitter::handle {
     border: 1px solid gray;
     border-radius: 5px;
     width: 9px;
