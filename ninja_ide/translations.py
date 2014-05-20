@@ -660,3 +660,6 @@ TR_SCHEME_INVALID_NAME = tr(
     "\nPlease pick a different name.")
 TR_WANT_OVERWRITE_FILE = tr("NINJA-IDE", "Do you want to overwrite the file")
 TR_SCHEME_SAVED = tr("NINJA-IDE", "The scheme has been saved")
+
+TR_CENTER_ITEMS_IN_TOOLBAR = tr("NINJA-IDE", "Center items in Toolbar")
+TR_TOOLBAR = tr("NINJA-IDE", "Toolbar")

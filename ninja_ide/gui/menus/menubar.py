@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from PyQt4.QtGui import QAction
-from PyQt4.QtGui import QMenu
+from PyQt4.QtGui import QMenu, QSizePolicy, QWidget
 from PyQt4.QtCore import QObject
 from collections import defaultdict
 
@@ -153,11 +153,17 @@ class _MenuBar(QObject):
                     #ADD A LATER CALLBACK
 
     def load_toolbar(self, ide):
+        """Take an IDE instance and load its ToolBar items."""
         toolbar = ide.get_service("toolbar")
         toolbar.clear()
         toolbar_items = ide.get_toolbaritems()
-        categories = list(ide.get_bar_categories().items())
+        categories = tuple(ide.get_bar_categories().items())
         categories = sorted(categories, key=lambda x: x[1])
+        if settings.TOOLBAR_POSITION:  # QToolBar with Centered items
+            l_spacer, r_spacer = QWidget(), QWidget()
+            l_spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            r_spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            toolbar.addWidget(l_spacer)
         for category, _ in categories:
             items_in_category = sorted(
                 [(key, toolbar_items[key][0], toolbar_items[key][1])
@@ -170,6 +176,8 @@ class _MenuBar(QObject):
                     toolbar.addAction(action)
             if items_in_category:
                 toolbar.addSeparator()
+        if settings.TOOLBAR_POSITION:
+            toolbar.addWidget(r_spacer)
 
 
 menu = _MenuBar()

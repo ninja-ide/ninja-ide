@@ -93,7 +93,7 @@ LANGUAGE = EXECUTION_OPTIONS = ""
 
 SHOW_START_PAGE = CONFIRM_EXIT = SHOW_STATUS_NOTIFICATIONS = True
 
-HIDE_TOOLBAR = PYTHON_EXEC_CONFIGURED_BY_USER = False
+HIDE_TOOLBAR = TOOLBAR_POSITION = PYTHON_EXEC_CONFIGURED_BY_USER = False
 
 NOTIFICATION_COLOR = "#000"
 
@@ -410,6 +410,7 @@ def load_settings():
     global NOTIFICATION_POSITION
     global NOTIFICATION_COLOR
     global LAST_CLEAN_LOCATOR
+    global TOOLBAR_POSITION
     #General
     HIDE_TOOLBAR = qsettings.value("window/hide_toolbar", False, type=bool)
     SHOW_STATUS_NOTIFICATIONS = qsettings.value(
@@ -557,6 +558,8 @@ def load_settings():
         'preferences/general/notification_color', "#000", type='QString')
     LAST_CLEAN_LOCATOR = qsettings.value(
         'preferences/general/cleanLocator', None)
+    TOOLBAR_POSITION =  qsettings.value(
+        'preferences/general/toolbar_position', False, type=bool)
     from ninja_ide.extensions import handlers
     handlers.init_basic_handlers()
     clean_locator_db(qsettings)
