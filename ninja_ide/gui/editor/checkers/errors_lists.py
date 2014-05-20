@@ -99,8 +99,10 @@ class ErrorsWidget(QDialog):
         settings.FIND_ERRORS = not settings.FIND_ERRORS
         if settings.FIND_ERRORS:
             self.btn_lint_activate.setText(self.tr("Lint: ON"))
+            self.listErrors.show()
         else:
             self.btn_lint_activate.setText(self.tr("Lint: OFF"))
+            self.listErrors.hide()
         self.emit(SIGNAL("lintActivated(bool)"), settings.FIND_ERRORS)
 
     def _turn_on_off_pep8(self):
@@ -108,8 +110,10 @@ class ErrorsWidget(QDialog):
         settings.CHECK_STYLE = not settings.CHECK_STYLE
         if settings.CHECK_STYLE:
             self.btn_pep8_activate.setText(self.tr("PEP8: ON"))
+            self.listPep8.show()
         else:
             self.btn_pep8_activate.setText(self.tr("PEP8: OFF"))
+            self.listPep8.hide()
         self.emit(SIGNAL("pep8Activated(bool)"), settings.CHECK_STYLE)
 
     def errors_selected(self):
