@@ -56,6 +56,7 @@ class GeneralConfiguration(QWidget):
         groupBoxWorkspace = QGroupBox(
             translations.TR_PREFERENCES_GENERAL_WORKSPACE)
         groupBoxNoti = QGroupBox(translations.TR_NOTIFICATION)
+        groupBoxToolBar = QGroupBox(translations.TR_TOOLBAR)
         groupBoxReset = QGroupBox(translations.TR_PREFERENCES_GENERAL_RESET)
 
         #Start
@@ -110,6 +111,10 @@ class GeneralConfiguration(QWidget):
         hboxNoti.addWidget(self._notify_position)
         hboxNoti.addWidget(self._notify_color, 0, Qt.AlignRight)
 
+        # ToolBar
+        self._toolbar_center = QCheckBox(translations.TR_CENTER_ITEMS_IN_TOOLBAR)
+        QHBoxLayout(groupBoxToolBar).addWidget(self._toolbar_center)
+
         # Resetting preferences
         vboxReset = QVBoxLayout(groupBoxReset)
         self._btnReset = QPushButton(
@@ -133,6 +138,7 @@ class GeneralConfiguration(QWidget):
         extensions = ', '.join(settings.SUPPORTED_EXTENSIONS)
         self._txtExtensions.setText(extensions)
         self._notify_position.setCurrentIndex(settings.NOTIFICATION_POSITION)
+        self._toolbar_center.setCheckState(settings.TOOLBAR_POSITION)
         qsettings.endGroup()
         qsettings.endGroup()
 
@@ -140,6 +146,7 @@ class GeneralConfiguration(QWidget):
         vbox.addWidget(groupBoxClose)
         vbox.addWidget(groupBoxWorkspace)
         vbox.addWidget(groupBoxNoti)
+        vbox.addWidget(groupBoxToolBar)
         vbox.addWidget(groupBoxReset)
 
         #Signals
@@ -197,6 +204,9 @@ class GeneralConfiguration(QWidget):
         settings.NOTIFICATION_COLOR = self._notification_choosed_color
         qsettings.setValue('preferences/general/notification_color',
             settings.NOTIFICATION_COLOR)
+        settings.TOOLBAR_POSITION = self._toolbar_center.isChecked()
+        qsettings.setValue('preferences/general/toolbar_position',
+                           settings.TOOLBAR_POSITION)
 
     def _reset_preferences(self):
         """Method to Reset all Preferences to default values"""
