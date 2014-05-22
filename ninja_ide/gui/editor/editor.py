@@ -732,6 +732,17 @@ class Editor(QPlainTextEdit):
                                 self.indent)
             cursor.removeSelectedText()
             return True
+        try:
+            cursor = self.textCursor()
+            cursor_position = cursor.positionInBlock()
+            text = self.document().lastBlock().text()
+            if text[cursor_position-1] in settings.BRACES and \
+            text[cursor_position] in settings.BRACES.values() \
+            or text[cursor_position-1] in settings.QUOTES and \
+            text[cursor_position] in settings.QUOTES.values():
+                cursor.deleteChar()
+        except:
+            pass
 
     def __home_pressed(self, event):
         if event.modifiers() == Qt.ControlModifier:
