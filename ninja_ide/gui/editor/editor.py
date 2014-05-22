@@ -734,12 +734,18 @@ class Editor(QPlainTextEdit):
             return True
         try:
             cursor = self.textCursor()
-            cursor_position = cursor.positionInBlock()
-            text = self.document().lastBlock().text()
-            if text[cursor_position-1] in settings.BRACES and \
-            text[cursor_position] in settings.BRACES.values() \
-            or text[cursor_position-1] in settings.QUOTES and \
-            text[cursor_position] in settings.QUOTES.values():
+            cursor.select(QTextCursor.LineUnderCursor)
+            text = cursor.selectedText()
+            
+            cursor = self.textCursor()
+            position = cursor.positionInBlock()
+            char = text[position-1]
+            next_char = text[position]
+            
+            if (char in settings.BRACES and \
+            next_char in settings.BRACES.values()) \
+            or (char in settings.QUOTES and \
+            next_char in settings.QUOTES.values()):
                 cursor.deleteChar()
         except:
             pass
