@@ -733,6 +733,19 @@ class Editor(QPlainTextEdit):
             cursor.removeSelectedText()
             return True
 
+        cursor.select(QTextCursor.LineUnderCursor)
+        text = cursor.selectedText()
+        position = self.textCursor().positionInBlock()
+        if position < len(text):
+            char = text[position - 1]
+            next_char = text[position]
+
+            if (char in settings.BRACES and
+            next_char in settings.BRACES.values()) \
+            or (char in settings.QUOTES and
+            next_char in settings.QUOTES.values()):
+                self.textCursor().deleteChar()
+
     def __home_pressed(self, event):
         if event.modifiers() == Qt.ControlModifier:
             return False
