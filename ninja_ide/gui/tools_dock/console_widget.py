@@ -272,15 +272,13 @@ class ConsoleWidget(QPlainTextEdit):
              self.document().lastBlock().text()[len(self.prompt):]):
             self.textCursor().removeSelectedText()
             return True
-        try:
-            cursor = self.textCursor()
-            cursor_position = cursor.positionInBlock() - len(self.prompt)
-            text = self.document().lastBlock().text()[len(self.prompt):]
-            if text[cursor_position-1] in BRACES and \
-            text[cursor_position] in BRACES.values():
-                cursor.deleteChar()
-        except:
-            pass
+
+        position = self.textCursor().positionInBlock() - len(self.prompt)
+        text = self.document().lastBlock().text()[len(self.prompt):]
+        if position < len(text):
+            if (text[position - 1] in BRACES and
+            text[position] in BRACES.values()):
+                self.textCursor().deleteChar()
 
         return self._get_cursor_position() == 0
 
