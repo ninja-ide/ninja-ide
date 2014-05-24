@@ -471,7 +471,11 @@ class IDE(QMainWindow):
     def show_preferences(self):
         """Open the Preferences Dialog."""
         pref = preferences.Preferences(self)
-        pref.show()
+        main_container = IDE.get_service("main_container")
+        if main_container:
+            main_container.show_dialog(pref)
+        else:
+            pref.show()
 
     def load_session_files_projects(self, files, projects,
                                     current_file, recent_files=None):
@@ -728,13 +732,11 @@ class IDE(QMainWindow):
     def show_plugins_store(self):
         """Open the Plugins Manager to install/uninstall plugins."""
         store = plugins_store.PluginsStore(self)
-        store.show()
-        #manager = plugins_manager.PluginsManagerWidget(self)
-        #manager.show()
-        #if manager._requirements:
-            #dependencyDialog = plugins_manager.DependenciesHelpDialog(
-                #manager._requirements)
-            #dependencyDialog.show()
+        main_container = IDE.get_service("main_container")
+        if main_container:
+            main_container.show_dialog(store)
+        else:
+            store.show()
 
     def show_languages(self):
         """Open the Language Manager to install/uninstall languages."""
