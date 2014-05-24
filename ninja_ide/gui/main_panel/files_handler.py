@@ -17,6 +17,8 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+import os
+import re
 import uuid
 
 from ninja_ide.tools.logger import NinjaLogger
@@ -30,6 +32,7 @@ from PyQt4.QtDeclarative import QDeclarativeView
 
 from ninja_ide.gui.ide import IDE
 from ninja_ide.tools import ui_tools
+from ninja_ide.tools.locator import locator
 
 
 class FilesHandler(QFrame):
@@ -57,6 +60,8 @@ class FilesHandler(QFrame):
         self.connect(self._root, SIGNAL("open(QString, QString)"), self._open)
         self.connect(self._root, SIGNAL("close(QString, QString)"), self._close)
         self.connect(self._root, SIGNAL("hide()"), self.hide)
+        self.connect(self._root, SIGNAL("fuzzySearch(QString)"),
+                     self._fuzzy_search)
 
     def _open(self, path, temp):
         if temp:
@@ -79,6 +84,21 @@ class FilesHandler(QFrame):
             nfile = ninjaide.get_or_create_nfile(path)
         if nfile is not None:
             nfile.close()
+
+    def _fuzzy_search(self, search):
+        search = '.+'.join(re.escape(search).split('\\ '))
+        pattern = re.compile(search, re.IGNORECASE)
+
+        model = []
+        for project_path in locator.files_paths:
+            files_in_project = locator.files_paths[project_path]
+            base_project = os.path.basename(project_path)
+            for file_path in files_in_project:
+                file_path = os.path.join(
+                    base_project, os.path.relpath(file_path, project_path))
+                if pattern.search(file_path):
+                    model.append([os.path.basename(file_path), file_path])
+        self._root.set_fuzzy_model(model)
 
     def _add_model(self):
         ninjaide = IDE.get_service("ide")
@@ -124,20 +144,23 @@ class FilesHandler(QFrame):
 
     def showEvent(self, event):
         self._add_model()
-        width = max(self._main_container.width() / 2, 300)
-        logger.debug("This is the width")
-        logger.debug(width)
-        height = max(self._main_container.height() / 2, 400)
-        logger.debug("This is the height")
-        logger.debug(height)
+        editor = self._main_container.get_current_editor()
+        if editor is None:
+            return
+        if self._main_container.splitter.count() == 1:
+            width = max(editor.width() / 2, 500)
+            height = max(editor.height() / 2, 400)
+        else:
+            width = editor.width()
+            height = editor.height()
         self.view.setFixedWidth(width)
-
         self.view.setFixedHeight(height)
+
         super(FilesHandler, self).showEvent(event)
         self._root.show_animation()
-        point = self._main_container.mapToGlobal(self.view.pos())
-        y_diff = self._main_container.combo_header_size
-        self.move(point.x(), point.y() + y_diff)
+        point = editor.mapToGlobal(self.view.pos())
+        #y_diff = self._main_container.combo_header_size
+        self.move(point.x(), point.y())
         self.view.setFocus()
         self._root.activateInput()
 

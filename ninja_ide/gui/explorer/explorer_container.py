@@ -44,7 +44,6 @@ class ExplorerContainer(QSplitter):
 ###############################################################################
 
     """
-    updateLocator()
     goToDefinition(int)
     projectOpened(QString)
     projectClosed(QString)

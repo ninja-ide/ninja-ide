@@ -23,6 +23,7 @@ import webbrowser
 
 from PyQt4 import uic
 from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QStackedLayout
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QFileDialog
@@ -43,6 +44,7 @@ from ninja_ide.gui.main_panel import main_selector
 from ninja_ide.gui.main_panel import browser_widget
 from ninja_ide.gui.main_panel import start_page
 from ninja_ide.gui.main_panel import files_handler
+from ninja_ide.gui.main_panel import add_file_folder
 from ninja_ide.gui.main_panel import image_viewer
 from ninja_ide.gui.main_panel import combo_editor
 from ninja_ide.gui.main_panel.helpers import split_orientation
@@ -88,12 +90,17 @@ class _MainContainer(QWidget):
     def __init__(self, parent=None):
         super(_MainContainer, self).__init__(parent)
         self._parent = parent
-        self.stack = QStackedLayout(self)
+        self._vbox = QVBoxLayout(self)
+        self._vbox.setContentsMargins(0, 0, 0, 0)
+        self._vbox.setSpacing(0)
+        self.stack = QStackedLayout()
         self.stack.setStackingMode(QStackedLayout.StackAll)
+        self._vbox.addLayout(self.stack)
 
         self.splitter = dynamic_splitter.DynamicSplitter()
         self.setAcceptDrops(True)
-        self.files_handler = files_handler.FilesHandler(self)
+        self._files_handler = files_handler.FilesHandler(self)
+        self._add_file_folder = add_file_folder.AddFileFolderWidget(self)
 
         #documentation browser
         self.docPage = None
@@ -151,14 +158,15 @@ class _MainContainer(QWidget):
         self.combo_area = combo_editor.ComboEditor(original=True)
         self.connect(self.combo_area, SIGNAL("allFilesClosed()"),
                      self._files_closed)
-        self.connect(self.combo_area, SIGNAL("showComboSelector()"),
-                     self.change_tab)
         self.splitter.add_widget(self.combo_area)
         self.add_widget(self.splitter)
 
         self.current_widget = self.combo_area
 
         ui_tools.install_shortcuts(self, actions.ACTIONS, ide)
+
+    def add_status_bar(self, status):
+        self._vbox.addWidget(status)
 
     @property
     def combo_header_size(self):
@@ -1073,15 +1081,21 @@ class _MainContainer(QWidget):
         """Close the current tab in the current TabWidget."""
         self.current_widget.close_current_file()
 
+    def create_file(self, base_path, project_path):
+        self._add_file_folder.create_file(base_path, project_path)
+
+    def create_folder(self, base_path, project_path):
+        self._add_file_folder.create_folder(base_path, project_path)
+
     def change_tab(self):
         """Change the tab in the current TabWidget."""
         self.stack.setCurrentWidget(self.splitter)
-        self.files_handler.next_item()
+        self._files_handler.next_item()
 
     def change_tab_reverse(self):
         """Change the tab in the current TabWidget backwards."""
         self.stack.setCurrentWidget(self.splitter)
-        self.files_handler.previous_item()
+        self._files_handler.previous_item()
 
     def toggle_tabs_and_spaces(self):
         """ Toggle Show/Hide Tabs and Spaces """

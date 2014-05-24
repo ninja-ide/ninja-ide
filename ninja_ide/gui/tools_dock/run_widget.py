@@ -17,6 +17,7 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+import sys
 import time
 import re
 
@@ -195,6 +196,7 @@ class RunWidget(QWidget):
             for path in envpaths:
                 env.insert('PYTHONPATH', path)
         env.insert('PYTHONIOENCODING', 'utf-8')
+        env.insert('PYTHONPATH', ':'.join(sys.path))
         self._proc.setProcessEnvironment(env)
 
         self._proc.start(self.pythonExec, options + [self.fileName] +
