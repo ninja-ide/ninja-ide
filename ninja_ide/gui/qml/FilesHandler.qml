@@ -20,6 +20,7 @@ Rectangle {
     signal open(string path, string tempFile)
     signal close(string path, string tempFile)
     signal hide
+    signal fuzzySearch(string search)
 
     function activateInput() {
         input.text = "";
@@ -51,8 +52,23 @@ Rectangle {
         }
     }
 
+    function set_fuzzy_model(model) {
+        listFuzzyFiles.model.clear();
+        listFuzzyFiles.currentIndex = 0;
+        for(var i = 0; i < model.length; i++) {
+            listFuzzyFiles.model.append(
+                {"name": model[i][0],
+                "path": model[i][1],
+                "checkers": "",
+                "modified": "",
+                "tempFile": "",
+                "itemVisible": true});
+        }
+    }
+
     function clear_model() {
         listFiles.model.clear();
+        listFuzzyFiles.model.clear();
     }
 
     function next_item() {
@@ -111,6 +127,12 @@ Rectangle {
                     }
                 }
                 listFiles.currentIndex = firstValidItem;
+                if (firstValidItem == -1) {
+                    listFiles.visible = false;
+                    fuzzySearch(input.text);
+                } else {
+                    listFiles.visible = true;
+                }
             }
 
             Keys.onDownPressed: {
@@ -126,6 +148,20 @@ Rectangle {
                 root.open_item();
             }
         }
+    }
+
+    Text {
+        id: fuzzyText
+        color: "white"
+        font.pixelSize: 10
+        font.bold: true
+        anchors {
+            left: parent.left
+            right: parent.right
+            top: inputArea.bottom
+            margins: 5
+        }
+        horizontalAlignment: Text.AlignHCenter
     }
 
     Component {
@@ -242,6 +278,24 @@ Rectangle {
             top: inputArea.bottom
             margins: 5
         }
+        spacing: 2
+
+        focus: true
+        model: ListModel {}
+        delegate: tabDelegate
+        highlightMoveDuration: 200
+    }
+
+    ListView {
+        id: listFuzzyFiles
+        anchors {
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+            top: fuzzyText.bottom
+            margins: 5
+        }
+        visible: !listFiles.visible
         spacing: 2
 
         focus: true

@@ -195,6 +195,7 @@ class IDE(QMainWindow):
 
         self.register_service('ide', self)
         self.register_service('toolbar', self.toolbar)
+        self.register_service('filesystem', self.filesystem)
         #Register signals connections
         connections = (
             {'target': 'main_container',
@@ -224,6 +225,11 @@ class IDE(QMainWindow):
         for service_name in self.__IDESERVICES:
             self.install_service(service_name)
         IDE.__created = True
+        # Place Status Bar
+        main_container = IDE.get_service('main_container')
+        status_bar = IDE.get_service('status_bar')
+        main_container.add_status_bar(status_bar)
+        # Load Menu Bar
         menu_bar = IDE.get_service('menu_bar')
         if menu_bar:
             menu_bar.load_menu(self)

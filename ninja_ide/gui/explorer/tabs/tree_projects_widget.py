@@ -134,7 +134,6 @@ class ProjectTreeColumn(QDialog):
         qfsm = ninjaide.filesystem.open_project(project)
         if qfsm:
             self.add_project(project)
-            self.emit(SIGNAL("updateLocator()"))
             self.save_recent_projects(folderName)
             main_container = IDE.get_service('main_container')
             if main_container:
@@ -550,31 +549,17 @@ class TreeProjectsWidget(QTreeView):
     def _add_new_file(self, path=''):
         if not path:
             path = self.model().filePath(self.currentIndex())
-        result = QInputDialog.getText(self, translations.TR_NEW_FILE,
-                                      translations.TR_ENTER_NEW_FILENAME + ": ")
-        fileName = result[0]
-
-        if result[1] and fileName.strip() != '':
-            fileName = os.path.join(path, fileName)
-            ide_srv = IDE.get_service('ide')
-            current_nfile = ide_srv.get_or_create_nfile(fileName)
-            current_nfile.create()
             main_container = IDE.get_service('main_container')
-            if main_container:
-                main_container.open_file(fileName)
+            project_path = self.project.path
+            main_container.create_file(path, project_path)
 
     def _add_new_folder(self, path=''):
         #FIXME: We need nfilesystem support for this
         if not path:
             path = self.model().filePath(self.currentIndex())
-        result = QInputDialog.getText(self, translations.TR_ADD_NEW_FOLDER,
-                                      translations.TR_ENTER_NEW_FOLDER_NAME +
-                                      ": ")
-        folderName = result[0]
-
-        if result[1] and folderName.strip() != '':
-            folderName = os.path.join(path, folderName)
-            file_manager.create_folder(folderName)
+            main_container = IDE.get_service('main_container')
+            project_path = self.project.path
+            main_container.create_folder(path, project_path)
 
     def _delete_file(self, path=''):
         if not path:

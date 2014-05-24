@@ -741,9 +741,9 @@ class Editor(QPlainTextEdit):
             next_char = text[position]
 
             if (char in settings.BRACES and
-            next_char in settings.BRACES.values()) \
-            or (char in settings.QUOTES and
-            next_char in settings.QUOTES.values()):
+                    next_char in settings.BRACES.values()) \
+                    or (char in settings.QUOTES and
+                        next_char in settings.QUOTES.values()):
                 self.textCursor().deleteChar()
 
     def __home_pressed(self, event):

@@ -53,18 +53,18 @@ class Notification(QFrame):
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
         vbox.addWidget(view)
-        self._height = self.height()
 
         self.connect(self._root, SIGNAL("close()"), self.close)
 
     def showEvent(self, event):
         """Method takes an event to show the Notification"""
         super(Notification, self).showEvent(event)
-        width, pgeo = self._parent.width() / 2, self._parent.geometry()
+        width, pgeo = self._parent.width(), self._parent.geometry()
         conditional_vertical = settings.NOTIFICATION_POSITION in (0, 1)
-        conditional_horizont = settings.NOTIFICATION_POSITION in (0, 2)
-        x = pgeo.left() if conditional_horizont else pgeo.right()
-        y = pgeo.bottom() if conditional_vertical else pgeo.top() - self._height
+        conditional_horizontal = settings.NOTIFICATION_POSITION in (0, 2)
+        x = pgeo.left() if conditional_horizontal else pgeo.right()
+        y = (pgeo.bottom() - self.height()
+             if conditional_vertical else pgeo.top())
         self.setFixedWidth(width)
         self.setGeometry(x, y, self.width(), self.height())
         background_color = str(settings.NOTIFICATION_COLOR)

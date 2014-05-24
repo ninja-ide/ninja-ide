@@ -463,6 +463,7 @@ QComboBox#combo_symbols::drop-down {
 QComboBox::down-arrow,
 QComboBox#combotab::down-arrow,
 QComboBox#combo_symbols::down-arrow {
+     image: url(:img/chevron);
      top: 2px;
      right: 7px;
 }
