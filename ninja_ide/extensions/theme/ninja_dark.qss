@@ -30,8 +30,7 @@ QMenuBar::item:pressed {
 }
 
 QToolBar {
-    background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
-        stop: 0 #202020, stop: 1.0 #404040);
+    background: #282828;
     border: 1px solid transparent;
 }
 

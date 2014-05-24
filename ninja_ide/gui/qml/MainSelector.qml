@@ -6,10 +6,20 @@ Rectangle {
 
     signal open(int index)
     signal ready
+    signal animationCompleted
 
     property int duration: 300
     property int indexSelected: 0
     property int currentIndex: 0
+
+    function select_item(index) {
+        preview.visible = true;
+        var image_path = repeater.model.get(index).image_path;
+        var obj_index = repeater.model.get(index).obj_index;
+        imagePreview.source = Qt.resolvedUrl(image_path);
+        root.indexSelected = obj_index;
+        animationSelected.start();
+    }
 
     ParallelAnimation {
         id: animation
@@ -22,6 +32,7 @@ Rectangle {
 
         onCompleted: {
             preview.visible = false;
+            root.animationCompleted();
         }
     }
 
@@ -69,7 +80,6 @@ Rectangle {
                     height: image.height + 5
                     focus: index == root.currentIndex ? true : false
 
-                    property int widgetIndex: obj_index
                     property alias mouse: mouseArea
 
                     Image {
@@ -95,10 +105,7 @@ Rectangle {
                         anchors.fill: parent
                         hoverEnabled: true
                         onClicked: {
-                            preview.visible = true;
-                            imagePreview.source = Qt.resolvedUrl(image_path);
-                            root.indexSelected = widgetIndex;
-                            animationSelected.start();
+                            select_item(index);
                         }
 
                         onEntered: {

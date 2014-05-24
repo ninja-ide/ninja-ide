@@ -141,6 +141,7 @@ class _MainContainer(QWidget):
         IDE.register_signals('main_container', connections)
 
         self.selector = main_selector.MainSelector(self)
+        self._opening_dialog = False
         self.add_widget(self.selector)
 
         if settings.SHOW_START_PAGE:
@@ -150,6 +151,10 @@ class _MainContainer(QWidget):
                      self._change_current_stack)
         self.connect(self.selector, SIGNAL("ready()"),
                      self._selector_ready)
+        self.connect(self.selector, SIGNAL("animationCompleted()"),
+                     self._selector_animation_completed)
+        self.connect(self, SIGNAL("closeDialog(PyQt_PyObject)"),
+                     self.remove_widget)
 
     def install(self):
         ide = IDE.get_service('ide')
@@ -174,6 +179,22 @@ class _MainContainer(QWidget):
 
     def add_widget(self, widget):
         self.stack.addWidget(widget)
+
+    def remove_widget(self, widget):
+        self.stack.removeWidget(widget)
+
+    def _close_dialog(self, widget):
+        self.emit(SIGNAL("closeDialog(PyQt_PyObject)"), widget)
+        self.disconnect(widget, SIGNAL("finished(int)"),
+                        lambda: self._close_dialog(widget))
+
+    def show_dialog(self, widget):
+        self._opening_dialog = True
+        self.connect(widget, SIGNAL("finished(int)"),
+                     lambda: self._close_dialog(widget))
+        self.setVisible(True)
+        self.stack.addWidget(widget)
+        self.show_selector()
 
     def show_selector(self):
         if self.selector != self.stack.currentWidget():
@@ -201,6 +222,13 @@ class _MainContainer(QWidget):
     def _selector_ready(self):
         self.stack.setCurrentWidget(self.selector)
         self.selector.start_animation()
+
+    def _selector_animation_completed(self):
+        if self._opening_dialog:
+            # We choose the last one with -2, -1 (for last one) +
+            # -1 for the hidden selector widget which is in the stacked too.
+            self.selector.open_item(self.stack.count() - 2)
+        self._opening_dialog = False
 
     def _change_current_stack(self, index):
         self.stack.setCurrentIndex(index)
