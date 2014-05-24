@@ -66,8 +66,6 @@ class FilesHandler(QFrame):
 
     def _open(self, path, temp, project):
         if project:
-            print project
-            print path
             path = os.path.join(os.path.split(project)[0], path)
             self._main_container.open_file(path)
         elif temp:
