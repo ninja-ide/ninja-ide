@@ -17,7 +17,7 @@ Rectangle {
         duration: 300
     }
 
-    signal open(string path, string tempFile)
+    signal open(string path, string tempFile, string project)
     signal close(string path, string tempFile)
     signal hide
     signal fuzzySearch(string search)
@@ -33,10 +33,16 @@ Rectangle {
     }
 
     function open_item() {
-        var item = listFiles.model.get(listFiles.currentIndex);
+        var item;
+        if (listFiles.visible) {
+            item = listFiles.model.get(listFiles.currentIndex);
+        } else {
+            item = listFuzzyFiles.model.get(listFuzzyFiles.currentIndex);
+        }
         var path = item.path;
         var tempFile = item.tempFile;
-        root.open(path, tempFile);
+        var project = item.project;
+        root.open(path, tempFile, project);
     }
 
     function set_model(model) {
@@ -48,6 +54,7 @@ Rectangle {
                 "checkers": model[i][2],
                 "modified": model[i][3],
                 "tempFile": model[i][4],
+                "project": "",
                 "itemVisible": true});
         }
     }
@@ -59,6 +66,7 @@ Rectangle {
             listFuzzyFiles.model.append(
                 {"name": model[i][0],
                 "path": model[i][1],
+                "project": model[i][2],
                 "checkers": "",
                 "modified": "",
                 "tempFile": "",
@@ -72,20 +80,28 @@ Rectangle {
     }
 
     function next_item() {
-        for (var i = 0; i < listFiles.model.count; i++) {
-            listFiles.incrementCurrentIndex();
-            if (listFiles.model.get(listFiles.currentIndex).itemVisible) {
-                break
+        if (listFiles.visible) {
+            for (var i = 0; i < listFiles.model.count; i++) {
+                listFiles.incrementCurrentIndex();
+                if (listFiles.model.get(listFiles.currentIndex).itemVisible) {
+                    break
+                }
             }
+        } else {
+            listFuzzyFiles.incrementCurrentIndex();
         }
     }
 
     function previous_item() {
-        for (var i = 0; i < listFiles.model.count; i++) {
-            listFiles.decrementCurrentIndex();
-            if (listFiles.model.get(listFiles.currentIndex).itemVisible) {
-                break
+        if (listFiles.visible) {
+            for (var i = 0; i < listFiles.model.count; i++) {
+                listFiles.decrementCurrentIndex();
+                if (listFiles.model.get(listFiles.currentIndex).itemVisible) {
+                    break
+                }
             }
+        } else {
+            listFuzzyFiles.decrementCurrentIndex();
         }
     }
 

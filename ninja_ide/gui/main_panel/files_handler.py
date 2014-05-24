@@ -57,14 +57,20 @@ class FilesHandler(QFrame):
         self._temp_files = {}
         self._max_index = 0
 
-        self.connect(self._root, SIGNAL("open(QString, QString)"), self._open)
+        self.connect(self._root, SIGNAL("open(QString, QString, QString)"),
+                     self._open)
         self.connect(self._root, SIGNAL("close(QString, QString)"), self._close)
         self.connect(self._root, SIGNAL("hide()"), self.hide)
         self.connect(self._root, SIGNAL("fuzzySearch(QString)"),
                      self._fuzzy_search)
 
-    def _open(self, path, temp):
-        if temp:
+    def _open(self, path, temp, project):
+        if project:
+            print project
+            print path
+            path = os.path.join(os.path.split(project)[0], path)
+            self._main_container.open_file(path)
+        elif temp:
             nfile = self._temp_files[temp]
             ninjaide = IDE.get_service("ide")
             neditable = ninjaide.get_or_create_editable(nfile=nfile)
@@ -97,7 +103,8 @@ class FilesHandler(QFrame):
                 file_path = os.path.join(
                     base_project, os.path.relpath(file_path, project_path))
                 if pattern.search(file_path):
-                    model.append([os.path.basename(file_path), file_path])
+                    model.append([os.path.basename(file_path), file_path,
+                                  project_path])
         self._root.set_fuzzy_model(model)
 
     def _add_model(self):
@@ -144,22 +151,21 @@ class FilesHandler(QFrame):
 
     def showEvent(self, event):
         self._add_model()
-        editor = self._main_container.get_current_editor()
-        if editor is None:
-            return
-        if self._main_container.splitter.count() == 1:
-            width = max(editor.width() / 2, 500)
-            height = max(editor.height() / 2, 400)
+        widget = self._main_container.get_current_editor()
+        if widget is None:
+            widget = self._main_container
+        if self._main_container.splitter.count() < 2:
+            width = max(widget.width() / 2, 500)
+            height = max(widget.height() / 2, 400)
         else:
-            width = editor.width()
-            height = editor.height()
+            width = widget.width()
+            height = widget.height()
         self.view.setFixedWidth(width)
         self.view.setFixedHeight(height)
 
         super(FilesHandler, self).showEvent(event)
         self._root.show_animation()
-        point = editor.mapToGlobal(self.view.pos())
-        #y_diff = self._main_container.combo_header_size
+        point = widget.mapToGlobal(self.view.pos())
         self.move(point.x(), point.y())
         self.view.setFocus()
         self._root.activateInput()
