@@ -195,6 +195,7 @@ class TreeSymbolsWidget(QDialog):
 
     def update_symbols_tree(self, symbols, filename='', parent=None):
         """Method to Update the symbols on the Tree"""
+        ITEM_COUNT = "  ({})"
         if not parent:
             if filename == self.actualSymbols[0] and \
                 self.actualSymbols[1] and not symbols:
@@ -210,7 +211,9 @@ class TreeSymbolsWidget(QDialog):
             self.docstrings = symbols.get('docstrings', {})
             parent = self.tree
         if 'attributes' in symbols:
-            globalAttribute = ItemTree(parent, [translations.TR_ATTRIBUTES])
+            globalAttribute = ItemTree(
+                parent, [translations.TR_ATTRIBUTES +
+                         ITEM_COUNT.format(len(symbols['attributes']))])
             globalAttribute.isClickable = False
             globalAttribute.isAttribute = True
             globalAttribute.setExpanded(self._get_expand(globalAttribute))
@@ -222,7 +225,9 @@ class TreeSymbolsWidget(QDialog):
                 globItem.setExpanded(self._get_expand(globItem))
 
         if 'functions' in symbols and symbols['functions']:
-            functionsItem = ItemTree(parent, [translations.TR_FUNCTIONS])
+            functionsItem = ItemTree(
+                parent, [translations.TR_FUNCTIONS +
+                         ITEM_COUNT.format(len(symbols['functions']))])
             functionsItem.isClickable = False
             functionsItem.isMethod = True
             functionsItem.setExpanded(self._get_expand(functionsItem))
@@ -238,7 +243,9 @@ class TreeSymbolsWidget(QDialog):
                 self.update_symbols_tree(
                     symbols['functions'][func]['functions'], parent=item)
         if 'classes' in symbols and symbols['classes']:
-            classItem = ItemTree(parent, [translations.TR_CLASSES])
+            classItem = ItemTree(
+                parent, [translations.TR_CLASSES +
+                         ITEM_COUNT.format(len(symbols['classes']))])
             classItem.isClickable = False
             classItem.isClass = True
             classItem.setExpanded(self._get_expand(classItem))
