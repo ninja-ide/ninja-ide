@@ -82,26 +82,42 @@ Rectangle {
     function next_item() {
         if (listFiles.visible) {
             for (var i = 0; i < listFiles.model.count; i++) {
-                listFiles.incrementCurrentIndex();
+                if (listFiles.currentIndex == (listFiles.count - 1)) {
+                    listFiles.currentIndex = 0;
+                } else {
+                    listFiles.incrementCurrentIndex();
+                }
                 if (listFiles.model.get(listFiles.currentIndex).itemVisible) {
                     break
                 }
             }
         } else {
-            listFuzzyFiles.incrementCurrentIndex();
+            if (listFuzzyFiles.currentIndex == (listFuzzyFiles.count - 1)) {
+                listFuzzyFiles.currentIndex = 0;
+            } else {
+                listFuzzyFiles.incrementCurrentIndex();
+            }
         }
     }
 
     function previous_item() {
         if (listFiles.visible) {
             for (var i = 0; i < listFiles.model.count; i++) {
-                listFiles.decrementCurrentIndex();
+                if (listFiles.currentIndex == 0) {
+                    listFiles.currentIndex = (listFiles.count - 1);
+                } else {
+                    listFiles.decrementCurrentIndex();
+                }
                 if (listFiles.model.get(listFiles.currentIndex).itemVisible) {
                     break
                 }
             }
         } else {
-            listFuzzyFiles.decrementCurrentIndex();
+            if (listFuzzyFiles.currentIndex == 0) {
+                listFuzzyFiles.currentIndex = (listFuzzyFiles.count - 1);
+            } else {
+                listFuzzyFiles.decrementCurrentIndex();
+            }
         }
     }
 
