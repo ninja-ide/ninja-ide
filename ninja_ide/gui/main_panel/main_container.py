@@ -149,6 +149,8 @@ class _MainContainer(QWidget):
 
         self.connect(self.selector, SIGNAL("changeCurrent(int)"),
                      self._change_current_stack)
+        self.connect(self.selector, SIGNAL("removeWidget(int)"),
+                     self._remove_item_from_stack)
         self.connect(self.selector, SIGNAL("ready()"),
                      self._selector_ready)
         self.connect(self.selector, SIGNAL("animationCompleted()"),
@@ -207,14 +209,17 @@ class _MainContainer(QWidget):
                 widget = self.stack.widget(index)
                 if widget == self.selector:
                     continue
+                closable = True
+                if widget == self.splitter:
+                    closable = False
                 pixmap = QPixmap.grabWidget(widget, widget.rect())
                 path = os.path.join(temp_dir, "screen%s.png" % index)
                 pixmap.save(path)
                 if index == current:
                     self.selector.set_preview(index, path)
-                    collected_data.insert(0, (index, path))
+                    collected_data.insert(0, (index, path, closable))
                 else:
-                    collected_data.append((index, path))
+                    collected_data.append((index, path, closable))
             self.selector.set_model(collected_data)
         else:
             self.selector.close_selector()
@@ -232,6 +237,10 @@ class _MainContainer(QWidget):
 
     def _change_current_stack(self, index):
         self.stack.setCurrentIndex(index)
+
+    def _remove_item_from_stack(self, index):
+        widget = self.stack.takeAt(index)
+        del widget
 
     def show_editor_area(self):
         self.stack.setCurrentWidget(self.splitter)
