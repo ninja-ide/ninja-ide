@@ -91,7 +91,7 @@ class AddFileFolderWidget(QDialog):
             path = os.path.join(self._base_path, path)
             folder = os.path.split(path)[0]
             if not os.path.exists(folder):
-                os.makedirs(folder)
+                file_manager.create_folder(folder)
             ninjaide = IDE.get_service('ide')
             current_nfile = ninjaide.get_or_create_nfile(path)
             current_nfile.create()
