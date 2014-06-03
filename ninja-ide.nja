@@ -5,13 +5,13 @@
   "relatedProjects": [], 
   "name": "NINJA-IDE", 
   "license": "GNU General Public License v3", 
+  "pythonExec": "python", 
   "url": "http://ninja-ide.org", 
-  "pythonPath": "python", 
+  "PYTHONPATH": "", 
   "preExecScript": "", 
   "additional_builtins": [], 
   "programParams": "", 
   "indentation": 4, 
-  "PYTHONPATH": "", 
   "supported-extensions": [
     ".py", 
     ".html", 
@@ -25,7 +25,8 @@
     ".qss", 
     ".qml", 
     ".md", 
-    ".qrc"
+    ".qrc", 
+    ".txt"
   ], 
   "project-type": "python", 
   "postExecScript": "", 
