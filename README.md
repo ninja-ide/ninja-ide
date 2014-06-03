@@ -16,7 +16,7 @@ software easier and more enjoyable.
 
 -   [Python](http://python.org/) >= 2.7 (or Python3)
 -   [PyQt](http://www.riverbankcomputing.com/software/pyqt/intro) >= 4.8
--   Virtualenv
+-   [pip](https://pip.pypa.io/en/latest/installing.html)
 
 ## Cloning and Running
 
