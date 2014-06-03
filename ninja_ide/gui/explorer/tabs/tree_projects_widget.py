@@ -180,13 +180,12 @@ class ProjectTreeColumn(QDialog):
         expanded for the first project only).
         Note: This slot is connected to the main container's
         "showFileInExplorer(QString)" signal.'''
+        central = IDE.get_service('central_container')
+        if central and not central.is_lateral_panel_visible():
+            return
         for project in self.projects:
             index = project.model().index(path)
             if index.isValid():
-                # Show the explorer if it is currently hidden
-                central = IDE.get_service('central_container')
-                if central and not central.is_lateral_panel_visible():
-                    central.change_lateral_visibility()
                 # This highlights the index in the tree for us
                 project.setCurrentIndex(index)
                 # Loop through the parents to expand the tree
