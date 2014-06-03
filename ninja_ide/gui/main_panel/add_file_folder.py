@@ -100,7 +100,6 @@ class AddFileFolderWidget(QDialog):
                 main_container.open_file(path)
         else:
             path = os.path.join(self._base_path, path)
-            print path
             if not os.path.exists(path):
                 file_manager.create_folder(path)
         self.hide()
