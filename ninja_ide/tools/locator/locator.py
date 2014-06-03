@@ -179,6 +179,7 @@ class LocateSymbolsThread(QThread):
 
     def find_code_location(self):
         self.cancel()
+        self.wait()
         self._cancel = False
         if not self.isRunning():
             global mapping_symbols

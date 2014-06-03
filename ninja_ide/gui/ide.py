@@ -115,14 +115,6 @@ class IDE(QMainWindow):
         #Filesystem
         self.filesystem = nfilesystem.NVirtualFileSystem()
 
-        #Start server if needed
-        self.s_listener = None
-        if start_server:
-            self.s_listener = QLocalServer()
-            self.s_listener.listen("ninja_ide")
-            self.connect(self.s_listener, SIGNAL("newConnection()"),
-                         self._process_connection)
-
         #Sessions handler
         self._session = None
         #Opacity
@@ -235,6 +227,15 @@ class IDE(QMainWindow):
             menu_bar.load_menu(self)
             #These two are the same service, I think that's ok
             menu_bar.load_toolbar(self)
+
+        #Start server if needed
+        self.s_listener = None
+        if start_server:
+            self.s_listener = QLocalServer()
+            self.s_listener.listen("ninja_ide")
+            self.connect(self.s_listener, SIGNAL("newConnection()"),
+                         self._process_connection)
+
         IDE.__instance = self
 
     @classmethod
