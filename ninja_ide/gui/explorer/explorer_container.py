@@ -95,6 +95,8 @@ class ExplorerContainer(QSplitter):
                          self._dock_widget)
             self.connect(obj, SIGNAL("undockWidget()"),
                          self._undock_widget)
+            self.connect(obj, SIGNAL("changeTitle(PyQt_PyObject, QString)"),
+                         self._change_tab_title)
 
         if self.count() == 0:
             self.hide()
@@ -106,6 +108,14 @@ class ExplorerContainer(QSplitter):
             central.change_lateral_visibility()
         tabname, icon = ExplorerContainer.__TABS[widget]
         self.add_tab(tabname, widget, icon)
+
+    def _change_tab_title(self, widget, title):
+        tab_widget = self.widget(0)
+        index = tab_widget.indexOf(widget)
+        data = ExplorerContainer.__TABS[widget]
+        data = tuple([title] + list(data[1:]))
+        ExplorerContainer.__TABS[widget] = data
+        tab_widget.setTabText(index, title)
 
     def _undock_widget(self):
         bar = self.widget(0).tabBar()
