@@ -138,6 +138,13 @@ class ProjectTreeColumn(QDialog):
             main_container = IDE.get_service('main_container')
             if main_container:
                 main_container.show_editor_area()
+            if len(self.projects) > 1:
+                title = "%s (%s)" % (
+                    translations.TR_TAB_PROJECTS, len(self.projects))
+            else:
+                title = translations.TR_TAB_PROJECTS
+            self.emit(
+                SIGNAL("changeTitle(PyQt_PyObject, QString)"), self, title)
 
     def _add_file_to_project(self, path):
         """Add the file for 'path' in the project the user choose here."""
@@ -222,6 +229,13 @@ class ProjectTreeColumn(QDialog):
         ninjaide = IDE.get_service('ide')
         ninjaide.filesystem.close_project(widget.project.path)
         widget.deleteLater()
+        if len(self.projects) > 1:
+            title = "%s (%s)" % (
+                translations.TR_TAB_PROJECTS, len(self.projects))
+        else:
+            title = translations.TR_TAB_PROJECTS
+        self.emit(
+            SIGNAL("changeTitle(PyQt_PyObject, QString)"), self, title)
 
     def _change_current_project(self, index):
         self._projects_area.setCurrentIndex(index)
