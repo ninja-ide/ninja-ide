@@ -263,8 +263,6 @@ class OutputWidget(QPlainTextEdit):
         super(OutputWidget, self).__init__(parent)
         self._parent = parent
         self.setReadOnly(True)
-        self.maxValue = 0
-        self.actualValue = 0
         #traceback pattern
         self.patLink = re.compile(r'(\s)*File "(.*?)", line \d.+')
         #formats
@@ -291,7 +289,8 @@ class OutputWidget(QPlainTextEdit):
                     "error-underline",
                     resources.COLOR_SCHEME["error-underline"]))))
 
-        self.connect(self, SIGNAL("blockCountChanged(int)"), self._scroll_area)
+        self.connect(self, SIGNAL("blockCountChanged(int)"),
+                     lambda: self.moveCursor(QTextCursor.End))
 
         css = 'QPlainTextEdit {color: %s; background-color: %s;' \
             'selection-color: %s; selection-background-color: %s;}' \
@@ -304,11 +303,6 @@ class OutputWidget(QPlainTextEdit):
                resources.CUSTOM_SCHEME.get('editor-selection-background',
                resources.COLOR_SCHEME['editor-selection-background']))
         self.setStyleSheet(css)
-
-    def _scroll_area(self):
-        """When new text is added to the widget, move the scroll to the end."""
-        if self.actualValue == self.maxValue:
-            self.moveCursor(QTextCursor.End)
 
     def mousePressEvent(self, event):
         """
@@ -323,9 +317,6 @@ class OutputWidget(QPlainTextEdit):
         #we should decode the bytes!
         currentProcess = self._parent.currentProcess
         text = currentProcess.readAllStandardOutput().data().decode('utf8')
-        verticalScroll = self.verticalScrollBar()
-        self.actualValue = verticalScroll.value()
-        self.maxValue = verticalScroll.maximum()
         self.textCursor().insertText(text, self.plain_format)
 
     def refresh_error(self):
@@ -335,9 +326,6 @@ class OutputWidget(QPlainTextEdit):
         currentProcess = self._parent.currentProcess
         text = currentProcess.readAllStandardError().data().decode('utf8')
         text_lines = text.split('\n')
-        verticalScroll = self.verticalScrollBar()
-        self.actualValue = verticalScroll.value()
-        self.maxValue = verticalScroll.maximum()
         for t in text_lines:
             cursor.insertBlock()
             if self.patLink.match(t):
