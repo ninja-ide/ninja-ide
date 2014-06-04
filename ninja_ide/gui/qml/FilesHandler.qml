@@ -214,9 +214,12 @@ Rectangle {
                 anchors.fill: parent
 
                 onClicked: {
-                    var path = listFiles.model.get(index).path;
-                    var tempFile = listFiles.model.get(index).tempFile;
-                    root.open(path, tempFile);
+                    if (listFiles.visible) {
+                        listFiles.currentIndex = index;
+                    } else {
+                        listFuzzyFiles.currentIndex = index;
+                    }
+                    root.open_item();
                 }
             }
 
