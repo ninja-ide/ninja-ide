@@ -148,8 +148,8 @@ class ProjectTreeColumn(QDialog):
 
     def _add_file_to_project(self, path):
         """Add the file for 'path' in the project the user choose here."""
-        if self._active_project:
-            pathProject = [self._active_project.project]
+        if self._projects_area.count() > 0:
+            pathProject = [self.current_project]
             addToProject = add_to_project.AddToProject(pathProject, self)
             addToProject.exec_()
             if not addToProject.pathSelected:
@@ -246,8 +246,8 @@ class ProjectTreeColumn(QDialog):
 
     def save_project(self):
         """Save all the opened files that belongs to the actual project."""
-        if self._active_project:
-            path = self._projects_area.currentWidget().project.path
+        if self._projects_area.count() > 0:
+            path = self.current_project.path
             main_container = IDE.get_service('main_container')
             if path and main_container:
                 main_container.save_project(path)
