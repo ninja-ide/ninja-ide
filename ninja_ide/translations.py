@@ -659,7 +659,13 @@ TR_APPLY_CHANGES = tr("NINJA-IDE", "Apply changes")
 TR_SAVE_BEFORE_APPLY = tr("NINJA-IDE", "Save the file before applying changes")
 
 
+# from_import_dialog
+TR_INSERT_AT_LINE = tr("NINJA-IDE", "Insert at line")
+TR_WITH_COMMENT = tr("NINJA-IDE", "with comment")
+TR_ADD = tr("NINJA-IDE", "Add")
 
+
+# Themes
 TR_CODE = tr("NINJA-IDE", "Code")
 TR_PREVIEW = tr("NINJA-IDE", "Preview")
 TR_SCHEME_INVALID_NAME = tr(
@@ -668,3 +674,4 @@ TR_SCHEME_INVALID_NAME = tr(
     "\nPlease pick a different name.")
 TR_WANT_OVERWRITE_FILE = tr("NINJA-IDE", "Do you want to overwrite the file")
 TR_SCHEME_SAVED = tr("NINJA-IDE", "The scheme has been saved")
+
