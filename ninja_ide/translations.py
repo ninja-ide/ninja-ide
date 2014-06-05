@@ -137,7 +137,7 @@ TR_PROJECT_PROPERTIES = tr("NINJA-IDE", "Project Properties")
 TR_PROJECT_DATA = tr("NINJA-IDE", "Project Data")
 TR_PROJECT_EXECUTION = tr("NINJA-IDE", "Project Execution")
 TR_PROJECT_METADATA = tr("NINJA-IDE", "Project Metadata")
-TR_PROJECT_NAME = tr("NINJA-IDE", "Name:")
+TR_PROJECT_NAME = tr("NINJA-IDE", "Name")
 TR_PROJECT_LOCATION = tr("NINJA-IDE", "Project Location:")
 TR_PROJECT_TYPE = tr("NINJA-IDE", "Project Type:")
 TR_PROJECT_DESCRIPTION = tr("NINJA-IDE", "Description:")
@@ -341,6 +341,7 @@ TR_CHANGE_KEYBOARD_FOCUS_BETWEEN_SPLITS = tr(
 TR_INSERT_BREAKPOINT = tr("NINJA-IDE", "Insert Bookmark/Breakpoint")
 TR_MOVE_TAB_TO_NEXT_SPLIT = tr("NINJA-IDE", "Move Current Tab to Next Split")
 TR_SHOW_TABS_IN_EDITOR = tr("NINJA-IDE", "Show/Hide Tabs in Editor")
+TR_SHOW_INDENTATION_GUIDE = tr("NINJA-IDE", "Show Indentation Guide")
 TR_HIGHLIGHT_OCCURRENCES = tr(
     "NINJA-IDE",
     "Highlight Occurrences of Word Under Cursor")
@@ -429,13 +430,11 @@ TR_PREFERENCES_EDITOR_GENERAL_TYPOGRAPHY = tr("NINJA-IDE", "Typography:")
 TR_PREFERENCES_EDITOR_GENERAL_SCHEME = tr("NINJA-IDE", "Scheme color:")
 TR_PREFERENCES_EDITOR_GENERAL_ENABLE_MINIMAP = tr(
     "NINJA-IDE",
-    "Enable/Disable MiniMap (Requires Restart):\n"
-    "(opacity not supported in Mac OS X)")
-TR_PREFERENCES_EDITOR_GENERAL_MAX_OPACITY = tr("NINJA-IDE", "Max Opacity:")
-TR_PREFERENCES_EDITOR_GENERAL_MIN_OPACITY = tr("NINJA-IDE", "Min Opacity:")
+    "Use MiniMap \n (Requires restart, \n Opacity unsupported on OsX)")
+TR_PREFERENCES_EDITOR_GENERAL_OPACITY = tr("NINJA-IDE", "Opacity")
+TR_PREFERENCES_EDITOR_GENERAL_SIZE_MINIMAP = tr("NINJA-IDE", "Size")
 TR_PREFERENCES_EDITOR_GENERAL_AREA_MINIMAP = tr(
-    "NINJA-IDE",
-    "Size Area Relative to Editor:")
+    "NINJA-IDE", "% Area relative to editor")
 TR_PREFERENCES_EDITOR_GENERAL_EDITOR_FONT = tr(
     "NINJA-IDE",
     "Editor Font:")
@@ -657,3 +656,14 @@ TR_SELECT_EXEC_OPTION_3 = tr(
 TR_INSERT_AT_LINE = tr("NINJA-IDE", "Insert at line")
 TR_WITH_COMMENT = tr("NINJA-IDE", "with comment")
 TR_ADD = tr("NINJA-IDE", "Add")
+
+
+# Themes
+TR_CODE = tr("NINJA-IDE", "Code")
+TR_PREVIEW = tr("NINJA-IDE", "Preview")
+TR_SCHEME_INVALID_NAME = tr(
+    "NINJA-IDE",
+    "The scheme name you have chosen is invalid. "
+    "\nPlease pick a different name.")
+TR_WANT_OVERWRITE_FILE = tr("NINJA-IDE", "Do you want to overwrite the file")
+TR_SCHEME_SAVED = tr("NINJA-IDE", "The scheme has been saved")

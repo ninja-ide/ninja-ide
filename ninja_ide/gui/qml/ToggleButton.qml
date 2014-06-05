@@ -7,6 +7,7 @@ Rectangle {
     property alias text: btnText.text
     property bool toggledEnagled: true
     property bool toggled: false
+    property int textWidth: btnText.width
 
     height: 30
 

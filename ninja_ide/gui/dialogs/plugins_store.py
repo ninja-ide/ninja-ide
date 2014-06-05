@@ -59,6 +59,8 @@ class PluginsStore(QDialog):
 
         self.connect(self.root, SIGNAL("loadPluginsGrid()"),
                      self._load_by_name)
+        self.connect(self.root, SIGNAL("close()"),
+                     self.close)
         self.connect(self.root, SIGNAL("showPluginDetails(int)"),
                      self.show_plugin_details)
         self.connect(self.root, SIGNAL("loadTagsGrid()"),

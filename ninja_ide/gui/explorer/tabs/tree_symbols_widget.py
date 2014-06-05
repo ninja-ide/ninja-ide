@@ -195,6 +195,7 @@ class TreeSymbolsWidget(QDialog):
 
     def update_symbols_tree(self, symbols, filename='', parent=None):
         """Method to Update the symbols on the Tree"""
+        TIP = "{} {}"
         if not parent:
             if filename == self.actualSymbols[0] and \
                 self.actualSymbols[1] and not symbols:
@@ -214,9 +215,11 @@ class TreeSymbolsWidget(QDialog):
             globalAttribute.isClickable = False
             globalAttribute.isAttribute = True
             globalAttribute.setExpanded(self._get_expand(globalAttribute))
+            globalAttribute.setToolTip(0, TIP.format(len(symbols['attributes']),
+                                                     translations.TR_ATTRIBUTES))
             for glob in sorted(symbols['attributes']):
                 globItem = ItemTree(globalAttribute, [glob],
-                    lineno=symbols['attributes'][glob])
+                                    lineno=symbols['attributes'][glob])
                 globItem.isAttribute = True
                 globItem.setIcon(0, QIcon(":img/attribute"))
                 globItem.setExpanded(self._get_expand(globItem))
@@ -226,9 +229,11 @@ class TreeSymbolsWidget(QDialog):
             functionsItem.isClickable = False
             functionsItem.isMethod = True
             functionsItem.setExpanded(self._get_expand(functionsItem))
+            functionsItem.setToolTip(0, TIP.format(len(symbols['functions']),
+                                                   translations.TR_FUNCTIONS))
             for func in sorted(symbols['functions']):
                 item = ItemTree(functionsItem, [func],
-                    lineno=symbols['functions'][func]['lineno'])
+                                lineno=symbols['functions'][func]['lineno'])
                 tooltip = self.create_tooltip(
                     func, symbols['functions'][func]['lineno'])
                 item.isMethod = True
@@ -242,6 +247,8 @@ class TreeSymbolsWidget(QDialog):
             classItem.isClickable = False
             classItem.isClass = True
             classItem.setExpanded(self._get_expand(classItem))
+            classItem.setToolTip(0, TIP.format(len(symbols['classes']),
+                                               translations.TR_CLASSES))
             for claz in sorted(symbols['classes']):
                 line_number = symbols['classes'][claz]['lineno']
                 item = ItemTree(classItem, [claz], lineno=line_number)
@@ -251,7 +258,7 @@ class TreeSymbolsWidget(QDialog):
                 item.setIcon(0, QIcon(":img/class"))
                 item.setExpanded(self._get_expand(item))
                 self.update_symbols_tree(symbols['classes'][claz]['members'],
-                    parent=item)
+                                         parent=item)
 
     def _go_to_definition(self, item):
         """Takes and item object and goes to definition on the editor"""

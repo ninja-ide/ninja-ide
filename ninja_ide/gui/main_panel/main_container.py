@@ -23,6 +23,7 @@ import webbrowser
 
 from PyQt4 import uic
 from PyQt4.QtGui import QWidget
+from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QStackedLayout
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QFileDialog
@@ -42,7 +43,8 @@ from ninja_ide.gui.main_panel import actions
 from ninja_ide.gui.main_panel import main_selector
 from ninja_ide.gui.main_panel import browser_widget
 from ninja_ide.gui.main_panel import start_page
-from ninja_ide.gui.main_panel import tabs_handler
+from ninja_ide.gui.main_panel import files_handler
+from ninja_ide.gui.main_panel import add_file_folder
 from ninja_ide.gui.main_panel import image_viewer
 from ninja_ide.gui.main_panel import combo_editor
 from ninja_ide.gui.main_panel.helpers import split_orientation
@@ -88,12 +90,17 @@ class _MainContainer(QWidget):
     def __init__(self, parent=None):
         super(_MainContainer, self).__init__(parent)
         self._parent = parent
-        self.stack = QStackedLayout(self)
+        self._vbox = QVBoxLayout(self)
+        self._vbox.setContentsMargins(0, 0, 0, 0)
+        self._vbox.setSpacing(0)
+        self.stack = QStackedLayout()
         self.stack.setStackingMode(QStackedLayout.StackAll)
+        self._vbox.addLayout(self.stack)
 
         self.splitter = dynamic_splitter.DynamicSplitter()
         self.setAcceptDrops(True)
-        self.tabs_handler = tabs_handler.TabsHandler(self)
+        self._files_handler = files_handler.FilesHandler(self)
+        self._add_file_folder = add_file_folder.AddFileFolderWidget(self)
 
         #documentation browser
         self.docPage = None
@@ -134,6 +141,7 @@ class _MainContainer(QWidget):
         IDE.register_signals('main_container', connections)
 
         self.selector = main_selector.MainSelector(self)
+        self._opening_dialog = False
         self.add_widget(self.selector)
 
         if settings.SHOW_START_PAGE:
@@ -141,8 +149,14 @@ class _MainContainer(QWidget):
 
         self.connect(self.selector, SIGNAL("changeCurrent(int)"),
                      self._change_current_stack)
+        self.connect(self.selector, SIGNAL("removeWidget(int)"),
+                     self._remove_item_from_stack)
         self.connect(self.selector, SIGNAL("ready()"),
                      self._selector_ready)
+        self.connect(self.selector, SIGNAL("animationCompleted()"),
+                     self._selector_animation_completed)
+        self.connect(self, SIGNAL("closeDialog(PyQt_PyObject)"),
+                     self.remove_widget)
 
     def install(self):
         ide = IDE.get_service('ide')
@@ -151,8 +165,6 @@ class _MainContainer(QWidget):
         self.combo_area = combo_editor.ComboEditor(original=True)
         self.connect(self.combo_area, SIGNAL("allFilesClosed()"),
                      self._files_closed)
-        self.connect(self.combo_area, SIGNAL("showComboSelector()"),
-                     self.change_tab)
         self.splitter.add_widget(self.combo_area)
         self.add_widget(self.splitter)
 
@@ -160,12 +172,31 @@ class _MainContainer(QWidget):
 
         ui_tools.install_shortcuts(self, actions.ACTIONS, ide)
 
+    def add_status_bar(self, status):
+        self._vbox.addWidget(status)
+
     @property
     def combo_header_size(self):
         return self.combo_area.bar.height()
 
     def add_widget(self, widget):
         self.stack.addWidget(widget)
+
+    def remove_widget(self, widget):
+        self.stack.removeWidget(widget)
+
+    def _close_dialog(self, widget):
+        self.emit(SIGNAL("closeDialog(PyQt_PyObject)"), widget)
+        self.disconnect(widget, SIGNAL("finished(int)"),
+                        lambda: self._close_dialog(widget))
+
+    def show_dialog(self, widget):
+        self._opening_dialog = True
+        self.connect(widget, SIGNAL("finished(int)"),
+                     lambda: self._close_dialog(widget))
+        self.setVisible(True)
+        self.stack.addWidget(widget)
+        self.show_selector()
 
     def show_selector(self):
         if self.selector != self.stack.currentWidget():
@@ -178,14 +209,17 @@ class _MainContainer(QWidget):
                 widget = self.stack.widget(index)
                 if widget == self.selector:
                     continue
+                closable = True
+                if widget == self.splitter:
+                    closable = False
                 pixmap = QPixmap.grabWidget(widget, widget.rect())
                 path = os.path.join(temp_dir, "screen%s.png" % index)
                 pixmap.save(path)
                 if index == current:
                     self.selector.set_preview(index, path)
-                    collected_data.insert(0, (index, path))
+                    collected_data.insert(0, (index, path, closable))
                 else:
-                    collected_data.append((index, path))
+                    collected_data.append((index, path, closable))
             self.selector.set_model(collected_data)
         else:
             self.selector.close_selector()
@@ -194,8 +228,19 @@ class _MainContainer(QWidget):
         self.stack.setCurrentWidget(self.selector)
         self.selector.start_animation()
 
+    def _selector_animation_completed(self):
+        if self._opening_dialog:
+            # We choose the last one with -2, -1 (for last one) +
+            # -1 for the hidden selector widget which is in the stacked too.
+            self.selector.open_item(self.stack.count() - 2)
+        self._opening_dialog = False
+
     def _change_current_stack(self, index):
         self.stack.setCurrentIndex(index)
+
+    def _remove_item_from_stack(self, index):
+        widget = self.stack.takeAt(index)
+        del widget
 
     def show_editor_area(self):
         self.stack.setCurrentWidget(self.splitter)
@@ -1073,15 +1118,21 @@ class _MainContainer(QWidget):
         """Close the current tab in the current TabWidget."""
         self.current_widget.close_current_file()
 
+    def create_file(self, base_path, project_path):
+        self._add_file_folder.create_file(base_path, project_path)
+
+    def create_folder(self, base_path, project_path):
+        self._add_file_folder.create_folder(base_path, project_path)
+
     def change_tab(self):
         """Change the tab in the current TabWidget."""
         self.stack.setCurrentWidget(self.splitter)
-        self.tabs_handler.next_item()
+        self._files_handler.next_item()
 
     def change_tab_reverse(self):
         """Change the tab in the current TabWidget backwards."""
         self.stack.setCurrentWidget(self.splitter)
-        self.tabs_handler.previous_item()
+        self._files_handler.previous_item()
 
     def toggle_tabs_and_spaces(self):
         """ Toggle Show/Hide Tabs and Spaces """

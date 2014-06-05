@@ -30,8 +30,7 @@ QMenuBar::item:pressed {
 }
 
 QToolBar {
-    background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
-        stop: 0 #202020, stop: 1.0 #404040);
+    background: #282828;
     border: 1px solid transparent;
 }
 
@@ -44,6 +43,13 @@ QToolBar::separator {
 QToolBar#custom {
     border-radius: 3px;
     border: 1px solid #222;
+}
+
+QToolBar::handle, QToolBar::handle:vertical, QToolBar::handle:horizontal {
+    border: 1px solid gray;
+    border-radius: 5px;
+    width: 9px;
+    height: 9px;
 }
 
 PopupCompleter > QListView::item:selected {
@@ -124,7 +130,7 @@ QScrollBar::sub-page:horizontal{
     border: none;
 }
 
-QLineEdit{
+QLineEdit, QSpinBox, QDoubleSpinBox {
     color: #444;
     background: #ddd;
     border-radius: 6px;
@@ -517,11 +523,6 @@ QMenu::item:selected {
     background: rgba(100, 100, 100, 150);
     */
     background: #e20000;
-}
-
-QSpinBox {
-    background : white;
-    color: black;
 }
 
 TabWidget::tab-bar {

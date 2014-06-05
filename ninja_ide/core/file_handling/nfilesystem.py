@@ -50,7 +50,7 @@ class NVirtualFileSystem(QObject):
             qfsm.setNameFilters(pext)
             self.__projects[project_path] = project
             self.__check_files_for(project_path)
-            self.emit(SIGNAL("projectOpened(PyQt_PyObject)"), project)
+            self.emit(SIGNAL("projectOpened(QString)"), project_path)
         else:
             qfsm = self.__projects[project_path]
         return qfsm
@@ -66,6 +66,7 @@ class NVirtualFileSystem(QObject):
             #This might not be needed just being extra cautious
             del self.__projects[project_path].model
             del self.__projects[project_path]
+            self.emit(SIGNAL("projectClosed(QString)"), project_path)
 
     def __check_files_for(self, project_path):
         project = self.__projects[project_path]
@@ -104,9 +105,10 @@ class NVirtualFileSystem(QObject):
             nfile = self.__tree[nfile_path]
         else:
             nfile = NFile()
-            self.connect(nfile,
-                    SIGNAL("savedAsNewFile(PyQt_PyObject, QString, QString)"),
-                    self.__file_copied)
+            self.connect(
+                nfile,
+                SIGNAL("savedAsNewFile(PyQt_PyObject, QString, QString)"),
+                self.__file_copied)
         return nfile
 
     def __file_copied(self, nfile, old_path, new_path):

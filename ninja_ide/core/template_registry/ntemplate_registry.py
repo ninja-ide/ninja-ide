@@ -86,7 +86,7 @@ class BaseProjectType(QObject):
     single_line_comment = {}
     description = "No Description"
 
-    def __init__(self, name, path, licence_text, licence_short_name="GPLv2",
+    def __init__(self, name, path, licence_text, licence_short_name="GPLv3",
                  base_encoding="utf-8"):
         self.name = name
         self.path = path
@@ -125,6 +125,7 @@ class BaseProjectType(QObject):
                 full_path += "/"
             if not os.path.exists(full_path):
                 os.mkdir(full_path)
+
     @classmethod
     def wizard_pages(cls):
         """Return the pages to be displayed in the wizard."""

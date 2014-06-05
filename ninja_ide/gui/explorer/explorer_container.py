@@ -44,7 +44,6 @@ class ExplorerContainer(QSplitter):
 ###############################################################################
 
     """
-    updateLocator()
     goToDefinition(int)
     projectOpened(QString)
     projectClosed(QString)
@@ -63,11 +62,11 @@ class ExplorerContainer(QSplitter):
 
         connections = (
             {'target': 'central_container',
-            'signal_name': "splitterBaseRotated()",
-            'slot': self.rotate_tab_position},
+             'signal_name': "splitterBaseRotated()",
+             'slot': self.rotate_tab_position},
             {'target': 'central_container',
-            'signal_name': 'splitterBaseRotated()',
-            'slot': self.rotate_tab_position},
+             'signal_name': 'splitterBaseRotated()',
+             'slot': self.rotate_tab_position},
         )
 
         self._point = None
@@ -93,9 +92,11 @@ class ExplorerContainer(QSplitter):
             tabname, icon = ExplorerContainer.__TABS[obj]
             self.add_tab(tabname, obj, icon)
             self.connect(obj, SIGNAL("dockWidget(PyQt_PyObject)"),
-                self._dock_widget)
+                         self._dock_widget)
             self.connect(obj, SIGNAL("undockWidget()"),
-                self._undock_widget)
+                         self._undock_widget)
+            self.connect(obj, SIGNAL("changeTitle(PyQt_PyObject, QString)"),
+                         self._change_tab_title)
 
         if self.count() == 0:
             self.hide()
@@ -107,6 +108,14 @@ class ExplorerContainer(QSplitter):
             central.change_lateral_visibility()
         tabname, icon = ExplorerContainer.__TABS[widget]
         self.add_tab(tabname, widget, icon)
+
+    def _change_tab_title(self, widget, title):
+        tab_widget = self.widget(0)
+        index = tab_widget.indexOf(widget)
+        data = ExplorerContainer.__TABS[widget]
+        data = tuple([title] + list(data[1:]))
+        ExplorerContainer.__TABS[widget] = data
+        tab_widget.setTabText(index, title)
 
     def _undock_widget(self):
         bar = self.widget(0).tabBar()
@@ -125,10 +134,11 @@ class ExplorerContainer(QSplitter):
         tab_widget = QTabWidget()
         tab_widget.setTabPosition(QTabWidget.East)
         tab_widget.setMovable(True)
-
         tabBar = tab_widget.tabBar()
+        tabBar.hide()
         tabBar.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.connect(tabBar,
+        self.connect(
+            tabBar,
             SIGNAL("customContextMenuRequested(const QPoint&)"),
             self.show_tab_context_menu)
         self.addWidget(tab_widget)
@@ -160,6 +170,16 @@ class ExplorerContainer(QSplitter):
         bar = self.widget(0).tabBar()
         self._point = point
         self.menu.exec_(bar.mapToGlobal(point))
+
+    def enterEvent(self, event):
+        super(ExplorerContainer, self).enterEvent(event)
+        bar = self.widget(0).tabBar()
+        bar.show()
+
+    def leaveEvent(self, event):
+        super(ExplorerContainer, self).leaveEvent(event)
+        bar = self.widget(0).tabBar()
+        bar.hide()
 
 
 explorer = ExplorerContainer()
