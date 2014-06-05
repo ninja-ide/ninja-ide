@@ -40,7 +40,7 @@ from ninja_ide.tools import introspection
 LIST_OF_PY_CHECKERS_COMMENTS = (
     'flake8:noqa', 'isort:skip', 'isort:skip_file', 'lint:disable',
     'lint:enable', 'lint:ok', 'noqa', 'pyflakes:ignore', 'pylint:disable',
-    'pylint:enable', 'silence pyflakes')
+    'pylint:enable', 'pragma: no cover', 'silence pyflakes')
 
 
 class FromImportDialog(QDialog):
