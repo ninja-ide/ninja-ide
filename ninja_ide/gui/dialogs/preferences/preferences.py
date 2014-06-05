@@ -83,10 +83,10 @@ class Preferences(QDialog):
         vbox.addLayout(hbox_footer)
 
         self.connect(self.tree, SIGNAL("itemSelectionChanged()"),
-            self._change_current)
+                     self._change_current)
         self.connect(self._btnCancel, SIGNAL("clicked()"), self.close)
         self.connect(self._btnSave, SIGNAL("clicked()"),
-            self._save_preferences)
+                     self._save_preferences)
 
         self.load_ui()
         self.tree.setCurrentItem(self.tree.topLevelItem(0))
@@ -96,7 +96,8 @@ class Preferences(QDialog):
         self.close()
 
     def load_ui(self):
-        sections = sorted(list(Preferences.configuration.keys()),
+        sections = sorted(
+            list(Preferences.configuration.keys()),
             key=lambda item: Preferences.configuration[item]['weight'])
         for section in sections:
             text = Preferences.configuration[section]['text']
@@ -114,7 +115,7 @@ class Preferences(QDialog):
             subcontent = Preferences.configuration[section].get(
                 'subsections', {})
             subsections = sorted(list(subcontent.keys()),
-                key=lambda item: subcontent[item]['weight'])
+                                 key=lambda item: subcontent[item]['weight'])
             for sub in subsections:
                 text = subcontent[sub]['text']
                 Widget = subcontent[sub]['widget']
@@ -136,19 +137,20 @@ class Preferences(QDialog):
 
     @classmethod
     def register_configuration(cls, section, widget, text, weight=None,
-            subsection=None):
+                               subsection=None):
         if weight is None:
             Preferences.weight += 1
             weight = Preferences.weight
         if not subsection:
             Preferences.configuration[section] = {'widget': widget,
-                'weight': weight, 'text': text}
+                                                  'weight': weight,
+                                                  'text': text}
         else:
             config = Preferences.configuration.get(section, {})
             if not config:
                 config[section] = {'widget': None, 'weight': 100}
             subconfig = config.get('subsections', {})
             subconfig[subsection] = {'widget': widget, 'weight': weight,
-                'text': text}
+                                     'text': text}
             config['subsections'] = subconfig
             Preferences.configuration[section] = config

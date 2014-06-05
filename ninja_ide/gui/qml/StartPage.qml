@@ -68,8 +68,6 @@ Rectangle {
                     text: "Welcome!"
                     font.bold: true
                     font.pointSize: 45
-                    style: Text.Raised
-                    styleColor: "black"
                 }
 
                 Text {

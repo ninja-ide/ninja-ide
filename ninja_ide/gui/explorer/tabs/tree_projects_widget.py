@@ -138,11 +138,18 @@ class ProjectTreeColumn(QDialog):
             main_container = IDE.get_service('main_container')
             if main_container:
                 main_container.show_editor_area()
+            if len(self.projects) > 1:
+                title = "%s (%s)" % (
+                    translations.TR_TAB_PROJECTS, len(self.projects))
+            else:
+                title = translations.TR_TAB_PROJECTS
+            self.emit(
+                SIGNAL("changeTitle(PyQt_PyObject, QString)"), self, title)
 
     def _add_file_to_project(self, path):
         """Add the file for 'path' in the project the user choose here."""
-        if self._active_project:
-            pathProject = [self._active_project.project]
+        if self._projects_area.count() > 0:
+            pathProject = [self.current_project]
             addToProject = add_to_project.AddToProject(pathProject, self)
             addToProject.exec_()
             if not addToProject.pathSelected:
@@ -180,13 +187,12 @@ class ProjectTreeColumn(QDialog):
         expanded for the first project only).
         Note: This slot is connected to the main container's
         "showFileInExplorer(QString)" signal.'''
+        central = IDE.get_service('central_container')
+        if central and not central.is_lateral_panel_visible():
+            return
         for project in self.projects:
             index = project.model().index(path)
             if index.isValid():
-                # Show the explorer if it is currently hidden
-                central = IDE.get_service('central_container')
-                if central and not central.is_lateral_panel_visible():
-                    central.change_lateral_visibility()
                 # This highlights the index in the tree for us
                 project.setCurrentIndex(index)
                 # Loop through the parents to expand the tree
@@ -223,6 +229,13 @@ class ProjectTreeColumn(QDialog):
         ninjaide = IDE.get_service('ide')
         ninjaide.filesystem.close_project(widget.project.path)
         widget.deleteLater()
+        if len(self.projects) > 1:
+            title = "%s (%s)" % (
+                translations.TR_TAB_PROJECTS, len(self.projects))
+        else:
+            title = translations.TR_TAB_PROJECTS
+        self.emit(
+            SIGNAL("changeTitle(PyQt_PyObject, QString)"), self, title)
 
     def _change_current_project(self, index):
         self._projects_area.setCurrentIndex(index)
@@ -233,8 +246,8 @@ class ProjectTreeColumn(QDialog):
 
     def save_project(self):
         """Save all the opened files that belongs to the actual project."""
-        if self._active_project:
-            path = self._projects_area.currentWidget().project.path
+        if self._projects_area.count() > 0:
+            path = self.current_project.path
             main_container = IDE.get_service('main_container')
             if path and main_container:
                 main_container.save_project(path)

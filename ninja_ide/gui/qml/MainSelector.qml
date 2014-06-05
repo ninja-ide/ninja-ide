@@ -11,6 +11,11 @@ Rectangle {
     property int duration: 300
     property int indexSelected: 0
     property int currentIndex: 0
+    property variant removed: new Array()
+
+    function get_removed() {
+        return root.removed;
+    }
 
     function select_item(index) {
         preview.visible = true;
@@ -19,6 +24,14 @@ Rectangle {
         imagePreview.source = Qt.resolvedUrl(image_path);
         root.indexSelected = obj_index;
         animationSelected.start();
+    }
+
+    function close_item(index) {
+        var obj_index = repeater.model.get(index).obj_index;
+        var array = root.removed
+        array.push(obj_index)
+        root.removed = array;
+        repeater.model.remove(index);
     }
 
     ParallelAnimation {
@@ -118,6 +131,31 @@ Rectangle {
                             root.currentIndex = 0;
                         }
                     }
+
+                    Rectangle {
+                        anchors.fill: imgClose
+                        anchors.margins: 2
+                        radius: width / 2
+                        color: "white"
+                        visible: closable
+                    }
+
+                    Image {
+                        id: imgClose
+                        source: "img/delete-project.png"
+                        anchors.right: parent.right
+                        anchors.top: parent.top
+                        anchors.margins: 7
+                        visible: closable
+
+                        MouseArea {
+                            anchors.fill: parent
+
+                            onClicked: {
+                                close_item(index);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -152,8 +190,8 @@ Rectangle {
         root.indexSelected = index;
     }
 
-    function add_widget(index, path){
-        repeater.model.append({"obj_index": index, "image_path": path});
+    function add_widget(index, path, closable) {
+        repeater.model.append({"obj_index": index, "image_path": path, "closable": closable});
     }
 
     function start_animation() {
@@ -163,6 +201,11 @@ Rectangle {
     function close_selector() {
         preview.visible = true;
         animationSelected.start();
+    }
+
+    function clean_removed() {
+        var array = new Array();
+        root.removed = array;
     }
 
     function calculate_index(key) {

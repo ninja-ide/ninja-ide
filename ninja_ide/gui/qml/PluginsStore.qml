@@ -10,6 +10,7 @@ Rectangle {
     signal loadAuthorGrid
     signal loadPluginsForCategory(string tag)
     signal search(string key)
+    signal close
     property int currentDownloads: 0
     property int pluginsSelected: 0
     property int categoryCounter: 0
@@ -281,7 +282,7 @@ Rectangle {
         smooth: true
         visible: false
         anchors {
-            right: parent.right
+            right: btnClose.left
             top: parent.top
             margins: 10
         }
@@ -311,6 +312,24 @@ Rectangle {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.margins: 5
+        }
+    }
+
+    ToggleButton {
+        id: btnClose
+        text: "Close"
+        height: 20
+        width: 50
+        visible: true
+        toggledEnagled: false
+        anchors {
+            right: parent.right
+            top: parent.top
+            margins: 10
+        }
+
+        onClicked: {
+            root.close();
         }
     }
 
