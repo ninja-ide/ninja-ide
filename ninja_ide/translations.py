@@ -652,6 +652,13 @@ TR_SELECT_EXEC_OPTION_3 = tr(
     "that 2to3 cannot trivially fix")
 
 
+# from_import_dialog
+TR_INSERT_AT_LINE = tr("NINJA-IDE", "Insert at line")
+TR_WITH_COMMENT = tr("NINJA-IDE", "with comment")
+TR_ADD = tr("NINJA-IDE", "Add")
+
+
+# Themes
 TR_CODE = tr("NINJA-IDE", "Code")
 TR_PREVIEW = tr("NINJA-IDE", "Preview")
 TR_SCHEME_INVALID_NAME = tr(
