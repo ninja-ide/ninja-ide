@@ -10,6 +10,7 @@ Rectangle {
     signal loadAuthorGrid
     signal loadPluginsForCategory(string tag)
     signal search(string key)
+    signal close
     property int currentDownloads: 0
     property int pluginsSelected: 0
     property int categoryCounter: 0
@@ -157,11 +158,13 @@ Rectangle {
         }
         spacing: 1
 
+        property int buttonsPadding: 20
+
         ToggleButton {
             id: btnName
             text: "By Name"
             height: 20
-            width: 70
+            width: btnName.textWidth + rowButtons.buttonsPadding
             color: "#b8b8b8"
             toggled: true
             visible: false
@@ -180,7 +183,7 @@ Rectangle {
             id: btnTags
             text: "By Tags"
             height: 20
-            width: 70
+            width: btnName.textWidth + rowButtons.buttonsPadding
             visible: false
 
             onClicked: {
@@ -197,7 +200,7 @@ Rectangle {
             id: btnAuthor
             text: "By Author"
             height: 20
-            width: 70
+            width: btnName.textWidth + rowButtons.buttonsPadding
             visible: false
 
             onClicked: {
@@ -214,7 +217,7 @@ Rectangle {
             id: btnInstalled
             text: "Installed"
             height: 20
-            width: 70
+            width: btnName.textWidth + rowButtons.buttonsPadding
             visible: false
 
             onClicked: {
@@ -230,7 +233,7 @@ Rectangle {
             id: btnSearch
             text: "Search"
             height: 20
-            width: 70
+            width: btnName.textWidth + rowButtons.buttonsPadding
             toggled: true
             visible: false
 
@@ -279,7 +282,7 @@ Rectangle {
         smooth: true
         visible: false
         anchors {
-            right: parent.right
+            right: btnClose.left
             top: parent.top
             margins: 10
         }
@@ -309,6 +312,24 @@ Rectangle {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.margins: 5
+        }
+    }
+
+    ToggleButton {
+        id: btnClose
+        text: "Close"
+        height: 20
+        width: 50
+        visible: true
+        toggledEnagled: false
+        anchors {
+            right: parent.right
+            top: parent.top
+            margins: 10
+        }
+
+        onClicked: {
+            root.close();
         }
     }
 

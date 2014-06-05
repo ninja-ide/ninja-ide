@@ -273,6 +273,13 @@ class ConsoleWidget(QPlainTextEdit):
             self.textCursor().removeSelectedText()
             return True
 
+        position = self.textCursor().positionInBlock() - len(self.prompt)
+        text = self.document().lastBlock().text()[len(self.prompt):]
+        if position < len(text):
+            if (text[position - 1] in BRACES and
+            text[position] in BRACES.values()):
+                self.textCursor().deleteChar()
+
         return self._get_cursor_position() == 0
 
     def keyPressEvent(self, event):

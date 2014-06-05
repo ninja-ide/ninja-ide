@@ -52,11 +52,12 @@ class NEditable(QObject):
         # Connect signals
         if self._nfile:
             self.connect(self._nfile, SIGNAL("neverSavedFileClosing(QString)"),
-                self._about_to_close_never_saved)
+                         self._about_to_close_never_saved)
             self.connect(self._nfile, SIGNAL("fileClosing(QString)"),
-                lambda: self.emit(SIGNAL("fileClosing(PyQt_PyObject)"),
-                    self))
-            self.connect(self._nfile, SIGNAL("fileChanged()"),
+                         lambda: self.emit(SIGNAL("fileClosing(PyQt_PyObject)"),
+                         self))
+            self.connect(
+                self._nfile, SIGNAL("fileChanged()"),
                 lambda: self.emit(SIGNAL("fileChanged(PyQt_PyObject)"), self))
 
     def _about_to_close_never_saved(self, path):
@@ -149,26 +150,27 @@ class NEditable(QObject):
 
     def save_content(self, path=None):
         """Save the content of the UI to a file."""
-        content = self.__editor.get_text()
-        nfile = self._nfile.save(content, path)
-        self._nfile = nfile
-        if not self.ignore_checkers:
-            self.run_checkers(content)
-        else:
-            self.ignore_checkers = False
-        self.emit(SIGNAL("fileSaved(PyQt_PyObject)"), self)
+        if self.__editor.is_modified:
+            content = self.__editor.get_text()
+            nfile = self._nfile.save(content, path)
+            self._nfile = nfile
+            if not self.ignore_checkers:
+                self.run_checkers(content)
+            else:
+                self.ignore_checkers = False
+            self.emit(SIGNAL("fileSaved(PyQt_PyObject)"), self)
 
     def include_checkers(self, lang='python'):
         """Initialize the Checkers, should be refreshed on checkers change."""
         self.registered_checkers = sorted(checkers.get_checkers_for(lang),
-            key=lambda x: x[2])
+                                          key=lambda x: x[2])
         self._has_checkers = len(self.registered_checkers) > 0
         for i, values in enumerate(self.registered_checkers):
             Checker, color, priority = values
             check = Checker(self.__editor)
             self.registered_checkers[i] = (check, color, priority)
             self.connect(check, SIGNAL("finished()"),
-                self.show_checkers_notifications)
+                         self.show_checkers_notifications)
 
     def update_checkers_metadata(self, blockNumber, diference,
                                  atLineStart=False):

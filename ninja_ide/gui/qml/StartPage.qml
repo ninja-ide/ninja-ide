@@ -68,8 +68,6 @@ Rectangle {
                     text: "Welcome!"
                     font.bold: true
                     font.pointSize: 45
-                    style: Text.Raised
-                    styleColor: "black"
                 }
 
                 Text {
@@ -180,7 +178,7 @@ Rectangle {
         anchors.bottomMargin: 10
         font.pixelSize: 12
         color: "white"
-        text: "Copyright © 2011-2014 NINJA-IDE under GPLv3 License agreements"
+        text: "Copyright © 2011-2014 NINJA-IDE is distributed under the terms of the GNU GPLv3+ copyleft license"
     }
 
     function add_project(name, path, favorite){

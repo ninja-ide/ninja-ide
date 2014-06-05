@@ -56,7 +56,8 @@ def detect_python_path():
     if (IS_WINDOWS and PYTHON_EXEC_CONFIGURED_BY_USER) or not IS_WINDOWS:
         return []
 
-    suggested = dirs = []
+    suggested = []
+    dirs = []
     try:
         drives = [QDir.toNativeSeparators(d.absolutePath())
                   for d in QDir.drives()]
@@ -157,7 +158,8 @@ LAST_CLEAN_LOCATOR = None
 # by default Unix (\n) is used
 USE_TABS = ALLOW_WORD_WRAP = USE_PLATFORM_END_OF_LINE = False
 
-SHOW_MARGIN_LINE = REMOVE_TRAILING_SPACES = SHOW_TABS_AND_SPACES = True
+SHOW_MARGIN_LINE = REMOVE_TRAILING_SPACES = SHOW_INDENTATION_GUIDE = True
+SHOW_TABS_AND_SPACES = False
 
 INDENT = 4
 
@@ -296,7 +298,7 @@ def pep8mod_refresh_checks():
     """
     Force to reload all checks in pep8mod.py
     """
-    pep8mod.refresh_checks()
+    #pep8mod.refresh_checks()
 
 
 def pep8mod_add_ignore(ignore_code):
@@ -381,6 +383,7 @@ def load_settings():
     global UNDERLINE_NOT_BACKGROUND
     global FONT
     global SHOW_MARGIN_LINE
+    global SHOW_INDENTATION_GUIDE
     global FIND_ERRORS
     global ERRORS_HIGHLIGHT_LINE
     global CHECK_STYLE
@@ -476,7 +479,7 @@ def load_settings():
     REMOVE_TRAILING_SPACES = qsettings.value(
         'preferences/editor/removeTrailingSpaces', True, type=bool)
     SHOW_TABS_AND_SPACES = qsettings.value(
-        'preferences/editor/showTabsAndSpaces', True, type=bool)
+        'preferences/editor/showTabsAndSpaces', False, type=bool)
     USE_TABS = qsettings.value('preferences/editor/useTabs', False, type=bool)
     if USE_TABS:
         pep8mod_add_ignore("W191")
@@ -492,6 +495,8 @@ def load_settings():
         FONT = font
     SHOW_MARGIN_LINE = qsettings.value(
         'preferences/editor/showMarginLine', True, type=bool)
+    SHOW_INDENTATION_GUIDE = qsettings.value(
+        'preferences/editor/showIndentationGuide', True, type=bool)
     FIND_ERRORS = qsettings.value('preferences/editor/errors', True, type=bool)
     SHOW_MIGRATION_TIPS = qsettings.value(
         'preferences/editor/showMigrationTips', True, type=bool)
@@ -531,7 +536,7 @@ def load_settings():
     SHOW_WEB_INSPECTOR = qsettings.value(
         'preferences/interface/showWebInspector', False, type=bool)
     SHOW_ERRORS_LIST = qsettings.value(
-        'preferences/interface/showErrorsList', False, type=bool)
+        'preferences/interface/showErrorsList', True, type=bool)
     SHOW_MIGRATION_LIST = qsettings.value(
         'preferences/interface/showMigrationList', True, type=bool)
     #Bookmarks and Breakpoints

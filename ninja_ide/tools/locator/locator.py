@@ -46,6 +46,7 @@ from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.tools.locator')
 
 mapping_symbols = {}
+files_paths = {}
 
 
 #@ FILES
@@ -178,10 +179,13 @@ class LocateSymbolsThread(QThread):
 
     def find_code_location(self):
         self.cancel()
+        self.wait()
         self._cancel = False
         if not self.isRunning():
             global mapping_symbols
+            global files_paths
             mapping_symbols = {}
+            files_paths = {}
             self.execute = self.locate_code
             self.start()
 
@@ -240,6 +244,7 @@ class LocateSymbolsThread(QThread):
 
             queue_folders = Queue.Queue()
             queue_folders.put(current_dir)
+            files_paths[nproject.path] = list()
             self.__locate_code_in_project(queue_folders, nproject)
         self.dirty = True
         self.get_locations()
@@ -262,10 +267,13 @@ class LocateSymbolsThread(QThread):
             current_files = current_dir.entryInfoList(
                 ['*{0}'.format(x) for x in nproject.extensions], file_filter)
             #process all files in current dir!
+            global files_paths
             for one_file in current_files:
                 try:
                     self._grep_file_symbols(one_file.absoluteFilePath(),
                                             one_file.fileName())
+                    files_paths[nproject.path].append(
+                        one_file.absoluteFilePath())
                 except Exception as reason:
                     logger.error(
                         '__locate_code_in_project, error: %r' % reason)

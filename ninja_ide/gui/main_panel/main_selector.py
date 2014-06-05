@@ -40,13 +40,16 @@ class MainSelector(QWidget):
         vbox.addWidget(view)
 
         self.connect(self._root, SIGNAL("open(int)"),
-            lambda i: self.emit(SIGNAL("changeCurrent(int)"), i))
+                     lambda i: self.emit(SIGNAL("changeCurrent(int)"), i))
+        self.connect(self._root, SIGNAL("open(int)"), self._clean_removed)
         self.connect(self._root, SIGNAL("ready()"),
-            lambda: self.emit(SIGNAL("ready()")))
+                     lambda: self.emit(SIGNAL("ready()")))
+        self.connect(self._root, SIGNAL("animationCompleted()"),
+                     lambda: self.emit(SIGNAL("animationCompleted()")))
 
     def set_model(self, model):
-        for index, path in model:
-            self._root.add_widget(index, path)
+        for index, path, closable in model:
+            self._root.add_widget(index, path, closable)
 
     def set_preview(self, index, preview_path):
         self._root.add_preview(index, preview_path)
@@ -57,3 +60,13 @@ class MainSelector(QWidget):
     def start_animation(self):
         self._root.start_animation()
         self._root.forceActiveFocus()
+
+    def open_item(self, index):
+        """Open the item at index."""
+        self._root.select_item(index)
+
+    def _clean_removed(self):
+        removed = sorted(self._root.get_removed(), reverse=True)
+        for r in removed:
+            self.emit(SIGNAL("removeWidget(int)"), r)
+        self._root.clean_removed()

@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
@@ -50,14 +51,13 @@ from ninja_ide.tools import json_manager
 
 
 class EditorGeneral(QWidget):
+    """EditorGeneral widget class."""
 
     def __init__(self, parent):
         super(EditorGeneral, self).__init__()
-        self._preferences = parent
-        vbox = QVBoxLayout(self)
+        self._preferences, vbox = parent, QVBoxLayout(self)
         self.original_style = copy.copy(resources.CUSTOM_SCHEME)
-        self.current_scheme = 'default'
-        self._modified_editors = []
+        self.current_scheme, self._modified_editors = 'default', []
         self._font = settings.FONT
 
         groupBoxMini = QGroupBox(
@@ -70,32 +70,29 @@ class EditorGeneral(QWidget):
         #Minimap
         formMini = QGridLayout(groupBoxMini)
         formMini.setContentsMargins(5, 15, 5, 5)
-        self._checkShowMinimap = QCheckBox()
+        self._checkShowMinimap = QCheckBox(
+            translations.TR_PREFERENCES_EDITOR_GENERAL_ENABLE_MINIMAP)
         self._spinMaxOpacity = QSpinBox()
-        self._spinMaxOpacity.setMaximum(100)
-        self._spinMaxOpacity.setMinimum(0)
+        self._spinMaxOpacity.setRange(0, 100)
+        self._spinMaxOpacity.setSuffix("% Max.")
         self._spinMinOpacity = QSpinBox()
-        self._spinMinOpacity.setMaximum(100)
-        self._spinMinOpacity.setMinimum(0)
+        self._spinMinOpacity.setRange(0, 100)
+        self._spinMinOpacity.setSuffix("% Min.")
         self._spinSize = QSpinBox()
         self._spinSize.setMaximum(100)
         self._spinSize.setMinimum(0)
-        formMini.addWidget(QLabel(
-            translations.TR_PREFERENCES_EDITOR_GENERAL_ENABLE_MINIMAP), 0, 0,
-            Qt.AlignRight)
-        formMini.addWidget(QLabel(
-            translations.TR_PREFERENCES_EDITOR_GENERAL_MAX_OPACITY), 1, 0,
-            Qt.AlignRight)
-        formMini.addWidget(QLabel(
-            translations.TR_PREFERENCES_EDITOR_GENERAL_MIN_OPACITY), 2, 0,
-            Qt.AlignRight)
-        formMini.addWidget(QLabel(
-            translations.TR_PREFERENCES_EDITOR_GENERAL_AREA_MINIMAP), 3, 0,
-            Qt.AlignRight)
+        self._spinSize.setSuffix(
+            translations.TR_PREFERENCES_EDITOR_GENERAL_AREA_MINIMAP)
         formMini.addWidget(self._checkShowMinimap, 0, 1)
-        formMini.addWidget(self._spinMaxOpacity, 1, 1)
+        formMini.addWidget(QLabel(
+            translations.TR_PREFERENCES_EDITOR_GENERAL_SIZE_MINIMAP), 1, 0,
+            Qt.AlignRight)
+        formMini.addWidget(self._spinSize, 1, 1)
+        formMini.addWidget(QLabel(
+            translations.TR_PREFERENCES_EDITOR_GENERAL_OPACITY), 2, 0,
+            Qt.AlignRight)
         formMini.addWidget(self._spinMinOpacity, 2, 1)
-        formMini.addWidget(self._spinSize, 3, 1)
+        formMini.addWidget(self._spinMaxOpacity, 2, 2)
         #Typo
         gridTypo = QGridLayout(groupBoxTypo)
         gridTypo.setContentsMargins(5, 15, 5, 5)
@@ -140,8 +137,14 @@ class EditorGeneral(QWidget):
         qsettings.beginGroup('preferences')
         qsettings.beginGroup('editor')
         self._checkShowMinimap.setChecked(settings.SHOW_MINIMAP)
-        self._spinMaxOpacity.setValue(settings.MINIMAP_MAX_OPACITY * 100)
-        self._spinMinOpacity.setValue(settings.MINIMAP_MIN_OPACITY * 100)
+        if settings.IS_MAC_OS:
+            self._spinMinOpacity.setValue(100)
+            self._spinMaxOpacity.setValue(100)
+            self._spinMinOpacity.setDisabled(True)
+            self._spinMaxOpacity.setDisabled(True)
+        else:
+            self._spinMinOpacity.setValue(settings.MINIMAP_MIN_OPACITY * 100)
+            self._spinMaxOpacity.setValue(settings.MINIMAP_MAX_OPACITY * 100)
         self._spinSize.setValue(settings.SIZE_PROPORTION * 100)
         btnText = ', '.join(self._font.toString().split(',')[0:2])
         self._btnEditorFont.setText(btnText)
@@ -201,7 +204,7 @@ class EditorGeneral(QWidget):
             try:
                 editorWidget.restyle(editorWidget.lang)
             except RuntimeError:
-                print 'the editor has been removed'
+                print('the editor has been removed')
 
     def _preview_style(self):
         scheme = self._listScheme.currentItem().text()
