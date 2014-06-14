@@ -368,7 +368,7 @@ Rectangle {
                                 anchors {
                                     right: parent.right
                                 }
-                                text: "[Line: " + lineno + "]"
+                                text: "[Line: " + (lineno + 1) + "]"
                                 visible: lineno > -1 ? true : false
                                 color: listItem.current ? "#aaaaaa" : "#555555"
                                 font.pixelSize: 10
