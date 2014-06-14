@@ -135,13 +135,10 @@ class _StatusBar(QWidget):
             return
 
         if editor:
-            if self._searchWidget.isVisible():
-                self._searchWidget.find_matches(editor)
-            if editor:
-                self.disconnect(editor, SIGNAL("textChanged()"),
-                                self._notify_editor_changed)
-                self.connect(editor, SIGNAL("textChanged()"),
-                             self._notify_editor_changed)
+            self.disconnect(editor, SIGNAL("textChanged()"),
+                            self._notify_editor_changed)
+            self.connect(editor, SIGNAL("textChanged()"),
+                         self._notify_editor_changed)
 
     def _notify_editor_changed(self):
         """
