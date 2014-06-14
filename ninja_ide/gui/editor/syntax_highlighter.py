@@ -414,7 +414,7 @@ class SyntaxHighlighter(QSyntaxHighlighter):
 
     def set_selected_word(self, word, partial=False):
         """Set the word to highlight."""
-        hl_worthy = len(word) > 2
+        hl_worthy = len(word) > 1
         if hl_worthy:
             suffix = "(?![A-Za-z_\d])"
             prefix = "(?<![A-Za-z_\d])"
