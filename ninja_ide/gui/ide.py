@@ -672,12 +672,11 @@ class IDE(QMainWindow):
     def _get_unsaved_files(self):
         """Return an array with the path of the unsaved files."""
         unsaved = []
-        files = self.filesystem.get_files()
+        files = self.opened_files
         for f in files:
-            editable = self.__neditables.get(files[f])
-            if editable is not None:
-                if editable.editor.is_modified:
-                    unsaved.append(f)
+            editable = self.__neditables.get(f)
+            if editable is not None and editable.editor.is_modified:
+                unsaved.append(f)
         return unsaved
 
     def _save_unsaved_files(self, files):
@@ -694,7 +693,7 @@ class IDE(QMainWindow):
         main_container = self.get_service("main_container")
         unsaved_files = self._get_unsaved_files()
         if (settings.CONFIRM_EXIT and unsaved_files):
-            txt = '\n'.join(unsaved_files)
+            txt = '\n'.join([nfile.file_name for nfile in unsaved_files])
             val = QMessageBox.question(
                 self,
                 translations.TR_IDE_CONFIRM_EXIT_TITLE,
