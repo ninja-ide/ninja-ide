@@ -155,7 +155,7 @@ class ComboEditor(QDialog):
                          self._close_file)
             if self.__original:
                 self.connect(neditable,
-                             SIGNAL("neverSavedFileClosing(PyQt_PyObject)"),
+                             SIGNAL("askForSaveFileClosing(PyQt_PyObject)"),
                              self._ask_for_save)
                 self.connect(neditable, SIGNAL("fileChanged(PyQt_PyObject)"),
                              self._file_has_been_modified)
@@ -232,6 +232,7 @@ class ComboEditor(QDialog):
         if val == QMessageBox.No:
             neditable.nfile.close(force_close=True)
         elif val == QMessageBox.Yes:
+            neditable.ignore_checkers = True
             self._main_container.save_file(neditable.editor)
             neditable.nfile.close()
 

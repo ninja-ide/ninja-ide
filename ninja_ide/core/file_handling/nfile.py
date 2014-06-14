@@ -47,7 +47,7 @@ How to continue:
 class NFile(QObject):
     """
     SIGNALS:
-    @neverSavedFileClosing(QString)
+    @askForSaveFileClosing(QString)
     @fileClosing(QString)
     @fileChanged()
     @willDelete(PyQt_PyObject, PyQt_PyObject)
@@ -309,9 +309,9 @@ class NFile(QObject):
         not saved yet
         """
         DEBUG("About to close NFile")
-        if self.__created and not force_close:
-            self.emit(SIGNAL("neverSavedFileClosing(QString)"), self._file_path)
-        else:
-            self.emit(SIGNAL("fileClosing(QString)"), self._file_path)
-            if self.__watcher:
-                self.__watcher.removePath(self._file_path)
+        self.emit(SIGNAL("fileClosing(QString, bool)"),
+                  self._file_path, force_close)
+
+    def remove_watcher(self):
+        if self.__watcher:
+            self.__watcher.removePath(self._file_path)
