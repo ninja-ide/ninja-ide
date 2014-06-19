@@ -145,6 +145,11 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
                 qss = fileaccess.read()
                 app.setStyleSheet(qss)
                 style_applied = True
+    if not style_applied and settings.A11Y_HIGH_CONTRAST:
+        with open(resources.NINJA_HIGH_CONTRAST_THEME) as fileaccess:
+            qss = fileaccess.read()
+            app.setStyleSheet(qss)
+            style_applied = True
     if not style_applied:
         if settings.NINJA_SKIN == 'Default':
             with open(resources.NINJA_THEME) as fileaccess:

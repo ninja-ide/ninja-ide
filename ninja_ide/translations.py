@@ -675,3 +675,7 @@ TR_SCHEME_INVALID_NAME = tr(
 TR_WANT_OVERWRITE_FILE = tr("NINJA-IDE", "Do you want to overwrite the file")
 TR_SCHEME_SAVED = tr("NINJA-IDE", "The scheme has been saved")
 
+
+# accesibility universal access
+TR_HIGH_CONTRAST = tr("NINJA-IDE", "Use high contrast theme")
+TR_BIG_FONT = tr("NINJA-IDE", "Use big font")

@@ -57,6 +57,7 @@ class GeneralConfiguration(QWidget):
             translations.TR_PREFERENCES_GENERAL_WORKSPACE)
         groupBoxNoti = QGroupBox(translations.TR_NOTIFICATION)
         groupBoxReset = QGroupBox(translations.TR_PREFERENCES_GENERAL_RESET)
+        groupBoxA11y = QGroupBox("A11y")
 
         #Start
         vboxStart = QVBoxLayout(groupBoxStart)
@@ -110,6 +111,15 @@ class GeneralConfiguration(QWidget):
         hboxNoti.addWidget(self._notify_position)
         hboxNoti.addWidget(self._notify_color, 0, Qt.AlignRight)
 
+        # A11Y
+        hboxA11y = QHBoxLayout(groupBoxA11y)
+        self._high_contrast = QCheckBox(translations.TR_HIGH_CONTRAST)
+        self._big_font_text = QCheckBox(translations.TR_BIG_FONT)
+        self._high_contrast.setCheckState(settings.A11Y_HIGH_CONTRAST)
+        self._big_font_text.setDisabled(True)
+        hboxA11y.addWidget(self._high_contrast)
+        hboxA11y.addWidget(self._big_font_text)
+
         # Resetting preferences
         vboxReset = QVBoxLayout(groupBoxReset)
         self._btnReset = QPushButton(
@@ -140,6 +150,7 @@ class GeneralConfiguration(QWidget):
         vbox.addWidget(groupBoxClose)
         vbox.addWidget(groupBoxWorkspace)
         vbox.addWidget(groupBoxNoti)
+        vbox.addWidget(groupBoxA11y)
         vbox.addWidget(groupBoxReset)
 
         #Signals
@@ -197,6 +208,9 @@ class GeneralConfiguration(QWidget):
         settings.NOTIFICATION_COLOR = self._notification_choosed_color
         qsettings.setValue('preferences/general/notification_color',
             settings.NOTIFICATION_COLOR)
+        settings.A11Y_HIGH_CONTRAST = self._high_contrast.checkState()
+        qsettings.setValue('preferences/general/a11y_high_contrast',
+            settings.A11Y_HIGH_CONTRAST)
 
     def _reset_preferences(self):
         """Method to Reset all Preferences to default values"""

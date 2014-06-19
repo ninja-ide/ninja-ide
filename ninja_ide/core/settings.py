@@ -241,6 +241,13 @@ WORKSPACE = ""
 
 
 ###############################################################################
+# ACCESIBILITY UNIVERSAL ACCESS
+###############################################################################
+
+A11Y_HIGH_CONTRAST = False
+
+
+###############################################################################
 # FUNCTIONS
 ###############################################################################
 
@@ -410,6 +417,7 @@ def load_settings():
     global NOTIFICATION_POSITION
     global NOTIFICATION_COLOR
     global LAST_CLEAN_LOCATOR
+    global A11Y_HIGH_CONTRAST
     #General
     HIDE_TOOLBAR = qsettings.value("window/hide_toolbar", False, type=bool)
     SHOW_STATUS_NOTIFICATIONS = qsettings.value(
@@ -557,6 +565,10 @@ def load_settings():
         'preferences/general/notification_color', "#000", type='QString')
     LAST_CLEAN_LOCATOR = qsettings.value(
         'preferences/general/cleanLocator', None)
+    # Accesibility universal access
+    A11Y_HIGH_CONTRAST = qsettings.value(
+        'preferences/general/a11y_high_contrast', False, type=bool)
+
     from ninja_ide.extensions import handlers
     handlers.init_basic_handlers()
     clean_locator_db(qsettings)
