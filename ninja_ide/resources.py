@@ -74,9 +74,6 @@ EDITOR_SKINS = os.path.join(EXTENSIONS_PATH, "schemes")
 
 NINJA_THEME = os.path.join(PRJ_PATH, "extensions", "theme", "ninja_dark.qss")
 
-NINJA_HIGH_CONTRAST_THEME = os.path.join(PRJ_PATH, "extensions",
-                                         "theme", "ninja_a11y.qss")
-
 NINJA_THEME_CLASSIC = os.path.join(
     PRJ_PATH, "extensions", "theme", "ninja_theme.qss")
 
