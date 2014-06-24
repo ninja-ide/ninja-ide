@@ -38,7 +38,7 @@ from ninja_ide.core import settings
 from ninja_ide.tools import console
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.editor import syntax_highlighter
-from ninja_ide.gui.editor import python_syntax
+from ninja_ide.gui.editor.syntaxes import python_syntax
 #from ninja_ide.tools.completion import completer
 #from ninja_ide.tools.completion import completer_widget
 
