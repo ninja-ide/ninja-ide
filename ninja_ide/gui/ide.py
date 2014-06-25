@@ -115,14 +115,6 @@ class IDE(QMainWindow):
         #Filesystem
         self.filesystem = nfilesystem.NVirtualFileSystem()
 
-        #Start server if needed
-        self.s_listener = None
-        if start_server:
-            self.s_listener = QLocalServer()
-            self.s_listener.listen("ninja_ide")
-            self.connect(self.s_listener, SIGNAL("newConnection()"),
-                         self._process_connection)
-
         #Sessions handler
         self._session = None
         #Opacity
@@ -195,6 +187,7 @@ class IDE(QMainWindow):
 
         self.register_service('ide', self)
         self.register_service('toolbar', self.toolbar)
+        self.register_service('filesystem', self.filesystem)
         #Register signals connections
         connections = (
             {'target': 'main_container',
@@ -224,11 +217,25 @@ class IDE(QMainWindow):
         for service_name in self.__IDESERVICES:
             self.install_service(service_name)
         IDE.__created = True
+        # Place Status Bar
+        main_container = IDE.get_service('main_container')
+        status_bar = IDE.get_service('status_bar')
+        main_container.add_status_bar(status_bar)
+        # Load Menu Bar
         menu_bar = IDE.get_service('menu_bar')
         if menu_bar:
             menu_bar.load_menu(self)
             #These two are the same service, I think that's ok
             menu_bar.load_toolbar(self)
+
+        #Start server if needed
+        self.s_listener = None
+        if start_server:
+            self.s_listener = QLocalServer()
+            self.s_listener.listen("ninja_ide")
+            self.connect(self.s_listener, SIGNAL("newConnection()"),
+                         self._process_connection)
+
         IDE.__instance = self
 
     @classmethod
@@ -465,7 +472,11 @@ class IDE(QMainWindow):
     def show_preferences(self):
         """Open the Preferences Dialog."""
         pref = preferences.Preferences(self)
-        pref.show()
+        main_container = IDE.get_service("main_container")
+        if main_container:
+            main_container.show_dialog(pref)
+        else:
+            pref.show()
 
     def load_session_files_projects(self, files, projects,
                                     current_file, recent_files=None):
@@ -661,12 +672,11 @@ class IDE(QMainWindow):
     def _get_unsaved_files(self):
         """Return an array with the path of the unsaved files."""
         unsaved = []
-        files = self.filesystem.get_files()
+        files = self.opened_files
         for f in files:
-            editable = self.__neditables.get(files[f])
-            if editable is not None:
-                if editable.editor.is_modified:
-                    unsaved.append(f)
+            editable = self.__neditables.get(f)
+            if editable is not None and editable.editor.is_modified:
+                unsaved.append(f)
         return unsaved
 
     def _save_unsaved_files(self, files):
@@ -683,7 +693,7 @@ class IDE(QMainWindow):
         main_container = self.get_service("main_container")
         unsaved_files = self._get_unsaved_files()
         if (settings.CONFIRM_EXIT and unsaved_files):
-            txt = '\n'.join(unsaved_files)
+            txt = '\n'.join([nfile.file_name for nfile in unsaved_files])
             val = QMessageBox.question(
                 self,
                 translations.TR_IDE_CONFIRM_EXIT_TITLE,
@@ -722,13 +732,11 @@ class IDE(QMainWindow):
     def show_plugins_store(self):
         """Open the Plugins Manager to install/uninstall plugins."""
         store = plugins_store.PluginsStore(self)
-        store.show()
-        #manager = plugins_manager.PluginsManagerWidget(self)
-        #manager.show()
-        #if manager._requirements:
-            #dependencyDialog = plugins_manager.DependenciesHelpDialog(
-                #manager._requirements)
-            #dependencyDialog.show()
+        main_container = IDE.get_service("main_container")
+        if main_container:
+            main_container.show_dialog(store)
+        else:
+            store.show()
 
     def show_languages(self):
         """Open the Language Manager to install/uninstall languages."""

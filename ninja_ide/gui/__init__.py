@@ -41,6 +41,8 @@ import ninja_ide.gui.main_panel.main_container
 import ninja_ide.gui.tools_dock.tools_dock
 import ninja_ide.gui.menus.menubar
 #from ninja_ide.tools.completion import completion_daemon
+# Syntax
+from ninja_ide.gui.syntax_registry import syntax_registry
 # Explorer Container
 from ninja_ide.gui.explorer.tabs import tree_projects_widget
 from ninja_ide.gui.explorer.tabs import tree_symbols_widget
