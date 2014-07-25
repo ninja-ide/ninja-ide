@@ -80,7 +80,8 @@ class GeneralConfiguration(QWidget):
         #Workspace and Project
         gridWorkspace = QGridLayout(groupBoxWorkspace)
         self._txtWorkspace = QLineEdit()
-        ui_tools.LineEditButton(self._txtWorkspace,
+        ui_tools.LineEditButton(
+            self._txtWorkspace,
             self._txtWorkspace.clear,
             self.style().standardPixmap(self.style().SP_TrashIcon))
         self._txtWorkspace.setReadOnly(True)
@@ -104,7 +105,7 @@ class GeneralConfiguration(QWidget):
              translations.TR_TOP + "-" + translations.TR_LEFT,
              translations.TR_TOP + "-" + translations.TR_RIGHT])
         self._notify_color = QPushButton(
-                             translations.TR_EDITOR_SCHEME_PICK_COLOR)
+            translations.TR_EDITOR_SCHEME_PICK_COLOR)
         self._notification_choosed_color = settings.NOTIFICATION_COLOR
         hboxNoti.addWidget(QLabel(translations.TR_POSITION_ON_SCREEN))
         hboxNoti.addWidget(self._notify_position)
@@ -126,7 +127,7 @@ class GeneralConfiguration(QWidget):
             qsettings.value('activatePlugins', defaultValue=True, type=bool))
         self._checkNotifyUpdates.setChecked(
             qsettings.value('preferences/general/notifyUpdates',
-            defaultValue=True, type=bool))
+                            defaultValue=True, type=bool))
         self._checkShowStartPage.setChecked(settings.SHOW_START_PAGE)
         self._checkConfirmExit.setChecked(settings.CONFIRM_EXIT)
         self._txtWorkspace.setText(settings.WORKSPACE)
@@ -143,11 +144,11 @@ class GeneralConfiguration(QWidget):
         vbox.addWidget(groupBoxReset)
 
         #Signals
-        self.connect(self._btnWorkspace,
-            SIGNAL("clicked()"), self._load_workspace)
+        self.connect(self._btnWorkspace, SIGNAL("clicked()"),
+                     self._load_workspace)
         self.connect(self._notify_color, SIGNAL("clicked()"), self._pick_color)
-        self.connect(self._btnReset,
-            SIGNAL('clicked()'), self._reset_preferences)
+        self.connect(self._btnReset, SIGNAL('clicked()'),
+                     self._reset_preferences)
         self.connect(self._preferences, SIGNAL("savePreferences()"), self.save)
 
     def _pick_color(self):
@@ -164,8 +165,8 @@ class GeneralConfiguration(QWidget):
 
     def _load_python_path(self):
         """Ask the user for a Python path"""
-        path = QFileDialog.getOpenFileName(self,
-            translations.TR_PREFERENCES_GENERAL_SELECT_PYTHON_PATH)
+        path = QFileDialog.getOpenFileName(
+            self, translations.TR_PREFERENCES_GENERAL_SELECT_PYTHON_PATH)
         if path:
             self._txtPythonPath.setText(path)
 
@@ -173,34 +174,35 @@ class GeneralConfiguration(QWidget):
         """Method to Save all preferences values"""
         qsettings = IDE.ninja_settings()
         qsettings.setValue('preferences/general/loadFiles',
-            self._checkLastSession.isChecked())
+                           self._checkLastSession.isChecked())
         qsettings.setValue('preferences/general/activatePlugins',
-            self._checkActivatePlugins.isChecked())
+                           self._checkActivatePlugins.isChecked())
         qsettings.setValue('preferences/general/notifyUpdates',
-            self._checkNotifyUpdates.isChecked())
+                           self._checkNotifyUpdates.isChecked())
         qsettings.setValue('preferences/general/showStartPage',
-            self._checkShowStartPage.isChecked())
+                           self._checkShowStartPage.isChecked())
         qsettings.setValue('preferences/general/confirmExit',
-            self._checkConfirmExit.isChecked())
+                           self._checkConfirmExit.isChecked())
         settings.CONFIRM_EXIT = self._checkConfirmExit.isChecked()
         qsettings.setValue('preferences/general/workspace',
-            self._txtWorkspace.text())
+                           self._txtWorkspace.text())
         settings.WORKSPACE = self._txtWorkspace.text()
         extensions = str(self._txtExtensions.text()).split(',')
         extensions = [e.strip() for e in extensions]
         qsettings.setValue('preferences/general/supportedExtensions',
-            extensions)
+                           extensions)
         settings.SUPPORTED_EXTENSIONS = list(extensions)
         settings.NOTIFICATION_POSITION = self._notify_position.currentIndex()
         qsettings.setValue('preferences/general/notification_position',
-            settings.NOTIFICATION_POSITION)
+                           settings.NOTIFICATION_POSITION)
         settings.NOTIFICATION_COLOR = self._notification_choosed_color
         qsettings.setValue('preferences/general/notification_color',
-            settings.NOTIFICATION_COLOR)
+                           settings.NOTIFICATION_COLOR)
 
     def _reset_preferences(self):
         """Method to Reset all Preferences to default values"""
-        result = QMessageBox.question(self,
+        result = QMessageBox.question(
+            self,
             translations.TR_PREFERENCES_GENERAL_RESET_TITLE,
             translations.TR_PREFERENCES_GENERAL_RESET_BODY,
             buttons=QMessageBox.Yes | QMessageBox.No)
@@ -210,5 +212,6 @@ class GeneralConfiguration(QWidget):
             self._preferences.close()
 
 
-preferences.Preferences.register_configuration('GENERAL', GeneralConfiguration,
+preferences.Preferences.register_configuration(
+    'GENERAL', GeneralConfiguration,
     translations.TR_PREFERENCES_GENERAL, preferences.SECTIONS['GENERAL'])
