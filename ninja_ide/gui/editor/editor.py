@@ -1364,21 +1364,10 @@ class Editor(QPlainTextEdit):
 def create_editor(neditable, syntax=None):
     has_editor = neditable.editor is not None
     editor = Editor(neditable)
-    if not has_editor:
-        editor.register_syntax(syntax)
+    ext = neditable.nfile.file_ext()
+    if not has_editor or syntax:
+        editor.register_syntax(ext, syntax)
     else:
         editor.highlighter = neditable.editor.highlighter
-    #if syntax is specified, use it
-    #if syntax:
-        #editor.register_syntax(syntax)
-    #else:
-        #try to set a syntax based on the file extension
-        #ext = file_manager.get_file_extension(neditable.ID)
-        #if ext not in settings.EXTENSIONS and neditable.ID == '':
-            #by default use python syntax
-        #if not has_editor:
-            #editor.register_syntax('py')
-        #else:
-            #editor.register_syntax(ext)
 
     return editor
