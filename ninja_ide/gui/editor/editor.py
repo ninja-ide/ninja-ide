@@ -44,6 +44,7 @@ from PyQt4.QtGui import QMenu
 from PyQt4.QtGui import QPainter
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QKeySequence
+from PyQt4.QtGui import QMessageBox
 from PyQt4.QtCore import QRect
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QMimeData
@@ -51,6 +52,7 @@ from PyQt4.QtCore import Qt
 
 from ninja_ide import resources
 from ninja_ide.core import settings
+from ninja_ide import translations
 from ninja_ide.core.file_handling import file_manager
 #from ninja_ide.tools.completion import completer_widget
 from ninja_ide.gui.ide import IDE
@@ -486,11 +488,23 @@ class Editor(QPlainTextEdit):
             self.go_to_line(line[0] - 1)
 
     def _find_occurrences(self):
-        if self.textCursor().hasSelection():
-            word = self.textCursor().selectedText()
+        # Editor must be contained in project to be able to find anything
+        ninjaide = IDE.get_service('ide')
+        nproject = ninjaide.get_project_for_file(self.file_path)
+        if nproject:
+            # Editor must have selection
+            if self.textCursor().hasSelection():
+                word = self.textCursor().selectedText()
+            else:
+                word = self._text_under_cursor()
+            self.emit(SIGNAL("findOcurrences(QString)"), word)
         else:
-            word = self._text_under_cursor()
-        self.emit(SIGNAL("findOcurrences(QString)"), word)
+            # Inform user that he should add this editor to
+            # project before he could use 'Find Usages'
+            QMessageBox.warning(
+                self,
+                translations.TR_WARNING_MESSAGE_TITLE,
+                translations.TR_WARNING_MESSAGE_ADD_TO_PROJECT)
 
     def _unfold_blocks_for_jump(self, lineno):
         """Unfold the blocks previous to the lineno."""
