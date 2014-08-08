@@ -262,7 +262,10 @@ TR_FILE_MODIFIED_OUTSIDE = tr(
     "NINJA-IDE",
     "\nThe file has been modified outside the application\n"
     "Do you want to reload it?")
-
+TR_WARNING_MESSAGE_ADD_TO_PROJECT = tr(
+    "NINJA-IDE",
+    "You should add this file to project before using this function")
+TR_WARNING_MESSAGE_TITLE = tr("NINJA_IDE", "Ninja warns you!")
 
 # tools_dock
 TR_TEXT_FOR_REPLACE = tr("NINJA-IDE", "Text to Replace")
