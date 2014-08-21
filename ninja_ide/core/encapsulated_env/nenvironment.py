@@ -42,10 +42,14 @@ DEBUG = debug
 from ninja_ide.resources import HOME_NINJA_PATH
 NINJA_ENV_NAME = "venv"
 NINJA_ENV = os.path.join(HOME_NINJA_PATH, NINJA_ENV_NAME)
-NINJA_ENV_ACTIVATE = os.path.join(NINJA_ENV, "bin", "activate_this.py")
+NINJA_ENV_BIN = os.path.join(NINJA_ENV, "bin")
 
 if not os.path.isdir(NINJA_ENV):
     create_environment(NINJA_ENV)
+if not os.path.isdir(NINJA_ENV_BIN):
+    NINJA_ENV_BIN = os.path.join(NINJA_ENV, "Scripts")
+    
+NINJA_ENV_ACTIVATE = os.path.join(NINJA_ENV_BIN, "activate_this.py")
 
 
 exec(compile(open(NINJA_ENV_ACTIVATE).read(), NINJA_ENV_ACTIVATE, 'exec'),
