@@ -634,9 +634,10 @@ class IDE(QMainWindow):
             qsettings.setValue("window/size", self.size())
             qsettings.setValue("window/pos", self.pos())
         self.central.save_configuration()
+
         #Save the toolbar visibility
-        #if not self.toolbar.isVisible() and self.menuBar().isVisible():
-            #qsettings.setValue("window/hide_toolbar", True)
+        qsettings.setValue("window/hide_toolbar", not self.toolbar.isVisible())
+
         #else:
             #qsettings.setValue("window/hide_toolbar", False)
         #Save Misc state
