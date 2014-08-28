@@ -43,9 +43,9 @@ class MigrationTo3(QThread):
         self.dirty = False
         self.checks = {}
         if settings.IS_WINDOWS and settings.PYTHON_EXEC_CONFIGURED_BY_USER:
-            tool_path = os.path.join(os.path.dirname(settings.PYTHON_PATH),
+            tool_path = os.path.join(os.path.dirname(settings.PYTHON_EXEC),
                                      'Tools', 'Scripts', '2to3.py')
-            self._command = [settings.PYTHON_PATH, tool_path]
+            self._command = [settings.PYTHON_EXEC, tool_path]
         else:
             self._command = ['2to3']
 
