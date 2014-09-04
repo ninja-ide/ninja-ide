@@ -187,6 +187,10 @@ class ComboEditor(QDialog):
                      self._remove_undock)
         new_combo.show()
 
+    @property
+    def prueba(self):
+        return 0
+
     def _remove_undock(self):
         widget = self.sender()
         self.__undocked.remove(widget)
@@ -285,8 +289,8 @@ class ComboEditor(QDialog):
         editor = self.stacked.currentWidget()
         # Check if it's current to avoid signals from other splits.
         if ignore_sender or editor == obj:
-            line = editor.textCursor().blockNumber() + 1
-            col = editor.textCursor().columnNumber()
+            line, col = editor.getCursorPosition()
+            line += 1
             self.bar.update_line_col(line, col)
 
     def _set_current_symbol(self, line, ignore_sender=False):
@@ -326,7 +330,7 @@ class ComboEditor(QDialog):
 
     def _load_symbols(self, neditable):
         symbols_handler = handlers.get_symbols_handler('py')
-        source = neditable.editor.toPlainText()
+        source = neditable.editor.text()
         source = source.encode(neditable.editor.encoding)
         symbols, symbols_simplified = symbols_handler.obtain_symbols(
             source, simple=True)
@@ -334,7 +338,7 @@ class ComboEditor(QDialog):
         symbols_simplified = sorted(
             list(symbols_simplified.items()), key=lambda x: x[0])
         self.bar.add_symbols(symbols_simplified)
-        line = neditable.editor.textCursor().blockNumber()
+        line, _ = neditable.editor.getCursorPosition()
         self._set_current_symbol(line, True)
         tree_symbols = IDE.get_service('symbols_explorer')
         tree_symbols.update_symbols_tree(symbols, neditable.file_path)

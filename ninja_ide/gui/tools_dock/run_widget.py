@@ -114,7 +114,7 @@ class RunWidget(QWidget):
         font = settings.FONT
         format_.setFont(font)
         format_.setForeground(QBrush(QColor(resources.CUSTOM_SCHEME.get(
-            "error-underline", resources.COLOR_SCHEME["error-underline"]))))
+            "ErrorUnderline", resources.COLOR_SCHEME["ErrorUnderline"]))))
         if error == 0:
             self.output.textCursor().insertText(self.tr('Failed to start'),
                                                 format_)
@@ -134,15 +134,15 @@ class RunWidget(QWidget):
         self.output.textCursor().insertText('\n\n')
         if exitStatus == QProcess.NormalExit:
             format_.setForeground(QBrush(QColor(resources.CUSTOM_SCHEME.get(
-                "keyword", resources.COLOR_SCHEME["keyword"]))))
+                "Keyword", resources.COLOR_SCHEME["Keyword"]))))
             self.output.textCursor().insertText(
                 self.tr("Execution Successful!"), format_)
         else:
             format_.setForeground(
                 QBrush(QColor(
                     resources.CUSTOM_SCHEME.get(
-                        "error-underline",
-                        resources.COLOR_SCHEME["error-underline"]))))
+                        "ErrorUnderline",
+                        resources.COLOR_SCHEME["ErrorUnderline"]))))
             self.output.textCursor().insertText(
                 self.tr("Execution Interrupted"), format_)
         self.output.textCursor().insertText('\n\n')
@@ -271,14 +271,14 @@ class OutputWidget(QPlainTextEdit):
         self.plain_format.setFont(font)
         self.plain_format.setForeground(
             QBrush(QColor(resources.CUSTOM_SCHEME.get(
-                "editor-text", resources.COLOR_SCHEME["editor-text"]))))
+                "Default", resources.COLOR_SCHEME["Default"]))))
         self.error_format = QTextCharFormat()
         self.error_format.setFont(font)
         self.error_format.setAnchor(True)
         self.error_format.setForeground(QColor(resources.CUSTOM_SCHEME.get(
-            "pep8-underline", resources.COLOR_SCHEME["pep8-underline"])))
+            "Pep8Underline", resources.COLOR_SCHEME["Pep8Underline"])))
         self.error_format.setBackground(QColor(resources.CUSTOM_SCHEME.get(
-            "error-underline", resources.COLOR_SCHEME["error-underline"])))
+            "ErrorUnderline", resources.COLOR_SCHEME["ErrorUnderline"])))
         self.error_format.setToolTip(self.tr("Click to show the source"))
         self.error_format2 = QTextCharFormat()
         self.error_format2.setAnchor(True)
@@ -286,8 +286,8 @@ class OutputWidget(QPlainTextEdit):
         self.error_format2.setForeground(
             QBrush(
                 QColor(resources.CUSTOM_SCHEME.get(
-                    "error-underline",
-                    resources.COLOR_SCHEME["error-underline"]))))
+                    "ErrorUnderline",
+                    resources.COLOR_SCHEME["ErrorUnderline"]))))
 
         self.connect(self, SIGNAL("blockCountChanged(int)"),
                      lambda: self.moveCursor(QTextCursor.End))
@@ -295,13 +295,13 @@ class OutputWidget(QPlainTextEdit):
         css = 'QPlainTextEdit {color: %s; background-color: %s;' \
             'selection-color: %s; selection-background-color: %s;}' \
             % (resources.CUSTOM_SCHEME.get('editor-text',
-               resources.COLOR_SCHEME['editor-text']),
-               resources.CUSTOM_SCHEME.get('editor-background',
-               resources.COLOR_SCHEME['editor-background']),
-               resources.CUSTOM_SCHEME.get('editor-selection-color',
-               resources.COLOR_SCHEME['editor-selection-color']),
-               resources.CUSTOM_SCHEME.get('editor-selection-background',
-               resources.COLOR_SCHEME['editor-selection-background']))
+               resources.COLOR_SCHEME['Default']),
+               resources.CUSTOM_SCHEME.get('EditorBackground',
+               resources.COLOR_SCHEME['EditorBackground']),
+               resources.CUSTOM_SCHEME.get('EditorSelectionColor',
+               resources.COLOR_SCHEME['EditorSelectionColor']),
+               resources.CUSTOM_SCHEME.get('EditorSelectionBackground',
+               resources.COLOR_SCHEME['EditorSelectionBackground']))
         self.setStyleSheet(css)
 
     def mousePressEvent(self, event):

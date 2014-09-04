@@ -52,7 +52,7 @@ class FromImportDialog(QDialog):
         self._editorWidget = editorWidget
         self.setMinimumSize(606, 90)
 
-        source = self._editorWidget.get_text()
+        source = self._editorWidget.text()
         source = source.encode(self._editorWidget.encoding)
         self._imports = introspection.obtain_imports(source)
 

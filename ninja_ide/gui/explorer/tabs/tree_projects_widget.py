@@ -173,7 +173,7 @@ class ProjectTreeColumn(QDialog):
             new_path = file_manager.create_path(addToProject.pathSelected, name)
             ide_srv = IDE.get_service("ide")
             old_file = ide_srv.get_or_create_nfile(path)
-            new_file = old_file.save(editorWidget.get_text(), new_path)
+            new_file = old_file.save(editorWidget.text(), new_path)
             #FIXME: Make this file replace the original in the open tab
         else:
             pass

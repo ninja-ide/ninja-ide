@@ -100,8 +100,8 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     app.processEvents()
 
     # Set the cursor to unblinking
-    if not settings.IS_WINDOWS:
-        app.setCursorFlashTime(0)
+    #if not settings.IS_WINDOWS:
+        #app.setCursorFlashTime(0)
 
     #Set the codec for strings (QString)
     QTextCodec.setCodecForCStrings(QTextCodec.codecForName('utf-8'))

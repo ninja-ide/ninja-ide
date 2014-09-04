@@ -104,7 +104,7 @@ class CodeCompletionWidget(QFrame):
         if settings.CODE_COMPLETION:
             if self._editor.document().revision() != self._revision and \
                cursor.block().blockNumber() != self._block:
-                source = self._editor.get_text()
+                source = self._editor.text()
                 source = source.encode(self._editor.encoding)
                 self.cc.analyze_file(self._editor.file_path, source,
                     self._editor.indent, self._editor.useTabs)
@@ -194,7 +194,7 @@ class CodeCompletionWidget(QFrame):
            self._editor.cursor_inside_comment() or
            self._invalid_completion_position()):
             return
-        source = self._editor.get_text()
+        source = self._editor.text()
         source = source.encode(self._editor.encoding)
         offset = self._editor.textCursor().position()
         results = self.cc.get_completion(source, offset)
@@ -235,7 +235,7 @@ class CodeCompletionWidget(QFrame):
         if not settings.CODE_COMPLETION or self._editor.lang != "python":
             return
         if self.isVisible():
-            source = self._editor.get_text()
+            source = self._editor.text()
             source = source.encode(self._editor.encoding)
             offset = self._editor.textCursor().position()
             prefix, valid = self.cc.get_prefix(source, offset)
@@ -305,7 +305,7 @@ class CompleterWidget(QCompleter):
             self.fill_completer()
 
     def fill_completer(self):
-        source = self._editor.get_text()
+        source = self._editor.text()
         source = source.encode(self._editor.encoding)
 #        self.cc.analyze_file('', source)
         offset = self._editor.textCursor().position()

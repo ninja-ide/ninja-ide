@@ -450,7 +450,7 @@ class _MainContainer(QWidget):
         if editorWidget:
             block_count = editorWidget.blockCount()
             blanks = re.findall('(^\n)|(^(\s+)?#)|(^( +)?($|\n))',
-                                editorWidget.get_text(), re.M)
+                                editorWidget.text(), re.M)
             blanks_count = len(blanks)
             resume = self.tr("Lines code: %s\n") % (block_count - blanks_count)
             resume += (self.tr("Blanks and commented lines: %s\n\n") %
@@ -521,7 +521,7 @@ class _MainContainer(QWidget):
         """Indent 1 position to the right for the current line or selection."""
         editorWidget = self.get_current_editor()
         if editorWidget and editorWidget.hasFocus():
-            editorWidget.indent_more()
+            editorWidget.indent()
 
     def editor_insert_debugging_prints(self):
         """Insert a print statement in each selected line."""
@@ -679,27 +679,27 @@ class _MainContainer(QWidget):
         editorWidget = editor.create_editor(editable)
 
         #Connect signals
-        self.connect(editorWidget, SIGNAL("fileSaved(QPlainTextEdit)"),
-                     self._editor_tab_was_saved)
-        self.connect(editorWidget, SIGNAL("openDropFile(QString)"),
-                     self.open_file)
-        self.connect(editorWidget, SIGNAL("addBackItemNavigation()"),
-                     self.add_back_item_navigation)
-        self.connect(editorWidget,
-                     SIGNAL("locateFunction(QString, QString, bool)"),
-                     self._editor_locate_function)
-        self.connect(editorWidget,
-                     SIGNAL("checksFound(QPlainTextEdit, PyQt_PyObject)"),
-                     self._show_tab_indicator)
-        self.connect(editorWidget, SIGNAL("cleanDocument(QPlainTextEdit)"),
-                     self._hide_icon_tab_indicator)
-        self.connect(editorWidget, SIGNAL("findOcurrences(QString)"),
-                     self._find_occurrences)
-        self.connect(editorWidget, SIGNAL("migrationAnalyzed()"),
-                     lambda: self.emit(SIGNAL("migrationAnalyzed()")))
-        #keyPressEventSignal for plugins
-        self.connect(editorWidget, SIGNAL("keyPressEvent(QEvent)"),
-                     self._editor_keyPressEvent)
+        #self.connect(editorWidget, SIGNAL("fileSaved(QPlainTextEdit)"),
+                     #self._editor_tab_was_saved)
+        #self.connect(editorWidget, SIGNAL("openDropFile(QString)"),
+                     #self.open_file)
+        #self.connect(editorWidget, SIGNAL("addBackItemNavigation()"),
+                     #self.add_back_item_navigation)
+        #self.connect(editorWidget,
+                     #SIGNAL("locateFunction(QString, QString, bool)"),
+                     #self._editor_locate_function)
+        #self.connect(editorWidget,
+                     #SIGNAL("checksFound(QPlainTextEdit, PyQt_PyObject)"),
+                     #self._show_tab_indicator)
+        #self.connect(editorWidget, SIGNAL("cleanDocument(QPlainTextEdit)"),
+                     #self._hide_icon_tab_indicator)
+        #self.connect(editorWidget, SIGNAL("findOcurrences(QString)"),
+                     #self._find_occurrences)
+        #self.connect(editorWidget, SIGNAL("migrationAnalyzed()"),
+                     #lambda: self.emit(SIGNAL("migrationAnalyzed()")))
+        ##keyPressEventSignal for plugins
+        #self.connect(editorWidget, SIGNAL("keyPressEvent(QEvent)"),
+                     #self._editor_keyPressEvent)
 
         return editorWidget
 
@@ -841,11 +841,11 @@ class _MainContainer(QWidget):
         try:
             editorWidget = self.add_editor(fileName,
                                            ignore_checkers=ignore_checkers)
-            if cursorPosition != -1:
-                if positionIsLineNumber:
-                    editorWidget.go_to_line(cursorPosition)
-                else:
-                    editorWidget.set_cursor_position(cursorPosition)
+            #if cursorPosition != -1:
+                #if positionIsLineNumber:
+                    #editorWidget.go_to_line(cursorPosition)
+                #else:
+                    #editorWidget.set_cursor_position(cursorPosition)
             self.emit(SIGNAL("currentEditorChanged(QString)"), fileName)
         except file_manager.NinjaIOException as reason:
             QMessageBox.information(self,
@@ -913,7 +913,7 @@ class _MainContainer(QWidget):
             editorWidget.neditable.save_content()
             #file_manager.store_file_content(
                 #fileName, content, addExtension=False)
-            encoding = file_manager.get_file_encoding(editorWidget.get_text())
+            encoding = file_manager.get_file_encoding(editorWidget.text())
             editorWidget.encoding = encoding
             self.emit(SIGNAL("fileSaved(QString)"),
                       (self.tr("File Saved: %s") % editorWidget.file_path))

@@ -145,8 +145,8 @@ class SliderArea(QFrame):
         self._parent = parent
         self.setMouseTracking(True)
         self.setCursor(Qt.OpenHandCursor)
-        color = resources.CUSTOM_SCHEME.get('current-line',
-            resources.COLOR_SCHEME['current-line'])
+        color = resources.CUSTOM_SCHEME.get(
+            'CurrentLine', resources.COLOR_SCHEME['CurrentLine'])
         if ACTIVATE_OPACITY:
             self.setStyleSheet("background: %s;" % color)
             self.goe = QGraphicsOpacityEffect()

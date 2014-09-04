@@ -83,7 +83,7 @@ class ErrorsChecker(QThread):
         if file_ext in exts:
             try:
                 self.reset()
-                source = self._editor.get_text()
+                source = self._editor.text()
                 if self._encoding is not None:
                     source = source.encode(self._encoding)
                 tree = compile(source, self._path, "exec", _ast.PyCF_ONLY_AST)
@@ -153,14 +153,14 @@ class ErrorsChecker(QThread):
 def remove_error_checker():
     checker = (ErrorsChecker,
                resources.CUSTOM_SCHEME.get(
-                   'error-underline',
-                   resources.COLOR_SCHEME['error-underline']), 10)
+                   'ErrorUnderline',
+                   resources.COLOR_SCHEME['ErrorUnderline']), 10)
     remove_checker(checker)
 
 
 if settings.FIND_ERRORS:
     register_checker(checker=ErrorsChecker,
                      color=resources.CUSTOM_SCHEME.get(
-                         'error-underline',
-                         resources.COLOR_SCHEME['error-underline']),
+                         'ErrorUnderline',
+                         resources.COLOR_SCHEME['ErrorUnderline']),
                      priority=10)

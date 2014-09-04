@@ -600,7 +600,7 @@ class IDE(QMainWindow):
                 else:
                     stat_value = os.stat(path).st_mtime
                 files_info.append([path,
-                                  editable.editor.get_cursor_position(),
+                                  editable.editor.getCursorPosition(),
                                   stat_value])
             data_qsettings.setValue('lastSession/openedFiles', files_info)
             if current_file is not None:

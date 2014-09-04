@@ -478,29 +478,30 @@ class SyntaxHighlighter(QSyntaxHighlighter):
 def _create_scheme():
     scheme = {
       "syntax_comment": dict(color=resources.CUSTOM_SCHEME.get(
-          "comment", resources.COLOR_SCHEME["comment"]), italic=True),
+          "Comment", resources.COLOR_SCHEME["Comment"]), italic=True),
       "syntax_string": resources.CUSTOM_SCHEME.get(
-          "string", resources.COLOR_SCHEME["string"]),
+          "SingleQuotedString", resources.COLOR_SCHEME["SingleQuotedString"]),
       "syntax_builtin": resources.CUSTOM_SCHEME.get(
-          "extras", resources.COLOR_SCHEME["extras"]),
+          "Decorator", resources.COLOR_SCHEME["Decorator"]),
       "syntax_keyword": (resources.CUSTOM_SCHEME.get(
-          "keyword", resources.COLOR_SCHEME["keyword"]), True),
+          "Keyword", resources.COLOR_SCHEME["Keyword"]), True),
       "syntax_definition": (resources.CUSTOM_SCHEME.get(
-          "definition", resources.COLOR_SCHEME["definition"]), True),
+          "FunctionMethodName",
+          resources.COLOR_SCHEME["FunctionMethodName"]), True),
       "syntax_braces": resources.CUSTOM_SCHEME.get(
-          "brace", resources.COLOR_SCHEME["brace"]),
+          "Brace", resources.COLOR_SCHEME["Brace"]),
       "syntax_number": resources.CUSTOM_SCHEME.get(
-          "numbers", resources.COLOR_SCHEME["numbers"]),
+          "Number", resources.COLOR_SCHEME["Number"]),
       "syntax_proper_object": resources.CUSTOM_SCHEME.get(
-          "properObject", resources.COLOR_SCHEME["properObject"]),
+          "SelfReference", resources.COLOR_SCHEME["SelfReference"]),
       "syntax_operators": resources.CUSTOM_SCHEME.get(
-          "operator", resources.COLOR_SCHEME["operator"]),
+          "Operator", resources.COLOR_SCHEME["Operator"]),
       "syntax_highlight_word": dict(color=resources.CUSTOM_SCHEME.get(
-          "selected-word", resources.COLOR_SCHEME["selected-word"]),
+          "SelectedWord", resources.COLOR_SCHEME["SelectedWord"]),
           background=resources.CUSTOM_SCHEME.get(
-          "selected-word-background",
-          resources.COLOR_SCHEME["selected-word-background"])),
-      "syntax_pending": resources.COLOR_SCHEME["pending"],
+          "SelectedWordBackground",
+          resources.COLOR_SCHEME["SelectedWordBackground"])),
+      "syntax_pending": resources.COLOR_SCHEME["Pending"],
     }
 
     return scheme

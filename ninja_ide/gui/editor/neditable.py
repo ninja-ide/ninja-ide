@@ -76,7 +76,8 @@ class NEditable(QObject):
         if not self._nfile.is_new_file:
             content = self._nfile.read()
             self._nfile.start_watching()
-            self.__editor.setPlainText(content)
+            self.__editor.setText(content)
+            self.__editor.setModified(False)
             encoding = file_manager.get_file_encoding(content)
             self.__editor.encoding = encoding
             if not self.ignore_checkers:
@@ -149,7 +150,7 @@ class NEditable(QObject):
     def save_content(self, path=None):
         """Save the content of the UI to a file."""
         if self.__editor.is_modified:
-            content = self.__editor.get_text()
+            content = self.__editor.text()
             nfile = self._nfile.save(content, path)
             self._nfile = nfile
             if not self.ignore_checkers:
