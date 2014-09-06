@@ -28,6 +28,7 @@ from PyQt4.QtGui import QStackedLayout
 from PyQt4.QtGui import QMessageBox
 from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QPixmap
+from PyQt4.QtCore import Qt
 from PyQt4.QtCore import QDir
 from PyQt4.QtCore import SIGNAL
 
@@ -269,7 +270,7 @@ class _MainContainer(QWidget):
         editorWidget = self.get_current_editor()
         if editorWidget:
             self.__codeBack.append((editorWidget.file_path,
-                                   editorWidget.textCursor().position()))
+                                   editorWidget.getCursorPosition()))
             self.__codeForward = []
         self._locator.navigate_to(function, filePath, isVariable)
 
@@ -286,17 +287,16 @@ class _MainContainer(QWidget):
         """Paste the text from the copy/paste history."""
         editorWidget = self.get_current_editor()
         if editorWidget and editorWidget.hasFocus():
-            cursor = editorWidget.textCursor()
+            line, index = editorWidget.getCursorPosition()
             central = IDE.get_service('central_container')
             if central:
-                cursor.insertText(central.get_paste())
+                editorWidget.insertAt(central.get_paste(), line, index)
 
     def copy_history(self):
         """Copy the selected text into the copy/paste history."""
         editorWidget = self.get_current_editor()
         if editorWidget and editorWidget.hasFocus():
-            cursor = editorWidget.textCursor()
-            copy = cursor.selectedText()
+            copy = editorWidget.selectedText()
             central = IDE.get_service('central_container')
             if central:
                 central.add_copy(copy)
@@ -313,7 +313,7 @@ class _MainContainer(QWidget):
         editorWidget = self.get_current_editor()
         if editorWidget:
             self.__codeBack.append((editorWidget.file_path,
-                                   editorWidget.textCursor().position()))
+                                   editorWidget.getCursorPosition()))
             self.__codeForward = []
 
     def preview_in_browser(self):
@@ -331,11 +331,11 @@ class _MainContainer(QWidget):
         editorWidget = self.get_current_editor()
         if editorWidget and editorWidget.hasFocus():
             if self.current_widget.bar.code_navigator.operation == 1:
-                editorWidget._sidebarWidget.set_bookmark(
-                    editorWidget.textCursor().blockNumber())
+                editorWidget.handle_bookmarks_breakpoints(
+                    editorWidget.getCursorPosition()[0], Qt.ControlModifier)
             elif self.current_widget.bar.code_navigator.operation == 2:
-                editorWidget._sidebarWidget.set_breakpoint(
-                    editorWidget.textCursor().blockNumber())
+                editorWidget.handle_bookmarks_breakpoints(
+                    editorWidget.getCursorPosition()[0], Qt.NoModifier)
 
     def __navigate_with_keyboard(self, val):
         """Navigate between the positions in the jump history stack."""
@@ -354,13 +354,13 @@ class _MainContainer(QWidget):
             editorWidget = self.get_current_editor()
             if editorWidget:
                 self.__codeForward.append((editorWidget.file_path,
-                                          editorWidget.textCursor().position()))
+                                          editorWidget.getCursorPosition()))
         elif val and self.__codeForward:
             node = self.__codeForward.pop()
             editorWidget = self.get_current_editor()
             if editorWidget:
                 self.__codeBack.append((editorWidget.file_path,
-                                       editorWidget.textCursor().position()))
+                                       editorWidget.getCursorPosition()))
         if node:
             self.open_file(node[0], node[1])
 
@@ -448,7 +448,7 @@ class _MainContainer(QWidget):
         """Count the lines of code in the current file."""
         editorWidget = self.get_current_editor()
         if editorWidget:
-            block_count = editorWidget.blockCount()
+            block_count = editorWidget.lines()
             blanks = re.findall('(^\n)|(^(\s+)?#)|(^( +)?($|\n))',
                                 editorWidget.text(), re.M)
             blanks_count = len(blanks)
@@ -791,9 +791,7 @@ class _MainContainer(QWidget):
             QMessageBox.information(self, self.tr("Incorrect File"),
                                     self.tr("The image couldn\'t be open"))
 
-    def open_file(self, filename='', cursorPosition=-1,
-                  tabIndex=None, positionIsLineNumber=False,
-                  ignore_checkers=False):
+    def open_file(self, filename='', line=-1, col=0, ignore_checkers=False):
         logger.debug("will try to open %s" % filename)
         if not filename:
             logger.debug("has nofilename")
@@ -830,22 +828,16 @@ class _MainContainer(QWidget):
                 self.w = uic.loadUi(filename)
                 self.w.show()
             else:
-                logger.debug("will try to open")
-                self.__open_file(filename, cursorPosition,
-                                 tabIndex, positionIsLineNumber,
+                logger.debug("will try to open: " + filename)
+                self.__open_file(filename, line, col,
                                  ignore_checkers)
 
-    def __open_file(self, fileName='', cursorPosition=-1,
-                    tabIndex=None, positionIsLineNumber=False,
-                    ignore_checkers=False):
+    def __open_file(self, fileName='', line=-1, col=0, ignore_checkers=False):
         try:
             editorWidget = self.add_editor(fileName,
                                            ignore_checkers=ignore_checkers)
-            #if cursorPosition != -1:
-                #if positionIsLineNumber:
-                    #editorWidget.go_to_line(cursorPosition)
-                #else:
-                    #editorWidget.set_cursor_position(cursorPosition)
+            if line != -1:
+                editorWidget.set_cursor_position(line, col)
             self.emit(SIGNAL("currentEditorChanged(QString)"), fileName)
         except file_manager.NinjaIOException as reason:
             QMessageBox.information(self,
@@ -917,7 +909,6 @@ class _MainContainer(QWidget):
             editorWidget.encoding = encoding
             self.emit(SIGNAL("fileSaved(QString)"),
                       (self.tr("File Saved: %s") % editorWidget.file_path))
-            editorWidget._file_saved()
             return True
         except Exception as reason:
             logger.error('save_file: %s', reason)
@@ -951,7 +942,6 @@ class _MainContainer(QWidget):
             self.emit(SIGNAL("fileSaved(QString)"),
                             (self.tr("File Saved: %s") % fileName))
             self.emit(SIGNAL("currentEditorChanged(QString)"), fileName)
-            editorWidget._file_saved()
             return True
         except file_manager.NinjaFileExistsException as ex:
             QMessageBox.information(self, self.tr("File Already Exists"),

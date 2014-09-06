@@ -338,7 +338,7 @@ class LocatorWidget(QDialog):
         if not main_container:
             return
         jump = lineno if self._line_jump == -1 else self._line_jump
-        main_container.open_file(path, jump, None, True)
+        main_container.open_file(path, jump)
         self.hide()
 
     def hideEvent(self, event):

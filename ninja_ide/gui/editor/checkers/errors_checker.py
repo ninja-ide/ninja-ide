@@ -133,19 +133,20 @@ class ErrorsChecker(QThread):
     def _get_ignore_range(self):
         ignored_range = []
         ignored_lines = []
-        block = self._editor.document().begin()
-        while block.isValid():
-            if self.pat_disable_lint.match(block.text()):
-                start = block.blockNumber()
-                while block.isValid():
-                    block = block.next()
-                    if self.pat_enable_lint.match(block.text()):
-                        end = block.blockNumber()
+        lines = self._editor.lines()
+        line = 0
+        while line < lines:
+            if self.pat_disable_lint.match(self._editor.text(line)):
+                start = line
+                while line < lines:
+                    line += 1
+                    if self.pat_enable_lint.match(self._editor.text(line)):
+                        end = line
                         ignored_range.append((start, end))
                         break
-            elif self.pat_ignore_lint.match(block.text()):
-                ignored_lines.append(block.blockNumber())
-            block = block.next()
+            elif self.pat_ignore_lint.match(self._editor.text(line)):
+                ignored_lines.append(line)
+            line += 1
 
         return (ignored_range, ignored_lines)
 

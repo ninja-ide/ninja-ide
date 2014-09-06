@@ -163,7 +163,7 @@ class SessionsManager(QDialog):
                     mtime = os.stat(path).st_mtime
                     ignore_checkers = (mtime == stat_value)
                     main_container.open_file(path, line,
-                        ignore_checkers=ignore_checkers)
+                                             ignore_checkers=ignore_checkers)
             if projects_explorer:
                 projects_explorer.load_session_projects(
                     settings.SESSIONS[key][1])

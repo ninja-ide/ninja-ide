@@ -37,7 +37,7 @@ from ninja_ide.gui.editor.checkers import migration_lists  # lint:ok
 class MigrationTo3(QThread):
 
     def __init__(self, editor):
-        QThread.__init__(self)
+        super(MigrationTo3, self).__init__()
         self._editor = editor
         self._path = ''
         self.dirty = False

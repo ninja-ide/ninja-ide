@@ -23,6 +23,11 @@ from PyQt4.Qsci import QsciLexerPython
 
 class PythonLexer(QsciLexerPython):
 
+    def __init__(self, *args, **kwargs):
+        super(PythonLexer, self).__init__(*args, **kwargs)
+        self.setFoldComments(True)
+        self.setFoldQuotes(True)
+
     def keywords(self, keyset):
         if keyset == 2:
             return (b'self super all any basestring bin bool bytearray callable '

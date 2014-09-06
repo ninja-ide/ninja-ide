@@ -25,11 +25,9 @@ from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QGridLayout
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QCompleter
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QSpinBox
-from PyQt4.QtGui import QGroupBox
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 
@@ -50,7 +48,6 @@ class FromImportDialog(QDialog):
         QDialog.__init__(self, parent, Qt.Dialog)
         self.setWindowTitle('from ... import ...')
         self._editorWidget = editorWidget
-        self.setMinimumSize(606, 90)
 
         source = self._editorWidget.text()
         source = source.encode(self._editorWidget.encoding)
@@ -64,16 +61,14 @@ class FromImportDialog(QDialog):
         self._froms += [module_name[1] for module_name in iter_modules()]
         self._froms = tuple(sorted(set(self._froms)))
 
-        group = QGroupBox(self)
-        hbox = QGridLayout(group)
+        hbox = QGridLayout(self)
         hbox.addWidget(QLabel('from'), 0, 0)
         self._lineFrom, self._insertAt = QLineEdit(self), QSpinBox(self)
         self._completer = QCompleter(self._froms)
         self._lineFrom.setCompleter(self._completer)
         self._lineFrom.setPlaceholderText("module")
         self._insertAt.setRange(0, 999)
-        self._insertAt.setValue(
-            self._editorWidget.textCursor().blockNumber() + 1)
+        self._insertAt.setValue(self._editorWidget.getCursorPosition()[0])
         hbox.addWidget(self._lineFrom, 0, 1)
         hbox.addWidget(QLabel('import'), 0, 2)
         self._lineImport, self._asImport = QLineEdit(self), QLineEdit(self)
@@ -105,9 +100,6 @@ class FromImportDialog(QDialog):
         importItem = self._lineImport.text().strip()  # import BAR
         asItem = self._asImport.text().strip()  # as FOO_BAR
         importComment = self._lineComment.text().strip()  # lint:ok or something
-        cursor = self._editorWidget.textCursor()
-        cursor.movePosition(abs(self._insertAt.value() - 2))
-        cursor.movePosition(QTextCursor.EndOfLine)
         if fromItem:
             importLine = '\nfrom {0} import {1}'.format(fromItem, importItem)
         else:
@@ -116,5 +108,6 @@ class FromImportDialog(QDialog):
             importLine += " as " + asItem
         if importComment:
             importLine += "  # " + importComment
-        cursor.insertText(importLine)
+        self._editorWidget.insertAt(
+            importLine, abs(self._insertAt.value() - 2), 0)
         self.close()

@@ -37,7 +37,7 @@ from ninja_ide.gui.editor.checkers import errors_lists  # lint:ok
 class Pep8Checker(QThread):
 
     def __init__(self, editor):
-        QThread.__init__(self)
+        super(Pep8Checker, self).__init__()
         self._editor = editor
         self._path = ''
         self._encoding = ''

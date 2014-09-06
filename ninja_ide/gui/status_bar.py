@@ -96,9 +96,6 @@ class _StatusBar(QWidget):
         #Register signals connections
         connections = (
             {'target': 'main_container',
-             'signal_name': 'currentEditorChanged(QString)',
-             'slot': self._handle_tab_changed},
-            {'target': 'main_container',
              'signal_name': 'updateLocator(QString)',
              'slot': self._explore_file_code},
             {'target': 'filesystem',
@@ -119,38 +116,6 @@ class _StatusBar(QWidget):
         self._codeLocator = locator_widget.LocatorWidget(ide)
 
         ui_tools.install_shortcuts(self, actions.ACTIONS_STATUS, ide)
-
-    def _handle_tab_changed(self, new_tab):
-        """
-        Re-run search if tab changed, we use the find of search widget because
-        we want the widget to be updated.
-        """
-        main_container = IDE.get_service("main_container")
-        if main_container:
-            editor = main_container.get_current_editor()
-        else:
-            return
-
-        if editor:
-            self.disconnect(editor, SIGNAL("textChanged()"),
-                            self._notify_editor_changed)
-            self.connect(editor, SIGNAL("textChanged()"),
-                         self._notify_editor_changed)
-
-    def _notify_editor_changed(self):
-        """
-        Lets search widget know that the editor contents changed and find
-        needs to be re-run
-        """
-        if self._searchWidget.isVisible():
-            main_container = IDE.get_service("main_container")
-            if main_container:
-                editor = main_container.get_current_editor()
-            else:
-                return
-
-            if editor:
-                self._searchWidget.contents_changed(editor)
 
     def _explore_code(self):
         """Update locator metadata for the current projects."""
@@ -311,14 +276,6 @@ class SearchWidget(QWidget):
             editor.setCursorPosition(0, 0)
             self.find()
 
-    def contents_changed(self, editor):
-        """Editor content changed, update search."""
-        #TODO: Find where the cursor is when finding to position the index
-        current_index = self.find()
-        if self.totalMatches >= current_index:
-            self.index = current_index
-        self._line.counter.update_count(self.index, self.totalMatches)
-
     def find(self, forward=True):
         """Collect flags and execute search in the editor."""
         reg = False
@@ -392,19 +349,13 @@ class ReplaceWidget(QWidget):
     def replace(self):
         """Replace one occurrence of the word."""
         status_search = IDE.get_service("status_search")
-        s = 0 if not status_search.sensitive_checked \
-            else QTextDocument.FindCaseSensitively
-        w = 0 if not status_search.wholeword_checked \
-            else QTextDocument.FindWholeWords
-        flags = 0 + s + w
         main_container = IDE.get_service("main_container")
         editor = None
         if main_container:
             editor = main_container.get_current_editor()
         if editor:
             editor.replace_match(status_search.search_text,
-                                 self._lineReplace.text(), flags)
-        if editor and not editor.textCursor().hasSelection():
+                                 self._lineReplace.text())
             status_search.find()
 
     def replace_selected(self):
@@ -414,18 +365,13 @@ class ReplaceWidget(QWidget):
     def replace_all(self, selected=False):
         """Replace all the occurrences of the word."""
         status_search = IDE.get_service("status_search")
-        s = 0 if not status_search.sensitive_checked \
-            else QTextDocument.FindCaseSensitively
-        w = 0 if not status_search.wholeword_checked \
-            else QTextDocument.FindWholeWords
-        flags = 0 + s + w
         main_container = IDE.get_service("main_container")
         editor = None
         if main_container:
             editor = main_container.get_current_editor()
         if editor:
             editor.replace_match(status_search.search_text,
-                                 self._lineReplace.text(), flags, True,
+                                 self._lineReplace.text(), True,
                                  selected)
 
 

@@ -135,7 +135,7 @@ class ComboEditor(QDialog):
             self.bar.add_item(neditable.display_name, neditable)
 
             # Editor Signals
-            self.connect(editor, SIGNAL("cursorPositionChanged()"),
+            self.connect(editor, SIGNAL("cursorPositionChanged(int, int)"),
                          self._update_cursor_position)
             self.connect(editor, SIGNAL("editorFocusObtained()"),
                          self._editor_with_focus)
@@ -284,12 +284,11 @@ class ComboEditor(QDialog):
         """Return the number of editors opened."""
         return self.stacked.count()
 
-    def _update_cursor_position(self, ignore_sender=False):
+    def _update_cursor_position(self, line=0, col=0, ignore_sender=False):
         obj = self.sender()
         editor = self.stacked.currentWidget()
         # Check if it's current to avoid signals from other splits.
         if ignore_sender or editor == obj:
-            line, col = editor.getCursorPosition()
             line += 1
             self.bar.update_line_col(line, col)
 

@@ -341,10 +341,7 @@ class OutputWidget(QPlainTextEdit):
             file_path, lineno = self._parse_traceback(text)
             main_container = IDE.get_service('main_container')
             if main_container:
-                main_container.open_file(
-                    file_path,
-                    cursorPosition=int(lineno) - 1,
-                    positionIsLineNumber=True)
+                main_container.open_file(file_path, line=int(lineno) - 1)
 
     def _parse_traceback(self, text):
         """

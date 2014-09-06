@@ -113,13 +113,14 @@ COLOR_SCHEME = {
     "Keyword": "#83c1fb",
     "Operator": "#FFFFFF",
     "Brace": "#FFFFFF",
+    "Caret": "#FFFFFF",
     "FunctionMethodName": "#fdff74",
     "ClassName": "#fdff74",
     "Identifier": "#c5c8c6",
     "DoubleQuotedString": "#d07cd3",
     "SingleQuotedString": "#d07cd3",
-    "TripleDoubleQuotedString ": "#86d986",
-    "TripleSingleQuotedString ": "#86d986",
+    "TripleDoubleQuotedString": "#86d986",
+    "TripleSingleQuotedString": "#86d986",
     "Comment": "#7c7c7c",
     "CommentBlock": "#7c7c7c",
     "SelfReference": "#6EC7D7",
@@ -134,19 +135,19 @@ COLOR_SCHEME = {
     "Pending": "red",
     "SelectedWordBackground": "#009B00",
     "FoldArea": "#292c2f",
-    "FoldArrow": "#696c6e",
-    "LinkNavigate": "orange",
+    "FoldArrowExpanded": "#696c6e",
+    "FoldArrowCollapsed": "white",
+    "LinkNavigate": "005aff",
     "BraceBackground": "#5BC85B",
     "BraceForeground": "red",
-    "ErrorUnderline": "red",
-    "Pep8Underline": "yellow",
+    "ErrorUnderline": "0000ff",
+    "Pep8Underline": "00ffff",
     "SidebarBackground": "#292c2f",
     "SidebarSelectedBackground": "#46484b",
     "SidebarForeground": "#868989",
     "SidebarSelectedForeground": "#c5c8c6",
-    "MigrationUnderline": "blue",
+    "MigrationUnderline": "ff0000",
     "MarginLine": '#7c7c7c',
-    "MarginOpacity": 20,
 }
 
 CUSTOM_SCHEME = {}
@@ -154,7 +155,7 @@ CUSTOM_SCHEME = {}
 
 def get_color(key):
     if key in COLOR_SCHEME:
-        return CUSTOM_SCHEME.get(key, COLOR_SCHEME[key])
+        return CUSTOM_SCHEME.get(key, COLOR_SCHEME.get(key))
     return None
 
 
@@ -178,8 +179,8 @@ SHORTCUTS = {
     "Save-project": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_S),
     "Print-file": QKeySequence(Qt.CTRL + Qt.Key_P),
     "Redo": QKeySequence(Qt.CTRL + Qt.Key_Y),
-    "Comment": QKeySequence(Qt.CTRL + Qt.Key_D),
-    "Uncomment": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_D),
+    "Comment": QKeySequence(Qt.CTRL + Qt.Key_G),
+    "Uncomment": QKeySequence(Qt.CTRL + Qt.SHIFT + Qt.Key_G),
     "Horizontal-line": QKeySequence(),
     "Title-comment": QKeySequence(),
     "Indent-less": QKeySequence(Qt.SHIFT + Qt.Key_Tab),
