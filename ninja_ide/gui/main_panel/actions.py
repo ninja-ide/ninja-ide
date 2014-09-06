@@ -401,12 +401,14 @@ ACTIONS = (
                'section': (translations.TR_MENU_SOURCE,
                            translations.TR_DEBUGGING_TRICKS),
                'weight': 320},
+    "connect": "editor_insert_debugging_prints"
     },
     {
     "action": {'text': translations.TR_INSERT_PDB,
                'section': (translations.TR_MENU_SOURCE,
                            translations.TR_DEBUGGING_TRICKS),
                'weight': 320},
+    "connect": "editor_insert_pdb"
     },
     {
     "action": {'text': translations.TR_REMOVE_TRAILING_SPACES,

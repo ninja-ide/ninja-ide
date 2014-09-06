@@ -37,7 +37,7 @@ from ninja_ide.gui.editor.checkers import migration_lists  # lint:ok
 class MigrationTo3(QThread):
 
     def __init__(self, editor):
-        QThread.__init__(self)
+        super(MigrationTo3, self).__init__()
         self._editor = editor
         self._path = ''
         self.dirty = False
@@ -125,13 +125,13 @@ class MigrationTo3(QThread):
 def remove_migration_checker():
     checker = (MigrationTo3,
                resources.CUSTOM_SCHEME.get(
-                   'migration-underline',
-                   resources.COLOR_SCHEME['migration-underline']), 1)
+                   'MigrationUnderline',
+                   resources.COLOR_SCHEME['MigrationUnderline']), 1)
     remove_checker(checker)
 
 
 if settings.SHOW_MIGRATION_TIPS:
     register_checker(checker=MigrationTo3,
                      color=resources.CUSTOM_SCHEME.get(
-                         'migration-underline',
-                         resources.COLOR_SCHEME['migration-underline']))
+                         'MigrationUnderline',
+                         resources.COLOR_SCHEME['MigrationUnderline']))

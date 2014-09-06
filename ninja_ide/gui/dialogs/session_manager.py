@@ -117,7 +117,7 @@ class SessionsManager(QDialog):
             else:
                 stat_value = os.stat(path).st_mtime
             files_info.append([path,
-                editable.editor.get_cursor_position(), stat_value])
+                               editable.editor.getCursorPosition(), stat_value])
         projects_obj = ide.filesystem.get_projects()
         projects = [projects_obj[proj].path for proj in projects_obj]
         settings.SESSIONS[sessionName] = [files_info, projects]
@@ -130,7 +130,7 @@ class SessionsManager(QDialog):
             sessionName = self.sessionList.currentItem().text()
             SessionsManager.save_session_data(sessionName, self._ide)
             self._ide.show_message(translations.TR_SESSIONS_UPDATED_NOTIF %
-                {'session': sessionName}, 2000)
+                                   {'session': sessionName}, 2000)
             self.load_session_content()
 
     def open_session(self):
@@ -163,7 +163,7 @@ class SessionsManager(QDialog):
                     mtime = os.stat(path).st_mtime
                     ignore_checkers = (mtime == stat_value)
                     main_container.open_file(path, line,
-                        ignore_checkers=ignore_checkers)
+                                             ignore_checkers=ignore_checkers)
             if projects_explorer:
                 projects_explorer.load_session_projects(
                     settings.SESSIONS[key][1])

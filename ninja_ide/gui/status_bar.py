@@ -17,8 +17,6 @@
 
 from __future__ import absolute_import
 
-import re
-
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QCompleter
 from PyQt4.QtGui import QFileSystemModel
@@ -29,7 +27,6 @@ from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
 from PyQt4.QtGui import QLineEdit
 from PyQt4.QtGui import QPushButton
-from PyQt4.QtGui import QTextCursor
 from PyQt4.QtGui import QCheckBox
 from PyQt4.QtGui import QStyle
 from PyQt4.QtGui import QIcon
@@ -99,9 +96,6 @@ class _StatusBar(QWidget):
         #Register signals connections
         connections = (
             {'target': 'main_container',
-             'signal_name': 'currentEditorChanged(QString)',
-             'slot': self._handle_tab_changed},
-            {'target': 'main_container',
              'signal_name': 'updateLocator(QString)',
              'slot': self._explore_file_code},
             {'target': 'filesystem',
@@ -123,38 +117,6 @@ class _StatusBar(QWidget):
 
         ui_tools.install_shortcuts(self, actions.ACTIONS_STATUS, ide)
 
-    def _handle_tab_changed(self, new_tab):
-        """
-        Re-run search if tab changed, we use the find of search widget because
-        we want the widget to be updated.
-        """
-        main_container = IDE.get_service("main_container")
-        if main_container:
-            editor = main_container.get_current_editor()
-        else:
-            return
-
-        if editor:
-            self.disconnect(editor, SIGNAL("textChanged()"),
-                            self._notify_editor_changed)
-            self.connect(editor, SIGNAL("textChanged()"),
-                         self._notify_editor_changed)
-
-    def _notify_editor_changed(self):
-        """
-        Lets search widget know that the editor contents changed and find
-        needs to be re-run
-        """
-        if self._searchWidget.isVisible():
-            main_container = IDE.get_service("main_container")
-            if main_container:
-                editor = main_container.get_current_editor()
-            else:
-                return
-
-            if editor:
-                self._searchWidget.contents_changed(editor)
-
     def _explore_code(self):
         """Update locator metadata for the current projects."""
         self._codeLocator.explore_code()
@@ -173,10 +135,10 @@ class _StatusBar(QWidget):
         if main_container:
             editor = main_container.get_current_editor()
 
-        if editor and editor.textCursor().hasSelection():
-            text = editor.textCursor().selectedText()
+        if editor and editor.hasSelectedText():
+            text = editor.selectedText()
             self._searchWidget._line.setText(text)
-            self._searchWidget.find_matches(editor, True)
+            self._searchWidget.find()
         self._searchWidget._line.setFocus()
         self._searchWidget._line.selectAll()
 
@@ -196,8 +158,7 @@ class _StatusBar(QWidget):
         if editor:
             word = editor._text_under_cursor()
             self._searchWidget._line.setText(word)
-            editor.moveCursor(QTextCursor.WordLeft)
-            self._searchWidget.find_matches(editor)
+            self._searchWidget.find()
 
     def show_locator(self):
         """Show the status bar with the locator widget."""
@@ -271,15 +232,15 @@ class SearchWidget(QWidget):
         self._line.counter.update_count(self.index, self.totalMatches)
 
         self.connect(self._btnFind, SIGNAL("clicked()"),
-                     self.find_next)
+                     self.find)
         self.connect(self.btnNext, SIGNAL("clicked()"),
                      self.find_next)
         self.connect(self.btnPrevious, SIGNAL("clicked()"),
                      self.find_previous)
         self.connect(self._checkSensitive, SIGNAL("stateChanged(int)"),
-                     self._checks_state_changed)
+                     self._states_changed)
         self.connect(self._checkWholeWord, SIGNAL("stateChanged(int)"),
-                     self._checks_state_changed)
+                     self._states_changed)
 
         IDE.register_service('status_search', self)
 
@@ -305,40 +266,34 @@ class SearchWidget(QWidget):
         """Return the value of the whole word checkbox."""
         return self._checkWholeWord.isChecked()
 
-    def _checks_state_changed(self):
+    def _states_changed(self):
         """Checkboxs state changed, update search."""
         main_container = IDE.get_service("main_container")
         editor = None
         if main_container:
             editor = main_container.get_current_editor()
         if editor:
-            editor.moveCursor(QTextCursor.Start)
-            self.find_matches(editor)
+            editor.setCursorPosition(0, 0)
+            self.find()
 
-    def contents_changed(self, editor):
-        """Editor content changed, update search."""
-        #TODO: Find where the cursor is when finding to position the index
-        current_index = self.find_matches(editor, True)
-        if self.totalMatches >= current_index:
-            self.index = current_index
-        self._line.counter.update_count(self.index, self.totalMatches)
-
-    def find(self, direction=0, findNext=False):
+    def find(self, forward=True):
         """Collect flags and execute search in the editor."""
-        s = 0 if not self.sensitive_checked \
-            else QTextDocument.FindCaseSensitively
-        w = 0 if not self.wholeword_checked else QTextDocument.FindWholeWords
-        flags = s + w + direction
+        reg = False
+        cs = self.sensitive_checked
+        wo = self.wholeword_checked
         main_container = IDE.get_service("main_container")
         editor = None
         if main_container:
             editor = main_container.get_current_editor()
         if editor:
-            editor.find_match(self.search_text, flags, findNext)
+            index, matches = editor.find_match(
+                self.search_text, reg, cs, wo, forward=forward)
+            self._line.counter.update_count(index, matches,
+                                            len(self.search_text) > 0)
 
     def find_next(self):
         """Find the next occurrence of the word to search."""
-        self.find(findNext=True)
+        self.find()
         if self.totalMatches > 0 and self.index < self.totalMatches:
             self.index += 1
         elif self.totalMatches > 0:
@@ -347,7 +302,7 @@ class SearchWidget(QWidget):
 
     def find_previous(self):
         """Find the previous occurrence of the word to search."""
-        self.find(direction=1, findNext=True)
+        self.find(forward=False)
         if self.totalMatches > 0 and self.index > 1:
             self.index -= 1
         elif self.totalMatches > 0:
@@ -357,46 +312,8 @@ class SearchWidget(QWidget):
             if main_container:
                 editor = main_container.get_current_editor()
             if editor:
-                editor.moveCursor(QTextCursor.End)
-                self.find(direction=1, findNext=True)
+                self.find(forward=False)
         self._line.counter.update_count(self.index, self.totalMatches)
-
-    def find_matches(self, editor, in_place=False):
-        """Check the matches for the word and update the counter and text."""
-        if editor is None:
-            return
-        text = editor.toPlainText()
-        search = self._line.text()
-        hasSearch = len(search) > 0
-        current_index = 0
-        if self._checkWholeWord.isChecked():
-            pattern = r'\b%s\b' % search
-            temp_text = ' '.join(re.findall(pattern, text, re.IGNORECASE))
-            text = temp_text if temp_text != '' else text
-        if self._checkSensitive.isChecked():
-            self.totalMatches = text.count(search)
-        else:
-            self.totalMatches = text.lower().count(search.lower())
-        if hasSearch and self.totalMatches > 0:
-            cursor = editor.textCursor()
-            cursor_position = cursor.position()
-
-            cursor.movePosition(QTextCursor.WordLeft)
-            cursor.movePosition(QTextCursor.Start, QTextCursor.KeepAnchor)
-            current_index = text[:cursor_position].count(search)
-            text = cursor.selectedText()
-            if current_index <= self.totalMatches:
-                self.index = current_index
-            else:
-                self.index = text.count(search) + 1
-        else:
-            self.index = 0
-            self.totalMatches = 0
-        self._line.counter.update_count(self.index, self.totalMatches,
-                                        hasSearch)
-        if hasSearch and not in_place:
-            self.find()
-        return current_index
 
 
 class ReplaceWidget(QWidget):
@@ -432,19 +349,13 @@ class ReplaceWidget(QWidget):
     def replace(self):
         """Replace one occurrence of the word."""
         status_search = IDE.get_service("status_search")
-        s = 0 if not status_search.sensitive_checked \
-            else QTextDocument.FindCaseSensitively
-        w = 0 if not status_search.wholeword_checked \
-            else QTextDocument.FindWholeWords
-        flags = 0 + s + w
         main_container = IDE.get_service("main_container")
         editor = None
         if main_container:
             editor = main_container.get_current_editor()
         if editor:
             editor.replace_match(status_search.search_text,
-                                 self._lineReplace.text(), flags)
-        if editor and not editor.textCursor().hasSelection():
+                                 self._lineReplace.text())
             status_search.find()
 
     def replace_selected(self):
@@ -454,18 +365,13 @@ class ReplaceWidget(QWidget):
     def replace_all(self, selected=False):
         """Replace all the occurrences of the word."""
         status_search = IDE.get_service("status_search")
-        s = 0 if not status_search.sensitive_checked \
-            else QTextDocument.FindCaseSensitively
-        w = 0 if not status_search.wholeword_checked \
-            else QTextDocument.FindWholeWords
-        flags = 0 + s + w
         main_container = IDE.get_service("main_container")
         editor = None
         if main_container:
             editor = main_container.get_current_editor()
         if editor:
             editor.replace_match(status_search.search_text,
-                                 self._lineReplace.text(), flags, True,
+                                 self._lineReplace.text(), True,
                                  selected)
 
 
@@ -489,7 +395,7 @@ class TextLine(QLineEdit):
 
         status_search = IDE.get_service("status_search")
         if event.key() in (Qt.Key_Enter, Qt.Key_Return):
-            status_search.find_next()
+            status_search.find()
             return
         super(TextLine, self).keyPressEvent(event)
         if (int(event.key()) in range(32, 162) or
@@ -500,7 +406,7 @@ class TextLine(QLineEdit):
                 in_replace_mode = (status_bar.current_status ==
                                    _STATUSBAR_STATE_REPLACE)
             if not in_replace_mode:
-                status_search.find_matches(editor, True)
+                status_search.find()
 
 
 class FileSystemOpener(QWidget):

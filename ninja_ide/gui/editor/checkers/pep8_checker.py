@@ -37,7 +37,7 @@ from ninja_ide.gui.editor.checkers import errors_lists  # lint:ok
 class Pep8Checker(QThread):
 
     def __init__(self, editor):
-        QThread.__init__(self)
+        super(Pep8Checker, self).__init__()
         self._editor = editor
         self._path = ''
         self._encoding = ''
@@ -74,7 +74,7 @@ class Pep8Checker(QThread):
         file_ext = file_manager.get_file_extension(self._path)
         if file_ext in exts:
             self.reset()
-            source = self._editor.get_text()
+            source = self._editor.text()
             tempData = pep8mod.run_check(self._path, source)
             for result in tempData:
                 message = "\n".join(("%s %s" % (
@@ -104,9 +104,9 @@ class Pep8Checker(QThread):
 
 
 def remove_pep8_checker():
-    _default_color = resources.COLOR_SCHEME['pep8-underline']
+    _default_color = resources.COLOR_SCHEME['Pep8Underline']
     checker = (Pep8Checker,
-               resources.CUSTOM_SCHEME.get('pep8-underline', _default_color), 2)
+               resources.CUSTOM_SCHEME.get('Pep8Underline', _default_color), 2)
     remove_checker(checker)
 
 
@@ -114,5 +114,5 @@ if settings.CHECK_STYLE:
     register_checker(
         checker=Pep8Checker,
         color=resources.CUSTOM_SCHEME.get(
-            'pep8-underline',
-            resources.COLOR_SCHEME['pep8-underline']), priority=2)
+            'Pep8Underline',
+            resources.COLOR_SCHEME['Pep8Underline']), priority=2)

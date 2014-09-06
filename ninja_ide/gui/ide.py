@@ -488,10 +488,11 @@ class IDE(QMainWindow):
                 if file_manager.file_exists(fileData[0]):
                     mtime = os.stat(fileData[0]).st_mtime
                     ignore_checkers = (mtime == fileData[2])
-                    main_container.open_file(fileData[0], fileData[1],
+                    line, col = fileData[1][0], fileData[1][1]
+                    main_container.open_file(fileData[0], line, col,
                                              ignore_checkers=ignore_checkers)
-            if current_file:
-                main_container.open_file(current_file)
+            #if current_file:
+                #main_container.open_file(current_file)
         if projects_explorer and projects:
             projects_explorer.load_session_projects(projects)
             #if recent_files is not None:
@@ -600,17 +601,17 @@ class IDE(QMainWindow):
                 else:
                     stat_value = os.stat(path).st_mtime
                 files_info.append([path,
-                                  editable.editor.get_cursor_position(),
+                                  editable.editor.getCursorPosition(),
                                   stat_value])
             data_qsettings.setValue('lastSession/openedFiles', files_info)
             if current_file is not None:
                 data_qsettings.setValue('lastSession/currentFile', current_file)
             data_qsettings.setValue('lastSession/recentFiles',
                                     settings.LAST_OPENED_FILES)
-        data_qsettings.setValue('preferences/editor/bookmarks',
-                                settings.BOOKMARKS)
-        data_qsettings.setValue('preferences/editor/breakpoints',
-                                settings.BREAKPOINTS)
+        qsettings.setValue('preferences/editor/bookmarks',
+                           settings.BOOKMARKS)
+        qsettings.setValue('preferences/editor/breakpoints',
+                           settings.BREAKPOINTS)
 
         # Session
         if self._session is not None:

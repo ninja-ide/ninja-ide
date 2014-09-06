@@ -477,9 +477,7 @@ class FindInFilesWidget(QWidget):
             root_dir_name = parent.dir_name_root
             file_path = file_manager.create_path(root_dir_name, file_name)
             #open the file and jump_to_line
-            self._main_container.open_file(file_path,
-                cursorPosition=int(lineno) - 1,
-                positionIsLineNumber=True)
+            self._main_container.open_file(file_path, line=int(lineno) - 1)
             self._main_container.get_current_editor().setFocus()
 
     def open(self):

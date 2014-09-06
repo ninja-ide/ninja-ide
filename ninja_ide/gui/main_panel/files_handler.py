@@ -132,7 +132,7 @@ class FilesHandler(QFrame):
                     checks.append(
                         {"checker_text": checker.dirty_text,
                          "checker_color": color})
-            modified = neditable.document.isModified()
+            modified = neditable.editor.is_modified
             temp_file = str(uuid.uuid4()) if nfile.file_path is None else ""
             filepath = nfile.file_path if nfile.file_path is not None else ""
             model.append([nfile.file_name, filepath, checks, modified,

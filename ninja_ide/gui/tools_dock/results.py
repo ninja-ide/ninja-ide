@@ -63,10 +63,7 @@ class Results(QWidget):
         line = int(item.text(2)) - 1
         main_container = IDE.get_service('main_container')
         if main_container:
-            main_container.open_file(
-                filename=filename,
-                cursorPosition=line,
-                positionIsLineNumber=True)
+            main_container.open_file(filename=filename, line=line)
         self._parent.hide()
 
     def update_result(self, items):

@@ -110,8 +110,7 @@ class GoToDefinition(QObject):
         if len(self._thread.results) == 1:
             main_container.open_file(
                 filename=self._thread.results[0][1],
-                cursorPosition=self._thread.results[0][2],
-                positionIsLineNumber=True)
+                line=self._thread.results[0][2])
         elif len(self._thread.results) == 0:
             #TODO: Check imports
             QMessageBox.information(

@@ -76,7 +76,8 @@ class NEditable(QObject):
         if not self._nfile.is_new_file:
             content = self._nfile.read()
             self._nfile.start_watching()
-            self.__editor.setPlainText(content)
+            self.__editor.setText(content)
+            self.__editor.setModified(False)
             encoding = file_manager.get_file_encoding(content)
             self.__editor.encoding = encoding
             if not self.ignore_checkers:
@@ -92,7 +93,8 @@ class NEditable(QObject):
         if self._nfile:
             content = self._nfile.read()
             self._nfile.start_watching()
-            self.__editor.setPlainText(content)
+            self.__editor.setText(content)
+            self.__editor.setModified(False)
             encoding = file_manager.get_file_encoding(content)
             self.__editor.encoding = encoding
             if not self.ignore_checkers:
@@ -149,13 +151,14 @@ class NEditable(QObject):
     def save_content(self, path=None):
         """Save the content of the UI to a file."""
         if self.__editor.is_modified:
-            content = self.__editor.get_text()
+            content = self.__editor.text()
             nfile = self._nfile.save(content, path)
             self._nfile = nfile
             if not self.ignore_checkers:
                 self.run_checkers(content)
             else:
                 self.ignore_checkers = False
+            self.__editor.setModified(False)
             self.emit(SIGNAL("fileSaved(PyQt_PyObject)"), self)
 
     def include_checkers(self, lang='python'):
@@ -169,16 +172,6 @@ class NEditable(QObject):
             self.registered_checkers[i] = (check, color, priority)
             self.connect(check, SIGNAL("finished()"),
                          self.show_checkers_notifications)
-
-    def update_checkers_metadata(self, blockNumber, diference,
-                                 atLineStart=False):
-        """Update the lines in the checkers when the editor change."""
-        for i, values in enumerate(self.registered_checkers):
-            checker, color, priority = values
-            if checker.checks:
-                checker.checks = helpers.add_line_increment_for_dict(
-                    checker.checks, blockNumber, diference, atLineStart)
-        self.emit(SIGNAL("checkersUpdated(PyQt_PyObject)"), self)
 
     def run_checkers(self, content, path=None, encoding=None):
         for items in self.registered_checkers:
