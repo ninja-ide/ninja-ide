@@ -78,7 +78,8 @@ class ProjectProperties(QDialog):
     """Project Properties widget class"""
 
     def __init__(self, project, parent=None):
-        QDialog.__init__(self, parent, Qt.Dialog)
+        super(ProjectProperties, self).__init__(parent, Qt.Dialog)
+        self.parent = parent
         self.project = project
         self.setWindowTitle(translations.TR_PROJECT_PROPERTIES)
         self.resize(600, 500)
@@ -140,6 +141,8 @@ class ProjectProperties(QDialog):
         self.project.related_projects = related
         self.project.save_project_properties()
 
+        self.parent.refresh_file_filters()
+
         self.close()
 
 
@@ -190,22 +193,26 @@ class ProjectData(QWidget):
 
         self.txtExtensions = QLineEdit()
         self.txtExtensions.setText(', '.join(self._parent.project.extensions))
+        self.txtExtensions.setToolTip(
+            translations.TR_PROJECT_EXTENSIONS_TOOLTIP)
         grid.addWidget(QLabel(translations.TR_PROJECT_EXTENSIONS), 6, 0)
         grid.addWidget(self.txtExtensions, 6, 1)
+        labelTooltip = QLabel(translations.TR_PROJECT_EXTENSIONS_INSTRUCTIONS)
+        grid.addWidget(labelTooltip, 7, 1)
 
-        grid.addWidget(QLabel(translations.TR_PROJECT_INDENTATION), 7, 0)
+        grid.addWidget(QLabel(translations.TR_PROJECT_INDENTATION), 8, 0)
         self.spinIndentation = QSpinBox()
         self.spinIndentation.setValue(self._parent.project.indentation)
         self.spinIndentation.setRange(2, 10)
         self.spinIndentation.setValue(4)
         self.spinIndentation.setSingleStep(2)
-        grid.addWidget(self.spinIndentation, 7, 1)
+        grid.addWidget(self.spinIndentation, 8, 1)
         self.checkUseTabs = QComboBox()
         self.checkUseTabs.addItems([
             translations.TR_PREFERENCES_EDITOR_CONFIG_SPACES.capitalize(),
             translations.TR_PREFERENCES_EDITOR_CONFIG_TABS.capitalize()])
         self.checkUseTabs.setCurrentIndex(int(self._parent.project.use_tabs))
-        grid.addWidget(self.checkUseTabs, 7, 2)
+        grid.addWidget(self.checkUseTabs, 8, 2)
 
 
 class ProjectExecution(QWidget):

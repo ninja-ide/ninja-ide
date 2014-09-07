@@ -217,15 +217,7 @@ def store_file_content(fileName, content, addExtension=True, newFile=False):
 
 def open_project(path):
     """Return a dict structure containing the info inside a folder."""
-    if not os.path.exists(path):
-        raise NinjaIOException("The folder does not exist")
-    d = {}
-    for root, dirs, files in os.walk(path, followlinks=True):
-        d[root] = [[f for f in files
-                   if (os.path.splitext(f.lower())[-1]) in
-                   settings.SUPPORTED_EXTENSIONS],
-                   dirs]
-    return d
+    return open_project_with_extensions(settings.SUPPORTED_EXTENSIONS)
 
 
 def open_project_with_extensions(path, extensions):
@@ -234,11 +226,16 @@ def open_project_with_extensions(path, extensions):
     This function uses the extensions specified by each project."""
     if not os.path.exists(path):
         raise NinjaIOException("The folder does not exist")
+    valid_extensions = [ext.lower() for ext in extensions
+                        if not ext.startswith('-')]
     d = {}
     for root, dirs, files in os.walk(path, followlinks=True):
-        d[root] = [[f for f in files
-                    if (os.path.splitext(f.lower())[-1]) in extensions or
-                    '.*' in extensions], dirs]
+        for f in files:
+            ext = os.path.splitext(f.lower())[-1]
+            if ext in valid_extensions or '.*' in valid_extensions:
+                d[root] = [f, dirs]
+            elif ext == '' and '*' in valid_extensions:
+                d[root] = [f, dirs]
     return d
 
 

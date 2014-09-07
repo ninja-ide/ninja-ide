@@ -92,10 +92,14 @@ class GeneralConfiguration(QWidget):
         gridWorkspace.addWidget(self._txtWorkspace, 0, 1)
         gridWorkspace.addWidget(self._btnWorkspace, 0, 2)
         self._txtExtensions = QLineEdit()
+        self._txtExtensions.setToolTip(
+            translations.TR_PROJECT_EXTENSIONS_TOOLTIP)
         gridWorkspace.addWidget(QLabel(
             translations.TR_PREFERENCES_GENERAL_SUPPORTED_EXT), 1, 0,
             Qt.AlignRight)
         gridWorkspace.addWidget(self._txtExtensions, 1, 1)
+        labelTooltip = QLabel(translations.TR_PROJECT_EXTENSIONS_INSTRUCTIONS)
+        gridWorkspace.addWidget(labelTooltip, 2, 1)
 
         # Notification
         hboxNoti, self._notify_position = QHBoxLayout(groupBoxNoti), QComboBox()
