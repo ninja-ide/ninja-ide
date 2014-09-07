@@ -26,6 +26,7 @@ logger = NinjaLogger('ninja_ide.gui.explorer.tree_projects_widget')
 DEBUG = logger.debug
 
 from PyQt4.QtGui import QTreeView
+from PyQt4.QtGui import QAbstractItemView
 from PyQt4.QtGui import QStackedLayout
 from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QComboBox
@@ -194,12 +195,8 @@ class ProjectTreeColumn(QDialog):
             index = project.model().index(path)
             if index.isValid():
                 # This highlights the index in the tree for us
+                project.scrollTo(index, QAbstractItemView.EnsureVisible)
                 project.setCurrentIndex(index)
-                # Loop through the parents to expand the tree
-                # all the way up to the selected index.
-                while index.isValid():
-                    project.expand(index)
-                    index = index.parent()
                 break
 
     def add_project(self, project):
