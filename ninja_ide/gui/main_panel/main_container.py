@@ -362,7 +362,9 @@ class _MainContainer(QWidget):
                 self.__codeBack.append((editorWidget.file_path,
                                        editorWidget.getCursorPosition()))
         if node:
-            self.open_file(node[0], node[1])
+            filename = node[0]
+            line, col = node[1]
+            self.open_file(filename, line, col)
 
     def _navigate_breakpoints(self, val):
         """Navigate between the breakpoints."""
