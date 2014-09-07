@@ -83,8 +83,6 @@ class Editor(QsciScintilla):
     locateFunction(QString, QString, bool) [functionName, filePath, isVariable]
     openDropFile(QString)
     addBackItemNavigation()
-    checksFound(QPlainTextEdit, PyQt_PyObject)
-    cleanDocument(QPlainTextEdit)
     findOcurrences(QString)
     cursorPositionChange(int, int)    #row, col
     migrationAnalyzed()
