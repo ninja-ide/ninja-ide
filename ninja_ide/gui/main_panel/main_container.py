@@ -679,7 +679,7 @@ class _MainContainer(QWidget):
         editorWidget = editor.create_editor(editable)
 
         #Connect signals
-        self.connect(editorWidget, SIGNAL("fileSaved(QPlainTextEdit)"),
+        self.connect(editable, SIGNAL("fileSaved(PyQt_PyObject)"),
                      self._editor_tab_was_saved)
         self.connect(editorWidget, SIGNAL("openDropFile(QString)"),
                      self.open_file)
@@ -688,15 +688,8 @@ class _MainContainer(QWidget):
         self.connect(editorWidget,
                      SIGNAL("locateFunction(QString, QString, bool)"),
                      self._editor_locate_function)
-        self.connect(editorWidget,
-                     SIGNAL("checksFound(QPlainTextEdit, PyQt_PyObject)"),
-                     self._show_tab_indicator)
-        self.connect(editorWidget, SIGNAL("cleanDocument(QPlainTextEdit)"),
-                     self._hide_icon_tab_indicator)
         self.connect(editorWidget, SIGNAL("findOcurrences(QString)"),
                      self._find_occurrences)
-        self.connect(editorWidget, SIGNAL("migrationAnalyzed()"),
-                     lambda: self.emit(SIGNAL("migrationAnalyzed()")))
         #keyPressEventSignal for plugins
         self.connect(editorWidget, SIGNAL("keyPressEvent(QEvent)"),
                      self._editor_keyPressEvent)
@@ -730,22 +723,6 @@ class _MainContainer(QWidget):
     def _find_occurrences(self, word):
         self.emit(SIGNAL("findOcurrences(QString)"), word)
 
-    def _show_tab_indicator(self, editorWidget, icon):
-        pass
-        #index = self.tabs.indexOf(editorWidget)
-        #self.emit(SIGNAL("updateFileMetadata()"))
-        #if index >= 0 and icon:
-            #if isinstance(icon, int):
-                #icon = QIcon(self.style().standardIcon(icon))
-            #self.tabs.setTabIcon(index, icon)
-
-    def _hide_icon_tab_indicator(self, editorWidget):
-        pass
-        #index = self.tabs.indexOf(editorWidget)
-        #self.emit(SIGNAL("updateFileMetadata()"))
-        #if index >= 0:
-            #self.tabs.setTabIcon(index, QIcon())
-
     def _editor_keyPressEvent(self, event):
         self.emit(SIGNAL("editorKeyPressEvent(QEvent)"), event)
 
@@ -753,8 +730,8 @@ class _MainContainer(QWidget):
         self.emit(SIGNAL("locateFunction(QString, QString, bool)"),
                   function, filePath, isVariable)
 
-    def _editor_tab_was_saved(self, editorWidget=None):
-        self.emit(SIGNAL("updateLocator(QString)"), editorWidget.file_path)
+    def _editor_tab_was_saved(self, editable=None):
+        self.emit(SIGNAL("updateLocator(QString)"), editable.file_path)
 
     def get_current_widget(self):
         return self.current_widget.currentWidget()
