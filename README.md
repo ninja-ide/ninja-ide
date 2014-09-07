@@ -3,9 +3,6 @@
 # Ninja-ide Is Not Just Another IDE.
 **Ninja-IDE** is a cross-platform integrated development environment (IDE) that runs on Linux/X11, Mac OS X and Windows desktop operating systems. Ninja-IDE allows developers to create applications for any purpose making the task of writing software easier and more enjoyable. It's also a secret ninja agency but this doesn't matter right now.
 ![Ninja-IDE logo](http://ninjaide.webfactional.com/static/common/img/ninja-big.png)
-PS: all **Ninja-IDE** work is done in developers spare time, so think twice before complaining, and do something more useful like opening an issue or proposing a pull-request ;)
-
-PS2: if you are willing to help with some coins for coffee or in any other way, we won't stop you. Check the contribute section on Ninja-IDE's website.
 
 ## Ninja contact
 -   [Ninja website](http://ninja-ide.org) at ninja-ide.org
