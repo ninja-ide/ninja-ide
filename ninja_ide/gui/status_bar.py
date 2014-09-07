@@ -186,6 +186,8 @@ class _StatusBar(QWidget):
             widget = main_container.get_current_widget()
         if widget:
             widget.setFocus()
+            if widget == main_container.get_current_editor():
+                widget.highlight_selected_word(reset=True)
 
 
 class SearchWidget(QWidget):

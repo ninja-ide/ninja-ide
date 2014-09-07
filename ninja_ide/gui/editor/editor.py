@@ -647,6 +647,7 @@ class Editor(QsciScintilla):
 
     def set_cursor_position(self, line, index=0):
         if self.lines() >= line:
+            self._cursor_line = self._cursor_index = -1
             self.setCursorPosition(line, index)
 
     def indent_less(self):
@@ -1106,7 +1107,8 @@ class Editor(QsciScintilla):
             invalid_syntax = True
         return (invalid_syntax, token_buffer)
 
-    def highlight_selected_word(self, word_find=None, case_sensitive=True):
+    def highlight_selected_word(self, word_find=None, case_sensitive=True,
+                                reset=False):
         """Highlight selected variable"""
         self.SendScintilla(QsciScintilla.SCI_SETINDICATORCURRENT,
                            self.__indicator_word)
@@ -1114,7 +1116,7 @@ class Editor(QsciScintilla):
         if word_find is not None:
             word = word_find
 
-        if word != self._selected_word:
+        if word != self._selected_word and not reset:
             self.SendScintilla(QsciScintilla.SCI_INDICATORCLEARRANGE, 0,
                                len(self.text()))
             self._selected_word = word
@@ -1129,7 +1131,7 @@ class Editor(QsciScintilla):
                 self.SendScintilla(QsciScintilla.SCI_INDICATORFILLRANGE,
                                    index, word_length)
                 index = text.find(search, index + 1)
-        elif (word == self._selected_word) and (word_find is None):
+        elif ((word == self._selected_word) and (word_find is None)) or reset:
             self.SendScintilla(QsciScintilla.SCI_INDICATORCLEARRANGE, 0,
                                len(self.text()))
             self._selected_word = None

@@ -679,27 +679,27 @@ class _MainContainer(QWidget):
         editorWidget = editor.create_editor(editable)
 
         #Connect signals
-        #self.connect(editorWidget, SIGNAL("fileSaved(QPlainTextEdit)"),
-                     #self._editor_tab_was_saved)
-        #self.connect(editorWidget, SIGNAL("openDropFile(QString)"),
-                     #self.open_file)
-        #self.connect(editorWidget, SIGNAL("addBackItemNavigation()"),
-                     #self.add_back_item_navigation)
-        #self.connect(editorWidget,
-                     #SIGNAL("locateFunction(QString, QString, bool)"),
-                     #self._editor_locate_function)
-        #self.connect(editorWidget,
-                     #SIGNAL("checksFound(QPlainTextEdit, PyQt_PyObject)"),
-                     #self._show_tab_indicator)
-        #self.connect(editorWidget, SIGNAL("cleanDocument(QPlainTextEdit)"),
-                     #self._hide_icon_tab_indicator)
-        #self.connect(editorWidget, SIGNAL("findOcurrences(QString)"),
-                     #self._find_occurrences)
-        #self.connect(editorWidget, SIGNAL("migrationAnalyzed()"),
-                     #lambda: self.emit(SIGNAL("migrationAnalyzed()")))
-        ##keyPressEventSignal for plugins
-        #self.connect(editorWidget, SIGNAL("keyPressEvent(QEvent)"),
-                     #self._editor_keyPressEvent)
+        self.connect(editorWidget, SIGNAL("fileSaved(QPlainTextEdit)"),
+                     self._editor_tab_was_saved)
+        self.connect(editorWidget, SIGNAL("openDropFile(QString)"),
+                     self.open_file)
+        self.connect(editorWidget, SIGNAL("addBackItemNavigation()"),
+                     self.add_back_item_navigation)
+        self.connect(editorWidget,
+                     SIGNAL("locateFunction(QString, QString, bool)"),
+                     self._editor_locate_function)
+        self.connect(editorWidget,
+                     SIGNAL("checksFound(QPlainTextEdit, PyQt_PyObject)"),
+                     self._show_tab_indicator)
+        self.connect(editorWidget, SIGNAL("cleanDocument(QPlainTextEdit)"),
+                     self._hide_icon_tab_indicator)
+        self.connect(editorWidget, SIGNAL("findOcurrences(QString)"),
+                     self._find_occurrences)
+        self.connect(editorWidget, SIGNAL("migrationAnalyzed()"),
+                     lambda: self.emit(SIGNAL("migrationAnalyzed()")))
+        #keyPressEventSignal for plugins
+        self.connect(editorWidget, SIGNAL("keyPressEvent(QEvent)"),
+                     self._editor_keyPressEvent)
 
         return editorWidget
 

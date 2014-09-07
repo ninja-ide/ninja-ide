@@ -38,5 +38,6 @@ class PythonLexer(QsciLexerPython):
                     'max memoryview min next object oct open ord pow property '
                     'range raw_input reduce reload repr reversed round set '
                     'setattr slice sorted staticmethod str sum tuple type '
-                    'unichr unicode vars xrange zip apply buffer coerce intern')
+                    'unichr unicode vars xrange zip apply buffer coerce intern '
+                    'True False')
         return super(PythonLexer, self).keywords(keyset)
