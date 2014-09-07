@@ -155,12 +155,14 @@ class _ToolsDock(QWidget):
         index_of = self.stack.indexOf(self._findInFilesWidget)
         self._item_changed(index_of)
         self._findInFilesWidget.open()
+        self._findInFilesWidget.setFocus()
 
     def show_find_occurrences(self, word):
         """Show Find In Files widget in find occurrences mode."""
         index_of = self.stack.indexOf(self._findInFilesWidget)
         self._item_changed(index_of)
         self._findInFilesWidget.find_occurrences(word)
+        self._findInFilesWidget.setFocus()
 
     def execute_file(self):
         """Execute the current file."""
@@ -221,6 +223,7 @@ class _ToolsDock(QWidget):
         self.show()
         self._results.update_result(items)
         self._results._tree.setFocus()
+        self._results.setFocus()
 
     def kill_application(self):
         """Kill the process of the application being executed."""
@@ -239,6 +242,7 @@ class _ToolsDock(QWidget):
                 self._web.webFrame.triggerPageAction(
                     QWebPage.InspectElement, True)
                 web_inspector.refresh_inspector()
+        self._web.setFocus()
 
     def add_to_stack(self, widget, icon_path, description):
         """
@@ -255,6 +259,12 @@ class _ToolsDock(QWidget):
         func = lambda: self._item_changed(index)
         self.connect(button, SIGNAL("clicked()"), func)
         self.__toolbar.addWidget(button)
+
+    def showEvent(self, event):
+        super(_ToolsDock, self).showEvent(event)
+        widget = self.stack.currentWidget()
+        if widget:
+            widget.setFocus()
 
 
 class StackedWidget(QStackedWidget):
