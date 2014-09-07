@@ -18,6 +18,9 @@ software easier and more enjoyable.
 -   [PyQt](http://www.riverbankcomputing.com/software/pyqt/intro) >= 4.8
 -   Virtualenv
 
+## Installing on Mac OS
+-   brew install qt pyqt sip qscintilla2
+
 ## Cloning and Running
 
 You can clone this repo and simply execute:
