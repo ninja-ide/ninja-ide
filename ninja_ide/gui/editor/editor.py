@@ -19,7 +19,6 @@ from __future__ import unicode_literals
 
 import re
 import math
-#import sys
 
 from tokenize import generate_tokens, TokenError
 #lint:disable
@@ -29,16 +28,10 @@ except:
     from io import StringIO
 #lint:enable
 
-#from PyQt4.QtGui import QPlainTextEdit
-#from PyQt4.QtGui import QTextEdit
 from PyQt4.QtGui import QFontMetricsF
 from PyQt4.QtGui import QToolTip
 from PyQt4.QtGui import QAction
-#from PyQt4.QtGui import QTextOption
 from PyQt4.QtGui import QInputDialog
-#from PyQt4.QtGui import QTextCursor
-#from PyQt4.QtGui import QTextDocument
-#from PyQt4.QtGui import QTextFormat
 from PyQt4.QtGui import QMenu
 from PyQt4.QtGui import QColor
 from PyQt4.QtGui import QKeySequence
@@ -52,11 +45,8 @@ from ninja_ide.core import settings
 ##from ninja_ide.tools.completion import completer_widget
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.editor import highlighter
-#from ninja_ide.gui.editor import syntax_highlighter
 from ninja_ide.gui.editor import helpers
 #from ninja_ide.gui.editor import minimap
-#from ninja_ide.gui.editor import sidebar_widget
-#from ninja_ide.gui.editor.syntaxes import register_builtin_syntaxes
 
 from PyQt4.Qsci import QsciScintilla, QsciCommand
 
@@ -64,12 +54,6 @@ from ninja_ide.tools.logger import NinjaLogger
 
 BRACE_DICT = {')': '(', ']': '[', '}': '{', '(': ')', '[': ']', '{': '}'}
 logger = NinjaLogger('ninja_ide.gui.editor.editor')
-
-
-#if sys.version_info.major == 3:
-    #python3 = True
-#else:
-    #python3 = False
 
 
 class Editor(QsciScintilla):
@@ -604,6 +588,7 @@ class Editor(QsciScintilla):
         """
         if lineno is not None:
             self.emit(SIGNAL("addBackItemNavigation()"))
+            self._cursor_line = self._cursor_index = -1
             self.go_to_line(lineno)
             return
 
