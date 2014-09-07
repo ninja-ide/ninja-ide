@@ -218,24 +218,22 @@ class Editor(QsciScintilla):
         #self.completer = completer_widget.CodeCompletionWidget(self)
         #Dict functions for KeyPress
         self.preKeyPress = {
-            #Qt.Key_Tab: self.__insert_indentation,
             Qt.Key_Backspace: self.__backspace,
-            #Qt.Key_Home: self.__home_pressed,
             Qt.Key_Enter: self.__ignore_extended_line,
             Qt.Key_Return: self.__ignore_extended_line,
             #Qt.Key_Colon: self.__retreat_to_keywords,
-            #Qt.Key_BracketRight: self.__brace_completion,
-            #Qt.Key_BraceRight: self.__brace_completion,
-            #Qt.Key_ParenRight: self.__brace_completion,
+            Qt.Key_BracketRight: self.__brace_completion,
+            Qt.Key_BraceRight: self.__brace_completion,
+            Qt.Key_ParenRight: self.__brace_completion,
             Qt.Key_Apostrophe: self.__quot_completion,
             Qt.Key_QuoteDbl: self.__quot_completion}
 
         self.postKeyPress = {
             Qt.Key_Enter: self.__auto_indent,
             Qt.Key_Return: self.__auto_indent,
-            #Qt.Key_BracketLeft: self.__complete_braces,
-            #Qt.Key_BraceLeft: self.__complete_braces,
-            #Qt.Key_ParenLeft: self.__complete_braces,
+            Qt.Key_BracketLeft: self.__complete_braces,
+            Qt.Key_BraceLeft: self.__complete_braces,
+            Qt.Key_ParenLeft: self.__complete_braces,
             Qt.Key_Apostrophe: self.__complete_quotes,
             Qt.Key_QuoteDbl: self.__complete_quotes}
 
@@ -262,10 +260,10 @@ class Editor(QsciScintilla):
         ##self.connect(ninjaide,
             ##SIGNAL("ns_preferences_editor_minimapShow(PyQt_PyObject)"),
             ##self._load_minimap)
-        #self.connect(
-            #ninjaide,
-            #SIGNAL("ns_preferences_editor_indent(PyQt_PyObject)"),
-            #self.load_project_config)
+        self.connect(
+            ninjaide,
+            SIGNAL("ns_preferences_editor_indent(PyQt_PyObject)"),
+            self.load_project_config)
         self.connect(
             ninjaide,
             SIGNAL("ns_preferences_editor_marginLine(PyQt_PyObject)"),
@@ -766,25 +764,6 @@ class Editor(QsciScintilla):
                 self.setSelection(line, index - 1, line, index)
                 self.removeSelectedText()
 
-    #def __home_pressed(self, event):
-        #if event.modifiers() == Qt.ControlModifier:
-            #return False
-        #elif event.modifiers() == Qt.ShiftModifier:
-            #move = QTextCursor.KeepAnchor
-        #else:
-            #move = QTextCursor.MoveAnchor
-        #if self.textCursor().atBlockStart():
-            #self.moveCursor(QTextCursor.WordRight, move)
-            #return True
-
-        #cursor = self.textCursor()
-        #position = cursor.position()
-        #self.moveCursor(QTextCursor.StartOfLine, move)
-        #self.moveCursor(QTextCursor.WordRight, move)
-        #if position != self.textCursor().position() and \
-           #cursor.block().text().startswith((' ', '\t')):
-            #return True
-
     def __ignore_extended_line(self, event):
         if event.modifiers() == Qt.ShiftModifier:
             return True
@@ -809,11 +788,6 @@ class Editor(QsciScintilla):
         """
         text = event.text()
         line, index = self.getCursorPosition()
-        #line_text = self.line(line)
-        #next_char = line_text[index, index + 1].strip()
-        #if self.cursor_inside_string() and text == next_char:
-            #self.moveCursor(QTextCursor.Right)
-            #return True
         PENTA_Q = 5 * text
         TETRA_Q = 4 * text
         TRIPLE_Q = 3 * text
@@ -916,7 +890,7 @@ class Editor(QsciScintilla):
               self.selected_text):
             self.insertAt(self.selected_text, line, index)
         elif is_unbalance:
-            next_char = text[index, index + 1].strip()
+            next_char = text[index:index + 1].strip()
             if self.selected_text or next_char == "":
                 self.insertAt(complementary_brace, line, index)
                 self.insertAt(self.selected_text, line, index)
