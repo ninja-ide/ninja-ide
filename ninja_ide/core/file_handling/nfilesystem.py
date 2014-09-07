@@ -55,6 +55,13 @@ class NVirtualFileSystem(QObject):
             qfsm = self.__projects[project_path]
         return qfsm
 
+    def refresh_name_filters(self, project):
+        qfsm = project.model
+        if qfsm:
+            pext = ["*{0}".format(x) for x in project.extensions]
+            logger.debug(pext)
+            qfsm.setNameFilters(pext)
+
     def close_project(self, project_path):
         if project_path in self.__projects:
             project_root = self.__projects[project_path]

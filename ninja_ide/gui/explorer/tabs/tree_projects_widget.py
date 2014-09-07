@@ -429,6 +429,10 @@ class TreeProjectsWidget(QTreeView):
         self.state_index = list()
         self._folding_menu = FoldingContextMenu(self)
 
+    def refresh_file_filters(self):
+        ninjaide = IDE.get_service("ide")
+        ninjaide.filesystem.refresh_name_filters(self.project)
+
     #FIXME: Check using the amount of items under this tree
     #add it to the items of pindex item children
     def _item_collapsed(self, tree_item):

@@ -187,6 +187,15 @@ TR_PROJECT_METADATA_RELATED = tr(
 TR_PROJECT_METADATA_TIP = tr(
     "NINJA-IDE",
     "Split your paths using newlines [ENTER].")
+TR_PROJECT_EXTENSIONS_TOOLTIP = tr(
+    "NINJA-IDE",
+    ("Supported Extensions:\n"
+     "Add: .[ext] with [ext = py html etc] to include new extension\n"
+     "Add: .* to show any file with extension\n"
+     "Add: * to show any file with or without extension"))
+TR_PROJECT_EXTENSIONS_INSTRUCTIONS = tr(
+    "NINJA-IDE",
+    "Mouse over supported extensions for instructions")
 
 
 #Locator Strings
