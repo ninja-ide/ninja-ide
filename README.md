@@ -1,8 +1,13 @@
 ![Travis report](https://travis-ci.org/ninja-ide/ninja-ide.svg?branch=master)
 
 # Ninja-ide Is Not Just Another IDE.
-**Ninja-IDE** is a cross-platform integrated development environment (IDE) that runs on Linux/X11, Mac OS X and Windows desktop operating systems. Ninja-IDE allows developers to create applications for any purpose making the task of writing software easier and more enjoyable. It's also a secret ninja agency but this doesn't matter right now.
+**Ninja-IDE** is a cross-platform integrated development environment (IDE) that allows developers to create applications for any purpose making the task of writing software easier and more enjoyable. It's also a secret ninja agency but this doesn't matter right now.
 ![Ninja-IDE logo](http://ninjaide.webfactional.com/static/common/img/ninja-big.png)
+
+## Platforms
+- Linux/X11
+- Mac OS X
+- Windows
 
 ## Ninja contact
 -   [Ninja website](http://ninja-ide.org) at ninja-ide.org
@@ -15,6 +20,7 @@ On any system you want **Ninja-IDE**, you'll need to have this dependencies inst
 
 -   [Python](http://python.org/) >= 2.7 (or Python3)
 -   [PyQt](http://www.riverbankcomputing.com/software/pyqt/intro) >= 4.8
+-   [pip](https://pip.pypa.io/en/latest/installing.html)
 
 ### Installing on Mac OS
     brew install qt pyqt sip qscintilla2
