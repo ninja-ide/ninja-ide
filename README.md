@@ -10,7 +10,7 @@
 -   [@ninja\_ide](https://twitter.com/ninja_ide) at Twitter
 -   [#ninja-ide](irc://freenode.net/ninja-ide) at Freenode.net
 
-## Requeriments
+## Requirements
 On any system you want **Ninja-IDE**, you'll need to have this dependencies installed:
 
 -   [Python](http://python.org/) >= 2.7 (or Python3)
