@@ -178,7 +178,7 @@ Rectangle {
         anchors.bottomMargin: 10
         font.pixelSize: 12
         color: "white"
-        text: "Copyright © 2011-2014 NINJA-IDE is distributed under the terms of the GNU GPLv3+ copyleft license"
+        text: "Copyright © 2010-2014 NINJA-IDE is distributed under the terms of the GNU GPLv3+ copyleft license"
     }
 
     function add_project(name, path, favorite){
