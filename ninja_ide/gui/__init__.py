@@ -56,9 +56,12 @@ from ninja_ide.gui.editor.checkers import migration_2to3
 from ninja_ide.gui.dialogs.preferences import preferences_general
 from ninja_ide.gui.dialogs.preferences import preferences_execution
 from ninja_ide.gui.dialogs.preferences import preferences_shortcuts
+from ninja_ide.gui.dialogs.preferences import preferences_interface
 from ninja_ide.gui.dialogs.preferences import preferences_editor_general
 from ninja_ide.gui.dialogs.preferences import preferences_editor_configuration
 from ninja_ide.gui.dialogs.preferences import preferences_editor_completion
+from ninja_ide.gui.dialogs.preferences import preferences_plugins
+from ninja_ide.gui.dialogs.preferences import preferences_theme
 # Templates
 from ninja_ide.core.template_registry import ntemplate_registry
 from ninja_ide.core.template_registry import (
@@ -136,7 +139,8 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
 
     #Set Stylesheet
     style_applied = False
-    if settings.NINJA_SKIN not in ('Default', 'Classic Theme'):
+    print settings.NINJA_SKIN
+    if settings.NINJA_SKIN not in ('Default'):
         file_name = ("%s.qss" % settings.NINJA_SKIN)
         qss_file = file_manager.create_path(resources.NINJA_THEME_DOWNLOAD,
                                             file_name)
@@ -148,9 +152,6 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     if not style_applied:
         if settings.NINJA_SKIN == 'Default':
             with open(resources.NINJA_THEME) as fileaccess:
-                qss = fileaccess.read()
-        else:
-            with open(resources.NINJA_THEME_CLASSIC) as fileaccess:
                 qss = fileaccess.read()
         app.setStyleSheet(qss)
 

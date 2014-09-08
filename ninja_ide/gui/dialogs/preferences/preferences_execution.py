@@ -45,6 +45,7 @@ class GeneralExecution(QWidget):
 
     def __init__(self, parent):
         super(GeneralExecution, self).__init__()
+        self._preferences = parent
         vbox = QVBoxLayout(self)
 
         groupExecution = QGroupBox(translations.TR_WORKSPACE_PROJECTS)
@@ -148,6 +149,7 @@ class GeneralExecution(QWidget):
         #Signals
         self.connect(self._btnPythonPath,
             SIGNAL("clicked()"), self._load_python_path)
+        self.connect(self._preferences, SIGNAL("savePreferences()"), self.save)
 
     def _load_python_path(self):
         """Ask the user for a Python Path"""

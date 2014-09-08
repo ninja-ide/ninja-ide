@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 from PyQt4 import QtCore
 
 
@@ -365,12 +364,18 @@ TR_SHORCUTS_ALREADY_ON_USE = tr(
 
 # Preferences
 TR_PREFERENCES_GENERAL = tr("NINJA-IDE", "General")
+TR_PREFERENCES_INTERFACE = tr("NINJA-IDE", "Interface")
+TR_PREFERENCES_PLUGINS = tr("NINJA-IDE", "Plugins")
+TR_PREFERENCES_THEME = tr("NINJA-IDE", "Theme")
 TR_PREFERENCES_EDITOR_GENERAL = tr("NINJA-IDE", "Editor")
 TR_PREFERENCES_EDITOR_CONFIGURATION = tr("NINJA-IDE", "Configuration")
 TR_PREFERENCES_EDITOR_COMPLETION = tr("NINJA-IDE", "Completion")
 TR_PREFERENCES_EDITOR_SCHEME_DESIGNER = tr("NINJA-IDE", "Scheme Designer")
 TR_PREFERENCES_SHORTCUTS = tr("NINJA-IDE", "Shortcuts")
 TR_PREFERENCES_EXECUTION = tr("NINJA-IDE", "Execution")
+TR_PREFERENCES_PLUGINS_MAIN = tr(
+    "NINJA-IDE",
+    "This section shows the configurations exposed by the Plugins.")
 TR_PREFERENCES_GENERAL_START = tr("NINJA-IDE", "On Start:")
 TR_PREFERENCES_GENERAL_CLOSE = tr("NINJA-IDE", "On Close:")
 TR_PREFERENCES_GENERAL_WORKSPACE = tr("NINJA-IDE", "Workspace and Project:")
@@ -382,6 +387,22 @@ TR_PREFERENCES_GENERAL_ACTIVATE_PLUGINS = tr("NINJA-IDE", "Activate Plugins")
 TR_PREFERENCES_GENERAL_NOTIFY_UPDATES = tr(
     "NINJA-IDE",
     "Notify me of new updates.")
+TR_PREFERENCES_INTERFACE_EXPLORER_PANEL = tr("NINJA-IDE", "Explorer Panel:")
+TR_PREFERENCES_INTERFACE_TOOLBAR_CUSTOMIZATION = tr(
+    "NINJA-IDE", "Tool Bar Customization:")
+TR_PREFERENCES_INTERFACE_LANGUAGE = tr(
+    "NINJA-IDE", "Language:")
+TR_PREFERENCES_SHOW_EXPLORER = tr("NINJA-IDE", "Show Project Explorer.")
+TR_PREFERENCES_SHOW_SYMBOLS = tr("NINJA-IDE", "Show Symbols List.")
+TR_PREFERENCES_SHOW_WEB_INSPECTOR = tr("NINJA-IDE", "Show Web Inspector.")
+TR_PREFERENCES_SHOW_FILE_ERRORS = tr("NINJA-IDE", "Show File Errors.")
+TR_PREFERENCES_TOOLBAR_ITEMS = tr("NINJA-IDE", "Toolbar Items:")
+TR_PREFERENCES_TOOLBAR_DEFAULT = tr("NINJA-IDE", "Default Items")
+TR_PREFERENCES_TOOLBAR_CONFIG_HELP = tr(
+    "NINJA-IDE", "The New Item will be inserted after the item selected.")
+TR_PREFERENCES_SELECT_LANGUAGE = tr("NINJA-IDE", "Select Language:")
+TR_PREFERENCES_REQUIRES_RESTART = tr("NINJA-IDE", "Requires restart...")
+TR_PREFERENCES_SHOW_MIGRATION = tr("NINJA-IDE", "Show Migration Tips.")
 TR_PREFERENCES_GENERAL_SHOW_START_PAGE = tr("NINJA-IDE", "Show Start Page")
 TR_PREFERENCES_GENERAL_CONFIRM_EXIT = tr("NINJA-IDE", "Confirm Exit.")
 TR_PREFERENCES_GENERAL_WORKSPACE = tr("NINJA-IDE", "Workspace")
@@ -679,8 +700,7 @@ TR_CODE = tr("NINJA-IDE", "Code")
 TR_PREVIEW = tr("NINJA-IDE", "Preview")
 TR_SCHEME_INVALID_NAME = tr(
     "NINJA-IDE",
-    "The scheme name you have chosen is invalid. "
+    "The name you have chosen is invalid. "
     "\nPlease pick a different name.")
 TR_WANT_OVERWRITE_FILE = tr("NINJA-IDE", "Do you want to overwrite the file")
 TR_SCHEME_SAVED = tr("NINJA-IDE", "The scheme has been saved")
-

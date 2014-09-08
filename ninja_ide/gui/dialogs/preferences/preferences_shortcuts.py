@@ -135,7 +135,7 @@ class ShortcutConfiguration(QWidget):
 
     def __init__(self, parent):
         super(ShortcutConfiguration, self).__init__()
-
+        self._preferences = parent
         self.shortcuts_text = {
             "Show-Selector": translations.TR_SHOW_SELECTOR,
             "cut": translations.TR_CUT,
@@ -244,6 +244,8 @@ class ShortcutConfiguration(QWidget):
         self.connect(self.shortcut_dialog, SIGNAL('shortcutChanged'),
                      self._shortcut_changed)
 
+        self.connect(self._preferences, SIGNAL("savePreferences()"), self.save)
+
     def _shortcut_changed(self, keysequence):
         """
         Validate and set a new shortcut
@@ -304,7 +306,6 @@ class ShortcutConfiguration(QWidget):
             shortcut_name = item.text(2)
             settings.setValue(shortcut_name, shortcut_keys)
         settings.endGroup()
-        actions.Actions().update_shortcuts()
 
     def _load_shortcuts(self):
         """Method to load all custom shortcuts"""

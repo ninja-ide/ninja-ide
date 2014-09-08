@@ -91,7 +91,7 @@ UI_LAYOUT = NOTIFICATION_POSITION = 0
 
 LANGUAGE = EXECUTION_OPTIONS = ""
 
-SHOW_START_PAGE = CONFIRM_EXIT = SHOW_STATUS_NOTIFICATIONS = True
+SHOW_START_PAGE = CONFIRM_EXIT = True
 
 HIDE_TOOLBAR = PYTHON_EXEC_CONFIGURED_BY_USER = False
 
@@ -112,14 +112,12 @@ TOOLBAR_ITEMS = [
     "_MainContainer.split_horizontally",
     "IDE.activate_profile",
     "IDE.deactivate_profile",
-    #TODO: sessions
     "_MainContainer.editor_cut",
     "_MainContainer.editor_copy",
     "_MainContainer.editor_paste",
     "_ToolsDock.execute_file",
     "_ToolsDock.execute_project",
     "_ToolsDock.kill_application",
-    #"run-project", "run-file", "stop", "separator",
 ]
 
 TOOLBAR_ITEMS_DEFAULT = [
@@ -129,15 +127,16 @@ TOOLBAR_ITEMS_DEFAULT = [
     "_MainContainer.open_file",
     "ProjectTreeColumn.open_project_folder",
     "_MainContainer.save_file",
-    "_MainContainer.split_assistance",
-    #TODO: sessions
+    "_MainContainer.split_vertically",
+    "_MainContainer.split_horizontally",
+    "IDE.activate_profile",
+    "IDE.deactivate_profile",
     "_MainContainer.editor_cut",
     "_MainContainer.editor_copy",
     "_MainContainer.editor_paste",
     "_ToolsDock.execute_file",
     "_ToolsDock.execute_project",
     "_ToolsDock.kill_application",
-    #"run-project", "run-file", "stop", "separator",
 ]
 
 #hold the toolbar actions added by plugins
@@ -404,7 +403,6 @@ def load_settings():
     global BREAKPOINTS
     global BRACES
     global HIDE_TOOLBAR
-    global SHOW_STATUS_NOTIFICATIONS
     global TOOLBAR_ITEMS
     global SHOW_MINIMAP
     global MINIMAP_MAX_OPACITY
@@ -415,8 +413,6 @@ def load_settings():
     global LAST_CLEAN_LOCATOR
     #General
     HIDE_TOOLBAR = qsettings.value("window/hide_toolbar", False, type=bool)
-    SHOW_STATUS_NOTIFICATIONS = qsettings.value(
-        "preferences/interface/showStatusNotifications", True, type=bool)
     TOOLBAR_AREA = qsettings.value('preferences/general/toolbarArea', 1,
                                    type=int)
     LANGUAGE = qsettings.value('preferences/interface/language', '',

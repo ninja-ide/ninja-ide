@@ -27,6 +27,7 @@ from PyQt4.QtGui import QSpacerItem
 from PyQt4.QtGui import QSizePolicy
 from PyQt4.QtGui import QKeySequence
 from PyQt4.QtCore import Qt
+from PyQt4.QtCore import SIGNAL
 
 from ninja_ide import translations
 from ninja_ide import resources
@@ -39,6 +40,7 @@ class EditorCompletion(QWidget):
 
     def __init__(self, parent):
         super(EditorCompletion, self).__init__()
+        self._preferences = parent
         vbox = QVBoxLayout(self)
 
         groupBoxClose = QGroupBox(translations.TR_PREF_EDITOR_COMPLETE)
@@ -88,6 +90,8 @@ class EditorCompletion(QWidget):
         vbox.addItem(QSpacerItem(0, 10, QSizePolicy.Expanding,
             QSizePolicy.Expanding))
 
+        self.connect(self._preferences, SIGNAL("savePreferences()"), self.save)
+
     def save(self):
         qsettings = IDE.ninja_settings()
         if self._checkParentheses.isChecked():
@@ -129,6 +133,7 @@ class EditorCompletion(QWidget):
             settings.COMPLETE_DECLARATIONS)
 
 
-preferences.Preferences.register_configuration('EDITOR', EditorCompletion,
+preferences.Preferences.register_configuration(
+    'EDITOR', EditorCompletion,
     translations.TR_PREFERENCES_EDITOR_COMPLETION,
     weight=1, subsection='COMPLETION')

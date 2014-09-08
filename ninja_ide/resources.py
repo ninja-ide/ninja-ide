@@ -74,9 +74,6 @@ EDITOR_SKINS = os.path.join(EXTENSIONS_PATH, "schemes")
 
 NINJA_THEME = os.path.join(PRJ_PATH, "extensions", "theme", "ninja_dark.qss")
 
-NINJA_THEME_CLASSIC = os.path.join(
-    PRJ_PATH, "extensions", "theme", "ninja_theme.qss")
-
 NINJA_THEME_DOWNLOAD = os.path.join(EXTENSIONS_PATH, "theme")
 
 LOG_FILE_PATH = os.path.join(HOME_NINJA_PATH, 'ninja_ide.log')
