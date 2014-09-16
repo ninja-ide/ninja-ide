@@ -204,16 +204,36 @@ SIZE_PROPORTION = 0.17
 ###############################################################################
 
 SUPPORTED_EXTENSIONS = [
-    '.py',
-    '.pyw',
-    '.html',
-    '.jpg',
-    '.png',
-    '.ui',
+    '.color',  # Similar to JSON, Ninja own Themes for example
     '.css',
-    '.json',
+    '.csv',  # plain text with commas
+    '.editorconfig'  # Its an .INI file, same syntax
+    '.html',
+    '.ini',
+    '.jpeg',  # JPG too
+    '.jpg',
     '.js',
-    '.ini']
+    '.json',
+    '.md',  # plain text MarkDown
+    '.png',
+    '.py',
+    '.pyw',  # Python for Window that never show up Console
+    '.qss',  # CSS for Qt, almost same syntax
+    '.rst',  # plain text ReStructuredText
+    '.svg',  # similar to XML, technically its an XML
+    '.txt',  # plain text
+    '.ui',
+    '.xml' # similar to HTML
+
+
+    # TODO: What we need to enable this ?
+    # '.scss',  # SASS that can contain CSS mixed, almost same syntax plus vars
+    # '.coffee',  # similar to JS, can contain plain JS mixed up
+    # '.qml',  # Similar to CSS, can contain plain JS mixed up
+    # '.sh',  # Bash
+    # '.bat',  # Windows Batch
+    # '.cmd',  # Windows Batch
+]
 
 
 ###############################################################################
