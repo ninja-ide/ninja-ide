@@ -223,7 +223,7 @@ SUPPORTED_EXTENSIONS = [
     '.svg',  # similar to XML, technically its an XML
     '.txt',  # plain text
     '.ui',
-    '.xml' # similar to HTML
+    '.xml'  # similar to HTML
 
 
     # TODO: What we need to enable this ?
