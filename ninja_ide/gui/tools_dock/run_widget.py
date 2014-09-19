@@ -136,7 +136,7 @@ class RunWidget(QWidget):
             format_.setForeground(QBrush(QColor(resources.CUSTOM_SCHEME.get(
                 "Keyword", resources.COLOR_SCHEME["Keyword"]))))
             self.output.textCursor().insertText(
-                self.tr("Execution Successful!"), format_)
+                "\n", format_)
         else:
             format_.setForeground(
                 QBrush(QColor(
