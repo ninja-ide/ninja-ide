@@ -9,6 +9,7 @@
 - Linux/X11
 - Mac OS X
 - Windows
+- BSD
 
 
 ## Ninja contact
