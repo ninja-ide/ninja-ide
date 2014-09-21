@@ -429,21 +429,25 @@ def load_settings():
     NINJA_SKIN = qsettings.value('preferences/theme/skin',
                                  'Default', type='QString')
     sessionDict = dict(data_qsettings.value('ide/sessions', {}))
-    for key in sessionDict:
-        session_list = list(sessionDict[key])
-        files = []
-        if session_list:
-            files = [item for item in tuple(session_list[0])]
-        tempFiles = []
-        for file_ in files:
-            fileData = tuple(file_)
-            if len(fileData) > 0:
-                tempFiles.append([fileData[0], int(fileData[1]), fileData[2]])
-        files = tempFiles
-        projects = []
-        if len(session_list) > 1:
-            projects = [item for item in tuple(session_list[1])]
-        SESSIONS[key] = [files, projects]
+    # Fix later
+    try:
+      for key in sessionDict:
+          session_list = list(sessionDict[key])
+          files = []
+          if session_list:
+              files = [item for item in tuple(session_list[0])]
+          tempFiles = []
+          for file_ in files:
+              fileData = tuple(file_)
+              if len(fileData) > 0:
+                  tempFiles.append([fileData[0], int(fileData[1]), fileData[2]])
+          files = tempFiles
+          projects = []
+          if len(session_list) > 1:
+              projects = [item for item in tuple(session_list[1])]
+          SESSIONS[key] = [files, projects]
+    except:
+      pass
     #TODO
     #toolbar_items = [item for item in list(qsettings.value(
         #'preferences/interface/toolbar', []))]
