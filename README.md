@@ -15,7 +15,7 @@
 -   [Ninja website](http://ninja-ide.org "http://ninja-ide.org") at ninja-ide.org
 -   [Mailing List](http://groups.google.com/group/ninja-ide/topics "Ninja Google Groups") at Google Groups
 -   [@ninja\_ide](https://twitter.com/ninja_ide "@ninja_ide") at Twitter
--   [ninja-ide](irc://freenode.net/ninja-ide "#ninja-ide") at Freenode.net
+-   [ninja-ide](https://kiwiirc.com/client/chat.freenode.net/?nick=Ninja%7C?&theme=cli#ninja-ide "ninja-ide at Freenode.net") at Freenode.net
 
 
 ## Requirements
