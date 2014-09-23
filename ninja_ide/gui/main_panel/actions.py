@@ -359,6 +359,24 @@ ACTIONS = (
     "connect": "editor_paste"
     },
     {
+    "action": {'text': translations.TR_CONVERT_UPPER,
+               'section': (translations.TR_MENU_EDIT, None),
+               'weight': 300},
+    "connect": "editor_upper"
+    },
+    {
+    "action": {'text': translations.TR_CONVERT_LOWER,
+               'section': (translations.TR_MENU_EDIT, None),
+               'weight': 310},
+    "connect": "editor_lower"
+    },
+    {
+    "action": {'text': translations.TR_CONVERT_TITLE,
+               'section': (translations.TR_MENU_EDIT, None),
+               'weight': 320},
+    "connect": "editor_title"
+    },
+    {
     "action": {'text': translations.TR_PREVIEW_IN_BROWSER,
                'image': 'preview-web',
                'section': (translations.TR_MENU_PROJECT, None),
