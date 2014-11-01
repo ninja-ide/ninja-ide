@@ -20,6 +20,7 @@
 """Operating System Detector for Ninja-IDE."""
 
 
+# imports
 import os
 import sys
 
@@ -34,19 +35,25 @@ from ninja_ide.core.settings import *  # lint:ok
 # OS DETECTOR
 ###############################################################################
 
-# Use this flags instead of sys.platform spreaded in the source code
-IS_WINDOWS, IS_MAC_OS, OS_KEY = False, False, "Ctrl"
 
+# Use this flags instead of sys.platform spreaded in the source code
+IS_WINDOWS = False
+
+IS_MAC_OS = False
+
+OS_KEY = "Ctrl"
 
 FONT = QFont('Monospace', 12)
-if sys.platform == "darwin":
+
+
+if sys.platform.startswith("darwin"):
     from PyQt4.QtGui import QKeySequence
     from PyQt4.QtCore import Qt
 
     FONT = QFont('Monaco', 12)
     OS_KEY = QKeySequence(Qt.CTRL).toString(QKeySequence.NativeText)
     IS_MAC_OS = True
-elif sys.platform == "win32":
+elif sys.platform.startswith("win"):
     FONT = QFont('Courier', 12)
     IS_WINDOWS = True
 

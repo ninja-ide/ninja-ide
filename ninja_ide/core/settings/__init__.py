@@ -26,6 +26,7 @@ from __future__ import absolute_import
 from PyQt4.QtCore import QSettings
 
 from ninja_ide import resources
+from ninja_ide.extensions import handlers
 
 # imports of individual setting modules.
 from .operating_system_detector import *  # lint:ok
@@ -48,6 +49,7 @@ from .locator_knowledge import *          # lint:ok
 
 
 def load_settings():
+    """Load all the Settings."""
     qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
     data_qsettings = QSettings(resources.DATA_SETTINGS_PATH,
                                QSettings.IniFormat)
@@ -226,6 +228,5 @@ def load_settings():
         'preferences/general/notification_color', "#000", type='QString')
     LAST_CLEAN_LOCATOR = qsettings.value(
         'preferences/general/cleanLocator', None)
-    from ninja_ide.extensions import handlers
     handlers.init_basic_handlers()
     clean_locator_db(qsettings)

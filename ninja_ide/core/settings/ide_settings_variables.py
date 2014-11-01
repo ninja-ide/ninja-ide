@@ -1,6 +1,22 @@
 # -*- coding: utf-8 -*-
 
 
+# This file is part of NINJA-IDE (http://ninja-ide.org).
+#
+# NINJA-IDE is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# any later version.
+#
+# NINJA-IDE is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
+
+
 """IDE Settings variables."""
 
 
@@ -16,7 +32,10 @@
 UI_LAYOUT = 0
 
 
-MAX_OPACITY, TOOLBAR_AREA = 1, 1
+MAX_OPACITY = 1
+
+TOOLBAR_AREA = 1
+
 MIN_OPACITY = 0.3
 
 
@@ -24,9 +43,13 @@ NOTIFICATION_POSITION = 0
 
 LANGUAGE, EXECUTION_OPTIONS = "", ""
 
-SHOW_START_PAGE, CONFIRM_EXIT = True, True
+SHOW_START_PAGE = True
 
-HIDE_TOOLBAR, PYTHON_EXEC_CONFIGURED_BY_USER = False, False
+CONFIRM_EXIT = True
+
+HIDE_TOOLBAR = False
+
+PYTHON_EXEC_CONFIGURED_BY_USER = False
 
 NOTIFICATION_COLOR = "#000"
 
