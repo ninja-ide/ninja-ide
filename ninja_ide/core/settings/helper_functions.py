@@ -21,9 +21,10 @@
 
 
 # imports
-from projects_data import PROJECT_TYPES
-from ide_settings_variables import TOOLBAR_ITEMS_PLUGINS
-from editor_settings_variables import USE_PLATFORM_END_OF_LINE
+from ninja_ide.core.settings.projects_data import PROJECT_TYPES
+from ninja_ide.core.settings.ide_settings_variables import TOOLBAR_ITEMS_PLUGINS
+from ninja_ide.core.settings.editor_settings_variables \
+    import USE_PLATFORM_END_OF_LINE
 
 
 ###############################################################################

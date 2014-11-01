@@ -28,7 +28,8 @@ from PyQt4.QtGui import QFont
 from PyQt4.QtCore import QDir
 from PyQt4.QtCore import QFileInfo
 
-from ninja_ide.core.settings import *  # lint:ok
+from ninja_ide.core.settings.ide_settings_variables \
+    import PYTHON_EXEC_CONFIGURED_BY_USER
 
 
 ###############################################################################

@@ -26,7 +26,7 @@ import os
 
 from ninja_ide import resources
 
-from ide_settings_variables import LAST_CLEAN_LOCATOR
+from ninja_ide.core.settings.ide_settings_variables import LAST_CLEAN_LOCATOR
 
 
 ###############################################################################
