@@ -799,7 +799,8 @@ class _MainContainer(QWidget):
             return
 
         for filename in fileNames:
-            if file_manager.get_file_extension(filename) in ('jpg', 'png'):
+            image_extensions = ('bmp', 'gif', 'jpeg', 'jpg', 'png')
+            if file_manager.get_file_extension(filename) in image_extensions:
                 logger.debug("will open as image")
                 self.open_image(filename)
             elif file_manager.get_file_extension(filename).endswith('ui'):
