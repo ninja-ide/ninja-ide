@@ -41,10 +41,10 @@ class PythonDetectDialog(QDialog):
         self.setWindowTitle("Configure Python Path")
 
         vbox = QVBoxLayout(self)
-
-        lblMessage = QLabel(self.tr("We have detected that you are using " +
-            "Windows,\nplease choose the proper " +
-            "Python application for you:"))
+        msg_str = ("We have detected that you are using "
+                   "Windows,\nplease choose the proper "
+                   "Python application for you:")
+        lblMessage = QLabel(self.tr(msg_str))
         vbox.addWidget(lblMessage)
 
         self.listPaths = QListWidget()
@@ -73,6 +73,6 @@ class PythonDetectDialog(QDialog):
         settings.PYTHON_PATH = python_path
         settings.PYTHON_EXEC = python_path
         settings.PYTHON_EXEC_CONFIGURED_BY_USER = True
-        qsettings.setValue('preferences/execution/pythonPath', python_path)
-        qsettings.setValue('preferences/execution/pythonPathConfigured', True)
+        qsettings.setValue('preferences/execution/pythonExec', python_path)
+        qsettings.setValue('preferences/execution/pythonExecConfigured', True)
         self.close()
