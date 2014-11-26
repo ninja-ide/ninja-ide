@@ -129,6 +129,8 @@ class FilesHandler(QFrame):
             for items in checkers:
                 checker, color, _ = items
                 if checker.dirty:
+                    # Colors needs to be reversed for QML
+                    color = "#%s" % color[::-1]
                     checks.append(
                         {"checker_text": checker.dirty_text,
                          "checker_color": color})

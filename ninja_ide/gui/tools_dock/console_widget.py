@@ -587,9 +587,9 @@ class ConsoleWidget(QPlainTextEdit):
 
     def wheelEvent(self, event):
         if event.modifiers() == Qt.ControlModifier:
-            if event.delta() == 120:
+            if event.delta() > 0:
                 self.zoom_in()
-            elif event.delta() == -120:
+            elif event.delta() < 0:
                 self.zoom_out()
             event.ignore()
         super(ConsoleWidget, self).wheelEvent(event)

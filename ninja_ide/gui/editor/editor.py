@@ -46,7 +46,7 @@ from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import helpers
-#from ninja_ide.gui.editor import minimap
+from ninja_ide.gui.editor import minimap
 
 from PyQt4.Qsci import QsciScintilla, QsciCommand
 
@@ -175,14 +175,14 @@ class Editor(QsciScintilla):
         # Configure key bindings
         self._configure_keybindings()
 
-        lexer = highlighter.build_lexer("python")
-        if lexer is not None:
-            self.setLexer(lexer)
+        self.lexer = highlighter.build_lexer("python")
+        if self.lexer is not None:
+            self.setLexer(self.lexer)
 
         #Config Editor
         self._mini = None
-        #if settings.SHOW_MINIMAP:
-            #self._load_minimap(settings.SHOW_MINIMAP)
+        if settings.SHOW_MINIMAP:
+            self._load_minimap(settings.SHOW_MINIMAP)
         self._last_block_position = 0
         self.set_flags()
         self.lang = 'python'
@@ -440,10 +440,16 @@ class Editor(QsciScintilla):
                     self.markerDelete(line, self._fold_expanded_marker)
                     self.markerAdd(line, self._fold_expanded_marker)
 
-    #def _load_minimap(self, show):
+    def _load_minimap(self, show):
+        pass
         #if show:
             #self._mini = minimap.MiniMap(self)
-            #self._mini.set_code(self.toPlainText())
+            ##self._mini.set_code(self.toPlainText())
+            #self._mini.setDocument(self.document())
+            #self._mini.setLexer(self.lexer)
+            #self._mini.setReadOnly(True)
+            #for i in range(100):
+                #self._mini.zoomOut()
             ##FIXME: register syntax
             #self._mini.show()
         #else:
@@ -946,9 +952,9 @@ class Editor(QsciScintilla):
 
     def wheelEvent(self, event, forward=True):
         if event.modifiers() == Qt.ControlModifier:
-            if event.delta() == 120:
+            if event.delta() > 0:
                 self.zoom_in()
-            elif event.delta() == -120:
+            elif event.delta() < 0:
                 self.zoom_out()
             event.ignore()
         super(Editor, self).wheelEvent(event)

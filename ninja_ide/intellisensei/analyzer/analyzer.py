@@ -58,17 +58,16 @@ class Analyzer(object):
         astModule = None
         try:
             astModule = ast.parse(source)
+            self._fixed_line = -1
         except SyntaxError as reason:
             line = reason.lineno - 1
             if line != self._fixed_line and reason.text is not None:
                 self._fixed_line = line
                 new_line = ''
-                #This is failing sometimes, it should remaing commented
-                #until we find the proper fix.
-                indent = re.match('^\s+', str(reason.text))
-                if indent is not None:
-                    new_line = indent.group() + 'pass'
                 split_source = source.splitlines()
+                indent = re.match('^\s+', str(split_source[line]))
+                if indent is not None:
+                    new_line = "%s%s" % (indent.group(), 'pass')
                 split_source[line] = new_line
                 source = '\n'.join(split_source)
                 if retry < MAX_THRESHOLD:
