@@ -87,7 +87,7 @@ class Editor(QsciScintilla):
             r"(\s)*\"\"\"|(\s)*def |(\s)*class |(\s)*if |(\s)*while |"
             "(\s)*else:|(\s)*elif |(\s)*for |"
             "(\s)*try:|(\s)*except:|(\s)*except |(.)*\($")
-        self.setIndentationsUseTabs(False)
+        self.setAutoIndent(True)
         self.setBackspaceUnindents(True)
         self.setCaretLineVisible(True)
         line_color = QColor(
@@ -404,11 +404,6 @@ class Editor(QsciScintilla):
         if project is not None:
             self._indent = project.indentation
             self.useTabs = project.use_tabs
-            self.setIndentationsUseTabs(self.useTabs)
-            self.setIndentationWidth(self._indent)
-            if self._mini:
-                self._mini.setIndentationsUseTabs(self.useTabs)
-                self._mini.setIndentationWidth(self._indent)
             self.connect(project, SIGNAL("projectPropertiesUpdated()"),
                          self.load_project_config)
             self.additional_builtins = project.additional_builtins
@@ -416,6 +411,11 @@ class Editor(QsciScintilla):
             self._indent = settings.INDENT
             self.useTabs = settings.USE_TABS
             self.additional_builtins = None
+        self.setIndentationsUseTabs(self.useTabs)
+        self.setIndentationWidth(self._indent)
+        if self._mini:
+            self._mini.setIndentationsUseTabs(self.useTabs)
+            self._mini.setIndentationWidth(self._indent)
         self._set_margin_line(settings.MARGIN_LINE)
 
     def _update_sidebar(self):
@@ -487,7 +487,6 @@ class Editor(QsciScintilla):
 
     def set_flags(self):
         """Set some configuration flags for the Editor."""
-        self.setAutoIndent(True)
         if settings.ALLOW_WORD_WRAP:
             self.setWrapMode(QsciScintilla.WrapWord)
         else:
