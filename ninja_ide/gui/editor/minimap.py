@@ -17,7 +17,6 @@
 import sys
 
 from PyQt4.QtGui import QFrame
-from PyQt4.QtGui import QPlainTextEdit
 from PyQt4.QtGui import QTextOption
 from PyQt4.QtGui import QGraphicsOpacityEffect
 from PyQt4.QtGui import QFontMetrics
@@ -29,6 +28,8 @@ from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import QPropertyAnimation
 
+from PyQt4.Qsci import QsciScintilla
+
 from ninja_ide import resources
 from ninja_ide.core import settings
 
@@ -37,22 +38,27 @@ from ninja_ide.core import settings
 ACTIVATE_OPACITY = True if sys.platform != 'darwin' else False
 
 
-class MiniMap(QPlainTextEdit):
+class MiniMap(QsciScintilla):
 
     def __init__(self, parent):
         super(MiniMap, self).__init__(parent)
-        self.setWordWrapMode(QTextOption.NoWrap)
-        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        #self.setWordWrapMode(QTextOption.NoWrap)
+        #self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        #self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setReadOnly(True)
-        self.setCenterOnScroll(True)
+        self.SendScintilla(QsciScintilla.SCI_SETBUFFEREDDRAW, 0)
+        self.SendScintilla(QsciScintilla.SCI_SETHSCROLLBAR, 0)
+        self.SendScintilla(QsciScintilla.SCI_SETVSCROLLBAR, 0)
+        self.setMarginWidth(1, 0)
+        self.setFolding(self.NoFoldStyle, 2)
+        #self.setCenterOnScroll(True)
         self.setMouseTracking(True)
-        self.viewport().setCursor(Qt.PointingHandCursor)
-        self.setTextInteractionFlags(Qt.NoTextInteraction)
+        #self.viewport().setCursor(Qt.PointingHandCursor)
+        #self.setTextInteractionFlags(Qt.NoTextInteraction)
 
         self._parent = parent
-        self.highlighter = None
-        self.lines_count = 0
+        #self.highlighter = None
+        #self.lines_count = 0
 
         self.connect(self._parent, SIGNAL("updateRequest(const QRect&, int)"),
             self.update_visible_area)
@@ -63,8 +69,8 @@ class MiniMap(QPlainTextEdit):
             self.goe.setOpacity(settings.MINIMAP_MIN_OPACITY)
             self.animation = QPropertyAnimation(self.goe, "opacity")
 
-        self.slider = SliderArea(self)
-        self.slider.show()
+        #self.slider = SliderArea(self)
+        #self.slider.show()
 
     def shutdown(self):
         self.disconnect(self._parent,
@@ -72,14 +78,14 @@ class MiniMap(QPlainTextEdit):
             self.update_visible_area)
 
     def __calculate_max(self):
-        line_height = self._parent.cursorRect().height()
-        if line_height > 0:
-            self.lines_count = self._parent.viewport().height() / line_height
-        self.slider.update_position()
+        #line_height = self._parent.cursorRect().height()
+        #if line_height > 0:
+            #self.lines_count = self._parent.viewport().height() / line_height
+        #self.slider.update_position()
         self.update_visible_area()
 
     def set_code(self, source):
-        self.setPlainText(source)
+        #self.setPlainText(source)
         self.__calculate_max()
 
     def adjust_to_parent(self):
@@ -87,55 +93,56 @@ class MiniMap(QPlainTextEdit):
         self.setFixedWidth(self._parent.width() * settings.SIZE_PROPORTION)
         x = self._parent.width() - self.width()
         self.move(x, 0)
-        fontsize = int(self.width() / settings.MARGIN_LINE)
-        if fontsize < 1:
-            fontsize = 1
-        font = self.document().defaultFont()
-        font.setPointSize(fontsize)
-        self.setFont(font)
+        #fontsize = int(self.width() / settings.MARGIN_LINE)
+        #if fontsize < 1:
+            #fontsize = 1
+        #font = self.document().defaultFont()
+        #font.setPointSize(fontsize)
+        #self.setFont(font)
         self.__calculate_max()
 
     def update_visible_area(self):
-        if not self.slider.pressed:
-            line_number = self._parent.firstVisibleBlock().blockNumber()
-            block = self.document().findBlockByLineNumber(line_number)
-            cursor = self.textCursor()
-            cursor.setPosition(block.position())
-            rect = self.cursorRect(cursor)
-            self.setTextCursor(cursor)
-            self.slider.move_slider(rect.y())
+        pass
+        #if not self.slider.pressed:
+        #line_number = self._parent.firstVisibleBlock().blockNumber()
+        #block = self.document().findBlockByLineNumber(line_number)
+        #cursor = self.textCursor()
+        #cursor.setPosition(block.position())
+        #rect = self.cursorRect(cursor)
+        #self.setTextCursor(cursor)
+            #self.slider.move_slider(rect.y())
 
-    def enterEvent(self, event):
-        if ACTIVATE_OPACITY:
-            self.animation.setDuration(300)
-            self.animation.setStartValue(settings.MINIMAP_MIN_OPACITY)
-            self.animation.setEndValue(settings.MINIMAP_MAX_OPACITY)
-            self.animation.start()
+    #def enterEvent(self, event):
+        #if ACTIVATE_OPACITY:
+            #self.animation.setDuration(300)
+            #self.animation.setStartValue(settings.MINIMAP_MIN_OPACITY)
+            #self.animation.setEndValue(settings.MINIMAP_MAX_OPACITY)
+            #self.animation.start()
 
-    def leaveEvent(self, event):
-        if ACTIVATE_OPACITY:
-            self.animation.setDuration(300)
-            self.animation.setStartValue(settings.MINIMAP_MAX_OPACITY)
-            self.animation.setEndValue(settings.MINIMAP_MIN_OPACITY)
-            self.animation.start()
+    #def leaveEvent(self, event):
+        #if ACTIVATE_OPACITY:
+            #self.animation.setDuration(300)
+            #self.animation.setStartValue(settings.MINIMAP_MAX_OPACITY)
+            #self.animation.setEndValue(settings.MINIMAP_MIN_OPACITY)
+            #self.animation.start()
 
-    def mousePressEvent(self, event):
-        super(MiniMap, self).mousePressEvent(event)
-        cursor = self.cursorForPosition(event.pos())
-        self._parent.jump_to_line(cursor.blockNumber())
+    #def mousePressEvent(self, event):
+        #super(MiniMap, self).mousePressEvent(event)
+        #cursor = self.cursorForPosition(event.pos())
+        #self._parent.jump_to_line(cursor.blockNumber())
 
-    def resizeEvent(self, event):
-        super(MiniMap, self).resizeEvent(event)
-        self.slider.update_position()
+    #def resizeEvent(self, event):
+        #super(MiniMap, self).resizeEvent(event)
+        #self.slider.update_position()
 
-    def scroll_area(self, pos_parent, pos_slider):
-        pos_parent.setY(pos_parent.y() - pos_slider.y())
-        cursor = self.cursorForPosition(pos_parent)
-        self._parent.verticalScrollBar().setValue(cursor.blockNumber())
+    #def scroll_area(self, pos_parent, pos_slider):
+        #pos_parent.setY(pos_parent.y() - pos_slider.y())
+        #cursor = self.cursorForPosition(pos_parent)
+        #self._parent.verticalScrollBar().setValue(cursor.blockNumber())
 
-    def wheelEvent(self, event):
-        super(MiniMap, self).wheelEvent(event)
-        self._parent.wheelEvent(event)
+    #def wheelEvent(self, event):
+        #super(MiniMap, self).wheelEvent(event)
+        #self._parent.wheelEvent(event)
 
 
 class SliderArea(QFrame):

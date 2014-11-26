@@ -17,12 +17,6 @@
 
 import ast
 
-try:
-    unicode
-except NameError:
-    # Python 3
-    basestring = unicode = str  # lint:ok
-
 
 MODULES = None
 late_resolution = 0
@@ -469,33 +463,31 @@ def expand_attribute(attribute):
 
 #class Structure(object):
 
-    #def __init__(self, parent=None):
+##   def __init__(self, parent=None):
         #super(Module, self).__init__()
         #self._parent = parent
         #self.attributes = {}
         #self.functions = {}
 
-    #def create_function(self, symbol):
+##   def create_function(self, symbol):
         #return Function(symbol, self)
 
-    #def create_attribute(self, symbol):
+##   def create_attribute(self, symbol):
         #pass
 
+##class Module(Structure):
 
-#class Module(Structure):
-
-    #def __init__(self):
+##   def __init__(self):
         #super(Module, self).__init__()
         #self.imports = {}
         #self.clazzes = {}
 
-    #def create_class(self, symbol):
+##   def create_class(self, symbol):
         #return Clazz(symbol, self)
 
+##class Clazz(Structure):
 
-#class Clazz(Structure):
-
-    #def __init__(self, symbol, parent):
+##   def __init__(self, symbol, parent):
         #super(Clazz, self).__init__(parent)
         #self.bases = {}
         #for base in symbol.bases:
@@ -506,24 +498,23 @@ def expand_attribute(attribute):
             #if value is None:
                 #self.bases[name] = value
 
-    #def close_class(self):
+##   def close_class(self):
         #return self._parent
 
+##class Function(Structure):
 
-#class Function(Structure):
-
-    #def __init__(self, symbol, parent):
+##    def __init__(self, symbol, parent):
         #super(Function, self).__init__(parent)
         #self.name = symbol.name
         #self.args = {}
         #self.decorators = []
         #self.return_type = []
 
-        #for decorator in symbol.decorator_list:
+##        for decorator in symbol.decorator_list:
             ##Decorators can be: Name, Call, Attributes
             #self.decorators.append(decorator.id)
 
-        #if symbol.args.vararg is not None:
+##        if symbol.args.vararg is not None:
             #assign = Assign(symbol.args.vararg)
             #assign.add_data(symbol.lineno, '__builtin__.list', None, None)
             #self.args[assign.name] = assign
@@ -540,7 +531,7 @@ def expand_attribute(attribute):
             #defaults.append((data_type, type_value))
         #for arg in reversed(symbol.args.args):
             #if isinstance(arg, ast.Tuple):
-                #self._parse_tuple_in_func_arg(arg, function, symbol.lineno)
+                #self._parse_tuple_in_func_arg(arg, symbol.lineno)
                 #continue
             #elif arg.id == 'self':
                 #continue
@@ -551,26 +542,51 @@ def expand_attribute(attribute):
             #assign.add_data(symbol.lineno, data_type[0], None, data_type[1])
             #self.args[assign.name] = assign
 
-    #def close_function(self):
+##    def _parse_tuple_in_func_arg(self, symbol_tuple, lineno=0):
+        #"""Parse the tuple inside a function argument call."""
+        #for item in symbol_tuple.elts:
+            #assign = Assign(item.id)
+            #data_type = (late_resolution, None)
+            #assign.add_data(lineno, data_type[0], None, data_type[1])
+            #self.args[assign.name] = assign
+
+##    def close_function(self):
         #return self._parent
 
+##class Assign(object):
 
-#class Assign(object):
-
-    #def __init__(self, symbol):
+##   def __init__(self, symbol, line_content=''):
         #super(Assign, self).__init__()
         #self.name = symbol.name
         #self.data = []
-        #self.add_symbol(symbol)
+        #self.add_symbol(symbol, line_content)
 
-    #def add_symbol(self, symbol):
-        #pass
-    ##def add_data(self, lineno, data_type, line_content, oper):
+##   def add_symbol(self, symbol, line_content=''):
+        #for var in symbol.targets:
+            #type_value = symbol.value.__class__
+            #line_content = self.content[symbol.lineno - 1]
+            #if type_value in (_ast.Num, _ast.Name):
+                #type_value = self._assign_disambiguation(
+                    #type_value, line_content)
+                #if type_value is None:
+                    #continue
+            #data_type = self.__mapping.get(type_value, model.late_resolution)
+            #if var.__class__ == ast.Attribute:
+                #data = (var.attr, symbol.lineno, data_type, line_content,
+                    #type_value)
+                #attributes.append(data)
+            #elif var.__class__ == ast.Name:
+                #data = (var.id, symbol.lineno, data_type, line_content,
+                    #type_value)
+                #assigns.append(data)
+##            if type_value is ast.Call:
+##                self._process_expression(symbol.value)
+        #return (assigns, attributes)
         ##info = TypeData(symbol.lineno, data_type, line_content)
         ##if info not in self.data:
             ##self.data.append(info)
 
-    #def get_data_type(self):
+##   def get_data_type(self):
         #possible = [d.data_type for d in self.data
                     #if d.data_type is not late_resolution]
         #if possible:
