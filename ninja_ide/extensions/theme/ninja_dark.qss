@@ -407,7 +407,7 @@ QComboBox {
 
 QComboBox:item:selected {
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                stop: 0 #888dd9, stop: 1 #6a6ea9);
+                                stop: 0 #f40000, stop: 1 #a90000);
 }
 
 QComboBox#combotab {
