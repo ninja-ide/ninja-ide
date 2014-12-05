@@ -24,7 +24,7 @@ from ninja_ide.tools.logger import NinjaLogger
 logger_imports = NinjaLogger(
     'ninja_ide.tools.introspection.obtaining_imports')
 logger_symbols = NinjaLogger(
-    'ninja_ide.tools.introspection.obtainint_symbols')
+    'ninja_ide.tools.introspection.obtaining_symbols')
 
 _map_type = {
     _ast.Tuple: 'tuple',
