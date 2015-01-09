@@ -143,10 +143,11 @@ def _parse_function(symbol, with_docstrings):
         lineno += 1
 
     return {'name': func_name, 'lineno': lineno,
-        'attrs': attrs, 'docstring': docstring, 'functions': func}
+            'attrs': attrs, 'docstring': docstring, 'functions': func}
 
 
-def obtain_symbols(source, with_docstrings=False, filename='', simple=False):
+def obtain_symbols(source, with_docstrings=False, filename='',
+                   simple=False, only_simple=False):
     """Parse a module source code to obtain: Classes, Functions and Assigns."""
     try:
         module = ast.parse(source)
@@ -164,26 +165,30 @@ def obtain_symbols(source, with_docstrings=False, filename='', simple=False):
     docstrings = {}
 
     for symbol in module.body:
-        if symbol.__class__ is ast.Assign:
+        if symbol.__class__ is ast.Assign and not only_simple:
             result = _parse_assign(symbol)
             globalAttributes.update(result[0])
             globalAttributes.update(result[1])
         elif symbol.__class__ is ast.FunctionDef:
-            result = _parse_function(symbol, with_docstrings)
-            if with_docstrings:
-                docstrings.update(result['docstring'])
-            globalFunctions[result['name']] = {'lineno': result['lineno'],
-                'functions': result['functions']}
+            if not only_simple:
+                result = _parse_function(symbol, with_docstrings)
+                if with_docstrings:
+                    docstrings.update(result['docstring'])
+                globalFunctions[result['name']] = {
+                    'lineno': result['lineno'],
+                    'functions': result['functions']}
             if simple:
                 result_simple = _parse_function_simplified(symbol)
                 symbols_simplified.update(result_simple)
         elif symbol.__class__ is ast.ClassDef:
-            result = _parse_class(symbol, with_docstrings)
-            classes[result['name']] = {'lineno': result['lineno'],
-                'members': {'attributes': result['attributes'],
-                'functions': result['functions'],
-                'classes': result['classes']}}
-            docstrings.update(result['docstring'])
+            if not only_simple:
+                result = _parse_class(symbol, with_docstrings)
+                classes[result['name']] = {
+                    'lineno': result['lineno'],
+                    'members': {'attributes': result['attributes'],
+                                'functions': result['functions'],
+                                'classes': result['classes']}}
+                docstrings.update(result['docstring'])
             if simple:
                 result_simple = _parse_class_simplified(symbol)
                 symbols_simplified.update(result_simple)
@@ -250,6 +255,7 @@ def _parse_class_simplified(symbol):
 
 def _parse_function_simplified(symbol, member_of=""):
     results = {}
+    inside_class = True if member_of != "" else False
 
     if member_of:
         func_name = member_of + " : " + symbol.name + '('
@@ -297,5 +303,5 @@ def _parse_function_simplified(symbol, member_of=""):
     for decorator in symbol.decorator_list:
         lineno += 1
 
-    results[lineno] = (func_name, 'f')
+    results[lineno] = (func_name, 'f', inside_class)
     return results
