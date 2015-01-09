@@ -187,10 +187,6 @@ class ComboEditor(QDialog):
                      self._remove_undock)
         new_combo.show()
 
-    @property
-    def prueba(self):
-        return 0
-
     def _remove_undock(self):
         widget = self.sender()
         self.__undocked.remove(widget)

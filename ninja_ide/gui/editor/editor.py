@@ -19,6 +19,7 @@ from __future__ import unicode_literals
 
 import re
 import math
+import bisect
 
 from tokenize import generate_tokens, TokenError
 #lint:disable
@@ -47,6 +48,7 @@ from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import helpers
 from ninja_ide.gui.editor import minimap
+from ninja_ide.extensions import handlers
 
 from PyQt4.Qsci import QsciScintilla, QsciCommand
 
@@ -872,10 +874,37 @@ class Editor(QsciScintilla):
         if (self.lang == "python") and (len(token_buffer) == 3) and \
                 (token_buffer[2][0] == brace) and (token_buffer[0][0] in
                                                    ("def", "class")):
-            #are we in presence of a function?
             self.insertAt("):", line, index)
-            self.setCursorPosition(line, index + 2)
-            self.insertAt(self.selected_text, line, index + 2)
+            #are we in presence of a function?
+            #TODO: IMPROVE THIS AND GENERALIZE IT WITH INTELLISENSEI
+            if token_buffer[0][0] == "def":
+                symbols_handler = handlers.get_symbols_handler('py')
+                split_source = self.text().split("\n")
+                indent = re.match('^\s+', str(split_source[line]))
+                indentation = (indent.group() + " " * self._indent
+                               if indent is not None else " " * self._indent)
+                new_line = "%s%s" % (indentation, 'pass')
+                split_source.insert(line + 1, new_line)
+                source = '\n'.join(split_source)
+                source = source.encode(self.encoding)
+                _, symbols_simplified = symbols_handler.obtain_symbols(
+                    source, simple=True, only_simple=True)
+                symbols_index = sorted(symbols_simplified.keys())
+                symbols_simplified = sorted(
+                    list(symbols_simplified.items()), key=lambda x: x[0])
+                index_symbol = bisect.bisect(symbols_index, line)
+                if (index_symbol >= len(symbols_index) or
+                        symbols_index[index_symbol] > (line + 1)):
+                    index -= 1
+                belongs_to_class = symbols_simplified[index_symbol][1][2]
+                if belongs_to_class:
+                    self.insertAt("self", line, index)
+                    index += 4
+                    if self.selected_text != "":
+                        self.insertAt(", ", line, index)
+                        index += 2
+            self.insertAt(self.selected_text, line, index)
+            self.setCursorPosition(line, index)
         elif (token_buffer and (not is_unbalance) and
               self.selected_text):
             self.insertAt(self.selected_text, line, index)
