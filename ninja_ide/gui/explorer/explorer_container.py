@@ -55,7 +55,7 @@ class ExplorerContainer(QSplitter):
     __created = False
 
     def __init__(self, parent=None):
-        super(ExplorerContainer, self).__init__(parent)
+        super(ExplorerContainer, self).__init__(Qt.Vertical, parent)
         self.create_tab_widget()
 
         IDE.register_service('explorer_container', self)
@@ -70,9 +70,18 @@ class ExplorerContainer(QSplitter):
         )
 
         self._point = None
+        self._widget_index = 0
         self.menu = QMenu()
-        actionUndock = self.menu.addAction(translations.TR_UNDOCK)
-        self.connect(actionUndock, SIGNAL("activated()"), self._undock_widget)
+        self.actionSplit = self.menu.addAction(translations.TR_SPLIT_TAB)
+        self.connect(
+            self.actionSplit, SIGNAL("triggered()"), self._split_widget)
+        self.actionUndock = self.menu.addAction(translations.TR_UNDOCK)
+        self.connect(
+            self.actionUndock, SIGNAL("triggered()"), self._undock_widget)
+        self.actionCloseSplit = self.menu.addAction(translations.TR_CLOSE_SPLIT)
+        self.connect(
+            self.actionCloseSplit, SIGNAL("triggered()"), self._close_split)
+        self.menuMoveToSplit = self.menu.addMenu(translations.TR_MOVE_TO_SPLIT)
 
         IDE.register_signals('explorer_container', connections)
         self.__created = True
@@ -110,17 +119,20 @@ class ExplorerContainer(QSplitter):
         self.add_tab(tabname, widget, icon)
 
     def _change_tab_title(self, widget, title):
-        tab_widget = self.widget(0)
-        index = tab_widget.indexOf(widget)
-        data = ExplorerContainer.__TABS[widget]
-        data = tuple([title] + list(data[1:]))
-        ExplorerContainer.__TABS[widget] = data
-        tab_widget.setTabText(index, title)
+        for i in range(self.count()):
+            tab_widget = self.widget(i)
+            index = tab_widget.indexOf(widget)
+            if index != -1:
+                data = ExplorerContainer.__TABS[widget]
+                data = tuple([title] + list(data[1:]))
+                ExplorerContainer.__TABS[widget] = data
+                tab_widget.setTabText(index, title)
+                break
 
     def _undock_widget(self):
-        bar = self.widget(0).tabBar()
+        tab_widget = self.widget(self._widget_index)
+        bar = tab_widget.tabBar()
         index = bar.tabAt(self._point)
-        tab_widget = self.widget(0)
         widget = tab_widget.widget(index)
         widget.setParent(None)
         widget.resize(500, 500)
@@ -130,6 +142,46 @@ class ExplorerContainer(QSplitter):
             central = IDE.get_service('central_container')
             central.change_lateral_visibility()
 
+    def _split_widget(self):
+        current_tab_widget = self.widget(self._widget_index)
+        if current_tab_widget.count() == 1:
+            return
+        tab_widget = self.create_tab_widget()
+        index_widget = self.indexOf(tab_widget)
+        tab_widget = self.widget(self._widget_index)
+        bar = tab_widget.tabBar()
+        index = bar.tabAt(self._point)
+        widget = tab_widget.widget(index)
+
+        tabname, icon = ExplorerContainer.__TABS[widget]
+        self.add_tab(tabname, widget, icon, index_widget)
+
+        self._reset_size()
+
+    def _close_split(self):
+        self._move_to_split(0)
+
+    def _move_to_split(self, index_widget=-1):
+        obj = self.sender()
+        if index_widget == -1:
+            index_widget = int(obj.text()) - 1
+
+        tab_widget = self.widget(self._widget_index)
+        bar = tab_widget.tabBar()
+        index = bar.tabAt(self._point)
+        widget = tab_widget.widget(index)
+        tabname, icon = ExplorerContainer.__TABS[widget]
+        self.add_tab(tabname, widget, icon, index_widget)
+
+        if tab_widget.count() == 0:
+            tab_widget.deleteLater()
+
+        self._reset_size()
+
+    def _reset_size(self):
+        sizes = [self.height() / self.count()] * self.count()
+        self.setSizes(sizes)
+
     def create_tab_widget(self):
         tab_widget = QTabWidget()
         tab_widget.setTabPosition(QTabWidget.East)
@@ -137,20 +189,22 @@ class ExplorerContainer(QSplitter):
         tabBar = tab_widget.tabBar()
         tabBar.hide()
         tabBar.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.addWidget(tab_widget)
+        index = self.indexOf(tab_widget)
         self.connect(
             tabBar,
             SIGNAL("customContextMenuRequested(const QPoint&)"),
-            self.show_tab_context_menu)
-        self.addWidget(tab_widget)
+            lambda point: self.show_tab_context_menu(index, point))
+        return tab_widget
 
-    def add_tab(self, tabname, obj, icon=None):
+    def add_tab(self, tabname, obj, icon=None, widget_index=0):
         obj.setWindowTitle(tabname)
         if icon is not None:
             qicon = QIcon(icon)
-            self.widget(0).addTab(obj, qicon, tabname)
+            self.widget(widget_index).addTab(obj, qicon, tabname)
             obj.setWindowIcon(qicon)
         else:
-            self.widget(0).addTab(obj, tabname)
+            self.widget(widget_index).addTab(obj, tabname)
         func = getattr(obj, 'install_tab', None)
         if isinstance(func, collections.Callable):
             func()
@@ -166,20 +220,37 @@ class ExplorerContainer(QSplitter):
     def shortcut_index(self, index):
         self.setCurrentIndex(index)
 
-    def show_tab_context_menu(self, point):
-        bar = self.widget(0).tabBar()
+    def show_tab_context_menu(self, widget_index, point):
+        bar = self.widget(widget_index).tabBar()
         self._point = point
+        self._widget_index = widget_index
+        if widget_index != 0:
+            self.actionUndock.setVisible(False)
+            self.actionCloseSplit.setVisible(True)
+        else:
+            self.actionUndock.setVisible(True)
+            self.actionCloseSplit.setVisible(False)
+
+        self.menuMoveToSplit.clear()
+        if self.count() > 1:
+            for i in range(1, self.count() + 1):
+                action = self.menuMoveToSplit.addAction("%d" % i)
+                self.connect(action, SIGNAL("triggered()"),
+                             self._move_to_split)
+
         self.menu.exec_(bar.mapToGlobal(point))
 
     def enterEvent(self, event):
         super(ExplorerContainer, self).enterEvent(event)
-        bar = self.widget(0).tabBar()
-        bar.show()
+        for index in range(self.count()):
+            bar = self.widget(index).tabBar()
+            bar.show()
 
     def leaveEvent(self, event):
         super(ExplorerContainer, self).leaveEvent(event)
-        bar = self.widget(0).tabBar()
-        bar.hide()
+        for index in range(self.count()):
+            bar = self.widget(index).tabBar()
+            bar.hide()
 
 
 explorer = ExplorerContainer()
