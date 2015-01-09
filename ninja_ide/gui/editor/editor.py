@@ -1052,6 +1052,11 @@ class Editor(QsciScintilla):
         if event.modifiers() == Qt.ControlModifier:
             self.go_to_definition()
 
+        line, _ = self.getCursorPosition()
+        if line != self._last_block_position:
+            self._last_block_position = line
+            self.emit(SIGNAL("currentLineChanged(int)"), line)
+
     def mouseReleaseEvent(self, event):
         super(Editor, self).mouseReleaseEvent(event)
         if event.button() == Qt.LeftButton:

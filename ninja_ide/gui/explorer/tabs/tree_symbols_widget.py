@@ -40,7 +40,7 @@ class TreeSymbolsWidget(QDialog):
 
     def __init__(self, parent=None):
         super(TreeSymbolsWidget, self).__init__(parent,
-            Qt.WindowStaysOnTopHint)
+                                                Qt.WindowStaysOnTopHint)
         vbox = QVBoxLayout(self)
         vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(0)
@@ -58,17 +58,18 @@ class TreeSymbolsWidget(QDialog):
         self.collapsedItems = {}
 
         self.connect(self, SIGNAL("itemClicked(QTreeWidgetItem *, int)"),
-            self._go_to_definition)
+                     self._go_to_definition)
         self.connect(self, SIGNAL("itemActivated(QTreeWidgetItem *, int)"),
-            self._go_to_definition)
+                     self._go_to_definition)
         self.tree.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.connect(self,
+        self.connect(
+            self,
             SIGNAL("customContextMenuRequested(const QPoint &)"),
             self._menu_context_tree)
         self.connect(self, SIGNAL("itemCollapsed(QTreeWidgetItem *)"),
-            self._item_collapsed)
+                     self._item_collapsed)
         self.connect(self, SIGNAL("itemExpanded(QTreeWidgetItem *)"),
-            self._item_expanded)
+                     self._item_expanded)
 
         IDE.register_service('symbols_explorer', self)
         ExplorerContainer.register_tab(translations.TR_TAB_SYMBOLS, self)
@@ -90,21 +91,21 @@ class TreeSymbolsWidget(QDialog):
         menu.addSeparator()
         u_class = menu.addAction(translations.TR_UNFOLD_CLASSES)
         u_class_method = menu.addAction(
-                         translations.TR_UNFOLD_CLASSES_AND_METHODS)
+            translations.TR_UNFOLD_CLASSES_AND_METHODS)
         u_class_attr = menu.addAction(
-                       translations.TR_UNFOLD_CLASSES_AND_ATTRIBUTES)
+            translations.TR_UNFOLD_CLASSES_AND_ATTRIBUTES)
         menu.addSeparator()
         #save_state = menu.addAction(self.tr("Save State"))
 
         self.connect(f_all, SIGNAL("triggered()"),
-            lambda: self.tree.collapseAll())
+                     lambda: self.tree.collapseAll())
         self.connect(u_all, SIGNAL("triggered()"),
-            lambda: self.tree.expandAll())
+                     lambda: self.tree.expandAll())
         self.connect(u_class, SIGNAL("triggered()"), self._unfold_class)
         self.connect(u_class_method, SIGNAL("triggered()"),
-            self._unfold_class_method)
+                     self._unfold_class_method)
         self.connect(u_class_attr, SIGNAL("triggered()"),
-            self._unfold_class_attribute)
+                     self._unfold_class_attribute)
         #self.connect(save_state, SIGNAL("triggered()"),
             #self._save_symbols_state)
 
@@ -198,8 +199,8 @@ class TreeSymbolsWidget(QDialog):
         TIP = "{} {}"
         if not parent:
             if filename == self.actualSymbols[0] and \
-                self.actualSymbols[1] and not symbols:
-                    return
+                    self.actualSymbols[1] and not symbols:
+                return
 
             if symbols == self.actualSymbols[1]:
                 # Nothing new then return
@@ -215,8 +216,9 @@ class TreeSymbolsWidget(QDialog):
             globalAttribute.isClickable = False
             globalAttribute.isAttribute = True
             globalAttribute.setExpanded(self._get_expand(globalAttribute))
-            globalAttribute.setToolTip(0, TIP.format(len(symbols['attributes']),
-                                                     translations.TR_ATTRIBUTES))
+            globalAttribute.setToolTip(
+                0, TIP.format(len(symbols['attributes']),
+                              translations.TR_ATTRIBUTES))
             for glob in sorted(symbols['attributes']):
                 globItem = ItemTree(globalAttribute, [glob],
                                     lineno=symbols['attributes'][glob])
