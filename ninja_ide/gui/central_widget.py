@@ -62,7 +62,9 @@ class CentralWidget(QWidget):
         hbox.setSpacing(0)
         #Create Splitters to divide the UI 3 regions
         self._splitterBase = dynamic_splitter.DynamicSplitter(Qt.Horizontal)
+        self._splitterBase.setOpaqueResize(True)
         self._splitterInside = dynamic_splitter.DynamicSplitter(Qt.Vertical)
+        self._splitterInside.setOpaqueResize(True)
         self._splitterBase.addWidget(self._splitterInside)
 
         #Add to Main Layout

@@ -540,3 +540,13 @@ QGroupBox::title {
     subcontrol-position: top center; /* position at the top center */
     padding: 5 10px;
 }
+
+QSplitter::handle {
+    background: #282828;
+    border: 0px solid transparent;
+    height: 3px;
+}
+
+QSplitter:handle:hover {
+    background: gray;
+}

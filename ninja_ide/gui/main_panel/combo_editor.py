@@ -39,6 +39,7 @@ from PyQt4.QtGui import QPushButton
 from PyQt4.QtCore import QSize
 from PyQt4.QtCore import SIGNAL
 from PyQt4.QtCore import Qt
+from PyQt4.Qsci import QsciDocument
 
 from ninja_ide import translations
 from ninja_ide.extensions import handlers
@@ -168,6 +169,11 @@ class ComboEditor(QDialog):
 
     def show_combo_symbol(self):
         self.bar.symbols_combo.showPopup()
+
+    def unlink_editors(self):
+        for index in range(self.stacked.count()):
+            widget = self.stacked.widget(index)
+            widget.setDocument(QsciDocument())
 
     def split_editor(self, orientationVertical):
         new_widget = ComboEditor()
