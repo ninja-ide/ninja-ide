@@ -123,8 +123,10 @@ class ComboEditor(QDialog):
         editable = ninjaide.get_or_create_editable(path)
         self.add_editor(editable)
         self.bar.set_current_by_index(index)
+        if index == -1:
+            self.bar.set_current_by_index(0)
 
-    def add_editor(self, neditable):
+    def add_editor(self, neditable, keep_index=False):
         """Add Editor Widget to the UI area."""
         if neditable.editor:
             if self.__original:
@@ -132,8 +134,11 @@ class ComboEditor(QDialog):
             else:
                 editor = self._main_container.create_editor_from_editable(
                     neditable)
+            index = self.stacked.currentIndex()
             self.stacked.addWidget(editor)
             self.bar.add_item(neditable.display_name, neditable)
+            if keep_index:
+                self.bar.set_current_by_index(index)
 
             # Editor Signals
             self.connect(editor, SIGNAL("cursorPositionChanged(int, int)"),

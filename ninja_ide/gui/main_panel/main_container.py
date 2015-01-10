@@ -667,12 +667,14 @@ class _MainContainer(QWidget):
         editorWidget = self.create_editor_from_editable(editable)
 
         #add the tab
-        if self.current_widget != self.combo_area:
-            self.combo_area.add_editor(editable)
-        self.current_widget.add_editor(editable)
+        keep_index = (self.splitter.count() > 1 and
+                      self.combo_area.stacked.count() > 0)
+        self.combo_area.add_editor(editable, keep_index)
 
         #emit a signal about the file open
         self.emit(SIGNAL("fileOpened(QString)"), fileName)
+        if keep_index:
+            self.current_widget.set_current(editable)
 
         self.stack.setCurrentWidget(self.splitter)
         return editorWidget
