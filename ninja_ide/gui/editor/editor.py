@@ -823,7 +823,7 @@ class Editor(QsciScintilla):
     def __auto_indent(self, event):
         line, index = self.getCursorPosition()
         text = self.text(line - 1).strip()
-        symbols_to_look = tuple(settings.BRACES.keys()) + (",", ":")
+        symbols_to_look = tuple(settings.BRACES.keys()) + (",")
         if text and text[-1] in symbols_to_look:
             symbol = " " * self._indent
             if self.useTabs:
