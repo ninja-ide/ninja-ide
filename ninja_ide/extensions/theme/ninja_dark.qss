@@ -509,7 +509,7 @@ QListView::item:selected:active {
 
 QListView::item:hover {
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                stop: 0 #888dd9, stop: 1 #6a6ea9);
+                                stop: 0 #f41818, stop: 1 #860d0d);
 }
 
 QMenu::item {
