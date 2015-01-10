@@ -88,6 +88,7 @@ class DynamicSplitter(QSplitter):
             return
         new_index = int(index == 0)
         combo_widget = self.widget(new_index)
+        widget.unlink_editors()
         widget.deleteLater()
         self.emit(SIGNAL("closeDynamicSplit(PyQt_PyObject, PyQt_PyObject)"),
                   self, combo_widget)
