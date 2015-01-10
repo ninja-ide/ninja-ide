@@ -287,12 +287,14 @@ def uncomment(editorWidget):
         index = len(get_indentation(editorWidget.text(lstart + l)))
         editorWidget.setSelection(lstart + l, index, lstart + l,
                                   index + len(wildopen))
-        editorWidget.removeSelectedText()
+        if editorWidget.selectedText() == wildopen:
+            editorWidget.removeSelectedText()
         if is_multi:
             length = editorWidget.lineLength(lstart + l)
             editorWidget.setSelection(lstart + l, length,
                                       lstart + l, index - len(wildclose))
-            editorWidget.removeSelectedText()
+            if editorWidget.selectedText() == wildopen:
+                editorWidget.removeSelectedText()
     editorWidget.SendScintilla(editorWidget.SCI_ENDUNDOACTION, 1)
 
 
