@@ -660,7 +660,7 @@ class _MainContainer(QWidget):
         editable = ninjaide.get_or_create_editable(fileName)
         if editable.editor:
             self.current_widget.set_current(editable)
-            return editable.editor
+            return self.current_widget.currentWidget()
         else:
             editable.ignore_checkers = ignore_checkers
 
