@@ -523,7 +523,7 @@ class _MainContainer(QWidget):
         """Indent 1 position to the right for the current line or selection."""
         editorWidget = self.get_current_editor()
         if editorWidget and editorWidget.hasFocus():
-            editorWidget.indent()
+            editorWidget.indent_more()
 
     def editor_insert_debugging_prints(self):
         """Insert a print statement in each selected line."""
