@@ -639,9 +639,26 @@ class Editor(QsciScintilla):
             self.setCursorPosition(line, index)
 
     def indent_less(self):
-        line_from, _, line_to, _ = self.getSelection()
-        for i in range(line_from, line_to):
-            self.unindent(i)
+        if self.hasSelectedText():
+            self.SendScintilla(QsciScintilla.SCI_BEGINUNDOACTION, 1)
+            line_from, _, line_to, _ = self.getSelection()
+            for i in range(line_from, line_to):
+                self.unindent(i)
+            self.SendScintilla(QsciScintilla.SCI_ENDUNDOACTION, 1)
+        else:
+            line, _ = self.getCursorPosition()
+            self.unindent(line)
+
+    def indent_more(self):
+        if self.hasSelectedText():
+            self.SendScintilla(QsciScintilla.SCI_BEGINUNDOACTION, 1)
+            line_from, _, line_to, _ = self.getSelection()
+            for i in range(line_from, line_to):
+                self.indent(i)
+            self.SendScintilla(QsciScintilla.SCI_ENDUNDOACTION, 1)
+        else:
+            line, _ = self.getCursorPosition()
+            self.indent(line)
 
     def find_match(self, expr, reg, cs, wo, wrap=True, forward=True, line=-1,
                    index=-1):
