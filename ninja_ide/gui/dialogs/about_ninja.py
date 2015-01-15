@@ -22,6 +22,9 @@ import webbrowser
 from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtGui import QHBoxLayout
+from PyQt4.QtGui import QSizePolicy
+from PyQt4.QtGui import QSpacerItem
+from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QPixmap
 from PyQt4.QtCore import Qt
@@ -29,6 +32,7 @@ from PyQt4.QtCore import QSize
 from PyQt4.QtCore import SIGNAL
 
 import ninja_ide
+from ninja_ide import translations
 
 
 class AboutNinja(QDialog):
@@ -76,10 +80,18 @@ situations thanks to its rich extensibility.""")))
                 (ninja_ide.__source__, ninja_ide.__source__))
         vbox.addWidget(link_source)
 
+        hbox2 = QHBoxLayout()
+        hbox2.addSpacerItem(QSpacerItem(1, 0, QSizePolicy.Expanding))
+        btn_close = QPushButton(translations.TR_CLOSE)
+        hbox2.addWidget(btn_close)
+        vbox.addLayout(hbox2)
+
         self.connect(link_ninja, SIGNAL("linkActivated(QString)"),
-            self.link_activated)
+                     self.link_activated)
         self.connect(link_source, SIGNAL("linkActivated(QString)"),
-            self.link_activated)
+                     self.link_activated)
+        self.connect(btn_close, SIGNAL("clicked()"),
+                     self.close)
 
     def link_activated(self, link):
         webbrowser.open(str(link))
