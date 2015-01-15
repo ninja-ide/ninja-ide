@@ -85,6 +85,7 @@ class Editor(QsciScintilla):
         self._neditable = neditable
 
         # QScintilla Configuration
+        self._first_visible_line = 0
         self.patFold = re.compile(
             r"(\s)*\"\"\"|(\s)*def |(\s)*class |(\s)*if |(\s)*while |"
             "(\s)*else:|(\s)*elif |(\s)*for |"
@@ -635,6 +636,7 @@ class Editor(QsciScintilla):
 
     def set_cursor_position(self, line, index=0):
         if self.lines() >= line:
+            self._first_visible_line = line
             self._cursor_line = self._cursor_index = -1
             self.setCursorPosition(line, index)
 
@@ -745,10 +747,13 @@ class Editor(QsciScintilla):
             self.setCursorPosition(line, index)
         if selected:
             self.setSelection(line, index, lto, ito)
+        self.SendScintilla(QsciScintilla.SCI_SETFIRSTVISIBLELINE, self._first_visible_line)
 
     def focusOutEvent(self, event):
         """Hide Popup on focus lost."""
         #self.completer.hide_completer()
+        self._first_visible_line = int(
+            self.SendScintilla(QsciScintilla.SCI_GETFIRSTVISIBLELINE))
         self._cursor_line, self._cursor_index = self.getCursorPosition()
         super(Editor, self).focusOutEvent(event)
 
