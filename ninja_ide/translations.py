@@ -237,7 +237,9 @@ TR_SEARCH_WHOLE_WORDS = tr("NINJA-IDE", "Find Whole Words")
 
 
 # Checkers
+TR_DISPLAY = tr("NINJA-IDE", "Display")
 TR_DISPLAY_ERRORS = tr("NINJA-IDE", "Display Errors and Warnings")
+TR_DISPLAY_LINE_NUMBERS = tr("NINJA-IDE", "Display Line Numbers")
 TR_PEP8_DIRTY_TEXT = tr("NINJA-IDE", "PEP8 Violations: ")
 TR_LINT_DIRTY_TEXT = tr("NINJA-IDE", "Lint Errors: ")
 

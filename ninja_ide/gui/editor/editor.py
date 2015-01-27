@@ -255,6 +255,10 @@ class Editor(QsciScintilla):
             ninjaide,
             SIGNAL("ns_preferences_editor_marginLine(PyQt_PyObject)"),
             self._set_margin_line)
+        self.connect(
+            ninjaide,
+            SIGNAL("ns_preferences_editor_showLineNumbers(PyQt_PyObject)"),
+            self._show_line_numbers)
         #self.connect(
             #ninjaide,
             #SIGNAL("ns_preferences_editor_scheme(PyQt_PyObject)"),
@@ -425,7 +429,10 @@ class Editor(QsciScintilla):
         # Margin 0 is used for line numbers
         fontmetrics = QFontMetricsF(self.__font)
         maxLine = math.ceil(math.log10(self.lines()))
-        self.setMarginWidth(0, fontmetrics.width('0' * int(maxLine)) + 10)
+        if settings.SHOW_LINE_NUMBERS:
+            self.setMarginWidth(0, fontmetrics.width('0' * int(maxLine)) + 10)
+        else:
+            self.setMarginWidth(0, 0)
 
         # Fold
         self.foldable_lines = []
@@ -575,12 +582,16 @@ class Editor(QsciScintilla):
                     #self._mini.document(), parts_scanner,
                     #code_scanner, formats, self._neditable)
 
+    def _show_line_numbers(self):
+        self.setMarginsFont(self.__font)
+        # Margin 0 is used for line numbers
+        self.setMarginLineNumbers(0, settings.SHOW_LINE_NUMBERS)
+        self._update_sidebar()
+
     def set_font(self, font):
         self.__font = font
         self.setFont(font)
-        self.setMarginsFont(font)
-        # Margin 0 is used for line numbers
-        self.setMarginLineNumbers(0, True)
+        self._show_line_numbers()
         background = resources.CUSTOM_SCHEME.get(
             'SidebarBackground',
             resources.COLOR_SCHEME['SidebarBackground'])
