@@ -53,7 +53,7 @@ class EditorConfiguration(QWidget):
         group4 = QGroupBox(translations.TR_PEP8_DIRTY_TEXT)
         group5 = QGroupBox(translations.TR_HIGHLIGHTER_EXTRAS)
         group6 = QGroupBox(translations.TR_TYPING_ASSISTANCE)
-        group7 = QGroupBox(translations.TR_DISPLAY_ERRORS)
+        group7 = QGroupBox(translations.TR_DISPLAY)
 
         # groups container
         container_widget_with_all_preferences = QWidget()
@@ -89,15 +89,24 @@ class EditorConfiguration(QWidget):
         formFeatures.addWidget(group2, 0, 1)
 
         # Display Errors
-        hboxDisplay = QHBoxLayout(group7)
-        hboxDisplay.setContentsMargins(5, 15, 5, 5)
+        vboxDisplay = QVBoxLayout(group7)
+        vboxDisplay.setContentsMargins(5, 15, 5, 5)
         self._checkHighlightLine = QComboBox()
         self._checkHighlightLine.addItems([
             translations.TR_PREFERENCES_EDITOR_CONFIG_ERROR_USE_BACKGROUND,
             translations.TR_PREFERENCES_EDITOR_CONFIG_ERROR_USE_UNDERLINE])
         self._checkHighlightLine.setCurrentIndex(
             int(settings.UNDERLINE_NOT_BACKGROUND))
-        hboxDisplay.addWidget(self._checkHighlightLine)
+        hboxDisplay1 = QHBoxLayout()
+        hboxDisplay1.addWidget(QLabel(translations.TR_DISPLAY_ERRORS))
+        hboxDisplay1.addWidget(self._checkHighlightLine)
+        hboxDisplay2 = QHBoxLayout()
+        self._checkDisplayLineNumbers = QCheckBox(
+            translations.TR_DISPLAY_LINE_NUMBERS)
+        self._checkDisplayLineNumbers.setChecked(settings.SHOW_LINE_NUMBERS)
+        hboxDisplay2.addWidget(self._checkDisplayLineNumbers)
+        vboxDisplay.addLayout(hboxDisplay1)
+        vboxDisplay.addLayout(hboxDisplay2)
         formFeatures.addWidget(group7, 1, 0, 1, 0)
 
         # Find Lint Errors (highlighter)
@@ -257,6 +266,9 @@ class EditorConfiguration(QWidget):
         settings.CHECK_FOR_DOCSTRINGS = self._checkForDocstrings.isChecked()
         qsettings.setValue('preferences/editor/checkForDocstrings',
                            settings.CHECK_FOR_DOCSTRINGS)
+        settings.SHOW_LINE_NUMBERS = self._checkDisplayLineNumbers.isChecked()
+        qsettings.setValue('preferences/editor/showLineNumbers',
+                           settings.SHOW_LINE_NUMBERS)
 
         if settings.USE_TABS:
             settings.pep8mod_add_ignore("W191")

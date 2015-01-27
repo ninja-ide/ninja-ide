@@ -175,6 +175,7 @@ COPY_HISTORY_BUFFER = 20
 FIND_ERRORS = ERRORS_HIGHLIGHT_LINE = CHECK_STYLE = CHECK_HIGHLIGHT_LINE = True
 CODE_COMPLETION = COMPLETE_DECLARATIONS = SHOW_MIGRATION_TIPS = True
 UNDERLINE_NOT_BACKGROUND = VALID_2TO3 = CENTER_ON_SCROLL = True
+SHOW_LINE_NUMBERS = True
 
 SYNTAX = {}
 EXTENSIONS = {}
@@ -411,6 +412,7 @@ def load_settings():
     global NOTIFICATION_POSITION
     global NOTIFICATION_COLOR
     global LAST_CLEAN_LOCATOR
+    global SHOW_LINE_NUMBERS
     #General
     HIDE_TOOLBAR = qsettings.value("window/hide_toolbar", False, type=bool)
     TOOLBAR_AREA = qsettings.value('preferences/general/toolbarArea', 1,
@@ -479,6 +481,8 @@ def load_settings():
     MARGIN_LINE = qsettings.value('preferences/editor/marginLine', 80,
                                   type=int)
     pep8mod_update_margin_line_length(MARGIN_LINE)
+    SHOW_LINE_NUMBERS = qsettings.value(
+        'preferences/editor/showLineNumbers', True, type=bool)
     REMOVE_TRAILING_SPACES = qsettings.value(
         'preferences/editor/removeTrailingSpaces', True, type=bool)
     SHOW_TABS_AND_SPACES = qsettings.value(
