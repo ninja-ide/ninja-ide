@@ -47,15 +47,15 @@ from ninja_ide.core import settings
 from ninja_ide.gui.ide import IDE
 from ninja_ide.gui.editor import highlighter
 from ninja_ide.gui.editor import helpers
-from ninja_ide.gui.editor import minimap
+#from ninja_ide.gui.editor import minimap
 from ninja_ide.extensions import handlers
 
-from PyQt4.Qsci import QsciScintilla, QsciCommand
+from PyQt4.Qsci import QsciScintilla  # , QsciCommand
 
 from ninja_ide.tools.logger import NinjaLogger
+logger = NinjaLogger('ninja_ide.gui.editor.editor')
 
 BRACE_DICT = {')': '(', ']': '[', '}': '{', '(': ')', '[': ']', '{': '}'}
-logger = NinjaLogger('ninja_ide.gui.editor.editor')
 
 
 class Editor(QsciScintilla):
@@ -80,11 +80,7 @@ class Editor(QsciScintilla):
     __indicator_folded = 2
     __indicator_navigation = 3
 
-    def __init__(self, neditable):
-        super(Editor, self).__init__()
-        self._neditable = neditable
-
-        # QScintilla Configuration
+    def _configure_qscintilla(self):
         self._first_visible_line = 0
         self.patFold = re.compile(
             r"(\s)*\"\"\"|(\s)*def |(\s)*class |(\s)*if |(\s)*while |"
@@ -132,6 +128,14 @@ class Editor(QsciScintilla):
                            self.__indicator_navigation, 8)
         self.SendScintilla(QsciScintilla.SCI_INDICSETALPHA,
                            self.__indicator_navigation, 40)
+
+    def __init__(self, neditable):
+        super(Editor, self).__init__()
+        self._neditable = neditable
+
+        # QScintilla Configuration
+        self._configure_qscintilla()
+
         # Markers
         self.foldable_lines = []
         self.breakpoints = []
@@ -178,7 +182,8 @@ class Editor(QsciScintilla):
         # Configure key bindings
         self._configure_keybindings()
 
-        self.lexer = highlighter.build_lexer("python")
+        self.lexer = highlighter.get_lexer(self._neditable.extension())
+
         if self.lexer is not None:
             self.setLexer(self.lexer)
 
@@ -188,7 +193,8 @@ class Editor(QsciScintilla):
             self._load_minimap(settings.SHOW_MINIMAP)
         self._last_block_position = 0
         self.set_flags()
-        self.lang = 'python'
+        #FIXME this lang should be guessed in the same form as lexer.
+        self.lang = highlighter.get_lang(self._neditable.extension())
         self._cursor_line = self._cursor_index = -1
         self.__lines_count = 0
         self.pos_margin = 0
@@ -197,6 +203,7 @@ class Editor(QsciScintilla):
         self.__font = None
         self.__encoding = None
 
+        #FIXME these should be language bound
         self.allows_less_indentation = ['else', 'elif', 'finally', 'except']
         self.set_font(settings.FONT)
         self._selected_word = ''
@@ -758,7 +765,8 @@ class Editor(QsciScintilla):
             self.setCursorPosition(line, index)
         if selected:
             self.setSelection(line, index, lto, ito)
-        self.SendScintilla(QsciScintilla.SCI_SETFIRSTVISIBLELINE, self._first_visible_line)
+        self.SendScintilla(QsciScintilla.SCI_SETFIRSTVISIBLELINE,
+                           self._first_visible_line)
 
     def focusOutEvent(self, event):
         """Hide Popup on focus lost."""

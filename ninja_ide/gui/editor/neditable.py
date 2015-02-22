@@ -57,6 +57,12 @@ class NEditable(QObject):
                 self._nfile, SIGNAL("fileChanged()"),
                 lambda: self.emit(SIGNAL("fileChanged(PyQt_PyObject)"), self))
 
+    def extension(self):
+        #FIXME This sucks, we should have a way to define lang
+        if self._nfile is None:
+            return ""
+        return self._nfile.file_ext()
+
     def _about_to_close_file(self, path, force_close):
         modified = False
         if self.__editor:
