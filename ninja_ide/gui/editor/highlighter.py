@@ -20,59 +20,125 @@ from __future__ import absolute_import
 
 import re
 
-from PyQt4.QtGui import QColor
-#from PyQt4.Qsci import QsciLexerPython
+from ninja_ide.gui.editor.extended_lexers.all_lexers import (
+    PythonLexer, AVSLexer, BashLexer, BatchLexer, CMakeLexer,
+    CPPLexer, CSSLexer, CSharpLexer, CoffeeScriptLexer, DLexer, DiffLexer,
+    FortranLexer, Fortran77Lexer, HTMLLexer, IDLLexer, JavaLexer,
+    JavaScriptLexer, LuaLexer, MakefileLexer, MatlabLexer, OctaveLexer, POLexer,
+    POVLexer, PascalLexer, PerlLexer, PostScriptLexer, PropertiesLexer,
+    RubyLexer, SQLLexer, SpiceLexer, TCLLexer, TeXLexer, VHDLLexer,
+    VerilogLexer, XMLLexer, YAMLLexer)
 
-from ninja_ide import resources
-from ninja_ide.core import settings
-from ninja_ide.gui.editor.extended_lexers.python_lexer import PythonLexer
+from ninja_ide.tools.logger import NinjaLogger
+logger = NinjaLogger('ninja_ide.gui.editor.highlighter')
 
-
-pattern = re.compile(r'^([A-Z]).+$')
 
 LEXERS = {
     "python": PythonLexer,
+    "avs": AVSLexer,
+    "bash": BashLexer,
+    "batch": BatchLexer,
+    "cmake": CMakeLexer,
+    "cpp": CPPLexer,
+    "css": CSSLexer,
+    "csharp": CSharpLexer,
+    "coffeescript": CoffeeScriptLexer,
+    "d": DLexer,
+    "diff": DiffLexer,
+    "fortran": FortranLexer,
+    "fortran77": Fortran77Lexer,
+    "html": HTMLLexer,
+    "idl": IDLLexer,
+    "java": JavaLexer,
+    "javascript": JavaScriptLexer,
+    "lua": LuaLexer,
+    "makefile": MakefileLexer,
+    "matlab": MatlabLexer,
+    "octave": OctaveLexer,
+    "po": POLexer,
+    "pov": POVLexer,
+    "pascal": PascalLexer,
+    "perl": PerlLexer,
+    "postscript": PostScriptLexer,
+    "properties": PropertiesLexer,
+    "ruby": RubyLexer,
+    "sql": SQLLexer,
+    "spice": SpiceLexer,
+    "tcl": TCLLexer,
+    "tex": TeXLexer,
+    "vhdl": VHDLLexer,
+    "verilog": VerilogLexer,
+    "xml": XMLLexer,
+    "yaml": YAMLLexer,
+}
+
+LEXER_MAP = {
+    "asm": "assembler",
+    "json": "json",
+    "cs": "csharp",
+    "rb": "ruby_on_rails",
+    "cpp": "cpp",
+    "coffee": "coffeescript",
+    "tex": "bibtex",
+    "js": "javascript",
+    "qml": "javascript",
+    "mo": "gettext",
+    "po": "gettext",
+    "pot": "gettext",
+    "v": "verilog",
+    "sh": "shell",
+    "shell": "shell",
+    "bash": "shell",
+    "ksh": "shell",
+    "pas": "pascal",
+    "html": "html",
+    "list": "sourceslist",
+    "lol": "lolcode",
+    "h": "header",
+    "conf": "apache",
+    "php": "php",
+    "php4": "php",
+    "php5": "php",
+    "css": "css",
+    "qss": "css",
+    "scss": "css",
+    "sass": "css",
+    "tex": "latex",
+    "py": "python",
+    "pyw": "python",
+    "rpy": "python",
+    "tac": "python",
+    "pyx": "cython",
+    "pxd": "cython",
+    "pxi": "cython",
+    "go": "go",
+    "asp": "asp",
+    "rst": "rst",
+    "c": "c",
+    "java": "java",
+}
+
+BUILT_LEXERS = {
 }
 
 
-def __initialize_color_scheme(self):
-    self.scheme = {}
-    self.background_color = QColor(resources.COLOR_SCHEME["EditorBackground"])
-    detected_values = []
-    identifiers = [word for word in dir(self) if pattern.match(word)]
-    for key in identifiers:
-        identifier = getattr(self, key)
-        if identifier not in detected_values:
-            color = resources.COLOR_SCHEME.get(
-                key, resources.COLOR_SCHEME["Default"])
-            if color != resources.COLOR_SCHEME["Default"]:
-                detected_values.append(identifier)
-            self.scheme[identifier] = QColor(color)
+def get_lang(extension):
+    return LEXER_MAP.get(extension, "")
 
 
-def __custom_default_color(self, style):
-    return self.scheme.get(style, QColor(resources.COLOR_SCHEME["Default"]))
-
-
-def __custom_default_font(self, style):
-    return settings.FONT
-
-
-def __custom_default_paper(self, style):
-    return self.background_color
+def get_lexer(extension="py"):
+    return build_lexer(get_lang(extension))
 
 
 def build_lexer(lang):
-    BaseLexer = LEXERS.get(lang, None)
-    Lexer = None
-    if BaseLexer is not None:
-        Lexer = type('Lexer', (BaseLexer,),
-                     {'defaultColor': __custom_default_color,
-                      'initialize_color_scheme': __initialize_color_scheme,
-                      'defaultFont': __custom_default_font,
-                      'defaultPaper': __custom_default_paper})
-    if Lexer is not None:
-        lex = Lexer()
-        lex.initialize_color_scheme()
-        return lex
-    return None
+    global BUILT_LEXERS
+    Lexer = BUILT_LEXERS.get(lang, None)
+
+    if Lexer is None:
+        Lexer = LEXERS.get(lang, None)
+        if Lexer is not None:
+            lex = Lexer()
+            lex.initialize_color_scheme()
+            BUILT_LEXERS[lang] = lex
+            return lex
+    return Lexer
