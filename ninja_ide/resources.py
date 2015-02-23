@@ -128,22 +128,22 @@ COLOR_SCHEME = {
     "EditorSelectionColor": "#000000",
     "EditorSelectionBackground": "#aaaaaa",
     "CurrentLine": "#313233",
-    "SelectedWord": "a8ff60",
-    "Pending": "red",
+    "SelectedWord": "#a8ff60",
+    "Pending": "#FF0000",
     "SelectedWordBackground": "#009B00",
     "FoldArea": "#292c2f",
     "FoldArrowExpanded": "#696c6e",
-    "FoldArrowCollapsed": "white",
+    "FoldArrowCollapsed": "#FFFFFF",
     "LinkNavigate": "005aff",
     "BraceBackground": "#5BC85B",
-    "BraceForeground": "red",
-    "ErrorUnderline": "0000ff",
-    "Pep8Underline": "00ffff",
+    "BraceForeground": "#FF0000",
+    "ErrorUnderline": "#0000ff",
+    "Pep8Underline": "#00ffff",
     "SidebarBackground": "#292c2f",
     "SidebarSelectedBackground": "#46484b",
     "SidebarForeground": "#868989",
     "SidebarSelectedForeground": "#c5c8c6",
-    "MigrationUnderline": "ff0000",
+    "MigrationUnderline": "#ff0000",
     "MarginLine": '#7c7c7c',
 }
 
@@ -153,6 +153,11 @@ CUSTOM_SCHEME = {}
 def get_color(key):
     if key in COLOR_SCHEME:
         return CUSTOM_SCHEME.get(key, COLOR_SCHEME.get(key))
+    return None
+
+def get_color_hex(key):
+    if key in COLOR_SCHEME:
+        return CUSTOM_SCHEME.get(key, COLOR_SCHEME.get(key)).lstrip("#")
     return None
 
 
