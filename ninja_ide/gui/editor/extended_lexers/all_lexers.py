@@ -57,6 +57,7 @@ class BaseNinjaLexer(object):
         self.background_color = QColor(resources.COLOR_SCHEME["EditorBackground"])
         detected_values = []
         identifiers = [word for word in dir(self) if pattern.match(word)]
+        logger.debug(identifiers)
         default_color = resources.COLOR_SCHEME["Default"]
         for key in identifiers:
             identifier = getattr(self, key)
@@ -79,7 +80,12 @@ class BaseNinjaLexer(object):
             if each_parent.__name__ not in not_lexers:
                 parent_lexer = each_parent
                 break
-        return parent_lexer.defaultColor(self, style)
+
+        #FIXME This reverses colors while we find a way to do themes.
+        c = parent_lexer.defaultColor(self, style).name()
+        logger.debug(c)
+        reverse_color = "#" + "".join((hex(255 - int(x, 16)))[2:].zfill(2) for x in (c[1:3], c[3:5], c[5:7]))
+        return QColor(reverse_color)
 
     def defaultFont(self, style):
         return settings.FONT

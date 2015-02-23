@@ -113,7 +113,7 @@ class Editor(QsciScintilla):
 
         self.SendScintilla(QsciScintilla.SCI_INDICSETFORE,
                            self.__indicator_word,
-                           int(resources.get_color("SelectedWord"), 16))
+                           int(resources.get_color_hex("SelectedWord"), 16))
         self.SendScintilla(QsciScintilla.SCI_INDICSETSTYLE,
                            self.__indicator_word, 6)
         self.SendScintilla(QsciScintilla.SCI_INDICSETFORE,
@@ -123,7 +123,7 @@ class Editor(QsciScintilla):
         self._navigation_highlight_active = False
         self.SendScintilla(QsciScintilla.SCI_INDICSETFORE,
                            self.__indicator_navigation,
-                           int(resources.get_color("LinkNavigate"), 16))
+                           int(resources.get_color_hex("LinkNavigate"), 16))
         self.SendScintilla(QsciScintilla.SCI_INDICSETSTYLE,
                            self.__indicator_navigation, 8)
         self.SendScintilla(QsciScintilla.SCI_INDICSETALPHA,
