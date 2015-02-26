@@ -25,14 +25,14 @@ from PyQt4.QtGui import QColor
 from ninja_ide import resources
 from ninja_ide.core import settings
 
-from PyQt4.Qsci import (QsciLexerAVS, QsciLexerBash, QsciLexerBatch,
+from PyQt4.Qsci import (QsciLexerBash, QsciLexerBatch,
                         QsciLexerCMake, QsciLexerCPP, QsciLexerCSS,
-                        QsciLexerCSharp, QsciLexerCoffeeScript,
+                        QsciLexerCSharp, 
                         QsciLexerD, QsciLexerDiff, QsciLexerFortran,
                         QsciLexerFortran77, QsciLexerHTML, QsciLexerIDL,
                         QsciLexerJava, QsciLexerJavaScript, QsciLexerLua,
                         QsciLexerMakefile, QsciLexerMatlab, QsciLexerOctave,
-                        QsciLexerPO, QsciLexerPOV, QsciLexerPascal,
+                        QsciLexerPOV, QsciLexerPascal,
                         QsciLexerPerl, QsciLexerPostScript, QsciLexerProperties,
                         QsciLexerPython, QsciLexerRuby, QsciLexerSQL,
                         QsciLexerSpice, QsciLexerTCL, QsciLexerTeX,
@@ -117,11 +117,14 @@ class PythonLexer(BaseNinjaLexer, QsciLexerPython):
         return super(PythonLexer, self).keywords(keyset)
 
 
-class AVSLexer(BaseNinjaLexer, QsciLexerAVS):
-    def __init__(self, *args, **kwargs):
-        self._settings_colored = None
-        super(AVSLexer, self).__init__(*args, **kwargs)
-
+try:
+    from PyQt4.Qsci import QsciLexerAVS
+    class AVSLexer(BaseNinjaLexer, QsciLexerAVS):
+        def __init__(self, *args, **kwargs):
+            self._settings_colored = None
+            super(AVSLexer, self).__init__(*args, **kwargs)
+except ImportError:
+    AVSLexer = None
 
 class BashLexer (BaseNinjaLexer, QsciLexerBash):
     def __init__(self, *args, **kwargs):
@@ -158,12 +161,14 @@ class CSharpLexer (BaseNinjaLexer, QsciLexerCSharp):
         self._settings_colored = None
         super(CSharpLexer, self).__init__(*args, **kwargs)
 
-
-class CoffeeScriptLexer (BaseNinjaLexer, QsciLexerCoffeeScript):
-    def __init__(self, *args, **kwargs):
-        self._settings_colored = None
-        super(CoffeeScriptLexer, self).__init__(*args, **kwargs)
-
+try:
+    from PyQt4.Qsci import QsciLexerCoffeeScript
+    class CoffeeScriptLexer (BaseNinjaLexer, QsciLexerCoffeeScript):
+        def __init__(self, *args, **kwargs):
+            self._settings_colored = None
+            super(CoffeeScriptLexer, self).__init__(*args, **kwargs)
+except ImportError:
+    CoffeeScriptLexer = None
 
 class DLexer (BaseNinjaLexer, QsciLexerD):
     def __init__(self, *args, **kwargs):
@@ -237,11 +242,14 @@ class OctaveLexer (BaseNinjaLexer, QsciLexerOctave):
         super(OctaveLexer, self).__init__(*args, **kwargs)
 
 
-class POLexer (BaseNinjaLexer, QsciLexerPO):
-    def __init__(self, *args, **kwargs):
-        self._settings_colored = None
-        super(POLexer, self).__init__(*args, **kwargs)
-
+try:
+    from PyQt4.Qsci import QsciLexerPO
+    class POLexer (BaseNinjaLexer, QsciLexerPO):
+        def __init__(self, *args, **kwargs):
+            self._settings_colored = None
+            super(POLexer, self).__init__(*args, **kwargs)
+except ImportError:
+    POLexer = None
 
 class POVLexer (BaseNinjaLexer, QsciLexerPOV):
     def __init__(self, *args, **kwargs):
