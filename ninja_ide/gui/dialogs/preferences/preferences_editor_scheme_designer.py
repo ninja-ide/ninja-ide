@@ -157,10 +157,10 @@ class EditorSchemeDesigner(QDialog):
             else:
                 scheme[key] = self._components[key][0].text()
         resources.CUSTOM_SCHEME = scheme
-        editorWidget = self._get_editor()
-        if editorWidget is not None:
-            editorWidget.restyle(editorWidget.lang)
-            editorWidget.highlight_current_line()
+        # editorWidget = self._get_editor()
+        # if editorWidget is not None:
+        #     editorWidget.restyle(editorWidget.lang)
+        #     editorWidget.highlight_current_line()
         return scheme
 
     def _get_editor(self):
@@ -187,8 +187,8 @@ class EditorSchemeDesigner(QDialog):
         super(EditorSchemeDesigner, self).hideEvent(event)
         resources.CUSTOM_SCHEME = self.original_style
         editorWidget = self._get_editor()
-        if editorWidget is not None:
-            editorWidget.restyle(editorWidget.lang)
+        # if editorWidget is not None:
+        #     editorWidget.restyle(editorWidget.lang)
 
     def _is_valid_scheme_name(self, name):
         """Check if a given name is a valid name for an editor scheme.

@@ -200,11 +200,11 @@ class EditorGeneral(QWidget):
     def hideEvent(self, event):
         super(EditorGeneral, self).hideEvent(event)
         resources.CUSTOM_SCHEME = self.original_style
-        for editorWidget in self._modified_editors:
-            try:
-                editorWidget.restyle(editorWidget.lang)
-            except RuntimeError:
-                print('the editor has been removed')
+        # for editorWidget in self._modified_editors:
+        #     try:
+        #         editorWidget.restyle(editorWidget.lang)
+        #     except RuntimeError:
+        #         print('the editor has been removed')
 
     def _preview_style(self):
         scheme = self._listScheme.currentItem().text()
@@ -218,7 +218,7 @@ class EditorGeneral(QWidget):
             resources.CUSTOM_SCHEME = self._schemes.get(
                 scheme,
                 resources.COLOR_SCHEME)
-            editorWidget.restyle(editorWidget.lang)
+            # editorWidget.restyle(editorWidget.lang)
             self._modified_editors.append(editorWidget)
         self.current_scheme = scheme
 
@@ -255,6 +255,10 @@ class EditorGeneral(QWidget):
         resources.CUSTOM_SCHEME = self._schemes.get(scheme,
                                                     resources.COLOR_SCHEME)
         qsettings.setValue('preferences/editor/scheme', scheme)
+
+        editor = IDE.get_service('main_container').get_current_editor()
+        if editor:
+            editor._configure_qscintilla()
 
 
 preferences.Preferences.register_configuration(
