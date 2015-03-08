@@ -57,8 +57,8 @@ exec(compile(open(NINJA_ENV_ACTIVATE).read(), NINJA_ENV_ACTIVATE, 'exec'),
 
 ###############################################################################
 from pip import main as pipmain
-from pip.backwardcompat import xmlrpclib
-from pip.util import get_installed_distributions
+import xmlrpclib
+from pip.utils import get_installed_distributions
 from PyQt4.QtCore import QObject, SIGNAL, QThread
 
 
