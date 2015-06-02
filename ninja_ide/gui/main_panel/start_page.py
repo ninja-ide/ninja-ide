@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+import datetime
+
 from PyQt4.QtGui import QWidget
 from PyQt4.QtGui import QVBoxLayout
 from PyQt4.QtCore import SIGNAL
@@ -50,6 +52,8 @@ class StartPage(QWidget):
             lambda: self.emit(SIGNAL("openPreferences()")))
         self.connect(self.root, SIGNAL("newFile()"),
             lambda: self.emit(SIGNAL("newFile()")))
+
+        self.root.set_year(str(datetime.datetime.now().year))
 
     def _open_project(self, path):
         projects_explorer = IDE.get_service('projects_explorer')

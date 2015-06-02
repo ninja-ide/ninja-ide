@@ -393,6 +393,8 @@ class Editor(QsciScintilla):
             self.SendScintilla(QsciScintilla.SCI_INDICATORCLEARRANGE,
                                0, len(self.text()))
             # Set Color
+            if color.startswith("#"):
+                color = color[1:]
             self.SendScintilla(QsciScintilla.SCI_INDICSETFORE,
                                indicator_index, int(color, 16))
             # Set Style
@@ -864,7 +866,7 @@ class Editor(QsciScintilla):
     def __auto_indent(self, event):
         line, index = self.getCursorPosition()
         text = self.text(line - 1).strip()
-        symbols_to_look = tuple(settings.BRACES.keys()) + (",")
+        symbols_to_look = tuple(settings.BRACES.keys()) + (",",)
         if text and text[-1] in symbols_to_look:
             symbol = " " * self._indent
             if self.useTabs:
