@@ -48,7 +48,8 @@ if not os.path.isdir(NINJA_ENV):
     create_environment(NINJA_ENV)
 if not os.path.isdir(NINJA_ENV_BIN):
     NINJA_ENV_BIN = os.path.join(NINJA_ENV, "Scripts")
-    
+
+
 NINJA_ENV_ACTIVATE = os.path.join(NINJA_ENV_BIN, "activate_this.py")
 
 
@@ -57,8 +58,16 @@ exec(compile(open(NINJA_ENV_ACTIVATE).read(), NINJA_ENV_ACTIVATE, 'exec'),
 
 ###############################################################################
 from pip import main as pipmain
-from pip.backwardcompat import xmlrpclib
-from pip.util import get_installed_distributions
+#lint:disable
+try:
+    from pip.backwardcompat import xmlrpclib
+except:
+    import xmlrpclib
+try:
+    from pip.util import get_installed_distributions
+except:
+    from pip.utils import get_installed_distributions
+#lint:enable
 from PyQt4.QtCore import QObject, SIGNAL, QThread
 
 

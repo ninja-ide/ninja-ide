@@ -172,17 +172,21 @@ Rectangle {
     }
 
     Text {
+        id: copyright
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.leftMargin: parent.height / 14
         anchors.bottomMargin: 10
         font.pixelSize: 12
         color: "white"
-        text: "Copyright © 2010-2014 NINJA-IDE is distributed under the terms of the GNU GPLv3+ copyleft license"
     }
 
     function add_project(name, path, favorite){
         projectList.add_project(name, path, favorite);
+    }
+
+    function set_year(year){
+        copyright.text = "Copyright © 2010-" + year + " NINJA-IDE is distributed under the terms of the GNU GPLv3+ copyleft license";
     }
 
 }
