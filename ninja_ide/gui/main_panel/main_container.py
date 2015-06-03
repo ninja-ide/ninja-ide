@@ -323,8 +323,8 @@ class _MainContainer(QWidget):
             if not editorWidget.file_path:
                 self.save_file()
             ext = file_manager.get_file_extension(editorWidget.file_path)
-            if ext == 'html':
-                webbrowser.open(editorWidget.file_path)
+            if ext in ('html', 'shpaml', 'handlebars', 'tpl'):
+                webbrowser.open_new_tab(editorWidget.file_path)
 
     def add_bookmark_breakpoint(self):
         """Add a bookmark or breakpoint to the current file in the editor."""

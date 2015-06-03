@@ -41,6 +41,20 @@ LIST_OF_PY_CHECKERS_COMMENTS = (
     'pylint:enable', 'pragma: no cover', 'silence pyflakes')
 
 
+def simple_python_completion():
+    """Return tuple of strings containing Python words for simple completion."""
+    python_completion = []
+    python_completion += builtin_module_names
+    python_completion += tuple(dir(__builtins__))
+    python_completion += [module_name[1] for module_name in iter_modules()]
+    try:
+        python_completion += tuple(__builtins__.__dict__.keys())
+    except:
+        pass  # is Python2
+    python_completion = tuple(sorted(set(python_completion)))
+    return python_completion
+
+
 class FromImportDialog(QDialog):
     """From Import dialog class."""
 
@@ -57,9 +71,7 @@ class FromImportDialog(QDialog):
         self._imports_names += [imp for imp in self._imports['fromImports']]
         self._froms = [self._imports['fromImports'][imp]['module']
                        for imp in self._imports['fromImports']]
-        self._froms += builtin_module_names
-        self._froms += [module_name[1] for module_name in iter_modules()]
-        self._froms = tuple(sorted(set(self._froms)))
+        self._froms += simple_python_completion()
 
         hbox = QGridLayout(self)
         hbox.addWidget(QLabel('from'), 0, 0)

@@ -49,6 +49,7 @@ if not os.path.isdir(NINJA_ENV):
 if not os.path.isdir(NINJA_ENV_BIN):
     NINJA_ENV_BIN = os.path.join(NINJA_ENV, "Scripts")
 
+
 NINJA_ENV_ACTIVATE = os.path.join(NINJA_ENV_BIN, "activate_this.py")
 
 

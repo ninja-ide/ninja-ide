@@ -314,7 +314,7 @@ class ComboEditor(QDialog):
         obj = self.sender()
         neditable = obj.neditable
         if value:
-            text = "%s (*)" % neditable.display_name
+            text = "\u2022 %s" % neditable.display_name
             self.bar.update_item_text(neditable, text)
         else:
             self.bar.update_item_text(neditable, neditable.display_name)
