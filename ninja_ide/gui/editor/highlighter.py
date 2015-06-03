@@ -123,6 +123,8 @@ BUILT_LEXERS = {
 
 
 def get_lang(extension):
+    if not extension:
+        extension = "py"
     return LEXER_MAP.get(extension, "")
 
 
