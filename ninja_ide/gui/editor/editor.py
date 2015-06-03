@@ -394,8 +394,7 @@ class Editor(QsciScintilla):
             self.SendScintilla(QsciScintilla.SCI_INDICATORCLEARRANGE,
                                0, len(self.text()))
             # Set Color
-            if color.startswith("#"):
-                color = color[1:]
+            color = color.replace("#","")
             self.SendScintilla(QsciScintilla.SCI_INDICSETFORE,
                                indicator_index, int(color, 16))
             # Set Style
