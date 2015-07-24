@@ -183,7 +183,7 @@ TR_PROJECT_SELECT_POST_SCRIPT = tr(
     "Select Post Execution Script File")
 TR_PROJECT_METADATA_RELATED = tr(
     "NINJA-IDE",
-    ("Insert the path of Python Projects related"
+    ("Insert the path of Python Projects related "
      "to this one in order\nto improve Code Completion."))
 TR_PROJECT_METADATA_TIP = tr(
     "NINJA-IDE",
