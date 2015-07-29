@@ -513,6 +513,8 @@ class Editor(QsciScintilla):
         self.setMouseTracking(True)
         if settings.SHOW_TABS_AND_SPACES:
             self.setWhitespaceVisibility(QsciScintilla.WsVisible)
+        else:
+            self.setWhitespaceVisibility(QsciScintilla.WsInvisible)
         self.setIndentationGuides(settings.SHOW_INDENTATION_GUIDE)
 
     def _update_file_metadata(self):
