@@ -1,3 +1,3 @@
-pyrcc4 ninja_ide/ninja_resources.qrc -o ninja_ide/ninja_resources.py
+pyrcc4 ninja_ide/ninja_resources.qrc -o ninja_ide/ninja_resources.py -py3
 
 pylupdate4 ninja_translate ninja.ts

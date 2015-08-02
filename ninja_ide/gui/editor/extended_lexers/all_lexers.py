@@ -27,7 +27,7 @@ from ninja_ide.core import settings
 
 from PyQt4.Qsci import (QsciLexerBash, QsciLexerBatch,
                         QsciLexerCMake, QsciLexerCPP, QsciLexerCSS,
-                        QsciLexerCSharp, 
+                        QsciLexerCSharp,
                         QsciLexerD, QsciLexerDiff, QsciLexerFortran,
                         QsciLexerFortran77, QsciLexerHTML, QsciLexerIDL,
                         QsciLexerJava, QsciLexerJavaScript, QsciLexerLua,
@@ -104,7 +104,7 @@ class PythonLexer(BaseNinjaLexer, QsciLexerPython):
 
     def keywords(self, keyset):
         if keyset == 2:
-            return (b'self super all any basestring bin bool bytearray callable '
+            return ('self super all any basestring bin bool bytearray callable '
                     'chr abs classmethod cmp compile complex delattr dict dir '
                     'divmod enumerate eval execfile file filter float format '
                     'frozenset getattr globals hasattr hash help hex id input '
@@ -333,4 +333,3 @@ class YAMLLexer (BaseNinjaLexer, QsciLexerYAML):
     def __init__(self, *args, **kwargs):
         self._settings_colored = None
         super(YAMLLexer, self).__init__(*args, **kwargs)
-

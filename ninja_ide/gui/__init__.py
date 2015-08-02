@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import sys
 
 from PyQt4.QtGui import QSplashScreen
@@ -139,7 +141,7 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
 
     #Set Stylesheet
     style_applied = False
-    print settings.NINJA_SKIN
+    print(settings.NINJA_SKIN)
     if settings.NINJA_SKIN not in ('Default'):
         file_name = ("%s.qss" % settings.NINJA_SKIN)
         qss_file = file_manager.create_path(resources.NINJA_THEME_DOWNLOAD,

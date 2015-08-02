@@ -19,7 +19,9 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from string import maketrans
+import sys
+if not sys.version_info[0] >= 3:
+    from string import maketrans
 
 from PyQt4.QtGui import QFrame
 from PyQt4.QtGui import QVBoxLayout
@@ -68,8 +70,12 @@ class Notification(QFrame):
         self.setFixedWidth(width)
         self.setGeometry(x, y, self.width(), self.height())
         background_color = str(settings.NOTIFICATION_COLOR)
-        foreground_color = str(settings.NOTIFICATION_COLOR).lower().translate(
-            maketrans('0123456789abcdef', 'fedcba9876543210'))
+        if sys.version_info[0] >= 3:
+            foreground_color = str(settings.NOTIFICATION_COLOR).lower().maketrans(
+                '0123456789abcdef', 'fedcba9876543210')
+        else:
+            foreground_color = str(settings.NOTIFICATION_COLOR).lower().translate(
+                maketrans('0123456789abcdef', 'fedcba9876543210'))
         self._root.setColor(background_color, foreground_color)
         self._root.start(self._duration)
 
