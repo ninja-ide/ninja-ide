@@ -14,7 +14,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
-import python_syntax
+from __future__ import absolute_import
+from . import python_syntax
 
 SYNTAXES = {"python": python_syntax.syntax}
 

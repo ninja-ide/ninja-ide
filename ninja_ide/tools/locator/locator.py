@@ -16,6 +16,7 @@
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 from __future__ import unicode_literals
+from __future__ import print_function
 
 import os
 import sqlite3
@@ -369,7 +370,7 @@ class LocateSymbolsThread(QThread):
                 mapping_symbols[file_path] += results
                 return
             except:
-                print "ResultItem couldn't be loaded, let's analyze it again'"
+                print("ResultItem couldn't be loaded, let's analyze it again'")
         #obtain a symbols handler for this file extension
         symbols_handler = handlers.get_symbols_handler(file_ext)
         if symbols_handler is None:

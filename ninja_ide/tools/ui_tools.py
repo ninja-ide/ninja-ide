@@ -19,7 +19,11 @@ from __future__ import absolute_import
 import os
 import math
 import collections
-from urlparse import urlparse, urlunparse
+import sys
+if sys.version_info[0] >= 3:
+    from urllib.parse import urlparse, urlunparse
+else:
+    from urlparse import urlparse, urlunparse
 
 from PyQt4.QtGui import QApplication
 from PyQt4.QtGui import QWidget

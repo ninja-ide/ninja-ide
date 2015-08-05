@@ -20,6 +20,7 @@
 ###############################################################################
 
 import os
+import sys
 
 from virtualenv import create_environment
 
@@ -62,7 +63,10 @@ from pip import main as pipmain
 try:
     from pip.backwardcompat import xmlrpclib
 except:
-    import xmlrpclib
+    if sys.version_info[0] >= 3:
+        import xmlrpc
+    else:
+        import xmlrpclib
 try:
     from pip.util import get_installed_distributions
 except:
