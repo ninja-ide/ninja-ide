@@ -615,6 +615,7 @@ Rectangle {
         color: "transparent"
         border.width: 1
         border.color: "white"
+        scale: ma.pressed ? 0.8 : 1
         smooth: true
 
         Text {
@@ -626,6 +627,7 @@ Rectangle {
         }
 
         MouseArea {
+            id: ma
             anchors.fill: parent
             onClicked: flipableArea.flipped = !flipableArea.flipped
         }
