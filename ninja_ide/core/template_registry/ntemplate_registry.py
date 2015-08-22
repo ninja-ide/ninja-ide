@@ -52,7 +52,7 @@ class NTemplateRegistry(QObject):
             raise ConflictingTypeForCategory(ptype.type_name, ptype.category)
         else:
             self.__project_types[ptype.compound_name()] = ptype
-            #This is here mostly for convenience
+            # This is here mostly for convenience
             self.__types_by_category.setdefault(ptype.category,
                                                 []).append(ptype)
 

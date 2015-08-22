@@ -70,7 +70,7 @@ class NVirtualFileSystem(QObject):
                 if self.__reverse_project_map[nfile] == project_root:
                     del self.__tree[nfile.file_path]
                     nfile.close()
-            #This might not be needed just being extra cautious
+            # This might not be needed just being extra cautious
             del self.__projects[project_path].model
             del self.__projects[project_path]
             self.emit(SIGNAL("projectClosed(QString)"), project_path)

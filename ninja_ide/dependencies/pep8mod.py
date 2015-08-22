@@ -110,6 +110,7 @@ HUNK_REGEX = re.compile(r'^@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@.*$')
 # a comment which is on a line by itself.
 COMMENT_WITH_NL = tokenize.generate_tokens(['#\n'].pop).send(None)[1] == '#\n'
 
+
 class Options:
     pass
 
@@ -1546,7 +1547,7 @@ class StandardReport(BaseReport):
         for line_number, offset, code, text, doc in self._deferred_print:
             d = {}
             d["filename"] = self.filename
-            d["line_number"] = line_number-1
+            d["line_number"] = line_number - 1
             d["row"] = self.line_offset + line_number
             d["col"] = offset + 1
             d["code"] = code

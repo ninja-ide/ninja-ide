@@ -313,14 +313,16 @@ class Checker(object):
         `callable` is called, the scope at the time this is called will be
         restored, however it will contain any new bindings added to it.
         """
-        self._deferredFunctions.append((callable, self.scopeStack[:], self.offset))
+        self._deferredFunctions.append((callable, self.scopeStack[:],
+            self.offset))
 
     def deferAssignment(self, callable):
         """
         Schedule an assignment handler to be called just after deferred
         function handlers.
         """
-        self._deferredAssignments.append((callable, self.scopeStack[:], self.offset))
+        self._deferredAssignments.append((callable, self.scopeStack[:],
+            self.offset))
 
     def runDeferred(self, deferred):
         """
@@ -431,7 +433,8 @@ class Checker(object):
         if existing and not self.differentForks(node, existing.source):
 
             parent_stmt = self.getParent(value.source)
-            if isinstance(existing, Importation) and isinstance(parent_stmt, ast.For):
+            if isinstance(existing, Importation) and\
+                isinstance(parent_stmt, ast.For):
                 self.report(messages.ImportShadowedByLoopVar,
                             node, value.name, existing.source)
 
@@ -445,7 +448,8 @@ class Checker(object):
                     self.report(messages.RedefinedWhileUnused,
                                 node, value.name, existing.source)
 
-            elif isinstance(existing, Importation) and value.redefines(existing):
+            elif isinstance(existing, Importation) and\
+                value.redefines(existing):
                 existing.redefined.append(node)
 
         self.scope[value.name] = value
@@ -472,7 +476,8 @@ class Checker(object):
 
         scopes = [scope for scope in self.scopeStack[:-1]
                   if isinstance(scope, (FunctionScope, ModuleScope))]
-        if isinstance(self.scope, GeneratorScope) and scopes[-1] != self.scopeStack[-2]:
+        if isinstance(self.scope, GeneratorScope) and\
+            scopes[-1] != self.scopeStack[-2]:
             scopes.append(self.scopeStack[-2])
 
         # try enclosing function scopes and global scope
@@ -489,7 +494,8 @@ class Checker(object):
         # look in the built-ins
         if importStarred or name in self.builtIns:
             return
-        if name == '__path__' and os.path.basename(self.filename) == '__init__.py':
+        if name == '__path__' and\
+            os.path.basename(self.filename) == '__init__.py':
             # the special name __path__ is valid only in packages
             return
 
@@ -511,7 +517,8 @@ class Checker(object):
                 # been accessed already in the current scope, and hasn't
                 # been declared global
                 used = name in scope and scope[name].used
-                if used and used[0] is self.scope and name not in self.scope.globals:
+                if used and used[0] is self.scope and\
+                    name not in self.scope.globals:
                     # then it's probably a mistake
                     self.report(messages.UndefinedLocal,
                                 scope[name].used[1], name, scope[name].source)
@@ -611,7 +618,8 @@ class Checker(object):
             self.builtIns.add('_')
         for example in examples:
             try:
-                tree = compile(example.source, "<doctest>", "exec", ast.PyCF_ONLY_AST)
+                tree = compile(example.source, "<doctest>",
+                    "exec", ast.PyCF_ONLY_AST)
             except SyntaxError:
                 e = sys.exc_info()[1]
                 position = (node_lineno + example.lineno + e.lineno,
@@ -690,7 +698,8 @@ class Checker(object):
         else:
             # must be a Param context -- this only happens for names in function
             # arguments, but these aren't dispatched through here
-            raise RuntimeError("Got impossible expression context: %r" % (node.ctx,))
+            raise RuntimeError("Got impossible expression context: %r" %
+                (node.ctx,))
 
     def RETURN(self, node):
         if node.value and not self.scope.returnValue:

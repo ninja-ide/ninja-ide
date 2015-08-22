@@ -35,7 +35,7 @@ from ninja_ide.core import ipc
 from ninja_ide.core.file_handling import file_manager
 from ninja_ide.tools import json_manager
 
-#Register Components:
+# Register Components:
 #lint:disable
 import ninja_ide.gui.central_widget
 import ninja_ide.gui.status_bar
@@ -111,7 +111,7 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
     #Set the codec for strings (QString)
     QTextCodec.setCodecForCStrings(QTextCodec.codecForName('utf-8'))
 
-    #Translator
+    # Translator
     qsettings = ide.IDE.ninja_settings()
     data_qsettings = ide.IDE.data_settings()
     language = QLocale.system().name()
@@ -131,15 +131,15 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
             QLibraryInfo.location(QLibraryInfo.TranslationsPath))
         app.installTranslator(qtTranslator)
 
-    #Loading Syntax
+    # Loading Syntax
     splash.showMessage("Loading Syntax", Qt.AlignRight | Qt.AlignTop, Qt.black)
     json_manager.load_syntax()
 
-    #Read Settings
+    # Read Settings
     splash.showMessage("Loading Settings", Qt.AlignRight | Qt.AlignTop,
                        Qt.black)
 
-    #Set Stylesheet
+    # Set Stylesheet
     style_applied = False
     print(settings.NINJA_SKIN)
     if settings.NINJA_SKIN not in ('Default'):
@@ -157,7 +157,7 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
                 qss = fileaccess.read()
         app.setStyleSheet(qss)
 
-    #Loading Schemes
+    # Loading Schemes
     splash.showMessage("Loading Schemes",
                        Qt.AlignRight | Qt.AlignTop, Qt.black)
     scheme = qsettings.value('preferences/editor/scheme', "default",
@@ -168,26 +168,26 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
         if file_manager.file_exists(scheme):
             resources.CUSTOM_SCHEME = json_manager.parse(open(scheme))
 
-    #Loading Shortcuts
+    # Loading Shortcuts
     resources.load_shortcuts()
-    #Loading GUI
+    # Loading GUI
     splash.showMessage("Loading GUI", Qt.AlignRight | Qt.AlignTop, Qt.black)
     ninjaide = ide.IDE(start_server)
 
-    #Showing GUI
+    # Showing GUI
     ninjaide.show()
-    #OSX workaround for ninja window not in front
+    # OSX workaround for ninja window not in front
     try:
         ninjaide.raise_()
     except:
         pass  # I really dont mind if this fails in any form
-    #Loading Session Files
+    # Loading Session Files
     splash.showMessage("Loading Files and Projects",
                        Qt.AlignRight | Qt.AlignTop, Qt.black)
 
-    #First check if we need to load last session files
+    # First check if we need to load last session files
     if qsettings.value('preferences/general/loadFiles', True, type=bool):
-        #Files in Main Tab
+        # Files in Main Tab
         files = data_qsettings.value('lastSession/openedFiles', [])
         tempFiles = []
         if files:
@@ -199,10 +199,10 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
 
         # Recent Files
         recent_files = data_qsettings.value('lastSession/recentFiles', [])
-        #Current File
+        # Current File
         current_file = data_qsettings.value(
             'lastSession/currentFile', '', type='QString')
-        #Projects
+        # Projects
         projects = data_qsettings.value('lastSession/projects', [])
     else:
         files = []
@@ -210,20 +210,20 @@ def start_ide(app, filenames, projects_path, extra_plugins, linenos):
         current_file = ''
         projects = []
 
-    #Include files received from console args
+    # Include files received from console args
     file_with_nro = list([(f[0], (f[1] - 1, 0), 0)
                          for f in zip(filenames, linenos)])
     file_without_nro = list([(f, (0, 0), 0) for f in filenames[len(linenos):]])
     files += file_with_nro + file_without_nro
-    #Include projects received from console args
+    # Include projects received from console args
     if projects_path:
         projects += projects_path
     #FIXME: IMPROVE THIS WITH THE NEW WAY OF DO IT
     ninjaide.load_session_files_projects(files, projects,
                                          current_file, recent_files)
-    #Load external plugins
+    # Load external plugins
     #if extra_plugins:
-        #ninjaide.load_external_plugins(extra_plugins)
+    #    ninjaide.load_external_plugins(extra_plugins)
 
     splash.finish(ninjaide)
     ninjaide.notify_plugin_errors()

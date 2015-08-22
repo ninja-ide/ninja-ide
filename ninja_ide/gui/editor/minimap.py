@@ -34,7 +34,7 @@ from ninja_ide import resources
 from ninja_ide.core import settings
 
 
-#QGraphicsOpacityEffect doesn't work in mac cause a Qt Issue: QTBUG-15367
+# QGraphicsOpacityEffect doesn't work in mac cause a Qt Issue: QTBUG-15367
 ACTIVATE_OPACITY = True if sys.platform != 'darwin' else False
 
 
@@ -60,7 +60,9 @@ class MiniMap(QsciScintilla):
         #self.highlighter = None
         #self.lines_count = 0
 
-        self.connect(self._parent, SIGNAL("updateRequest(const QRect&, int)"),
+        self.connect(
+            self._parent,
+            SIGNAL("updateRequest(const QRect&, int)"),
             self.update_visible_area)
 
         if ACTIVATE_OPACITY:
@@ -73,7 +75,8 @@ class MiniMap(QsciScintilla):
         #self.slider.show()
 
     def shutdown(self):
-        self.disconnect(self._parent,
+        self.disconnect(
+            self._parent,
             SIGNAL("updateRequest(const QRect&, int)"),
             self.update_visible_area)
 
@@ -95,7 +98,7 @@ class MiniMap(QsciScintilla):
         self.move(x, 0)
         #fontsize = int(self.width() / settings.MARGIN_LINE)
         #if fontsize < 1:
-            #fontsize = 1
+        #    fontsize = 1
         #font = self.document().defaultFont()
         #font.setPointSize(fontsize)
         #self.setFont(font)
@@ -114,17 +117,17 @@ class MiniMap(QsciScintilla):
 
     #def enterEvent(self, event):
         #if ACTIVATE_OPACITY:
-            #self.animation.setDuration(300)
-            #self.animation.setStartValue(settings.MINIMAP_MIN_OPACITY)
-            #self.animation.setEndValue(settings.MINIMAP_MAX_OPACITY)
-            #self.animation.start()
+        #    self.animation.setDuration(300)
+        #    self.animation.setStartValue(settings.MINIMAP_MIN_OPACITY)
+        #    self.animation.setEndValue(settings.MINIMAP_MAX_OPACITY)
+        #    self.animation.start()
 
     #def leaveEvent(self, event):
         #if ACTIVATE_OPACITY:
-            #self.animation.setDuration(300)
-            #self.animation.setStartValue(settings.MINIMAP_MAX_OPACITY)
-            #self.animation.setEndValue(settings.MINIMAP_MIN_OPACITY)
-            #self.animation.start()
+        #    self.animation.setDuration(300)
+        #    self.animation.setStartValue(settings.MINIMAP_MAX_OPACITY)
+        #    self.animation.setEndValue(settings.MINIMAP_MIN_OPACITY)
+        #    self.animation.start()
 
     #def mousePressEvent(self, event):
         #super(MiniMap, self).mousePressEvent(event)

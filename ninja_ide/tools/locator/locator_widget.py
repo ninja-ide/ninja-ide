@@ -162,9 +162,9 @@ class LocatorWidget(QDialog):
 
     def _create_list_items(self, locations):
         """Create a list of items (using pages for results to speed up)."""
-        #The list is regenerated when the locate metadata is updated
-        #for example: open project, etc.
-        #Create the list items
+        # The list is regenerated when the locate metadata is updated
+        # for example: open project, etc.
+        # Create the list items
         begin = self.items_in_page
         self.items_in_page += self.page_items_step
         locations_view = [x for x in locations[begin:self.items_in_page]]

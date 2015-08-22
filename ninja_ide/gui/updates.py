@@ -117,7 +117,7 @@ class ThreadUpdates(QThread):
 
     def run(self):
         try:
-            #Check for IDE Updates
+            # Check for IDE Updates
             ninja_version = urllib.urlopen(resources.UPDATES_URL)
             ide = json_manager.parse(ninja_version)
         except:

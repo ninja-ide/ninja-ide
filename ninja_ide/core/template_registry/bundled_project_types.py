@@ -67,18 +67,18 @@ class PythonProject(BaseProjectType):
             if not os.path.exists(full_path):
                 os.mkdir(full_path)
 
-        #Create a single init file
+        # Create a single init file
         filepath = os.path.join(self.path, "__init__.py")
         with open(filepath, "w") as base_init:
             self.init_file(base_init, filepath)
 
-        #Create a setup.py
+        # Create a setup.py
         filepath = os.path.join(self.path, "setup.py")
         with open(filepath, "w") as base_setup:
             self.init_file(base_setup, filepath)
             base_setup.write(SETUP_PY_FILE % self.name)
 
-        #Create a basic main file
+        # Create a basic main file
         filepath = os.path.join(self.path, "main.py")
         with open(filepath, "w") as base_main:
             self.init_file(base_main, filepath)

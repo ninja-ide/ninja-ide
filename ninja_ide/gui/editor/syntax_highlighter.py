@@ -80,8 +80,15 @@ class Format(object):
 
     __slots__ = ("name", "tcf")
 
-    def __init__(self, name, color=None, bold=None, italic=None,
-        base_format=None, background=None):
+    def __init__(
+        self,
+        name,
+        color=None,
+        bold=None,
+        italic=None,
+        base_format=None,
+        background=None
+    ):
         self.name = name
         tcf = TextCharFormat()
         if base_format is not None:
@@ -269,8 +276,14 @@ class Scanner(object):
 
 class SyntaxHighlighter(QSyntaxHighlighter):
 
-    def __init__(self, parent, partition_scanner, scanner, formats,
-        neditable=None):
+    def __init__(
+        self,
+        parent,
+        partition_scanner,
+        scanner,
+        formats,
+        neditable=None
+    ):
         """
         :param parent: QDocument or QTextEdit/QPlainTextEdit instance
         'partition_scanner:
@@ -289,7 +302,8 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         self._old_search = None
 
         if self._neditable:
-            self.connect(self._neditable,
+            self.connect(
+                self._neditable,
                 SIGNAL("checkersUpdated(PyQt_PyObject)"),
                 self._rehighlight_checkers)
 
@@ -350,7 +364,12 @@ class SyntaxHighlighter(QSyntaxHighlighter):
         self.__apply_proper_style(char_format, color)
         return char_format
 
-    def __remove_error_highlight(self, char_format, user_data, color_name=None):
+    def __remove_error_highlight(
+        self,
+        char_format,
+        user_data,
+        color_name=None
+    ):
         user_data.error = False
         char_format.setUnderlineStyle(QTextCharFormat.NoUnderline)
         char_format.clearBackground()
@@ -442,7 +461,8 @@ class SyntaxHighlighter(QSyntaxHighlighter):
             return
         for line in lines:
             block = self.document().findBlockByNumber(line)
-            self.document().markContentsDirty(block.position(),
+            self.document().markContentsDirty(
+                block.position(),
                 block.position() + block.length())
             self.rehighlightBlock(block)
 
@@ -477,31 +497,32 @@ class SyntaxHighlighter(QSyntaxHighlighter):
 
 def _create_scheme():
     scheme = {
-      "syntax_comment": dict(color=resources.CUSTOM_SCHEME.get(
-          "Comment", resources.COLOR_SCHEME["Comment"]), italic=True),
-      "syntax_string": resources.CUSTOM_SCHEME.get(
-          "SingleQuotedString", resources.COLOR_SCHEME["SingleQuotedString"]),
-      "syntax_builtin": resources.CUSTOM_SCHEME.get(
-          "Decorator", resources.COLOR_SCHEME["Decorator"]),
-      "syntax_keyword": (resources.CUSTOM_SCHEME.get(
-          "Keyword", resources.COLOR_SCHEME["Keyword"]), True),
-      "syntax_definition": (resources.CUSTOM_SCHEME.get(
-          "FunctionMethodName",
-          resources.COLOR_SCHEME["FunctionMethodName"]), True),
-      "syntax_braces": resources.CUSTOM_SCHEME.get(
-          "Brace", resources.COLOR_SCHEME["Brace"]),
-      "syntax_number": resources.CUSTOM_SCHEME.get(
-          "Number", resources.COLOR_SCHEME["Number"]),
-      "syntax_proper_object": resources.CUSTOM_SCHEME.get(
-          "SelfReference", resources.COLOR_SCHEME["SelfReference"]),
-      "syntax_operators": resources.CUSTOM_SCHEME.get(
-          "Operator", resources.COLOR_SCHEME["Operator"]),
-      "syntax_highlight_word": dict(color=resources.CUSTOM_SCHEME.get(
-          "SelectedWord", resources.COLOR_SCHEME["SelectedWord"]),
-          background=resources.CUSTOM_SCHEME.get(
-          "SelectedWordBackground",
-          resources.COLOR_SCHEME["SelectedWordBackground"])),
-      "syntax_pending": resources.COLOR_SCHEME["Pending"],
+        "syntax_comment": dict(color=resources.CUSTOM_SCHEME.get(
+            "Comment", resources.COLOR_SCHEME["Comment"]), italic=True),
+        "syntax_string": resources.CUSTOM_SCHEME.get(
+            "SingleQuotedString", resources.COLOR_SCHEME["SingleQuotedString"]),
+        "syntax_builtin": resources.CUSTOM_SCHEME.get(
+            "Decorator", resources.COLOR_SCHEME["Decorator"]),
+        "syntax_keyword": (resources.CUSTOM_SCHEME.get(
+            "Keyword", resources.COLOR_SCHEME["Keyword"]), True),
+        "syntax_definition": (resources.CUSTOM_SCHEME.get(
+            "FunctionMethodName",
+            resources.COLOR_SCHEME["FunctionMethodName"]), True),
+        "syntax_braces": resources.CUSTOM_SCHEME.get(
+            "Brace", resources.COLOR_SCHEME["Brace"]),
+        "syntax_number": resources.CUSTOM_SCHEME.get(
+            "Number", resources.COLOR_SCHEME["Number"]),
+        "syntax_proper_object":
+            resources.CUSTOM_SCHEME.get(
+                "SelfReference", resources.COLOR_SCHEME["SelfReference"]),
+            "syntax_operators": resources.CUSTOM_SCHEME.get(
+            "Operator", resources.COLOR_SCHEME["Operator"]),
+        "syntax_highlight_word": dict(color=resources.CUSTOM_SCHEME.get(
+            "SelectedWord", resources.COLOR_SCHEME["SelectedWord"]),
+            background=resources.CUSTOM_SCHEME.get(
+            "SelectedWordBackground",
+            resources.COLOR_SCHEME["SelectedWordBackground"])),
+        "syntax_pending": resources.COLOR_SCHEME["Pending"],
     }
 
     return scheme

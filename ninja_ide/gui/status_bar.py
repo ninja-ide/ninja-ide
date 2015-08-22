@@ -68,14 +68,14 @@ class _StatusBar(QWidget):
             vbox.setSpacing(0)
         else:
             vbox.setSpacing(3)
-        #Search Layout
+        # Search Layout
         self._searchWidget = SearchWidget()
         vbox.addWidget(self._searchWidget)
-        #Replace Layout
+        # Replace Layout
         self._replaceWidget = ReplaceWidget()
         vbox.addWidget(self._replaceWidget)
         self._replaceWidget.setVisible(False)
-        #File system completer
+        # File system completer
         self._fileSystemOpener = FileSystemOpener()
         vbox.addWidget(self._fileSystemOpener)
         self._fileSystemOpener.setVisible(False)
@@ -93,7 +93,7 @@ class _StatusBar(QWidget):
         self.connect(self._fileSystemOpener, SIGNAL("requestHide()"),
                      self.hide_status)
 
-        #Register signals connections
+        # Register signals connections
         connections = (
             {'target': 'main_container',
              'signal_name': 'updateLocator(QString)',
@@ -454,5 +454,5 @@ class FileSystemOpener(QWidget):
         self.pathLine.selectAll()
 
 
-#Register StatusBar
+# Register StatusBar
 status = _StatusBar()

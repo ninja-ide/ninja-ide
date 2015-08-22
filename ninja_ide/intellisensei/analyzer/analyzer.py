@@ -200,7 +200,7 @@ class Analyzer(object):
                 continue
             name = expand_attribute(base)
             clazz.add_parent(name)
-        #TODO: Decotator
+        # TODO: Decotator
 #        for decorator in symbol.decorator_list:
 #            clazz.decorators.append(decorator.id)
         # PARSE FUNCTIONS AND ATTRIBUTES
@@ -217,10 +217,10 @@ class Analyzer(object):
     def _process_function(self, symbol, parent=None):
         """Process an ast.FunctionDef object to extract data."""
         function = model.Function(symbol.name)
-        #TODO: Decorators
-        #We are not going to collect data from decorators yet.
+        # TODO: Decorators
+        # We are not going to collect data from decorators yet.
 #        for decorator in symbol.decorator_list:
-            #Decorators can be: Name, Call, Attributes
+            # Decorators can be: Name, Call, Attributes
 #            function.decorators.append(decorator.id)
         if symbol.args.vararg is not None:
             assign = model.Assign(symbol.args.vararg)
@@ -230,7 +230,7 @@ class Analyzer(object):
             assign = model.Assign(symbol.args.kwarg)
             assign.add_data(symbol.lineno, '__builtin__.dict', None, None)
             function.args[assign.name] = assign
-        #We store the arguments to compare with default backwards
+        # We store the arguments to compare with default backwards
         defaults = []
         for value in symbol.args.defaults:
             #TODO: In some cases we can have something like: a=os.path

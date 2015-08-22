@@ -5,35 +5,36 @@
 from setuptools import find_packages
 packages = find_packages(exclude=["tests"])
 
-import warnings 
+import warnings
 #ignore the sets DeprecationWarning
-warnings.simplefilter('ignore', DeprecationWarning) 
-import py2exe
-warnings.resetwarnings() 
+warnings.simplefilter('ignore', DeprecationWarning)
+warnings.resetwarnings()
 
 from distutils.core import setup
-        
+
 target = {
-    'script' : "ninja-ide.py",
-    'version' : "2.1",
-    'company_name' : "",
-    'copyright' : "GPL",
-    'name' : "Ninja", 
-    'dest_base' : "Ninja", 
+    'script': "ninja-ide.py",
+    'version': "2.1",
+    'company_name': "",
+    'copyright': "GPL",
+    'name': "Ninja",
+    'dest_base': "Ninja",
     'icon_resources': [(1, "ninja.ico")]
 }
 
 setup(
-    data_files = [],
-    
-    zipfile = None,
+    data_files=[],
 
-    options = {
+    zipfile=None,
+
+    options={
         "py2exe": {
-            "compressed": 0, 
+            "compressed": 0,
               "optimize": 0,
               "includes": ['sip', 'PyQt4.QtNetwork', 'win32com'],
-              "excludes": ['_gtkagg', '_tkagg', 'bsddb', 'curses', 'email', 'pywin.debugger', 'pywin.debugger.dbgcon', 'pywin.dialogs', 'tcl', 'Tkconstants', 'Tkinter'],
+              "excludes": ['_gtkagg', '_tkagg', 'bsddb', 'curses', 'email',
+                  'pywin.debugger', 'pywin.debugger.dbgcon', 'pywin.dialogs',
+                  'tcl', 'Tkconstants', 'Tkinter'],
               "packages": packages,
               "bundle_files": 1,
               "dist_dir": "dist",
@@ -43,9 +44,9 @@ setup(
               "custom_boot_script": '',
             }
         },
-    console = [],
-    windows = [target],
-    service = [],
-    com_server = [],
-    ctypes_com_server = []
+    console=[],
+    windows=[target],
+    service=[],
+    com_server=[],
+    ctypes_com_server=[]
 )

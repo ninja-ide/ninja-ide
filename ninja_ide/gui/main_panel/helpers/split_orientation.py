@@ -14,7 +14,8 @@ from ninja_ide.tools import ui_tools
 class SplitOrientation(QDialog):
 
     def __init__(self, parent=None):
-        super(SplitOrientation, self).__init__(parent,
+        super(SplitOrientation, self).__init__(
+            parent,
             Qt.Dialog | Qt.FramelessWindowHint)
         self._operations = {'row': False, 'col': True}
         self.setModal(True)
@@ -32,7 +33,8 @@ class SplitOrientation(QDialog):
         vbox.setSpacing(0)
         vbox.addWidget(view)
 
-        self.connect(self._root, SIGNAL("selected(QString)"),
+        self.connect(
+            self._root, SIGNAL("selected(QString)"),
             self._split_operation)
 
     def _split_operation(self, orientation):

@@ -106,21 +106,21 @@ class IDE(QMainWindow):
         self.setWindowTitle('NINJA-IDE {Ninja-IDE Is Not Just Another IDE}')
         self.setMinimumSize(750, 500)
         QToolTip.setFont(QFont(settings.FONT.family(), 10))
-        #Load the size and the position of the main window
+        # Load the size and the position of the main window
         self.load_window_geometry()
         self.__project_to_open = 0
 
-        #Editables
+        # Editables
         self.__neditables = {}
-        #Filesystem
+        # Filesystem
         self.filesystem = nfilesystem.NVirtualFileSystem()
 
-        #Sessions handler
+        # Sessions handler
         self._session = None
-        #Opacity
+        # Opacity
         self.opacity = settings.MAX_OPACITY
 
-        #ToolBar
+        # ToolBar
         self.toolbar = QToolBar(self)
         if settings.IS_MAC_OS:
             self.toolbar.setIconSize(QSize(36, 36))
@@ -138,7 +138,7 @@ class IDE(QMainWindow):
         #Notificator
         self.notification = notification.Notification(self)
 
-        #Plugin Manager
+        # Plugin Manager
         # CHECK ACTIVATE PLUGINS SETTING
         #services = {
             #'editor': plugin_services.MainService(),
@@ -152,10 +152,10 @@ class IDE(QMainWindow):
         self.plugin_manager = plugin_manager.PluginManager(resources.PLUGINS,
                                                            serviceLocator)
         self.plugin_manager.discover()
-        #load all plugins!
+        # load all plugins!
         self.plugin_manager.load_all()
 
-        #Tray Icon
+        # Tray Icon
         self.trayIcon = updates.TrayIconUpdates(self)
         self.connect(self.trayIcon, SIGNAL("closeTrayIcon()"),
                      self._close_tray_icon)
@@ -171,7 +171,8 @@ class IDE(QMainWindow):
                     QKeySequence(Qt.ALT + key), self, i)
             key += 1
             self.connect(short, SIGNAL("activated()"), self._change_tab_index)
-        short = ui_tools.TabShortcuts(QKeySequence(Qt.ALT + Qt.Key_0), self, 10)
+        short = ui_tools.TabShortcuts(QKeySequence(Qt.ALT + Qt.Key_0), self,
+            10)
         self.connect(short, SIGNAL("activated()"), self._change_tab_index)
 
         # Register menu categories
@@ -188,7 +189,7 @@ class IDE(QMainWindow):
         self.register_service('ide', self)
         self.register_service('toolbar', self.toolbar)
         self.register_service('filesystem', self.filesystem)
-        #Register signals connections
+        # Register signals connections
         connections = (
             {'target': 'main_container',
              'signal_name': 'fileSaved(QString)',
@@ -225,7 +226,7 @@ class IDE(QMainWindow):
         menu_bar = IDE.get_service('menu_bar')
         if menu_bar:
             menu_bar.load_menu(self)
-            #These two are the same service, I think that's ok
+            # These two are the same service, I think that's ok
             menu_bar.load_toolbar(self)
 
         #Start server if needed
@@ -459,7 +460,7 @@ class IDE(QMainWindow):
         """Load external plugins, the ones added to ninja throw the cmd."""
         for path in paths:
             self.plugin_manager.add_plugin_dir(path)
-        #load all plugins!
+        # load all plugins!
         self.plugin_manager.discover()
         self.plugin_manager.load_all()
 
@@ -626,24 +627,24 @@ class IDE(QMainWindow):
                     self.Session, self)
         #qsettings.setValue('preferences/general/toolbarArea',
             #self.toolBarArea(self.toolbar))
-        #Save if the windows state is maximixed
+        # Save if the windows state is maximixed
         if(self.isMaximized()):
             qsettings.setValue("window/maximized", True)
         else:
             qsettings.setValue("window/maximized", False)
-            #Save the size and position of the mainwindow
+            # Save the size and position of the mainwindow
             qsettings.setValue("window/size", self.size())
             qsettings.setValue("window/pos", self.pos())
         self.central.save_configuration()
 
-        #Save the toolbar visibility
+        # Save the toolbar visibility
         qsettings.setValue("window/hide_toolbar", not self.toolbar.isVisible())
 
         #else:
             #qsettings.setValue("window/hide_toolbar", False)
-        #Save Misc state
+        # Save Misc state
         #qsettings.setValue("window/show_region1", self.misc.isVisible())
-        #Save Profiles
+        # Save Profiles
         #if self.profile is not None:
             #self.actions.save_profile(self.profile)
         #else:
@@ -702,18 +703,18 @@ class IDE(QMainWindow):
                 (translations.TR_IDE_CONFIRM_EXIT_BODY % {'files': txt}),
                 QMessageBox.Yes, QMessageBox.No, QMessageBox.Cancel)
             if val == QMessageBox.Yes:
-                #Saves all open files
+                # Saves all open files
                 self._save_unsaved_files(unsaved_files)
             if val == QMessageBox.Cancel:
                 event.ignore()
                 return
         self.save_settings()
         self.emit(SIGNAL("goingDown()"))
-        #close python documentation server (if running)
+        # close python documentation server (if running)
         main_container.close_python_doc()
-        #Shutdown PluginManager
+        # Shutdown PluginManager
         self.plugin_manager.shutdown()
-        #completion_daemon.shutdown_daemon()
+        # completion_daemon.shutdown_daemon()
         super(IDE, self).closeEvent(event)
 
     def notify_plugin_errors(self):
@@ -723,7 +724,7 @@ class IDE(QMainWindow):
             plugin_error_dialog = traceback_widget.PluginErrorDialog()
             for err_tuple in errors:
                 plugin_error_dialog.add_traceback(err_tuple[0], err_tuple[1])
-            #show the dialog
+            # show the dialog
             plugin_error_dialog.exec_()
 
     def show_message(self, message, duration=3000):
@@ -761,7 +762,7 @@ class IDE(QMainWindow):
 
     def show_python_detection(self):
         """Show Python detection dialog for windows."""
-        #TODO: Notify the user when no python version could be found
+        # TODO: Notify the user when no python version could be found
         suggested = settings.detect_python_path()
         if suggested:
             dialog = python_detect_dialog.PythonDetectDialog(suggested, self)

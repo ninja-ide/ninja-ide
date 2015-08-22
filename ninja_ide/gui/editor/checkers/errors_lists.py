@@ -35,10 +35,9 @@ from ninja_ide.gui.explorer.explorer_container import ExplorerContainer
 
 
 class ErrorsWidget(QDialog):
-
-###############################################################################
-# ERRORS WIDGET SIGNALS
-###############################################################################
+    ###########################################################################
+    # ERRORS WIDGET SIGNALS
+    ###########################################################################
     """
     pep8Activated(bool)
     lintActivated(bool)

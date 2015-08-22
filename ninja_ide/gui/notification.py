@@ -71,11 +71,11 @@ class Notification(QFrame):
         self.setGeometry(x, y, self.width(), self.height())
         background_color = str(settings.NOTIFICATION_COLOR)
         if sys.version_info[0] >= 3:
-            foreground_color = str(settings.NOTIFICATION_COLOR).lower().maketrans(
-                '0123456789abcdef', 'fedcba9876543210')
+            foreground_color = str(settings.NOTIFICATION_COLOR).lower().\
+                maketrans('0123456789abcdef', 'fedcba9876543210')
         else:
-            foreground_color = str(settings.NOTIFICATION_COLOR).lower().translate(
-                maketrans('0123456789abcdef', 'fedcba9876543210'))
+            foreground_color = str(settings.NOTIFICATION_COLOR).lower().\
+                translate(maketrans('0123456789abcdef', 'fedcba9876543210'))
         self._root.setColor(background_color, foreground_color)
         self._root.start(self._duration)
 

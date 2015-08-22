@@ -101,13 +101,13 @@ class MainService(QObject):
         """
         Return the project where this file belongs, or an empty string.
         """
-        #if not editor try to get the current
+        # if not editor try to get the current
         if editorWidget is None:
             editorWidget = self._main.get_current_editor()
         belongs = ''
         if editorWidget is None:
             return belongs
-        #get the opened projects
+        # get the opened projects
         opened_projects_obj = self._explorer.get_opened_projects()
         for project in opened_projects_obj:
             if file_manager.belongs_to_folder(project.path, editorWidget.ID):
@@ -473,7 +473,7 @@ class ExplorerService(QObject):
         @scope: String with the menu scope (all, project, folder, file)
         """
         if scope is None:
-            #default behavior show ALL
+            # default behavior show ALL
             scope = plugin_util.ContextMenuScope(project=True, folder=True,
                 files=True)
         if self._explorer._treeProjects:

@@ -21,7 +21,8 @@ from __future__ import absolute_import
 #from PyQt4.QtCore import SIGNAL
 
 from ninja_ide.tools.logger import NinjaLogger
-logger = NinjaLogger('ninja_ide.core.file_handling.filesystem_notifications.darwin')
+logger = NinjaLogger(
+    'ninja_ide.core.file_handling.filesystem_notifications.darwin')
 DEBUG = logger.debug
 
 from ninja_ide.core.file_handling.filesystem_notifications import base_watcher

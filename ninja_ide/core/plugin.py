@@ -41,7 +41,7 @@ class Plugin(QObject):
         klass = self.__class__
         plugin_name = "%s.%s" % (klass.__module__, klass.__name__)
         self.logger = NinjaLogger('ninja_ide.plugins.%s' % plugin_name)
-        #set the path!
+        # set the path!
         try:
             self_module = self.__module__
             path = os.path.abspath(sys.modules[self_module].__file__)

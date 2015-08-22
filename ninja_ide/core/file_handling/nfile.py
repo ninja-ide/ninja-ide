@@ -195,7 +195,7 @@ class NFile(QObject):
         f.write(encoded_stream)
         f.flush()
         f.close()
-        #SIGNAL: Will save (temp, definitive) to warn folder to do something
+        # SIGNAL: Will save (temp, definitive) to warn folder to do something
         self.emit(SIGNAL("willSave(QString, QString)"),
                   swap_save_path, save_path)
         self.__mtime = os.path.getmtime(swap_save_path)
@@ -243,7 +243,7 @@ class NFile(QObject):
         """
         if self._exists():
             signal_handler = SignalFlowControl()
-            #SIGNALL: WILL MOVE TO, to warn folder to exist
+            # SIGNALL: WILL MOVE TO, to warn folder to exist
             self.emit(SIGNAL("willMove(Qt_PyQtObject, QString, QString)"),
                       signal_handler,
                       self._file_path,
@@ -271,7 +271,7 @@ class NFile(QObject):
         """
         if self._exists():
             signal_handler = SignalFlowControl()
-            #SIGNALL: WILL COPY TO, to warn folder to exist
+            # SIGNALL: WILL COPY TO, to warn folder to exist
             self.emit(SIGNAL("willCopyTo(Qt_PyQtObject, QString, QString)"),
                       signal_handler, self._file_path, new_path)
             if signal_handler.stopped():
@@ -290,7 +290,7 @@ class NFile(QObject):
         """
         This deletes the object and closes the file.
         """
-        #if created but exists this file migth to someone else
+        # if created but exists this file migth to someone else
         self.close()
         if ((not self.__created) or force) and self._exists():
             DEBUG("Deleting our own NFile %s" % self._file_path)

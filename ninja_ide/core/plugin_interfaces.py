@@ -19,9 +19,9 @@
 ###############################################################################
 # ABSTRACT CLASSES (This file contains useful interfaces for plugins)
 
-#We know, Python does not need interfaces, but this file is useful as
-#documentation. Is not mandatory inherit from these interfaces but you SHOULD
-#implement the methods inside them.
+# We know, Python does not need interfaces, but this file is useful as
+# documentation. Is not mandatory inherit from these interfaces but you SHOULD
+# implement the methods inside them.
 ###############################################################################
 
 
@@ -60,14 +60,14 @@ class IProjectTypeHandler(object):
     Interface to create a Project type handler
     """
 
-    #mandatory
+    # mandatory
     def get_pages(self):
         """
         Returns a collection of QWizardPage
         """
         pass
 
-    #mandatory
+    # mandatory
     def on_wizard_finish(self, wizard):
         """
         Called when the user finish the wizard
@@ -101,7 +101,7 @@ class ISymbolsHandler:
      }
     """
 
-    #mandatory
+    # mandatory
     def obtain_symbols(self, source):
         """
         Returns the dict needed by the tree
@@ -114,7 +114,7 @@ class IPluginPreferences:
     """
     Interface for plugin preferences widget
     """
-    #mandatory
+    # mandatory
     def save(self):
         """
         Save the plugin data as NINJA-IDE settings

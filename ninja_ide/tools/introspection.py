@@ -91,7 +91,7 @@ def _parse_function(symbol, with_docstrings):
     func = {'functions': {}}
 
     func_name = symbol.name + '('
-    #We store the arguments to compare with default backwards
+    # We store the arguments to compare with default backwards
     defaults = []
     for value in symbol.args.defaults:
         #TODO: In some cases we can have something like: a=os.path
@@ -261,7 +261,7 @@ def _parse_function_simplified(symbol, member_of=""):
         func_name = member_of + " : " + symbol.name + '('
     else:
         func_name = symbol.name + '('
-    #We store the arguments to compare with default backwards
+    # We store the arguments to compare with default backwards
     defaults = []
     for value in symbol.args.defaults:
         #TODO: In some cases we can have something like: a=os.path

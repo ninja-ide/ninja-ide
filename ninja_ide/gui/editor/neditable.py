@@ -39,13 +39,13 @@ class NEditable(QObject):
     def __init__(self, nfile=None):
         super(NEditable, self).__init__()
         self.__editor = None
-        #Create NFile
+        # Create NFile
         self._nfile = nfile
         self.text_modified = False
         self._has_checkers = False
         self.ignore_checkers = False
 
-        #Checkers:
+        # Checkers:
         self.registered_checkers = []
         self._checkers_executed = 0
 
@@ -58,7 +58,7 @@ class NEditable(QObject):
                 lambda: self.emit(SIGNAL("fileChanged(PyQt_PyObject)"), self))
 
     def extension(self):
-        #FIXME This sucks, we should have a way to define lang
+        # FIXME This sucks, we should have a way to define lang
         if self._nfile is None:
             return ""
         return self._nfile.file_ext()
@@ -91,7 +91,7 @@ class NEditable(QObject):
             else:
                 self.ignore_checkers = False
 
-        #New file then try to add a coding line
+        # New file then try to add a coding line
         if not content:
             helpers.insert_coding_line(self.__editor)
 
