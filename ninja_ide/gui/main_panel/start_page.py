@@ -42,15 +42,20 @@ class StartPage(QWidget):
 
         self.load_items()
 
-        self.connect(self.root, SIGNAL("openProject(QString)"),
+        self.connect(
+            self.root, SIGNAL("openProject(QString)"),
             self._open_project)
-        self.connect(self.root, SIGNAL("removeProject(QString)"),
+        self.connect(
+            self.root, SIGNAL("removeProject(QString)"),
             self._on_click_on_delete)
-        self.connect(self.root, SIGNAL("markAsFavorite(QString, bool)"),
+        self.connect(
+            self.root, SIGNAL("markAsFavorite(QString, bool)"),
             self._on_click_on_favorite)
-        self.connect(self.root, SIGNAL("openPreferences()"),
+        self.connect(
+            self.root, SIGNAL("openPreferences()"),
             lambda: self.emit(SIGNAL("openPreferences()")))
-        self.connect(self.root, SIGNAL("newFile()"),
+        self.connect(
+            self.root, SIGNAL("newFile()"),
             lambda: self.emit(SIGNAL("newFile()")))
 
         self.root.set_year(str(datetime.datetime.now().year))
@@ -80,23 +85,23 @@ class StartPage(QWidget):
         listByFavorites = []
         listNoneFavorites = []
         recent_projects_dict = dict(settings.value('recentProjects', {}))
-        #Filter for favorites
+        # Filter for favorites
         for recent_project_path, content in list(recent_projects_dict.items()):
             if bool(dict(content)["isFavorite"]):
-                listByFavorites.append((recent_project_path,
-                    content["lastopen"]))
+                listByFavorites.append(
+                    (recent_project_path, content["lastopen"]))
             else:
-                listNoneFavorites.append((recent_project_path,
-                    content["lastopen"]))
+                listNoneFavorites.append(
+                    (recent_project_path, content["lastopen"]))
         if len(listByFavorites) > 1:
             # sort by date favorites
-            listByFavorites = sorted(listByFavorites,
-                key=lambda date: listByFavorites[1])
+            listByFavorites = sorted(
+                listByFavorites, key=lambda date: listByFavorites[1])
 
         if len(listNoneFavorites) > 1:
-            #sort by date last used
-            listNoneFavorites = sorted(listNoneFavorites,
-                key=lambda date: listNoneFavorites[1])
+            # sort by date last used
+            listNoneFavorites = sorted(
+                listNoneFavorites, key=lambda date: listNoneFavorites[1])
 
         for recent_project_path in listByFavorites:
             path = recent_project_path[0]

@@ -35,8 +35,8 @@ from ninja_ide.tools.completion import completer
 from ninja_ide.tools.completion import completion_daemon
 
 
-#Because my python doesn't have it, and is not in the web docs either
-#but trust me, it exists!
+# Because my python doesn't have it, and is not in the web docs either
+# but trust me, it exists!
 _TOKEN_NL = 54
 
 
@@ -93,8 +93,8 @@ class CodeCompletion(object):
                 in generate_tokens(StringIO(code).readline):
                 token_code.append((tkn_type, tkn_str, pos, line))
         except TokenError:
-            #This is an expected situation, where i don't want to do anything
-            #possible an unbalanced brace like: func(os.p| (| = cursor-end)
+            # This is an expected situation, where i don't want to do anything
+            # possible an unbalanced brace like: func(os.p| (| = cursor-end)
             pass
         except IndentationError:
             return []
@@ -118,17 +118,17 @@ class CodeCompletion(object):
         while keep_exploring:
             is_indented = line[3].startswith(' ')
             is_definition = line[1] in ('def', 'class')
-            #Skip lines that are not def or class
+            # Skip lines that are not def or class
             if is_indented and is_definition:
                 new_indent = self.patIndent.match(line[3])
                 if new_indent is not None:
                     new_indent = len(new_indent.group())
-                #We only care about the function where we are
+                # We only care about the function where we are
                 if new_indent < indent:
                     indent = new_indent
-                    #We need the "previous_line" because we are exploring
-                    #the tokens backwards, and when we reach to def or class
-                    #the actual name was in the line before.
+                    # We need the "previous_line" because we are exploring
+                    # the tokens backwards, and when we reach to def or class
+                    # the actual name was in the line before.
                     scopes.insert(0, previous_line)
             elif not is_indented and is_definition:
                 scopes.insert(0, previous_line)

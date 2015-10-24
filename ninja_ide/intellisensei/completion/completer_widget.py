@@ -126,7 +126,7 @@ class CodeCompletionWidget(QFrame):
         desktop_geometry = self.desktop.availableGeometry(self._editor)
         point = self._editor.mapToGlobal(cr.topLeft())
         cr.moveTopLeft(point)
-        #Check new position according desktop geometry
+        # Check new position according desktop geometry
         width = (self.completion_list.sizeHintForColumn(0) +
             self.completion_list.verticalScrollBar().sizeHint().width() + 10)
         height = 200

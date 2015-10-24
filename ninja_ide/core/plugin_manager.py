@@ -24,14 +24,14 @@ import shutil
 import copy
 import zipfile
 import traceback
-#lint:disable
+# lint:disable
 try:
     from urllib.request import urlopen
     from urllib.error import URLError
 except ImportError:
     from urllib2 import urlopen
     from urllib2 import URLError
-#lint:enable
+# lint:enable
 
 from ninja_ide import resources
 from ninja_ide.tools.logger import NinjaLogger
@@ -101,7 +101,7 @@ class PluginManagerException(Exception):
     pass
 
 
-#Singleton
+# Singleton
 __pluginManagerInstance = None
 
 
@@ -111,7 +111,7 @@ def PluginManager(*args, **kw):
         __pluginManagerInstance = __PluginManager(*args, **kw)
     return __pluginManagerInstance
 
-#Extension of the NINJA-IDE plugin
+# Extension of the NINJA-IDE plugin
 PLUGIN_EXTENSION = '.plugin'
 
 
@@ -126,20 +126,20 @@ class __PluginManager(object):
         @param service_loctor: ServiceLocator object.
         '''
         self._service_locator = service_locator
-        #new!
+        # new!
         self._plugins_by_dir = {}
-        #add all the plugins paths
+        # add all the plugins paths
         for path in self.__create_list(plugins_dir):
             self.add_plugin_dir(path)
-        #end new!
-        #self._plugins_dir = plugins_dir
+        # end new!
+        # self._plugins_dir = plugins_dir
         self._errors = []
-        #found plugins
-        #example: ["logger", "my_plugin"]
+        # found plugins
+        # example: ["logger", "my_plugin"]
         self._found_plugins = []
-        #active plugins
-        #example: {"logger": (LoggerIntance, metadata),
-        #    "my_plugin": (MyPluginInstance, metadata)}
+        # active plugins
+        # example: {"logger": (LoggerIntance, metadata),
+        #     "my_plugin": (MyPluginInstance, metadata)}
         self._active_plugins = {}
 
     def __create_list(self, obj):
@@ -288,9 +288,9 @@ class __PluginManager(object):
             sys.path.insert(1, dir_name)
             module = __import__(module, globals(), locals(), [])
             klass = getattr(module, klassname)
-            #Instanciate the plugin
+            # Instanciate the plugin
             plugin_instance = klass(self._service_locator, metadata=metadata)
-            #return the plugin instance
+            # return the plugin instance
             return plugin_instance
         except(ImportError, AttributeError) as reason:
             raise PluginManagerException('Error loading "%s": %s' %
@@ -315,23 +315,23 @@ class __PluginManager(object):
                     try:
                         plugin_instance = self._load_module(module,
                             klassname, plugin_structure, dir_name)
-                        #set a get_plugin method to get the reference to other
-                        #setattr(plugin_instance,'get_plugin',self.__getitem__)
-                        #call a special method *initialize* in the plugin!
+                        # set a get_plugin method to get the reference to other
+                        # setattr(plugin_instance,'get_plugin',self.__getitem__)
+                        # call a special method *initialize* in the plugin!
                         plugin_instance.metadata = plugin_structure
                         logger.info("Calling initialize (%s)", plugin_name)
                         plugin_instance.initialize()
-                        #tuple (instance, metadata)
+                        # tuple (instance, metadata)
                         plugin_metadata = (plugin_instance, plugin_structure)
                         self._active_plugins[plugin_name] = plugin_metadata
                     except (PluginManagerException, Exception) as reason:
                         logger.error("Not instanciated (%s): %s", plugin_name,
                             reason)
-                        #remove the plugin because has errors
+                        # remove the plugin because has errors
                         self._found_plugins.remove(plugin_name)
                         traceback_msg = traceback.format_exc()
                         plugin_name = plugin_name.replace(ext, '')
-                        #add the traceback to errors
+                        # add the traceback to errors
                         self._add_error(plugin_name, traceback_msg)
                     else:
                         logger.info("Successfuly initialized (%s)",
@@ -339,13 +339,13 @@ class __PluginManager(object):
 
     def load_all(self):
         for dir, pl in list(self._plugins_by_dir.items()):
-            #Copy the list because may be we REMOVE item while iterate!
+            # Copy the list because may be we REMOVE item while iterate!
             found_plugins_aux = copy.copy(pl)
             for plugin_name in found_plugins_aux:
                 self.load(plugin_name, dir)
 
     def load_all_external(self, plugin_path):
-        #Copy the list because may be we REMOVE item while iterate!
+        # Copy the list because may be we REMOVE item while iterate!
         found_plugins_aux = copy.copy(self._found_plugins)
         for plugin_name in found_plugins_aux:
             self.load(plugin_name, plugin_path)
@@ -353,7 +353,7 @@ class __PluginManager(object):
     def unload(self, plugin_name):
         try:
             plugin_object = self._active_plugins[plugin_name][0]
-            #call a special method *finish* in the plugin!
+            # call a special method *finish* in the plugin!
             plugin_object.finish()
             del self._active_plugins[plugin_name]
         except Exception as reason:
@@ -362,7 +362,7 @@ class __PluginManager(object):
             logger.info("Successfuly finished (%s)", plugin_name)
 
     def unload_all(self):
-        #Copy the list because may be we REMOVE item while iterate!
+        # Copy the list because may be we REMOVE item while iterate!
         active_plugins_aux = copy.copy(self._active_plugins)
         for plugin_name in active_plugins_aux:
             self.unload(plugin_name)
@@ -437,23 +437,23 @@ def download_plugin(file_):
     Download a plugin specified by file_
     '''
     global PLUGIN_EXTENSION
-    #get all the .plugin files in local filesystem
+    # get all the .plugin files in local filesystem
     plugins_installed_before = set(__get_all_plugin_descriptors())
-    #download the plugin
+    # download the plugin
     fileName = os.path.join(resources.PLUGINS, os.path.basename(file_))
     content = urlopen(file_)
     f = open(fileName, 'wb')
     f.write(content.read())
     f.close()
-    #create the zip
+    # create the zip
     zipFile = zipfile.ZipFile(fileName, 'r')
     zipFile.extractall(resources.PLUGINS)
     zipFile.close()
-    #clean up the enviroment
+    # clean up the enviroment
     os.remove(fileName)
-    #get the name of the last installed plugin
+    # get the name of the last installed plugin
     plugins_installed_after = set(__get_all_plugin_descriptors())
-    #using set operations get the difference that is the new plugin
+    # using set operations get the difference that is the new plugin
     new_plugin = (plugins_installed_after - plugins_installed_before).pop()
     return new_plugin
 
@@ -461,20 +461,20 @@ def download_plugin(file_):
 def manual_install(file_):
     """Copy zip file and install."""
     global PLUGIN_EXTENSION
-    #get all the .plugin files in local filesystem
+    # get all the .plugin files in local filesystem
     plugins_installed_before = set(__get_all_plugin_descriptors())
-    #copy the plugin
+    # copy the plugin
     fileName = os.path.join(resources.PLUGINS, os.path.basename(file_))
     shutil.copyfile(file_, fileName)
-    #extract the zip
+    # extract the zip
     zipFile = zipfile.ZipFile(fileName, 'r')
     zipFile.extractall(resources.PLUGINS)
     zipFile.close()
-    #clean up the enviroment
+    # clean up the enviroment
     os.remove(fileName)
-    #get the name of the last installed plugin
+    # get the name of the last installed plugin
     plugins_installed_after = set(__get_all_plugin_descriptors())
-    #using set operations get the difference that is the new plugin
+    # using set operations get the difference that is the new plugin
     new_plugin = (plugins_installed_after - plugins_installed_before).pop()
     return new_plugin
 
@@ -492,12 +492,12 @@ def has_dependencies(plug):
             pd_file = os.path.join(PLUGINS, p['plugin-descriptor'])
             p_json = json_manager.read_json(pd_file)
             module = p_json.get('module')
-            #plugin_module/requirements.txt
+            # plugin_module/requirements.txt
             req_file = os.path.join(os.path.join(PLUGINS, module),
                 REQUIREMENTS)
             if os.path.isfile(req_file):
                 return (True, COMMAND_FOR_PIP_INSTALL % req_file)
-            #the plugin was found but no requirement then break!
+            # the plugin was found but no requirement then break!
             break
     return (False, None)
 
@@ -513,7 +513,7 @@ def update_local_plugin_descriptor(plugins):
     if os.path.isfile(resources.PLUGINS_DESCRIPTOR):
         structure = json_manager.read_json(resources.PLUGINS_DESCRIPTOR)
     for plug_list in plugins:
-        #create the plugin data
+        # create the plugin data
         plug = {}
         plug['name'] = plug_list[0]
         plug['version'] = plug_list[1]
@@ -522,7 +522,7 @@ def update_local_plugin_descriptor(plugins):
         plug['home'] = plug_list[4]
         plug['download'] = plug_list[5]
         plug['plugin-descriptor'] = plug_list[6]
-        #append the plugin data
+        # append the plugin data
         structure.append(plug)
     json_manager.write_json(structure, resources.PLUGINS_DESCRIPTOR)
 
@@ -535,14 +535,14 @@ def uninstall_plugin(plug):
     structure = []
     if os.path.isfile(resources.PLUGINS_DESCRIPTOR):
         structure = json_manager.read_json(resources.PLUGINS_DESCRIPTOR)
-    #copy the strcuture we iterate and remove at the same time
+    # copy the strcuture we iterate and remove at the same time
     structure_aux = copy.copy(structure)
     for plugin in structure_aux:
         if plugin["name"] == plugin_name:
             fileName = plugin["plugin-descriptor"]
             structure.remove(plugin)
             break
-    #open <plugin>.plugin file and get the module to remove
+    # open <plugin>.plugin file and get the module to remove
     fileName = os.path.join(resources.PLUGINS, fileName)
     plugin = json_manager.read_json(fileName)
     module = plugin.get('module')
@@ -551,17 +551,17 @@ def uninstall_plugin(plug):
         folders = [pluginDir]
         for root, dirs, files in os.walk(pluginDir):
             pluginFiles = [os.path.join(root, f) for f in files]
-            #remove all files
+            # remove all files
             list(map(os.remove, pluginFiles))
-            #collect subfolders
+            # collect subfolders
             folders += [os.path.join(root, d) for d in dirs]
         folders.reverse()
         for f in folders:
             if os.path.isdir(f):
                 os.removedirs(f)
-        #remove ths plugin_name.plugin file
+        # remove ths plugin_name.plugin file
         os.remove(fileName)
-    #write the new info
+    # write the new info
     json_manager.write_json(structure, resources.PLUGINS_DESCRIPTOR)
 
 
@@ -574,7 +574,7 @@ if __name__ == '__main__':
     services = {}
     sl = ServiceLocator(services)
     pm = PluginManager(folders, sl)
-    #There are not plugins yet...lets discover
+    # There are not plugins yet...lets discover
     pm.discover()
     logger.info("listing plugins names...")
     for p in pm:

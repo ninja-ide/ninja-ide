@@ -33,11 +33,11 @@ from PyQt4.Qsci import (QsciLexerBash, QsciLexerBatch,
                         QsciLexerJava, QsciLexerJavaScript, QsciLexerLua,
                         QsciLexerMakefile, QsciLexerMatlab, QsciLexerOctave,
                         QsciLexerPOV, QsciLexerPascal,
-                        QsciLexerPerl, QsciLexerPostScript, QsciLexerProperties,
-                        QsciLexerPython, QsciLexerRuby, QsciLexerSQL,
-                        QsciLexerSpice, QsciLexerTCL, QsciLexerTeX,
-                        QsciLexerVHDL, QsciLexerVerilog, QsciLexerXML,
-                        QsciLexerYAML)
+                        QsciLexerPerl, QsciLexerPostScript,
+                        QsciLexerProperties, QsciLexerPython, QsciLexerRuby,
+                        QsciLexerSQL, QsciLexerSpice, QsciLexerTCL,
+                        QsciLexerTeX, QsciLexerVHDL, QsciLexerVerilog,
+                        QsciLexerXML, QsciLexerYAML)
 
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.gui.editor.extended_lexers.all_lexers')
@@ -54,7 +54,8 @@ class BaseNinjaLexer(object):
 
     def initialize_color_scheme(self):
         self.scheme = {}
-        self.background_color = QColor(resources.COLOR_SCHEME["EditorBackground"])
+        self.background_color = QColor(
+            resources.COLOR_SCHEME["EditorBackground"])
         detected_values = []
         identifiers = [word for word in dir(self) if pattern.match(word)]
         logger.debug(identifiers)
@@ -81,10 +82,14 @@ class BaseNinjaLexer(object):
                 parent_lexer = each_parent
                 break
 
-        #FIXME This reverses colors while we find a way to do themes.
+        # FIXME This reverses colors while we find a way to do themes.
         c = parent_lexer.defaultColor(self, style).name()
         logger.debug(c)
-        reverse_color = "#" + "".join((hex(255 - int(x, 16)))[2:].zfill(2) for x in (c[1:3], c[3:5], c[5:7]))
+        reverse_color = "#" + "".join(
+            (hex(255 - int(x, 16)))[2:].zfill(2) for x in (
+                c[1:3], c[3:5], c[5:7]
+            )
+        )
         return QColor(reverse_color)
 
     def defaultFont(self, style):
@@ -104,27 +109,29 @@ class PythonLexer(BaseNinjaLexer, QsciLexerPython):
 
     def keywords(self, keyset):
         if keyset == 2:
-            return ('self super all any basestring bin bool bytearray callable '
-                    'chr abs classmethod cmp compile complex delattr dict dir '
-                    'divmod enumerate eval execfile file filter float format '
-                    'frozenset getattr globals hasattr hash help hex id input '
-                    'int isinstance issubclass iter len list locals long map '
-                    'max memoryview min next object oct open ord pow property '
-                    'range raw_input reduce reload repr reversed round set '
-                    'setattr slice sorted staticmethod str sum tuple type '
-                    'unichr unicode vars xrange zip apply buffer coerce intern '
-                    'True False')
+            return ('self super all any basestring bin bool bytearray '
+                    'callable chr abs classmethod cmp compile complex delattr '
+                    'dict dir divmod enumerate eval execfile file filter '
+                    'float format frozenset getattr globals hasattr hash help '
+                    'hex id input int isinstance issubclass iter len list '
+                    'locals long map max memoryview min next object oct open '
+                    'ord pow property range raw_input reduce reload repr '
+                    'reversed round set setattr slice sorted staticmethod str '
+                    'sum tuple type unichr unicode vars xrange zip apply '
+                    'buffer coerce intern True False')
         return super(PythonLexer, self).keywords(keyset)
 
 
 try:
     from PyQt4.Qsci import QsciLexerAVS
+
     class AVSLexer(BaseNinjaLexer, QsciLexerAVS):
         def __init__(self, *args, **kwargs):
             self._settings_colored = None
             super(AVSLexer, self).__init__(*args, **kwargs)
 except ImportError:
     AVSLexer = None
+
 
 class BashLexer (BaseNinjaLexer, QsciLexerBash):
     def __init__(self, *args, **kwargs):
@@ -163,12 +170,14 @@ class CSharpLexer (BaseNinjaLexer, QsciLexerCSharp):
 
 try:
     from PyQt4.Qsci import QsciLexerCoffeeScript
+
     class CoffeeScriptLexer (BaseNinjaLexer, QsciLexerCoffeeScript):
         def __init__(self, *args, **kwargs):
             self._settings_colored = None
             super(CoffeeScriptLexer, self).__init__(*args, **kwargs)
 except ImportError:
     CoffeeScriptLexer = None
+
 
 class DLexer (BaseNinjaLexer, QsciLexerD):
     def __init__(self, *args, **kwargs):
@@ -244,12 +253,14 @@ class OctaveLexer (BaseNinjaLexer, QsciLexerOctave):
 
 try:
     from PyQt4.Qsci import QsciLexerPO
+
     class POLexer (BaseNinjaLexer, QsciLexerPO):
         def __init__(self, *args, **kwargs):
             self._settings_colored = None
             super(POLexer, self).__init__(*args, **kwargs)
 except ImportError:
     POLexer = None
+
 
 class POVLexer (BaseNinjaLexer, QsciLexerPOV):
     def __init__(self, *args, **kwargs):

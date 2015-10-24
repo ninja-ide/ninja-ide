@@ -14,8 +14,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with NINJA-IDE; If not, see <http://www.gnu.org/licenses/>.
-#This file is not for NINJA-IDE internal use, but to execute it using
-#the System Python and obtain the correct sys.path for frozen applications
+# This file is not for NINJA-IDE internal use, but to execute it using
+# the System Python and obtain the correct sys.path for frozen applications
 
 import sys
 

@@ -41,7 +41,7 @@ def filter_data_type(data_types):
 
 
 def remove_function_arguments(line):
-    #TODO: improve line analysis using tokenizer to get the lines of the text
+    # TODO: improve line analysis using tokenizer to get the lines of the text
     while line.find('(') != -1:
         start = line.find('(')
         end = line.find(')') + 1

@@ -83,10 +83,10 @@ def detect_python_path():
 MAX_OPACITY = TOOLBAR_AREA = 1
 MIN_OPACITY = 0.3
 
-#UI LAYOUT
-#001 : Central Rotate
-#010 : Panels Rotate
-#100 : Central Orientation
+# UI LAYOUT
+# 001 : Central Rotate
+# 010 : Panels Rotate
+# 100 : Central Orientation
 UI_LAYOUT = NOTIFICATION_POSITION = 0
 
 LANGUAGE = EXECUTION_OPTIONS = ""
@@ -139,7 +139,7 @@ TOOLBAR_ITEMS_DEFAULT = [
     "_ToolsDock.kill_application",
 ]
 
-#hold the toolbar actions added by plugins
+# hold the toolbar actions added by plugins
 TOOLBAR_ITEMS_PLUGINS = LAST_OPENED_FILES = []
 
 NINJA_SKIN = 'Default'
@@ -348,7 +348,7 @@ def should_clean_locator_knowledge():
     return value
 
 
-#Clean Locator Knowledge
+# Clean Locator Knowledge
 def clean_locator_db(qsettings):
     last_clean = should_clean_locator_knowledge()
     if last_clean is not None:
@@ -433,29 +433,30 @@ def load_settings():
     sessionDict = dict(data_qsettings.value('ide/sessions', {}))
     # Fix later
     try:
-      for key in sessionDict:
-          session_list = list(sessionDict[key])
-          files = []
-          if session_list:
-              files = [item for item in tuple(session_list[0])]
-          tempFiles = []
-          for file_ in files:
-              fileData = tuple(file_)
-              if len(fileData) > 0:
-                  tempFiles.append([fileData[0], int(fileData[1]), fileData[2]])
-          files = tempFiles
-          projects = []
-          if len(session_list) > 1:
-              projects = [item for item in tuple(session_list[1])]
-          SESSIONS[key] = [files, projects]
+        for key in sessionDict:
+            session_list = list(sessionDict[key])
+            files = []
+            if session_list:
+                files = [item for item in tuple(session_list[0])]
+            tempFiles = []
+            for file_ in files:
+                fileData = tuple(file_)
+                if len(fileData) > 0:
+                    tempFiles.append([fileData[0], int(fileData[1]),
+                        fileData[2]])
+            files = tempFiles
+            projects = []
+            if len(session_list) > 1:
+                projects = [item for item in tuple(session_list[1])]
+            SESSIONS[key] = [files, projects]
     except:
-      pass
+        pass
     #TODO
     #toolbar_items = [item for item in list(qsettings.value(
         #'preferences/interface/toolbar', []))]
     #if toolbar_items:
         #TOOLBAR_ITEMS = toolbar_items
-    #EXECUTION OPTIONS
+    # EXECUTION OPTIONS
     EXECUTION_OPTIONS = qsettings.value(
         'preferences/execution/executionOptions',
         defaultValue='', type='QString')
@@ -465,7 +466,7 @@ def load_settings():
         SUPPORTED_EXTENSIONS = extensions
     WORKSPACE = qsettings.value(
         'preferences/general/workspace', "", type='QString')
-    #Editor
+    # Editor
     SHOW_MINIMAP = qsettings.value(
         'preferences/editor/minimapShow', False, type=bool)
     MINIMAP_MAX_OPACITY = float(qsettings.value(
@@ -535,7 +536,7 @@ def load_settings():
                                    True, type=bool)
     if not doubleQuotes:
         del QUOTES['"']
-    #Projects
+    # Projects
     SHOW_PROJECT_EXPLORER = qsettings.value(
         'preferences/interface/showProjectExplorer', True, type=bool)
     SHOW_SYMBOLS_LIST = qsettings.value(
@@ -546,7 +547,7 @@ def load_settings():
         'preferences/interface/showErrorsList', True, type=bool)
     SHOW_MIGRATION_LIST = qsettings.value(
         'preferences/interface/showMigrationList', True, type=bool)
-    #Bookmarks and Breakpoints
+    # Bookmarks and Breakpoints
     bookmarks = dict(qsettings.value('preferences/editor/bookmarks', {}))
     for key in bookmarks:
         if key:

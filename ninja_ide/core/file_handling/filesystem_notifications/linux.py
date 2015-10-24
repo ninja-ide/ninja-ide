@@ -24,7 +24,8 @@ from pyinotify import ProcessEvent, IN_CREATE, IN_DELETE, IN_DELETE_SELF, \
                         IN_MODIFY, WatchManager, Notifier, ExcludeFilter
 
 from ninja_ide.tools.logger import NinjaLogger
-logger = NinjaLogger('ninja_ide.core.file_handling.filesystem_notifications.linux')
+logger = NinjaLogger(
+    'ninja_ide.core.file_handling.filesystem_notifications.linux')
 DEBUG = logger.debug
 
 from ninja_ide.core.file_handling.filesystem_notifications import base_watcher
@@ -123,7 +124,7 @@ class NinjaFileSystemWatcher(base_watcher.BaseWatcher):
                 self.watching_paths[path] = notifier
             except (OSError, IOError):
                 pass
-                #Shit happens, most likely temp file
+                # Shit happens, most likely temp file
 
     def remove_watch(self, path):
         if path in self.watching_paths:

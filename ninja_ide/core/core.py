@@ -35,7 +35,7 @@ def run_ninja():
         try:
             import ctypes
             libc = ctypes.CDLL('libc.so.6')
-            #Set the application name
+            # Set the application name
             procname = 'ninja-ide'
             libc.prctl(15, '%s\0' % procname, 0, 0, 0)
         except:

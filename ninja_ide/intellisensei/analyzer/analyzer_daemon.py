@@ -299,7 +299,7 @@ class _DaemonProcess(Process):
                 self.packages.append(package)
 
     def _resolve_with_local_names(self, types, module, splitby):
-        #TODO: resolve with functions returns
+        # TODO: resolve with functions returns
         for data in types:
             if data.data_type != model.late_resolution:
                 continue

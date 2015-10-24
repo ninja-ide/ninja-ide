@@ -50,14 +50,14 @@ mapping_symbols = {}
 files_paths = {}
 
 
-#@ FILES
-#< CLASSES
-#> FUNCTIONS
-#- MODULE ATTRIBUTES
-#! NO PYTHON FILES
-#. SYMBOLS IN THIS FILE
-#/ TABS OPENED
-#: LINE NUMBER
+# @ FILES
+# < CLASSES
+# > FUNCTIONS
+# - MODULE ATTRIBUTES
+# ! NO PYTHON FILES
+# . SYMBOLS IN THIS FILE
+# / TABS OPENED
+# : LINE NUMBER
 FILTERS = {
     'files': '@',
     'classes': '<',
@@ -85,7 +85,7 @@ def _initialize_db():
 _initialize_db()
 
 
-#TODO: Clean non existent paths from the DB
+# TODO: Clean non existent paths from the DB
 
 
 class GoToDefinition(QObject):
@@ -113,7 +113,7 @@ class GoToDefinition(QObject):
                 filename=self._thread.results[0][1],
                 line=self._thread.results[0][2])
         elif len(self._thread.results) == 0:
-            #TODO: Check imports
+            # TODO: Check imports
             QMessageBox.information(
                 main_container,
                 translations.TR_DEFINITION_NOT_FOUND,
@@ -238,7 +238,7 @@ class LocateSymbolsThread(QThread):
             if self._cancel:
                 break
             current_dir = QDir(nproject.path)
-            #Skip not readable dirs!
+            # Skip not readable dirs!
             if not current_dir.isReadable():
                 continue
 
@@ -254,19 +254,19 @@ class LocateSymbolsThread(QThread):
         dir_filter = QDir.Dirs | QDir.NoDotAndDotDot | QDir.Readable
         while not self._cancel and not queue_folders.empty():
             current_dir = QDir(queue_folders.get())
-            #Skip not readable dirs!
+            # Skip not readable dirs!
             if not current_dir.isReadable():
                 continue
 
-            #Collect all sub dirs!
+            # Collect all sub dirs!
             current_sub_dirs = current_dir.entryInfoList(dir_filter)
             for one_dir in current_sub_dirs:
                 queue_folders.put(one_dir.absoluteFilePath())
 
-            #all files in sub_dir first apply the filters
+            # all files in sub_dir first apply the filters
             current_files = current_dir.entryInfoList(
                 ['*{0}'.format(x) for x in nproject.extensions], file_filter)
-            #process all files in current dir!
+            # process all files in current dir!
             global files_paths
             for one_file in current_files:
                 try:
@@ -319,7 +319,7 @@ class LocateSymbolsThread(QThread):
                     data[3] = line
                     self.results.append(data)
                     break
-                #take the next line!
+                # take the next line!
                 line = stream.readLine()
                 line_index += 1
 
@@ -349,7 +349,7 @@ class LocateSymbolsThread(QThread):
         self.locations = sorted(self.locations, key=lambda item: item.name)
 
     def _grep_file_symbols(self, file_path, file_name):
-        #type - file_name - file_path
+        # type - file_name - file_path
         global mapping_symbols
         exts = settings.SYNTAX.get('python')['extension']
         file_ext = file_manager.get_file_extension(file_path)
@@ -371,7 +371,7 @@ class LocateSymbolsThread(QThread):
                 return
             except:
                 print("ResultItem couldn't be loaded, let's analyze it again'")
-        #obtain a symbols handler for this file extension
+        # obtain a symbols handler for this file extension
         symbols_handler = handlers.get_symbols_handler(file_ext)
         if symbols_handler is None:
             return
@@ -444,7 +444,7 @@ class LocateSymbolsThread(QThread):
         with open(file_path) as f:
             content = f.read()
             ext = file_manager.get_file_extension(file_path)
-            #obtain a symbols handler for this file extension
+            # obtain a symbols handler for this file extension
             symbols_handler = handlers.get_symbols_handler(ext)
             symbols = symbols_handler.obtain_symbols(content,
                                                      filename=file_path)

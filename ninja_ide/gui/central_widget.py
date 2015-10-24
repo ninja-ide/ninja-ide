@@ -34,21 +34,17 @@ from ninja_ide.tools import ui_tools
 
 
 class CentralWidget(QWidget):
-
 ###############################################################################
 # CentralWidget SIGNALS
 ###############################################################################
-
     """
     splitterCentralRotated()
     """
-
 ###############################################################################
-
     def __init__(self, parent=None):
         super(CentralWidget, self).__init__(parent)
         self.parent = parent
-        #This variables are used to save the splitter sizes before hide
+        # This variables are used to save the splitter sizes before hide
         self.lateralPanel = LateralPanel()
 
         self._add_functions = {
@@ -60,14 +56,14 @@ class CentralWidget(QWidget):
         hbox = QHBoxLayout(self)
         hbox.setContentsMargins(0, 0, 0, 0)
         hbox.setSpacing(0)
-        #Create Splitters to divide the UI 3 regions
+        # Create Splitters to divide the UI 3 regions
         self._splitterBase = dynamic_splitter.DynamicSplitter(Qt.Horizontal)
         self._splitterBase.setOpaqueResize(True)
         self._splitterInside = dynamic_splitter.DynamicSplitter(Qt.Vertical)
         self._splitterInside.setOpaqueResize(True)
         self._splitterBase.addWidget(self._splitterInside)
 
-        #Add to Main Layout
+        # Add to Main Layout
         hbox.addWidget(self._splitterBase)
         IDE.register_service('central_container', self)
 
@@ -125,7 +121,7 @@ class CentralWidget(QWidget):
                 toolbar.show()
 
     def showEvent(self, event):
-        #Show Event
+        # Show Event
         super(CentralWidget, self).showEvent(event)
         if bin(settings.UI_LAYOUT)[-1] == '1':
             self.splitter_base_rotate()
@@ -133,9 +129,9 @@ class CentralWidget(QWidget):
             self.splitter_inside_rotate()
         if bin(settings.UI_LAYOUT >> 2)[-1] == '1':
             self.splitter_base_orientation()
-        #Rearrange widgets on Window
+        # Rearrange widgets on Window
         qsettings = IDE.ninja_settings()
-        #Lists of sizes as list of QVariant- heightList = [QVariant, QVariant]
+        # Lists of sizes as list of QVariant- heightList = [QVariant, QVariant]
         heightSize = qsettings.value("window/central/insideSplitterSize", None)
         widthSize = qsettings.value("window/central/baseSplitterSize", None)
         lateralVisible = qsettings.value("window/central/lateralVisible", True,
@@ -176,7 +172,7 @@ class CentralWidget(QWidget):
 
     def save_configuration(self):
         qsettings = IDE.ninja_settings()
-        #Save the size of de splitters
+        # Save the size of de splitters
         qsettings.setValue("window/central/baseSplitterSize",
             self._splitterBase.saveState())
         qsettings.setValue("window/central/insideSplitterSize",

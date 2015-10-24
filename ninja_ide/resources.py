@@ -155,6 +155,7 @@ def get_color(key):
         return CUSTOM_SCHEME.get(key, COLOR_SCHEME.get(key))
     return None
 
+
 def get_color_hex(key):
     if key in COLOR_SCHEME:
         return CUSTOM_SCHEME.get(key, COLOR_SCHEME.get(key)).lstrip("#")

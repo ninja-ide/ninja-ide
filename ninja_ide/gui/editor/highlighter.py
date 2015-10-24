@@ -24,10 +24,10 @@ from ninja_ide.gui.editor.extended_lexers.all_lexers import (
     PythonLexer, AVSLexer, BashLexer, BatchLexer, CMakeLexer,
     CPPLexer, CSSLexer, CSharpLexer, CoffeeScriptLexer, DLexer, DiffLexer,
     FortranLexer, Fortran77Lexer, HTMLLexer, IDLLexer, JavaLexer,
-    JavaScriptLexer, LuaLexer, MakefileLexer, MatlabLexer, OctaveLexer, POLexer,
-    POVLexer, PascalLexer, PerlLexer, PostScriptLexer, PropertiesLexer,
-    RubyLexer, SQLLexer, SpiceLexer, TCLLexer, TeXLexer, VHDLLexer,
-    VerilogLexer, XMLLexer, YAMLLexer)
+    JavaScriptLexer, LuaLexer, MakefileLexer, MatlabLexer, OctaveLexer,
+    POLexer, POVLexer, PascalLexer, PerlLexer, PostScriptLexer,
+    PropertiesLexer, RubyLexer, SQLLexer, SpiceLexer, TCLLexer, TeXLexer,
+    VHDLLexer, VerilogLexer, XMLLexer, YAMLLexer)
 
 from ninja_ide.tools.logger import NinjaLogger
 logger = NinjaLogger('ninja_ide.gui.editor.highlighter')

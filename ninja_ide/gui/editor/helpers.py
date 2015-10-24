@@ -31,7 +31,7 @@ patIsLocalFunction = re.compile('(\s)+self\.(\w)+\(\)')
 patClass = re.compile("(\\s)*class.+\\:$")
 endCharsForIndent = [':', '{', '(', '[']
 closeBraces = {'{': '}', '(': ')', '[': ']'}
-#Coding line by language
+# Coding line by language
 CODING_LINE = {
     'python': '# -*- coding: utf-8 -*-'
 }
@@ -102,7 +102,7 @@ def add_line_increment_for_dict(data, lineModified, diference,
     #keyword = remove_symbols(word)
 
     #if keyword in settings.SYNTAX.get('python')['keywords']:
-        #return keyword
+    #    return keyword
 
     #return word
 
@@ -113,7 +113,7 @@ def add_line_increment_for_dict(data, lineModified, diference,
 
 #def clean_line(editorWidget):
     #while editorWidget.textCursor().columnNumber() > 0:
-        #editorWidget.textCursor().deletePreviousChar()
+    #    editorWidget.textCursor().deletePreviousChar()
 
 
 def remove_trailing_spaces(editorWidget):
@@ -201,7 +201,7 @@ def insert_debugging_prints(editorWidget):
         print_text = ""
         if result:
             print_text = "%s: " % result
-        #begin Undo feature
+        # begin Undo feature
         editorWidget.SendScintilla(editorWidget.SCI_BEGINUNDOACTION, 1)
         lstart, istart, lend, iend = editorWidget.getSelection()
         lines = lend - lstart
@@ -210,7 +210,7 @@ def insert_debugging_prints(editorWidget):
             indentation = get_indentation(editorWidget.text(pos))
             editorWidget.insertAt("%sprint('%s%i')\n" % (
                 indentation, print_text, i), pos, 0)
-        #end Undo feature
+        # end Undo feature
         editorWidget.SendScintilla(editorWidget.SCI_ENDUNDOACTION, 1)
 
 

@@ -19,7 +19,8 @@ from PyQt4.QtCore import QObject
 from PyQt4.QtCore import SIGNAL, QThread
 
 from ninja_ide.tools.logger import NinjaLogger
-logger = NinjaLogger('ninja_ide.core.file_handling.filesystem_notifications.Watcher')
+logger = NinjaLogger(
+    'ninja_ide.core.file_handling.filesystem_notifications.Watcher')
 DEBUG = logger.debug
 
 ADDED = 1
@@ -50,7 +51,7 @@ class SingleFileWatcher(QThread):
 
     def add_watch(self, file_to_watch):
         status = do_stat(file_to_watch)
-        #only add if the file still exists
+        # only add if the file still exists
         if (file_to_watch not in self._watches) and status:
             self._watches[file_to_watch] = do_stat(file_to_watch)
         elif not status:
@@ -82,13 +83,11 @@ class SingleFileWatcher(QThread):
 
 
 class BaseWatcher(QObject):
-
 ###############################################################################
 # SIGNALS
 #
 # fileChanged(int, QString)  [added, deleted, modified, rename, remove]
 ###############################################################################
-
     def __init__(self):
         super(BaseWatcher, self).__init__()
         self._single_file_watcher = None
@@ -101,6 +100,7 @@ class BaseWatcher(QObject):
             self.connect(self._single_file_watcher,
                 SIGNAL("destroyed(QObject*)"), self.on_destroy)
             self._single_file_watcher.start()
+
         self._single_file_watcher.add_watch(file_path)
 
     def remove_file_watch(self, file_path):

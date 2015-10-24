@@ -26,7 +26,8 @@ import os
 from ninja_ide.core.file_handling import file_manager
 
 from ninja_ide.tools.logger import NinjaLogger
-logger = NinjaLogger('ninja_ide.core.file_handling.filesystem_notifications.windows')
+logger = NinjaLogger(
+    'ninja_ide.core.file_handling.filesystem_notifications.windows')
 DEBUG = logger.debug
 
 from ninja_ide.core.file_handling.filesystem_notifications import base_watcher
@@ -37,11 +38,11 @@ RENAME = base_watcher.RENAME
 MODIFIED = base_watcher.MODIFIED
 
 ACTIONS = {
-  1: ADDED,
-  2: DELETED,
-  3: MODIFIED,
-  4: RENAME,
-  5: RENAME
+    1: ADDED,
+    2: DELETED,
+    3: MODIFIED,
+    4: RENAME,
+    5: RENAME
 }
 
 # Thanks to Claudio Grondi for the correct set of numbers
@@ -60,8 +61,8 @@ def listdir(path):
         for each_file in files:
             yield os.path.join(each_folder, each_file)
 
-#Credit on this workaround for the shortsightness of windows developers goes
-#to Malthe Borch http://pypi.python.org/pypi/MacFSEvents
+# Credit on this workaround for the shortsightness of windows developers goes
+# to Malthe Borch http://pypi.python.org/pypi/MacFSEvents
 
 
 class FileEventCallback(object):

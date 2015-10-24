@@ -40,5 +40,5 @@ def init_basic_handlers():
     # Import introspection here, it not needed in the namespace of
     # the rest of the file.
     from ninja_ide.tools import introspection
-    #Set Default Symbol Handler
+    # Set Default Symbol Handler
     set_symbols_handler('py', introspection)
