@@ -659,7 +659,7 @@ class IDE(QMainWindow):
         self.Session = None
 
     def load_window_geometry(self):
-        """Load from QSettings the window size of de Ninja IDE"""
+        """Load from QSettings the window size of Ninja IDE"""
         qsettings = QSettings(resources.SETTINGS_PATH, QSettings.IniFormat)
         if qsettings.value("window/maximized", True, type=bool):
             self.setWindowState(Qt.WindowMaximized)
