@@ -510,7 +510,6 @@ class Editor(QsciScintilla):
 
     def set_flags(self):
         """Set some configuration flags for the Editor."""
-        print("LALAL")
         if settings.ALLOW_WORD_WRAP:
             self.setWrapMode(QsciScintilla.WrapWord)
         else:
