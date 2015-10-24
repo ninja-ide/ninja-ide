@@ -550,3 +550,13 @@ QSplitter::handle {
 QSplitter:handle:hover {
     background: gray;
 }
+
+QCheckBox::indicator:unchecked {
+    background: #ddd;
+    border-radius: 2px;
+    image: url(:img/checkbox-unchecked);
+}
+
+QCheckBox::indicator:checked {
+    image: url(:img/checkbox-checked);
+}
