@@ -250,6 +250,10 @@ class Editor(QsciScintilla):
             ninjaide,
             SIGNAL("ns_preferences_editor_showTabsAndSpaces(PyQt_PyObject)"),
             self.set_flags)
+        self.connect(
+            ninjaide,
+            SIGNAL("ns_preferences_editor_showIndentationGuide(PyQt_PyObject)"),
+            self.set_flags)
         #TODO: figure it out it doesn´t work if gets shown after init
         ##self.connect(ninjaide,
             ##SIGNAL("ns_preferences_editor_minimapShow(PyQt_PyObject)"),
@@ -506,6 +510,7 @@ class Editor(QsciScintilla):
 
     def set_flags(self):
         """Set some configuration flags for the Editor."""
+        print("LALAL")
         if settings.ALLOW_WORD_WRAP:
             self.setWrapMode(QsciScintilla.WrapWord)
         else:
