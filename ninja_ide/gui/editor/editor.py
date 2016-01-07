@@ -129,6 +129,9 @@ class Editor(QsciScintilla):
         self.SendScintilla(QsciScintilla.SCI_INDICSETALPHA,
                            self.__indicator_navigation, 40)
 
+        # Sets QScintilla into unicode mode
+        self.SendScintilla(QsciScintilla.SCI_SETCODEPAGE, 65001)
+
     def __init__(self, neditable):
         super(Editor, self).__init__()
         self._neditable = neditable
