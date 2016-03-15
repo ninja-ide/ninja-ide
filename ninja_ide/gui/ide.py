@@ -684,7 +684,7 @@ class IDE(QMainWindow):
     def _save_unsaved_files(self, files):
         """Save the files from the paths in the array."""
         for f in files:
-            editable = self.get_or_create_editable(f)
+            editable = self.get_or_create_editable(nfile=f)
             editable.ignore_checkers = True
             editable.save_content()
 
